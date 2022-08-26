@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1972
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloneDroneOverhaul", "CloneDroneOverhaul\CloneDroneOverhaul.csproj", "{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {156FD66F-9849-47BA-A413-EA2B63763168}
+	EndGlobalSection
+EndGlobal
