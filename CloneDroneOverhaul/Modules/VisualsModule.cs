@@ -5,6 +5,7 @@ using ModLibrary;
 using UnityEngine.Rendering;
 using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.PooledPrefabs;
+using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -25,6 +26,11 @@ namespace CloneDroneOverhaul.Modules
         SimplePooledPrefab bodyPartDamagedVFX;
         SimplePooledPrefab bodyPartDamagedWithFireVFX;
         SimplePooledPrefab bodyPartBurning;
+
+        SimplePooledPrefab newExplosionVFX;
+        SimplePooledPrefab lavaVoxelsVFX;
+
+        Camera lastSpottedCamera;
 
         private bool isWaitingNextFrame;
 
@@ -58,6 +64,8 @@ namespace CloneDroneOverhaul.Modules
             bodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 15, "VFX_Cut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedWithFireVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 15, "VFX_FireCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartBurning = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 15, "VFX_Burning", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
+            lavaVoxelsVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, "VFX_ExplosionCubes", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
+            newExplosionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, "VFX_NewExplosion", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
 
             RefreshDustMaterials();
 
@@ -76,6 +84,20 @@ namespace CloneDroneOverhaul.Modules
                 isWaitingNextFrame = false;
                 this.probe.RenderProbe();
             }
+
+            Camera newCam = Camera.main;
+            if (lastSpottedCamera != newCam)
+            {
+                if (newCam != null)
+                {
+                    Bloom bloom = newCam.GetComponent<Bloom>();
+                    bloom.bloomBlurIterations = 10;
+                    bloom.bloomIntensity = 0.7f;
+                    bloom.bloomThreshold = 1.25f;
+                    bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+                }
+            }
+            lastSpottedCamera = Camera.main;
         }
         public override void OnManagedUpdate()
         {
@@ -173,6 +195,50 @@ namespace CloneDroneOverhaul.Modules
         public void EmitBurningVFX(Vector3 pos)
         {
             bodyPartBurning.SpawnObject(pos, Vector3.zero, Color.clear);
+        }
+
+        public void EmitExplosion(Vector3 pos)
+        {
+            newExplosionVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+            lavaVoxelsVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+        }
+    }
+
+    public class PointLightDust : MonoBehaviour
+    {
+        public Transform Target;
+        Transform Dust;
+
+        void Start()
+        {
+            Dust = Instantiate<Transform>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustLight").transform);
+        }
+
+        void FixedUpdate()
+        {
+            Dust.transform.position = Target.position;
+        }
+
+        void OnDestroy()
+        {
+            if (Dust != null)
+                Destroy(Dust.gameObject);
+        }
+
+        void OnDisable()
+        {
+            if (Dust != null)
+            {
+                Dust.gameObject.SetActive(false);
+            }
+        }
+
+        void OnEnable()
+        {
+            if (Dust != null)
+            {
+                Dust.gameObject.SetActive(true);
+            }
         }
     }
 }

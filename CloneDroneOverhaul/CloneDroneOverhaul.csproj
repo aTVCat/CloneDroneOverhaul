@@ -12,13 +12,15 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -81,11 +83,16 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\Random Patches FINAL\RandomPatches\bin\Debug\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="VoxReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\VoxReader-master\VoxReader-master\VoxReader\bin\Debug\netstandard2.0\VoxReader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Localization\LocalizationEditor.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="Modules\DelegateTimer.cs" />
+    <Compile Include="Modules\CinematicGameManager.cs" />
     <Compile Include="Modules\DynamicSkyboxMaterialSwapper.cs" />
     <Compile Include="Modules\ModuleManagement.cs" />
     <Compile Include="Modules\HotkeysStaticModule.cs" />
@@ -103,6 +110,17 @@
     <Compile Include="UI\NotificationsUI.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="Utilities\PlayerUtilities.cs" />
+    <Compile Include="WeaponSkins\WeaponSkinManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
 </Project>

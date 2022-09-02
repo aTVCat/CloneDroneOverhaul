@@ -47,6 +47,17 @@ namespace CloneDroneOverhaul.UI
             }
         }
 
+        public override void OnNewFrame()
+        {
+            for (int i = 0; i < guis.Count; i++)
+            {
+                if (guis[i].gameObject.activeInHierarchy)
+                {
+                    ModGUIBase mBase = guis[i];
+                    mBase.OnNewFrame();
+                }
+            }
+        }
     }
 
     public class ModGUIBase : UnityEngine.MonoBehaviour
@@ -58,5 +69,6 @@ namespace CloneDroneOverhaul.UI
         public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
         public virtual void RunFunction(string name, object[] arguments) { throw new NotImplementedException(); }
         public virtual void OnManagedUpdate() { }
+        public virtual void OnNewFrame() { }
     }
 }

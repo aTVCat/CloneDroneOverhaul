@@ -21,22 +21,13 @@ namespace CloneDroneOverhaul.Modules
                 return;
             }
 
-            List<int> indexes = new List<int>();
-            int index = 0;
-
-            foreach (TimedAction action in actions)
+            for(int i = actions.Count - 1; i > 0; i--)
             {
-                if (action.CompleteNextFrame && action.Act != null)
+                if (actions[i].CompleteNextFrame && actions[i].Act != null)
                 {
-                    action.Act();
-                    indexes.Add(index);
+                    actions[i].Act();
+                    actions.RemoveAt(i);
                 }
-                index++;
-            }
-
-            foreach (int i in indexes)
-            {
-                actions.RemoveAt(i);
             }
         }
 

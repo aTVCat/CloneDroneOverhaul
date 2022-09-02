@@ -8,6 +8,8 @@ namespace CloneDroneOverhaul.UI
 {
     public class NotificationsUI : ModGUIBase
     {
-
+        public override void OnAdded()
+        {
+        }
     }
 }

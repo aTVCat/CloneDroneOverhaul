@@ -1,5 +1,6 @@
 ﻿using ModLibrary;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CloneDroneOverhaul
 {
@@ -10,6 +11,13 @@ namespace CloneDroneOverhaul
 
     internal class BaseStaticValues
     {
+        public static string ModDataFolder
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
         public static bool IsModEnabled { get; internal set; }
     }
 
@@ -59,6 +67,35 @@ namespace CloneDroneOverhaul
             ServerToClientsAdminCommand serverToClientsAdminCommand = ServerToClientsAdminCommand.Create(Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered);
             serverToClientsAdminCommand.CommandType = (int)ServerToClientAdminCommandType.ActivateDebugSwordCutVisualization;
             serverToClientsAdminCommand.Send();
+        }
+
+        public static void Console_ShowAppDataPath()
+        {
+            debug.Log(UnityEngine.Application.dataPath);
+        }
+
+        public static void Test_OpenSkinsFolder()
+        {
+            if (!GameModeManager.IsOnTitleScreen())
+            {
+                return;
+            }
+            FileManagerStuff.OpenSkinsFolder();
+        }
+    }
+
+    public static class FileManagerStuff
+    {
+        internal static Process ExplorerProcess { get; set; }
+
+        public static void OpenSkinsFolder()
+        {
+            ExplorerProcess = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "C:\\Program Files (x86)\\Steam\\steamapps\\common",
+                UseShellExecute = true,
+                Verb = "open"
+            });
         }
     }
 }

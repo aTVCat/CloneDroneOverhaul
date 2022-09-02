@@ -20,6 +20,7 @@ namespace CloneDroneOverhaul
         public static VisualsModule Visuals { get; set; }
         public static VoxelEffectsModule VoxelEffects { get; set; }
         public static UI.GUIManagement GUI { get; set; }
+        public static WeaponSkins.WeaponSkinManager Skins { get; set; }
 
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
@@ -32,6 +33,7 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
+            AppDomain.CurrentDomain.Load(File.ReadAllBytes(this.ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
 
@@ -72,6 +74,7 @@ namespace CloneDroneOverhaul
             manager.AddModule<HotkeysModule>();
             GUI = manager.AddModule<UI.GUIManagement>();
             VoxelEffects = manager.AddModule<VoxelEffectsModule>();
+            Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
         }
 
         private void addListeners()
@@ -88,26 +91,34 @@ namespace CloneDroneOverhaul
                 Key1 = UnityEngine.KeyCode.LeftControl,
                 Method = BaseUtils.IgnoreLastCrash
             });
-
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key2 = UnityEngine.KeyCode.B,
                 Key1 = UnityEngine.KeyCode.LeftControl,
                 Method = BaseUtils.ExplodePlayer
             });
-
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key2 = UnityEngine.KeyCode.V,
                 Key1 = UnityEngine.KeyCode.LeftControl,
                 Method = BaseUtils.AddSkillPoint
             });
-
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
-                Key2 = UnityEngine.KeyCode.N,
+                Key2 = UnityEngine.KeyCode.M,
                 Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.TrySpawnEnemy
+                Method = BaseUtils.Console_ShowAppDataPath
+            });
+            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            {
+                Key2 = UnityEngine.KeyCode.X,
+                Key1 = UnityEngine.KeyCode.LeftControl,
+                Method = BaseUtils.Test_OpenSkinsFolder
+            });
+            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            {
+                Key1 = UnityEngine.KeyCode.F2,
+                Method = CinematicGameManager.SwitchHud
             });
 
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
@@ -123,13 +134,27 @@ namespace CloneDroneOverhaul
 
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
 
-            AttackManager.Instance.HitColor = new Color(4, 0.5f, 0.25f, 0);
-            AttackManager.Instance.BodyOnFireColor = new Color(1, 0.42f, 0.22f, 0.28f);
+            AttackManager.Instance.HitColor = new Color(4, 0.65f, 0.25f, 0.3f);
+            AttackManager.Instance.BodyOnFireColor = new Color(1, 0.42f, 0.22f, 0.1f);
 
             EmoteManager.Instance.PitchLimits.Max = 5f;
             EmoteManager.Instance.PitchLimits.Min = 0f;
 
+            Application.targetFrameRate = 121;
+            Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
+
+            if(-1 == 0)
+            {
+                Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("cdo_rw_stuff", "CursorImg");
+                Cursor.SetCursor(tex, Vector2.zero, CursorMode.ForceSoftware);
+            }
+
             unlockSecretFeatures();
+        }
+
+        private void DisableVSync()
+        {
+            SettingsManager.Instance.SetVsyncOn(false);
         }
 
         private void unlockSecretFeatures()
@@ -160,9 +185,9 @@ namespace CloneDroneOverhaul
 
     public static class OverhaulDescription
     {
-        public static string GetModName(bool includeVersion)
+        public static string GetModName(bool includeVersion, bool shortVariant = false)
         {
-            string name = "Clone Drone Overhaul";
+            string name = shortVariant == false ? "Clone Drone Overhaul" : "CDO";
             if (includeVersion)
             {
                 return name + " " + GetModVersion();
@@ -172,13 +197,14 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion()
         {
-            return "0.2.0.0 (RW PRE 1)";
+            return "0.2.0.1";
         }
     }
 
     public class OverhaulMonoBehaviourListener : ManagedBehaviour
     {
         private float timeWhenOneSecondWillPast;
+        public static bool IsApplicationFocused { get; private set; }
 
         private bool IsReadyToWork()
         {
@@ -212,6 +238,21 @@ namespace CloneDroneOverhaul
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFrame();
+            }
+        }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            OverhaulMonoBehaviourListener.IsApplicationFocused = hasFocus;
+            if (!hasFocus)
+            {
+                Shader.Find("Standard").maximumLOD = 1;
+                Application.targetFrameRate = 30;
+            }
+            else
+            {
+                Shader.Find("Standard").maximumLOD = -1;
+                Application.targetFrameRate = 121;
             }
         }
 

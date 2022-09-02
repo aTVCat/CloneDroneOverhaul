@@ -7,6 +7,7 @@ using PicaVoxel;
 using HarmonyLib;
 using ModLibrary;
 using CloneDroneOverhaul.Patching.VisualFixes;
+using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -24,7 +25,6 @@ namespace CloneDroneOverhaul.Patching
             }
             catch
             {
-                Debug.Log("we have nullpoint");
             }
         }
         [HarmonyPostfix]
@@ -89,6 +89,16 @@ namespace CloneDroneOverhaul.Patching
         public static void MechBodyPart_Start_Postfix(MechBodyPart __instance)
         {
             BodyPartPatcher.OnBodyPartStart(__instance);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ExplodeWhenCut), "onBodyPartDamaged")]
+        public static void ExplodeWhenCut_onBodyPartDamaged_Prefix(ExplodeWhenCut __instance)
+        {
+            if (!__instance.GetPrivateField<bool>("_hasExploded"))
+            {
+                OverhaulMain.Visuals.EmitExplosion(__instance.ExplosionSpawnPoint.position);
+            }
         }
 
         [HarmonyPostfix]
@@ -173,6 +183,50 @@ namespace CloneDroneOverhaul.Patching
         private static void ArenaCustomizationManager_LerpUpgradeRoomMaterialTo_Prefix(ref Color targetColor)
         {
             targetColor *= 1.5f;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]
+        private static void LevelEditorPointLight_Start_Postfix(LevelEditorPointLight __instance)
+        {
+            CloneDroneOverhaul.Modules.PointLightDust dust = __instance.gameObject.AddComponent<CloneDroneOverhaul.Modules.PointLightDust>();
+            dust.Target = __instance.transform;
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AchievementProgressUI), "populateUI")]
+        private static void AchievementProgressUI_populateUI_Postfix(AchievementProgressUI __instance)
+        {
+            float fractionOfAchievementsCompleted = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
+            GameplayAchievement[] achs = GameplayAchievementManager.Instance.GetAllAchievements();
+            int completed = 0;
+            foreach (GameplayAchievement ach in achs)
+            {
+                if (ach.IsComplete())
+                {
+                    completed++;
+                }
+            }
+            (__instance.ProgressPercentageLabel.transform as RectTransform).sizeDelta = new Vector2(300, 50);
+            __instance.ProgressPercentageLabel.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "% [" + completed + "/" + achs.Length + "]";
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerStatusPanel1v1), "populateValues")]
+        public static void PlayerStatusPanel1v1_populateValues_Postfix(PlayerStatusPanel1v1 __instance)
+        {
+            List<MultiplayerPlayerInfoState> allPlayerInfoStates = Singleton<MultiplayerPlayerInfoManager>.Instance.GetAllPlayerInfoStates();
+            bool flag = allPlayerInfoStates != null && allPlayerInfoStates.Count == 2;
+            if (flag)
+            {
+                Sprite imageSprite = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[1].state.CharacterModelIndex].ImageSprite;
+                Sprite imageSprite2 = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[0].state.CharacterModelIndex].ImageSprite;
+                Image component = __instance.transform.GetChild(3).GetComponent<Image>();
+                Image component2 = __instance.transform.GetChild(2).GetComponent<Image>();
+                component.sprite = imageSprite;
+                component2.sprite = imageSprite2;
+            }
         }
 
         [HarmonyTranspiler]

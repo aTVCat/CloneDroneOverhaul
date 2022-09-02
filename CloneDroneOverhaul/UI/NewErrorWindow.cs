@@ -37,6 +37,7 @@ namespace CloneDroneOverhaul.UI
         public void Hide()
         {
             base.gameObject.SetActive(false);
+            GameUIRoot.Instance.RefreshCursorEnabled();
         }
     }
 }
