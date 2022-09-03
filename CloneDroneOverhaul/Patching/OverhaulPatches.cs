@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Linq;
-using UnityEngine;
-using PicaVoxel;
+﻿using CloneDroneOverhaul.Patching.VisualFixes;
 using HarmonyLib;
 using ModLibrary;
-using CloneDroneOverhaul.Patching.VisualFixes;
+using PicaVoxel;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using UnityEngine;
 using UnityEngine.UI;
+using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -47,6 +47,13 @@ namespace CloneDroneOverhaul.Patching
             return false;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CharacterTracker), "SetPlayer")]
+        private static void CharacterTracker_SetPlayer_Prefix(CharacterTracker __instance, Character player)
+        {
+            BaseStaticReferences.ModuleManager.ExecuteFunction("onPlayerSet", new object[] { player.GetRobotInfo(), __instance.GetPrivateField<Character>("_player").GetRobotInfo() });
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ArmorPiece), "Initialize")]
         private static void ArmorPiece_Initialize_Postfix(ArmorPiece __instance)
@@ -80,8 +87,8 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MindSpaceBodyPart), "tryExplodeBodyPart")]
         public static void MindSpaceBodyPart_tryExplodeBodyPart_Postfix(MindSpaceBodyPart __instance, ref bool __result)
         {
-            if(__result)
-            BodyPartPatcher.OnBodyPartDamaged(__instance);
+            if (__result)
+                BodyPartPatcher.OnBodyPartDamaged(__instance);
         }
 
         [HarmonyPostfix]
@@ -112,7 +119,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MechBodyPart), "tryBurnColorAt")]
         public static void MechBodyPart_tryBurnColorAt_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, int offsetX, int offsetY, int offsetZ, float colorMultiplier = -1f)
         {
-            if(UnityEngine.Random.Range(1, 5) > 3) OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
+            if (UnityEngine.Random.Range(1, 5) > 3) OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
         }
 
         [HarmonyPostfix]
@@ -229,12 +236,31 @@ namespace CloneDroneOverhaul.Patching
             }
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorPerformanceStatsPanel), "Initialize")]
+        public static void LevelEditorPerformanceStatsPanel_Initialize_Postfix(LevelEditorPerformanceStatsPanel __instance)
+        {
+            ObjectFixer.FixObject(__instance.transform, "FixPerformanceStats", __instance);
+        }
+
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(MechBodyPart), "destroyVoxelAtPositionFromCut")]
         private static IEnumerable<CodeInstruction> MechBodyPart_destroyVoxelAtPositionFromCut_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> list = new List<CodeInstruction>(instructions);
             for (int i = 36; i < 66; i++)
+            {
+                list[i].opcode = OpCodes.Nop;
+            }
+            return list.AsEnumerable<CodeInstruction>();
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(CloneUI), "recreateCloneIcons")]
+        private static IEnumerable<CodeInstruction> CloneUI_recreateCloneIcons_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            List<CodeInstruction> list = new List<CodeInstruction>(instructions);
+            for (int i = 3; i < 27; i++)
             {
                 list[i].opcode = OpCodes.Nop;
             }

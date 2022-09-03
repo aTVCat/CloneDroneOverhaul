@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using CloneDroneOverhaul;
+﻿using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI
 {

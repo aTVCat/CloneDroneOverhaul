@@ -91,6 +91,8 @@
   <ItemGroup>
     <Compile Include="Localization\LocalizationEditor.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Modules\RobotEventsModule.cs" />
+    <Compile Include="Modules\WorldGUIs.cs" />
     <Compile Include="Modules\DelegateTimer.cs" />
     <Compile Include="Modules\CinematicGameManager.cs" />
     <Compile Include="Modules\DynamicSkyboxMaterialSwapper.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="UI\GUIManagement.cs" />
     <Compile Include="UI\NewErrorWindow.cs" />
     <Compile Include="UI\NotificationsUI.cs" />
+    <Compile Include="UI\BackMindTransfersUI.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="Utilities\PlayerUtilities.cs" />
     <Compile Include="WeaponSkins\WeaponSkinManager.cs" />

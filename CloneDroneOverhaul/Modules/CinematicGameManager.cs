@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using ModLibrary;
-using UnityEngine.Rendering;
-using CloneDroneOverhaul.Utilities;
-using CloneDroneOverhaul.PooledPrefabs;
-using UnityStandardAssets.ImageEffects;
-
-namespace CloneDroneOverhaul.Modules
+﻿namespace CloneDroneOverhaul.Modules
 {
     public class CinematicGameManager : ModuleBase
     {
