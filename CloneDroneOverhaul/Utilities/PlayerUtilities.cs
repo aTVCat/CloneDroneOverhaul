@@ -9,14 +9,15 @@ namespace CloneDroneOverhaul.Utilities
             return GetRobotInfo(CharacterTracker.Instance.GetPlayer());
         }
 
-        public static RobotShortInformation GetRobotInfo(Character character)
+        public static RobotShortInformation GetRobotInfo(this Character character)
         {
             RobotShortInformation info = new RobotShortInformation();
-            if (character == null)
+            info.Instance = character;
+            if (info.IsNull)
             {
-                info.IsNull = true;
                 return info;
             }
+            info.Instance = character;
             info.CharacterType = character.CharacterType;
             if (character is BattleCruiserController)
             {
@@ -36,7 +37,17 @@ namespace CloneDroneOverhaul.Utilities
 
     public class RobotShortInformation
     {
-        public bool IsNull;
+        public bool IsNull
+        {
+            get
+            {
+                if (Instance == null || !Instance.gameObject.activeSelf)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         public bool IsFPMMindspace;
 
@@ -47,5 +58,7 @@ namespace CloneDroneOverhaul.Utilities
         public string PlayfabID;
 
         public EnemyType CharacterType;
+
+        public Character Instance;
     }
 }

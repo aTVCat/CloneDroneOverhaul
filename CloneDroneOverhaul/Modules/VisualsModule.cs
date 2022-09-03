@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using ModLibrary;
-using UnityEngine.Rendering;
+﻿using CloneDroneOverhaul.PooledPrefabs;
 using CloneDroneOverhaul.Utilities;
-using CloneDroneOverhaul.PooledPrefabs;
+using ModLibrary;
+using UnityEngine;
+using UnityEngine.Rendering;
 using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.Modules
@@ -14,23 +12,19 @@ namespace CloneDroneOverhaul.Modules
         private bool isInitialized;
 
         private ReflectionProbe probe;
-        ParticleSystem worldDustMS1;
-        ParticleSystem worldDustMS0;
-        ParticleSystem worldDustNormal;
-
-        SimplePooledPrefab swordBlockPooled;
-        SimplePooledPrefab swordFireBlockPooled;
-        SimplePooledPrefab swordBlockMSPooled;
-        SimplePooledPrefab msBodyPartDamagedVFX;
-
-        SimplePooledPrefab bodyPartDamagedVFX;
-        SimplePooledPrefab bodyPartDamagedWithFireVFX;
-        SimplePooledPrefab bodyPartBurning;
-
-        SimplePooledPrefab newExplosionVFX;
-        SimplePooledPrefab lavaVoxelsVFX;
-
-        Camera lastSpottedCamera;
+        private ParticleSystem worldDustMS1;
+        private ParticleSystem worldDustMS0;
+        private ParticleSystem worldDustNormal;
+        private SimplePooledPrefab swordBlockPooled;
+        private SimplePooledPrefab swordFireBlockPooled;
+        private SimplePooledPrefab swordBlockMSPooled;
+        private SimplePooledPrefab msBodyPartDamagedVFX;
+        private SimplePooledPrefab bodyPartDamagedVFX;
+        private SimplePooledPrefab bodyPartDamagedWithFireVFX;
+        private SimplePooledPrefab bodyPartBurning;
+        private SimplePooledPrefab newExplosionVFX;
+        private SimplePooledPrefab lavaVoxelsVFX;
+        private Camera lastSpottedCamera;
 
         private bool isWaitingNextFrame;
 
@@ -41,17 +35,17 @@ namespace CloneDroneOverhaul.Modules
         public override void OnActivated()
         {
             GameObject gameObject = new GameObject("CDO_Visuals");
-            this.probe = gameObject.AddComponent<ReflectionProbe>();
-            this.probe.size = new Vector3(4096f, 4096f, 4096f);
-            this.probe.resolution = 64;
-            this.probe.shadowDistance = 1024f;
-            this.probe.intensity = 0.75f;
-            this.probe.nearClipPlane = 0.01f;
-            this.probe.nearClipPlane = 0.3f;
-            this.probe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
-            this.probe.mode = ReflectionProbeMode.Realtime;
-            this.probe.timeSlicingMode = ReflectionProbeTimeSlicingMode.NoTimeSlicing;
-            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.SectionVisibilityChanged, this.renderReflections);
+            probe = gameObject.AddComponent<ReflectionProbe>();
+            probe.size = new Vector3(4096f, 4096f, 4096f);
+            probe.resolution = 64;
+            probe.shadowDistance = 1024f;
+            probe.intensity = 0.75f;
+            probe.nearClipPlane = 0.01f;
+            probe.nearClipPlane = 0.3f;
+            probe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
+            probe.mode = ReflectionProbeMode.Realtime;
+            probe.timeSlicingMode = ReflectionProbeTimeSlicingMode.NoTimeSlicing;
+            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.SectionVisibilityChanged, renderReflections);
 
             worldDustMS1 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM1")).GetComponent<ParticleSystem>();
             worldDustMS0 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM0")).GetComponent<ParticleSystem>();
@@ -82,7 +76,7 @@ namespace CloneDroneOverhaul.Modules
             if (isWaitingNextFrame)
             {
                 isWaitingNextFrame = false;
-                this.probe.RenderProbe();
+                probe.RenderProbe();
             }
 
             Camera newCam = Camera.main;
@@ -103,17 +97,17 @@ namespace CloneDroneOverhaul.Modules
         {
             if (Camera.main != null)
             {
-                this.probe.gameObject.transform.position = Camera.main.transform.position;
-                this.worldDustMS1.gameObject.transform.position = Camera.main.transform.position;
-                this.worldDustMS0.gameObject.transform.position = Camera.main.transform.position;
-                this.worldDustNormal.gameObject.transform.position = Camera.main.transform.position;
+                probe.gameObject.transform.position = Camera.main.transform.position;
+                worldDustMS1.gameObject.transform.position = Camera.main.transform.position;
+                worldDustMS0.gameObject.transform.position = Camera.main.transform.position;
+                worldDustNormal.gameObject.transform.position = Camera.main.transform.position;
             }
             else
             {
-                this.probe.gameObject.transform.position = Vector3.zero;
-                this.worldDustMS1.gameObject.transform.position = Vector3.zero;
-                this.worldDustMS0.gameObject.transform.position = Vector3.zero;
-                this.worldDustNormal.gameObject.transform.position = Vector3.zero;
+                probe.gameObject.transform.position = Vector3.zero;
+                worldDustMS1.gameObject.transform.position = Vector3.zero;
+                worldDustMS0.gameObject.transform.position = Vector3.zero;
+                worldDustNormal.gameObject.transform.position = Vector3.zero;
             }
         }
         public override void OnSecond(float time)
@@ -207,25 +201,27 @@ namespace CloneDroneOverhaul.Modules
     public class PointLightDust : MonoBehaviour
     {
         public Transform Target;
-        Transform Dust;
+        private Transform Dust;
 
-        void Start()
+        private void Start()
         {
             Dust = Instantiate<Transform>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustLight").transform);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             Dust.transform.position = Target.position;
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (Dust != null)
+            {
                 Destroy(Dust.gameObject);
+            }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (Dust != null)
             {
@@ -233,7 +229,7 @@ namespace CloneDroneOverhaul.Modules
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (Dust != null)
             {

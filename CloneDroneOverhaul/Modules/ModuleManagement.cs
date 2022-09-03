@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CloneDroneOverhaul.Modules
 {
     public class ModuleManagement
     {
-        List<ModuleBase> modules = new List<ModuleBase>();
+        private List<ModuleBase> modules = new List<ModuleBase>();
 
         public T AddModule<T>() where T : ModuleBase
         {
@@ -36,7 +33,9 @@ namespace CloneDroneOverhaul.Modules
             {
                 ModuleBase mBase = modules[i];
                 if (mBase.ShouldWork())
+                {
                     mBase.OnNewFrame();
+                }
             }
         }
         public void OnFixedUpdate()
@@ -45,7 +44,9 @@ namespace CloneDroneOverhaul.Modules
             {
                 ModuleBase mBase = modules[i];
                 if (mBase.ShouldWork())
+                {
                     mBase.OnFixedUpdate();
+                }
             }
         }
         public void OnTime(float time)
@@ -54,7 +55,9 @@ namespace CloneDroneOverhaul.Modules
             {
                 ModuleBase mBase = modules[i];
                 if (mBase.ShouldWork())
+                {
                     mBase.OnSecond(time);
+                }
             }
         }
         public void OnManagedUpdate()
@@ -62,8 +65,21 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if(mBase.ShouldWork())
-                   mBase.OnManagedUpdate();
+                if (mBase.ShouldWork())
+                {
+                    mBase.OnManagedUpdate();
+                }
+            }
+        }
+        public void ExecuteFunction(string funcName, object[] args)
+        {
+            for (int i = 0; i < modules.Count; i++)
+            {
+                ModuleBase mBase = modules[i];
+                if (mBase.ExecutesFunction(funcName))
+                {
+                    mBase.RunFunction(funcName, args);
+                }
             }
         }
     }
@@ -74,7 +90,20 @@ namespace CloneDroneOverhaul.Modules
         public virtual void OnModDeactivated() { throw new NotImplementedException(); }
         public virtual bool ShouldWork() { throw new NotImplementedException(); return false; }
         public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
-        public virtual void RunFunction(string name, object[] arguments) { throw new NotImplementedException(); }
+        public virtual void RunFunction(string name, object[] arguments) { }
+        public bool ExecutesFunction(string name)
+        {
+            List<string> list = GetExecutingFunctions();
+            if (list == null || list.Count < 1)
+            {
+                return false;
+            }
+            return list.Contains(name);
+        }
+        public virtual List<string> GetExecutingFunctions()
+        {
+            return null;
+        }
         public virtual void OnNewFrame() { }
         public virtual void OnFixedUpdate() { }
         public virtual void OnSecond(float time) { }

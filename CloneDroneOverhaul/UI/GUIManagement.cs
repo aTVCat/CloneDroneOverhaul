@@ -6,7 +6,7 @@ namespace CloneDroneOverhaul.UI
 {
     public class GUIManagement : ModuleBase
     {
-        List<ModGUIBase> guis = new List<ModGUIBase>();
+        private List<ModGUIBase> guis = new List<ModGUIBase>();
 
         public override bool ShouldWork()
         {

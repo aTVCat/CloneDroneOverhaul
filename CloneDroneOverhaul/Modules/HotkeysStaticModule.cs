@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -16,12 +15,16 @@ namespace CloneDroneOverhaul.Modules
 
         public override void OnNewFrame()
         {
-            if (hotKeys.Count == 0) return;
+            if (hotKeys.Count == 0)
+            {
+                return;
+            }
+
             for (int i = 0; i < hotKeys.Count; i++)
             {
                 Hotkey hk = hotKeys[i];
-                KeyCode Key1 = hk.Key1; 
-                KeyCode Key2 = hk.Key2; 
+                KeyCode Key1 = hk.Key1;
+                KeyCode Key2 = hk.Key2;
 
                 bool twoKeysUsed = Key1 != KeyCode.None && Key2 != KeyCode.None;
                 if (!twoKeysUsed)
@@ -44,7 +47,7 @@ namespace CloneDroneOverhaul.Modules
 
         public void AddHotkey(Hotkey hotkey)
         {
-            if(hotkey.Key1 == KeyCode.None && hotkey.Key2 == KeyCode.None || hotkey.Method == null)
+            if ((hotkey.Key1 == KeyCode.None && hotkey.Key2 == KeyCode.None) || hotkey.Method == null)
             {
                 return;
             }

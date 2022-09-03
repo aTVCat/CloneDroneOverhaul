@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using PicaVoxel;
+﻿using CloneDroneOverhaul.PooledPrefabs;
 using ModLibrary;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using CloneDroneOverhaul.PooledPrefabs;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -24,8 +23,10 @@ namespace CloneDroneOverhaul.Modules
         public override void OnManagedUpdate()
         {
             return;
-            if(!isCalculatingVoxels)
-            StaticCoroutineRunner.StartStaticCoroutine(OnUpdateMeThread());
+            if (!isCalculatingVoxels)
+            {
+                StaticCoroutineRunner.StartStaticCoroutine(OnUpdateMeThread());
+            }
         }
 
         public IEnumerator OnUpdateMeThread()

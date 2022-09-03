@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using PicaVoxel;
+﻿using PicaVoxel;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -38,11 +38,11 @@ namespace CloneDroneOverhaul.Patching
         public static void OnVoxelCut(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
             Vector3 voxelWorldPosition = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
-            if(fireSpreadDefinition == null)
+            if (fireSpreadDefinition == null)
             {
                 Vector3 a = (voxelWorldPosition - volumeWorldCenter).normalized + impactDirectionWorld;
                 VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, 1f * a);
-                VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, 3f * impactDirectionWorld + 1f * a);
+                VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, (3f * impactDirectionWorld) + (1f * a));
             }
 
             OverhaulMain.Visuals.EmitBodyPartCutVFX(voxelWorldPosition, fireSpreadDefinition != null);
@@ -50,7 +50,7 @@ namespace CloneDroneOverhaul.Patching
 
         public static void OnBodyPartDamaged(BaseBodyPart part)
         {
-            if(part is MindSpaceBodyPart)
+            if (part is MindSpaceBodyPart)
             {
                 OverhaulMain.Visuals.EmitMSBodyPartDamage(part.transform.position);
             }

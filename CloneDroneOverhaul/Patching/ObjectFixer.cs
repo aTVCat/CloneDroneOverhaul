@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.Patching.VisualFixes
 {
@@ -25,6 +23,10 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                 SelectableUI ui = instanceScript as SelectableUI;
                 ui.GameThemeData.ButtonBackground[0].Color = new Color(0.19f, 0.37f, 0.88f, 1);
                 ui.GameThemeData.ButtonBackground[1].Color = new Color(0.3f, 0.5f, 1, 1f);
+            }
+            if (id == "FixPerformanceStats")
+            {
+                (transform as RectTransform).anchoredPosition = new Vector2(0, 15);
             }
         }
 

@@ -21,6 +21,7 @@ namespace CloneDroneOverhaul
         public static VoxelEffectsModule VoxelEffects { get; set; }
         public static UI.GUIManagement GUI { get; set; }
         public static WeaponSkins.WeaponSkinManager Skins { get; set; }
+        public static ModuleManagement Modules { get; set; }
 
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
@@ -50,10 +51,17 @@ namespace CloneDroneOverhaul
 
         private void checkforUpdate()
         {
+            if (hasCheckForUpdates)
+            {
+                return;
+            }
             API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(this.OnModDataGet));
         }
         private void OnModDataGet(JsonObject json)
         {
+            hasCheckForUpdates = true;
+            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+            notif.SetUp("New update available!", "It includes fixes, stability improvements and other.", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
             return;
             if ((Int32)OverhaulMain.Instance.ModInfo.Version < (Int32)json["Version"])
             {
@@ -68,6 +76,7 @@ namespace CloneDroneOverhaul
         private void addModules()
         {
             ModuleManagement manager = BaseStaticReferences.ModuleManager;
+            Modules = manager;
             Timer = manager.AddModule<DelegateTimer>();
             Localization = manager.AddModule<Localization.OverhaulLocalizationManager>();
             Visuals = manager.AddModule<VisualsModule>();
@@ -75,6 +84,8 @@ namespace CloneDroneOverhaul
             GUI = manager.AddModule<UI.GUIManagement>();
             VoxelEffects = manager.AddModule<VoxelEffectsModule>();
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
+            manager.AddModule<WorldGUIs>();
+            manager.AddModule<RobotEventsModule>();
         }
 
         private void addListeners()
@@ -143,7 +154,7 @@ namespace CloneDroneOverhaul
             Application.targetFrameRate = 121;
             Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
 
-            if(-1 == 0)
+            if (-1 == 0)
             {
                 Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("cdo_rw_stuff", "CursorImg");
                 Cursor.SetCursor(tex, Vector2.zero, CursorMode.ForceSoftware);
@@ -170,12 +181,14 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(0).gameObject.AddComponent<UI.Watermark>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<Localization.OverhaulLocalizationEditor>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<UI.NewErrorWindow>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<UI.BackupMindTransfersUI>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<UI.Notifications.NotificationsUI>());
         }
 
         public static string GetTranslatedString(string ID)
         {
             CloneDroneOverhaul.Localization.TranslationEntry entry = Localization.GetTranslation(ID);
-            if(entry == null)
+            if (entry == null)
             {
                 return "NT: " + ID;
             }
@@ -197,7 +210,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion()
         {
-            return "0.2.0.1";
+            return "0.2.0.2";
         }
     }
 
@@ -362,4 +375,8 @@ namespace CloneDroneOverhaul
             return result;
         }
     }
+
+    // Changelog 0.2.0.2
+    // Mind transfers panel shows above your head
+    // Version watermark no longer overlaps PerformanceStatsPanel
 }

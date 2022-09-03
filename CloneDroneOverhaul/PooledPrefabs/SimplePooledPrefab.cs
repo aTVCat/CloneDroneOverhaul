@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneDroneOverhaul.PooledPrefabs
@@ -10,31 +8,31 @@ namespace CloneDroneOverhaul.PooledPrefabs
         // Token: 0x060000F6 RID: 246 RVA: 0x00008980 File Offset: 0x00006B80
         public SimplePooledPrefab(Transform prefab, int maxCount, string name, float timeToDestroy, string tag)
         {
-            this.Prefab = prefab;
-            this.MaxCount = maxCount;
-            this.Name = name;
-            this.timeToHide = timeToDestroy;
+            Prefab = prefab;
+            MaxCount = maxCount;
+            Name = name;
+            timeToHide = timeToDestroy;
             this.tag = tag;
-            this.InitializeContainer();
+            InitializeContainer();
         }
 
         // Token: 0x060000F7 RID: 247 RVA: 0x000089D8 File Offset: 0x00006BD8
         private void InitializeContainer()
         {
-            Transform transform = new GameObject(this.Name).transform;
-            for (int i = 0; i < this.MaxCount; i++)
+            Transform transform = new GameObject(Name).transform;
+            for (int i = 0; i < MaxCount; i++)
             {
-                Transform transform2 = UnityEngine.Object.Instantiate<Transform>(this.Prefab, transform);
-                transform2.gameObject.name = this.Name + "_" + i.ToString();
+                Transform transform2 = UnityEngine.Object.Instantiate<Transform>(Prefab, transform);
+                transform2.gameObject.name = Name + "_" + i.ToString();
                 transform2.gameObject.SetActive(false);
-                this.AvailableObjects.Add(transform2);
+                AvailableObjects.Add(transform2);
             }
         }
 
         // Token: 0x060000F8 RID: 248 RVA: 0x00008A58 File Offset: 0x00006C58
         public Transform SpawnObject(Vector3 position, Vector3 rotation, Color col, Transform transformToFollow = null, bool usedForVoxels = false)
         {
-            Transform nextObject = this.GetNextObject();
+            Transform nextObject = GetNextObject();
             bool flag = nextObject != null;
             Transform result;
             if (flag)
@@ -43,7 +41,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
                 nextObject.position = position;
                 nextObject.eulerAngles = rotation;
                 nextObject.gameObject.AddComponent<SimplePooledPrefabInstance>().Initialize(this, transformToFollow, position, usedForVoxels, col);
-                this.ActiveObjects.Add(nextObject);
+                ActiveObjects.Add(nextObject);
                 result = nextObject;
             }
             else
@@ -56,9 +54,9 @@ namespace CloneDroneOverhaul.PooledPrefabs
         // Token: 0x060000F9 RID: 249 RVA: 0x00008AC4 File Offset: 0x00006CC4
         private Transform GetNextObject()
         {
-            foreach (Transform transform in this.AvailableObjects)
+            foreach (Transform transform in AvailableObjects)
             {
-                bool flag = !this.ActiveObjects.Contains(transform);
+                bool flag = !ActiveObjects.Contains(transform);
                 if (flag)
                 {
                     return transform;
@@ -70,7 +68,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
         // Token: 0x060000FA RID: 250 RVA: 0x00008B34 File Offset: 0x00006D34
         internal void ReturnToPool(SimplePooledPrefabInstance instance, bool dontDisable)
         {
-            bool flag = this.ActiveObjects.Contains(instance.transform);
+            bool flag = ActiveObjects.Contains(instance.transform);
             if (flag)
             {
                 bool flag2 = !dontDisable;
@@ -78,7 +76,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
                 {
                     instance.gameObject.SetActive(false);
                 }
-                this.ActiveObjects.Remove(instance.transform);
+                ActiveObjects.Remove(instance.transform);
                 UnityEngine.Object.Destroy(instance);
             }
         }
@@ -86,13 +84,13 @@ namespace CloneDroneOverhaul.PooledPrefabs
         // Token: 0x060000FB RID: 251 RVA: 0x00008B8C File Offset: 0x00006D8C
         public float GetLifeTime()
         {
-            return this.timeToHide;
+            return timeToHide;
         }
 
         // Token: 0x060000FC RID: 252 RVA: 0x00008BA4 File Offset: 0x00006DA4
         public string GetTag()
         {
-            return this.tag;
+            return tag;
         }
 
         // Token: 0x04000092 RID: 146
@@ -125,21 +123,21 @@ namespace CloneDroneOverhaul.PooledPrefabs
             bool flag = og.GetLifeTime() > 0f;
             if (flag)
             {
-                this.TimeToHide = Time.time + og.GetLifeTime();
+                TimeToHide = Time.time + og.GetLifeTime();
             }
-            this.orig = og;
-            this.Follow = transformToFollow;
-            bool flag2 = this.Follow != null;
+            orig = og;
+            Follow = transformToFollow;
+            bool flag2 = Follow != null;
             if (flag2)
             {
-                this.UsesFollow = true;
-                this.InitPosDifference = transformToFollow.position - initPos;
+                UsesFollow = true;
+                InitPosDifference = transformToFollow.position - initPos;
                 if (voxelFix)
                 {
-                    this.InitPosDifference *= 0.5f;
+                    InitPosDifference *= 0.5f;
                 }
             }
-            bool flag3 = this.orig.GetTag() == SimplePooledPrefabInstance.ParticleSystemTag;
+            bool flag3 = orig.GetTag() == SimplePooledPrefabInstance.ParticleSystemTag;
             if (flag3)
             {
                 base.GetComponent<ParticleSystem>().Play();
@@ -149,35 +147,35 @@ namespace CloneDroneOverhaul.PooledPrefabs
         // Token: 0x060000FE RID: 254 RVA: 0x00008CE8 File Offset: 0x00006EE8
         public override void UpdateMe()
         {
-            bool flag = this.TimeToHide != -1f && Time.time >= this.TimeToHide && !this.isEnded;
+            bool flag = TimeToHide != -1f && Time.time >= TimeToHide && !isEnded;
             if (flag)
             {
-                this.isEnded = true;
-                bool flag2 = this.orig.GetTag() == SimplePooledPrefabInstance.ParticleSystemTag;
+                isEnded = true;
+                bool flag2 = orig.GetTag() == SimplePooledPrefabInstance.ParticleSystemTag;
                 if (flag2)
                 {
                     base.GetComponent<ParticleSystem>().Stop();
-                    this.ReturnToPool(true);
+                    ReturnToPool(true);
                     return;
                 }
-                this.ReturnToPool(false);
+                ReturnToPool(false);
             }
-            bool flag3 = this.InitPosDifference != Vector3.zero && this.Follow != null;
+            bool flag3 = InitPosDifference != Vector3.zero && Follow != null;
             if (flag3)
             {
-                base.gameObject.transform.position = this.Follow.transform.position + this.InitPosDifference;
+                base.gameObject.transform.position = Follow.transform.position + InitPosDifference;
             }
-            bool flag4 = this.UsesFollow && this.Follow == null;
+            bool flag4 = UsesFollow && Follow == null;
             if (flag4)
             {
-                this.ReturnToPool(true);
+                ReturnToPool(true);
             }
         }
 
         // Token: 0x060000FF RID: 255 RVA: 0x00008DF6 File Offset: 0x00006FF6
         public void ReturnToPool(bool dontDisableGameObject)
         {
-            this.orig.ReturnToPool(this, dontDisableGameObject);
+            orig.ReturnToPool(this, dontDisableGameObject);
         }
 
         // Token: 0x04000099 RID: 153
