@@ -24,6 +24,7 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab bodyPartBurning;
         private SimplePooledPrefab newExplosionVFX;
         private SimplePooledPrefab lavaVoxelsVFX;
+        private SimplePooledPrefab floatingLavaParticlesVFX; //VFX_FloatingLava
         private Camera lastSpottedCamera;
 
         private bool isWaitingNextFrame;
@@ -57,9 +58,10 @@ namespace CloneDroneOverhaul.Modules
             msBodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_CutMS").transform, 10, "VFX_MSCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 15, "VFX_Cut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedWithFireVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 15, "VFX_FireCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
-            bodyPartBurning = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 15, "VFX_Burning", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
+            bodyPartBurning = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 5, "VFX_Burning", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
             lavaVoxelsVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, "VFX_ExplosionCubes", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
             newExplosionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, "VFX_NewExplosion", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
+            floatingLavaParticlesVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FloatingLava").transform, 15, "VFX_FloatingLava", 0.5f, SimplePooledPrefabInstance.ParticleSystemTag);
 
             RefreshDustMaterials();
 
@@ -188,6 +190,7 @@ namespace CloneDroneOverhaul.Modules
 
         public void EmitBurningVFX(Vector3 pos)
         {
+            if(Random.Range(0, 10) > 5)
             bodyPartBurning.SpawnObject(pos, Vector3.zero, Color.clear);
         }
 
@@ -195,6 +198,12 @@ namespace CloneDroneOverhaul.Modules
         {
             newExplosionVFX.SpawnObject(pos, Vector3.zero, Color.clear);
             lavaVoxelsVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+            EmitFloatingLavaDust(pos);
+        }
+
+        public void EmitFloatingLavaDust(Vector3 pos)
+        {
+            floatingLavaParticlesVFX.SpawnObject(pos, Vector3.zero, Color.clear);
         }
     }
 

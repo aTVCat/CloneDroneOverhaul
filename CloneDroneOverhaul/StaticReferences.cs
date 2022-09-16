@@ -1,6 +1,7 @@
 ﻿using ModLibrary;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul
 {
@@ -55,18 +56,22 @@ namespace CloneDroneOverhaul
                         bool activeInHierarchy = baseBodyPart.gameObject.activeInHierarchy;
                         if (activeInHierarchy)
                         {
-                            baseBodyPart.CrackVolumeAround(baseBodyPart.transform.position, UnityEngine.Vector3.down, nextAttackID, null, 2, null, -1, (DamageSourceType)993, null);
+                            baseBodyPart.CrackVolumeAround(baseBodyPart.transform.position, UnityEngine.Vector3.down, nextAttackID, null, 2, null, -1, DamageSourceType.SpeedHackBanFire, null);
                         }
                     }
                 }
             }
         }
 
-        public static void TrySpawnEnemy()
+        public static void DebugFireSword()
         {
-            ServerToClientsAdminCommand serverToClientsAdminCommand = ServerToClientsAdminCommand.Create(Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered);
-            serverToClientsAdminCommand.CommandType = (int)ServerToClientAdminCommandType.ActivateDebugSwordCutVisualization;
-            serverToClientsAdminCommand.Send();
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if(mover != null)
+            {
+                mover.AddUpgradeToRobot(UpgradeType.SwordUnlock, 1);
+                mover.AddUpgradeToRobot(UpgradeType.FireSword, 2);
+                mover.GetEnergySource().HasInfiniteEnergy = true;
+            }
         }
 
         public static void Console_ShowAppDataPath()

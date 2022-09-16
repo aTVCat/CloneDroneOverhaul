@@ -18,7 +18,6 @@ namespace CloneDroneOverhaul
         private static Localization.OverhaulLocalizationManager Localization { get; set; }
         public static DelegateTimer Timer { get; set; }
         public static VisualsModule Visuals { get; set; }
-        public static VoxelEffectsModule VoxelEffects { get; set; }
         public static UI.GUIManagement GUI { get; set; }
         public static WeaponSkins.WeaponSkinManager Skins { get; set; }
         public static ModuleManagement Modules { get; set; }
@@ -47,6 +46,11 @@ namespace CloneDroneOverhaul
 
             finalPreparations();
             checkforUpdate();
+        }
+
+        protected override void OnModDeactivated()
+        {
+            BaseStaticValues.IsModEnabled = false;
         }
 
         private void checkforUpdate()
@@ -82,10 +86,13 @@ namespace CloneDroneOverhaul
             Visuals = manager.AddModule<VisualsModule>();
             manager.AddModule<HotkeysModule>();
             GUI = manager.AddModule<UI.GUIManagement>();
-            VoxelEffects = manager.AddModule<VoxelEffectsModule>();
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
             manager.AddModule<RobotEventsModule>();
+            manager.AddModule<ModDataManager>();
+            manager.AddModule<Addons.AddonsManager>();
+            manager.AddModule<Modules.MultiplayerManager>();
+            manager.AddModule<ArenaAppearenceManager>();
         }
 
         private void addListeners()
@@ -100,7 +107,7 @@ namespace CloneDroneOverhaul
             {
                 Key2 = UnityEngine.KeyCode.C,
                 Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.IgnoreLastCrash
+                Method = BaseUtils.DebugFireSword
             });
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
@@ -122,12 +129,6 @@ namespace CloneDroneOverhaul
             });
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
-                Key2 = UnityEngine.KeyCode.X,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.Test_OpenSkinsFolder
-            });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
                 Key1 = UnityEngine.KeyCode.F2,
                 Method = CinematicGameManager.SwitchHud
             });
@@ -145,13 +146,13 @@ namespace CloneDroneOverhaul
 
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
 
-            AttackManager.Instance.HitColor = new Color(4, 0.65f, 0.25f, 0.3f);
+            AttackManager.Instance.HitColor = new Color(4, 0.65f, 0.35f, 0.2f);
             AttackManager.Instance.BodyOnFireColor = new Color(1, 0.42f, 0.22f, 0.1f);
 
             EmoteManager.Instance.PitchLimits.Max = 5f;
             EmoteManager.Instance.PitchLimits.Min = 0f;
 
-            Application.targetFrameRate = 121;
+            Application.targetFrameRate = 119;
             Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
 
             if (-1 == 0)
@@ -183,6 +184,7 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<UI.NewErrorWindow>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<UI.BackupMindTransfersUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<UI.Notifications.NotificationsUI>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<UI.NewEscMenu>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -210,7 +212,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion()
         {
-            return "0.2.0.2";
+            return "a0.2.0.3 (." + OverhaulMain.Instance.ModInfo.Version + ")";
         }
     }
 
@@ -259,13 +261,13 @@ namespace CloneDroneOverhaul
             OverhaulMonoBehaviourListener.IsApplicationFocused = hasFocus;
             if (!hasFocus)
             {
-                Shader.Find("Standard").maximumLOD = 1;
+                //Shader.Find("Standard").maximumLOD = 1;
                 Application.targetFrameRate = 30;
             }
             else
             {
-                Shader.Find("Standard").maximumLOD = -1;
-                Application.targetFrameRate = 121;
+                //Shader.Find("Standard").maximumLOD = -1;
+                Application.targetFrameRate = 119;
             }
         }
 

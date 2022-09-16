@@ -11,8 +11,8 @@ using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul.Patching
 {
-    [HarmonyPatch(typeof(ChapterLoadingScreen))]
-    public class OverhaulPatches
+    [HarmonyPatch(typeof(GameUIRoot))]
+    public class OverhaulUIPatches
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameUIRoot), "RefreshCursorEnabled")]
@@ -27,6 +27,7 @@ namespace CloneDroneOverhaul.Patching
             {
             }
         }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ErrorWindow), "Show")]
         private static void ErrorWindow_Show_Postfix(ErrorWindow __instance, string errorMessage)
@@ -34,12 +35,54 @@ namespace CloneDroneOverhaul.Patching
             __instance.gameObject.SetActive(false);
             BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>().GetGUI<UI.NewErrorWindow>().Show(errorMessage);
         }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ErrorWindow), "Hide")]
         private static void ErrorWindow_Hide_Postfix()
         {
             BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>().GetGUI<UI.NewErrorWindow>().Hide();
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SelectableUI), "Start")]
+        private static void SelectableUI_Start_Postfix(SelectableUI __instance)
+        {
+            ObjectFixer.FixObject(__instance.transform, "FixSelectableUI", __instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerStatusPanel1v1), "populateValues")]
+        public static void PlayerStatusPanel1v1_populateValues_Postfix(PlayerStatusPanel1v1 __instance)
+        {
+            List<MultiplayerPlayerInfoState> allPlayerInfoStates = Singleton<MultiplayerPlayerInfoManager>.Instance.GetAllPlayerInfoStates();
+            bool flag = allPlayerInfoStates != null && allPlayerInfoStates.Count == 2;
+            if (flag)
+            {
+                Sprite imageSprite = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[1].state.CharacterModelIndex].ImageSprite;
+                Sprite imageSprite2 = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[0].state.CharacterModelIndex].ImageSprite;
+                Image component = __instance.transform.GetChild(3).GetComponent<Image>();
+                Image component2 = __instance.transform.GetChild(2).GetComponent<Image>();
+                component.sprite = imageSprite;
+                component2.sprite = imageSprite2;
+            }
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(CloneUI), "recreateCloneIcons")]
+        private static IEnumerable<CodeInstruction> CloneUI_recreateCloneIcons_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            List<CodeInstruction> list = new List<CodeInstruction>(instructions);
+            for (int i = 3; i < 27; i++)
+            {
+                list[i].opcode = OpCodes.Nop;
+            }
+            return list.AsEnumerable<CodeInstruction>();
+        }
+    }
+
+    [HarmonyPatch(typeof(ChapterLoadingScreen))]
+    public class OverhaulPatches
+    {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ErrorManager), "sendExceptionDetailsToLoggly")]
         private static bool ErrorManager_sendExceptionDetailsToLoggly_Prefix()
@@ -61,19 +104,19 @@ namespace CloneDroneOverhaul.Patching
             ObjectFixer.FixObject(__instance.transform, "FixArmorPiece", __instance);
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SelectableUI), "Start")]
-        private static void SelectableUI_Start_Postfix(SelectableUI __instance)
-        {
-            ObjectFixer.FixObject(__instance.transform, "FixSelectableUI", __instance);
-        }
-
         [HarmonyPrefix]
         [HarmonyPatch(typeof(AttackManager), "CreateSwordBlockVFX")]
         private static bool AttackManager_CreateSwordBlockVFX_Prefix(Vector3 position)
         {
             OverhaulMain.Visuals.EmitSwordBlockVFX(position);
             return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MultiplayerPlayerInfoManager), "AddPlayerInfoState")]
+        private static void MultiplayerPlayerInfoManager_AddPlayerInfoState_Postfix(MultiplayerPlayerInfoState multiplayerPlayerInfoState)
+        {
+            BaseStaticReferences.ModuleManager.ExecuteFunction("onPlayerJoined", new object[] { multiplayerPlayerInfoState });
         }
 
         [HarmonyPostfix]
@@ -119,7 +162,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MechBodyPart), "tryBurnColorAt")]
         public static void MechBodyPart_tryBurnColorAt_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, int offsetX, int offsetY, int offsetZ, float colorMultiplier = -1f)
         {
-            if (UnityEngine.Random.Range(1, 5) > 3) OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
+            if (UnityEngine.Random.Range(1, 10) > 5) OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
         }
 
         [HarmonyPostfix]
@@ -220,27 +263,23 @@ namespace CloneDroneOverhaul.Patching
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(PlayerStatusPanel1v1), "populateValues")]
-        public static void PlayerStatusPanel1v1_populateValues_Postfix(PlayerStatusPanel1v1 __instance)
-        {
-            List<MultiplayerPlayerInfoState> allPlayerInfoStates = Singleton<MultiplayerPlayerInfoManager>.Instance.GetAllPlayerInfoStates();
-            bool flag = allPlayerInfoStates != null && allPlayerInfoStates.Count == 2;
-            if (flag)
-            {
-                Sprite imageSprite = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[1].state.CharacterModelIndex].ImageSprite;
-                Sprite imageSprite2 = Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[allPlayerInfoStates[0].state.CharacterModelIndex].ImageSprite;
-                Image component = __instance.transform.GetChild(3).GetComponent<Image>();
-                Image component2 = __instance.transform.GetChild(2).GetComponent<Image>();
-                component.sprite = imageSprite;
-                component2.sprite = imageSprite2;
-            }
-        }
-
-        [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorPerformanceStatsPanel), "Initialize")]
         public static void LevelEditorPerformanceStatsPanel_Initialize_Postfix(LevelEditorPerformanceStatsPanel __instance)
         {
             ObjectFixer.FixObject(__instance.transform, "FixPerformanceStats", __instance);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LocalizationManager), "GetTranslatedString", new System.Type[] { typeof(string), typeof(int) })]
+        public static bool LocalizationManager_GetTranslatedString_Prefix(ref string __result, string stringID, int maxCharactersBeforeJapaneseLineBreak = -1)
+        {
+            if(stringID == "Thanks for playing!")
+            {
+                string str = OverhaulMain.GetTranslatedString("Credits_ThankForUsingTheMod");
+                __result = str;
+                return false;
+            }
+            return true;
         }
 
         [HarmonyTranspiler]
@@ -249,18 +288,6 @@ namespace CloneDroneOverhaul.Patching
         {
             List<CodeInstruction> list = new List<CodeInstruction>(instructions);
             for (int i = 36; i < 66; i++)
-            {
-                list[i].opcode = OpCodes.Nop;
-            }
-            return list.AsEnumerable<CodeInstruction>();
-        }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(CloneUI), "recreateCloneIcons")]
-        private static IEnumerable<CodeInstruction> CloneUI_recreateCloneIcons_Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            List<CodeInstruction> list = new List<CodeInstruction>(instructions);
-            for (int i = 3; i < 27; i++)
             {
                 list[i].opcode = OpCodes.Nop;
             }

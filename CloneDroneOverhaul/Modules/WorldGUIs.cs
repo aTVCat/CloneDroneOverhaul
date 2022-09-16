@@ -10,8 +10,6 @@ namespace CloneDroneOverhaul.Modules
 {
     public class WorldGUIs : ModuleBase
     {
-        List<string> Functions = new List<string>();
-
         Transform MindTransfers;
         Transform MindTransferIcon;
         Transform MindTransferContainer;
@@ -40,11 +38,6 @@ namespace CloneDroneOverhaul.Modules
             MindTransfers.gameObject.AddComponent<FaceTowardsCamera>();
         }
 
-        public override List<string> GetExecutingFunctions()
-        {
-            return Functions;
-        }
-
         public override void RunFunction(string name, object[] arguments)
         {
             if (name == Functions[0])
@@ -69,12 +62,12 @@ namespace CloneDroneOverhaul.Modules
                 FirstPersonMover mover = (FirstPersonMover)CurrentPlayerInfo.Instance;
                 Transform head = TransformUtils.FindChildRecursive(CurrentPlayerInfo.Instance.transform, "Head");
                 MindTransferToFollow = head;
-                OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(RefreshMindTransfers);
                 MindTransferContainer.transform.localScale = Vector3.zero;
                 iTween.ScaleTo(MindTransferContainer.gameObject, Vector3.one, Time.timeScale * 0.5f);
                 TimeToHideTransfers = Time.time + 5f;
                 YOffset = 0;
                 _combinedBounds = new Bounds();
+                RefreshMindTransfers();
 
                 if (head == null || mover.CharacterType == EnemyType.EmperorCombat || mover.CharacterType == EnemyType.EmperorNonCombat)
                 {
