@@ -89,8 +89,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Addons\AddonsManager.cs" />
     <Compile Include="Localization\LocalizationEditor.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Modules\ArenaAppearences.cs" />
+    <Compile Include="Modules\MultiplayerManager.cs" />
+    <Compile Include="Modules\ModDataManager.cs" />
     <Compile Include="Modules\RobotEventsModule.cs" />
     <Compile Include="Modules\WorldGUIs.cs" />
     <Compile Include="Modules\DelegateTimer.cs" />
@@ -99,7 +103,6 @@
     <Compile Include="Modules\ModuleManagement.cs" />
     <Compile Include="Modules\HotkeysStaticModule.cs" />
     <Compile Include="Modules\VisualsModule.cs" />
-    <Compile Include="Modules\VoxelEffectsModule.cs" />
     <Compile Include="Patching\BodyPartPatcher.cs" />
     <Compile Include="Patching\ObjectFixer.cs" />
     <Compile Include="OverhaulMain.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="UI\NewErrorWindow.cs" />
     <Compile Include="UI\NotificationsUI.cs" />
     <Compile Include="UI\BackMindTransfersUI.cs" />
+    <Compile Include="UI\NewEscMenu.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="Utilities\PlayerUtilities.cs" />
     <Compile Include="WeaponSkins\WeaponSkinManager.cs" />

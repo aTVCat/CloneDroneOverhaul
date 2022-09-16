@@ -10,9 +10,6 @@ namespace CloneDroneOverhaul.Modules
 {
     public class RobotEventsModule : ModuleBase
     {
-        List<string> Functions = new List<string>();
-
-
         public override bool ShouldWork()
         {
             return true;
@@ -21,11 +18,6 @@ namespace CloneDroneOverhaul.Modules
         public override void OnActivated()
         {
             Functions.Add("onPlayerSet");
-        }
-
-        public override List<string> GetExecutingFunctions()
-        {
-            return Functions;
         }
 
         public override void RunFunction(string name, object[] arguments)

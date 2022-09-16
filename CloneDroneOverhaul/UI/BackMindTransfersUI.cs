@@ -26,7 +26,7 @@ namespace CloneDroneOverhaul.UI
                 trans.gameObject.SetActive(true);
             }
             Container.localScale = Vector3.zero;
-            iTween.ScaleTo(Container.gameObject, Vector3.one, Time.timeScale + 0.5f);
+            iTween.ScaleTo(Container.gameObject, Vector3.one, 1.5f);
             timeToHide = Time.unscaledTime + 5f;
         }
 
@@ -35,7 +35,7 @@ namespace CloneDroneOverhaul.UI
             if(timeToHide != -1 && Time.unscaledTime >= timeToHide)
             {
                 timeToHide = -1;
-                iTween.ScaleTo(Container.gameObject, Vector3.zero, Time.timeScale + 0.5f);
+                iTween.ScaleTo(Container.gameObject, Vector3.zero, 1.5f);
             }
         }
     }

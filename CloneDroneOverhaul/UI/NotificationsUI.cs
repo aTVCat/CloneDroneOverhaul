@@ -34,6 +34,7 @@ namespace CloneDroneOverhaul.UI.Notifications
             RectTransform transform = Instantiate<RectTransform>(MyModdedObject.GetObjectFromList<RectTransform>(0), MyModdedObject.GetObjectFromList<RectTransform>(1));
             transform.sizeDelta = notification.SizeDelta;
             transform.GetComponent<Image>().color = notification.Color;
+            transform.SetAsFirstSibling();
             Messages.Add(notification);
             transform.gameObject.SetActive(true);
             ModdedObject mObj = transform.GetComponent<ModdedObject>();

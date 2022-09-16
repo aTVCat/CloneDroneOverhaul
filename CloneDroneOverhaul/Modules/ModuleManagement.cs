@@ -82,10 +82,17 @@ namespace CloneDroneOverhaul.Modules
                 }
             }
         }
+
+        public static void ShowError(string message)
+        {
+            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+            notif.SetUp(message, "", 5, new UnityEngine.Vector2(500, 52), new UnityEngine.Color(0.5f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
+        }
     }
 
     public class ModuleBase // Not Implemented Fully Yet
     {
+        protected List<string> Functions = new List<string>();
         public virtual void OnActivated() { }
         public virtual void OnModDeactivated() { throw new NotImplementedException(); }
         public virtual bool ShouldWork() { throw new NotImplementedException(); return false; }
@@ -100,9 +107,9 @@ namespace CloneDroneOverhaul.Modules
             }
             return list.Contains(name);
         }
-        public virtual List<string> GetExecutingFunctions()
+        public List<string> GetExecutingFunctions()
         {
-            return null;
+            return Functions;
         }
         public virtual void OnNewFrame() { }
         public virtual void OnFixedUpdate() { }

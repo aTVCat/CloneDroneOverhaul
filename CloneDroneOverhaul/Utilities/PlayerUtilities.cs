@@ -18,6 +18,7 @@ namespace CloneDroneOverhaul.Utilities
                 return info;
             }
             info.Instance = character;
+            info.UpgradeCollection = character.GetComponent<UpgradeCollection>();
             info.CharacterType = character.CharacterType;
             if (character is BattleCruiserController)
             {
@@ -32,6 +33,28 @@ namespace CloneDroneOverhaul.Utilities
             }
             info.PlayfabID = character.GetPlayFabID();
             return info;
+        }
+
+        public static void AddUpgradeToRobot(this FirstPersonMover mover, UpgradeType type, int level = 1)
+        {
+            RobotShortInformation info = mover.GetRobotInfo();
+            if (!info.IsNull && info.IsFPM)
+            {
+                UpgradeCollection coll = info.UpgradeCollection;
+                if (coll != null)
+                {
+                    coll.AddUpgradeIfMissing(type, level);
+                    (info.Instance as FirstPersonMover).RefreshUpgrades();
+                }
+                else
+                {
+                    Modules.ModuleManagement.ShowError("Upgrade adding failed. Reason: No upgrade collection found");
+                }
+            }
+            else
+            {
+                Modules.ModuleManagement.ShowError("Upgrade adding failed. Reason: FirstPersonMover is NULL");
+            }
         }
     }
 
@@ -60,5 +83,7 @@ namespace CloneDroneOverhaul.Utilities
         public EnemyType CharacterType;
 
         public Character Instance;
+
+        public UpgradeCollection UpgradeCollection;
     }
 }

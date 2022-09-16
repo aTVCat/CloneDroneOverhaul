@@ -20,10 +20,21 @@ namespace CloneDroneOverhaul.Modules
 
             for (int i = actions.Count - 1; i > 0; i--)
             {
-                if (actions[i].CompleteNextFrame && actions[i].Act != null)
+                if (actions[i].HasArgs)
                 {
-                    actions[i].Act();
-                    actions.RemoveAt(i);
+                    if (actions[i].CompleteNextFrame && actions[i].Act != null)
+                    {
+                        actions[i].Act();
+                        actions.RemoveAt(i);
+                    }
+                }
+                else
+                {
+                    if (actions[i].CompleteNextFrame && actions[i].ActArgs != null)
+                    {
+                        actions[i].ActArgs(actions[i].Args);
+                        actions.RemoveAt(i);
+                    }
                 }
             }
         }
@@ -37,10 +48,31 @@ namespace CloneDroneOverhaul.Modules
             });
         }
 
+        public void AddActionToCompleteNextFrame(Action<object[]> action, object[] argument)
+        {
+            actions.Add(new TimedAction
+            {
+                ActArgs = action,
+                CompleteNextFrame = true,
+                Args = argument
+            });
+        }
+
         private class TimedAction
         {
             public Action Act;
             public bool CompleteNextFrame;
+
+            public Action<object[]> ActArgs;
+            public object[] Args;
+
+            public bool HasArgs
+            {
+                get
+                {
+                    return Args != null;
+                }
+            }
         }
     }
 }
