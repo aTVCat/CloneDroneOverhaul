@@ -58,6 +58,18 @@ namespace CloneDroneOverhaul.UI
                 }
             }
         }
+
+        protected override bool ExectuteFunctionAnyway()
+        {
+            return true;
+        }
+        public override void RunFunction(string name, object[] arguments)
+        {
+            foreach(ModGUIBase ui in guis)
+            {
+                ui.RunFunction(name, arguments);
+            }
+        }
     }
 
     public class ModGUIBase : UnityEngine.MonoBehaviour
@@ -67,7 +79,7 @@ namespace CloneDroneOverhaul.UI
 
         public virtual void OnAdded() { }
         public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
-        public virtual void RunFunction(string name, object[] arguments) { throw new NotImplementedException(); }
+        public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void OnManagedUpdate() { }
         public virtual void OnNewFrame() { }
     }

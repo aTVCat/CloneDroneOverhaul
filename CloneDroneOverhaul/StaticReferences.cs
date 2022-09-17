@@ -8,6 +8,7 @@ namespace CloneDroneOverhaul
     public class BaseStaticReferences
     {
         public static Modules.ModuleManagement ModuleManager { get; internal set; }
+        public static UI.NewEscMenu NewEscMenu { get; internal set; }
     }
 
     internal class BaseStaticValues
@@ -20,10 +21,23 @@ namespace CloneDroneOverhaul
             }
         }
         public static bool IsModEnabled { get; internal set; }
+        public static bool IsEscMenuWaitingToShow { get; set; }
     }
 
     public class BaseUtils
     {
+        public static void OpenURL(string url)
+        {
+            bool flag = url.Contains("steamcommunity.com");
+            bool flag2 = url.Contains("steampowered.com");
+            if ((flag || flag2) && Singleton<SteamManager>.Instance.Initialized && Steamworks.SteamUtils.IsOverlayEnabled())
+            {
+                Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url);
+                return;
+            }
+            UnityEngine.Application.OpenURL(url);
+        }
+
         public static void IgnoreLastCrash()
         {
             Singleton<ErrorManager>.Instance.SetPrivateField("_hasCrashed", false);
@@ -70,6 +84,16 @@ namespace CloneDroneOverhaul
             {
                 mover.AddUpgradeToRobot(UpgradeType.SwordUnlock, 1);
                 mover.AddUpgradeToRobot(UpgradeType.FireSword, 2);
+                mover.GetEnergySource().HasInfiniteEnergy = true;
+            }
+        }
+
+        public static void DebugSize()
+        {
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if (mover != null)
+            {
+                mover.AddUpgradeToRobot(UpgradeType.Size, 1);
                 mover.GetEnergySource().HasInfiniteEnergy = true;
             }
         }

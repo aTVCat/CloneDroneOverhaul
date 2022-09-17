@@ -45,6 +45,7 @@ namespace CloneDroneOverhaul.Utilities
                 {
                     coll.AddUpgradeIfMissing(type, level);
                     (info.Instance as FirstPersonMover).RefreshUpgrades();
+                    (info.Instance as FirstPersonMover).RefreshSizeUpgrades();
                 }
                 else
                 {

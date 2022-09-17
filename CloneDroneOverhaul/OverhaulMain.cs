@@ -132,6 +132,12 @@ namespace CloneDroneOverhaul
                 Key1 = UnityEngine.KeyCode.F2,
                 Method = CinematicGameManager.SwitchHud
             });
+            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            {
+                Key2 = UnityEngine.KeyCode.X,
+                Key1 = UnityEngine.KeyCode.LeftControl,
+                Method = BaseUtils.DebugSize
+            });
 
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
             QualitySettings.softParticles = true;
@@ -212,7 +218,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion()
         {
-            return "a0.2.0.3 (." + OverhaulMain.Instance.ModInfo.Version + ")";
+            return "a0.2.0.4 (." + OverhaulMain.Instance.ModInfo.Version + ")";
         }
     }
 
@@ -331,6 +337,22 @@ namespace CloneDroneOverhaul
                 }
             }
             return part.GetPrivateField<float>("_voxelParticleSize");
+        }
+
+        public static bool IsPrivateMatch(this GameModeManager manager)
+        {
+            bool flag = MultiplayerMatchmakingManager.LastDuelRequest == null;
+            bool result;
+            if (flag)
+            {
+                result = false;
+            }
+            else
+            {
+                GameRequestType type = MultiplayerMatchmakingManager.LastDuelRequest.GameType;
+                result = (GameModeManager.IsMultiplayer() && type != GameRequestType.RandomAnyQuickMatch && type != GameRequestType.RandomBattleRoyale && type != GameRequestType.RandomCoopChallenge && type != GameRequestType.RandomDuel && type != GameRequestType.RandomEndlessCoop);
+            }
+            return result;
         }
 
     }

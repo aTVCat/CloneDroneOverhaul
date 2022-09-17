@@ -76,12 +76,20 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\Random Patches FINAL\RandomPatches\bin\Debug\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\Random Patches FINAL\RandomPatches\bin\Debug\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="VoxReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -99,7 +107,6 @@
     <Compile Include="Modules\WorldGUIs.cs" />
     <Compile Include="Modules\DelegateTimer.cs" />
     <Compile Include="Modules\CinematicGameManager.cs" />
-    <Compile Include="Modules\DynamicSkyboxMaterialSwapper.cs" />
     <Compile Include="Modules\ModuleManagement.cs" />
     <Compile Include="Modules\HotkeysStaticModule.cs" />
     <Compile Include="Modules\VisualsModule.cs" />
@@ -116,6 +123,7 @@
     <Compile Include="UI\BackMindTransfersUI.cs" />
     <Compile Include="UI\NewEscMenu.cs" />
     <Compile Include="UI\Watermark.cs" />
+    <Compile Include="Utilities\Coroutines.cs" />
     <Compile Include="Utilities\PlayerUtilities.cs" />
     <Compile Include="WeaponSkins\WeaponSkinManager.cs" />
   </ItemGroup>
