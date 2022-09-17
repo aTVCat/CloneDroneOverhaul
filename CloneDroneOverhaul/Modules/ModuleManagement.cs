@@ -98,8 +98,13 @@ namespace CloneDroneOverhaul.Modules
         public virtual bool ShouldWork() { throw new NotImplementedException(); return false; }
         public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
         public virtual void RunFunction(string name, object[] arguments) { }
+        protected virtual bool ExectuteFunctionAnyway() { return false; }
         public bool ExecutesFunction(string name)
         {
+            if (ExectuteFunctionAnyway())
+            {
+                return true;
+            }
             List<string> list = GetExecutingFunctions();
             if (list == null || list.Count < 1)
             {

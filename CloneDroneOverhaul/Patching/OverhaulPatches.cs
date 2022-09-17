@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.Patching.VisualFixes;
+using CloneDroneOverhaul.Utilities;
 using HarmonyLib;
 using ModLibrary;
 using PicaVoxel;
@@ -7,7 +8,6 @@ using System.Linq;
 using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UI;
-using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -21,7 +21,9 @@ namespace CloneDroneOverhaul.Patching
             try
             {
                 if (OverhaulMain.GUI.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || OverhaulMain.GUI.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy)
+                {
                     global::InputManager.Instance.SetCursorEnabled(true);
+                }
             }
             catch
             {
@@ -51,6 +53,42 @@ namespace CloneDroneOverhaul.Patching
         }
 
         [HarmonyPostfix]
+        [HarmonyPatch(typeof(EscMenu), "Show")]
+        private static void EscMenu_Show_Postfix(EscMenu __instance)
+        {
+            ObjectFixer.FixObject(__instance.transform, "FixEscMenu", __instance);
+            BaseStaticReferences.NewEscMenu.Show();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(EscMenu), "Hide")]
+        private static void EscMenu_Hide_Postfix(EscMenu __instance)
+        {
+            GameUIRoot.Instance.AchievementProgressUI.Hide();
+            BaseStaticReferences.NewEscMenu.Hide();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SettingsMenu), "Hide")]
+        private static void SettingsMenu_Hide_Postfix(EscMenu __instance)
+        {
+            if (BaseStaticValues.IsEscMenuWaitingToShow)
+            {
+                BaseStaticReferences.NewEscMenu.Show();
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AchievementProgressUI), "Hide")]
+        private static void AchievementProgressUI_Hide_Postfix(EscMenu __instance)
+        {
+            if (BaseStaticValues.IsEscMenuWaitingToShow)
+            {
+                BaseStaticReferences.NewEscMenu.Show();
+            }
+        }
+
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(PlayerStatusPanel1v1), "populateValues")]
         public static void PlayerStatusPanel1v1_populateValues_Postfix(PlayerStatusPanel1v1 __instance)
         {
@@ -65,6 +103,24 @@ namespace CloneDroneOverhaul.Patching
                 component.sprite = imageSprite;
                 component2.sprite = imageSprite2;
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AchievementProgressUI), "populateUI")]
+        private static void AchievementProgressUI_populateUI_Postfix(AchievementProgressUI __instance)
+        {
+            float fractionOfAchievementsCompleted = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
+            GameplayAchievement[] achs = GameplayAchievementManager.Instance.GetAllAchievements();
+            int completed = 0;
+            foreach (GameplayAchievement ach in achs)
+            {
+                if (ach.IsComplete())
+                {
+                    completed++;
+                }
+            }
+    (__instance.ProgressPercentageLabel.transform as RectTransform).sizeDelta = new Vector2(300, 50);
+            __instance.ProgressPercentageLabel.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "% [" + completed + "/" + achs.Length + "]";
         }
 
         [HarmonyTranspiler]
@@ -88,6 +144,13 @@ namespace CloneDroneOverhaul.Patching
         private static bool ErrorManager_sendExceptionDetailsToLoggly_Prefix()
         {
             return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PhotoManager), "Update")]
+        private static bool PhotoManager_Update_Prefix()
+        {
+            return true;
         }
 
         [HarmonyPrefix]
@@ -131,7 +194,9 @@ namespace CloneDroneOverhaul.Patching
         public static void MindSpaceBodyPart_tryExplodeBodyPart_Postfix(MindSpaceBodyPart __instance, ref bool __result)
         {
             if (__result)
+            {
                 BodyPartPatcher.OnBodyPartDamaged(__instance);
+            }
         }
 
         [HarmonyPostfix]
@@ -162,7 +227,10 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MechBodyPart), "tryBurnColorAt")]
         public static void MechBodyPart_tryBurnColorAt_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, int offsetX, int offsetY, int offsetZ, float colorMultiplier = -1f)
         {
-            if (UnityEngine.Random.Range(1, 10) > 5) OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
+            if (UnityEngine.Random.Range(1, 10) > 5)
+            {
+                OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
+            }
         }
 
         [HarmonyPostfix]
@@ -243,25 +311,6 @@ namespace CloneDroneOverhaul.Patching
             dust.Target = __instance.transform;
         }
 
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(AchievementProgressUI), "populateUI")]
-        private static void AchievementProgressUI_populateUI_Postfix(AchievementProgressUI __instance)
-        {
-            float fractionOfAchievementsCompleted = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
-            GameplayAchievement[] achs = GameplayAchievementManager.Instance.GetAllAchievements();
-            int completed = 0;
-            foreach (GameplayAchievement ach in achs)
-            {
-                if (ach.IsComplete())
-                {
-                    completed++;
-                }
-            }
-            (__instance.ProgressPercentageLabel.transform as RectTransform).sizeDelta = new Vector2(300, 50);
-            __instance.ProgressPercentageLabel.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "% [" + completed + "/" + achs.Length + "]";
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorPerformanceStatsPanel), "Initialize")]
         public static void LevelEditorPerformanceStatsPanel_Initialize_Postfix(LevelEditorPerformanceStatsPanel __instance)
@@ -269,11 +318,18 @@ namespace CloneDroneOverhaul.Patching
             ObjectFixer.FixObject(__instance.transform, "FixPerformanceStats", __instance);
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SceneTransitionManager), "DisconnectAndExitToMainMenu")]
+        public static void SceneTransitionManager_DisconnectAndExitToMainMenu_Postfix(SceneTransitionManager __instance)
+        {
+            OverhaulMain.Modules.ExecuteFunction("onBoltShutdown", null);
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LocalizationManager), "GetTranslatedString", new System.Type[] { typeof(string), typeof(int) })]
         public static bool LocalizationManager_GetTranslatedString_Prefix(ref string __result, string stringID, int maxCharactersBeforeJapaneseLineBreak = -1)
         {
-            if(stringID == "Thanks for playing!")
+            if (stringID == "Thanks for playing!")
             {
                 string str = OverhaulMain.GetTranslatedString("Credits_ThankForUsingTheMod");
                 __result = str;

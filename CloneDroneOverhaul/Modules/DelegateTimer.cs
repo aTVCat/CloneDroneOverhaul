@@ -20,20 +20,35 @@ namespace CloneDroneOverhaul.Modules
 
             for (int i = actions.Count - 1; i > 0; i--)
             {
-                if (actions[i].HasArgs)
+                if (!(actions[i] is TimedAction2))
                 {
-                    if (actions[i].CompleteNextFrame && actions[i].Act != null)
+                    if (!actions[i].HasArgs)
                     {
-                        actions[i].Act();
-                        actions.RemoveAt(i);
+                        if (actions[i].CompleteNextFrame && actions[i].Act != null)
+                        {
+                            actions[i].Act();
+                            actions.RemoveAt(i);
+                        }
+                    }
+                    else
+                    {
+                        if (actions[i].CompleteNextFrame && !actions[i].HasArgs)
+                        {
+                            actions[i].ActArgs(actions[i].Args);
+                            actions.RemoveAt(i);
+                        }
                     }
                 }
                 else
                 {
-                    if (actions[i].CompleteNextFrame && actions[i].ActArgs != null)
+                    TimedAction2 act2 = actions[i] as TimedAction2;
+                    if (act2.TimeToComplete != -1 && !act2.HasArgs)
                     {
-                        actions[i].ActArgs(actions[i].Args);
-                        actions.RemoveAt(i);
+                        if (act2.UnscaledTime ? UnityEngine.Time.unscaledTime >= act2.TimeToComplete : UnityEngine.Time.time >= act2.TimeToComplete)
+                        {
+                            act2.Act();
+                            actions.RemoveAt(i);
+                        }
                     }
                 }
             }
@@ -45,6 +60,16 @@ namespace CloneDroneOverhaul.Modules
             {
                 Act = action,
                 CompleteNextFrame = true
+            });
+        }
+
+        public void AddNoArgAction(Action action, float timeToWait, bool useUnscaledTime)
+        {
+            actions.Add(new TimedAction2
+            {
+                Act = action,
+                UnscaledTime = useUnscaledTime,
+                TimeToComplete = useUnscaledTime ? UnityEngine.Time.unscaledTime + timeToWait : UnityEngine.Time.time + timeToWait
             });
         }
 
@@ -73,6 +98,12 @@ namespace CloneDroneOverhaul.Modules
                     return Args != null;
                 }
             }
+        }
+
+        private class TimedAction2 : TimedAction
+        {
+            public float TimeToComplete = -1;
+            public bool UnscaledTime;
         }
     }
 }

@@ -28,6 +28,11 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
             {
                 (transform as RectTransform).anchoredPosition = new Vector2(0, 15);
             }
+            if(id == "FixEscMenu")
+            {
+                TransformUtils.HideAllChildren(transform);
+                transform.GetComponent<UnityEngine.UI.Image>().enabled = false;
+            }
         }
 
         private class ArmorAnimation : MonoBehaviour
