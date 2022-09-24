@@ -7,6 +7,11 @@ namespace CloneDroneOverhaul.Patching
     {
         public static void OnBodyPartStart(MechBodyPart __instance)
         {
+            if (GameModeManager.IsMultiplayer())
+            {
+                return;
+            }
+
             //GarbageTarget target = __instance.GetComponentInParent<GarbageTarget>();
             //if(target == null || target.State != GarbageState.NotGarbage)
             //{

@@ -88,6 +88,12 @@ namespace CloneDroneOverhaul.Modules
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
             notif.SetUp(message, "", 5, new UnityEngine.Vector2(500, 52), new UnityEngine.Color(0.5f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
         }
+
+        public static void ShowError_Type2(string title, string message)
+        {
+            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+            notif.SetUp(title, message, 20, new UnityEngine.Vector2(600, 300), new UnityEngine.Color(0.5f, 0, 0, 0.9f), new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
+        }
     }
 
     public class ModuleBase // Not Implemented Fully Yet

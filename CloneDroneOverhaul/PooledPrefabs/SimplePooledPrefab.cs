@@ -142,6 +142,27 @@ namespace CloneDroneOverhaul.PooledPrefabs
             {
                 base.GetComponent<ParticleSystem>().Play();
             }
+            bool flag5 = this.orig.GetTag() == SimplePooledPrefabInstance.LightTag;
+            if (flag5)
+            {
+                bool flag6 = lightColor != Color.clear;
+                if (flag6)
+                {
+                    base.GetComponent<Light>().color = lightColor;
+                }
+                base.GetComponent<Animator>().Play("LightStarted");
+            }
+            bool flag61 = this.orig.GetTag() == SimplePooledPrefabInstance.LongLiveLightTag;
+            if (flag61)
+            {
+                bool flag7 = lightColor != Color.clear;
+                if (flag7)
+                {
+                    base.GetComponent<Light>().color = lightColor;
+                }
+                base.GetComponent<Animator>().speed = 0.5f;
+                base.GetComponent<Animator>().Play("LightStarted");
+            }
         }
 
         // Token: 0x060000FE RID: 254 RVA: 0x00008CE8 File Offset: 0x00006EE8
@@ -204,5 +225,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
 
         // Token: 0x040000A1 RID: 161
         public static string LightTag = "EmitLight";
+
+        public static string LongLiveLightTag = "EmitLongLiveLight";
     }
 }

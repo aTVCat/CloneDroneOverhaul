@@ -1,7 +1,8 @@
-﻿using ModLibrary;
+﻿using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.Utilities;
+using ModLibrary;
 using System.Collections.Generic;
 using System.Diagnostics;
-using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul
 {
@@ -80,7 +81,7 @@ namespace CloneDroneOverhaul
         public static void DebugFireSword()
         {
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if(mover != null)
+            if (mover != null)
             {
                 mover.AddUpgradeToRobot(UpgradeType.SwordUnlock, 1);
                 mover.AddUpgradeToRobot(UpgradeType.FireSword, 2);
@@ -126,5 +127,19 @@ namespace CloneDroneOverhaul
                 Verb = "open"
             });
         }
+    }
+
+    public class CloneDroneOverhaulDataContainer
+    {
+        public static CloneDroneOverhaulDataContainer Instance;
+
+        public CloneDroneOverhaulDataContainer()
+        {
+            Instance = this;
+            ModDataManager dataManager = BaseStaticReferences.ModuleManager.GetModule<ModDataManager>();
+            SettingsData = dataManager.CreateInstanceOfDataClass<CloneDroneOverhaulSettingsData>(true, false);
+        }
+
+        public Modules.CloneDroneOverhaulSettingsData SettingsData;
     }
 }
