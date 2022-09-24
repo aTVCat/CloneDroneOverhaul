@@ -24,7 +24,10 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab bodyPartBurning;
         private SimplePooledPrefab newExplosionVFX;
         private SimplePooledPrefab lavaVoxelsVFX;
-        private SimplePooledPrefab floatingLavaParticlesVFX; //VFX_FloatingLava
+        private SimplePooledPrefab floatingLavaParticlesVFX; //VFX_FloatingLava //VFX_HammerHit
+        private SimplePooledPrefab hammerHitVFX;
+        private SimplePooledPrefab lightVFX;
+        private SimplePooledPrefab longLiveightVFX;
         private Camera lastSpottedCamera;
 
         private bool isWaitingNextFrame;
@@ -62,6 +65,9 @@ namespace CloneDroneOverhaul.Modules
             lavaVoxelsVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, "VFX_ExplosionCubes", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
             newExplosionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, "VFX_NewExplosion", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
             floatingLavaParticlesVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FloatingLava").transform, 15, "VFX_FloatingLava", 0.5f, SimplePooledPrefabInstance.ParticleSystemTag);
+            hammerHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_HammerHit").transform, 10, "VFX_HammerHit", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
+            lightVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 10, "VFX_EmitLight", 1f, SimplePooledPrefabInstance.LightTag);
+            longLiveightVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 10, "VFX_EmitLongLiveLight", 2f, SimplePooledPrefabInstance.LongLiveLightTag);
 
             RefreshDustMaterials();
 
@@ -199,11 +205,30 @@ namespace CloneDroneOverhaul.Modules
             newExplosionVFX.SpawnObject(pos, Vector3.zero, Color.clear);
             lavaVoxelsVFX.SpawnObject(pos, Vector3.zero, Color.clear);
             EmitFloatingLavaDust(pos);
+            Color col = "FFB59C".hexToColor();
+            EmitLongLivingLightVFX(pos, col, 100);
         }
 
         public void EmitFloatingLavaDust(Vector3 pos)
         {
             floatingLavaParticlesVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+        }
+
+        public void EmitHammerHitVFX(Vector3 pos)
+        {
+            hammerHitVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+            Color col = "258AFF".hexToColor();
+            EmitLightVFX(pos, col, 15);
+        }
+
+        public void EmitLightVFX(Vector3 pos, Color color, float range)
+        {
+            lightVFX.SpawnObject(pos, Vector3.zero, color).GetComponent<Light>().range = range;
+        }
+
+        public void EmitLongLivingLightVFX(Vector3 pos, Color color, float range)
+        {
+            longLiveightVFX.SpawnObject(pos, Vector3.zero, color).GetComponent<Light>().range = range;
         }
     }
 

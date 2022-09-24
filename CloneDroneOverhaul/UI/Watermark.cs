@@ -7,9 +7,11 @@ namespace CloneDroneOverhaul.UI
         private Text WatermarkText;
         private Button ChangelogButton;
         private Button LEButton;
+        private Button editorsButton;
 
         private Text ChangelogText;
         private Text LEText;
+        private Text editText;
 
         public override void OnAdded()
         {
@@ -20,6 +22,8 @@ namespace CloneDroneOverhaul.UI
             LEButton = MyModdedObject.GetObjectFromList<Button>(3);
             LEButton.onClick.AddListener(new UnityEngine.Events.UnityAction(TryShowLocalEditor));
             LEText = MyModdedObject.GetObjectFromList<Text>(4);
+            editText = MyModdedObject.GetObjectFromList<Text>(6);
+            editorsButton = MyModdedObject.GetObjectFromList<Button>(5);
 
             OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(AddListeners);
         }
@@ -28,12 +32,13 @@ namespace CloneDroneOverhaul.UI
         {
             ChangelogButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
             LEButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
+            editorsButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
             WatermarkText.text = OverhaulDescription.GetModName(true, !GameModeManager.IsOnTitleScreen());
         }
 
         public override void OnNewFrame()
         {
-            WatermarkText.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode());
+            WatermarkText.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.CinematicGameManager.IsUIHidden);
         }
 
         private void OnLangChanged()

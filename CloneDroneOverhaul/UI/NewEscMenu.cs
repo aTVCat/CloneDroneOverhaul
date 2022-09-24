@@ -230,6 +230,7 @@ namespace CloneDroneOverhaul.UI
 
         private void refreshPlayers()
         {
+            PIM_Prefab.gameObject.SetActive(false);
             PlayersInMatchMObj.gameObject.SetActive(GameModeManager.IsMultiplayer());
             if (!GameModeManager.IsMultiplayer())
             {
@@ -244,7 +245,7 @@ namespace CloneDroneOverhaul.UI
                 {
                     ModdedObject mObj = Instantiate<ModdedObject>(PIM_Prefab.GetComponent<ModdedObject>(), PIM_Container);
                     mObj.gameObject.SetActive(true);
-                    mObj.GetObjectFromList<Text>(0).text = infoState.state.DisplayName;
+                    mObj.GetObjectFromList<InputField>(0).text = infoState.state.DisplayName;
                     mObj.GetObjectFromList<Text>(2).text = GameModeManager.IsBattleRoyale() ? infoState.state.LastBotStandingWins.ToString() : "--";
                     mObj.GetObjectFromList<Text>(1).text = OverhaulMain.GetTranslatedString("EscMenu_Wins");
                     mObj.GetObjectFromList<Text>(4).text = MultiplayerPlayerInfoManager.Instance.GetPlayerPlatform(infoState.state.PlayFabID).ToString();
@@ -255,6 +256,11 @@ namespace CloneDroneOverhaul.UI
         private void refreshWorkshop()
         {
             WLI_SkipLevelButton.interactable = GameModeManager.CanSkipCurrentLevel();
+            if (!GameModeManager.Is(GameMode.Endless))
+            {
+                this.WorkshopLevelInfoMObj.gameObject.SetActive(false);
+                return;
+            }
 
             SteamWorkshopItem item = Singleton<WorkshopLevelManager>.Instance.GetCurrentLevelWorkshopItem();
             if(item != null)
@@ -359,7 +365,7 @@ namespace CloneDroneOverhaul.UI
                 {
                     final += OverhaulMain.GetTranslatedString("LBS_WaitingArea");
                 }
-                else if (progress == BattleRoyaleMatchProgress.GarbageBotsGrabbingPlayers || progress == BattleRoyaleMatchProgress.GatheringGarbageBotsInRing)
+                else if (progress == BattleRoyaleMatchProgress.GarbageBotsGrabbingPlayers || progress == BattleRoyaleMatchProgress.GatheringGarbageBotsInRing || progress == BattleRoyaleMatchProgress.NotStarted)
                 {
                     final += OverhaulMain.GetTranslatedString("LBS_MatchStart");
                 }

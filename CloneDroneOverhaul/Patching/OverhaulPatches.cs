@@ -167,12 +167,40 @@ namespace CloneDroneOverhaul.Patching
             ObjectFixer.FixObject(__instance.transform, "FixArmorPiece", __instance);
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SettingsManager), "ShouldHideGameUI")]
+        private static void SettingsManager_ShouldHideGameUI_Postfix(ref bool __result)
+        {
+            if (Modules.CinematicGameManager.IsUIHidden)
+            {
+                __result = true;
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(KillFeedUI), "onKillEventReceived")]
+        private static bool KillFeedUI_onKillEventReceived_Prefix(MultiplayerKillEvent killEvent)
+        {
+            if (Modules.CinematicGameManager.IsUIHidden)
+            {
+                return false;
+            }
+            return true;
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(AttackManager), "CreateSwordBlockVFX")]
         private static bool AttackManager_CreateSwordBlockVFX_Prefix(Vector3 position)
         {
             OverhaulMain.Visuals.EmitSwordBlockVFX(position);
             return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AttackManager), "CreateHammerHitEffectVFX")]
+        private static void AttackManager_CreateHammerHitEffectVFX_Postfix(Vector3 position)
+        {
+            OverhaulMain.Visuals.EmitHammerHitVFX(position);
         }
 
         [HarmonyPostfix]
@@ -336,6 +364,17 @@ namespace CloneDroneOverhaul.Patching
                 return false;
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GarbageTarget), "Start")]
+        public static void GarbageTarget_Start_Postfix(GarbageTarget __instance)
+        {
+            Rigidbody rigid = __instance.GetComponent<Rigidbody>();
+            if (rigid != null)
+            {
+                rigid.interpolation = RigidbodyInterpolation.Interpolate;
+            }
         }
 
         [HarmonyTranspiler]

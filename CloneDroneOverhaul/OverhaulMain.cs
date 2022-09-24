@@ -1,11 +1,12 @@
 ﻿using CloneDroneOverhaul.Modules;
+using ModBotWebsiteAPI;
 using ModLibrary;
-using UnityEngine.SceneManagement;
-using UnityEngine;
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using ModBotWebsiteAPI;
-using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace CloneDroneOverhaul
 {
@@ -33,7 +34,7 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(this.ModInfo.FolderPath + "netstandard.dll"));
+            AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
 
@@ -59,7 +60,7 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
-            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(this.OnModDataGet));
+            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
         }
         private void OnModDataGet(JsonObject json)
         {
@@ -67,7 +68,7 @@ namespace CloneDroneOverhaul
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
             notif.SetUp("New update available!", "It includes fixes, stability improvements and other.", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
             return;
-            if ((Int32)OverhaulMain.Instance.ModInfo.Version < (Int32)json["Version"])
+            if ((int)OverhaulMain.Instance.ModInfo.Version < (int)json["Version"])
             {
             }
         }
@@ -80,8 +81,9 @@ namespace CloneDroneOverhaul
         private void addModules()
         {
             ModuleManagement manager = BaseStaticReferences.ModuleManager;
-            Modules = manager;
             Timer = manager.AddModule<DelegateTimer>();
+            manager.AddModule<ModDataManager>();
+            Modules = manager;
             Localization = manager.AddModule<Localization.OverhaulLocalizationManager>();
             Visuals = manager.AddModule<VisualsModule>();
             manager.AddModule<HotkeysModule>();
@@ -89,7 +91,6 @@ namespace CloneDroneOverhaul
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
             manager.AddModule<RobotEventsModule>();
-            manager.AddModule<ModDataManager>();
             manager.AddModule<Addons.AddonsManager>();
             manager.AddModule<Modules.MultiplayerManager>();
             manager.AddModule<ArenaAppearenceManager>();
@@ -103,6 +104,8 @@ namespace CloneDroneOverhaul
 
         private void finalPreparations()
         {
+            new CloneDroneOverhaulDataContainer();
+
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key2 = UnityEngine.KeyCode.C,
@@ -158,7 +161,6 @@ namespace CloneDroneOverhaul
             EmoteManager.Instance.PitchLimits.Max = 5f;
             EmoteManager.Instance.PitchLimits.Min = 0f;
 
-            Application.targetFrameRate = 119;
             Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
 
             if (-1 == 0)
@@ -168,11 +170,57 @@ namespace CloneDroneOverhaul
             }
 
             unlockSecretFeatures();
+
+            Transform trans = TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "BottomButtons");
+            trans.localScale = new Vector3(0.85f, 0.85f, 0.85f); //OptionsButton
+            trans.localPosition = new Vector3(0, -180, 0); //CanvasRoundedUnityDarkEdge
+            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "LeftFadeBG").GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.65f);
+            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "PlaySingleplayer").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "MultiplayerButton_NEW").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+
+            for (int i = 0; i < trans.childCount; i++)
+            {
+                trans.GetChild(i).GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+                if (!trans.GetChild(i).gameObject.name.Contains("HR"))
+                {
+                    trans.GetChild(i).GetComponent<RectTransform>().sizeDelta = new Vector2(115, 29);
+                }
+            }
+
+            if (TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"))
+            {
+                Transform t2 = UnityEngine.GameObject.Instantiate<Transform>(TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"), trans);
+                t2.SetSiblingIndex(1);
+                t2.GetComponent<Button>().onClick.RemoveAllListeners();
+                UnityEngine.GameObject.Destroy(t2.GetComponentInChildren<LocalizedTextField>());
+            }
+
+            foreach (UnityEngine.UI.Image img in GameUIRoot.Instance.GetComponentsInChildren<UnityEngine.UI.Image>(true))
+            {
+                if (img != null && img.sprite != null)
+                {
+                    if (img.sprite.name == "UISprite" || img.sprite.name == "Knob")
+                    {
+                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+                    }
+                    if (img.sprite.name == "Checkmark")
+                    {
+                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CheckmarkSmall");
+                        img.color = Color.black;
+                    }
+                    if (img.sprite.name == "Background")
+                    {
+                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnity");
+                    }
+                }
+            }
+
         }
 
         private void DisableVSync()
         {
             SettingsManager.Instance.SetVsyncOn(false);
+            Application.targetFrameRate = 119;
         }
 
         private void unlockSecretFeatures()
@@ -218,7 +266,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion()
         {
-            return "a0.2.0.4 (." + OverhaulMain.Instance.ModInfo.Version + ")";
+            return "a0.2.0.5 (." + OverhaulMain.Instance.ModInfo.Version + ")";
         }
     }
 
@@ -262,7 +310,7 @@ namespace CloneDroneOverhaul
             }
         }
 
-        void OnApplicationFocus(bool hasFocus)
+        private void OnApplicationFocus(bool hasFocus)
         {
             OverhaulMonoBehaviourListener.IsApplicationFocused = hasFocus;
             if (!hasFocus)
@@ -305,6 +353,22 @@ namespace CloneDroneOverhaul
 
     public static class CodeExtensions
     {
+        public static Color hexToColor(this string hex)
+        {
+            hex = hex.Replace("0x", "");//in case the string is formatted 0xFFFFFF
+            hex = hex.Replace("#", "");//in case the string is formatted #FFFFFF
+            byte a = 255;//assume fully visible unless specified in hex
+            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+            //Only use alpha if the string has enough characters
+            if (hex.Length == 8)
+            {
+                a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+            return new Color32(r, g, b, a);
+        }
+
         public static T GetObjectFromList<T>(this ModdedObject obj, int index) where T : UnityEngine.Object
         {
             GameObject gameObject = obj.objects[index] as GameObject;
@@ -350,7 +414,7 @@ namespace CloneDroneOverhaul
             else
             {
                 GameRequestType type = MultiplayerMatchmakingManager.LastDuelRequest.GameType;
-                result = (GameModeManager.IsMultiplayer() && type != GameRequestType.RandomAnyQuickMatch && type != GameRequestType.RandomBattleRoyale && type != GameRequestType.RandomCoopChallenge && type != GameRequestType.RandomDuel && type != GameRequestType.RandomEndlessCoop);
+                result = GameModeManager.IsMultiplayer() && type != GameRequestType.RandomAnyQuickMatch && type != GameRequestType.RandomBattleRoyale && type != GameRequestType.RandomCoopChallenge && type != GameRequestType.RandomDuel && type != GameRequestType.RandomEndlessCoop;
             }
             return result;
         }
@@ -393,7 +457,7 @@ namespace CloneDroneOverhaul
                 using (MemoryStream memoryStream = new MemoryStream(data))
                 {
                     object obj = binaryFormatter.Deserialize(memoryStream);
-                    result = (T)((object)obj);
+                    result = (T)obj;
                 }
             }
             return result;

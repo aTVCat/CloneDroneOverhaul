@@ -20,6 +20,7 @@ namespace CloneDroneOverhaul.UI.Notifications
 
         public override void OnNewFrame()
         {
+            MyModdedObject.GetObjectFromList<RectTransform>(1).gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.CinematicGameManager.IsUIHidden);
             for (int i = Messages.Count - 1; i > -1; i--)
             {
                 if (Time.unscaledTime >= Messages[i].TimeToDestroy)
@@ -57,6 +58,7 @@ namespace CloneDroneOverhaul.UI.Notifications
             UnityEngine.GameObject.Destroy(notification.InstanceRectTransform.gameObject);
             Messages.Remove(notification);
         }
+
     }
 
     public class Notification
