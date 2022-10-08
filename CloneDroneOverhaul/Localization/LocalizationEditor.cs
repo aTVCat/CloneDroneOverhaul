@@ -29,7 +29,7 @@ namespace CloneDroneOverhaul.Localization
         public string EditingLocal;
         public string EditingLang;
 
-        public override void OnAdded()
+        public override void OnInstanceStart()
         {
             OurModule = BaseStaticReferences.ModuleManager.GetModule<OverhaulLocalizationManager>();
             MyModdedObject = base.GetComponent<ModdedObject>();

@@ -19,6 +19,13 @@ namespace CloneDroneOverhaul.Modules
                 return Application.persistentDataPath + "/CloneDroneOverhaul/";
             }
         }
+        public static string Mod_TempFolder
+        {
+            get
+            {
+                return Mod_Folder + "/Temp/";
+            }
+        }
         public string Addons_Folder
         {
             get
@@ -44,7 +51,7 @@ namespace CloneDroneOverhaul.Modules
         {
             return this != null && this._hasInitialized;
         }
-        public CloneDroneOverhaulSettingsData SettingsData { get; private set; }
+        public CloneDroneOverhaulSettingsData SettingsData { get; set; }
         private bool _hasInitialized;
 
         public override bool ShouldWork()
@@ -73,6 +80,11 @@ namespace CloneDroneOverhaul.Modules
                 Directory.CreateDirectory(Data_Folder);
                 OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Data_Folder });
             }
+            if (!Directory.Exists(Mod_TempFolder))
+            {
+                Directory.CreateDirectory(Mod_TempFolder);
+                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_TempFolder });
+            }
         }
         private void showMessageAboutFolderCreation(object[] args)
         {
@@ -80,7 +92,7 @@ namespace CloneDroneOverhaul.Modules
             notif.SetUp("New folder created", "Created: " + (string)args[0], 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
         }
 
-        public T LoadData<T>(string path) where T : DataBase
+        public T LoadData<T>(string path) where T : class
         {
             T result = null;
             try
@@ -93,7 +105,7 @@ namespace CloneDroneOverhaul.Modules
             }
             return result;
         }
-        public void SaveData<T>(T obj, string path) where T : DataBase
+        public void SaveData<T>(T obj, string path) where T : class
         {
             try
             {
@@ -148,6 +160,10 @@ namespace CloneDroneOverhaul.Modules
         {
 
         }
+        public virtual void TrySaveData()
+        {
+
+        }
         private bool checkFolders()
         {
             return CheckFolders();
@@ -166,7 +182,37 @@ namespace CloneDroneOverhaul.Modules
         [Serializable]
         public class Data
         {
-            private List<SavedSettingEntry> SavedSettings;
+            public List<SavedSettingEntry> SavedSettings;
+
+            public void UpdateValue(string id, object value, bool onlyAdd)
+            {
+                SavedSettingEntry entry = GetSettingSave(id, value, onlyAdd);
+                if (onlyAdd)
+                {
+                    return;
+                }
+                entry.Value = value;
+                BaseStaticReferences.ModuleManager.OnSettingRefreshed(id, value);
+            }
+
+            public SavedSettingEntry GetSettingSave(string id, object newSettingValue, bool isNewSetting)
+            {
+                foreach (SavedSettingEntry entry in SavedSettings)
+                {
+                    if (entry.ID == id)
+                    {
+                        return entry;
+                    }
+                }
+                SavedSettingEntry entryNew = new SavedSettingEntry();
+                entryNew.ID = id;
+                if (isNewSetting)
+                {
+                    entryNew.Value = newSettingValue;
+                }
+                SavedSettings.Add(entryNew);
+                return entryNew;
+            }
 
             [Serializable]
             public class SavedSettingEntry
@@ -178,16 +224,50 @@ namespace CloneDroneOverhaul.Modules
 
         protected override void TryLoadData()
         {
-            SettingsData = ByteSaver.FromByteArray<CloneDroneOverhaulSettingsData.Data>(File.ReadAllBytes(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension));
+            SettingsData = base.DataManagerReference.LoadData<CloneDroneOverhaulSettingsData.Data>(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
         }
 
         protected override bool CheckFolders()
         {
             if(!File.Exists(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension))
             {
-                File.WriteAllBytes(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension, ByteSaver.ObjectToByteArray(new CloneDroneOverhaulSettingsData.Data()));
+                CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data();
+                data.SavedSettings = new List<Data.SavedSettingEntry>();
+                base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(data, DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
             }
             return true;
+        }
+
+        public override void TrySaveData()
+        {
+            base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(SettingsData, DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
+        }
+
+        public void SaveSetting(string id, object value, bool onlyAdd)
+        {            
+            SettingsData.UpdateValue(id, value, onlyAdd);
+            if (onlyAdd)
+            {
+                return;
+            }
+            TrySaveData();
+        }
+
+        public object GetSettingValue(string id)
+        {
+            foreach(Data.SavedSettingEntry entry in SettingsData.SavedSettings)
+            {
+                if(entry.ID == id)
+                {
+                    return entry.Value;
+                }
+            }
+            return null;
+        }
+
+        public T GetSettingValue<T>(string id)
+        {
+            return (T)GetSettingValue(id);
         }
     }
 }

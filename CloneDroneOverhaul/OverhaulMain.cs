@@ -37,6 +37,7 @@ namespace CloneDroneOverhaul
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
+            OverhaulCacheManager.CacheStuff();
 
             addReferences();
             addModules();
@@ -60,17 +61,26 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
+            hasCheckForUpdates = true;
+
+            UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
+            return; // Will be used later for public builds
             API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
         }
         private void OnModDataGet(JsonObject json)
         {
-            hasCheckForUpdates = true;
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
             notif.SetUp("New update available!", "It includes fixes, stability improvements and other.", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
             return;
-            if ((int)OverhaulMain.Instance.ModInfo.Version < (int)json["Version"])
+            if ((Int32)OverhaulMain.Instance.ModInfo.Version < (Int32)json["Version"])
             {
             }
+        }
+        private void OnUpdateReceivedGitHub(string newVersion)
+        {
+            if (newVersion == OverhaulDescription.GetModVersion(false)) return;
+            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+            notif.SetUp("New update available!", "Version " + newVersion + " is available to download", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
         }
 
         private void addReferences()
@@ -83,17 +93,26 @@ namespace CloneDroneOverhaul
             ModuleManagement manager = BaseStaticReferences.ModuleManager;
             Timer = manager.AddModule<DelegateTimer>();
             manager.AddModule<ModDataManager>();
+            new CloneDroneOverhaulDataContainer();
             Modules = manager;
+            manager.AddModule<CloneDroneOverhaul.Modules.SettingsManager>();
             Localization = manager.AddModule<Localization.OverhaulLocalizationManager>();
             Visuals = manager.AddModule<VisualsModule>();
             manager.AddModule<HotkeysModule>();
             GUI = manager.AddModule<UI.GUIManagement>();
+            BaseStaticReferences.GUIs = GUI;
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
             manager.AddModule<RobotEventsModule>();
             manager.AddModule<Addons.AddonsManager>();
             manager.AddModule<Modules.MultiplayerManager>();
             manager.AddModule<ArenaAppearenceManager>();
+            manager.AddModule<CinematicGameManager>();
+        }
+
+        private void addSettings()
+        {
+
         }
 
         private void addListeners()
@@ -104,8 +123,6 @@ namespace CloneDroneOverhaul
 
         private void finalPreparations()
         {
-            new CloneDroneOverhaulDataContainer();
-
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key2 = UnityEngine.KeyCode.C,
@@ -191,8 +208,10 @@ namespace CloneDroneOverhaul
             {
                 Transform t2 = UnityEngine.GameObject.Instantiate<Transform>(TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"), trans);
                 t2.SetSiblingIndex(1);
-                t2.GetComponent<Button>().onClick.RemoveAllListeners();
                 UnityEngine.GameObject.Destroy(t2.GetComponentInChildren<LocalizedTextField>());
+                t2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+                t2.GetComponent<Button>().onClick.AddListener(new UnityEngine.Events.UnityAction(UI.SettingsUI.Instance.Show));
+                t2.GetComponentInChildren<Text>().text = "Overhaul Settings";
             }
 
             foreach (UnityEngine.UI.Image img in GameUIRoot.Instance.GetComponentsInChildren<UnityEngine.UI.Image>(true))
@@ -211,6 +230,11 @@ namespace CloneDroneOverhaul
                     if (img.sprite.name == "Background")
                     {
                         img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnity");
+                    }
+                    Outline outline = img.GetComponent<Outline>();
+                    if(outline != null)
+                    {
+                        outline.enabled = false;
                     }
                 }
             }
@@ -234,11 +258,13 @@ namespace CloneDroneOverhaul
 
             GameObject obj = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "CDO_RW_UI"));
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(0).gameObject.AddComponent<UI.Watermark>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(9).gameObject.AddComponent<UI.SettingsUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<Localization.OverhaulLocalizationEditor>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<UI.NewErrorWindow>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<UI.BackupMindTransfersUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<UI.Notifications.NotificationsUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<UI.NewEscMenu>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<UI.MultiplayerInviteUIs>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -250,13 +276,25 @@ namespace CloneDroneOverhaul
             }
             return entry.Translations[LocalizationManager.Instance.GetCurrentLanguageCode()];
         }
+
+        public static T GetSetting<T>(string ID)
+        {
+            return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
+        } 
     }
 
     public static class OverhaulDescription
     {
+        public enum Branch
+        {
+            Github,
+
+            ModBot
+        }
+
         public static string GetModName(bool includeVersion, bool shortVariant = false)
         {
-            string name = shortVariant == false ? "Clone Drone Overhaul" : "CDO";
+            string name = shortVariant == false ? "Clone Drone Overhaul " + GetModVersionBranch() : "CDO";
             if (includeVersion)
             {
                 return name + " " + GetModVersion();
@@ -264,9 +302,19 @@ namespace CloneDroneOverhaul
             return name;
         }
 
-        public static string GetModVersion()
+        public static string GetModVersion(bool withModBotVersion = true)
         {
-            return "a0.2.0.5 (." + OverhaulMain.Instance.ModInfo.Version + ")";
+            string version = "a0.2.0.6";
+            if (!withModBotVersion)
+            {
+                return version;
+            }
+            return version + " (." + OverhaulMain.Instance.ModInfo.Version + ")";
+        }
+
+        public static Branch GetModVersionBranch()
+        {
+            return Branch.Github;
         }
     }
 
@@ -301,12 +349,19 @@ namespace CloneDroneOverhaul
             }
             if (GameModeManager.IsMultiplayer() && UnityEngine.Time.timeScale > 1.2f)
             {
-                UnityEngine.Time.timeScale = 1f;
+                //UnityEngine.Time.timeScale = 1f;
             }
-            //AttackManager.Instance.MultiplayerAttackSpeedMultiplier = 0.8f * (1f / UnityEngine.Time.timeScale);
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFrame();
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                if (GameModeManager.UsesMultiplayerUpgrades())
+                {
+                    Singleton<UpgradeManager>.Instance.TryRequestMultiplayerUpgradeFromServer(UpgradeManager.Instance.GetUpgrade(UpgradeType.SeekingArrows, 1), false);
+                }
+                Singleton<UpgradeManager>.Instance.TryUpgradeAbility(UpgradeManager.Instance.GetUpgrade(UpgradeType.SeekingArrows, 1), false);
             }
         }
 
@@ -351,17 +406,24 @@ namespace CloneDroneOverhaul
         }
     }
 
+    public class BoltEventListener : Bolt.GlobalEventListener
+    {
+        public override void OnEvent(MatchInstance evnt)
+        {
+            BaseStaticReferences.ModuleManager.ExecuteFunction<MatchInstance>("Bolt.OnEvent", new object[] { evnt });
+        }
+    }
+
     public static class CodeExtensions
     {
         public static Color hexToColor(this string hex)
         {
-            hex = hex.Replace("0x", "");//in case the string is formatted 0xFFFFFF
-            hex = hex.Replace("#", "");//in case the string is formatted #FFFFFF
-            byte a = 255;//assume fully visible unless specified in hex
+            hex = hex.Replace("0x", "");
+            hex = hex.Replace("#", "");
+            byte a = 255;
             byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
             byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-            //Only use alpha if the string has enough characters
             if (hex.Length == 8)
             {
                 a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
