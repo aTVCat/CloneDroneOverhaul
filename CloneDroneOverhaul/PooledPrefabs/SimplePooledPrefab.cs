@@ -112,7 +112,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
         private string tag;
 
         // Token: 0x04000098 RID: 152
-        private Transform Prefab;
+        public Transform Prefab;
     }
 
     public class SimplePooledPrefabInstance : ManagedBehaviour
@@ -160,7 +160,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
                 {
                     base.GetComponent<Light>().color = lightColor;
                 }
-                base.GetComponent<Animator>().speed = 0.5f;
+                base.GetComponent<Animator>().speed = 0.3f;
                 base.GetComponent<Animator>().Play("LightStarted");
             }
         }

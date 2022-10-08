@@ -13,11 +13,12 @@ namespace CloneDroneOverhaul.UI
         private Text LEText;
         private Text editText;
 
-        public override void OnAdded()
+        public override void OnInstanceStart()
         {
             base.MyModdedObject = base.GetComponent<ModdedObject>();
             WatermarkText = MyModdedObject.GetObjectFromList<Text>(0);
             ChangelogButton = MyModdedObject.GetObjectFromList<Button>(1);
+            ChangelogButton.onClick.AddListener(new UnityEngine.Events.UnityAction(OnUpdateNotesClicked));
             ChangelogText = MyModdedObject.GetObjectFromList<Text>(2);
             LEButton = MyModdedObject.GetObjectFromList<Button>(3);
             LEButton.onClick.AddListener(new UnityEngine.Events.UnityAction(TryShowLocalEditor));
@@ -54,6 +55,10 @@ namespace CloneDroneOverhaul.UI
         {
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.UILanguageChanged, OnLangChanged);
             OnLangChanged();
+        }
+        private void OnUpdateNotesClicked()
+        {
+            BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/" + OverhaulDescription.GetModVersion(false));
         }
     }
 }

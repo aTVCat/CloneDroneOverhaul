@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.UI
         RectTransform Container;
         float timeToHide;
 
-        public override void OnAdded()
+        public override void OnInstanceStart()
         {
             base.MyModdedObject = base.GetComponent<ModdedObject>();
             Prefab = MyModdedObject.GetObjectFromList<RectTransform>(0);

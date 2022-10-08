@@ -18,6 +18,7 @@ namespace CloneDroneOverhaul.Utilities
                 return info;
             }
             info.Instance = character;
+            info.RobotCamera = character.GetPlayerCamera();
             info.UpgradeCollection = character.GetComponent<UpgradeCollection>();
             info.CharacterType = character.CharacterType;
             if (character is BattleCruiserController)
@@ -86,5 +87,7 @@ namespace CloneDroneOverhaul.Utilities
         public Character Instance;
 
         public UpgradeCollection UpgradeCollection;
+
+        public Camera RobotCamera;
     }
 }

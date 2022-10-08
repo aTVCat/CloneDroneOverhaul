@@ -27,5 +27,35 @@ namespace CloneDroneOverhaul.Utilities
 			action(sprite);
 			yield break;
 		}
+
+		public static void LerpImageColor(UnityEngine.UI.Image img, Color targetColor, float multipler, Action delegateOnEnd = null)
+        {
+			StaticCoroutineRunner.StartStaticCoroutine(lerpImageColor(img, targetColor, multipler, delegateOnEnd));
+		}
+
+		private static IEnumerator lerpImageColor(UnityEngine.UI.Image img, Color targetColor, float duration, Action delegateOnEnd)
+		{
+			float elapsed = 0.0f;
+			Color colStart = img.color;
+
+			while (elapsed < duration)
+			{
+				Color col = img.color;
+				col.r = Mathf.Lerp(colStart.r, targetColor.r, elapsed / duration);
+				col.g = Mathf.Lerp(colStart.g, targetColor.g, elapsed / duration);
+				col.b = Mathf.Lerp(colStart.b, targetColor.b, elapsed / duration);
+				col.a = Mathf.Lerp(colStart.a, targetColor.a, elapsed / duration);
+				img.color = col;
+				elapsed += Time.deltaTime;
+
+				yield return null;
+			}
+			img.color = targetColor;
+			if (delegateOnEnd != null)
+            {
+				delegateOnEnd();
+			}
+			yield break;
+		}
 	}
 }

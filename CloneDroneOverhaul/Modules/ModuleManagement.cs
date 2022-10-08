@@ -7,11 +7,14 @@ namespace CloneDroneOverhaul.Modules
     {
         private List<ModuleBase> modules = new List<ModuleBase>();
 
-        public T AddModule<T>() where T : ModuleBase
+        public T AddModule<T>(bool activateManually = false) where T : ModuleBase
         {
             T module = Activator.CreateInstance<T>();
             modules.Add(module);
-            module.OnActivated();
+            if (!activateManually)
+            {
+                module.OnActivated();
+            }
             return module;
         }
 
@@ -82,11 +85,30 @@ namespace CloneDroneOverhaul.Modules
                 }
             }
         }
+        public void ExecuteFunction<T>(string funcName, object[] args)
+        {
+            for (int i = 0; i < modules.Count; i++)
+            {
+                ModuleBase mBase = modules[i];
+                if (mBase.ExecutesFunction(funcName))
+                {
+                    mBase.RunFunction<T>(funcName, args);
+                }
+            }
+        }
+        public void OnSettingRefreshed(string id, object value)
+        {
+            for (int i = 0; i < modules.Count; i++)
+            {
+                ModuleBase mBase = modules[i];
+                mBase.OnSettingRefreshed(id, value);
+            }
+        }
 
         public static void ShowError(string message)
         {
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp(message, "", 5, new UnityEngine.Vector2(500, 52), new UnityEngine.Color(0.5f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
+            notif.SetUp(message, "", 20, new UnityEngine.Vector2(900, 52), new UnityEngine.Color(0.5f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
         }
 
         public static void ShowError_Type2(string title, string message)
@@ -102,8 +124,9 @@ namespace CloneDroneOverhaul.Modules
         public virtual void OnActivated() { }
         public virtual void OnModDeactivated() { throw new NotImplementedException(); }
         public virtual bool ShouldWork() { throw new NotImplementedException(); return false; }
-        public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
+        public virtual void OnSettingRefreshed(string ID, object value) { }
         public virtual void RunFunction(string name, object[] arguments) { }
+        public virtual void RunFunction<T>(string name, object[] arguments) { }
         protected virtual bool ExectuteFunctionAnyway() { return false; }
         public bool ExecutesFunction(string name)
         {

@@ -5,6 +5,7 @@ namespace CloneDroneOverhaul.Patching
 {
     public class BodyPartPatcher
     {
+        public static bool CanCalculateVoxelWorldPositionNextTime = true;
         public static void OnBodyPartStart(MechBodyPart __instance)
         {
             if (GameModeManager.IsMultiplayer())
@@ -49,12 +50,17 @@ namespace CloneDroneOverhaul.Patching
         {
             try
             {
+                CanCalculateVoxelWorldPositionNextTime = !CanCalculateVoxelWorldPositionNextTime;
+                if (!CanCalculateVoxelWorldPositionNextTime)
+                {
+                    return;
+                }
                 Vector3 voxelWorldPosition = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
                 if (fireSpreadDefinition == null)
                 {
                     Vector3 a = (voxelWorldPosition - volumeWorldCenter).normalized + impactDirectionWorld;
-                    VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, 1f * a);
-                    VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, (3f * impactDirectionWorld) + (1f * a));
+                    //VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, 1f * a);
+                    //VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, (3f * impactDirectionWorld) + (1f * a));
                 }
 
                 OverhaulMain.Visuals.EmitBodyPartCutVFX(voxelWorldPosition, fireSpreadDefinition != null);
@@ -77,6 +83,7 @@ namespace CloneDroneOverhaul.Patching
         public static void AddMechBodyPartComponent(GameObject obj)
         {
             MechBodyPart part = obj.AddComponent<MechBodyPart>();
+            throw new System.NotImplementedException();
 
         }
     }

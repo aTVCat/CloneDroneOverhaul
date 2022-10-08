@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.UI.Notifications
         public static NotificationsUI Instance;
         private List<Notification> Messages;
 
-        public override void OnAdded()
+        public override void OnInstanceStart()
         {
             MyModdedObject = base.GetComponent<ModdedObject>();
             Messages = new List<Notification>();

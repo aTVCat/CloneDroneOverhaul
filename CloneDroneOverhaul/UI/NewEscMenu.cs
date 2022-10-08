@@ -110,9 +110,7 @@ namespace CloneDroneOverhaul.UI
         private RectTransform BackToLvLEditorButtonParent;
         private Button BackToLvLEditorButton;
 
-
-
-        public override void OnAdded()
+        public override void OnInstanceStart()
         {
             base.MyModdedObject = GetComponent<ModdedObject>();
             BaseStaticReferences.NewEscMenu = this;
@@ -121,7 +119,8 @@ namespace CloneDroneOverhaul.UI
             SpecialButtonsMObj = MyModdedObject.GetObjectFromList<ModdedObject>(0);
             PhotoMode = SpecialButtonsMObj.GetObjectFromList<Button>(0);
             CDOSettings = SpecialButtonsMObj.GetObjectFromList<Button>(1);
-            Addons = SpecialButtonsMObj.GetObjectFromList<Button>(2);
+            CDOSettings.onClick.AddListener(UI.SettingsUI.Instance.Show);
+           Addons = SpecialButtonsMObj.GetObjectFromList<Button>(2);
             StatisticsButton = SpecialButtonsMObj.GetObjectFromList<Button>(3);
 
             RightSideMObj = MyModdedObject.GetObjectFromList<ModdedObject>(1);
@@ -225,6 +224,7 @@ namespace CloneDroneOverhaul.UI
         public void Hide()
         {
             base.gameObject.SetActive(false);
+            BaseStaticReferences.GUIs.GetGUI<UI.SettingsUI>().Hide();
         }
 
 
@@ -282,6 +282,8 @@ namespace CloneDroneOverhaul.UI
         private void refreshSpecialButtons()
         {
             PhotoMode.gameObject.SetActive(ShowPhotoModeButton);
+            SettingsButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
+            AchButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
         }
         private void refreshHosting()
         {
@@ -443,12 +445,7 @@ namespace CloneDroneOverhaul.UI
 
         private void onCopyCodeClicked()
         {
-            TextEditor textEditor = new TextEditor();
-            textEditor.text = this.CUI_Code.text;
-            textEditor.SelectAll();
-            textEditor.Copy();
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("Code " + CUI_Code.text + " copied to clipboard!", "", 10, new Vector2(450, 52), Color.clear, new UI.Notifications.Notification.NotificationButton[] { });
+            BaseUtils.CopyToClipboard(this.CUI_Code.text, true, "Code ", " was copied to clipboard!");
         }
 
         private void onWorkshopItemPageClicked()

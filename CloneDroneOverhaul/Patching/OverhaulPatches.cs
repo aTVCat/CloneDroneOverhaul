@@ -14,20 +14,30 @@ namespace CloneDroneOverhaul.Patching
     [HarmonyPatch(typeof(GameUIRoot))]
     public class OverhaulUIPatches
     {
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(GameUIRoot), "RefreshCursorEnabled")]
-        private static void GameUIRoot_RefreshCursorEnabled_Postfix()
+        private static bool GameUIRoot_RefreshCursorEnabled_Prefix()
         {
             try
             {
-                if (OverhaulMain.GUI.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || OverhaulMain.GUI.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy)
+                if (OverhaulMain.GUI.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || OverhaulMain.GUI.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
+                     OverhaulMain.GUI.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy)
                 {
                     global::InputManager.Instance.SetCursorEnabled(true);
+                    return false;
                 }
             }
             catch
             {
             }
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Multiplayer1v1UI), "refreshUIVisibility")]
+        private static void Multiplayer1v1UI_refreshUIVisibility_Postfix(Multiplayer1v1UI __instance)
+        {
+            __instance.WaitingOnOpponentLabel.gameObject.gameObject.SetActive(false);
         }
 
         [HarmonyPostfix]
@@ -76,6 +86,14 @@ namespace CloneDroneOverhaul.Patching
             {
                 BaseStaticReferences.NewEscMenu.Show();
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MultiplayerInviteCodeUI), "ShowWithCode")]
+        private static bool MultiplayerInviteCodeUI_ShowWithCode_Prefix(MultiplayerInviteCodeUI __instance, string inviteCode, bool showSettings)
+        {
+            BaseStaticReferences.GUIs.GetGUI<UI.MultiplayerInviteUIs>().ShowWithCode(inviteCode, showSettings);
+            return false;
         }
 
         [HarmonyPostfix]
@@ -238,9 +256,22 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(ExplodeWhenCut), "onBodyPartDamaged")]
         public static void ExplodeWhenCut_onBodyPartDamaged_Prefix(ExplodeWhenCut __instance)
         {
-            if (!__instance.GetPrivateField<bool>("_hasExploded"))
+            if (__instance != null && !__instance.GetPrivateField<bool>("_hasExploded"))
             {
                 OverhaulMain.Visuals.EmitExplosion(__instance.ExplosionSpawnPoint.position);
+
+                Vector3 pos1 = __instance.transform.position;
+                Vector3 pos2 = new Vector3();
+                RobotShortInformation info = CharacterTracker.Instance.GetPlayer().GetRobotInfo();
+                if (!info.IsNull)
+                {
+                    pos2 = info.Instance.transform.position;
+                    if(Vector3.Distance(pos1, pos2) < 40)
+                    {
+                        PlayerCameraManager.Instance.ShakeCamera(0.2f, 0.8f);
+                    }
+                }
+
             }
         }
 
@@ -255,9 +286,15 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MechBodyPart), "tryBurnColorAt")]
         public static void MechBodyPart_tryBurnColorAt_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, int offsetX, int offsetY, int offsetZ, float colorMultiplier = -1f)
         {
+            BodyPartPatcher.CanCalculateVoxelWorldPositionNextTime = !BodyPartPatcher.CanCalculateVoxelWorldPositionNextTime;
+            if (!BodyPartPatcher.CanCalculateVoxelWorldPositionNextTime)
+            {
+                return;
+            }
             if (UnityEngine.Random.Range(1, 10) > 5)
             {
-                OverhaulMain.Visuals.EmitBurningVFX(currentFrame.GetVoxelWorldPosition(voxelPosition));
+                Vector3 vector = currentFrame.GetVoxelWorldPosition(voxelPosition);
+                OverhaulMain.Visuals.EmitBurningVFX(vector);
             }
         }
 
@@ -377,16 +414,26 @@ namespace CloneDroneOverhaul.Patching
             }
         }
 
+
         [HarmonyTranspiler]
-        [HarmonyPatch(typeof(MechBodyPart), "destroyVoxelAtPositionFromCut")]
-        private static IEnumerable<CodeInstruction> MechBodyPart_destroyVoxelAtPositionFromCut_Transpiler(IEnumerable<CodeInstruction> instructions)
+        [HarmonyPatch(typeof(CameraShaker), "Update")]
+        private static IEnumerable<CodeInstruction> CameraShaker_Update_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            List<CodeInstruction> list = new List<CodeInstruction>(instructions);
-            for (int i = 36; i < 66; i++)
+            var codes = new List<CodeInstruction>(instructions);
+
+            debug.Log(codes.Count);
+            for (int i = 56; i < 72; i++)
             {
-                list[i].opcode = OpCodes.Nop;
+                codes[i].opcode = OpCodes.Nop;
             }
-            return list.AsEnumerable<CodeInstruction>();
+
+            for (int i = 77; i < 81; i++)
+            {
+                codes[i].opcode = OpCodes.Nop;
+            }
+
+
+            return codes.AsEnumerable();
         }
     }
 }

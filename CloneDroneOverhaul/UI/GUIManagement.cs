@@ -29,7 +29,7 @@ namespace CloneDroneOverhaul.UI
         {
             if (!guis.Contains(gui))
             {
-                gui.OnAdded();
+                gui.OnInstanceStart();
                 gui.GUIModule = this;
                 guis.Add(gui);
             }
@@ -70,6 +70,13 @@ namespace CloneDroneOverhaul.UI
                 ui.RunFunction(name, arguments);
             }
         }
+        public override void OnSettingRefreshed(string id, object value)
+        {
+            foreach (ModGUIBase ui in guis)
+            {
+                ui.OnSettingRefreshed(id, value);
+            }
+        }
     }
 
     public class ModGUIBase : UnityEngine.MonoBehaviour
@@ -77,8 +84,8 @@ namespace CloneDroneOverhaul.UI
         public ModdedObject MyModdedObject { get; protected set; }
         public GUIManagement GUIModule { get; set; }
 
-        public virtual void OnAdded() { }
-        public virtual void OnSettingRefreshed(string ID, object value) { throw new NotImplementedException(); }
+        public virtual void OnInstanceStart() { }
+        public virtual void OnSettingRefreshed(string ID, object value) { }
         public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void OnManagedUpdate() { }
         public virtual void OnNewFrame() { }
