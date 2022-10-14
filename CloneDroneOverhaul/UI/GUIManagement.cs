@@ -8,7 +8,7 @@ namespace CloneDroneOverhaul.UI
     {
         private List<ModGUIBase> guis = new List<ModGUIBase>();
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }

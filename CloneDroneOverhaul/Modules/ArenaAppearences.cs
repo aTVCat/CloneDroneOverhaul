@@ -11,7 +11,7 @@ namespace CloneDroneOverhaul.Modules
 		public Transform ArenaTransform { get; private set; }
         public ArenaAppearenceManager.ArenaParts ArenaInterior { get; private set; }
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
 			return true;
         }

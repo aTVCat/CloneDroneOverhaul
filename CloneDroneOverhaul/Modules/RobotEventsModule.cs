@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.Modules
 {
     public class RobotEventsModule : ModuleBase
     {
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }
@@ -18,6 +18,13 @@ namespace CloneDroneOverhaul.Modules
         public override void OnActivated()
         {
             Functions.Add("onPlayerSet");
+            Singleton<GlobalEventManager>.Instance.AddEventListener<Camera>(GlobalEvents.PlayerCameraEnabled, OnCameraEnabled);
+        }
+
+        private void OnCameraEnabled(Camera cam)
+        {
+            //cam.nearClipPlane = 0.01f;
+            OverhaulMain.Modules.ExecuteFunction<Camera>("onPlayerCameraEnabled", cam);
         }
 
         public override void RunFunction(string name, object[] arguments)

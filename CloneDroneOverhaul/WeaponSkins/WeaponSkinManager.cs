@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.WeaponSkins
     public class WeaponSkinManager : ModuleBase
     {
 		IVoxFile file;
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }

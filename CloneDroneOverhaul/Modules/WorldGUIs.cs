@@ -23,7 +23,7 @@ namespace CloneDroneOverhaul.Modules
 
         static bool TransferedBefore;
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }

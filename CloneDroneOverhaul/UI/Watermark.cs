@@ -32,7 +32,7 @@ namespace CloneDroneOverhaul.UI
         public override void OnManagedUpdate()
         {
             ChangelogButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
-            LEButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
+            LEButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen() && !OverhaulDescription.IsPublicBuild());
             editorsButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
             WatermarkText.text = OverhaulDescription.GetModName(true, !GameModeManager.IsOnTitleScreen());
         }

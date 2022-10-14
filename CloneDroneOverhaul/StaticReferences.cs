@@ -30,6 +30,18 @@ namespace CloneDroneOverhaul
 
     public class BaseUtils
     {
+        public static ModLibrary.ModInfo GetModInfoByID(string id)
+        {
+            foreach (ModLibrary.ModInfo info in InternalModBot.ModsManager.Instance.GetActiveModInfos())
+            {
+                if (info.UniqueID == id)
+                {
+                    return info;
+                }
+            } 
+            return null;
+        }
+
         public static void SetGameSpeed(float timeScale, float time)
         {
             StaticCoroutineRunner.StartStaticCoroutine(setGameSpeed(timeScale, time));

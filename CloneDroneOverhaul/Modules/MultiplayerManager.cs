@@ -4,7 +4,7 @@ namespace CloneDroneOverhaul.Modules
 {
     public class MultiplayerManager : ModuleBase
     {
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }
