@@ -54,7 +54,7 @@ namespace CloneDroneOverhaul.Modules
         public CloneDroneOverhaulSettingsData SettingsData { get; set; }
         private bool _hasInitialized;
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }

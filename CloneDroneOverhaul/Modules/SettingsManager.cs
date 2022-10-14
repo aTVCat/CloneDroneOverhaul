@@ -13,7 +13,7 @@ namespace CloneDroneOverhaul.Modules
         private List<SettingEntry> Entries = new List<SettingEntry>();
         public static SettingsManager Instance;
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }
@@ -27,6 +27,8 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
             AddSetting(SettingEntry.NewSetting<bool>("Show duel room code", "Show the duel room code after you start the game", "Misc", "Privacy", true));
+
+            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", true)); //Levels.Editor.New Level Editor
         }
 
         public List<SettingEntry> GetSettings(string category, string section)

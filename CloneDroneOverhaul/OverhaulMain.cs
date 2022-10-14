@@ -22,6 +22,7 @@ namespace CloneDroneOverhaul
         public static UI.GUIManagement GUI { get; set; }
         public static WeaponSkins.WeaponSkinManager Skins { get; set; }
         public static ModuleManagement Modules { get; set; }
+        public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
 
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
@@ -38,7 +39,9 @@ namespace CloneDroneOverhaul
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
             OverhaulCacheManager.CacheStuff();
+            LAN.LANMultiplayerManager.CreateManager();
 
+            checkDlls();
             addReferences();
             addModules();
             addListeners();
@@ -53,6 +56,15 @@ namespace CloneDroneOverhaul
         protected override void OnModDeactivated()
         {
             BaseStaticValues.IsModEnabled = false;
+        }
+
+        protected override void OnLevelEditorStarted()
+        {
+            Modules.ExecuteFunction("onLevelEditorStarted", null);
+        }
+        protected override void OnModRefreshed()
+        {
+            checkDlls();
         }
 
         private void checkforUpdate()
@@ -72,13 +84,17 @@ namespace CloneDroneOverhaul
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
             notif.SetUp("New update available!", "It includes fixes, stability improvements and other.", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
             return;
-            if ((Int32)OverhaulMain.Instance.ModInfo.Version < (Int32)json["Version"])
+            if ((int)OverhaulMain.Instance.ModInfo.Version < (int)json["Version"])
             {
             }
         }
         private void OnUpdateReceivedGitHub(string newVersion)
         {
-            if (newVersion == OverhaulDescription.GetModVersion(false)) return;
+            if (newVersion == OverhaulDescription.GetModVersion(false))
+            {
+                return;
+            }
+
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
             notif.SetUp("New update available!", "Version " + newVersion + " is available to download", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
         }
@@ -108,11 +124,20 @@ namespace CloneDroneOverhaul
             manager.AddModule<Modules.MultiplayerManager>();
             manager.AddModule<ArenaAppearenceManager>();
             manager.AddModule<CinematicGameManager>();
+            ModdedEditor = manager.AddModule<LevelEditor.ModdedLevelEditorManager>();
         }
 
-        private void addSettings()
+        private void checkDlls()
         {
-
+            return; // Early tests of cross-modding
+            foreach (System.Reflection.Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.FullName.Contains("LevelEditorTools,"))
+                {
+                    OverhaulDescription.IsLETInstalled = true;
+                    break;
+                }
+            }
         }
 
         private void addListeners()
@@ -232,9 +257,20 @@ namespace CloneDroneOverhaul
                         img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnity");
                     }
                     Outline outline = img.GetComponent<Outline>();
-                    if(outline != null)
+                    if (outline != null)
                     {
                         outline.enabled = false;
+                    }
+                }
+            }
+
+            foreach (EnemyConfiguration character in EnemyFactory.Instance.Enemies)
+            {
+                if (character.EnemyPrefab.GetComponent<FirstPersonMover>() != null)
+                {
+                    foreach (MechBodyPart part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.GetComponentsInChildren<MechBodyPart>())
+                    {
+                        Patching.BodyPartPatcher.OnBodyPartStart(part.GetComponentInChildren<PicaVoxel.Frame>());
                     }
                 }
             }
@@ -265,6 +301,7 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<UI.Notifications.NotificationsUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<UI.NewEscMenu>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<UI.MultiplayerInviteUIs>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<LevelEditor.ModdedLevelEditorUI>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -280,7 +317,7 @@ namespace CloneDroneOverhaul
         public static T GetSetting<T>(string ID)
         {
             return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
-        } 
+        }
     }
 
     public static class OverhaulDescription
@@ -304,7 +341,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.6";
+            string version = "a0.2.0.7";
             if (!withModBotVersion)
             {
                 return version;
@@ -316,12 +353,25 @@ namespace CloneDroneOverhaul
         {
             return Branch.Github;
         }
+
+        public static bool IsPublicBuild()
+        {
+            return true;
+        }
+
+
+        internal static bool IsLETInstalled;
+        public static bool LevelEditorToolsInstalled()
+        {
+            return BaseUtils.GetModInfoByID("286ea03e-b667-46ae-8c12-95eb08c412e4") != null;
+        }
     }
 
     public class OverhaulMonoBehaviourListener : ManagedBehaviour
     {
         private float timeWhenOneSecondWillPast;
         public static bool IsApplicationFocused { get; private set; }
+        public LAN.LANMultiplayerManager LANManager;
 
         private bool IsReadyToWork()
         {
@@ -399,6 +449,7 @@ namespace CloneDroneOverhaul
         private void Start()
         {
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+            LANManager = LAN.LANMultiplayerManager.Instance;
         }
         private void OnSceneUnloaded(Scene current)
         {
@@ -523,6 +574,46 @@ namespace CloneDroneOverhaul
                 }
             }
             return result;
+        }
+    }
+
+    public static class CrossModManager
+    {
+        public static void DoAction(string name, object[] arguments)
+        {
+            try
+            {
+                if (name == "ModdedLevelEditor.RefreshSelected")
+                {
+                    OverhaulMain.GUI.GetGUI<LevelEditor.ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
+                }
+                if (name == "ModdedLevelEditor.RefreshSelectedLETMod")
+                {
+                    LevelEditor.ModdedLevelEditorUI.ObjectsSelectedPanel ObjectsSelected = arguments[0] as LevelEditor.ModdedLevelEditorUI.ObjectsSelectedPanel;
+                    if (OverhaulDescription.LevelEditorToolsInstalled())
+                    {
+                        float? rotAngle = LevelEditorTools.AccurateRotationTool.RotationAngle;
+                        ObjectsSelected.AdditionalText.text = string.Concat(new string[]
+                        {
+                    "Level Editor Tools Mod:",
+                    System.Environment.NewLine,
+                    "R + " + LevelEditorTools.PositionerTool.SetXKey + " to rotate objects " + rotAngle + " degrees along X axis",
+                                 System.Environment.NewLine,
+                    "R + " + LevelEditorTools.PositionerTool.SetYKey + " to rotate objects " + rotAngle + " degrees along Y axis",
+                                 System.Environment.NewLine,
+                    "R + " + LevelEditorTools.PositionerTool.SetZKey + " to rotate objects " + rotAngle + " degrees along Z axis",
+                        });
+                    }
+                    else
+                    {
+                        ObjectsSelected.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
+                    }
+                }
+            }
+            catch
+            {
+
+            }
         }
     }
 

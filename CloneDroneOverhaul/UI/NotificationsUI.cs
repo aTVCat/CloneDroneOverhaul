@@ -30,7 +30,7 @@ namespace CloneDroneOverhaul.UI.Notifications
             }
         }
 
-        internal RectTransform RecieveMessage(Notification notification)
+        internal NotificationControl ReceieveMessage(Notification notification)
         {
             RectTransform transform = Instantiate<RectTransform>(MyModdedObject.GetObjectFromList<RectTransform>(0), MyModdedObject.GetObjectFromList<RectTransform>(1));
             transform.sizeDelta = notification.SizeDelta;
@@ -50,7 +50,12 @@ namespace CloneDroneOverhaul.UI.Notifications
                 transform2.gameObject.SetActive(true);
                 transform.GetComponent<Animator>().Play("NotificationAppear");
             }
-            return transform;
+            return new NotificationControl(transform, mObj.GetObjectFromList<Text>(0), mObj.GetObjectFromList<Text>(1));
+        }
+
+        private NotificationControl ReceieveFullscreenMessage()
+        {
+            return null;
         }
 
         internal void HideMessage(Notification notification)
@@ -59,6 +64,20 @@ namespace CloneDroneOverhaul.UI.Notifications
             Messages.Remove(notification);
         }
 
+    }
+
+    public class NotificationControl
+    {
+        public Text Title { private set; get; }
+        public Text Description { private set; get; }
+        public RectTransform Rect { private set; get; }
+
+        public NotificationControl(RectTransform rect, Text text, Text desc)
+        {
+            Title = text;
+            Description = desc;
+            Rect = rect;
+        }
     }
 
     public class Notification
@@ -70,8 +89,9 @@ namespace CloneDroneOverhaul.UI.Notifications
         public NotificationButton[] Buttons { private set; get; }
         public float TimeToDestroy { private set; get; }
         public RectTransform InstanceRectTransform { private set; get; }
+        public bool IsFullscreen { private set; get; }
 
-        public Notification SetUp(string title, string description, float unscaledTimeToLive, Vector2 sizeDelta, Color color, NotificationButton[] buttons)
+        public NotificationControl SetUp(string title, string description, float unscaledTimeToLive, Vector2 sizeDelta, Color color, NotificationButton[] buttons, bool isFullscreen = false)
         {
             Title = title;
             Description = description;
@@ -79,8 +99,10 @@ namespace CloneDroneOverhaul.UI.Notifications
             Color = color != Color.clear ? color : new Color(0.132743f, 0.1559941f, 0.1792453f, 0.8509804f);
             Buttons = buttons;
             TimeToDestroy = Time.unscaledTime + Mathf.Clamp(unscaledTimeToLive, 2.00f, 20.00f);
-            InstanceRectTransform = NotificationsUI.Instance.RecieveMessage(this);
-            return this;
+            IsFullscreen = isFullscreen;
+            NotificationControl control = NotificationsUI.Instance.ReceieveMessage(this);
+            InstanceRectTransform = control.Rect;
+            return control;
         }
 
         public Notification()

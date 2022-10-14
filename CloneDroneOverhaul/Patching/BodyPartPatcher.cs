@@ -6,20 +6,10 @@ namespace CloneDroneOverhaul.Patching
     public class BodyPartPatcher
     {
         public static bool CanCalculateVoxelWorldPositionNextTime = true;
-        public static void OnBodyPartStart(MechBodyPart __instance)
+        public static void OnBodyPartStart(Frame frame)
         {
-            if (GameModeManager.IsMultiplayer())
-            {
-                return;
-            }
-
-            //GarbageTarget target = __instance.GetComponentInParent<GarbageTarget>();
-            //if(target == null || target.State != GarbageState.NotGarbage)
-            //{
-            //    return;
-            //}
-            Voxel[] voxels = __instance.GetMyVolume.GetCurrentFrame().Voxels;
-            ReplaceVoxelColor replaceVoxels = __instance.GetComponent<ReplaceVoxelColor>();
+            Voxel[] voxels = frame.Voxels;
+            ReplaceVoxelColor replaceVoxels = frame.GetComponentInParent<ReplaceVoxelColor>();
             for (int i = 0; i < voxels.Length; i++)
             {
                 Color normalCol = voxels[i].Color;
@@ -42,8 +32,6 @@ namespace CloneDroneOverhaul.Patching
                     voxels[i].Color = color;
                 }
             }
-
-            Singleton<CacheManager>.Instance.GetVolume(__instance.transform).GetCurrentFrame().UpdateAllChunks();
         }
 
         public static void OnVoxelCut(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)

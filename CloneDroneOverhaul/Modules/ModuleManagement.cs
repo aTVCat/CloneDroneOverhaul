@@ -35,7 +35,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.ShouldWork())
+                if (mBase.IsEnabled())
                 {
                     mBase.OnNewFrame();
                 }
@@ -46,7 +46,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.ShouldWork())
+                if (mBase.IsEnabled())
                 {
                     mBase.OnFixedUpdate();
                 }
@@ -57,7 +57,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.ShouldWork())
+                if (mBase.IsEnabled())
                 {
                     mBase.OnSecond(time);
                 }
@@ -68,7 +68,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.ShouldWork())
+                if (mBase.IsEnabled())
                 {
                     mBase.OnManagedUpdate();
                 }
@@ -96,6 +96,18 @@ namespace CloneDroneOverhaul.Modules
                 }
             }
         }
+        public void ExecuteFunction<T>(string funcName, T obj)
+        {
+            for (int i = 0; i < modules.Count; i++)
+            {
+                ModuleBase mBase = modules[i];
+                if (mBase.ExecutesFunction(funcName))
+                {
+                    mBase.RunFunction<T>(funcName, obj);
+                }
+            }
+        }
+
         public void OnSettingRefreshed(string id, object value)
         {
             for (int i = 0; i < modules.Count; i++)
@@ -123,10 +135,11 @@ namespace CloneDroneOverhaul.Modules
         protected List<string> Functions = new List<string>();
         public virtual void OnActivated() { }
         public virtual void OnModDeactivated() { throw new NotImplementedException(); }
-        public virtual bool ShouldWork() { throw new NotImplementedException(); return false; }
+        public virtual bool IsEnabled() { throw new NotImplementedException(); return false; }
         public virtual void OnSettingRefreshed(string ID, object value) { }
         public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void RunFunction<T>(string name, object[] arguments) { }
+        public virtual void RunFunction<T>(string name, T obj) { }
         protected virtual bool ExectuteFunctionAnyway() { return false; }
         public bool ExecutesFunction(string name)
         {

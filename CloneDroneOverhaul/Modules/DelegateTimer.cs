@@ -7,7 +7,7 @@ namespace CloneDroneOverhaul.Modules
     {
         private List<TimedAction> actions = new List<TimedAction>();
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return true;
         }

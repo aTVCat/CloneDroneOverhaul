@@ -96,6 +96,18 @@ namespace CloneDroneOverhaul.Patching
             return false;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LevelEditorUI), "Show")]
+        private static bool LevelEditorUI_Show_Prefix()
+        {
+            if(OverhaulMain.GetSetting<bool>("Levels.Editor.New Level Editor"))
+            {
+                BaseStaticReferences.GUIs.GetGUI<LevelEditor.ModdedLevelEditorUI>().Show();
+                return false;
+            }
+            return true;
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AchievementProgressUI), "Hide")]
         private static void AchievementProgressUI_Hide_Postfix(EscMenu __instance)
@@ -245,18 +257,11 @@ namespace CloneDroneOverhaul.Patching
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(MechBodyPart), "Start")]
-        public static void MechBodyPart_Start_Postfix(MechBodyPart __instance)
-        {
-            BodyPartPatcher.OnBodyPartStart(__instance);
-        }
-
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ExplodeWhenCut), "onBodyPartDamaged")]
         public static void ExplodeWhenCut_onBodyPartDamaged_Prefix(ExplodeWhenCut __instance)
         {
-            if (__instance != null && !__instance.GetPrivateField<bool>("_hasExploded"))
+            if (__instance != null && !__instance.GetPrivateField<bool>("_hasExploded") && __instance.ExplosionSpawnPoint != null)
             {
                 OverhaulMain.Visuals.EmitExplosion(__instance.ExplosionSpawnPoint.position);
 
@@ -368,6 +373,43 @@ namespace CloneDroneOverhaul.Patching
             targetColor *= 1.5f;
         }
 
+        /// Update level editorPart
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Select")]
+        private static bool LevelEditorObjectPlacementManager_Select_Prefix(ObjectPlacedInLevel objectToSelect, bool deselectAllAnimationTracks = true)
+        {
+            if (OverhaulMain.GUI.GetGUI<UI.NewEscMenu>().gameObject.activeInHierarchy)
+            {
+                return false;
+            }
+            return true;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Select")]
+        private static void LevelEditorObjectPlacementManager_Select_Postfix(LevelEditorObjectPlacementManager __instance, ObjectPlacedInLevel objectToSelect, bool deselectAllAnimationTracks = true)
+        {
+            CrossModManager.DoAction("ModdedLevelEditor.RefreshSelected", new object[] { __instance });
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Deselect")]
+        private static void LevelEditorObjectPlacementManager_Deselect_Postfix(LevelEditorObjectPlacementManager __instance, ObjectPlacedInLevel objectToDeselect)
+        {
+            CrossModManager.DoAction("ModdedLevelEditor.RefreshSelected", new object[] { __instance });
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "DeselectEverything")]
+        private static void LevelEditorObjectPlacementManager_DeselectEverything_Postfix(LevelEditorObjectPlacementManager __instance)
+        {
+            CrossModManager.DoAction("ModdedLevelEditor.RefreshSelected", new object[] { __instance });
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorToolManager), "SetActiveTool")]
+        private static void LevelEditorToolManager_SetActiveTool_Postfix(LevelEditorObjectPlacementManager __instance)
+        {
+            OverhaulMain.GUI.GetGUI<LevelEditor.ModdedLevelEditorUI>().ToolBar.RefreshSelected();
+        }
+
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]
         private static void LevelEditorPointLight_Start_Postfix(LevelEditorPointLight __instance)
@@ -412,6 +454,14 @@ namespace CloneDroneOverhaul.Patching
             {
                 rigid.interpolation = RigidbodyInterpolation.Interpolate;
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "PlaceObjectInLevelRoot")]
+        private static bool LevelEditorObjectPlacementManager_PlaceObjectInLevelRoot_Prefix(LevelObjectEntry objectPlacedLevelObjectEntry, Transform levelRoot, ref ObjectPlacedInLevel __result)
+        {
+            __result = LevelEditor.ModdedLevelEditorManager.Instance.PlaceObject(objectPlacedLevelObjectEntry, levelRoot);
+            return false;
         }
 
 

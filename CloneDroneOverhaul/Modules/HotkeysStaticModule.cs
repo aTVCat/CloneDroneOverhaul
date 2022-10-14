@@ -8,7 +8,7 @@ namespace CloneDroneOverhaul.Modules
     {
         private List<Hotkey> hotKeys = new List<Hotkey>();
 
-        public override bool ShouldWork() // Add splashes/tooltips for it
+        public override bool IsEnabled() // Add splashes/tooltips for it
         {
             return true;
         }

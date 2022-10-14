@@ -32,7 +32,7 @@ namespace CloneDroneOverhaul.Modules
 
         private bool isWaitingNextFrame;
 
-        public override bool ShouldWork()
+        public override bool IsEnabled()
         {
             return isInitialized; // SETTINGS!!
         }
