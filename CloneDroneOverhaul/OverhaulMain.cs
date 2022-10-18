@@ -302,6 +302,7 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<UI.NewEscMenu>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<UI.MultiplayerInviteUIs>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<LevelEditor.ModdedLevelEditorUI>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<UI.MultiplayerUIs>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -577,7 +578,7 @@ namespace CloneDroneOverhaul
         }
     }
 
-    public static class CrossModManager
+    public static class CrossModManager //probably a mistake
     {
         public static void DoAction(string name, object[] arguments)
         {

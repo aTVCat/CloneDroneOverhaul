@@ -166,6 +166,7 @@
     <Compile Include="UI\NewEscMenu.cs" />
     <Compile Include="UI\MultiplayerInviteUIs.cs" />
     <Compile Include="UI\SettingsUI.cs" />
+    <Compile Include="UI\MultiplayerUIs.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="OverhaulCacheManager.cs" />
     <Compile Include="UpdateChecker.cs" />

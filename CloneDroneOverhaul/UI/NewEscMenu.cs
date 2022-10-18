@@ -7,8 +7,9 @@ namespace CloneDroneOverhaul.UI
 {
     public class NewEscMenu : ModGUIBase
     {
-        private bool wasMainMenuButtonClicked;
-        private bool wasExitToDesktopButtonClicked;
+        private bool _wasMainMenuButtonClicked;
+        private bool _wasExitToDesktopButtonClicked;
+        private bool _userDismissedStream;
 
         private bool ShowPlayerList { get { return GameModeManager.IsMultiplayer(); } }
         private bool ShowPhotoModeButton { get { return !GameModeManager.IsMultiplayer() && !CharacterTracker.Instance.GetPlayer().GetRobotInfo().IsNull; } }
@@ -35,6 +36,8 @@ namespace CloneDroneOverhaul.UI
                 return -1;
             }
         }
+
+        private string _currentDevStreamLink;
 
         private string GetAchievementsCompletedText
         {
@@ -83,7 +86,7 @@ namespace CloneDroneOverhaul.UI
         private Text LP_Title;
 
         private ModdedObject DevLiveMObj;
-        private RectTransform DL_ErickLolLmao;
+        private RectTransform DL_Erik;
         private RectTransform DL_Brian;
         private RectTransform DL_Vast;
         private Button SayHelloButton;
@@ -120,7 +123,7 @@ namespace CloneDroneOverhaul.UI
             PhotoMode = SpecialButtonsMObj.GetObjectFromList<Button>(0);
             CDOSettings = SpecialButtonsMObj.GetObjectFromList<Button>(1);
             CDOSettings.onClick.AddListener(UI.SettingsUI.Instance.Show);
-           Addons = SpecialButtonsMObj.GetObjectFromList<Button>(2);
+            Addons = SpecialButtonsMObj.GetObjectFromList<Button>(2);
             StatisticsButton = SpecialButtonsMObj.GetObjectFromList<Button>(3);
 
             RightSideMObj = MyModdedObject.GetObjectFromList<ModdedObject>(1);
@@ -143,11 +146,13 @@ namespace CloneDroneOverhaul.UI
             LP_Title = LevelProgressMObj.GetObjectFromList<Text>(0);
 
             DevLiveMObj = MyModdedObject.GetObjectFromList<ModdedObject>(2);
-            DL_ErickLolLmao = DevLiveMObj.GetObjectFromList<RectTransform>(0);
+            DL_Erik = DevLiveMObj.GetObjectFromList<RectTransform>(0);
             DL_Brian = DevLiveMObj.GetObjectFromList<RectTransform>(7);
             DL_Vast = DevLiveMObj.GetObjectFromList<RectTransform>(8);
             SayHelloButton = DevLiveMObj.GetObjectFromList<Button>(4);
+            SayHelloButton.onClick.AddListener(onSayHelloClicked);
             CloseButton = DevLiveMObj.GetObjectFromList<Button>(6);
+            CloseButton.onClick.AddListener(onDismissDevStreamClicked);
             DL_DevLiveText = DevLiveMObj.GetObjectFromList<Text>(2);
             DL_DevBuildsGameText = DevLiveMObj.GetObjectFromList<Text>(3);
 
@@ -207,6 +212,14 @@ namespace CloneDroneOverhaul.UI
             AchButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_Achievements");
             MainMenuButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_MainMenu");
             DesktopButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_ExitToDesktop");
+            PlayersInMatchMObj.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("EscMenu_PlayersInMatch");
+
+            MyModdedObject.GetObjectFromList<Text>(8).text = OverhaulMain.GetTranslatedString("PhotoMode");
+            MyModdedObject.GetObjectFromList<Text>(9).text = OverhaulMain.GetTranslatedString("DebugInfo");
+            MyModdedObject.GetObjectFromList<Text>(10).text = OverhaulMain.GetTranslatedString("CDOSettings");
+            MyModdedObject.GetObjectFromList<Text>(11).text = OverhaulMain.GetTranslatedString("ShowCode");
+            MyModdedObject.GetObjectFromList<Text>(12).text = OverhaulMain.GetTranslatedString("StartDaMatch");
+            MyModdedObject.GetObjectFromList<Text>(13).text = OverhaulMain.GetTranslatedString("BackToLVLEditor");
 
             if (BaseStaticValues.IsEscMenuWaitingToShow)
             {
@@ -214,12 +227,13 @@ namespace CloneDroneOverhaul.UI
                 return;
             }
 
+            refreshTip();
             refreshLevelProgress();
             refreshHosting();
             refreshSpecialButtons();
             refreshWorkshop();
             refreshPlayers();
-
+            refreshDevs();
         }
         public void Hide()
         {
@@ -227,6 +241,55 @@ namespace CloneDroneOverhaul.UI
             BaseStaticReferences.GUIs.GetGUI<UI.SettingsUI>().Hide();
         }
 
+        private void refreshTip()
+        {
+            Tips.text = "";
+        }
+
+        private void refreshDevs()
+        {
+            int devID = DevLiveID;
+            bool showNotification = devID != -1;
+            DevLiveMObj.gameObject.SetActive(showNotification && !_userDismissedStream);
+            if (showNotification)
+            {
+                // 93285630 - Erik
+                // 103096704 - Brian
+                // 138733010 - Vastlite
+
+                DL_Erik.gameObject.SetActive(false);
+                DL_Vast.gameObject.SetActive(false);
+                DL_Brian.gameObject.SetActive(false);
+
+                string devName = string.Empty;
+
+                if (devID == 93285630)
+                {
+                    DL_Erik.gameObject.SetActive(true);
+                    devName = "Erik";
+                    _currentDevStreamLink = "https://www.twitch.tv/doborog";
+                }
+                if (devID == 103096704)
+                {
+                    DL_Brian.gameObject.SetActive(true);
+                    devName = "Brian";
+                    _currentDevStreamLink = "https://www.twitch.tv/bribrobot";
+                }
+                if (devID == 138733010)
+                {
+                    DL_Vast.gameObject.SetActive(true);
+                    devName = "VastLite";
+                    _currentDevStreamLink = "https://www.twitch.tv/vastlite";
+                }
+
+                DL_DevLiveText.text = "Watch <size=16>" + devName + "</size>" + System.Environment.NewLine + "Build the game!";
+
+                if (GameplayAchievementManager.Instance.HasUnlockedAchievement("SayHelloToDoborog"))
+                {
+                    Tips.text = "Tip: Press that \"Say hello\" button to get \"Hello doborog\" Achievement";
+                }
+            }
+        }
 
         private void refreshPlayers()
         {
@@ -297,19 +360,19 @@ namespace CloneDroneOverhaul.UI
 
             if (GameModeManager.IsMultiplayer())
             {
-                details = "Multiplayer";
+                details = OverhaulMain.GetTranslatedString("Multiplayer");
             }
 
             if (GameModeManager.IsMultiplayer() && GameModeManager.Instance.IsPrivateMatch())
             {
-                details = "Multiplayer," + System.Environment.NewLine + "Private match";
+                details = OverhaulMain.GetTranslatedString("Multiplayer") + "," + System.Environment.NewLine + OverhaulMain.GetTranslatedString("PrivateMatch");
             }
 
             StartMatchButtonParent.gameObject.SetActive(false);
 
             if (isHost)
             {
-                details = "Multiplayer," + System.Environment.NewLine + "You're host of private match";
+                details = OverhaulMain.GetTranslatedString("Multiplayer") + "," + System.Environment.NewLine + OverhaulMain.GetTranslatedString("HostOfPrivateRoom");
                 if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
                 {
                     StartMatchButtonParent.gameObject.SetActive(true);
@@ -401,35 +464,35 @@ namespace CloneDroneOverhaul.UI
         }
         private void onMainMenuClicked() // Implement Generic2Button
         {
-            if (wasMainMenuButtonClicked)
+            if (_wasMainMenuButtonClicked)
             {
                 Hide();
                 GameUIRoot.Instance.EscMenu.OnMainMenuConfirmClicked();
                 return;
             }
-            wasMainMenuButtonClicked = true;
+            _wasMainMenuButtonClicked = true;
             MainMenuButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_AreYouSure");
             OverhaulMain.Timer.AddNoArgAction(resetMainMenuButton, 3, true);
         }
         private void onExitGameClicked()
         {
-            if (wasExitToDesktopButtonClicked)
+            if (_wasExitToDesktopButtonClicked)
             {
                 GameUIRoot.Instance.EscMenu.OnExitGameConfirmClicked();
                 return;
             }
-            wasExitToDesktopButtonClicked = true;
+            _wasExitToDesktopButtonClicked = true;
             DesktopButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_AreYouSure");
             OverhaulMain.Timer.AddNoArgAction(resetExitGameButton, 3, true);
         }
         private void resetMainMenuButton()
         {
-            wasMainMenuButtonClicked = false;
+            _wasMainMenuButtonClicked = false;
             MainMenuButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_MainMenu");
         }
         private void resetExitGameButton()
         {
-            wasExitToDesktopButtonClicked = false;
+            _wasExitToDesktopButtonClicked = false;
             DesktopButton.GetComponent<Text>().text = OverhaulMain.GetTranslatedString("EscMenu_ExitDesktop");
         }
 
@@ -455,6 +518,18 @@ namespace CloneDroneOverhaul.UI
             {
                 BaseUtils.OpenURL("http://steamcommunity.com/sharedfiles/filedetails/?source=CloneDroneGame&id=" + item.WorkshopItemID.ToString());
             }
+        }
+
+        private void onSayHelloClicked()
+        {
+            Singleton<GlobalEventManager>.Instance.Dispatch<SimpleAchievementEvent>("SimpleAchivementEvent", SimpleAchievementEvent.ClickedDoborogButton);
+            BaseUtils.OpenURL(_currentDevStreamLink);
+        }
+
+        private void onDismissDevStreamClicked()
+        {
+            _userDismissedStream = true;
+            DevLiveMObj.gameObject.SetActive(false);
         }
     }
 }
