@@ -471,7 +471,6 @@ namespace CloneDroneOverhaul.Patching
         {
             var codes = new List<CodeInstruction>(instructions);
 
-            debug.Log(codes.Count);
             for (int i = 56; i < 72; i++)
             {
                 codes[i].opcode = OpCodes.Nop;

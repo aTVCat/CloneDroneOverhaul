@@ -28,7 +28,7 @@ namespace CloneDroneOverhaul.Modules
 
             AddSetting(SettingEntry.NewSetting<bool>("Show duel room code", "Show the duel room code after you start the game", "Misc", "Privacy", true));
 
-            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", true)); //Levels.Editor.New Level Editor
+            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false));
         }
 
         public List<SettingEntry> GetSettings(string category, string section)
