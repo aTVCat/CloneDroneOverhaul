@@ -342,7 +342,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.7";
+            string version = "a0.2.0.7a";
             if (!withModBotVersion)
             {
                 return version;

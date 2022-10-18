@@ -31,7 +31,7 @@ namespace CloneDroneOverhaul
                     yield return new UnityEngine.WaitForEndOfFrame();
                 }
 
-                string version = System.IO.File.ReadAllText(Modules.ModDataManager.Mod_TempFolder + "Version.txt");
+                string version = System.IO.File.ReadAllText(Modules.ModDataManager.Mod_TempFolder + "Version.txt").TrimEnd(new char[] { char.Parse("\n"), char.Parse(" ") });
                 if (onReceivedVersion != null)
                 {
                     onReceivedVersion(version);
