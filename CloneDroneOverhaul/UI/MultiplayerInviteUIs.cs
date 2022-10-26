@@ -367,6 +367,7 @@ namespace CloneDroneOverhaul.UI
 
                 if (val)
                 {
+                    Clones.SetLimits(0, OverhaulMain.GetSetting<bool>("Misc.Privacy.Unlimited clone count") ? 999 : 15);
                     StartSkillpoints.SetValue(Multiplayer1v1CustomGameManager.Instance.GetSavedStartSkillPoints());
                     SkillpointsPerDeath.SetValue(Multiplayer1v1CustomGameManager.Instance.GetSavedSkillPointsPerDeath());
                     Clones.SetValue(Multiplayer1v1CustomGameManager.Instance.GetSavedStartClones());

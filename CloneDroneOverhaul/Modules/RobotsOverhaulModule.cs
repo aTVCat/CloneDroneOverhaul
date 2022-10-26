@@ -1,34 +1,34 @@
-﻿using CloneDroneOverhaul.PooledPrefabs;
-using CloneDroneOverhaul.Utilities;
-using ModLibrary;
+﻿using CloneDroneOverhaul.Utilities;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
-using System.Collections.Generic;
 
 namespace CloneDroneOverhaul.Modules
 {
-    public class RobotEventsModule : ModuleBase
+    public class RobotsOverhaulModule : ModuleBase
     {
-        public override bool IsEnabled()
-        {
-            return true;
-        }
+        // Todo
+        // Make robots more unique:
+        //  - Random speed
+        //  - Random jump height
+        //  - Random acceleration speed - To do
+        // Robot visuals editor
 
-        public override void OnActivated()
+        public override void Start()
         {
-            Functions.Add("onPlayerSet");
+            Functions = new string[]
+            {
+                "onPlayerSet"
+            };
             Singleton<GlobalEventManager>.Instance.AddEventListener<Camera>(GlobalEvents.PlayerCameraEnabled, OnCameraEnabled);
         }
 
         private void OnCameraEnabled(Camera cam)
         {
-            //cam.nearClipPlane = 0.01f;
             OverhaulMain.Modules.ExecuteFunction<Camera>("onPlayerCameraEnabled", cam);
         }
 
         public override void RunFunction(string name, object[] arguments)
         {
+            // Fix robot speed
             if (name == Functions[0])
             {
                 RobotShortInformation info = arguments[0] as RobotShortInformation;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules
 {
-    public class CinematicGameManager : ModuleBase
+    public class MiscEffectsManager : ModuleBase
     {
         private float z;
         private float x;
@@ -20,11 +20,8 @@ namespace CloneDroneOverhaul.Modules
         float mouseY;
 
         public static bool IsUIHidden;
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-        public override void OnActivated()
+
+        public override void Start()
         {
             IsUIHidden = false;
         }

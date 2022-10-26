@@ -282,7 +282,7 @@ namespace CloneDroneOverhaul.UI
                     _currentDevStreamLink = "https://www.twitch.tv/vastlite";
                 }
 
-                DL_DevLiveText.text = "Watch <size=16>" + devName + "</size>" + System.Environment.NewLine + "Build the game!";
+                DL_DevBuildsGameText.text = "Watch <size=16>" + devName + "</size>" + System.Environment.NewLine + "Build the game!";
 
                 if (GameplayAchievementManager.Instance.HasUnlockedAchievement("SayHelloToDoborog"))
                 {

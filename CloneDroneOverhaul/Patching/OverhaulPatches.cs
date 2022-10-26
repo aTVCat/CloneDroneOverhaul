@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.Patching.VisualFixes;
+using CloneDroneOverhaul.UI;
 using CloneDroneOverhaul.Utilities;
 using HarmonyLib;
 using ModLibrary;
@@ -21,7 +22,7 @@ namespace CloneDroneOverhaul.Patching
             try
             {
                 if (OverhaulMain.GUI.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || OverhaulMain.GUI.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
-                     OverhaulMain.GUI.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy)
+                     OverhaulMain.GUI.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
                 {
                     global::InputManager.Instance.SetCursorEnabled(true);
                     return false;
@@ -31,6 +32,13 @@ namespace CloneDroneOverhaul.Patching
             {
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TitleScreenUI), "setLogoAndRootButtonsVisible")]
+        private static void TitleScreenUI_setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
+        {
+            __instance.transform.GetChild(1).gameObject.SetActive(visible);
         }
 
         [HarmonyPostfix]
@@ -54,6 +62,26 @@ namespace CloneDroneOverhaul.Patching
         {
             BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>().GetGUI<UI.NewErrorWindow>().Hide();
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BattleRoyaleUI), "Show")]
+        private static bool BattleRoyaleUI_Show_Postfix(BattleRoyaleUI __instance)
+        {
+            if(OverhaulMain.GetSetting<bool>("Patches.GUI.Last Bot Standing"))
+            {
+                MultiplayerUIs.Instance.Show(MultiplayerUIs.MultiplayerUI.BattleRoyale);
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(BattleRoyaleUI), "Hide")]
+        private static void BattleRoyaleUI_Hide_Postfix()
+        {
+            MultiplayerUIs.Instance.Hide(MultiplayerUIs.MultiplayerUI.BattleRoyale);
+        }
+
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SelectableUI), "Start")]
@@ -201,7 +229,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(SettingsManager), "ShouldHideGameUI")]
         private static void SettingsManager_ShouldHideGameUI_Postfix(ref bool __result)
         {
-            if (Modules.CinematicGameManager.IsUIHidden)
+            if (Modules.MiscEffectsManager.IsUIHidden)
             {
                 __result = true;
             }
@@ -211,7 +239,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(KillFeedUI), "onKillEventReceived")]
         private static bool KillFeedUI_onKillEventReceived_Prefix(MultiplayerKillEvent killEvent)
         {
-            if (Modules.CinematicGameManager.IsUIHidden)
+            if (Modules.MiscEffectsManager.IsUIHidden)
             {
                 return false;
             }
@@ -231,6 +259,20 @@ namespace CloneDroneOverhaul.Patching
         private static void AttackManager_CreateHammerHitEffectVFX_Postfix(Vector3 position)
         {
             OverhaulMain.Visuals.EmitHammerHitVFX(position);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AttackManager), "CreateKickHitVFX")]
+        private static void AttackManager_CreateKickHitVFX_Postfix(Vector3 position)
+        {
+            OverhaulMain.Visuals.EmitKickVFX(position);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AttackManager), "CreateRocketJumpVFX")]
+        private static void AttackManager_CreateRocketJumpVFX_Postfix(Vector3 position)
+        {
+            OverhaulMain.Visuals.EmitDashVFX(position, true, true);
         }
 
         [HarmonyPostfix]

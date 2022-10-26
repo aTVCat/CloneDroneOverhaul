@@ -42,6 +42,12 @@ namespace CloneDroneOverhaul.UI.Components
             OnSliderUpdated(num);
         }
 
+        public void SetLimits(float min, float max)
+        {
+            TheSlider.minValue = min;
+            TheSlider.maxValue = max;
+        }
+
         public float SliderValue
         {
             get

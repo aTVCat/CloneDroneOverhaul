@@ -4,23 +4,34 @@ using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules
 {
-	public class ArenaAppearenceManager : ModuleBase
+	public class ArenaManager : ModuleBase
 	{
 		public Transform SpawnedCamera { get; private set; }
 		public Transform ArenaCamera { get; private set; }
 		public Transform ArenaTransform { get; private set; }
-        public ArenaAppearenceManager.ArenaParts ArenaInterior { get; private set; }
+        public ArenaManager.ArenaParts ArenaInterior { get; private set; }
 
-        public override bool IsEnabled()
+		public static void SetArenaVisible(bool val)
+		{
+			LevelManager.Instance.SetPrivateField<bool>("_currentLevelHidesTheArena", val);
+			foreach(HideIfLevelHidesArena hide in GameObject.FindObjectsOfType<HideIfLevelHidesArena>())
+			{
+				hide.CallPrivateMethod("refreshVisibility");
+			}
+			WorldRoot.Instance.gameObject.SetActive(false);
+			AudienceManager.Instance.enabled = val;
+        }
+        public static void SetLogoVisible(bool val)
         {
-			return true;
+			ArenaCameraManager.Instance.SetTitleScreenLogoVisible(val);
         }
 
-        public override void OnActivated()
+        public override void Start()
         {
 			this.ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
-            this.ArenaInterior = default(ArenaAppearenceManager.ArenaParts).GetObjects(this.ArenaTransform);
+            this.ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(this.ArenaTransform);
 			spawnCommentatorsDecor();
+
             ReleaseRenderTextureOnMainMenuExit[] cameras = UnityEngine.Object.FindObjectsOfType<ReleaseRenderTextureOnMainMenuExit>();
 			return;
             foreach (ReleaseRenderTextureOnMainMenuExit cam in cameras)
@@ -122,7 +133,7 @@ namespace CloneDroneOverhaul.Modules
 			public FalloutCatcher[] FalloutCatchers { get; private set; }
 			public Transform FalloutLaser { get; private set; }
 
-			public ArenaAppearenceManager.ArenaParts GetObjects(Transform original)
+			public ArenaManager.ArenaParts GetObjects(Transform original)
 			{
 				this.GroundArrows = original.GetChild(0);
 				this.EditorFloor = original.GetChild(1);

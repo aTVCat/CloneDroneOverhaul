@@ -51,14 +51,9 @@ namespace CloneDroneOverhaul.Modules
         {
             return this != null && this._hasInitialized;
         }
-        public CloneDroneOverhaulSettingsData SettingsData { get; set; }
         private bool _hasInitialized;
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-        public override void OnActivated()
+        public override void Start()
         {
             checkFolders();
             this._hasInitialized = true;

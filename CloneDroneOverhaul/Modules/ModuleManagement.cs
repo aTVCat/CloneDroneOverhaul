@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -13,7 +14,7 @@ namespace CloneDroneOverhaul.Modules
             modules.Add(module);
             if (!activateManually)
             {
-                module.OnActivated();
+                module.Start();
             }
             return module;
         }
@@ -35,10 +36,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.IsEnabled())
-                {
-                    mBase.OnNewFrame();
-                }
+                mBase.OnNewFrame();
             }
         }
         public void OnFixedUpdate()
@@ -46,10 +44,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.IsEnabled())
-                {
-                    mBase.OnFixedUpdate();
-                }
+                mBase.OnFixedUpdate();
             }
         }
         public void OnTime(float time)
@@ -57,10 +52,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.IsEnabled())
-                {
-                    mBase.OnSecond(time);
-                }
+                mBase.OnSecond(time);
             }
         }
         public void OnManagedUpdate()
@@ -68,10 +60,7 @@ namespace CloneDroneOverhaul.Modules
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                if (mBase.IsEnabled())
-                {
-                    mBase.OnManagedUpdate();
-                }
+                mBase.OnManagedUpdate();
             }
         }
         public void ExecuteFunction(string funcName, object[] args)
@@ -132,10 +121,8 @@ namespace CloneDroneOverhaul.Modules
 
     public class ModuleBase // Not Implemented Fully Yet
     {
-        protected List<string> Functions = new List<string>();
-        public virtual void OnActivated() { }
-        public virtual void OnModDeactivated() { throw new NotImplementedException(); }
-        public virtual bool IsEnabled() { throw new NotImplementedException(); return false; }
+        protected string[] Functions;
+        public virtual void Start() { }
         public virtual void OnSettingRefreshed(string ID, object value) { }
         public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void RunFunction<T>(string name, object[] arguments) { }
@@ -147,14 +134,14 @@ namespace CloneDroneOverhaul.Modules
             {
                 return true;
             }
-            List<string> list = GetExecutingFunctions();
-            if (list == null || list.Count < 1)
+            string[] list = GetExecutingFunctions();
+            if (list == null || list.Length < 1)
             {
                 return false;
             }
             return list.Contains(name);
         }
-        public List<string> GetExecutingFunctions()
+        public string[] GetExecutingFunctions()
         {
             return Functions;
         }

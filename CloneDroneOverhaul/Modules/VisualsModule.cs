@@ -19,24 +19,23 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab swordFireBlockPooled;
         private SimplePooledPrefab swordBlockMSPooled;
         private SimplePooledPrefab msBodyPartDamagedVFX;
+        private SimplePooledPrefab msHitVFX;
         private SimplePooledPrefab bodyPartDamagedVFX;
         private SimplePooledPrefab bodyPartDamagedWithFireVFX;
         private SimplePooledPrefab bodyPartBurning;
         private SimplePooledPrefab newExplosionVFX;
         private SimplePooledPrefab lavaVoxelsVFX;
-        private SimplePooledPrefab floatingLavaParticlesVFX; //VFX_FloatingLava //VFX_HammerHit
+        private SimplePooledPrefab floatingLavaParticlesVFX;
         private SimplePooledPrefab hammerHitVFX;
         private SimplePooledPrefab lightVFX;
         private SimplePooledPrefab longLiveightVFX;
+        private SimplePooledPrefab kickVFX;
+        private SimplePooledPrefab jumpDash;
         private Camera lastSpottedCamera;
 
         private bool isWaitingNextFrame;
 
-        public override bool IsEnabled()
-        {
-            return isInitialized; // SETTINGS!!
-        }
-        public override void OnActivated()
+        public override void Start()
         {
             GameObject gameObject = new GameObject("CDO_Visuals");
             probe = gameObject.AddComponent<ReflectionProbe>();
@@ -68,6 +67,9 @@ namespace CloneDroneOverhaul.Modules
             hammerHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_HammerHit").transform, 10, "VFX_HammerHit", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
             lightVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 10, "VFX_EmitLight", 1f, SimplePooledPrefabInstance.LightTag);
             longLiveightVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 10, "VFX_EmitLongLiveLight", 4f, SimplePooledPrefabInstance.LongLiveLightTag);
+            kickVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Kick").transform, 5, "VFX_Kick", 0.2f, SimplePooledPrefabInstance.ParticleSystemTag);
+            jumpDash = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_JumpDash").transform, 5, "VFX_JumpDash", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
+            msHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_MSHit").transform, 10, "VFX_MSHit", 0.17f, SimplePooledPrefabInstance.ParticleSystemTag);
 
             RefreshDustMaterials();
 
@@ -165,6 +167,7 @@ namespace CloneDroneOverhaul.Modules
             if (useMindspace)
             {
                 swordBlockMSPooled.SpawnObject(pos, Vector3.zero, Color.clear);
+                msHitVFX.SpawnObject(pos, Vector3.zero, Color.clear);
             }
             else
             {
@@ -230,6 +233,24 @@ namespace CloneDroneOverhaul.Modules
         {
             longLiveightVFX.SpawnObject(pos, Vector3.zero, color).GetComponent<Light>().range = range;
         }
+        public void EmitKickVFX(Vector3 pos)
+        {
+            kickVFX.SpawnObject(pos, Vector3.zero, Color.clear);
+        }
+
+        public void EmitDashVFX(Vector3 pos, bool isJumpDash, bool withOffset)
+        {
+            if (isJumpDash)
+            {
+                if (withOffset)
+                {
+                    jumpDash.SpawnObject(pos + new Vector3(0, 2, 0), Vector3.zero, Color.clear);
+                    return;
+                }
+                jumpDash.SpawnObject(pos, Vector3.zero, Color.clear);
+            }
+        }
+
     }
 
     public class PointLightDust : MonoBehaviour
