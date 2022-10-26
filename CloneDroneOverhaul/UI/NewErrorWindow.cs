@@ -4,13 +4,13 @@ namespace CloneDroneOverhaul.UI
 {
     public class NewErrorWindow : ModGUIBase
     {
-        private Text Stackrace;
+        private InputField Stackrace;
 
         public override void OnInstanceStart()
         {
             Hide();
             MyModdedObject = base.GetComponent<ModdedObject>();
-            Stackrace = MyModdedObject.GetObjectFromList<Text>(4);
+            Stackrace = MyModdedObject.GetObjectFromList<InputField>(4);
             MyModdedObject.GetObjectFromList<Button>(6).onClick.AddListener(new UnityEngine.Events.UnityAction(BaseUtils.IgnoreLastCrash));
             MyModdedObject.GetObjectFromList<Button>(8).onClick.AddListener(new UnityEngine.Events.UnityAction(delegate
             {

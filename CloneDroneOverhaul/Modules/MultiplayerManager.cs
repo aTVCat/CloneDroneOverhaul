@@ -4,15 +4,13 @@ namespace CloneDroneOverhaul.Modules
 {
     public class MultiplayerManager : ModuleBase
     {
-        public override bool IsEnabled()
+        public override void Start()
         {
-            return true;
-        }
-
-        public override void OnActivated()
-        {
-            Functions.Add("onPlayerJoined");
-            Functions.Add("Bolt.OnEvent");
+            Functions = new string[]
+            {
+                "onPlayerJoined",
+                "Bolt.OnEvent"
+            };
         }
 
         public override void RunFunction(string name, object[] arguments)
@@ -34,13 +32,13 @@ namespace CloneDroneOverhaul.Modules
             }
         }
 
-        public override void RunFunction<T>(string name, object[] arguments)
+        public override void RunFunction<T>(string name, T obj)
         {
-            if(name == "Bolt.OnEvent")
+            if(name == Functions[1])
             {
                 if (typeof(T) == typeof(MatchInstance))
                 {
-                    MatchInstance instance = (MatchInstance)arguments[0];
+                    MatchInstance instance =  obj as MatchInstance;
                     BaseStaticValues.GetInviteCode = instance.MatchID;
                 }
             }

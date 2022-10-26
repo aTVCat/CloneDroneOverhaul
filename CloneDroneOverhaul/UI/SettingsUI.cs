@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,7 +75,7 @@ namespace CloneDroneOverhaul.UI
         {
             selectedSection = string.Empty;
             selectedCategory = str;
-            populateSettings(false, Modules.SettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
+            populateSections();
         }
         public void SelectSection(string str)
         {
@@ -105,7 +106,7 @@ namespace CloneDroneOverhaul.UI
         }
         private void onEndSearching(string str)
         {
-            OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(onEndSearchingNextFrame);
+            //OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(onEndSearchingNextFrame);
         }
         private void onEndSearchingNextFrame()
         {
@@ -113,19 +114,45 @@ namespace CloneDroneOverhaul.UI
             populateSettings(false, Modules.SettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
         }
 
+        private void populateSections()
+        {
+            List<string> spawnedSections = new List<string>();
+            TransformUtils.DestroyAllChildren(SectionContainer);
+            if (string.IsNullOrEmpty(selectedSection) && !string.IsNullOrEmpty(selectedCategory))
+            {
+                List<Modules.SettingsManager.SettingEntry.CategoryPath> paths = Modules.SettingsManager.Instance.GetPaths(selectedCategory);
+                foreach (Modules.SettingsManager.SettingEntry.CategoryPath pathhh in paths)
+                {
+                    if (!spawnedSections.Contains(pathhh.Section))
+                    {
+                        ModdedObject mObj = Instantiate<ModdedObject>(SectionItemPrefab, SectionContainer);
+                        mObj.GetObjectFromList<Text>(0).text = Modules.SettingsManager.Instance.GetSectionName(pathhh.Section);
+                        spawnedSections.Add(pathhh.Section);
+                        mObj.gameObject.SetActive(true);
+                        CategoryButton button = mObj.gameObject.AddComponent<CategoryButton>();
+                        button.SectionName = pathhh.Section;
+                    }
+                }
+            }
+        }
+
         private void populateSettings(bool onlyCategories, List<Modules.SettingsManager.SettingEntry> settingsList)
         {
             List<Modules.SettingsManager.SettingEntry> settings = settingsList;
 
             List<string> spawnedCategories = new List<string>();
-            List<string> spawnedSections = new List<string>();
 
             if (onlyCategories)
             {
                 TransformUtils.DestroyAllChildren(CategoryContainer);
             }
 
-            TransformUtils.DestroyAllChildren(SectionContainer);
+            base.MyModdedObject.GetObjectFromList<Text>(15).text = string.Empty;
+           Modules.SettingsManager.SettingEntry.CategoryPath path = Modules.SettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
+            if (!path.IsEmpty)
+            {
+                base.MyModdedObject.GetObjectFromList<Text>(15).text = path.SectionPageDescription;
+            }
             TransformUtils.DestroyAllChildren(ViewPort);
 
             foreach (Modules.SettingsManager.SettingEntry entry in settings)
@@ -135,23 +162,13 @@ namespace CloneDroneOverhaul.UI
                     if (!spawnedCategories.Contains(entry.Path.Category))
                     {
                         ModdedObject mObj = Instantiate<ModdedObject>(CategoryItemPrefab, CategoryContainer);
-                        mObj.GetObjectFromList<Text>(0).text = entry.Path.Category;
+                        mObj.GetObjectFromList<Text>(0).text = Modules.SettingsManager.Instance.GetCategoryName(entry.Path.Category);
                         spawnedCategories.Add(entry.Path.Category);
                         mObj.gameObject.SetActive(true);
                         CategoryButton button = mObj.gameObject.AddComponent<CategoryButton>();
                         button.CategoryName = entry.Path.Category;
                     }
                     goto IL_0000;
-                }
-
-                if (!spawnedSections.Contains(entry.Path.Section))
-                {
-                    ModdedObject mObj = Instantiate<ModdedObject>(SectionItemPrefab, SectionContainer);
-                    mObj.GetObjectFromList<Text>(0).text = entry.Path.Section;
-                    spawnedSections.Add(entry.Path.Section);
-                    mObj.gameObject.SetActive(true);
-                    CategoryButton button = mObj.gameObject.AddComponent<CategoryButton>();
-                    button.SectionName = entry.Path.Section;
                 }
 
                 populateSetting(entry, ViewPort, false);

@@ -12,14 +12,9 @@ namespace CloneDroneOverhaul.Addons
 {
     internal class AddonsManager : Modules.ModuleBase
     {
-        public override void OnActivated()
+        public override void Start()
         {
-            base.OnActivated();
-        }
-
-        public override bool IsEnabled()
-        {
-            return true;
+            base.Start();
         }
     }
 }

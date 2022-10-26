@@ -33,13 +33,13 @@ namespace CloneDroneOverhaul.UI
         {
             ChangelogButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
             LEButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen() && !OverhaulDescription.IsPublicBuild());
-            editorsButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
+            editorsButton.gameObject.SetActive(false && GameModeManager.IsOnTitleScreen()); //false is a temp thing there
             WatermarkText.text = OverhaulDescription.GetModName(true, !GameModeManager.IsOnTitleScreen());
         }
 
         public override void OnNewFrame()
         {
-            WatermarkText.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.CinematicGameManager.IsUIHidden);
+            WatermarkText.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
         }
 
         private void OnLangChanged()

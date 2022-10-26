@@ -8,11 +8,6 @@ namespace CloneDroneOverhaul.UI
     {
         private List<ModGUIBase> guis = new List<ModGUIBase>();
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-
         public T GetGUI<T>() where T : ModGUIBase
         {
             for (int i = 0; i < guis.Count; i++)
@@ -59,6 +54,18 @@ namespace CloneDroneOverhaul.UI
             }
         }
 
+        public override void OnFixedUpdate()
+        {
+            for (int i = 0; i < guis.Count; i++)
+            {
+                if (guis[i].gameObject.activeInHierarchy)
+                {
+                    ModGUIBase mBase = guis[i];
+                    mBase.OnFixedUpdate();
+                }
+            }
+        }
+
         protected override bool ExectuteFunctionAnyway()
         {
             return true;
@@ -68,6 +75,13 @@ namespace CloneDroneOverhaul.UI
             foreach(ModGUIBase ui in guis)
             {
                 ui.RunFunction(name, arguments);
+            }
+        }
+        public override void RunFunction<T>(string name, T obj)
+        {
+            foreach (ModGUIBase ui in guis)
+            {
+                ui.RunFunction<T>(name, obj);
             }
         }
         public override void OnSettingRefreshed(string id, object value)
@@ -87,7 +101,9 @@ namespace CloneDroneOverhaul.UI
         public virtual void OnInstanceStart() { }
         public virtual void OnSettingRefreshed(string ID, object value) { }
         public virtual void RunFunction(string name, object[] arguments) { }
+        public virtual void RunFunction<T>(string name, T obj) { }
         public virtual void OnManagedUpdate() { }
         public virtual void OnNewFrame() { }
+        public virtual void OnFixedUpdate() { }
     }
 }

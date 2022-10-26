@@ -1,8 +1,10 @@
 ﻿using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace CloneDroneOverhaul
 {
@@ -28,8 +30,29 @@ namespace CloneDroneOverhaul
         public static string GetInviteCode { get; internal set; }
     }
 
-    public class BaseUtils
+    public static class BaseUtils
     {
+        public static void SpawnLevelFromPath(string path, bool clearLevels, System.Action callback = null)
+        {
+            if (clearLevels) LevelManager.Instance.CleanUpLevelThisFrame();
+            if (System.IO.File.Exists(path))
+            {
+                LevelEditorLevelData levelEditorLevelData = LevelManager.Instance.LoadLevelEditorLevelData(path);
+                Transform root = new GameObject("ExplorationModeLevel").transform;
+                StaticCoroutineRunner.StartStaticCoroutine(SpawnLevel(root, levelEditorLevelData, callback));
+            }
+            else
+            {
+                ModuleManagement.ShowError("Level " + path + " was not found");
+            }
+        }
+        private static IEnumerator SpawnLevel(Transform transform, LevelEditorLevelData data, System.Action callback = null)
+        {
+            yield return OverhaulMain.LocalMonoBehaviour.StartCoroutine(LevelEditorDataManager.Instance.DeserializeInto(transform, data, true));
+            if(callback != null) callback();
+            yield break;
+        }
+
         public static ModLibrary.ModInfo GetModInfoByID(string id)
         {
             foreach (ModLibrary.ModInfo info in InternalModBot.ModsManager.Instance.GetActiveModInfos())
@@ -170,6 +193,21 @@ namespace CloneDroneOverhaul
         }
     }
 
+    public static class VanillaPrefs
+    {
+        static bool[] EscMenuChildrenVisibility;
+        public readonly static AudioConfiguration AudioConfig = AudioSettings.GetConfiguration().Clone();
+
+        internal static void RememberStuff()
+        {
+            EscMenuChildrenVisibility = new bool[GameUIRoot.Instance.EscMenu.transform.childCount - 1];
+            for(int i = 0; i < EscMenuChildrenVisibility.Length; i++)
+            {
+                EscMenuChildrenVisibility[i] = GameUIRoot.Instance.EscMenu.transform.GetChild(i).gameObject.activeSelf;
+            }
+        }
+    }
+
     public static class FileManagerStuff
     {
         internal static Process ExplorerProcess { get; set; }
@@ -185,6 +223,7 @@ namespace CloneDroneOverhaul
         }
     }
 
+
     public class CloneDroneOverhaulDataContainer
     {
         public static CloneDroneOverhaulDataContainer Instance;
@@ -194,7 +233,6 @@ namespace CloneDroneOverhaul
             Instance = this;
             ModDataManager dataManager = BaseStaticReferences.ModuleManager.GetModule<ModDataManager>();
             SettingsData = dataManager.CreateInstanceOfDataClass<CloneDroneOverhaulSettingsData>(true, false);
-            dataManager.SettingsData = SettingsData;
         }
 
         public Modules.CloneDroneOverhaulSettingsData SettingsData;

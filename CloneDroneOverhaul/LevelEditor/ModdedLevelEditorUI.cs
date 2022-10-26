@@ -150,10 +150,30 @@ namespace CloneDroneOverhaul.LevelEditor
             }
         }
 
+        public class LibraryUI : UIPanel
+        {
+            protected override void Config()
+            {
+                base.ModdedObj.GetObjectFromList<Button>(0).onClick.AddListener(openLibrary);
+                base.ModdedObj.GetObjectFromList<Button>(1).onClick.AddListener(closeLibrary);
+                closeLibrary();
+            }
+
+            void openLibrary()
+            {
+                base.ModdedObj.gameObject.SetActive(true);
+            }
+            void closeLibrary()
+            {
+                base.ModdedObj.gameObject.SetActive(false);
+            }
+        }
+
         public ObjectsSelectedPanel ObjectsSelected;
         public Toolbar ToolBar;
         public LTEM_Toolbar LTEM_ToolBar;
         public Inspector InspectorPanel;
+        public LibraryUI LibraryPanel;
 
         public override void OnInstanceStart()
         {
@@ -165,6 +185,7 @@ namespace CloneDroneOverhaul.LevelEditor
             ToolBar = MyModdedObject.GetObjectFromList<RectTransform>(2).gameObject.AddComponent<Toolbar>().SetUp<Toolbar>();
             LTEM_ToolBar = MyModdedObject.GetObjectFromList<RectTransform>(3).gameObject.AddComponent<LTEM_Toolbar>().SetUp<LTEM_Toolbar>();
             InspectorPanel = MyModdedObject.GetObjectFromList<RectTransform>(4).gameObject.AddComponent<Inspector>().SetUp<Inspector>();
+            LibraryPanel = MyModdedObject.GetObjectFromList<RectTransform>(5).gameObject.AddComponent<LibraryUI>().SetUp<LibraryUI>();
             base.gameObject.AddComponent<UIManager>();
         }
 

@@ -1,5 +1,6 @@
 ﻿using PicaVoxel;
 using UnityEngine;
+using ModLibrary;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -14,16 +15,18 @@ namespace CloneDroneOverhaul.Patching
             {
                 Color normalCol = voxels[i].Color;
 
-                float num = UnityEngine.Random.Range(0.95f, 1.00f);
+                float num = UnityEngine.Random.Range(0.94f, 1.00f);
                 bool shouldUpdateColor = false;
                 if (replaceVoxels == null)
                 {
-                    shouldUpdateColor = voxels[i].Color.a == 255;
+                    shouldUpdateColor = voxels[i].Color.a > 253;
                 }
-                else if (replaceVoxels != null && replaceVoxels.Old != normalCol)
+
+                if (replaceVoxels != null && replaceVoxels.Old != normalCol)
                 {
                     shouldUpdateColor = true;
                 }
+                shouldUpdateColor = true;
 
                 if (shouldUpdateColor)
                 {
@@ -32,6 +35,7 @@ namespace CloneDroneOverhaul.Patching
                     voxels[i].Color = color;
                 }
             }
+            frame.UpdateAllChunks();
         }
 
         public static void OnVoxelCut(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
@@ -47,8 +51,6 @@ namespace CloneDroneOverhaul.Patching
                 if (fireSpreadDefinition == null)
                 {
                     Vector3 a = (voxelWorldPosition - volumeWorldCenter).normalized + impactDirectionWorld;
-                    //VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, 1f * a);
-                    //VoxelParticleSystem.Instance.SpawnSingle(voxelWorldPosition, voxelAtPosition.Value.Color, __instance.GetVoxelSize() * 0.75f, (3f * impactDirectionWorld) + (1f * a));
                 }
 
                 OverhaulMain.Visuals.EmitBodyPartCutVFX(voxelWorldPosition, fireSpreadDefinition != null);
@@ -72,7 +74,6 @@ namespace CloneDroneOverhaul.Patching
         {
             MechBodyPart part = obj.AddComponent<MechBodyPart>();
             throw new System.NotImplementedException();
-
         }
     }
 }

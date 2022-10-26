@@ -11,15 +11,13 @@ namespace CloneDroneOverhaul.LevelEditor
         private bool _hasSpawnedSpecialObjects;
         private GameObject Grid;
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-
-        public override void OnActivated()
+        public override void Start()
         {
             Instance = this;
-            Functions.Add("onLevelEditorStarted");
+            Functions = new string[]
+            {
+                "onLevelEditorStarted"
+            };
         }
 
         public override void OnNewFrame()
@@ -39,13 +37,14 @@ namespace CloneDroneOverhaul.LevelEditor
                 bound.Encapsulate(transforms[i].transform.position);
             }
             Vector3 Center = bound.center;
-            Grid.transform.position = Center;
+            Grid.transform.position = Center + new Vector3(0, 0.1f, 0);
         }
 
         public void SpawnSpecialObjects()
         {
             Grid = UnityEngine.GameObject.Instantiate(OverhaulCacheManager.GetCached<GameObject>("LevelEditor_Grid"));
             Grid.transform.position = Vector3.zero;
+            Grid.transform.localScale = new Vector3(100000, 1, 100000);
             _hasSpawnedSpecialObjects = true;
         }
 

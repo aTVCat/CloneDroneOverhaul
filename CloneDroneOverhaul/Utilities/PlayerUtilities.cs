@@ -90,4 +90,20 @@ namespace CloneDroneOverhaul.Utilities
 
         public Camera RobotCamera;
     }
+
+    public struct RobotSpawnInfo
+    {
+        public Vector3 Position;
+        public Vector3 Rotation;
+        
+        public Character SpawnPlayer()
+        {
+            GameObject obj = new GameObject("TempSpawnpoint");
+            obj.transform.position = Position;
+            obj.transform.eulerAngles = Rotation;
+            Character charr = GameFlowManager.Instance.SpawnPlayer(obj.transform, true, true, null);
+            GameObject.Destroy(obj);
+            return charr;
+        }
+    }
 }
