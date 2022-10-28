@@ -7,10 +7,6 @@ namespace CloneDroneOverhaul.Modules
     {
         private List<TimedAction> actions = new List<TimedAction>();
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
         public override void OnNewFrame()
         {
             if (actions.Count < 1)

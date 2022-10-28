@@ -5,19 +5,19 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityStandardAssets.ImageEffects;
 using System.Collections.Generic;
+using System.Linq;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CloneDroneOverhaul.Modules
 {
     public class SettingsManager : ModuleBase
     {
         private List<SettingEntry> Entries = new List<SettingEntry>();
+        private List<SettingEntry.CategoryPath> PageDescriptions = new List<SettingEntry.CategoryPath>();
+        private List<SettingEntry.OverridePrefs> PageOverrides = new List<SettingEntry.OverridePrefs>();
         public static SettingsManager Instance;
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-        public override void OnActivated()
+        public override void Start()
         {
             BaseStaticReferences.SettingsManager = this;
             Instance = this;
@@ -27,34 +27,85 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
             AddSetting(SettingEntry.NewSetting<bool>("Show duel room code", "Show the duel room code after you start the game", "Misc", "Privacy", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Unlimited clone count", "Play with 999 clones!", "Misc", "Privacy", false));
 
             AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false));
+
+            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false));
+            AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
+
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
+            PageOverrides.Add(new SettingEntry.OverridePrefs("Misc", "Privacy", "Gameplay", "Duels"));
         }
 
+        public string GetSectionName(string sectionInitName)
+        {
+            string name = sectionInitName;
+            foreach(SettingEntry.OverridePrefs prefs in PageOverrides)
+            {
+                if(prefs.OldSectionName == sectionInitName)
+                {
+                    name = prefs.NewSectionName;
+                }
+            }
+            return name;
+        }
+        public string GetCategoryName(string categoryInitName)
+        {
+            string name = categoryInitName;
+            foreach (SettingEntry.OverridePrefs prefs in PageOverrides)
+            {
+                if (prefs.OldCategoryName == categoryInitName)
+                {
+                    name = prefs.NewCategoryName;
+                }
+            }
+            return name;
+        }
+
+        public SettingEntry.CategoryPath GetPageData(string c, string s)
+        {
+            bool found = false;
+            SettingEntry.CategoryPath page = default(SettingEntry.CategoryPath);
+            foreach(SettingEntry.CategoryPath path in PageDescriptions)
+            {
+                if(c == path.Category && s == path.Section)
+                {
+                    found = true;
+                    page = path;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                page.IsEmpty = true;
+            }
+            return page;
+        }
+
+        public List<SettingEntry.CategoryPath> GetPaths(string category)
+        {
+            List<SettingEntry.CategoryPath> list = new List<SettingEntry.CategoryPath>();
+
+            foreach (SettingEntry entry in GetAllSettings())
+            {
+                if (entry.Path.Category == category)
+                {
+                    list.Add(entry.Path);
+                }
+            }
+            return list;
+        }
         public List<SettingEntry> GetSettings(string category, string section)
         {
             List<SettingEntry> list = new List<SettingEntry>();
-            if (string.IsNullOrEmpty(section) && string.IsNullOrEmpty(category))
-            {
-                return list;
-            }
 
             foreach (SettingEntry entry in GetAllSettings())
             {                
-                if (string.IsNullOrEmpty(section))
-                {
-                    if (entry.Path.Category == category)
-                    {
-                        list.Add(entry);
-                        goto IL_0000;
-                    }
-                }
-
                 if (entry.Path.Category == category && entry.Path.Section == section)
                 {
                     list.Add(entry);
                 }
-                IL_0000:;
             }
             return list;
         }
@@ -109,10 +160,47 @@ namespace CloneDroneOverhaul.Modules
 
         public class SettingEntry
         {
+            public struct OverridePrefs
+            {
+                public string OldCategoryName;
+                public string OldSectionName;
+                public string NewCategoryName;
+                public string NewSectionName;
+
+                public OverridePrefs(string oldCategoryName, string oldSectionName, string categoryName, string sectionName)
+                {
+                    NewCategoryName = categoryName;
+                    NewSectionName = sectionName;
+                    OldCategoryName = oldCategoryName;
+                    OldSectionName = oldSectionName;
+                }
+            }
+
             public struct CategoryPath
             {
                 public string Category;
                 public string Section;
+
+                public string SectionPageDescription;
+                public string SectionPageDescriptionLocalID;
+
+                public bool IsEmpty;
+
+                public CategoryPath SetUp(string category, string section)
+                {
+                    Category = category;
+                    Section = section;
+                    return this;
+                }
+
+                public CategoryPath SetUp(string category, string section, string sectionPageDescription, string sectionPageDescriptionLocalID)
+                {
+                    Category = category;
+                    Section = section;
+                    SectionPageDescription = sectionPageDescription;
+                    SectionPageDescriptionLocalID = sectionPageDescriptionLocalID;
+                    return this;
+                }
             }
 
             public class ChildrenSettings

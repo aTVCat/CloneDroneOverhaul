@@ -1,8 +1,10 @@
 ﻿using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.Utilities;
 using ModBotWebsiteAPI;
 using ModLibrary;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +16,7 @@ namespace CloneDroneOverhaul
     public class OverhaulMain : Mod
     {
         private static bool hasCheckForUpdates;
+        private static bool hasCachedStuff;
         public bool IsModInitialized { get; private set; }
         public static OverhaulMain Instance { get; internal set; }
         private static Localization.OverhaulLocalizationManager Localization { get; set; }
@@ -23,6 +26,7 @@ namespace CloneDroneOverhaul
         public static WeaponSkins.WeaponSkinManager Skins { get; set; }
         public static ModuleManagement Modules { get; set; }
         public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
+        public static OverhaulMonoBehaviourListener LocalMonoBehaviour { get; set; }
 
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
@@ -38,18 +42,25 @@ namespace CloneDroneOverhaul
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
-            OverhaulCacheManager.CacheStuff();
             LAN.LANMultiplayerManager.CreateManager();
 
+            if (!hasCachedStuff)
+            {
+                rememberVanillaPreferences();
+                OverhaulCacheManager.CacheStuff();
+                hasCachedStuff = true;
+            }
             checkDlls();
             addReferences();
             addModules();
             addListeners();
             spawnGUI();
+            fixVanillaStuff();
 
             IsModInitialized = true;
 
             finalPreparations();
+            test_AmplifyOcclusion();
             checkforUpdate();
         }
 
@@ -65,6 +76,16 @@ namespace CloneDroneOverhaul
         protected override void OnModRefreshed()
         {
             checkDlls();
+        }
+
+        private void test_AmplifyOcclusion()
+        {
+            Modules.GetModule<VisualsModule>().tryAddOcclusionToCamera();
+        }
+
+        private void rememberVanillaPreferences()
+        {
+            VanillaPrefs.RememberStuff();
         }
 
         private void checkforUpdate()
@@ -119,12 +140,14 @@ namespace CloneDroneOverhaul
             BaseStaticReferences.GUIs = GUI;
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
-            manager.AddModule<RobotEventsModule>();
+            manager.AddModule<RobotsOverhaulModule>();
             manager.AddModule<Addons.AddonsManager>();
             manager.AddModule<Modules.MultiplayerManager>();
-            manager.AddModule<ArenaAppearenceManager>();
-            manager.AddModule<CinematicGameManager>();
+            manager.AddModule<ArenaManager>();
+            manager.AddModule<MiscEffectsManager>();
             ModdedEditor = manager.AddModule<LevelEditor.ModdedLevelEditorManager>();
+            manager.AddModule<ExplorationGameModeManager>();
+            manager.AddModule<PatchesManager>();
         }
 
         private void checkDlls()
@@ -143,47 +166,51 @@ namespace CloneDroneOverhaul
         private void addListeners()
         {
             UnityEngine.GameObject obj = new UnityEngine.GameObject("CDOListeners");
-            obj.AddComponent<OverhaulMonoBehaviourListener>();
+            LocalMonoBehaviour = obj.AddComponent<OverhaulMonoBehaviourListener>();
         }
 
         private void finalPreparations()
         {
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            if (!OverhaulDescription.IsPublicBuild())
             {
-                Key2 = UnityEngine.KeyCode.C,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.DebugFireSword
-            });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
-                Key2 = UnityEngine.KeyCode.B,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.ExplodePlayer
-            });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
-                Key2 = UnityEngine.KeyCode.V,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.AddSkillPoint
-            });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
-                Key2 = UnityEngine.KeyCode.M,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.Console_ShowAppDataPath
-            });
+                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                {
+                    Key2 = UnityEngine.KeyCode.C,
+                    Key1 = UnityEngine.KeyCode.LeftControl,
+                    Method = BaseUtils.DebugFireSword
+                });
+                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                {
+                    Key2 = UnityEngine.KeyCode.B,
+                    Key1 = UnityEngine.KeyCode.LeftControl,
+                    Method = BaseUtils.ExplodePlayer
+                });
+                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                {
+                    Key2 = UnityEngine.KeyCode.V,
+                    Key1 = UnityEngine.KeyCode.LeftControl,
+                    Method = BaseUtils.AddSkillPoint
+                });
+                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                {
+                    Key2 = UnityEngine.KeyCode.M,
+                    Key1 = UnityEngine.KeyCode.LeftControl,
+                    Method = BaseUtils.Console_ShowAppDataPath
+                });
+                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                {
+                    Key2 = UnityEngine.KeyCode.X,
+                    Key1 = UnityEngine.KeyCode.LeftControl,
+                    Method = BaseUtils.DebugSize
+                });
+            }
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key1 = UnityEngine.KeyCode.F2,
-                Method = CinematicGameManager.SwitchHud
-            });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
-                Key2 = UnityEngine.KeyCode.X,
-                Key1 = UnityEngine.KeyCode.LeftControl,
-                Method = BaseUtils.DebugSize
+                Method = MiscEffectsManager.SwitchHud
             });
 
+            //Setting up some graphics stuff
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
             QualitySettings.softParticles = true;
             QualitySettings.streamingMipmapsMemoryBudget = 4096f;
@@ -195,34 +222,36 @@ namespace CloneDroneOverhaul
             QualitySettings.antiAliasing = 8;
             QualitySettings.shadowCascades = 2;
 
+            //Mindspace skybox color
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
 
+            //hit colors
             AttackManager.Instance.HitColor = new Color(4, 0.65f, 0.35f, 0.2f);
             AttackManager.Instance.BodyOnFireColor = new Color(1, 0.42f, 0.22f, 0.1f);
 
+            //Emote pitch limit
             EmoteManager.Instance.PitchLimits.Max = 5f;
             EmoteManager.Instance.PitchLimits.Min = 0f;
 
             Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
 
+            //New cursor texture (bad idea actually)
             if (-1 == 0)
             {
-                Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("cdo_rw_stuff", "CursorImg");
+                Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("cdo_rw_stuff", "CursorV6");
                 Cursor.SetCursor(tex, Vector2.zero, CursorMode.ForceSoftware);
             }
-
-            unlockSecretFeatures();
 
             Transform trans = TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "BottomButtons");
             trans.localScale = new Vector3(0.85f, 0.85f, 0.85f); //OptionsButton
             trans.localPosition = new Vector3(0, -180, 0); //CanvasRoundedUnityDarkEdge
-            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "LeftFadeBG").GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.65f);
-            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "PlaySingleplayer").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
-            TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "MultiplayerButton_NEW").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "LeftFadeBG").GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.65f);
+            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "PlaySingleplayer").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "MultiplayerButton_NEW").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
 
             for (int i = 0; i < trans.childCount; i++)
             {
-                trans.GetChild(i).GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+                //trans.GetChild(i).GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
                 if (!trans.GetChild(i).gameObject.name.Contains("HR"))
                 {
                     trans.GetChild(i).GetComponent<RectTransform>().sizeDelta = new Vector2(115, 29);
@@ -268,13 +297,18 @@ namespace CloneDroneOverhaul
             {
                 if (character.EnemyPrefab.GetComponent<FirstPersonMover>() != null)
                 {
-                    foreach (MechBodyPart part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.GetComponentsInChildren<MechBodyPart>())
+                    foreach (PicaVoxel.Frame part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.transform.GetChild(0).GetChild(0).GetComponentsInChildren<PicaVoxel.Frame>(true))
                     {
-                        Patching.BodyPartPatcher.OnBodyPartStart(part.GetComponentInChildren<PicaVoxel.Frame>());
+                        Patching.BodyPartPatcher.OnBodyPartStart(part);
+                    }
+                    foreach (PicaVoxel.Frame part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.transform.GetChild(0).GetChild(1).GetComponentsInChildren<PicaVoxel.Frame>(true))
+                    {
+                        Patching.BodyPartPatcher.OnBodyPartStart(part);
                     }
                 }
             }
 
+            new GameObject("CDO_RW_BoltEventListener").AddComponent<BoltEventListener>();
         }
 
         private void DisableVSync()
@@ -283,9 +317,10 @@ namespace CloneDroneOverhaul
             Application.targetFrameRate = 119;
         }
 
-        private void unlockSecretFeatures()
+        private void fixVanillaStuff()
         {
             MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
+            PatchesManager.Instance.UpdateAudioSettings(GetSetting<bool>("Patches.QoL.Fix sounds"));
         }
 
         private void spawnGUI()
@@ -303,6 +338,7 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<UI.MultiplayerInviteUIs>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<LevelEditor.ModdedLevelEditorUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<UI.MultiplayerUIs>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<UI.NewKillFeedUI>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -342,7 +378,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.7a";
+            string version = "a0.2.0.9";
             if (!withModBotVersion)
             {
                 return version;
@@ -357,7 +393,7 @@ namespace CloneDroneOverhaul
 
         public static bool IsPublicBuild()
         {
-            return true;
+            return false;
         }
 
 
@@ -406,14 +442,6 @@ namespace CloneDroneOverhaul
             {
                 BaseStaticReferences.ModuleManager.OnFrame();
             }
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                if (GameModeManager.UsesMultiplayerUpgrades())
-                {
-                    Singleton<UpgradeManager>.Instance.TryRequestMultiplayerUpgradeFromServer(UpgradeManager.Instance.GetUpgrade(UpgradeType.SeekingArrows, 1), false);
-                }
-                Singleton<UpgradeManager>.Instance.TryUpgradeAbility(UpgradeManager.Instance.GetUpgrade(UpgradeType.SeekingArrows, 1), false);
-            }
         }
 
         private void OnApplicationFocus(bool hasFocus)
@@ -456,18 +484,86 @@ namespace CloneDroneOverhaul
         {
             OverhaulMain.Instance = null;
         }
+
+        void Awake()
+        {
+            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleMatchProgressChanged, delegate
+            {
+                executeFunction<object>("battleRoyale.MatchProgressUpdated");
+            });
+            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleTimeToGameStartUpdated, delegate
+            {
+                executeFunction<object>("battleRoyale.TimeToGameStartUpdated");
+            });
+            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.NumMultiplayerPlayersChanged, delegate
+            {
+                executeFunction<object>("battleRoyale.NumMultiplayerPlayersChanged");
+            });
+
+            Singleton<GlobalEventManager>.Instance.AddEventListener<Character>("CharacterKilled", delegate (Character charr)
+            {
+                executeFunction<Character>("battleRoyale.CharacterKilled", charr);
+            });
+        }
+
+        void executeFunction<T>(string name, T obj = null) where T : class
+        {
+            if (name == "battleRoyale.MatchProgressUpdated")
+            {
+                OverhaulMain.Modules.ExecuteFunction(name, new object[]
+                {
+                    BattleRoyaleManager.Instance != null ? (BattleRoyaleMatchProgress)BattleRoyaleManager.Instance.state.MatchProgress : BattleRoyaleMatchProgress.NotStarted
+                });
+            }
+            else if (name == "battleRoyale.TimeToGameStartUpdated")
+            {
+                OverhaulMain.Modules.ExecuteFunction(name, new object[]
+                {
+                    BattleRoyaleManager.Instance != null ? BattleRoyaleManager.Instance.GetSecondsToGameStart() : -1
+                });
+            }
+            else if (name == "battleRoyale.NumMultiplayerPlayersChanged")
+            {
+                OverhaulMain.Modules.ExecuteFunction(name, new object[]
+                {
+                    MultiplayerPlayerInfoManager.Instance.GetPlayerCount()
+                });
+            }
+            else if (name == "battleRoyale.CharacterKilled")
+            {
+                OverhaulMain.Modules.ExecuteFunction(name, new object[]
+                {
+                    (obj as Character).GetRobotInfo()
+                });
+            }
+        }
     }
 
     public class BoltEventListener : Bolt.GlobalEventListener
     {
         public override void OnEvent(MatchInstance evnt)
         {
-            BaseStaticReferences.ModuleManager.ExecuteFunction<MatchInstance>("Bolt.OnEvent", new object[] { evnt });
+            BaseStaticReferences.ModuleManager.ExecuteFunction<MatchInstance>("Bolt.OnEvent", evnt);
+        }
+        public override void OnEvent(MultiplayerKillEvent evnt)
+        {
+            BaseStaticReferences.ModuleManager.ExecuteFunction<MultiplayerKillEvent>("Bolt.OnEvent", evnt);
         }
     }
 
     public static class CodeExtensions
     {
+        public static T Clone<T>(this T obj)
+        {
+            MethodInfo method = obj.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
+            return (T)(object)((method != null) ? method.Invoke(obj, null) : null);
+        }
+
+        public static void SetGameMode(this GameFlowManager manager, GameMode gm)
+        {
+            manager.SetPrivateField<GameMode>("_gameMode", gm);
+        }
+
         public static Color hexToColor(this string hex)
         {
             hex = hex.Replace("0x", "");

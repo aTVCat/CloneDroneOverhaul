@@ -23,14 +23,13 @@ namespace CloneDroneOverhaul.Modules
 
         static bool TransferedBefore;
 
-        public override bool IsEnabled()
+        public override void Start()
         {
-            return true;
-        }
+            Functions = new string[]
+            {
+                "onPlayerSet"
+            };
 
-        public override void OnActivated()
-        {
-            Functions.Add("onPlayerSet");
             MindTransfers = UnityEngine.GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "MindTransfersLeft")).transform;
             MindTransfers.gameObject.SetActive(false);
             MindTransferContainer = MindTransfers.GetComponent<ModdedObject>().GetObjectFromList<RectTransform>(1);

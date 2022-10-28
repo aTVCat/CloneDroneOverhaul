@@ -17,12 +17,7 @@ namespace CloneDroneOverhaul.Localization
 
         List<TranslationEntry> entries = new List<TranslationEntry>();
 
-        public override bool IsEnabled()
-        {
-            return true;
-        }
-
-        public override void OnActivated()
+        public override void Start()
         {
             LoadTranslations();
         }

@@ -10,12 +10,8 @@ namespace CloneDroneOverhaul.WeaponSkins
     public class WeaponSkinManager : ModuleBase
     {
 		IVoxFile file;
-        public override bool IsEnabled()
-        {
-            return true;
-        }
 
-        public override void OnActivated()
+        public override void Start()
         {
             file = VoxReader.VoxReader.Read(OverhaulMain.Instance.ModInfo.FolderPath + "WeaponSkinPacks/TheDarkPast/bow.vox");
         }
