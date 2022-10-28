@@ -82,7 +82,7 @@ namespace CloneDroneOverhaul
         {
             Modules.GetModule<VisualsModule>().tryAddOcclusionToCamera();
         }
-
+        
         private void rememberVanillaPreferences()
         {
             VanillaPrefs.RememberStuff();
@@ -301,9 +301,6 @@ namespace CloneDroneOverhaul
                     {
                         Patching.BodyPartPatcher.OnBodyPartStart(part);
                     }
-                    foreach (PicaVoxel.Frame part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.transform.GetChild(0).GetChild(1).GetComponentsInChildren<PicaVoxel.Frame>(true))
-                    {
-                        Patching.BodyPartPatcher.OnBodyPartStart(part);
                     }
                 }
             }
