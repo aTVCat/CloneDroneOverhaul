@@ -60,6 +60,7 @@ namespace CloneDroneOverhaul
             IsModInitialized = true;
 
             finalPreparations();
+            test_AmplifyOcclusion();
             checkforUpdate();
         }
 
@@ -77,6 +78,11 @@ namespace CloneDroneOverhaul
             checkDlls();
         }
 
+        private void test_AmplifyOcclusion()
+        {
+            Modules.GetModule<VisualsModule>().tryAddOcclusionToCamera();
+        }
+        
         private void rememberVanillaPreferences()
         {
             VanillaPrefs.RememberStuff();
@@ -165,7 +171,7 @@ namespace CloneDroneOverhaul
 
         private void finalPreparations()
         {
-            if (OverhaulDescription.IsPublicBuild())
+            if (!OverhaulDescription.IsPublicBuild())
             {
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
@@ -295,9 +301,6 @@ namespace CloneDroneOverhaul
                     {
                         Patching.BodyPartPatcher.OnBodyPartStart(part);
                     }
-                    foreach (PicaVoxel.Frame part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.transform.GetChild(0).GetChild(1).GetComponentsInChildren<PicaVoxel.Frame>(true))
-                    {
-                        Patching.BodyPartPatcher.OnBodyPartStart(part);
                     }
                 }
             }
@@ -372,7 +375,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.8";
+            string version = "a0.2.0.9";
             if (!withModBotVersion)
             {
                 return version;

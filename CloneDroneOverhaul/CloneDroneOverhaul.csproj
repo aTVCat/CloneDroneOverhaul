@@ -138,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\AddonsManager.cs" />
+    <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
+    <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="LAN\LANMultiplayerManager.cs" />
     <Compile Include="LevelEditor\ModdedLevelEditorManager.cs" />
     <Compile Include="LevelEditor\ModdedLevelEditorUI.cs" />

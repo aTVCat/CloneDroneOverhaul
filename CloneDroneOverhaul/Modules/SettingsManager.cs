@@ -31,7 +31,7 @@ namespace CloneDroneOverhaul.Modules
 
             AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false));
 
-            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
 
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));

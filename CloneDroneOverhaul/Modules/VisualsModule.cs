@@ -11,6 +11,8 @@ namespace CloneDroneOverhaul.Modules
     {
         private bool isInitialized;
 
+        private AmplifyOcclusionEffect Occlusion;
+
         private ReflectionProbe probe;
         private ParticleSystem worldDustMS1;
         private ParticleSystem worldDustMS0;
@@ -99,12 +101,22 @@ namespace CloneDroneOverhaul.Modules
                     bloom.bloomIntensity = 0.7f;
                     bloom.bloomThreshold = 1.25f;
                     bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+
+                    AmplifyOcclusionEffect acc = newCam.gameObject.AddComponent<AmplifyOcclusionEffect>();
+                    acc.Intensity = 0.85f;
+                    acc.BlurSharpness = 4f;
+                    acc.FilterResponse = 0.8f;
+                    Occlusion = acc;
                 }
             }
             lastSpottedCamera = Camera.main;
         }
         public override void OnManagedUpdate()
         {
+            if(Occlusion != null)
+            {
+                Occlusion.enabled = !GameModeManager.IsInLevelEditor();
+            }
             if (Camera.main != null)
             {
                 probe.gameObject.transform.position = Camera.main.transform.position;
@@ -126,6 +138,13 @@ namespace CloneDroneOverhaul.Modules
             {
                 RefreshDustMaterials();
             }
+        }
+
+        public void tryAddOcclusionToCamera()
+        {
+            return;
+            Camera cam = PlayerCameraManager.Instance.DefaultGameCameraPrefab;
+            cam.gameObject.AddComponent<AmplifyOcclusionEffect>();
         }
 
         private void RefreshDustMaterials()
