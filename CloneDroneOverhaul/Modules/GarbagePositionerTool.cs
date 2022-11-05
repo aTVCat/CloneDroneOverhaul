@@ -5,16 +5,13 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityStandardAssets.ImageEffects;
 using System.Collections.Generic;
-using System.IO;
-using System;
 
-namespace CloneDroneOverhaul.Addons
+namespace CloneDroneOverhaul.Modules
 {
-    internal class AddonsManager : Modules.ModuleBase
+    public class GarbagePositionerManager : ModuleBase
     {
         public override void Start()
         {
-            base.Start();
         }
     }
 }

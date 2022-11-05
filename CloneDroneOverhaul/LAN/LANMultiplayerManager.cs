@@ -27,12 +27,6 @@ namespace CloneDroneOverhaul.LAN
 ;            return Instance;
         }
 
-        void Update()
-        {
-            LANClient.Update();
-            LANServer.Update();
-        }
-
         public class SteamHostingTest
         {
             public void StartSteamHost()

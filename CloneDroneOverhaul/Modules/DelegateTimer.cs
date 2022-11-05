@@ -9,12 +9,12 @@ namespace CloneDroneOverhaul.Modules
 
         public override void OnNewFrame()
         {
-            if (actions.Count < 1)
+            if (actions.Count == 0)
             {
                 return;
             }
 
-            for (int i = actions.Count - 1; i > 0; i--)
+            for (int i = actions.Count - 1; i > -1; i--)
             {
                 if (!(actions[i] is TimedAction2))
                 {

@@ -89,7 +89,7 @@ namespace CloneDroneOverhaul.Localization
                 BaseStaticReferences.ModuleManager.GetModule<GUIManagement>().GetGUI<OverhaulLocalizationEditor>().EditingLang = MyLangID;
             }
 
-            void FixedUpdate()
+            void Update()
             {
                 ModdedObject mObj = base.GetComponent<ModdedObject>();
                 mObj.GetObjectFromList<InputField>(1).interactable = UI.EditingLang == mObj.GetObjectFromList<Text>(0).text;

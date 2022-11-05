@@ -11,18 +11,25 @@ namespace CloneDroneOverhaul
         private static bool _hasCached;
 
         private static Dictionary<string, object> _cachedStuff;
+        private static Dictionary<string, object> _temporalStuff;
 
         static Dictionary<string, Transform> _cachedLevelEditorAssets = new Dictionary<string, Transform>();
-        static List<ComponentCache> _cachedModdedObjects = new List<ComponentCache>();
 
         public const string OverhaulMainAssetBundle = "cdo_rw_stuff";
 
+        internal static void ClearTemporal()
+        {
+            if(_temporalStuff != null )
+            _temporalStuff.Clear();
+        }
         public static void CacheStuff()
         {
             if (_hasCached)
             {
                 return;
             }
+
+            _temporalStuff = new Dictionary<string, object>();
 
             _cachedStuff = new Dictionary<string, object>();
             _cachedStuff.Add("LBSInviteScreenBG_1", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_1"));
@@ -52,6 +59,13 @@ namespace CloneDroneOverhaul
             _cachedStuff.Add("KillMethodType_" + DamageSourceType.EnvironmentFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireTrap"));
             _cachedStuff.Add("KillMethodType_" + DamageSourceType.SpeedHackBanFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Banned"));
 
+            _cachedStuff.Add("Shader_BleedingColors", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BleedingColors"));
+            _cachedStuff.Add("Shader_BWDiffuse", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BWDiffuse"));
+            _cachedStuff.Add("Shader_Distortion", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Distortion"));
+            _cachedStuff.Add("Shader_Scanlines", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Scanlines"));
+            _cachedStuff.Add("Shader_Tint", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Tint"));
+            _cachedStuff.Add("Shader_VUnsync", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "VUnsync"));
+
             _hasCached = true;
         }
 
@@ -73,28 +87,30 @@ namespace CloneDroneOverhaul
             }
             return null;
         }
-        public static T GetCachedComponent<T>(this Transform transform, int index) where T : Component
-        {
-            throw new NotImplementedException();
-            bool requireCache = false;
-            T comp = null;
-            foreach (ComponentCache cached in _cachedModdedObjects)
-            {
 
-            }
-            if (requireCache)
+        public static void AddTemporalObject<T>(T obj, string name)
+        {
+            if (!_temporalStuff.ContainsKey(name))
             {
-                comp = transform.GetComponent<T>();
-                if (comp != null)
-                {
-                    _cachedModdedObjects.Add(new ComponentCache() { Component = (T)comp, Index = index, Transform = transform });
-                }
+                _temporalStuff.Add(name, obj);
             }
-            return comp;
         }
-        private static void getCached(Transform transform, int index)
+        public static T GetTemporalObject<T>(string name)
         {
-
+            object result = null;
+            _temporalStuff.TryGetValue(name, out result);
+            return (T)result;
+        }
+        public static void RemoveTemporalObject(string name)
+        {
+            if (_temporalStuff.ContainsKey(name))
+            {
+                _temporalStuff.Remove(name);
+            }
+        }
+        public static bool ContainsTemporalObject(string name)
+        {
+            return _temporalStuff.ContainsKey(name);
         }
 
         public static Transform GetAndCacheLevelEditorObject(string path)
@@ -110,13 +126,6 @@ namespace CloneDroneOverhaul
                 _cachedLevelEditorAssets.Add(path, trans);
             }
             return trans;
-        }
-
-        private class ComponentCache
-        {
-            public int Index;
-            public Component Component;
-            public Transform Transform;
         }
     }
 }

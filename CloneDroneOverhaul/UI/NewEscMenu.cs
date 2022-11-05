@@ -62,6 +62,7 @@ namespace CloneDroneOverhaul.UI
 
         private ModdedObject SpecialButtonsMObj;
         private Button PhotoMode;
+        public Toggle PhotoModeDebugInfo;
         private Button CDOSettings;
         private Button Addons;
         private Button StatisticsButton;
@@ -121,6 +122,7 @@ namespace CloneDroneOverhaul.UI
 
             SpecialButtonsMObj = MyModdedObject.GetObjectFromList<ModdedObject>(0);
             PhotoMode = SpecialButtonsMObj.GetObjectFromList<Button>(0);
+            PhotoModeDebugInfo = SpecialButtonsMObj.GetObjectFromList<Toggle>(4);
             CDOSettings = SpecialButtonsMObj.GetObjectFromList<Button>(1);
             CDOSettings.onClick.AddListener(UI.SettingsUI.Instance.Show);
             Addons = SpecialButtonsMObj.GetObjectFromList<Button>(2);

@@ -1,4 +1,5 @@
-﻿using CloneDroneOverhaul.Utilities;
+﻿using CloneDroneOverhaul.EffectsAndAbilitiesV4;
+using CloneDroneOverhaul.Utilities;
 using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules
@@ -16,7 +17,9 @@ namespace CloneDroneOverhaul.Modules
         {
             Functions = new string[]
             {
-                "onPlayerSet"
+                "onPlayerSet",
+                "firstPersonMover.OnSpawn",
+                "firstPersonMover.OnDestroy"
             };
             Singleton<GlobalEventManager>.Instance.AddEventListener<Camera>(GlobalEvents.PlayerCameraEnabled, OnCameraEnabled);
         }
@@ -39,9 +42,17 @@ namespace CloneDroneOverhaul.Modules
                     FirstPersonMover mover = (FirstPersonMover)info.Instance;
                     if (mover.IsUsingMagBoots())
                     {
-                        mover.OverrideBaseMoveSpeed(5.8f);
+                        mover.OverrideBaseMoveSpeed(6f);
                     }
                 }
+            }
+            if (name == Functions[1])
+            {
+                RobotsExpansionManager.OnRobotSpawned((RobotShortInformation)arguments[0]);
+            }
+            if (name == Functions[2])
+            {
+                RobotsExpansionManager.OnRobotDestroyed((RobotShortInformation)arguments[0]);
             }
         }
     }

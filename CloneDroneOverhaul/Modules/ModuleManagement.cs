@@ -97,12 +97,12 @@ namespace CloneDroneOverhaul.Modules
             }
         }
 
-        public void OnSettingRefreshed(string id, object value)
+        public void OnSettingRefreshed(string id, object value, bool isOnStart)
         {
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
-                mBase.OnSettingRefreshed(id, value);
+                mBase.OnSettingRefreshed(id, value, isOnStart);
             }
         }
 
@@ -119,11 +119,11 @@ namespace CloneDroneOverhaul.Modules
         }
     }
 
-    public class ModuleBase // Not Implemented Fully Yet
+    public class ModuleBase
     {
         protected string[] Functions;
         public virtual void Start() { }
-        public virtual void OnSettingRefreshed(string ID, object value) { }
+        public virtual void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false) { }
         public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void RunFunction<T>(string name, object[] arguments) { }
         public virtual void RunFunction<T>(string name, T obj) { }

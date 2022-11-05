@@ -5,7 +5,6 @@ namespace CloneDroneOverhaul.PooledPrefabs
 {
     public class SimplePooledPrefab
     {
-        // Token: 0x060000F6 RID: 246 RVA: 0x00008980 File Offset: 0x00006B80
         public SimplePooledPrefab(Transform prefab, int maxCount, string name, float timeToDestroy, string tag)
         {
             Prefab = prefab;
@@ -16,7 +15,6 @@ namespace CloneDroneOverhaul.PooledPrefabs
             InitializeContainer();
         }
 
-        // Token: 0x060000F7 RID: 247 RVA: 0x000089D8 File Offset: 0x00006BD8
         private void InitializeContainer()
         {
             Transform transform = new GameObject(Name).transform;
@@ -29,7 +27,6 @@ namespace CloneDroneOverhaul.PooledPrefabs
             }
         }
 
-        // Token: 0x060000F8 RID: 248 RVA: 0x00008A58 File Offset: 0x00006C58
         public Transform SpawnObject(Vector3 position, Vector3 rotation, Color col, Transform transformToFollow = null, bool usedForVoxels = false)
         {
             Transform nextObject = GetNextObject();
@@ -51,7 +48,6 @@ namespace CloneDroneOverhaul.PooledPrefabs
             return result;
         }
 
-        // Token: 0x060000F9 RID: 249 RVA: 0x00008AC4 File Offset: 0x00006CC4
         private Transform GetNextObject()
         {
             foreach (Transform transform in AvailableObjects)
@@ -65,7 +61,6 @@ namespace CloneDroneOverhaul.PooledPrefabs
             return null;
         }
 
-        // Token: 0x060000FA RID: 250 RVA: 0x00008B34 File Offset: 0x00006D34
         internal void ReturnToPool(SimplePooledPrefabInstance instance, bool dontDisable)
         {
             bool flag = ActiveObjects.Contains(instance.transform);
@@ -81,13 +76,11 @@ namespace CloneDroneOverhaul.PooledPrefabs
             }
         }
 
-        // Token: 0x060000FB RID: 251 RVA: 0x00008B8C File Offset: 0x00006D8C
         public float GetLifeTime()
         {
             return timeToHide;
         }
 
-        // Token: 0x060000FC RID: 252 RVA: 0x00008BA4 File Offset: 0x00006DA4
         public string GetTag()
         {
             return tag;
