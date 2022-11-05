@@ -12,35 +12,56 @@ namespace CloneDroneOverhaul.Modules
 {
     public class ModDataManager : ModuleBase
     {
-        public static string Mod_Folder
+        public static string Mod_DataFolder
         {
             get
             {
                 return Application.persistentDataPath + "/CloneDroneOverhaul/";
             }
         }
+        public static string Mod_Folder
+        {
+            get
+            {
+                return OverhaulMain.Instance.ModInfo.FolderPath;
+            }
+        }
         public static string Mod_TempFolder
         {
             get
             {
-                return Mod_Folder + "/Temp/";
+                return Mod_DataFolder + "/Temp/";
             }
         }
-        public string Addons_Folder
+        public static string Addons_Folder
         {
             get
             {
-                return Mod_Folder + "Addons/";
+                return Mod_DataFolder + "Addons/";
             }
         }
-        public string Data_Folder
+        public static string Data_Folder
         {
             get
             {
-                return Mod_Folder + "SavedData/";
+                return Mod_DataFolder + "SavedData/";
             }
         }
-        public string FileExtension
+        public static string DublicatedLevelsFolder
+        {
+            get
+            {
+                return Mod_DataFolder + "CopiedLevels/";
+            }
+        }
+        public static string AddonsCompliedDlls
+        {
+            get
+            {
+                return Mod_DataFolder + "CompiledDlls/";
+            }
+        }
+        public static string FileExtension
         {
             get
             {
@@ -60,10 +81,10 @@ namespace CloneDroneOverhaul.Modules
         }
         private void checkFolders()
         {
-            if (!Directory.Exists(Mod_Folder))
+            if (!Directory.Exists(Mod_DataFolder))
             {
-                Directory.CreateDirectory(Mod_Folder);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_Folder });
+                Directory.CreateDirectory(Mod_DataFolder);
+                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_DataFolder });
             }
             if (!Directory.Exists(Addons_Folder))
             {
@@ -79,6 +100,11 @@ namespace CloneDroneOverhaul.Modules
             {
                 Directory.CreateDirectory(Mod_TempFolder);
                 OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_TempFolder });
+            }
+            if (!Directory.Exists(AddonsCompliedDlls))
+            {
+                Directory.CreateDirectory(AddonsCompliedDlls);
+                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { AddonsCompliedDlls });
             }
         }
         private void showMessageAboutFolderCreation(object[] args)
@@ -187,7 +213,7 @@ namespace CloneDroneOverhaul.Modules
                     return;
                 }
                 entry.Value = value;
-                BaseStaticReferences.ModuleManager.OnSettingRefreshed(id, value);
+                BaseStaticReferences.ModuleManager.OnSettingRefreshed(id, value, false);
             }
 
             public SavedSettingEntry GetSettingSave(string id, object newSettingValue, bool isNewSetting)
@@ -219,23 +245,23 @@ namespace CloneDroneOverhaul.Modules
 
         protected override void TryLoadData()
         {
-            SettingsData = base.DataManagerReference.LoadData<CloneDroneOverhaulSettingsData.Data>(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
+            SettingsData = base.DataManagerReference.LoadData<CloneDroneOverhaulSettingsData.Data>(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
         }
 
         protected override bool CheckFolders()
         {
-            if(!File.Exists(DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension))
+            if(!File.Exists(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension))
             {
                 CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data();
                 data.SavedSettings = new List<Data.SavedSettingEntry>();
-                base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(data, DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
+                base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(data, ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
             }
             return true;
         }
 
         public override void TrySaveData()
         {
-            base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(SettingsData, DataManagerReference.Data_Folder + "SettingsData" + DataManagerReference.FileExtension);
+            base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(SettingsData, ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
         }
 
         public void SaveSetting(string id, object value, bool onlyAdd)

@@ -36,6 +36,7 @@ namespace CloneDroneOverhaul
                 {
                     onReceivedVersion(version);
                 }
+                yield break;
             }
             yield break;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,9 +7,9 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public static class AddAndConfigBetterSliderClass
     {
-        public static BetterSlider AddAndConfigBetterSlider(this ModdedObject obj, BetterSlider.Settings settings)
+        public static BetterSlider AddAndConfigBetterSlider(this ModdedObject obj, BetterSlider.Settings settings, Action<float> onValueUpdated = null)
         {
-            return obj.gameObject.AddComponent<BetterSlider>().SetUp(obj, settings);
+            return obj.gameObject.AddComponent<BetterSlider>().SetUp(obj, settings, onValueUpdated);
         }
     }
 
@@ -17,8 +18,9 @@ namespace CloneDroneOverhaul.UI.Components
         private Text Description;
         private Text Value;
         private Slider TheSlider;
+        private Action<float> onValueUpdated;
 
-        public BetterSlider SetUp(ModdedObject obj, Settings settings)
+        public BetterSlider SetUp(ModdedObject obj, Settings settings, Action<float> onValueUpdatedAction = null)
         {
             Description = obj.GetObjectFromList<Text>(0);
             Value = obj.GetObjectFromList<Text>(1);
@@ -27,6 +29,7 @@ namespace CloneDroneOverhaul.UI.Components
             TheSlider.maxValue = settings.MaxValue;
             TheSlider.wholeNumbers = settings.UseInt;
             TheSlider.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<float>(OnSliderUpdated));
+            onValueUpdated = onValueUpdatedAction;
 
             if (!string.IsNullOrEmpty(settings.IDToTranslate))
             {
@@ -59,6 +62,10 @@ namespace CloneDroneOverhaul.UI.Components
         public void OnSliderUpdated(float value)
         {
             Value.text = "[" + Mathf.Round(value) + "]";
+            if (onValueUpdated != null)
+            {
+                onValueUpdated(value);
+            }
         }
 
         public struct Settings

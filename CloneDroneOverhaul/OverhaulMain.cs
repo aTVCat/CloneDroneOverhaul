@@ -2,13 +2,16 @@
 using CloneDroneOverhaul.Utilities;
 using ModBotWebsiteAPI;
 using ModLibrary;
+using Pathfinding;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading;
 
 namespace CloneDroneOverhaul
 {
@@ -35,14 +38,23 @@ namespace CloneDroneOverhaul
 
         protected override void OnModLoaded()
         {
+            OverhaulCacheManager.ClearTemporal();
             if (OverhaulMain.Instance != null)
             {
                 return;
             }
+
+            ThreadLaunch();
+            return;
+            new Thread(ThreadLaunch).Start();
+        }
+        void ThreadLaunch()
+        {
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
             LAN.LANMultiplayerManager.CreateManager();
+            Profiler.BeginThreadProfiling("Profile111", "Thread111");
 
             if (!hasCachedStuff)
             {
@@ -60,7 +72,6 @@ namespace CloneDroneOverhaul
             IsModInitialized = true;
 
             finalPreparations();
-            test_AmplifyOcclusion();
             checkforUpdate();
         }
 
@@ -77,10 +88,9 @@ namespace CloneDroneOverhaul
         {
             checkDlls();
         }
-
-        private void test_AmplifyOcclusion()
+        protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
-            Modules.GetModule<VisualsModule>().tryAddOcclusionToCamera();
+            OverhaulMain.Modules.ExecuteFunction("firstPersonMover.OnSpawn", new object[] { firstPersonMover.GetRobotInfo() });
         }
         
         private void rememberVanillaPreferences()
@@ -132,7 +142,7 @@ namespace CloneDroneOverhaul
             manager.AddModule<ModDataManager>();
             new CloneDroneOverhaulDataContainer();
             Modules = manager;
-            manager.AddModule<CloneDroneOverhaul.Modules.SettingsManager>();
+            manager.AddModule<CloneDroneOverhaul.Modules.OverhaulSettingsManager>();
             Localization = manager.AddModule<Localization.OverhaulLocalizationManager>();
             Visuals = manager.AddModule<VisualsModule>();
             manager.AddModule<HotkeysModule>();
@@ -141,13 +151,14 @@ namespace CloneDroneOverhaul
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
             manager.AddModule<RobotsOverhaulModule>();
-            manager.AddModule<Addons.AddonsManager>();
             manager.AddModule<Modules.MultiplayerManager>();
             manager.AddModule<ArenaManager>();
             manager.AddModule<MiscEffectsManager>();
             ModdedEditor = manager.AddModule<LevelEditor.ModdedLevelEditorManager>();
             manager.AddModule<ExplorationGameModeManager>();
             manager.AddModule<PatchesManager>();
+            manager.AddModule<AdvancedPhotoModeManager>();
+            manager.AddModule<GarbagePositionerManager>();
         }
 
         private void checkDlls()
@@ -233,7 +244,7 @@ namespace CloneDroneOverhaul
             EmoteManager.Instance.PitchLimits.Max = 5f;
             EmoteManager.Instance.PitchLimits.Min = 0f;
 
-            Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
+            //Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
 
             //New cursor texture (bad idea actually)
             if (-1 == 0)
@@ -336,6 +347,8 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<LevelEditor.ModdedLevelEditorUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<UI.MultiplayerUIs>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<UI.NewKillFeedUI>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<UI.NewGameModeSelectionScreen>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<UI.NewPhotoModeUI>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -343,7 +356,7 @@ namespace CloneDroneOverhaul
             CloneDroneOverhaul.Localization.TranslationEntry entry = Localization.GetTranslation(ID);
             if (entry == null)
             {
-                return "NT: " + ID;
+                return "NL: " + ID;
             }
             return entry.Translations[LocalizationManager.Instance.GetCurrentLanguageCode()];
         }
@@ -375,7 +388,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.9";
+            string version = "a0.2.0.10";
             if (!withModBotVersion)
             {
                 return version;
@@ -390,7 +403,7 @@ namespace CloneDroneOverhaul
 
         public static bool IsPublicBuild()
         {
-            return false;
+            return true;
         }
 
 
@@ -431,13 +444,13 @@ namespace CloneDroneOverhaul
             {
                 OnTimePast(0.5f);
             }
-            if (GameModeManager.IsMultiplayer() && UnityEngine.Time.timeScale > 1.2f)
-            {
-                //UnityEngine.Time.timeScale = 1f;
-            }
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFrame();
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                Profiler.EndThreadProfiling();
             }
         }
 
@@ -447,12 +460,12 @@ namespace CloneDroneOverhaul
             if (!hasFocus)
             {
                 //Shader.Find("Standard").maximumLOD = 1;
-                Application.targetFrameRate = 30;
+                //Application.targetFrameRate = 30;
             }
             else
             {
                 //Shader.Find("Standard").maximumLOD = -1;
-                Application.targetFrameRate = 119;
+                //Application.targetFrameRate = -1;
             }
         }
 
@@ -469,6 +482,7 @@ namespace CloneDroneOverhaul
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFixedUpdate();
+                EffectsAndAbilitiesV4.RobotsExpansionManager.FixedUpdate();
             }
         }
 
@@ -550,6 +564,10 @@ namespace CloneDroneOverhaul
 
     public static class CodeExtensions
     {
+        public static FlyingCameraController GetCurrentFlyingCameraController(this PhotoManager mgr)
+        {
+            return mgr.GetPrivateField<FlyingCameraController>("_cameraController");
+        }
         public static T Clone<T>(this T obj)
         {
             MethodInfo method = obj.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);

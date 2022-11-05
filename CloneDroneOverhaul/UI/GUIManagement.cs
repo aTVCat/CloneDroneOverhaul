@@ -84,11 +84,11 @@ namespace CloneDroneOverhaul.UI
                 ui.RunFunction<T>(name, obj);
             }
         }
-        public override void OnSettingRefreshed(string id, object value)
+        public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
             foreach (ModGUIBase ui in guis)
             {
-                ui.OnSettingRefreshed(id, value);
+                ui.OnSettingRefreshed(ID, value, isRefreshedOnStart);
             }
         }
     }
@@ -99,7 +99,7 @@ namespace CloneDroneOverhaul.UI
         public GUIManagement GUIModule { get; set; }
 
         public virtual void OnInstanceStart() { }
-        public virtual void OnSettingRefreshed(string ID, object value) { }
+        public virtual void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false) { }
         public virtual void RunFunction(string name, object[] arguments) { }
         public virtual void RunFunction<T>(string name, T obj) { }
         public virtual void OnManagedUpdate() { }

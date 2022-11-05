@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,7 @@ namespace CloneDroneOverhaul.UI
 
         private ModdedObject BoolValuePrefab;
         private ModdedObject FloatValuePrefab;
+        private ModdedObject EnumValuePrefab;
 
         private RectTransform ChildrenSettings;
         private RectTransform AdditSettingsContainer;
@@ -54,6 +57,7 @@ namespace CloneDroneOverhaul.UI
 
             BoolValuePrefab = MyModdedObject.GetObjectFromList<ModdedObject>(8);
             FloatValuePrefab = MyModdedObject.GetObjectFromList<ModdedObject>(14);
+            EnumValuePrefab = MyModdedObject.GetObjectFromList<ModdedObject>(16);
             Hide();
         }
 
@@ -63,12 +67,18 @@ namespace CloneDroneOverhaul.UI
             HideAdditSettings();
         }
 
+        public void ShowWithOpenedPage(string category, string section)
+        {
+            Show();
+            SelectCategory(category);
+            SelectSection(section);
+        }
         public void Show()
         {
             GameUIRoot.Instance.SettingsMenu.Hide();
             GetComponent<Animator>().Play("SettingsShow");
             base.gameObject.SetActive(true);
-            populateSettings(true, Modules.SettingsManager.Instance.GetAllSettings());
+            populateSettings(true, Modules.OverhaulSettingsManager.Instance.GetAllSettings());
         }
 
         public void SelectCategory(string str)
@@ -80,14 +90,14 @@ namespace CloneDroneOverhaul.UI
         public void SelectSection(string str)
         {
             selectedSection = str;
-            populateSettings(false, Modules.SettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
+            populateSettings(false, Modules.OverhaulSettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
         }
-        public void ShowAdditionalSettings(Modules.SettingsManager.SettingEntry entry)
+        public void ShowAdditionalSettings(Modules.OverhaulSettingsManager.SettingEntry entry)
         {
             ChildrenSettings.gameObject.SetActive(true);
             TransformUtils.DestroyAllChildren(AdditSettingsContainer);
-            List<Modules.SettingsManager.SettingEntry> list = Modules.SettingsManager.Instance.GetSettings(entry.ChildSettings.ChildrenSettingID);
-            foreach(Modules.SettingsManager.SettingEntry entry2 in list)
+            List<Modules.OverhaulSettingsManager.SettingEntry> list = Modules.OverhaulSettingsManager.Instance.GetSettings(entry.ChildSettings.ChildrenSettingID);
+            foreach(Modules.OverhaulSettingsManager.SettingEntry entry2 in list)
             {
                 populateSetting(entry2, AdditSettingsContainer, true);
             }
@@ -100,9 +110,9 @@ namespace CloneDroneOverhaul.UI
         {
             if (string.IsNullOrEmpty(str))
             {
-                populateSettings(false, Modules.SettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
+                populateSettings(false, Modules.OverhaulSettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
             }
-            populateSettings(false, Modules.SettingsManager.Instance.SearchSettings(str));
+            populateSettings(false, Modules.OverhaulSettingsManager.Instance.SearchSettings(str));
         }
         private void onEndSearching(string str)
         {
@@ -111,7 +121,7 @@ namespace CloneDroneOverhaul.UI
         private void onEndSearchingNextFrame()
         {
             SearchField.text = "";
-            populateSettings(false, Modules.SettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
+            populateSettings(false, Modules.OverhaulSettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
         }
 
         private void populateSections()
@@ -120,13 +130,13 @@ namespace CloneDroneOverhaul.UI
             TransformUtils.DestroyAllChildren(SectionContainer);
             if (string.IsNullOrEmpty(selectedSection) && !string.IsNullOrEmpty(selectedCategory))
             {
-                List<Modules.SettingsManager.SettingEntry.CategoryPath> paths = Modules.SettingsManager.Instance.GetPaths(selectedCategory);
-                foreach (Modules.SettingsManager.SettingEntry.CategoryPath pathhh in paths)
+                List<Modules.OverhaulSettingsManager.SettingEntry.CategoryPath> paths = Modules.OverhaulSettingsManager.Instance.GetPaths(selectedCategory);
+                foreach (Modules.OverhaulSettingsManager.SettingEntry.CategoryPath pathhh in paths)
                 {
                     if (!spawnedSections.Contains(pathhh.Section))
                     {
                         ModdedObject mObj = Instantiate<ModdedObject>(SectionItemPrefab, SectionContainer);
-                        mObj.GetObjectFromList<Text>(0).text = Modules.SettingsManager.Instance.GetSectionName(pathhh.Section);
+                        mObj.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("Settings_Section_" + Modules.OverhaulSettingsManager.Instance.GetSectionName(pathhh.Section));
                         spawnedSections.Add(pathhh.Section);
                         mObj.gameObject.SetActive(true);
                         CategoryButton button = mObj.gameObject.AddComponent<CategoryButton>();
@@ -136,9 +146,9 @@ namespace CloneDroneOverhaul.UI
             }
         }
 
-        private void populateSettings(bool onlyCategories, List<Modules.SettingsManager.SettingEntry> settingsList)
+        private void populateSettings(bool onlyCategories, List<Modules.OverhaulSettingsManager.SettingEntry> settingsList)
         {
-            List<Modules.SettingsManager.SettingEntry> settings = settingsList;
+            List<Modules.OverhaulSettingsManager.SettingEntry> settings = settingsList;
 
             List<string> spawnedCategories = new List<string>();
 
@@ -148,21 +158,21 @@ namespace CloneDroneOverhaul.UI
             }
 
             base.MyModdedObject.GetObjectFromList<Text>(15).text = string.Empty;
-           Modules.SettingsManager.SettingEntry.CategoryPath path = Modules.SettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
+           Modules.OverhaulSettingsManager.SettingEntry.CategoryPath path = Modules.OverhaulSettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
             if (!path.IsEmpty)
             {
                 base.MyModdedObject.GetObjectFromList<Text>(15).text = path.SectionPageDescription;
             }
             TransformUtils.DestroyAllChildren(ViewPort);
 
-            foreach (Modules.SettingsManager.SettingEntry entry in settings)
+            foreach (Modules.OverhaulSettingsManager.SettingEntry entry in settings)
             {
                 if (onlyCategories)
                 {
                     if (!spawnedCategories.Contains(entry.Path.Category))
                     {
                         ModdedObject mObj = Instantiate<ModdedObject>(CategoryItemPrefab, CategoryContainer);
-                        mObj.GetObjectFromList<Text>(0).text = Modules.SettingsManager.Instance.GetCategoryName(entry.Path.Category);
+                        mObj.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("Settings_Category_" + Modules.OverhaulSettingsManager.Instance.GetCategoryName(entry.Path.Category));
                         spawnedCategories.Add(entry.Path.Category);
                         mObj.gameObject.SetActive(true);
                         CategoryButton button = mObj.gameObject.AddComponent<CategoryButton>();
@@ -177,7 +187,7 @@ namespace CloneDroneOverhaul.UI
             }
         }
 
-        void populateSetting(Modules.SettingsManager.SettingEntry entry, Transform parent, bool ignoreIsHidden)
+        void populateSetting(Modules.OverhaulSettingsManager.SettingEntry entry, Transform parent, bool ignoreIsHidden)
         {
             if (entry.Path.Section == selectedSection && entry.Path.Category == selectedCategory)
             {
@@ -191,18 +201,22 @@ namespace CloneDroneOverhaul.UI
             if (entry.Type == typeof(bool))
             {
                 setting = Instantiate<ModdedObject>(BoolValuePrefab, parent);
-                setting.GetObjectFromList<Text>(0).text = entry.Name;
-                setting.GetObjectFromList<Text>(3).text = entry.Description;
-                setting.GetObjectFromList<InputField>(2).text = entry.ID;
-                setting.gameObject.AddComponent<UISettingEntry>().SetupValue<bool>(entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID));
+                setting.gameObject.AddComponent<UISettingEntry>().SetupValue(entry.Type, entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID));
             }
             else if (entry.Type == typeof(float))
             {
                 setting = Instantiate<ModdedObject>(FloatValuePrefab, parent);
-                setting.GetObjectFromList<Text>(0).text = entry.Name;
-                setting.GetObjectFromList<Text>(3).text = entry.Description;
-                setting.GetObjectFromList<InputField>(2).text = entry.ID;
-                setting.gameObject.AddComponent<UISettingEntry>().SetupValue<float>(entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID));
+                setting.gameObject.AddComponent<UISettingEntry>().SetupValue(entry.Type, entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID));
+            }
+            else if (entry.Type == typeof(int))
+            {
+                setting = Instantiate<ModdedObject>(FloatValuePrefab, parent);
+                setting.gameObject.AddComponent<UISettingEntry>().SetupValue(entry.Type, entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID));
+            }
+            else if (entry.Type.IsEnum)
+            {
+                setting = Instantiate<ModdedObject>(EnumValuePrefab, parent);
+                setting.gameObject.AddComponent<UISettingEntry>().SetupValue(entry.Type, entry, CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue(entry.ID), entry.ValueSettings.DropdownEnumType);
             }
             if (setting == null)
             {
@@ -212,41 +226,57 @@ namespace CloneDroneOverhaul.UI
             {
                 setting.gameObject.SetActive(true);
             }
+            setting.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("SName_" + entry.ID);
+            setting.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("SDesc_" + entry.ID);
+            setting.GetObjectFromList<InputField>(2).text = entry.ID;
         }
 
         private class UISettingEntry : MonoBehaviour
         {
             private ModdedObject MyModdedObject;
-            private Modules.SettingsManager.SettingEntry Entry;
+            private Modules.OverhaulSettingsManager.SettingEntry Entry;
             private System.Type Type;
+            private Modules.OverhaulSettingsManager.SettingEntry.UIValueSettings Settings;
 
-            public void SetupValue<T>(Modules.SettingsManager.SettingEntry sEntry, object value)
+            public void SetupValue(Type type, Modules.OverhaulSettingsManager.SettingEntry sEntry, object value, Type enumerator = null)
             {
                 Entry = sEntry;
+                Settings = sEntry.ValueSettings;
                 MyModdedObject = base.GetComponent<ModdedObject>();
-                Type = typeof(T);
-                if (typeof(T) == typeof(bool))
+                Type = type;
+
+                MyModdedObject.GetObjectFromList<RectTransform>(4).gameObject.SetActive(Entry.HasChildSettings);
+                MyModdedObject.GetObjectFromList<Button>(4).onClick.AddListener(new UnityEngine.Events.UnityAction(ShowAdditSettings));
+
+                if (type == typeof(bool))
                 {
                     base.GetComponent<Toggle>().isOn = (bool)value;
                     base.GetComponent<Toggle>().onValueChanged.AddListener(new UnityEngine.Events.UnityAction<bool>(ToggleBoolValue));
-                    MyModdedObject.GetObjectFromList<RectTransform>(4).gameObject.SetActive(Entry.HasChildSettings);
-                    MyModdedObject.GetObjectFromList<Button>(4).onClick.AddListener(new UnityEngine.Events.UnityAction(ShowAdditSettings));
                 }
-                if (typeof(T) == typeof(float))
+                if (type.IsEnum)
                 {
-                    //base.GetComponent<Toggle>().isOn = (bool)value;
-                    //base.GetComponent<Toggle>().onValueChanged.AddListener(new UnityEngine.Events.UnityAction<bool>(ToggleBoolValue));
-                    MyModdedObject.GetObjectFromList<RectTransform>(4).gameObject.SetActive(Entry.HasChildSettings);
-                    MyModdedObject.GetObjectFromList<Button>(4).onClick.AddListener(new UnityEngine.Events.UnityAction(ShowAdditSettings));
+                    Dropdown dr = MyModdedObject.GetObjectFromList<Dropdown>(5);
+                    List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+                    foreach(string str in type.GetEnumNames())
+                    {
+                        list.Add(new Dropdown.OptionData(str));
+                    }
+                    dr.options = list;
+                    dr.value = (int)value;
+                    dr.onValueChanged.AddListener(SetEnumValue);
+ 
+                }
+                if (type == typeof(float))
+                {
                     if(Entry.ValueSettings != null)
                     {
                         Slider slider = MyModdedObject.GetObjectFromList<Slider>(5);
-                        slider.wholeNumbers = false;
+                        slider.wholeNumbers = Entry.ValueSettings.OnlyInt;
                         slider.minValue = Entry.ValueSettings.MinValue;
                         slider.maxValue = Entry.ValueSettings.MaxValue;
                         slider.value = (float)value;
                         slider.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<float>(SetFloatValue));
-                        string valtxt = ((float)value).ToString();
+                        string valtxt = ((float)value * (Settings.Step == -1 ? 1 : Settings.Step)).ToString();
                         if (valtxt.Length > 4)
                         {
                             valtxt = valtxt.Remove(4);
@@ -272,12 +302,16 @@ namespace CloneDroneOverhaul.UI
             void SetFloatValue(float val)
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, val, false);
-                string valtxt = val.ToString();
+                string valtxt = (val * (Settings.Step == -1 ? 1 : Settings.Step)).ToString();
                 if(valtxt.Length > 4)
                 {
                     valtxt = valtxt.Remove(4);
                 }
                 MyModdedObject.GetObjectFromList<Text>(6).text = "[" + valtxt + "]";
+            }
+            void SetEnumValue(int num)
+            {
+                CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, num, false);
             }
         }
 

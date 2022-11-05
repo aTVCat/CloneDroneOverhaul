@@ -1,9 +1,13 @@
-﻿using CloneDroneOverhaul.PooledPrefabs;
+﻿using AmplifyOcclusion;
+using CloneDroneOverhaul.PooledPrefabs;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityStandardAssets.ImageEffects;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using CloneDroneOverhaul.UI.Components;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -12,6 +16,7 @@ namespace CloneDroneOverhaul.Modules
         private bool isInitialized;
 
         private AmplifyOcclusionEffect Occlusion;
+        private Image NoiseImage;
 
         private ReflectionProbe probe;
         private ParticleSystem worldDustMS1;
@@ -34,8 +39,27 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab kickVFX;
         private SimplePooledPrefab jumpDash;
         private Camera lastSpottedCamera;
+        private Camera noiseCamera;
+
+        List<AmplifyOcclusionEffect> effects = new List<AmplifyOcclusionEffect>();
 
         private bool isWaitingNextFrame;
+
+        private bool AOEnabled;
+        private int AOSampleCount;
+        private float AOIntensity;
+        private float NoiseMultipler;
+        private bool DustEnabled;
+        private bool NoiseEnabled;
+
+
+        public bool OverrideSettings;
+        public bool Override_AOEnabled;
+        public int Override_AOSampleCount;
+        public float Override_AOIntensity;
+        public float Override_NoiseMultipler;
+        public bool Override_DustEnabled;
+        public bool Override_NoiseEnabled;
 
         public override void Start()
         {
@@ -73,9 +97,61 @@ namespace CloneDroneOverhaul.Modules
             jumpDash = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_JumpDash").transform, 5, "VFX_JumpDash", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
             msHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_MSHit").transform, 10, "VFX_MSHit", 0.17f, SimplePooledPrefabInstance.ParticleSystemTag);
 
+            GameObject obj1 = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "Noise"));
+            NoiseImage = obj1.transform.GetChild(1).gameObject.GetComponent<Image>();
+            noiseCamera = obj1.transform.GetChild(0).gameObject.GetComponent<Camera>();
+            obj1.transform.GetChild(0).SetParent(null);
+
             RefreshDustMaterials();
 
             isInitialized = true;
+        }
+
+        public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
+        {
+            if(ID == "Graphics.Additions.Noise Multipler")
+            {
+                NoiseMultipler = (float)value;
+            }
+            if (ID == "Graphics.Additions.Sample count")
+            {
+                AOSampleCount = (int)value;
+            }
+            if(ID == "Graphics.Additions.Amplify occlusion")
+            {
+                AOEnabled = (bool)value;
+            }
+            if (ID == "Graphics.Additions.Noise effect")
+            {
+                NoiseEnabled = (bool)value;
+            }
+            if (ID == "Graphics.World.Floating dust")
+            {
+                DustEnabled = (bool)value;
+            }
+            if (ID == "Graphics.Additions.Occlusion intensity")
+            {
+                AOIntensity = (float)value;
+            }
+            RefreshVisuals();
+        }
+
+        public void RefreshVisuals()
+        {
+            if (Occlusion != null)
+            {
+                Occlusion.Intensity = (OverrideSettings ? Override_AOIntensity : AOIntensity);
+                Occlusion.enabled = (OverrideSettings ? Override_AOEnabled : AOEnabled);
+                Occlusion.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : AOSampleCount);
+            }
+            NoiseImage.color = new Color(1, 1, 1, 0.33f * (OverrideSettings ? Override_NoiseMultipler : NoiseMultipler));
+            NoiseImage.gameObject.SetActive(OverrideSettings ? Override_NoiseEnabled : NoiseEnabled);
+            if (!DustEnabled)
+            {
+                worldDustNormal.Clear();
+                worldDustMS0.Clear();
+                worldDustMS1.Clear();
+            }
         }
 
         private void renderReflections()
@@ -92,6 +168,7 @@ namespace CloneDroneOverhaul.Modules
             }
 
             Camera newCam = Camera.main;
+            noiseCamera.gameObject.SetActive(newCam != null);
             if (lastSpottedCamera != newCam)
             {
                 if (newCam != null)
@@ -103,10 +180,33 @@ namespace CloneDroneOverhaul.Modules
                     bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
 
                     AmplifyOcclusionEffect acc = newCam.gameObject.AddComponent<AmplifyOcclusionEffect>();
-                    acc.Intensity = 0.85f;
+                    acc.Intensity = OverhaulMain.GetSetting<float>("Graphics.Additions.Occlusion intensity");
                     acc.BlurSharpness = 4f;
-                    acc.FilterResponse = 0.8f;
+                    acc.FilterResponse = 0.7f;
+                    acc.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : AOSampleCount);
+                    acc.Bias = 1;
                     Occlusion = acc;
+                    acc.enabled = (OverrideSettings ? Override_AOEnabled : AOEnabled);
+
+                    if(effects.Count != 0)
+                    {
+                        for (int i = effects.Count - 1; i > -1; i--)
+                        {
+                            if(effects[i] == null || effects[i].gameObject == null)
+                            {
+                                effects.RemoveAt(i);
+                            }
+                            else
+                            {
+                                if (effects[i].GetComponent<Camera>() != PlayerCameraManager.Instance.GetMainCamera())
+                                {
+                                    GameObject.Destroy(effects[i]);
+                                }
+                            }
+
+                        }
+                    }
+                    effects.Add(acc);
                 }
             }
             lastSpottedCamera = Camera.main;
@@ -115,7 +215,7 @@ namespace CloneDroneOverhaul.Modules
         {
             if(Occlusion != null)
             {
-                Occlusion.enabled = !GameModeManager.IsInLevelEditor();
+                Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : AOEnabled);
             }
             if (Camera.main != null)
             {
@@ -149,6 +249,15 @@ namespace CloneDroneOverhaul.Modules
 
         private void RefreshDustMaterials()
         {
+            worldDustNormal.Stop();
+            worldDustMS0.Stop();
+            worldDustMS1.Stop();
+
+            if (!DustEnabled)
+            {
+                return;
+            }
+
             RobotShortInformation info = PlayerUtilities.GetPlayerRobotInfo();
             bool useMindspace = false;
             if (!info.IsNull)
@@ -156,20 +265,13 @@ namespace CloneDroneOverhaul.Modules
                 useMindspace = info.IsFPMMindspace;
             }
 
-            worldDustNormal.Stop();
-            worldDustMS0.Stop();
-            worldDustMS1.Stop();
-
             if (useMindspace)
             {
                 worldDustMS0.Play();
                 worldDustMS1.Play();
-                worldDustNormal.Stop();
             }
             else
             {
-                worldDustMS0.Stop();
-                worldDustMS1.Stop();
                 worldDustNormal.Play();
             }
         }

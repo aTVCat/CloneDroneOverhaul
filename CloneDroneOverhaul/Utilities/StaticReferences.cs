@@ -1,9 +1,12 @@
 ﻿using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
+using System.CodeDom.Compiler;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using UnityEngine;
 
 namespace CloneDroneOverhaul
@@ -11,7 +14,7 @@ namespace CloneDroneOverhaul
     public class BaseStaticReferences
     {
         public static Modules.ModuleManagement ModuleManager { get; internal set; }
-        public static Modules.SettingsManager SettingsManager { get; internal set; }
+        public static Modules.OverhaulSettingsManager SettingsManager { get; internal set; }
         public static UI.GUIManagement GUIs { get; internal set; }
         public static UI.NewEscMenu NewEscMenu { get; internal set; }
     }
@@ -32,6 +35,27 @@ namespace CloneDroneOverhaul
 
     public static class BaseUtils
     {
+        public static SelectableUI AddSelectableUIToObject(GameObject obj)
+        {
+            SelectableUI result = null;
+            result = obj.AddComponent<SelectableUI>();
+            result.GameThemeData = Patching.VisualFixes.ObjectFixer.GameUIThemeData;
+            return result;
+        }
+
+        public static Assembly CompileAsseblyFromFilesInPath(string path)
+        {
+            Assembly result = null;
+
+            System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
+            parameters.GenerateExecutable = false;
+            parameters.OutputAssembly = "AutoGen.dll";
+
+            result = CodeDomProvider.CreateProvider("CSharp").CompileAssemblyFromSource(parameters, System.IO.File.ReadAllLines("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Clone Drone in the Danger Zone\\mods\\CloneDroneOverhaulRW\\CSScripts\\BWEffect.cs")).CompiledAssembly;
+
+            return result;
+        }
+
         public static void SpawnLevelFromPath(string path, bool clearLevels, System.Action callback = null)
         {
             if (clearLevels) LevelManager.Instance.CleanUpLevelThisFrame();
@@ -189,7 +213,6 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
-            FileManagerStuff.OpenSkinsFolder();
         }
     }
 
@@ -212,11 +235,11 @@ namespace CloneDroneOverhaul
     {
         internal static Process ExplorerProcess { get; set; }
 
-        public static void OpenSkinsFolder()
+        public static void OpenFolder(string path)
         {
             ExplorerProcess = Process.Start(new ProcessStartInfo()
             {
-                FileName = "C:\\Program Files (x86)\\Steam\\steamapps\\common",
+                FileName = path,
                 UseShellExecute = true,
                 Verb = "open"
             });

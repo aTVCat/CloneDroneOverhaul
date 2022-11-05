@@ -1,5 +1,6 @@
 ﻿using CloneDroneOverhaul.Patching.VisualFixes;
 using CloneDroneOverhaul.UI;
+using CloneDroneOverhaul.UI.Components;
 using CloneDroneOverhaul.Utilities;
 using HarmonyLib;
 using ModLibrary;
@@ -12,6 +13,26 @@ using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.Patching
 {
+    internal class OverhualSepratedPatchMethods
+    {
+        public static void PatchSettings(SettingsMenu __instance)
+        {
+            OverhaulMain.Timer.AddNoArgAction(delegate
+            {
+                __instance.VsyncOnToggle.transform.GetChild(1).GetComponent<Text>().text = OverhaulMain.GetTranslatedString("Settings_VSyncNotif");
+                __instance.VsyncOnToggle.transform.GetChild(0).gameObject.SetActive(false);
+                __instance.VsyncOnToggle.interactable = false;
+                __instance.VsyncOnToggle.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
+                __instance.VsyncOnToggle.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 20);
+                if (__instance.GetComponent<SelectableUI>() != null) __instance.GetComponent<SelectableUI>().enabled = false;
+                if (__instance.VsyncOnToggle.GetComponent<DoOnClick>() == null) DoOnClick.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
+                {
+                    SettingsUI.Instance.ShowWithOpenedPage("Graphics", "Settings");
+                });
+            }, 0.05f, true);
+        }
+    }
+
     [HarmonyPatch(typeof(GameUIRoot))]
     public class OverhaulUIPatches
     {
@@ -22,7 +43,7 @@ namespace CloneDroneOverhaul.Patching
             try
             {
                 if (OverhaulMain.GUI.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || OverhaulMain.GUI.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
-                     OverhaulMain.GUI.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
+                     OverhaulMain.GUI.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy || NewPhotoModeUI.Instance.ShouldShowCursor())
                 {
                     global::InputManager.Instance.SetCursorEnabled(true);
                     return false;
@@ -39,6 +60,28 @@ namespace CloneDroneOverhaul.Patching
         private static void TitleScreenUI_setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
         {
             __instance.transform.GetChild(1).gameObject.SetActive(visible);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TitleScreenUI), "Hide")]
+        private static void TitleScreenUI_Hide_Postfix(TitleScreenUI __instance)
+        {
+            NewGameModeSelectionScreen.Instance.Hide();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PhotoModeControlsDisplay), "SetVisibility")]
+        private static void PhotoModeControlsDisplay_SetVisibility_Postfix(PhotoModeControlsDisplay __instance, bool value)
+        {
+            __instance.gameObject.SetActive(false);
+            if (value)
+            {
+                UI.NewPhotoModeUI.Instance.Show();
+            }
+            else
+            {
+                UI.NewPhotoModeUI.Instance.Hide();
+            }
         }
 
         [HarmonyPostfix]
@@ -108,12 +151,25 @@ namespace CloneDroneOverhaul.Patching
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SettingsMenu), "Hide")]
-        private static void SettingsMenu_Hide_Postfix(EscMenu __instance)
+        private static void SettingsMenu_Hide_Postfix(SettingsMenu __instance)
         {
             if (BaseStaticValues.IsEscMenuWaitingToShow)
             {
                 BaseStaticReferences.NewEscMenu.Show();
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SettingsMenu), "Show")]
+        private static void SettingsMenu_Show_Postfix(SettingsMenu __instance)
+        {
+            OverhualSepratedPatchMethods.PatchSettings(__instance);
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SettingsMenu), "ShowContentsForTab")]
+        private static void SettingsMenu_ShowContentsForTab_Postfix(SettingsMenu __instance)
+        {
+            OverhualSepratedPatchMethods.PatchSettings(__instance);
         }
 
         [HarmonyPrefix]
@@ -144,6 +200,27 @@ namespace CloneDroneOverhaul.Patching
             {
                 BaseStaticReferences.NewEscMenu.Show();
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(GameModeSelectScreen), "Show")]
+        private static bool GameModeSelectScreen_Show_Prefix(GameModeSelectScreen __instance)
+        {
+            NewGameModeSelectionScreen.Instance.Show(__instance.GameModeData);
+            return false;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameModeSelectScreen), "Hide")]
+        private static void GameModeSelectScreen_Show_Postfix(GameModeSelectScreen __instance)
+        {
+            NewGameModeSelectionScreen.Instance.Hide();
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(GameModeSelectScreen), "SetMainScreenVisible")]
+        private static bool GameModeSelectScreen_SetMainScreenVisible_Prefix(GameModeSelectScreen __instance, bool visible)
+        {
+            NewGameModeSelectionScreen.Instance.SetMainScreenVisible(visible);
+            return false;
         }
 
         [HarmonyPostfix]
@@ -177,7 +254,7 @@ namespace CloneDroneOverhaul.Patching
                     completed++;
                 }
             }
-    (__instance.ProgressPercentageLabel.transform as RectTransform).sizeDelta = new Vector2(300, 50);
+            (__instance.ProgressPercentageLabel.transform as RectTransform).sizeDelta = new Vector2(300, 50);
             __instance.ProgressPercentageLabel.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "% [" + completed + "/" + achs.Length + "]";
         }
 
@@ -216,6 +293,13 @@ namespace CloneDroneOverhaul.Patching
         private static void CharacterTracker_SetPlayer_Prefix(CharacterTracker __instance, Character player)
         {
             BaseStaticReferences.ModuleManager.ExecuteFunction("onPlayerSet", new object[] { player.GetRobotInfo(), __instance.GetPrivateField<Character>("_player").GetRobotInfo() });
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FirstPersonMover), "OnDestroy")]
+        private static void FirstPersonMover_OnDestroy_Postfix(FirstPersonMover __instance)
+        {
+            BaseStaticReferences.ModuleManager.ExecuteFunction("firstPersonMover.OnDestroy", new object[] { __instance.GetRobotInfo() });
         }
 
         [HarmonyPostfix]
@@ -318,7 +402,6 @@ namespace CloneDroneOverhaul.Patching
                         PlayerCameraManager.Instance.ShakeCamera(0.2f, 0.8f);
                     }
                 }
-
             }
         }
 
@@ -375,29 +458,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(PS4BodyCubeMaterialFix), "Awake")]
         public static void PS4BodyCubeMaterialFix_Awake_Postfix(PS4BodyCubeMaterialFix __instance)
         {
-            MeshRenderer component = __instance.GetComponent<MeshRenderer>();
-            bool flag = component == null;
-            if (!flag)
-            {
-                Material material = component.material;
-                bool flag2 = material == null;
-                if (!flag2)
-                {
-                    bool flag3 = material.name == "MindSpaceMaterial_EmperorCrown (Instance)";
-                    if (flag3)
-                    {
-                        material.color = new Color(2f, 1.5f, 0.35f, 0.98f);
-                    }
-                    else
-                    {
-                        bool flag4 = material.name == "MindSpaceMaterial_EmperorFace (Instance)";
-                        if (flag4)
-                        {
-                            material.color = new Color(0.5f, 0.76f, 1.8f, 0.89f);
-                        }
-                    }
-                }
-            }
+            ObjectFixer.FixObject(__instance.transform, "PS4Cube", __instance);
         }
 
         [HarmonyPostfix]
@@ -506,6 +567,13 @@ namespace CloneDroneOverhaul.Patching
             return false;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetCollider), "OnEnable")]
+        private static void PlanetCollider_OnEnable_Prefix(PlanetCollider __instance)
+        {
+            ObjectFixer.FixObject(__instance.transform, "Planet_Earth", __instance);
+        }
+
 
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(CameraShaker), "Update")]
@@ -525,6 +593,94 @@ namespace CloneDroneOverhaul.Patching
 
 
             return codes.AsEnumerable();
+        }
+
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(PhotoManager), "Update")]
+        private static IEnumerable<CodeInstruction> PhotoManager_Update_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+
+            for (int i = 66; i < 95; i++)
+            {
+                codes[i].opcode = OpCodes.Nop;
+            }
+
+            return codes.AsEnumerable();
+        }
+    }
+
+    public class BodyPartPatcher
+    {
+        public static bool CanCalculateVoxelWorldPositionNextTime = true;
+        public static void OnBodyPartStart(Frame frame)
+        {
+            Voxel[] voxels = frame.Voxels;
+            ReplaceVoxelColor replaceVoxels = frame.GetComponentInParent<ReplaceVoxelColor>();
+            for (int i = 0; i < voxels.Length; i++)
+            {
+                Color normalCol = voxels[i].Color;
+
+                float num = UnityEngine.Random.Range(0.95f, 1.00f);
+                bool shouldUpdateColor = false;
+                if (replaceVoxels == null)
+                {
+                    shouldUpdateColor = voxels[i].Color.a > 253;
+                }
+
+                if (replaceVoxels != null && replaceVoxels.Old != normalCol)
+                {
+                    shouldUpdateColor = true;
+                }
+                shouldUpdateColor = true;
+
+                if (shouldUpdateColor)
+                {
+                    Color32 color = new Color32((byte)Mathf.RoundToInt(voxels[i].Color.r * num), (byte)Mathf.RoundToInt(voxels[i].Color.g * num),
+                       (byte)Mathf.RoundToInt(voxels[i].Color.b * num), voxels[i].Color.a);
+                    voxels[i].Color = color;
+                }
+            }
+            frame.UpdateAllChunks();
+        }
+
+        public static void OnVoxelCut(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
+        {
+            try
+            {
+                CanCalculateVoxelWorldPositionNextTime = !CanCalculateVoxelWorldPositionNextTime;
+                if (!CanCalculateVoxelWorldPositionNextTime)
+                {
+                    return;
+                }
+                Vector3 voxelWorldPosition = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
+                if (fireSpreadDefinition == null)
+                {
+                    Vector3 a = (voxelWorldPosition - volumeWorldCenter).normalized + impactDirectionWorld;
+                }
+
+                OverhaulMain.Visuals.EmitBodyPartCutVFX(voxelWorldPosition, fireSpreadDefinition != null);
+            }
+            catch (System.Exception ex)
+            {
+                CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+                notif.SetUp("Nullpoint : BodyPartPatcher - OnVoxelCut", ex.Message, 5, new UnityEngine.Vector2(400, 700), new UnityEngine.Color(1f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
+            }
+        }
+
+        public static void OnBodyPartDamaged(BaseBodyPart part)
+        {
+            if (part is MindSpaceBodyPart)
+            {
+                OverhaulMain.Visuals.EmitMSBodyPartDamage(part.transform.position);
+            }
+        }
+
+        public static void AddMechBodyPartComponent(GameObject obj)
+        {
+            MechBodyPart part = obj.AddComponent<MechBodyPart>();
+            throw new System.NotImplementedException();
         }
     }
 }

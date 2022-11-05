@@ -7,15 +7,25 @@ using UnityStandardAssets.ImageEffects;
 using System.Collections.Generic;
 using System.Linq;
 using static System.Collections.Specialized.BitVector32;
+using PicaVoxel;
+using System;
+using AmplifyOcclusion;
 
 namespace CloneDroneOverhaul.Modules
 {
-    public class SettingsManager : ModuleBase
+    public class OverhaulSettingsManager : ModuleBase
     {
         private List<SettingEntry> Entries = new List<SettingEntry>();
         private List<SettingEntry.CategoryPath> PageDescriptions = new List<SettingEntry.CategoryPath>();
         private List<SettingEntry.OverridePrefs> PageOverrides = new List<SettingEntry.OverridePrefs>();
-        public static SettingsManager Instance;
+        public static OverhaulSettingsManager Instance;
+        public static CloneDroneOverhaulSettingsData Data
+        {
+            get
+            {
+                return CloneDroneOverhaulDataContainer.Instance.SettingsData;
+            }
+        }
 
         public override void Start()
         {
@@ -26,6 +36,14 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
+            AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel)}));
+            AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f}));
+            AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.85f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
+            AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
+            AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler" } }));
+
+            AddSetting(SettingEntry.NewSetting<bool>("Floating dust", "", "Graphics", "World", true));
+
             AddSetting(SettingEntry.NewSetting<bool>("Show duel room code", "Show the duel room code after you start the game", "Misc", "Privacy", true));
             AddSetting(SettingEntry.NewSetting<bool>("Unlimited clone count", "Play with 999 clones!", "Misc", "Privacy", false));
 
@@ -34,8 +52,24 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
 
+            AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 10, Step = 60, OnlyInt = true }));
+
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
             PageOverrides.Add(new SettingEntry.OverridePrefs("Misc", "Privacy", "Gameplay", "Duels"));
+            PageOverrides.Add(new SettingEntry.OverridePrefs("Graphics", "Additions", "Graphics", "Camera"));
+
+            OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(delegate
+            {
+                this.refreshSettings();
+            });
+        }
+
+        private void refreshSettings()
+        {
+            foreach (SettingEntry entry in Entries)
+            {
+                BaseStaticReferences.ModuleManager.OnSettingRefreshed(entry.ID, OverhaulMain.GetSetting<object>(entry.ID), true);
+            }
         }
 
         public string GetSectionName(string sectionInitName)
@@ -152,7 +186,7 @@ namespace CloneDroneOverhaul.Modules
         {
             return Entries;
         }
-        public void AddSetting(Modules.SettingsManager.SettingEntry entry)
+        public void AddSetting(Modules.OverhaulSettingsManager.SettingEntry entry)
         {
             Entries.Add(entry);
             CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(entry.ID, entry.DefaultValue, true);
@@ -213,11 +247,15 @@ namespace CloneDroneOverhaul.Modules
                 //Float slider stuff
                 public float MinValue;
                 public float MaxValue;
+                public int Step = -1;
+                public bool OnlyInt;
+
+                public Type DropdownEnumType;
             }
 
-            public static SettingEntry NewSetting<T>(string name, string description, string category, string categorySection, T defaultValue, ChildrenSettings childSettings = null, UIValueSettings valueSettings = null, string nameID = null, string descriptionID = null)
+            public static SettingEntry NewSetting<T>(string name, string description, string category, string categorySection, object defaultValue, ChildrenSettings childSettings = null, UIValueSettings valueSettings = null, string nameID = null, string descriptionID = null)
             {
-                Modules.SettingsManager.SettingEntry entry = new Modules.SettingsManager.SettingEntry();
+                Modules.OverhaulSettingsManager.SettingEntry entry = new Modules.OverhaulSettingsManager.SettingEntry();
                 entry.Name = name;
                 entry.Description = description;
                 entry.Type = typeof(T);
