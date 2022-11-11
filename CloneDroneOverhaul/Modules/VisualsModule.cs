@@ -13,8 +13,6 @@ namespace CloneDroneOverhaul.Modules
 {
     public class VisualsModule : ModuleBase
     {
-        private bool isInitialized;
-
         private AmplifyOcclusionEffect Occlusion;
         private Image NoiseImage;
 
@@ -45,12 +43,15 @@ namespace CloneDroneOverhaul.Modules
 
         private bool isWaitingNextFrame;
 
-        private bool AOEnabled;
-        private int AOSampleCount;
-        private float AOIntensity;
-        private float NoiseMultipler;
-        private bool DustEnabled;
-        private bool NoiseEnabled;
+        private bool _AOEnabled;
+        private int _AOSampleCount;
+        private float _AOIntensity;
+        private float _noiseMultipler;
+        private bool _dustEnabled;
+        private bool _noiseEnabled;
+        private int _shadowResolution;
+        private int _shadowBias;
+        private bool _softShadows;
 
 
         public bool OverrideSettings;
@@ -60,6 +61,13 @@ namespace CloneDroneOverhaul.Modules
         public float Override_NoiseMultipler;
         public bool Override_DustEnabled;
         public bool Override_NoiseEnabled;
+        public int Override_ShadowResolution;
+        public int Override_ShadowBias;
+        public bool Override_SoftShadows;
+        public bool Override_BloomEnabled;
+        public int Override_BloomIterations;
+        public float Override_BloomThreshold;
+        public float Override_BloomIntensity;
 
         public override void Start()
         {
@@ -84,7 +92,7 @@ namespace CloneDroneOverhaul.Modules
             swordFireBlockPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBlock").transform, 50, "VFX_SwordFireBlock", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             swordBlockMSPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_BlockMS").transform, 10, "VFX_SwordBlockMS", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             msBodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_CutMS").transform, 10, "VFX_MSCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
-            bodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 15, "VFX_Cut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
+            bodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 5, "VFX_Cut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedWithFireVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 15, "VFX_FireCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartBurning = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 5, "VFX_Burning", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
             lavaVoxelsVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, "VFX_ExplosionCubes", 0.25f, SimplePooledPrefabInstance.ParticleSystemTag);
@@ -103,35 +111,45 @@ namespace CloneDroneOverhaul.Modules
             obj1.transform.GetChild(0).SetParent(null);
 
             RefreshDustMaterials();
-
-            isInitialized = true;
         }
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
             if(ID == "Graphics.Additions.Noise Multipler")
             {
-                NoiseMultipler = (float)value;
+                _noiseMultipler = (float)value;
             }
             if (ID == "Graphics.Additions.Sample count")
             {
-                AOSampleCount = (int)value;
+                _AOSampleCount = (int)value;
             }
             if(ID == "Graphics.Additions.Amplify occlusion")
             {
-                AOEnabled = (bool)value;
+                _AOEnabled = (bool)value;
             }
             if (ID == "Graphics.Additions.Noise effect")
             {
-                NoiseEnabled = (bool)value;
+                _noiseEnabled = (bool)value;
             }
             if (ID == "Graphics.World.Floating dust")
             {
-                DustEnabled = (bool)value;
+                _dustEnabled = (bool)value;
             }
             if (ID == "Graphics.Additions.Occlusion intensity")
             {
-                AOIntensity = (float)value;
+                _AOIntensity = (float)value;
+            }
+            if(ID == "Graphics.Settings.Shadow resolution")
+            {
+                _shadowResolution = (int)value;
+            }
+            if (ID == "Graphics.Settings.Shadow bias")
+            {
+                _shadowBias = (int)value;
+            }
+            if (ID == "Graphics.Settings.Soft shadows")
+            {
+                _softShadows = (bool)value;
             }
             RefreshVisuals();
         }
@@ -140,13 +158,59 @@ namespace CloneDroneOverhaul.Modules
         {
             if (Occlusion != null)
             {
-                Occlusion.Intensity = (OverrideSettings ? Override_AOIntensity : AOIntensity);
-                Occlusion.enabled = (OverrideSettings ? Override_AOEnabled : AOEnabled);
-                Occlusion.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : AOSampleCount);
+                Occlusion.Intensity = (OverrideSettings ? Override_AOIntensity : _AOIntensity);
+                Occlusion.enabled = (OverrideSettings ? Override_AOEnabled : _AOEnabled);
+                Occlusion.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : _AOSampleCount);
             }
-            NoiseImage.color = new Color(1, 1, 1, 0.33f * (OverrideSettings ? Override_NoiseMultipler : NoiseMultipler));
-            NoiseImage.gameObject.SetActive(OverrideSettings ? Override_NoiseEnabled : NoiseEnabled);
-            if (!DustEnabled)
+            NoiseImage.color = new Color(1, 1, 1, 0.33f * (OverrideSettings ? Override_NoiseMultipler : _noiseMultipler));
+            NoiseImage.gameObject.SetActive(OverrideSettings ? Override_NoiseEnabled : _noiseEnabled);
+            Light light = DirectionalLightManager.Instance.DirectionalLight;
+            if(light != null)
+            {
+                ShadowResolution enumRes = (ShadowResolution)(OverrideSettings ? Override_ShadowResolution : _shadowResolution);
+                switch (enumRes)
+                {
+                    case ShadowResolution.Low:
+                        light.shadowCustomResolution = 1000;
+                        break;
+                    case ShadowResolution.Default:
+                        light.shadowCustomResolution = -1;
+                        break;
+                    case ShadowResolution.High:
+                        light.shadowCustomResolution = 5000;
+                        break;
+                    case ShadowResolution.ExtremlyHigh:
+                        light.shadowCustomResolution = 10000;
+                        break;
+                }
+
+                ShadowBias shadowBias = (ShadowBias)(OverrideSettings ? Override_ShadowBias : _shadowBias);
+                switch (shadowBias)
+                {
+                    case ShadowBias.Minimum:
+                        light.shadowBias = 0;
+                        break;
+                    case ShadowBias.Low:
+                        light.shadowBias = 0.2f;
+                        break;
+                    case ShadowBias.Default:
+                        light.shadowBias = 1f;
+                        break;
+                }
+
+                LightShadows shadowsMode = LightShadows.Soft;
+                int qualityLevel = SettingsManager.Instance.GetSavedQualityIndex();
+                if(qualityLevel == 0)
+                {
+                    shadowsMode = LightShadows.None;
+                }
+                else
+                {
+                    shadowsMode = (OverrideSettings ? Override_SoftShadows : _softShadows) ? LightShadows.Soft : LightShadows.Hard;
+                }
+                light.shadows = shadowsMode;
+            }
+            if (!_dustEnabled)
             {
                 worldDustNormal.Clear();
                 worldDustMS0.Clear();
@@ -183,10 +247,10 @@ namespace CloneDroneOverhaul.Modules
                     acc.Intensity = OverhaulMain.GetSetting<float>("Graphics.Additions.Occlusion intensity");
                     acc.BlurSharpness = 4f;
                     acc.FilterResponse = 0.7f;
-                    acc.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : AOSampleCount);
+                    acc.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : _AOSampleCount);
                     acc.Bias = 1;
                     Occlusion = acc;
-                    acc.enabled = (OverrideSettings ? Override_AOEnabled : AOEnabled);
+                    acc.enabled = (OverrideSettings ? Override_AOEnabled : _AOEnabled);
 
                     if(effects.Count != 0)
                     {
@@ -215,7 +279,7 @@ namespace CloneDroneOverhaul.Modules
         {
             if(Occlusion != null)
             {
-                Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : AOEnabled);
+                Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : _AOEnabled);
             }
             if (Camera.main != null)
             {
@@ -253,7 +317,7 @@ namespace CloneDroneOverhaul.Modules
             worldDustMS0.Stop();
             worldDustMS1.Stop();
 
-            if (!DustEnabled)
+            if (!_dustEnabled)
             {
                 return;
             }
@@ -412,5 +476,20 @@ namespace CloneDroneOverhaul.Modules
                 Dust.gameObject.SetActive(true);
             }
         }
+    }
+
+    public enum ShadowResolution
+    {
+        Low,
+        Default,
+        High,
+        ExtremlyHigh
+    }
+
+    public enum ShadowBias
+    {
+        Minimum,
+        Low,
+        Default,
     }
 }

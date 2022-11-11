@@ -19,6 +19,7 @@ namespace CloneDroneOverhaul.UI.Components
         private Text Value;
         private Slider TheSlider;
         private Action<float> onValueUpdated;
+        private string translateID;
 
         public BetterSlider SetUp(ModdedObject obj, Settings settings, Action<float> onValueUpdatedAction = null)
         {
@@ -30,13 +31,17 @@ namespace CloneDroneOverhaul.UI.Components
             TheSlider.wholeNumbers = settings.UseInt;
             TheSlider.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<float>(OnSliderUpdated));
             onValueUpdated = onValueUpdatedAction;
-
-            if (!string.IsNullOrEmpty(settings.IDToTranslate))
-            {
-                Description.text = OverhaulMain.GetTranslatedString(settings.IDToTranslate);
-            }
+            translateID = settings.IDToTranslate;
 
             return this;
+        }
+
+        void OnEnable()
+        {
+            if (!string.IsNullOrEmpty(translateID))
+            {
+                Description.text = OverhaulMain.GetTranslatedString(translateID);
+            }
         }
 
         public void SetValue(float num)

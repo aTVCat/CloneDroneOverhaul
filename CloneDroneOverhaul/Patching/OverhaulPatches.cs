@@ -7,6 +7,7 @@ using ModLibrary;
 using PicaVoxel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ namespace CloneDroneOverhaul.Patching
                 __instance.VsyncOnToggle.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
                 __instance.VsyncOnToggle.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 20);
                 if (__instance.GetComponent<SelectableUI>() != null) __instance.GetComponent<SelectableUI>().enabled = false;
-                if (__instance.VsyncOnToggle.GetComponent<DoOnClick>() == null) DoOnClick.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
+                if (__instance.VsyncOnToggle.GetComponent<DoOnMouseActions>() == null) DoOnMouseActions.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
                 {
                     SettingsUI.Instance.ShowWithOpenedPage("Graphics", "Settings");
                 });

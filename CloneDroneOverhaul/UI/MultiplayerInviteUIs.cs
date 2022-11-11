@@ -155,6 +155,13 @@ namespace CloneDroneOverhaul.UI
                     moddedObjectMain.GetObjectFromList<Button>(7).GetComponent<Button>().onClick.AddListener(ShowCode);
 
                     moddedObjectMain.GetObjectFromList<Text>(6).text = MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+
+                    moddedObjectToTranslate.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("General_CustomizeGame");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(1).text = OverhaulMain.GetTranslatedString("MIUI_LBS_IncludeVanillaLevels");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(2).text = OverhaulMain.GetTranslatedString("MIUI_ShowCode");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("MIUI_StartGame");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(4).text = OverhaulMain.GetTranslatedString("General_SelectAll");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(5).text = OverhaulMain.GetTranslatedString("MIUI_LBS_Refresh");
                 }
             }
 
@@ -327,21 +334,24 @@ namespace CloneDroneOverhaul.UI
                 {
                     MinValue = 0,
                     MaxValue = 30,
-                    UseInt = true
+                    UseInt = true,
+                    IDToTranslate = "Slider_StartPoints"
                 });
 
                 SkillpointsPerDeath = moddedObjectMain.GetObjectFromList<ModdedObject>(1).AddAndConfigBetterSlider(new BetterSlider.Settings
                 {
                     MinValue = 0,
                     MaxValue = 30,
-                    UseInt = true
+                    UseInt = true,
+                    IDToTranslate = "Slider_PointsPerDeath"
                 });
 
                 Clones = moddedObjectMain.GetObjectFromList<ModdedObject>(2).AddAndConfigBetterSlider(new BetterSlider.Settings
                 {
                     MinValue = 0,
-                    MaxValue = 30, // A warning about 15+ clones
-                    UseInt = true
+                    MaxValue = 30,
+                    UseInt = true,
+                    IDToTranslate = "Slider_Clones"
                 });
 
                 AdditParams = moddedObjectMain.GetObjectFromList<ModdedObject>(8);
@@ -373,6 +383,13 @@ namespace CloneDroneOverhaul.UI
                     Clones.SetValue(Multiplayer1v1CustomGameManager.Instance.GetSavedStartClones());
                     Settings.gameObject.SetActive(true);
                     AdditParams.gameObject.SetActive(false);
+
+                    moddedObjectToTranslate.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("MIUI_Duel_WaitingForPlayer");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(1).text = OverhaulMain.GetTranslatedString("General_CustomizeGame");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(7).text = OverhaulMain.GetTranslatedString("MIUI_StartGame");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(8).text = OverhaulMain.GetTranslatedString("MIUI_ShowCode");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(9).text = OverhaulMain.GetTranslatedString("MIUI_Duel_Note");
+                    moddedObjectToTranslate.GetObjectFromList<Text>(10).text = OverhaulMain.GetTranslatedString("MIUI_Duel_Tip");
                 }
             }
 
@@ -394,14 +411,14 @@ namespace CloneDroneOverhaul.UI
                 string codePart = string.Empty;
                 if (OverhaulMain.GetSetting<bool>("Misc.Privacy.Show duel room code"))
                 {
-                    codePart = System.Environment.NewLine + "Code: " + MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+                    codePart = System.Environment.NewLine + OverhaulMain.GetTranslatedString("MIUI_Duel_Settings_Code") + " " + MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
                 }
                 else
                 {
                     moddedObjectMain.GetObjectFromList<RectTransform>(9).gameObject.SetActive(false);
                 }
 
-                ParamsText.text = "Duel settings: " + System.Environment.NewLine + StartSkillpoints.SliderValue + "-" + SkillpointsPerDeath.SliderValue + "-" + Clones.SliderValue + codePart;
+                ParamsText.text = OverhaulMain.GetTranslatedString("MIUI_Duel_Settings_Settings") + System.Environment.NewLine + StartSkillpoints.SliderValue + "-" + SkillpointsPerDeath.SliderValue + "-" + Clones.SliderValue + codePart;
             }
 
             private void OnShowCodeClicked()
@@ -452,7 +469,8 @@ namespace CloneDroneOverhaul.UI
                 {
                     MinValue = 0,
                     MaxValue = 30,
-                    UseInt = true
+                    UseInt = true,
+                    IDToTranslate = "Slider_StartPoints"
                 });
                 TiersDropdown = mainModdedObj.GetObjectFromList<Dropdown>(1);
                 FriendlyFireToggle = mainModdedObj.GetObjectFromList<Toggle>(2);
@@ -497,6 +515,12 @@ namespace CloneDroneOverhaul.UI
 
                     StartTierRectT.gameObject.SetActive(!isCoopChallenge);
                     StartSkillPointsSlider.gameObject.SetActive(!isCoopChallenge);
+
+                    toTranslateMObj.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("General_CustomizeGame");
+                    toTranslateMObj.GetObjectFromList<Text>(2).text = OverhaulMain.GetTranslatedString("DropdownText_StartTier");
+                    toTranslateMObj.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("ToggleText_FriendlyFire");
+                    toTranslateMObj.GetObjectFromList<Text>(4).text = OverhaulMain.GetTranslatedString("MIUI_ShowCode");
+                    toTranslateMObj.GetObjectFromList<Text>(5).text = OverhaulMain.GetTranslatedString("MIUI_StartGame");
                 }
             }
 
@@ -531,7 +555,7 @@ namespace CloneDroneOverhaul.UI
 
             private void refreshToggleValues(bool val)
             {
-                mainModdedObj.GetObjectFromList<Text>(3).text = val ? "On" : "Off";
+                mainModdedObj.GetObjectFromList<Text>(3).text = val ? OverhaulMain.GetTranslatedString("Toggle_Value_On") : OverhaulMain.GetTranslatedString("Toggle_Value_Off");
             }
 
             private void OnShowCodeClicked()
