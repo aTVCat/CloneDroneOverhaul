@@ -31,27 +31,6 @@ namespace CloneDroneOverhaul.Modules
 			this.ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
             this.ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(this.ArenaTransform);
 			spawnCommentatorsDecor();
-
-            ReleaseRenderTextureOnMainMenuExit[] cameras = UnityEngine.Object.FindObjectsOfType<ReleaseRenderTextureOnMainMenuExit>();
-			return;
-            foreach (ReleaseRenderTextureOnMainMenuExit cam in cameras)
-			{
-				bool flag2 = cam.gameObject.name == "ArenaCamera";
-				if (flag2)
-				{
-					return;
-					this.ArenaCamera = cam.gameObject.transform;
-					bool flag3 = false;//FastPrefabs.NewArenaDrone == null;
-					if (flag3)
-					{
-						//FastPrefabs.NewArenaDrone = AssetLoader.GetObjectFromFile("rp_newobjects", "FlyingCameraPrefabFull").transform;
-					}
-					//this.SpawnedCamera = UnityEngine.Object.Instantiate<Transform>(FastPrefabs.NewArenaDrone, cam.transform, false);
-					this.SpawnedCamera.transform.localEulerAngles = new Vector3(0f, 270f, 0f);
-					this.SpawnedCamera.transform.localPosition = new Vector3(0f, 0f, -2f);
-					break;
-				}
-			}
 		}
 
 		private void spawnCommentatorsDecor()

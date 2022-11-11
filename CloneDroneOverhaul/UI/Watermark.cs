@@ -1,62 +1,99 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI
 {
     public class Watermark : ModGUIBase
     {
-        private Text WatermarkText;
-        private Button ChangelogButton;
-        private Button LEButton;
-        private Button editorsButton;
+        private Text _version;
+        private Button _changelog;
+        private Button _aboutModButton;
+        private Button _localizationEditor;
+        private RectTransform _buttonContainer;
 
-        private Text ChangelogText;
-        private Text LEText;
-        private Text editText;
+        private bool _hasInitializedAboutWindow;
 
         public override void OnInstanceStart()
         {
             base.MyModdedObject = base.GetComponent<ModdedObject>();
-            WatermarkText = MyModdedObject.GetObjectFromList<Text>(0);
-            ChangelogButton = MyModdedObject.GetObjectFromList<Button>(1);
-            ChangelogButton.onClick.AddListener(new UnityEngine.Events.UnityAction(OnUpdateNotesClicked));
-            ChangelogText = MyModdedObject.GetObjectFromList<Text>(2);
-            LEButton = MyModdedObject.GetObjectFromList<Button>(3);
-            LEButton.onClick.AddListener(new UnityEngine.Events.UnityAction(TryShowLocalEditor));
-            LEText = MyModdedObject.GetObjectFromList<Text>(4);
-            editText = MyModdedObject.GetObjectFromList<Text>(6);
-            editorsButton = MyModdedObject.GetObjectFromList<Button>(5);
 
-            OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(AddListeners);
+            _version = MyModdedObject.GetObjectFromList<Text>(0);
+            _buttonContainer = MyModdedObject.GetObjectFromList<RectTransform>(1);
+            _changelog = MyModdedObject.GetObjectFromList<Button>(3);
+            _changelog.onClick.AddListener(openChangelog);
+            _localizationEditor = MyModdedObject.GetObjectFromList<Button>(4);
+            _localizationEditor.onClick.AddListener(openLocalizationEditor);
+            _aboutModButton = MyModdedObject.GetObjectFromList<Button>(5);
+            _aboutModButton.onClick.AddListener(openAboutWindow);
+
+            refreshVersion();
+
+            _localizationEditor.gameObject.SetActive(!OverhaulDescription.IsPublicBuild());
         }
-
-        public override void OnManagedUpdate()
-        {
-            ChangelogButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
-            LEButton.gameObject.SetActive(GameModeManager.IsOnTitleScreen() && !OverhaulDescription.IsPublicBuild());
-            editorsButton.gameObject.SetActive(false && GameModeManager.IsOnTitleScreen()); //false is a temp thing there
-            WatermarkText.text = OverhaulDescription.GetModName(true, !GameModeManager.IsOnTitleScreen());
-        }
-
         public override void OnNewFrame()
         {
-            WatermarkText.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
+            _version.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
         }
-
-        private void OnLangChanged()
+        public override void RunFunction<T>(string name, T obj)
         {
-            ChangelogText.text = OverhaulMain.GetTranslatedString("UpdateNotes");
+            if(name == "onGameModeUpdated")
+            {
+                refreshVersion();
+                _buttonContainer.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
+            }
         }
 
-        private void TryShowLocalEditor()
+        private void refreshVersion()
+        {
+            _version.text = OverhaulDescription.GetModName(true, !GameModeManager.IsOnTitleScreen());
+        }
+
+        private void openLocalizationEditor()
         {
             GUIModule.GetGUI<Localization.OverhaulLocalizationEditor>().TryShow();
         }
-        private void AddListeners()
+
+        private void openAboutWindow()
         {
-            GlobalEventManager.Instance.AddEventListener(GlobalEvents.UILanguageChanged, OnLangChanged);
-            OnLangChanged();
+            MyModdedObject.GetObjectFromList<RectTransform>(2).gameObject.SetActive(true);
+            ModdedObject mObj = MyModdedObject.GetObjectFromList<ModdedObject>(2);
+            if (!_hasInitializedAboutWindow)
+            {
+                _hasInitializedAboutWindow = true;
+                mObj.GetObjectFromList<Button>(1).onClick.AddListener(closeAboutWindow);
+                mObj.GetObjectFromList<Button>(6).onClick.AddListener(openModbot);
+                mObj.GetObjectFromList<Button>(8).onClick.AddListener(openGithub);
+                mObj.GetObjectFromList<Button>(10).onClick.AddListener(openGoogleFormsBugReport);
+            }
+
+            mObj.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("About_AboutCDO");
+            mObj.GetObjectFromList<Text>(2).text = OverhaulMain.GetTranslatedString("About_MadeBy");
+            mObj.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("About_Version") + OverhaulDescription.GetModVersion(true) + "\n" + OverhaulMain.GetTranslatedString("About_DevStatus");
+            mObj.GetObjectFromList<Text>(5).text = OverhaulMain.GetTranslatedString("About_Desc");
+            mObj.GetObjectFromList<Text>(7).text = OverhaulMain.GetTranslatedString("About_ModBobPage");
+            mObj.GetObjectFromList<Text>(9).text = OverhaulMain.GetTranslatedString("About_GitHub");
+            mObj.GetObjectFromList<Text>(11).text = OverhaulMain.GetTranslatedString("About_ReportABugGoogle");
+            mObj.GetObjectFromList<Text>(14).text = OverhaulMain.GetTranslatedString("About_Feedback");
+            mObj.GetObjectFromList<Text>(15).text = OverhaulMain.GetTranslatedString("About_InDiscord");
         }
-        private void OnUpdateNotesClicked()
+        private void closeAboutWindow()
+        {
+            MyModdedObject.GetObjectFromList<RectTransform>(2).gameObject.SetActive(false);
+        }
+        private void openGoogleFormsBugReport()
+        {
+            BaseUtils.OpenURL("https://forms.gle/ZXdQyTrYrbZDX4LH7");
+        }
+        private void openGithub()
+        {
+            BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul");
+        }
+        private void openModbot()
+        {
+            BaseUtils.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
+        }
+
+        private void openChangelog()
         {
             BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/" + OverhaulDescription.GetModVersion(false));
         }

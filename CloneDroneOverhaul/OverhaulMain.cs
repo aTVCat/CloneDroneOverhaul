@@ -12,6 +12,8 @@ using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading;
+using AlignTool;
+using CloneDroneOverhaul.LevelEditor;
 
 namespace CloneDroneOverhaul
 {
@@ -29,7 +31,7 @@ namespace CloneDroneOverhaul
         public static WeaponSkins.WeaponSkinManager Skins { get; set; }
         public static ModuleManagement Modules { get; set; }
         public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
-        public static OverhaulMonoBehaviourListener LocalMonoBehaviour { get; set; }
+        public static OverhaulMainMonoBehaviour LocalMonoBehaviour { get; set; }
 
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
@@ -80,8 +82,19 @@ namespace CloneDroneOverhaul
             BaseStaticValues.IsModEnabled = false;
         }
 
+        protected override UnityEngine.Object OnResourcesLoad(string path)
+        {
+            if(path == "Data/LevelEditorLevels/Story5/C5_5_PrisonCellFlashback")
+            {
+                return new TextAsset(File.ReadAllText(GetModFolder() + "C5_5_PrisonCellFlashback.json"));
+            }
+            return LevelEditor.LevelEditorCustomObjectsManager.TryGetObject(path);
+        }
+
+
         protected override void OnLevelEditorStarted()
         {
+            LevelEditorCustomObjectsManager.OnLevelEditorStarted();
             Modules.ExecuteFunction("onLevelEditorStarted", null);
         }
         protected override void OnModRefreshed()
@@ -159,6 +172,7 @@ namespace CloneDroneOverhaul
             manager.AddModule<PatchesManager>();
             manager.AddModule<AdvancedPhotoModeManager>();
             manager.AddModule<GarbagePositionerManager>();
+            manager.AddModule<GameInformationManager>();
         }
 
         private void checkDlls()
@@ -177,7 +191,7 @@ namespace CloneDroneOverhaul
         private void addListeners()
         {
             UnityEngine.GameObject obj = new UnityEngine.GameObject("CDOListeners");
-            LocalMonoBehaviour = obj.AddComponent<OverhaulMonoBehaviourListener>();
+            LocalMonoBehaviour = obj.AddComponent<OverhaulMainMonoBehaviour>();
         }
 
         private void finalPreparations()
@@ -387,7 +401,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.10";
+            string version = "a0.2.0.11";
             if (!withModBotVersion)
             {
                 return version;
@@ -402,7 +416,7 @@ namespace CloneDroneOverhaul
 
         public static bool IsPublicBuild()
         {
-            return true;
+            return false;
         }
 
 
@@ -413,11 +427,13 @@ namespace CloneDroneOverhaul
         }
     }
 
-    public class OverhaulMonoBehaviourListener : ManagedBehaviour
+    public class OverhaulMainMonoBehaviour : ManagedBehaviour
     {
         private float timeWhenOneSecondWillPast;
         public static bool IsApplicationFocused { get; private set; }
         public LAN.LANMultiplayerManager LANManager;
+
+        private GameMode _gameModeSetLastUpdate;
 
         private bool IsReadyToWork()
         {
@@ -429,6 +445,13 @@ namespace CloneDroneOverhaul
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnManagedUpdate();
+
+                GameMode newGameMode = GameFlowManager.Instance.GetCurrentGameMode();
+                if(newGameMode != _gameModeSetLastUpdate)
+                {
+                    OverhaulMain.Modules.ExecuteFunction<GameMode>("onGameModeUpdated", newGameMode);
+                }
+                _gameModeSetLastUpdate = newGameMode;
             }
         }
 
@@ -455,17 +478,7 @@ namespace CloneDroneOverhaul
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            OverhaulMonoBehaviourListener.IsApplicationFocused = hasFocus;
-            if (!hasFocus)
-            {
-                //Shader.Find("Standard").maximumLOD = 1;
-                //Application.targetFrameRate = 30;
-            }
-            else
-            {
-                //Shader.Find("Standard").maximumLOD = -1;
-                //Application.targetFrameRate = -1;
-            }
+            OverhaulMainMonoBehaviour.IsApplicationFocused = hasFocus;
         }
 
         private void OnTimePast(float time)
@@ -499,15 +512,15 @@ namespace CloneDroneOverhaul
         {
             Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleMatchProgressChanged, delegate
             {
-                executeFunction<object>("battleRoyale.MatchProgressUpdated");
+                executeFunction<object>("battleRoyale.MatchProgressUpdated", null);
             });
             Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleTimeToGameStartUpdated, delegate
             {
-                executeFunction<object>("battleRoyale.TimeToGameStartUpdated");
+                executeFunction<object>("battleRoyale.TimeToGameStartUpdated", null);
             });
             Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.NumMultiplayerPlayersChanged, delegate
             {
-                executeFunction<object>("battleRoyale.NumMultiplayerPlayersChanged");
+                executeFunction<object>("battleRoyale.NumMultiplayerPlayersChanged", null);
             });
 
             Singleton<GlobalEventManager>.Instance.AddEventListener<Character>("CharacterKilled", delegate (Character charr)
@@ -516,7 +529,7 @@ namespace CloneDroneOverhaul
             });
         }
 
-        void executeFunction<T>(string name, T obj = null) where T : class
+        void executeFunction<T>(string name, T obj)
         {
             if (name == "battleRoyale.MatchProgressUpdated")
             {

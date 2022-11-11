@@ -2,11 +2,85 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using CloneDroneOverhaul.Modules;
+using System.Threading;
+using ModLibrary;
+using System;
 
 namespace CloneDroneOverhaul.UI
 {
     public class NewEscMenu : ModGUIBase
     {
+        public class ReportWindow : MonoBehaviour
+        {
+            internal static ReportWindow ConfigWindow(GameObject obj)
+            {
+                return obj.AddComponent<ReportWindow>().SetUp();
+            }
+
+            ReportWindow SetUp()
+            {
+                ModdedObject mObj = base.GetComponent<ModdedObject>();
+                mObj.GetObjectFromList<Button>(1).onClick.AddListener(HideWindow);
+                mObj.GetObjectFromList<Button>(7).onClick.AddListener(sendReport);
+
+                HideWindow();
+
+                return this;
+            }
+
+            private string _currentPlayfabID;
+            private string _currentPlayerName;
+
+            public void HideWindow()
+            {
+                base.gameObject.SetActive(false);
+            }
+
+            public void ShowWindow(string playerName, string playfabID)
+            {
+                base.gameObject.SetActive(true);
+                ModdedObject mObj = base.GetComponent<ModdedObject>();
+                mObj.GetObjectFromList<Text>(2).text = playerName;
+
+                _currentPlayerName = playerName;
+                _currentPlayfabID = playfabID;
+
+                List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+                for (int i = 0; i < GameUIRoot.Instance.EscMenu.ReportUserMenu.ReportTypeOptions.Count; i++)
+                {
+                    string translatedString = Singleton<LocalizationManager>.Instance.GetTranslatedString(GameUIRoot.Instance.EscMenu.ReportUserMenu.ReportTypeOptions[i], -1);
+                    list.Add(new Dropdown.OptionData(translatedString));
+                }
+                mObj.GetObjectFromList<Dropdown>(4).options = list;
+                mObj.GetObjectFromList<Button>(7).onClick.AddListener(delegate
+                {
+
+                });
+                mObj.GetObjectFromList<InputField>(6).text = string.Empty;
+            }
+
+            private void sendReport()
+            {
+                if (base.gameObject.activeSelf && !string.IsNullOrEmpty(_currentPlayerName) && !string.IsNullOrEmpty(_currentPlayfabID))
+                {
+                    ModdedObject mObj = base.GetComponent<ModdedObject>();
+                    MultiplayerPlayerInfoState localPlayerInfoState = Singleton<MultiplayerPlayerInfoManager>.Instance.GetLocalPlayerInfoState();
+                    string reportId = GameUIRoot.Instance.EscMenu.ReportUserMenu.ReportTypeOptions[mObj.GetObjectFromList<Dropdown>(4).value];
+                    string description = mObj.GetObjectFromList<InputField>(6).text;
+                    string reportedPlayerPlayfabId = _currentPlayfabID;
+                    string reportedPlayerDisplayName = _currentPlayerName;
+                    string senderPlayfabId = localPlayerInfoState.state.PlayFabID;
+                    localPlayerInfoState.GetOrPrepareSafeDisplayName(delegate (string displayName)
+                    {
+                        ReportManager.SendUserReport(reportId, description, senderPlayfabId, displayName, reportedPlayerPlayfabId, reportedPlayerDisplayName);
+                    });
+                    HideWindow();
+                }
+            }
+        }
+
+
         private bool _wasMainMenuButtonClicked;
         private bool _wasExitToDesktopButtonClicked;
         private bool _userDismissedStream;
@@ -114,10 +188,14 @@ namespace CloneDroneOverhaul.UI
         private RectTransform BackToLvLEditorButtonParent;
         private Button BackToLvLEditorButton;
 
+        private ReportWindow _reportWindow;
+
         public override void OnInstanceStart()
         {
             base.MyModdedObject = GetComponent<ModdedObject>();
             BaseStaticReferences.NewEscMenu = this;
+
+            _reportWindow = ReportWindow.ConfigWindow(MyModdedObject.GetObjectFromList<RectTransform>(14).gameObject);
             Hide();
 
             SpecialButtonsMObj = MyModdedObject.GetObjectFromList<ModdedObject>(0);
@@ -241,6 +319,7 @@ namespace CloneDroneOverhaul.UI
         {
             base.gameObject.SetActive(false);
             BaseStaticReferences.GUIs.GetGUI<UI.SettingsUI>().Hide();
+            _reportWindow.HideWindow();
         }
 
         private void refreshTip()
@@ -315,8 +394,39 @@ namespace CloneDroneOverhaul.UI
                     mObj.GetObjectFromList<Text>(1).text = OverhaulMain.GetTranslatedString("EscMenu_Wins");
                     mObj.GetObjectFromList<Text>(4).text = MultiplayerPlayerInfoManager.Instance.GetPlayerPlatform(infoState.state.PlayFabID).ToString();
                     mObj.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("EscMenu_Platform");
+                    mObj.GetObjectFromList<Text>(9).text = infoState.state.PlayFabID;
+                    mObj.GetObjectFromList<Button>(8).onClick.AddListener(delegate
+                    {
+                        if (OverhaulDescription.IsPublicBuild())
+                        {
+                            ModuleManagement.ShowError("You cannot copy playfab IDs");
+                        }
+                        else
+                        {
+                            BaseUtils.CopyToClipboard(mObj.GetObjectFromList<Text>(9).text, true, "ID ", " was copied");
+                        }
+                    });
+                    mObj.GetObjectFromList<Button>(8).gameObject.SetActive(!OverhaulDescription.IsPublicBuild());
+                    mObj.GetObjectFromList<Button>(6).onClick.AddListener(delegate
+                    {
+                        _reportWindow.ShowWindow(mObj.GetObjectFromList<InputField>(0).text, mObj.GetObjectFromList<Text>(9).text);
+                    });
+                    mObj.GetObjectFromList<Button>(7).onClick.AddListener(delegate
+                    {
+                        mObj.GetObjectFromList<RectTransform>(5).gameObject.SetActive(!mObj.GetObjectFromList<RectTransform>(5).gameObject.activeSelf);
+                        OverhaulMain.Timer.AddNoArgAction(delegate
+                        {
+                            mObj.GetObjectFromList<ContentSizeFitter>(5).CallPrivateMethod("SetDirty");
+                        }, 0.1f, true);
+                    });
+                    mObj.GetObjectFromList<RectTransform>(5).gameObject.SetActive(false);
                 }
             }
+            PIM_Container.gameObject.SetActive(false);
+            OverhaulMain.Timer.AddNoArgAction(delegate
+            {
+                PIM_Container.gameObject.SetActive(true);
+            }, 0.2f, true);
         }
         private void refreshWorkshop()
         {
@@ -346,7 +456,7 @@ namespace CloneDroneOverhaul.UI
         }
         private void refreshSpecialButtons()
         {
-            PhotoMode.gameObject.SetActive(ShowPhotoModeButton);
+            PhotoMode.interactable = ShowPhotoModeButton;
             SettingsButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
             AchButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
         }

@@ -1,5 +1,6 @@
 ﻿using AmplifyOcclusion;
 using CloneDroneOverhaul.UI.Components;
+using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace CloneDroneOverhaul.UI
         private BetterSlider _camZoom;
         private ToggleWithDesc _showHUD;
         private ToggleWithDesc _overrideVisuals;
+        private List<GarbageTarget> garbageTargets = new List<GarbageTarget>();
 
         private string _curPage = "Robots";
         private int _curPageInt;
@@ -22,7 +24,9 @@ namespace CloneDroneOverhaul.UI
         {
             "Robots",
             "Bloom",
-            "Amplify Occlusion"
+            "Amplify Occlusion",
+            "Noise",
+            "Shadows"
         };
         private Dictionary<string, GameObject[]> _effects = new Dictionary<string, GameObject[]>();
 
@@ -48,13 +52,33 @@ namespace CloneDroneOverhaul.UI
 
             _effects.Add(_pages[0], new GameObject[]
             {
-                MyModdedObject.GetObjectFromList<ModdedObject>(12).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, null).gameObject,
-                     MyModdedObject.GetObjectFromList<ModdedObject>(13).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, null).gameObject,
-                          MyModdedObject.GetObjectFromList<ModdedObject>(14).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, null).gameObject
+                MyModdedObject.GetObjectFromList<ModdedObject>(12).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, refreshPlayerModel).gameObject,
+                     MyModdedObject.GetObjectFromList<ModdedObject>(13).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, refreshEnemiesModel).gameObject,
+                          MyModdedObject.GetObjectFromList<ModdedObject>(14).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, setGarbageVisible).gameObject,
+                                  MyModdedObject.GetObjectFromList<ModdedObject>(19).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, refreshProjectiles).gameObject
             });
 
             _effects.Add(_pages[1], new GameObject[]
             {
+                    MyModdedObject.GetObjectFromList<ModdedObject>(22).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, null).gameObject,
+                         MyModdedObject.GetObjectFromList<ModdedObject>(23).AddAndConfigBetterSlider(new BetterSlider.Settings()
+                         {
+                              UseInt = true,
+                              MinValue = 1,
+                              MaxValue = 10
+                         }, null).gameObject,
+                              MyModdedObject.GetObjectFromList<ModdedObject>(24).AddAndConfigBetterSlider(new BetterSlider.Settings()
+                         {
+                              UseInt = false,
+                              MinValue = 0.1f,
+                              MaxValue = 3f
+                         }, null).gameObject,
+                                   MyModdedObject.GetObjectFromList<ModdedObject>(25).AddAndConfigBetterSlider(new BetterSlider.Settings()
+                         {
+                              UseInt = false,
+                              MinValue = 0.1f,
+                              MaxValue = 10f
+                         }, null).gameObject,
             });
 
             _effects.Add(_pages[2], new GameObject[]
@@ -65,6 +89,17 @@ namespace CloneDroneOverhaul.UI
                 MinValue = 0.1f,
                 MaxValue = 3f
                 }, setAOIntensity).gameObject
+            });
+
+             _effects.Add(_pages[3], new GameObject[]
+            {
+                MyModdedObject.GetObjectFromList<ModdedObject>(20).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, setNoiseEnabled).gameObject,
+                         MyModdedObject.GetObjectFromList<ModdedObject>(21).AddAndConfigBetterSlider(new BetterSlider.Settings()
+                         {
+                              UseInt = false,
+                              MinValue = 0.5f,
+                              MaxValue = 3f
+                         }, setNoiseIntensity).gameObject,
             });
 
             MyModdedObject.GetObjectFromList<Button>(5).onClick.AddListener(nextPage);
@@ -98,15 +133,22 @@ namespace CloneDroneOverhaul.UI
 
             refreshDebugInfoEnabled();
             refreshCameraSettings();
+            refreshGameplayInportantThings();
             setActivePage(_pages[0]);
             MyModdedObject.GetObjectFromList<Transform>(15).gameObject.SetActive(true);
             _overrideVisuals.SetValue(true);
+
+
         }
         public void Hide()
         {
             base.gameObject.SetActive(false);
             refreshHUD(!CutSceneManager.Instance.IsInCutscene());
-            if (Time.timeSinceLevelLoad > 3) _overrideVisuals.SetValue(false);
+            if (Time.timeSinceLevelLoad > 3)
+            {
+                refreshGameplayInportantThings();
+                _overrideVisuals.SetValue(false);
+            }
         }
         public bool ShouldShowCursor()
         {
@@ -172,6 +214,13 @@ namespace CloneDroneOverhaul.UI
             if (Time.timeSinceLevelLoad > 3)
                 GameUIRoot.Instance.SetPlayerHUDVisible(val);
         }
+        private void refreshGameplayInportantThings()
+        {
+            MyModdedObject.GetObjectFromList<ToggleWithDesc>(12).SetValue(true);
+            MyModdedObject.GetObjectFromList<ToggleWithDesc>(13).SetValue(true);
+            MyModdedObject.GetObjectFromList<ToggleWithDesc>(14).SetValue(true);
+            MyModdedObject.GetObjectFromList<ToggleWithDesc>(19).SetValue(true);
+        }
 
         //
         //
@@ -211,7 +260,101 @@ namespace CloneDroneOverhaul.UI
             OverhaulMain.Visuals.Override_AOIntensity = val;
             OverhaulMain.Visuals.RefreshVisuals();
         }
+        private void setNoiseEnabled(bool val)
+        {
+            OverhaulMain.Visuals.Override_NoiseEnabled = val;
+            OverhaulMain.Visuals.RefreshVisuals();
+        }
+        private void setNoiseIntensity(float val)
+        {
+            OverhaulMain.Visuals.Override_NoiseMultipler = val;
+            OverhaulMain.Visuals.RefreshVisuals();
+        }
+        private void setGarbageVisible(bool val)
+        {
+            if (!val)
+            {
+                this.garbageTargets = GarbageManager.Instance.GetAllGarbageReadyForCollection();
+            }
+            foreach(GarbageTarget t in garbageTargets)
+            {
+                t.gameObject.SetActive(val);
+            }
+        }
+        private void refreshPlayerModel(bool show = true) // Code was copied from v0.1.5
+        {
+            bool flag = !show;
+            if (flag)
+            {
+                bool flag2 = Singleton<CharacterTracker>.Instance.GetPlayerRobot() != null && Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetCharacterModel() != null;
+                if (flag2)
+                {
+                    Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetCharacterModel().HideAllBodyPartsandArmor();
+                    bool flag3 = Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetEquippedWeaponModel() != null;
+                    if (flag3)
+                    {
+                        Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetEquippedWeaponModel().gameObject.SetActive(false);
+                    }
+                }
+            }
+            else
+            {
+                bool flag4 = Singleton<CharacterTracker>.Instance.GetPlayerRobot() != null && Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetCharacterModel() != null;
+                if (flag4)
+                {
+                    Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetCharacterModel().ShowAllHiddenBodyPartsAndArmor();
+                    bool flag5 = Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetEquippedWeaponModel() != null;
+                    if (flag5)
+                    {
+                        Singleton<CharacterTracker>.Instance.GetPlayerRobot().GetEquippedWeaponModel().gameObject.SetActive(true);
+                    }
+                }
+            }
+        }
+        private void refreshEnemiesModel(bool show = true)
+        {
+            bool flag = Singleton<CharacterTracker>.Instance.GetAllLivingCharacters() == null;
+            if (!flag)
+            {
+                foreach (Character character in Singleton<CharacterTracker>.Instance.GetAllLivingCharacters())
+                {
+                    bool flag2 = character is FirstPersonMover && !character.IsMainPlayer() && (character as FirstPersonMover).GetCharacterModel() != null;
+                    if (flag2)
+                    {
+                        bool flag3 = (character as FirstPersonMover).GetEquippedWeaponModel() != null;
+                        if (flag3)
+                        {
+                            (character as FirstPersonMover).GetEquippedWeaponModel().gameObject.SetActive(show);
+                        }
+                        bool flag4 = !show;
+                        if (flag4)
+                        {
+                            (character as FirstPersonMover).GetCharacterModel().HideAllBodyPartsandArmor();
+                        }
+                        else
+                        {
+                            (character as FirstPersonMover).GetCharacterModel().ShowAllHiddenBodyPartsAndArmor();
+                        }
+                    }
+                }
+            }
+        }
 
+        private void refreshProjectiles(bool show = true)
+        {
+            bool flag = Singleton<ProjectileManager>.Instance != null && Singleton<ProjectileManager>.Instance.ArrowPool.GetAllActiveObjects() != null;
+            if (flag)
+            {
+                foreach (Transform transform in Singleton<ProjectileManager>.Instance.ArrowPool.GetAllActiveObjects())
+                {
+                    bool flag2 = transform != null;
+                    if (flag2)
+                    {
+                        transform.gameObject.SetActive(show);
+                    }
+                }
+            }
+        }
     }
 
     public struct EffectInfo

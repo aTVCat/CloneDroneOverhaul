@@ -46,7 +46,7 @@ namespace CloneDroneOverhaul.UI
         {
             for (int i = 0; i < guis.Count; i++)
             {
-                if (guis[i].gameObject.activeInHierarchy)
+                if (guis[i].gameObject.activeSelf)
                 {
                     ModGUIBase mBase = guis[i];
                     mBase.OnNewFrame();

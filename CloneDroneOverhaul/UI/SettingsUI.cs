@@ -79,6 +79,11 @@ namespace CloneDroneOverhaul.UI
             GetComponent<Animator>().Play("SettingsShow");
             base.gameObject.SetActive(true);
             populateSettings(true, Modules.OverhaulSettingsManager.Instance.GetAllSettings());
+
+            base.MyModdedObject.GetObjectFromList<Text>(17).text = OverhaulMain.GetTranslatedString("FullCDOSettings");
+            base.MyModdedObject.GetObjectFromList<Text>(20).text = OverhaulMain.GetTranslatedString("PressSpacebar");
+            base.MyModdedObject.GetObjectFromList<Text>(19).text = OverhaulMain.GetTranslatedString("FindASetting");
+            base.MyModdedObject.GetObjectFromList<Text>(18).text = OverhaulMain.GetTranslatedString("ToBeFilled");
         }
 
         public void SelectCategory(string str)

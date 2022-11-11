@@ -18,6 +18,10 @@ namespace CloneDroneOverhaul.LevelEditor
             {
                 "onLevelEditorStarted"
             };
+
+            Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("leveleditor_objects", "Banner16x16");
+            Transform tr = AssetLoader.GetObjectFromFile<GameObject>("leveleditor_objects", "Object_ConceptBanner").transform;
+            LevelEditorCustomObjectsManager.AddObject("Chapter4Concepts", "ConceptBanner", tr, tex);
         }
 
         public override void OnNewFrame()

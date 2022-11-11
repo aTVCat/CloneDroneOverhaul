@@ -35,6 +35,15 @@ namespace CloneDroneOverhaul
 
     public static class BaseUtils
     {
+        public static Character SpawnRobotWithDisabledComponents(Transform spawnPos, EnemyType type)
+        {
+            Character result = EnemyFactory.Instance.SpawnEnemy(type, spawnPos.position, spawnPos.eulerAngles).GetComponent<Character>();
+            Coroutines.WaitForCharacterInitAndCall(result, delegate
+            {
+            });
+            return result;
+        }
+
         public static SelectableUI AddSelectableUIToObject(GameObject obj)
         {
             SelectableUI result = null;
@@ -62,7 +71,7 @@ namespace CloneDroneOverhaul
             if (System.IO.File.Exists(path))
             {
                 LevelEditorLevelData levelEditorLevelData = LevelManager.Instance.LoadLevelEditorLevelData(path);
-                Transform root = new GameObject("ExplorationModeLevel").transform;
+                Transform root = new GameObject("Level").transform;
                 StaticCoroutineRunner.StartStaticCoroutine(SpawnLevel(root, levelEditorLevelData, callback));
             }
             else

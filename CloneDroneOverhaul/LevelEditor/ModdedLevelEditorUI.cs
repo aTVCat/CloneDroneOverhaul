@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using System;
+using System.Threading;
 
 namespace CloneDroneOverhaul.LevelEditor
 {
     public class ModdedLevelEditorUI : ModGUIBase
     {
+        public static ModdedLevelEditorUI Instance;
         public static Color NormalColor
         {
             get
@@ -71,6 +75,18 @@ namespace CloneDroneOverhaul.LevelEditor
             protected override void Config()
             {
                 RefreshSelected();
+            }
+        }
+        public class UpperToolbar : UIPanel
+        {
+            protected override void Config()
+            {
+                base.ModdedObj.GetObjectFromList<Button>(0).onClick.AddListener(openLevelsMenu);
+            }
+
+            private void openLevelsMenu()
+            {
+                ModdedLevelEditorUI.Instance.Menu.ShowMenu();
             }
         }
         public class LTEM_Toolbar : UIPanel
@@ -169,11 +185,220 @@ namespace CloneDroneOverhaul.LevelEditor
             }
         }
 
+        public class LevelsMenu : UIPanel
+        {
+            public TabButton[] Tabs;
+            public TabPage[] Pages;
+
+            public string GetLevelsFolder()
+            {
+                return Application.persistentDataPath + "/LevelEditorLevels/";
+            }
+
+            protected override void Config()
+            {
+                Tabs = new TabButton[]
+                {
+                     base.ModdedObj.GetObjectFromList<Button>(0).gameObject.AddComponent<TabButton>().SetID("levels"),
+                        base.ModdedObj.GetObjectFromList<Button>(1).gameObject.AddComponent<TabButton>().SetID("challenges"),
+                           base.ModdedObj.GetObjectFromList<Button>(2).gameObject.AddComponent<TabButton>().SetID("adventures"),
+                              base.ModdedObj.GetObjectFromList<Button>(3).gameObject.AddComponent<TabButton>().SetID("upload"),
+                };
+                Pages = new TabPage[]
+                {
+                    new TabPage() { ID = "levels", PageTransform = base.ModdedObj.GetObjectFromList<Transform>(9) },
+                     new TabPage() { ID = "challenges", PageTransform = base.ModdedObj.GetObjectFromList<Transform>(10) },
+                      new TabPage() { ID = "adventures", PageTransform = base.ModdedObj.GetObjectFromList<Transform>(10) },
+                       new TabPage() { ID = "upload", PageTransform = base.ModdedObj.GetObjectFromList<Transform>(11) }
+                };
+
+                base.ModdedObj.GetObjectFromList<Button>(4).onClick.AddListener(CloseMenu);
+                base.ModdedObj.GetObjectFromList<Button>(7).onClick.AddListener(delegate
+                {
+                    FileManagerStuff.OpenFolder(Application.persistentDataPath + "/LevelEditorLevels/");
+                });
+            }
+
+            public void ShowMenu()
+            {
+                base.ModdedObj.gameObject.SetActive(true);
+                OnSelectedTab(Tabs[0]);
+            }
+            public void CloseMenu()
+            {
+                base.ModdedObj.gameObject.SetActive(false);
+            }
+            public void populateEntries(EntryType type)
+            {
+                TransformUtils.DestroyAllChildren(base.ModdedObj.GetObjectFromList<Transform>(14));
+
+                base.ModdedObj.GetObjectFromList<Transform>(16).gameObject.SetActive(false);
+
+                if (type == EntryType.LevelFolder)
+                {
+                    List<LevelFileEntry> levelFilesAndFolders = Singleton<LevelEditorFilesManager>.Instance.GetLevelFilesAndFolders(true);
+                    levelFilesAndFolders.Sort((LevelFileEntry entry, LevelFileEntry entryB) => string.Compare(entry.PathUnderLevelsFolder, entryB.PathUnderLevelsFolder, StringComparison.OrdinalIgnoreCase));
+
+                    Dictionary<string, FolderWithLevels> dictionary = new Dictionary<string, FolderWithLevels>();
+                    Dictionary<LevelFileEntry, Transform> dictionary2 = new Dictionary<LevelFileEntry, Transform>();
+
+                    foreach (LevelFileEntry file in levelFilesAndFolders)
+                    {
+                        ModdedObject mObj = null;
+                        if (file.IsFolder)
+                        {
+                            mObj = Instantiate<ModdedObject>(base.ModdedObj.GetObjectFromList<ModdedObject>(12), base.ModdedObj.GetObjectFromList<Transform>(14));
+                            dictionary.Add(file.PathUnderLevelsFolder, mObj.gameObject.AddComponent<FolderWithLevels>().MakeUIFolder(file));
+                        }
+                        else
+                        {
+                            mObj = Instantiate<ModdedObject>(base.ModdedObj.GetObjectFromList<ModdedObject>(15), base.ModdedObj.GetObjectFromList<Transform>(14));
+                            mObj.gameObject.AddComponent<UILevelEntry>().MakeLevelEntry(file);
+                        }
+
+                        if (mObj != null)
+                        {
+                            dictionary2.Add(file, mObj.transform);
+                            mObj.gameObject.SetActive(true);
+                        }
+                    }
+
+                    for (int j = 0; j < levelFilesAndFolders.Count; j++)
+                    {
+                        LevelFileEntry levelFileEntry2 = levelFilesAndFolders[j];
+                        foreach (KeyValuePair<string, FolderWithLevels> keyValuePair in dictionary)
+                        {
+                            if (FolderContainsFile(keyValuePair.Key, levelFileEntry2))
+                            {
+                                Transform transform2 = dictionary2[levelFileEntry2];
+                                keyValuePair.Value.PutLevelIntoFolder(transform2.gameObject);
+                            }
+                        }
+                    }
+
+                    OverhaulMain.Timer.AddNoArgAction(delegate
+                    {
+                        base.ModdedObj.GetObjectFromList<Transform>(16).gameObject.SetActive(true);
+                    }, 0.1f, true);
+
+                }
+            }
+
+            public void OnSelectedTab(TabButton button)
+            {
+                foreach(TabPage page in Pages)
+                {
+                    page.PageTransform.gameObject.SetActive(false);
+                }
+                foreach (TabPage page in Pages)
+                {
+                    if (page.ID == button.ID)
+                    {
+                        page.PageTransform.gameObject.SetActive(true);
+                    }
+                }
+                foreach (TabButton button2 in Tabs)
+                {
+                    button2.SetDeselected();
+                }
+                foreach (TabButton button2 in Tabs)
+                {
+                    if (button2 == button)
+                    {
+                        button2.SetSelected();
+                    }
+                }
+                if(button.ID == "levels")
+                {
+                    populateEntries(EntryType.LevelFolder);
+                }
+            }
+
+            private static bool FolderContainsFile(string folderPath, LevelFileEntry levelFileEntry)
+            {
+                return levelFileEntry.PathUnderLevelsFolder.StartsWith(folderPath + "/") && LevelEditorFilesManager.GetPathDepth(folderPath) + 1 == LevelEditorFilesManager.GetPathDepth(levelFileEntry.PathUnderLevelsFolder);
+            }
+
+            public enum EntryType
+            {
+                LevelFolder,
+                Level,
+                Challenge,
+                Adventure
+            }
+
+            public class LevelsFileBase : MonoBehaviour
+            {
+                public LevelFileEntry File;
+            }
+            public class FolderWithLevels : LevelsFileBase
+            {
+                public FolderWithLevels MakeUIFolder(LevelFileEntry path)
+                {
+                    File = path;
+                    base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.GetLevelName();
+                    return this;
+                }
+
+                public void PutLevelIntoFolder(GameObject obj)
+                {
+                    obj.transform.SetParent(base.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2));
+                }
+            }
+            public class UILevelEntry : LevelsFileBase
+            {
+                public UILevelEntry MakeLevelEntry(LevelFileEntry path)
+                {
+                    File = path;
+                    base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.GetLevelName();
+                    return this;
+                }
+            }
+
+            public class TabPage
+            {
+                public Transform PageTransform;
+                public string ID;
+            }
+
+            public class TabButton : MonoBehaviour
+            {
+                public string ID;
+                public TabButton SetID(string id)
+                {
+                    ID = id;
+                    return this;
+                }
+
+                public void SetSelected()
+                {
+                    base.GetComponent<ModdedObject>().GetObjectFromList<RectTransform>(0).gameObject.SetActive(true);
+                }
+
+                public void SetDeselected()
+                {
+                    base.GetComponent<ModdedObject>().GetObjectFromList<RectTransform>(0).gameObject.SetActive(false);
+                }
+
+                void Awake()
+                {
+                    base.GetComponent<Button>().onClick.AddListener(select);
+                }
+
+                void select()
+                {
+                    ModdedLevelEditorUI.Instance.Menu.OnSelectedTab(this);
+                }
+            }
+        }
+
         public ObjectsSelectedPanel ObjectsSelected;
         public Toolbar ToolBar;
+        public UpperToolbar UpperToolBar;
         public LTEM_Toolbar LTEM_ToolBar;
         public Inspector InspectorPanel;
         public LibraryUI LibraryPanel;
+        public LevelsMenu Menu;
 
         public override void OnInstanceStart()
         {
@@ -186,6 +411,11 @@ namespace CloneDroneOverhaul.LevelEditor
             LTEM_ToolBar = MyModdedObject.GetObjectFromList<RectTransform>(3).gameObject.AddComponent<LTEM_Toolbar>().SetUp<LTEM_Toolbar>();
             InspectorPanel = MyModdedObject.GetObjectFromList<RectTransform>(4).gameObject.AddComponent<Inspector>().SetUp<Inspector>();
             LibraryPanel = MyModdedObject.GetObjectFromList<RectTransform>(5).gameObject.AddComponent<LibraryUI>().SetUp<LibraryUI>();
+            Menu = MyModdedObject.GetObjectFromList<RectTransform>(6).gameObject.AddComponent<LevelsMenu>().SetUp<LevelsMenu>();
+            UpperToolBar = MyModdedObject.GetObjectFromList<RectTransform>(7).gameObject.AddComponent<UpperToolbar>().SetUp<UpperToolbar>();
+
+            Instance = this;
+
             base.gameObject.AddComponent<UIManager>();
         }
 

@@ -13,6 +13,11 @@ namespace CloneDroneOverhaul.Modules
         {
         }
 
+        public LevelInformation GetCurrentLevelInfo()
+        {
+            return LevelInformation.GetCurrentLevelInfo(true);
+        }
+
 
         public struct LevelInformation
         {
@@ -21,7 +26,7 @@ namespace CloneDroneOverhaul.Modules
                 Transform lvlTransform = LevelManager.Instance.GetCurrentLevelTransform();
 
                 LevelInformation levelInformation = default(LevelInformation);
-                levelInformation.IsNull = lvlTransform != null;
+                levelInformation.IsNull = lvlTransform == null;
                 if (!levelInformation.IsNull)
                 {
                     levelInformation.ID = LevelManager.Instance.GetCurrentLevelID();
@@ -37,10 +42,21 @@ namespace CloneDroneOverhaul.Modules
                 return levelInformation;
             }
 
-            public void TrySaveLevel(bool openExplorer, string fileName)
+            public void TrySaveLevel(bool openExplorer, string fileName, bool createLevelDataIfNull)
             {
+                if(LevelData == null)
+                {
+                    if (!createLevelDataIfNull)
+                    {
+                        return;
+                    }
+                    LevelData = new LevelEditorLevelData();
+                    LevelEditorLevelObject levelEditorLevelObject = new LevelEditorLevelObject();
+                    levelEditorLevelObject.SerializeFrom(LevelTransform.gameObject);
+                    LevelData.RootLevelObject = levelEditorLevelObject;
+                }
                 string contents = JsonConvert.SerializeObject(LevelData, Newtonsoft.Json.Formatting.None, DataRepository.Instance.GetSettings());
-                File.WriteAllText(ModDataManager.DublicatedLevelsFolder + fileName, contents);
+                File.WriteAllText(ModDataManager.DublicatedLevelsFolder + fileName + ".json", contents);
 
                 if (openExplorer)
                 {

@@ -5,8 +5,37 @@ namespace CloneDroneOverhaul.Modules
 {
     public class AdvancedPhotoModeManager : ModuleBase
     {
+        private bool _usingSlowMo;
+        public bool IsSlowMoEnabled
+        {
+            get
+            {
+                return PhotoManager.Instance.IsInPhotoMode() && _usingSlowMo;
+            }
+        }
+
         public override void Start()
         {
+        }
+
+        public override void OnNewFrame()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (PhotoManager.Instance.IsInPhotoMode())
+                {
+                    if (IsSlowMoEnabled)
+                    {
+                        Singleton<TimeManager>.Instance.RestoreOverridePausedTimeScale();
+                        _usingSlowMo = false;
+                    }
+                    else
+                    {
+                        Singleton<TimeManager>.Instance.SetOverridePausedTimeScale(0.1f);
+                        _usingSlowMo = true;
+                    }
+                }
+            }
         }
 
         private Camera GetCamera()
@@ -22,7 +51,6 @@ namespace AdvancedPhotoModeEffects
 {
     public class AdvancedPhotoModeCameraEffect : MonoBehaviour
     {
-
     }
 
     public class BWEffect : AdvancedPhotoModeCameraEffect

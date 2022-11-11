@@ -1,17 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Steamworks;
 
 namespace CloneDroneOverhaul.Utilities
 {
-    public static class Coroutines
+	public static class Coroutines
     {
 		public static void LoadWorkshopImage(string url, Action<Sprite> action)
 		{
 			StaticCoroutineRunner.StartStaticCoroutine(loadWorkshopImage(url, action));
 		}
+		public static void WaitForCharacterInitAndCall(Character character, Action callback)
+		{
+			StaticCoroutineRunner.StartStaticCoroutine(waitForCharacterInitAndCall(character, callback));
+		}
 
-		private static IEnumerator loadWorkshopImage(string url, Action<Sprite> action)
+        private static IEnumerator waitForCharacterInitAndCall(Character character, Action callback)
+        {
+			yield return new WaitUntil(() => character.IsInitialized() == true);
+			callback();
+            yield break;
+        }
+        private static IEnumerator loadWorkshopImage(string url, Action<Sprite> action)
 		{
 			WWW www = new WWW(url);
 			yield return www;
