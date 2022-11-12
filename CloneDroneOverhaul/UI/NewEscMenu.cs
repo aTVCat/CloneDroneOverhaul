@@ -457,8 +457,8 @@ namespace CloneDroneOverhaul.UI
         private void refreshSpecialButtons()
         {
             PhotoMode.interactable = ShowPhotoModeButton;
-            SettingsButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
-            AchButton.interactable = CharacterTracker.Instance.GetPlayer() != null;
+            SettingsButton.interactable = CharacterTracker.Instance.GetPlayer() != null || GameModeManager.IsInLevelEditor();
+            AchButton.interactable = CharacterTracker.Instance.GetPlayer() != null || GameModeManager.IsInLevelEditor();
         }
         private void refreshHosting()
         {
