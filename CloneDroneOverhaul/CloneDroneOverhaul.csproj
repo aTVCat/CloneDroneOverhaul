@@ -210,6 +210,9 @@
   <ItemGroup>
     <Folder Include="LevelEditor\ModdedComponents\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Overhaul0200Changelog.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
