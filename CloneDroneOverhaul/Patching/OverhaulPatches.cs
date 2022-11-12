@@ -74,6 +74,10 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(PhotoModeControlsDisplay), "SetVisibility")]
         private static void PhotoModeControlsDisplay_SetVisibility_Postfix(PhotoModeControlsDisplay __instance, bool value)
         {
+            if (!OverhaulDescription.IsBetaBuild())
+            {
+                return;
+            }
             __instance.gameObject.SetActive(false);
             if (value)
             {
@@ -487,7 +491,7 @@ namespace CloneDroneOverhaul.Patching
                 return false;
             }
             return true;
-        }
+        }/*
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Select")]
         private static void LevelEditorObjectPlacementManager_Select_Postfix(LevelEditorObjectPlacementManager __instance, ObjectPlacedInLevel objectToSelect, bool deselectAllAnimationTracks = true)
@@ -512,7 +516,7 @@ namespace CloneDroneOverhaul.Patching
         {
             OverhaulMain.GUI.GetGUI<LevelEditor.ModdedLevelEditorUI>().ToolBar.RefreshSelected();
         }
-
+        */
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]
@@ -582,6 +586,8 @@ namespace CloneDroneOverhaul.Patching
         {
             var codes = new List<CodeInstruction>(instructions);
 
+
+
             for (int i = 56; i < 72; i++)
             {
                 codes[i].opcode = OpCodes.Nop;
@@ -602,6 +608,11 @@ namespace CloneDroneOverhaul.Patching
         private static IEnumerable<CodeInstruction> PhotoManager_Update_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
+
+            if (!OverhaulDescription.IsBetaBuild())
+            {
+                return codes.AsEnumerable();
+            }
 
             for (int i = 66; i < 95; i++)
             {

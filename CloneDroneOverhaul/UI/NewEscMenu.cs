@@ -397,7 +397,7 @@ namespace CloneDroneOverhaul.UI
                     mObj.GetObjectFromList<Text>(9).text = infoState.state.PlayFabID;
                     mObj.GetObjectFromList<Button>(8).onClick.AddListener(delegate
                     {
-                        if (OverhaulDescription.IsPublicBuild())
+                        if (OverhaulDescription.IsBetaBuild())
                         {
                             ModuleManagement.ShowError("You cannot copy playfab IDs");
                         }
@@ -406,7 +406,7 @@ namespace CloneDroneOverhaul.UI
                             BaseUtils.CopyToClipboard(mObj.GetObjectFromList<Text>(9).text, true, "ID ", " was copied");
                         }
                     });
-                    mObj.GetObjectFromList<Button>(8).gameObject.SetActive(!OverhaulDescription.IsPublicBuild());
+                    mObj.GetObjectFromList<Button>(8).gameObject.SetActive(!OverhaulDescription.IsBetaBuild());
                     mObj.GetObjectFromList<Button>(6).onClick.AddListener(delegate
                     {
                         _reportWindow.ShowWindow(mObj.GetObjectFromList<InputField>(0).text, mObj.GetObjectFromList<Text>(9).text);

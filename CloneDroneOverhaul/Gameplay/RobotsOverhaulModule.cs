@@ -46,6 +46,7 @@ namespace CloneDroneOverhaul.Modules
                     }
                 }
             }
+            if (!OverhaulDescription.IsBetaBuild()) return;
             if (name == Functions[1])
             {
                 RobotsExpansionManager.OnRobotSpawned((RobotShortInformation)arguments[0]);

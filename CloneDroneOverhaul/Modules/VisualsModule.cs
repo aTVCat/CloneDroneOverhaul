@@ -46,24 +46,38 @@ namespace CloneDroneOverhaul.Modules
         private bool _AOEnabled;
         private int _AOSampleCount;
         private float _AOIntensity;
+
         private float _noiseMultipler;
         private bool _dustEnabled;
         private bool _noiseEnabled;
+
         private int _shadowResolution;
         private int _shadowBias;
+        private int _shadowDistance;
         private bool _softShadows;
+
+        private bool _bloomEnabled;
+        private int _bloomIterations;
+        private float _bloomThreshold;
+        private float _bloomIntensity;
 
 
         public bool OverrideSettings;
+
         public bool Override_AOEnabled;
         public int Override_AOSampleCount;
         public float Override_AOIntensity;
+
         public float Override_NoiseMultipler;
-        public bool Override_DustEnabled;
         public bool Override_NoiseEnabled;
+
+        public bool Override_DustEnabled;
+
         public int Override_ShadowResolution;
         public int Override_ShadowBias;
+        private int Override_ShadowDistance;
         public bool Override_SoftShadows;
+
         public bool Override_BloomEnabled;
         public int Override_BloomIterations;
         public float Override_BloomThreshold;
@@ -108,6 +122,10 @@ namespace CloneDroneOverhaul.Modules
             GameObject obj1 = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "Noise"));
             NoiseImage = obj1.transform.GetChild(1).gameObject.GetComponent<Image>();
             noiseCamera = obj1.transform.GetChild(0).gameObject.GetComponent<Camera>();
+            NoiseImage.transform.SetParent(GameUIRoot.Instance.transform);
+            NoiseImage.transform.localPosition = Vector3.zero;
+            NoiseImage.transform.localScale = Vector3.one;
+            NoiseImage.transform.SetAsFirstSibling();
             obj1.transform.GetChild(0).SetParent(null);
 
             RefreshDustMaterials();
@@ -150,6 +168,10 @@ namespace CloneDroneOverhaul.Modules
             if (ID == "Graphics.Settings.Soft shadows")
             {
                 _softShadows = (bool)value;
+            }
+            if (ID == "Graphics.Settings.Shadow distance")
+            {
+                _shadowDistance = (int)value;
             }
             RefreshVisuals();
         }
@@ -198,6 +220,29 @@ namespace CloneDroneOverhaul.Modules
                         break;
                 }
 
+                ShadowDistance shadowDistance = (ShadowDistance)(OverrideSettings ? Override_ShadowDistance : _shadowDistance);
+                switch (shadowDistance)
+                {
+                    case ShadowDistance.Default:
+                        QualitySettings.shadowDistance = 300;
+                        break;
+                    case ShadowDistance.VeryLow:
+                        QualitySettings.shadowDistance = 100;
+                        break;
+                    case ShadowDistance.Low:
+                        QualitySettings.shadowDistance = 200;
+                        break;
+                    case ShadowDistance.High:
+                        QualitySettings.shadowDistance = 500;
+                        break;
+                    case ShadowDistance.VeryHigh:
+                        QualitySettings.shadowDistance = 750;
+                        break;
+                    case ShadowDistance.ExctremlyHigh:
+                        QualitySettings.shadowDistance = 1000;
+                        break;
+                }
+
                 LightShadows shadowsMode = LightShadows.Soft;
                 int qualityLevel = SettingsManager.Instance.GetSavedQualityIndex();
                 if(qualityLevel == 0)
@@ -232,7 +277,7 @@ namespace CloneDroneOverhaul.Modules
             }
 
             Camera newCam = Camera.main;
-            noiseCamera.gameObject.SetActive(newCam != null);
+            noiseCamera.gameObject.SetActive(false && newCam != null); //Temp
             if (lastSpottedCamera != newCam)
             {
                 if (newCam != null)
@@ -491,5 +536,15 @@ namespace CloneDroneOverhaul.Modules
         Minimum,
         Low,
         Default,
+    }
+
+    public enum ShadowDistance
+    {
+        VeryLow,
+        Low,
+        Default,
+        High,
+        VeryHigh,
+        ExctremlyHigh
     }
 }

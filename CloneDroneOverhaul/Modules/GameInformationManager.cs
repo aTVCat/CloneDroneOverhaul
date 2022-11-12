@@ -17,7 +17,29 @@ namespace CloneDroneOverhaul.Modules
         {
             return LevelInformation.GetCurrentLevelInfo(true);
         }
+        public QualityInformation GetQualityInfo()
+        {
+            return QualityInformation.GetQualityInformation();
+        }
 
+
+        public struct QualityInformation
+        {
+            public static QualityInformation GetQualityInformation()
+            {
+                QualityInformation result = default(QualityInformation);
+
+                return result;
+            }
+
+            public float ShadowDistance
+            {
+                get
+                {
+                    return QualitySettings.shadowDistance;
+                }
+            }
+        }
 
         public struct LevelInformation
         {
