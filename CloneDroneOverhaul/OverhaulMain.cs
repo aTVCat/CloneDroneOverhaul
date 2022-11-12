@@ -1,19 +1,17 @@
-﻿using CloneDroneOverhaul.Modules;
+﻿using CloneDroneOverhaul.LevelEditor;
+using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.Utilities;
 using ModBotWebsiteAPI;
 using ModLibrary;
-using Pathfinding;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Threading;
-using AlignTool;
-using CloneDroneOverhaul.LevelEditor;
 
 namespace CloneDroneOverhaul
 {
@@ -33,6 +31,8 @@ namespace CloneDroneOverhaul
         public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
         public static OverhaulMainMonoBehaviour LocalMonoBehaviour { get; set; }
 
+        private Text _settingsButtonText;
+
         public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
         {
             return ModInfo.FolderPath;
@@ -47,16 +47,13 @@ namespace CloneDroneOverhaul
             }
 
             ThreadLaunch();
-            return;
-            new Thread(ThreadLaunch).Start();
         }
         void ThreadLaunch()
         {
             AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
-            LAN.LANMultiplayerManager.CreateManager();
-            Profiler.BeginThreadProfiling("Profile111", "Thread111");
+            //LAN.LANMultiplayerManager.CreateManager();
 
             if (!hasCachedStuff)
             {
@@ -82,6 +79,7 @@ namespace CloneDroneOverhaul
             BaseStaticValues.IsModEnabled = false;
         }
 
+        /*
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
             if(path == "Data/LevelEditorLevels/Story5/C5_5_PrisonCellFlashback")
@@ -89,6 +87,13 @@ namespace CloneDroneOverhaul
                 return new TextAsset(File.ReadAllText(GetModFolder() + "C5_5_PrisonCellFlashback.json"));
             }
             return LevelEditor.LevelEditorCustomObjectsManager.TryGetObject(path);
+        }
+       */
+
+        protected override void OnLanguageChanged(string newLanguageID, System.Collections.Generic.Dictionary<string, string> localizationDictionary)
+        {
+            Modules.ExecuteFunction("onLanguageChanged", null);
+            _settingsButtonText.text = GetTranslatedString("OverhaulSettings");
         }
 
 
@@ -119,17 +124,22 @@ namespace CloneDroneOverhaul
             }
             hasCheckForUpdates = true;
 
-            UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
-            return; // Will be used later for public builds
-            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
+            if(OverhaulDescription.GetModVersionBranch() != OverhaulDescription.Branch.ModBot)
+            {
+                UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
+            }
+            else
+            {
+                API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
+            }
         }
         private void OnModDataGet(JsonObject json)
         {
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New update available!", "It includes fixes, stability improvements and other.", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
-            return;
-            if ((int)OverhaulMain.Instance.ModInfo.Version < (int)json["Version"])
+            string ver = json["Version"].ToString();
+            if(ver != this.ModInfo.Version.ToString())
             {
+                CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
+                notif.SetUp("New update available!", "Version " + ver + " is available to download", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
             }
         }
         private void OnUpdateReceivedGitHub(string newVersion)
@@ -140,7 +150,7 @@ namespace CloneDroneOverhaul
             }
 
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New update available!", "Version " + newVersion + " is available to download", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
+            notif.SetUp("New update available!", "See mod Mod-Bot page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
         }
 
         private void addReferences()
@@ -196,7 +206,7 @@ namespace CloneDroneOverhaul
 
         private void finalPreparations()
         {
-            if (!OverhaulDescription.IsPublicBuild())
+            if (OverhaulDescription.IsBetaBuild())
             {
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
@@ -291,6 +301,7 @@ namespace CloneDroneOverhaul
                 t2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
                 t2.GetComponent<Button>().onClick.AddListener(new UnityEngine.Events.UnityAction(UI.SettingsUI.Instance.Show));
                 t2.GetComponentInChildren<Text>().text = "Overhaul Settings";
+                _settingsButtonText = t2.GetComponentInChildren<Text>();
             }
 
             foreach (UnityEngine.UI.Image img in GameUIRoot.Instance.GetComponentsInChildren<UnityEngine.UI.Image>(true))
@@ -371,7 +382,12 @@ namespace CloneDroneOverhaul
             {
                 return "NL: " + ID;
             }
-            return entry.Translations[LocalizationManager.Instance.GetCurrentLanguageCode()];
+            string text = entry.Translations[LocalizationManager.Instance.GetCurrentLanguageCode()];
+            if (text == "nontranslated")
+            {
+                text = entry.Translations["en"];
+            }
+            return text;
         }
 
         public static T GetSetting<T>(string ID)
@@ -401,7 +417,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.11";
+            string version = "a0.2.0.12";
             if (!withModBotVersion)
             {
                 return version;
@@ -411,10 +427,10 @@ namespace CloneDroneOverhaul
 
         public static Branch GetModVersionBranch()
         {
-            return Branch.Github;
+            return Branch.ModBot;
         }
 
-        public static bool IsPublicBuild()
+        public static bool IsBetaBuild()
         {
             return false;
         }
@@ -447,7 +463,7 @@ namespace CloneDroneOverhaul
                 BaseStaticReferences.ModuleManager.OnManagedUpdate();
 
                 GameMode newGameMode = GameFlowManager.Instance.GetCurrentGameMode();
-                if(newGameMode != _gameModeSetLastUpdate)
+                if (newGameMode != _gameModeSetLastUpdate)
                 {
                     OverhaulMain.Modules.ExecuteFunction<GameMode>("onGameModeUpdated", newGameMode);
                 }

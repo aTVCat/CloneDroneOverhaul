@@ -454,7 +454,8 @@ namespace CloneDroneOverhaul.LevelEditor
             ObjectsSelected.ObjectsSelected.text = OverhaulMain.GetTranslatedString("LVLEdit_ObjectsSelected") + " " + objects.Count;
             ObjectsSelected.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
 
-            CrossModManager.DoAction("ModdedLevelEditor.RefreshSelectedLETMod", new object[] { ObjectsSelected });
+            /*
+            CrossModManager.DoAction("ModdedLevelEditor.RefreshSelectedLETMod", new object[] { ObjectsSelected });*/
         }
     }
 }

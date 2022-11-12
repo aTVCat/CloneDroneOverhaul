@@ -14,6 +14,10 @@ namespace CloneDroneOverhaul
         {
             BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases");
         }
+        public static void OpenModBotPage()
+        {
+            BaseUtils.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
+        }
 
         public static void CheckForUpdates(Action<string> onReceivedVersion) //https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/update-preview/Version.txt
         {

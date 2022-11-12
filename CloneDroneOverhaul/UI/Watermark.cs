@@ -12,6 +12,7 @@ namespace CloneDroneOverhaul.UI
         private RectTransform _buttonContainer;
 
         private bool _hasInitializedAboutWindow;
+        private bool _showVersion;
 
         public override void OnInstanceStart()
         {
@@ -28,11 +29,11 @@ namespace CloneDroneOverhaul.UI
 
             refreshVersion();
 
-            _localizationEditor.gameObject.SetActive(!OverhaulDescription.IsPublicBuild());
+            _localizationEditor.gameObject.SetActive(OverhaulDescription.IsBetaBuild());
         }
         public override void OnNewFrame()
         {
-            _version.gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
+            _version.gameObject.SetActive(_showVersion && !PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
         }
         public override void RunFunction<T>(string name, T obj)
         {
@@ -41,6 +42,25 @@ namespace CloneDroneOverhaul.UI
                 refreshVersion();
                 _buttonContainer.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
             }
+        }
+        public override void RunFunction(string name, object[] arguments)
+        {
+            if(name == "onLanguageChanged")
+            {
+                MyModdedObject.GetObjectFromList<Text>(6).text = OverhaulMain.GetTranslatedString("Watermark_AboutOverhaul");
+            }
+        }
+        public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
+        {
+            if(ID == "Misc.Mod.Show version")
+            {
+                _showVersion = (bool)value;
+            }
+        }
+
+        private void refreshText()
+        {
+
         }
 
         private void refreshVersion()

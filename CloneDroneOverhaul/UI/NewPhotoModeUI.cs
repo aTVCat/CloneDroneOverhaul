@@ -102,6 +102,11 @@ namespace CloneDroneOverhaul.UI
                          }, setNoiseIntensity).gameObject,
             });
 
+            _effects.Add(_pages[4], new GameObject[]
+           {
+
+           });
+
             MyModdedObject.GetObjectFromList<Button>(5).onClick.AddListener(nextPage);
             MyModdedObject.GetObjectFromList<Button>(6).onClick.AddListener(prevPage);
 
