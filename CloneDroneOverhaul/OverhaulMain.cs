@@ -139,7 +139,7 @@ namespace CloneDroneOverhaul
             if(ver != this.ModInfo.Version.ToString())
             {
                 CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                notif.SetUp("New update available!", "Version " + ver + " is available to download", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
+                notif.SetUp("New update available!", "See the mod page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
             }
         }
         private void OnUpdateReceivedGitHub(string newVersion)
@@ -150,7 +150,7 @@ namespace CloneDroneOverhaul
             }
 
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New update available!", "See mod Mod-Bot page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
+            notif.SetUp("New update available!", "New version (" + newVersion + ") is available to download!", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
         }
 
         private void addReferences()
