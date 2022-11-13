@@ -172,7 +172,7 @@ namespace CloneDroneOverhaul.UI
 
             foreach (Modules.OverhaulSettingsManager.SettingEntry entry in settings)
             {
-                if (onlyCategories)
+                if (!entry.ForceHide && onlyCategories)
                 {
                     if (!spawnedCategories.Contains(entry.Path.Category))
                     {
@@ -194,8 +194,9 @@ namespace CloneDroneOverhaul.UI
 
         void populateSetting(Modules.OverhaulSettingsManager.SettingEntry entry, Transform parent, bool ignoreIsHidden)
         {
-            if (entry.Path.Section == selectedSection && entry.Path.Category == selectedCategory)
+            if (entry.ForceHide)
             {
+                return;
             }
 
             if (!ignoreIsHidden && entry.IsHidden)
