@@ -124,7 +124,12 @@ namespace CloneDroneOverhaul
             }
             hasCheckForUpdates = true;
 
-            if(OverhaulDescription.GetModVersionBranch() != OverhaulDescription.Branch.ModBot)
+            UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
+            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
+
+            return;
+
+            if (OverhaulDescription.GetModVersionBranch() != OverhaulDescription.Branch.ModBot)
             {
                 UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
             }
@@ -139,7 +144,7 @@ namespace CloneDroneOverhaul
             if(ver != this.ModInfo.Version.ToString())
             {
                 CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                notif.SetUp("New update available!", "See the mod page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
+                notif.SetUp("New update available!", "See CDO mod page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
             }
         }
         private void OnUpdateReceivedGitHub(string newVersion)
@@ -150,7 +155,7 @@ namespace CloneDroneOverhaul
             }
 
             CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New update available!", "New version (" + newVersion + ") is available to download!", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
+            notif.SetUp("New update available!", "New version (" + newVersion + ") is available on GitHub!", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
         }
 
         private void addReferences()
@@ -417,7 +422,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.13";
+            string version = "a0.2.0.14";
             if (!withModBotVersion)
             {
                 return version;

@@ -48,9 +48,9 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Unlimited clone count", "Play with 999 clones!", "Misc", "Privacy", false));
             AddSetting(SettingEntry.NewSetting<bool>("Show version", "Buttom text Bottom text", "Misc", "Mod", true));
 
-            if (OverhaulDescription.IsBetaBuild()) AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false));
+            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, true));
 
-            if (OverhaulDescription.IsBetaBuild()) AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false));
+            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, true));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
 
             AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 10, Step = 60, OnlyInt = true }));
@@ -128,7 +128,7 @@ namespace CloneDroneOverhaul.Modules
 
             foreach (SettingEntry entry in GetAllSettings())
             {
-                if (entry.Path.Category == category)
+                if (!entry.ForceHide && entry.Path.Category == category)
                 {
                     list.Add(entry.Path);
                 }
@@ -258,7 +258,7 @@ namespace CloneDroneOverhaul.Modules
                 public Type DropdownEnumType;
             }
 
-            public static SettingEntry NewSetting<T>(string name, string description, string category, string categorySection, object defaultValue, ChildrenSettings childSettings = null, UIValueSettings valueSettings = null, string nameID = null, string descriptionID = null)
+            public static SettingEntry NewSetting<T>(string name, string description, string category, string categorySection, object defaultValue, ChildrenSettings childSettings = null, UIValueSettings valueSettings = null, string nameID = null, string descriptionID = null, bool forceHide = false)
             {
                 Modules.OverhaulSettingsManager.SettingEntry entry = new Modules.OverhaulSettingsManager.SettingEntry();
                 entry.Name = name;
@@ -273,6 +273,7 @@ namespace CloneDroneOverhaul.Modules
                 entry.DefaultValue = defaultValue;
                 entry.ChildSettings = childSettings;
                 entry.ValueSettings = valueSettings;
+                entry.ForceHide = forceHide;
                 return entry;
             }
             public void SetUpLocalization(string nameID, string descriptionID)
@@ -293,6 +294,7 @@ namespace CloneDroneOverhaul.Modules
             public string Description { get; private set; }
             public string DescLocalizationID { get; private set; }
             public object DefaultValue { get; private set; }
+            public bool ForceHide { get; private set; }
             public ChildrenSettings ChildSettings
             {
                 set
