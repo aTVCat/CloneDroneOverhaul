@@ -66,6 +66,8 @@ namespace CloneDroneOverhaul
             _cachedStuff.Add("Shader_Tint", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Tint"));
             _cachedStuff.Add("Shader_VUnsync", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "VUnsync"));
 
+            _cachedStuff.Add("SceneTransition_LevelEditorStyle", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "SceneTransitionScreen"));
+
             _hasCached = true;
         }
 

@@ -276,8 +276,8 @@ namespace CloneDroneOverhaul.Modules
                 probe.RenderProbe();
             }
 
-            Camera newCam = Camera.main;
-            noiseCamera.gameObject.SetActive(false && newCam != null); //Temp
+            Camera newCam = PlayerCameraManager.Instance.GetMainCamera();
+            NoiseImage.gameObject.SetActive(newCam != null && !GameModeManager.IsInLevelEditor() && OverrideSettings ? Override_NoiseEnabled : _noiseEnabled); //Temp
             if (lastSpottedCamera != newCam)
             {
                 if (newCam != null)
@@ -318,7 +318,7 @@ namespace CloneDroneOverhaul.Modules
                     effects.Add(acc);
                 }
             }
-            lastSpottedCamera = Camera.main;
+            lastSpottedCamera = newCam;
         }
         public override void OnManagedUpdate()
         {

@@ -221,6 +221,10 @@ namespace CloneDroneOverhaul.UI
         }
         private void refreshGameplayInportantThings()
         {
+            if (!OverhaulDescription.IsBetaBuild())
+            {
+                return;
+            }
             MyModdedObject.GetObjectFromList<ToggleWithDesc>(12).SetValue(true);
             MyModdedObject.GetObjectFromList<ToggleWithDesc>(13).SetValue(true);
             MyModdedObject.GetObjectFromList<ToggleWithDesc>(14).SetValue(true);

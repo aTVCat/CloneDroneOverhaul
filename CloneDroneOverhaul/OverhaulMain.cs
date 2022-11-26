@@ -30,6 +30,7 @@ namespace CloneDroneOverhaul
         public static ModuleManagement Modules { get; set; }
         public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
         public static OverhaulMainMonoBehaviour LocalMonoBehaviour { get; set; }
+        public static CloneDroneOverhaulSettingsData SettingsData { get; set; }
 
         private Text _settingsButtonText;
 
@@ -50,7 +51,6 @@ namespace CloneDroneOverhaul
         }
         void ThreadLaunch()
         {
-            AppDomain.CurrentDomain.Load(File.ReadAllBytes(ModInfo.FolderPath + "netstandard.dll"));
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
             //LAN.LANMultiplayerManager.CreateManager();
@@ -61,7 +61,6 @@ namespace CloneDroneOverhaul
                 OverhaulCacheManager.CacheStuff();
                 hasCachedStuff = true;
             }
-            checkDlls();
             addReferences();
             addModules();
             addListeners();
@@ -235,8 +234,8 @@ namespace CloneDroneOverhaul
                 {
                     Key2 = UnityEngine.KeyCode.M,
                     Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = BaseUtils.Console_ShowAppDataPath
-                });
+                    Method = delegate { Gameplay.Levels.LevelConstructor.BuildALevel(new Gameplay.Levels.LevelConstructor.LevelSettings(), true); }
+                });;
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
                     Key2 = UnityEngine.KeyCode.X,
@@ -288,15 +287,6 @@ namespace CloneDroneOverhaul
             //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "LeftFadeBG").GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.65f);
             //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "PlaySingleplayer").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
             //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "MultiplayerButton_NEW").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
-
-            for (int i = 0; i < trans.childCount; i++)
-            {
-                //trans.GetChild(i).GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
-                if (!trans.GetChild(i).gameObject.name.Contains("HR"))
-                {
-                    trans.GetChild(i).GetComponent<RectTransform>().sizeDelta = new Vector2(115, 29);
-                }
-            }
 
             if (TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"))
             {
@@ -358,6 +348,16 @@ namespace CloneDroneOverhaul
         {
             MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
             PatchesManager.Instance.UpdateAudioSettings(GetSetting<bool>("Patches.QoL.Fix sounds"));
+
+            GameInformationManager.UnoptimizedThings things = GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff();
+
+            foreach(Camera cam in things.AllCameras)
+            {
+                if(cam.name == "ArenaCamera")
+                {
+                    cam.pixelRect = new Rect(new Vector2(0, 0), new Vector2(640, 360));
+                }
+            }
         }
 
         private void spawnGUI()
@@ -422,7 +422,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = "a0.2.0.14";
+            string version = getGameVersion();
             if (!withModBotVersion)
             {
                 return version;
@@ -433,6 +433,13 @@ namespace CloneDroneOverhaul
         public static Branch GetModVersionBranch()
         {
             return Branch.ModBot;
+        }
+
+        private static string getGameVersion()
+        {
+            string version = "a0.2.0.16";
+            string betaVersion = "a0.2.1.0";
+            return IsBetaBuild() ? betaVersion : version;
         }
 
         public static bool IsBetaBuild()

@@ -25,14 +25,14 @@ namespace CloneDroneOverhaul.Modules
             {
                 try // InvalidCastException
                 {
-                    FPSCap = (float)value * 60f;
+                    FPSCap = (float)value * 30f;
                     SettingsManager.Instance.SetVsyncOn(FPSCap == 60f);
                     if (FPSCap == 600f)
                     {
                         Application.targetFrameRate = -1;
                         return;
                     }
-                    Application.targetFrameRate = UnityEngine.Mathf.RoundToInt(FPSCap);
+                    Application.targetFrameRate = UnityEngine.Mathf.RoundToInt(FPSCap) - 1;
                 }
                 catch
                 {
