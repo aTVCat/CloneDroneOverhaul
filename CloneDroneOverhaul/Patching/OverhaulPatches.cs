@@ -332,7 +332,7 @@ namespace CloneDroneOverhaul.Patching
             {
                 return false;
             }
-            return true;
+            return false;
         }
 
         [HarmonyPrefix]
@@ -491,7 +491,7 @@ namespace CloneDroneOverhaul.Patching
                 return false;
             }
             return true;
-        }/*
+        }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Select")]
         private static void LevelEditorObjectPlacementManager_Select_Postfix(LevelEditorObjectPlacementManager __instance, ObjectPlacedInLevel objectToSelect, bool deselectAllAnimationTracks = true)
@@ -516,7 +516,7 @@ namespace CloneDroneOverhaul.Patching
         {
             OverhaulMain.GUI.GetGUI<LevelEditor.ModdedLevelEditorUI>().ToolBar.RefreshSelected();
         }
-        */
+        
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]

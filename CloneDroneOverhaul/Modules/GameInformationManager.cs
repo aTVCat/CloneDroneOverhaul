@@ -21,7 +21,34 @@ namespace CloneDroneOverhaul.Modules
         {
             return QualityInformation.GetQualityInformation();
         }
+        public UnoptimizedThings GetUnoptimizedThingsInfo()
+        {
+            return UnoptimizedThings.GetFPSLoweringStuff();
+        }
 
+        public struct UnoptimizedThings
+        {
+            public static UnoptimizedThings GetFPSLoweringStuff()
+            {
+                UnoptimizedThings result = default(UnoptimizedThings);
+                result.getValues();
+                return result;
+            }
+
+            private void getValues()
+            {
+                _allCameras = UnityEngine.Object.FindObjectsOfType<Camera>();
+            }
+
+            private Camera[] _allCameras;
+            public Camera[] AllCameras
+            {
+                get
+                {
+                    return _allCameras;
+                }
+            }
+        }
 
         public struct QualityInformation
         {

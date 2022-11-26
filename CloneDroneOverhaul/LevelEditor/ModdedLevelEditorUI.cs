@@ -1,12 +1,12 @@
 ﻿using CloneDroneOverhaul.UI;
 using ModLibrary;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System;
-using System.Threading;
 
 namespace CloneDroneOverhaul.LevelEditor
 {
@@ -107,7 +107,7 @@ namespace CloneDroneOverhaul.LevelEditor
 
             protected override void Config()
             {
-                for(int i = 0; i < 9; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     ModdedObj.GetObjectFromList<InputField>(i).onValueChanged.AddListener(onTransformValuesUpdated);
                 }
@@ -185,10 +185,12 @@ namespace CloneDroneOverhaul.LevelEditor
             }
         }
 
+
         public class LevelsMenu : UIPanel
         {
             public TabButton[] Tabs;
             public TabPage[] Pages;
+            public SelectedLevelControlsDisplay SelectedLevelDisplay;
 
             public string GetLevelsFolder()
             {
@@ -212,6 +214,8 @@ namespace CloneDroneOverhaul.LevelEditor
                        new TabPage() { ID = "upload", PageTransform = base.ModdedObj.GetObjectFromList<Transform>(11) }
                 };
 
+                SelectedLevelDisplay = base.ModdedObj.GetObjectFromList<Transform>(9).gameObject.AddComponent<SelectedLevelControlsDisplay>();
+
                 base.ModdedObj.GetObjectFromList<Button>(4).onClick.AddListener(CloseMenu);
                 base.ModdedObj.GetObjectFromList<Button>(7).onClick.AddListener(delegate
                 {
@@ -228,65 +232,69 @@ namespace CloneDroneOverhaul.LevelEditor
             {
                 base.ModdedObj.gameObject.SetActive(false);
             }
-            public void populateEntries(EntryType type)
+            public void PopulateEntries(EntryType type)
             {
                 TransformUtils.DestroyAllChildren(base.ModdedObj.GetObjectFromList<Transform>(14));
 
-                base.ModdedObj.GetObjectFromList<Transform>(16).gameObject.SetActive(false);
-
                 if (type == EntryType.LevelFolder)
                 {
-                    List<LevelFileEntry> levelFilesAndFolders = Singleton<LevelEditorFilesManager>.Instance.GetLevelFilesAndFolders(true);
-                    levelFilesAndFolders.Sort((LevelFileEntry entry, LevelFileEntry entryB) => string.Compare(entry.PathUnderLevelsFolder, entryB.PathUnderLevelsFolder, StringComparison.OrdinalIgnoreCase));
-
-                    Dictionary<string, FolderWithLevels> dictionary = new Dictionary<string, FolderWithLevels>();
-                    Dictionary<LevelFileEntry, Transform> dictionary2 = new Dictionary<LevelFileEntry, Transform>();
-
-                    foreach (LevelFileEntry file in levelFilesAndFolders)
-                    {
-                        ModdedObject mObj = null;
-                        if (file.IsFolder)
-                        {
-                            mObj = Instantiate<ModdedObject>(base.ModdedObj.GetObjectFromList<ModdedObject>(12), base.ModdedObj.GetObjectFromList<Transform>(14));
-                            dictionary.Add(file.PathUnderLevelsFolder, mObj.gameObject.AddComponent<FolderWithLevels>().MakeUIFolder(file));
-                        }
-                        else
-                        {
-                            mObj = Instantiate<ModdedObject>(base.ModdedObj.GetObjectFromList<ModdedObject>(15), base.ModdedObj.GetObjectFromList<Transform>(14));
-                            mObj.gameObject.AddComponent<UILevelEntry>().MakeLevelEntry(file);
-                        }
-
-                        if (mObj != null)
-                        {
-                            dictionary2.Add(file, mObj.transform);
-                            mObj.gameObject.SetActive(true);
-                        }
-                    }
-
-                    for (int j = 0; j < levelFilesAndFolders.Count; j++)
-                    {
-                        LevelFileEntry levelFileEntry2 = levelFilesAndFolders[j];
-                        foreach (KeyValuePair<string, FolderWithLevels> keyValuePair in dictionary)
-                        {
-                            if (FolderContainsFile(keyValuePair.Key, levelFileEntry2))
-                            {
-                                Transform transform2 = dictionary2[levelFileEntry2];
-                                keyValuePair.Value.PutLevelIntoFolder(transform2.gameObject);
-                            }
-                        }
-                    }
-
-                    OverhaulMain.Timer.AddNoArgAction(delegate
-                    {
-                        base.ModdedObj.GetObjectFromList<Transform>(16).gameObject.SetActive(true);
-                    }, 0.1f, true);
-
+                    PopulateFolder((LevelEditorFilesManager.Instance.GetRootDataPath() + "/" + LevelEditorFilesManager.Instance.LocalLevelsFolder).Replace("/", "\\"), base.ModdedObj.GetObjectFromList<Transform>(14));
                 }
+            }
+
+            public void RefreshContainerGameObject(GameObject obj)
+            {
+                obj.GetComponent<ContentSizeFitter>().CallPrivateMethod("SetDirty");
+            }
+
+            public List<Transform> PopulateFolder(string path, Transform parent)
+            {
+                List<Transform> result = new List<Transform>();
+
+                List<string> allFiles = Directory.GetDirectories(path).ToList();
+                List<string> files = Directory.GetFiles(path).ToList();
+                foreach (string str in files)
+                {
+                    allFiles.Add(str);
+                }
+
+                foreach (string file in allFiles)
+                {
+                    LevelsFileBase entry = null;
+                    if (Directory.Exists(file))
+                    {
+                        FolderWithLevels folder = Instantiate(ModdedObj.GetObjectFromList<Transform>(12), ModdedObj.GetObjectFromList<Transform>(14)).gameObject.AddComponent<FolderWithLevels>();
+                        folder.transform.SetSiblingIndex(parent.GetSiblingIndex() + 1);
+                        folder.MakeUIFolder(file);
+                        folder.gameObject.SetActive(true);
+
+                        if (parent.name != "Content")
+                        {
+                            folder.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
+                        }
+
+                        entry = folder;
+                    }
+                    else if (file.EndsWith(".json"))
+                    {
+                        UILevelEntry folder = Instantiate(ModdedObj.GetObjectFromList<Transform>(15), ModdedObj.GetObjectFromList<Transform>(14)).gameObject.AddComponent<UILevelEntry>();
+                        folder.transform.SetSiblingIndex(parent.GetSiblingIndex() + 1);
+                        folder.MakeLevelEntry(file);
+                        folder.gameObject.SetActive(true);
+
+                        entry = folder;
+                    }
+                    if (entry != null) result.Add(entry.transform);
+                }
+
+                RefreshContainerGameObject(base.ModdedObj.GetObjectFromList<Transform>(14).gameObject);
+
+                return result;
             }
 
             public void OnSelectedTab(TabButton button)
             {
-                foreach(TabPage page in Pages)
+                foreach (TabPage page in Pages)
                 {
                     page.PageTransform.gameObject.SetActive(false);
                 }
@@ -308,9 +316,17 @@ namespace CloneDroneOverhaul.LevelEditor
                         button2.SetSelected();
                     }
                 }
-                if(button.ID == "levels")
+                if (button.ID == "levels")
                 {
-                    populateEntries(EntryType.LevelFolder);
+                    PopulateEntries(EntryType.LevelFolder);
+                }
+                if (button.ID == "challenges")
+                {
+                    PopulateEntries(EntryType.Challenge);
+                }
+                if (button.ID == "adventures")
+                {
+                    PopulateEntries(EntryType.Adventure);
                 }
             }
 
@@ -329,29 +345,103 @@ namespace CloneDroneOverhaul.LevelEditor
 
             public class LevelsFileBase : MonoBehaviour
             {
-                public LevelFileEntry File;
+                public string File;
+
+                protected virtual void OnClick()
+                {
+
+                }
             }
             public class FolderWithLevels : LevelsFileBase
             {
-                public FolderWithLevels MakeUIFolder(LevelFileEntry path)
+                List<Transform> _myEntries;
+
+                public FolderWithLevels MakeUIFolder(string path)
                 {
                     File = path;
-                    base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.GetLevelName();
+                    if (path.Contains("/"))
+                    {
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path;
+                        string text = base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text;
+                        text = text.Substring(text.LastIndexOf("/") + 1);
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = text;
+                    }
+                    else
+                    {
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path;
+                        string text = base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text;
+                        text = text.Substring(text.LastIndexOf(@"\") + 1);
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = text;
+                    }
+                    base.GetComponent<ModdedObject>().GetObjectFromList<RectTransform>(2).gameObject.SetActive(false);
                     return this;
+                }
+
+                void Awake()
+                {
+                    base.GetComponent<ModdedObject>().GetObjectFromList<Button>(3).onClick.AddListener(OnClick);
+                    base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#404448");
+                }
+
+                void OnDestroy()
+                {
+                    if (_myEntries != null && _myEntries.Count > 0)
+                    {
+                        this.SetIsOpen(false);
+                    }
                 }
 
                 public void PutLevelIntoFolder(GameObject obj)
                 {
                     obj.transform.SetParent(base.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2));
                 }
+
+                public void SetIsOpen(bool refresh) // #404448 non opened  #42505E opened
+                {
+                    if (_myEntries == null || _myEntries.Count == 0)
+                    {
+                        _myEntries = ModdedLevelEditorUI.Instance.Menu.PopulateFolder(File, this.transform);
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#42505E");
+                    }
+                    else
+                    {
+                        foreach (Transform t in _myEntries)
+                        {
+                            Destroy(t.gameObject);
+                        }
+                        _myEntries.Clear();
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#404448");
+                    }
+                    if (refresh) ModdedLevelEditorUI.Instance.Menu.RefreshContainerGameObject(ModdedLevelEditorUI.Instance.Menu.ModdedObj.GetObjectFromList<Transform>(14).gameObject);
+                }
+
+                protected override void OnClick()
+                {
+                    SetIsOpen(true);
+                }
             }
             public class UILevelEntry : LevelsFileBase
             {
-                public UILevelEntry MakeLevelEntry(LevelFileEntry path)
+                public UILevelEntry MakeLevelEntry(string path)
                 {
                     File = path;
-                    base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.GetLevelName();
+                    if (path.Contains("/"))
+                    {
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.Substring(path.LastIndexOf("/") + 1).Replace(".json", string.Empty);
+                    }
+                    else
+                    {
+                        base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0).text = path.Substring(path.LastIndexOf(@"\") + 1).Replace(".json", string.Empty);
+                    }
                     return this;
+                }
+
+                void Awake()
+                {
+                    base.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        ModdedLevelEditorUI.Instance.Menu.SelectedLevelDisplay.SelectLevel(File);
+                    });
                 }
             }
 
@@ -390,7 +480,91 @@ namespace CloneDroneOverhaul.LevelEditor
                     ModdedLevelEditorUI.Instance.Menu.OnSelectedTab(this);
                 }
             }
-        }
+
+            public class SelectedLevelControlsDisplay : MonoBehaviour
+            {
+                public string SelectedLevelPath;
+
+                void Awake()
+                {
+                    base.gameObject.AddComponent<LevelThumbnailSelector>();
+
+                    ModdedObject obj = base.GetComponent<ModdedObject>();
+
+                }
+
+                /// <summary>
+                /// Called, when user select a level
+                /// </summary>
+                /// <param name="levelPath"></param>
+                public void SelectLevel(string levelPath)
+                {
+                    SelectedLevelPath = levelPath;
+
+                    ModdedObject obj = base.GetComponent<ModdedObject>();
+                    obj.GetObjectFromList<InputField>(8).text = levelPath.Substring(levelPath.LastIndexOf("\\") + 1).Replace(".json", string.Empty);
+                    obj.GetObjectFromList<Button>(5).onClick.AddListener(delegate
+                    {
+                        EditSelectedLevel();
+                    });
+                }
+
+                /// <summary>
+                /// Opens currently selected level
+                /// </summary>
+                public void EditSelectedLevel()
+                {
+                    if (!string.IsNullOrEmpty(SelectedLevelPath) && File.Exists(SelectedLevelPath))
+                    {
+                        SceneTransitionController.SpawnTransitionScreen(delegate
+                        {
+                            ModdedLevelEditorUI.Instance.Menu.CloseMenu();
+                            LevelEditorLevelData data = BaseUtils.TryLoad<LevelEditorLevelData>(SelectedLevelPath);
+                            LevelEditorDataManager.Instance.SetPrivateField<LevelEditorLevelData>("_currentLevelData", data);
+                            LevelEditorDataManager.Instance.CallPrivateMethod("PopulateCurrentLevel");
+                        }, "Loading level...", SelectedLevelPath);
+                    }
+                }
+            }
+
+            public class LevelThumbnailSelector : MonoBehaviour
+            {
+                public Image Thumbnail;
+                public Text ThumbnailPath;
+                public Text ErrorLabel;
+                public Button BrowseImage;
+
+                void Awake()
+                {
+                    ModdedObject mObj = base.GetComponent<ModdedObject>();
+                    Thumbnail = mObj.GetObjectFromList<Image>(0);
+                    ThumbnailPath = mObj.GetObjectFromList<Text>(2);
+                    ErrorLabel = mObj.GetObjectFromList<Text>(3);
+                    ErrorLabel.gameObject.SetActive(false);
+                    BrowseImage = mObj.GetObjectFromList<Button>(4);
+                    BrowseImage.onClick.AddListener(delegate
+                    {
+                        this.onFileSelected(FileManagerStuff.OpenFileSelect("PNG files (*.png)|*.png|JPG files (*.jpg*)|*.jpg*|JPEG files (*.jpeg*)|*.jpeg*"));
+                    });
+                }
+
+                void onFileSelected(string file)
+                {
+                    ErrorLabel.gameObject.SetActive(false);
+                    if (string.IsNullOrEmpty(file))
+                    {
+                        ErrorLabel.gameObject.SetActive(true);
+                        ErrorLabel.text = "Error: file selection was canceled";
+                        return;
+                    }
+                    ThumbnailPath.text = "Path: " + file;
+                    BaseUtils.ImageUtils.LoadSpriteFromFile(file, delegate (Sprite s)
+                    {
+                        Thumbnail.sprite = s;
+                    });
+                }
+            }
+        }      
 
         public ObjectsSelectedPanel ObjectsSelected;
         public Toolbar ToolBar;
@@ -426,6 +600,21 @@ namespace CloneDroneOverhaul.LevelEditor
             if (LevelEditorToolManager.Instance.IsMouseOverAnyTool() && list.Count > 0)
             {
                 InspectorPanel.Populate(list[0]);
+            }
+        }
+
+        public override void OnNewFrame()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                if(!Menu.gameObject.activeSelf)
+                {
+                    Menu.ShowMenu();
+                }
+                else
+                {
+                    Menu.CloseMenu();
+                }
             }
         }
 

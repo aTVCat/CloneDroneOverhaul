@@ -53,7 +53,7 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, true));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
 
-            AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 10, Step = 60, OnlyInt = true }));
+            AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 20, Step = 30, OnlyInt = true }));
             AddSetting(SettingEntry.NewSetting<ShadowResolution>("Shadow resolution", "Default with \"Soft\" enabled is the most optimal variant", "Graphics", "Settings", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowResolution) }));
             AddSetting(SettingEntry.NewSetting<ShadowBias>("Shadow bias", "With \"Minimum\" selected, you'll forget about weird shadows (NO)", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowBias) }));
             AddSetting(SettingEntry.NewSetting<ShadowDistance>("Shadow distance", "If you see this text... then you are using dnSpy or unity explorer", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowDistance) }));

@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
+using System.Windows.Forms;
+using System.IO;
+using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 namespace CloneDroneOverhaul
 {
@@ -35,6 +39,63 @@ namespace CloneDroneOverhaul
 
     public static class BaseUtils
     {
+        public static class ImageUtils
+        {
+            public static void LoadSpriteFromFile(string path, Action<Sprite> onLoaded)
+            {
+                StaticCoroutineRunner.StartStaticCoroutine(loadSpriteFromFile(path, onLoaded));
+            }
+
+            static IEnumerator loadSpriteFromFile(string path, Action<Sprite> onLoaded)
+            {
+                Sprite result = null;
+                LoadTextureFromFile(path, delegate (Texture2D tex)
+                {
+                    result = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+                });
+                onLoaded(result);
+                yield break;
+            }
+
+            public static void LoadTextureFromFile(string path, Action<Texture2D> onLoaded)
+            {
+                StaticCoroutineRunner.StartStaticCoroutine(loadTextureFromFile(path, onLoaded));
+            }
+
+            static IEnumerator loadTextureFromFile(string path, Action<Texture2D> onLoaded)
+            {
+                Texture2D tex = new Texture2D(0, 0);
+                tex.LoadImage(File.ReadAllBytes(path), false);
+                onLoaded(tex);
+                yield break;
+                using (UnityWebRequest request = UnityWebRequestTexture.GetTexture("file://" + path))
+                {
+                    yield return request.SendWebRequest();
+                    tex = DownloadHandlerTexture.GetContent(request);
+                    onLoaded(tex);
+                }
+            }
+        }
+
+        public static T TryLoad<T>(string filepath)
+        {
+            T loadedData = default(T);
+            if (File.Exists(filepath))
+            {
+                string text = File.ReadAllText(filepath);
+                loadedData = JsonConvert.DeserializeObject<T>(text, DataRepository.Instance.GetSettings());
+            }
+            return loadedData;
+        }
+        public static Color ColorFromHex(string hex)
+        {
+            Color result = new Color();
+
+            ColorUtility.TryParseHtmlString(hex, out result);
+
+            return result;
+        }
+
         public static Character SpawnRobotWithDisabledComponents(Transform spawnPos, EnemyType type)
         {
             Character result = EnemyFactory.Instance.SpawnEnemy(type, spawnPos.position, spawnPos.eulerAngles).GetComponent<Character>();
@@ -137,6 +198,11 @@ namespace CloneDroneOverhaul
             {
                 material.SetFloat(propertyName, material.GetFloat(propertyName) + (targetValue * multipler));
             }
+        }
+
+        public static void SmoothChangeImageColor(UnityEngine.UI.Image image, Color initColor, Color targetColor, float time)
+        {
+            image.color = Color.Lerp(initColor, targetColor, time);
         }
 
         public static void OpenURL(string url)
@@ -253,6 +319,42 @@ namespace CloneDroneOverhaul
                 Verb = "open"
             });
         }
+
+        public static string OpenFileSelect(string filter)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+            OpenFileDialog openFileDialog = null;
+
+            using (openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = filter;
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        fileContent = reader.ReadToEnd();
+                    }
+                }
+            }
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return string.Empty;
+            }
+
+            return filePath;
+        }
     }
 
 
@@ -265,8 +367,10 @@ namespace CloneDroneOverhaul
             Instance = this;
             ModDataManager dataManager = BaseStaticReferences.ModuleManager.GetModule<ModDataManager>();
             SettingsData = dataManager.CreateInstanceOfDataClass<CloneDroneOverhaulSettingsData>(true, false);
+            LevelEditorData = dataManager.CreateInstanceOfDataClass<ModdedLevelEditorSaveData>(true, false);
         }
 
         public Modules.CloneDroneOverhaulSettingsData SettingsData;
+        public Modules.ModdedLevelEditorSaveData LevelEditorData;
     }
 }

@@ -81,63 +81,30 @@ namespace CloneDroneOverhaul.Modules
         }
         private void checkFolders()
         {
-            if (!Directory.Exists(Mod_DataFolder))
+            string[] folders = new string[]
             {
-                Directory.CreateDirectory(Mod_DataFolder);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_DataFolder });
-            }
-            if (!Directory.Exists(Addons_Folder))
-            {
-                Directory.CreateDirectory(Addons_Folder);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Addons_Folder });
-            }
-            if (!Directory.Exists(Data_Folder))
-            {
-                Directory.CreateDirectory(Data_Folder);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Data_Folder });
-            }
-            if (!Directory.Exists(Mod_TempFolder))
-            {
-                Directory.CreateDirectory(Mod_TempFolder);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { Mod_TempFolder });
-            }
-            if (!Directory.Exists(AddonsCompliedDlls))
-            {
-                Directory.CreateDirectory(AddonsCompliedDlls);
-                OverhaulMain.Timer.AddActionToCompleteNextFrame(showMessageAboutFolderCreation, new object[] { AddonsCompliedDlls });
-            }
-        }
-        private void showMessageAboutFolderCreation(object[] args)
-        {
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New folder created", "Created: " + (string)args[0], 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
+                Mod_DataFolder,
+                Data_Folder,
+                Addons_Folder,
+                Mod_TempFolder,
+                AddonsCompliedDlls,
+                DublicatedLevelsFolder
+            };
+
+            CreateFoldersIfNeeded(folders);
         }
 
         public T LoadData<T>(string path) where T : class
         {
             T result = null;
-            try
-            {
-                result = ByteSaver.FromByteArray<T>(File.ReadAllBytes(path));
-            }
-            catch(Exception ex)
-            {
-                ModuleManagement.ShowError_Type2("Error occured, while loading data from path: " + path, "Details:" + ex.Message);
-            }
+            result = ByteSaver.FromByteArray<T>(File.ReadAllBytes(path));
             return result;
         }
         public void SaveData<T>(T obj, string path) where T : class
         {
-            try
-            {
-                byte[] array = null;
-                array = ByteSaver.ObjectToByteArray(obj);
-                File.WriteAllBytes(path, array);
-            }
-            catch (Exception ex)
-            {
-                ModuleManagement.ShowError_Type2("Error occured, while saving data in: " + path, "Details:" + ex.Message);
-            }
+            byte[] array = null;
+            array = ByteSaver.ObjectToByteArray(obj);
+            File.WriteAllBytes(path, array);
         }
         public T CreateInstanceOfDataClass<T>(bool loadData, bool loadDataNextFrame) where T : DataBase
         {
@@ -156,6 +123,30 @@ namespace CloneDroneOverhaul.Modules
             }
             return obj;
         }
+
+        /// <summary>
+        /// Creates a folder if one doesn't exist
+        /// </summary>
+        /// <param name="path"></param>
+        public void CreateFolderIfNeeded(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// Same as method above, but for multiple folders
+        /// </summary>
+        /// <param name="paths"></param>
+        public void CreateFoldersIfNeeded(string[] paths)
+        {
+            foreach(string path in paths)
+            {
+                CreateFolderIfNeeded(path);
+            }
+        }
     }
 
     public class DataBase
@@ -164,18 +155,11 @@ namespace CloneDroneOverhaul.Modules
 
         public void LoadData()
         {
-            try
+            if (!checkFolders())
             {
-                if (!checkFolders())
-                {
-                    return;
-                }
-                TryLoadData();
+                return;
             }
-            catch(System.Exception ex)
-            {
-                ModuleManagement.ShowError_Type2(this.GetType().ToString() + " Data error", "Details (TryLoadData method): " + ex.Message);
-            }
+            TryLoadData();
         }
         protected virtual void TryLoadData()
         {
@@ -196,13 +180,49 @@ namespace CloneDroneOverhaul.Modules
         }
     }
 
-    public class CloneDroneOverhaulSettingsData : DataBase
+    public class ModdedLevelEditorSaveData : DataBase
     {
-        public CloneDroneOverhaulSettingsData.Data SettingsData;
+        public ModdedLevelEditorSaveData.Data LEData;
 
         [Serializable]
         public class Data
         {
+        }
+
+        protected override void TryLoadData()
+        {
+            LEData = base.DataManagerReference.LoadData<ModdedLevelEditorSaveData.Data>(ModDataManager.Data_Folder + "ModdedLevelEditorData" + ModDataManager.FileExtension);
+        }
+
+        protected override bool CheckFolders()
+        {
+            if (!File.Exists(ModDataManager.Data_Folder + "ModdedLevelEditorData" + ModDataManager.FileExtension))
+            {
+                ModdedLevelEditorSaveData.Data data = new ModdedLevelEditorSaveData.Data();
+                LEData = data;
+                TrySaveData();
+                return false;
+            }
+            return true;
+        }
+
+        public override void TrySaveData()
+        {
+            base.DataManagerReference.SaveData<ModdedLevelEditorSaveData.Data>(LEData, ModDataManager.Data_Folder + "ModdedLevelEditorData" + ModDataManager.FileExtension);
+        }
+    }
+
+    public class CloneDroneOverhaulSettingsData : DataBase
+    {
+        public CloneDroneOverhaulSettingsData.Data SettingsData;
+
+
+        [Serializable]
+        public class Data
+        {
+            [NonSerialized]
+            public CloneDroneOverhaulSettingsData DataBase;
+
             public List<SavedSettingEntry> SavedSettings;
 
             public void UpdateValue(string id, object value, bool onlyAdd)
@@ -218,6 +238,10 @@ namespace CloneDroneOverhaul.Modules
 
             public SavedSettingEntry GetSettingSave(string id, object newSettingValue, bool isNewSetting)
             {
+                if(SavedSettings == null)
+                {
+                    SavedSettings = new List<SavedSettingEntry>();
+                }
                 foreach (SavedSettingEntry entry in SavedSettings)
                 {
                     if (entry.ID == id)
@@ -246,6 +270,8 @@ namespace CloneDroneOverhaul.Modules
         protected override void TryLoadData()
         {
             SettingsData = base.DataManagerReference.LoadData<CloneDroneOverhaulSettingsData.Data>(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
+            SettingsData.DataBase = this;
+            OverhaulMain.SettingsData = this;
         }
 
         protected override bool CheckFolders()
@@ -254,7 +280,9 @@ namespace CloneDroneOverhaul.Modules
             {
                 CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data();
                 data.SavedSettings = new List<Data.SavedSettingEntry>();
-                base.DataManagerReference.SaveData<CloneDroneOverhaulSettingsData.Data>(data, ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
+                SettingsData = data;
+                SettingsData.DataBase = this;
+                TrySaveData();
             }
             return true;
         }
@@ -265,7 +293,12 @@ namespace CloneDroneOverhaul.Modules
         }
 
         public void SaveSetting(string id, object value, bool onlyAdd)
-        {            
+        {   
+            /*
+            if(SettingsData == null)
+            {
+                CheckFolders();
+            }*/
             SettingsData.UpdateValue(id, value, onlyAdd);
             if (onlyAdd)
             {
