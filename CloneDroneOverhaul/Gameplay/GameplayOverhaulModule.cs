@@ -1,10 +1,11 @@
 ﻿using CloneDroneOverhaul.EffectsAndAbilitiesV4;
 using CloneDroneOverhaul.Utilities;
 using UnityEngine;
+using ModLibrary;
 
 namespace CloneDroneOverhaul.Modules
 {
-    public class RobotsOverhaulModule : ModuleBase
+    public class GameplayOverhaulModule : ModuleBase
     {
         // Todo
         // Make robots more unique:
@@ -12,6 +13,8 @@ namespace CloneDroneOverhaul.Modules
         //  - Random jump height
         //  - Random acceleration speed - To do
         // Robot visuals editor
+
+        public static GameplayOverhaulModule Instance;
 
         public override void Start()
         {
@@ -22,6 +25,7 @@ namespace CloneDroneOverhaul.Modules
                 "firstPersonMover.OnDestroy"
             };
             Singleton<GlobalEventManager>.Instance.AddEventListener<Camera>(GlobalEvents.PlayerCameraEnabled, OnCameraEnabled);
+            Instance = this;
         }
 
         private void OnCameraEnabled(Camera cam)
@@ -55,6 +59,11 @@ namespace CloneDroneOverhaul.Modules
             {
                 RobotsExpansionManager.OnRobotDestroyed((RobotShortInformation)arguments[0]);
             }
+        }
+
+        public void CreateLiftAndSpawnPlayer()
+        {
+            GameFlowManager.Instance.CallPrivateMethod("createPlayerAndSetLift");
         }
     }
 }

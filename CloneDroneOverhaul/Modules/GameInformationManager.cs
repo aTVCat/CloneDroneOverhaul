@@ -66,6 +66,22 @@ namespace CloneDroneOverhaul.Modules
                     return QualitySettings.shadowDistance;
                 }
             }
+
+            public float PixelLightCount
+            {
+                get
+                {
+                    return QualitySettings.pixelLightCount;
+                }
+            }
+
+            public LightmapSettings LightmapSettings
+            {
+                get
+                {
+                    return Object.FindObjectOfType<LightmapSettings>();
+                }
+            }
         }
 
         public struct LevelInformation

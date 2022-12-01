@@ -31,6 +31,7 @@ namespace CloneDroneOverhaul
         public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
         public static OverhaulMainMonoBehaviour LocalMonoBehaviour { get; set; }
         public static CloneDroneOverhaulSettingsData SettingsData { get; set; }
+        public static OverhaulCacheManager CacheManager { get; set; }
 
         private Text _settingsButtonText;
 
@@ -41,7 +42,9 @@ namespace CloneDroneOverhaul
 
         protected override void OnModLoaded()
         {
+            Gameplay.OverModes.OverModesController.InitializeForCurrentScene();
             OverhaulCacheManager.ClearTemporal();
+            CacheManager = new OverhaulCacheManager();
             if (OverhaulMain.Instance != null)
             {
                 return;
@@ -177,7 +180,7 @@ namespace CloneDroneOverhaul
             BaseStaticReferences.GUIs = GUI;
             Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
             manager.AddModule<WorldGUIs>();
-            manager.AddModule<RobotsOverhaulModule>();
+            manager.AddModule<GameplayOverhaulModule>();
             manager.AddModule<Modules.MultiplayerManager>();
             manager.AddModule<ArenaManager>();
             manager.AddModule<MiscEffectsManager>();
@@ -378,6 +381,7 @@ namespace CloneDroneOverhaul
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<UI.NewKillFeedUI>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<UI.NewGameModeSelectionScreen>());
             mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<UI.NewPhotoModeUI>());
+            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<UI.NewWorkshopBrowserUI>());
         }
 
         public static string GetTranslatedString(string ID)
@@ -437,14 +441,14 @@ namespace CloneDroneOverhaul
 
         private static string getGameVersion()
         {
-            string version = "a0.2.0.16";
+            string version = "a0.2.1.0";
             string betaVersion = "a0.2.1.0";
             return IsBetaBuild() ? betaVersion : version;
         }
 
         public static bool IsBetaBuild()
         {
-            return false;
+            return true;
         }
 
 

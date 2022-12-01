@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace CloneDroneOverhaul.Patching
 {
@@ -54,6 +55,15 @@ namespace CloneDroneOverhaul.Patching
             {
             }
             return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TitleScreenUI), "OnWorkshopBrowserButtonClicked")]
+        private static bool TitleScreenUI_OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
+        {
+            Modules.ArenaManager.SetRootAndLogoVisible(false);
+            NewWorkshopBrowserUI.Instance.Show();
+            return false;
         }
 
         [HarmonyPostfix]
@@ -343,6 +353,21 @@ namespace CloneDroneOverhaul.Patching
             return false;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ArrowProjectile), "PlayGroundImpactVFX")]
+        private static bool ArrowProjectile_PlayGroundImpactVFX_Prefix(ArrowProjectile __instance)
+        {
+            if (__instance.GetPrivateField<bool>("_isFlaming"))
+            {
+                Singleton<GlobalFireParticleSystem>.Instance.CreateGroundImpactVFX(__instance.transform.position);
+            }
+            else
+            {
+                OverhaulMain.Visuals.EmitArrowCollision(__instance.transform.position);
+            }
+            return false;
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AttackManager), "CreateHammerHitEffectVFX")]
         private static void AttackManager_CreateHammerHitEffectVFX_Postfix(Vector3 position)
@@ -522,6 +547,10 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]
         private static void LevelEditorPointLight_Start_Postfix(LevelEditorPointLight __instance)
         {
+            if (!OverhaulMain.Visuals.IsDustEnabled())
+            {
+                return;
+            }
             CloneDroneOverhaul.Modules.PointLightDust dust = __instance.gameObject.AddComponent<CloneDroneOverhaul.Modules.PointLightDust>();
             dust.Target = __instance.transform;
         }
@@ -577,6 +606,77 @@ namespace CloneDroneOverhaul.Patching
         private static void PlanetCollider_OnEnable_Prefix(PlanetCollider __instance)
         {
             ObjectFixer.FixObject(__instance.transform, "Planet_Earth", __instance);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ArenaLiftManager), "Update")]
+        private static bool ArenaLiftManager_Update_Prefix(ArenaLiftManager __instance)
+        {
+            GameMode currentGameMode = GameFlowManager.Instance.GetCurrentGameMode();
+            if(currentGameMode == Gameplay.OverModes.EndlessModeOverhaul.Instance.GetOverModeGameMode())
+            {
+                if (!__instance.Lift.IsMoving() && __instance.AreAllPlayersInTheLift() && (__instance.GetLiftTarget() == ArenaLiftPosition.StartArea || __instance.GetLiftTarget() == ArenaLiftPosition.UpgradeRoom))
+                {
+                    Singleton<GameFlowManager>.Instance.OnAllPlayersInLiftThatsNotMoving();
+                }
+                if(!__instance.Lift.IsMoving() && __instance.GetLiftTarget() == ArenaLiftPosition.Arena && __instance.AreAllPlayersInTheLift() && GameFlowManager.Instance.HasWonRound())
+                {
+                    __instance.Lift.GoToUpgradeRoom();
+                }
+                return false;
+            }
+            return true;
+        }
+
+
+        ///
+        /// Overmode patches
+        ///
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LevelManager), "getLevelDescriptions")]
+        private static bool LevelManager_getLevelDescriptions_Prefix(LevelManager __instance, ref List<LevelDescription> __result)
+        {
+            GameMode currentGameMode = GameFlowManager.Instance.GetCurrentGameMode();
+            if (currentGameMode == Gameplay.OverModes.EndlessModeOverhaul.Instance.GetOverModeGameMode())
+            {
+                __result = Gameplay.OverModes.EndlessModeOverhaul.LevelDescriptions;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(GameDataManager), "getCurrentGameData")]
+        private static bool GameDataManager_getCurrentGameData_Prefix(GameDataManager __instance, ref GameData __result)
+        {
+            GameMode currentGameMode = GameFlowManager.Instance.GetCurrentGameMode();
+            if (currentGameMode == Gameplay.OverModes.EndlessModeOverhaul.Instance.GetOverModeGameMode())
+            {
+                Gameplay.OverModes.EndlessModeOverhaul instance = Gameplay.OverModes.EndlessModeOverhaul.Instance as Gameplay.OverModes.EndlessModeOverhaul;
+                __result = instance.Data_Legacy;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameDataManager), "Update")]
+        private static void GameDataManager_Update_Postfix(GameDataManager __instance)
+        {
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LevelManager), "SpawnCurrentLevel")]
+        private static bool LevelManager_SpawnCurrentLevel_Prefix(LevelManager __instance, ref IEnumerator __result, bool isAsync = false, string overrideLevelID = null, System.Action completeCallback = null)
+        {
+            GameMode currentGameMode = GameFlowManager.Instance.GetCurrentGameMode();
+            if (currentGameMode == Gameplay.OverModes.EndlessModeOverhaul.Instance.GetOverModeGameMode())
+            {
+                __result = Coroutines.SpawnCurrentLevel_EndlessOverMode(isAsync, overrideLevelID, completeCallback);
+                return false;
+            }
+            return true;
         }
 
 

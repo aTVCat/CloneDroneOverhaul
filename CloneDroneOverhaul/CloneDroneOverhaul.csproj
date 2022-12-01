@@ -58,6 +58,30 @@
     <Reference Include="ModLibrary">
       <HintPath>..\..\..\..\Random Patches FINAL\RandomPatches\bin\Debug\ModLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Common">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\MonoMod.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.UnitTest">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\MonoMod.UnitTest.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\MonoMod.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ModBotSource\Mod Bot\bin\Debug\Newtonsoft.Json.dll</HintPath>
@@ -168,6 +192,9 @@
     <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
     <Compile Include="Gameplay\Levels\LevelConstructor.cs" />
+    <Compile Include="Gameplay\OverModes\EndlessModeOverhaul.cs" />
+    <Compile Include="Gameplay\OverModes\OverModeBase.cs" />
+    <Compile Include="Gameplay\OverModes\OverModesController.cs" />
     <Compile Include="LAN\LANMultiplayerManager.cs" />
     <Compile Include="LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="LevelEditor\LevelEditorUndoRedoManager.cs" />
@@ -181,7 +208,7 @@
     <Compile Include="Gameplay\Exploration\ExplorationGameModeManager.cs" />
     <Compile Include="Modules\MultiplayerManager.cs" />
     <Compile Include="Modules\ModDataManager.cs" />
-    <Compile Include="Gameplay\RobotsOverhaulModule.cs" />
+    <Compile Include="Gameplay\GameplayOverhaulModule.cs" />
     <Compile Include="Modules\SettingsManager.cs" />
     <Compile Include="Modules\AdvancedPhotoModeManager.cs" />
     <Compile Include="Modules\GarbagePositionerTool.cs" />
@@ -197,11 +224,14 @@
     <Compile Include="Patching\OverhaulPatches.cs" />
     <Compile Include="PooledPrefabs\SimplePooledPrefab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Components\ImageLoader.cs" />
+    <Compile Include="UI\Components\ReferenceOnClick.cs" />
     <Compile Include="UI\Components\ToggleWithDesc.cs" />
     <Compile Include="UI\Components\Values.cs" />
     <Compile Include="UI\Components\DoOnClick.cs" />
     <Compile Include="UI\NewPhotoModeUI.cs" />
     <Compile Include="UI\NewGameModeSelectionScreen.cs" />
+    <Compile Include="UI\NewWorkshopBrowserUI.cs" />
     <Compile Include="Utilities\StaticReferences.cs" />
     <Compile Include="UI\Components\DestroyAfterWaitWithCallback.cs" />
     <Compile Include="UI\Components\BetterToggleGroup.cs" />

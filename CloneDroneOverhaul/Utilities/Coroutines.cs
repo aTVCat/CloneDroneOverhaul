@@ -24,6 +24,12 @@ namespace CloneDroneOverhaul.Utilities
         }
         private static IEnumerator loadWorkshopImage(string url, Action<Sprite> action)
 		{
+			if (OverhaulCacheManager.ContainsTemporalObject(UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url))
+            {
+				action(OverhaulCacheManager.GetTemporalObject<Sprite>(UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url));
+				yield break;
+			}
+
 			WWW www = new WWW(url);
 			yield return www;
 			bool flag = !string.IsNullOrEmpty(www.error);
@@ -34,8 +40,14 @@ namespace CloneDroneOverhaul.Utilities
 			}
 			Texture2D texture2D = new Texture2D(32, 32, TextureFormat.ARGB32, false);
 			www.LoadImageIntoTexture(texture2D);
+			texture2D.filterMode = FilterMode.Point;
+			texture2D.Apply();
 			Sprite sprite = Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0.5f, 0.5f));
+
+			//OverhaulCacheManager.AddTemporalObject<Sprite>(sprite, UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url); //Memory issues
+
 			action(sprite);
+
 			yield break;
 		}
 
@@ -68,5 +80,11 @@ namespace CloneDroneOverhaul.Utilities
 			}
 			yield break;
 		}
+
+		public static IEnumerator SpawnCurrentLevel_EndlessOverMode(bool isAsync = false, string overrideLevelID = null, Action completeCallback = null)
+        {
+			Gameplay.Levels.LevelConstructor.BuildALevel(new Gameplay.Levels.LevelConstructor.LevelSettings(), true);
+			yield break;
+        }
 	}
 }

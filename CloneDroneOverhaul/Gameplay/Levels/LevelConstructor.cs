@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
         public static Vector3 LIFT_POS = new Vector3(80, 0, 0);
 
         public const int PLAINS_ROUGHNESS_INDEX = 0;
-        public const int PLATFORM_SEED_SIZE_INDEX = 1;
+        public const int RANDOMVALUE1_INDEX = 1;
         public const int MAXLOWLEVELITERATIONS_SEED_INDEX = 3;
 
         public const string CUBE_PREFAB_PATH = "Prefabs/LevelObjects/Primitives/CubeFlat";
@@ -219,6 +219,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
                 CurrentChunkIndex = data.CurrentChunkIndex;
                 CurrentChuckX = data.CurrentChuckX;
                 CurrentChuckZ = data.CurrentChuckZ;
+                Seed = data.Seed;
             }
 
             public LevelGenerationCompletion()
@@ -236,12 +237,27 @@ namespace CloneDroneOverhaul.Gameplay.Levels
             {
                 int rough = Mathf.Clamp(ChunkData.Seed.ToString()[LevelConstructor.PLAINS_ROUGHNESS_INDEX], 1, 9);
 
-                float shift = ChunkData.Seed.ToString()[LevelConstructor.PLAINS_ROUGHNESS_INDEX] == 6 ? -2.5f : 2.5f;
+                int randomValueSeedValue = ChunkData.Seed.ToString()[LevelConstructor.RANDOMVALUE1_INDEX];
+                float randomValue = 2.5f;
+                if(randomValueSeedValue > 7)
+                {
+                    randomValue = 2.25f;
+                }
+                else if (randomValueSeedValue > 4)
+                {
+                    randomValue = 1.65f;
+                }
+                float shift = ChunkData.Seed.ToString()[LevelConstructor.PLAINS_ROUGHNESS_INDEX] == 6 ? -randomValue : randomValue;
 
                 base.transform.localScale = new Vector3(8, noise.GetPixel(ChunkData.CurrentChuckX, ChunkData.CurrentChuckZ).r * rough * 2, 8);
                 if (ChunkData.Seed.ToString()[LevelConstructor.PLAINS_ROUGHNESS_INDEX] > 4)
                 {
                     base.transform.position += new Vector3(0, (base.transform.localScale.y / shift) - (1.5f + Random.Range(0.100f, 1.000f)), 0);
+                }
+
+                if (randomValueSeedValue > 5) if (ChunkData.CurrentChuckX > Random.Range(4, 7) && ChunkData.CurrentChuckZ < Random.Range(4, 7))
+                {
+                    base.transform.position += new Vector3(0, base.transform.position.y * 2, 0);
                 }
             }
 
@@ -322,7 +338,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
             {
                 //Start building from platform
                 float size = 0;
-                float.TryParse(seed[LevelConstructor.PLATFORM_SEED_SIZE_INDEX].ToString(), out size);
+                //float.TryParse(seed[LevelConstructor.PLATFORM_SEED_SIZE_INDEX].ToString(), out size);
                 size = Mathf.Clamp(size, 0.2f, 3);
 
                 float sizeX = Mathf.Clamp(WedgeInitScaleX + size, 1.6f, 2.3f);

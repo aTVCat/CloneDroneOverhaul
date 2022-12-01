@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace CloneDroneOverhaul
 {
-    public static class OverhaulCacheManager
+    public class OverhaulCacheManager
     {
         private static bool _hasCached;
 
@@ -67,6 +67,7 @@ namespace CloneDroneOverhaul
             _cachedStuff.Add("Shader_VUnsync", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "VUnsync"));
 
             _cachedStuff.Add("SceneTransition_LevelEditorStyle", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "SceneTransitionScreen"));
+            _cachedStuff.Add("placeholderLoadSprite", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "placeholderLoad"));
 
             _hasCached = true;
         }
@@ -99,8 +100,7 @@ namespace CloneDroneOverhaul
         }
         public static T GetTemporalObject<T>(string name)
         {
-            object result = null;
-            _temporalStuff.TryGetValue(name, out result);
+            T result = (T)_temporalStuff[name];
             return (T)result;
         }
         public static void RemoveTemporalObject(string name)

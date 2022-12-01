@@ -48,7 +48,7 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Unlimited clone count", "Play with 999 clones!", "Misc", "Privacy", false));
             AddSetting(SettingEntry.NewSetting<bool>("Show version", "Buttom text Bottom text", "Misc", "Mod", true));
 
-            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, true));
+            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, false));
 
             AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, true));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
