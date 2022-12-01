@@ -14,7 +14,7 @@ namespace CloneDroneOverhaul.Modules
 
         public void StartGameWithLevel(string levelJSONPath)
         {
-            GameUIRoot.Instance.TitleScreenUI.Hide();
+            GameFlowManager.Instance.HideTitleScreen(true);
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 GameFlowManager.Instance.SetGameMode(EXPLORATION_GAMEMODE);

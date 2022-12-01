@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.IO;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using Steamworks;
 
 namespace CloneDroneOverhaul
 {
@@ -39,6 +40,106 @@ namespace CloneDroneOverhaul
 
     public static class BaseUtils
     {
+        public static class SteamWorkshopUtils
+        {
+            public enum VoteInfo
+            {
+                None,
+                VoteUp,
+                VoteDown
+            }
+            /// <summary>
+            /// Gets the vote of item
+            /// </summary>
+            /// <param name="item"></param>
+            /// <param name="onGetInfo"></param>
+            public static void GetUserVote(SteamWorkshopItem item, Action<VoteInfo> onGetInfo)
+            {
+                VoteInfo vote = VoteInfo.None;
+                SteamAPICall_t userItemVote = SteamUGC.GetUserItemVote(item.WorkshopItemID);
+                CallResult<GetUserItemVoteResult_t> callRes = CallResult<GetUserItemVoteResult_t>.Create(delegate (GetUserItemVoteResult_t t, bool failure)
+                {
+                    if (failure || t.m_bVoteSkipped)
+                    {
+                        onGetInfo(vote);
+                    }
+                    else
+                    {
+                        if (t.m_bVotedUp)
+                        {
+                            vote = VoteInfo.VoteUp;
+                        }
+                        if (t.m_bVotedDown)
+                        {
+                            vote = VoteInfo.VoteDown;
+                        }
+                        onGetInfo(vote);
+                    }
+                });
+            }
+            /// <summary>
+            /// Sets vote for item
+            /// </summary>
+            /// <param name="item"></param>
+            /// <param name="vote"></param>
+            public static void SetUserVote(SteamWorkshopItem item, VoteInfo vote)
+            {
+                if (vote == VoteInfo.None)
+                {
+                    return;
+                }
+
+                SteamAPICall_t hAPICall = SteamUGC.SetUserItemVote(item.WorkshopItemID, vote == VoteInfo.VoteUp ? true : false);
+                CallResult<SetUserItemVoteResult_t> callResult = CallResult<SetUserItemVoteResult_t>.Create(delegate (SetUserItemVoteResult_t t, bool failure)
+                {
+                    if (failure)
+                    {
+                        return;
+                    }
+                });
+                callResult.Set(hAPICall, null);
+            }
+            /// <summary>
+            /// Checks if the user is subscribed to item
+            /// </summary>
+            /// <param name="item"></param>
+            /// <returns></returns>
+            public static bool HasUserSubscribedToItem(string tag, int page)
+            {
+                return false;
+            }
+            /// <summary>
+            /// Gets the number of all subscribed items
+            /// </summary>
+            /// <returns></returns>
+            public static uint GetNumSubscribedItems()
+            {
+                uint result = SteamUGC.GetNumSubscribedItems();
+                return result;
+            }
+            /// <summary>
+            /// Gets all subscribed items
+            /// </summary>
+            /// <returns></returns>
+            public static PublishedFileId_t[] GetSubscribedItems()
+            {
+                uint itemsCount = GetNumSubscribedItems();
+                PublishedFileId_t[] array = new PublishedFileId_t[itemsCount];
+                SteamUGC.GetSubscribedItems(array, itemsCount);
+                return array;
+            }
+            public static float GetItemLoadProgress(SteamWorkshopItem item)
+            {
+                ulong current = 0;
+                ulong total = 0;
+                bool isValid = SteamUGC.GetItemDownloadInfo(item.WorkshopItemID, out current, out total);
+                if (!isValid || total == 0)
+                {
+                    return -1f;
+                }
+                return (float)current / (float)total;
+            }
+        }
         public static class ImageUtils
         {
             public static void LoadSpriteFromFile(string path, Action<Sprite> onLoaded)
@@ -112,7 +213,7 @@ namespace CloneDroneOverhaul
             result.GameThemeData = Patching.VisualFixes.ObjectFixer.GameUIThemeData;
             return result;
         }
-
+        
         public static Assembly CompileAsseblyFromFilesInPath(string path)
         {
             Assembly result = null;

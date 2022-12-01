@@ -42,13 +42,16 @@ namespace CloneDroneOverhaul.UI.Notifications
             mObj.GetObjectFromList<Text>(0).text = notification.Title;
             mObj.GetObjectFromList<Text>(1).text = notification.Description;
             mObj.GetObjectFromList<RectTransform>(3).gameObject.SetActive(false);
-            foreach (Notification.NotificationButton button in notification.Buttons)
+            if(notification.Buttons != null)
             {
-                mObj.GetObjectFromList<Text>(4).text = button.Text;
-                RectTransform transform2 = Instantiate<RectTransform>(mObj.GetObjectFromList<RectTransform>(3), mObj.GetObjectFromList<RectTransform>(2));
-                transform2.GetComponent<Button>().onClick.AddListener(button.Action);
-                transform2.gameObject.SetActive(true);
-                transform.GetComponent<Animator>().Play("NotificationAppear");
+                foreach (Notification.NotificationButton button in notification.Buttons)
+                {
+                    mObj.GetObjectFromList<Text>(4).text = button.Text;
+                    RectTransform transform2 = Instantiate<RectTransform>(mObj.GetObjectFromList<RectTransform>(3), mObj.GetObjectFromList<RectTransform>(2));
+                    transform2.GetComponent<Button>().onClick.AddListener(button.Action);
+                    transform2.gameObject.SetActive(true);
+                    transform.GetComponent<Animator>().Play("NotificationAppear");
+                }
             }
             return new NotificationControl(transform, mObj.GetObjectFromList<Text>(0), mObj.GetObjectFromList<Text>(1));
         }

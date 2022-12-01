@@ -20,6 +20,7 @@ namespace CloneDroneOverhaul.Modules
         private ParticleSystem worldDustMS1;
         private ParticleSystem worldDustMS0;
         private ParticleSystem worldDustNormal;
+        private ParticleSystem worldDustNormalWinter;
         private SimplePooledPrefab swordBlockPooled;
         private SimplePooledPrefab swordFireBlockPooled;
         private SimplePooledPrefab swordBlockMSPooled;
@@ -36,12 +37,14 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab longLiveightVFX;
         private SimplePooledPrefab kickVFX;
         private SimplePooledPrefab jumpDash;
+        private SimplePooledPrefab ArrowCollisionVFX;
         private Camera lastSpottedCamera;
         private Camera noiseCamera;
 
         List<AmplifyOcclusionEffect> effects = new List<AmplifyOcclusionEffect>();
 
-        private bool isWaitingNextFrame;
+        private bool _isWaitingNextFrame;
+        private float _timeToUpdateWeather_DEBUG;
 
         private bool _AOEnabled;
         private int _AOSampleCount;
@@ -101,6 +104,8 @@ namespace CloneDroneOverhaul.Modules
             worldDustMS1 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM1")).GetComponent<ParticleSystem>();
             worldDustMS0 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM0")).GetComponent<ParticleSystem>();
             worldDustNormal = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustNormal")).GetComponent<ParticleSystem>();
+            worldDustNormalWinter = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustNormalWinter")).GetComponent<ParticleSystem>();
+            worldDustNormalWinter.transform.position = new Vector3(0, 50, 0);
 
             swordBlockPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Block").transform, 10, "VFX_SwordBlock", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             swordFireBlockPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBlock").transform, 50, "VFX_SwordFireBlock", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
@@ -118,6 +123,7 @@ namespace CloneDroneOverhaul.Modules
             kickVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Kick").transform, 5, "VFX_Kick", 0.2f, SimplePooledPrefabInstance.ParticleSystemTag);
             jumpDash = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_JumpDash").transform, 5, "VFX_JumpDash", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
             msHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_MSHit").transform, 10, "VFX_MSHit", 0.17f, SimplePooledPrefabInstance.ParticleSystemTag);
+            ArrowCollisionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ArrowCollision").transform, 5, "VFX_ArrowCollision", 0.45f, SimplePooledPrefabInstance.ParticleSystemTag);
 
             GameObject obj1 = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "Noise"));
             NoiseImage = obj1.transform.GetChild(1).gameObject.GetComponent<Image>();
@@ -128,7 +134,14 @@ namespace CloneDroneOverhaul.Modules
             NoiseImage.transform.SetAsFirstSibling();
             obj1.transform.GetChild(0).SetParent(null);
 
+            QualitySettings.pixelLightCount = 25;
+
             RefreshDustMaterials();
+        }
+
+        public bool IsDustEnabled()
+        {
+            return OverrideSettings ? Override_DustEnabled : _dustEnabled;
         }
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
@@ -265,15 +278,20 @@ namespace CloneDroneOverhaul.Modules
 
         private void renderReflections()
         {
-            isWaitingNextFrame = true;
+            _isWaitingNextFrame = true;
         }
 
         public override void OnNewFrame()
         {
-            if (isWaitingNextFrame)
+            if (_isWaitingNextFrame)
             {
-                isWaitingNextFrame = false;
+                _isWaitingNextFrame = false;
                 probe.RenderProbe();
+            }
+
+            if(NoiseImage != null)
+            {
+                NoiseImage.rectTransform.sizeDelta = Vector2.zero;
             }
 
             Camera newCam = PlayerCameraManager.Instance.GetMainCamera();
@@ -326,6 +344,11 @@ namespace CloneDroneOverhaul.Modules
             {
                 Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : _AOEnabled);
             }
+            if(Time.time >= _timeToUpdateWeather_DEBUG)
+            {
+                _timeToUpdateWeather_DEBUG = Time.time + Random.Range(30, 60);
+                worldDustNormalWinter.emissionRate = Random.Range(120, 200);
+            }
             if (Camera.main != null)
             {
                 probe.gameObject.transform.position = Camera.main.transform.position;
@@ -361,9 +384,16 @@ namespace CloneDroneOverhaul.Modules
             worldDustNormal.Stop();
             worldDustMS0.Stop();
             worldDustMS1.Stop();
+            worldDustNormalWinter.Stop();
 
             if (!_dustEnabled)
             {
+                return;
+            }
+
+            if ((GameModeManager.Is(GameMode.Endless) || GameModeManager.IsCoop() || GameModeManager.IsOnTitleScreen()) && !LevelManager.Instance.IsCurrentLevelHidingTheArena())
+            {
+                worldDustNormalWinter.Play();
                 return;
             }
 
@@ -479,6 +509,11 @@ namespace CloneDroneOverhaul.Modules
                 }
                 jumpDash.SpawnObject(pos, Vector3.zero, Color.clear);
             }
+        }
+
+        public void EmitArrowCollision(Vector3 pos)
+        {
+            ArrowCollisionVFX.SpawnObject(pos, Vector3.zero, Color.clear);
         }
 
     }

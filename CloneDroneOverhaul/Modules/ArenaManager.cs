@@ -25,8 +25,12 @@ namespace CloneDroneOverhaul.Modules
         {
 			ArenaCameraManager.Instance.SetTitleScreenLogoVisible(val);
         }
+		public static void SetRootAndLogoVisible(bool val)
+		{
+			GameUIRoot.Instance.TitleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { val });
+		}
 
-        public override void Start()
+		public override void Start()
         {
 			this.ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
             this.ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(this.ArenaTransform);
