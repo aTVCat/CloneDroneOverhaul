@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 3033626203
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: rp_uiassets
+      Dependencies: {}
+    Info_1:
+      Name: rp_newobjects
+      Dependencies:
+        Dependency_0: cdo_rw_stuff
+    Info_2:
+      Name: playfabgetterui
+      Dependencies:
+        Dependency_0: cdo_rw_stuff
+    Info_3:
+      Name: cdo_rw_stuff
+      Dependencies:
+        Dependency_0: rp_uiassets
+    Info_4:
+      Name: chatmod
+      Dependencies:
+        Dependency_0: cdo_rw_stuff
+    Info_5:
+      Name: effect_amplifyocclusion
+      Dependencies: {}
+    Info_6:
+      Name: leveleditor_objects
+      Dependencies: {}

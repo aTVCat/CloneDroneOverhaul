@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 3886964291
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3a60bf92403fdac845f9ddb71ecc255d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: bbda1c1f9c70cc6f8e6b3521e091b78e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/Charging.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/EffectsUINew.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ChapterSelectShow.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ModdedAchievementsUI.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ErrorUI.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/NewEscMenu.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/AchievementClose.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ClanStuffNewPlayerJoined.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ChargeHide.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/NewChapterSelectScreen.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ChapterSelectHide.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/AchievementGet.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ErrorShow.anim
+- Assets/ModStuff/Old/Bundles/AudioStuff/NewAmbient.mp3
+- Assets/ModStuff/Old/Bundles/AudioStuff/Beep1.ogg
+- Assets/ModStuff/Old/Bundles/AudioStuff/Beep2.ogg
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/EscMenuShow.anim
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/Charge.controller
+- Assets/ModStuff/Old/Bundles/UIStuff/Animations/ChargeAppear.anim
+- Assets/ModStuff/Old/Bundles/NewModels/NewWeapons/Guns/V2/GunCrosshair.prefab
+Dependencies: []
