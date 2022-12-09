@@ -1,6 +1,4 @@
-﻿using CloneDroneOverhaul.Utilities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +38,7 @@ namespace CloneDroneOverhaul.UI
 
         public override void OnManagedUpdate()
         {
-            if(BattleRoyaleManager.Instance != null)
+            if (BattleRoyaleManager.Instance != null)
             {
                 BRMObj.GetObjectFromList<RectTransform>(0).gameObject.SetActive(BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea));
                 BR_ShowResultScreen(false);
@@ -49,22 +47,22 @@ namespace CloneDroneOverhaul.UI
 
         public override void RunFunction(string name, object[] arguments)
         {
-            if(BattleRoyaleManager.Instance == null)
+            if (BattleRoyaleManager.Instance == null)
             {
                 return;
             }
 
-            if(name == "onBoltShutdown")
+            if (name == "onBoltShutdown")
             {
                 base.gameObject.SetActive(false);
             }
-            if(name == "battleRoyale.MatchProgressUpdated")
+            if (name == "battleRoyale.MatchProgressUpdated")
             {
                 BattleRoyaleMatchProgress progress = (BattleRoyaleMatchProgress)arguments[0];
             }
             if (name == "battleRoyale.TimeToGameStartUpdated")
             {
-                if(BattleRoyaleManager.Instance == null)
+                if (BattleRoyaleManager.Instance == null)
                 {
                     return;
                 }
@@ -164,7 +162,7 @@ namespace CloneDroneOverhaul.UI
             }
             BRMObj.GetObjectFromList<Image>(9).gameObject.SetActive(!isMatchedSettled);
             BRMObj.GetObjectFromList<RectTransform>(6).gameObject.SetActive(true);
-            if(!_isResultShownAlready) BRMObj.GetObjectFromList<Animator>(6).Play("BR_ResultScreen");
+            if (!_isResultShownAlready) BRMObj.GetObjectFromList<Animator>(6).Play("BR_ResultScreen");
             GameUIRoot.Instance.RefreshCursorEnabled();
 
             //Count the place
@@ -193,7 +191,7 @@ namespace CloneDroneOverhaul.UI
             {
                 ActiveMultiplayerUIs.Add(toShow);
             }
-            if(toShow == MultiplayerUI.BattleRoyale)
+            if (toShow == MultiplayerUI.BattleRoyale)
             {
                 base.MyModdedObject.GetObjectFromList<RectTransform>(0).gameObject.SetActive(true);
                 BRMObj.GetObjectFromList<RectTransform>(6).gameObject.SetActive(false);

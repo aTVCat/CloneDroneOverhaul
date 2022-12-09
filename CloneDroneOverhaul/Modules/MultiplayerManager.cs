@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CloneDroneOverhaul.Modules
+﻿namespace CloneDroneOverhaul.Modules
 {
     public class MultiplayerManager : ModuleBase
     {
@@ -18,7 +16,7 @@ namespace CloneDroneOverhaul.Modules
             if (name == "onPlayerJoined")
             {
                 MultiplayerPlayerInfoState stateLoc = MultiplayerPlayerInfoManager.Instance.GetLocalPlayerInfoState();
-                if(stateLoc == null)
+                if (stateLoc == null)
                 {
                     return;
                 }
@@ -34,11 +32,11 @@ namespace CloneDroneOverhaul.Modules
 
         public override void RunFunction<T>(string name, T obj)
         {
-            if(name == Functions[1])
+            if (name == Functions[1])
             {
                 if (typeof(T) == typeof(MatchInstance))
                 {
-                    MatchInstance instance =  obj as MatchInstance;
+                    MatchInstance instance = obj as MatchInstance;
                     BaseStaticValues.GetInviteCode = instance.MatchID;
                 }
             }

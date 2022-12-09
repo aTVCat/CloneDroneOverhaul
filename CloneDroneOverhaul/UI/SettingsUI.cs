@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -102,7 +100,7 @@ namespace CloneDroneOverhaul.UI
             ChildrenSettings.gameObject.SetActive(true);
             TransformUtils.DestroyAllChildren(AdditSettingsContainer);
             List<Modules.OverhaulSettingsManager.SettingEntry> list = Modules.OverhaulSettingsManager.Instance.GetSettings(entry.ChildSettings.ChildrenSettingID);
-            foreach(Modules.OverhaulSettingsManager.SettingEntry entry2 in list)
+            foreach (Modules.OverhaulSettingsManager.SettingEntry entry2 in list)
             {
                 populateSetting(entry2, AdditSettingsContainer, true);
             }
@@ -163,7 +161,7 @@ namespace CloneDroneOverhaul.UI
             }
 
             base.MyModdedObject.GetObjectFromList<Text>(15).text = string.Empty;
-           Modules.OverhaulSettingsManager.SettingEntry.CategoryPath path = Modules.OverhaulSettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
+            Modules.OverhaulSettingsManager.SettingEntry.CategoryPath path = Modules.OverhaulSettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
             if (!path.IsEmpty)
             {
                 base.MyModdedObject.GetObjectFromList<Text>(15).text = path.SectionPageDescription;
@@ -188,7 +186,7 @@ namespace CloneDroneOverhaul.UI
 
                 populateSetting(entry, ViewPort, false);
 
-                IL_0000:;
+            IL_0000:;
             }
         }
 
@@ -263,18 +261,18 @@ namespace CloneDroneOverhaul.UI
                 {
                     Dropdown dr = MyModdedObject.GetObjectFromList<Dropdown>(5);
                     List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-                    foreach(string str in type.GetEnumNames())
+                    foreach (string str in type.GetEnumNames())
                     {
                         list.Add(new Dropdown.OptionData(str));
                     }
                     dr.options = list;
                     dr.value = (int)value;
                     dr.onValueChanged.AddListener(SetEnumValue);
- 
+
                 }
                 if (type == typeof(float))
                 {
-                    if(Entry.ValueSettings != null)
+                    if (Entry.ValueSettings != null)
                     {
                         Slider slider = MyModdedObject.GetObjectFromList<Slider>(5);
                         slider.wholeNumbers = Entry.ValueSettings.OnlyInt;
@@ -298,7 +296,7 @@ namespace CloneDroneOverhaul.UI
 
             void ShowAdditSettings()
             {
-                BaseStaticReferences.GUIs.GetGUI<UI.SettingsUI>().ShowAdditionalSettings(Entry);
+                GUIManagement.Instance.GetGUI<UI.SettingsUI>().ShowAdditionalSettings(Entry);
             }
 
             void ToggleBoolValue(bool val)
@@ -309,7 +307,7 @@ namespace CloneDroneOverhaul.UI
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, val, false);
                 string valtxt = (val * (Settings.Step == -1 ? 1 : Settings.Step)).ToString();
-                if(valtxt.Length > 4)
+                if (valtxt.Length > 4)
                 {
                     valtxt = valtxt.Remove(4);
                 }

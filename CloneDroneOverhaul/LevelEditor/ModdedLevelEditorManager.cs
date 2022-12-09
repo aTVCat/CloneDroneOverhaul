@@ -1,6 +1,6 @@
 ﻿using ModLibrary;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.LevelEditor
 {
@@ -33,7 +33,7 @@ namespace CloneDroneOverhaul.LevelEditor
                 return;
             }
             List<ObjectPlacedInLevel> transforms = LevelEditorObjectPlacementManager.Instance.GetSelectedSceneObjects();
-            if(transforms.Count == 0)
+            if (transforms.Count == 0)
             {
                 return;
             }

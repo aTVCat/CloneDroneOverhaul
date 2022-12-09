@@ -2,12 +2,11 @@
 using CloneDroneOverhaul.PooledPrefabs;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using CloneDroneOverhaul.UI.Components;
+using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -146,7 +145,7 @@ namespace CloneDroneOverhaul.Modules
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
-            if(ID == "Graphics.Additions.Noise Multipler")
+            if (ID == "Graphics.Additions.Noise Multipler")
             {
                 _noiseMultipler = (float)value;
             }
@@ -154,7 +153,7 @@ namespace CloneDroneOverhaul.Modules
             {
                 _AOSampleCount = (int)value;
             }
-            if(ID == "Graphics.Additions.Amplify occlusion")
+            if (ID == "Graphics.Additions.Amplify occlusion")
             {
                 _AOEnabled = (bool)value;
             }
@@ -170,7 +169,7 @@ namespace CloneDroneOverhaul.Modules
             {
                 _AOIntensity = (float)value;
             }
-            if(ID == "Graphics.Settings.Shadow resolution")
+            if (ID == "Graphics.Settings.Shadow resolution")
             {
                 _shadowResolution = (int)value;
             }
@@ -200,7 +199,7 @@ namespace CloneDroneOverhaul.Modules
             NoiseImage.color = new Color(1, 1, 1, 0.33f * (OverrideSettings ? Override_NoiseMultipler : _noiseMultipler));
             NoiseImage.gameObject.SetActive(OverrideSettings ? Override_NoiseEnabled : _noiseEnabled);
             Light light = DirectionalLightManager.Instance.DirectionalLight;
-            if(light != null)
+            if (light != null)
             {
                 ShadowResolution enumRes = (ShadowResolution)(OverrideSettings ? Override_ShadowResolution : _shadowResolution);
                 switch (enumRes)
@@ -258,7 +257,7 @@ namespace CloneDroneOverhaul.Modules
 
                 LightShadows shadowsMode = LightShadows.Soft;
                 int qualityLevel = SettingsManager.Instance.GetSavedQualityIndex();
-                if(qualityLevel == 0)
+                if (qualityLevel == 0)
                 {
                     shadowsMode = LightShadows.None;
                 }
@@ -289,7 +288,7 @@ namespace CloneDroneOverhaul.Modules
                 probe.RenderProbe();
             }
 
-            if(NoiseImage != null)
+            if (NoiseImage != null)
             {
                 NoiseImage.rectTransform.sizeDelta = Vector2.zero;
             }
@@ -315,11 +314,11 @@ namespace CloneDroneOverhaul.Modules
                     Occlusion = acc;
                     acc.enabled = (OverrideSettings ? Override_AOEnabled : _AOEnabled);
 
-                    if(effects.Count != 0)
+                    if (effects.Count != 0)
                     {
                         for (int i = effects.Count - 1; i > -1; i--)
                         {
-                            if(effects[i] == null || effects[i].gameObject == null)
+                            if (effects[i] == null || effects[i].gameObject == null)
                             {
                                 effects.RemoveAt(i);
                             }
@@ -340,11 +339,11 @@ namespace CloneDroneOverhaul.Modules
         }
         public override void OnManagedUpdate()
         {
-            if(Occlusion != null)
+            if (Occlusion != null)
             {
                 Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : _AOEnabled);
             }
-            if(Time.time >= _timeToUpdateWeather_DEBUG)
+            if (Time.time >= _timeToUpdateWeather_DEBUG)
             {
                 _timeToUpdateWeather_DEBUG = Time.time + Random.Range(30, 60);
                 worldDustNormalWinter.emissionRate = Random.Range(120, 200);
@@ -459,8 +458,8 @@ namespace CloneDroneOverhaul.Modules
 
         public void EmitBurningVFX(Vector3 pos)
         {
-            if(Random.Range(0, 10) > 5)
-            bodyPartBurning.SpawnObject(pos, Vector3.zero, Color.clear);
+            if (Random.Range(0, 10) > 5)
+                bodyPartBurning.SpawnObject(pos, Vector3.zero, Color.clear);
         }
 
         public void EmitExplosion(Vector3 pos)
@@ -581,5 +580,13 @@ namespace CloneDroneOverhaul.Modules
         High,
         VeryHigh,
         ExctremlyHigh
+    }
+
+    public enum LightLimit
+    {
+        Low,
+        Default,
+        High,
+        ExtremlyHigh
     }
 }

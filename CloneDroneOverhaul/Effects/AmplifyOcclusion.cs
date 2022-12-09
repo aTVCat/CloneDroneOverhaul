@@ -1,10 +1,9 @@
 ﻿// Amplify Occlusion 2 - Robust Ambient Occlusion for Unity
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
+using ModLibrary;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Profiling;
-using ModLibrary;
 
 #if UNITY_EDITOR
 using UnityEditor;

@@ -4,12 +4,10 @@ using ModLibrary;
 using Newtonsoft.Json;
 using Steamworks;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -210,19 +208,6 @@ namespace CloneDroneOverhaul
             SelectableUI result = null;
             result = obj.AddComponent<SelectableUI>();
             result.GameThemeData = Patching.VisualFixes.ObjectFixer.GameUIThemeData;
-            return result;
-        }
-
-        public static Assembly CompileAsseblyFromFilesInPath(string path)
-        {
-            Assembly result = null;
-
-            System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
-            parameters.GenerateExecutable = false;
-            parameters.OutputAssembly = "AutoGen.dll";
-
-            result = CodeDomProvider.CreateProvider("CSharp").CompileAssemblyFromSource(parameters, System.IO.File.ReadAllLines("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Clone Drone in the Danger Zone\\mods\\CloneDroneOverhaulRW\\CSScripts\\BWEffect.cs")).CompiledAssembly;
-
             return result;
         }
 

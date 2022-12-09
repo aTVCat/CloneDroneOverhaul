@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CloneDroneOverhaul.Modules;
+using System;
 using System.Collections.Generic;
-using CloneDroneOverhaul.Modules;
 using System.IO;
 
 namespace CloneDroneOverhaul.Localization
@@ -11,7 +11,7 @@ namespace CloneDroneOverhaul.Localization
         {
             get
             {
-                return OverhaulMain.Instance.GetModFolder() + "Localizations/";
+                return OverhaulDescription.GetModFolder() + "Localizations/";
             }
         }
 
@@ -31,7 +31,7 @@ namespace CloneDroneOverhaul.Localization
         {
             TranslationEntry entry = new TranslationEntry();
             entry.Translations = new Dictionary<string, string>();
-            foreach(string str in GetAllLanguageCodes())
+            foreach (string str in GetAllLanguageCodes())
             {
                 entry.Translations.Add(str, "nontranslated");
             }

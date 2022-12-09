@@ -1,7 +1,6 @@
-﻿using UnityEngine.UI;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using CloneDroneOverhaul;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI.Notifications
 {
@@ -42,7 +41,7 @@ namespace CloneDroneOverhaul.UI.Notifications
             mObj.GetObjectFromList<Text>(0).text = notification.Title;
             mObj.GetObjectFromList<Text>(1).text = notification.Description;
             mObj.GetObjectFromList<RectTransform>(3).gameObject.SetActive(false);
-            if(notification.Buttons != null)
+            if (notification.Buttons != null)
             {
                 foreach (Notification.NotificationButton button in notification.Buttons)
                 {

@@ -1,6 +1,4 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
-using CloneDroneOverhaul;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.UI
 {
@@ -31,8 +29,8 @@ namespace CloneDroneOverhaul.UI
         }
 
         public override void OnNewFrame()
-        {           
-            if(timeToHide != -1 && Time.unscaledTime >= timeToHide)
+        {
+            if (timeToHide != -1 && Time.unscaledTime >= timeToHide)
             {
                 timeToHide = -1;
                 iTween.ScaleTo(Container.gameObject, Vector3.zero, 1.5f);

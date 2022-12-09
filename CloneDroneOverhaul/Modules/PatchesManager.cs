@@ -1,6 +1,4 @@
-﻿using CloneDroneOverhaul.Utilities;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -12,16 +10,19 @@ namespace CloneDroneOverhaul.Modules
         public override void Start()
         {
             Instance = this;
+            SkyBoxManager instance = Singleton<SkyBoxManager>.Instance;
+            instance.LevelConfigurableSkyboxes[7] = OverhaulCacheManager.GetCached<Material>("SkyboxMaterial_Stars2");
+            instance.LevelConfigurableSkyboxes[2] = OverhaulCacheManager.GetCached<Material>("SkyboxMaterial_StarsChapter4");
         }
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
-            if(ID == "Patches.QoL.Fix sounds")
+            if (ID == "Patches.QoL.Fix sounds")
             {
                 bool val = (bool)value;
                 UpdateAudioSettings(val);
             }
-            if(ID == "Graphics.Settings.FPS Cap")
+            if (ID == "Graphics.Settings.FPS Cap")
             {
                 try // InvalidCastException
                 {
@@ -37,6 +38,26 @@ namespace CloneDroneOverhaul.Modules
                 catch
                 {
                     return;
+                }
+            }
+            if (ID == "Graphics.Settings.Light limit")
+            {
+                switch ((int)value)
+                {
+                    case 0:
+                        QualitySettings.pixelLightCount = 3;
+                        return;
+                    case 1:
+                        QualitySettings.pixelLightCount = 6;
+                        return;
+                    case 2:
+                        QualitySettings.pixelLightCount = 12;
+                        return;
+                    case 3:
+                        QualitySettings.pixelLightCount = 30;
+                        break;
+                    default:
+                        return;
                 }
             }
         }

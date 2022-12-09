@@ -1,15 +1,6 @@
-﻿using CloneDroneOverhaul.PooledPrefabs;
-using CloneDroneOverhaul.Utilities;
-using ModLibrary;
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
-using System.Collections.Generic;
-using System.Linq;
-using static System.Collections.Specialized.BitVector32;
-using PicaVoxel;
+﻿using AmplifyOcclusion;
 using System;
-using AmplifyOcclusion;
+using System.Collections.Generic;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -36,8 +27,8 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
-            AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel)}));
-            AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f}));
+            AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel) }));
+            AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.85f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
             AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler" } }));
@@ -57,11 +48,18 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<ShadowResolution>("Shadow resolution", "Default with \"Soft\" enabled is the most optimal variant", "Graphics", "Settings", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowResolution) }));
             AddSetting(SettingEntry.NewSetting<ShadowBias>("Shadow bias", "With \"Minimum\" selected, you'll forget about weird shadows (NO)", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowBias) }));
             AddSetting(SettingEntry.NewSetting<ShadowDistance>("Shadow distance", "If you see this text... then you are using dnSpy or unity explorer", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowDistance) }));
+
+            this.AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<LightLimit>("Light limit", "Sets the limit of visible point lights", "Graphics", "Settings", 1, null, new OverhaulSettingsManager.SettingEntry.UIValueSettings
+            {
+                DropdownEnumType = typeof(LightLimit)
+            }, null, null, false));
+            this.AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<bool>("Vignette", "Shades screen edges", "Graphics", "Additions", true, null, null, null, null, false));
             AddSetting(SettingEntry.NewSetting<bool>("Soft shadows", "Make shadows less pixelated", "Graphics", "Settings", true));
 
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
             PageOverrides.Add(new SettingEntry.OverridePrefs("Misc", "Privacy", "Gameplay", "Duels"));
             PageOverrides.Add(new SettingEntry.OverridePrefs("Graphics", "Additions", "Graphics", "Camera"));
+
 
             OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(delegate
             {
@@ -80,9 +78,9 @@ namespace CloneDroneOverhaul.Modules
         public string GetSectionName(string sectionInitName)
         {
             string name = sectionInitName;
-            foreach(SettingEntry.OverridePrefs prefs in PageOverrides)
+            foreach (SettingEntry.OverridePrefs prefs in PageOverrides)
             {
-                if(prefs.OldSectionName == sectionInitName)
+                if (prefs.OldSectionName == sectionInitName)
                 {
                     name = prefs.NewSectionName;
                 }
@@ -106,9 +104,9 @@ namespace CloneDroneOverhaul.Modules
         {
             bool found = false;
             SettingEntry.CategoryPath page = default(SettingEntry.CategoryPath);
-            foreach(SettingEntry.CategoryPath path in PageDescriptions)
+            foreach (SettingEntry.CategoryPath path in PageDescriptions)
             {
-                if(c == path.Category && s == path.Section)
+                if (c == path.Category && s == path.Section)
                 {
                     found = true;
                     page = path;
@@ -140,7 +138,7 @@ namespace CloneDroneOverhaul.Modules
             List<SettingEntry> list = new List<SettingEntry>();
 
             foreach (SettingEntry entry in GetAllSettings())
-            {                
+            {
                 if (entry.Path.Category == category && entry.Path.Section == section)
                 {
                     list.Add(entry);
@@ -153,9 +151,9 @@ namespace CloneDroneOverhaul.Modules
             List<SettingEntry> list = new List<SettingEntry>();
             foreach (SettingEntry entry in GetAllSettings())
             {
-                foreach(string str in idArray)
+                foreach (string str in idArray)
                 {
-                    if(str == entry.ID)
+                    if (str == entry.ID)
                     {
                         list.Add(entry);
                     }
@@ -171,7 +169,7 @@ namespace CloneDroneOverhaul.Modules
             {
                 if (entry.Name.ToLower().Contains(name))
                 {
-                    if(!string.IsNullOrEmpty(category) && entry.Path.Category == category)
+                    if (!string.IsNullOrEmpty(category) && entry.Path.Category == category)
                     {
                         if (!string.IsNullOrEmpty(section) && entry.Path.Section == section)
                         {
@@ -183,7 +181,7 @@ namespace CloneDroneOverhaul.Modules
                     }
                     list.Add(entry);
                 }
-                IL_0000:;
+            IL_0000:;
             }
             return list;
         }
@@ -266,7 +264,8 @@ namespace CloneDroneOverhaul.Modules
                 entry.Type = typeof(T);
                 entry.NameLocalizationID = nameID;
                 entry.DescLocalizationID = descriptionID;
-                entry.Path = new CategoryPath(){
+                entry.Path = new CategoryPath()
+                {
                     Category = category,
                     Section = categorySection
                 };
@@ -290,7 +289,7 @@ namespace CloneDroneOverhaul.Modules
                 }
             }
             public string Name { get; private set; }
-            public string NameLocalizationID{ get; private set; }
+            public string NameLocalizationID { get; private set; }
             public string Description { get; private set; }
             public string DescLocalizationID { get; private set; }
             public object DefaultValue { get; private set; }
@@ -299,7 +298,7 @@ namespace CloneDroneOverhaul.Modules
             {
                 set
                 {
-                    if(value != null && value.ChildrenSettingID != null && value.ChildrenSettingID.Length > 0)
+                    if (value != null && value.ChildrenSettingID != null && value.ChildrenSettingID.Length > 0)
                     {
                         HasChildSettings = true;
                         foreach (SettingEntry entry in BaseStaticReferences.SettingsManager.GetAllSettings())
@@ -309,7 +308,7 @@ namespace CloneDroneOverhaul.Modules
                                 if (entry.ID == str)
                                 {
                                     entry.IsHidden = true;
-                                    if(entry.ChildSettings != null)
+                                    if (entry.ChildSettings != null)
                                     {
                                         Modules.ModuleManagement.ShowError_Type2("Preferences warning!", "Children settings cannot have children XD" + System.Environment.NewLine + "Details: " + entry.Name);
                                     }

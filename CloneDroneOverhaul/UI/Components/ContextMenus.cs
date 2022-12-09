@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using static CloneDroneOverhaul.UI.Components.OverhaulContextMenu;
 
@@ -28,7 +27,7 @@ namespace CloneDroneOverhaul.UI.Components
             public ContextMenuElement(ContextMenuElementType elementType, BaseEventData buttonAction, string textFieldString)
             {
                 ElementType = elementType;
-                ButtonAction = buttonAction;    
+                ButtonAction = buttonAction;
                 TextFieldString = textFieldString;
             }
         }
@@ -46,7 +45,7 @@ namespace CloneDroneOverhaul.UI.Components
             }
             private set
             {
-                if(value == isShowingUI)
+                if (value == isShowingUI)
                 {
                     return;
                 }
@@ -69,7 +68,7 @@ namespace CloneDroneOverhaul.UI.Components
             if (isPointerOverElement)
             {
                 timeMouseIsOverElement += Time.unscaledDeltaTime;
-                if(timeMouseIsOverElement > 0.5f)
+                if (timeMouseIsOverElement > 0.5f)
                 {
 
                 }

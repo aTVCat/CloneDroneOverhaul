@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using static CloneDroneOverhaul.UI.Components.OverhaulContextMenu;
-
-namespace CloneDroneOverhaul.UI.Components
+﻿namespace CloneDroneOverhaul.UI.Components
 {
     public class ValueBase
     {
@@ -25,10 +19,10 @@ namespace CloneDroneOverhaul.UI.Components
         protected T getValue<T>()
         {
             T result = default(T);
-            if((Override ? _overrideVal : _value) != null)
+            if ((Override ? _overrideVal : _value) != null)
             {
                 result = (T)(Override ? _overrideVal : _value);
-            }    
+            }
             return result;
         }
     }

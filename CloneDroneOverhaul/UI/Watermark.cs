@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace CloneDroneOverhaul.UI
 {
     public class Watermark : ModGUIBase
     {
-        private Text _version;
+        private TextMeshProUGUI _version;
         private Button _changelog;
         private Button _aboutModButton;
         private Button _localizationEditor;
@@ -18,7 +19,7 @@ namespace CloneDroneOverhaul.UI
         {
             base.MyModdedObject = base.GetComponent<ModdedObject>();
 
-            _version = MyModdedObject.GetObjectFromList<Text>(0);
+            _version = MyModdedObject.GetObjectFromList<TextMeshProUGUI>(0);
             _buttonContainer = MyModdedObject.GetObjectFromList<RectTransform>(1);
             _changelog = MyModdedObject.GetObjectFromList<Button>(3);
             _changelog.onClick.AddListener(openChangelog);
@@ -37,7 +38,7 @@ namespace CloneDroneOverhaul.UI
         }
         public override void RunFunction<T>(string name, T obj)
         {
-            if(name == "onGameModeUpdated")
+            if (name == "onGameModeUpdated")
             {
                 refreshVersion();
                 _buttonContainer.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
@@ -45,14 +46,14 @@ namespace CloneDroneOverhaul.UI
         }
         public override void RunFunction(string name, object[] arguments)
         {
-            if(name == "onLanguageChanged")
+            if (name == "onLanguageChanged")
             {
                 MyModdedObject.GetObjectFromList<Text>(6).text = OverhaulMain.GetTranslatedString("Watermark_AboutOverhaul");
             }
         }
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
-            if(ID == "Misc.Mod.Show version")
+            if (ID == "Misc.Mod.Show version")
             {
                 _showVersion = (bool)value;
             }

@@ -239,7 +239,7 @@ namespace CloneDroneOverhaul.UI
                 yield break;
             }
 
-                public void RefreshLevels()
+            public void RefreshLevels()
             {
                 if (Time.unscaledTime < timeToAllowNextRefresh)
                 {

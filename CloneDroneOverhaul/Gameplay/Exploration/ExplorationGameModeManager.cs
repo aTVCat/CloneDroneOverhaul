@@ -1,5 +1,4 @@
 ﻿using CloneDroneOverhaul.Utilities;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules

@@ -91,8 +91,8 @@ namespace CloneDroneOverhaul.UI
                 }, setAOIntensity).gameObject
             });
 
-             _effects.Add(_pages[3], new GameObject[]
-            {
+            _effects.Add(_pages[3], new GameObject[]
+           {
                 MyModdedObject.GetObjectFromList<ModdedObject>(20).gameObject.AddComponent<ToggleWithDesc>().SetUp(null, setNoiseEnabled).gameObject,
                          MyModdedObject.GetObjectFromList<ModdedObject>(21).AddAndConfigBetterSlider(new BetterSlider.Settings()
                          {
@@ -100,7 +100,7 @@ namespace CloneDroneOverhaul.UI
                               MinValue = 0.5f,
                               MaxValue = 3f
                          }, setNoiseIntensity).gameObject,
-            });
+           });
 
             _effects.Add(_pages[4], new GameObject[]
            {
@@ -163,7 +163,7 @@ namespace CloneDroneOverhaul.UI
 
         private void setActivePage(string name)
         {
-            foreach(GameObject gObj in _effects[_curPage])
+            foreach (GameObject gObj in _effects[_curPage])
             {
                 gObj.SetActive(false);
             }
@@ -203,7 +203,7 @@ namespace CloneDroneOverhaul.UI
         //
         private void refreshDebugInfoEnabled()
         {
-            bool isEnabled = OverhaulMain.GUI.GetGUI<NewEscMenu>().PhotoModeDebugInfo.isOn;
+            bool isEnabled = GUIManagement.Instance.GetGUI<NewEscMenu>().PhotoModeDebugInfo.isOn;
             _showDebug = isEnabled;
 
             MyModdedObject.GetObjectFromList<RectTransform>(10).gameObject.SetActive(isEnabled);
@@ -237,7 +237,7 @@ namespace CloneDroneOverhaul.UI
         private void setCamZoom(float val)
         {
             FlyingCameraController cntrl = PhotoManager.Instance.GetCurrentFlyingCameraController();
-            if(cntrl != null)
+            if (cntrl != null)
             {
                 Camera cam = cntrl.GetComponentInChildren<Camera>();
                 if (cam != null)
@@ -250,8 +250,8 @@ namespace CloneDroneOverhaul.UI
             if (cntrl != null)
             {
                 Camera cam = cntrl.GetComponentInChildren<Camera>();
-                if(cam != null)
-                cam.transform.localEulerAngles = new Vector3(cam.transform.localEulerAngles.x, cam.transform.localEulerAngles.y, val);
+                if (cam != null)
+                    cam.transform.localEulerAngles = new Vector3(cam.transform.localEulerAngles.x, cam.transform.localEulerAngles.y, val);
             }
         }
         private void setAOEnabled(bool val)
@@ -285,7 +285,7 @@ namespace CloneDroneOverhaul.UI
             {
                 this.garbageTargets = GarbageManager.Instance.GetAllGarbageReadyForCollection();
             }
-            foreach(GarbageTarget t in garbageTargets)
+            foreach (GarbageTarget t in garbageTargets)
             {
                 t.gameObject.SetActive(val);
             }

@@ -1,11 +1,8 @@
 ﻿using CloneDroneOverhaul.Utilities;
-using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using CloneDroneOverhaul.Modules;
-using System.Threading;
 using ModLibrary;
-using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI
 {
@@ -318,7 +315,7 @@ namespace CloneDroneOverhaul.UI
         public void Hide()
         {
             base.gameObject.SetActive(false);
-            BaseStaticReferences.GUIs.GetGUI<UI.SettingsUI>().Hide();
+            GUIManagement.Instance.GetGUI<UI.SettingsUI>().Hide();
             _reportWindow.HideWindow();
         }
 
@@ -431,7 +428,7 @@ namespace CloneDroneOverhaul.UI
             }
 
             SteamWorkshopItem item = Singleton<WorkshopLevelManager>.Instance.GetCurrentLevelWorkshopItem();
-            if(item != null)
+            if (item != null)
             {
                 WorkshopLevelInfoMObj.gameObject.SetActive(true);
                 Coroutines.LoadWorkshopImage(item.PreviewURL, delegate (Sprite spr)
@@ -523,9 +520,9 @@ namespace CloneDroneOverhaul.UI
 
                 LP_Title.text = final;
             }
-            if(gameMode == GameMode.BattleRoyale)
+            if (gameMode == GameMode.BattleRoyale)
             {
-                if(BattleRoyaleManager.Instance == null)
+                if (BattleRoyaleManager.Instance == null)
                 {
                     return;
                 }
@@ -619,7 +616,7 @@ namespace CloneDroneOverhaul.UI
         private void onWorkshopItemPageClicked()
         {
             SteamWorkshopItem item = Singleton<WorkshopLevelManager>.Instance.GetCurrentLevelWorkshopItem();
-            if(item != null)
+            if (item != null)
             {
                 BaseUtils.OpenURL("http://steamcommunity.com/sharedfiles/filedetails/?source=CloneDroneGame&id=" + item.WorkshopItemID.ToString());
             }
