@@ -1,9 +1,7 @@
-﻿using Bolt;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
-using Steamworks;
 
 namespace CloneDroneOverhaul.LAN
 {
@@ -24,7 +22,7 @@ namespace CloneDroneOverhaul.LAN
             LANMultiplayerManager.Instance.LANServer = new Server();
             LANMultiplayerManager.Instance.LANClient = new Client();
             LANMultiplayerManager.Instance.SteamTest = new SteamHostingTest();
-;            return Instance;
+            ; return Instance;
         }
 
         public class SteamHostingTest
@@ -64,7 +62,7 @@ namespace CloneDroneOverhaul.LAN
                 size = listener.Receive(buffer);
                 data.Append(Encoding.UTF8.GetString(buffer, 0, size));
 
-                if(listener.Available > 0)
+                if (listener.Available > 0)
                 {
                     Debug.Log(data);
 

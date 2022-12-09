@@ -1,258 +1,284 @@
-﻿using CloneDroneOverhaul.LevelEditor;
+﻿using CloneDroneOverhaul.Gameplay.Levels;
+using CloneDroneOverhaul.LevelEditor;
+using CloneDroneOverhaul.Localization;
 using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.UI;
+using CloneDroneOverhaul.UI.Notifications;
 using CloneDroneOverhaul.Utilities;
+using CloneDroneOverhaul.WeaponSkins;
+using LevelEditorTools;
 using ModBotWebsiteAPI;
 using ModLibrary;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using CloneDroneOverhaul.Gameplay.OverModes;
 
 namespace CloneDroneOverhaul
 {
     [MainModClass]
     public class OverhaulMain : Mod
     {
-        private static bool hasCheckForUpdates;
-        private static bool hasCachedStuff;
+        // Token: 0x17000004 RID: 4
+        // (get) Token: 0x0600002E RID: 46 RVA: 0x00004390 File Offset: 0x00002590
+        // (set) Token: 0x0600002F RID: 47 RVA: 0x00004398 File Offset: 0x00002598
         public bool IsModInitialized { get; private set; }
+
+        // Token: 0x17000005 RID: 5
+        // (get) Token: 0x06000030 RID: 48 RVA: 0x000043A1 File Offset: 0x000025A1
+        // (set) Token: 0x06000031 RID: 49 RVA: 0x000043A8 File Offset: 0x000025A8
         public static OverhaulMain Instance { get; internal set; }
-        private static Localization.OverhaulLocalizationManager Localization { get; set; }
+
+        // Token: 0x17000006 RID: 6
+        // (get) Token: 0x06000032 RID: 50 RVA: 0x000043B0 File Offset: 0x000025B0
+        // (set) Token: 0x06000033 RID: 51 RVA: 0x000043B7 File Offset: 0x000025B7
+        private static OverhaulLocalizationManager Localization { get; set; }
+
+        // Token: 0x17000007 RID: 7
+        // (get) Token: 0x06000034 RID: 52 RVA: 0x000043BF File Offset: 0x000025BF
+        // (set) Token: 0x06000035 RID: 53 RVA: 0x000043C6 File Offset: 0x000025C6
         public static DelegateTimer Timer { get; set; }
+
+        // Token: 0x17000008 RID: 8
+        // (get) Token: 0x06000036 RID: 54 RVA: 0x000043CE File Offset: 0x000025CE
+        // (set) Token: 0x06000037 RID: 55 RVA: 0x000043D5 File Offset: 0x000025D5
         public static VisualsModule Visuals { get; set; }
-        public static UI.GUIManagement GUI { get; set; }
-        public static WeaponSkins.WeaponSkinManager Skins { get; set; }
+
+        // Token: 0x17000009 RID: 9
+        // (get) Token: 0x06000038 RID: 56 RVA: 0x000043DD File Offset: 0x000025DD
+        // (set) Token: 0x06000039 RID: 57 RVA: 0x000043E4 File Offset: 0x000025E4
         public static ModuleManagement Modules { get; set; }
-        public static LevelEditor.ModdedLevelEditorManager ModdedEditor { get; set; }
-        public static OverhaulMainMonoBehaviour LocalMonoBehaviour { get; set; }
-        public static CloneDroneOverhaulSettingsData SettingsData { get; set; }
-        public static OverhaulCacheManager CacheManager { get; set; }
 
-        private Text _settingsButtonText;
+        // Token: 0x1700000A RID: 10
+        // (get) Token: 0x0600003A RID: 58 RVA: 0x000043EC File Offset: 0x000025EC
+        // (set) Token: 0x0600003B RID: 59 RVA: 0x000043F3 File Offset: 0x000025F3
+        public static OverhaulMainMonoBehaviour MainMonoBehaviour { get; set; }
 
-        public string GetModFolder() //C:/Program Files (x86)/Steam/steamapps/common/Clone Drone in the Danger Zone/mods/CloneDroneOverhaulRW/
-        {
-            return ModInfo.FolderPath;
-        }
-
+        // Token: 0x0600003C RID: 60 RVA: 0x000043FB File Offset: 0x000025FB
         protected override void OnModLoaded()
         {
-            Gameplay.OverModes.OverModesController.InitializeForCurrentScene();
+            OverModesController.InitializeForCurrentScene();
             OverhaulCacheManager.ClearTemporal();
-            CacheManager = new OverhaulCacheManager();
             if (OverhaulMain.Instance != null)
             {
                 return;
             }
-
-            ThreadLaunch();
+            this.InitializeOverhaul();
         }
-        void ThreadLaunch()
+
+        // Token: 0x0600003D RID: 61 RVA: 0x00004418 File Offset: 0x00002618
+        private void InitializeOverhaul()
         {
             OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
-            //LAN.LANMultiplayerManager.CreateManager();
-
-            if (!hasCachedStuff)
+            if (!OverhaulMain.hasCachedStuff)
             {
-                rememberVanillaPreferences();
+                this.rememberVanillaPreferences();
                 OverhaulCacheManager.CacheStuff();
-                hasCachedStuff = true;
+                OverhaulMain.hasCachedStuff = true;
             }
-            addReferences();
-            addModules();
-            addListeners();
-            spawnGUI();
-            fixVanillaStuff();
-
-            IsModInitialized = true;
-
-            finalPreparations();
-            checkforUpdate();
+            this.addReferences();
+            this.addModules();
+            this.addListeners();
+            this.spawnGUI();
+            this.fixVanillaStuff();
+            this.IsModInitialized = true;
+            this.finalPreparations();
+            this.checkforUpdate();
         }
 
+        // Token: 0x0600003E RID: 62 RVA: 0x0000447A File Offset: 0x0000267A
         protected override void OnModDeactivated()
         {
             BaseStaticValues.IsModEnabled = false;
         }
 
-        /*
+        // Token: 0x0600003F RID: 63 RVA: 0x00004482 File Offset: 0x00002682
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
-            if(path == "Data/LevelEditorLevels/Story5/C5_5_PrisonCellFlashback")
-            {
-                return new TextAsset(File.ReadAllText(GetModFolder() + "C5_5_PrisonCellFlashback.json"));
-            }
-            return LevelEditor.LevelEditorCustomObjectsManager.TryGetObject(path);
+            return LevelEditorCustomObjectsManager.TryGetObject(path);
         }
-       */
 
-        protected override void OnLanguageChanged(string newLanguageID, System.Collections.Generic.Dictionary<string, string> localizationDictionary)
+        // Token: 0x06000040 RID: 64 RVA: 0x00004496 File Offset: 0x00002696
+        protected override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
-            Modules.ExecuteFunction("onLanguageChanged", null);
-            _settingsButtonText.text = GetTranslatedString("OverhaulSettings");
+            OverhaulMain.Modules.ExecuteFunction("onLanguageChanged", null);
+            this._settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
         }
 
-
+        // Token: 0x06000041 RID: 65 RVA: 0x000044BD File Offset: 0x000026BD
         protected override void OnLevelEditorStarted()
         {
             LevelEditorCustomObjectsManager.OnLevelEditorStarted();
-            Modules.ExecuteFunction("onLevelEditorStarted", null);
-        }
-        protected override void OnModRefreshed()
-        {
-            checkDlls();
-        }
-        protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
-        {
-            OverhaulMain.Modules.ExecuteFunction("firstPersonMover.OnSpawn", new object[] { firstPersonMover.GetRobotInfo() });
+            OverhaulMain.Modules.ExecuteFunction("onLevelEditorStarted", null);
         }
 
+        // Token: 0x06000042 RID: 66 RVA: 0x000044D4 File Offset: 0x000026D4
+        protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
+        {
+            OverhaulMain.Modules.ExecuteFunction("firstPersonMover.OnSpawn", new object[]
+            {
+                firstPersonMover.GetRobotInfo()
+            });
+        }
+
+        // Token: 0x06000043 RID: 67 RVA: 0x000044F4 File Offset: 0x000026F4
         private void rememberVanillaPreferences()
         {
             VanillaPrefs.RememberStuff();
         }
 
+        // Token: 0x06000044 RID: 68 RVA: 0x000044FB File Offset: 0x000026FB
         private void checkforUpdate()
         {
-            if (hasCheckForUpdates)
+            if (OverhaulMain.hasCheckForUpdates)
             {
                 return;
             }
-            hasCheckForUpdates = true;
-
-            UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
-            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
-
-            return;
-
-            if (OverhaulDescription.GetModVersionBranch() != OverhaulDescription.Branch.ModBot)
-            {
-                UpdateChecker.CheckForUpdates(OnUpdateReceivedGitHub);
-            }
-            else
-            {
-                API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
-            }
+            OverhaulMain.hasCheckForUpdates = true;
+            UpdateChecker.CheckForUpdates(new Action<string>(this.OnUpdateReceivedGitHub));
+            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(this.OnModDataGet));
         }
+
+        // Token: 0x06000045 RID: 69 RVA: 0x00004534 File Offset: 0x00002734
         private void OnModDataGet(JsonObject json)
         {
-            string ver = json["Version"].ToString();
-            if(ver != this.ModInfo.Version.ToString())
+            string a = json["Version"].ToString();
+            if (a != base.ModInfo.Version.ToString())
             {
-                CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                notif.SetUp("New update available!", "See CDO mod page", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenModBotPage), Text = "ModBot" } });
+                Notification notification = new Notification();
+                notification.SetUp("New update available!", "See CDO mod page", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
+                {
+                    new Notification.NotificationButton
+                    {
+                        Action = new UnityAction(notification.HideThis),
+                        Text = "OK"
+                    },
+                    new Notification.NotificationButton
+                    {
+                        Action = new UnityAction(UpdateChecker.OpenModBotPage),
+                        Text = "ModBot"
+                    }
+                }, false);
             }
         }
+
+        // Token: 0x06000046 RID: 70 RVA: 0x000045E8 File Offset: 0x000027E8
         private void OnUpdateReceivedGitHub(string newVersion)
         {
             if (newVersion == OverhaulDescription.GetModVersion(false))
             {
                 return;
             }
-
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp("New update available!", "New version (" + newVersion + ") is available on GitHub!", 20, Vector2.zero, Color.clear, new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" }, new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(UpdateChecker.OpenGitHubWithReleases), Text = "GitHub" } });
+            Notification notification = new Notification();
+            notification.SetUp("New update available!", "New version (" + newVersion + ") is available on GitHub!", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
+            {
+                new Notification.NotificationButton
+                {
+                    Action = new UnityAction(notification.HideThis),
+                    Text = "OK"
+                },
+                new Notification.NotificationButton
+                {
+                    Action = new UnityAction(UpdateChecker.OpenGitHubWithReleases),
+                    Text = "GitHub"
+                }
+            }, false);
         }
 
+        // Token: 0x06000047 RID: 71 RVA: 0x00004688 File Offset: 0x00002888
         private void addReferences()
         {
             BaseStaticReferences.ModuleManager = new ModuleManagement();
         }
 
+        // Token: 0x06000048 RID: 72 RVA: 0x00004694 File Offset: 0x00002894
         private void addModules()
         {
-            ModuleManagement manager = BaseStaticReferences.ModuleManager;
-            Timer = manager.AddModule<DelegateTimer>();
-            manager.AddModule<ModDataManager>();
+            ModuleManagement moduleManagement = new ModuleManagement();
+            BaseStaticReferences.ModuleManager = moduleManagement;
+            OverhaulMain.Timer = moduleManagement.AddModule<DelegateTimer>(false);
+            moduleManagement.AddModule<ModDataManager>(false);
             new CloneDroneOverhaulDataContainer();
-            Modules = manager;
-            manager.AddModule<CloneDroneOverhaul.Modules.OverhaulSettingsManager>();
-            Localization = manager.AddModule<Localization.OverhaulLocalizationManager>();
-            Visuals = manager.AddModule<VisualsModule>();
-            manager.AddModule<HotkeysModule>();
-            GUI = manager.AddModule<UI.GUIManagement>();
-            BaseStaticReferences.GUIs = GUI;
-            Skins = manager.AddModule<WeaponSkins.WeaponSkinManager>();
-            manager.AddModule<WorldGUIs>();
-            manager.AddModule<GameplayOverhaulModule>();
-            manager.AddModule<Modules.MultiplayerManager>();
-            manager.AddModule<ArenaManager>();
-            manager.AddModule<MiscEffectsManager>();
-            ModdedEditor = manager.AddModule<LevelEditor.ModdedLevelEditorManager>();
-            manager.AddModule<ExplorationGameModeManager>();
-            manager.AddModule<PatchesManager>();
-            manager.AddModule<AdvancedPhotoModeManager>();
-            manager.AddModule<GarbagePositionerManager>();
-            manager.AddModule<GameInformationManager>();
+            OverhaulMain.Modules = moduleManagement;
+            moduleManagement.AddModule<OverhaulSettingsManager>(false);
+            OverhaulMain.Localization = moduleManagement.AddModule<OverhaulLocalizationManager>(false);
+            OverhaulMain.Visuals = moduleManagement.AddModule<VisualsModule>(false);
+            moduleManagement.AddModule<HotkeysModule>(false);
+            moduleManagement.AddModule<GUIManagement>(false);
+            moduleManagement.AddModule<WeaponSkinManager>(false);
+            moduleManagement.AddModule<WorldGUIs>(false);
+            moduleManagement.AddModule<GameplayOverhaulModule>(false);
+            moduleManagement.AddModule<MultiplayerManager>(false);
+            moduleManagement.AddModule<ArenaManager>(false);
+            moduleManagement.AddModule<MiscEffectsManager>(false);
+            moduleManagement.AddModule<ModdedLevelEditorManager>(false);
+            moduleManagement.AddModule<ExplorationGameModeManager>(false);
+            moduleManagement.AddModule<PatchesManager>(false);
+            moduleManagement.AddModule<AdvancedPhotoModeManager>(false);
+            moduleManagement.AddModule<GarbagePositionerManager>(false);
+            moduleManagement.AddModule<GameInformationManager>(false);
+            moduleManagement.AddModule<GameStateChangeController>(false);
         }
 
-        private void checkDlls()
-        {
-            return; // Early tests of cross-modding
-            foreach (System.Reflection.Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.FullName.Contains("LevelEditorTools,"))
-                {
-                    OverhaulDescription.IsLETInstalled = true;
-                    break;
-                }
-            }
-        }
-
+        // Token: 0x06000049 RID: 73 RVA: 0x00004768 File Offset: 0x00002968
         private void addListeners()
         {
-            UnityEngine.GameObject obj = new UnityEngine.GameObject("CDOListeners");
-            LocalMonoBehaviour = obj.AddComponent<OverhaulMainMonoBehaviour>();
+            GameObject gameObject = new GameObject("CDOListeners");
+            OverhaulMain.MainMonoBehaviour = gameObject.AddComponent<OverhaulMainMonoBehaviour>();
         }
 
+        // Token: 0x0600004A RID: 74 RVA: 0x0000478C File Offset: 0x0000298C
         private void finalPreparations()
         {
             if (OverhaulDescription.IsBetaBuild())
             {
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
-                    Key2 = UnityEngine.KeyCode.C,
-                    Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = BaseUtils.DebugFireSword
+                    Key2 = KeyCode.C,
+                    Key1 = KeyCode.LeftControl,
+                    Method = new Action(BaseUtils.DebugFireSword)
                 });
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
-                    Key2 = UnityEngine.KeyCode.B,
-                    Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = BaseUtils.ExplodePlayer
+                    Key2 = KeyCode.B,
+                    Key1 = KeyCode.LeftControl,
+                    Method = new Action(BaseUtils.ExplodePlayer)
                 });
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
-                    Key2 = UnityEngine.KeyCode.V,
-                    Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = BaseUtils.AddSkillPoint
+                    Key2 = KeyCode.V,
+                    Key1 = KeyCode.LeftControl,
+                    Method = new Action(BaseUtils.AddSkillPoint)
                 });
+                HotkeysModule module = BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>();
+                Hotkey hotkey = new Hotkey();
+                hotkey.Key2 = KeyCode.M;
+                hotkey.Key1 = KeyCode.LeftControl;
+                hotkey.Method = delegate ()
+                {
+                    LevelConstructor.BuildALevel(new LevelConstructor.LevelSettings(), true);
+                };
+                module.AddHotkey(hotkey);
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
-                    Key2 = UnityEngine.KeyCode.M,
-                    Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = delegate { Gameplay.Levels.LevelConstructor.BuildALevel(new Gameplay.Levels.LevelConstructor.LevelSettings(), true); }
-                });;
-                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-                {
-                    Key2 = UnityEngine.KeyCode.X,
-                    Key1 = UnityEngine.KeyCode.LeftControl,
-                    Method = BaseUtils.DebugSize
+                    Key2 = KeyCode.X,
+                    Key1 = KeyCode.LeftControl,
+                    Method = new Action(BaseUtils.DebugSize)
                 });
             }
             BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
             {
-                Key1 = UnityEngine.KeyCode.F2,
-                Method = MiscEffectsManager.SwitchHud
+                Key1 = KeyCode.F2,
+                Method = new Action(MiscEffectsManager.SwitchHud)
             });
-
-            //Setting up some graphics stuff
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
             QualitySettings.softParticles = true;
             QualitySettings.streamingMipmapsMemoryBudget = 4096f;
@@ -263,187 +289,164 @@ namespace CloneDroneOverhaul
             QualitySettings.asyncUploadPersistentBuffer = true;
             QualitySettings.antiAliasing = 8;
             QualitySettings.shadowCascades = 2;
-
-            //Mindspace skybox color
-            SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
-
-            //hit colors
-            AttackManager.Instance.HitColor = new Color(4, 0.65f, 0.35f, 0.2f);
-            AttackManager.Instance.BodyOnFireColor = new Color(1, 0.42f, 0.22f, 0.1f);
-
-            //Emote pitch limit
-            EmoteManager.Instance.PitchLimits.Max = 5f;
-            EmoteManager.Instance.PitchLimits.Min = 0f;
-
-            //Timer.AddNoArgActionToCompleteNextFrame(DisableVSync);
-
-            //New cursor texture (bad idea actually)
-            if (-1 == 0)
+            Singleton<SkyBoxManager>.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
+            Singleton<AttackManager>.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
+            Singleton<AttackManager>.Instance.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
+            Singleton<EmoteManager>.Instance.PitchLimits.Max = 5f;
+            Singleton<EmoteManager>.Instance.PitchLimits.Min = 0f;
+            Transform transform = TransformUtils.FindChildRecursive(Singleton<GameUIRoot>.Instance.TitleScreenUI.transform, "BottomButtons");
+            transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+            transform.localPosition = new Vector3(0f, -180f, 0f);
+            if (TransformUtils.FindChildRecursive(Singleton<GameUIRoot>.Instance.TitleScreenUI.transform, "OptionsButton"))
             {
-                Texture2D tex = AssetLoader.GetObjectFromFile<Texture2D>("cdo_rw_stuff", "CursorV6");
-                Cursor.SetCursor(tex, Vector2.zero, CursorMode.ForceSoftware);
+                Transform transform2 = UnityEngine.Object.Instantiate<Transform>(TransformUtils.FindChildRecursive(Singleton<GameUIRoot>.Instance.TitleScreenUI.transform, "OptionsButton"), transform);
+                transform2.SetSiblingIndex(1);
+                UnityEngine.Object.Destroy(transform2.GetComponentInChildren<LocalizedTextField>());
+                transform2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+                transform2.GetComponent<Button>().onClick.AddListener(new UnityAction(SettingsUI.Instance.Show));
+                transform2.GetComponentInChildren<Text>().text = "Overhaul Settings";
+                this._settingsButtonText = transform2.GetComponentInChildren<Text>();
             }
-
-            Transform trans = TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "BottomButtons");
-            trans.localScale = new Vector3(0.85f, 0.85f, 0.85f); //OptionsButton
-            trans.localPosition = new Vector3(0, -180, 0); //CanvasRoundedUnityDarkEdge
-            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "LeftFadeBG").GetComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.65f);
-            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "PlaySingleplayer").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
-            //TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "MultiplayerButton_NEW").GetComponent<UnityEngine.UI.Image>().sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
-
-            if (TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"))
+            foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {
-                Transform t2 = UnityEngine.GameObject.Instantiate<Transform>(TransformUtils.FindChildRecursive(GameUIRoot.Instance.TitleScreenUI.transform, "OptionsButton"), trans);
-                t2.SetSiblingIndex(1);
-                UnityEngine.GameObject.Destroy(t2.GetComponentInChildren<LocalizedTextField>());
-                t2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-                t2.GetComponent<Button>().onClick.AddListener(new UnityEngine.Events.UnityAction(UI.SettingsUI.Instance.Show));
-                t2.GetComponentInChildren<Text>().text = "Overhaul Settings";
-                _settingsButtonText = t2.GetComponentInChildren<Text>();
-            }
-
-            foreach (UnityEngine.UI.Image img in GameUIRoot.Instance.GetComponentsInChildren<UnityEngine.UI.Image>(true))
-            {
-                if (img != null && img.sprite != null)
+                if (image != null && image.sprite != null)
                 {
-                    if (img.sprite.name == "UISprite" || img.sprite.name == "Knob")
+                    if (image.sprite.name == "UISprite" || image.sprite.name == "Knob")
                     {
-                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
+                        image.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
                     }
-                    if (img.sprite.name == "Checkmark")
+                    if (image.sprite.name == "Checkmark")
                     {
-                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CheckmarkSmall");
-                        img.color = Color.black;
+                        image.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CheckmarkSmall");
+                        image.color = Color.black;
                     }
-                    if (img.sprite.name == "Background")
+                    if (image.sprite.name == "Background")
                     {
-                        img.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnity");
+                        image.sprite = AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnity");
                     }
-                    Outline outline = img.GetComponent<Outline>();
-                    if (outline != null)
+                    Outline component = image.GetComponent<Outline>();
+                    if (component != null)
                     {
-                        outline.enabled = false;
+                        component.enabled = false;
                     }
                 }
             }
-
-            foreach (EnemyConfiguration character in EnemyFactory.Instance.Enemies)
-            {
-                if (character.EnemyPrefab.GetComponent<FirstPersonMover>() != null)
-                {
-                    foreach (PicaVoxel.Frame part in character.EnemyPrefab.GetComponent<FirstPersonMover>().CharacterModelPrefab.transform.GetChild(0).GetChild(0).GetComponentsInChildren<PicaVoxel.Frame>(true))
-                    {
-                        Patching.BodyPartPatcher.OnBodyPartStart(part);
-                    }
-                }
-            }
-
             new GameObject("CDO_RW_BoltEventListener").AddComponent<BoltEventListener>();
         }
 
-        private void DisableVSync()
-        {
-            SettingsManager.Instance.SetVsyncOn(false);
-            Application.targetFrameRate = 119;
-        }
-
+        // Token: 0x0600004B RID: 75 RVA: 0x00004C04 File Offset: 0x00002E04
         private void fixVanillaStuff()
         {
-            MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
-            PatchesManager.Instance.UpdateAudioSettings(GetSetting<bool>("Patches.QoL.Fix sounds"));
-
-            GameInformationManager.UnoptimizedThings things = GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff();
-
-            foreach(Camera cam in things.AllCameras)
+            Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
+            PatchesManager.Instance.UpdateAudioSettings(OverhaulMain.GetSetting<bool>("Patches.QoL.Fix sounds"));
+            foreach (Camera camera in GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff().AllCameras)
             {
-                if(cam.name == "ArenaCamera")
+                if (camera.name == "ArenaCamera")
                 {
-                    cam.pixelRect = new Rect(new Vector2(0, 0), new Vector2(640, 360));
+                    camera.pixelRect = new Rect(new Vector2(0f, 0f), new Vector2(640f, 360f));
                 }
             }
         }
 
+        // Token: 0x0600004C RID: 76 RVA: 0x00004C9C File Offset: 0x00002E9C
         private void spawnGUI()
         {
-            UI.GUIManagement mngr = BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>();
-
-            GameObject obj = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "CDO_RW_UI"));
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(0).gameObject.AddComponent<UI.Watermark>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(9).gameObject.AddComponent<UI.SettingsUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<Localization.OverhaulLocalizationEditor>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<UI.NewErrorWindow>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<UI.BackupMindTransfersUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<UI.Notifications.NotificationsUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<UI.NewEscMenu>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<UI.MultiplayerInviteUIs>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<LevelEditor.ModdedLevelEditorUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<UI.MultiplayerUIs>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<UI.NewKillFeedUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<UI.NewGameModeSelectionScreen>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<UI.NewPhotoModeUI>());
-            mngr.AddGUI(obj.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<UI.NewWorkshopBrowserUI>());
+            GUIManagement module = BaseStaticReferences.ModuleManager.GetModule<GUIManagement>();
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "CDO_RW_UI"));
+            gameObject.name = "CloneDroneOverhaulUI";
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(0).gameObject.AddComponent<Watermark>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(9).gameObject.AddComponent<SettingsUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<OverhaulLocalizationEditor>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<NewErrorWindow>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<BackupMindTransfersUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<NotificationsUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<NewEscMenu>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<MultiplayerInviteUIs>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<ModdedLevelEditorUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<MultiplayerUIs>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<NewKillFeedUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<NewGameModeSelectionScreen>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<NewPhotoModeUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<NewWorkshopBrowserUI>());
+            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
         }
 
+        // Token: 0x0600004D RID: 77 RVA: 0x00004E80 File Offset: 0x00003080
         public static string GetTranslatedString(string ID)
         {
-            CloneDroneOverhaul.Localization.TranslationEntry entry = Localization.GetTranslation(ID);
-            if (entry == null)
+            TranslationEntry translation = OverhaulMain.Localization.GetTranslation(ID);
+            if (translation == null)
             {
                 return "NL: " + ID;
             }
-            string text = entry.Translations[LocalizationManager.Instance.GetCurrentLanguageCode()];
+            string text = translation.Translations[Singleton<LocalizationManager>.Instance.GetCurrentLanguageCode()];
             if (text == "nontranslated")
             {
-                text = entry.Translations["en"];
+                text = translation.Translations["en"];
             }
             return text;
         }
 
+        // Token: 0x0600004E RID: 78 RVA: 0x00004EDD File Offset: 0x000030DD
         public static T GetSetting<T>(string ID)
         {
             return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
         }
+
+        // Token: 0x0400005D RID: 93
+        private static bool hasCheckForUpdates;
+
+        // Token: 0x0400005E RID: 94
+        private static bool hasCachedStuff;
+
+        // Token: 0x04000066 RID: 102
+        public static OverhaulCacheManager CacheManagerReference = new OverhaulCacheManager();
+
+        // Token: 0x04000067 RID: 103
+        private Text _settingsButtonText;
     }
 
     public static class OverhaulDescription
     {
-        public enum Branch
+        public static string GetModFolder()
         {
-            Github,
-
-            ModBot
+            return OverhaulMain.Instance.ModInfo.FolderPath;
         }
 
         public static string GetModName(bool includeVersion, bool shortVariant = false)
         {
-            string name = shortVariant == false ? "Clone Drone Overhaul " + GetModVersionBranch() : "CDO";
+            string text = (!shortVariant) ? ("Clone Drone Overhaul " + OverhaulDescription.GetModVersionBranch().ToString()) : "CDO";
             if (includeVersion)
             {
-                return name + " " + GetModVersion();
+                return text + " " + OverhaulDescription.GetModVersion(true);
             }
-            return name;
+            return text;
         }
 
         public static string GetModVersion(bool withModBotVersion = true)
         {
-            string version = getGameVersion();
+            string gameVersion = OverhaulDescription.getGameVersion();
             if (!withModBotVersion)
             {
-                return version;
+                return gameVersion;
             }
-            return version + " (." + OverhaulMain.Instance.ModInfo.Version + ")";
+            return gameVersion + " (." + OverhaulMain.Instance.ModInfo.Version.ToString() + ")";
         }
 
-        public static Branch GetModVersionBranch()
+        public static OverhaulDescription.Branch GetModVersionBranch()
         {
-            return Branch.ModBot;
+            return OverhaulDescription.Branch.Github;
         }
 
         private static string getGameVersion()
         {
-            string version = "a0.2.1.0";
-            string betaVersion = "a0.2.1.0";
-            return IsBetaBuild() ? betaVersion : version;
+            string result = "a0.2.0.17";
+            string result2 = "a0.2.1.1";
+            if (!OverhaulDescription.IsBetaBuild())
+            {
+                return result;
+            }
+            return result2;
         }
 
         public static bool IsBetaBuild()
@@ -451,11 +454,17 @@ namespace CloneDroneOverhaul
             return true;
         }
 
-
-        internal static bool IsLETInstalled;
-        public static bool LevelEditorToolsInstalled()
+        public static bool LevelEditorToolsEnabled()
         {
-            return BaseUtils.GetModInfoByID("286ea03e-b667-46ae-8c12-95eb08c412e4") != null;
+            return PlayerPrefs.HasKey("286ea03e-b667-46ae-8c12-95eb08c412e4") && PlayerPrefs.GetInt("286ea03e-b667-46ae-8c12-95eb08c412e4") == 1;
+        }
+
+        public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
+
+        public enum Branch
+        {
+            Github,
+            ModBot
         }
     }
 
@@ -733,42 +742,69 @@ namespace CloneDroneOverhaul
         }
     }
 
-    public static class CrossModManager //probably a mistake
+    public static class CrossModManager
     {
+        // Token: 0x06000075 RID: 117 RVA: 0x000055D0 File Offset: 0x000037D0
         public static void DoAction(string name, object[] arguments)
         {
             try
             {
                 if (name == "ModdedLevelEditor.RefreshSelected")
                 {
-                    OverhaulMain.GUI.GetGUI<LevelEditor.ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
+                    GUIManagement.Instance.GetGUI<ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
                 }
                 if (name == "ModdedLevelEditor.RefreshSelectedLETMod")
                 {
-                    LevelEditor.ModdedLevelEditorUI.ObjectsSelectedPanel ObjectsSelected = arguments[0] as LevelEditor.ModdedLevelEditorUI.ObjectsSelectedPanel;
-                    if (OverhaulDescription.LevelEditorToolsInstalled())
+                    ModdedLevelEditorUI.ObjectsSelectedPanel objectsSelectedPanel = arguments[0] as ModdedLevelEditorUI.ObjectsSelectedPanel;
+                    if (OverhaulDescription.LevelEditorToolsEnabled())
                     {
-                        float? rotAngle = LevelEditorTools.AccurateRotationTool.RotationAngle;
-                        ObjectsSelected.AdditionalText.text = string.Concat(new string[]
-                        {
-                    "Level Editor Tools Mod:",
-                    System.Environment.NewLine,
-                    "R + " + LevelEditorTools.PositionerTool.SetXKey + " to rotate objects " + rotAngle + " degrees along X axis",
-                                 System.Environment.NewLine,
-                    "R + " + LevelEditorTools.PositionerTool.SetYKey + " to rotate objects " + rotAngle + " degrees along Y axis",
-                                 System.Environment.NewLine,
-                    "R + " + LevelEditorTools.PositionerTool.SetZKey + " to rotate objects " + rotAngle + " degrees along Z axis",
-                        });
+                        float? rotationAngle = AccurateRotationTool.RotationAngle;
+                        Text additionalText = objectsSelectedPanel.AdditionalText;
+                        string[] array = new string[7];
+                        array[0] = "Level Editor Tools Mod:";
+                        array[1] = Environment.NewLine;
+                        int num = 2;
+                        string[] array2 = new string[5];
+                        array2[0] = "R + ";
+                        array2[1] = PositionerTool.SetXKey.ToString();
+                        array2[2] = " to rotate objects ";
+                        int num2 = 3;
+                        float? num3 = rotationAngle;
+                        array2[num2] = num3.ToString();
+                        array2[4] = " degrees along X axis";
+                        array[num] = string.Concat(array2);
+                        array[3] = Environment.NewLine;
+                        int num4 = 4;
+                        string[] array3 = new string[5];
+                        array3[0] = "R + ";
+                        array3[1] = PositionerTool.SetYKey.ToString();
+                        array3[2] = " to rotate objects ";
+                        int num5 = 3;
+                        num3 = rotationAngle;
+                        array3[num5] = num3.ToString();
+                        array3[4] = " degrees along Y axis";
+                        array[num4] = string.Concat(array3);
+                        array[5] = Environment.NewLine;
+                        int num6 = 6;
+                        string[] array4 = new string[5];
+                        array4[0] = "R + ";
+                        array4[1] = PositionerTool.SetZKey.ToString();
+                        array4[2] = " to rotate objects ";
+                        int num7 = 3;
+                        num3 = rotationAngle;
+                        array4[num7] = num3.ToString();
+                        array4[4] = " degrees along Z axis";
+                        array[num6] = string.Concat(array4);
+                        additionalText.text = string.Concat(array);
                     }
                     else
                     {
-                        ObjectsSelected.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
+                        objectsSelectedPanel.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
                     }
                 }
             }
             catch
             {
-
             }
         }
     }

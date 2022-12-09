@@ -1,12 +1,7 @@
-﻿using CloneDroneOverhaul.PooledPrefabs;
-using CloneDroneOverhaul.Utilities;
-using ModLibrary;
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -142,7 +137,7 @@ namespace CloneDroneOverhaul.Modules
         /// <param name="paths"></param>
         public void CreateFoldersIfNeeded(string[] paths)
         {
-            foreach(string path in paths)
+            foreach (string path in paths)
             {
                 CreateFolderIfNeeded(path);
             }
@@ -238,7 +233,7 @@ namespace CloneDroneOverhaul.Modules
 
             public SavedSettingEntry GetSettingSave(string id, object newSettingValue, bool isNewSetting)
             {
-                if(SavedSettings == null)
+                if (SavedSettings == null)
                 {
                     SavedSettings = new List<SavedSettingEntry>();
                 }
@@ -271,12 +266,11 @@ namespace CloneDroneOverhaul.Modules
         {
             SettingsData = base.DataManagerReference.LoadData<CloneDroneOverhaulSettingsData.Data>(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension);
             SettingsData.DataBase = this;
-            OverhaulMain.SettingsData = this;
         }
 
         protected override bool CheckFolders()
         {
-            if(!File.Exists(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension))
+            if (!File.Exists(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension))
             {
                 CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data();
                 data.SavedSettings = new List<Data.SavedSettingEntry>();
@@ -293,7 +287,7 @@ namespace CloneDroneOverhaul.Modules
         }
 
         public void SaveSetting(string id, object value, bool onlyAdd)
-        {   
+        {
             /*
             if(SettingsData == null)
             {
@@ -309,9 +303,9 @@ namespace CloneDroneOverhaul.Modules
 
         public object GetSettingValue(string id)
         {
-            foreach(Data.SavedSettingEntry entry in SettingsData.SavedSettings)
+            foreach (Data.SavedSettingEntry entry in SettingsData.SavedSettings)
             {
-                if(entry.ID == id)
+                if (entry.ID == id)
                 {
                     return entry.Value;
                 }

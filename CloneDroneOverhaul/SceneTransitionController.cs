@@ -1,8 +1,6 @@
 ﻿using System;
-using ModLibrary;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 namespace CloneDroneOverhaul
 {
@@ -64,7 +62,7 @@ namespace CloneDroneOverhaul
                     }
                     else
                     {
-                        if(_currentAction != null)
+                        if (_currentAction != null)
                         {
                             _currentAction();
                             _currentAction = null;

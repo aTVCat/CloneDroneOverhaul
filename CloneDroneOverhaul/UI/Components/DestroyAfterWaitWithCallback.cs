@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI.Components
 {
@@ -18,7 +16,7 @@ namespace CloneDroneOverhaul.UI.Components
 
         void FixedUpdate()
         {
-            if(Time.unscaledTime >= timeToDestroy)
+            if (Time.unscaledTime >= timeToDestroy)
             {
                 Destroy(this.gameObject);
             }

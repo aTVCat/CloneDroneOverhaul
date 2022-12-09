@@ -1,39 +1,71 @@
-﻿using UnityEngine;
-using System;
-using UnityEngine.SceneManagement;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.Gameplay.OverModes
 {
     public static class OverModesController
     {
-        private static GameObject _overModesGameObject;
-
-        private static int _prevSceneID;
-
-        /// <summary>
-        /// Usually all monobehaviours remove when switching scenes
-        /// </summary>
         public static void InitializeForCurrentScene()
         {
-            GameObject gameObject = new GameObject("Overhaul_OverModes");
-            _overModesGameObject = gameObject;
-
-            InstantiateManager<EndlessModeOverhaul>("Endless_Overhaul");
+            GameObject overModesGameObject = new GameObject("Overhaul_OverModes");
+            OverModesController._overModesGameObject = overModesGameObject;
+            OverModesController.InstantiateManager<EndlessModeOverhaul>("Endless_Overhaul");
+            OverModesController.InstantiateManager<StoryModeOverhaul>("Story_Overhaul");
         }
 
-        /// <summary>
-        /// Create an instance of over mode manager
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        public static bool CurrentGamemodeIsOvermode()
+        {
+            foreach (GameMode mode in OverModesController._gameModes.Keys)
+            {
+                if (GameModeManager.Is(mode))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static OverModeBase GetCurrentOvermode()
+        {
+            if (!OverModesController.CurrentGamemodeIsOvermode())
+            {
+                return null;
+            }
+            return OverModesController._gameModes[Singleton<GameFlowManager>.Instance.GetCurrentGameMode()];
+        }
+
+        public static void ProcessEvent(OverModeBase.EventNames eventName, object[] args)
+        {
+            if (OverModesController.CurrentGamemodeIsOvermode())
+            {
+                OverModesController.GetCurrentOvermode().ProcessEvent(eventName, args);
+            }
+        }
+
+        public static T ProcessEventAndReturn<T>(OverModeBase.EventNames eventName, object[] args) where T : class
+        {
+            if (OverModesController.CurrentGamemodeIsOvermode())
+            {
+                return OverModesController.GetCurrentOvermode().ProcessEventAndReturn<T>(eventName, args);
+            }
+            return default(T);
+        }
+
         public static T InstantiateManager<T>(string name) where T : OverModeBase
         {
-            GameObject obj = new GameObject(name);
-            obj.transform.SetParent(_overModesGameObject.transform);
-            T result = obj.AddComponent<T>();
-            result.Initialize();
-            return result;
+            GameObject gameObject = new GameObject(name);
+            gameObject.transform.SetParent(OverModesController._overModesGameObject.transform);
+            T t = gameObject.AddComponent<T>();
+            t.Initialize();
+            if (!OverModesController._gameModes.ContainsKey(t.GetGamemode()))
+            {
+                OverModesController._gameModes.Add(t.GetGamemode(), t);
+            }
+            return t;
         }
+
+        private static GameObject _overModesGameObject;
+
+        private static Dictionary<GameMode, OverModeBase> _gameModes = new Dictionary<GameMode, OverModeBase>();
     }
 }

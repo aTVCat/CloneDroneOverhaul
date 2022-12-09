@@ -1,10 +1,7 @@
-﻿using System;
+﻿using CloneDroneOverhaul.UI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using CloneDroneOverhaul.Modules;
-using CloneDroneOverhaul.UI;
-using CloneDroneOverhaul;
 
 namespace CloneDroneOverhaul.Localization
 {

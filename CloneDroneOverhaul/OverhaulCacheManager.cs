@@ -1,8 +1,6 @@
-﻿using System;
-using ModLibrary;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using ModLibrary;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CloneDroneOverhaul
 {
@@ -19,8 +17,8 @@ namespace CloneDroneOverhaul
 
         internal static void ClearTemporal()
         {
-            if(_temporalStuff != null )
-            _temporalStuff.Clear();
+            if (_temporalStuff != null)
+                _temporalStuff.Clear();
         }
         public static void CacheStuff()
         {
@@ -69,6 +67,21 @@ namespace CloneDroneOverhaul
             _cachedStuff.Add("SceneTransition_LevelEditorStyle", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "SceneTransitionScreen"));
             _cachedStuff.Add("placeholderLoadSprite", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "placeholderLoad"));
 
+            _cachedStuff.Add("SkyboxMaterial_Stars", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarsSkyboxV2"));
+            _cachedStuff.Add("SkyboxMaterial_Stars2", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarSkyBox"));
+            _cachedStuff.Add("SkyboxMaterial_StarsChapter4", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "Chapter4NewSkybox"));
+
+            _cachedStuff.Add("objects_normalMap_dark_tile_2_normalMap", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_normalMap"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Tile_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_heightMapV4"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_1_heightMap"));
+            _cachedStuff.Add("MatHeightMap_HumanFleetShips", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "HumanFleetShips_heightMap"));
+            _cachedStuff.Add("MatHeightMap_DarkHallwayParts", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "DarkHallwayParts_heightMap"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Tile_4", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_4_heightMap"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_1_heightMap"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_SmallDark_Tile_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "TILES_SMALLER_01_heightMap"));
+            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_2_heightMap"));
+            _cachedStuff.Add("MatHeightMap_RampBasic", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "Ramp_texture_v2_heightMap"));
+
             _hasCached = true;
         }
 
@@ -77,7 +90,7 @@ namespace CloneDroneOverhaul
             if (_cachedStuff.ContainsKey(id))
             {
                 object rawObj = _cachedStuff[id];
-                if(!(rawObj is T))
+                if (!(rawObj is T))
                 {
                     Modules.ModuleManagement.ShowError("Object with ID: " + id + " is not " + typeof(T).ToString());
                 }
@@ -91,6 +104,10 @@ namespace CloneDroneOverhaul
             return null;
         }
 
+        public static bool HasCached(string id)
+        {
+            return _cachedStuff.ContainsKey(id);
+        }
         public static void AddTemporalObject<T>(T obj, string name)
         {
             if (!_temporalStuff.ContainsKey(name))

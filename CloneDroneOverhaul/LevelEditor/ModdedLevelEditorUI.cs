@@ -1,6 +1,5 @@
 ﻿using CloneDroneOverhaul.UI;
 using ModLibrary;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -93,7 +92,7 @@ namespace CloneDroneOverhaul.LevelEditor
         {
             public void RefreshSelected()
             {
-                base.gameObject.SetActive(OverhaulDescription.LevelEditorToolsInstalled());
+                base.gameObject.SetActive(OverhaulDescription.LevelEditorToolsEnabled());
             }
             protected override void Config()
             {
@@ -564,7 +563,7 @@ namespace CloneDroneOverhaul.LevelEditor
                     });
                 }
             }
-        }      
+        }
 
         public ObjectsSelectedPanel ObjectsSelected;
         public Toolbar ToolBar;
@@ -607,7 +606,7 @@ namespace CloneDroneOverhaul.LevelEditor
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                if(!Menu.gameObject.activeSelf)
+                if (!Menu.gameObject.activeSelf)
                 {
                     Menu.ShowMenu();
                 }

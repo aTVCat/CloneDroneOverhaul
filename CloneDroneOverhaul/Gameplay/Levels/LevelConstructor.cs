@@ -125,7 +125,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
             }
 
             Texture2D noise = GeneratePerlinNoise(generationProgress);
-            foreach(LevelChunk c in tDesc.Chunks)
+            foreach (LevelChunk c in tDesc.Chunks)
             {
                 c.ApplyPerlinNoise(noise);
                 c.ApplyExceptions();
@@ -157,7 +157,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
                 y++;
             }
 
-            for(int i = 0; i < pix.Length; i++)
+            for (int i = 0; i < pix.Length; i++)
             {
                 Color c = pix[i];
                 float s = Random.Range(-0.2f, 0.4f);
@@ -229,7 +229,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
 
         public class LevelChunk : MonoBehaviour
         {
-            public static readonly int[] LIFT_INDEXES = new int[]{ 147, 126, 105 };
+            public static readonly int[] LIFT_INDEXES = new int[] { 147, 126, 105 };
 
             public LevelGenerationCompletion ChunkData;
 
@@ -239,7 +239,7 @@ namespace CloneDroneOverhaul.Gameplay.Levels
 
                 int randomValueSeedValue = ChunkData.Seed.ToString()[LevelConstructor.RANDOMVALUE1_INDEX];
                 float randomValue = 2.5f;
-                if(randomValueSeedValue > 7)
+                if (randomValueSeedValue > 7)
                 {
                     randomValue = 2.25f;
                 }
@@ -256,14 +256,14 @@ namespace CloneDroneOverhaul.Gameplay.Levels
                 }
 
                 if (randomValueSeedValue > 5) if (ChunkData.CurrentChuckX > Random.Range(4, 7) && ChunkData.CurrentChuckZ < Random.Range(4, 7))
-                {
-                    base.transform.position += new Vector3(0, base.transform.position.y * 2, 0);
-                }
+                    {
+                        base.transform.position += new Vector3(0, base.transform.position.y * 2, 0);
+                    }
             }
 
             public void ApplyExceptions()
             {
-                if(LIFT_INDEXES[0] == ChunkData.CurrentChunkIndex || LIFT_INDEXES[1] == ChunkData.CurrentChunkIndex || LIFT_INDEXES[2] == ChunkData.CurrentChunkIndex)
+                if (LIFT_INDEXES[0] == ChunkData.CurrentChunkIndex || LIFT_INDEXES[1] == ChunkData.CurrentChunkIndex || LIFT_INDEXES[2] == ChunkData.CurrentChunkIndex)
                 {
                     base.gameObject.SetActive(false);
                 }

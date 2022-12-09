@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.UI.Components
@@ -38,7 +37,7 @@ namespace CloneDroneOverhaul.UI.Components
 
         public void SetImage(Sprite sprite)
         {
-            if(ImageComponent == null)
+            if (ImageComponent == null)
             {
                 MyModdedObject = base.GetComponent<ModdedObject>();
                 ImageComponent = MyModdedObject.GetObjectFromList<Image>(0);

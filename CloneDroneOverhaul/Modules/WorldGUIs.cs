@@ -1,10 +1,7 @@
-﻿using CloneDroneOverhaul.PooledPrefabs;
+﻿using CloneDroneOverhaul.UI;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
-using System.Collections.Generic;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -70,7 +67,7 @@ namespace CloneDroneOverhaul.Modules
 
                 if (head == null || mover.CharacterType == EnemyType.EmperorCombat || mover.CharacterType == EnemyType.EmperorNonCombat)
                 {
-                    OverhaulMain.GUI.GetGUI<UI.BackupMindTransfersUI>().RefreshMindTransfers();
+                    GUIManagement.Instance.GetGUI<UI.BackupMindTransfersUI>().RefreshMindTransfers();
                     MindTransferToFollow = null;
                     return;
                 }
@@ -94,7 +91,7 @@ namespace CloneDroneOverhaul.Modules
         private void RefreshMindTransfers()
         {
             TransformUtils.DestroyAllChildren(MindTransferContainer);
-            for(int i = 0; i < GameDataManager.Instance.GetNumConsciousnessTransfersLeft(); i++)
+            for (int i = 0; i < GameDataManager.Instance.GetNumConsciousnessTransfersLeft(); i++)
             {
                 Transform trans = GameObject.Instantiate(MindTransferIcon, MindTransferContainer);
                 trans.gameObject.SetActive(true);

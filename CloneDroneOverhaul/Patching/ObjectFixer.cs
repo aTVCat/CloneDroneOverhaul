@@ -8,6 +8,62 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
 
         public static void FixObject(Transform transform, string id, Object instanceScript = null)
         {
+            if (id == "objectPlacedInLevel")
+            {
+                if (GameModeManager.IsInLevelEditor())
+                {
+                    return;
+                }
+                ObjectPlacedInLevel objectPlacedInLevel = instanceScript as ObjectPlacedInLevel;
+                ReplaceMaterial component = transform.GetComponent<ReplaceMaterial>();
+                if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Primitives/Tile")
+                {
+                    foreach (Material material in component.MaterialOptions)
+                    {
+                        string name = material.name;
+                        if (OverhaulCacheManager.HasCached("MatHeightMap_" + name))
+                        {
+                            material.mainTexture.filterMode = FilterMode.Point;
+                            material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_" + name));
+                        }
+                    }
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Primitives/Ramp")
+                {
+                    foreach (Material material2 in component.MaterialOptions)
+                    {
+                        string name2 = material2.name;
+                        if (OverhaulCacheManager.HasCached("MatHeightMap_" + name2))
+                        {
+                            material2.mainTexture.filterMode = FilterMode.Point;
+                            material2.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_" + name2));
+                        }
+                    }
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/HumanFleet/HumanBattleCruiser")
+                {
+                    component.MaterialOptions[0].SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_HumanFleetShips"));
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall2")
+                {
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall1")
+                {
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall3")
+                {
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                }
+                else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Door")
+                {
+                    foreach (MeshRenderer meshRenderer in objectPlacedInLevel.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        meshRenderer.material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                    }
+                }
+            }
             if (id == "FixArmorPiece")
             {
                 ArmorPiece ap = instanceScript as ArmorPiece;
@@ -26,7 +82,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                 if (GameUIThemeData == null) GameUIThemeData = ui.GameThemeData;
                 ui.GameThemeData.ButtonBackground[0].Color = new Color(0.19f, 0.37f, 0.88f, 1);
                 ui.GameThemeData.ButtonBackground[1].Color = new Color(0.3f, 0.5f, 1, 1f);
-                if(ui.GetComponent<UnityEngine.UI.Image>() != null && ui.GetComponent<UnityEngine.UI.Image>().sprite != null && ui.GetComponent<UnityEngine.UI.Image>().sprite.name == "UISprite")
+                if (ui.GetComponent<UnityEngine.UI.Image>() != null && ui.GetComponent<UnityEngine.UI.Image>().sprite != null && ui.GetComponent<UnityEngine.UI.Image>().sprite.name == "UISprite")
                 {
                     ui.GetComponent<UnityEngine.UI.Image>().sprite = ModLibrary.AssetLoader.GetObjectFromFile<Sprite>("cdo_rw_stuff", "CanvasRoundedUnityDarkEdge");
                 }
@@ -35,12 +91,12 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
             {
                 (transform as RectTransform).anchoredPosition = new Vector2(0, 15);
             }
-            if(id == "FixEscMenu")
+            if (id == "FixEscMenu")
             {
                 TransformUtils.HideAllChildren(transform);
                 transform.GetComponent<UnityEngine.UI.Image>().enabled = false;
             }
-            if(id == "Planet_Earth")
+            if (id == "Planet_Earth")
             {
                 PlanetCollider __instance = instanceScript as PlanetCollider;
                 __instance.gameObject.GetComponent<Rotator>().enabled = true;

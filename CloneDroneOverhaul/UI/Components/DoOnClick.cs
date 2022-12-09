@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static CloneDroneOverhaul.UI.Components.OverhaulContextMenu;
 
 namespace CloneDroneOverhaul.UI.Components
 {
@@ -35,13 +33,13 @@ namespace CloneDroneOverhaul.UI.Components
 
         void IPointerClickHandler.OnPointerClick(UnityEngine.EventSystems.PointerEventData eventData)
         {
-            if(Event != null)
+            if (Event != null)
             {
                 Event.Invoke();
                 return;
             }
-            if(ActOnClick != null)
-            ActOnClick();
+            if (ActOnClick != null)
+                ActOnClick();
         }
 
         void IPointerEnterHandler.OnPointerEnter(UnityEngine.EventSystems.PointerEventData eventData)
@@ -55,7 +53,7 @@ namespace CloneDroneOverhaul.UI.Components
 
         void IPointerExitHandler.OnPointerExit(UnityEngine.EventSystems.PointerEventData eventData)
         {
-            if(_mouseIsOverUIElement == true && ActOnMouseHover != null)
+            if (_mouseIsOverUIElement == true && ActOnMouseHover != null)
             {
                 ActOnMouseHover(false);
             }
