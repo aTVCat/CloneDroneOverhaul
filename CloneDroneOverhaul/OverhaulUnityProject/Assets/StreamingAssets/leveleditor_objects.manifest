@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 1378825010
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2c010bdd27931f0cb0bcff158bbfd579
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3b4907a72e960bd2e4826b38c9d360d0
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/ModStuff/CloneDroneOverhaul/LevelEditorObjects/Chapter4Concepts/FlagC4.obj
+- Assets/ModStuff/CloneDroneOverhaul/LevelEditorObjects/Chapter4Concepts/FlagC4.png
+- Assets/ModStuff/CloneDroneOverhaul/LevelEditorObjects/Chapter4Concepts/ConceptBanner_Mat.mat
+- Assets/ModStuff/CloneDroneOverhaul/LevelEditorObjects/Chapter4Concepts/Banner16x16.png
+- Assets/ModStuff/CloneDroneOverhaul/LevelEditorObjects/Chapter4Concepts/Object_ConceptBanner.prefab
+Dependencies: []
