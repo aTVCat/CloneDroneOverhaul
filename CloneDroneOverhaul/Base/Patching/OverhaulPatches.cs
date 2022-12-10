@@ -668,7 +668,7 @@ namespace CloneDroneOverhaul.Patching
         private static bool ArenaLiftManager_Update_Prefix(ArenaLiftManager __instance)
         {
             GameMode currentGameMode = Singleton<GameFlowManager>.Instance.GetCurrentGameMode();
-            if (currentGameMode == Singleton<OverModeBase>.Instance.GetGamemode())
+            if (currentGameMode == EndlessModeOverhaul.Instance.GetGamemode())
             {
                 if (!__instance.Lift.IsMoving() && __instance.AreAllPlayersInTheLift() && (__instance.GetLiftTarget() == ArenaLiftPosition.StartArea || __instance.GetLiftTarget() == ArenaLiftPosition.UpgradeRoom))
                 {

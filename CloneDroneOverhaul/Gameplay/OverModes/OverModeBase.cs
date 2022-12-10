@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CloneDroneOverhaul.Gameplay.OverModes
 {
-    public class OverModeBase : Singleton<OverModeBase>
+    public class OverModeBase : MonoBehaviour
     {
         public virtual void Initialize()
         {
