@@ -1,6 +1,7 @@
 ﻿using CloneDroneOverhaul.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
+using CloneDroneOverhaul.Gameplay.OverModes;
 
 namespace CloneDroneOverhaul.UI
 {
@@ -23,6 +24,14 @@ namespace CloneDroneOverhaul.UI
             MyModdedObject.GetObjectFromList<Button>(0).onClick.AddListener(delegate
             {
                 GameUIRoot.Instance.TitleScreenUI.OnCloseModeSelectButtonClicked();
+            });
+            base.MyModdedObject.GetObjectFromList<Button>(9).onClick.AddListener(delegate
+            {
+                StoryModeOverhaul.Instance.StartOvermode(null, false);
+            });
+            base.MyModdedObject.GetObjectFromList<Button>(8).onClick.AddListener(delegate
+            {
+                EndlessModeOverhaul.Instance.StartOvermode(null, true);
             });
 
             Instance = this;

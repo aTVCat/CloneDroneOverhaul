@@ -25,8 +25,10 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
         /// </summary>
         public GameData Data_Legacy;
 
+        public static StoryModeOverhaul Instance;
         public override void Initialize()
         {
+            Instance = this;
             bool succesfullyLoaded = false;
             succesfullyLoaded = Singleton<DataRepository>.Instance.TryLoad<GameData>(LegacyFileName, out this.Data_Legacy, false);
             if (succesfullyLoaded)

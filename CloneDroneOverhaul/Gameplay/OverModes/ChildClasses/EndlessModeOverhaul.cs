@@ -1,6 +1,7 @@
 ﻿using CloneDroneOverhaul.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace CloneDroneOverhaul.Gameplay.OverModes
@@ -14,7 +15,7 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
         {
             new LevelDescription()
             {
-                GeneratedUniqueID =  OVERMODELEVELTAG
+                GeneratedUniqueID = OVERMODELEVELTAG
             }
         };
         public const string LegacyFileName = "OverModeEndlessData";
@@ -24,8 +25,11 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
         /// </summary>
         public GameData Data_Legacy;
 
+        public static EndlessModeOverhaul Instance;
+
         public override void Initialize()
         {
+            Instance = this;
             bool succesfullyLoaded = false;
             succesfullyLoaded = Singleton<DataRepository>.Instance.TryLoad<GameData>(LegacyFileName, out this.Data_Legacy, false);
             if (succesfullyLoaded)
@@ -92,7 +96,10 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
 
         public override void StartOvermode(Action onStartDone = null, bool spawnPlayer = false)
         {
-            base.StartOvermode(onStartDone, spawnPlayer);
+            base.StartOvermode(delegate
+            {
+                ProcessEventAndReturn<Coroutine>(EventNames.SpawnLevel, new object[] { false, OVERMODELEVELTAG, null });
+            }, spawnPlayer);
         }
 
         public override T ProcessEventAndReturn<T>(EventNames eventName, object[] args)
@@ -102,7 +109,7 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
                 bool isAsync = (bool)args[0];
                 string overrideLevelID = (string)args[1];
                 Action completeCallback = args[2] as Action;
-                return (T)Coroutines.SpawnCurrentLevel_EndlessOverMode(isAsync, overrideLevelID, completeCallback);
+                return StartCoroutine(Coroutines.SpawnCurrentLevel_EndlessOverMode(isAsync, overrideLevelID, completeCallback)) as T;
             }
             return null;
         }
