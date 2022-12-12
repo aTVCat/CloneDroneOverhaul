@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CloneDroneOverhaul.V3Tests.Base
+﻿namespace CloneDroneOverhaul.V3Tests.Base
 {
     /// <summary>
     /// The base class for mod controllers. New version of ModuleBase class

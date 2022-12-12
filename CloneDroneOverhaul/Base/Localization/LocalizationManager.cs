@@ -44,7 +44,7 @@ namespace CloneDroneOverhaul.Localization
             return entries;
         }
 
-        public TranslationEntry GetTranslation(string id)
+        public TranslationEntry GetTranslation(in string id)
         {
             foreach (TranslationEntry entry in entries)
             {

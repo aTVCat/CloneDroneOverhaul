@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using ModLibrary;
 using PicaVoxel;
-using ModLibrary;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Utilities
 {
@@ -13,7 +11,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
 
         public static Volume CreateVolume(in string volumeName, in int xSize, in int ySize, in int zSize)
         {
-            if(_defMat == null)
+            if (_defMat == null)
             {
                 _defMat = new Material(Shader.Find("PicaVoxel/PicaVoxel PBR OneMinus Alpha Emissive"));
             }
@@ -84,7 +82,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             Color[] colors = new Color[vox.Palette.Colors.Length];
 
             int index = 0;
-            foreach(VoxReader.Color col in vox.Palette.Colors)
+            foreach (VoxReader.Color col in vox.Palette.Colors)
             {
                 Color newCol = new Color(col.R, col.G, col.B, col.A);
                 colors[index] = newCol;

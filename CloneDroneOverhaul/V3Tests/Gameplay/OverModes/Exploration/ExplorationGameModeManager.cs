@@ -1,9 +1,10 @@
-﻿using CloneDroneOverhaul.Utilities;
+﻿using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.Utilities;
 using UnityEngine;
 
-namespace CloneDroneOverhaul.Modules
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class ExplorationGameModeManager : ModuleBase
+    public class ExplorationGameModeManager_OLD : ModuleBase
     {
         public const GameMode EXPLORATION_GAMEMODE = (GameMode)8259;
 
