@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 583, y: 498}
   m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
-  controlID: 12
+  controlID: 71
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 498}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
-  controlID: 13
+  controlID: 72
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -382,9 +382,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 3a940000
-      m_LastClickedID: 37946
-      m_ExpandedIDs: fa72000060820000c08e0000e09000005e940000749d0000109f0000929f0000bca20000c4a20000
+      m_SelectedIDs: 8c350000
+      m_LastClickedID: 0
+      m_ExpandedIDs: ca770000b09500008ca70000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -439,9 +439,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 514.0072, y: 271.07574, z: -3.0874114}
+    m_Target: {x: 571.4326, y: 340.63635, z: -3}
     speed: 2
-    m_Value: {x: 514.0072, y: 271.07574, z: -3.0874114}
+    m_Value: {x: 571.4326, y: 340.63635, z: -3}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -473,15 +473,15 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: -1}
   m_Size:
-    m_Target: 655.70667
+    m_Target: 629.6551
     speed: 2
-    m_Value: 655.70667
+    m_Value: 629.6551
   m_Ortho:
     m_Target: 1
     speed: 2
     m_Value: 1
   m_ShowGlobalGrid: 1
-  m_LastSceneViewRotation: {x: 0.053483058, y: -0.79893434, z: -0.07184875, w: -0.59471107}
+  m_LastSceneViewRotation: {x: 0.03347308, y: -0.9609888, z: -0.23944186, w: -0.13434178}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -551,20 +551,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/ModStuff/CloneDroneOverhaul/UI/Sprites
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/ModStuff/CloneDroneOverhaul/UI/Sprites
   m_LastFoldersGridSize: 64
   m_LastProjectPath: D:\Clone drone stuff\Clone drone overhaul rewrite\CloneDroneOverhaul\CloneDroneOverhaul\OverhaulUnityProject
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 600b0000
-    m_LastClickedID: 2912
-    m_ExpandedIDs: 00000000600b0000820b0000120c0000320c00007e0c00001e0d00003c0d0000ba0d0000ce0f00008410000098100000e81000005e110000bc110000d211000016120000b01200001413000058130000f61400005c150000d0150000ee1600007c170000cc6d0000ce6d0000d06d0000d26d0000d46d0000d66d000000ca9a3b
+    scrollPos: {x: 0, y: 10}
+    m_SelectedIDs: 6a2f0000
+    m_LastClickedID: 12138
+    m_ExpandedIDs: 000000001c2f0000223200008a330000e634000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -592,7 +592,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000600b0000820b0000120c0000320c00007e0c00001e0d00003c0d0000ba0d0000ce0f00008410000098100000e81000005e110000bc110000d211000016120000b01200001413000058130000f61400005c150000d0150000ee1600007c170000cc6d0000ce6d0000d06d0000d26d0000d46d0000d66d0000
+    m_ExpandedIDs: 000000001c2f0000223200008a330000e6340000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000c8320000b8320000803800004e0a0000260a00002e0b0000680a00005c0a00006a8a0800cc0500005c0d0000da0c0000be0d0000b8432600941000007211000028cd3e0064a1080006120000be0a0000c60d0000aa0d0000d00e0000e80e0000820f0000ea0f000066fd0300fc120000e60f000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -644,7 +644,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 720}
     m_GridSize: 64
   m_DirectoriesAreaWidth: 115
 --- !u!114 &17
