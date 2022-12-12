@@ -5,7 +5,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay.Robots
     /// <summary>
     /// Allows to freely work with weapons 
     /// </summary>
-    public class OverhaulWeaponController : V3_ModControllerBase
+    public class WeaponSkinController : V3_ModControllerBase
     {
     }
 }

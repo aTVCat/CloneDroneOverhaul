@@ -1,11 +1,10 @@
-﻿using CloneDroneOverhaul.Gameplay.Levels;
-using CloneDroneOverhaul.LevelEditor;
+﻿using CloneDroneOverhaul.LevelEditor;
 using CloneDroneOverhaul.Localization;
 using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.UI;
 using CloneDroneOverhaul.UI.Notifications;
 using CloneDroneOverhaul.Utilities;
-using CloneDroneOverhaul.WeaponSkins;
+using CloneDroneOverhaul.V3Tests.Base;
 using LevelEditorTools;
 using ModBotWebsiteAPI;
 using ModLibrary;
@@ -19,8 +18,6 @@ using UnityEngine.Events;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using CloneDroneOverhaul.Gameplay.OverModes;
-using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul
 {
@@ -37,7 +34,6 @@ namespace CloneDroneOverhaul
 
         protected override void OnModLoaded()
         {
-            OverModesController.InitializeForCurrentScene();
             OverhaulCacheManager.ClearTemporal();
             V3_MainModController.Initialize();
             if (OverhaulMain.Instance != null)
@@ -175,14 +171,11 @@ namespace CloneDroneOverhaul
             OverhaulMain.Visuals = moduleManagement.AddModule<VisualsModule>(false);
             moduleManagement.AddModule<HotkeysModule>(false);
             moduleManagement.AddModule<GUIManagement>(false);
-            moduleManagement.AddModule<WeaponSkinManager>(false);
             moduleManagement.AddModule<WorldGUIs>(false);
             moduleManagement.AddModule<GameplayOverhaulModule>(false);
-            moduleManagement.AddModule<MultiplayerManager>(false);
             moduleManagement.AddModule<ArenaManager>(false);
             moduleManagement.AddModule<MiscEffectsManager>(false);
             moduleManagement.AddModule<ModdedLevelEditorManager>(false);
-            moduleManagement.AddModule<ExplorationGameModeManager>(false);
             moduleManagement.AddModule<PatchesManager>(false);
             moduleManagement.AddModule<AdvancedPhotoModeManager>(false);
             moduleManagement.AddModule<GarbagePositionerManager>(false);
@@ -224,7 +217,7 @@ namespace CloneDroneOverhaul
                 hotkey.Key1 = KeyCode.LeftControl;
                 hotkey.Method = delegate ()
                 {
-                    LevelConstructor.BuildALevel(new LevelConstructor.LevelSettings(), true);
+                    V3Tests.Gameplay.LevelConstructor.BuildALevel(new V3Tests.Gameplay.LevelConstructor.LevelSettings(), true);
                 };
                 module.AddHotkey(hotkey);
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
@@ -329,7 +322,7 @@ namespace CloneDroneOverhaul
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
         }
 
-        public static string GetTranslatedString(string ID)
+        public static string GetTranslatedString(in string ID)
         {
             TranslationEntry translation = OverhaulMain.Localization.GetTranslation(ID);
             if (translation == null)
@@ -344,7 +337,7 @@ namespace CloneDroneOverhaul
             return text;
         }
 
-        public static T GetSetting<T>(string ID)
+        public static T GetSetting<T>(in string ID)
         {
             return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
         }
@@ -424,7 +417,6 @@ namespace CloneDroneOverhaul
     {
         private float timeWhenOneSecondWillPast;
         public static bool IsApplicationFocused { get; private set; }
-        public LAN.LANMultiplayerManager LANManager;
 
         private GameMode _gameModeSetLastUpdate;
 
@@ -494,7 +486,6 @@ namespace CloneDroneOverhaul
         private void Start()
         {
             SceneManager.sceneUnloaded += OnSceneUnloaded;
-            LANManager = LAN.LANMultiplayerManager.Instance;
         }
         private void OnSceneUnloaded(Scene current)
         {

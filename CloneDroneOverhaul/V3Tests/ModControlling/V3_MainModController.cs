@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using CloneDroneOverhaul.V3Tests.Gameplay;
 using CloneDroneOverhaul.V3Tests.Utilities;
+using System.Collections.Generic;
+using UnityEngine;
+
 
 namespace CloneDroneOverhaul.V3Tests.Base
 {
@@ -23,13 +22,18 @@ namespace CloneDroneOverhaul.V3Tests.Base
             _controllersGameObject = null;
             _spawnedControllers.Clear();
 
+            OverModesController.InitializeForCurrentScene();
+
             GameObject newMainGameObject = new GameObject("CloneDroneOverhaul");
 
             GameObject newControllersGameObject = new GameObject("OverhaulModControllers");
             newControllersGameObject.transform.SetParent(newMainGameObject.transform);
             _controllersGameObject = newControllersGameObject;
 
-            AddManager<V3_MainModController>("MainModController");
+            V3_MainModController mainController = AddManager<V3_MainModController>("MainModController");
+            ModDataController dataControll = AddManager<ModDataController>("DataController");
+
+            FakePrefabSystem.DataController = dataControll;
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
         Texture _testTexture;
         public void Text_AsyncLoadTexture()
         {
-            OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(OverhaulDescription.GetModFolder() + "Assets/Textures/TestTexture.png", delegate (Texture2D tex) 
+            OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(OverhaulDescription.GetModFolder() + "Assets/Textures/TestTexture.png", delegate (Texture2D tex)
             {
                 _testTexture = tex;
             });

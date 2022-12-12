@@ -1,9 +1,10 @@
-﻿using CloneDroneOverhaul.Gameplay.OverModes;
-using CloneDroneOverhaul.LevelEditor;
+﻿using CloneDroneOverhaul.LevelEditor;
 using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.Patching.VisualFixes;
 using CloneDroneOverhaul.UI;
+using CloneDroneOverhaul.UI.Components;
 using CloneDroneOverhaul.Utilities;
+using CloneDroneOverhaul.V3Tests.Gameplay;
 using HarmonyLib;
 using ModLibrary;
 using PicaVoxel;
@@ -14,11 +15,10 @@ using System.Linq;
 using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UI;
-using CloneDroneOverhaul.UI.Components;
 
 namespace CloneDroneOverhaul.Patching
 {
-    internal class OverhualSepratedPatchMethods
+    internal class OverhaulSepratedPatchMethods
     {
         public static void PatchSettings(SettingsMenu __instance)
         {
@@ -181,13 +181,13 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(SettingsMenu), "Show")]
         private static void SettingsMenu_Show_Postfix(SettingsMenu __instance)
         {
-            OverhualSepratedPatchMethods.PatchSettings(__instance);
+            OverhaulSepratedPatchMethods.PatchSettings(__instance);
         }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SettingsMenu), "ShowContentsForTab")]
         private static void SettingsMenu_ShowContentsForTab_Postfix(SettingsMenu __instance)
         {
-            OverhualSepratedPatchMethods.PatchSettings(__instance);
+            OverhaulSepratedPatchMethods.PatchSettings(__instance);
         }
 
         [HarmonyPrefix]

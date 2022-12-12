@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CloneDroneOverhaul.Gameplay.OverModes
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class OverModeBase : MonoBehaviour
     {
@@ -27,16 +27,16 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
             return null;
         }
 
-        public virtual void ProcessEvent(OverModeBase.EventNames eventName, object[] args)
+        public virtual void ProcessEvent(in OverModeBase.EventNames eventName, in object[] args)
         {
         }
 
-        public virtual T ProcessEventAndReturn<T>(OverModeBase.EventNames eventName, object[] args) where T : class
+        public virtual T ProcessEventAndReturn<T>(in OverModeBase.EventNames eventName, in object[] args) where T : class
         {
             return default(T);
         }
 
-        public static void SpawnEnemy(EnemyType type, Vector3 position)
+        public static void SpawnEnemy(in EnemyType type, in Vector3 position)
         {
             Singleton<EnemyFactory>.Instance.SpawnEnemy(type, position, Vector3.zero);
         }

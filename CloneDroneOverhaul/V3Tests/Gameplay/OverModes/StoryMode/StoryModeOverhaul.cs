@@ -1,12 +1,11 @@
-﻿using CloneDroneOverhaul.Utilities;
+﻿using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.V3Tests.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using UnityEngine;
 
-namespace CloneDroneOverhaul.Gameplay.OverModes
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class EndlessModeOverhaul : OverModeBase
+    public class StoryModeOverhaul : OverModeBase
     {
         /// <summary>
         /// It is always empty
@@ -18,15 +17,15 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
                 GeneratedUniqueID = OVERMODELEVELTAG
             }
         };
-        public const string LegacyFileName = "OverModeEndlessData";
+        public const string LegacyFileName = "StoryOvermodeData";
+        public const string Chapter4Level1FilePath = "Levels\\Overmodes\\Story\\Chapter4\\OvermodeChapter4.json";
 
         /// <summary>
         /// Vanilla like save data
         /// </summary>
         public GameData Data_Legacy;
 
-        public static EndlessModeOverhaul Instance;
-
+        public static StoryModeOverhaul Instance;
         public override void Initialize()
         {
             Instance = this;
@@ -40,11 +39,6 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
             {
                 ResetSaveData();
             }
-        }
-
-        private void test_Sword1()
-        {
-            SpawnEnemy(EnemyType.Swordsman1, new Vector3(0, 30, 0));
         }
 
         /// <summary>
@@ -78,7 +72,6 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
                 Singleton<DataRepository>.Instance.Save(Data_Legacy, LegacyFileName, false, true);
             }
         }
-
         public override GameData GetLegacyGameData()
         {
             return Data_Legacy;
@@ -86,32 +79,38 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
 
         public override GameMode GetGamemode()
         {
-            return (GameMode)29300;
+            return (GameMode)29301;
         }
-
         public override List<LevelDescription> GetLevelDescriptions()
         {
             return LevelDescriptions;
         }
 
-        public override void StartOvermode(Action onStartDone = null, bool spawnPlayer = false)
-        {
-            base.StartOvermode(delegate
-            {
-                ProcessEventAndReturn<Coroutine>(EventNames.SpawnLevel, new object[] { false, OVERMODELEVELTAG, null });
-            }, spawnPlayer);
-        }
-
-        public override T ProcessEventAndReturn<T>(EventNames eventName, object[] args)
+        public override T ProcessEventAndReturn<T>(in EventNames eventName, in object[] args)
         {
             if (eventName == EventNames.SpawnLevel)
             {
-                bool isAsync = (bool)args[0];
-                string overrideLevelID = (string)args[1];
-                Action completeCallback = args[2] as Action;
-                return StartCoroutine(Coroutines.SpawnCurrentLevel_EndlessOverMode(isAsync, overrideLevelID, completeCallback)) as T;
+                BaseUtils.SpawnLevelFromPath(OverhaulDescription.GetModFolder() + Chapter4Level1FilePath, true, delegate
+                {
+                    OverhaulUtilities.CameraUtils.SetRendererEnabled(true, true);
+                    AdventureCheckPoint checkpoint = UnityEngine.Object.FindObjectOfType<AdventureCheckPoint>();
+                    checkpoint.OnPlayerAboutToSpawn();
+                    GameFlowManager.Instance.SpawnPlayer(checkpoint.transform, true, true, null);
+                    checkpoint.OnPlayerSpawned();
+                    Data_Legacy.CurentLevelID = LevelDescriptions[0].GeneratedUniqueID;
+                });
             }
             return null;
+        }
+
+        public override void StartOvermode(Action onStartDone = null, bool spawnPlayer = false)
+        {
+            OverhaulUtilities.CameraUtils.SetRendererEnabled(false, true);
+            base.StartOvermode(delegate
+            {
+                ArenaManager.SetArenaVisible(false);
+                ProcessEventAndReturn<Test123>(EventNames.SpawnLevel, null);
+            }, false);
         }
     }
 }

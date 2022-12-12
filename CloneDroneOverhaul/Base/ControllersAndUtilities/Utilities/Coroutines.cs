@@ -82,7 +82,7 @@ namespace CloneDroneOverhaul.Utilities
 
         public static IEnumerator SpawnCurrentLevel_EndlessOverMode(bool isAsync = false, string overrideLevelID = null, Action completeCallback = null)
         {
-            Gameplay.Levels.LevelConstructor.BuildALevel(new Gameplay.Levels.LevelConstructor.LevelSettings(), true);
+            V3Tests.Gameplay.LevelConstructor.BuildALevel(new V3Tests.Gameplay.LevelConstructor.LevelSettings(), true);
             yield break;
         }
     }

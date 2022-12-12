@@ -301,7 +301,7 @@ namespace CloneDroneOverhaul.Modules
             TrySaveData();
         }
 
-        public object GetSettingValue(string id)
+        public object GetSettingValue(in string id)
         {
             foreach (Data.SavedSettingEntry entry in SettingsData.SavedSettings)
             {
@@ -313,7 +313,7 @@ namespace CloneDroneOverhaul.Modules
             return null;
         }
 
-        public T GetSettingValue<T>(string id)
+        public T GetSettingValue<T>(in string id)
         {
             return (T)GetSettingValue(id);
         }

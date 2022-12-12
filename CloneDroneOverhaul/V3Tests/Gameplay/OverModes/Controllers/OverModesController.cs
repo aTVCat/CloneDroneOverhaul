@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CloneDroneOverhaul.Gameplay.OverModes
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public static class OverModesController
     {
@@ -9,8 +9,12 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
         {
             GameObject overModesGameObject = new GameObject("Overhaul_OverModes");
             OverModesController._overModesGameObject = overModesGameObject;
-            OverModesController.InstantiateManager<EndlessModeOverhaul>("Endless_Overhaul");
-            OverModesController.InstantiateManager<StoryModeOverhaul>("Story_Overhaul");
+
+            OverModesController.InstantiateManager<EndlessModeOverhaul>("Endless_Overmode");
+            OverModesController.InstantiateManager<StoryModeOverhaul>("Story_Overmode");
+            OverModesController.InstantiateManager<ExplorationMode>("Exploration_Overmode");
+            OverModesController.InstantiateManager<SurvivalMode>("Survival_Overmode");
+            OverModesController.InstantiateManager<SandboxMode>("Sandbox_Overmode");
         }
 
         public static bool CurrentGamemodeIsOvermode()
@@ -34,7 +38,7 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
             return OverModesController._gameModes[Singleton<GameFlowManager>.Instance.GetCurrentGameMode()];
         }
 
-        public static void ProcessEvent(OverModeBase.EventNames eventName, object[] args)
+        public static void ProcessEvent(in OverModeBase.EventNames eventName, in object[] args)
         {
             if (OverModesController.CurrentGamemodeIsOvermode())
             {
@@ -42,7 +46,7 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
             }
         }
 
-        public static T ProcessEventAndReturn<T>(OverModeBase.EventNames eventName, object[] args) where T : class
+        public static T ProcessEventAndReturn<T>(in OverModeBase.EventNames eventName, in object[] args) where T : class
         {
             if (OverModesController.CurrentGamemodeIsOvermode())
             {
@@ -51,7 +55,7 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
             return default(T);
         }
 
-        public static T InstantiateManager<T>(string name) where T : OverModeBase
+        public static T InstantiateManager<T>(in string name) where T : OverModeBase
         {
             GameObject gameObject = new GameObject(name);
             gameObject.transform.SetParent(OverModesController._overModesGameObject.transform);

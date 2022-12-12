@@ -33,20 +33,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Base\ControllersAndUtilities\GameCameraController.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\Coroutines.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\PlayerUtilities.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\StaticReferences.cs" />
     <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
     <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
-    <Compile Include="Gameplay\Multiplayer\LAN\LANMultiplayerManager.cs" />
-    <Compile Include="Gameplay\Levels\LevelConstructor.cs" />
-    <Compile Include="Gameplay\OverModes\ChildClasses\EndlessModeOverhaul.cs" />
-    <Compile Include="Gameplay\OverModes\ChildClasses\StoryModeOverhaul.cs" />
-    <Compile Include="Gameplay\OverModes\OverModeBase.cs" />
-    <Compile Include="Gameplay\OverModes\OverModesController.cs" />
-    <Compile Include="Gameplay\WeaponSkins\WeaponSkinManager.cs" />
+    <Compile Include="V3Tests\Gameplay\LevelManagement\LevelConstructor.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\EndlessMode\EndlessModeOverhaul.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Sandbox\SandboxMode - Копировать.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Survival\SurvivalMode.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Exploration\ExplorationMode.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\StoryMode\StoryModeOverhaul.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModeBase.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModesController.cs" />
     <Compile Include="LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="LevelEditor\LevelEditorUndoRedoManager.cs" />
     <Compile Include="LevelEditor\ModdedLevelEditorManager.cs" />
@@ -57,8 +57,7 @@
     <Compile Include="Base\Modules\MainControllers\GameInformationManager.cs" />
     <Compile Include="Base\Modules\MainControllers\ArenaManager.cs" />
     <Compile Include="Base\Patching\PatchesManager.cs" />
-    <Compile Include="Gameplay\Exploration\ExplorationGameModeManager.cs" />
-    <Compile Include="Gameplay\Multiplayer\MultiplayerManager.cs" />
+    <Compile Include="V3Tests\Gameplay\OverModes\Exploration\ExplorationGameModeManager.cs" />
     <Compile Include="Base\Modules\MainControllers\ModDataManager.cs" />
     <Compile Include="Gameplay\GameplayOverhaulModule.cs" />
     <Compile Include="Base\Modules\MainControllers\SettingsManager.cs" />
@@ -103,9 +102,12 @@
     <Compile Include="Base\OverhaulCacheManager.cs" />
     <Compile Include="Base\UpdateChecker.cs" />
     <Compile Include="V3Tests\Gameplay\RobotsOverhaul\Controllers\OverhaulRobotsController.cs" />
+    <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\WeaponSkins\WeaponSkinController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_MainModController.cs" />
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\Controllers\OverhaulWeaponController.cs" />
+    <Compile Include="V3Tests\ModControlling\ModData\ModDataController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
+    <Compile Include="V3Tests\Utilities\FakePrefabSystem\FakePrefabSystem.cs" />
     <Compile Include="V3Tests\Utilities\Material\MaterialTextureType.cs" />
     <Compile Include="V3Tests\Utilities\OverhaulUtilities.cs" />
     <Compile Include="V3Tests\Utilities\Voxel\RawVoxFile.cs" />
@@ -119,9 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LevelEditor\ModdedComponents\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Overhaul0200Changelog.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -422,6 +421,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\Clone Drone Overhaul (Alpha)\VoxReader.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Overhaul0200Changelog.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />

@@ -1,11 +1,9 @@
-﻿using CloneDroneOverhaul.Controllers;
-using CloneDroneOverhaul.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace CloneDroneOverhaul.Gameplay.OverModes
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class StoryModeOverhaul : OverModeBase
+    public class SandboxMode : OverModeBase
     {
         /// <summary>
         /// It is always empty
@@ -17,15 +15,14 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
                 GeneratedUniqueID = OVERMODELEVELTAG
             }
         };
-        public const string LegacyFileName = "StoryOvermodeData";
-        public const string Chapter4Level1FilePath = "Levels\\Overmodes\\Story\\Chapter4\\OvermodeChapter4.json";
+        public const string LegacyFileName = "SandboxModeData";
 
         /// <summary>
         /// Vanilla like save data
         /// </summary>
         public GameData Data_Legacy;
 
-        public static StoryModeOverhaul Instance;
+        public static SandboxMode Instance;
         public override void Initialize()
         {
             Instance = this;
@@ -79,38 +76,16 @@ namespace CloneDroneOverhaul.Gameplay.OverModes
 
         public override GameMode GetGamemode()
         {
-            return (GameMode)29301;
+            return (GameMode)29302;
         }
         public override List<LevelDescription> GetLevelDescriptions()
         {
             return LevelDescriptions;
         }
 
-        public override T ProcessEventAndReturn<T>(EventNames eventName, object[] args)
-        {
-            if (eventName == EventNames.SpawnLevel)
-            {
-                BaseUtils.SpawnLevelFromPath(OverhaulDescription.GetModFolder() + Chapter4Level1FilePath, true, delegate
-                {
-                    GameCameraController.SetRendererEnabled(true, true);
-                    AdventureCheckPoint checkpoint = UnityEngine.Object.FindObjectOfType<AdventureCheckPoint>();
-                    checkpoint.OnPlayerAboutToSpawn();
-                    GameFlowManager.Instance.SpawnPlayer(checkpoint.transform, true, true, null);
-                    checkpoint.OnPlayerSpawned();
-                    Data_Legacy.CurentLevelID = LevelDescriptions[0].GeneratedUniqueID;
-                });
-            }
-            return null;
-        }
 
         public override void StartOvermode(Action onStartDone = null, bool spawnPlayer = false)
         {
-            GameCameraController.SetRendererEnabled(false, true);
-            base.StartOvermode(delegate
-            {
-                ArenaManager.SetArenaVisible(false);
-                ProcessEventAndReturn<Test123>(EventNames.SpawnLevel, null);
-            }, false);
         }
     }
 }

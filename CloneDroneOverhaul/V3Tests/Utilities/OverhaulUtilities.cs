@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -29,10 +28,10 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// <param name="path"></param>
             public static Texture2D LoadTexture(in string path)
             {
-                Texture2D result = new Texture2D(1,1);
+                Texture2D result = new Texture2D(1, 1);
 
                 byte[] content = FileUtils.LoadBytes(path);
-                if(content != null)
+                if (content != null)
                 {
                     result.LoadImage(content, false);
                 }
@@ -50,7 +49,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 Texture2D result = new Texture2D(1, 1);
                 FileUtils.LoadBytesAsync(path, delegate (byte[] array)
                 {
-                    if(array != null)
+                    if (array != null)
                     {
                         result.LoadImage(array);
                         result.Apply();
@@ -61,6 +60,84 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                         onLoaded(null);
                     }
                 });
+            }
+        }
+
+        public static class CameraUtils
+        {
+            private static Dictionary<Camera, int> _cameraCullingMasks = new Dictionary<Camera, int>();
+            private static List<AudioListener> _audioListeners = new List<AudioListener>();
+
+            private const int DONT_RENDER_CULLING_MASK = 0;
+
+            private static int _lastTargetFrame = -1;
+            private static bool _renderingGame = true;
+            private static bool _audioEnabled = true;
+
+            public static void SetRendererEnabled(bool value, bool loweOrHighFramerate)
+            {
+                if (!value && _renderingGame)
+                {
+                    Camera[] _cameras = Modules.GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff().AllCameras;
+                    _cameraCullingMasks.Clear();
+                    foreach (Camera cam in _cameras)
+                    {
+                        if (cam != null)
+                        {
+                            _cameraCullingMasks.Add(cam, cam.cullingMask);
+                            cam.cullingMask = DONT_RENDER_CULLING_MASK;
+                        }
+                    }
+
+                    if (loweOrHighFramerate)
+                    {
+                        SetTargetFramerate(30);
+                    }
+                }
+                else if (value && !_renderingGame)
+                {
+                    foreach (Camera cam in _cameraCullingMasks.Keys)
+                    {
+                        cam.cullingMask = _cameraCullingMasks[cam];
+                    }
+
+                    if (loweOrHighFramerate)
+                    {
+                        SetTargetFramerate(_lastTargetFrame);
+                    }
+                }
+
+                _renderingGame = value;
+            }
+
+            public static void SetAudioListenersEnabled(bool value)
+            {
+                if (_audioEnabled && !value)
+                {
+                    _audioListeners.Clear();
+                    AudioListener[] listeners = UnityEngine.Object.FindObjectsOfType<AudioListener>();
+                    foreach (AudioListener listener in listeners)
+                    {
+                        _audioListeners.Add(listener);
+                        listener.enabled = value;
+                    }
+                }
+                else if (!_audioEnabled && value)
+                {
+                    foreach (AudioListener listener in _audioListeners)
+                    {
+                        if (listener != null)
+                        {
+                            listener.enabled = value;
+                        }
+                    }
+                }
+                _audioEnabled = value;
+            }
+
+            public static void SetTargetFramerate(int value)
+            {
+                Application.targetFrameRate = value;
             }
         }
 
@@ -113,6 +190,30 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 onLoaded(array);
 
                 yield break;
+            }
+
+            /// <summary>
+            /// Creates a folder if one doesn't exist
+            /// </summary>
+            /// <param name="path"></param>
+            public static void TryCreateFolder(in string path)
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+
+            /// <summary>
+            /// Same as method above, but for multiple folders
+            /// </summary>
+            /// <param name="paths"></param>
+            public static void TryCreateFolders(in string[] paths)
+            {
+                foreach (string path in paths)
+                {
+                    TryCreateFolder(path);
+                }
             }
         }
     }
