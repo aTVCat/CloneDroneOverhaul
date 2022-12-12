@@ -20,52 +20,26 @@ using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using CloneDroneOverhaul.Gameplay.OverModes;
+using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul
 {
     [MainModClass]
     public class OverhaulMain : Mod
     {
-        // Token: 0x17000004 RID: 4
-        // (get) Token: 0x0600002E RID: 46 RVA: 0x00004390 File Offset: 0x00002590
-        // (set) Token: 0x0600002F RID: 47 RVA: 0x00004398 File Offset: 0x00002598
         public bool IsModInitialized { get; private set; }
-
-        // Token: 0x17000005 RID: 5
-        // (get) Token: 0x06000030 RID: 48 RVA: 0x000043A1 File Offset: 0x000025A1
-        // (set) Token: 0x06000031 RID: 49 RVA: 0x000043A8 File Offset: 0x000025A8
         public static OverhaulMain Instance { get; internal set; }
-
-        // Token: 0x17000006 RID: 6
-        // (get) Token: 0x06000032 RID: 50 RVA: 0x000043B0 File Offset: 0x000025B0
-        // (set) Token: 0x06000033 RID: 51 RVA: 0x000043B7 File Offset: 0x000025B7
         private static OverhaulLocalizationManager Localization { get; set; }
-
-        // Token: 0x17000007 RID: 7
-        // (get) Token: 0x06000034 RID: 52 RVA: 0x000043BF File Offset: 0x000025BF
-        // (set) Token: 0x06000035 RID: 53 RVA: 0x000043C6 File Offset: 0x000025C6
         public static DelegateTimer Timer { get; set; }
-
-        // Token: 0x17000008 RID: 8
-        // (get) Token: 0x06000036 RID: 54 RVA: 0x000043CE File Offset: 0x000025CE
-        // (set) Token: 0x06000037 RID: 55 RVA: 0x000043D5 File Offset: 0x000025D5
         public static VisualsModule Visuals { get; set; }
-
-        // Token: 0x17000009 RID: 9
-        // (get) Token: 0x06000038 RID: 56 RVA: 0x000043DD File Offset: 0x000025DD
-        // (set) Token: 0x06000039 RID: 57 RVA: 0x000043E4 File Offset: 0x000025E4
         public static ModuleManagement Modules { get; set; }
-
-        // Token: 0x1700000A RID: 10
-        // (get) Token: 0x0600003A RID: 58 RVA: 0x000043EC File Offset: 0x000025EC
-        // (set) Token: 0x0600003B RID: 59 RVA: 0x000043F3 File Offset: 0x000025F3
         public static OverhaulMainMonoBehaviour MainMonoBehaviour { get; set; }
 
-        // Token: 0x0600003C RID: 60 RVA: 0x000043FB File Offset: 0x000025FB
         protected override void OnModLoaded()
         {
             OverModesController.InitializeForCurrentScene();
             OverhaulCacheManager.ClearTemporal();
+            V3_MainModController.Initialize();
             if (OverhaulMain.Instance != null)
             {
                 return;
@@ -73,7 +47,6 @@ namespace CloneDroneOverhaul
             this.InitializeOverhaul();
         }
 
-        // Token: 0x0600003D RID: 61 RVA: 0x00004418 File Offset: 0x00002618
         private void InitializeOverhaul()
         {
             OverhaulMain.Instance = this;
@@ -94,33 +67,28 @@ namespace CloneDroneOverhaul
             this.checkforUpdate();
         }
 
-        // Token: 0x0600003E RID: 62 RVA: 0x0000447A File Offset: 0x0000267A
         protected override void OnModDeactivated()
         {
             BaseStaticValues.IsModEnabled = false;
         }
 
-        // Token: 0x0600003F RID: 63 RVA: 0x00004482 File Offset: 0x00002682
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
             return LevelEditorCustomObjectsManager.TryGetObject(path);
         }
 
-        // Token: 0x06000040 RID: 64 RVA: 0x00004496 File Offset: 0x00002696
         protected override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
             OverhaulMain.Modules.ExecuteFunction("onLanguageChanged", null);
             this._settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
         }
 
-        // Token: 0x06000041 RID: 65 RVA: 0x000044BD File Offset: 0x000026BD
         protected override void OnLevelEditorStarted()
         {
             LevelEditorCustomObjectsManager.OnLevelEditorStarted();
             OverhaulMain.Modules.ExecuteFunction("onLevelEditorStarted", null);
         }
 
-        // Token: 0x06000042 RID: 66 RVA: 0x000044D4 File Offset: 0x000026D4
         protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
             OverhaulMain.Modules.ExecuteFunction("firstPersonMover.OnSpawn", new object[]
@@ -129,13 +97,11 @@ namespace CloneDroneOverhaul
             });
         }
 
-        // Token: 0x06000043 RID: 67 RVA: 0x000044F4 File Offset: 0x000026F4
         private void rememberVanillaPreferences()
         {
             VanillaPrefs.RememberStuff();
         }
 
-        // Token: 0x06000044 RID: 68 RVA: 0x000044FB File Offset: 0x000026FB
         private void checkforUpdate()
         {
             if (OverhaulMain.hasCheckForUpdates)
@@ -147,7 +113,6 @@ namespace CloneDroneOverhaul
             API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(this.OnModDataGet));
         }
 
-        // Token: 0x06000045 RID: 69 RVA: 0x00004534 File Offset: 0x00002734
         private void OnModDataGet(JsonObject json)
         {
             string a = json["Version"].ToString();
@@ -170,7 +135,6 @@ namespace CloneDroneOverhaul
             }
         }
 
-        // Token: 0x06000046 RID: 70 RVA: 0x000045E8 File Offset: 0x000027E8
         private void OnUpdateReceivedGitHub(string newVersion)
         {
             if (newVersion == OverhaulDescription.GetModVersion(false))
@@ -193,13 +157,11 @@ namespace CloneDroneOverhaul
             }, false);
         }
 
-        // Token: 0x06000047 RID: 71 RVA: 0x00004688 File Offset: 0x00002888
         private void addReferences()
         {
             BaseStaticReferences.ModuleManager = new ModuleManagement();
         }
 
-        // Token: 0x06000048 RID: 72 RVA: 0x00004694 File Offset: 0x00002894
         private void addModules()
         {
             ModuleManagement moduleManagement = new ModuleManagement();
@@ -228,14 +190,12 @@ namespace CloneDroneOverhaul
             moduleManagement.AddModule<GameStateChangeController>(false);
         }
 
-        // Token: 0x06000049 RID: 73 RVA: 0x00004768 File Offset: 0x00002968
         private void addListeners()
         {
             GameObject gameObject = new GameObject("CDOListeners");
             OverhaulMain.MainMonoBehaviour = gameObject.AddComponent<OverhaulMainMonoBehaviour>();
         }
 
-        // Token: 0x0600004A RID: 74 RVA: 0x0000478C File Offset: 0x0000298C
         private void finalPreparations()
         {
             if (OverhaulDescription.IsBetaBuild())
@@ -334,7 +294,6 @@ namespace CloneDroneOverhaul
             new GameObject("CDO_RW_BoltEventListener").AddComponent<BoltEventListener>();
         }
 
-        // Token: 0x0600004B RID: 75 RVA: 0x00004C04 File Offset: 0x00002E04
         private void fixVanillaStuff()
         {
             Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
@@ -348,7 +307,6 @@ namespace CloneDroneOverhaul
             }
         }
 
-        // Token: 0x0600004C RID: 76 RVA: 0x00004C9C File Offset: 0x00002E9C
         private void spawnGUI()
         {
             GUIManagement module = BaseStaticReferences.ModuleManager.GetModule<GUIManagement>();
@@ -371,7 +329,6 @@ namespace CloneDroneOverhaul
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
         }
 
-        // Token: 0x0600004D RID: 77 RVA: 0x00004E80 File Offset: 0x00003080
         public static string GetTranslatedString(string ID)
         {
             TranslationEntry translation = OverhaulMain.Localization.GetTranslation(ID);
@@ -387,22 +344,17 @@ namespace CloneDroneOverhaul
             return text;
         }
 
-        // Token: 0x0600004E RID: 78 RVA: 0x00004EDD File Offset: 0x000030DD
         public static T GetSetting<T>(string ID)
         {
             return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
         }
 
-        // Token: 0x0400005D RID: 93
         private static bool hasCheckForUpdates;
 
-        // Token: 0x0400005E RID: 94
         private static bool hasCachedStuff;
 
-        // Token: 0x04000066 RID: 102
         public static OverhaulCacheManager CacheManagerReference = new OverhaulCacheManager();
 
-        // Token: 0x04000067 RID: 103
         private Text _settingsButtonText;
     }
 
