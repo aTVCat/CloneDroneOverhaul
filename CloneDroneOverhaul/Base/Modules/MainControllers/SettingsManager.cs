@@ -57,6 +57,14 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Soft shadows", "Make shadows less pixelated", "Graphics", "Settings", true));
 
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Additions", "Image effects that enchance entire game.\nEach enabled option may decrease performance!", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "World", "Visual improvements that don't really affect performance", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Settings", "Game renderer settings.", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Privacy", "Duel advanced options.", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Mod", "Overhaul mod related settings.", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Levels", "Editor", "Enchance level building hobby!", string.Empty));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "QoL", "Fixes that are required by community.", string.Empty));
+
             PageOverrides.Add(new SettingEntry.OverridePrefs("Misc", "Privacy", "Gameplay", "Duels"));
             PageOverrides.Add(new SettingEntry.OverridePrefs("Graphics", "Additions", "Graphics", "Camera"));
 

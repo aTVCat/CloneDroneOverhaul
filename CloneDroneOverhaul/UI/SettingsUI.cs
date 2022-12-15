@@ -160,11 +160,11 @@ namespace CloneDroneOverhaul.UI
                 TransformUtils.DestroyAllChildren(CategoryContainer);
             }
 
-            base.MyModdedObject.GetObjectFromList<Text>(15).text = string.Empty;
+            base.MyModdedObject.GetObjectFromList<TMPro.TextMeshProUGUI>(15).text = string.Empty;
             Modules.OverhaulSettingsManager.SettingEntry.CategoryPath path = Modules.OverhaulSettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
             if (!path.IsEmpty)
             {
-                base.MyModdedObject.GetObjectFromList<Text>(15).text = path.SectionPageDescription;
+                base.MyModdedObject.GetObjectFromList<TMPro.TextMeshProUGUI>(15).text = path.SectionPageDescription;
             }
             TransformUtils.DestroyAllChildren(ViewPort);
 
@@ -233,6 +233,7 @@ namespace CloneDroneOverhaul.UI
             setting.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("SName_" + entry.ID);
             setting.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("SDesc_" + entry.ID);
             setting.GetObjectFromList<InputField>(2).text = entry.ID;
+            setting.GetObjectFromList<InputField>(2).gameObject.SetActive(OverhaulDescription.IsBetaBuild());
         }
 
         private class UISettingEntry : MonoBehaviour

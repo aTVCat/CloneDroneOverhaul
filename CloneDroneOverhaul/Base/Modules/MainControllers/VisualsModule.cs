@@ -5,7 +5,6 @@ using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.Modules
@@ -13,7 +12,6 @@ namespace CloneDroneOverhaul.Modules
     public class VisualsModule : ModuleBase
     {
         private AmplifyOcclusionEffect Occlusion;
-        private Image NoiseImage;
 
         private ReflectionProbe probe;
         private ParticleSystem worldDustMS1;
@@ -38,7 +36,6 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab jumpDash;
         private SimplePooledPrefab ArrowCollisionVFX;
         private Camera lastSpottedCamera;
-        private Camera noiseCamera;
 
         List<AmplifyOcclusionEffect> effects = new List<AmplifyOcclusionEffect>();
 
@@ -49,9 +46,9 @@ namespace CloneDroneOverhaul.Modules
         private int _AOSampleCount;
         private float _AOIntensity;
 
-        private float _noiseMultipler;
+        public float NoiseMultipler;
         private bool _dustEnabled;
-        private bool _noiseEnabled;
+        public bool NoiseEnabled;
 
         private int _shadowResolution;
         private int _shadowBias;
@@ -124,17 +121,6 @@ namespace CloneDroneOverhaul.Modules
             msHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_MSHit").transform, 10, "VFX_MSHit", 0.17f, SimplePooledPrefabInstance.ParticleSystemTag);
             ArrowCollisionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ArrowCollision").transform, 5, "VFX_ArrowCollision", 0.45f, SimplePooledPrefabInstance.ParticleSystemTag);
 
-            GameObject obj1 = GameObject.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "Noise"));
-            NoiseImage = obj1.transform.GetChild(1).gameObject.GetComponent<Image>();
-            noiseCamera = obj1.transform.GetChild(0).gameObject.GetComponent<Camera>();
-            NoiseImage.transform.SetParent(GameUIRoot.Instance.transform);
-            NoiseImage.transform.localPosition = Vector3.zero;
-            NoiseImage.transform.localScale = Vector3.one;
-            NoiseImage.transform.SetAsFirstSibling();
-            obj1.transform.GetChild(0).SetParent(null);
-
-            QualitySettings.pixelLightCount = 25;
-
             RefreshDustMaterials();
         }
 
@@ -147,7 +133,7 @@ namespace CloneDroneOverhaul.Modules
         {
             if (ID == "Graphics.Additions.Noise Multipler")
             {
-                _noiseMultipler = (float)value;
+                NoiseMultipler = (float)value;
             }
             if (ID == "Graphics.Additions.Sample count")
             {
@@ -156,10 +142,6 @@ namespace CloneDroneOverhaul.Modules
             if (ID == "Graphics.Additions.Amplify occlusion")
             {
                 _AOEnabled = (bool)value;
-            }
-            if (ID == "Graphics.Additions.Noise effect")
-            {
-                _noiseEnabled = (bool)value;
             }
             if (ID == "Graphics.World.Floating dust")
             {
@@ -190,14 +172,13 @@ namespace CloneDroneOverhaul.Modules
 
         public void RefreshVisuals()
         {
+            UI.VisualEffectsUI.Instance.RefreshEffects();
             if (Occlusion != null)
             {
                 Occlusion.Intensity = (OverrideSettings ? Override_AOIntensity : _AOIntensity);
                 Occlusion.enabled = (OverrideSettings ? Override_AOEnabled : _AOEnabled);
                 Occlusion.SampleCount = (SampleCountLevel)(OverrideSettings ? Override_AOSampleCount : _AOSampleCount);
             }
-            NoiseImage.color = new Color(1, 1, 1, 0.33f * (OverrideSettings ? Override_NoiseMultipler : _noiseMultipler));
-            NoiseImage.gameObject.SetActive(OverrideSettings ? Override_NoiseEnabled : _noiseEnabled);
             Light light = DirectionalLightManager.Instance.DirectionalLight;
             if (light != null)
             {
@@ -288,13 +269,7 @@ namespace CloneDroneOverhaul.Modules
                 probe.RenderProbe();
             }
 
-            if (NoiseImage != null)
-            {
-                NoiseImage.rectTransform.sizeDelta = Vector2.zero;
-            }
-
             Camera newCam = PlayerCameraManager.Instance.GetMainCamera();
-            NoiseImage.gameObject.SetActive(newCam != null && !GameModeManager.IsInLevelEditor() && OverrideSettings ? Override_NoiseEnabled : _noiseEnabled); //Temp
             if (lastSpottedCamera != newCam)
             {
                 if (newCam != null)

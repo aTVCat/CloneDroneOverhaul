@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CloneDroneOverhaul
 {
-    public static class SceneTransitionController
+    public static class SceneTransitionController_OLD
     {
         public class SceneTransitionUI : MonoBehaviour
         {

@@ -515,7 +515,7 @@ namespace CloneDroneOverhaul.LevelEditor
                 {
                     if (!string.IsNullOrEmpty(SelectedLevelPath) && File.Exists(SelectedLevelPath))
                     {
-                        SceneTransitionController.SpawnTransitionScreen(delegate
+                        SceneTransitionController_OLD.SpawnTransitionScreen(delegate
                         {
                             ModdedLevelEditorUI.Instance.Menu.CloseMenu();
                             LevelEditorLevelData data = BaseUtils.TryLoad<LevelEditorLevelData>(SelectedLevelPath);

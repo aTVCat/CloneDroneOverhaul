@@ -47,10 +47,10 @@
     <Compile Include="V3Tests\Gameplay\OverModes\StoryMode\StoryModeOverhaul.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModeBase.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModesController.cs" />
-    <Compile Include="LevelEditor\LevelEditorCustomObjectsManager.cs" />
-    <Compile Include="LevelEditor\LevelEditorUndoRedoManager.cs" />
-    <Compile Include="LevelEditor\ModdedLevelEditorManager.cs" />
-    <Compile Include="LevelEditor\ModdedLevelEditorUI.cs" />
+    <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
+    <Compile Include="V3Tests\LevelEditor\LevelEditorUndoRedoManager.cs" />
+    <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
+    <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorUI.cs" />
     <Compile Include="Base\Localization\LocalizationEditor.cs" />
     <Compile Include="Base\Localization\LocalizationManager.cs" />
     <Compile Include="Base\Modules\MainControllers\GameStateChangeController.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="Base\Modules\MainControllers\HotkeysStaticModule.cs" />
     <Compile Include="Base\Modules\MainControllers\VisualsModule.cs" />
     <Compile Include="Base\Patching\ObjectValueReplacer.cs" />
-    <Compile Include="Base\SceneTransitionController.cs" />
+    <Compile Include="Base\SceneTransitionController_OLD.cs" />
     <Compile Include="Base\Patching\ObjectFixer.cs" />
     <Compile Include="OverhaulMain.cs" />
     <Compile Include="Base\Patching\OverhaulPatches.cs" />
@@ -103,9 +103,13 @@
     <Compile Include="Base\UpdateChecker.cs" />
     <Compile Include="V3Tests\Gameplay\RobotsOverhaul\Controllers\OverhaulRobotsController.cs" />
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\WeaponSkins\WeaponSkinController.cs" />
+    <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionAction.cs" />
+    <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionUI.cs" />
+    <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionType.cs" />
     <Compile Include="V3Tests\ModControlling\V3_MainModController.cs" />
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\Controllers\OverhaulWeaponController.cs" />
     <Compile Include="V3Tests\ModControlling\ModData\ModDataController.cs" />
+    <Compile Include="V3Tests\ModControlling\SceneTransition\SceneTransitionController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
     <Compile Include="V3Tests\Utilities\FakePrefabSystem\FakePrefabSystem.cs" />
     <Compile Include="V3Tests\Utilities\Material\MaterialTextureType.cs" />
@@ -120,7 +124,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="LevelEditor\ModdedComponents\" />
+    <Folder Include="V3Tests\LevelEditor\ModdedComponents\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">

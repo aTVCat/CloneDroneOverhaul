@@ -14,6 +14,7 @@ namespace CloneDroneOverhaul
         static Dictionary<string, Transform> _cachedLevelEditorAssets = new Dictionary<string, Transform>();
 
         public const string OverhaulMainAssetBundle = "cdo_rw_stuff";
+        public const string OverhaulAssetBundleP2 = "overhaulstuff_p2";
 
         internal static void ClearTemporal()
         {
@@ -81,6 +82,8 @@ namespace CloneDroneOverhaul
             _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_SmallDark_Tile_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "TILES_SMALLER_01_heightMap"));
             _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_2_heightMap"));
             _cachedStuff.Add("MatHeightMap_RampBasic", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "Ramp_texture_v2_heightMap"));
+
+            _cachedStuff.Add("UI_TransitionScreen", AssetLoader.GetObjectFromFile<GameObject>(OverhaulAssetBundleP2, "SceneTranstionUI"));
 
             _hasCached = true;
         }
