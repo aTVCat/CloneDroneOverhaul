@@ -72,9 +72,18 @@ namespace CloneDroneOverhaul.V3Tests.Base
             return VoxelUtils.ReadVoxFile(OverhaulDescription.GetModFolder() + "Assets/Vox/CloneDroneLogoV1.vox");
         }
 
-        public void Text_ApplyVoxToVol(GameObject vol, VoxReader.Interfaces.IVoxFile vox)
+        public void Test_ApplyVoxToVol(GameObject vol, VoxReader.Interfaces.IVoxFile vox)
         {
             VoxelUtils.ApplyVoxFileToVolume(vox, vol.GetComponent<PicaVoxel.Volume>());
+        }
+
+        public void Test_Transition()
+        {
+            TransitionAction t = new TransitionAction();
+            t.Type = TranstionType.SceneSwitch;
+            t.SceneName = "Gameplay";
+            t.HideOnComplete = true;
+            SceneTransitionController.StartTranstion(t, "Loading...", "This may take a while...", true);
         }
     }
 }

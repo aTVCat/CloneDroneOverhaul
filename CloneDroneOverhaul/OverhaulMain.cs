@@ -386,7 +386,7 @@ namespace CloneDroneOverhaul
         private static string getGameVersion()
         {
             string result = "a0.2.0.17";
-            string result2 = "a0.2.1.1";
+            string result2 = "a0.2.1.2";
             if (!OverhaulDescription.IsBetaBuild())
             {
                 return result;

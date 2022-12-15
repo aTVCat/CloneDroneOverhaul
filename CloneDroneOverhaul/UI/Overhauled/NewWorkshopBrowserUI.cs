@@ -25,6 +25,8 @@ namespace CloneDroneOverhaul.UI
             this._itemDetailsUI = base.MyModdedObject.GetObjectFromList<Transform>(8).gameObject.AddComponent<NewWorkshopBrowserUI.ItemDetailsUI>();
             this._itemDetailsUI.Initialize(this);
             this._pages = NewWorkshopBrowserUI.Pages.Initialize(this, base.MyModdedObject.GetObjectFromList<ModdedObject>(13));
+            this._levelsView = base.MyModdedObject.GetObjectFromList<Transform>(7);
+            this._collectionsView = base.MyModdedObject.GetObjectFromList<Transform>(19);
             this.Hide();
         }
 
@@ -202,6 +204,7 @@ namespace CloneDroneOverhaul.UI
             this.PopulateWorkshopItems();
         }
 
+
         // Token: 0x060000F4 RID: 244 RVA: 0x00007EB0 File Offset: 0x000060B0
         public List<SteamWorkshopItem> GetWorkshopItems(int selectLevelType, string tabID, int page, EUGCQuery queryType, Action<List<SteamWorkshopItem>> onReceive = null)
         {
@@ -216,6 +219,11 @@ namespace CloneDroneOverhaul.UI
                         onReceive(items);
                     }
                 });
+                return result;
+            }
+            if (tabID == NewWorkshopBrowserUI.TAB_IDS[0])
+            {
+                Singleton<SteamWorkshopManager>.Instance.GetCollectionChildren(new PublishedFileId_t(2652995786), new Action<List<SteamWorkshopItem>>(onReceive));
                 return result;
             }
             Singleton<SteamWorkshopManager>.Instance.GetAllNewWorkshopItems(NewWorkshopBrowserUI.LEVEL_TYPES[selectLevelType], queryType, page, delegate (List<SteamWorkshopItem> items)
@@ -269,6 +277,26 @@ namespace CloneDroneOverhaul.UI
             }
             this.clearExistingItems();
             this.SetState(NewWorkshopBrowserUI.BrowserState.LoadingItems);
+
+            bool viewCollections = this._selectedTabID == TAB_IDS[0];
+            _isViewingCollectionChildren = viewCollections;
+            base.MyModdedObject.GetObjectFromList<Transform>(21).gameObject.SetActive(viewCollections);
+
+            base.MyModdedObject.GetObjectFromList<Dropdown>(4).interactable = !viewCollections;
+
+            _levelsView.gameObject.SetActive(!viewCollections);
+            _collectionsView.gameObject.SetActive(viewCollections);
+
+            if (viewCollections)
+            {
+                this.GetWorkshopItems(this._selectedLeveltype, this._selectedTabID, this._currentPage, this.EUGCQueryByTabID(this._selectedTabID), delegate (List<SteamWorkshopItem> items)
+                {
+                    this.SetState(NewWorkshopBrowserUI.BrowserState.InitializingItems);
+                    base.StartCoroutine(this.asyncPopulateWorkshopItems(items, true));
+                    this._pages.SetupForCollectionsView();
+                });
+                return;
+            }
             this.GetWorkshopItems(this._selectedLeveltype, this._selectedTabID, this._currentPage, this.EUGCQueryByTabID(this._selectedTabID), delegate (List<SteamWorkshopItem> items)
             {
                 this.SetState(NewWorkshopBrowserUI.BrowserState.InitializingItems);
@@ -278,7 +306,7 @@ namespace CloneDroneOverhaul.UI
         }
 
         // Token: 0x060000F7 RID: 247 RVA: 0x00008004 File Offset: 0x00006204
-        private IEnumerator asyncPopulateWorkshopItems(List<SteamWorkshopItem> items)
+        private IEnumerator asyncPopulateWorkshopItems(List<SteamWorkshopItem> items, bool populateCollections = false)
         {
             foreach (SteamWorkshopItem item in items)
             {
@@ -288,16 +316,26 @@ namespace CloneDroneOverhaul.UI
                     this.SetState(NewWorkshopBrowserUI.BrowserState.Idle);
                     yield break;
                 }
-                ModdedObject moddedObject = UnityEngine.Object.Instantiate<ModdedObject>(base.MyModdedObject.GetObjectFromList<ModdedObject>(6), base.MyModdedObject.GetObjectFromList<Transform>(7));
-                moddedObject.GetObjectFromList<Text>(1).text = item.Title;
-                bool active = Singleton<ChallengeManager>.Instance.HasCompletedChallenge(item.WorkshopItemID.ToString());
-                moddedObject.GetObjectFromList<Transform>(2).gameObject.SetActive(active);
-                moddedObject.gameObject.AddComponent<NewWorkshopBrowserUI.ItemDisplay>().Initialize(this, item);
-                moddedObject.gameObject.SetActive(true);
+
+                if (!populateCollections)
+                {
+                    ModdedObject moddedObject = UnityEngine.Object.Instantiate<ModdedObject>(base.MyModdedObject.GetObjectFromList<ModdedObject>(6), _levelsView);
+                    moddedObject.GetObjectFromList<Text>(1).text = item.Title;
+                    bool active = Singleton<ChallengeManager>.Instance.HasCompletedChallenge(item.WorkshopItemID.ToString());
+                    moddedObject.GetObjectFromList<Transform>(2).gameObject.SetActive(active);
+                    moddedObject.gameObject.AddComponent<NewWorkshopBrowserUI.ItemDisplay>().Initialize(this, item);
+                    moddedObject.gameObject.SetActive(true);
+                }
+                else
+                {
+                    ModdedObject moddedObject = UnityEngine.Object.Instantiate<ModdedObject>(base.MyModdedObject.GetObjectFromList<ModdedObject>(20), _collectionsView);
+                    moddedObject.GetObjectFromList<Text>(1).text = item.Title;
+                    moddedObject.GetObjectFromList<Text>(2).text = item.Description;
+                    moddedObject.GetObjectFromList<ModdedObject>(0).gameObject.AddComponent<ImageLoader>().LoadImage(item.PreviewURL);
+                    moddedObject.gameObject.SetActive(true);
+                }
             }
-            List<SteamWorkshopItem>.Enumerator enumerator = default(List<SteamWorkshopItem>.Enumerator);
             this.SetState(NewWorkshopBrowserUI.BrowserState.Idle);
-            yield break;
             yield break;
         }
 
@@ -306,6 +344,8 @@ namespace CloneDroneOverhaul.UI
         {
             base.StopAllCoroutines();
             TransformUtils.DestroyAllChildren(base.MyModdedObject.GetObjectFromList<Transform>(7));
+            TransformUtils.DestroyAllChildren(base.MyModdedObject.GetObjectFromList<Transform>(19));
+            _itemDetailsUI.PopulateItemInfo(null, null);
             this._pages.SetPageViewActive(false);
         }
 
@@ -348,19 +388,14 @@ namespace CloneDroneOverhaul.UI
             return true;
         }
 
-        // Token: 0x0400009A RID: 154
         public static NewWorkshopBrowserUI Instance;
 
-        // Token: 0x0400009B RID: 155
         private NewWorkshopBrowserUI.ItemDetailsUI _itemDetailsUI;
 
-        // Token: 0x0400009C RID: 156
         private NewWorkshopBrowserUI.Pages _pages;
 
-        // Token: 0x0400009D RID: 157
         private bool _hasPopulatedTabs;
 
-        // Token: 0x0400009E RID: 158
         public static readonly string[] TAB_IDS = new string[]
         {
             "Featured",
@@ -373,7 +408,6 @@ namespace CloneDroneOverhaul.UI
             "Friends favourite"
         };
 
-        // Token: 0x0400009F RID: 159
         public static readonly string[] LEVEL_TYPES = new string[]
         {
             "Endless Level",
@@ -382,46 +416,38 @@ namespace CloneDroneOverhaul.UI
             "Last Bot Standing Level"
         };
 
-        // Token: 0x040000A0 RID: 160
         public const string TAB_SELECTED_COLOR_HEX = "#3C9C63";
 
-        // Token: 0x040000A1 RID: 161
         public const string TAB_DEFAULT_COLOR_HEX = "#45474F";
 
-        // Token: 0x040000A2 RID: 162
         public const string TEMPORAL_PREFIX = "WorkshopBrowser_CDO_";
 
-        // Token: 0x040000A3 RID: 163
         private bool _canRereshItems;
 
-        // Token: 0x040000A4 RID: 164
         private int _selectedLeveltype;
 
-        // Token: 0x040000A5 RID: 165
         private int _currentPage = 1;
 
-        // Token: 0x040000A6 RID: 166
         private string _selectedTabID;
 
-        // Token: 0x040000A7 RID: 167
         private List<NewWorkshopBrowserUI.ItemDisplay> _spawnedItems = new List<NewWorkshopBrowserUI.ItemDisplay>();
 
-        // Token: 0x040000A8 RID: 168
         private List<string> _tabButtonImages_IDs = new List<string>();
 
-        // Token: 0x040000A9 RID: 169
         private SteamWorkshopItem _selectedItem;
 
-        // Token: 0x040000AA RID: 170
         private NewWorkshopBrowserUI.BrowserState _currentState = NewWorkshopBrowserUI.BrowserState.Idle;
 
-        // Token: 0x040000AB RID: 171
         private bool _hasShownEarlier;
 
-        // Token: 0x040000AC RID: 172
         private bool _hasToRefreshTabs = true;
 
-        // Token: 0x0200008E RID: 142
+        private Transform _levelsView;
+
+        private Transform _collectionsView;
+
+        private bool _isViewingCollectionChildren;
+
         public class ItemDisplay : MonoBehaviour, IPointerClickHandler, IEventSystemHandler
         {
             // Token: 0x0600039D RID: 925 RVA: 0x00013D64 File Offset: 0x00011F64
@@ -488,9 +514,11 @@ namespace CloneDroneOverhaul.UI
                 this._steamPageButton.onClick.AddListener(new UnityAction(this.viewItemSteamPage));
                 this._resetProgress = this._moddedObject.GetObjectFromList<Button>(15);
                 this._resetProgress.onClick.AddListener(new UnityAction(this.resetProgress));
+                this._unsubscribeFromItem = this._moddedObject.GetObjectFromList<Button>(17);
+                this._unsubscribeFromItem.onClick.AddListener(new UnityAction(this.unsubscribeFromItem));
                 this._itemTitle = this._moddedObject.GetObjectFromList<Text>(3);
                 this._itemMadeBy = this._moddedObject.GetObjectFromList<Text>(4);
-                this._itemDesc = this._moddedObject.GetObjectFromList<InputField>(6);
+                this._itemDesc = this._moddedObject.GetObjectFromList<Text>(6);
                 this._goToGameMode = this._moddedObject.GetObjectFromList<Text>(10);
                 this._optionsButton = this._moddedObject.GetObjectFromList<Button>(1);
                 this._optionsButton.onClick.AddListener(new UnityAction(this.toggleOptionsMenu));
@@ -499,11 +527,19 @@ namespace CloneDroneOverhaul.UI
                 {
                     if (this._browser.GetCurrentLevelType() != 0 && this._browser.GetCurrentLevelType() != 3)
                     {
-                        if (Singleton<WorkshopChallengeManager>.Instance.StartChallengeFromWorkshop(this._browser.GetSelectedWorkshopItem()))
+                        V3Tests.Base.TransitionAction act = new V3Tests.Base.TransitionAction();
+                        act.Type = V3Tests.Base.TranstionType.Method;
+                        act.Action = delegate
                         {
-                            this._browser.Hide();
-                            return;
-                        }
+                            if (Singleton<WorkshopChallengeManager>.Instance.StartChallengeFromWorkshop(this._browser.GetSelectedWorkshopItem()))
+                            {
+                                this._browser.Hide();
+                                return;
+                            }
+                        };
+                        act.HideOnComplete = true;
+                        V3Tests.Base.SceneTransitionController.StartTranstion(act, "Spawning level...", string.Empty, false);
+                        return;
                     }
                     else
                     {
@@ -516,8 +552,13 @@ namespace CloneDroneOverhaul.UI
                             this._goToGameMode.GetComponent<Button>().onClick.AddListener(delegate ()
                             {
                                 this._browser.Hide();
-                                Singleton<GameFlowManager>.Instance.StartEndlessModeGame();
+                                V3Tests.Base.TransitionAction act = new V3Tests.Base.TransitionAction();
+                                act.Type = V3Tests.Base.TranstionType.Method;
+                                act.Action = delegate { Singleton<GameFlowManager>.Instance.StartEndlessModeGame(); };
+                                act.HideOnComplete = true;
+                                V3Tests.Base.SceneTransitionController.StartTranstion(act, "Starting Endless mode...", string.Empty, false);
                             });
+
                             return;
                         }
                         if (this._browser.GetCurrentLevelType() == 3)
@@ -546,6 +587,9 @@ namespace CloneDroneOverhaul.UI
             {
                 if (item == null)
                 {
+                    this._moddedObject.GetObjectFromList<Transform>(9).gameObject.SetActive(false);
+                    base.GetComponent<Image>().color = BaseUtils.ColorFromHex("#1D1D1D");
+                    this._imageLoader.SetImage(null);
                     return;
                 }
                 this._moddedObject.GetObjectFromList<Transform>(9).gameObject.SetActive(true);
@@ -688,7 +732,6 @@ namespace CloneDroneOverhaul.UI
                 this._resetProgress.interactable = this._selectedLevelHasSavedData;
             }
 
-            // Token: 0x060003AA RID: 938 RVA: 0x000143DC File Offset: 0x000125DC
             private void viewItemSteamPage()
             {
                 string str = "https://steamcommunity.com/sharedfiles/filedetails/?id=";
@@ -696,7 +739,6 @@ namespace CloneDroneOverhaul.UI
                 BaseUtils.OpenURL(str + workshopItemID.ToString());
             }
 
-            // Token: 0x060003AB RID: 939 RVA: 0x00014418 File Offset: 0x00012618
             private void resetProgress()
             {
                 if (!this._selectedLevelHasSavedData)
@@ -711,7 +753,14 @@ namespace CloneDroneOverhaul.UI
                 File.Delete(instance.GetFullPath(str + workshopItemID.ToString() + ".json", false));
             }
 
-            // Token: 0x060003AC RID: 940 RVA: 0x00014479 File Offset: 0x00012679
+            private void unsubscribeFromItem()
+            {
+                SteamWorkshopItem item = this._browser.GetSelectedWorkshopItem();
+                SteamWorkshopManager.Instance.UnsubscribeFromItem(item.WorkshopItemID);
+                item.Folder = string.Empty;
+                RefreshPlayButtons();
+            }
+
             private void Update()
             {
                 if (this._isDownloading)
@@ -720,64 +769,46 @@ namespace CloneDroneOverhaul.UI
                 }
             }
 
-            // Token: 0x040002C3 RID: 707
             public const string NoItemsSelectedColor = "#292A30";
 
-            // Token: 0x040002C4 RID: 708
             public const string ItemsSelectedColor = "#108424";
 
-            // Token: 0x040002C5 RID: 709
             private NewWorkshopBrowserUI _browser;
 
-            // Token: 0x040002C6 RID: 710
             private ImageLoader _imageLoader;
 
-            // Token: 0x040002C7 RID: 711
             private ModdedObject _moddedObject;
 
-            // Token: 0x040002C8 RID: 712
             private Transform _optionsMenuTransform;
 
-            // Token: 0x040002C9 RID: 713
             private Button _steamPageButton;
 
-            // Token: 0x040002CA RID: 714
             private Button _resetProgress;
 
-            // Token: 0x040002CB RID: 715
+            private Button _unsubscribeFromItem;
+
             private Text _itemTitle;
 
-            // Token: 0x040002CC RID: 716
-            private InputField _itemDesc;
+            private Text _itemDesc;
 
-            // Token: 0x040002CD RID: 717
             private Text _itemMadeBy;
 
-            // Token: 0x040002CE RID: 718
             private Text _goToGameMode;
 
-            // Token: 0x040002CF RID: 719
             private Button _playButton;
 
-            // Token: 0x040002D0 RID: 720
             private Button _subscribeButton;
 
-            // Token: 0x040002D1 RID: 721
             private Button _optionsButton;
 
-            // Token: 0x040002D2 RID: 722
             private Slider _downloadProgressSlider;
 
-            // Token: 0x040002D3 RID: 723
             private Text _downloadState;
 
-            // Token: 0x040002D4 RID: 724
             private bool _isDownloading;
 
-            // Token: 0x040002D5 RID: 725
             private bool _showingOptions;
 
-            // Token: 0x040002D6 RID: 726
             private bool _selectedLevelHasSavedData;
         }
 
@@ -807,7 +838,6 @@ namespace CloneDroneOverhaul.UI
                 return pages;
             }
 
-            // Token: 0x060003B4 RID: 948 RVA: 0x000147D3 File Offset: 0x000129D3
             public void UpdatePages()
             {
                 this._query = Singleton<SteamWorkshopManager>.Instance.GetNumPagesForLastQuery();
@@ -816,10 +846,17 @@ namespace CloneDroneOverhaul.UI
                 this._currentPageText.text = this._browser._currentPage.ToString();
             }
 
-            // Token: 0x060003B5 RID: 949 RVA: 0x0001480C File Offset: 0x00012A0C
+            public void SetupForCollectionsView()
+            {
+                this._query = 0;
+                this._currentPageText.text = string.Empty;
+                this.updateFirstAndLastPageButtons();
+                this.updateNextAndPrevPageButtons();
+            }
+
             public void SetPage(int page)
             {
-                if (!this._browser.AllowSwitching())
+                if (!this._browser.AllowSwitching() || this._browser._isViewingCollectionChildren)
                 {
                     return;
                 }
@@ -852,6 +889,11 @@ namespace CloneDroneOverhaul.UI
             // Token: 0x060003B8 RID: 952 RVA: 0x0001489C File Offset: 0x00012A9C
             private void updateFirstAndLastPageButtons()
             {
+                if (this._query == 0)
+                {
+                    this._choosePageButton.interactable = false;
+                    return;
+                }
                 this._firstPageText.text = "1";
                 NewWorkshopBrowserUI.Pages.PageButton.Initialize(this._firstPage, new Action<int>(this.SetPage), 1);
                 this._lastPageText.text = this._query.ToString();
@@ -914,55 +956,38 @@ namespace CloneDroneOverhaul.UI
                 yield break;
             }
 
-            // Token: 0x040002D7 RID: 727
             private NewWorkshopBrowserUI _browser;
 
-            // Token: 0x040002D8 RID: 728
             private ModdedObject _moddedObject;
 
-            // Token: 0x040002D9 RID: 729
             private int _query;
 
-            // Token: 0x040002DA RID: 730
             private bool _pageViewActive;
 
-            // Token: 0x040002DB RID: 731
             private Button _nextPage;
 
-            // Token: 0x040002DC RID: 732
             private Button _prevPage;
 
-            // Token: 0x040002DD RID: 733
             private Button _choosePageButton;
 
-            // Token: 0x040002DE RID: 734
             private Button _firstPage;
 
-            // Token: 0x040002DF RID: 735
             private Text _firstPageText;
 
-            // Token: 0x040002E0 RID: 736
             private Button _lastPage;
 
-            // Token: 0x040002E1 RID: 737
             private Text _lastPageText;
 
-            // Token: 0x040002E2 RID: 738
             private Text _currentPageText;
 
-            // Token: 0x040002E3 RID: 739
             private Transform _pageViewMain;
 
-            // Token: 0x040002E4 RID: 740
             private Button _pageViewEntry;
 
-            // Token: 0x040002E5 RID: 741
             private Transform _pageViewContainer;
 
-            // Token: 0x020000D2 RID: 210
             public class PageButton
             {
-                // Token: 0x060004DF RID: 1247 RVA: 0x000188A8 File Offset: 0x00016AA8
                 public static void Initialize(Button button, Action<int> onSelect, int myPage)
                 {
                     button.onClick.RemoveAllListeners();
