@@ -65,6 +65,7 @@ namespace CloneDroneOverhaul.Modules
         }
         public void ExecuteFunction(string funcName, object[] args)
         {
+            V3Tests.Base.V3_MainModController.CallEvent(funcName, args);
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
@@ -76,6 +77,7 @@ namespace CloneDroneOverhaul.Modules
         }
         public void ExecuteFunction<T>(string funcName, object[] args)
         {
+            V3Tests.Base.V3_MainModController.CallEvent(funcName, args);
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
@@ -87,6 +89,7 @@ namespace CloneDroneOverhaul.Modules
         }
         public void ExecuteFunction<T>(string funcName, T obj)
         {
+            V3Tests.Base.V3_MainModController.CallEvent(funcName, new object[] { obj });
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];
@@ -99,6 +102,7 @@ namespace CloneDroneOverhaul.Modules
 
         public void OnSettingRefreshed(string id, object value, bool isOnStart)
         {
+            V3Tests.Base.V3_MainModController.SendSettingWasRefreshed(id, value);
             for (int i = 0; i < modules.Count; i++)
             {
                 ModuleBase mBase = modules[i];

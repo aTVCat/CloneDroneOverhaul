@@ -39,7 +39,10 @@
     <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
     <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
-    <Compile Include="V3Tests\Gameplay\LevelManagement\LevelConstructor.cs" />
+    <None Include="ModdedObject.cs" />
+    <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraType.cs" />
+    <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraInfo.cs" />
+    <Compile Include="V3Tests\Gameplay\LevelControlling\LevelConstructor.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\EndlessMode\EndlessModeOverhaul.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Sandbox\SandboxMode - Копировать.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Survival\SurvivalMode.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="V3Tests\Gameplay\OverModes\StoryMode\StoryModeOverhaul.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModeBase.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModesController.cs" />
+    <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\CameraController.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorUndoRedoManager.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
@@ -103,6 +107,9 @@
     <Compile Include="Base\UpdateChecker.cs" />
     <Compile Include="V3Tests\Gameplay\RobotsOverhaul\Controllers\OverhaulRobotsController.cs" />
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\WeaponSkins\WeaponSkinController.cs" />
+    <Compile Include="V3Tests\ModControlling\ModData\ModAssetFileType.cs" />
+    <Compile Include="V3Tests\ModControlling\ModdedUpgrades\UpgradeInfo.cs" />
+    <Compile Include="V3Tests\ModControlling\ModdedUpgrades\OverhaulUpgradeDescription.cs" />
     <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionAction.cs" />
     <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionUI.cs" />
     <Compile Include="V3Tests\ModControlling\SceneTransition\TransitionType.cs" />
@@ -110,6 +117,8 @@
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\Controllers\OverhaulWeaponController.cs" />
     <Compile Include="V3Tests\ModControlling\ModData\ModDataController.cs" />
     <Compile Include="V3Tests\ModControlling\SceneTransition\SceneTransitionController.cs" />
+    <Compile Include="V3Tests\ModControlling\V3_FunctionEvents.cs" />
+    <Compile Include="V3Tests\ModControlling\ModdedUpgrades\ModdedUpgradesController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
     <Compile Include="V3Tests\Utilities\FakePrefabSystem\FakePrefabSystem.cs" />
     <Compile Include="V3Tests\Utilities\Material\MaterialTextureType.cs" />
@@ -136,7 +145,8 @@
     <Reference Include="AmplifyColor">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\AmplifyColor.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">

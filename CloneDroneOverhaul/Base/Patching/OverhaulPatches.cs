@@ -102,6 +102,10 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(TitleScreenUI), "OnWorkshopBrowserButtonClicked")]
         private static bool TitleScreenUI_OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
         {
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
+            {
+                return true;
+            }
             Modules.ArenaManager.SetRootAndLogoVisible(false);
             NewWorkshopBrowserUI.Instance.Show();
             return false;
@@ -125,7 +129,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(PhotoModeControlsDisplay), "SetVisibility")]
         private static void PhotoModeControlsDisplay_SetVisibility_Postfix(PhotoModeControlsDisplay __instance, bool value)
         {
-            if (!OverhaulDescription.IsBetaBuild())
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return;
             }
@@ -139,6 +143,21 @@ namespace CloneDroneOverhaul.Patching
                 UI.NewPhotoModeUI.Instance.Hide();
             }
         }
+
+        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Character), "SetCameraAnimatorEnabled")]
+        private static bool Character_SetCameraAnimatorEnabled_Prefix()
+        {
+            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlayerCameraMover), "LateUpdate")]
+        private static bool PlayerCameraMover_LateUpdate_Prefix()
+        {
+            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
+        }
+
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Multiplayer1v1UI), "refreshUIVisibility")]
@@ -779,7 +798,7 @@ namespace CloneDroneOverhaul.Patching
         private static IEnumerable<CodeInstruction> PhotoManager_Update_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> list = new List<CodeInstruction>(instructions);
-            if (!OverhaulDescription.IsBetaBuild())
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return list.AsEnumerable<CodeInstruction>();
             }

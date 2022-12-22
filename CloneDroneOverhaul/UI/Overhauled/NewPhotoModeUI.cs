@@ -221,7 +221,7 @@ namespace CloneDroneOverhaul.UI
         }
         private void refreshGameplayInportantThings()
         {
-            if (!OverhaulDescription.IsBetaBuild())
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return;
             }

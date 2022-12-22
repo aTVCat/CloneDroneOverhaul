@@ -396,7 +396,7 @@ namespace CloneDroneOverhaul.UI
                     {
                         BaseUtils.CopyToClipboard(mObj.GetObjectFromList<Text>(9).text, true, "ID ", " was copied");
                     });
-                    mObj.GetObjectFromList<Button>(8).gameObject.SetActive(OverhaulDescription.IsBetaBuild());
+                    mObj.GetObjectFromList<Button>(8).gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
                     mObj.GetObjectFromList<Button>(6).onClick.AddListener(delegate
                     {
                         _reportWindow.ShowWindow(mObj.GetObjectFromList<InputField>(0).text, mObj.GetObjectFromList<Text>(9).text);
