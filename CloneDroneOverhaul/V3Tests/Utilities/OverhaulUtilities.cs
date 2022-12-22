@@ -23,6 +23,16 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             }
 
             /// <summary>
+            /// Create sprite from texture
+            /// </summary>
+            /// <param name="texture2D"></param>
+            /// <returns></returns>
+            public static Sprite FastSpriteCreate(in Texture2D texture2D)
+            {
+                return Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+            }
+
+            /// <summary>
             /// Load a texture from file
             /// </summary>
             /// <param name="path"></param>
@@ -144,7 +154,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
         public static class FileUtils
         {
             /// <summary>
-            /// Load bytes from file
+            /// Get bytes in file
             /// </summary>
             /// <param name="path"></param>
             /// <returns></returns>
@@ -161,7 +171,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             }
 
             /// <summary>
-            /// Async load bytes from file
+            /// Async get bytes in file
             /// </summary>
             /// <param name="path"></param>
             /// <param name="onReadEnd"></param>
@@ -176,6 +186,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                     onReadEnd(null);
                 }
             }
+
             static IEnumerator loadBytesAsync(string filePath, Action<byte[]> onLoaded)
             {
                 byte[] array = null;
@@ -188,6 +199,56 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 unityWebRequestAsyncOperation.Dispose();
 
                 onLoaded(array);
+
+                yield break;
+            }
+
+            /// <summary>
+            /// Load all text
+            /// </summary>
+            /// <param name="path"></param>
+            /// <returns></returns>
+            public static string LoadString(in string path)
+            {
+                string result = null;
+
+                if (File.Exists(path))
+                {
+                    result = File.ReadAllText(path);
+                }
+
+                return result;
+            }
+
+            /// <summary>
+            /// Async read string in file
+            /// </summary>
+            /// <param name="path"></param>
+            /// <param name="onReadEnd"></param>
+            public static void LoadStringAsync(string path, Action<string> onReadEnd)
+            {
+                if (File.Exists(path))
+                {
+                    StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path, onReadEnd));
+                }
+                else
+                {
+                    onReadEnd(null);
+                }
+            }
+
+            static IEnumerator loadStringAsync(string filePath, Action<string> onLoaded)
+            {
+                string data = null;
+
+                UnityWebRequest unityWebRequestAsyncOperation = UnityWebRequest.Get("file://" + filePath);
+
+                yield return unityWebRequestAsyncOperation.SendWebRequest();
+
+                data = unityWebRequestAsyncOperation.downloadHandler.text;
+                unityWebRequestAsyncOperation.Dispose();
+
+                onLoaded(data);
 
                 yield break;
             }

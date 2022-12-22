@@ -34,18 +34,20 @@ namespace CloneDroneOverhaul
 
         protected override void OnModLoaded()
         {
-            OverhaulCacheManager.ClearTemporal();
-            V3_MainModController.Initialize();
             if (OverhaulMain.Instance != null)
             {
                 return;
             }
+            else
+            {
+                OverhaulMain.Instance = this;
+            }
+            OverhaulCacheManager.ClearTemporal();
             this.InitializeOverhaul();
         }
 
         private void InitializeOverhaul()
         {
-            OverhaulMain.Instance = this;
             BaseStaticValues.IsModEnabled = true;
             if (!OverhaulMain.hasCachedStuff)
             {
@@ -55,6 +57,8 @@ namespace CloneDroneOverhaul
             }
             this.addReferences();
             this.addModules();
+            V3_MainModController.Initialize();
+
             this.addListeners();
             this.spawnGUI();
             this.fixVanillaStuff();
@@ -191,7 +195,7 @@ namespace CloneDroneOverhaul
 
         private void finalPreparations()
         {
-            if (OverhaulDescription.IsBetaBuild())
+            if (OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
                 {
@@ -232,6 +236,11 @@ namespace CloneDroneOverhaul
                 Key1 = KeyCode.F2,
                 Method = new Action(MiscEffectsManager.SwitchHud)
             });
+            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            {
+                Key1 = KeyCode.Y,
+                Method = new Action(V3Tests.Gameplay.AdvancedCameraController.TryChangeCameraPosition)
+            });
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
             QualitySettings.softParticles = true;
             QualitySettings.streamingMipmapsMemoryBudget = 4096f;
@@ -241,7 +250,7 @@ namespace CloneDroneOverhaul
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadPersistentBuffer = true;
             QualitySettings.antiAliasing = 8;
-            QualitySettings.shadowCascades = 2;
+            QualitySettings.shadowCascades = 0; // 2 Before
             Singleton<SkyBoxManager>.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
             Singleton<AttackManager>.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
             Singleton<AttackManager>.Instance.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
@@ -289,8 +298,17 @@ namespace CloneDroneOverhaul
 
         private void fixVanillaStuff()
         {
+            // Make Jetpack1 skin available for everyone
             Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
+
+            // Fix sounds cut bug
             PatchesManager.Instance.UpdateAudioSettings(OverhaulMain.GetSetting<bool>("Patches.QoL.Fix sounds"));
+
+            // Make GameUIRoot pixel perfect
+            GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = true;
+            GameUIRoot.Instance.GetComponent<Canvas>().referencePixelsPerUnit = 75f;
+
+            // Lower arena camera resolution and save ~5% FPS
             foreach (Camera camera in GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff().AllCameras)
             {
                 if (camera.name == "ArenaCamera")
@@ -353,6 +371,17 @@ namespace CloneDroneOverhaul
 
     public static class OverhaulDescription
     {
+        public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
+
+        public const bool TEST_FEATURES_ENABLED = false;
+        public const bool OVERRIDE_VERSION_STRING = false;
+        public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
+
+        public const string MOD_FULLNAME_SPACE = "Clone Drone Overhaul ";
+        public const string MOD_FULLNAME = "Clone Drone Overhaul";
+        public const string MOD_SHORTNAME_SPACE = "CDO ";
+        public const string MOD_SHORTNAME = "CDO";
+
         public static string GetModFolder()
         {
             return OverhaulMain.Instance.ModInfo.FolderPath;
@@ -360,7 +389,7 @@ namespace CloneDroneOverhaul
 
         public static string GetModName(bool includeVersion, bool shortVariant = false)
         {
-            string text = (!shortVariant) ? ("Clone Drone Overhaul " + OverhaulDescription.GetModVersionBranch().ToString()) : "CDO";
+            string text = (!shortVariant) ? (MOD_FULLNAME_SPACE + CURRENT_BRANCH.ToString()) : MOD_SHORTNAME;
             if (includeVersion)
             {
                 return text + " " + OverhaulDescription.GetModVersion(true);
@@ -378,33 +407,21 @@ namespace CloneDroneOverhaul
             return gameVersion + " (." + OverhaulMain.Instance.ModInfo.Version.ToString() + ")";
         }
 
-        public static OverhaulDescription.Branch GetModVersionBranch()
-        {
-            return OverhaulDescription.Branch.Github;
-        }
-
         private static string getGameVersion()
         {
             string result = "a0.2.0.17";
-            string result2 = "a0.2.1.2";
-            if (!OverhaulDescription.IsBetaBuild())
+            string result2 = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!OVERRIDE_VERSION_STRING)
             {
                 return result;
             }
             return result2;
         }
 
-        public static bool IsBetaBuild()
-        {
-            return true;
-        }
-
         public static bool LevelEditorToolsEnabled()
         {
-            return PlayerPrefs.HasKey("286ea03e-b667-46ae-8c12-95eb08c412e4") && PlayerPrefs.GetInt("286ea03e-b667-46ae-8c12-95eb08c412e4") == 1;
+            return PlayerPrefs.HasKey(LEVEL_EDITOR_TOOLS_MODID) && PlayerPrefs.GetInt(LEVEL_EDITOR_TOOLS_MODID) == 1;
         }
-
-        public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
 
         public enum Branch
         {
@@ -687,8 +704,18 @@ namespace CloneDroneOverhaul
 
     public static class CrossModManager
     {
-        // Token: 0x06000075 RID: 117 RVA: 0x000055D0 File Offset: 0x000037D0
         public static void DoAction(string name, object[] arguments)
+        {
+            if (OverhaulDescription.LevelEditorToolsEnabled())
+            {
+                doAction_LET(name, arguments);
+            }
+            else
+            {
+
+            }
+        }
+        private static void doAction_LET(string name, object[] arguments)
         {
             try
             {

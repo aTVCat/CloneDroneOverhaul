@@ -30,7 +30,7 @@ namespace CloneDroneOverhaul.UI
 
             refreshVersion();
 
-            _localizationEditor.gameObject.SetActive(OverhaulDescription.IsBetaBuild());
+            _localizationEditor.gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
         }
         public override void OnNewFrame()
         {

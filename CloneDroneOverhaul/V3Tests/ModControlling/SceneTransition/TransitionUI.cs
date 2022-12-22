@@ -11,6 +11,8 @@ namespace CloneDroneOverhaul.V3Tests.Base
 {
     public class TransitionUI : BoltGlobalEventListenerSingleton<TransitionUI>
     {
+        private const bool IGNORE_CRASHES = false;
+
         public static bool IsLoadingScene;
         public static bool LastIngoreCrashesState;
 
@@ -62,8 +64,12 @@ namespace CloneDroneOverhaul.V3Tests.Base
         /// <returns></returns>
         public TransitionUI Initialize(ModdedObject mObj, string title, string details, TransitionAction action, bool showProgress = false)
         {
-            LastIngoreCrashesState = InternalModBot.IgnoreCrashesManager.GetIsIgnoringCrashes();
-            InternalModBot.IgnoreCrashesManager.SetIsIgnoringCrashes(true);
+            if (IGNORE_CRASHES)
+            {
+                LastIngoreCrashesState = InternalModBot.IgnoreCrashesManager.GetIsIgnoringCrashes();
+                InternalModBot.IgnoreCrashesManager.SetIsIgnoringCrashes(true);
+            }
+
             DontDestroyOnLoad(this.gameObject);
 
             MyAnimator = base.GetComponent<Animator>();
@@ -250,7 +256,11 @@ namespace CloneDroneOverhaul.V3Tests.Base
             _isWaitingToDestroy = true;
             _timeLeftToDestroy = 1f;
             MyAnimator.Play("Hide");
-            InternalModBot.IgnoreCrashesManager.SetIsIgnoringCrashes(LastIngoreCrashesState);
+
+            if (IGNORE_CRASHES)
+            {
+                InternalModBot.IgnoreCrashesManager.SetIsIgnoringCrashes(LastIngoreCrashesState);
+            }
         }
 
         void Update()

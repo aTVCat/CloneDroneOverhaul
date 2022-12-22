@@ -14,6 +14,17 @@ namespace CloneDroneOverhaul.V3Tests.Base
         private static GameObject _controllersGameObject;
         private static List<V3_ModControllerBase> _spawnedControllers = new List<V3_ModControllerBase>();
 
+        public const string CACHED_ASSET_PREFIX = "RootModAsset_";
+
+        private static bool _hasLoadedAssets;
+        public static bool HasLoadedAssets
+        {
+            get
+            {
+                return _hasLoadedAssets;
+            }
+        }
+
         /// <summary>
         /// Called every time gameplay scene is loaded
         /// </summary>
@@ -25,15 +36,36 @@ namespace CloneDroneOverhaul.V3Tests.Base
             OverModesController.InitializeForCurrentScene();
 
             GameObject newMainGameObject = new GameObject("CloneDroneOverhaul");
-
             GameObject newControllersGameObject = new GameObject("OverhaulModControllers");
             newControllersGameObject.transform.SetParent(newMainGameObject.transform);
             _controllersGameObject = newControllersGameObject;
 
             V3_MainModController mainController = AddManager<V3_MainModController>("MainModController");
             ModDataController dataControll = AddManager<ModDataController>("DataController");
+            AdvancedCameraController aCameraController = AddManager<AdvancedCameraController>("AdvancedCameraController");
+            ModdedUpgradesController moddedUpgradesController = AddManager<ModdedUpgradesController>("ModdedUpgradesController");
+
+            LoadAssets();
 
             FakePrefabSystem.DataController = dataControll;
+        }
+
+        private static void LoadAssets()
+        {
+            if (HasLoadedAssets)
+            {
+                CallEvent("overhaul.onAssetsLoadDone", new object[] { false });
+                return;
+            }
+
+            ModDataController dataControll = ModDataController.GetInstance<ModDataController>();
+
+            Sprite unknownUpgradeIconSprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(dataControll.LoadModAsset<Texture2D>("Textures/Upgrades/Unknown-Upgrade-16x16.png", ModAssetFileType.Image));
+            unknownUpgradeIconSprite.texture.filterMode = FilterMode.Point;
+            OverhaulCacheManager.CacheObject<Sprite>(unknownUpgradeIconSprite, CACHED_ASSET_PREFIX + OverhaulUpgradeDescription.UPGRADE_ICON_ASSET_PREFIX + "Unknown");
+
+            _hasLoadedAssets = true;
+            CallEvent("overhaul.onAssetsLoadDone", new object[] { true });
         }
 
         /// <summary>
@@ -52,6 +84,38 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
             return result;
         }
+
+        public static T GetManager<T>() where T : V3_ModControllerBase
+        {
+            T result = null;
+            foreach(V3_ModControllerBase c in _spawnedControllers)
+            {
+                if(c is T)
+                {
+                    result = (T)c;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public static void CallEvent(string eventName, object[] args)
+        {
+            foreach (V3_ModControllerBase controllers in _spawnedControllers)
+            {
+                controllers.OnEvent(eventName, args);
+            }
+        }
+
+        public static void SendSettingWasRefreshed(string settingName, object value)
+        {
+            foreach (V3_ModControllerBase controllers in _spawnedControllers)
+            {
+                controllers.OnSettingRefreshed(settingName, value);
+            }
+        }
+
+
 
         Texture _testTexture;
         public void Text_AsyncLoadTexture()

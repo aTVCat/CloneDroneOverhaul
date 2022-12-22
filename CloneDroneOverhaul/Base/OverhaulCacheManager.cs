@@ -88,7 +88,27 @@ namespace CloneDroneOverhaul
             _hasCached = true;
         }
 
-        public static T GetCached<T>(string id) where T : class
+        /// <summary>
+        /// Save an object in memory until game closes
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="object"></param>
+        /// <param name="name"></param>
+        public static void CacheObject<T>(in T @object, in string name)
+        {
+            if (!HasCached(name))
+            {
+                _cachedStuff.Add(name, @object);
+            }
+        }
+
+        /// <summary>
+        /// Get saved object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static T GetCached<T>(in string id) where T : class
         {
             if (_cachedStuff.ContainsKey(id))
             {
@@ -107,35 +127,70 @@ namespace CloneDroneOverhaul
             return null;
         }
 
-        public static bool HasCached(string id)
+        /// <summary>
+        /// Check if we saved an object with specified id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool HasCached(in string id)
         {
             return _cachedStuff.ContainsKey(id);
         }
-        public static void AddTemporalObject<T>(T obj, string name)
+
+        /// <summary>
+        /// Save an object in memory until scene restarts/switches
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="name"></param>
+        public static void AddTemporalObject<T>(in T obj, in string name)
         {
             if (!_temporalStuff.ContainsKey(name))
             {
                 _temporalStuff.Add(name, obj);
             }
         }
-        public static T GetTemporalObject<T>(string name)
+
+        /// <summary>
+        /// Get temporary saved object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static T GetTemporalObject<T>(in string name)
         {
             T result = (T)_temporalStuff[name];
             return (T)result;
         }
-        public static void RemoveTemporalObject(string name)
+
+        /// <summary>
+        /// Dispose temporary saved object
+        /// </summary>
+        /// <param name="name"></param>
+        public static void RemoveTemporalObject(in string name)
         {
             if (_temporalStuff.ContainsKey(name))
             {
                 _temporalStuff.Remove(name);
             }
         }
-        public static bool ContainsTemporalObject(string name)
+
+        /// <summary>
+        /// Check if we have added a temporal object with specified id
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static bool ContainsTemporalObject(in string name)
         {
             return _temporalStuff.ContainsKey(name);
         }
 
-        public static Transform GetAndCacheLevelEditorObject(string path)
+        /// <summary>
+        /// Get modded level editor related asset
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Transform GetModdedLevelEditorResource(in string path)
         {
             Transform trans = null;
             if (_cachedLevelEditorAssets.ContainsKey(path))
