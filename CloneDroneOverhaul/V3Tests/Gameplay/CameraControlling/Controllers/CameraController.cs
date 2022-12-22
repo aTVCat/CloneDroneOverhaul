@@ -31,10 +31,14 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 PatchCamera(value, GlobalCameraState);
             }
         }
-        private AdvancedCameraInfo _playerCameraInfo;
+        private RobotAdvancedCameraController _playerCameraInfo;
 
         public void SwitchCameraPosition()
         {
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
+            {
+                return;
+            }
             GlobalCameraState++;
             if((int)GlobalCameraState > 3)
             {
@@ -68,10 +72,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                AdvancedCameraInfo info = character.GetComponent<AdvancedCameraInfo>();
+                RobotAdvancedCameraController info = character.GetComponent<RobotAdvancedCameraController>();
                 if (!info)
                 {
-                    _playerCameraInfo = character.gameObject.AddComponent<AdvancedCameraInfo>().Initialize(this, character);
+                    _playerCameraInfo = character.gameObject.AddComponent<RobotAdvancedCameraController>().Initialize(this, character);
                 }
                 _playerCameraInfo.PatchCharacter(character.GetCameraMover().gameObject, GlobalCameraState);
             }, 0.1f);

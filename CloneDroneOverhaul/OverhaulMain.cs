@@ -409,7 +409,7 @@ namespace CloneDroneOverhaul
 
         private static string getGameVersion()
         {
-            string result = "a0.2.0.17";
+            string result = "a0.2.0.18";
             string result2 = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (!OVERRIDE_VERSION_STRING)
             {

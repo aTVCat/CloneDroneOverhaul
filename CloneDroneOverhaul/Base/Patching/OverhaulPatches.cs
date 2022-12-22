@@ -151,6 +151,16 @@ namespace CloneDroneOverhaul.Patching
         {
             return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FirstPersonMover), "Update")]
+        private static void Character_Update_Postfix(FirstPersonMover __instance)
+        {
+            if (__instance.IsRidingOtherCharacter())
+            {
+                __instance.transform.localPosition = Vector3.zero;
+                __instance.transform.localEulerAngles = Vector3.zero;
+            }
+        }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerCameraMover), "LateUpdate")]
         private static bool PlayerCameraMover_LateUpdate_Prefix()
