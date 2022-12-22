@@ -233,7 +233,7 @@ namespace CloneDroneOverhaul.UI
             setting.GetObjectFromList<Text>(0).text = OverhaulMain.GetTranslatedString("SName_" + entry.ID);
             setting.GetObjectFromList<Text>(3).text = OverhaulMain.GetTranslatedString("SDesc_" + entry.ID);
             setting.GetObjectFromList<InputField>(2).text = entry.ID;
-            setting.GetObjectFromList<InputField>(2).gameObject.SetActive(OverhaulDescription.IsBetaBuild());
+            setting.GetObjectFromList<InputField>(2).gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
         }
 
         private class UISettingEntry : MonoBehaviour

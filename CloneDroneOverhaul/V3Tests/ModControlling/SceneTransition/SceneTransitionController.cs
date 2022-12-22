@@ -28,20 +28,7 @@
                 header = "Going to next match...";
             }
 
-            TransitionAction action = new TransitionAction();/*
-            if (BoltNetwork.IsRunning || BoltNetwork.IsConnected)
-            {
-                action.Type = TranstionType.SceneSwitch;
-                action.SceneName = string.Empty;
-                action.HideOnComplete = true;
-            }
-            else
-            {
-                action.Type = TranstionType.SceneSwitch;
-                action.SceneName = "Gameplay";
-                action.UseAsyncSceneLoading = true;
-                action.HideOnComplete = true;
-            }*/
+            TransitionAction action = new TransitionAction();
             action.Type = TranstionType.SceneSwitch;
             action.SceneName = "Gameplay";
             action.UseAsyncSceneLoading = true;
