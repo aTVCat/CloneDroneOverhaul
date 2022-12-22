@@ -34,6 +34,9 @@ namespace CloneDroneOverhaul.UI
                 EndlessModeOverhaul.Instance.StartOvermode(null, true);
             });
 
+            base.MyModdedObject.GetObjectFromList<Button>(8).gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
+            base.MyModdedObject.GetObjectFromList<Button>(9).gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
+
             Instance = this;
         }
 

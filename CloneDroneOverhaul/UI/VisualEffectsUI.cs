@@ -26,14 +26,14 @@ namespace CloneDroneOverhaul.UI
             _noise.rectTransform.SetParent(Singleton<GameUIRoot>.Instance.transform);
             _noise.rectTransform.SetAsFirstSibling();
             _noise.rectTransform.sizeDelta = Vector2.zero;
-            _noise.rectTransform.localScale = Vector2.one;
+            _noise.rectTransform.localScale = Vector3.one;
             _noise.rectTransform.localPosition = Vector2.zero;
 
             RectTransform objectFromList = base.MyModdedObject.GetObjectFromList<RectTransform>(0);
             objectFromList.SetParent(Singleton<GameUIRoot>.Instance.transform);
             objectFromList.SetAsFirstSibling();
             objectFromList.sizeDelta = Vector2.zero;
-            objectFromList.localScale = Vector2.one;
+            objectFromList.localScale = Vector3.one;
             objectFromList.localPosition = Vector2.zero;
             this._vignette = objectFromList.GetComponent<Image>();
         }
@@ -43,16 +43,12 @@ namespace CloneDroneOverhaul.UI
             if (ID == "Graphics.Additions.Vignette")
             {
                 _vignetteEnabled = (bool)value;
-                RefreshEffects();
             }
             if (ID == "Graphics.Additions.Noise effect")
             {
                 OverhaulMain.Visuals.NoiseEnabled = (bool)value;
             }
-            if (ID == "Graphics.Additions.Noise Multipler")
-            {
-                RefreshEffects();
-            }
+            RefreshEffects();
         }
 
         public override void RunFunction<T>(string name, T obj)

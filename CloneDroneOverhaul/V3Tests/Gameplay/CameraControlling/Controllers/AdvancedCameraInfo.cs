@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class AdvancedCameraInfo : MonoBehaviour
+    public class RobotAdvancedCameraController : MonoBehaviour
     {
         AdvancedCameraController _controller;
         Character _owner;
@@ -14,7 +14,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         Transform _headTransform;
 
-        public AdvancedCameraInfo Initialize(AdvancedCameraController controller, Character character)
+        public RobotAdvancedCameraController Initialize(AdvancedCameraController controller, Character character)
         {
             _controller = controller;
             _owner = character;
