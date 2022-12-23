@@ -1,5 +1,6 @@
 ﻿using CloneDroneOverhaul.V3Tests.Base;
 using CloneDroneOverhaul.Utilities;
+using Rewired;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {

@@ -41,6 +41,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             ModdedUpgradesController moddedUpgradesController = AddManager<ModdedUpgradesController>("ModdedUpgradesController");
             GameStatisticsController statistics = AddManager<GameStatisticsController>("GameStatisticsController");
             ArenaWeatherController weather = AddManager<ArenaWeatherController>("ArenaWeatherController");
+            OverhaulGraphicsController graphics = AddManager<OverhaulGraphicsController>("OverhaulGraphicsController");
             LevelEditor.MetaDataController metaData = AddManager<LevelEditor.MetaDataController>("MetaDataController");
 
             LoadAssets();

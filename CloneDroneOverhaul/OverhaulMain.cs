@@ -32,6 +32,7 @@ namespace CloneDroneOverhaul
         public static VisualsModule Visuals { get; set; }
         public static ModuleManagement Modules { get; set; }
         public static OverhaulMainMonoBehaviour MainMonoBehaviour { get; set; }
+        public static Canvas ModGUICanvas { get; set; }
 
         protected override void OnModLoaded()
         {
@@ -252,7 +253,6 @@ namespace CloneDroneOverhaul
             QualitySettings.asyncUploadBufferSize = 16;
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadPersistentBuffer = true;
-            QualitySettings.antiAliasing = 8;
             QualitySettings.shadowCascades = 0; // 2 Before
             Singleton<SkyBoxManager>.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
             Singleton<AttackManager>.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
@@ -307,8 +307,7 @@ namespace CloneDroneOverhaul
             // Fix sounds cut bug
             PatchesManager.Instance.UpdateAudioSettings(OverhaulMain.GetSetting<bool>("Patches.QoL.Fix sounds"));
 
-            // Make GameUIRoot pixel perfect
-            GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = true;
+            // Changing pixels per unit of main canvas
             GameUIRoot.Instance.GetComponent<Canvas>().referencePixelsPerUnit = 75f;
 
             // Lower arena camera resolution and save ~5% FPS
@@ -341,6 +340,7 @@ namespace CloneDroneOverhaul
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<NewPhotoModeUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<NewWorkshopBrowserUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
+            ModGUICanvas = gameObject.GetComponent<Canvas>();
         }
 
         public static string GetTranslatedString(in string ID)
@@ -377,7 +377,10 @@ namespace CloneDroneOverhaul
         public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
 
         public const bool TEST_FEATURES_ENABLED = false;
-        public const bool OVERRIDE_VERSION_STRING = false;
+        public const bool OVERRIDE_VERSION = true;
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.19";
+        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
 
         public const string MOD_FULLNAME_SPACE = "Clone Drone Overhaul ";
@@ -407,18 +410,12 @@ namespace CloneDroneOverhaul
             {
                 return gameVersion;
             }
-            return gameVersion + " (." + OverhaulMain.Instance.ModInfo.Version.ToString() + ")";
+            return gameVersion + " (." + ModBotVersionString + ")";
         }
 
         private static string getGameVersion()
         {
-            string result = "a0.2.0.19";
-            string result2 = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (!OVERRIDE_VERSION_STRING)
-            {
-                return result;
-            }
-            return result2;
+            return OVERRIDE_VERSION ? OVERRIDE_VERSION_STRING : VersionString;
         }
 
         public static bool LevelEditorToolsEnabled()

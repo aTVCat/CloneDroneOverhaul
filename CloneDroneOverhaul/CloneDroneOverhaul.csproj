@@ -125,8 +125,10 @@
     <Compile Include="V3Tests\ModControlling\V3_FunctionEvents.cs" />
     <Compile Include="V3Tests\ModControlling\ModdedUpgrades\ModdedUpgradesController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
+    <Compile Include="V3Tests\Optimisation\ObjectsLODController.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_LongLifeTime.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_ShortLifeTime.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_Light.cs" />
     <Compile Include="V3Tests\PooledPrefabs\PooledPrefabContainer.cs" />
     <Compile Include="V3Tests\PooledPrefabs\PooledPrefabController.cs" />
     <Compile Include="V3Tests\PooledPrefabs\PooledPrefabInstanceBase.cs" />
@@ -222,6 +224,10 @@
     <Reference Include="PlayFab, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PlayFab.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Rewired_Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />

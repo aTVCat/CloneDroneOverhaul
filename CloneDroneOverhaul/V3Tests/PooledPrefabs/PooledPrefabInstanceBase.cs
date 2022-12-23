@@ -50,6 +50,14 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         }
 
         /// <summary>
+        /// Get required references if there's need
+        /// </summary>
+        public virtual void PreparePrefab()
+        {
+
+        }
+
+        /// <summary>
         /// Override this method to expand prefab functionality when it is used
         /// </summary>
         protected virtual void OnPrefabUsed()

@@ -68,7 +68,7 @@ namespace CloneDroneOverhaul.Utilities
         {
             get
             {
-                if (Instance == null || !Instance.gameObject.activeSelf)
+                if (!Instance || this is null)
                 {
                     return true;
                 }

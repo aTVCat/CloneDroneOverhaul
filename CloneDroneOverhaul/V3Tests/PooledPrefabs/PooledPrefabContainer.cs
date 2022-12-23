@@ -29,6 +29,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 newObject.transform.position = Vector3.zero;
                 newObject.transform.eulerAngles = Vector3.zero;
                 newObject.PrefabContainer = this;
+                newObject.PreparePrefab();
                 _prefabs[i] = newObject;
             }
             HasPopulatedTransform = true;

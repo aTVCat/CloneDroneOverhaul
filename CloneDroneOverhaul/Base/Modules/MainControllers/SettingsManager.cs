@@ -26,6 +26,7 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.85f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
             AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler" } }));
+            AddSetting(SettingEntry.NewSetting<AntialiasingLevel>("Antialiasing", "", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AntialiasingLevel) }));
 
             AddSetting(SettingEntry.NewSetting<bool>("Floating dust", "", "Graphics", "World", true));
 
@@ -37,6 +38,8 @@ namespace CloneDroneOverhaul.Modules
 
             AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, !OverhaulDescription.TEST_FEATURES_ENABLED));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Pixel perfect HUD", "Fixes blurry parts of the HUD", "Patches", "GUI", true));
+            AddSetting(SettingEntry.NewSetting<float>("HUD Scale", "", "Graphics", "Additions", 0f, null, new SettingEntry.UIValueSettings() { MinValue = -0.12f, MaxValue = 0.12f }));
 
             AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 20, Step = 30, OnlyInt = true }));
             AddSetting(SettingEntry.NewSetting<ShadowResolution>("Shadow resolution", "Default with \"Soft\" enabled is the most optimal variant", "Graphics", "Settings", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowResolution) }));
@@ -50,14 +53,19 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<bool>("Vignette", "Shades screen edges", "Graphics", "Additions", true, null, null, null, null, false));
             AddSetting(SettingEntry.NewSetting<bool>("Soft shadows", "Make shadows less pixelated", "Graphics", "Settings", true));
 
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Additions", "Image effects that enchance entire game.\nEach enabled option may decrease performance!", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "World", "Visual improvements that don't really affect performance", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Settings", "Game renderer settings.", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Privacy", "Duel advanced options.", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Mod", "Overhaul mod related settings.", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Levels", "Editor", "Enchance level building hobby!", string.Empty));
-            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "QoL", "Fixes that are required by community.", string.Empty));
+            AddSetting(SettingEntry.NewSetting<bool>("Level of detail [LoD]", "", "Graphics", "Optimisation", true));
+            AddSetting(SettingEntry.NewSetting<bool>("High LoD threshold", "", "Graphics", "Optimisation", false));
+            AddSetting(SettingEntry.NewSetting<bool>("Shading", "", "Graphics", "Additions", false));
+
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized.", "Patch.GUI"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Additions", "Image effects that enchance entire game.\nEach enabled option may decrease performance!", "Graphics.Camera"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "World", "Visual improvements that don't really affect performance.", "Graphics.World"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Settings", "Game renderer settings.", "Graphics.Settings"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Privacy", "Duel advanced options.", "Misc.Duels"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Misc", "Mod", "Overhaul mod related settings.", "Misc.Overhaul"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Levels", "Editor", "Enchance level building hobby!", "Levels.Editor"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "QoL", "Fixes that are required by community.", "Patch.QoL"));
+            PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Optimisation", "Manage settings that might increase performance.", "Graphics.Optimisation"));
 
             PageOverrides.Add(new SettingEntry.OverridePrefs("Misc", "Privacy", "Gameplay", "Duels"));
             PageOverrides.Add(new SettingEntry.OverridePrefs("Graphics", "Additions", "Graphics", "Camera"));

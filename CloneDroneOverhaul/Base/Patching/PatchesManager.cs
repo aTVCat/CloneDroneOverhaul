@@ -22,6 +22,17 @@ namespace CloneDroneOverhaul.Modules
                 bool val = (bool)value;
                 UpdateAudioSettings(val);
             }
+            if (ID == "Graphics.Additions.HUD Scale")
+            {
+                float val = (float)value;
+                GameUIRoot.Instance.GetComponent<Canvas>().scaleFactor = 1.7f + val;
+                OverhaulMain.ModGUICanvas.scaleFactor = 1f + val;
+            }
+            if(ID == "Patches.GUI.Pixel perfect HUD")
+            {
+                GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = (bool)value;
+                OverhaulMain.ModGUICanvas.pixelPerfect = (bool)value;
+            }
             if (ID == "Graphics.Settings.FPS Cap")
             {
                 try // InvalidCastException
