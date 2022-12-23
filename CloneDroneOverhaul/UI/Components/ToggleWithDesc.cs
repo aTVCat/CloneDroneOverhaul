@@ -6,7 +6,7 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public class ToggleWithDesc : MonoBehaviour
     {
-        Action<bool> action;
+        private Action<bool> action;
         public ToggleWithDesc SetUp(string descTranslateID, Action<bool> onChangedValue)
         {
             Text txt = base.GetComponent<ModdedObject>().GetObjectFromList<Text>(0);
@@ -25,7 +25,8 @@ namespace CloneDroneOverhaul.UI.Components
         {
             base.GetComponent<Toggle>().isOn = val;
         }
-        void onValueChanged(bool val)
+
+        private void onValueChanged(bool val)
         {
             if (action != null)
             {
@@ -34,12 +35,6 @@ namespace CloneDroneOverhaul.UI.Components
         }
 
 
-        public bool ToggleValue
-        {
-            get
-            {
-                return base.GetComponent<Toggle>().isOn;
-            }
-        }
+        public bool ToggleValue => base.GetComponent<Toggle>().isOn;
     }
 }

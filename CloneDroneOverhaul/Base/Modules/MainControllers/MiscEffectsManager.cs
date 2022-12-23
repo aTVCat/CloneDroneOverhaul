@@ -16,8 +16,8 @@ namespace CloneDroneOverhaul.Modules
         public float Multipler = 0.04f;
         public float MultiplerX = 5f;
         public float MultiplerY = 10f;
-        float mouseX;
-        float mouseY;
+        private float mouseX;
+        private float mouseY;
 
         public static bool IsUIHidden;
 

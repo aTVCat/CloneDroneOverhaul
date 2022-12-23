@@ -30,9 +30,20 @@ namespace AmplifyOcclusion
         public static Material CreateMaterialWithShaderName(string aShaderName, bool aThroughErrorMsg)
         {
             Shader shader = null;
-            if (aShaderName == "Hidden/Amplify Occlusion/Occlusion") shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Occlusion");
-            if (aShaderName == "Hidden/Amplify Occlusion/Blur") shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Blur");
-            if (aShaderName == "Hidden/Amplify Occlusion/Apply") shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Apply");
+            if (aShaderName == "Hidden/Amplify Occlusion/Occlusion")
+            {
+                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Occlusion");
+            }
+
+            if (aShaderName == "Hidden/Amplify Occlusion/Blur")
+            {
+                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Blur");
+            }
+
+            if (aShaderName == "Hidden/Amplify Occlusion/Apply")
+            {
+                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Apply");
+            }
 
             if (shader == null)
             {
@@ -186,9 +197,13 @@ namespace AmplifyOcclusion
             float projScale;
 
             if (aCamera.orthographic)
+            {
                 projScale = ((float)aTarget.fullHeight) / aCamera.orthographicSize;
+            }
             else
+            {
                 projScale = ((float)aTarget.fullHeight) / (Mathf.Tan(fovRad * 0.5f) * 2.0f);
+            }
 
             if ((isDownsample == true) || (isFilterDownsample == true))
             {

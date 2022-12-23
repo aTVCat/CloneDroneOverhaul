@@ -4,9 +4,9 @@ namespace CloneDroneOverhaul.UI
 {
     public class BackupMindTransfersUI : ModGUIBase
     {
-        RectTransform Prefab;
-        RectTransform Container;
-        float timeToHide;
+        private RectTransform Prefab;
+        private RectTransform Container;
+        private float timeToHide;
 
         public override void OnInstanceStart()
         {

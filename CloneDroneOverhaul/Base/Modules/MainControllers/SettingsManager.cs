@@ -10,13 +10,7 @@ namespace CloneDroneOverhaul.Modules
         private List<SettingEntry.CategoryPath> PageDescriptions = new List<SettingEntry.CategoryPath>();
         private List<SettingEntry.OverridePrefs> PageOverrides = new List<SettingEntry.OverridePrefs>();
         public static OverhaulSettingsManager Instance;
-        public static CloneDroneOverhaulSettingsData Data
-        {
-            get
-            {
-                return CloneDroneOverhaulDataContainer.Instance.SettingsData;
-            }
-        }
+        public static CloneDroneOverhaulSettingsData Data => CloneDroneOverhaulDataContainer.Instance.SettingsData;
 
         public override void Start()
         {
@@ -39,9 +33,9 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Unlimited clone count", "Play with 999 clones!", "Misc", "Privacy", false));
             AddSetting(SettingEntry.NewSetting<bool>("Show version", "Buttom text Bottom text", "Misc", "Mod", true));
 
-            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, false));
+            AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, !OverhaulDescription.TEST_FEATURES_ENABLED));
 
-            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, true));
+            AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, !OverhaulDescription.TEST_FEATURES_ENABLED));
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
 
             AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 20, Step = 30, OnlyInt = true }));
@@ -49,11 +43,11 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<ShadowBias>("Shadow bias", "With \"Minimum\" selected, you'll forget about weird shadows (NO)", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowBias) }));
             AddSetting(SettingEntry.NewSetting<ShadowDistance>("Shadow distance", "If you see this text... then you are using dnSpy or unity explorer", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(ShadowDistance) }));
 
-            this.AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<LightLimit>("Light limit", "Sets the limit of visible point lights", "Graphics", "Settings", 1, null, new OverhaulSettingsManager.SettingEntry.UIValueSettings
+            AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<LightLimit>("Light limit", "Sets the limit of visible point lights", "Graphics", "Settings", 1, null, new OverhaulSettingsManager.SettingEntry.UIValueSettings
             {
                 DropdownEnumType = typeof(LightLimit)
             }, null, null, false));
-            this.AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<bool>("Vignette", "Shades screen edges", "Graphics", "Additions", true, null, null, null, null, false));
+            AddSetting(OverhaulSettingsManager.SettingEntry.NewSetting<bool>("Vignette", "Shades screen edges", "Graphics", "Additions", true, null, null, null, null, false));
             AddSetting(SettingEntry.NewSetting<bool>("Soft shadows", "Make shadows less pixelated", "Graphics", "Settings", true));
 
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized", string.Empty));
@@ -71,7 +65,7 @@ namespace CloneDroneOverhaul.Modules
 
             OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(delegate
             {
-                this.refreshSettings();
+                refreshSettings();
             });
         }
 
@@ -266,21 +260,23 @@ namespace CloneDroneOverhaul.Modules
 
             public static SettingEntry NewSetting<T>(string name, string description, string category, string categorySection, object defaultValue, ChildrenSettings childSettings = null, UIValueSettings valueSettings = null, string nameID = null, string descriptionID = null, bool forceHide = false)
             {
-                Modules.OverhaulSettingsManager.SettingEntry entry = new Modules.OverhaulSettingsManager.SettingEntry();
-                entry.Name = name;
-                entry.Description = description;
-                entry.Type = typeof(T);
-                entry.NameLocalizationID = nameID;
-                entry.DescLocalizationID = descriptionID;
-                entry.Path = new CategoryPath()
+                Modules.OverhaulSettingsManager.SettingEntry entry = new Modules.OverhaulSettingsManager.SettingEntry
                 {
-                    Category = category,
-                    Section = categorySection
+                    Name = name,
+                    Description = description,
+                    Type = typeof(T),
+                    NameLocalizationID = nameID,
+                    DescLocalizationID = descriptionID,
+                    Path = new CategoryPath()
+                    {
+                        Category = category,
+                        Section = categorySection
+                    },
+                    DefaultValue = defaultValue,
+                    ChildSettings = childSettings,
+                    ValueSettings = valueSettings,
+                    ForceHide = forceHide
                 };
-                entry.DefaultValue = defaultValue;
-                entry.ChildSettings = childSettings;
-                entry.ValueSettings = valueSettings;
-                entry.ForceHide = forceHide;
                 return entry;
             }
             public void SetUpLocalization(string nameID, string descriptionID)
@@ -289,13 +285,7 @@ namespace CloneDroneOverhaul.Modules
                 DescLocalizationID = descriptionID;
             }
 
-            public string ID
-            {
-                get
-                {
-                    return Path.Category + "." + Path.Section + "." + Name;
-                }
-            }
+            public string ID => Path.Category + "." + Path.Section + "." + Name;
             public string Name { get; private set; }
             public string NameLocalizationID { get; private set; }
             public string Description { get; private set; }
@@ -326,10 +316,7 @@ namespace CloneDroneOverhaul.Modules
                     }
                     children = value;
                 }
-                get
-                {
-                    return children;
-                }
+                get => children;
             }
             private ChildrenSettings children;
             public UIValueSettings ValueSettings { get; private set; }

@@ -6,19 +6,19 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public class ReferenceOnClick : MonoBehaviour
     {
-        Action<MonoBehaviour> ActOnClick;
+        private Action<MonoBehaviour> ActOnClick;
 
         public static void CallOnClickWithReference(GameObject obj, Action<MonoBehaviour> evnt)
         {
             obj.AddComponent<ReferenceOnClick>().ActOnClick = evnt;
         }
 
-        void Awake()
+        private void Awake()
         {
             base.GetComponent<Button>().onClick.AddListener(onButtonClick);
         }
 
-        void onButtonClick()
+        private void onButtonClick()
         {
             ActOnClick(this);
         }

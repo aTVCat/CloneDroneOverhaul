@@ -9,11 +9,9 @@ namespace CloneDroneOverhaul.LevelEditor
     {
         public const string PREFABPATHPREFIX = "Prefabs/LevelObjects/";
         public const string TEXTUREPATHPREFIX = "CloneDroneOverhaul/Textures/";
-
-        static Dictionary<string, Transform> _moddedLevelObjectTransforms = new Dictionary<string, Transform>();
-        static Dictionary<string, Texture2D> _moddedLevelObjectTextures = new Dictionary<string, Texture2D>();
-
-        static List<Tuple<string, string>> _moddedLevelObjects = new List<Tuple<string, string>>();
+        private static Dictionary<string, Transform> _moddedLevelObjectTransforms = new Dictionary<string, Transform>();
+        private static Dictionary<string, Texture2D> _moddedLevelObjectTextures = new Dictionary<string, Texture2D>();
+        private static List<Tuple<string, string>> _moddedLevelObjects = new List<Tuple<string, string>>();
 
         public static void AddObject(string folderName, string itemName, Transform transform, Texture2D image)
         {
@@ -21,15 +19,21 @@ namespace CloneDroneOverhaul.LevelEditor
             string texturePath = TEXTUREPATHPREFIX + folderName + "/" + itemName;
 
             if (!_moddedLevelObjectTextures.ContainsKey(texturePath))
+            {
                 _moddedLevelObjectTextures.Add(texturePath, image);
+            }
 
             if (!_moddedLevelObjectTransforms.ContainsKey(fullPath))
+            {
                 _moddedLevelObjectTransforms.Add(fullPath, transform);
+            }
 
             Tuple<string, string> tuple = new Tuple<string, string>(fullPath, texturePath);
 
             if (!_moddedLevelObjects.Contains(tuple))
+            {
                 _moddedLevelObjects.Add(tuple);
+            }
         }
 
         internal static UnityEngine.Object TryGetObject(string path)

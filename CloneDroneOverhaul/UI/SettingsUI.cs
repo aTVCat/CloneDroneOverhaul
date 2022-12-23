@@ -190,7 +190,7 @@ namespace CloneDroneOverhaul.UI
             }
         }
 
-        void populateSetting(Modules.OverhaulSettingsManager.SettingEntry entry, Transform parent, bool ignoreIsHidden)
+        private void populateSetting(Modules.OverhaulSettingsManager.SettingEntry entry, Transform parent, bool ignoreIsHidden)
         {
             if (entry.ForceHide)
             {
@@ -295,16 +295,17 @@ namespace CloneDroneOverhaul.UI
                 }
             }
 
-            void ShowAdditSettings()
+            private void ShowAdditSettings()
             {
                 GUIManagement.Instance.GetGUI<UI.SettingsUI>().ShowAdditionalSettings(Entry);
             }
 
-            void ToggleBoolValue(bool val)
+            private void ToggleBoolValue(bool val)
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, val, false);
             }
-            void SetFloatValue(float val)
+
+            private void SetFloatValue(float val)
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, val, false);
                 string valtxt = (val * (Settings.Step == -1 ? 1 : Settings.Step)).ToString();
@@ -314,7 +315,8 @@ namespace CloneDroneOverhaul.UI
                 }
                 MyModdedObject.GetObjectFromList<Text>(6).text = "[" + valtxt + "]";
             }
-            void SetEnumValue(int num)
+
+            private void SetEnumValue(int num)
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, num, false);
             }

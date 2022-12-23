@@ -33,16 +33,13 @@ namespace CloneDroneOverhaul.UI.Components
         }
         public ContextMenuElement[] Elements;
         public ContextMenuActivationMethod ActivationMethod;
-        bool isPointerOverElement;
-        float timeMouseIsOverElement;
+        private bool isPointerOverElement;
+        private float timeMouseIsOverElement;
 
         private bool isShowingUI;
         public bool IsShowingUI
         {
-            get
-            {
-                return isShowingUI;
-            }
+            get => isShowingUI;
             private set
             {
                 if (value == isShowingUI)
@@ -63,7 +60,7 @@ namespace CloneDroneOverhaul.UI.Components
             isPointerOverElement = true;
         }
 
-        void Update()
+        private void Update()
         {
             if (isPointerOverElement)
             {

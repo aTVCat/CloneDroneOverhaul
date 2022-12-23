@@ -6,13 +6,7 @@ namespace CloneDroneOverhaul.Modules
     public class AdvancedPhotoModeManager : ModuleBase
     {
         private bool _usingSlowMo;
-        public bool IsSlowMoEnabled
-        {
-            get
-            {
-                return PhotoManager.Instance.IsInPhotoMode() && _usingSlowMo;
-            }
-        }
+        public bool IsSlowMoEnabled => PhotoManager.Instance.IsInPhotoMode() && _usingSlowMo;
 
         public override void Start()
         {
@@ -103,12 +97,12 @@ namespace AdvancedPhotoModeEffects
         private Material material_Displacement;
         private Material material_Scanlines;
 
-        void Awake()
+        private void Awake()
         {
             material_Scanlines = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_Scanlines"));
         }
 
-        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
             material_Scanlines.SetFloat("_Intensity", scanlineIntensity * 0.01f);
             material_Scanlines.SetFloat("_ValueX", scanlineWidth);
@@ -124,12 +118,12 @@ namespace AdvancedPhotoModeEffects
         public float v = 1;
         private Material material;
 
-        void Awake()
+        private void Awake()
         {
             material = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_Tint"));
         }
 
-        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
 
             material.SetFloat("_ValueX", y);

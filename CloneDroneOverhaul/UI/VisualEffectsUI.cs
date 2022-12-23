@@ -35,7 +35,7 @@ namespace CloneDroneOverhaul.UI
             objectFromList.sizeDelta = Vector2.zero;
             objectFromList.localScale = Vector3.one;
             objectFromList.localPosition = Vector2.zero;
-            this._vignette = objectFromList.GetComponent<Image>();
+            _vignette = objectFromList.GetComponent<Image>();
         }
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
@@ -68,10 +68,10 @@ namespace CloneDroneOverhaul.UI
             {
                 Modules.VisualsModule visuals = OverhaulMain.Visuals;
 
-                this._vignette.gameObject.SetActive(_vignetteEnabled && _currrentGameMode != GAMEMODE_WHERE_IMAGE_EFFECTS_CAANOT_BE_VISIBLE);
+                _vignette.gameObject.SetActive(_vignetteEnabled && _currrentGameMode != GAMEMODE_WHERE_IMAGE_EFFECTS_CAANOT_BE_VISIBLE);
 
-                this._noise.gameObject.SetActive(visuals.OverrideSettings ? visuals.Override_NoiseEnabled : visuals.NoiseEnabled && _currrentGameMode != GAMEMODE_WHERE_IMAGE_EFFECTS_CAANOT_BE_VISIBLE);
-                this._noise.color = new Color(1, 1, 1, 0.33f * (visuals.OverrideSettings ? visuals.Override_NoiseMultipler : visuals.NoiseMultipler));
+                _noise.gameObject.SetActive(visuals.OverrideSettings ? visuals.Override_NoiseEnabled : visuals.NoiseEnabled && _currrentGameMode != GAMEMODE_WHERE_IMAGE_EFFECTS_CAANOT_BE_VISIBLE);
+                _noise.color = new Color(1, 1, 1, 0.33f * (visuals.OverrideSettings ? visuals.Override_NoiseMultipler : visuals.NoiseMultipler));
             });
         }
     }

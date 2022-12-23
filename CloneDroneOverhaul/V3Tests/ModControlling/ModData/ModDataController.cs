@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using CloneDroneOverhaul.V3Tests.Utilities;
+﻿using CloneDroneOverhaul.V3Tests.Utilities;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Base
 {
@@ -13,7 +13,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
         /// <summary>
         /// The folder, where most of assets are stored in
         /// </summary>
-        public static string ModAssetsFolder { get { return OverhaulDescription.GetModFolder() + "Assets/"; } }
+        public static string ModAssetsFolder => OverhaulDescription.GetModFolder() + "Assets/";
 
         /// <summary>
         /// Load an asset from Assets directory
@@ -28,15 +28,15 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
             object result = null;
 
-            if(fileType == ModAssetFileType.Image)
+            if (fileType == ModAssetFileType.Image)
             {
                 result = OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(fileUnderAssetsFolder);
             }
-            else if(fileType == ModAssetFileType.Json)
+            else if (fileType == ModAssetFileType.Json)
             {
                 result = OverhaulUtilities.FileUtils.LoadString(fileUnderAssetsFolder);
             }
-            else if(fileType == ModAssetFileType.None)
+            else if (fileType == ModAssetFileType.None)
             {
                 result = OverhaulUtilities.FileUtils.LoadBytes(fileUnderAssetsFolder);
             }

@@ -1,6 +1,4 @@
 ﻿using CloneDroneOverhaul.V3Tests.Base;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -15,15 +13,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private Character _playerInstance;
         private Character _player
         {
-            get
-            {
-                return _playerInstance;
-            }
+            get => _playerInstance;
             set
             {
                 _playerInstance = value;
 
-                if(value == null)
+                if (value == null)
                 {
                     _playerCameraInfo = null;
                     return;
@@ -40,7 +35,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 return;
             }
             GlobalCameraState++;
-            if((int)GlobalCameraState > 3)
+            if ((int)GlobalCameraState > 3)
             {
                 GlobalCameraState = 0;
             }
@@ -56,7 +51,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         {
             PlayerCameraState = cameraPos;
             Character character = null;
-            if(characterIn != null)
+            if (characterIn != null)
             {
                 character = characterIn;
             }
@@ -88,7 +83,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public override void OnEvent(in string eventName, in object[] args)
         {
-            if(eventName == "onPlayerSet")
+            if (eventName == "onPlayerSet")
             {
                 CloneDroneOverhaul.Utilities.RobotShortInformation info = args[0] as CloneDroneOverhaul.Utilities.RobotShortInformation;
                 _player = info.Instance;

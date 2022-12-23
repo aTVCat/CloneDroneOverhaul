@@ -34,7 +34,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
         private bool _isDone;
         public bool IsDone
         {
-            get { return _isDone; }
+            get => _isDone;
             set
             {
                 _isDone = value;
@@ -70,7 +70,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
                 InternalModBot.IgnoreCrashesManager.SetIsIgnoringCrashes(true);
             }
 
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
 
             MyAnimator = base.GetComponent<Animator>();
             Title = mObj.GetObjectFromList<TextMeshProUGUI>(0);
@@ -126,7 +126,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             }, 0.3f, true);
         }
 
-        IEnumerator switchScene(string id, bool onlyLoadScene = false)
+        private IEnumerator switchScene(string id, bool onlyLoadScene = false)
         {
             if (!onlyLoadScene)
             {
@@ -223,7 +223,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             {
                 SceneTransitionManager.Instance.SetPrivateField<bool>("_isBoltDisconnectInProgress", true);
             }
-            registerDoneCallback(new System.Action(this.onShutDownComplete));
+            registerDoneCallback(new System.Action(onShutDownComplete));
         }
 
         private void onShutDownComplete()
@@ -232,7 +232,11 @@ namespace CloneDroneOverhaul.V3Tests.Base
             if (SceneTransitionManager.Instance.GetPrivateField<bool>("_isDisconnecting"))
             {
                 SceneTransitionManager.Instance.SetPrivateField<bool>("_isDisconnecting", false);
-                if (IsLoadingScene) return;
+                if (IsLoadingScene)
+                {
+                    return;
+                }
+
                 AddStatusString("BoltLauncher.Shutdown done!");
                 base.StartCoroutine(switchScene(Action.SceneName, true));
             }
@@ -263,7 +267,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             }
         }
 
-        void Update()
+        private void Update()
         {
             LoadingSpinner.eulerAngles += new Vector3(0, 0, 180 * Time.deltaTime);
             if (_isWaitingToDestroy)
@@ -273,7 +277,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
                 if (_timeLeftToDestroy < 0)
                 {
-                    Destroy(this.gameObject);
+                    Destroy(gameObject);
                 }
             }
         }

@@ -28,11 +28,13 @@
                 header = "Going to next match...";
             }
 
-            TransitionAction action = new TransitionAction();
-            action.Type = TranstionType.SceneSwitch;
-            action.SceneName = "Gameplay";
-            action.UseAsyncSceneLoading = true;
-            action.HideOnComplete = true;
+            TransitionAction action = new TransitionAction
+            {
+                Type = TranstionType.SceneSwitch,
+                SceneName = "Gameplay",
+                UseAsyncSceneLoading = true,
+                HideOnComplete = true
+            };
             StartTranstion(action, header, details, true);
         }
 

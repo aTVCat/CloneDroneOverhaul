@@ -132,8 +132,7 @@ namespace CloneDroneOverhaul.UI
                 BRMObj.GetObjectFromList<Text>(12).text = BattleRoyaleManager.Instance.GetWinnerName();
                 if (BattleRoyaleManager.Instance.IsLocalPlayerTheWinner())
                 {
-                    Color col;
-                    ColorUtility.TryParseHtmlString("#99FFA2", out col);
+                    ColorUtility.TryParseHtmlString("#99FFA2", out Color col);
                     BRMObj.GetObjectFromList<Text>(12).color = col;
 
                     ColorUtility.TryParseHtmlString("#147816", out col);
@@ -147,8 +146,7 @@ namespace CloneDroneOverhaul.UI
                 }
                 else
                 {
-                    Color col;
-                    ColorUtility.TryParseHtmlString("#FB6262", out col);
+                    ColorUtility.TryParseHtmlString("#FB6262", out Color col);
                     BRMObj.GetObjectFromList<Text>(12).color = col;
 
                     ColorUtility.TryParseHtmlString("#871D22", out col);
@@ -162,7 +160,11 @@ namespace CloneDroneOverhaul.UI
             }
             BRMObj.GetObjectFromList<Image>(9).gameObject.SetActive(!isMatchedSettled);
             BRMObj.GetObjectFromList<RectTransform>(6).gameObject.SetActive(true);
-            if (!_isResultShownAlready) BRMObj.GetObjectFromList<Animator>(6).Play("BR_ResultScreen");
+            if (!_isResultShownAlready)
+            {
+                BRMObj.GetObjectFromList<Animator>(6).Play("BR_ResultScreen");
+            }
+
             GameUIRoot.Instance.RefreshCursorEnabled();
 
             //Count the place

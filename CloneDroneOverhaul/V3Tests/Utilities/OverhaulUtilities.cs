@@ -187,7 +187,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 }
             }
 
-            static IEnumerator loadBytesAsync(string filePath, Action<byte[]> onLoaded)
+            private static IEnumerator loadBytesAsync(string filePath, Action<byte[]> onLoaded)
             {
                 byte[] array = null;
 
@@ -237,7 +237,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 }
             }
 
-            static IEnumerator loadStringAsync(string filePath, Action<string> onLoaded)
+            private static IEnumerator loadStringAsync(string filePath, Action<string> onLoaded)
             {
                 string data = null;
 

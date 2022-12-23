@@ -36,12 +36,15 @@
     <Compile Include="Base\ControllersAndUtilities\Utilities\Coroutines.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\PlayerUtilities.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\StaticReferences.cs" />
+    <Compile Include="Base\SceneTransitionController.cs" />
     <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
     <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
     <None Include="ModdedObject.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraType.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraInfo.cs" />
+    <Compile Include="V3Tests\Gameplay\GameStatistics\Controllers\GameStatistic.cs" />
+    <Compile Include="V3Tests\Gameplay\GameStatistics\Controllers\GameStatisticsController.cs" />
     <Compile Include="V3Tests\Gameplay\LevelControlling\LevelConstructor.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\EndlessMode\EndlessModeOverhaul.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Sandbox\SandboxMode - Копировать.cs" />
@@ -51,8 +54,11 @@
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModeBase.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModesController.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\CameraController.cs" />
+    <Compile Include="V3Tests\Graphics\OverhaulGraphicsController.cs" />
+    <Compile Include="V3Tests\Graphics\WorldEffects\ArenaWeatherController.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorUndoRedoManager.cs" />
+    <Compile Include="V3Tests\LevelEditor\MetaDataController.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorUI.cs" />
     <Compile Include="Base\Localization\LocalizationEditor.cs" />
@@ -74,7 +80,6 @@
     <Compile Include="Base\Modules\MainControllers\HotkeysStaticModule.cs" />
     <Compile Include="Base\Modules\MainControllers\VisualsModule.cs" />
     <Compile Include="Base\Patching\ObjectValueReplacer.cs" />
-    <Compile Include="Base\SceneTransitionController_OLD.cs" />
     <Compile Include="Base\Patching\ObjectFixer.cs" />
     <Compile Include="OverhaulMain.cs" />
     <Compile Include="Base\Patching\OverhaulPatches.cs" />
@@ -120,6 +125,11 @@
     <Compile Include="V3Tests\ModControlling\V3_FunctionEvents.cs" />
     <Compile Include="V3Tests\ModControlling\ModdedUpgrades\ModdedUpgradesController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_LongLifeTime.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_ShortLifeTime.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\PooledPrefabContainer.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\PooledPrefabController.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\PooledPrefabInstanceBase.cs" />
     <Compile Include="V3Tests\Utilities\FakePrefabSystem\FakePrefabSystem.cs" />
     <Compile Include="V3Tests\Utilities\Material\MaterialTextureType.cs" />
     <Compile Include="V3Tests\Utilities\OverhaulUtilities.cs" />

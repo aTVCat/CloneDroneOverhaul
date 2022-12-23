@@ -20,7 +20,7 @@ namespace CloneDroneOverhaul
             StaticCoroutineRunner.StartStaticCoroutine(checkForUpdate(onReceivedVersion));
         }
 
-        static private IEnumerator checkForUpdate(Action<string> onReceivedVersion)
+        private static IEnumerator checkForUpdate(Action<string> onReceivedVersion)
         {
             using (WebClient wc = new WebClient())
             {

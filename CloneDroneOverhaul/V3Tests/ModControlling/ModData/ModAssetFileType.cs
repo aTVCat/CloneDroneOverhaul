@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CloneDroneOverhaul.V3Tests.Base
+﻿namespace CloneDroneOverhaul.V3Tests.Base
 {
     public enum ModAssetFileType
     {

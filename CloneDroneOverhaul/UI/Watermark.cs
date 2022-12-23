@@ -116,8 +116,8 @@ namespace CloneDroneOverhaul.UI
 
         private void openChangelog()
         {
-            //BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/" + OverhaulDescription.GetModVersion(false));
-            BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/a0.2.0.13");
+            BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/" + OverhaulDescription.GetModVersion(false));
+            //BaseUtils.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases/tag/a0.2.0.13");
         }
     }
 }

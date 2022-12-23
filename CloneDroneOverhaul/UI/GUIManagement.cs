@@ -14,11 +14,11 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x06000104 RID: 260 RVA: 0x000082AC File Offset: 0x000064AC
         public T GetGUI<T>() where T : ModGUIBase
         {
-            for (int i = 0; i < this.guis.Count; i++)
+            for (int i = 0; i < guis.Count; i++)
             {
-                if (this.guis[i] is T)
+                if (guis[i] is T)
                 {
-                    return this.guis[i] as T;
+                    return guis[i] as T;
                 }
             }
             return default(T);
@@ -27,22 +27,22 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x06000105 RID: 261 RVA: 0x00008302 File Offset: 0x00006502
         public void AddGUI(ModGUIBase gui)
         {
-            if (!this.guis.Contains(gui))
+            if (!guis.Contains(gui))
             {
                 gui.OnInstanceStart();
                 gui.GUIModule = this;
-                this.guis.Add(gui);
+                guis.Add(gui);
             }
         }
 
         // Token: 0x06000106 RID: 262 RVA: 0x0000832C File Offset: 0x0000652C
         public override void OnManagedUpdate()
         {
-            for (int i = 0; i < this.guis.Count; i++)
+            for (int i = 0; i < guis.Count; i++)
             {
-                if (this.guis[i].gameObject.activeInHierarchy)
+                if (guis[i].gameObject.activeInHierarchy)
                 {
-                    ModGUIBase modGUIBase = this.guis[i];
+                    ModGUIBase modGUIBase = guis[i];
                     modGUIBase.OnManagedUpdate();
                 }
             }
@@ -51,11 +51,11 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x06000107 RID: 263 RVA: 0x0000837C File Offset: 0x0000657C
         public override void OnNewFrame()
         {
-            for (int i = 0; i < this.guis.Count; i++)
+            for (int i = 0; i < guis.Count; i++)
             {
-                if (this.guis[i].gameObject.activeSelf)
+                if (guis[i].gameObject.activeSelf)
                 {
-                    ModGUIBase modGUIBase = this.guis[i];
+                    ModGUIBase modGUIBase = guis[i];
                     modGUIBase.OnNewFrame();
                 }
             }
@@ -64,11 +64,11 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x06000108 RID: 264 RVA: 0x000083CC File Offset: 0x000065CC
         public override void OnFixedUpdate()
         {
-            for (int i = 0; i < this.guis.Count; i++)
+            for (int i = 0; i < guis.Count; i++)
             {
-                if (this.guis[i].gameObject.activeInHierarchy)
+                if (guis[i].gameObject.activeInHierarchy)
                 {
-                    ModGUIBase modGUIBase = this.guis[i];
+                    ModGUIBase modGUIBase = guis[i];
                     modGUIBase.OnFixedUpdate();
                 }
             }
@@ -83,7 +83,7 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x0600010A RID: 266 RVA: 0x00008420 File Offset: 0x00006620
         public override void RunFunction(string name, object[] arguments)
         {
-            foreach (ModGUIBase modGUIBase in this.guis)
+            foreach (ModGUIBase modGUIBase in guis)
             {
                 modGUIBase.RunFunction(name, arguments);
             }
@@ -92,7 +92,7 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x0600010B RID: 267 RVA: 0x00008474 File Offset: 0x00006674
         public override void RunFunction<T>(string name, T obj)
         {
-            foreach (ModGUIBase modGUIBase in this.guis)
+            foreach (ModGUIBase modGUIBase in guis)
             {
                 modGUIBase.RunFunction<T>(name, obj);
             }
@@ -101,7 +101,7 @@ namespace CloneDroneOverhaul.UI
         // Token: 0x0600010C RID: 268 RVA: 0x000084C8 File Offset: 0x000066C8
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)
         {
-            foreach (ModGUIBase modGUIBase in this.guis)
+            foreach (ModGUIBase modGUIBase in guis)
             {
                 modGUIBase.OnSettingRefreshed(ID, value, isRefreshedOnStart);
             }

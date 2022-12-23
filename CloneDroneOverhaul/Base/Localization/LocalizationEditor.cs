@@ -72,7 +72,7 @@ namespace CloneDroneOverhaul.Localization
 
             public void OnPointerClick(UnityEngine.EventSystems.PointerEventData data)
             {
-                BaseStaticReferences.ModuleManager.GetModule<GUIManagement>().GetGUI<OverhaulLocalizationEditor>().OnEditButtonClicked(this.MyID);
+                BaseStaticReferences.ModuleManager.GetModule<GUIManagement>().GetGUI<OverhaulLocalizationEditor>().OnEditButtonClicked(MyID);
             }
         }
 
@@ -86,7 +86,7 @@ namespace CloneDroneOverhaul.Localization
                 BaseStaticReferences.ModuleManager.GetModule<GUIManagement>().GetGUI<OverhaulLocalizationEditor>().EditingLang = MyLangID;
             }
 
-            void Update()
+            private void Update()
             {
                 ModdedObject mObj = base.GetComponent<ModdedObject>();
                 mObj.GetObjectFromList<InputField>(1).interactable = UI.EditingLang == mObj.GetObjectFromList<Text>(0).text;
@@ -99,7 +99,7 @@ namespace CloneDroneOverhaul.Localization
             LocalNameIF.text = ID;
             EditingLocal = " - 1 ";
 
-            TransformUtils.DestroyAllChildren(this.LangContainer);
+            TransformUtils.DestroyAllChildren(LangContainer);
             foreach (string str in OurModule.GetAllLanguageCodes())
             {
                 RectTransform trans = Instantiate<RectTransform>(LangEntryPrefab, LangContainer);
@@ -144,7 +144,7 @@ namespace CloneDroneOverhaul.Localization
         private void OnRemoveSelectedTranslationClick()
         {
             OurModule.GetAllTranslations().Remove(OurModule.GetTranslation(EditingLocal));
-            TransformUtils.DestroyAllChildren(this.LangContainer);
+            TransformUtils.DestroyAllChildren(LangContainer);
             RefreshAvailableLocals();
         }
 

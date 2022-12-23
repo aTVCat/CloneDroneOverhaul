@@ -42,16 +42,10 @@ namespace CloneDroneOverhaul.Modules
 
             private void getValues()
             {
-                this._allCameras = UnityEngine.Object.FindObjectsOfType<Camera>();
+                _allCameras = UnityEngine.Object.FindObjectsOfType<Camera>();
             }
 
-            public Camera[] AllCameras
-            {
-                get
-                {
-                    return this._allCameras;
-                }
-            }
+            public Camera[] AllCameras => _allCameras;
 
             private Camera[] _allCameras;
         }
@@ -63,29 +57,11 @@ namespace CloneDroneOverhaul.Modules
                 return default(GameInformationManager.QualityInformation);
             }
 
-            public float ShadowDistance
-            {
-                get
-                {
-                    return QualitySettings.shadowDistance;
-                }
-            }
+            public float ShadowDistance => QualitySettings.shadowDistance;
 
-            public float PixelLightCount
-            {
-                get
-                {
-                    return (float)QualitySettings.pixelLightCount;
-                }
-            }
+            public float PixelLightCount => (float)QualitySettings.pixelLightCount;
 
-            public LightmapSettings LightmapSettings
-            {
-                get
-                {
-                    return UnityEngine.Object.FindObjectOfType<LightmapSettings>();
-                }
-            }
+            public LightmapSettings LightmapSettings => UnityEngine.Object.FindObjectOfType<LightmapSettings>();
         }
 
         public struct LevelInformation
@@ -111,18 +87,18 @@ namespace CloneDroneOverhaul.Modules
 
             public void TrySaveLevel(bool openExplorer, string fileName, bool createLevelDataIfNull)
             {
-                if (this.LevelData == null)
+                if (LevelData == null)
                 {
                     if (!createLevelDataIfNull)
                     {
                         return;
                     }
-                    this.LevelData = new LevelEditorLevelData();
+                    LevelData = new LevelEditorLevelData();
                     LevelEditorLevelObject levelEditorLevelObject = new LevelEditorLevelObject();
-                    levelEditorLevelObject.SerializeFrom(this.LevelTransform.gameObject);
-                    this.LevelData.RootLevelObject = levelEditorLevelObject;
+                    levelEditorLevelObject.SerializeFrom(LevelTransform.gameObject);
+                    LevelData.RootLevelObject = levelEditorLevelObject;
                 }
-                string contents = JsonConvert.SerializeObject(this.LevelData, Formatting.None, Singleton<DataRepository>.Instance.GetSettings());
+                string contents = JsonConvert.SerializeObject(LevelData, Formatting.None, Singleton<DataRepository>.Instance.GetSettings());
                 File.WriteAllText(ModDataManager.DublicatedLevelsFolder + fileName + ".json", contents);
                 if (openExplorer)
                 {

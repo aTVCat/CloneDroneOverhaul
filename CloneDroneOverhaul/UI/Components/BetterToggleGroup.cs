@@ -54,7 +54,7 @@ namespace CloneDroneOverhaul.UI.Components
             Toggles.Add(togg);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             foreach (BetterToggleGroupEntry togg in Toggles)
             {
@@ -87,7 +87,7 @@ namespace CloneDroneOverhaul.UI.Components
             Group.OnEntryValueUpdated(this, val);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (Group.Toggles.Contains(this))
             {

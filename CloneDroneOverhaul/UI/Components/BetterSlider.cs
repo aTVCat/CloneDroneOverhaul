@@ -35,7 +35,7 @@ namespace CloneDroneOverhaul.UI.Components
             return this;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (!string.IsNullOrEmpty(translateID))
             {
@@ -55,13 +55,7 @@ namespace CloneDroneOverhaul.UI.Components
             TheSlider.maxValue = max;
         }
 
-        public float SliderValue
-        {
-            get
-            {
-                return TheSlider.value;
-            }
-        }
+        public float SliderValue => TheSlider.value;
 
         public void OnSliderUpdated(float value)
         {

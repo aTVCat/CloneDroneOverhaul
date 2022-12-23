@@ -15,7 +15,7 @@ namespace CloneDroneOverhaul.UI
                 return obj.AddComponent<ReportWindow>().SetUp();
             }
 
-            ReportWindow SetUp()
+            private ReportWindow SetUp()
             {
                 ModdedObject mObj = base.GetComponent<ModdedObject>();
                 mObj.GetObjectFromList<Button>(1).onClick.AddListener(HideWindow);
@@ -82,9 +82,9 @@ namespace CloneDroneOverhaul.UI
         private bool _wasExitToDesktopButtonClicked;
         private bool _userDismissedStream;
 
-        private bool ShowPlayerList { get { return GameModeManager.IsMultiplayer(); } }
-        private bool ShowPhotoModeButton { get { return !GameModeManager.IsMultiplayer() && !CharacterTracker.Instance.GetPlayer().GetRobotInfo().IsNull; } }
-        private bool ShowWorkshopLevelInfo { get { return GameModeManager.IsPlayingWorkshopLevelInEndlessOrTwitch(); } }
+        private bool ShowPlayerList => GameModeManager.IsMultiplayer();
+        private bool ShowPhotoModeButton => !GameModeManager.IsMultiplayer() && !CharacterTracker.Instance.GetPlayer().GetRobotInfo().IsNull;
+        private bool ShowWorkshopLevelInfo => GameModeManager.IsPlayingWorkshopLevelInEndlessOrTwitch();
 
         // 93285630 - Erik
         // 103096704 - Brian
@@ -423,7 +423,7 @@ namespace CloneDroneOverhaul.UI
             WLI_SkipLevelButton.interactable = GameModeManager.CanSkipCurrentLevel();
             if (!GameModeManager.Is(GameMode.Endless))
             {
-                this.WorkshopLevelInfoMObj.gameObject.SetActive(false);
+                WorkshopLevelInfoMObj.gameObject.SetActive(false);
                 return;
             }
 
@@ -441,7 +441,7 @@ namespace CloneDroneOverhaul.UI
             }
             else
             {
-                this.WorkshopLevelInfoMObj.gameObject.SetActive(false);
+                WorkshopLevelInfoMObj.gameObject.SetActive(false);
             }
         }
         private void refreshSpecialButtons()
@@ -492,7 +492,7 @@ namespace CloneDroneOverhaul.UI
                 }
             }
 
-            this.GameStatus.text = details;
+            GameStatus.text = details;
         }
 
         private void refreshLevelProgress()
@@ -610,7 +610,7 @@ namespace CloneDroneOverhaul.UI
 
         private void onCopyCodeClicked()
         {
-            BaseUtils.CopyToClipboard(this.CUI_Code.text, true, "Code ", " was copied to clipboard!");
+            BaseUtils.CopyToClipboard(CUI_Code.text, true, "Code ", " was copied to clipboard!");
         }
 
         private void onWorkshopItemPageClicked()

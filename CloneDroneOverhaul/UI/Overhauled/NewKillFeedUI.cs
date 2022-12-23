@@ -57,12 +57,14 @@ namespace CloneDroneOverhaul.UI
             if (name == "Bolt.OnEvent" && typeof(T) == typeof(MultiplayerKillEvent))
             {
                 MultiplayerKillEvent evnt = obj as MultiplayerKillEvent;
-                KillEventData data = new KillEventData();
-                data.KillerID = evnt.KillerPlayFabID;
-                data.KillerName = evnt.KillerName;
-                data.VictimName = evnt.VictimName;
-                data.DamageType = evnt.DamageType;
-                data.WasKicked = evnt.WasKicked;
+                KillEventData data = new KillEventData
+                {
+                    KillerID = evnt.KillerPlayFabID,
+                    KillerName = evnt.KillerName,
+                    VictimName = evnt.VictimName,
+                    DamageType = evnt.DamageType,
+                    WasKicked = evnt.WasKicked
+                };
                 events.Add(data);
             }
         }

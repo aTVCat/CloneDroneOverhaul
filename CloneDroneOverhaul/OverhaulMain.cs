@@ -1,6 +1,7 @@
 ﻿using CloneDroneOverhaul.LevelEditor;
 using CloneDroneOverhaul.Localization;
 using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.RemovedOrOld;
 using CloneDroneOverhaul.UI;
 using CloneDroneOverhaul.UI.Notifications;
 using CloneDroneOverhaul.Utilities;
@@ -43,7 +44,7 @@ namespace CloneDroneOverhaul
                 OverhaulMain.Instance = this;
             }
             OverhaulCacheManager.ClearTemporal();
-            this.InitializeOverhaul();
+            InitializeOverhaul();
         }
 
         private void InitializeOverhaul()
@@ -51,20 +52,20 @@ namespace CloneDroneOverhaul
             BaseStaticValues.IsModEnabled = true;
             if (!OverhaulMain.hasCachedStuff)
             {
-                this.rememberVanillaPreferences();
+                rememberVanillaPreferences();
                 OverhaulCacheManager.CacheStuff();
                 OverhaulMain.hasCachedStuff = true;
             }
-            this.addReferences();
-            this.addModules();
+            addReferences();
+            addModules();
             V3_MainModController.Initialize();
 
-            this.addListeners();
-            this.spawnGUI();
-            this.fixVanillaStuff();
-            this.IsModInitialized = true;
-            this.finalPreparations();
-            this.checkforUpdate();
+            addListeners();
+            spawnGUI();
+            fixVanillaStuff();
+            IsModInitialized = true;
+            finalPreparations();
+            checkforUpdate();
         }
 
         protected override void OnModDeactivated()
@@ -80,7 +81,7 @@ namespace CloneDroneOverhaul
         protected override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
             OverhaulMain.Modules.ExecuteFunction("onLanguageChanged", null);
-            this._settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
+            _settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
         }
 
         protected override void OnLevelEditorStarted()
@@ -109,8 +110,8 @@ namespace CloneDroneOverhaul
                 return;
             }
             OverhaulMain.hasCheckForUpdates = true;
-            UpdateChecker.CheckForUpdates(new Action<string>(this.OnUpdateReceivedGitHub));
-            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(this.OnModDataGet));
+            UpdateChecker.CheckForUpdates(new Action<string>(OnUpdateReceivedGitHub));
+            API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
         }
 
         private void OnModDataGet(JsonObject json)
@@ -216,12 +217,14 @@ namespace CloneDroneOverhaul
                     Method = new Action(BaseUtils.AddSkillPoint)
                 });
                 HotkeysModule module = BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>();
-                Hotkey hotkey = new Hotkey();
-                hotkey.Key2 = KeyCode.M;
-                hotkey.Key1 = KeyCode.LeftControl;
-                hotkey.Method = delegate ()
+                Hotkey hotkey = new Hotkey
                 {
-                    V3Tests.Gameplay.LevelConstructor.BuildALevel(new V3Tests.Gameplay.LevelConstructor.LevelSettings(), true);
+                    Key2 = KeyCode.M,
+                    Key1 = KeyCode.LeftControl,
+                    Method = delegate ()
+                    {
+                        V3Tests.Gameplay.LevelConstructor.BuildALevel(new V3Tests.Gameplay.LevelConstructor.LevelSettings(), true);
+                    }
                 };
                 module.AddHotkey(hotkey);
                 BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
@@ -267,7 +270,7 @@ namespace CloneDroneOverhaul
                 transform2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
                 transform2.GetComponent<Button>().onClick.AddListener(new UnityAction(SettingsUI.Instance.Show));
                 transform2.GetComponentInChildren<Text>().text = "Overhaul Settings";
-                this._settingsButtonText = transform2.GetComponentInChildren<Text>();
+                _settingsButtonText = transform2.GetComponentInChildren<Text>();
             }
             foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {
@@ -409,7 +412,7 @@ namespace CloneDroneOverhaul
 
         private static string getGameVersion()
         {
-            string result = "a0.2.0.18";
+            string result = "a0.2.0.19";
             string result2 = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (!OVERRIDE_VERSION_STRING)
             {
@@ -496,7 +499,7 @@ namespace CloneDroneOverhaul
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFixedUpdate();
-                EffectsAndAbilitiesV4.RobotsExpansionManager.FixedUpdate();
+                RobotsExpansionManager.FixedUpdate();
             }
         }
 
@@ -509,7 +512,7 @@ namespace CloneDroneOverhaul
             OverhaulMain.Instance = null;
         }
 
-        void Awake()
+        private void Awake()
         {
             Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleMatchProgressChanged, delegate
             {
@@ -530,7 +533,7 @@ namespace CloneDroneOverhaul
             });
         }
 
-        void executeFunction<T>(string name, T obj)
+        private void executeFunction<T>(string name, T obj)
         {
             if (name == "battleRoyale.MatchProgressUpdated")
             {

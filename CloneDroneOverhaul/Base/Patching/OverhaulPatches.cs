@@ -29,11 +29,18 @@ namespace CloneDroneOverhaul.Patching
                 __instance.VsyncOnToggle.interactable = false;
                 __instance.VsyncOnToggle.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
                 __instance.VsyncOnToggle.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 20);
-                if (__instance.GetComponent<SelectableUI>() != null) __instance.GetComponent<SelectableUI>().enabled = false;
-                if (__instance.VsyncOnToggle.GetComponent<DoOnMouseActions>() == null) DoOnMouseActions.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
+                if (__instance.GetComponent<SelectableUI>() != null)
+                {
+                    __instance.GetComponent<SelectableUI>().enabled = false;
+                }
+
+                if (__instance.VsyncOnToggle.GetComponent<DoOnMouseActions>() == null)
+                {
+                    DoOnMouseActions.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
                 {
                     SettingsUI.Instance.ShowWithOpenedPage("Graphics", "Settings");
                 });
+                }
             }, 0.05f, true);
         }
     }
@@ -144,7 +151,7 @@ namespace CloneDroneOverhaul.Patching
             }
         }
 
-        
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Character), "SetCameraAnimatorEnabled")]
         private static bool Character_SetCameraAnimatorEnabled_Prefix()
@@ -415,7 +422,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(AttackManager), "CreateSwordBlockVFX")]
         private static bool AttackManager_CreateSwordBlockVFX_Prefix(Vector3 position)
         {
-            OverhaulMain.Visuals.EmitSwordBlockVFX(position, false);
+            OverhaulGraphicsController.EmitVFX_SwordBlock(position, false);
             return false;
         }
 
@@ -469,7 +476,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(GlobalFireParticleSystem), "CreateGroundImpactVFX")]
         public static void GlobalFireParticleSystem_CreateGroundImpactVFX_Postfix(Vector3 positon)
         {
-            OverhaulMain.Visuals.EmitSwordBlockVFX(positon, true);
+            OverhaulGraphicsController.EmitVFX_SwordBlock(positon, true);
         }
 
         [HarmonyPostfix]
@@ -785,6 +792,13 @@ namespace CloneDroneOverhaul.Patching
                 return false;
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorDataManager), "DeserializeInto")]
+        private static void LevelEditorDataManager_DeserializeInto_Postfix()
+        {
+            MetaDataController.GetInstance<MetaDataController>().RefreshCurrentLevelMetaData();
         }
 
         [HarmonyTranspiler]

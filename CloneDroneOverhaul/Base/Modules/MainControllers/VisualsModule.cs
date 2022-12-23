@@ -17,12 +17,7 @@ namespace CloneDroneOverhaul.Modules
         private ParticleSystem worldDustMS1;
         private ParticleSystem worldDustMS0;
         private ParticleSystem worldDustNormal;
-        private ParticleSystem worldDustNormalWinter;
-        private SimplePooledPrefab swordBlockPooled;
-        private SimplePooledPrefab swordFireBlockPooled;
-        private SimplePooledPrefab swordBlockMSPooled;
         private SimplePooledPrefab msBodyPartDamagedVFX;
-        private SimplePooledPrefab msHitVFX;
         private SimplePooledPrefab bodyPartDamagedVFX;
         private SimplePooledPrefab bodyPartDamagedWithFireVFX;
         private SimplePooledPrefab bodyPartBurning;
@@ -36,8 +31,7 @@ namespace CloneDroneOverhaul.Modules
         private SimplePooledPrefab jumpDash;
         private SimplePooledPrefab ArrowCollisionVFX;
         private Camera lastSpottedCamera;
-
-        List<AmplifyOcclusionEffect> effects = new List<AmplifyOcclusionEffect>();
+        private List<AmplifyOcclusionEffect> effects = new List<AmplifyOcclusionEffect>();
 
         private bool _isWaitingNextFrame;
         private float _timeToUpdateWeather_DEBUG;
@@ -100,12 +94,7 @@ namespace CloneDroneOverhaul.Modules
             worldDustMS1 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM1")).GetComponent<ParticleSystem>();
             worldDustMS0 = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustM0")).GetComponent<ParticleSystem>();
             worldDustNormal = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustNormal")).GetComponent<ParticleSystem>();
-            worldDustNormalWinter = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustNormalWinter")).GetComponent<ParticleSystem>();
-            worldDustNormalWinter.transform.position = new Vector3(0, 50, 0);
 
-            swordBlockPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Block").transform, 10, "VFX_SwordBlock", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
-            swordFireBlockPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBlock").transform, 50, "VFX_SwordFireBlock", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
-            swordBlockMSPooled = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_BlockMS").transform, 10, "VFX_SwordBlockMS", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             msBodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_CutMS").transform, 10, "VFX_MSCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 5, "VFX_Cut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
             bodyPartDamagedWithFireVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 15, "VFX_FireCut", 0.15f, SimplePooledPrefabInstance.ParticleSystemTag);
@@ -118,7 +107,6 @@ namespace CloneDroneOverhaul.Modules
             longLiveightVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 10, "VFX_EmitLongLiveLight", 4f, SimplePooledPrefabInstance.LongLiveLightTag);
             kickVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Kick").transform, 5, "VFX_Kick", 0.2f, SimplePooledPrefabInstance.ParticleSystemTag);
             jumpDash = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_JumpDash").transform, 5, "VFX_JumpDash", 0.3f, SimplePooledPrefabInstance.ParticleSystemTag);
-            msHitVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_MSHit").transform, 10, "VFX_MSHit", 0.17f, SimplePooledPrefabInstance.ParticleSystemTag);
             ArrowCollisionVFX = new SimplePooledPrefab(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ArrowCollision").transform, 5, "VFX_ArrowCollision", 0.45f, SimplePooledPrefabInstance.ParticleSystemTag);
 
             RefreshDustMaterials();
@@ -318,11 +306,6 @@ namespace CloneDroneOverhaul.Modules
             {
                 Occlusion.enabled = !GameModeManager.IsInLevelEditor() && (OverrideSettings ? Override_AOEnabled : _AOEnabled);
             }
-            if (Time.time >= _timeToUpdateWeather_DEBUG)
-            {
-                _timeToUpdateWeather_DEBUG = Time.time + Random.Range(30, 60);
-                worldDustNormalWinter.emissionRate = Random.Range(120, 200);
-            }
             if (Camera.main != null)
             {
                 probe.gameObject.transform.position = Camera.main.transform.position;
@@ -358,16 +341,9 @@ namespace CloneDroneOverhaul.Modules
             worldDustNormal.Stop();
             worldDustMS0.Stop();
             worldDustMS1.Stop();
-            worldDustNormalWinter.Stop();
 
             if (!_dustEnabled)
             {
-                return;
-            }
-
-            if ((GameModeManager.Is(GameMode.Endless) || GameModeManager.IsCoop() || GameModeManager.IsOnTitleScreen()) && !LevelManager.Instance.IsCurrentLevelHidingTheArena())
-            {
-                worldDustNormalWinter.Play();
                 return;
             }
 
@@ -386,31 +362,6 @@ namespace CloneDroneOverhaul.Modules
             else
             {
                 worldDustNormal.Play();
-            }
-        }
-
-        public void EmitSwordBlockVFX(Vector3 pos, bool isFire = false)
-        {
-            RobotShortInformation info = PlayerUtilities.GetPlayerRobotInfo();
-            bool useMindspace = false;
-            if (!info.IsNull)
-            {
-                useMindspace = info.IsFPMMindspace;
-            }
-
-            if (useMindspace)
-            {
-                swordBlockMSPooled.SpawnObject(pos, Vector3.zero, Color.clear);
-                msHitVFX.SpawnObject(pos, Vector3.zero, Color.clear);
-            }
-            else
-            {
-                if (isFire)
-                {
-                    swordFireBlockPooled.SpawnObject(pos, Vector3.zero, Color.clear);
-                    return;
-                }
-                swordBlockPooled.SpawnObject(pos + new Vector3(0, 0.1f, 0), Vector3.zero, Color.clear);
             }
         }
 
@@ -434,7 +385,9 @@ namespace CloneDroneOverhaul.Modules
         public void EmitBurningVFX(Vector3 pos)
         {
             if (Random.Range(0, 10) > 5)
+            {
                 bodyPartBurning.SpawnObject(pos, Vector3.zero, Color.clear);
+            }
         }
 
         public void EmitExplosion(Vector3 pos)
