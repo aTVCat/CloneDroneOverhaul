@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace CloneDroneOverhaul.Patching.VisualFixes
 {
     public class ObjectFixer
     {
         public static GameUIThemeData GameUIThemeData { get; private set; }
+        public static readonly List<string> LowPriorityObjects = new List<string>
+        {
+            "HumanEnvoyShip",
+            "Spidertron6000_TransportTube"
+        };
 
         public static void FixObject(Transform transform, string id, Object instanceScript = null)
         {
@@ -14,7 +20,38 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                 {
                     return;
                 }
+
                 ObjectPlacedInLevel objectPlacedInLevel = instanceScript as ObjectPlacedInLevel;
+                string dispName = objectPlacedInLevel.GetDisplayName();
+                // LODs
+                if (OverhaulCacheManager.HasCached(objectPlacedInLevel.GetDisplayName() + "_LOD0"))
+                {
+                    bool lowPriority = LowPriorityObjects.Contains(dispName);
+                    Material origMat = transform.GetComponent<Renderer>().material; 
+                    string lodBaseString = dispName + "_LOD";
+                    GameObject[] gObjs = new GameObject[3];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        GameObject g = UnityEngine.Object.Instantiate(OverhaulCacheManager.GetCached<GameObject>(lodBaseString + i.ToString()));
+                        g.GetComponent<Renderer>().material = origMat;
+                        gObjs[i] = g;
+                    }
+
+                    if(dispName == "ibeam")
+                    {
+                        V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 15f);
+                        goto IL_0000;
+                    }
+                    else if (dispName == "White_Pillar" || dispName == "ThinWhitePillar")
+                    {
+                        V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 75f);
+                        goto IL_0000;
+                    }
+
+                    V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, lowPriority ? 80f : 45f);
+                }
+                IL_0000:
+                // Normal maps
                 ReplaceMaterial component = transform.GetComponent<ReplaceMaterial>();
                 if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Primitives/Tile")
                 {

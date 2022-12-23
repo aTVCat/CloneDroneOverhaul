@@ -7,13 +7,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
     public class PooledPrefab_VFXEffect_ShortLifeTime : PooledPrefabInstanceBase
     {
         ParticleSystem _system;
-      
+        public override void PreparePrefab()
+        {
+            _system = GetComponent<ParticleSystem>();
+        }
+
         protected override void OnPrefabUsed()
         {
-            if(_system == null)
-            {
-                _system = GetComponent<ParticleSystem>();
-            }
             _system.Play();
         }
 

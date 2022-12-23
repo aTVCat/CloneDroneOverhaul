@@ -22,7 +22,8 @@ namespace CloneDroneOverhaul.UI.Notifications
             MyModdedObject.GetObjectFromList<RectTransform>(1).gameObject.SetActive(!PhotoManager.Instance.IsInPhotoMode() && !CutSceneManager.Instance.IsInCutscene() && !Modules.MiscEffectsManager.IsUIHidden);
             for (int i = Messages.Count - 1; i > -1; i--)
             {
-                if (Time.unscaledTime >= Messages[i].TimeToDestroy)
+                Messages[i].TimeToDestroy -= Time.deltaTime;
+                if (Messages[i].TimeToDestroy <= 0f)
                 {
                     HideMessage(Messages[i]);
                 }
@@ -89,7 +90,7 @@ namespace CloneDroneOverhaul.UI.Notifications
         public Vector2 SizeDelta { private set; get; }
         public Color Color { private set; get; }
         public NotificationButton[] Buttons { private set; get; }
-        public float TimeToDestroy { private set; get; }
+        public float TimeToDestroy { set; get; }
         public RectTransform InstanceRectTransform { private set; get; }
         public bool IsFullscreen { private set; get; }
 
@@ -100,7 +101,7 @@ namespace CloneDroneOverhaul.UI.Notifications
             SizeDelta = sizeDelta != Vector2.zero ? sizeDelta : new Vector2(450, 150);
             Color = color != Color.clear ? color : new Color(0.132743f, 0.1559941f, 0.1792453f, 0.8509804f);
             Buttons = buttons;
-            TimeToDestroy = Time.unscaledTime + Mathf.Clamp(unscaledTimeToLive, 2.00f, 20.00f);
+            TimeToDestroy = unscaledTimeToLive;
             IsFullscreen = isFullscreen;
             NotificationControl control = NotificationsUI.Instance.ReceieveMessage(this);
             InstanceRectTransform = control.Rect;

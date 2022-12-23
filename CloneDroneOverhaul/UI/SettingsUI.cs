@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Rewired;
 
 namespace CloneDroneOverhaul.UI
 {
@@ -59,6 +61,22 @@ namespace CloneDroneOverhaul.UI
             Hide();
         }
 
+        public override void OnNewFrame()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (SearchField.text == " ")
+                {
+                    SearchField.text = string.Empty;
+                    SearchField.DeactivateInputField();
+                    return;
+                }
+                SearchField.Select();
+                SearchField.ActivateInputField();
+                SearchField.text = " ";
+            }
+        }
+
         public void Hide()
         {
             base.gameObject.SetActive(false);
@@ -84,13 +102,24 @@ namespace CloneDroneOverhaul.UI
             base.MyModdedObject.GetObjectFromList<Text>(18).text = OverhaulMain.GetTranslatedString("ToBeFilled");
         }
 
-        public void SelectCategory(string str)
+        public void RefreshPage()
+        {
+            Select(this.selectedCategory, this.selectedSection);
+        }
+
+        public void Select(in string category, in string section)
+        {
+            populateSettings(false, Modules.OverhaulSettingsManager.Instance.GetSettings(category, section));
+        }
+
+        public void SelectCategory(in string str)
         {
             selectedSection = string.Empty;
             selectedCategory = str;
             populateSections();
         }
-        public void SelectSection(string str)
+
+        public void SelectSection(in string str)
         {
             selectedSection = str;
             populateSettings(false, Modules.OverhaulSettingsManager.Instance.GetSettings(selectedCategory, selectedSection));
@@ -164,7 +193,7 @@ namespace CloneDroneOverhaul.UI
             Modules.OverhaulSettingsManager.SettingEntry.CategoryPath path = Modules.OverhaulSettingsManager.Instance.GetPageData(selectedCategory, selectedSection);
             if (!path.IsEmpty)
             {
-                base.MyModdedObject.GetObjectFromList<TMPro.TextMeshProUGUI>(15).text = path.SectionPageDescription;
+                base.MyModdedObject.GetObjectFromList<TMPro.TextMeshProUGUI>(15).text = OverhaulMain.GetTranslatedString("SPage_" + path.SectionPageDescriptionLocalID);
             }
             TransformUtils.DestroyAllChildren(ViewPort);
 
@@ -236,12 +265,16 @@ namespace CloneDroneOverhaul.UI
             setting.GetObjectFromList<InputField>(2).gameObject.SetActive(OverhaulDescription.TEST_FEATURES_ENABLED);
         }
 
-        private class UISettingEntry : MonoBehaviour
+        private class UISettingEntry : MonoBehaviour, UnityEngine.EventSystems.IPointerEnterHandler, UnityEngine.EventSystems.IPointerExitHandler
         {
             private ModdedObject MyModdedObject;
             private Modules.OverhaulSettingsManager.SettingEntry Entry;
             private System.Type Type;
             private Modules.OverhaulSettingsManager.SettingEntry.UIValueSettings Settings;
+            private bool _isMouseIn;
+            private bool _isMouseDown;
+
+            private float _floatValueWaitingToSet;
 
             public void SetupValue(Type type, Modules.OverhaulSettingsManager.SettingEntry sEntry, object value, Type enumerator = null)
             {
@@ -307,6 +340,13 @@ namespace CloneDroneOverhaul.UI
 
             private void SetFloatValue(float val)
             {
+                _isMouseDown = Input.GetMouseButton(0);
+                if (_isMouseDown)
+                {
+                    _floatValueWaitingToSet = val;
+                    return;
+                }
+
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, val, false);
                 string valtxt = (val * (Settings.Step == -1 ? 1 : Settings.Step)).ToString();
                 if (valtxt.Length > 4)
@@ -319,6 +359,48 @@ namespace CloneDroneOverhaul.UI
             private void SetEnumValue(int num)
             {
                 CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, num, false);
+            }
+
+            void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+            {
+                _isMouseIn = false;
+            }
+
+            void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+            {
+                _isMouseIn = true;
+            }
+
+            void Update()
+            {
+                if (!base.gameObject.activeInHierarchy)
+                {
+                    return;
+                }
+                if (_isMouseIn)
+                {
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        BaseUtils.CopyToClipboard(MyModdedObject.GetObjectFromList<InputField>(2).text, true, "ID ", " was copied to clipboard!");
+                    }
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        if (OverhaulMain.GetSetting<object>(Entry.ID) != Entry.DefaultValue)
+                        {
+                            CloneDroneOverhaulDataContainer.Instance.SettingsData.SaveSetting(Entry.ID, Entry.DefaultValue, false);
+                            new Notifications.Notification().SetUp("Setting reset!", "Set default value for " + OverhaulMain.GetTranslatedString(Entry.NameLocalizationID) + " (" + Entry.DefaultValue.ToString() + ")", 2.5f, Vector3.zero, Color.clear, null);
+                            SettingsUI.Instance.RefreshPage();
+                        }
+                    }
+                }
+                if (_isMouseDown)
+                {
+                    if (!Input.GetMouseButton(0))
+                    {
+                        _isMouseDown = false;
+                        SetFloatValue(_floatValueWaitingToSet);
+                    }
+                }
             }
         }
 

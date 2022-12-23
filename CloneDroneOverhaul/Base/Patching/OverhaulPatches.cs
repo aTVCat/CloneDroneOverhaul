@@ -422,7 +422,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(AttackManager), "CreateSwordBlockVFX")]
         private static bool AttackManager_CreateSwordBlockVFX_Prefix(Vector3 position)
         {
-            OverhaulGraphicsController.EmitVFX_SwordBlock(position, false);
+            OverhaulGraphicsController.Simulate_SwordBlock(position, false);
             return false;
         }
 
@@ -436,7 +436,7 @@ namespace CloneDroneOverhaul.Patching
             }
             else
             {
-                OverhaulMain.Visuals.EmitArrowCollision(__instance.transform.position);
+                OverhaulGraphicsController.Simulate_ArrowCollision(__instance.transform.position);
             }
             return false;
         }
@@ -445,21 +445,14 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(AttackManager), "CreateHammerHitEffectVFX")]
         private static void AttackManager_CreateHammerHitEffectVFX_Postfix(Vector3 position)
         {
-            OverhaulMain.Visuals.EmitHammerHitVFX(position);
+            OverhaulGraphicsController.Simulate_HammerHit(position);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AttackManager), "CreateKickHitVFX")]
         private static void AttackManager_CreateKickHitVFX_Postfix(Vector3 position)
         {
-            OverhaulMain.Visuals.EmitKickVFX(position);
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(AttackManager), "CreateRocketJumpVFX")]
-        private static void AttackManager_CreateRocketJumpVFX_Postfix(Vector3 position)
-        {
-            OverhaulMain.Visuals.EmitDashVFX(position, true, true);
+            OverhaulGraphicsController.Simulate_Kick(position);
         }
 
         [HarmonyPostfix]
@@ -476,7 +469,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(GlobalFireParticleSystem), "CreateGroundImpactVFX")]
         public static void GlobalFireParticleSystem_CreateGroundImpactVFX_Postfix(Vector3 positon)
         {
-            OverhaulGraphicsController.EmitVFX_SwordBlock(positon, true);
+            OverhaulGraphicsController.Simulate_SwordBlock(positon, true);
         }
 
         [HarmonyPostfix]
@@ -495,13 +488,13 @@ namespace CloneDroneOverhaul.Patching
         {
             if (__instance != null && !__instance.GetPrivateField<bool>("_hasExploded") && __instance.ExplosionSpawnPoint != null)
             {
-                OverhaulMain.Visuals.EmitExplosion(__instance.ExplosionSpawnPoint.position);
-                Vector3 position = __instance.transform.position;
-                Vector3 b = default(Vector3);
-                RobotShortInformation robotInfo = Singleton<CharacterTracker>.Instance.GetPlayer().GetRobotInfo();
+                OverhaulGraphicsController.Simulate_Explosion(__instance.ExplosionSpawnPoint.position);
+
+                RobotShortInformation robotInfo = V3Tests.Gameplay.GameStatisticsController.GameStatistics.PlayerRobotInformation;
                 if (!robotInfo.IsNull)
                 {
-                    b = robotInfo.Instance.transform.position;
+                    Vector3 position = __instance.transform.position;
+                    Vector3 b = robotInfo.Instance.transform.position;
                     if (Vector3.Distance(position, b) < 40f)
                     {
                         Singleton<PlayerCameraManager>.Instance.ShakeCamera(0.2f, 0.8f);
@@ -529,7 +522,7 @@ namespace CloneDroneOverhaul.Patching
             if (UnityEngine.Random.Range(1, 10) > 5)
             {
                 Vector3 voxelWorldPosition = currentFrame.GetVoxelWorldPosition(voxelPosition);
-                OverhaulMain.Visuals.EmitBurningVFX(voxelWorldPosition);
+                OverhaulGraphicsController.Simulate_Burning(voxelWorldPosition);
             }
         }
 
@@ -885,7 +878,7 @@ namespace CloneDroneOverhaul.Patching
                     Vector3 a = (voxelWorldPosition - volumeWorldCenter).normalized + impactDirectionWorld;
                 }
 
-                OverhaulMain.Visuals.EmitBodyPartCutVFX(voxelWorldPosition, fireSpreadDefinition != null);
+                OverhaulGraphicsController.Simulate_Cut(voxelWorldPosition, fireSpreadDefinition != null);
             }
             catch (System.Exception ex)
             {
@@ -898,7 +891,7 @@ namespace CloneDroneOverhaul.Patching
         {
             if (part is MindSpaceBodyPart)
             {
-                OverhaulMain.Visuals.EmitMSBodyPartDamage(part.transform.position);
+                OverhaulGraphicsController.Simulate_Mindspace_Hit(part.transform.position);
             }
         }
 
