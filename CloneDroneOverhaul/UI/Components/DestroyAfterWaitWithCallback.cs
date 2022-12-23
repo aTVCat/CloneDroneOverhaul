@@ -5,8 +5,8 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public class DestroyAfterWaitWithCallback : MonoBehaviour
     {
-        Action<GameObject> action;
-        float timeToDestroy = -1;
+        private Action<GameObject> action;
+        private float timeToDestroy = -1;
 
         public void SetUp(float wait, Action<GameObject> act)
         {
@@ -14,17 +14,17 @@ namespace CloneDroneOverhaul.UI.Components
             action = act;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Time.unscaledTime >= timeToDestroy)
             {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
-            action(this.gameObject);
+            action(gameObject);
         }
     }
 }

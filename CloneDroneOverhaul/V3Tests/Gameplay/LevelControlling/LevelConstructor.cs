@@ -32,7 +32,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             }
             foreach (LevelTransform t in _levelTransforms)
             {
-                if (t.Transform != null) GameObject.Destroy(t.Transform.gameObject);
+                if (t.Transform != null)
+                {
+                    GameObject.Destroy(t.Transform.gameObject);
+                }
             }
             _levelTransforms.Clear();
         }
@@ -60,11 +63,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             levelTransform.position = Vector3.zero;
 
             //Level description
-            LevelTransform tDesc = new LevelTransform();
-            tDesc.Transform = levelTransform;
-            tDesc.ID = Random.Range(10000, 99999).ToString();
-            tDesc.Enemies = new List<Character>();
-            tDesc.Chunks = new List<LevelChunk>();
+            LevelTransform tDesc = new LevelTransform
+            {
+                Transform = levelTransform,
+                ID = Random.Range(10000, 99999).ToString(),
+                Enemies = new List<Character>(),
+                Chunks = new List<LevelChunk>()
+            };
             _levelTransforms.Add(tDesc);
 
             //Arena appearence
@@ -92,8 +97,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             }
             */
 
-            LevelGenerationCompletion generationProgress = new LevelGenerationCompletion();
-            generationProgress.Seed = buildSettings.SeedInt;
+            LevelGenerationCompletion generationProgress = new LevelGenerationCompletion
+            {
+                Seed = buildSettings.SeedInt
+            };
 
             //Chunk Generation
             Vector3 position = new Vector3(93, 0, -56);
@@ -135,7 +142,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             yield break;
         }
 
-        static Texture2D GeneratePerlinNoise(LevelGenerationCompletion completion)
+        private static Texture2D GeneratePerlinNoise(LevelGenerationCompletion completion)
         {
             Texture2D noiseTex = new Texture2D(completion.CurrentChuckX, completion.CurrentChuckZ);
             Color[] pix = new Color[completion.CurrentChunkIndex];
@@ -255,10 +262,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                     base.transform.position += new Vector3(0, (base.transform.localScale.y / shift) - (1.5f + Random.Range(0.100f, 1.000f)), 0);
                 }
 
-                if (randomValueSeedValue > 5) if (ChunkData.CurrentChuckX > Random.Range(4, 7) && ChunkData.CurrentChuckZ < Random.Range(4, 7))
+                if (randomValueSeedValue > 5)
+                {
+                    if (ChunkData.CurrentChuckX > Random.Range(4, 7) && ChunkData.CurrentChuckZ < Random.Range(4, 7))
                     {
                         base.transform.position += new Vector3(0, base.transform.position.y * 2, 0);
                     }
+                }
             }
 
             public void ApplyExceptions()
@@ -330,9 +340,8 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
             private const string WedgePrefabPath = "Prefabs/LevelObjects/Primitives/Wedge";
             private const string PlatformPrefabPath = "Prefabs/LevelObjects/Primitives/Platform";
-
-            Transform _myWedge;
-            Transform _myPlatform;
+            private Transform _myWedge;
+            private Transform _myPlatform;
 
             public override void BuildStructure(string seed)
             {
@@ -351,7 +360,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                 Bounds bounds = GetStructureWorldBounds();
 
-                _myPlatform = LevelConstructor.SpawnObject(PlatformPrefabPath, this.transform);
+                _myPlatform = LevelConstructor.SpawnObject(PlatformPrefabPath, transform);
                 _myPlatform.transform.localScale = new Vector3(sizeX, sizeY, sizeZ + 0.06f);
                 //_myPlatform.transform.localPosition = new Vector3((bounds.min.x - (GetStructureBounds().center.x)), 0, 0);
                 _myPlatform.transform.localPosition = Vector3.zero;

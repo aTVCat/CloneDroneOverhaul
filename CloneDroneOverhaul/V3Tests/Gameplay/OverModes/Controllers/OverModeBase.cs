@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.RemovedOrOld;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             Singleton<LevelManager>.Instance.CleanUpLevelThisFrame();
             BoltGlobalEventListenerSingleton<SingleplayerServerStarter>.Instance.StartServerThenCall(delegate
             {
-                Singleton<GameFlowManager>.Instance.SetGameMode(this.GetGamemode());
+                Singleton<GameFlowManager>.Instance.SetGameMode(GetGamemode());
                 ArenaManager.SetLogoVisible(false);
                 if (spawnPlayer)
                 {

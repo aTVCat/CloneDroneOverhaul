@@ -17,13 +17,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
         public const string CACHED_ASSET_PREFIX = "RootModAsset_";
 
         private static bool _hasLoadedAssets;
-        public static bool HasLoadedAssets
-        {
-            get
-            {
-                return _hasLoadedAssets;
-            }
-        }
+        public static bool HasLoadedAssets => _hasLoadedAssets;
 
         /// <summary>
         /// Called every time gameplay scene is loaded
@@ -34,6 +28,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             _spawnedControllers.Clear();
 
             OverModesController.InitializeForCurrentScene();
+            OverhaulGraphicsController.Initialize();
 
             GameObject newMainGameObject = new GameObject("CloneDroneOverhaul");
             GameObject newControllersGameObject = new GameObject("OverhaulModControllers");
@@ -44,6 +39,9 @@ namespace CloneDroneOverhaul.V3Tests.Base
             ModDataController dataControll = AddManager<ModDataController>("DataController");
             AdvancedCameraController aCameraController = AddManager<AdvancedCameraController>("AdvancedCameraController");
             ModdedUpgradesController moddedUpgradesController = AddManager<ModdedUpgradesController>("ModdedUpgradesController");
+            GameStatisticsController statistics = AddManager<GameStatisticsController>("GameStatisticsController");
+            ArenaWeatherController weather = AddManager<ArenaWeatherController>("ArenaWeatherController");
+            LevelEditor.MetaDataController metaData = AddManager<LevelEditor.MetaDataController>("MetaDataController");
 
             LoadAssets();
 
@@ -88,9 +86,9 @@ namespace CloneDroneOverhaul.V3Tests.Base
         public static T GetManager<T>() where T : V3_ModControllerBase
         {
             T result = null;
-            foreach(V3_ModControllerBase c in _spawnedControllers)
+            foreach (V3_ModControllerBase c in _spawnedControllers)
             {
-                if(c is T)
+                if (c is T)
                 {
                     result = (T)c;
                     break;
@@ -115,9 +113,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             }
         }
 
-
-
-        Texture _testTexture;
+        private Texture _testTexture;
         public void Text_AsyncLoadTexture()
         {
             OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(OverhaulDescription.GetModFolder() + "Assets/Textures/TestTexture.png", delegate (Texture2D tex)
@@ -143,10 +139,12 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
         public void Test_Transition()
         {
-            TransitionAction t = new TransitionAction();
-            t.Type = TranstionType.SceneSwitch;
-            t.SceneName = "Gameplay";
-            t.HideOnComplete = true;
+            TransitionAction t = new TransitionAction
+            {
+                Type = TranstionType.SceneSwitch,
+                SceneName = "Gameplay",
+                HideOnComplete = true
+            };
             SceneTransitionController.StartTranstion(t, "Loading...", "This may take a while...", true);
         }
     }

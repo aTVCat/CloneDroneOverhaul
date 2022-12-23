@@ -31,36 +31,36 @@ namespace CloneDroneOverhaul.Modules
 
         public override void Start()
         {
-            this.ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
-            this.ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(this.ArenaTransform);
+            ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
+            ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(ArenaTransform);
             spawnCommentatorsDecor();
         }
 
         private void spawnCommentatorsDecor()
         {
-            this.Microphone = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "MicrophoneModelVox").transform;
-            this.Coffee = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "CoffeeModelVox").transform;
-            this.Laptop = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "ComputerModelVox").transform;
-            this.LotsOfPapers = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "LotsOfPapers").transform;
-            Transform trans = UnityEngine.Object.Instantiate<Transform>(this.Microphone, this.ArenaInterior.CommentatorBox);
+            Microphone = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "MicrophoneModelVox").transform;
+            Coffee = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "CoffeeModelVox").transform;
+            Laptop = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "ComputerModelVox").transform;
+            LotsOfPapers = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "LotsOfPapers").transform;
+            Transform trans = UnityEngine.Object.Instantiate<Transform>(Microphone, ArenaInterior.CommentatorBox);
             trans.localPosition = new Vector3(6f, 4.6f, -0.8f);
             trans.localEulerAngles = new Vector3(0f, 32f, 0f);
-            Transform trans2 = UnityEngine.Object.Instantiate<Transform>(this.Coffee, this.ArenaInterior.CommentatorBox);
+            Transform trans2 = UnityEngine.Object.Instantiate<Transform>(Coffee, ArenaInterior.CommentatorBox);
             trans2.localPosition = new Vector3(6f, 4.6f, -5.6f);
             trans2.localEulerAngles = new Vector3(0f, 282f, 0f);
-            Transform trans3 = UnityEngine.Object.Instantiate<Transform>(this.Laptop, this.ArenaInterior.CommentatorBox);
+            Transform trans3 = UnityEngine.Object.Instantiate<Transform>(Laptop, ArenaInterior.CommentatorBox);
             trans3.localPosition = new Vector3(6f, 4.645f, 3.9f);
             trans3.localEulerAngles = new Vector3(0f, 316f, 0f);
-            Transform trans4 = UnityEngine.Object.Instantiate<Transform>(this.LotsOfPapers, this.ArenaInterior.CommentatorBox);
+            Transform trans4 = UnityEngine.Object.Instantiate<Transform>(LotsOfPapers, ArenaInterior.CommentatorBox);
             trans4.localPosition = new Vector3(4.8f, 4.6f, -10f);
             trans4.localEulerAngles = new Vector3(0f, 305f, 0f);
             trans4.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            Transform transCam = TransformUtils.FindChildRecursive(this.ArenaInterior.ArenaCameraMain, "CommentatorTarget");
+            Transform transCam = TransformUtils.FindChildRecursive(ArenaInterior.ArenaCameraMain, "CommentatorTarget");
             transCam.localPosition = new Vector3(-65.35f, 37.4f, 0.27f);
-            this.ArenaInterior.CommentatorBox.GetChild(0).GetComponent<CommentatorAnimator>().EyeGlowBase = 4f;
-            this.ArenaInterior.CommentatorBox.GetChild(0).GetComponent<CommentatorAnimator>().SetIntensity(0f);
-            this.ArenaInterior.CommentatorBox.GetChild(1).GetComponent<CommentatorAnimator>().EyeGlowBase = 1f;
-            this.ArenaInterior.CommentatorBox.GetChild(1).GetComponent<CommentatorAnimator>().SetIntensity(0f);
+            ArenaInterior.CommentatorBox.GetChild(0).GetComponent<CommentatorAnimator>().EyeGlowBase = 4f;
+            ArenaInterior.CommentatorBox.GetChild(0).GetComponent<CommentatorAnimator>().SetIntensity(0f);
+            ArenaInterior.CommentatorBox.GetChild(1).GetComponent<CommentatorAnimator>().EyeGlowBase = 1f;
+            ArenaInterior.CommentatorBox.GetChild(1).GetComponent<CommentatorAnimator>().SetIntensity(0f);
             Transform transformBC = UnityEngine.Object.Instantiate<Transform>(Singleton<EnemyFactory>.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
             foreach (BattleCruiserProjectileWeapon proj in transformBC.GetComponentsInChildren<BattleCruiserProjectileWeapon>())
             {
@@ -68,8 +68,8 @@ namespace CloneDroneOverhaul.Modules
             }
             TransformUtils.HideAllChildren(transformBC);
             transformBC.GetChild(0).gameObject.SetActive(true);
-            this.ArenaInterior.BattleCruiser.GetComponent<MeshRenderer>().enabled = false;
-            transformBC.SetParent(this.ArenaInterior.BattleCruiser, false);
+            ArenaInterior.BattleCruiser.GetComponent<MeshRenderer>().enabled = false;
+            transformBC.SetParent(ArenaInterior.BattleCruiser, false);
             transformBC.localPosition = new Vector3(0f, 0f, -0.65f);
             transformBC.localEulerAngles = Vector3.zero;
             transformBC.localScale = new Vector3(0.35f, 0.35f, 0.35f);
@@ -117,27 +117,27 @@ namespace CloneDroneOverhaul.Modules
 
             public ArenaManager.ArenaParts GetObjects(Transform original)
             {
-                this.GroundArrows = original.GetChild(0);
-                this.EditorFloor = original.GetChild(1);
-                this.Floor = original.GetChild(2);
-                this.Arena2019 = original.GetChild(3);
-                this.RemovedAudienceRoot2019 = original.GetChild(4);
-                this.ArenaOG = original.GetChild(5);
-                this.EmperorSection = this.ArenaOG.GetChild(5);
-                this.BattleCruiser = this.EmperorSection.GetChild(4);
-                this.StartArea = original.GetChild(6);
-                this.UpgradeRoom = original.GetChild(7);
-                this.CommentatorBox = original.GetChild(8);
-                this.ArenaLift = original.GetChild(9).GetComponentInChildren<ArenaLift>();
-                this.Sky = original.GetChild(10);
-                this.ArenaCameraMain = original.GetChild(11);
-                this.GarbageShuteAndRoom = original.GetChild(12);
-                this.GarbageSortingRoom = original.GetChild(13);
-                this.SawbladeRoom = original.GetChild(14);
-                this.RobotCity = original.GetChild(15);
-                this.ArenaTVs = original.GetChild(16);
-                this.RemovedAudienceRootOLD = original.GetChild(17);
-                this.Chapter1EndingStuff = original.GetChild(19).GetComponent<GhostWin1Cutscene>();
+                GroundArrows = original.GetChild(0);
+                EditorFloor = original.GetChild(1);
+                Floor = original.GetChild(2);
+                Arena2019 = original.GetChild(3);
+                RemovedAudienceRoot2019 = original.GetChild(4);
+                ArenaOG = original.GetChild(5);
+                EmperorSection = ArenaOG.GetChild(5);
+                BattleCruiser = EmperorSection.GetChild(4);
+                StartArea = original.GetChild(6);
+                UpgradeRoom = original.GetChild(7);
+                CommentatorBox = original.GetChild(8);
+                ArenaLift = original.GetChild(9).GetComponentInChildren<ArenaLift>();
+                Sky = original.GetChild(10);
+                ArenaCameraMain = original.GetChild(11);
+                GarbageShuteAndRoom = original.GetChild(12);
+                GarbageSortingRoom = original.GetChild(13);
+                SawbladeRoom = original.GetChild(14);
+                RobotCity = original.GetChild(15);
+                ArenaTVs = original.GetChild(16);
+                RemovedAudienceRootOLD = original.GetChild(17);
+                Chapter1EndingStuff = original.GetChild(19).GetComponent<GhostWin1Cutscene>();
                 return this;
             }
         }

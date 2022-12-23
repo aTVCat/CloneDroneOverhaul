@@ -1,6 +1,6 @@
 ﻿using CloneDroneOverhaul.Utilities;
 
-namespace CloneDroneOverhaul.EffectsAndAbilitiesV4
+namespace CloneDroneOverhaul.RemovedOrOld
 {
     public static class RobotsExpansionManager
     {
@@ -13,8 +13,10 @@ namespace CloneDroneOverhaul.EffectsAndAbilitiesV4
 
         public static void OnRobotSpawned(RobotShortInformation mover)
         {
-            SpecialAbilityCollection collection = new SpecialAbilityCollection();
-            collection.Owner = (FirstPersonMover)mover.Instance;
+            SpecialAbilityCollection collection = new SpecialAbilityCollection
+            {
+                Owner = (FirstPersonMover)mover.Instance
+            };
 
             OverhaulCacheManager.AddTemporalObject<SpecialAbilityCollection>(collection, "SpecialAbilitiesCollection_" + mover.Instance.GetInstanceID());
         }

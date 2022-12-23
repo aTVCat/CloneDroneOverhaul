@@ -6,11 +6,10 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public class DoOnMouseActions : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
-        Action ActOnClick;
-        Action<bool> ActOnMouseHover;
-        UnityEngine.Events.UnityEvent Event;
-
-        bool _mouseIsOverUIElement;
+        private Action ActOnClick;
+        private Action<bool> ActOnMouseHover;
+        private UnityEngine.Events.UnityEvent Event;
+        private bool _mouseIsOverUIElement;
 
         public static void AddComponent(GameObject obj, Action evnt)
         {
@@ -39,7 +38,9 @@ namespace CloneDroneOverhaul.UI.Components
                 return;
             }
             if (ActOnClick != null)
+            {
                 ActOnClick();
+            }
         }
 
         void IPointerEnterHandler.OnPointerEnter(UnityEngine.EventSystems.PointerEventData eventData)

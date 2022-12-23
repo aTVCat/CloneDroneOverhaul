@@ -86,25 +86,18 @@ namespace CloneDroneOverhaul.PooledPrefabs
             return tag;
         }
 
-        // Token: 0x04000092 RID: 146
         private List<Transform> AvailableObjects = new List<Transform>();
 
-        // Token: 0x04000093 RID: 147
         private List<Transform> ActiveObjects = new List<Transform>();
 
-        // Token: 0x04000094 RID: 148
         private int MaxCount;
 
-        // Token: 0x04000095 RID: 149
         private float timeToHide;
 
-        // Token: 0x04000096 RID: 150
         private string Name;
 
-        // Token: 0x04000097 RID: 151
         private string tag;
 
-        // Token: 0x04000098 RID: 152
         public Transform Prefab;
     }
 
@@ -135,7 +128,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
             {
                 base.GetComponent<ParticleSystem>().Play();
             }
-            bool flag5 = this.orig.GetTag() == SimplePooledPrefabInstance.LightTag;
+            bool flag5 = orig.GetTag() == SimplePooledPrefabInstance.LightTag;
             if (flag5)
             {
                 bool flag6 = lightColor != Color.clear;
@@ -145,7 +138,7 @@ namespace CloneDroneOverhaul.PooledPrefabs
                 }
                 base.GetComponent<Animator>().Play("LightStarted");
             }
-            bool flag61 = this.orig.GetTag() == SimplePooledPrefabInstance.LongLiveLightTag;
+            bool flag61 = orig.GetTag() == SimplePooledPrefabInstance.LongLiveLightTag;
             if (flag61)
             {
                 bool flag7 = lightColor != Color.clear;

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using ModLibrary;
+﻿using ModLibrary;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Base
 {
@@ -10,7 +10,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
         public override void OnEvent(in string eventName, in object[] args)
         {
-            if(eventName == "overhaul.onAssetsLoadDone")
+            if (eventName == "overhaul.onAssetsLoadDone")
             {
                 if (!OverhaulDescription.TEST_FEATURES_ENABLED)
                 {
@@ -67,9 +67,12 @@ namespace CloneDroneOverhaul.V3Tests.Base
         /// <returns></returns>
         public static bool HasUpgradeWithType(in UpgradeType type)
         {
-            foreach(UpgradeDescription desc in UpgradeManager.Instance.UpgradeDescriptions)
+            foreach (UpgradeDescription desc in UpgradeManager.Instance.UpgradeDescriptions)
             {
-                if(desc.UpgradeType == type) return true;
+                if (desc.UpgradeType == type)
+                {
+                    return true;
+                }
             }
             return false;
         }

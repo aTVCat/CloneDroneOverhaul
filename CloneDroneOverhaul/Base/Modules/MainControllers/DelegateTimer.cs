@@ -87,13 +87,7 @@ namespace CloneDroneOverhaul.Modules
             public Action<object[]> ActArgs;
             public object[] Args;
 
-            public bool HasArgs
-            {
-                get
-                {
-                    return Args != null;
-                }
-            }
+            public bool HasArgs => Args != null;
         }
 
         private class TimedAction2 : TimedAction

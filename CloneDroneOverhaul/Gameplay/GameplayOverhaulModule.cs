@@ -1,9 +1,9 @@
-﻿using CloneDroneOverhaul.EffectsAndAbilitiesV4;
+﻿using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.Utilities;
 using ModLibrary;
 using UnityEngine;
 
-namespace CloneDroneOverhaul.Modules
+namespace CloneDroneOverhaul.RemovedOrOld
 {
     public class GameplayOverhaulModule : ModuleBase
     {
@@ -49,15 +49,6 @@ namespace CloneDroneOverhaul.Modules
                         mover.OverrideBaseMoveSpeed(6f);
                     }
                 }
-            }
-            if (!OverhaulDescription.TEST_FEATURES_ENABLED) return;
-            if (name == Functions[1])
-            {
-                RobotsExpansionManager.OnRobotSpawned((RobotShortInformation)arguments[0]);
-            }
-            if (name == Functions[2])
-            {
-                RobotsExpansionManager.OnRobotDestroyed((RobotShortInformation)arguments[0]);
             }
         }
 

@@ -23,13 +23,7 @@ namespace CloneDroneOverhaul
 
     internal class BaseStaticValues
     {
-        public static string ModDataFolder
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        public static string ModDataFolder => string.Empty;
         public static bool IsModEnabled { get; internal set; }
         public static bool IsEscMenuWaitingToShow { get; set; }
         public static string GetInviteCode { get; internal set; }
@@ -127,9 +121,7 @@ namespace CloneDroneOverhaul
             }
             public static float GetItemLoadProgress(SteamWorkshopItem item)
             {
-                ulong current = 0;
-                ulong total = 0;
-                bool isValid = SteamUGC.GetItemDownloadInfo(item.WorkshopItemID, out current, out total);
+                bool isValid = SteamUGC.GetItemDownloadInfo(item.WorkshopItemID, out ulong current, out ulong total);
                 if (!isValid || total == 0)
                 {
                     return -1f;
@@ -144,7 +136,7 @@ namespace CloneDroneOverhaul
                 StaticCoroutineRunner.StartStaticCoroutine(loadSpriteFromFile(path, onLoaded));
             }
 
-            static IEnumerator loadSpriteFromFile(string path, Action<Sprite> onLoaded)
+            private static IEnumerator loadSpriteFromFile(string path, Action<Sprite> onLoaded)
             {
                 Sprite result = null;
                 LoadTextureFromFile(path, delegate (Texture2D tex)
@@ -160,7 +152,7 @@ namespace CloneDroneOverhaul
                 StaticCoroutineRunner.StartStaticCoroutine(loadTextureFromFile(path, onLoaded));
             }
 
-            static IEnumerator loadTextureFromFile(string path, Action<Texture2D> onLoaded)
+            private static IEnumerator loadTextureFromFile(string path, Action<Texture2D> onLoaded)
             {
                 Texture2D tex = new Texture2D(0, 0);
                 tex.LoadImage(File.ReadAllBytes(path), false);
@@ -242,7 +234,11 @@ namespace CloneDroneOverhaul
         private static IEnumerator SpawnLevel(Transform transform, LevelEditorLevelData data, System.Action callback = null)
         {
             yield return OverhaulMain.MainMonoBehaviour.StartCoroutine(LevelEditorDataManager.Instance.DeserializeInto(transform, data, true));
-            if (callback != null) callback();
+            if (callback != null)
+            {
+                callback();
+            }
+
             yield break;
         }
 
@@ -275,8 +271,10 @@ namespace CloneDroneOverhaul
         }
         public static void CopyToClipboard(string text, bool showMessage = false, string messageP1 = "", string messageP2 = "")
         {
-            UnityEngine.TextEditor textEditor = new UnityEngine.TextEditor();
-            textEditor.text = text;
+            UnityEngine.TextEditor textEditor = new UnityEngine.TextEditor
+            {
+                text = text
+            };
             textEditor.SelectAll();
             textEditor.Copy();
             if (showMessage)
@@ -397,8 +395,8 @@ namespace CloneDroneOverhaul
 
     public static class VanillaPrefs
     {
-        static bool[] EscMenuChildrenVisibility;
-        public readonly static AudioConfiguration AudioConfig = AudioSettings.GetConfiguration().Clone();
+        private static bool[] EscMenuChildrenVisibility;
+        public static readonly AudioConfiguration AudioConfig = AudioSettings.GetConfiguration().Clone();
 
         internal static void RememberStuff()
         {

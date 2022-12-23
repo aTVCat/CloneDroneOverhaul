@@ -1,4 +1,5 @@
-﻿using CloneDroneOverhaul.UI;
+﻿using CloneDroneOverhaul.RemovedOrOld;
+using CloneDroneOverhaul.UI;
 using ModLibrary;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 namespace CloneDroneOverhaul.LevelEditor
 {
@@ -16,8 +18,7 @@ namespace CloneDroneOverhaul.LevelEditor
         {
             get
             {
-                Color result;
-                ColorUtility.TryParseHtmlString("#31373F", out result);
+                ColorUtility.TryParseHtmlString("#31373F", out Color result);
                 return result; //286ea03e-b667-46ae-8c12-95eb08c412e4
             }
         }
@@ -25,8 +26,7 @@ namespace CloneDroneOverhaul.LevelEditor
         {
             get
             {
-                Color result;
-                ColorUtility.TryParseHtmlString("#5B6D85", out result);
+                ColorUtility.TryParseHtmlString("#5B6D85", out Color result);
                 return result;
             }
         }
@@ -139,14 +139,11 @@ namespace CloneDroneOverhaul.LevelEditor
                     return;
                 }
 
-                float num;
-                float num2;
-                float num3;
                 _selected.OnPositionAboutToChange();
                 _selected.OnRotationAboutToChange();
                 _selected.OnScaleAboutToChange();
 
-                if (float.TryParse(ModdedObj.GetObjectFromList<InputField>(0).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out num) && float.TryParse(ModdedObj.GetObjectFromList<InputField>(1).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out num2) && float.TryParse(ModdedObj.GetObjectFromList<InputField>(2).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out num3))
+                if (float.TryParse(ModdedObj.GetObjectFromList<InputField>(0).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float num) && float.TryParse(ModdedObj.GetObjectFromList<InputField>(1).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float num2) && float.TryParse(ModdedObj.GetObjectFromList<InputField>(2).text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out float num3))
                 {
                     _selected.transform.localPosition = new Vector3(num, num2, num3);
                 }
@@ -174,11 +171,12 @@ namespace CloneDroneOverhaul.LevelEditor
                 closeLibrary();
             }
 
-            void openLibrary()
+            private void openLibrary()
             {
                 base.ModdedObj.gameObject.SetActive(true);
             }
-            void closeLibrary()
+
+            private void closeLibrary()
             {
                 base.ModdedObj.gameObject.SetActive(false);
             }
@@ -283,7 +281,10 @@ namespace CloneDroneOverhaul.LevelEditor
 
                         entry = folder;
                     }
-                    if (entry != null) result.Add(entry.transform);
+                    if (entry != null)
+                    {
+                        result.Add(entry.transform);
+                    }
                 }
 
                 RefreshContainerGameObject(base.ModdedObj.GetObjectFromList<Transform>(14).gameObject);
@@ -353,7 +354,7 @@ namespace CloneDroneOverhaul.LevelEditor
             }
             public class FolderWithLevels : LevelsFileBase
             {
-                List<Transform> _myEntries;
+                private List<Transform> _myEntries;
 
                 public FolderWithLevels MakeUIFolder(string path)
                 {
@@ -376,17 +377,17 @@ namespace CloneDroneOverhaul.LevelEditor
                     return this;
                 }
 
-                void Awake()
+                private void Awake()
                 {
                     base.GetComponent<ModdedObject>().GetObjectFromList<Button>(3).onClick.AddListener(OnClick);
                     base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#404448");
                 }
 
-                void OnDestroy()
+                private void OnDestroy()
                 {
                     if (_myEntries != null && _myEntries.Count > 0)
                     {
-                        this.SetIsOpen(false);
+                        SetIsOpen(false);
                     }
                 }
 
@@ -399,7 +400,7 @@ namespace CloneDroneOverhaul.LevelEditor
                 {
                     if (_myEntries == null || _myEntries.Count == 0)
                     {
-                        _myEntries = ModdedLevelEditorUI.Instance.Menu.PopulateFolder(File, this.transform);
+                        _myEntries = ModdedLevelEditorUI.Instance.Menu.PopulateFolder(File, transform);
                         base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#42505E");
                     }
                     else
@@ -411,7 +412,10 @@ namespace CloneDroneOverhaul.LevelEditor
                         _myEntries.Clear();
                         base.GetComponent<ModdedObject>().GetObjectFromList<Image>(3).color = BaseUtils.ColorFromHex("#404448");
                     }
-                    if (refresh) ModdedLevelEditorUI.Instance.Menu.RefreshContainerGameObject(ModdedLevelEditorUI.Instance.Menu.ModdedObj.GetObjectFromList<Transform>(14).gameObject);
+                    if (refresh)
+                    {
+                        ModdedLevelEditorUI.Instance.Menu.RefreshContainerGameObject(ModdedLevelEditorUI.Instance.Menu.ModdedObj.GetObjectFromList<Transform>(14).gameObject);
+                    }
                 }
 
                 protected override void OnClick()
@@ -435,7 +439,7 @@ namespace CloneDroneOverhaul.LevelEditor
                     return this;
                 }
 
-                void Awake()
+                private void Awake()
                 {
                     base.GetComponent<Button>().onClick.AddListener(delegate
                     {
@@ -469,12 +473,12 @@ namespace CloneDroneOverhaul.LevelEditor
                     base.GetComponent<ModdedObject>().GetObjectFromList<RectTransform>(0).gameObject.SetActive(false);
                 }
 
-                void Awake()
+                private void Awake()
                 {
                     base.GetComponent<Button>().onClick.AddListener(select);
                 }
 
-                void select()
+                private void select()
                 {
                     ModdedLevelEditorUI.Instance.Menu.OnSelectedTab(this);
                 }
@@ -484,7 +488,7 @@ namespace CloneDroneOverhaul.LevelEditor
             {
                 public string SelectedLevelPath;
 
-                void Awake()
+                private void Awake()
                 {
                     base.gameObject.AddComponent<LevelThumbnailSelector>();
 
@@ -515,13 +519,10 @@ namespace CloneDroneOverhaul.LevelEditor
                 {
                     if (!string.IsNullOrEmpty(SelectedLevelPath) && File.Exists(SelectedLevelPath))
                     {
-                        SceneTransitionController_OLD.SpawnTransitionScreen(delegate
-                        {
-                            ModdedLevelEditorUI.Instance.Menu.CloseMenu();
-                            LevelEditorLevelData data = BaseUtils.TryLoad<LevelEditorLevelData>(SelectedLevelPath);
-                            LevelEditorDataManager.Instance.SetPrivateField<LevelEditorLevelData>("_currentLevelData", data);
-                            LevelEditorDataManager.Instance.CallPrivateMethod("PopulateCurrentLevel");
-                        }, "Loading level...", SelectedLevelPath);
+                        ModdedLevelEditorUI.Instance.Menu.CloseMenu();
+                        LevelEditorLevelData data = BaseUtils.TryLoad<LevelEditorLevelData>(SelectedLevelPath);
+                        LevelEditorDataManager.Instance.SetPrivateField<LevelEditorLevelData>("_currentLevelData", data);
+                        LevelEditorDataManager.Instance.CallPrivateMethod("PopulateCurrentLevel");
                     }
                 }
             }
@@ -533,7 +534,7 @@ namespace CloneDroneOverhaul.LevelEditor
                 public Text ErrorLabel;
                 public Button BrowseImage;
 
-                void Awake()
+                private void Awake()
                 {
                     ModdedObject mObj = base.GetComponent<ModdedObject>();
                     Thumbnail = mObj.GetObjectFromList<Image>(0);
@@ -543,11 +544,11 @@ namespace CloneDroneOverhaul.LevelEditor
                     BrowseImage = mObj.GetObjectFromList<Button>(4);
                     BrowseImage.onClick.AddListener(delegate
                     {
-                        this.onFileSelected(FileManagerStuff.OpenFileSelect("PNG files (*.png)|*.png|JPG files (*.jpg*)|*.jpg*|JPEG files (*.jpeg*)|*.jpeg*"));
+                        onFileSelected(FileManagerStuff.OpenFileSelect("PNG files (*.png)|*.png|JPG files (*.jpg*)|*.jpg*|JPEG files (*.jpeg*)|*.jpeg*"));
                     });
                 }
 
-                void onFileSelected(string file)
+                private void onFileSelected(string file)
                 {
                     ErrorLabel.gameObject.SetActive(false);
                     if (string.IsNullOrEmpty(file))
@@ -633,7 +634,11 @@ namespace CloneDroneOverhaul.LevelEditor
 
         public void RefreshSelected(List<ObjectPlacedInLevel> objects)
         {
-            if (objects.Count == 1) InspectorPanel.Populate(objects[0]);
+            if (objects.Count == 1)
+            {
+                InspectorPanel.Populate(objects[0]);
+            }
+
             ObjectsSelected.gameObject.SetActive(objects.Count > 0);
             if (objects.Count == 0)
             {

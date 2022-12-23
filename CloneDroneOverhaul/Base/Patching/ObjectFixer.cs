@@ -79,7 +79,11 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
             if (id == "FixSelectableUI")
             {
                 SelectableUI ui = instanceScript as SelectableUI;
-                if (GameUIThemeData == null) GameUIThemeData = ui.GameThemeData;
+                if (GameUIThemeData == null)
+                {
+                    GameUIThemeData = ui.GameThemeData;
+                }
+
                 ui.GameThemeData.ButtonBackground[0].Color = new Color(0.19f, 0.37f, 0.88f, 1);
                 ui.GameThemeData.ButtonBackground[1].Color = new Color(0.3f, 0.5f, 1, 1f);
                 if (ui.GetComponent<UnityEngine.UI.Image>() != null && ui.GetComponent<UnityEngine.UI.Image>().sprite != null && ui.GetComponent<UnityEngine.UI.Image>().sprite.name == "UISprite")

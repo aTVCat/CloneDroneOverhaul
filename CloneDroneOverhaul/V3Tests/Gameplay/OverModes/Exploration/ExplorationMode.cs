@@ -27,10 +27,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         {
             Instance = this;
             bool succesfullyLoaded = false;
-            succesfullyLoaded = Singleton<DataRepository>.Instance.TryLoad<GameData>(LegacyFileName, out this.Data_Legacy, false);
+            succesfullyLoaded = Singleton<DataRepository>.Instance.TryLoad<GameData>(LegacyFileName, out Data_Legacy, false);
             if (succesfullyLoaded)
             {
-                this.Data_Legacy.RepairAnyMissingFields(true);
+                Data_Legacy.RepairAnyMissingFields(true);
             }
             else
             {
@@ -43,14 +43,16 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// </summary>
         public void ResetSaveData()
         {
-            GameData gameData = new GameData();
-            gameData.NumClones = Singleton<CloneManager>.Instance.GetNumStartingClones();
-            gameData.NumLevelsWon = 0;
-            gameData.AvailableSkillPoints = 0;
-            gameData.PlayerUpgrades = Singleton<UpgradeManager>.Instance.CreateDefaultPlayerUpgrades();
-            gameData.LevelIDsBeatenThisPlaythrough = new List<string>();
-            gameData.LevelPrefabsBeatenThisPlaythrough = new List<string>();
-            gameData.LevelIDsExcludedThisGame = new List<string>();
+            GameData gameData = new GameData
+            {
+                NumClones = Singleton<CloneManager>.Instance.GetNumStartingClones(),
+                NumLevelsWon = 0,
+                AvailableSkillPoints = 0,
+                PlayerUpgrades = Singleton<UpgradeManager>.Instance.CreateDefaultPlayerUpgrades(),
+                LevelIDsBeatenThisPlaythrough = new List<string>(),
+                LevelPrefabsBeatenThisPlaythrough = new List<string>(),
+                LevelIDsExcludedThisGame = new List<string>()
+            };
             gameData.SetDirty(true);
             gameData.PlayerArmorParts = new List<MechBodyPartType>();
             gameData.PlayerBodyPartDamages = new List<MechBodyPartDamage>();

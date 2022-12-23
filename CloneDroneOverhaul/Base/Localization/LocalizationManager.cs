@@ -7,15 +7,9 @@ namespace CloneDroneOverhaul.Localization
 {
     public class OverhaulLocalizationManager : ModuleBase
     {
-        public static string TranslationsFolder
-        {
-            get
-            {
-                return OverhaulDescription.GetModFolder() + "Localizations/";
-            }
-        }
+        public static string TranslationsFolder => OverhaulDescription.GetModFolder() + "Localizations/";
 
-        List<TranslationEntry> entries = new List<TranslationEntry>();
+        private List<TranslationEntry> entries = new List<TranslationEntry>();
 
         public override void Start()
         {
@@ -29,8 +23,10 @@ namespace CloneDroneOverhaul.Localization
 
         public TranslationEntry MakeNewTranslation()
         {
-            TranslationEntry entry = new TranslationEntry();
-            entry.Translations = new Dictionary<string, string>();
+            TranslationEntry entry = new TranslationEntry
+            {
+                Translations = new Dictionary<string, string>()
+            };
             foreach (string str in GetAllLanguageCodes())
             {
                 entry.Translations.Add(str, "nontranslated");

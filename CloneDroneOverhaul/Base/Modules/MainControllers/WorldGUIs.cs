@@ -7,18 +7,16 @@ namespace CloneDroneOverhaul.Modules
 {
     public class WorldGUIs : ModuleBase
     {
-        Transform MindTransfers;
-        Transform MindTransferIcon;
-        Transform MindTransferContainer;
-        Transform MindTransferToFollow;
-        float TimeToHideTransfers;
-        float YOffset;
-        Bounds _combinedBounds;
-
-        RobotShortInformation CurrentPlayerInfo;
-        RobotShortInformation OldPlayerInfo;
-
-        static bool TransferedBefore;
+        private Transform MindTransfers;
+        private Transform MindTransferIcon;
+        private Transform MindTransferContainer;
+        private Transform MindTransferToFollow;
+        private float TimeToHideTransfers;
+        private float YOffset;
+        private Bounds _combinedBounds;
+        private RobotShortInformation CurrentPlayerInfo;
+        private RobotShortInformation OldPlayerInfo;
+        private static bool TransferedBefore;
 
         public override void Start()
         {
@@ -74,12 +72,12 @@ namespace CloneDroneOverhaul.Modules
                 Renderer[] renderers = head.gameObject.GetComponentsInChildren<Renderer>();
                 if (renderers.Length != 0)
                 {
-                    this._combinedBounds = renderers[0].bounds;
+                    _combinedBounds = renderers[0].bounds;
                     int i = 1;
                     int len = renderers.Length;
                     while (i < len)
                     {
-                        this._combinedBounds.Encapsulate(renderers[i].bounds);
+                        _combinedBounds.Encapsulate(renderers[i].bounds);
                         int num = i;
                         i = num + 1;
                     }

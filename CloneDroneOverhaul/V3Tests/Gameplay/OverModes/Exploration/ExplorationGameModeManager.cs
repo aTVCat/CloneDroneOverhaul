@@ -24,11 +24,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             });
         }
 
-        void SpawnPlayer()
+        private void SpawnPlayer()
         {
-            RobotSpawnInfo info = new RobotSpawnInfo();
-            info.Rotation = Vector3.zero;
-            info.Position = new Vector3(0, 100, 0);
+            RobotSpawnInfo info = new RobotSpawnInfo
+            {
+                Rotation = Vector3.zero,
+                Position = new Vector3(0, 100, 0)
+            };
             info.SpawnPlayer();
         }
     }

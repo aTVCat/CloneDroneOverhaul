@@ -5,9 +5,9 @@ namespace CloneDroneOverhaul.UI.Components
 {
     public class ImageLoader : MonoBehaviour
     {
-        ModdedObject MyModdedObject;
+        private ModdedObject MyModdedObject;
         public Image ImageComponent;
-        bool _isDestroyed;
+        private bool _isDestroyed;
 
         public void LoadImage(string url)
         {
@@ -54,7 +54,7 @@ namespace CloneDroneOverhaul.UI.Components
             ImageComponent.sprite = sprite;
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _isDestroyed = true;
         }

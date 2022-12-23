@@ -2,34 +2,30 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CloneDroneOverhaul
+namespace CloneDroneOverhaul.RemovedOrOld
 {
-    public static class SceneTransitionController_OLD
+    public static class SceneTransitionController
     {
         public class SceneTransitionUI : MonoBehaviour
         {
-            ModdedObject ModdedObj;
+            private ModdedObject ModdedObj;
+            private Text _header;
+            private Text _details;
+            private Image _bg;
+            private float _unscaledTimeToStopUpdatingColor;
+            private bool _isAnimatingBG;
+            private bool _isShowingBG;
+            private bool _manualControl;
+            private readonly Color InitialColor = new Color(1, 1, 1, 0);
+            private readonly Color EndColor = new Color(1, 1, 1, 1);
+            private Action _currentAction;
 
-            Text _header;
-            Text _details;
-            Image _bg;
-
-            float _unscaledTimeToStopUpdatingColor;
-            bool _isAnimatingBG;
-            bool _isShowingBG;
-            bool _manualControl;
-
-            readonly Color InitialColor = new Color(1, 1, 1, 0);
-            readonly Color EndColor = new Color(1, 1, 1, 1);
-
-            Action _currentAction;
-
-            void Awake()
+            private void Awake()
             {
                 ModdedObj = base.GetComponent<ModdedObject>();
             }
 
-            void Update()
+            private void Update()
             {
                 if (Time.unscaledTime < _unscaledTimeToStopUpdatingColor)
                 {

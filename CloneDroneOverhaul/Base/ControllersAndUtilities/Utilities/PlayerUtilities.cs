@@ -11,8 +11,10 @@ namespace CloneDroneOverhaul.Utilities
 
         public static RobotShortInformation GetRobotInfo(this Character character)
         {
-            RobotShortInformation info = new RobotShortInformation();
-            info.Instance = character;
+            RobotShortInformation info = new RobotShortInformation
+            {
+                Instance = character
+            };
             if (info.IsNull)
             {
                 return info;

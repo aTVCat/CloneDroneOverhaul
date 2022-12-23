@@ -7,72 +7,24 @@ namespace CloneDroneOverhaul.Modules
 {
     public class ModDataManager : ModuleBase
     {
-        public static string Mod_DataFolder
-        {
-            get
-            {
-                return Application.persistentDataPath + "/CloneDroneOverhaul/";
-            }
-        }
-        public static string Mod_Folder
-        {
-            get
-            {
-                return OverhaulMain.Instance.ModInfo.FolderPath;
-            }
-        }
-        public static string Mod_TempFolder
-        {
-            get
-            {
-                return Mod_DataFolder + "/Temp/";
-            }
-        }
-        public static string Addons_Folder
-        {
-            get
-            {
-                return Mod_DataFolder + "Addons/";
-            }
-        }
-        public static string Data_Folder
-        {
-            get
-            {
-                return Mod_DataFolder + "SavedData/";
-            }
-        }
-        public static string DublicatedLevelsFolder
-        {
-            get
-            {
-                return Mod_DataFolder + "CopiedLevels/";
-            }
-        }
-        public static string AddonsCompliedDlls
-        {
-            get
-            {
-                return Mod_DataFolder + "CompiledDlls/";
-            }
-        }
-        public static string FileExtension
-        {
-            get
-            {
-                return ".cdosave";
-            }
-        }
+        public static string Mod_DataFolder => Application.persistentDataPath + "/CloneDroneOverhaul/";
+        public static string Mod_Folder => OverhaulMain.Instance.ModInfo.FolderPath;
+        public static string Mod_TempFolder => Mod_DataFolder + "/Temp/";
+        public static string Addons_Folder => Mod_DataFolder + "Addons/";
+        public static string Data_Folder => Mod_DataFolder + "SavedData/";
+        public static string DublicatedLevelsFolder => Mod_DataFolder + "CopiedLevels/";
+        public static string AddonsCompliedDlls => Mod_DataFolder + "CompiledDlls/";
+        public static string FileExtension => ".cdosave";
         public bool CanOthersAddData()
         {
-            return this != null && this._hasInitialized;
+            return this != null && _hasInitialized;
         }
         private bool _hasInitialized;
 
         public override void Start()
         {
             checkFolders();
-            this._hasInitialized = true;
+            _hasInitialized = true;
         }
         private void checkFolders()
         {
@@ -146,7 +98,7 @@ namespace CloneDroneOverhaul.Modules
 
     public class DataBase
     {
-        internal protected ModDataManager DataManagerReference;
+        protected internal ModDataManager DataManagerReference;
 
         public void LoadData()
         {
@@ -244,8 +196,10 @@ namespace CloneDroneOverhaul.Modules
                         return entry;
                     }
                 }
-                SavedSettingEntry entryNew = new SavedSettingEntry();
-                entryNew.ID = id;
+                SavedSettingEntry entryNew = new SavedSettingEntry
+                {
+                    ID = id
+                };
                 if (isNewSetting)
                 {
                     entryNew.Value = newSettingValue;
@@ -272,8 +226,10 @@ namespace CloneDroneOverhaul.Modules
         {
             if (!File.Exists(ModDataManager.Data_Folder + "SettingsData" + ModDataManager.FileExtension))
             {
-                CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data();
-                data.SavedSettings = new List<Data.SavedSettingEntry>();
+                CloneDroneOverhaulSettingsData.Data data = new CloneDroneOverhaulSettingsData.Data
+                {
+                    SavedSettings = new List<Data.SavedSettingEntry>()
+                };
                 SettingsData = data;
                 SettingsData.DataBase = this;
                 TrySaveData();

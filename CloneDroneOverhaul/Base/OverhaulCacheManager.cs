@@ -10,8 +10,7 @@ namespace CloneDroneOverhaul
 
         private static Dictionary<string, object> _cachedStuff;
         private static Dictionary<string, object> _temporalStuff;
-
-        static Dictionary<string, Transform> _cachedLevelEditorAssets = new Dictionary<string, Transform>();
+        private static Dictionary<string, Transform> _cachedLevelEditorAssets = new Dictionary<string, Transform>();
 
         public const string OverhaulMainAssetBundle = "cdo_rw_stuff";
         public const string OverhaulAssetBundleP2 = "overhaulstuff_p2";
@@ -19,7 +18,9 @@ namespace CloneDroneOverhaul
         internal static void ClearTemporal()
         {
             if (_temporalStuff != null)
+            {
                 _temporalStuff.Clear();
+            }
         }
         public static void CacheStuff()
         {
@@ -30,60 +31,62 @@ namespace CloneDroneOverhaul
 
             _temporalStuff = new Dictionary<string, object>();
 
-            _cachedStuff = new Dictionary<string, object>();
-            _cachedStuff.Add("LBSInviteScreenBG_1", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_1"));
-            _cachedStuff.Add("LBSInviteScreenBG_2", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_2"));
-            _cachedStuff.Add("LBSInviteScreenBG_3", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_3"));
-            _cachedStuff.Add("LBSInviteScreenBG_4", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_4"));
-            _cachedStuff.Add("LevelEditor_Grid", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "LevelEditorGrid"));
+            _cachedStuff = new Dictionary<string, object>
+            {
+                { "LBSInviteScreenBG_1", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_1") },
+                { "LBSInviteScreenBG_2", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_2") },
+                { "LBSInviteScreenBG_3", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_3") },
+                { "LBSInviteScreenBG_4", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "LBSInviteBG_4") },
+                { "LevelEditor_Grid", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "LevelEditorGrid") },
 
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Sword.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonSword256x256"));
-            _cachedStuff.Add("KillMethodType_" + "Fire" + DamageSourceType.Sword.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireSword"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Arrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonArrow256x256"));
-            _cachedStuff.Add("KillMethodType_" + "Fire" + DamageSourceType.Arrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireArrow"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Hammer.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Hammer"));
-            _cachedStuff.Add("KillMethodType_" + "Fire" + DamageSourceType.Hammer.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireHammer"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Spear.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonSpear256x256"));
-            _cachedStuff.Add("KillMethodType_" + "Fire" + DamageSourceType.Spear.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireSpear"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.FlameBreath.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FlameBruh"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.AutoLaser.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Laser"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.SpikeTrap.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_SpikeTrap"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.SawBlade.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Sawblade"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.DeflectedArrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_DeflectedArrow256x256"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.SpawnCampDeflectedArrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_DeflectedArrow256x256"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Laser.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Laser"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.EnergyBeam.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_BeamV216x16"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.Lava.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Lava"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.FireTrap.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireTrap"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.EnvironmentFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireTrap"));
-            _cachedStuff.Add("KillMethodType_" + DamageSourceType.SpeedHackBanFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Banned"));
+                { "KillMethodType_" + DamageSourceType.Sword.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonSword256x256") },
+                { "KillMethodType_" + "Fire" + DamageSourceType.Sword.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireSword") },
+                { "KillMethodType_" + DamageSourceType.Arrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonArrow256x256") },
+                { "KillMethodType_" + "Fire" + DamageSourceType.Arrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireArrow") },
+                { "KillMethodType_" + DamageSourceType.Hammer.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Hammer") },
+                { "KillMethodType_" + "Fire" + DamageSourceType.Hammer.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireHammer") },
+                { "KillMethodType_" + DamageSourceType.Spear.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_CommonSpear256x256") },
+                { "KillMethodType_" + "Fire" + DamageSourceType.Spear.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireSpear") },
+                { "KillMethodType_" + DamageSourceType.FlameBreath.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FlameBruh") },
+                { "KillMethodType_" + DamageSourceType.AutoLaser.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Laser") },
+                { "KillMethodType_" + DamageSourceType.SpikeTrap.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_SpikeTrap") },
+                { "KillMethodType_" + DamageSourceType.SawBlade.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Sawblade") },
+                { "KillMethodType_" + DamageSourceType.DeflectedArrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_DeflectedArrow256x256") },
+                { "KillMethodType_" + DamageSourceType.SpawnCampDeflectedArrow.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_DeflectedArrow256x256") },
+                { "KillMethodType_" + DamageSourceType.Laser.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Laser") },
+                { "KillMethodType_" + DamageSourceType.EnergyBeam.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_BeamV216x16") },
+                { "KillMethodType_" + DamageSourceType.Lava.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Lava") },
+                { "KillMethodType_" + DamageSourceType.FireTrap.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireTrap") },
+                { "KillMethodType_" + DamageSourceType.EnvironmentFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_FireTrap") },
+                { "KillMethodType_" + DamageSourceType.SpeedHackBanFire.ToString(), AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "Kill_Banned") },
 
-            _cachedStuff.Add("Shader_BleedingColors", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BleedingColors"));
-            _cachedStuff.Add("Shader_BWDiffuse", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BWDiffuse"));
-            _cachedStuff.Add("Shader_Distortion", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Distortion"));
-            _cachedStuff.Add("Shader_Scanlines", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Scanlines"));
-            _cachedStuff.Add("Shader_Tint", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Tint"));
-            _cachedStuff.Add("Shader_VUnsync", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "VUnsync"));
+                { "Shader_BleedingColors", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BleedingColors") },
+                { "Shader_BWDiffuse", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "BWDiffuse") },
+                { "Shader_Distortion", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Distortion") },
+                { "Shader_Scanlines", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Scanlines") },
+                { "Shader_Tint", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "Tint") },
+                { "Shader_VUnsync", AssetLoader.GetObjectFromFile<Shader>("effect_glitches", "VUnsync") },
 
-            _cachedStuff.Add("SceneTransition_LevelEditorStyle", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "SceneTransitionScreen"));
-            _cachedStuff.Add("placeholderLoadSprite", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "placeholderLoad"));
+                { "SceneTransition_LevelEditorStyle", AssetLoader.GetObjectFromFile<GameObject>(OverhaulMainAssetBundle, "SceneTransitionScreen") },
+                { "placeholderLoadSprite", AssetLoader.GetObjectFromFile<Sprite>(OverhaulMainAssetBundle, "placeholderLoad") },
 
-            _cachedStuff.Add("SkyboxMaterial_Stars", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarsSkyboxV2"));
-            _cachedStuff.Add("SkyboxMaterial_Stars2", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarSkyBox"));
-            _cachedStuff.Add("SkyboxMaterial_StarsChapter4", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "Chapter4NewSkybox"));
+                { "SkyboxMaterial_Stars", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarsSkyboxV2") },
+                { "SkyboxMaterial_Stars2", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "StarSkyBox") },
+                { "SkyboxMaterial_StarsChapter4", AssetLoader.GetObjectFromFile<Material>("cdo_rw_stuff", "Chapter4NewSkybox") },
 
-            _cachedStuff.Add("objects_normalMap_dark_tile_2_normalMap", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_normalMap"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Tile_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_heightMapV4"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_1_heightMap"));
-            _cachedStuff.Add("MatHeightMap_HumanFleetShips", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "HumanFleetShips_heightMap"));
-            _cachedStuff.Add("MatHeightMap_DarkHallwayParts", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "DarkHallwayParts_heightMap"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Tile_4", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_4_heightMap"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_1_heightMap"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_SmallDark_Tile_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "TILES_SMALLER_01_heightMap"));
-            _cachedStuff.Add("MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_2_heightMap"));
-            _cachedStuff.Add("MatHeightMap_RampBasic", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "Ramp_texture_v2_heightMap"));
+                { "objects_normalMap_dark_tile_2_normalMap", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_normalMap") },
+                { "MatHeightMap_Tile_BattleCruiser_Dark_Tile_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_2_heightMapV4") },
+                { "MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_1_heightMap") },
+                { "MatHeightMap_HumanFleetShips", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "HumanFleetShips_heightMap") },
+                { "MatHeightMap_DarkHallwayParts", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "DarkHallwayParts_heightMap") },
+                { "MatHeightMap_Tile_BattleCruiser_Dark_Tile_4", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_tile_4_heightMap") },
+                { "MatHeightMap_Tile_BattleCruiser_Dark_Floor_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_1_heightMap") },
+                { "MatHeightMap_Tile_BattleCruiser_SmallDark_Tile_1", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "TILES_SMALLER_01_heightMap") },
+                { "MatHeightMap_Tile_BattleCruiser_Dark_Floor_Detail_2", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "dark_floor_detail_2_heightMap") },
+                { "MatHeightMap_RampBasic", AssetLoader.GetObjectFromFile<Texture>("cdo_rw_stuff", "Ramp_texture_v2_heightMap") },
 
-            _cachedStuff.Add("UI_TransitionScreen", AssetLoader.GetObjectFromFile<GameObject>(OverhaulAssetBundleP2, "SceneTranstionUI"));
+                { "UI_TransitionScreen", AssetLoader.GetObjectFromFile<GameObject>(OverhaulAssetBundleP2, "SceneTranstionUI") }
+            };
 
             _hasCached = true;
         }

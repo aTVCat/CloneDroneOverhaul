@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ModLibrary;
 
 namespace CloneDroneOverhaul.V3Tests.Base
 {
@@ -13,47 +12,23 @@ namespace CloneDroneOverhaul.V3Tests.Base
         /// <summary>
         /// Get translated upgrade name string
         /// </summary>
-        public string UpgradeName
-        {
-            get
-            {
-                return OverhaulMain.GetTranslatedString(NAME_LOCALIZATION_PREFIX + _upgradeLocID);
-            }
-        }
+        public string UpgradeName => OverhaulMain.GetTranslatedString(NAME_LOCALIZATION_PREFIX + _upgradeLocID);
         /// <summary>
         /// Get translated upgrade description string
         /// </summary>
-        public string UpgradeDescription
-        {
-            get
-            {
-                return OverhaulMain.GetTranslatedString(DESCRIPTION_LOCALIZATION_PREFIX + _upgradeLocID);
-            }
-        }
+        public string UpgradeDescription => OverhaulMain.GetTranslatedString(DESCRIPTION_LOCALIZATION_PREFIX + _upgradeLocID);
 
         private UpgradeType _upgradeType;
         /// <summary>
         /// Get upgrade type (usually it is a value that is not specified in UpgradeType enum)
         /// </summary>
-        public UpgradeType UpgradeType
-        {
-            get
-            {
-                return _upgradeType;
-            }
-        }
+        public UpgradeType UpgradeType => _upgradeType;
 
         private Sprite _upgradeIcon;
         /// <summary>
         /// Get upgrade icon
         /// </summary>
-        public Sprite UpgradeIcon
-        {
-            get
-            {
-                return _upgradeIcon;
-            }
-        }
+        public Sprite UpgradeIcon => _upgradeIcon;
 
         public UpgradeInfo(in string nameAndDescLocID, in UpgradeType upgradeType, in Sprite upgradeIcon)
         {

@@ -1,25 +1,21 @@
-﻿using CloneDroneOverhaul.V3Tests.Base;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class RobotAdvancedCameraController : MonoBehaviour
     {
-        AdvancedCameraController _controller;
-        Character _owner;
-        Transform _camera;
-
-        Transform _initCamTransformParent;
-
-        Transform _headTransform;
+        private AdvancedCameraController _controller;
+        private Character _owner;
+        private Transform _camera;
+        private Transform _initCamTransformParent;
+        private Transform _headTransform;
 
         public RobotAdvancedCameraController Initialize(AdvancedCameraController controller, Character character)
         {
             _controller = controller;
             _owner = character;
 
-            if(_owner != null && _owner.IsAlivePlayer())
+            if (_owner != null && _owner.IsAlivePlayer())
             {
                 //_headTransform = TransformUtils.FindChildRecursive(_owner.transform, "Head");
                 PlayerCameraMover pcm = _owner.GetCameraMover();
@@ -27,11 +23,15 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 if (pcm != null)
                 {
                     _camera = pcm.transform;
-                    if (_initCamTransformParent == null) _initCamTransformParent = _camera.parent;
+                    if (_initCamTransformParent == null)
+                    {
+                        _initCamTransformParent = _camera.parent;
+                    }
+
                     if (_headTransform == null)
                     {
                         Transform h = character.GetBodyPartParent("Head");
-                        if(h != null)
+                        if (h != null)
                         {
                             _headTransform = h.Find("model");
                         }
@@ -49,16 +49,21 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public void UpdateModelsAndCamera(AdvancedCameraType newState)
         {
-            if (this._controller == null || this._owner == null || this._camera == null)
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
+            {
+                return;
+            }
+
+            if (_controller == null || _owner == null || _camera == null)
             {
                 Initialize(AdvancedCameraController.GetInstance<AdvancedCameraController>(), base.GetComponent<Character>());
-                if (!this._camera)
+                if (!_camera)
                 {
                     return;
                 }
             }
 
-            if(_headTransform != null)
+            if (_headTransform != null)
             {
                 bool showHead = newState == AdvancedCameraType.ThirdPerson || newState == AdvancedCameraType.Free || newState == AdvancedCameraType.Side;
                 _headTransform.gameObject.SetActive(showHead);

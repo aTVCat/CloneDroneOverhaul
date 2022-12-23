@@ -217,7 +217,9 @@ namespace CloneDroneOverhaul.UI
         private void refreshHUD(bool val)
         {
             if (Time.timeSinceLevelLoad > 3)
+            {
                 GameUIRoot.Instance.SetPlayerHUDVisible(val);
+            }
         }
         private void refreshGameplayInportantThings()
         {
@@ -241,7 +243,9 @@ namespace CloneDroneOverhaul.UI
             {
                 Camera cam = cntrl.GetComponentInChildren<Camera>();
                 if (cam != null)
+                {
                     cam.fieldOfView = val;
+                }
             }
         }
         private void setCamTilt(float val)
@@ -251,7 +255,9 @@ namespace CloneDroneOverhaul.UI
             {
                 Camera cam = cntrl.GetComponentInChildren<Camera>();
                 if (cam != null)
+                {
                     cam.transform.localEulerAngles = new Vector3(cam.transform.localEulerAngles.x, cam.transform.localEulerAngles.y, val);
+                }
             }
         }
         private void setAOEnabled(bool val)
@@ -283,7 +289,7 @@ namespace CloneDroneOverhaul.UI
         {
             if (!val)
             {
-                this.garbageTargets = GarbageManager.Instance.GetAllGarbageReadyForCollection();
+                garbageTargets = GarbageManager.Instance.GetAllGarbageReadyForCollection();
             }
             foreach (GarbageTarget t in garbageTargets)
             {
