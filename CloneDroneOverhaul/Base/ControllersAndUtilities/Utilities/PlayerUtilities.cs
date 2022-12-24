@@ -68,7 +68,7 @@ namespace CloneDroneOverhaul.Utilities
         {
             get
             {
-                if (!Instance || this is null)
+                if (this is null || !Instance)
                 {
                     return true;
                 }

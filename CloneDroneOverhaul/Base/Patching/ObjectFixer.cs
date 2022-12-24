@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using CloneDroneOverhaul.V3Tests.Optimisation;
 
 namespace CloneDroneOverhaul.Patching.VisualFixes
 {
@@ -26,6 +27,10 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                 // LODs
                 if (OverhaulCacheManager.HasCached(objectPlacedInLevel.GetDisplayName() + "_LOD0"))
                 {
+                    if (!ObjectsLODController.LoDEnabled)
+                    {
+                        goto IL_0000;
+                    }
                     bool lowPriority = LowPriorityObjects.Contains(dispName);
                     Material origMat = transform.GetComponent<Renderer>().material; 
                     string lodBaseString = dispName + "_LOD";
@@ -39,16 +44,16 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
 
                     if(dispName == "ibeam")
                     {
-                        V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 15f);
+                        ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 15f);
                         goto IL_0000;
                     }
                     else if (dispName == "White_Pillar" || dispName == "ThinWhitePillar")
                     {
-                        V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 75f);
+                        ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 75f);
                         goto IL_0000;
                     }
 
-                    V3Tests.Optimisation.ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, lowPriority ? 80f : 45f);
+                    ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, lowPriority ? 80f : 45f);
                 }
                 IL_0000:
                 // Normal maps

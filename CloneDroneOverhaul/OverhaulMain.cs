@@ -29,7 +29,6 @@ namespace CloneDroneOverhaul
         public static OverhaulMain Instance { get; internal set; }
         private static OverhaulLocalizationManager Localization { get; set; }
         public static DelegateTimer Timer { get; set; }
-        public static VisualsModule Visuals { get; set; }
         public static ModuleManagement Modules { get; set; }
         public static OverhaulMainMonoBehaviour MainMonoBehaviour { get; set; }
         public static Canvas ModGUICanvas { get; set; }
@@ -59,10 +58,9 @@ namespace CloneDroneOverhaul
             }
             addReferences();
             addModules();
-            V3_MainModController.Initialize();
-
             addListeners();
             spawnGUI();
+            V3_MainModController.Initialize();
             fixVanillaStuff();
             IsModInitialized = true;
             finalPreparations();
@@ -174,7 +172,6 @@ namespace CloneDroneOverhaul
             OverhaulMain.Modules = moduleManagement;
             moduleManagement.AddModule<OverhaulSettingsManager>(false);
             OverhaulMain.Localization = moduleManagement.AddModule<OverhaulLocalizationManager>(false);
-            OverhaulMain.Visuals = moduleManagement.AddModule<VisualsModule>(false);
             moduleManagement.AddModule<HotkeysModule>(false);
             moduleManagement.AddModule<GUIManagement>(false);
             moduleManagement.AddModule<WorldGUIs>(false);
@@ -184,7 +181,6 @@ namespace CloneDroneOverhaul
             moduleManagement.AddModule<ModdedLevelEditorManager>(false);
             moduleManagement.AddModule<PatchesManager>(false);
             moduleManagement.AddModule<AdvancedPhotoModeManager>(false);
-            moduleManagement.AddModule<GarbagePositionerManager>(false);
             moduleManagement.AddModule<GameInformationManager>(false);
             moduleManagement.AddModule<GameStateChangeController>(false);
         }
@@ -337,7 +333,6 @@ namespace CloneDroneOverhaul
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<MultiplayerUIs>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<NewKillFeedUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<NewGameModeSelectionScreen>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(14).gameObject.AddComponent<NewPhotoModeUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<NewWorkshopBrowserUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
             ModGUICanvas = gameObject.GetComponent<Canvas>();
@@ -378,7 +373,7 @@ namespace CloneDroneOverhaul
 
         public const bool TEST_FEATURES_ENABLED = false;
         public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.19";
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.20";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;

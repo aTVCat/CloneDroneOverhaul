@@ -7,7 +7,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private static bool _hasinitialized;
         public static GameStatistic GameStatistics { get; set; }
 
-        void Start()
+        void Awake()
         {
             if (!_hasinitialized)
             {

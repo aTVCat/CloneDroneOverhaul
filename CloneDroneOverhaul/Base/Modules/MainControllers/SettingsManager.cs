@@ -21,9 +21,9 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
-            AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel) }));
+            AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel) }));
             AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f }));
-            AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.85f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
+            AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.95f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
             AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler" } }));
             AddSetting(SettingEntry.NewSetting<AntialiasingLevel>("Antialiasing", "", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AntialiasingLevel) }));
@@ -54,8 +54,8 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("Soft shadows", "Make shadows less pixelated", "Graphics", "Settings", true));
 
             AddSetting(SettingEntry.NewSetting<bool>("Level of detail [LoD]", "", "Graphics", "Optimisation", true));
-            AddSetting(SettingEntry.NewSetting<bool>("High LoD threshold", "", "Graphics", "Optimisation", false));
-            AddSetting(SettingEntry.NewSetting<bool>("Shading", "", "Graphics", "Additions", false));
+            AddSetting(SettingEntry.NewSetting<bool>("High LoD threshold", "", "Graphics", "Optimisation", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Shading", "", "Graphics", "Additions", true));
 
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized.", "Patch.GUI"));
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Additions", "Image effects that enchance entire game.\nEach enabled option may decrease performance!", "Graphics.Camera"));

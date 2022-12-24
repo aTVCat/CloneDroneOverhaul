@@ -55,7 +55,7 @@ namespace CloneDroneOverhaul.Patching
             try
             {
                 if (GUIManagement.Instance.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || GUIManagement.Instance.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
-                      GUIManagement.Instance.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy || NewPhotoModeUI.Instance.ShouldShowCursor())
+                      GUIManagement.Instance.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
                 {
                     global::InputManager.Instance.SetCursorEnabled(true);
                     return false;
@@ -141,14 +141,6 @@ namespace CloneDroneOverhaul.Patching
                 return;
             }
             __instance.gameObject.SetActive(false);
-            if (value)
-            {
-                UI.NewPhotoModeUI.Instance.Show();
-            }
-            else
-            {
-                UI.NewPhotoModeUI.Instance.Hide();
-            }
         }
 
 
@@ -162,8 +154,9 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(FirstPersonMover), "Update")]
         private static void Character_Update_Postfix(FirstPersonMover __instance)
         {
-            if (__instance.IsRidingOtherCharacter())
+            if (__instance.IsRidingOtherCharacter() && __instance.transform.parent != null && __instance.transform.parent.gameObject.name == "RiderContainer")
             {
+                
                 __instance.transform.localPosition = Vector3.zero;
                 __instance.transform.localEulerAngles = Vector3.zero;
             }
@@ -622,7 +615,8 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(LevelEditorPointLight), "Start")]
         private static void LevelEditorPointLight_Start_Postfix(LevelEditorPointLight __instance)
         {
-            if (!OverhaulMain.Visuals.IsDustEnabled())
+            OverhaulGraphicsController.PatchLight(__instance.PointLight, __instance.UseShadows);
+            if (!ArenaWeatherController.IsDustEnabled)
             {
                 return;
             }
