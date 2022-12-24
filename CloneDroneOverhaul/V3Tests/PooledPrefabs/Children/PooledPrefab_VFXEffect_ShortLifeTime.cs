@@ -4,23 +4,11 @@ using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class PooledPrefab_VFXEffect_ShortLifeTime : PooledPrefabInstanceBase
+    public class PooledPrefab_VFXEffect_ShortLifeTime : PooledPrefab_VFXEffect_ParticleSystemBase
     {
-        ParticleSystem _system;
-        public override void PreparePrefab()
-        {
-            _system = GetComponent<ParticleSystem>();
-        }
-
-        protected override void OnPrefabUsed()
-        {
-            _system.Play();
-        }
-
         protected override float LifeTime()
         {
             return 0.75f;
         }
-
     }
 }

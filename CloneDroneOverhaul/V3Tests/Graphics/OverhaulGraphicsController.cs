@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using CloneDroneOverhaul.V3Tests.Base;
-using CloneDroneOverhaul;
+﻿using AmplifyOcclusion;
 using CloneDroneOverhaul.Modules;
+using CloneDroneOverhaul.V3Tests.Base;
 using ModLibrary;
+using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -27,7 +27,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public const string ID_VFX_CUT = "VFX_Cut";
         public const string ID_VFX_CUT_FIRE = "VFX_FireCut";
-        public const string ID_VFX_HAMMER_HIT = "VFX_Cut";
+        public const string ID_VFX_HAMMER_HIT = "VFX_HammerHit";
         public const string ID_VFX_KICK = "VFX_Kick";
 
         public const string ID_VFX_EXPLOSION_VOXELS = "VFX_Explosion_Voxels";
@@ -61,7 +61,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 10, ID_VFX_CUT);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 10, ID_VFX_CUT_FIRE);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 10, ID_VFX_BURNING);
-            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, ID_VFX_EXPLOSION_VOXELS);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_VeryLongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, ID_VFX_EXPLOSION_VOXELS);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, ID_VFX_EXPLOSION);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FloatingLava").transform, 10, ID_VFX_FLOATING_MAGMA);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_LongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_HammerHit").transform, 5, ID_VFX_HAMMER_HIT);
@@ -151,7 +151,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         public static void Simulate_Light_Hex(in Vector3 position, in float range, in string hexColor, in float speed = 1f)
         {
             PooledPrefab_VFXEffect_Light light = UseVFX<PooledPrefab_VFXEffect_Light>(ID_VFX_LIGHT, position, Vector3.zero);
-            if(light != null) light.SetLightSettings(range, hexColor.hexToColor(), speed);
+            if (light != null)
+            {
+                light.SetLightSettings(range, hexColor.hexToColor(), speed);
+            }
         }
 
         public static void Simulate_HammerHit(in Vector3 position)
@@ -167,7 +170,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public static void Simulate_Burning(in Vector3 position)
         {
-            if (Random.Range(0, 10) > 5)
+            if (UnityEngine.Random.Range(0, 10) > 5)
             {
                 UseVFX(ID_VFX_BURNING, position, Vector3.zero);
             }
@@ -184,8 +187,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         #region Effects
 
-        static ReflectionProbe _reflectionProbe;
+        private static ReflectionProbe _reflectionProbe;
 
+
+        /// <summary>
+        /// Spawn a reflection probe that shades the environment
+        /// </summary>
         internal static void SpawnReflectionProbe()
         {
             GameObject gameObject = new GameObject("Overhaul_Shading[ReflectionProbe]");
@@ -199,7 +206,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             _reflectionProbe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.ViaScripting;
             _reflectionProbe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
             _reflectionProbe.timeSlicingMode = UnityEngine.Rendering.ReflectionProbeTimeSlicingMode.NoTimeSlicing;
-            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.SectionVisibilityChanged, delegate 
+            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.SectionVisibilityChanged, delegate
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
@@ -210,11 +217,27 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         #endregion
 
-        #region Non-static Stuff
+        #region Settings
+
+        private bool _overrideSettings;
+        public static bool OverrideSettings
+        {
+            get => GetInstance<OverhaulGraphicsController>()._overrideSettings;
+            set => GetInstance<OverhaulGraphicsController>()._overrideSettings = value;
+        }
+
+        public static (bool, bool) AmplifyOcclusionEnabled;
+        public static (float, float) AmplifyOcclusionIntenisty;
+        public static (SampleCountLevel, SampleCountLevel) AmplifyOcclusionSampleCount;
+
+        public static (ShadowBias, ShadowBias) ShadowsBias;
+        public static (ShadowDistance, ShadowDistance) ShadowsDistance;
+        public static (Modules.ShadowResolution, Modules.ShadowResolution) ShadowsResolution;
+        public static (bool, bool) ShadowsSoft;
 
         public override void OnSettingRefreshed(in string settingName, in object value)
         {
-            if(settingName == "Graphics.Additions.Shading")
+            if (settingName == "Graphics.Additions.Shading")
             {
                 _reflectionProbe.enabled = (bool)value;
             }
@@ -240,6 +263,303 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                         break;
                 }
             }
+            if (settingName == "Graphics.Additions.Sample count")
+            {
+                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionSampleCount, value, false);
+            }
+            if (settingName == "Graphics.Additions.Amplify occlusion")
+            {
+                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionEnabled, value, false);
+            }
+            if (settingName == "Graphics.Additions.Occlusion intensity")
+            {
+                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionIntensity, value, false);
+            }
+            if (settingName == "Graphics.Settings.Shadow resolution")
+            {
+                SetParameterValue(GraphicsParameterNames.ShadowsResolution, value, false);
+            }
+            if (settingName == "Graphics.Settings.Shadow bias")
+            {
+                SetParameterValue(GraphicsParameterNames.ShadowsBias, value, false);
+            }
+            if (settingName == "Graphics.Settings.Soft shadows")
+            {
+                SetParameterValue(GraphicsParameterNames.ShadowsSoft, value, false);
+            }
+            if (settingName == "Graphics.Settings.Shadow distance")
+            {
+                SetParameterValue(GraphicsParameterNames.ShadowsDistance, value, false);
+            }
+        }
+
+        #region Set parameter
+        /// <summary>
+        /// Set and refresh graphics parameter
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <param name="value"></param>
+        /// <param name="overrideSetting"></param>
+        public static void SetParameterValue(in GraphicsParameterNames parameter, in object value, in bool overrideSetting)
+        {
+            switch (parameter)
+            {
+                case GraphicsParameterNames.AmplifyOcclusionEnabled:
+
+                    if (overrideSetting)
+                    {
+                        AmplifyOcclusionEnabled.Item1 = (bool)value;
+                    }
+                    else
+                    {
+                        AmplifyOcclusionEnabled.Item2 = (bool)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.AmplifyOcclusionSampleCount:
+
+                    if (overrideSetting)
+                    {
+                        AmplifyOcclusionSampleCount.Item1 = (SampleCountLevel)value;
+                    }
+                    else
+                    {
+                        AmplifyOcclusionSampleCount.Item2 = (SampleCountLevel)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.AmplifyOcclusionIntensity:
+
+                    if (overrideSetting)
+                    {
+                        AmplifyOcclusionIntenisty.Item1 = (float)value;
+                    }
+                    else
+                    {
+                        AmplifyOcclusionIntenisty.Item2 = (float)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.ShadowsBias:
+
+                    if (overrideSetting)
+                    {
+                        ShadowsBias.Item1 = (ShadowBias)value;
+                    }
+                    else
+                    {
+                        ShadowsBias.Item2 = (ShadowBias)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.ShadowsDistance:
+
+                    if (overrideSetting)
+                    {
+                        ShadowsDistance.Item1 = (ShadowDistance)value;
+                    }
+                    else
+                    {
+                        ShadowsDistance.Item2 = (ShadowDistance)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.ShadowsResolution:
+
+                    if (overrideSetting)
+                    {
+                        ShadowsResolution.Item1 = (Modules.ShadowResolution)value;
+                    }
+                    else
+                    {
+                        ShadowsResolution.Item2 = (Modules.ShadowResolution)value;
+                    }
+
+                    break;
+
+                case GraphicsParameterNames.ShadowsSoft:
+
+                    if (overrideSetting)
+                    {
+                        ShadowsSoft.Item1 = (bool)value;
+                    }
+                    else
+                    {
+                        ShadowsSoft.Item2 = (bool)value;
+                    }
+
+                    break;
+            }
+
+            RefreshGraphics();
+        }
+        #endregion
+
+        public static void RefreshGraphics()
+        {
+            OverhaulGraphicsController controller = GetInstance<OverhaulGraphicsController>();
+
+            AmplifyOcclusionEffect amplifyOcclusionEffect = controller._cachedAmplifyOcclusion;
+            if (amplifyOcclusionEffect)
+            {
+                amplifyOcclusionEffect.enabled = OverrideSettings ? AmplifyOcclusionEnabled.Item1 : AmplifyOcclusionEnabled.Item2;
+                amplifyOcclusionEffect.Intensity = OverrideSettings ? AmplifyOcclusionIntenisty.Item1 : AmplifyOcclusionIntenisty.Item2;
+                amplifyOcclusionEffect.SampleCount = OverrideSettings ? AmplifyOcclusionSampleCount.Item1 : AmplifyOcclusionSampleCount.Item2;
+            }
+
+            Modules.ShadowDistance shadowDistance = (OverrideSettings ? ShadowsDistance.Item1 : ShadowsDistance.Item2);
+            switch (shadowDistance)
+            {
+                case Modules.ShadowDistance.Default:
+                    QualitySettings.shadowDistance = 300;
+                    break;
+
+                case Modules.ShadowDistance.VeryLow:
+                    QualitySettings.shadowDistance = 100;
+                    break;
+
+                case Modules.ShadowDistance.Low:
+                    QualitySettings.shadowDistance = 200;
+                    break;
+
+                case Modules.ShadowDistance.High:
+                    QualitySettings.shadowDistance = 500;
+                    break;
+
+                case Modules.ShadowDistance.VeryHigh:
+                    QualitySettings.shadowDistance = 750;
+                    break;
+
+                case Modules.ShadowDistance.ExtremlyHigh:
+                    QualitySettings.shadowDistance = 1000;
+                    break;
+            }
+
+            UI.VisualEffectsUI.Instance.RefreshEffects();
+            PatchLight(DirectionalLightManager.Instance.DirectionalLight, true);
+        }
+
+        #endregion
+
+        #region Trackers
+
+        private AmplifyOcclusionEffect _cachedAmplifyOcclusion;
+        private Camera _cachedCamera;
+        /// <summary>
+        /// Quickly get main camera component
+        /// </summary>
+        public static Camera CachedMainCamera
+        {
+            get => GetInstance<OverhaulGraphicsController>()._cachedCamera;
+            set
+            {
+                OverhaulGraphicsController g = GetInstance<OverhaulGraphicsController>();
+                g._cachedCamera = value;
+                g.PatchCamera(value);
+            }
+        }
+
+        private void Update()
+        {
+            if (!CachedMainCamera || !CachedMainCamera.isActiveAndEnabled)
+            {
+                CachedMainCamera = Camera.main;
+            }
+        }
+
+        #endregion
+
+        #region Patches
+
+        public void PatchCamera(in Camera camera)
+        {
+            if (camera == null || camera.orthographic)
+            {
+                return;
+            }
+
+            Bloom bloom = camera.GetComponent<Bloom>();
+            if (bloom)
+            {
+                bloom.bloomBlurIterations = 10;
+                bloom.bloomIntensity = 0.7f;
+                bloom.bloomThreshold = 1.25f;
+                bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+            }
+
+            if (_cachedAmplifyOcclusion)
+            {
+                Destroy(_cachedAmplifyOcclusion);
+                _cachedAmplifyOcclusion = null;
+            }
+
+            if (_cachedAmplifyOcclusion == null)
+            {
+                AmplifyOcclusionEffect acc = camera.gameObject.AddComponent<AmplifyOcclusionEffect>();
+                acc.BlurSharpness = 4f;
+                acc.FilterResponse = 0.7f;
+                acc.Bias = 1;
+                _cachedAmplifyOcclusion = acc;
+                RefreshGraphics();
+            }
+        }
+
+        public static void PatchLight(in Light light, in bool enableShadows)
+        {
+            Modules.ShadowResolution enumRes = (OverrideSettings ? ShadowsResolution.Item1 : ShadowsResolution.Item2);
+            switch (enumRes)
+            {
+                case Modules.ShadowResolution.Low:
+                    light.shadowCustomResolution = 1000;
+                    break;
+
+                case Modules.ShadowResolution.Default:
+                    light.shadowCustomResolution = -1;
+                    break;
+
+                case Modules.ShadowResolution.High:
+                    light.shadowCustomResolution = 5000;
+                    break;
+
+                case Modules.ShadowResolution.ExtremlyHigh:
+                    light.shadowCustomResolution = 10000;
+                    break;
+
+            }
+
+            ShadowBias shadowBias = (OverrideSettings ? ShadowsBias.Item1 : ShadowsBias.Item2);
+            switch (shadowBias)
+            {
+                case ShadowBias.Minimum:
+                    light.shadowBias = 0;
+                    break;
+
+                case ShadowBias.Low:
+                    light.shadowBias = 0.2f;
+                    break;
+
+                case ShadowBias.Default:
+                    light.shadowBias = 1f;
+                    break;
+
+            }
+
+            LightShadows shadowsMode = LightShadows.Soft;
+            int qualityLevel = SettingsManager.Instance.GetSavedQualityIndex();
+            if (qualityLevel == 0)
+            {
+                shadowsMode = LightShadows.None;
+            }
+            else
+            {
+                shadowsMode = (OverrideSettings ? ShadowsSoft.Item1 : ShadowsSoft.Item2) ? LightShadows.Soft : LightShadows.Hard;
+            }
+            light.shadows = enableShadows ? shadowsMode : LightShadows.None;
         }
 
         #endregion

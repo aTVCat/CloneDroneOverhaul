@@ -38,7 +38,7 @@ namespace CloneDroneOverhaul.V3Tests.Optimisation
 
             group.SetLODs(lods);
             group.RecalculateBounds();
-            group.size = size;
+            group.size = size * (HighLoDThreshold ? 1.25f : 1f);
         }
 
         public override void OnSettingRefreshed(in string settingName, in object value)

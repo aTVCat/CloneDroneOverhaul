@@ -54,10 +54,13 @@
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModeBase.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Controllers\OverModesController.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\CameraController.cs" />
+    <Compile Include="V3Tests\Graphics\GraphicsParameterNames.cs" />
     <Compile Include="V3Tests\Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="V3Tests\Graphics\WorldEffects\ArenaWeatherController.cs" />
+    <Compile Include="V3Tests\HUD\ControlInstructionEntry.cs" />
+    <Compile Include="V3Tests\HUD\ControlInstructionsUI.cs" />
+    <Compile Include="V3Tests\HUD\V3_ModHUDBase.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
-    <Compile Include="V3Tests\LevelEditor\LevelEditorUndoRedoManager.cs" />
     <Compile Include="V3Tests\LevelEditor\MetaDataController.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorUI.cs" />
@@ -72,7 +75,6 @@
     <Compile Include="Gameplay\GameplayOverhaulModule.cs" />
     <Compile Include="Base\Modules\MainControllers\SettingsManager.cs" />
     <Compile Include="Base\Modules\AdvancedPhotoModeManager.cs" />
-    <Compile Include="Base\Modules\GarbagePositionerTool.cs" />
     <Compile Include="Base\Modules\MainControllers\WorldGUIs.cs" />
     <Compile Include="Base\Modules\MainControllers\DelegateTimer.cs" />
     <Compile Include="Base\Modules\MainControllers\MiscEffectsManager.cs" />
@@ -90,7 +92,7 @@
     <Compile Include="UI\Components\ToggleWithDesc.cs" />
     <Compile Include="UI\Components\Values.cs" />
     <Compile Include="UI\Components\DoOnClick.cs" />
-    <Compile Include="UI\Overhauled\NewPhotoModeUI.cs" />
+    <None Include="UI\Overhauled\NewPhotoModeUI.cs" />
     <Compile Include="UI\Overhauled\NewGameModeSelectionScreen.cs" />
     <Compile Include="UI\Overhauled\NewWorkshopBrowserUI.cs" />
     <Compile Include="UI\Components\DestroyAfterWaitWithCallback.cs" />
@@ -126,6 +128,8 @@
     <Compile Include="V3Tests\ModControlling\ModdedUpgrades\ModdedUpgradesController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
     <Compile Include="V3Tests\Optimisation\ObjectsLODController.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_ParticleSystemBase.cs" />
+    <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_VeryLongLifeTime.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_LongLifeTime.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_ShortLifeTime.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_Light.cs" />

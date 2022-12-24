@@ -27,6 +27,8 @@ namespace CloneDroneOverhaul.V3Tests.Base
             _controllersGameObject = null;
             _spawnedControllers.Clear();
 
+            ModdedObject modHUDModdedObject = OverhaulMain.ModGUICanvas.GetComponent<ModdedObject>();
+
             OverModesController.InitializeForCurrentScene();
             OverhaulGraphicsController.Initialize();
 
@@ -42,7 +44,10 @@ namespace CloneDroneOverhaul.V3Tests.Base
             GameStatisticsController statistics = AddManager<GameStatisticsController>("GameStatisticsController");
             ArenaWeatherController weather = AddManager<ArenaWeatherController>("ArenaWeatherController");
             OverhaulGraphicsController graphics = AddManager<OverhaulGraphicsController>("OverhaulGraphicsController");
+            Optimisation.ObjectsLODController lod = AddManager<Optimisation.ObjectsLODController>("ObjectsLODController");
             LevelEditor.MetaDataController metaData = AddManager<LevelEditor.MetaDataController>("MetaDataController");
+
+            HUD.V3_ModHUDBase.AddHUD<HUD.ControlInstructionsUI>(modHUDModdedObject.GetObjectFromList<ModdedObject>(17));
 
             LoadAssets();
 
@@ -73,13 +78,21 @@ namespace CloneDroneOverhaul.V3Tests.Base
         /// <typeparam name="T"></typeparam>
         /// <param name="managerName"></param>
         /// <returns></returns>
-        public static T AddManager<T>(in string managerName) where T : V3_ModControllerBase
+        public static T AddManager<T>(in string managerName, in Transform transform = null) where T : V3_ModControllerBase
         {
-            GameObject newGO = new GameObject(managerName);
-            newGO.transform.SetParent(_controllersGameObject.transform);
-
-            T result = newGO.AddComponent<T>();
-            _spawnedControllers.Add(result);
+            T result = null;
+            if (transform == null)
+            {
+                GameObject newGO = new GameObject(managerName);
+                newGO.transform.SetParent(_controllersGameObject.transform);
+                result = newGO.AddComponent<T>();
+                _spawnedControllers.Add(result);
+            }
+            else
+            {
+                result = transform.gameObject.AddComponent<T>();
+                _spawnedControllers.Add(result);
+            }
 
             return result;
         }
