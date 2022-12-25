@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class PooledPrefab_VFXEffect_Light : PooledPrefabInstanceBase
     {
-        Light _light;
-        Animator _animator;
-      
+        private Light _light;
+        private Animator _animator;
+
         public override void PreparePrefab()
         {
             _light = GetComponent<Light>();

@@ -110,7 +110,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             OverhaulUtilities.CameraUtils.SetRendererEnabled(false, true);
             base.StartOvermode(delegate
             {
-                ArenaManager.SetArenaVisible(false);
+                V3Tests.Gameplay.ArenaController.SetArenaVisible(false);
                 ProcessEventAndReturn<Test123>(EventNames.SpawnLevel, null);
             }, false);
         }

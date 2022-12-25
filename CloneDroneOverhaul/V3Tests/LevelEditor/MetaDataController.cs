@@ -1,6 +1,5 @@
-﻿using UnityEngine;
+﻿using CloneDroneOverhaul.V3Tests.Base;
 using ModLibrary;
-using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul.LevelEditor
 {
@@ -23,7 +22,7 @@ namespace CloneDroneOverhaul.LevelEditor
             {
                 return Singleton<LevelEditorDataManager>.Instance.GetCurrentLevelData();
             }
-            if(Singleton<LevelManager>.Instance.GetCurrentLevelID() != null)
+            if (Singleton<LevelManager>.Instance.GetCurrentLevelID() != null)
             {
                 LevelDescription currentLevelDescription = Singleton<LevelManager>.Instance.GetCurrentLevelDescription();
                 if (currentLevelDescription != null)

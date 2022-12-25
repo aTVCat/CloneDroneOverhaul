@@ -180,7 +180,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         {
             UseVFX(ID_VFX_EXPLOSION_VOXELS, position, Vector3.zero);
             Simulate_Smoke(position);
-            Simulate_Light_Hex(position, 100, "FFB59C", 03f);
+            Simulate_Light_Hex(position, 100, "FFB59C", 0.3f);
         }
 
         #endregion

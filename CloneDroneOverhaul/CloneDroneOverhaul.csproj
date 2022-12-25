@@ -41,6 +41,7 @@
     <Compile Include="Effects\AmplifyOcclusion.cs" />
     <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
     <None Include="ModdedObject.cs" />
+    <Compile Include="V3Tests\Gameplay\Arena\ArenaController.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraType.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraInfo.cs" />
     <Compile Include="V3Tests\Gameplay\GameStatistics\Controllers\GameStatistic.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="Base\Localization\LocalizationManager.cs" />
     <Compile Include="Base\Modules\MainControllers\GameStateChangeController.cs" />
     <Compile Include="Base\Modules\MainControllers\GameInformationManager.cs" />
-    <Compile Include="Base\Modules\MainControllers\ArenaManager.cs" />
     <Compile Include="Base\Patching\PatchesManager.cs" />
     <Compile Include="V3Tests\Gameplay\OverModes\Exploration\ExplorationGameModeManager.cs" />
     <Compile Include="Base\Modules\MainControllers\ModDataManager.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="UI\VisualEffectsUI.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="Base\OverhaulCacheManager.cs" />
-    <Compile Include="Base\UpdateChecker.cs" />
+    <Compile Include="Base\UpdateController.cs" />
     <Compile Include="V3Tests\Gameplay\RobotsOverhaul\Controllers\OverhaulRobotsController.cs" />
     <Compile Include="V3Tests\Gameplay\WeaponsOverhaul\WeaponSkins\WeaponSkinController.cs" />
     <Compile Include="V3Tests\ModControlling\ModData\ModAssetFileType.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="V3Tests\ModControlling\V3_FunctionEvents.cs" />
     <Compile Include="V3Tests\ModControlling\ModdedUpgrades\ModdedUpgradesController.cs" />
     <Compile Include="V3Tests\ModControlling\V3_ModControllerBase.cs" />
+    <Compile Include="V3Tests\Optimisation\OptimiseOnStartup.cs" />
     <Compile Include="V3Tests\Optimisation\ObjectsLODController.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_ParticleSystemBase.cs" />
     <Compile Include="V3Tests\PooledPrefabs\Children\PooledPrefab_VFXEffect_VeryLongLifeTime.cs" />

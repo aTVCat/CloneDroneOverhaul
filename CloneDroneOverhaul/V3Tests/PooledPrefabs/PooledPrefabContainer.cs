@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System;
-using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -21,7 +19,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         {
             _prefabs = new PooledPrefabInstanceBase[count];
             _activatedPrefabs = new bool[count];
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 T newObject = Instantiate<Transform>(@object, base.transform).gameObject.AddComponent<T>();
                 newObject.gameObject.SetActive(false);
@@ -42,7 +40,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private PooledPrefabInstanceBase getAvailablePooledPrefab(in bool markAsUsed = false)
         {
             PooledPrefabInstanceBase result = null;
-            for(int i = 0; i < _activatedPrefabs.Length; i++)
+            for (int i = 0; i < _activatedPrefabs.Length; i++)
             {
                 bool val = _activatedPrefabs[i];
                 if (!val)
@@ -80,7 +78,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             T result = null;
             result = (T)getAvailablePooledPrefab(true);
 
-            if(result != null)
+            if (result != null)
             {
                 result.UsePrefab(position, rotation);
             }

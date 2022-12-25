@@ -109,17 +109,18 @@ namespace CloneDroneOverhaul
                 return;
             }
             OverhaulMain.hasCheckForUpdates = true;
-            UpdateChecker.CheckForUpdates(new Action<string>(OnUpdateReceivedGitHub));
+            UpdateController.CheckForUpdates(new Action<Version>(OnUpdateReceivedGitHub));
             API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
         }
 
         private void OnModDataGet(JsonObject json)
         {
-            string a = json["Version"].ToString();
-            if (a != base.ModInfo.Version.ToString())
+            int a = int.Parse(json["Version"].ToString());
+            int b = int.Parse(base.ModInfo.Version.ToString());
+            if (a > b)
             {
                 Notification notification = new Notification();
-                notification.SetUp("New update available!", "See CDO mod page", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
+                notification.SetUp("New update is out on Mod-Bot!", "If you wish, you may visit Overhaul mod site by clicking \"Mod-Bot\" and download new version.", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
                 {
                     new Notification.NotificationButton
                     {
@@ -128,21 +129,21 @@ namespace CloneDroneOverhaul
                     },
                     new Notification.NotificationButton
                     {
-                        Action = new UnityAction(UpdateChecker.OpenModBotPage),
+                        Action = new UnityAction(UpdateController.OpenModBotPage),
                         Text = "ModBot"
                     }
                 }, false);
             }
         }
 
-        private void OnUpdateReceivedGitHub(string newVersion)
+        private void OnUpdateReceivedGitHub(Version newVersion)
         {
-            if (newVersion == OverhaulDescription.GetModVersion(false))
+            if (newVersion <= UpdateController.ToVersion(OverhaulDescription.GetModVersion(false)))
             {
                 return;
             }
             Notification notification = new Notification();
-            notification.SetUp("New update available!", "New version (" + newVersion + ") is available on GitHub!", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
+            notification.SetUp("Version a" + newVersion + " out on GitHub!", "You may visit mod GitHub site by clicking \"GitHub\" to download new version.", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
             {
                 new Notification.NotificationButton
                 {
@@ -151,7 +152,7 @@ namespace CloneDroneOverhaul
                 },
                 new Notification.NotificationButton
                 {
-                    Action = new UnityAction(UpdateChecker.OpenGitHubWithReleases),
+                    Action = new UnityAction(UpdateController.OpenGitHubWithReleases),
                     Text = "GitHub"
                 }
             }, false);
@@ -176,7 +177,6 @@ namespace CloneDroneOverhaul
             moduleManagement.AddModule<GUIManagement>(false);
             moduleManagement.AddModule<WorldGUIs>(false);
             moduleManagement.AddModule<GameplayOverhaulModule>(false);
-            moduleManagement.AddModule<ArenaManager>(false);
             moduleManagement.AddModule<MiscEffectsManager>(false);
             moduleManagement.AddModule<ModdedLevelEditorManager>(false);
             moduleManagement.AddModule<PatchesManager>(false);
@@ -305,15 +305,6 @@ namespace CloneDroneOverhaul
 
             // Changing pixels per unit of main canvas
             GameUIRoot.Instance.GetComponent<Canvas>().referencePixelsPerUnit = 75f;
-
-            // Lower arena camera resolution and save ~5% FPS
-            foreach (Camera camera in GameInformationManager.UnoptimizedThings.GetFPSLoweringStuff().AllCameras)
-            {
-                if (camera.name == "ArenaCamera")
-                {
-                    camera.pixelRect = new Rect(new Vector2(0f, 0f), new Vector2(640f, 360f));
-                }
-            }
         }
 
         private void spawnGUI()
@@ -373,7 +364,7 @@ namespace CloneDroneOverhaul
 
         public const bool TEST_FEATURES_ENABLED = false;
         public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.20";
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.21";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;

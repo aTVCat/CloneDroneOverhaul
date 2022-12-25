@@ -57,7 +57,7 @@ namespace CloneDroneOverhaul.Patching
                 if (GUIManagement.Instance.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || GUIManagement.Instance.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
                       GUIManagement.Instance.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
                 {
-                    global::InputManager.Instance.SetCursorEnabled(true);
+                    InputManager.Instance.SetCursorEnabled(true);
                     return false;
                 }
             }
@@ -83,29 +83,6 @@ namespace CloneDroneOverhaul.Patching
         }*/
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(SceneTransitionManager), "DisconnectAndExitToMainMenu")]
-        private static bool SceneTransitionManager_DisconnectAndExitToMainMenu_Prefix()
-        {
-            V3Tests.Base.SceneTransitionController.GoToMainMenu();
-            return false;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(SceneTransitionManager), "InstantiateSceneTransitionOverlay")]
-        private static bool SceneTransitionManager_InstantiateSceneTransitionOverlay_Prefix()
-        {
-            return false;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(SceneTransitionManager), "onShutDownComplete")]
-        private static bool SceneTransitionManager_onShutDownComplete_Prefix()
-        {
-            return false;
-        }
-
-
-        [HarmonyPrefix]
         [HarmonyPatch(typeof(TitleScreenUI), "OnWorkshopBrowserButtonClicked")]
         private static bool TitleScreenUI_OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
         {
@@ -113,7 +90,7 @@ namespace CloneDroneOverhaul.Patching
             {
                 return true;
             }
-            Modules.ArenaManager.SetRootAndLogoVisible(false);
+            V3Tests.Gameplay.ArenaController.SetRootAndLogoVisible(false);
             NewWorkshopBrowserUI.Instance.Show();
             return false;
         }
@@ -142,32 +119,6 @@ namespace CloneDroneOverhaul.Patching
             }
             __instance.gameObject.SetActive(false);
         }
-
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Character), "SetCameraAnimatorEnabled")]
-        private static bool Character_SetCameraAnimatorEnabled_Prefix()
-        {
-            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
-        }
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(FirstPersonMover), "Update")]
-        private static void Character_Update_Postfix(FirstPersonMover __instance)
-        {
-            if (__instance.IsRidingOtherCharacter() && __instance.transform.parent != null && __instance.transform.parent.gameObject.name == "RiderContainer")
-            {
-                
-                __instance.transform.localPosition = Vector3.zero;
-                __instance.transform.localEulerAngles = Vector3.zero;
-            }
-        }
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlayerCameraMover), "LateUpdate")]
-        private static bool PlayerCameraMover_LateUpdate_Prefix()
-        {
-            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
-        }
-
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Multiplayer1v1UI), "refreshUIVisibility")]
@@ -360,6 +311,51 @@ namespace CloneDroneOverhaul.Patching
     public class OverhaulPatches
     {
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(Character), "SetCameraAnimatorEnabled")]
+        private static bool Character_SetCameraAnimatorEnabled_Prefix()
+        {
+            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FirstPersonMover), "Update")]
+        private static void Character_Update_Postfix(FirstPersonMover __instance)
+        {
+            if (__instance.IsRidingOtherCharacter() && __instance.transform.parent != null && __instance.transform.parent.gameObject.name == "RiderContainer")
+            {
+                __instance.transform.localPosition = Vector3.zero;
+                __instance.transform.localEulerAngles = Vector3.zero;
+            }
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlayerCameraMover), "LateUpdate")]
+        private static bool PlayerCameraMover_LateUpdate_Prefix()
+        {
+            return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SceneTransitionManager), "DisconnectAndExitToMainMenu")]
+        private static bool SceneTransitionManager_DisconnectAndExitToMainMenu_Prefix()
+        {
+            V3Tests.Base.SceneTransitionController.GoToMainMenu();
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SceneTransitionManager), "InstantiateSceneTransitionOverlay")]
+        private static bool SceneTransitionManager_InstantiateSceneTransitionOverlay_Prefix()
+        {
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SceneTransitionManager), "onShutDownComplete")]
+        private static bool SceneTransitionManager_onShutDownComplete_Prefix()
+        {
+            return false;
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(ErrorManager), "sendExceptionDetailsToLoggly")]
         private static bool ErrorManager_sendExceptionDetailsToLoggly_Prefix()
         {
@@ -392,6 +388,13 @@ namespace CloneDroneOverhaul.Patching
             {
                 __instance.GetRobotInfo()
             });
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ControlsHintPanel), "areHintsDisabled")]
+        private static void ControlsHintPanel_areHintsDisabled_Postfix(ref bool __result)
+        {
+            __result = true;
         }
 
         [HarmonyPostfix]

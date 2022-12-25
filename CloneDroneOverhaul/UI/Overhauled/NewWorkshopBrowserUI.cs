@@ -64,7 +64,7 @@ namespace CloneDroneOverhaul.UI
             base.gameObject.SetActive(false);
             if (GameModeManager.IsOnTitleScreen())
             {
-                ArenaManager.SetRootAndLogoVisible(true);
+                V3Tests.Gameplay.ArenaController.SetRootAndLogoVisible(true);
             }
         }
 

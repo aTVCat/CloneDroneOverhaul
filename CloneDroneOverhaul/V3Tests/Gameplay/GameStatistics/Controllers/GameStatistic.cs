@@ -1,10 +1,8 @@
-﻿using CloneDroneOverhaul.V3Tests.Base;
-using CloneDroneOverhaul.Utilities;
-using Rewired;
+﻿using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class GameStatistic 
+    public class GameStatistic
     {
         /// <summary>
         /// How many robots have you played as?

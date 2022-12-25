@@ -28,7 +28,7 @@ namespace CloneDroneOverhaul.Modules
                 GameUIRoot.Instance.GetComponent<Canvas>().scaleFactor = 1.7f + val;
                 OverhaulMain.ModGUICanvas.scaleFactor = 1f + val;
             }
-            if(ID == "Patches.GUI.Pixel perfect HUD")
+            if (ID == "Patches.GUI.Pixel perfect HUD")
             {
                 GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = (bool)value;
                 OverhaulMain.ModGUICanvas.pixelPerfect = (bool)value;

@@ -1,47 +1,24 @@
-﻿using ModLibrary;
+﻿using System.Collections;
 using UnityEngine;
+using ModLibrary;
 
-namespace CloneDroneOverhaul.Modules
+namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
-    public class ArenaManager : ModuleBase
+    public static class ArenaController
     {
-        public Transform SpawnedCamera { get; private set; }
-        public Transform ArenaCamera { get; private set; }
-        public Transform ArenaTransform { get; private set; }
-        public ArenaManager.ArenaParts ArenaInterior { get; private set; }
+        public static ArenaParts ArenaInterior { get; private set; }
 
-        public static void SetArenaVisible(bool val)
+        /// <summary>
+        /// Spawn decor like laptop, coffee on commentators desk
+        /// </summary>
+        public static void InitializeForCurrentScene()
         {
-            LevelManager.Instance.SetPrivateField<bool>("_currentLevelHidesTheArena", val);
-            foreach (HideIfLevelHidesArena hide in GameObject.FindObjectsOfType<HideIfLevelHidesArena>())
-            {
-                hide.CallPrivateMethod("refreshVisibility");
-            }
-            WorldRoot.Instance.gameObject.SetActive(false);
-            AudienceManager.Instance.enabled = val;
-        }
-        public static void SetLogoVisible(bool val)
-        {
-            ArenaCameraManager.Instance.SetTitleScreenLogoVisible(val);
-        }
-        public static void SetRootAndLogoVisible(bool val)
-        {
-            GameUIRoot.Instance.TitleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { val });
-        }
+            ArenaInterior = new ArenaParts().GetObjects(UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform);
 
-        public override void Start()
-        {
-            ArenaTransform = UnityEngine.Object.FindObjectOfType<HideIfLevelHidesArena>().transform;
-            ArenaInterior = default(ArenaManager.ArenaParts).GetObjects(ArenaTransform);
-            spawnCommentatorsDecor();
-        }
-
-        private void spawnCommentatorsDecor()
-        {
-            Microphone = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "MicrophoneModelVox").transform;
-            Coffee = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "CoffeeModelVox").transform;
-            Laptop = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "ComputerModelVox").transform;
-            LotsOfPapers = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "LotsOfPapers").transform;
+            Transform Microphone = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "MicrophoneModelVox").transform;
+            Transform Coffee = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "CoffeeModelVox").transform;
+            Transform Laptop = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "ComputerModelVox").transform;
+            Transform LotsOfPapers = AssetLoader.GetObjectFromFile<GameObject>("rp_newobjects", "LotsOfPapers").transform;
             Transform trans = UnityEngine.Object.Instantiate<Transform>(Microphone, ArenaInterior.CommentatorBox);
             trans.localPosition = new Vector3(6f, 4.6f, -0.8f);
             trans.localEulerAngles = new Vector3(0f, 32f, 0f);
@@ -73,12 +50,41 @@ namespace CloneDroneOverhaul.Modules
             transformBC.localPosition = new Vector3(0f, 0f, -0.65f);
             transformBC.localEulerAngles = Vector3.zero;
             transformBC.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+
+            ArenaInterior.ArenaTVs.gameObject.SetActive(false);
         }
 
-        private Transform Microphone = null;
-        private Transform Coffee = null;
-        private Transform Laptop = null;
-        private Transform LotsOfPapers = null;
+        /// <summary>
+        /// Toggle arena visibility
+        /// </summary>
+        /// <param name="val"></param>
+        public static void SetArenaVisible(bool val)
+        {
+            LevelManager.Instance.SetPrivateField<bool>("_currentLevelHidesTheArena", val);
+            foreach (HideIfLevelHidesArena hide in GameObject.FindObjectsOfType<HideIfLevelHidesArena>())
+            {
+                hide.CallPrivateMethod("refreshVisibility");
+            }
+            WorldRoot.Instance.gameObject.SetActive(false);
+            AudienceManager.Instance.enabled = val;
+        }
+        /// <summary>
+        /// Toggle Clone drone logo
+        /// </summary>
+        /// <param name="val"></param>
+        public static void SetLogoVisible(bool val)
+        {
+            ArenaCameraManager.Instance.SetTitleScreenLogoVisible(val);
+        }
+
+        /// <summary>
+        /// Toggle title screen HUD
+        /// </summary>
+        /// <param name="val"></param>
+        public static void SetRootAndLogoVisible(bool val)
+        {
+            GameUIRoot.Instance.TitleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { val });
+        }
 
         public struct ArenaParts
         {
@@ -115,7 +121,7 @@ namespace CloneDroneOverhaul.Modules
             public FalloutCatcher[] FalloutCatchers { get; private set; }
             public Transform FalloutLaser { get; private set; }
 
-            public ArenaManager.ArenaParts GetObjects(Transform original)
+            public ArenaParts GetObjects(Transform original)
             {
                 GroundArrows = original.GetChild(0);
                 EditorFloor = original.GetChild(1);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Rewired;
 
 namespace CloneDroneOverhaul.UI
 {
@@ -104,7 +103,7 @@ namespace CloneDroneOverhaul.UI
 
         public void RefreshPage()
         {
-            Select(this.selectedCategory, this.selectedSection);
+            Select(selectedCategory, selectedSection);
         }
 
         public void Select(in string category, in string section)
@@ -371,7 +370,7 @@ namespace CloneDroneOverhaul.UI
                 _isMouseIn = true;
             }
 
-            void Update()
+            private void Update()
             {
                 if (!base.gameObject.activeInHierarchy)
                 {

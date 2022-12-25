@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using CloneDroneOverhaul.Utilities;
+﻿using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Gameplay;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
     public class ControlInstructionsUI : V3_ModHUDBase
     {
-        ControlInstructionEntry _raptorDismount;
-        ControlInstructionEntry _raptorKick;
-
-        ControlInstructionEntry _flameBreath;
-        ControlInstructionEntry _laser;
-
-        ControlInstructionEntry _mindTransfers;
+        private ControlInstructionEntry _raptorDismount;
+        private ControlInstructionEntry _raptorKick;
+        private ControlInstructionEntry _flameBreath;
+        private ControlInstructionEntry _laser;
+        private ControlInstructionEntry _mindTransfers;
 
         private float _timeToNextCheck;
 
@@ -45,10 +39,10 @@ namespace CloneDroneOverhaul.V3Tests.HUD
                     bool isInPhotoMode = PhotoManager.Instance.IsInPhotoMode();
                     FirstPersonMover mover = character as FirstPersonMover;
                     _raptorDismount.SetVisible(mover.IsRidingOtherCharacter());
-                    _raptorKick.SetVisible(mover.IsRidingOtherCharacter());
+                    _raptorKick.SetVisible(mover.CharacterType == EnemyType.FireRaptor || mover.CharacterType == EnemyType.LaserRaptor);
                     _flameBreath.SetVisible(mover.IsRidingOtherCharacter() || mover.HasAbility(UpgradeType.FlameBreath));
                     _laser.SetVisible(mover.HasAbility(UpgradeType.EnergyLaser));
-                    _laser.SetIsAvailable(mover.IsRidingOtherCharacter());
+                    _laser.SetIsAvailable(!mover.IsRidingOtherCharacter());
                     _mindTransfers.SetVisible(GameModeManager.ConsciousnessTransferToKillerEnabled());
                 }
             }
@@ -63,7 +57,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             _mindTransfers.SetVisible(false);
         }
 
-        void Update()
+        private void Update()
         {
             if (SettingsManager.Instance.ShouldHideGameUI())
             {
@@ -73,7 +67,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
             bool isInPhotoMode = PhotoManager.Instance.IsInPhotoMode() || CutSceneManager.Instance.IsInCutscene();
             _timeToNextCheck -= Time.deltaTime;
-            if(_timeToNextCheck <= 0f && !isInPhotoMode)
+            if (_timeToNextCheck <= 0f && !isInPhotoMode)
             {
                 _timeToNextCheck = 0.5f;
                 RefreshControls();

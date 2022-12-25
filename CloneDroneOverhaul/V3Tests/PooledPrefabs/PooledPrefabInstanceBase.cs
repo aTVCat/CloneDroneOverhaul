@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using CloneDroneOverhaul.V3Tests.Base;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -37,12 +35,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             base.gameObject.SetActive(false);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (IsActivated)
             {
                 TimeLeft -= Time.fixedDeltaTime;
-                if(TimeLeft <= 0)
+                if (TimeLeft <= 0)
                 {
                     ReturnToPool();
                 }

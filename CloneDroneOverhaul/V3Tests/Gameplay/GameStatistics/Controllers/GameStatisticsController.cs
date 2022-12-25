@@ -7,7 +7,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private static bool _hasinitialized;
         public static GameStatistic GameStatistics { get; set; }
 
-        void Awake()
+        private void Awake()
         {
             if (!_hasinitialized)
             {
@@ -23,6 +23,9 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 CloneDroneOverhaul.Utilities.RobotShortInformation info = args[0] as CloneDroneOverhaul.Utilities.RobotShortInformation;
                 GameStatistics.PlayerRobotInformation = info;
                 GameStatistics.ControlledCharacterCount++;
+
+                Optimisation.OptimiseOnStartup.SetArenaCameraEnabled();
+                ArenaController.ArenaInterior.ArenaTVs.gameObject.SetActive(true);
             }
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
@@ -19,6 +15,8 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         public int MouseButtonID { get; private set; }
         public bool IsAvailable = true;
 
+        ModdedObject _moddedObject;
+
         public static ControlInstructionEntry AddComponent(in ModdedObject moddedObject)
         {
             ControlInstructionEntry entry = moddedObject.gameObject.AddComponent<ControlInstructionEntry>();
@@ -26,6 +24,8 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             entry.Name = moddedObject.GetObjectFromList<Text>(1);
             entry.Key = moddedObject.GetObjectFromList<Text>(2);
             entry.Animator = moddedObject.GetComponent<Animator>();
+            entry._moddedObject = moddedObject;
+            entry.SetIsAvailable(true);
             return entry;
         }
 
@@ -35,7 +35,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         /// <param name="value"></param>
         public void SetIsAvailable(in bool value)
         {
-            NonAvailableHUD.gameObject.SetActive(value);
+            NonAvailableHUD.gameObject.SetActive(!value);
             IsAvailable = value;
         }
 
@@ -58,6 +58,9 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             MouseTrigger = useMouse;
             MouseButtonID = mouseButtonID;
             Keycode = key;
+
+            _moddedObject.GetObjectFromList<Transform>(2).gameObject.SetActive(!useMouse);
+            _moddedObject.GetObjectFromList<Transform>(3).gameObject.SetActive(useMouse);
         }
 
         public void PlayUseAnimation()
