@@ -1,5 +1,4 @@
-﻿using CloneDroneOverhaul.Modules;
-using CloneDroneOverhaul.RemovedOrOld;
+﻿using CloneDroneOverhaul.RemovedOrOld;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

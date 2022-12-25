@@ -13,6 +13,11 @@ namespace CloneDroneOverhaul.LevelEditor
         public void RefreshCurrentLevelMetaData()
         {
             LevelEditorLevelData levelData = GetCurrentLevelData();
+            if(levelData == null)
+            {
+                V3_MainModController.CallEvent("level.data", new object[] { null });
+                return;
+            }
             V3_MainModController.CallEvent("level.data", new object[] { levelData.ModdedMetadata });
         }
 
@@ -20,11 +25,11 @@ namespace CloneDroneOverhaul.LevelEditor
         {
             if (LevelEditorModdedMetadataManager.IsCurrentlyEditingLevel())
             {
-                return Singleton<LevelEditorDataManager>.Instance.GetCurrentLevelData();
+                return LevelEditorDataManager.Instance.GetCurrentLevelData();
             }
-            if (Singleton<LevelManager>.Instance.GetCurrentLevelID() != null)
+            if (LevelManager.Instance.GetCurrentLevelID() != null)
             {
-                LevelDescription currentLevelDescription = Singleton<LevelManager>.Instance.GetCurrentLevelDescription();
+                LevelDescription currentLevelDescription = LevelManager.Instance.GetCurrentLevelDescription();
                 if (currentLevelDescription != null)
                 {
                     return currentLevelDescription.GetLevelEditorLevelData();

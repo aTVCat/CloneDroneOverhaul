@@ -1,5 +1,4 @@
-﻿using CloneDroneOverhaul.Modules;
-using CloneDroneOverhaul.UI.Components;
+﻿using CloneDroneOverhaul.UI.Components;
 using CloneDroneOverhaul.UI.Notifications;
 using Steamworks;
 using System;

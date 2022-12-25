@@ -36,10 +36,8 @@
     <Compile Include="Base\ControllersAndUtilities\Utilities\Coroutines.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\PlayerUtilities.cs" />
     <Compile Include="Base\ControllersAndUtilities\Utilities\StaticReferences.cs" />
-    <Compile Include="Base\SceneTransitionController.cs" />
     <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
     <Compile Include="Effects\AmplifyOcclusion.cs" />
-    <Compile Include="Gameplay\EffectsAndAbilitiesV4\RobotsExpansionManager.cs" />
     <None Include="ModdedObject.cs" />
     <Compile Include="V3Tests\Gameplay\Arena\ArenaController.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraType.cs" />
@@ -81,11 +79,9 @@
     <Compile Include="Base\Modules\ModuleManagement.cs" />
     <Compile Include="Base\Modules\MainControllers\HotkeysStaticModule.cs" />
     <Compile Include="Base\Modules\MainControllers\VisualsModule.cs" />
-    <Compile Include="Base\Patching\ObjectValueReplacer.cs" />
     <Compile Include="Base\Patching\ObjectFixer.cs" />
     <Compile Include="OverhaulMain.cs" />
     <Compile Include="Base\Patching\OverhaulPatches.cs" />
-    <Compile Include="Base\Modules\PooledPrefabs\SimplePooledPrefab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Components\ImageLoader.cs" />
     <Compile Include="UI\Components\ReferenceOnClick.cs" />

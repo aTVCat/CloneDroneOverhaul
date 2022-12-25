@@ -364,10 +364,10 @@ namespace CloneDroneOverhaul
 
         public const bool TEST_FEATURES_ENABLED = false;
         public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.21";
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.22";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
-        public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
+        public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.ModBot;
 
         public const string MOD_FULLNAME_SPACE = "Clone Drone Overhaul ";
         public const string MOD_FULLNAME = "Clone Drone Overhaul";
@@ -482,7 +482,6 @@ namespace CloneDroneOverhaul
             if (IsReadyToWork())
             {
                 BaseStaticReferences.ModuleManager.OnFixedUpdate();
-                RobotsExpansionManager.FixedUpdate();
             }
         }
 

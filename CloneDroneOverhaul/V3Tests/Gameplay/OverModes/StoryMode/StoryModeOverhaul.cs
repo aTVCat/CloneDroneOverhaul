@@ -1,5 +1,4 @@
-﻿using CloneDroneOverhaul.Modules;
-using CloneDroneOverhaul.V3Tests.Utilities;
+﻿using CloneDroneOverhaul.V3Tests.Utilities;
 using System;
 using System.Collections.Generic;
 
