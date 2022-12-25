@@ -32,6 +32,9 @@ namespace CloneDroneOverhaul.V3Tests.Base
             OverModesController.InitializeForCurrentScene();
             OverhaulGraphicsController.Initialize();
 
+            Optimisation.OptimiseOnStartup.Initialize();
+            ArenaController.InitializeForCurrentScene();
+
             GameObject newMainGameObject = new GameObject("CloneDroneOverhaul");
             GameObject newControllersGameObject = new GameObject("OverhaulModControllers");
             newControllersGameObject.transform.SetParent(newMainGameObject.transform);

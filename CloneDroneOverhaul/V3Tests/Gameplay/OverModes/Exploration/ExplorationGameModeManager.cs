@@ -18,8 +18,8 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 GameFlowManager.Instance.SetGameMode(EXPLORATION_GAMEMODE);
-                ArenaManager.SetArenaVisible(false);
-                ArenaManager.SetLogoVisible(false);
+                V3Tests.Gameplay.ArenaController.SetArenaVisible(false);
+                V3Tests.Gameplay.ArenaController.SetLogoVisible(false);
                 BaseUtils.SpawnLevelFromPath(levelJSONPath, true, SpawnPlayer);
             });
         }

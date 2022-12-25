@@ -1,11 +1,5 @@
-﻿using AmplifyOcclusion;
-using CloneDroneOverhaul.PooledPrefabs;
-using CloneDroneOverhaul.Utilities;
-using ModLibrary;
-using System.Collections.Generic;
+﻿using ModLibrary;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityStandardAssets.ImageEffects;
 
 namespace CloneDroneOverhaul.Modules
 {

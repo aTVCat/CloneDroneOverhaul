@@ -49,7 +49,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             BoltGlobalEventListenerSingleton<SingleplayerServerStarter>.Instance.StartServerThenCall(delegate
             {
                 Singleton<GameFlowManager>.Instance.SetGameMode(GetGamemode());
-                ArenaManager.SetLogoVisible(false);
+                V3Tests.Gameplay.ArenaController.SetLogoVisible(false);
                 if (spawnPlayer)
                 {
                     GameplayOverhaulModule.Instance.CreateLiftAndSpawnPlayer();

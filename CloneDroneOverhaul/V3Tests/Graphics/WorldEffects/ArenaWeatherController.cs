@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Base;
 using ModLibrary;
-using CloneDroneOverhaul.Utilities;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -24,10 +24,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// </summary>
         public string CurrentWeather
         {
-            get
-            {
-                return _currentWeather;
-            }
+            get => _currentWeather;
             set
             {
                 _currentWeather = value;
@@ -66,13 +63,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public override void OnEvent(in string eventName, in object[] args)
         {
-            if(eventName == "level.data")
+            if (eventName == "level.data")
             {
                 CurrentWeather = string.Empty;
                 if (args[0] != null)
                 {
                     LevelEditorLevelData data = args[0] as LevelEditorLevelData;
-                    if(data == null || data.ModdedMetadata == null)
+                    if (data == null || data.ModdedMetadata == null)
                     {
                         WeatherEnabled = false;
                         return;
@@ -152,10 +149,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 else
                 {
                     _environmentDust_Normal.Play();
-                    
+
                     _environmentDust_Normal.transform.position = player.transform.position;
                 }
-                
+
             }
         }
     }

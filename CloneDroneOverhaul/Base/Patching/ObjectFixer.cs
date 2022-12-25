@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using CloneDroneOverhaul.V3Tests.Optimisation;
 using System.Collections.Generic;
-using CloneDroneOverhaul.V3Tests.Optimisation;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.Patching.VisualFixes
 {
@@ -32,7 +32,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                         goto IL_0000;
                     }
                     bool lowPriority = LowPriorityObjects.Contains(dispName);
-                    Material origMat = transform.GetComponent<Renderer>().material; 
+                    Material origMat = transform.GetComponent<Renderer>().material;
                     string lodBaseString = dispName + "_LOD";
                     GameObject[] gObjs = new GameObject[3];
                     for (int i = 0; i < 3; i++)
@@ -42,7 +42,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                         gObjs[i] = g;
                     }
 
-                    if(dispName == "ibeam")
+                    if (dispName == "ibeam")
                     {
                         ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, 15f);
                         goto IL_0000;
@@ -55,7 +55,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
 
                     ObjectsLODController.AddLODGroup(transform.gameObject, gObjs, lowPriority ? 80f : 45f);
                 }
-                IL_0000:
+            IL_0000:
                 // Normal maps
                 ReplaceMaterial component = transform.GetComponent<ReplaceMaterial>();
                 if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Primitives/Tile")

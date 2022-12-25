@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Optimisation
 {
@@ -14,7 +9,7 @@ namespace CloneDroneOverhaul.V3Tests.Optimisation
 
         public static void AddLODGroup(in GameObject gObject, in GameObject[] renderers, in float size)
         {
-            if(!LoDEnabled)
+            if (!LoDEnabled)
             {
                 return;
             }
@@ -23,7 +18,7 @@ namespace CloneDroneOverhaul.V3Tests.Optimisation
             gObject.GetComponent<Renderer>().enabled = false;
 
             LOD[] lods = new LOD[renderers.Length];
-            for(int i = 0; i < renderers.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
                 Renderer r = renderers[i].GetComponent<Renderer>();
                 Renderer[] rens = new Renderer[] { r };
@@ -43,11 +38,11 @@ namespace CloneDroneOverhaul.V3Tests.Optimisation
 
         public override void OnSettingRefreshed(in string settingName, in object value)
         {
-            if(settingName == "Graphics.Optimisation.Level of detail [LoD]")
+            if (settingName == "Graphics.Optimisation.Level of detail [LoD]")
             {
                 LoDEnabled = (bool)value;
             }
-            if(settingName == "Graphics.Optimisation.High LoD threshold")
+            if (settingName == "Graphics.Optimisation.High LoD threshold")
             {
                 HighLoDThreshold = (bool)value;
             }

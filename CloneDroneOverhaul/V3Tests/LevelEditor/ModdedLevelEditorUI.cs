@@ -1,5 +1,4 @@
-﻿using CloneDroneOverhaul.RemovedOrOld;
-using CloneDroneOverhaul.UI;
+﻿using CloneDroneOverhaul.UI;
 using ModLibrary;
 using System.Collections.Generic;
 using System.Globalization;
