@@ -49,6 +49,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public void PatchCamera(in Character characterIn, in AdvancedCameraType cameraPos)
         {
+            if (!OverhaulDescription.TEST_FEATURES_ENABLED)
+            {
+                return;
+            }
             PlayerCameraState = cameraPos;
             Character character = null;
             if (characterIn != null)
@@ -67,8 +71,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
             DelegateScheduler.Instance.Schedule(delegate
             {
+                if (character == null)
+                {
+                    return;
+                }
                 RobotAdvancedCameraController info = character.GetComponent<RobotAdvancedCameraController>();
-                if (!info)
+                if (info == null)
                 {
                     _playerCameraInfo = character.gameObject.AddComponent<RobotAdvancedCameraController>().Initialize(this, character);
                 }

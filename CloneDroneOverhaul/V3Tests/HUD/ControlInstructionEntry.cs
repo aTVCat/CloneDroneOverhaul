@@ -14,8 +14,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         public bool MouseTrigger { get; private set; }
         public int MouseButtonID { get; private set; }
         public bool IsAvailable = true;
-
-        ModdedObject _moddedObject;
+        private ModdedObject _moddedObject;
 
         public static ControlInstructionEntry AddComponent(in ModdedObject moddedObject)
         {
