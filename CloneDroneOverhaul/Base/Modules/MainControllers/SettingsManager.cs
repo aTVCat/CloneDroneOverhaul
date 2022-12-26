@@ -17,6 +17,9 @@ namespace CloneDroneOverhaul.Modules
             BaseStaticReferences.SettingsManager = this;
             Instance = this;
 
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.DitheringResolution>("DitherRes", "", "Graphics", "Additions", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.DitheringResolution) }));
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.DitheringRefreshRate>("DitherRRate", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.DitheringRefreshRate) }));
+
             AddSetting(SettingEntry.NewSetting<float>("Roll Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
@@ -25,7 +28,7 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.95f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
-            AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler" } }));
+            AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler", "Graphics.Additions.DitherRes", "Graphics.Additions.DitherRRate" } }));
             AddSetting(SettingEntry.NewSetting<AntialiasingLevel>("Antialiasing", "", "Graphics", "Settings", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AntialiasingLevel) }));
 
             AddSetting(SettingEntry.NewSetting<bool>("Floating dust", "", "Graphics", "World", true));

@@ -56,8 +56,10 @@
     <Compile Include="V3Tests\Graphics\GraphicsParameterNames.cs" />
     <Compile Include="V3Tests\Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="V3Tests\Graphics\WorldEffects\ArenaWeatherController.cs" />
-    <Compile Include="V3Tests\HUD\ControlInstructionEntry.cs" />
-    <Compile Include="V3Tests\HUD\ControlInstructionsUI.cs" />
+    <Compile Include="V3Tests\HUD\ControlInstructions\ControlInstructionEntry.cs" />
+    <Compile Include="V3Tests\HUD\ControlInstructions\UIControlInstructions.cs" />
+    <Compile Include="V3Tests\HUD\ImageEffects\DitheringRefreshRate.cs" />
+    <Compile Include="V3Tests\HUD\ImageEffects\DitheringResolution.cs" />
     <Compile Include="V3Tests\HUD\V3_ModHUDBase.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="V3Tests\LevelEditor\MetaDataController.cs" />
@@ -104,7 +106,7 @@
     <Compile Include="UI\SettingsUI.cs" />
     <Compile Include="UI\Overhauled\MultiplayerUIs.cs" />
     <Compile Include="UI\Overhauled\NewKillFeedUI.cs" />
-    <Compile Include="UI\VisualEffectsUI.cs" />
+    <Compile Include="V3Tests\HUD\ImageEffects\UIImageEffects.cs" />
     <Compile Include="UI\Watermark.cs" />
     <Compile Include="Base\OverhaulCacheManager.cs" />
     <Compile Include="Base\UpdateController.cs" />
