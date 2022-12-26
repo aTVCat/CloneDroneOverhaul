@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
-    public class ControlInstructionsUI : V3_ModHUDBase
+    public class UIControlInstructions : V3_ModHUDBase
     {
         private ControlInstructionEntry _raptorDismount;
         private ControlInstructionEntry _raptorKick;

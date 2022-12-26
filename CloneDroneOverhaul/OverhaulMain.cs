@@ -325,7 +325,6 @@ namespace CloneDroneOverhaul
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<NewKillFeedUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<NewGameModeSelectionScreen>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<NewWorkshopBrowserUI>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(16).gameObject.AddComponent<VisualEffectsUI>());
             ModGUICanvas = gameObject.GetComponent<Canvas>();
         }
 
@@ -364,7 +363,7 @@ namespace CloneDroneOverhaul
 
         public const bool TEST_FEATURES_ENABLED = false;
         public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.22";
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.23";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.ModBot;

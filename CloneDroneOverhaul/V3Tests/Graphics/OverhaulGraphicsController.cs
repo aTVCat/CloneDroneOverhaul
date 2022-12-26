@@ -60,10 +60,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_CutMS").transform, 10, ID_VFX_CUT_MINDSPACE);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Normal").transform, 10, ID_VFX_CUT);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Cut_Fire").transform, 10, ID_VFX_CUT_FIRE);
-            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 10, ID_VFX_BURNING);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_LongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FireBurn").transform, 10, ID_VFX_BURNING);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_VeryLongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionCubes").transform, 5, ID_VFX_EXPLOSION_VOXELS);
-            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, ID_VFX_EXPLOSION);
-            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FloatingLava").transform, 10, ID_VFX_FLOATING_MAGMA);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_LongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_ExplosionNew").transform, 5, ID_VFX_EXPLOSION);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_LongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_FloatingLava").transform, 10, ID_VFX_FLOATING_MAGMA);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_LongLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_HammerHit").transform, 5, ID_VFX_HAMMER_HIT);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_Light>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "EmitableLight").transform, 5, ID_VFX_LIGHT);
             PooledPrefabController.TurnObjectIntoPooledPrefab<PooledPrefab_VFXEffect_ShortLifeTime>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "VFX_Kick").transform, 5, ID_VFX_KICK);
@@ -440,7 +440,6 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                     break;
             }
 
-            UI.VisualEffectsUI.Instance.RefreshEffects();
             PatchLight(DirectionalLightManager.Instance.DirectionalLight, true);
         }
 
@@ -466,9 +465,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         private void Update()
         {
-            if (!CachedMainCamera || !CachedMainCamera.isActiveAndEnabled)
+            if (CachedMainCamera == null || !CachedMainCamera.isActiveAndEnabled)
             {
                 CachedMainCamera = Camera.main;
+                HUD.UIImageEffects.RefreshImageEffects();
             }
         }
 

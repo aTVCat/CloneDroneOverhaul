@@ -50,7 +50,8 @@ namespace CloneDroneOverhaul.V3Tests.Base
             Optimisation.ObjectsLODController lod = AddManager<Optimisation.ObjectsLODController>("ObjectsLODController");
             LevelEditor.MetaDataController metaData = AddManager<LevelEditor.MetaDataController>("MetaDataController");
 
-            HUD.V3_ModHUDBase.AddHUD<HUD.ControlInstructionsUI>(modHUDModdedObject.GetObjectFromList<ModdedObject>(17));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIControlInstructions>(modHUDModdedObject.GetObjectFromList<ModdedObject>(17));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIImageEffects>(modHUDModdedObject.GetObjectFromList<ModdedObject>(16));
 
             LoadAssets();
 
