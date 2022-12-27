@@ -361,12 +361,12 @@ namespace CloneDroneOverhaul
     {
         public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
 
-        public const bool TEST_FEATURES_ENABLED = false;
-        public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.23";
+        public const bool TEST_FEATURES_ENABLED = true;
+        public const bool OVERRIDE_VERSION = false;
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.24";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
-        public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.ModBot;
+        public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
 
         public const string MOD_FULLNAME_SPACE = "Clone Drone Overhaul ";
         public const string MOD_FULLNAME = "Clone Drone Overhaul";

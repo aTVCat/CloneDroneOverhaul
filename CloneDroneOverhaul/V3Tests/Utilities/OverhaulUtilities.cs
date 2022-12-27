@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Threading;
 
 namespace CloneDroneOverhaul.V3Tests.Utilities
 {
@@ -158,13 +159,18 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// </summary>
             /// <param name="path"></param>
             /// <returns></returns>
-            public static byte[] LoadBytes(in string path)
+            public static byte[] LoadBytes(string path)
             {
                 byte[] result = null;
 
                 if (File.Exists(path))
                 {
-                    result = File.ReadAllBytes(path);
+                    ThreadStart start = delegate
+                    {
+                        result = File.ReadAllBytes(path);
+                    };
+                    Thread thread = new Thread(start);
+                    thread.Start();
                 }
 
                 return result;
@@ -179,7 +185,12 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             {
                 if (File.Exists(path))
                 {
-                    StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path, onReadEnd));
+                    ThreadStart start = delegate
+                    {
+                        StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path, onReadEnd));
+                    };
+                    Thread thread = new Thread(start);
+                    thread.Start();
                 }
                 else
                 {
@@ -214,7 +225,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
 
                 if (File.Exists(path))
                 {
-                    result = File.ReadAllText(path);
+                    result = System.Text.Encoding.UTF8.GetString(LoadBytes(path));
                 }
 
                 return result;
@@ -229,7 +240,12 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             {
                 if (File.Exists(path))
                 {
-                    StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path, onReadEnd));
+                    ThreadStart start = delegate
+                    {
+                        StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path, onReadEnd));
+                    };
+                    Thread thread = new Thread(start);
+                    thread.Start();
                 }
                 else
                 {
