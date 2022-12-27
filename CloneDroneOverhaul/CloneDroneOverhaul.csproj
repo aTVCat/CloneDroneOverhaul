@@ -38,10 +38,18 @@
     <Compile Include="Base\ControllersAndUtilities\Utilities\StaticReferences.cs" />
     <Compile Include="Effects\AmplifyOcclusionCamera.cs" />
     <Compile Include="Effects\AmplifyOcclusion.cs" />
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="ModdedObject.cs" />
+    <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditor.cs" />
+    <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditorCamera.cs" />
     <Compile Include="V3Tests\Gameplay\Arena\ArenaController.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraType.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\Controllers\AdvancedCameraInfo.cs" />
+    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Combat\CombatOverhaulController.cs" />
+    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Weaponary\IWeapon.cs" />
+    <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationController.cs" />
     <Compile Include="V3Tests\Gameplay\GameStatistics\Controllers\GameStatistic.cs" />
     <Compile Include="V3Tests\Gameplay\GameStatistics\Controllers\GameStatisticsController.cs" />
     <Compile Include="V3Tests\Gameplay\LevelControlling\LevelConstructor.cs" />
@@ -56,11 +64,16 @@
     <Compile Include="V3Tests\Graphics\GraphicsParameterNames.cs" />
     <Compile Include="V3Tests\Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="V3Tests\Graphics\WorldEffects\ArenaWeatherController.cs" />
+    <Compile Include="V3Tests\HUD\Animations\EAnimationType.cs" />
+    <Compile Include="V3Tests\HUD\Animations\SAnimation.cs" />
+    <Compile Include="V3Tests\HUD\Animations\UIAnimationPanel.cs" />
     <Compile Include="V3Tests\HUD\ControlInstructions\ControlInstructionEntry.cs" />
     <Compile Include="V3Tests\HUD\ControlInstructions\UIControlInstructions.cs" />
     <Compile Include="V3Tests\HUD\ImageEffects\DitheringRefreshRate.cs" />
     <Compile Include="V3Tests\HUD\ImageEffects\DitheringResolution.cs" />
     <Compile Include="V3Tests\HUD\V3_ModHUDBase.cs" />
+    <Compile Include="V3Tests\Interfaces\IEditor.cs" />
+    <Compile Include="V3Tests\Interfaces\IGamemode.cs" />
     <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
     <Compile Include="V3Tests\LevelEditor\MetaDataController.cs" />
     <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
