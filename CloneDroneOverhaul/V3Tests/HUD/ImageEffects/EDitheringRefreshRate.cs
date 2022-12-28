@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
-    public enum DitheringRefreshRate
+    public enum EDitheringRefreshRate
     {
         EveryFrame,
 

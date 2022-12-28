@@ -16,17 +16,17 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         public const float _ditheringTextureColorAValue = 0.3f;
         private (bool, bool) _ditheringEnabled;
         private (float, float) _ditheringIntensity;
-        private (DitheringResolution, DitheringResolution) _ditheringResolution;
-        private DitheringRefreshRate _ditheringRefreshRate;
+        private (EDitheringResolution, EDitheringResolution) _ditheringResolution;
+        private EDitheringRefreshRate _ditheringRefreshRate;
 
         private static bool _shouldGenerateDitheringTextures = true;
-        private static Dictionary<DitheringResolution, Texture2D[]> _ditheringGeneratedTextures = new Dictionary<DitheringResolution, Texture2D[]>()
+        private static Dictionary<EDitheringResolution, Texture2D[]> _ditheringGeneratedTextures = new Dictionary<EDitheringResolution, Texture2D[]>()
         {
-            {DitheringResolution.Res_320x180, new Texture2D[10] },
-            {DitheringResolution.Res_640x360, new Texture2D[10] },
-            {DitheringResolution.Res_1280x720, new Texture2D[10] },
-            {DitheringResolution.Res_1920x1080, new Texture2D[10] },
-            {DitheringResolution.Res_2560x1440, new Texture2D[10] },
+            {EDitheringResolution.Res_320x180, new Texture2D[10] },
+            {EDitheringResolution.Res_640x360, new Texture2D[10] },
+            {EDitheringResolution.Res_1280x720, new Texture2D[10] },
+            {EDitheringResolution.Res_1920x1080, new Texture2D[10] },
+            {EDitheringResolution.Res_2560x1440, new Texture2D[10] },
         };
         private int _ditheringTextureIndex = 0;
         private bool _isReadyToDither;
@@ -99,11 +99,11 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         {
             switch (_ditheringRefreshRate)
             {
-                case DitheringRefreshRate.EveryFrame:
+                case EDitheringRefreshRate.EveryFrame:
                     return 1;
-                case DitheringRefreshRate.EverySecondFrame:
+                case EDitheringRefreshRate.EverySecondFrame:
                     return 2;
-                case DitheringRefreshRate.EveryThirdFrame:
+                case EDitheringRefreshRate.EveryThirdFrame:
                     return 3;
             }
             return 3;
@@ -118,7 +118,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
                 (int, int) res = GetResolutionByIndex(j);
                 for (int i = 0; i < 10; i++)
                 {
-                    _ditheringGeneratedTextures[(DitheringResolution)j][i] = GeneratePerlinNoise(res.Item1, res.Item2);
+                    _ditheringGeneratedTextures[(EDitheringResolution)j][i] = GeneratePerlinNoise(res.Item1, res.Item2);
                 }
             }
         }
@@ -173,11 +173,11 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             }
             if (settingName == "Graphics.Additions.DitherRes")
             {
-                _ditheringResolution.Item2 = (DitheringResolution)(int)value;
+                _ditheringResolution.Item2 = (EDitheringResolution)(int)value;
             }
             if (settingName == "Graphics.Additions.DitherRRate")
             {
-                _ditheringRefreshRate = (DitheringRefreshRate)(int)value;
+                _ditheringRefreshRate = (EDitheringRefreshRate)(int)value;
             }
             RefreshEffects();
         }

@@ -165,12 +165,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
 
                 if (File.Exists(path))
                 {
-                    ThreadStart start = delegate
-                    {
-                        result = File.ReadAllBytes(path);
-                    };
-                    Thread thread = new Thread(start);
-                    thread.Start();
+                    result = File.ReadAllBytes(path);
                 }
 
                 return result;
@@ -225,7 +220,7 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
 
                 if (File.Exists(path))
                 {
-                    result = System.Text.Encoding.UTF8.GetString(LoadBytes(path));
+                    result = File.ReadAllText(path);
                 }
 
                 return result;

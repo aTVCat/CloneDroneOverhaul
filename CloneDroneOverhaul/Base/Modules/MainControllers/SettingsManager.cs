@@ -17,8 +17,8 @@ namespace CloneDroneOverhaul.Modules
             BaseStaticReferences.SettingsManager = this;
             Instance = this;
 
-            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.DitheringResolution>("DitherRes", "", "Graphics", "Additions", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.DitheringResolution) }));
-            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.DitheringRefreshRate>("DitherRRate", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.DitheringRefreshRate) }));
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringResolution>("DitherRes", "", "Graphics", "Additions", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringResolution) }));
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringRefreshRate>("DitherRRate", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringRefreshRate) }));
 
             AddSetting(SettingEntry.NewSetting<float>("Roll Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
