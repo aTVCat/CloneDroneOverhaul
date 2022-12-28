@@ -42,6 +42,9 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="ModdedObject.cs" />
+    <Compile Include="V3Tests\Gameplay\Animations\CustomAnimation.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\LevelEditor\V3_LevelEditorController.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\UIEditors.cs" />
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditor.cs" />
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditorCamera.cs" />
     <Compile Include="V3Tests\Gameplay\Arena\ArenaController.cs" />
@@ -69,15 +72,16 @@
     <Compile Include="V3Tests\HUD\Animations\UIAnimationPanel.cs" />
     <Compile Include="V3Tests\HUD\ControlInstructions\ControlInstructionEntry.cs" />
     <Compile Include="V3Tests\HUD\ControlInstructions\UIControlInstructions.cs" />
-    <Compile Include="V3Tests\HUD\ImageEffects\DitheringRefreshRate.cs" />
-    <Compile Include="V3Tests\HUD\ImageEffects\DitheringResolution.cs" />
+    <Compile Include="V3Tests\HUD\ImageEffects\EDitheringRefreshRate.cs" />
+    <Compile Include="V3Tests\HUD\ImageEffects\EDitheringResolution.cs" />
+    <Compile Include="V3Tests\HUD\NewSubtitleTextField\UISubtitleTextField.cs" />
     <Compile Include="V3Tests\HUD\V3_ModHUDBase.cs" />
     <Compile Include="V3Tests\Interfaces\IEditor.cs" />
     <Compile Include="V3Tests\Interfaces\IGamemode.cs" />
-    <Compile Include="V3Tests\LevelEditor\LevelEditorCustomObjectsManager.cs" />
-    <Compile Include="V3Tests\LevelEditor\MetaDataController.cs" />
-    <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorManager.cs" />
-    <Compile Include="V3Tests\LevelEditor\ModdedLevelEditorUI.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\LevelEditor\LevelEditorCustomObjectsManager.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\LevelEditor\MetaDataController.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\LevelEditor\ModdedLevelEditorManager.cs" />
+    <Compile Include="V3Tests\Gameplay\Editors\LevelEditor\ModdedLevelEditorUI.cs" />
     <Compile Include="Base\Localization\LocalizationEditor.cs" />
     <Compile Include="Base\Localization\LocalizationManager.cs" />
     <Compile Include="Base\Modules\MainControllers\GameStateChangeController.cs" />
@@ -161,7 +165,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="V3Tests\LevelEditor\ModdedComponents\" />
+    <Folder Include="V3Tests\Gameplay\Editors\LevelEditor\ModdedComponents\" />
+    <Folder Include="V3Tests\HUD\Dashboard\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">

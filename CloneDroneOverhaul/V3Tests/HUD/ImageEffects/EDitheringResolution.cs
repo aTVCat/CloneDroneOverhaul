@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
-    public enum DitheringResolution
+    public enum EDitheringResolution
     {
         Res_320x180,
         Res_640x360,

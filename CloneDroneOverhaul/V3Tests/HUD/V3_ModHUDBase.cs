@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.V3Tests.Base;
+using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
@@ -15,6 +16,15 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             result.gameObject.SetActive(true);
 
             return result;
+        }
+
+        public static void ParentUIToGameUIRoot(in RectTransform transform)
+        {
+            transform.SetParent(Singleton<GameUIRoot>.Instance.transform);
+            transform.SetAsFirstSibling();
+            transform.sizeDelta = Vector2.zero;
+            transform.localScale = Vector3.one;
+            transform.localPosition = Vector2.zero;
         }
     }
 }

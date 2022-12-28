@@ -7,7 +7,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class ArenaWeatherController : V3_ModControllerBase
     {
-        public const string METADATA_LEVELWEATHER_KEY = LevelEditor.MetaDataController.OVERHAUL_MOD_KEY_PREFIX + "_WeatherState";
+        public const string METADATA_LEVELWEATHER_KEY = LevelEditor.MetaDataController.OVERHAUL_MOD_KEY_PREFIX + "Overhaul_WeatherState";
         public const string METADATA_LEVELWEATHER_RAINY_VALUE = "Rainy";
 
         private static bool _hasSpawnedStaticEnvironmentEffects;
@@ -38,11 +38,17 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         public bool WeatherEnabled { get; set; }
 
         private ParticleSystem Weather_Snow;
+        private ParticleSystem Weather_Rain;
 
         private void Awake()
         {
             Weather_Snow = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "WorldDustNormalWinter")).GetComponent<ParticleSystem>();
             Weather_Snow.transform.position = new Vector3(0, 50, 0);
+            Weather_Snow.Stop();
+
+            Weather_Rain = UnityEngine.Object.Instantiate(AssetLoader.GetObjectFromFile("overhaulstuff_p2", "Weather_Rain")).GetComponent<ParticleSystem>();
+            Weather_Rain.transform.position = new Vector3(0, 50, 0);
+            Weather_Rain.Stop();
 
             if (!_hasSpawnedStaticEnvironmentEffects)
             {
@@ -76,7 +82,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                     }
 
                     string weather = string.Empty;
-                    data.ModdedMetadata.TryGetValue(METADATA_LEVELWEATHER_KEY, out weather);
+                    LevelEditorModdedMetadataManager.TryGetMetadata(METADATA_LEVELWEATHER_KEY, out weather);
 
                     WeatherEnabled = !data.ArenaIsHidden && data.LevelType == LevelType.ArenaLevel;
                     CurrentWeather = weather;
@@ -98,12 +104,18 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public void RefreshWeather()
         {
+            Weather_Rain.Stop();
             Weather_Snow.Stop();
             Weather_Snow.Clear(true);
 
             if (GameModeManager.IsOnTitleScreen())
             {
                 Weather_Snow.Play();
+            }
+
+            if(CurrentWeather == METADATA_LEVELWEATHER_RAINY_VALUE)
+            {
+                Weather_Rain.Play();
             }
 
             /*
