@@ -38,7 +38,7 @@ namespace CloneDroneOverhaul.Modules
                 DublicatedLevelsFolder
             };
 
-            CreateFoldersIfNeeded(folders);
+            V3Tests.Base.ModDataController.CreateFoldersIfRequired(folders);
         }
 
         public T LoadData<T>(string path) where T : class
@@ -70,30 +70,6 @@ namespace CloneDroneOverhaul.Modules
             }
             return obj;
         }
-
-        /// <summary>
-        /// Creates a folder if one doesn't exist
-        /// </summary>
-        /// <param name="path"></param>
-        public void CreateFolderIfNeeded(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-        }
-
-        /// <summary>
-        /// Same as method above, but for multiple folders
-        /// </summary>
-        /// <param name="paths"></param>
-        public void CreateFoldersIfNeeded(string[] paths)
-        {
-            foreach (string path in paths)
-            {
-                CreateFolderIfNeeded(path);
-            }
-        }
     }
 
     public class DataBase
@@ -122,7 +98,6 @@ namespace CloneDroneOverhaul.Modules
         }
         protected virtual bool CheckFolders()
         {
-            ModuleManagement.ShowError_Type2(GetType().ToString() + " Override error", "DataBase subclass must override ChechFolders method");
             return false;
         }
     }

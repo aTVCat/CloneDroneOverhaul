@@ -23,10 +23,11 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             return 3f;
         }
 
-        public void SetLightSettings(in float lightRange, in Color color, in float animationSpeed = 1f)
+        public void SetLightSettings(in float lightRange, in Color color, in float animationSpeed = 1f, in LightShadows shadows = LightShadows.Hard)
         {
             _light.color = color;
             _light.range = lightRange;
+            _light.shadows = shadows;
             _animator.speed = animationSpeed;
         }
     }

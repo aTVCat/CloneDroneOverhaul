@@ -1,14 +1,13 @@
-﻿using CloneDroneOverhaul.V3Tests.Gameplay;
-using ModLibrary;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace CloneDroneOverhaul.V3Tests.HUD
 {
     public class UISubtitleTextField : V3_ModHUDBase
     {
+        private GameObject _ogSubtitleGameObject;
+
         private GameObject _subtitleGameObject;
         private Text _speakerName;
         private Text _sentence;
@@ -20,18 +19,18 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
         private void Start()
         {
-            _subtitleGameObject = ModdedObject.GetObjectFromList<RectTransform>(0).gameObject;
-            _speakerName = ModdedObject.GetObjectFromList<Text>(1);
-            _sentence = ModdedObject.GetObjectFromList<Text>(2);
+            _subtitleGameObject = MyModdedObject.GetObjectFromList<RectTransform>(0).gameObject;
+            _speakerName = MyModdedObject.GetObjectFromList<Text>(1);
+            _sentence = MyModdedObject.GetObjectFromList<Text>(2);
 
-            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSentenceStarted", new Action(this.onSequenceStarted));
-            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSequenceFinished", new Action(this.onSequenceEnded));
-            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSentenceCancelled", new Action(this.onSequenceEnded));
+            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSentenceStarted", new Action(onSequenceStarted));
+            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSequenceFinished", new Action(onSequenceEnded));
+            Singleton<GlobalEventManager>.Instance.AddEventListener("SpeechSentenceCancelled", new Action(onSequenceEnded));
 
             SubtitleTextField textField = FindObjectOfType<SubtitleTextField>();
-            if(textField != null)
+            if (textField != null)
             {
-                textField.gameObject.SetActive(false);
+                _ogSubtitleGameObject = textField.gameObject;
             }
 
             _hasInitialized = true;
@@ -40,7 +39,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         private void LateUpdate()
         {
             _timeLeftToCheck -= Time.deltaTime;
-            if(_timeLeftToCheck <= 0)
+            if (_timeLeftToCheck <= 0)
             {
                 _timeLeftToCheck = 0.1f;
                 //_subtitleGameObject.SetActive((!Cursor.visible && Cursor.lockState != CursorLockMode.None && _isShowingSubtitle) || GameFlowManager.Instance.HasPlayerDied() || GameFlowManager.Instance.HasLostRound());
@@ -56,7 +55,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             }
 
             SpeechSentence currentSentence = Singleton<SpeechAudioManager>.Instance.GetCurrentSentence();
-            if(currentSentence != null)
+            if (currentSentence != null)
             {
                 ShowSubtitle(currentSentence, SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
             }
@@ -74,6 +73,14 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
         public void ShowSubtitle(in SpeechSentence speech, in Color textColor)
         {
+            bool setting = OverhaulMain.GetSetting<bool>("Patches.GUI.Subtitles");
+            _ogSubtitleGameObject.SetActive(!setting);
+
+            if (!setting)
+            {
+                return;
+            }
+
             if (!SettingsManager.Instance.ShouldShowSubtitles() || !_hasInitialized)
             {
                 return;

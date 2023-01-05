@@ -5,18 +5,28 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 {
     public class V3_ModHUDBase : V3_ModControllerBase
     {
-        public ModdedObject ModdedObject { get; private set; }
+        public ModdedObject MyModdedObject { get; private set; }
 
         public static T AddHUD<T>(in ModdedObject moddedObject) where T : V3_ModHUDBase
         {
             T result = null;
 
             result = V3_MainModController.AddManager<T>(null, moddedObject.transform);
-            result.ModdedObject = moddedObject;
+            result.MyModdedObject = moddedObject;
             result.gameObject.SetActive(true);
 
             return result;
         }
+
+        public static T AddHUDPatch<T>(in string name) where T : V3_ModHUDBase
+        {
+            T result;
+
+            result = V3_MainModController.AddManager<T>(name, GameUIRoot.Instance.transform);
+
+            return result;
+        }
+
 
         public static void ParentUIToGameUIRoot(in RectTransform transform)
         {

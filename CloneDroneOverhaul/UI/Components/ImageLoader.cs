@@ -9,7 +9,7 @@ namespace CloneDroneOverhaul.UI.Components
         public Image ImageComponent;
         private bool _isDestroyed;
 
-        public void LoadImage(string url)
+        public void LoadImage(SteamWorkshopItem url)
         {
             if (_isDestroyed)
             {
@@ -21,10 +21,10 @@ namespace CloneDroneOverhaul.UI.Components
 
             ImageComponent = MyModdedObject.GetObjectFromList<Image>(0);
 
-            Sprite loadBG = OverhaulCacheManager.GetCached<Sprite>("placeholderLoadSprite");
+            Sprite loadBG = OverhaulCacheAndGarbageController.GetCached<Sprite>("placeholderLoadSprite");
             ImageComponent.sprite = loadBG;
 
-            Utilities.Coroutines.LoadWorkshopImage(url, delegate (Sprite sp)
+            Utilities.Coroutines.LoadWorkshopImage(url.PreviewURL, url.WorkshopItemID.ToString(), delegate (Sprite sp)
             {
                 if (_isDestroyed)
                 {
@@ -47,7 +47,7 @@ namespace CloneDroneOverhaul.UI.Components
 
             if (sprite == null)
             {
-                ImageComponent.sprite = OverhaulCacheManager.GetCached<Sprite>("placeholderLoadSprite");
+                ImageComponent.sprite = OverhaulCacheAndGarbageController.GetCached<Sprite>("placeholderLoadSprite");
                 return;
             }
 

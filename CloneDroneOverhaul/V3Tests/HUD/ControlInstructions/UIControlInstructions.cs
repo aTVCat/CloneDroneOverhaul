@@ -16,15 +16,15 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
         private void Start()
         {
-            _raptorDismount = ControlInstructionEntry.AddComponent(ModdedObject.GetObjectFromList<ModdedObject>(0));
+            _raptorDismount = ControlInstructionEntry.AddComponent(MyModdedObject.GetObjectFromList<ModdedObject>(0));
             _raptorDismount.SetUseTrigger(KeyCode.E);
-            _flameBreath = ControlInstructionEntry.AddComponent(ModdedObject.GetObjectFromList<ModdedObject>(1));
+            _flameBreath = ControlInstructionEntry.AddComponent(MyModdedObject.GetObjectFromList<ModdedObject>(1));
             _flameBreath.SetUseTrigger(KeyCode.F);
-            _raptorKick = ControlInstructionEntry.AddComponent(ModdedObject.GetObjectFromList<ModdedObject>(2));
+            _raptorKick = ControlInstructionEntry.AddComponent(MyModdedObject.GetObjectFromList<ModdedObject>(2));
             _raptorKick.SetUseTrigger(KeyCode.None, true, 1);
-            _laser = ControlInstructionEntry.AddComponent(ModdedObject.GetObjectFromList<ModdedObject>(3));
+            _laser = ControlInstructionEntry.AddComponent(MyModdedObject.GetObjectFromList<ModdedObject>(3));
             _laser.SetUseTrigger(KeyCode.F);
-            _mindTransfers = ControlInstructionEntry.AddComponent(ModdedObject.GetObjectFromList<ModdedObject>(4));
+            _mindTransfers = ControlInstructionEntry.AddComponent(MyModdedObject.GetObjectFromList<ModdedObject>(4));
             _mindTransfers.SetUseTrigger(KeyCode.Tab);
         }
 

@@ -54,7 +54,7 @@ namespace AdvancedPhotoModeEffects
 
         private void Awake()
         {
-            material = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_BWDiffuse"));
+            material = new Material(OverhaulCacheAndGarbageController.GetCached<Shader>("Shader_BWDiffuse"));
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -78,7 +78,7 @@ namespace AdvancedPhotoModeEffects
 
         private void Awake()
         {
-            material = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_BleedingColors"));
+            material = new Material(OverhaulCacheAndGarbageController.GetCached<Shader>("Shader_BleedingColors"));
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -99,7 +99,7 @@ namespace AdvancedPhotoModeEffects
 
         private void Awake()
         {
-            material_Scanlines = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_Scanlines"));
+            material_Scanlines = new Material(OverhaulCacheAndGarbageController.GetCached<Shader>("Shader_Scanlines"));
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -120,7 +120,7 @@ namespace AdvancedPhotoModeEffects
 
         private void Awake()
         {
-            material = new Material(OverhaulCacheManager.GetCached<Shader>("Shader_Tint"));
+            material = new Material(OverhaulCacheAndGarbageController.GetCached<Shader>("Shader_Tint"));
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)

@@ -51,7 +51,7 @@ namespace CloneDroneOverhaul.LevelEditor
 
         public void SpawnSpecialObjects()
         {
-            Grid = UnityEngine.GameObject.Instantiate(OverhaulCacheManager.GetCached<GameObject>("LevelEditor_Grid"));
+            Grid = UnityEngine.GameObject.Instantiate(OverhaulCacheAndGarbageController.GetCached<GameObject>("LevelEditor_Grid"));
             Grid.transform.position = Vector3.zero;
             Grid.transform.localScale = new Vector3(100000, 1, 100000);
             _hasSpawnedSpecialObjects = true;
@@ -71,7 +71,7 @@ namespace CloneDroneOverhaul.LevelEditor
 
         public ObjectPlacedInLevel PlaceObject(LevelObjectEntry objectPlacedLevelObjectEntry, Transform levelRoot)
         {
-            Transform transform = OverhaulCacheManager.GetModdedLevelEditorResource(objectPlacedLevelObjectEntry.PathUnderResources);
+            Transform transform = OverhaulCacheAndGarbageController.GetModdedLevelEditorResource(objectPlacedLevelObjectEntry.PathUnderResources);
 
             if (transform == null)
             {

@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.V3Tests.Gameplay;
+using CloneDroneOverhaul.V3Tests.Notifications;
 using CloneDroneOverhaul.V3Tests.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
             OverModesController.InitializeForCurrentScene();
             OverhaulGraphicsController.Initialize();
+            ModDataController.Initialize();
 
             Optimisation.OptimiseOnStartup.Initialize();
             ArenaController.InitializeForCurrentScene();
@@ -53,10 +55,25 @@ namespace CloneDroneOverhaul.V3Tests.Base
             Gameplay.Animations.CustomAnimationController customAnimationController = AddManager<Gameplay.Animations.CustomAnimationController>("CustomAnimationController");
             LevelEditor.V3_LevelEditorController levelEditorController = AddManager<LevelEditor.V3_LevelEditorController>("LevelEditorController");
 
+            HUD.V3_ModHUDBase.AddHUD<HUD.UICrashScreen>(modHUDModdedObject.GetObjectFromList<ModdedObject>(1));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UISettings>(modHUDModdedObject.GetObjectFromList<ModdedObject>(9));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIPauseMenu>(modHUDModdedObject.GetObjectFromList<ModdedObject>(5));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIMindTransfersLeftForEdgeCases>(modHUDModdedObject.GetObjectFromList<ModdedObject>(4));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIVersionLabel>(modHUDModdedObject.GetObjectFromList<ModdedObject>(0));
             HUD.V3_ModHUDBase.AddHUD<HUD.UIControlInstructions>(modHUDModdedObject.GetObjectFromList<ModdedObject>(17));
             HUD.V3_ModHUDBase.AddHUD<HUD.UIImageEffects>(modHUDModdedObject.GetObjectFromList<ModdedObject>(16));
             HUD.V3_ModHUDBase.AddHUD<HUD.UIEditors>(modHUDModdedObject.GetObjectFromList<ModdedObject>(18));
             HUD.V3_ModHUDBase.AddHUD<HUD.UISubtitleTextField>(modHUDModdedObject.GetObjectFromList<ModdedObject>(19));
+            HUD.V3_ModHUDBase.AddHUD<LevelEditor.UILevelEditorV2>(modHUDModdedObject.GetObjectFromList<ModdedObject>(10));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIGamemodeSelection>(modHUDModdedObject.GetObjectFromList<ModdedObject>(13));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIMultiplayer>(modHUDModdedObject.GetObjectFromList<ModdedObject>(11));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIInviteToLobby>(modHUDModdedObject.GetObjectFromList<ModdedObject>(8));
+            HUD.V3_ModHUDBase.AddHUD<HUD.UIWorkshopBrowser>(modHUDModdedObject.GetObjectFromList<ModdedObject>(15));
+            HUD.V3_ModHUDBase.AddHUD<Notifications.UINotifications>(modHUDModdedObject.GetObjectFromList<ModdedObject>(20));
+
+            HUD.V3_ModHUDBase.AddHUDPatch<HUD.UIEnergyBarPatch>("EnergyUI_Patch");
+            HUD.V3_ModHUDBase.AddHUDPatch<HUD.UITitleScreenPatch>("TitleScreenUI_Patch");
+            HUD.V3_ModHUDBase.AddHUDPatch<HUD.UIEmoteSelectionPatch>("EmoteSelectionUI_Patch");
 
             LoadAssets();
 
@@ -71,11 +88,9 @@ namespace CloneDroneOverhaul.V3Tests.Base
                 return;
             }
 
-            ModDataController dataControll = ModDataController.GetInstance<ModDataController>();
-
-            Sprite unknownUpgradeIconSprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(dataControll.LoadModAsset<Texture2D>("Textures/Upgrades/Unknown-Upgrade-16x16.png", ModAssetFileType.Image));
+            Sprite unknownUpgradeIconSprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(ModDataController.LoadModAsset<Texture2D>("Textures/Upgrades/Unknown-Upgrade-16x16.png", ModAssetFileType.Image));
             unknownUpgradeIconSprite.texture.filterMode = FilterMode.Point;
-            OverhaulCacheManager.CacheObject<Sprite>(unknownUpgradeIconSprite, CACHED_ASSET_PREFIX + OverhaulUpgradeDescription.UPGRADE_ICON_ASSET_PREFIX + "Unknown");
+            OverhaulCacheAndGarbageController.CacheObject<Sprite>(unknownUpgradeIconSprite, CACHED_ASSET_PREFIX + OverhaulUpgradeDescription.UPGRADE_ICON_ASSET_PREFIX + "Unknown");
 
             _hasLoadedAssets = true;
             CallEvent("overhaul.onAssetsLoadDone", new object[] { true });
@@ -162,13 +177,21 @@ namespace CloneDroneOverhaul.V3Tests.Base
 
         public void Test_Transition()
         {
-            TransitionAction t = new TransitionAction
+            V3Tests.HUD.TransitionAction t = new V3Tests.HUD.TransitionAction
             {
-                Type = TranstionType.SceneSwitch,
+                Type = V3Tests.HUD.ETranstionType.SceneSwitch,
                 SceneName = "Gameplay",
                 HideOnComplete = true
             };
-            SceneTransitionController.StartTranstion(t, "Loading...", "This may take a while...", true);
+            V3Tests.HUD.SceneTransitionController.StartTranstion(t, "Loading...", "This may take a while...", true);
+        }
+
+        public void Test_NewNotif()
+        {
+            SNotificationButton[] buttons = new SNotificationButton[] { new SNotificationButton("OK", null) };
+            buttons[0].SetAction(buttons[0].Action_Close);
+            SNotification notif = new SNotification("Test messsage", "V0.3 is here!", 10f, UINotifications.NotificationSize_Default, buttons);
+            notif.Send();
         }
     }
 }

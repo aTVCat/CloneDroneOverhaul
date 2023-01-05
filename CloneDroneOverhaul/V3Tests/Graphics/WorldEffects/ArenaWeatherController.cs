@@ -113,7 +113,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 Weather_Snow.Play();
             }
 
-            if(CurrentWeather == METADATA_LEVELWEATHER_RAINY_VALUE)
+            if (CurrentWeather == METADATA_LEVELWEATHER_RAINY_VALUE)
             {
                 Weather_Rain.Play();
             }

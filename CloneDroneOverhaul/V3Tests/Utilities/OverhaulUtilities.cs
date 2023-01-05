@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Threading;
 
 namespace CloneDroneOverhaul.V3Tests.Utilities
 {
@@ -46,6 +46,19 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
                 {
                     result.LoadImage(content, false);
                 }
+
+                return result;
+            }
+
+            /// <summary>
+            /// Turn texture into byte array
+            /// </summary>
+            /// <param name="path"></param>
+            public static byte[] TextureToByteArray(in Texture2D tex)
+            {
+                byte[] result;
+
+                result = tex.EncodeToPNG();
 
                 return result;
             }
@@ -159,16 +172,31 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// </summary>
             /// <param name="path"></param>
             /// <returns></returns>
-            public static byte[] LoadBytes(string path)
+            public static byte[] LoadBytes(in string path, in string filename = "")
             {
                 byte[] result = null;
 
-                if (File.Exists(path))
+                if (File.Exists(path + filename))
                 {
-                    result = File.ReadAllBytes(path);
+                    result = File.ReadAllBytes(path + filename);
                 }
 
                 return result;
+            }
+
+            /// <summary>
+            /// Save
+            /// </summary>
+            /// <param name="bytes"></param>
+            /// <param name="path"></param>
+            public static void SaveBytes(in byte[] bytes, in string path, in string filename = "")
+            {
+                File.WriteAllBytes(path + filename, bytes);
+            }
+
+            public static bool FileExists(in string path)
+            {
+                return File.Exists(path);
             }
 
             /// <summary>
@@ -176,13 +204,13 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// </summary>
             /// <param name="path"></param>
             /// <param name="onReadEnd"></param>
-            public static void LoadBytesAsync(string path, Action<byte[]> onReadEnd)
+            public static void LoadBytesAsync(string path, Action<byte[]> onReadEnd, string filename = "")
             {
-                if (File.Exists(path))
+                if (File.Exists(path + filename))
                 {
                     ThreadStart start = delegate
                     {
-                        StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path, onReadEnd));
+                        StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path + filename, onReadEnd));
                     };
                     Thread thread = new Thread(start);
                     thread.Start();
@@ -196,16 +224,11 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             private static IEnumerator loadBytesAsync(string filePath, Action<byte[]> onLoaded)
             {
                 byte[] array = null;
-
                 UnityWebRequest unityWebRequestAsyncOperation = UnityWebRequest.Get("file://" + filePath);
-
                 yield return unityWebRequestAsyncOperation.SendWebRequest();
-
                 array = unityWebRequestAsyncOperation.downloadHandler.data;
                 unityWebRequestAsyncOperation.Dispose();
-
                 onLoaded(array);
-
                 yield break;
             }
 
@@ -214,13 +237,13 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// </summary>
             /// <param name="path"></param>
             /// <returns></returns>
-            public static string LoadString(in string path)
+            public static string LoadString(in string path, in string filename = "")
             {
                 string result = null;
 
-                if (File.Exists(path))
+                if (File.Exists(path + filename))
                 {
-                    result = File.ReadAllText(path);
+                    result = File.ReadAllText(path + filename);
                 }
 
                 return result;
@@ -231,13 +254,13 @@ namespace CloneDroneOverhaul.V3Tests.Utilities
             /// </summary>
             /// <param name="path"></param>
             /// <param name="onReadEnd"></param>
-            public static void LoadStringAsync(string path, Action<string> onReadEnd)
+            public static void LoadStringAsync(string path, Action<string> onReadEnd, string filename = "")
             {
-                if (File.Exists(path))
+                if (File.Exists(path + filename))
                 {
                     ThreadStart start = delegate
                     {
-                        StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path, onReadEnd));
+                        StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path + filename, onReadEnd));
                     };
                     Thread thread = new Thread(start);
                     thread.Start();

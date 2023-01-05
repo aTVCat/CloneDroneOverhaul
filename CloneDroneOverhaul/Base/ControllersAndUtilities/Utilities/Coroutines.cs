@@ -6,9 +6,9 @@ namespace CloneDroneOverhaul.Utilities
 {
     public static class Coroutines
     {
-        public static void LoadWorkshopImage(string url, Action<Sprite> action)
+        public static void LoadWorkshopImage(string url, string id, Action<Sprite> action)
         {
-            StaticCoroutineRunner.StartStaticCoroutine(loadWorkshopImage(url, action));
+            StaticCoroutineRunner.StartStaticCoroutine(loadWorkshopImage(url, id, action));
         }
         public static void WaitForCharacterInitAndCall(Character character, Action callback)
         {
@@ -21,13 +21,18 @@ namespace CloneDroneOverhaul.Utilities
             callback();
             yield break;
         }
-        private static IEnumerator loadWorkshopImage(string url, Action<Sprite> action)
+        private static IEnumerator loadWorkshopImage(string url, string id, Action<Sprite> action)
         {
-            if (OverhaulCacheManager.ContainsTemporalObject(UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url))
+            /*
+            if (V3Tests.Base.ModDataController.HasTempAsset(id + ".png"))
             {
-                action(OverhaulCacheManager.GetTemporalObject<Sprite>(UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url));
+                V3Tests.Base.ModDataController.LoadTempAssetAsync<Texture2D>(id + ".png", V3Tests.Base.ModAssetFileType.Image, delegate (Texture2D tex)
+                {
+                    Sprite sprite1 = Sprite.Create(tex, new Rect(0f, 0f, (float)tex.width, (float)tex.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+                    action(sprite1);
+                });
                 yield break;
-            }
+            }*/
 
             WWW www = new WWW(url);
             yield return www;
@@ -42,6 +47,8 @@ namespace CloneDroneOverhaul.Utilities
             texture2D.filterMode = FilterMode.Point;
             texture2D.Apply();
             Sprite sprite = Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+
+            /*OverhaulCacheAndGarbageController.SaveImageOnDisk(texture2D, id + ".png");*/
 
             //OverhaulCacheManager.AddTemporalObject<Sprite>(sprite, UI.NewWorkshopBrowserUI.TEMPORAL_PREFIX + "Image_" + url); //Memory issues
 

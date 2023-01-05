@@ -3,10 +3,10 @@ using CloneDroneOverhaul.Localization;
 using CloneDroneOverhaul.Modules;
 using CloneDroneOverhaul.RemovedOrOld;
 using CloneDroneOverhaul.UI;
-using CloneDroneOverhaul.UI.Notifications;
 using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Base;
-using LevelEditorTools;
+using CloneDroneOverhaul.V3Tests.HUD;
+using CloneDroneOverhaul.V3Tests.Notifications;
 using ModBotWebsiteAPI;
 using ModLibrary;
 using System;
@@ -43,7 +43,7 @@ namespace CloneDroneOverhaul
             {
                 OverhaulMain.Instance = this;
             }
-            OverhaulCacheManager.ClearTemporal();
+            OverhaulCacheAndGarbageController.ClearTemporal();
             InitializeOverhaul();
         }
 
@@ -53,7 +53,7 @@ namespace CloneDroneOverhaul
             if (!OverhaulMain.hasCachedStuff)
             {
                 rememberVanillaPreferences();
-                OverhaulCacheManager.CacheStuff();
+                OverhaulCacheAndGarbageController.PrepareStuff();
                 OverhaulMain.hasCachedStuff = true;
             }
             addReferences();
@@ -119,20 +119,10 @@ namespace CloneDroneOverhaul
             int b = int.Parse(base.ModInfo.Version.ToString());
             if (a > b)
             {
-                Notification notification = new Notification();
-                notification.SetUp("New update is out on Mod-Bot!", "If you wish, you may visit Overhaul mod site by clicking \"Mod-Bot\" and download new version.", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
-                {
-                    new Notification.NotificationButton
-                    {
-                        Action = new UnityAction(notification.HideThis),
-                        Text = "OK"
-                    },
-                    new Notification.NotificationButton
-                    {
-                        Action = new UnityAction(UpdateController.OpenModBotPage),
-                        Text = "ModBot"
-                    }
-                }, false);
+                SNotificationButton[] buttons = new SNotificationButton[] { new SNotificationButton("Mod site", null) };
+                buttons[0].SetAction(UpdateController.OpenModBotPage);
+                SNotification notif = new SNotification("New update is out on Mod-Bot!", "If you wish, you may visit Overhaul mod site by clicking \"Mod-Bot\" and download new version.", 20f, UINotifications.NotificationSize_Default, buttons);
+                notif.Send();
             }
         }
 
@@ -142,20 +132,11 @@ namespace CloneDroneOverhaul
             {
                 return;
             }
-            Notification notification = new Notification();
-            notification.SetUp("Version a" + newVersion + " out on GitHub!", "You may visit mod GitHub site by clicking \"GitHub\" to download new version.", 20f, Vector2.zero, Color.clear, new Notification.NotificationButton[]
-            {
-                new Notification.NotificationButton
-                {
-                    Action = new UnityAction(notification.HideThis),
-                    Text = "OK"
-                },
-                new Notification.NotificationButton
-                {
-                    Action = new UnityAction(UpdateController.OpenGitHubWithReleases),
-                    Text = "GitHub"
-                }
-            }, false);
+
+            SNotificationButton[] buttons = new SNotificationButton[] { new SNotificationButton("GitHub", null) };
+            buttons[0].SetAction(UpdateController.OpenGitHubWithReleases);
+            SNotification notif = new SNotification("Version a" + newVersion + " out on GitHub!", "You may visit mod GitHub site by clicking \"GitHub\" to download new version.", 20f, UINotifications.NotificationSize_Default, buttons);
+            notif.Send();
         }
 
         private void addReferences()
@@ -264,7 +245,7 @@ namespace CloneDroneOverhaul
                 transform2.SetSiblingIndex(1);
                 UnityEngine.Object.Destroy(transform2.GetComponentInChildren<LocalizedTextField>());
                 transform2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-                transform2.GetComponent<Button>().onClick.AddListener(new UnityAction(SettingsUI.Instance.Show));
+                transform2.GetComponent<Button>().onClick.AddListener(new UnityAction(UISettings.GetInstance<UISettings>().Show));
                 transform2.GetComponentInChildren<Text>().text = "Overhaul Settings";
                 _settingsButtonText = transform2.GetComponentInChildren<Text>();
             }
@@ -312,19 +293,7 @@ namespace CloneDroneOverhaul
             GUIManagement module = BaseStaticReferences.ModuleManager.GetModule<GUIManagement>();
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "CDO_RW_UI"));
             gameObject.name = "CloneDroneOverhaulUI";
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(0).gameObject.AddComponent<Watermark>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(9).gameObject.AddComponent<SettingsUI>());
             module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<OverhaulLocalizationEditor>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(1).gameObject.AddComponent<NewErrorWindow>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(4).gameObject.AddComponent<BackupMindTransfersUI>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(3).gameObject.AddComponent<NotificationsUI>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(5).gameObject.AddComponent<NewEscMenu>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(8).gameObject.AddComponent<MultiplayerInviteUIs>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(10).gameObject.AddComponent<ModdedLevelEditorUI>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(11).gameObject.AddComponent<MultiplayerUIs>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(12).gameObject.AddComponent<NewKillFeedUI>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(13).gameObject.AddComponent<NewGameModeSelectionScreen>());
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(15).gameObject.AddComponent<NewWorkshopBrowserUI>());
             ModGUICanvas = gameObject.GetComponent<Canvas>();
         }
 
@@ -352,7 +321,7 @@ namespace CloneDroneOverhaul
 
         private static bool hasCachedStuff;
 
-        public static OverhaulCacheManager CacheManagerReference = new OverhaulCacheManager();
+        public static OverhaulCacheAndGarbageController CacheManagerReference = new OverhaulCacheAndGarbageController();
 
         private Text _settingsButtonText;
     }
@@ -361,8 +330,8 @@ namespace CloneDroneOverhaul
     {
         public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
 
-        public const bool TEST_FEATURES_ENABLED = true;
-        public const bool OVERRIDE_VERSION = false;
+        public const bool TEST_FEATURES_ENABLED = false;
+        public const bool OVERRIDE_VERSION = true;
         public const string OVERRIDE_VERSION_STRING = "a0.2.0.24";
         public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
@@ -705,11 +674,11 @@ namespace CloneDroneOverhaul
             {
                 if (name == "ModdedLevelEditor.RefreshSelected")
                 {
-                    GUIManagement.Instance.GetGUI<ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
+                    //GUIManagement.Instance.GetGUI<ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
                 }
                 if (name == "ModdedLevelEditor.RefreshSelectedLETMod")
                 {
-                    ModdedLevelEditorUI.ObjectsSelectedPanel objectsSelectedPanel = arguments[0] as ModdedLevelEditorUI.ObjectsSelectedPanel;
+                    /*ModdedLevelEditorUI.ObjectsSelectedPanel objectsSelectedPanel = arguments[0] as ModdedLevelEditorUI.ObjectsSelectedPanel;
                     if (OverhaulDescription.LevelEditorToolsEnabled())
                     {
                         float? rotationAngle = AccurateRotationTool.RotationAngle;
@@ -754,7 +723,7 @@ namespace CloneDroneOverhaul
                     else
                     {
                         objectsSelectedPanel.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
-                    }
+                    }*/
                 }
             }
             catch

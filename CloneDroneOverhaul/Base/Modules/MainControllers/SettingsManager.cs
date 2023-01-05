@@ -17,15 +17,15 @@ namespace CloneDroneOverhaul.Modules
             BaseStaticReferences.SettingsManager = this;
             Instance = this;
 
-            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringResolution>("DitherRes", "", "Graphics", "Additions", 2, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringResolution) }));
-            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringRefreshRate>("DitherRRate", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringRefreshRate) }));
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringResolution>("DitherRes", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringResolution) }));
+            AddSetting(SettingEntry.NewSetting<V3Tests.HUD.EDitheringRefreshRate>("DitherRRate", "", "Graphics", "Additions", 1, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.HUD.EDitheringRefreshRate) }));
 
             AddSetting(SettingEntry.NewSetting<float>("Roll Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<float>("(Multiplayer) Roll Multipler", "", "Graphics", "Additions", 0.65f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 2 }));
             AddSetting(SettingEntry.NewSetting<bool>("Camera Rolling", "Camera will change its angle depending on your movement", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Roll Multipler", "Graphics.Additions.(Multiplayer) Roll Multipler" } }));
 
             AddSetting(SettingEntry.NewSetting<SampleCountLevel>("Sample count", "", "Graphics", "Additions", 3, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(AmplifyOcclusion.SampleCountLevel) }));
-            AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 1.00f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f }));
+            AddSetting(SettingEntry.NewSetting<float>("Noise Multipler", "", "Graphics", "Additions", 0.9f, null, new SettingEntry.UIValueSettings() { MinValue = 0.8f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<float>("Occlusion intensity", "", "Graphics", "Additions", 0.95f, null, new SettingEntry.UIValueSettings() { MinValue = 0.5f, MaxValue = 1.3f }));
             AddSetting(SettingEntry.NewSetting<bool>("Amplify occlusion", "Makes the game more realistic\nNot recommended on low-end PCs", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Sample count", "Graphics.Additions.Occlusion intensity" } }));
             AddSetting(SettingEntry.NewSetting<bool>("Noise effect", "", "Graphics", "Additions", true, new SettingEntry.ChildrenSettings() { ChildrenSettingID = new string[] { "Graphics.Additions.Noise Multipler", "Graphics.Additions.DitherRes", "Graphics.Additions.DitherRRate" } }));
@@ -40,8 +40,12 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("New Level Editor", "", "Levels", "Editor", false, null, null, null, null, !OverhaulDescription.TEST_FEATURES_ENABLED));
 
             AddSetting(SettingEntry.NewSetting<bool>("Last Bot Standing", "Camera will change its angle depending on your movement", "Patches", "GUI", false, null, null, null, null, !OverhaulDescription.TEST_FEATURES_ENABLED));
+            AddSetting(SettingEntry.NewSetting<bool>("Subtitles", "", "Patches", "GUI", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Pause menu", "", "Patches", "GUI", true));
+
             AddSetting(SettingEntry.NewSetting<bool>("Fix sounds", "Fix the audio bugs with emotes, raptor kick and ect.", "Patches", "QoL", true));
             AddSetting(SettingEntry.NewSetting<bool>("Pixel perfect HUD", "Fixes blurry parts of the HUD", "Patches", "GUI", true));
+            AddSetting(SettingEntry.NewSetting<bool>("Energy bar", "", "Patches", "GUI", true));
             AddSetting(SettingEntry.NewSetting<float>("HUD Scale", "", "Graphics", "Additions", 0f, null, new SettingEntry.UIValueSettings() { MinValue = -0.12f, MaxValue = 0.12f }));
 
             AddSetting(SettingEntry.NewSetting<float>("FPS Cap", "60 - Set VSync to On\n600 - Unlimited FPS", "Graphics", "Settings", 2f, null, new SettingEntry.UIValueSettings() { MinValue = 1, MaxValue = 20, Step = 30, OnlyInt = true }));
@@ -319,7 +323,7 @@ namespace CloneDroneOverhaul.Modules
                                     entry.IsHidden = true;
                                     if (entry.ChildSettings != null)
                                     {
-                                        Modules.ModuleManagement.ShowError_Type2("Preferences warning!", "Children settings cannot have children XD" + System.Environment.NewLine + "Details: " + entry.Name);
+                                        Modules.ModuleManagement.ShowError("Preferences warning!\nChildren settings cannot have children XD" + System.Environment.NewLine + "Details: " + entry.Name);
                                     }
                                 }
                             }

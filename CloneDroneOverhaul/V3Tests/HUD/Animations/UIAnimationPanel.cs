@@ -1,10 +1,7 @@
-﻿using System;
+﻿using CloneDroneOverhaul.V3Tests.HUD;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine.UI;
-using UnityEngine;
-using CloneDroneOverhaul.V3Tests.HUD;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay.Animations
 {
@@ -74,7 +71,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay.Animations
         /// <returns></returns>
         private bool hasModdedObject()
         {
-            return ModdedObject != null && ModdedObject.objects.Count != 0;
+            return MyModdedObject != null && MyModdedObject.objects.Count != 0;
         }
 
         private bool isreadyToWorkWithAnimations()

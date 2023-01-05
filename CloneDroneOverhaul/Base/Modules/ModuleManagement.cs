@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CloneDroneOverhaul.V3Tests.Notifications;
 
 namespace CloneDroneOverhaul.Modules
 {
@@ -112,14 +113,8 @@ namespace CloneDroneOverhaul.Modules
 
         public static void ShowError(string message)
         {
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp(message, "", 20, new UnityEngine.Vector2(900, 52), new UnityEngine.Color(0.5f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
-        }
-
-        public static void ShowError_Type2(string title, string message)
-        {
-            CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-            notif.SetUp(title, message, 20, new UnityEngine.Vector2(600, 300), new UnityEngine.Color(0.5f, 0, 0, 0.9f), new UI.Notifications.Notification.NotificationButton[] { new UI.Notifications.Notification.NotificationButton { Action = new UnityEngine.Events.UnityAction(notif.HideThis), Text = "OK" } });
+            SNotification notif = new SNotification("ERROR", message, 20f, UINotifications.NotificationSize_Default, null);
+            notif.Send();
         }
     }
 
