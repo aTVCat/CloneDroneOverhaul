@@ -11,8 +11,8 @@ namespace CloneDroneOverhaul.Modules
         {
             Instance = this;
             SkyBoxManager instance = Singleton<SkyBoxManager>.Instance;
-            instance.LevelConfigurableSkyboxes[7] = OverhaulCacheManager.GetCached<Material>("SkyboxMaterial_Stars2");
-            instance.LevelConfigurableSkyboxes[2] = OverhaulCacheManager.GetCached<Material>("SkyboxMaterial_StarsChapter4");
+            instance.LevelConfigurableSkyboxes[7] = OverhaulCacheAndGarbageController.GetCached<Material>("SkyboxMaterial_Stars2");
+            instance.LevelConfigurableSkyboxes[2] = OverhaulCacheAndGarbageController.GetCached<Material>("SkyboxMaterial_StarsChapter4");
         }
 
         public override void OnSettingRefreshed(string ID, object value, bool isRefreshedOnStart = false)

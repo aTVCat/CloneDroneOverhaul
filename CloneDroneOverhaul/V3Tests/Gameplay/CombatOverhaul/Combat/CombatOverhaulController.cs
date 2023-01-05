@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Base;
-using CloneDroneOverhaul.Utilities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
@@ -18,13 +16,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// <summary>
         /// May combat overhaul patch the game?
         /// </summary>
-        public static bool ShouldWork
-        {
-            get
-            {
-                return !GameModeManager.IsMultiplayer() && OverhaulDescription.TEST_FEATURES_ENABLED;
-            }
-        }
+        public static bool ShouldWork => !GameModeManager.IsMultiplayer() && OverhaulDescription.TEST_FEATURES_ENABLED;
 
         /// <summary>
         /// All weapons in game, including modded
@@ -83,7 +75,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 return;
             }
 
-            if(eventName == FIRSTPERSONMOVER_ONSPAWN_EVENT_NAME)
+            if (eventName == FIRSTPERSONMOVER_ONSPAWN_EVENT_NAME)
             {
                 if (args[0] is RobotShortInformation robot && !robot.IsNull && robot.IsFPM)
                 {

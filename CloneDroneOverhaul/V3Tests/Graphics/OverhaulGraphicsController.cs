@@ -9,6 +9,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class OverhaulGraphicsController : V3_ModControllerBase
     {
+        #region Constants
+
+        public static readonly Color SwordBlock_Normal_LightColor = BaseUtils.ColorFromHex("#FFF4C1");
+
+        #endregion
+
         #region RendererParameters
 
         public static AntialiasingLevel AntiAliasingLevel = AntialiasingLevel.Off;
@@ -153,7 +159,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             PooledPrefab_VFXEffect_Light light = UseVFX<PooledPrefab_VFXEffect_Light>(ID_VFX_LIGHT, position, Vector3.zero);
             if (light != null)
             {
-                light.SetLightSettings(range, hexColor.hexToColor(), speed);
+                light.SetLightSettings(range, hexColor.hexToColor(), speed, LightShadows.None);
             }
         }
 
@@ -265,31 +271,31 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             }
             if (settingName == "Graphics.Additions.Sample count")
             {
-                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionSampleCount, value, false);
+                SetParameterValue(EGraphicsParameterNames.AmplifyOcclusionSampleCount, value, false);
             }
             if (settingName == "Graphics.Additions.Amplify occlusion")
             {
-                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionEnabled, value, false);
+                SetParameterValue(EGraphicsParameterNames.AmplifyOcclusionEnabled, value, false);
             }
             if (settingName == "Graphics.Additions.Occlusion intensity")
             {
-                SetParameterValue(GraphicsParameterNames.AmplifyOcclusionIntensity, value, false);
+                SetParameterValue(EGraphicsParameterNames.AmplifyOcclusionIntensity, value, false);
             }
             if (settingName == "Graphics.Settings.Shadow resolution")
             {
-                SetParameterValue(GraphicsParameterNames.ShadowsResolution, value, false);
+                SetParameterValue(EGraphicsParameterNames.ShadowsResolution, value, false);
             }
             if (settingName == "Graphics.Settings.Shadow bias")
             {
-                SetParameterValue(GraphicsParameterNames.ShadowsBias, value, false);
+                SetParameterValue(EGraphicsParameterNames.ShadowsBias, value, false);
             }
             if (settingName == "Graphics.Settings.Soft shadows")
             {
-                SetParameterValue(GraphicsParameterNames.ShadowsSoft, value, false);
+                SetParameterValue(EGraphicsParameterNames.ShadowsSoft, value, false);
             }
             if (settingName == "Graphics.Settings.Shadow distance")
             {
-                SetParameterValue(GraphicsParameterNames.ShadowsDistance, value, false);
+                SetParameterValue(EGraphicsParameterNames.ShadowsDistance, value, false);
             }
         }
 
@@ -300,11 +306,11 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// <param name="parameter"></param>
         /// <param name="value"></param>
         /// <param name="overrideSetting"></param>
-        public static void SetParameterValue(in GraphicsParameterNames parameter, in object value, in bool overrideSetting)
+        public static void SetParameterValue(in EGraphicsParameterNames parameter, in object value, in bool overrideSetting)
         {
             switch (parameter)
             {
-                case GraphicsParameterNames.AmplifyOcclusionEnabled:
+                case EGraphicsParameterNames.AmplifyOcclusionEnabled:
 
                     if (overrideSetting)
                     {
@@ -317,7 +323,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.AmplifyOcclusionSampleCount:
+                case EGraphicsParameterNames.AmplifyOcclusionSampleCount:
 
                     if (overrideSetting)
                     {
@@ -330,7 +336,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.AmplifyOcclusionIntensity:
+                case EGraphicsParameterNames.AmplifyOcclusionIntensity:
 
                     if (overrideSetting)
                     {
@@ -343,7 +349,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.ShadowsBias:
+                case EGraphicsParameterNames.ShadowsBias:
 
                     if (overrideSetting)
                     {
@@ -356,7 +362,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.ShadowsDistance:
+                case EGraphicsParameterNames.ShadowsDistance:
 
                     if (overrideSetting)
                     {
@@ -369,7 +375,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.ShadowsResolution:
+                case EGraphicsParameterNames.ShadowsResolution:
 
                     if (overrideSetting)
                     {
@@ -382,7 +388,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
                     break;
 
-                case GraphicsParameterNames.ShadowsSoft:
+                case EGraphicsParameterNames.ShadowsSoft:
 
                     if (overrideSetting)
                     {
@@ -503,7 +509,8 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 AmplifyOcclusionEffect acc = camera.gameObject.AddComponent<AmplifyOcclusionEffect>();
                 acc.BlurSharpness = 4f;
                 acc.FilterResponse = 0.7f;
-                acc.Bias = 1;
+                acc.Bias = 0.8f;
+                acc.ApplyMethod = AmplifyOcclusionEffect.ApplicationMethod.Deferred;
                 _cachedAmplifyOcclusion = acc;
                 RefreshGraphics();
             }

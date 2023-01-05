@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay.Animations
 {

@@ -1,5 +1,4 @@
 ﻿using CloneDroneOverhaul.V3Tests.Gameplay;
-using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +21,9 @@ namespace CloneDroneOverhaul.V3Tests.HUD
         private static bool _shouldGenerateDitheringTextures = true;
         private static Dictionary<EDitheringResolution, Texture2D[]> _ditheringGeneratedTextures = new Dictionary<EDitheringResolution, Texture2D[]>()
         {
-            {EDitheringResolution.Res_320x180, new Texture2D[10] },
-            {EDitheringResolution.Res_640x360, new Texture2D[10] },
-            {EDitheringResolution.Res_1280x720, new Texture2D[10] },
-            {EDitheringResolution.Res_1920x1080, new Texture2D[10] },
-            {EDitheringResolution.Res_2560x1440, new Texture2D[10] },
+            {EDitheringResolution.Res_640x360, new Texture2D[4] },
+            {EDitheringResolution.Res_1280x720, new Texture2D[4] },
+            {EDitheringResolution.Res_1920x1080, new Texture2D[4] },
         };
         private int _ditheringTextureIndex = 0;
         private bool _isReadyToDither;
@@ -82,17 +79,13 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             switch (index)
             {
                 case 0:
-                    return (320, 180);
-                case 1:
                     return (640, 360);
-                case 2:
+                case 1:
                     return (1280, 720);
-                case 3:
+                case 2:
                     return (1920, 1080);
-                case 4:
-                    return (2560, 1440);
             }
-            return (320, 180);
+            return (640, 360);
         }
 
         private int getFramesToWait()
@@ -113,10 +106,10 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
         private void generatePerlinNoiseTextures()
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 3; j++)
             {
                 (int, int) res = GetResolutionByIndex(j);
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     _ditheringGeneratedTextures[(EDitheringResolution)j][i] = GeneratePerlinNoise(res.Item1, res.Item2);
                 }
@@ -128,7 +121,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             GetInstance<UIImageEffects>().RefreshEffects();
         }
 
-        void Start()
+        private void Start()
         {
             if (_shouldGenerateDitheringTextures)
             {
@@ -136,7 +129,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
                 _shouldGenerateDitheringTextures = false;
             }
 
-            RectTransform objectFromList2 = base.ModdedObject.GetObjectFromList<RectTransform>(1);
+            RectTransform objectFromList2 = base.MyModdedObject.GetObjectFromList<RectTransform>(1);
             objectFromList2.SetParent(Singleton<GameUIRoot>.Instance.transform);
             objectFromList2.SetAsFirstSibling();
             objectFromList2.sizeDelta = Vector2.zero;
@@ -146,7 +139,7 @@ namespace CloneDroneOverhaul.V3Tests.HUD
             _ditheringTest.color = new Color(1, 1, 1, 0.3f);
             _isReadyToDither = true;
 
-            RectTransform objectFromList = base.ModdedObject.GetObjectFromList<RectTransform>(0);
+            RectTransform objectFromList = base.MyModdedObject.GetObjectFromList<RectTransform>(0);
             objectFromList.SetParent(Singleton<GameUIRoot>.Instance.transform);
             objectFromList.SetAsFirstSibling();
             objectFromList.sizeDelta = Vector2.zero;
@@ -195,18 +188,18 @@ namespace CloneDroneOverhaul.V3Tests.HUD
 
         private void Update()
         {
-            if(!(OverhaulGraphicsController.OverrideSettings ? _ditheringEnabled.Item1 : _ditheringEnabled.Item2) || !_isReadyToDither || _shouldGenerateDitheringTextures)
+            if (!(OverhaulGraphicsController.OverrideSettings ? _ditheringEnabled.Item1 : _ditheringEnabled.Item2) || !_isReadyToDither || _shouldGenerateDitheringTextures)
             {
                 return;
             }
 
             _framesLeftToSwitchDitheringTexture--;
-            if(_framesLeftToSwitchDitheringTexture <= 0)
+            if (_framesLeftToSwitchDitheringTexture <= 0)
             {
                 _framesLeftToSwitchDitheringTexture = getFramesToWait();
 
                 _ditheringTextureIndex++;
-                if(_ditheringTextureIndex >= 10)
+                if (_ditheringTextureIndex >= 4)
                 {
                     _ditheringTextureIndex = 0;
                 }

@@ -18,12 +18,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay.Animations
         {
             LevelEditorAnimation result = null;
 
-            if(AnimationType == EAnimationType.LevelEditorAnimation)
+            if (AnimationType == EAnimationType.LevelEditorAnimation)
             {
                 List<LevelEditorAnimation> list = LevelEditorAnimationManager.Instance.GetAnimationsInLevel();
-                foreach(LevelEditorAnimation anim in list)
+                foreach (LevelEditorAnimation anim in list)
                 {
-                    if(anim.AnimationName == AnimationName)
+                    if (anim.AnimationName == AnimationName)
                     {
                         result = anim;
                         break;

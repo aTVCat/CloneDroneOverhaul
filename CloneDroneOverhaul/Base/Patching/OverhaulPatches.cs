@@ -5,6 +5,7 @@ using CloneDroneOverhaul.UI;
 using CloneDroneOverhaul.UI.Components;
 using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Gameplay;
+using CloneDroneOverhaul.V3Tests.HUD;
 using HarmonyLib;
 using ModLibrary;
 using PicaVoxel;
@@ -38,7 +39,7 @@ namespace CloneDroneOverhaul.Patching
                 {
                     DoOnMouseActions.AddComponent(__instance.VsyncOnToggle.gameObject, delegate
                 {
-                    SettingsUI.Instance.ShowWithOpenedPage("Graphics", "Settings");
+                    UISettings.GetInstance<UISettings>().ShowWithOpenedPage("Graphics", "Settings");
                 });
                 }
             }, 0.05f, true);
@@ -54,8 +55,8 @@ namespace CloneDroneOverhaul.Patching
         {
             try
             {
-                if (GUIManagement.Instance.GetGUI<UI.NewErrorWindow>().gameObject.activeInHierarchy || GUIManagement.Instance.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UI.MultiplayerInviteUIs.Instance.ShallCursorBeActive() ||
-                      GUIManagement.Instance.GetGUI<UI.SettingsUI>().gameObject.activeInHierarchy || MultiplayerUIs.Instance.BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
+                if (UICrashScreen.GetInstance<UICrashScreen>().gameObject.activeInHierarchy || GUIManagement.Instance.GetGUI<Localization.OverhaulLocalizationEditor>().gameObject.activeInHierarchy || UIInviteToLobby.GetInstance<UIInviteToLobby>().ShallCursorBeActive() ||
+                       UISettings.GetInstance<UISettings>().gameObject.activeInHierarchy || UIMultiplayer.GetInstance<UIMultiplayer>().BRMObj.GetObjectFromList<RectTransform>(6).gameObject.activeInHierarchy)
                 {
                     InputManager.Instance.SetCursorEnabled(true);
                     return false;
@@ -74,14 +75,6 @@ namespace CloneDroneOverhaul.Patching
             //V3Tests.Base.SceneTransitionController.EndTripToMainMenu();
         }
 
-        /*
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SceneTransitionManager), "DisconnectAndExitToMainMenu")]
-        private static void SceneTransitionManager_DisconnectAndExitToMainMenu_Postfix()
-        {
-            V3Tests.Base.SceneTransitionController.GoToMainMenu();
-        }*/
-
         [HarmonyPrefix]
         [HarmonyPatch(typeof(TitleScreenUI), "OnWorkshopBrowserButtonClicked")]
         private static bool TitleScreenUI_OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
@@ -91,7 +84,7 @@ namespace CloneDroneOverhaul.Patching
                 return true;
             }
             V3Tests.Gameplay.ArenaController.SetRootAndLogoVisible(false);
-            NewWorkshopBrowserUI.Instance.Show();
+            UIWorkshopBrowser.GetInstance<UIWorkshopBrowser>().Show();
             return false;
         }
 
@@ -106,7 +99,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(TitleScreenUI), "Hide")]
         private static void TitleScreenUI_Hide_Postfix(TitleScreenUI __instance)
         {
-            NewGameModeSelectionScreen.Instance.Hide();
+            UIGamemodeSelection.GetInstance<UIGamemodeSelection>().Hide();
         }
 
         [HarmonyPostfix]
@@ -132,14 +125,14 @@ namespace CloneDroneOverhaul.Patching
         private static void ErrorWindow_Show_Postfix(ErrorWindow __instance, string errorMessage)
         {
             __instance.gameObject.SetActive(false);
-            BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>().GetGUI<UI.NewErrorWindow>().Show(errorMessage);
+            UICrashScreen.GetInstance<UICrashScreen>().Show(errorMessage);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ErrorWindow), "Hide")]
         private static void ErrorWindow_Hide_Postfix()
         {
-            BaseStaticReferences.ModuleManager.GetModule<UI.GUIManagement>().GetGUI<UI.NewErrorWindow>().Hide();
+            UICrashScreen.GetInstance<UICrashScreen>().Hide();
         }
 
         [HarmonyPrefix]
@@ -148,7 +141,7 @@ namespace CloneDroneOverhaul.Patching
         {
             if (OverhaulMain.GetSetting<bool>("Patches.GUI.Last Bot Standing"))
             {
-                MultiplayerUIs.Instance.Show(MultiplayerUIs.MultiplayerUI.BattleRoyale);
+                UIMultiplayer.GetInstance<UIMultiplayer>().Show(UIMultiplayer.EMultiplayerUI.BattleRoyale);
                 return false;
             }
             return true;
@@ -158,7 +151,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(BattleRoyaleUI), "Hide")]
         private static void BattleRoyaleUI_Hide_Postfix()
         {
-            MultiplayerUIs.Instance.Hide(MultiplayerUIs.MultiplayerUI.BattleRoyale);
+            UIMultiplayer.GetInstance<UIMultiplayer>().Hide(UIMultiplayer.EMultiplayerUI.BattleRoyale);
         }
 
 
@@ -173,8 +166,13 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(EscMenu), "Show")]
         private static void EscMenu_Show_Postfix(EscMenu __instance)
         {
+            if (!OverhaulMain.GetSetting<bool>("Patches.GUI.Pause menu"))
+            {
+                __instance.GetComponent<UnityEngine.UI.Image>().enabled = true;
+                return;
+            }
             ObjectFixer.FixObject(__instance.transform, "FixEscMenu", __instance);
-            BaseStaticReferences.NewEscMenu.Show();
+            UIPauseMenu.GetInstance<UIPauseMenu>().Show();
         }
 
         [HarmonyPostfix]
@@ -182,7 +180,7 @@ namespace CloneDroneOverhaul.Patching
         private static void EscMenu_Hide_Postfix(EscMenu __instance)
         {
             GameUIRoot.Instance.AchievementProgressUI.Hide();
-            BaseStaticReferences.NewEscMenu.Hide();
+            UIPauseMenu.GetInstance<UIPauseMenu>().Hide();
         }
 
         [HarmonyPostfix]
@@ -191,7 +189,7 @@ namespace CloneDroneOverhaul.Patching
         {
             if (BaseStaticValues.IsEscMenuWaitingToShow)
             {
-                BaseStaticReferences.NewEscMenu.Show();
+                UIPauseMenu.GetInstance<UIPauseMenu>().Show();
             }
         }
 
@@ -212,7 +210,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(MultiplayerInviteCodeUI), "ShowWithCode")]
         private static bool MultiplayerInviteCodeUI_ShowWithCode_Prefix(MultiplayerInviteCodeUI __instance, string inviteCode, bool showSettings)
         {
-            GUIManagement.Instance.GetGUI<UI.MultiplayerInviteUIs>().ShowWithCode(inviteCode, showSettings);
+            UIMultiplayer.GetInstance<UIInviteToLobby>().ShowWithCode(inviteCode, showSettings);
             return false;
         }
 
@@ -220,9 +218,9 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(LevelEditorUI), "Show")]
         private static bool LevelEditorUI_Show_Prefix()
         {
-            if (OverhaulMain.GetSetting<bool>("Levels.Editor.New Level Editor"))
+            if (OverhaulMain.GetSetting<bool>("Levels.Editor.New Level Editor") && OverhaulDescription.TEST_FEATURES_ENABLED)
             {
-                GUIManagement.Instance.GetGUI<LevelEditor.ModdedLevelEditorUI>().Show();
+                UILevelEditorV2.GetInstance<UILevelEditorV2>().Initialize();
                 return false;
             }
             return true;
@@ -234,7 +232,7 @@ namespace CloneDroneOverhaul.Patching
         {
             if (BaseStaticValues.IsEscMenuWaitingToShow)
             {
-                BaseStaticReferences.NewEscMenu.Show();
+                UIPauseMenu.GetInstance<UIPauseMenu>().Show();
             }
         }
 
@@ -242,20 +240,20 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(GameModeSelectScreen), "Show")]
         private static bool GameModeSelectScreen_Show_Prefix(GameModeSelectScreen __instance)
         {
-            NewGameModeSelectionScreen.Instance.Show(__instance.GameModeData);
+            UIGamemodeSelection.GetInstance<UIGamemodeSelection>().Show(__instance.GameModeData);
             return false;
         }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameModeSelectScreen), "Hide")]
         private static void GameModeSelectScreen_Show_Postfix(GameModeSelectScreen __instance)
         {
-            NewGameModeSelectionScreen.Instance.Hide();
+            UIGamemodeSelection.GetInstance<UIGamemodeSelection>().Hide();
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GameModeSelectScreen), "SetMainScreenVisible")]
         private static bool GameModeSelectScreen_SetMainScreenVisible_Prefix(GameModeSelectScreen __instance, bool visible)
         {
-            NewGameModeSelectionScreen.Instance.SetMainScreenVisible(visible);
+            UIGamemodeSelection.GetInstance<UIGamemodeSelection>().SetMainScreenVisible(visible);
             return false;
         }
 
@@ -275,6 +273,18 @@ namespace CloneDroneOverhaul.Patching
                 component2.sprite = imageSprite2;
             }
         }
+
+        /*
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(EnergyUI), "showGlow")]
+        public static bool EnergyUI_showGlow_Postfix(EnergyUI __instance, float position, float energyAmount, ref string animationName)
+        {
+            if(animationName == "InsufficientAmount")
+            {
+                return !GameModeManager.IsMultiplayer();
+            }
+            return true;
+        }*/
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AchievementProgressUI), "populateUI")]
@@ -306,7 +316,7 @@ namespace CloneDroneOverhaul.Patching
             return list.AsEnumerable<CodeInstruction>();
         }
     }
-    // Token: 0x02000044 RID: 68
+
     [HarmonyPatch(typeof(ChapterLoadingScreen))]
     public class OverhaulPatches
     {
@@ -337,7 +347,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(SceneTransitionManager), "DisconnectAndExitToMainMenu")]
         private static bool SceneTransitionManager_DisconnectAndExitToMainMenu_Prefix()
         {
-            V3Tests.Base.SceneTransitionController.GoToMainMenu();
+            V3Tests.HUD.SceneTransitionController.GoToMainMenu();
             return false;
         }
 
@@ -574,7 +584,7 @@ namespace CloneDroneOverhaul.Patching
         [HarmonyPatch(typeof(LevelEditorObjectPlacementManager), "Select")]
         private static bool LevelEditorObjectPlacementManager_Select_Prefix(ObjectPlacedInLevel objectToSelect, bool deselectAllAnimationTracks = true)
         {
-            return !GUIManagement.Instance.GetGUI<NewEscMenu>().gameObject.activeInHierarchy;
+            return !UIPauseMenu.GetInstance<UIPauseMenu>().gameObject.activeInHierarchy;
         }
 
         [HarmonyPostfix]
@@ -609,9 +619,13 @@ namespace CloneDroneOverhaul.Patching
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(LevelEditorToolManager), "SetActiveTool")]
-        private static void LevelEditorToolManager_SetActiveTool_Postfix(LevelEditorObjectPlacementManager __instance)
+        private static void LevelEditorToolManager_SetActiveTool_Postfix(LevelEditorToolType toolType)
         {
-            GUIManagement.Instance.GetGUI<ModdedLevelEditorUI>().ToolBar.RefreshSelected();
+            if (!UILevelEditorV2.IsEnabled)
+            {
+                return;
+            }
+            UILevelEditorV2.GetInstance<UILevelEditorV2>().GetHUD<UIToolbar>().SetActiveTool(toolType);
         }
 
         [HarmonyPostfix]
@@ -625,13 +639,6 @@ namespace CloneDroneOverhaul.Patching
             }
             PointLightDust pointLightDust = __instance.gameObject.AddComponent<PointLightDust>();
             pointLightDust.Target = __instance.transform;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(LevelEditorPerformanceStatsPanel), "Initialize")]
-        public static void LevelEditorPerformanceStatsPanel_Initialize_Postfix(LevelEditorPerformanceStatsPanel __instance)
-        {
-            ObjectFixer.FixObject(__instance.transform, "FixPerformanceStats", __instance);
         }
 
         [HarmonyPostfix]
@@ -879,8 +886,6 @@ namespace CloneDroneOverhaul.Patching
             }
             catch (System.Exception ex)
             {
-                CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                notif.SetUp("Nullpoint : BodyPartPatcher - OnVoxelCut", ex.Message, 5, new UnityEngine.Vector2(400, 700), new UnityEngine.Color(1f, 0.1559941f, 0.1792453f, 0.6f), new UI.Notifications.Notification.NotificationButton[] { });
             }
         }
 

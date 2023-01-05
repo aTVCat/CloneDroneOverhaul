@@ -12,6 +12,10 @@ namespace CloneDroneOverhaul.V3Tests.Base
             return V3_MainModController.GetManager<T>();
         }
 
+        public void OnAdded()
+        {
+        }
+
         public virtual void OnEvent(in string eventName, in object[] args)
         {
 

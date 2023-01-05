@@ -25,7 +25,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                 ObjectPlacedInLevel objectPlacedInLevel = instanceScript as ObjectPlacedInLevel;
                 string dispName = objectPlacedInLevel.GetDisplayName();
                 // LODs
-                if (OverhaulCacheManager.HasCached(objectPlacedInLevel.GetDisplayName() + "_LOD0"))
+                if (OverhaulCacheAndGarbageController.HasCached(objectPlacedInLevel.GetDisplayName() + "_LOD0"))
                 {
                     if (!ObjectsLODController.LoDEnabled)
                     {
@@ -37,7 +37,7 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                     GameObject[] gObjs = new GameObject[3];
                     for (int i = 0; i < 3; i++)
                     {
-                        GameObject g = UnityEngine.Object.Instantiate(OverhaulCacheManager.GetCached<GameObject>(lodBaseString + i.ToString()));
+                        GameObject g = UnityEngine.Object.Instantiate(OverhaulCacheAndGarbageController.GetCached<GameObject>(lodBaseString + i.ToString()));
                         g.GetComponent<Renderer>().material = origMat;
                         gObjs[i] = g;
                     }
@@ -63,10 +63,10 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                     foreach (Material material in component.MaterialOptions)
                     {
                         string name = material.name;
-                        if (OverhaulCacheManager.HasCached("MatHeightMap_" + name))
+                        if (OverhaulCacheAndGarbageController.HasCached("MatHeightMap_" + name))
                         {
                             material.mainTexture.filterMode = FilterMode.Point;
-                            material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_" + name));
+                            material.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_" + name));
                         }
                     }
                 }
@@ -75,34 +75,34 @@ namespace CloneDroneOverhaul.Patching.VisualFixes
                     foreach (Material material2 in component.MaterialOptions)
                     {
                         string name2 = material2.name;
-                        if (OverhaulCacheManager.HasCached("MatHeightMap_" + name2))
+                        if (OverhaulCacheAndGarbageController.HasCached("MatHeightMap_" + name2))
                         {
                             material2.mainTexture.filterMode = FilterMode.Point;
-                            material2.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_" + name2));
+                            material2.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_" + name2));
                         }
                     }
                 }
                 else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/HumanFleet/HumanBattleCruiser")
                 {
-                    component.MaterialOptions[0].SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_HumanFleetShips"));
+                    component.MaterialOptions[0].SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_HumanFleetShips"));
                 }
                 else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall2")
                 {
-                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
                 }
                 else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall1")
                 {
-                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
                 }
                 else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Wall3")
                 {
-                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                    objectPlacedInLevel.GetComponent<MeshRenderer>().material.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
                 }
                 else if (objectPlacedInLevel.LevelObjectEntry.PathUnderResources == "Prefabs/LevelObjects/Story_Chapter4/Dark_Door")
                 {
                     foreach (MeshRenderer meshRenderer in objectPlacedInLevel.GetComponentsInChildren<MeshRenderer>())
                     {
-                        meshRenderer.material.SetTexture("_OcclusionMap", OverhaulCacheManager.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
+                        meshRenderer.material.SetTexture("_OcclusionMap", OverhaulCacheAndGarbageController.GetCached<Texture>("MatHeightMap_DarkHallwayParts"));
                     }
                 }
             }

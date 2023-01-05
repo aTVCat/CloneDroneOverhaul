@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows.Forms;
 using UnityEngine;
 using UnityEngine.Networking;
+using CloneDroneOverhaul.V3Tests.Notifications;
 
 namespace CloneDroneOverhaul
 {
@@ -18,7 +19,6 @@ namespace CloneDroneOverhaul
     {
         public static Modules.ModuleManagement ModuleManager { get; internal set; }
         public static Modules.OverhaulSettingsManager SettingsManager { get; internal set; }
-        public static UI.NewEscMenu NewEscMenu { get; internal set; }
     }
 
     internal class BaseStaticValues
@@ -269,7 +269,7 @@ namespace CloneDroneOverhaul
         {
             UnityEngine.Application.Quit();
         }
-        public static void CopyToClipboard(string text, bool showMessage = false, string messageP1 = "", string messageP2 = "")
+        public static void CopyToClipboard(string text, bool showMessage = false)
         {
             UnityEngine.TextEditor textEditor = new UnityEngine.TextEditor
             {
@@ -279,14 +279,14 @@ namespace CloneDroneOverhaul
             textEditor.Copy();
             if (showMessage)
             {
-                CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                notif.SetUp(messageP1 + text + messageP2, "", 10, new UnityEngine.Vector2(450, 52), UnityEngine.Color.clear, new UI.Notifications.Notification.NotificationButton[] { });
+                SNotification notif = new SNotification("Text or code copied to clipboard!", text, 20f, UINotifications.NotificationSize_Small, null);
+                notif.Send();
             }
         }
 
         public static void CopyLobbyCode()
         {
-            CopyToClipboard(MultiplayerMatchmakingManager.Instance.GetLastInviteCode(), true, "Code ", " was copied to clipboard!");
+            CopyToClipboard(MultiplayerMatchmakingManager.Instance.GetLastInviteCode(), true);
         }
 
         public static void SmoothChangeMaterialPropery(UnityEngine.Material material, string propertyName, float targetValue, float multipler = 0.04f)
@@ -395,7 +395,7 @@ namespace CloneDroneOverhaul
 
     public static class VanillaPrefs
     {
-        private static bool[] EscMenuChildrenVisibility;
+        public static bool[] EscMenuChildrenVisibility;
         public static readonly AudioConfiguration AudioConfig = AudioSettings.GetConfiguration().Clone();
 
         internal static void RememberStuff()

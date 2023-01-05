@@ -1,5 +1,4 @@
-﻿using CloneDroneOverhaul.UI;
-using CloneDroneOverhaul.Utilities;
+﻿using CloneDroneOverhaul.Utilities;
 using ModLibrary;
 using UnityEngine;
 
@@ -16,7 +15,6 @@ namespace CloneDroneOverhaul.Modules
         private Bounds _combinedBounds;
         private RobotShortInformation CurrentPlayerInfo;
         private RobotShortInformation OldPlayerInfo;
-        private static bool TransferedBefore;
 
         public override void Start()
         {
@@ -47,12 +45,6 @@ namespace CloneDroneOverhaul.Modules
             // Show mind transfers using top of the robot's head
             if (GameModeManager.ConsciousnessTransferToKillerEnabled() && !CurrentPlayerInfo.IsNull && CurrentPlayerInfo.Instance is FirstPersonMover)
             {
-                if (!TransferedBefore)
-                {
-                    CloneDroneOverhaul.UI.Notifications.Notification notif = new UI.Notifications.Notification();
-                    notif.SetUp("Press 'TAB' to view your mind transfers", "", 10, new Vector2(450, 52), Color.clear, new UI.Notifications.Notification.NotificationButton[] { });
-                    TransferedBefore = true;
-                }
                 FirstPersonMover mover = (FirstPersonMover)CurrentPlayerInfo.Instance;
                 Transform head = TransformUtils.FindChildRecursive(CurrentPlayerInfo.Instance.transform, "Head");
                 MindTransferToFollow = head;
@@ -65,7 +57,7 @@ namespace CloneDroneOverhaul.Modules
 
                 if (head == null || mover.CharacterType == EnemyType.EmperorCombat || mover.CharacterType == EnemyType.EmperorNonCombat)
                 {
-                    GUIManagement.Instance.GetGUI<UI.BackupMindTransfersUI>().RefreshMindTransfers();
+                    CloneDroneOverhaul.V3Tests.HUD.UIMindTransfersLeftForEdgeCases.GetInstance<CloneDroneOverhaul.V3Tests.HUD.UIMindTransfersLeftForEdgeCases>().RefreshMindTransfers();
                     MindTransferToFollow = null;
                     return;
                 }
