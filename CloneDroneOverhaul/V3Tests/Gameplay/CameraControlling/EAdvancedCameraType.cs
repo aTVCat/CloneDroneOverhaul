@@ -3,11 +3,10 @@
     /// <summary>
     /// 
     /// </summary>
-    public enum AdvancedCameraType
+    public enum EAdvancedCameraType
     {
         ThirdPerson,
         FirstPerson,
         Side,
-        Free
     }
 }

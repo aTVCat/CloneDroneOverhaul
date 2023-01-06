@@ -43,6 +43,8 @@
     </None>
     <None Include="ModdedObject.cs" />
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimation.cs" />
+    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Combat\MovementController.cs" />
+    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Combat\FirstPersonMoverAddititonBase.cs" />
     <Compile Include="V3Tests\Gameplay\Editors\LevelEditorV2\UI\ELevelEditorBasicPatchType.cs" />
     <Compile Include="V3Tests\Gameplay\Editors\LevelEditorV2\UI\Inspector\UIInspector.cs" />
     <Compile Include="V3Tests\Gameplay\Editors\LevelEditorV2\UI\Library\UILibrary.cs" />
@@ -54,9 +56,9 @@
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditor.cs" />
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationEditorCamera.cs" />
     <Compile Include="V3Tests\Gameplay\Arena\ArenaController.cs" />
-    <Compile Include="V3Tests\Gameplay\CameraControlling\AdvancedCameraType.cs" />
+    <Compile Include="V3Tests\Gameplay\CameraControlling\EAdvancedCameraType.cs" />
     <Compile Include="V3Tests\Gameplay\CameraControlling\AdvancedCameraInfo.cs" />
-    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Combat\CombatOverhaulController.cs" />
+    <Compile Include="V3Tests\Gameplay\CombatOverhaul\Combat\RobotsAndCombatOverhaulController.cs" />
     <Compile Include="V3Tests\Gameplay\CombatOverhaul\Weaponary\IWeapon.cs" />
     <Compile Include="V3Tests\Gameplay\Animations\CustomAnimationController.cs" />
     <Compile Include="V3Tests\Gameplay\ErrorManagement\CrashPreventionController.cs" />
@@ -137,8 +139,7 @@
     <Compile Include="V3Tests\HUD\Multiplayer\UIMultiplayer.cs" />
     <Compile Include="V3Tests\HUD\ImageEffects\UIImageEffects.cs" />
     <Compile Include="V3Tests\Utilities\Caching\OverhaulCacheAndGarbageController.cs" />
-    <Compile Include="Base\UpdateController.cs" />
-    <Compile Include="V3Tests\Gameplay\RobotsOverhaul\Controllers\OverhaulRobotsController.cs" />
+    <Compile Include="V3Tests\ModControlling\UpdateController.cs" />
     <Compile Include="V3Tests\Gameplay\CombatOverhaul\WeaponsOverhaul\WeaponSkins\WeaponSkinController.cs" />
     <Compile Include="V3Tests\ModControlling\ModData\ModAssetFileType.cs" />
     <Compile Include="V3Tests\Gameplay\ModdedUpgrades\UpgradeInfo.cs" />

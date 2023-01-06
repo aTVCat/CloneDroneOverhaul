@@ -57,6 +57,7 @@ namespace CloneDroneOverhaul.V3Tests.Notifications
                 clone._description.text = notif.Description;
                 clone._closeNotificationButton.onClick.AddListener(clone.CloseNotification);
                 clone._timeLeft = notif.Lifetime;
+                clone.GetComponent<RectTransform>().sizeDelta = notif.Size;
 
                 if (notif.Buttons != null)
                 {

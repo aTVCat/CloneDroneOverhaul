@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
+using ModLibrary;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     public class RobotAdvancedCameraController : MonoBehaviour
     {
+        public static readonly Vector3 CameraTargetPosition = new Vector3(0, 0.4f, 0);
+
         private AdvancedCameraController _controller;
         private Character _owner;
         private Transform _camera;
         private Transform _initCamTransformParent;
         private Transform _headTransform;
 
+        private bool _hasAddedListeners;
+
         public RobotAdvancedCameraController Initialize(AdvancedCameraController controller, Character character)
         {
             _controller = controller;
             _owner = character;
 
-            if (_owner != null && _owner.IsAlivePlayer())
+            if (_owner != null)
             {
                 //_headTransform = TransformUtils.FindChildRecursive(_owner.transform, "Head");
                 PlayerCameraMover pcm = _owner.GetCameraMover();
@@ -37,23 +42,84 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                         }
                     }
                 }
+
+                if (!_hasAddedListeners)
+                {
+                    _hasAddedListeners = true;
+                    Singleton<GlobalEventManager>.Instance.AddEventListener("EnteredPhotoMode", JustShowModels);
+                    Singleton<GlobalEventManager>.Instance.AddEventListener("ExitedPhotoMode", JustHideModels);
+                }
             }
 
             return this;
         }
 
-        public void PatchCharacter(in GameObject cameraGObj, AdvancedCameraType state)
+        void OnDestroy()
         {
-            UpdateModelsAndCamera(state);
+            Singleton<GlobalEventManager>.Instance.RemoveEventListener("EnteredPhotoMode", JustShowModels);
+            Singleton<GlobalEventManager>.Instance.RemoveEventListener("ExitedPhotoMode", JustHideModels);
         }
 
-        public void UpdateModelsAndCamera(AdvancedCameraType newState)
+        void LateUpdate()
+        {
+            if (GameModeManager.IsMultiplayer())
+            {
+                if(_headTransform == null)
+                {
+                    Initialize(_controller, _owner);
+                }
+            }
+            if (_camera != null && _headTransform != null && _camera.parent == _headTransform.parent)
+            {
+                _camera.localPosition = CameraTargetPosition;
+            }
+        }
+
+        /// <summary>
+        /// Use for event listeners
+        /// </summary>
+        public void JustShowModels()
+        {
+            ShowModels(null, true);
+        }
+
+        /// <summary>
+        /// Use for event listeners
+        /// </summary>
+        public void JustHideModels()
+        {
+            HideModels(null);
+        }
+
+        /// <summary>
+        /// There's no need to attach cinematic camera instance to <paramref name="c"/>, just leave it null
+        /// </summary>
+        public void ShowModels(LevelEditorCinematicCamera c, bool dontManipulateWithCamera)
+        {
+            UpdateModelsAndCamera(true, !dontManipulateWithCamera);
+        }
+
+        /// <summary>
+        /// There's no need to attach cinematic camera instance to <paramref name="c"/>, just leave it null
+        /// </summary>
+        public void HideModels(LevelEditorCinematicCamera c)
+        {
+            PatchCharacter(_owner.GetCameraMover().gameObject, _controller.CurrentCameraMode);
+        }
+
+        public void PatchCharacter(in GameObject cameraGObj, EAdvancedCameraType state)
+        {
+            UpdateModelsAndCamera(state == EAdvancedCameraType.ThirdPerson || state == EAdvancedCameraType.Side);
+        }
+
+        public void UpdateModelsAndCamera(bool showHead, bool updateCamera = true)
         {
             if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return;
             }
 
+            // Fix missing fields if ones are null
             if (_controller == null || _owner == null || _camera == null)
             {
                 Initialize(AdvancedCameraController.GetInstance<AdvancedCameraController>(), base.GetComponent<Character>());
@@ -65,18 +131,28 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
             if (_headTransform != null)
             {
-                bool showHead = newState == AdvancedCameraType.ThirdPerson || newState == AdvancedCameraType.Free || newState == AdvancedCameraType.Side;
+                Initialize(_controller, _owner);
+            }
+
+            if (_headTransform != null)
+            {
                 _headTransform.gameObject.SetActive(showHead);
                 if (showHead)
                 {
-                    _camera.SetParent(_initCamTransformParent, false);
+                    if (updateCamera)
+                    {
+                        _camera.SetParent(_initCamTransformParent, false);
+                    }
+                    _owner.SetPrivateField<Transform>("_playerCameraParent", _initCamTransformParent);
                 }
                 else
                 {
-                    _camera.SetParent(_headTransform.parent, false);
-                    _camera.localPosition = Vector3.zero;
+                    if (updateCamera)
+                    {
+                        _camera.SetParent(_headTransform.parent, false);
+                    }
+                    _owner.SetPrivateField<Transform>("_playerCameraParent", _headTransform.parent);
                 }
-
             }
         }
     }

@@ -24,17 +24,28 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// </summary>
         public UpgradeType UpgradeType => _upgradeType;
 
+        public int UpgradeLevel;
+
         private Sprite _upgradeIcon;
         /// <summary>
         /// Get upgrade icon
         /// </summary>
         public Sprite UpgradeIcon => _upgradeIcon;
 
-        public UpgradeInfo(in string nameAndDescLocID, in UpgradeType upgradeType, in Sprite upgradeIcon)
+        public UpgradeDescription Requiement;
+
+        public UpgradeInfo(in string nameAndDescLocID, in UpgradeType upgradeType, in int level, in Sprite upgradeIcon)
         {
             _upgradeLocID = nameAndDescLocID;
             _upgradeType = upgradeType;
             _upgradeIcon = upgradeIcon != null ? upgradeIcon : OverhaulUpgradeDescription.MissingSpriteIcon;
+            UpgradeLevel = level;
+            Requiement = null;
+        }
+
+        public void SetRequirement(in UpgradeDescription description)
+        {
+            Requiement = description;
         }
     }
 }

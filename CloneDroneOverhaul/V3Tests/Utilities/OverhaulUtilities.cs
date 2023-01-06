@@ -5,11 +5,17 @@ using System.IO;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
+using ModLibrary;
 
 namespace CloneDroneOverhaul.V3Tests.Utilities
 {
     public static class OverhaulUtilities
     {
+        public static Dictionary<UpgradeType, int> GetUpgradesDictionary(this UpgradeCollection collection)
+        {
+            return collection.GetPrivateField<Dictionary<UpgradeType, int>>("_upgradeLevels");
+        }
+
         public static class TextureAndMaterialUtils
         {
             /// <summary>
