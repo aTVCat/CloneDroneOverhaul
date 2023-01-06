@@ -343,6 +343,13 @@ namespace CloneDroneOverhaul.Patching
             return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CharacterModel), "ShowAllHiddenBodyPartsAndArmor")]
+        private static void CharacterModel_ShowAllHiddenBodyPartsAndArmor_Postfix(CharacterModel __instance)
+        {
+            AdvancedCameraController c = AdvancedCameraController.GetInstance<AdvancedCameraController>();
+            c.PatchCamera(__instance.GetOwner(), c.CurrentCameraMode);
+        }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FirstPersonMover), "Update")]

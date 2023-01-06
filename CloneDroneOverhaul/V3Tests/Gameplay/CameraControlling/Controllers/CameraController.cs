@@ -28,6 +28,19 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         }
         private RobotAdvancedCameraController _playerCameraInfo;
 
+        private void Start()
+        {
+            GlobalEventManager.Instance.AddEventListener("UpgradeUIClosed", delegate 
+            {
+                if(GameModeManager.IsMultiplayer())
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    _playerInstance = CharacterTracker.Instance.GetPlayerRobot();
+                    PatchCamera(_player, CurrentCameraMode);
+                }, 1);
+            });
+        }
+
         public void SwitchMode()
         {
             if (!OverhaulDescription.TEST_FEATURES_ENABLED)

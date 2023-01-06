@@ -13,12 +13,14 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private Transform _initCamTransformParent;
         private Transform _headTransform;
 
+        private bool _hasAddedListeners;
+
         public RobotAdvancedCameraController Initialize(AdvancedCameraController controller, Character character)
         {
             _controller = controller;
             _owner = character;
 
-            if (_owner != null && _owner.IsAlivePlayer())
+            if (_owner != null)
             {
                 //_headTransform = TransformUtils.FindChildRecursive(_owner.transform, "Head");
                 PlayerCameraMover pcm = _owner.GetCameraMover();
@@ -41,8 +43,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                     }
                 }
 
-                Singleton<GlobalEventManager>.Instance.AddEventListener("EnteredPhotoMode", JustShowModels);
-                Singleton<GlobalEventManager>.Instance.AddEventListener("ExitedPhotoMode", JustHideModels);
+                if (!_hasAddedListeners)
+                {
+                    _hasAddedListeners = true;
+                    Singleton<GlobalEventManager>.Instance.AddEventListener("EnteredPhotoMode", JustShowModels);
+                    Singleton<GlobalEventManager>.Instance.AddEventListener("ExitedPhotoMode", JustHideModels);
+                }
             }
 
             return this;
@@ -56,6 +62,13 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         void LateUpdate()
         {
+            if (GameModeManager.IsMultiplayer())
+            {
+                if(_headTransform == null)
+                {
+                    Initialize(_controller, _owner);
+                }
+            }
             if (_camera != null && _headTransform != null && _camera.parent == _headTransform.parent)
             {
                 _camera.localPosition = CameraTargetPosition;
@@ -114,6 +127,11 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 {
                     return;
                 }
+            }
+
+            if (_headTransform != null)
+            {
+                Initialize(_controller, _owner);
             }
 
             if (_headTransform != null)
