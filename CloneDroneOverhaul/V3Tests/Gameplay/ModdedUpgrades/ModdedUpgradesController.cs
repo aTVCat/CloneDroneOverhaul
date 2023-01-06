@@ -9,19 +9,27 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
     {
         private List<OverhaulUpgradeDescription> _upgrades = new List<OverhaulUpgradeDescription>();
 
+        private void Awake()
+        {
+            UpgradeManager.Instance.PlayerStartUpgrades[2].Level = 0;
+        }
+
         public override void OnEvent(in string eventName, in object[] args)
         {
             if (eventName == "overhaul.onAssetsLoadDone")
             {
-                if (!OverhaulDescription.TEST_FEATURES_ENABLED)
+                OverhaulMain.Timer.AddNoArgActionToCompleteNextFrame(delegate
                 {
-                    return;
-                }
+                    UpgradeInfo info1 = new UpgradeInfo("Sprint", UpgradeType.Dash, 0, null);
+                    OverhaulUpgradeDescription result1 = AddUpgrade<OverhaulUpgradeDescription>(info1, true);
 
-                UpgradeInfo info1 = new UpgradeInfo("TestUpgrade", UpgradeInfo.DEFAULT_UPGRADE_TYPE + 1, null);
-                AddUpgrade(info1);
+                    UpgradeManager.Instance.GetUpgrade(UpgradeType.Dash, 1).Requirement = result1;
+                    UpgradeInfo info2 = new UpgradeInfo("Dash", UpgradeType.Dash, 1, null);
+                    info2.SetRequirement(result1);
+                    AddUpgrade(info2, true);
 
-                changeNullSpritesTooMissingIcons();
+                    changeNullSpritesTooMissingIcons();
+                });
             }
         }
 
@@ -31,10 +39,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// <typeparam name="T"></typeparam>
         /// <param name="upgradeInfo"></param>
         /// <returns></returns>
-        public T AddUpgrade<T>(in UpgradeInfo upgradeInfo) where T : OverhaulUpgradeDescription
+        public T AddUpgrade<T>(in UpgradeInfo upgradeInfo, in bool forceAdd = false) where T : OverhaulUpgradeDescription
         {
             T result = null;
-            bool cannotBeAdded = ModdedUpgradesController.HasUpgradeWithType(upgradeInfo.UpgradeType);
+            bool cannotBeAdded = ModdedUpgradesController.HasUpgradeWithType(upgradeInfo.UpgradeType) && !forceAdd;
 
             if (!cannotBeAdded)
             {
@@ -43,11 +51,12 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 result.UpgradeName = upgradeInfo.UpgradeName;
                 result.UpgradeType = upgradeInfo.UpgradeType;
                 result.SkillPointCostDefault = 1;
-                result.Level = 1;
-                result.IsUpgradeVisible = true;
+                result.Level = upgradeInfo.UpgradeLevel;
                 result.Icon = upgradeInfo.UpgradeIcon;
                 result.Description = upgradeInfo.UpgradeDescription;
+                result.Requirement = upgradeInfo.Requiement;
                 result.UpgradeInformation = upgradeInfo;
+                gm.transform.SetParent(base.transform);
 
                 _upgrades.Add(result);
                 UpgradeManager.Instance.AddUpgrade(result, OverhaulMain.Instance);
@@ -59,9 +68,9 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// Add overhaul upgrade description to game
         /// </summary>
         /// <param name="upgradeInfo"></param>
-        public void AddUpgrade(in UpgradeInfo upgradeInfo)
+        public void AddUpgrade(in UpgradeInfo upgradeInfo, in bool forceAdd = false)
         {
-            AddUpgrade<OverhaulUpgradeDescription>(upgradeInfo);
+            AddUpgrade<OverhaulUpgradeDescription>(upgradeInfo, forceAdd);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using CloneDroneOverhaul.V3Tests.Base;
+using CloneDroneOverhaul.Utilities;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
@@ -7,7 +8,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         private static bool _hasinitialized;
         public static GameStatistic GameStatistics { get; set; }
 
-        private void Awake()
+        internal static void Initialize()
         {
             if (!_hasinitialized)
             {
@@ -20,13 +21,27 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         {
             if (eventName == "onPlayerSet")
             {
-                CloneDroneOverhaul.Utilities.RobotShortInformation info = args[0] as CloneDroneOverhaul.Utilities.RobotShortInformation;
-                GameStatistics.PlayerRobotInformation = info;
-                GameStatistics.ControlledCharacterCount++;
-
-                Optimisation.OptimiseOnStartup.SetArenaCameraEnabled();
-                ArenaController.ArenaInterior.ArenaTVs.gameObject.SetActive(true);
+                TrySetPlayer(args[0] as CloneDroneOverhaul.Utilities.RobotShortInformation);
             }
+        }
+
+        public void TrySetPlayer(in CloneDroneOverhaul.Utilities.RobotShortInformation info)
+        {
+            if(info == null || info.IsNull)
+            {
+                return;
+            }
+
+            GameStatistics.PlayerRobotInformation = info;
+            GameStatistics.ControlledCharacterCount++;
+
+            Optimisation.OptimiseOnStartup.SetArenaCameraEnabled();
+            ArenaController.ArenaInterior.ArenaTVs.gameObject.SetActive(true);
+        }
+
+        public void TrySetPlayer()
+        {
+            TrySetPlayer(CharacterTracker.Instance.GetPlayer().GetRobotInfo());
         }
     }
 }

@@ -64,6 +64,8 @@ namespace CloneDroneOverhaul.Modules
             AddSetting(SettingEntry.NewSetting<bool>("High LoD threshold", "", "Graphics", "Optimisation", true));
             AddSetting(SettingEntry.NewSetting<bool>("Shading", "", "Graphics", "Additions", true));
 
+            AddSetting(SettingEntry.NewSetting<V3Tests.Gameplay.EAdvancedCameraType>("Camera mode", "", "Misc", "Experience", 0, null, new SettingEntry.UIValueSettings() { DropdownEnumType = typeof(V3Tests.Gameplay.EAdvancedCameraType) }));
+
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Patches", "GUI", "Gameplay User Interface patches\nMake clone drone GUI more stylized.", "Patch.GUI"));
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "Additions", "Image effects that enchance entire game.\nEach enabled option may decrease performance!", "Graphics.Camera"));
             PageDescriptions.Add(new SettingEntry.CategoryPath().SetUp("Graphics", "World", "Visual improvements that don't really affect performance.", "Graphics.World"));

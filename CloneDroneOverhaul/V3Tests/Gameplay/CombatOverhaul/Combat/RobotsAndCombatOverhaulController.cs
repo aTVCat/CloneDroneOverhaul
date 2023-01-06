@@ -1,22 +1,24 @@
 ﻿using CloneDroneOverhaul.Utilities;
 using CloneDroneOverhaul.V3Tests.Base;
+using CloneDroneOverhaul.V3Tests.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ModLibrary;
 
 namespace CloneDroneOverhaul.V3Tests.Gameplay
 {
     /// <summary>
     /// A full reimagination of combat (i don't think so), coming in 0.3 or later.
     /// </summary>
-    public class CombatOverhaulController : V3_ModControllerBase
+    public class RobotsAndCombatOverhaulController : V3_ModControllerBase
     {
         private const string FIRSTPERSONMOVER_ONSPAWN_EVENT_NAME = "firstPersonMover.OnSpawn";
 
         /// <summary>
         /// May combat overhaul patch the game?
         /// </summary>
-        public static bool ShouldWork => !GameModeManager.IsMultiplayer() && OverhaulDescription.TEST_FEATURES_ENABLED;
+        public static bool ShouldWork => !GameModeManager.IsMultiplayer();// && OverhaulDescription.TEST_FEATURES_ENABLED;
 
         /// <summary>
         /// All weapons in game, including modded
@@ -61,9 +63,17 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// Called when first person mover is initialized
         /// </summary>
         /// <param name="mover"></param>
-        public static void ConfigureFirstPersonMover(in FirstPersonMover mover)
+        public static void ConfigureFirstPersonMover(FirstPersonMover mover)
         {
+            if (!ShouldWork)
+            {
+                return;
+            }
 
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                AddBetterMovement(mover);
+            }, 0.2f);
         }
 
         #region Event listeners
@@ -81,6 +91,41 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 {
                     FirstPersonMover firstPersonMover = robot.Instance as FirstPersonMover;
                     ConfigureFirstPersonMover(firstPersonMover);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Movement patch
+
+        public static void AddBetterMovement(in FirstPersonMover mover)
+        {
+            // Implement dash upgrade to upgrade tree
+            // Don't give dash on start
+
+            if(mover == null)
+            {
+                return;
+            }
+
+            RobotShortInformation info = mover.GetRobotInfo();
+            if (info.IsFPM)
+            {
+                UpgradeCollection collection = info.UpgradeCollection;
+                if(collection != null)
+                {
+                    Dictionary<UpgradeType, int> d = collection.GetUpgradesDictionary();
+                    if (d != null && d.ContainsKey(UpgradeType.Dash))
+                    {
+                        mover.gameObject.AddComponent<MovementController>().Initialize(mover);
+                        if(mover.CharacterType == EnemyType.Swordsman1)
+                        {
+                            d[UpgradeType.Dash] = 0;
+                        }
+                        collection.SetPrivateField<Dictionary<UpgradeType, int>>("_upgradeLevels", d);
+                        mover.RefreshUpgrades();
+                    }
                 }
             }
         }

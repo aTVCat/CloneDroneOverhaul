@@ -69,6 +69,14 @@ namespace CloneDroneOverhaul.Patching
         }
 
         [HarmonyPostfix]
+        [HarmonyPatch(typeof(UpgradeUITooltip), "Show", new Type[] { typeof(RectTransform), typeof(UpgradeDescription) })]
+        private static void UpgradeUITooltip_Show_Postfix(UpgradeUITooltip __instance, RectTransform iconTransform, UpgradeDescription upgradeDescription)
+        {
+            __instance.TitleLabel.text = OverhaulMain.GetTranslatedString(__instance.TitleLabel.text, true);
+            __instance.DescriptionLabel.text = OverhaulMain.GetTranslatedString(__instance.DescriptionLabel.text, true);
+        }
+
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(GameUIRoot), "InitializeUI")]
         private static void GameUIRoot_InitializeUI_Postfix()
         {
@@ -320,12 +328,22 @@ namespace CloneDroneOverhaul.Patching
     [HarmonyPatch(typeof(ChapterLoadingScreen))]
     public class OverhaulPatches
     {
+        /*
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UpgradeManager), "AddStartUpgradesIfMissing")]
+        private static bool UpgradeManager_AddStartUpgradesIfMissing_Postfix(ref Dictionary<UpgradeType, int> playerUpgrades)
+        {
+            return false;
+        }*/
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Character), "SetCameraAnimatorEnabled")]
         private static bool Character_SetCameraAnimatorEnabled_Prefix()
         {
             return V3Tests.Gameplay.AdvancedCameraController.GetInstance<AdvancedCameraController>().AllowCameraAnimatorAndMoverEnabled();
         }
+
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FirstPersonMover), "Update")]
         private static void Character_Update_Postfix(FirstPersonMover __instance)
@@ -336,6 +354,22 @@ namespace CloneDroneOverhaul.Patching
                 __instance.transform.localEulerAngles = Vector3.zero;
             }
         }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorCinematicCamera), "TurnOff")]
+        private static void LevelEditorCinematicCamera_TurnOff_Postfix()
+        {
+            V3Tests.Base.V3_MainModController.CallEvent("cinematicCamera.Off", null);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(LevelEditorCinematicCamera), "TurnOn")]
+        private static void LevelEditorCinematicCamera_TurnOn_Postfix()
+        {
+            V3Tests.Base.V3_MainModController.CallEvent("cinematicCamera.On", null);
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerCameraMover), "LateUpdate")]
         private static bool PlayerCameraMover_LateUpdate_Prefix()
@@ -398,6 +432,21 @@ namespace CloneDroneOverhaul.Patching
             {
                 __instance.GetRobotInfo()
             });
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FirstPersonMover), "ExecuteCommand")]
+        private static void FirstPersonMover_ExecuteCommand_Postfix(FirstPersonMover __instance, Bolt.Command command, bool resetState)
+        {
+            string str = FirstPersonMoverAddititonBase.TEMPORAL_PREFIX + __instance.GetInstanceID();
+            if (OverhaulCacheAndGarbageController.ContainsTemporalObject(str))
+            {
+                FirstPersonMoverAddititonBase aBase = OverhaulCacheAndGarbageController.GetTemporalObject<FirstPersonMoverAddititonBase>(str);
+                if(aBase != null)
+                {
+                    aBase.ReceiveCommand((FPMoveCommand)command);
+                }
+            }
         }
 
         [HarmonyPostfix]

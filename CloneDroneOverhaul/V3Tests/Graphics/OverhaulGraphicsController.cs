@@ -105,7 +105,14 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         public static void Simulate_SwordBlock(in Vector3 position, in bool isFire)
         {
-            bool isMindspace = GameStatisticsController.GameStatistics.PlayerRobotInformation.IsFPMMindspace;
+            GameStatistic statistic = GameStatisticsController.GameStatistics;
+            CloneDroneOverhaul.Utilities.RobotShortInformation info = statistic.PlayerRobotInformation;
+            if(info == null || info.IsNull)
+            {
+                GameStatisticsController.GetInstance<GameStatisticsController>().TrySetPlayer();
+                return;
+            }
+            bool isMindspace = info.IsFPMMindspace;
 
             Vector3 rot = Vector3.zero;
 

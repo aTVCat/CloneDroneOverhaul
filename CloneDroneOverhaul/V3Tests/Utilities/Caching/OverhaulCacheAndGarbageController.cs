@@ -195,7 +195,7 @@ namespace CloneDroneOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <param name="name"></param>
-        public static void AddTemporalObject<T>(in T obj, in string name)
+        public static void AddTemporalObject<T>(in T obj, in string name) where T : class
         {
             if (!_temporalStuff.ContainsKey(name))
             {
@@ -209,8 +209,12 @@ namespace CloneDroneOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static T GetTemporalObject<T>(in string name)
+        public static T GetTemporalObject<T>(in string name) where T : class
         {
+            if (!_temporalStuff.ContainsKey(name))
+            {
+                return null;
+            }
             T result = (T)_temporalStuff[name];
             return (T)result;
         }

@@ -19,6 +19,7 @@ using UnityEngine.Events;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using CloneDroneOverhaul.V3Tests.Gameplay;
 
 namespace CloneDroneOverhaul
 {
@@ -95,6 +96,19 @@ namespace CloneDroneOverhaul
             {
                 firstPersonMover.GetRobotInfo()
             });
+        }
+
+        protected override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
+        {
+            string str = FirstPersonMoverAddititonBase.TEMPORAL_PREFIX + owner.GetInstanceID();
+            if (OverhaulCacheAndGarbageController.ContainsTemporalObject(str))
+            {
+                FirstPersonMoverAddititonBase aBase = OverhaulCacheAndGarbageController.GetTemporalObject<FirstPersonMoverAddititonBase>(str);
+                if (aBase != null)
+                {
+                    aBase.OnUpgradesRefreshed(upgrades);
+                }
+            }
         }
 
         private void rememberVanillaPreferences()
@@ -297,11 +311,15 @@ namespace CloneDroneOverhaul
             ModGUICanvas = gameObject.GetComponent<Canvas>();
         }
 
-        public static string GetTranslatedString(in string ID)
+        public static string GetTranslatedString(in string ID, in bool returnSameIfNull = false)
         {
             TranslationEntry translation = OverhaulMain.Localization.GetTranslation(ID);
             if (translation == null)
             {
+                if (returnSameIfNull)
+                {
+                    return ID;
+                }
                 return "NL: " + ID;
             }
             string text = translation.Translations[Singleton<LocalizationManager>.Instance.GetCurrentLanguageCode()];
@@ -330,10 +348,10 @@ namespace CloneDroneOverhaul
     {
         public const string LEVEL_EDITOR_TOOLS_MODID = "286ea03e-b667-46ae-8c12-95eb08c412e4";
 
-        public const bool TEST_FEATURES_ENABLED = false;
-        public const bool OVERRIDE_VERSION = true;
-        public const string OVERRIDE_VERSION_STRING = "a0.2.0.24";
-        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public const bool TEST_FEATURES_ENABLED = true;
+        public const bool OVERRIDE_VERSION = false;
+        public const string OVERRIDE_VERSION_STRING = "a0.2.0.25";
+        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "-PREVIEW 1";
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
 

@@ -33,6 +33,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             OverModesController.InitializeForCurrentScene();
             OverhaulGraphicsController.Initialize();
             ModDataController.Initialize();
+            GameStatisticsController.Initialize();
 
             Optimisation.OptimiseOnStartup.Initialize();
             ArenaController.InitializeForCurrentScene();
@@ -51,7 +52,7 @@ namespace CloneDroneOverhaul.V3Tests.Base
             OverhaulGraphicsController graphics = AddManager<OverhaulGraphicsController>("OverhaulGraphicsController");
             Optimisation.ObjectsLODController lod = AddManager<Optimisation.ObjectsLODController>("ObjectsLODController");
             LevelEditor.MetaDataController metaData = AddManager<LevelEditor.MetaDataController>("MetaDataController");
-            CombatOverhaulController combatOverhaulController = AddManager<CombatOverhaulController>("CombatOverhaulController");
+            RobotsAndCombatOverhaulController combatOverhaulController = AddManager<RobotsAndCombatOverhaulController>("CombatOverhaulController");
             Gameplay.Animations.CustomAnimationController customAnimationController = AddManager<Gameplay.Animations.CustomAnimationController>("CustomAnimationController");
             LevelEditor.V3_LevelEditorController levelEditorController = AddManager<LevelEditor.V3_LevelEditorController>("LevelEditorController");
 

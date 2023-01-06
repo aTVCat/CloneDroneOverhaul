@@ -7,8 +7,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
     /// </summary>
     public class AdvancedCameraController : V3_ModControllerBase
     {
-        public AdvancedCameraType GlobalCameraState { get; private set; }
-        public AdvancedCameraType PlayerCameraState { get; private set; }
+        public EAdvancedCameraType CurrentCameraMode { get; private set; }
 
         private Character _playerInstance;
         private Character _player
@@ -18,59 +17,48 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             {
                 _playerInstance = value;
 
-                if (value == null)
+                if (_playerInstance == null)
                 {
                     _playerCameraInfo = null;
                     return;
                 }
-                PatchCamera(value, GlobalCameraState);
+
+                PatchCamera(_playerInstance, CurrentCameraMode);
             }
         }
         private RobotAdvancedCameraController _playerCameraInfo;
 
-        public void SwitchCameraPosition()
+        public void SwitchMode()
         {
             if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return;
             }
-            GlobalCameraState++;
-            if ((int)GlobalCameraState > 3)
+            CurrentCameraMode++;
+            if ((int)CurrentCameraMode > 2)
             {
-                GlobalCameraState = 0;
+                CurrentCameraMode = 0;
             }
-            PatchCamera(_player, GlobalCameraState);
+            PatchCamera(_player, CurrentCameraMode);
         }
 
         public bool AllowCameraAnimatorAndMoverEnabled()
         {
-            return PlayerCameraState == AdvancedCameraType.ThirdPerson;
+            return CurrentCameraMode == EAdvancedCameraType.ThirdPerson;
         }
 
-        public void PatchCamera(in Character characterIn, in AdvancedCameraType cameraPos)
+        public void PatchCamera(in Character characterIn, in EAdvancedCameraType cameraPos)
         {
             if (!OverhaulDescription.TEST_FEATURES_ENABLED)
             {
                 return;
             }
-            PlayerCameraState = cameraPos;
-            Character character = null;
-            if (characterIn != null)
-            {
-                character = characterIn;
-            }
-            else
-            {
-                character = _player;
 
-                if (!character)
-                {
-                    return;
-                }
-            }
+            Character character = characterIn != null ? characterIn : _player;
 
             DelegateScheduler.Instance.Schedule(delegate
             {
+
                 if (character == null)
                 {
                     return;
@@ -80,13 +68,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 {
                     _playerCameraInfo = character.gameObject.AddComponent<RobotAdvancedCameraController>().Initialize(this, character);
                 }
-                _playerCameraInfo.PatchCharacter(character.GetCameraMover().gameObject, GlobalCameraState);
-            }, 0.1f);
-        }
+                _playerCameraInfo.PatchCharacter(character.GetCameraMover().gameObject, CurrentCameraMode);
 
-        public static void TryChangeCameraPosition()
-        {
-            AdvancedCameraController.GetInstance<AdvancedCameraController>().SwitchCameraPosition();
+
+            }, 0.1f);
         }
 
         public override void OnEvent(in string eventName, in object[] args)
@@ -96,6 +81,35 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
                 CloneDroneOverhaul.Utilities.RobotShortInformation info = args[0] as CloneDroneOverhaul.Utilities.RobotShortInformation;
                 _player = info.Instance;
             }
+
+            if(_playerCameraInfo == null)
+            {
+                return;
+            }
+
+            if (eventName == "cinematicCamera.On")
+            {
+                _playerCameraInfo.ShowModels(null, true);
+            }
+            if (eventName == "cinematicCamera.Off")
+            {
+                _playerCameraInfo.HideModels(null);
+            }
         }
+
+        public override void OnSettingRefreshed(in string settingName, in object value)
+        {
+            if(settingName == "Misc.Experience.Camera mode")
+            {
+                CurrentCameraMode = (EAdvancedCameraType)(int)value;
+                if(_player != null) PatchCamera(_player, CurrentCameraMode);
+            }
+        }
+
+        public static void TryChangeCameraPosition()
+        {
+            AdvancedCameraController.GetInstance<AdvancedCameraController>().SwitchMode();
+        }
+
     }
 }
