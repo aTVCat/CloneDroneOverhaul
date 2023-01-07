@@ -351,7 +351,7 @@ namespace CloneDroneOverhaul
         public const bool TEST_FEATURES_ENABLED = true;
         public const bool OVERRIDE_VERSION = false;
         public const string OVERRIDE_VERSION_STRING = "a0.2.0.25";
-        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "-PREVIEW 1";
+        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "-PREVIEW 2";
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
 

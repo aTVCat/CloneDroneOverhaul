@@ -44,7 +44,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         void Update()
         {
-            if(!_hasInitialized || _error)
+            if(!_hasInitialized || _error || Owner == null)
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             bool additCondition = Owner.IsMainPlayer() && Owner.IsPlayerInputEnabled() && (!Owner.HasFallenDown() && !Owner.IsGettingUpFromKick() && !Owner.IsKicking());
 
             EnergySource source = Owner.GetEnergySource();
-            bool canSprint = source.CanConsume(0.1f) && _hasSprint && additCondition;
+            bool canSprint = source != null && source.CanConsume(0.1f) && _hasSprint && additCondition;
 
             if(_restTime > 0)
             {
@@ -94,7 +94,7 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             {
                 _sprint = Mathf.Clamp(_sprint - Time.deltaTime * 6f, 0f, 0.5f);
             }
-            _legsAnimator.speed = 1f + (_sprint * 0.75f);
+            if(_legsAnimator != null) _legsAnimator.speed = 1f + (_sprint * 0.75f);
 
             Owner.SetPrivateField<float>("_moveSpeedMultiplier", _speedMultipler);
         }

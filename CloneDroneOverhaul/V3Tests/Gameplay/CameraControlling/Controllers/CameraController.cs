@@ -41,6 +41,21 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
             });
         }
 
+        void LateUpdate()
+        {
+            if (GameModeManager.IsMultiplayer())
+            {
+                if (_playerCameraInfo == null && _playerInstance != null)
+                {
+                    PatchCamera(_player, CurrentCameraMode);
+                }
+                else if (_playerCameraInfo != null && !_playerCameraInfo.FoundHead())
+                {
+                    _playerCameraInfo.Initialize(this, _player);
+                }
+            }
+        }
+
         public void SwitchMode()
         {
             if (!OverhaulDescription.TEST_FEATURES_ENABLED)

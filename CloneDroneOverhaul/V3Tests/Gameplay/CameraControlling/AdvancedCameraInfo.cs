@@ -62,17 +62,15 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
 
         void LateUpdate()
         {
-            if (GameModeManager.IsMultiplayer())
-            {
-                if(_headTransform == null)
-                {
-                    Initialize(_controller, _owner);
-                }
-            }
             if (_camera != null && _headTransform != null && _camera.parent == _headTransform.parent)
             {
                 _camera.localPosition = CameraTargetPosition;
             }
+        }
+
+        public bool FoundHead()
+        {
+            return _headTransform != null;
         }
 
         /// <summary>
@@ -104,6 +102,10 @@ namespace CloneDroneOverhaul.V3Tests.Gameplay
         /// </summary>
         public void HideModels(LevelEditorCinematicCamera c)
         {
+            if(_owner == null || _owner.GetCameraMover() == null)
+            {
+                return;
+            }
             PatchCharacter(_owner.GetCameraMover().gameObject, _controller.CurrentCameraMode);
         }
 
