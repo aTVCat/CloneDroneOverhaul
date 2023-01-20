@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloneDroneOverhaulBeta", "..\..\CloneDroneOverhaulBeta\CloneDroneOverhaulBeta\CloneDroneOverhaulBeta.csproj", "{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
