@@ -1,76 +1,61 @@
 ﻿using CloneDroneOverhaul.LevelEditor;
-using CloneDroneOverhaul.Localization;
 using CloneDroneOverhaul.Modules;
-using CloneDroneOverhaul.RemovedOrOld;
 using CloneDroneOverhaul.UI;
-using CloneDroneOverhaul.Utilities;
-using CloneDroneOverhaul.V3Tests.Base;
-using CloneDroneOverhaul.V3Tests.HUD;
-using CloneDroneOverhaul.V3Tests.Notifications;
+using CloneDroneOverhaul.V3;
+using CloneDroneOverhaul.V3.Base;
+using CloneDroneOverhaul.V3.HUD;
+using CloneDroneOverhaul.V3.Notifications;
 using ModBotWebsiteAPI;
 using ModLibrary;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using CloneDroneOverhaul.V3Tests.Gameplay;
+using CloneDroneOverhaul.V3.Gameplay;
 
 namespace CloneDroneOverhaul
 {
+    /// <summary>
+    /// Most of the stuff in this class is gonna move on <see cref="V3.Base.V3_MainModController"/>
+    /// </summary>
     [MainModClass]
     public class OverhaulMain : Mod
     {
-        public bool IsModInitialized { get; private set; }
         public static OverhaulMain Instance { get; internal set; }
-        private static OverhaulLocalizationManager Localization { get; set; }
         public static DelegateTimer Timer { get; set; }
         public static ModuleManagement Modules { get; set; }
-        public static OverhaulMainMonoBehaviour MainMonoBehaviour { get; set; }
-        public static Canvas ModGUICanvas { get; set; }
+
+        private static bool _hasCheckedForUpdates;
+
+        private static bool _hasCachedStuff;
+
+        private Text _settingsButtonText;
 
         protected override void OnModLoaded()
         {
-            if (OverhaulMain.Instance != null)
-            {
-                return;
-            }
-            else
-            {
-                OverhaulMain.Instance = this;
-            }
-            OverhaulCacheAndGarbageController.ClearTemporal();
+            if (OverhaulMain.Instance != null) return;
+            OverhaulMain.Instance = this;
             InitializeOverhaul();
         }
 
         private void InitializeOverhaul()
         {
-            BaseStaticValues.IsModEnabled = true;
-            if (!OverhaulMain.hasCachedStuff)
+            if (!OverhaulMain._hasCachedStuff)
             {
                 rememberVanillaPreferences();
                 OverhaulCacheAndGarbageController.PrepareStuff();
-                OverhaulMain.hasCachedStuff = true;
+                OverhaulMain._hasCachedStuff = true;
             }
-            addReferences();
             addModules();
-            addListeners();
-            spawnGUI();
             V3_MainModController.Initialize();
             fixVanillaStuff();
-            IsModInitialized = true;
             finalPreparations();
             checkforUpdate();
-        }
-
-        protected override void OnModDeactivated()
-        {
-            BaseStaticValues.IsModEnabled = false;
         }
 
         protected override UnityEngine.Object OnResourcesLoad(string path)
@@ -80,8 +65,11 @@ namespace CloneDroneOverhaul
 
         protected override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
-            OverhaulMain.Modules.ExecuteFunction("onLanguageChanged", null);
-            _settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
+            Timer.CompleteNextFrame(delegate
+            {
+                OverhaulMain.Modules.ExecuteFunction("onLanguageChanged", null);
+                _settingsButtonText.text = OverhaulMain.GetTranslatedString("OverhaulSettings");
+            });
         }
 
         protected override void OnLevelEditorStarted()
@@ -118,11 +106,11 @@ namespace CloneDroneOverhaul
 
         private void checkforUpdate()
         {
-            if (OverhaulMain.hasCheckForUpdates)
+            if (OverhaulMain._hasCheckedForUpdates)
             {
                 return;
             }
-            OverhaulMain.hasCheckForUpdates = true;
+            OverhaulMain._hasCheckedForUpdates = true;
             UpdateController.CheckForUpdates(new Action<Version>(OnUpdateReceivedGitHub));
             API.GetModData("rAnDomPaTcHeS1", new Action<JsonObject>(OnModDataGet));
         }
@@ -153,103 +141,54 @@ namespace CloneDroneOverhaul
             notif.Send();
         }
 
-        private void addReferences()
-        {
-            BaseStaticReferences.ModuleManager = new ModuleManagement();
-        }
-
         private void addModules()
         {
             ModuleManagement moduleManagement = new ModuleManagement();
-            BaseStaticReferences.ModuleManager = moduleManagement;
-            OverhaulMain.Timer = moduleManagement.AddModule<DelegateTimer>(false);
             moduleManagement.AddModule<ModDataManager>(false);
-            new CloneDroneOverhaulDataContainer();
-            OverhaulMain.Modules = moduleManagement;
-            moduleManagement.AddModule<OverhaulSettingsManager>(false);
-            OverhaulMain.Localization = moduleManagement.AddModule<OverhaulLocalizationManager>(false);
-            moduleManagement.AddModule<HotkeysModule>(false);
-            moduleManagement.AddModule<GUIManagement>(false);
-            moduleManagement.AddModule<WorldGUIs>(false);
-            moduleManagement.AddModule<GameplayOverhaulModule>(false);
-            moduleManagement.AddModule<MiscEffectsManager>(false);
-            moduleManagement.AddModule<ModdedLevelEditorManager>(false);
-            moduleManagement.AddModule<PatchesManager>(false);
-            moduleManagement.AddModule<AdvancedPhotoModeManager>(false);
-            moduleManagement.AddModule<GameInformationManager>(false);
-            moduleManagement.AddModule<GameStateChangeController>(false);
-        }
 
-        private void addListeners()
-        {
-            GameObject gameObject = new GameObject("CDOListeners");
-            OverhaulMain.MainMonoBehaviour = gameObject.AddComponent<OverhaulMainMonoBehaviour>();
+            OverhaulMain.Modules = moduleManagement;
+
+            CloneDroneOverhaulDataContainer.Initialize();
         }
 
         private void finalPreparations()
         {
             if (OverhaulDescription.TEST_FEATURES_ENABLED)
             {
-                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                HotkeysModule.GetInstance<HotkeysModule>().AddHotkey(new Hotkey
                 {
                     Key2 = KeyCode.C,
                     Key1 = KeyCode.LeftControl,
                     Method = new Action(BaseUtils.DebugFireSword)
                 });
-                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                HotkeysModule.GetInstance<HotkeysModule>().AddHotkey(new Hotkey
                 {
                     Key2 = KeyCode.B,
                     Key1 = KeyCode.LeftControl,
                     Method = new Action(BaseUtils.ExplodePlayer)
                 });
-                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+                HotkeysModule.GetInstance<HotkeysModule>().AddHotkey(new Hotkey
                 {
                     Key2 = KeyCode.V,
                     Key1 = KeyCode.LeftControl,
                     Method = new Action(BaseUtils.AddSkillPoint)
                 });
-                HotkeysModule module = BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>();
-                Hotkey hotkey = new Hotkey
+                HotkeysModule.GetInstance<HotkeysModule>().AddHotkey(new Hotkey
                 {
                     Key2 = KeyCode.M,
                     Key1 = KeyCode.LeftControl,
                     Method = delegate ()
                     {
-                        V3Tests.Gameplay.LevelConstructor.BuildALevel(new V3Tests.Gameplay.LevelConstructor.LevelSettings(), true);
+                        V3.Gameplay.LevelConstructor.BuildALevel(new V3.Gameplay.LevelConstructor.LevelSettings(), true);
                     }
-                };
-                module.AddHotkey(hotkey);
-                BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-                {
-                    Key2 = KeyCode.X,
-                    Key1 = KeyCode.LeftControl,
-                    Method = new Action(BaseUtils.DebugSize)
                 });
             }
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
+            HotkeysModule.GetInstance<HotkeysModule>().AddHotkey(new Hotkey
             {
                 Key1 = KeyCode.F2,
-                Method = new Action(MiscEffectsManager.SwitchHud)
+                Method = new Action(CloneDroneOverhaul.V3.Graphics.CameraRollController.SwitchHud)
             });
-            BaseStaticReferences.ModuleManager.GetModule<HotkeysModule>().AddHotkey(new Hotkey
-            {
-                Key1 = KeyCode.Y,
-                Method = new Action(V3Tests.Gameplay.AdvancedCameraController.TryChangeCameraPosition)
-            });
-            QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-            QualitySettings.softParticles = true;
-            QualitySettings.streamingMipmapsMemoryBudget = 4096f;
-            QualitySettings.streamingMipmapsMaxLevelReduction = 6;
-            QualitySettings.streamingMipmapsMaxFileIORequests = 4096;
-            QualitySettings.asyncUploadBufferSize = 16;
-            QualitySettings.asyncUploadTimeSlice = 4;
-            QualitySettings.asyncUploadPersistentBuffer = true;
-            QualitySettings.shadowCascades = 0; // 2 Before
-            Singleton<SkyBoxManager>.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
-            Singleton<AttackManager>.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
-            Singleton<AttackManager>.Instance.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
-            Singleton<EmoteManager>.Instance.PitchLimits.Max = 5f;
-            Singleton<EmoteManager>.Instance.PitchLimits.Min = 0f;
+
             Transform transform = TransformUtils.FindChildRecursive(Singleton<GameUIRoot>.Instance.TitleScreenUI.transform, "BottomButtons");
             transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
             transform.localPosition = new Vector3(0f, -180f, 0f);
@@ -259,7 +198,7 @@ namespace CloneDroneOverhaul
                 transform2.SetSiblingIndex(1);
                 UnityEngine.Object.Destroy(transform2.GetComponentInChildren<LocalizedTextField>());
                 transform2.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-                transform2.GetComponent<Button>().onClick.AddListener(new UnityAction(UISettings.GetInstance<UISettings>().Show));
+                transform2.GetComponent<Button>().onClick.AddListener(UIModSettings.GetInstance<UIModSettings>().Show);
                 transform2.GetComponentInChildren<Text>().text = "Overhaul Settings";
                 _settingsButtonText = transform2.GetComponentInChildren<Text>();
             }
@@ -287,7 +226,6 @@ namespace CloneDroneOverhaul
                     }
                 }
             }
-            new GameObject("CDO_RW_BoltEventListener").AddComponent<BoltEventListener>();
         }
 
         private void fixVanillaStuff()
@@ -295,25 +233,30 @@ namespace CloneDroneOverhaul
             // Make Jetpack1 skin available for everyone
             Singleton<MultiplayerCharacterCustomizationManager>.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
 
-            // Fix sounds cut bug
-            PatchesManager.Instance.UpdateAudioSettings(OverhaulMain.GetSetting<bool>("Patches.QoL.Fix sounds"));
-
             // Changing pixels per unit of main canvas
             GameUIRoot.Instance.GetComponent<Canvas>().referencePixelsPerUnit = 75f;
-        }
 
-        private void spawnGUI()
-        {
-            GUIManagement module = BaseStaticReferences.ModuleManager.GetModule<GUIManagement>();
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(AssetLoader.GetObjectFromFile("cdo_rw_stuff", "CDO_RW_UI"));
-            gameObject.name = "CloneDroneOverhaulUI";
-            module.AddGUI(gameObject.GetComponent<ModdedObject>().GetObjectFromList<Transform>(2).gameObject.AddComponent<OverhaulLocalizationEditor>());
-            ModGUICanvas = gameObject.GetComponent<Canvas>();
+            
+            QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
+            QualitySettings.softParticles = true;
+            QualitySettings.streamingMipmapsMemoryBudget = 4096f;
+            QualitySettings.streamingMipmapsMaxLevelReduction = 6;
+            QualitySettings.streamingMipmapsMaxFileIORequests = 4096;
+            QualitySettings.asyncUploadBufferSize = 16;
+            QualitySettings.asyncUploadTimeSlice = 4;
+            QualitySettings.asyncUploadPersistentBuffer = true;
+            QualitySettings.shadowCascades = 0; // 2 Before
+
+            Singleton<SkyBoxManager>.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
+            Singleton<AttackManager>.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
+            Singleton<AttackManager>.Instance.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
+            Singleton<EmoteManager>.Instance.PitchLimits.Max = 5f;
+            Singleton<EmoteManager>.Instance.PitchLimits.Min = 0f;
         }
 
         public static string GetTranslatedString(in string ID, in bool returnSameIfNull = false)
         {
-            TranslationEntry translation = OverhaulMain.Localization.GetTranslation(ID);
+            Localization.TranslationEntry translation = Localization.LocalizationController.GetInstance<Localization.LocalizationController>().GetTranslation(ID);
             if (translation == null)
             {
                 if (returnSameIfNull)
@@ -332,16 +275,13 @@ namespace CloneDroneOverhaul
 
         public static T GetSetting<T>(in string ID)
         {
-            return CloneDroneOverhaulDataContainer.Instance.SettingsData.GetSettingValue<T>(ID);
+            return CloneDroneOverhaulDataContainer.SettingsData.GetSettingValue<T>(ID);
         }
 
-        private static bool hasCheckForUpdates;
-
-        private static bool hasCachedStuff;
-
-        public static OverhaulCacheAndGarbageController CacheManagerReference = new OverhaulCacheAndGarbageController();
-
-        private Text _settingsButtonText;
+        public static T GetSettingValue<T>(in string settingName)
+        {
+            return V3.Base.ModSettingsController.GetSettingValue<T>(settingName);
+        }
     }
 
     public static class OverhaulDescription
@@ -351,7 +291,7 @@ namespace CloneDroneOverhaul
         public const bool TEST_FEATURES_ENABLED = true;
         public const bool OVERRIDE_VERSION = false;
         public const string OVERRIDE_VERSION_STRING = "a0.2.0.25";
-        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "-PREVIEW 2";
+        public static readonly string VersionString = "a" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "-PREVIEW 3";
         public static readonly string ModBotVersionString = OverhaulMain.Instance.ModInfo.Version.ToString();
         public const OverhaulDescription.Branch CURRENT_BRANCH = Branch.Github;
 
@@ -399,150 +339,6 @@ namespace CloneDroneOverhaul
         {
             Github,
             ModBot
-        }
-    }
-
-    public class OverhaulMainMonoBehaviour : ManagedBehaviour
-    {
-        private float timeWhenOneSecondWillPast;
-        public static bool IsApplicationFocused { get; private set; }
-
-        private GameMode _gameModeSetLastUpdate;
-
-        private bool IsReadyToWork()
-        {
-            return OverhaulMain.Instance.IsModInitialized;
-        }
-
-        public override void UpdateMe()
-        {
-            if (IsReadyToWork())
-            {
-                BaseStaticReferences.ModuleManager.OnManagedUpdate();
-
-                GameMode newGameMode = GameFlowManager.Instance.GetCurrentGameMode();
-                if (newGameMode != _gameModeSetLastUpdate)
-                {
-                    OverhaulMain.Modules.ExecuteFunction<GameMode>("onGameModeUpdated", newGameMode);
-                }
-                _gameModeSetLastUpdate = newGameMode;
-            }
-        }
-
-        private void Update()
-        {
-            if (Time.time >= timeWhenOneSecondWillPast)
-            {
-                timeWhenOneSecondWillPast = Time.time + 1;
-                OnTimePast(1f);
-            }
-            if (Time.time >= timeWhenOneSecondWillPast - 0.5f)
-            {
-                OnTimePast(0.5f);
-            }
-            if (IsReadyToWork())
-            {
-                BaseStaticReferences.ModuleManager.OnFrame();
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                Profiler.EndThreadProfiling();
-            }
-        }
-
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            OverhaulMainMonoBehaviour.IsApplicationFocused = hasFocus;
-        }
-
-        private void OnTimePast(float time)
-        {
-            if (IsReadyToWork())
-            {
-                BaseStaticReferences.ModuleManager.OnTime(time);
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            if (IsReadyToWork())
-            {
-                BaseStaticReferences.ModuleManager.OnFixedUpdate();
-            }
-        }
-
-        private void Start()
-        {
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
-        }
-        private void OnSceneUnloaded(Scene current)
-        {
-            OverhaulMain.Instance = null;
-        }
-
-        private void Awake()
-        {
-            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleMatchProgressChanged, delegate
-            {
-                executeFunction<object>("battleRoyale.MatchProgressUpdated", null);
-            });
-            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.BattleRoyaleTimeToGameStartUpdated, delegate
-            {
-                executeFunction<object>("battleRoyale.TimeToGameStartUpdated", null);
-            });
-            Singleton<GlobalEventManager>.Instance.AddEventListener(GlobalEvents.NumMultiplayerPlayersChanged, delegate
-            {
-                executeFunction<object>("battleRoyale.NumMultiplayerPlayersChanged", null);
-            });
-
-            Singleton<GlobalEventManager>.Instance.AddEventListener<Character>("CharacterKilled", delegate (Character charr)
-            {
-                executeFunction<Character>("battleRoyale.CharacterKilled", charr);
-            });
-        }
-
-        private void executeFunction<T>(string name, T obj)
-        {
-            if (name == "battleRoyale.MatchProgressUpdated")
-            {
-                OverhaulMain.Modules.ExecuteFunction(name, new object[]
-                {
-                    BattleRoyaleManager.Instance != null ? (BattleRoyaleMatchProgress)BattleRoyaleManager.Instance.state.MatchProgress : BattleRoyaleMatchProgress.NotStarted
-                });
-            }
-            else if (name == "battleRoyale.TimeToGameStartUpdated")
-            {
-                OverhaulMain.Modules.ExecuteFunction(name, new object[]
-                {
-                    BattleRoyaleManager.Instance != null ? BattleRoyaleManager.Instance.GetSecondsToGameStart() : -1
-                });
-            }
-            else if (name == "battleRoyale.NumMultiplayerPlayersChanged")
-            {
-                OverhaulMain.Modules.ExecuteFunction(name, new object[]
-                {
-                    MultiplayerPlayerInfoManager.Instance.GetPlayerCount()
-                });
-            }
-            else if (name == "battleRoyale.CharacterKilled")
-            {
-                OverhaulMain.Modules.ExecuteFunction(name, new object[]
-                {
-                    (obj as Character).GetRobotInfo()
-                });
-            }
-        }
-    }
-
-    public class BoltEventListener : Bolt.GlobalEventListener
-    {
-        public override void OnEvent(MatchInstance evnt)
-        {
-            BaseStaticReferences.ModuleManager.ExecuteFunction<MatchInstance>("Bolt.OnEvent", evnt);
-        }
-        public override void OnEvent(MultiplayerKillEvent evnt)
-        {
-            BaseStaticReferences.ModuleManager.ExecuteFunction<MultiplayerKillEvent>("Bolt.OnEvent", evnt);
         }
     }
 
@@ -630,49 +426,6 @@ namespace CloneDroneOverhaul
 
     }
 
-    public static class ByteSaver
-    {
-        public static byte[] ObjectToByteArray(object obj)
-        {
-            bool flag = obj == null;
-            byte[] result;
-            if (flag)
-            {
-                result = null;
-            }
-            else
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    binaryFormatter.Serialize(memoryStream, obj);
-                    result = memoryStream.ToArray();
-                }
-            }
-            return result;
-        }
-
-        public static T FromByteArray<T>(byte[] data)
-        {
-            bool flag = data == null;
-            T result;
-            if (flag)
-            {
-                result = default(T);
-            }
-            else
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                using (MemoryStream memoryStream = new MemoryStream(data))
-                {
-                    object obj = binaryFormatter.Deserialize(memoryStream);
-                    result = (T)obj;
-                }
-            }
-            return result;
-        }
-    }
-
     public static class CrossModManager
     {
         public static void DoAction(string name, object[] arguments)
@@ -690,59 +443,7 @@ namespace CloneDroneOverhaul
         {
             try
             {
-                if (name == "ModdedLevelEditor.RefreshSelected")
-                {
-                    //GUIManagement.Instance.GetGUI<ModdedLevelEditorUI>().RefreshSelected((arguments[0] as LevelEditorObjectPlacementManager).GetSelectedSceneObjects());
-                }
-                if (name == "ModdedLevelEditor.RefreshSelectedLETMod")
-                {
-                    /*ModdedLevelEditorUI.ObjectsSelectedPanel objectsSelectedPanel = arguments[0] as ModdedLevelEditorUI.ObjectsSelectedPanel;
-                    if (OverhaulDescription.LevelEditorToolsEnabled())
-                    {
-                        float? rotationAngle = AccurateRotationTool.RotationAngle;
-                        Text additionalText = objectsSelectedPanel.AdditionalText;
-                        string[] array = new string[7];
-                        array[0] = "Level Editor Tools Mod:";
-                        array[1] = Environment.NewLine;
-                        int num = 2;
-                        string[] array2 = new string[5];
-                        array2[0] = "R + ";
-                        array2[1] = PositionerTool.SetXKey.ToString();
-                        array2[2] = " to rotate objects ";
-                        int num2 = 3;
-                        float? num3 = rotationAngle;
-                        array2[num2] = num3.ToString();
-                        array2[4] = " degrees along X axis";
-                        array[num] = string.Concat(array2);
-                        array[3] = Environment.NewLine;
-                        int num4 = 4;
-                        string[] array3 = new string[5];
-                        array3[0] = "R + ";
-                        array3[1] = PositionerTool.SetYKey.ToString();
-                        array3[2] = " to rotate objects ";
-                        int num5 = 3;
-                        num3 = rotationAngle;
-                        array3[num5] = num3.ToString();
-                        array3[4] = " degrees along Y axis";
-                        array[num4] = string.Concat(array3);
-                        array[5] = Environment.NewLine;
-                        int num6 = 6;
-                        string[] array4 = new string[5];
-                        array4[0] = "R + ";
-                        array4[1] = PositionerTool.SetZKey.ToString();
-                        array4[2] = " to rotate objects ";
-                        int num7 = 3;
-                        num3 = rotationAngle;
-                        array4[num7] = num3.ToString();
-                        array4[4] = " degrees along Z axis";
-                        array[num6] = string.Concat(array4);
-                        additionalText.text = string.Concat(array);
-                    }
-                    else
-                    {
-                        objectsSelectedPanel.AdditionalText.text = "Install/Enable Level editor tools mod for advanced controls";
-                    }*/
-                }
+                
             }
             catch
             {
