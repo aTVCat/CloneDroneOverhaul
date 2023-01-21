@@ -62,7 +62,7 @@ namespace CDOverhaul.Gameplay
         {
             if (multiplayer)
             {
-                if(Normal.Item2 == null)
+                if (Normal.Item2 == null)
                 {
                     return Normal.Item1;
                 }
@@ -77,9 +77,17 @@ namespace CDOverhaul.Gameplay
             {
                 if (Fire.Item2 == null)
                 {
+                    if (Fire.Item1 == null)
+                    {
+                        return GetNormalModel(multiplayer);
+                    }
                     return Fire.Item1;
                 }
                 return Fire.Item2;
+            }
+            if (Fire.Item1 == null)
+            {
+                return GetNormalModel(multiplayer);
             }
             return Fire.Item1;
         }

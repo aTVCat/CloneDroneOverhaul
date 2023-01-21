@@ -11,7 +11,6 @@ namespace CDOverhaul.LevelEditor
         private RawImage _img;
         private RectTransform _canvasRectTransform;
 
-
         [IncludeInLevelEditor(false, true)]
         public string Path = "Path";
 
@@ -21,7 +20,6 @@ namespace CDOverhaul.LevelEditor
         public float Y = 3f;
 
         private string _lastPathString;
-
 
         private void Awake()
         {

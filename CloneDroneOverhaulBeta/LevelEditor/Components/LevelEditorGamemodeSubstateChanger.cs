@@ -22,7 +22,7 @@ namespace CDOverhaul.LevelEditor
         {
             MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = (EGamemodeSubstate)Index;
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if(mover != null)
+            if (mover != null)
             {
                 mover.transform.localRotation = base.transform.localRotation;
             }

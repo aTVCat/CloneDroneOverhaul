@@ -1,6 +1,6 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Gameplay;
+using HarmonyLib;
 using UnityEngine;
-using CDOverhaul.Gameplay;
 
 namespace CDOverhaul.Patches
 {

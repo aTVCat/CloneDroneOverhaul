@@ -1,7 +1,5 @@
-﻿using CDOverhaul.Gameplay;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
-using System;
 
 namespace CDOverhaul.HUD
 {

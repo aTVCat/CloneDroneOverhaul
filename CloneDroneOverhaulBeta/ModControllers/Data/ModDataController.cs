@@ -27,7 +27,7 @@ namespace CDOverhaul
         public static T GetData<T>(in string fileName) where T : ModDataContainerBase
         {
             DataRepository.Instance.TryLoad("Overhaul/" + fileName, out T data, false);
-            if(data == null)
+            if (data == null)
             {
                 data = Activator.CreateInstance<T>();
             }
