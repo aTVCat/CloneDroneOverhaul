@@ -13,8 +13,8 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
             TitleScreenUI target = GameUIRoot.Instance.TitleScreenUI;
-            _buttonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
 
+            _buttonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
             if (_buttonsTransform == null)
             {
                 SuccessfullyPatched = false;

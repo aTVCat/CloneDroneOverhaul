@@ -14,12 +14,8 @@ namespace CDOverhaul
         public static int AddCondition()
         {
             int number = UnityEngine.Random.Range(0, 999999);
-            if (_conditionIDs.Contains(number))
-            {
-                number = UnityEngine.Random.Range(0, 999999);
-            }
-
             _conditionIDs.Add(number);
+
             GameUIRoot.Instance.RefreshCursorEnabled();
 
             return number;

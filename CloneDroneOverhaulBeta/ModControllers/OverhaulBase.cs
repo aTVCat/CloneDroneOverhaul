@@ -14,11 +14,6 @@ namespace CDOverhaul
         public const string ModDeactivatedEventString = "ModDeactivated";
 
         /// <summary>
-        /// The start index of mod gamemodes
-        /// </summary>
-        public const int GamemodeStartIndex = 2000;
-
-        /// <summary>
         /// The instance of the core
         /// </summary>
         public static OverhaulCore Core { get; internal set; }
@@ -50,6 +45,11 @@ namespace CDOverhaul
 
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
+            if (!IsCoreCreated)
+            {
+                return null;
+            }
+
             return LevelEditorObjectsController.GetObject(path);
         }
 

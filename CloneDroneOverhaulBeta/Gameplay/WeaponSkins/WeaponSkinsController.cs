@@ -12,22 +12,27 @@ namespace CDOverhaul.Gameplay
         public static readonly Vector3 UsualRotation = new Vector3(0, 270, 270);
         public static readonly Vector3 UsualPosition = new Vector3(0, 0, -0.7f);
 
-        public static readonly GameMode EditorGamemode = (GameMode)(OverhaulBase.GamemodeStartIndex + 1);
+        public static readonly GameMode EditorGamemode = (GameMode)(MainGameplayController.GamemodeStartIndex + 1);
 
         public const string SaveDataFileName = "SkinSelection";
         public const string DefaultWeaponSkinName = "VanillaGame";
 
-        #region PlayerData
+        public const bool SkinsOnlyForPlayer = false;
 
         public PlayerSkinsData PlayerSelectedSkinsData;
-
-        #endregion
 
         public override void Initialize()
         {
             PlayerSelectedSkinsData = PlayerSkinsData.GetData<PlayerSkinsData>(SaveDataFileName);
 
-            OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onFPMSpawned);
+            if (SkinsOnlyForPlayer)
+            {
+                OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, onPlayerFound);
+            }
+            else
+            {
+                OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
+            }
 
             AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default(WeaponSkinPlacement));
             AddWeaponSkin(null, WeaponType.Hammer, DefaultWeaponSkinName, default(WeaponSkinPlacement));
@@ -38,11 +43,12 @@ namespace CDOverhaul.Gameplay
             WeaponSkinModels model1 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "DetailedOne", new WeaponSkinPlacement(UsualPosition, UsualRotation, UsualScale));
             model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins), false);
             model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins), true);
-
             model1.SetNormalModel(model1.Normal.Item1, true);
 
-            WeaponSkinModels model2 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDarkPast", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Dark Past", new WeaponSkinPlacement(new Vector3(0, -0.05f, -0.8f), new Vector3(0, 90, 90), Vector3.one));
-            WeaponSkinModels model3 = AddWeaponSkin(AssetController.GetAsset("HammerSkinDarkPast", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Hammer, "Dark Past", new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
+            WeaponSkinModels model2 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDarkPast", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Dark Past",
+                new WeaponSkinPlacement(new Vector3(0, -0.05f, -0.8f), new Vector3(0, 90, 90), Vector3.one));
+            WeaponSkinModels model3 = AddWeaponSkin(AssetController.GetAsset("HammerSkinDarkPast", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Hammer, "Dark Past",
+                new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
 
             HasAddedEventListeners = true;
             IsInitialized = true;
@@ -51,12 +57,7 @@ namespace CDOverhaul.Gameplay
         public void ConfirmSkinSelect(in WeaponType weaponType, in string skinName)
         {
             PlayerSelectedSkinsData.SelectSkin(weaponType, skinName);
-
-            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if (player != null)
-            {
-                RefreshSkins(player);
-            }
+            RefreshSkins(CharacterTracker.Instance.GetPlayerRobot());
         }
 
         public WeaponSkinModels GetSkin(in WeaponType weaponType, in string skinName)
@@ -152,6 +153,7 @@ namespace CDOverhaul.Gameplay
 
             return skin;
         }
+
         /// <summary>
         /// Spawn weapon skin if one exists
         /// </summary>
@@ -179,7 +181,7 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinPlacement placement = _modelPlacements[key];
             GameObject toSpawn = _weaponSkins[key].GetModel(isFire, isMultiplayer);
-            if(toSpawn == null)
+            if (toSpawn == null)
             {
                 return null;
             }
@@ -233,7 +235,7 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void EnterSkinSelectionRoom()
         {
-            MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulBase.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate 
+            MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulBase.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate
             {
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
 
@@ -247,7 +249,7 @@ namespace CDOverhaul.Gameplay
                 }, 0.2f);
 
                 LevelSection[] sections = FindObjectsOfType<LevelSection>();
-                foreach(LevelSection s in sections)
+                foreach (LevelSection s in sections)
                 {
                     s.EnableFromAnimation();
                 }
@@ -259,25 +261,41 @@ namespace CDOverhaul.Gameplay
             return PlayerSelectedSkinsData.Skins.ContainsKey(weaponType) && PlayerSelectedSkinsData.Skins[weaponType] != DefaultWeaponSkinName;
         }
 
-        private void onFPMSpawned(FirstPersonMover mover)
+        private void onPlayerFound(FirstPersonMover mover)
         {
-            if (!mover.HasCharacterModel())
+            DelegateScheduler.Instance.Schedule(delegate
             {
-                return;
-            }
+                RefreshSkins(mover);
 
-            RefreshSkins(mover);
+            }, 0.1f);
         }
 
         public void RefreshSkins(in FirstPersonMover mover)
         {
+            if (mover == null || !mover.HasCharacterModel())
+            {
+                return;
+            }
+
+            if (SkinsOnlyForPlayer)
+            {
+                if (!mover.IsPlayer())
+                {
+                    return;
+                }
+            }
+
             RobotDataCollection collection = mover.GetComponent<RobotDataCollection>();
+            if (collection == null)
+            {
+                return;
+            }
             collection.DestroyAllSkins();
 
             CharacterModel cModel = mover.GetCharacterModel();
             WeaponModel[] weaponModelArray = cModel.WeaponModels;
 
-            foreach(WeaponModel wModel in weaponModelArray)
+            foreach (WeaponModel wModel in weaponModelArray)
             {
                 string skinName = GetSkinName(wModel.WeaponType);
                 bool usingVanillaSkin = skinName == null || skinName == DefaultWeaponSkinName || !AllowSkinsOnWeapon(wModel.WeaponType);

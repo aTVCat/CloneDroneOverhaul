@@ -401,10 +401,11 @@
     <Compile Include="ModControllers\OverhaulCore.cs" />
     <Compile Include="ModControllers\Patches\PhotoManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="ModControllers\Patches\CharacterTracker_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponManager_Patch.cs" />
     <Compile Include="ModControllers\Replacement\ReplacementBase.cs" />
-    <Compile Include="ModControllers\Replacement\TitleScreenUIReplacement.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="ModControllers\SOverhaulEventEntry.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulCodeExtentions.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulUtilities.cs" />

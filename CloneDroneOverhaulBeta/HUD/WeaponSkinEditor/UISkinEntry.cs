@@ -1,7 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
-using UnityEngine.UI;
 using UnityEngine;
-using System;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -23,10 +22,12 @@ namespace CDOverhaul.HUD
 
             string file = WeaponSkinModels.SkinPreviewDirectory + weaponType.ToString() + "_" + skin.SkinName + ".jpg";
             if (OverhaulUtilities.FileUtils.FileExists(file))
-            OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(file, delegate(Texture2D tex) 
+            {
+                OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(file, delegate (Texture2D tex)
             {
                 m.GetObject<Image>(0).sprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(tex);
             });
+            }
 
             WeaponType = weaponType;
             SkinName = skin.SkinName;

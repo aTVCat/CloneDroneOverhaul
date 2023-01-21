@@ -1,8 +1,8 @@
 ﻿using CDOverhaul.Gameplay;
-using UnityEngine.UI;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -68,7 +68,7 @@ namespace CDOverhaul.HUD
         {
             _spawnedSkinEntries.Clear();
             TransformUtils.DestroyAllChildren(_skinContainer);
-            foreach(WeaponSkinModels model in MainGameplayController.Instance.WeaponSkins.GetAllSkins(type))
+            foreach (WeaponSkinModels model in MainGameplayController.Instance.WeaponSkins.GetAllSkins(type))
             {
                 ModdedObject clone = Instantiate(_skinEntry, _skinContainer);
                 clone.gameObject.SetActive(true);
@@ -92,7 +92,7 @@ namespace CDOverhaul.HUD
             int index = 0;
             foreach (string str in Enum.GetNames(typeof(WeaponType)))
             {
-                if(index != 0 && index != 4 && index <= 6)
+                if (index != 0 && index != 4 && index <= 6)
                 {
                     ModdedObject clone = Instantiate(_weaponEntry, _weaponContainer);
                     clone.GetObject<Text>(1).text = str;
@@ -117,7 +117,7 @@ namespace CDOverhaul.HUD
                 populateWeapons();
 
                 FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
-                if(m != null && m.GetCameraMover() != null)
+                if (m != null && m.GetCameraMover() != null)
                 {
                     Transform t = m.GetCameraMover().transform.parent.parent;
                     m.PauseRotationSmoothing();

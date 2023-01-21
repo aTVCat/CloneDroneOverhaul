@@ -1,5 +1,4 @@
 ﻿using ModLibrary;
-using UnityEngine;
 using System;
 
 namespace CDOverhaul.Gameplay
@@ -9,6 +8,14 @@ namespace CDOverhaul.Gameplay
         public const string GamemodeChangedEventString = "GamemodeChanged";
         public const string FirstPersonMoverSpawnedEventString = "FPMSpawned";
         public const string FirstPersonMoverSpawned_DelayEventString = "FPMSpawned_Delay";
+
+        public const string PlayerSetAsCharacter = "PlayerSet_Base";
+        public const string PlayerSetAsFirstPersonMover = "PlayerSet_FirstPersonMover";
+
+        /// <summary>
+        /// The start index of mod gamemodes
+        /// </summary>
+        public const int GamemodeStartIndex = 2000;
 
         public static MainGameplayController Instance;
 
@@ -31,6 +38,8 @@ namespace CDOverhaul.Gameplay
             OverhaulEventManager.AddEvent(GamemodeChangedEventString);
             OverhaulEventManager.AddEvent(FirstPersonMoverSpawnedEventString);
             OverhaulEventManager.AddEvent(FirstPersonMoverSpawned_DelayEventString);
+            OverhaulEventManager.AddEvent(PlayerSetAsCharacter);
+            OverhaulEventManager.AddEvent(PlayerSetAsFirstPersonMover);
 
             GameFlow = GameFlowManager.Instance;
             WeaponSkins = ModControllerManager.NewController<WeaponSkinsController>();
@@ -67,7 +76,7 @@ namespace CDOverhaul.Gameplay
 
                 if (spawnLevel)
                 {
-                    Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) onPlayerSpawned(); } });
+                    Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) { onPlayerSpawned(); } } });
                 }
             });
         }
