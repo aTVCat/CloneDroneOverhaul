@@ -371,9 +371,11 @@
     <Compile Include="Gameplay\Robots\RobotDataCollection.cs" />
     <Compile Include="Gameplay\Robots\RobotsController.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinModels.cs" />
-    <Compile Include="Gameplay\WeaponSkins\SModelPlacement.cs" />
+    <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
+    <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
+    <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorTextBlock.cs" />
@@ -382,6 +384,9 @@
     <Compile Include="ModControllers\Assets\AssetController.cs" />
     <Compile Include="ModControllers\Assets\EModAssetBundlePart.cs" />
     <Compile Include="HUD\HUDControllers.cs" />
+    <Compile Include="ModControllers\Data\ModDataContainerBase.cs" />
+    <Compile Include="ModControllers\Data\DataContainers\PlayerSkinsData.cs" />
+    <Compile Include="ModControllers\Data\ModDataController.cs" />
     <Compile Include="ModControllers\GamemodeStates\EGamemodeSubstate.cs" />
     <Compile Include="ModControllers\GamemodeStates\GamemodeSubstatesController.cs" />
     <Compile Include="ModControllers\ControllersManagement\ModController.cs" />
@@ -394,6 +399,7 @@
     <Compile Include="ModControllers\OverhaulVersion.cs" />
     <Compile Include="ModControllers\OverhaulBase.cs" />
     <Compile Include="ModControllers\OverhaulCore.cs" />
+    <Compile Include="ModControllers\Patches\PhotoManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponManager_Patch.cs" />
@@ -401,7 +407,9 @@
     <Compile Include="ModControllers\Replacement\TitleScreenUIReplacement.cs" />
     <Compile Include="ModControllers\SOverhaulEventEntry.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulCodeExtentions.cs" />
+    <Compile Include="ModControllers\Utilities\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

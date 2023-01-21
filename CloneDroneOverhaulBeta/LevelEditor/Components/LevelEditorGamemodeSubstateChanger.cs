@@ -21,6 +21,11 @@ namespace CDOverhaul.LevelEditor
         public void SetGamemodeSubstate()
         {
             MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = (EGamemodeSubstate)Index;
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if(mover != null)
+            {
+                mover.transform.localRotation = base.transform.localRotation;
+            }
         }
     }
 }

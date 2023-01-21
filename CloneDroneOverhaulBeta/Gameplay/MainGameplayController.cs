@@ -1,5 +1,6 @@
 ﻿using ModLibrary;
 using UnityEngine;
+using System;
 
 namespace CDOverhaul.Gameplay
 {
@@ -50,7 +51,7 @@ namespace CDOverhaul.Gameplay
         /// <param name="levelData"></param>
         /// <param name="spawnLevel"></param>
         /// <param name="spawnPlayer"></param>
-        public void StartGamemode(GameMode gamemode, LevelEditorLevelData levelData, bool spawnLevel = true, bool spawnPlayer = true)
+        public void StartGamemode(GameMode gamemode, LevelEditorLevelData levelData, Action onPlayerSpawned = null, bool spawnLevel = true, bool spawnPlayer = true)
         {
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
@@ -66,7 +67,7 @@ namespace CDOverhaul.Gameplay
 
                 if (spawnLevel)
                 {
-                    Levels.SpawnLevel(levelData, "Level" + Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); } });
+                    Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) onPlayerSpawned(); } });
                 }
             });
         }

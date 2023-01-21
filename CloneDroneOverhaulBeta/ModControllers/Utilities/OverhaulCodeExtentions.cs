@@ -1,4 +1,6 @@
-﻿namespace CDOverhaul
+﻿using ModLibrary;
+
+namespace CDOverhaul
 {
     public static class OverhaulCodeExtentions
     {
@@ -15,6 +17,11 @@
             UnityEngine.GameObject @gameObject = @object as UnityEngine.GameObject;
 
             return @gameObject.GetComponent<Type>();
+        }
+
+        public static bool HasReplacedWithFireVariant(this WeaponModel model)
+        {
+            return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
         }
     }
 }

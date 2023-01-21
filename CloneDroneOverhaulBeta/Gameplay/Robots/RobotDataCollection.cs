@@ -55,6 +55,15 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        public void DestroyAllSkins()
+        {
+            foreach ((GameObject, string, bool, bool) data in _skinsCollection)
+            {
+                Destroy(data.Item1);
+            }
+            _skinsCollection.Clear();
+        }
+
         /// <summary>
         /// Show specific skin model
         /// </summary>

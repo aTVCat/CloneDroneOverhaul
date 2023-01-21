@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using CDOverhaul.Gameplay;
 
 namespace CDOverhaul.Patches
 {
@@ -8,11 +9,36 @@ namespace CDOverhaul.Patches
     {
         [HarmonyPostfix]
         [HarmonyPatch("GetWeaponModelReplacementPrefab")]
-        private static void GetWeaponModelReplacementPrefab_Prefix(ref Transform __result, WeaponType weaponType, bool isOnFire, bool isMultiplayer, bool isEMP)
+        private static void GetWeaponModelReplacementPrefab_Postfix(ref Transform __result, WeaponType weaponType, bool isOnFire, bool isMultiplayer, bool isEMP)
         {
-            if (weaponType == WeaponType.Sword)
+            WeaponSkinsController c = MainGameplayController.Instance.WeaponSkins;
+            WeaponSkinModels models = c.GetSkin(weaponType);
+            if (models == null)
             {
-                __result = null;
+                return;
+            }
+
+            if (isOnFire)
+            {
+                if (isMultiplayer && models.Fire.Item2 != null)
+                {
+                    __result = null;
+                }
+                else if (!isMultiplayer && models.Fire.Item1 != null)
+                {
+                    __result = null;
+                }
+            }
+            else
+            {
+                if (isMultiplayer && models.Normal.Item2 != null)
+                {
+                    __result = null;
+                }
+                else if (!isMultiplayer && models.Normal.Item1 != null)
+                {
+                    __result = null;
+                }
             }
         }
     }
