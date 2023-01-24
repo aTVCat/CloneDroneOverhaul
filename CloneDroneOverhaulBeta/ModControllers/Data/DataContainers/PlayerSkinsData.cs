@@ -6,11 +6,17 @@ namespace CDOverhaul.Gameplay
     {
         public Dictionary<WeaponType, string> Skins;
 
+        public List<string> CustomSkins;
+
         protected override void RepairMissingFields()
         {
             if (Skins == null)
             {
                 Skins = new Dictionary<WeaponType, string>();
+            }
+            if (CustomSkins == null)
+            {
+                CustomSkins = new List<string>();
             }
             if (Skins.Count != 5) // Implement target list count method later
             {

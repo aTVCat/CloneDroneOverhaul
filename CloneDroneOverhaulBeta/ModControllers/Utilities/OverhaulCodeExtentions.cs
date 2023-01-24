@@ -1,4 +1,5 @@
 ﻿using ModLibrary;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -22,6 +23,18 @@ namespace CDOverhaul
         public static bool HasReplacedWithFireVariant(this WeaponModel model)
         {
             return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
+        }
+
+        public static T GetComponentInParents<T>(this GameObject gameObject) where T : Component
+        {
+            T result = null;
+            Transform transform2 = gameObject.transform;
+            while (result == null && transform2 != null)
+            {
+                result = transform2.GetComponent<T>();
+                transform2 = transform2.parent;
+            }
+            return result;
         }
     }
 }

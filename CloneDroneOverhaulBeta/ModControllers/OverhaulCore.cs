@@ -2,6 +2,7 @@
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
+using CDOverhaul.Shared;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -15,6 +16,7 @@ namespace CDOverhaul
 
         public HUDControllers HUDController { get; private set; }
         public MainGameplayController GameplayController { get; private set; }
+        public SharedControllers Shared { get; private set; }
 
         internal void InitializeCore()
         {
@@ -31,6 +33,7 @@ namespace CDOverhaul
             ModControllerManager.Initialize(controllers);
             LevelEditorObjectsController.Initialize();
 
+            Shared = ModControllerManager.NewController<SharedControllers>();
             HUDController = ModControllerManager.NewController<HUDControllers>();
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
 

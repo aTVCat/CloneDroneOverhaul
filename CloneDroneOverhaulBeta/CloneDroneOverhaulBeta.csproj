@@ -370,14 +370,24 @@
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
     <Compile Include="Gameplay\Robots\RobotDataCollection.cs" />
     <Compile Include="Gameplay\Robots\RobotsController.cs" />
+    <Compile Include="Gameplay\Shared\SharedControllers.cs" />
+    <Compile Include="Gameplay\Shared\VolumeEditor\AltVolumeEditorController.cs" />
+    <Compile Include="Gameplay\Shared\VolumeEditor\EVolumeEditorTool.cs" />
+    <Compile Include="Gameplay\Shared\VolumeEditor\UI3DImagePalette.cs" />
+    <Compile Include="Gameplay\Shared\VolumeEditor\UIImagePalettePixel.cs" />
+    <Compile Include="Gameplay\Shared\VolumeEditor\VolumeEditorController.cs" />
+    <Compile Include="Gameplay\WeaponSkins\ESkinModelType.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinModels.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
+    <Compile Include="HUD\Shared\DraggableUI.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
+    <Compile Include="LevelEditor\Components\LevelEditorGiveAllWeapons.cs" />
+    <Compile Include="LevelEditor\Components\LevelEditorSkinSpawnpoint.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorTextBlock.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorImageBlock.cs" />
     <Compile Include="LevelEditor\LevelEditorObjectsController.cs" />
@@ -405,11 +415,14 @@
     <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponManager_Patch.cs" />
     <Compile Include="ModControllers\Replacement\ReplacementBase.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="ModControllers\SOverhaulEventEntry.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulCodeExtentions.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\FreeCameraMovement.cs" />
+    <Compile Include="Shared\ObjectStateListener.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
