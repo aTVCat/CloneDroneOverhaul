@@ -29,6 +29,14 @@ namespace CDOverhaul.LevelEditor
                 GameObject obj3 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.EModAssetBundlePart.Objects);
                 obj3.AddComponent<LevelEditorGamemodeSubstateChanger>();
                 AddObject(obj3.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "G_SChanger");
+
+                GameObject obj4 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.EModAssetBundlePart.Objects);
+                obj4.AddComponent<LevelEditorSkinSpawnpoint>();
+                AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "SkinSpawnpoint");
+
+                GameObject obj5 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.EModAssetBundlePart.Objects);
+                obj5.AddComponent<LevelEditorGiveAllWeapons>();
+                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "GiveAllWeapons");
             }
 
             OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);

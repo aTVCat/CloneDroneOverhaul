@@ -38,7 +38,7 @@ namespace CDOverhaul.HUD
 
         public void OnClick()
         {
-            _ui.OnSelectSkin(this);
+            _ui.SelectSkin(this);
         }
 
         public void VisualizeSelect()

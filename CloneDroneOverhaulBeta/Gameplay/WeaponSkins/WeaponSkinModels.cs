@@ -28,7 +28,7 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public WeaponType WeaponType { get; set; }
 
-        public void SetNormalModel(in GameObject @object, in bool multiplayer)
+        public virtual void SetNormalModel(in GameObject @object, in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -38,7 +38,7 @@ namespace CDOverhaul.Gameplay
             Normal.Item1 = @object;
         }
 
-        public void SetFireModel(in GameObject @object, in bool multiplayer)
+        public virtual void SetFireModel(in GameObject @object, in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -48,7 +48,7 @@ namespace CDOverhaul.Gameplay
             Fire.Item1 = @object;
         }
 
-        public void SetEMPModel(in GameObject @object, in bool multiplayer)
+        public virtual void SetEMPModel(in GameObject @object, in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay
             EMP.Item1 = @object;
         }
 
-        public GameObject GetNormalModel(in bool multiplayer)
+        public virtual GameObject GetNormalModel(in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -71,7 +71,7 @@ namespace CDOverhaul.Gameplay
             return Normal.Item1;
         }
 
-        public GameObject GetFireModel(in bool multiplayer)
+        public virtual GameObject GetFireModel(in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -92,7 +92,7 @@ namespace CDOverhaul.Gameplay
             return Fire.Item1;
         }
 
-        public GameObject GetEMPModel(in bool multiplayer)
+        public virtual GameObject GetEMPModel(in bool multiplayer)
         {
             if (multiplayer)
             {
@@ -105,7 +105,7 @@ namespace CDOverhaul.Gameplay
             return Normal.Item1;
         }
 
-        public GameObject GetModel(in bool fire, in bool multiplayer)
+        public virtual GameObject GetModel(in bool fire, in bool multiplayer)
         {
             if (fire)
             {
@@ -114,7 +114,7 @@ namespace CDOverhaul.Gameplay
             return GetNormalModel(multiplayer);
         }
 
-        public WeaponSkinPlacement GetPlacement()
+        public virtual WeaponSkinPlacement GetPlacement()
         {
             return MainGameplayController.Instance.WeaponSkins.GetSkinPlacement(this);
         }

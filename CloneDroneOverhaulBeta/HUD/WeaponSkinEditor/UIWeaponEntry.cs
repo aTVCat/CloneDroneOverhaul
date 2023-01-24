@@ -6,14 +6,14 @@ namespace CDOverhaul.HUD
     public class UIWeaponEntry : MonoBehaviour
     {
         private GameObject _selectedBG;
-        private UISkinSelection _ui;
+        private UISkinSelection _uiQuickReference;
 
         public WeaponType Weapon { get; set; }
 
         public void Initialize(in Transform selectedTransform, in Button button, in UISkinSelection ui, in WeaponType weapon)
         {
             _selectedBG = selectedTransform.gameObject;
-            _ui = ui;
+            _uiQuickReference = ui;
             button.onClick.AddListener(OnClick);
             VisualizeDeselect();
 
@@ -22,7 +22,7 @@ namespace CDOverhaul.HUD
 
         public void OnClick()
         {
-            _ui.OnSelectWeapon(this);
+            _uiQuickReference.OnSelectWeapon(this);
         }
 
         public void VisualizeSelect()

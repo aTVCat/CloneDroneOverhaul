@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Shared;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,13 @@ namespace CDOverhaul.HUD
         private ModdedObject _skinEntry;
         private Transform _skinContainer;
 
+        private ModdedObject _addSkin;
+        private ModdedObject _skinAddingWindow;
+
         private List<UIWeaponEntry> _spawnedWeaponEntries = new List<UIWeaponEntry>();
         private List<UISkinEntry> _spawnedSkinEntries = new List<UISkinEntry>();
+
+        private Transform _bg;
 
         private Vector3 _initCamPosition;
 
@@ -30,12 +36,29 @@ namespace CDOverhaul.HUD
             _weaponEntry.gameObject.SetActive(false);
             _weaponContainer = MyModdedObject.GetObject<Transform>(1);
 
+            _addSkin = MyModdedObject.GetObject<ModdedObject>(6);
+            _addSkin.gameObject.SetActive(false);
             _skinEntry = MyModdedObject.GetObject<ModdedObject>(4);
             _skinEntry.gameObject.SetActive(false);
             _skinContainer = MyModdedObject.GetObject<Transform>(5);
 
-            MyModdedObject.GetObject<Button>(3).onClick.AddListener(tryWeaponOut);
-            setActive(false);
+            _skinAddingWindow = MyModdedObject.GetObject<ModdedObject>(7);
+            _skinAddingWindow.gameObject.AddComponent<DraggableUI>();
+
+            VolumeEditorController controller = OverhaulBase.Core.Shared.VolumeEditor;
+            MyModdedObject.GetObject<Button>(10).onClick.AddListener(controller.SelectToolNone);
+            MyModdedObject.GetObject<Button>(11).onClick.AddListener(controller.SelectToolAdd);
+            MyModdedObject.GetObject<Button>(12).onClick.AddListener(controller.SelectToolDelete);
+
+            _bg = MyModdedObject.GetObject<Transform>(8);
+
+            MyModdedObject.GetObject<Button>(3).onClick.AddListener(tryWeapon);
+            MyModdedObject.GetObject<Button>(2).onClick.AddListener(goBack);
+
+            UI3DImagePalette palette = MyModdedObject.GetObject<Transform>(13).gameObject.AddComponent<UI3DImagePalette>().Initialize(MyModdedObject.GetObject<Transform>(13), MyModdedObject.GetObject<Transform>(14));
+            palette.SetButtons(MyModdedObject.GetObject<Button>(15), MyModdedObject.GetObject<Button>(16));
+
+            activate(false);
 
             HasAddedEventListeners = true;
             IsInitialized = true;
@@ -47,6 +70,10 @@ namespace CDOverhaul.HUD
         /// <param name="entry"></param>
         public void OnSelectWeapon(in UIWeaponEntry entry)
         {
+            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinCreation)
+            {
+                return;
+            }
             foreach (UIWeaponEntry entry1 in _spawnedWeaponEntries)
             {
                 entry1.VisualizeDeselect();
@@ -59,11 +86,15 @@ namespace CDOverhaul.HUD
         /// Show skin description and variants
         /// </summary>
         /// <param name="entry"></param>
-        public void OnSelectSkin(in UISkinEntry entry)
+        public void SelectSkin(in UISkinEntry entry)
         {
             MainGameplayController.Instance.WeaponSkins.ConfirmSkinSelect(entry.WeaponType, entry.SkinName);
         }
 
+        /// <summary>
+        /// Populate all skins for weapon
+        /// </summary>
+        /// <param name="type"></param>
         private void populateSkins(in WeaponType type)
         {
             _spawnedSkinEntries.Clear();
@@ -77,6 +108,9 @@ namespace CDOverhaul.HUD
                 entry.Initialize(model, this, type);
                 _spawnedSkinEntries.Add(entry);
             }
+            ModdedObject clone2 = Instantiate(_addSkin, _skinContainer);
+            clone2.gameObject.SetActive(true);
+            clone2.GetComponent<Button>().onClick.AddListener(startSkinAddingMode);
 
             FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
             if (m != null)
@@ -85,6 +119,9 @@ namespace CDOverhaul.HUD
             }
         }
 
+        /// <summary>
+        /// Populate all avaiable weapon entries
+        /// </summary>
         private void populateWeapons()
         {
             _spawnedWeaponEntries.Clear();
@@ -107,16 +144,30 @@ namespace CDOverhaul.HUD
             }
         }
 
-        private void setActive(in bool value)
+        /// <summary>
+        /// Switch UI visibility
+        /// </summary>
+        /// <param name="value"></param>
+        private void activate(in bool value)
         {
+            if (base.gameObject.activeSelf == value)
+            {
+                return;
+            }
+
             base.gameObject.SetActive(value);
+
+            FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
+            if (m != null)
+            {
+                GameUIRoot.Instance.SetPlayerHUDVisible(!value);
+            }
 
             if (value)
             {
                 EnableCursorConditionID = EnableCursorController.AddCondition();
                 populateWeapons();
 
-                FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
                 if (m != null && m.GetCameraMover() != null)
                 {
                     Transform t = m.GetCameraMover().transform.parent.parent;
@@ -130,7 +181,6 @@ namespace CDOverhaul.HUD
             {
                 EnableCursorController.RemoveCondition(EnableCursorConditionID);
 
-                FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
                 if (m != null && m.GetCameraMover() != null)
                 {
                     Transform t = m.GetCameraMover().transform.parent.parent;
@@ -141,14 +191,43 @@ namespace CDOverhaul.HUD
             }
         }
 
+        /// <summary>
+        /// Do something when substate of gamemode gets changed
+        /// </summary>
         private void onGamemodeSubstateUpdated()
         {
-            setActive(MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinSelection);
+            EGamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
+            activate(s == EGamemodeSubstate.WeaponSkinSelection || s == EGamemodeSubstate.WeaponSkinCreation);
+            _skinAddingWindow.gameObject.SetActive(s == EGamemodeSubstate.WeaponSkinCreation);
+            _bg.gameObject.SetActive(s != EGamemodeSubstate.WeaponSkinCreation);
         }
 
-        private void tryWeaponOut()
+        /// <summary>
+        /// Start adding/changing a skin
+        /// </summary>
+        private void startSkinAddingMode()
         {
+            MainGameplayController.Instance.WeaponSkins.EnterSkinCreationMode();
+        }
+
+        /// <summary>
+        /// Exit the UI and test the skin
+        /// </summary>
+        private void tryWeapon()
+        {
+            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinCreation)
+            {
+                MainGameplayController.Instance.WeaponSkins.ExitSkinCreationMode();
+            }
             MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = EGamemodeSubstate.None;
+        }
+
+        /// <summary>
+        /// Exit to main menu
+        /// </summary>
+        private void goBack()
+        {
+            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
     }
 }

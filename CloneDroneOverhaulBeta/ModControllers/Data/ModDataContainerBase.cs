@@ -23,6 +23,7 @@ namespace CDOverhaul
                 return;
             }
 
+            OnPrepareToSave();
             ModDataController.SaveData((T)this, FileName);
         }
 
@@ -30,6 +31,11 @@ namespace CDOverhaul
         /// Add missing values if you have need
         /// </summary>
         protected virtual void RepairMissingFields()
+        {
+
+        }
+
+        protected virtual void OnPrepareToSave()
         {
 
         }

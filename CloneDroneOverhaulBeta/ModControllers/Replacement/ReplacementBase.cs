@@ -50,6 +50,7 @@ namespace CDOverhaul.Patches
         internal static void CreateReplacements()
         {
             NewReplacement<TitleScreenUIReplacement>();
+            NewReplacement<PlayerCameraPrefabReplacement>();
         }
     }
 }
