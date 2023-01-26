@@ -2,14 +2,14 @@
 
 namespace CDOverhaul
 {
-    public struct SOverhaulEventEntry
+    public struct SEventEntry
     {
         public string EventName { get; set; }
         public bool WithPrefix { get; set; }
         public Action EventAction { get; set; }
         public object EventActionWithArgument { get; set; }
 
-        public SOverhaulEventEntry(in string eventName, in Action @delegate, in bool withPrefix)
+        public SEventEntry(in string eventName, in Action @delegate, in bool withPrefix)
         {
             EventName = eventName;
             EventAction = @delegate;
@@ -28,7 +28,7 @@ namespace CDOverhaul
             return EventActionWithArgument as Action<T>;
         }
 
-        public bool Equals(in SOverhaulEventEntry a, in SOverhaulEventEntry b)
+        public bool Equals(in SEventEntry a, in SEventEntry b)
         {
             return a.EventName == b.EventName && a.EventAction == b.EventAction && a.EventActionWithArgument == b.EventActionWithArgument && a.WithPrefix == b.WithPrefix;
         }

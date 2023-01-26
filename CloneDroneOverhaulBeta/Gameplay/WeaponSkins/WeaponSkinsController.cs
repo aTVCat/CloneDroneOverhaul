@@ -18,8 +18,8 @@ namespace CDOverhaul.Gameplay
         public static readonly Vector3 UsualRotation = new Vector3(0, 270, 270);
         public static readonly Vector3 UsualPosition = new Vector3(0, 0, -0.7f);
 
-        private static Dictionary<string, WeaponSkinModels> _weaponSkins = new Dictionary<string, WeaponSkinModels>();
-        private static Dictionary<string, WeaponSkinPlacement> _modelPlacements = new Dictionary<string, WeaponSkinPlacement>();
+        private static readonly Dictionary<string, WeaponSkinModels> _weaponSkins = new Dictionary<string, WeaponSkinModels>();
+        private static readonly Dictionary<string, WeaponSkinPlacement> _modelPlacements = new Dictionary<string, WeaponSkinPlacement>();
 
         public PlayerSkinsData PlayerSelectedSkinsData;
 
@@ -201,7 +201,7 @@ namespace CDOverhaul.Gameplay
                 return null;
             }
 
-            RobotDataCollection collection = mover.GetComponent<RobotDataCollection>();
+            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
             if (!collection.AllowSkinRegistration(key, isFire, isMultiplayer))
             {
                 return null;
@@ -393,7 +393,7 @@ namespace CDOverhaul.Gameplay
                 }
             }
 
-            RobotDataCollection collection = mover.GetComponent<RobotDataCollection>();
+            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
             if (collection == null)
             {
                 return;

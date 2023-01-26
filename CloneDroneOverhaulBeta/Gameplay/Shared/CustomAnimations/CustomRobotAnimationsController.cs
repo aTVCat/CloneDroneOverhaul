@@ -5,6 +5,10 @@ namespace CDOverhaul.Shared
 {
     public class CustomAnimationsController : ModController
     {
+        public bool ShouldWork => !GameModeManager.IsMultiplayer();
+
+        public static readonly GameMode EditorGamemode = (GameMode)(MainGameplayController.GamemodeStartIndex + 2);
+
         public CustomRobotAnimationsData AnimationsContainer;
         public const string AnimsContainerFilename = "AnimationsContainerAnimationsContainer";
 
@@ -19,8 +23,11 @@ namespace CDOverhaul.Shared
 
         private void onRobotSpawn(FirstPersonMover mover)
         {
-            /*
-            mover.gameObject.AddComponent<CustomRobotAnimationFPMExtention>();*/
+            if (!ShouldWork)
+            {
+                return;
+            }
+            mover.gameObject.AddComponent<CustomRobotAnimationFPMExtention>();
         }
 
         public CustomRobotAnimation GetAnimation(in string name)

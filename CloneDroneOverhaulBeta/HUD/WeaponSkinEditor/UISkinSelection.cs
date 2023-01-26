@@ -21,8 +21,8 @@ namespace CDOverhaul.HUD
         private ModdedObject _addSkin;
         private ModdedObject _skinAddingWindow;
 
-        private List<UIWeaponEntry> _spawnedWeaponEntries = new List<UIWeaponEntry>();
-        private List<UISkinEntry> _spawnedSkinEntries = new List<UISkinEntry>();
+        private readonly List<UIWeaponEntry> _spawnedWeaponEntries = new List<UIWeaponEntry>();
+        private readonly List<UISkinEntry> _spawnedSkinEntries = new List<UISkinEntry>();
 
         private Transform _bg;
 

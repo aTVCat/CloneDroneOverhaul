@@ -8,11 +8,14 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulEventManager
     {
+        /// <summary>
+        /// This prefix is automaticaly added to any of mod events
+        /// </summary>
         public const string EventPrefix = "Overhaul_";
         public static Action EmptyDelegate = delegate { };
 
         private static GlobalEventManager _globalEventManager;
-        private static List<SOverhaulEventEntry> _events;
+        private static List<SEventEntry> _events;
 
         /// <summary>
         /// Check if <see cref="GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
@@ -25,7 +28,7 @@ namespace CDOverhaul
 
             if (_events == null)
             {
-                _events = new List<SOverhaulEventEntry>();
+                _events = new List<SEventEntry>();
             }
             _events.Clear();
 
@@ -44,7 +47,6 @@ namespace CDOverhaul
             }
         }
 
-
         public static void AddEvent(in string name, in bool dontAddPrefix = false)
         {
             AddEventListener(name, EmptyDelegate, dontAddPrefix);
@@ -57,7 +59,7 @@ namespace CDOverhaul
             if (MayAddListeners)
             {
                 string finalString = !dontAddPrefix ? EventPrefix + name : name;
-                foreach (SOverhaulEventEntry entry in _events)
+                foreach (SEventEntry entry in _events)
                 {
                     if (entry.EventName == finalString)
                     {
@@ -88,34 +90,34 @@ namespace CDOverhaul
         }
 
 
-        public static SOverhaulEventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
+        public static SEventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
-                return default(SOverhaulEventEntry);
+                return default(SEventEntry);
             }
 
             string finalString = !dontAddPrefix ? EventPrefix + name : name;
             _globalEventManager.AddEventListener(finalString, callback);
 
-            SOverhaulEventEntry newEvent = new SOverhaulEventEntry(finalString, callback, !dontAddPrefix);
+            SEventEntry newEvent = new SEventEntry(finalString, callback, !dontAddPrefix);
             _events.Add(newEvent);
 
             return newEvent;
         }
 
-        public static SOverhaulEventEntry AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
+        public static SEventEntry AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
-                return default(SOverhaulEventEntry);
+                return default(SEventEntry);
             }
 
 
             string finalString = !dontAddPrefix ? EventPrefix + name : name;
             _globalEventManager.AddEventListener<T>(finalString, callback);
 
-            SOverhaulEventEntry newEvent = new SOverhaulEventEntry(finalString, null, !dontAddPrefix);
+            SEventEntry newEvent = new SEventEntry(finalString, null, !dontAddPrefix);
             newEvent.SetArgument<T>(callback);
             _events.Add(newEvent);
 
@@ -133,8 +135,8 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener(finalString, callback);
 
             int removeIndex = -1;
-            SOverhaulEventEntry eventToRemove = new SOverhaulEventEntry(finalString, callback, !dontAddPrefix);
-            foreach (SOverhaulEventEntry entry in _events)
+            SEventEntry eventToRemove = new SEventEntry(finalString, callback, !dontAddPrefix);
+            foreach (SEventEntry entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))
@@ -159,9 +161,9 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener<T>(finalString, callback);
 
             int removeIndex = -1;
-            SOverhaulEventEntry eventToRemove = new SOverhaulEventEntry(finalString, null, !dontAddPrefix);
+            SEventEntry eventToRemove = new SEventEntry(finalString, null, !dontAddPrefix);
             eventToRemove.SetArgument<T>(callback);
-            foreach (SOverhaulEventEntry entry in _events)
+            foreach (SEventEntry entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))

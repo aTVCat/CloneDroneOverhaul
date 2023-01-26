@@ -23,6 +23,6 @@ namespace CDOverhaul.HUD
             }
         }
 
-        protected int EnableCursorConditionID { get; set; }
+        protected byte EnableCursorConditionID { get; set; }
     }
 }

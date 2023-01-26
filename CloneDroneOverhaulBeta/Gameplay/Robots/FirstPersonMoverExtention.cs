@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay
     {
         #region Static
 
-        private static Dictionary<int, List<FirstPersonMoverExtention>> _spawnedExtentions = new Dictionary<int, List<FirstPersonMoverExtention>>();
+        private static readonly Dictionary<int, List<FirstPersonMoverExtention>> _spawnedExtentions = new Dictionary<int, List<FirstPersonMoverExtention>>();
 
         internal static void InitializeStatic()
         {
@@ -105,7 +105,7 @@ namespace CDOverhaul.Gameplay
 
         }
 
-        public virtual void OnAIUpdate(in AIController controller)
+        public virtual void OnAIUpdate(in AISwordsmanController controller)
         {
 
         }

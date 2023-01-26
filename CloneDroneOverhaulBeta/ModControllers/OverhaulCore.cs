@@ -12,6 +12,9 @@ namespace CDOverhaul
     /// </summary>
     public sealed class OverhaulCore : MonoBehaviour
     {
+        /// <summary>
+        /// The mod directory path
+        /// </summary>
         public string ModFolder { get; private set; }
 
         public HUDControllers HUDController { get; private set; }
@@ -36,6 +39,8 @@ namespace CDOverhaul
             Shared = ModControllerManager.NewController<SharedControllers>();
             HUDController = ModControllerManager.NewController<HUDControllers>();
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
+
+            OverhaulBenchmarkController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

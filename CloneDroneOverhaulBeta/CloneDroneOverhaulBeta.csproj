@@ -27,7 +27,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
@@ -376,6 +377,8 @@
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimation.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationsController.cs" />
     <Compile Include="Gameplay\Robots\RobotsController.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationKeyframe.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationTrack.cs" />
     <Compile Include="Gameplay\Shared\SharedControllers.cs" />
     <Compile Include="Gameplay\Shared\VolumeEditor\AltVolumeEditorController.cs" />
     <Compile Include="Gameplay\Shared\VolumeEditor\EVolumeEditorTool.cs" />
@@ -387,7 +390,10 @@
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
+    <Compile Include="ModControllers\Debug\OverhaulBenchmarkController.cs" />
+    <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
+    <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
     <Compile Include="ModControllers\Settings\ESettingType.cs" />
     <Compile Include="ModControllers\Settings\Setting.cs" />
@@ -428,7 +434,7 @@
     <Compile Include="ModControllers\Replacement\ReplacementBase.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
-    <Compile Include="ModControllers\SOverhaulEventEntry.cs" />
+    <Compile Include="ModControllers\SEventEntry.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulCodeExtentions.cs" />
     <Compile Include="ModControllers\Utilities\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

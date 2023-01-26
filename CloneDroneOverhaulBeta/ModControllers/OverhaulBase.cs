@@ -18,6 +18,9 @@ namespace CDOverhaul
         /// </summary>
         public static OverhaulCore Core { get; internal set; }
 
+        /// <summary>
+        /// The instance of main mod class
+        /// </summary>
         public static OverhaulBase Base { get; internal set; }
 
         /// <summary>
@@ -93,7 +96,7 @@ namespace CDOverhaul
         {
             if (!IsCoreCreated)
             {
-                debug.Log("Overhaul: There's no need to decostruct Core class instance.");
+                debug.Log("Overhaul: There's no need to deconstruct Core class instance.");
                 return;
             }
 

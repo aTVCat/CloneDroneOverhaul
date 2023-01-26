@@ -14,6 +14,7 @@ namespace CDOverhaul.Gameplay
             }
             if (Skins.Count != 5) // Implement target list count method later
             {
+                Skins.Clear();
                 Skins.Add(WeaponType.Sword, WeaponSkinsController.DefaultWeaponSkinName);
                 Skins.Add(WeaponType.Bow, WeaponSkinsController.DefaultWeaponSkinName);
                 Skins.Add(WeaponType.Hammer, WeaponSkinsController.DefaultWeaponSkinName);
