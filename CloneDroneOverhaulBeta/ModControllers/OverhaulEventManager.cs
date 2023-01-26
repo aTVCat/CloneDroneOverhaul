@@ -12,7 +12,6 @@ namespace CDOverhaul
         public static Action EmptyDelegate = delegate { };
 
         private static GlobalEventManager _globalEventManager;
-
         private static List<SOverhaulEventEntry> _events;
 
         /// <summary>

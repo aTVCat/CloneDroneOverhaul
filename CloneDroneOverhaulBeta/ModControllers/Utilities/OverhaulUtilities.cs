@@ -18,7 +18,6 @@ namespace CDOverhaul
 
         public static class TextureAndMaterialUtils
         {
-
             /// <summary>
             /// Create sprite from texture
             /// </summary>

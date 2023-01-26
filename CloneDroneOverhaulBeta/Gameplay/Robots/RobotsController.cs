@@ -5,6 +5,7 @@
         public override void Initialize()
         {
             OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
+            OverhaulEventManager.AddEvent(RobotDataCollection.DataCollectionInitializedEventString);
 
             HasAddedEventListeners = true;
             IsInitialized = true;

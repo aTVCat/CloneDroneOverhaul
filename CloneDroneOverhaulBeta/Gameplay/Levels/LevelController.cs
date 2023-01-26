@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModLibrary;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace CDOverhaul.Gameplay
             set
             {
                 _arenaIsHidden = value;
+                LevelManager.Instance.SetPrivateField<bool>("_currentLevelHidesTheArena", value);
                 SetArenaVisibility(!value);
             }
         }
@@ -66,7 +68,7 @@ namespace CDOverhaul.Gameplay
 
             if (updateArena)
             {
-                SetArenaVisibility(!data.ArenaIsHidden);
+                ArenaIsHidden = data.ArenaIsHidden;
             }
 
             return @object.GetComponent<LevelInstance>();

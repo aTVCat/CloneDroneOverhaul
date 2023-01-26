@@ -368,7 +368,13 @@
   <ItemGroup>
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
+    <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
     <Compile Include="Gameplay\Robots\RobotDataCollection.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationPlayInfo.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationsData.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationFPMExt.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimation.cs" />
+    <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationsController.cs" />
     <Compile Include="Gameplay\Robots\RobotsController.cs" />
     <Compile Include="Gameplay\Shared\SharedControllers.cs" />
     <Compile Include="Gameplay\Shared\VolumeEditor\AltVolumeEditorController.cs" />
@@ -381,7 +387,12 @@
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
-    <Compile Include="HUD\Shared\DraggableUI.cs" />
+    <Compile Include="ModControllers\OverhaulExceptions.cs" />
+    <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
+    <Compile Include="ModControllers\Settings\ESettingType.cs" />
+    <Compile Include="ModControllers\Settings\Setting.cs" />
+    <Compile Include="ModControllers\Settings\SettingsController.cs" />
+    <Compile Include="Shared\DraggableUI.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />

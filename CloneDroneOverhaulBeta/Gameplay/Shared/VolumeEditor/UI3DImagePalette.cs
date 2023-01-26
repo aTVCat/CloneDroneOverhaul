@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using CDOverhaul.Gameplay;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace CDOverhaul.Shared
 {
@@ -60,7 +56,7 @@ namespace CDOverhaul.Shared
             PrevLayerButton.interactable = CurrentLayer > 0;
         }
 
-   
+
 
         public void PopulatePalette(int layer)
         {

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CDOverhaul.Shared
 {
+    /// <summary>
+    /// The 3D way of voxel editing
+    /// </summary>
     public class VolumeEditorController : ModController
     {
         public bool IsActivated { get; private set; }
