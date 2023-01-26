@@ -3,13 +3,19 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
+    /// <summary>
+    /// The main script with all temp data about <see cref="FirstPersonMover"/>
+    /// </summary>
     public class RobotDataCollection : MonoBehaviour
     {
+        public const string DataCollectionInitializedEventString = "FPMDataCollectionInitialized";
         private List<(GameObject, string, bool, bool)> _skinsCollection;
 
         private void Awake()
         {
             _skinsCollection = new List<(GameObject, string, bool, bool)>();
+
+            OverhaulEventManager.DispatchEvent<RobotDataCollection>(DataCollectionInitializedEventString, this);
         }
 
         /// <summary>
@@ -55,6 +61,9 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// D e s t r o y  a l l  s k i n s
+        /// </summary>
         public void DestroyAllSkins()
         {
             foreach ((GameObject, string, bool, bool) data in _skinsCollection)

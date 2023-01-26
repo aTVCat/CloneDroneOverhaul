@@ -20,11 +20,22 @@ namespace CDOverhaul
             return @gameObject.GetComponent<Type>();
         }
 
+        /// <summary>
+        /// Check if weapon model is on fire
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public static bool HasReplacedWithFireVariant(this WeaponModel model)
         {
             return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
         }
 
+        /// <summary>
+        /// Get component in parents, not only parent
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
         public static T GetComponentInParents<T>(this GameObject gameObject) where T : Component
         {
             T result = null;

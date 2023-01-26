@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Shared
 {
@@ -18,8 +17,10 @@ namespace CDOverhaul.Shared
         {
             Color[] colors = CreateColorArray(width, height);
 
-            Texture2D tex = new Texture2D(width, height);
-            tex.name = "WeaponPalette";
+            Texture2D tex = new Texture2D(width, height)
+            {
+                name = "WeaponPalette"
+            };
             tex.SetPixels(colors);
 
             return tex;

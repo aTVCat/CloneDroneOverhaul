@@ -11,6 +11,10 @@ namespace CDOverhaul
             _conditionIDs.Clear();
         }
 
+        /// <summary>
+        /// Make the game understand that cursor should be enabled until you remove condition (<see cref="EnableCursorController.RemoveCondition(in int)"/>) the ID which we got from this method
+        /// </summary>
+        /// <returns></returns>
         public static int AddCondition()
         {
             int number = UnityEngine.Random.Range(0, 999999);
@@ -21,6 +25,10 @@ namespace CDOverhaul
             return number;
         }
 
+        /// <summary>
+        /// Remove condition with ID
+        /// </summary>
+        /// <param name="id"></param>
         public static void RemoveCondition(in int id)
         {
             if (_conditionIDs.Contains(id))

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CDOverhaul.HUD
+namespace CDOverhaul.Shared
 {
     /// <summary>
     /// Make UI panel draggable
