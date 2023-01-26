@@ -15,7 +15,7 @@
             {
                 EGamemodeSubstate _prevState = _gamemodeSubstate;
                 _gamemodeSubstate = value;
-                if (value != _prevState)
+                if (_gamemodeSubstate != _prevState)
                 {
                     OverhaulEventManager.DispatchEvent(SubstateChangedEventString);
                 }

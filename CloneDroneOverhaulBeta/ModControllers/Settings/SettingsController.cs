@@ -4,7 +4,7 @@ namespace CDOverhaul
 {
     public static class SettingsController
     {
-        private static List<Setting> _settings = new List<Setting>();
+        private static readonly List<Setting> _settings = new List<Setting>();
         private static bool _hasAddedSettings;
 
         internal static void Initialize()
@@ -14,7 +14,7 @@ namespace CDOverhaul
                 return;
             }
 
-
+            AddSetting<bool>("TestCategory.TestSection.TestSetting", false);
 
             _hasAddedSettings = true;
         }

@@ -14,7 +14,6 @@ namespace CDOverhaul.Patches
             if (__instance.WeaponType == WeaponType.Sword)
             {
                 WeaponSkinsController c = MainGameplayController.Instance.WeaponSkins;
-                //c.GetAndSpawnSkin(__instance, c.GetSkinName(__instance.WeaponType), __instance.MeleeImpactArea.Owner, isMultiplayer, isOnFire);
                 c.RefreshSkins(__instance.MeleeImpactArea.Owner);
             }
         }

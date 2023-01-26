@@ -6,12 +6,12 @@ namespace CDOverhaul.Gameplay
     /// <summary>
     /// The main script with all temp data about <see cref="FirstPersonMover"/>
     /// </summary>
-    public class RobotDataCollection : MonoBehaviour
+    public class RobotDataCollection : FirstPersonMoverExtention
     {
         public const string DataCollectionInitializedEventString = "FPMDataCollectionInitialized";
         private List<(GameObject, string, bool, bool)> _skinsCollection;
 
-        private void Awake()
+        protected override void Initialize(FirstPersonMover owner)
         {
             _skinsCollection = new List<(GameObject, string, bool, bool)>();
 

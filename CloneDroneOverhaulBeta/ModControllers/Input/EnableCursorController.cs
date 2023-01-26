@@ -4,7 +4,8 @@ namespace CDOverhaul
 {
     public static class EnableCursorController
     {
-        private static List<int> _conditionIDs = new List<int>();
+        private static readonly List<byte> _conditionIDs = new List<byte>();
+        private static byte _nextId = 0;
 
         internal static void Reset()
         {
@@ -15,9 +16,15 @@ namespace CDOverhaul
         /// Make the game understand that cursor should be enabled until you remove condition (<see cref="EnableCursorController.RemoveCondition(in int)"/>) the ID which we got from this method
         /// </summary>
         /// <returns></returns>
-        public static int AddCondition()
+        public static byte AddCondition()
         {
-            int number = UnityEngine.Random.Range(0, 999999);
+            byte number = _nextId;
+            _nextId++;
+            if (_nextId >= 255)
+            {
+                _nextId = 0;
+            }
+
             _conditionIDs.Add(number);
 
             GameUIRoot.Instance.RefreshCursorEnabled();
@@ -29,7 +36,7 @@ namespace CDOverhaul
         /// Remove condition with ID
         /// </summary>
         /// <param name="id"></param>
-        public static void RemoveCondition(in int id)
+        public static void RemoveCondition(in byte id)
         {
             if (_conditionIDs.Contains(id))
             {

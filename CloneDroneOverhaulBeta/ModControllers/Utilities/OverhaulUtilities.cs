@@ -25,7 +25,7 @@ namespace CDOverhaul
             /// <returns></returns>
             public static Sprite FastSpriteCreate(in Texture2D texture2D)
             {
-                return Sprite.Create(texture2D, new Rect(0f, 0f, (float)texture2D.width, (float)texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+                return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
             }
 
             /// <summary>

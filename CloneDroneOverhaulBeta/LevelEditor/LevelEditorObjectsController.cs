@@ -9,7 +9,7 @@ namespace CDOverhaul.LevelEditor
         public const string ObjectPathPrefix = "Prefabs/LevelObjects/OverhaulMod";
         public const string PreviewPathPrefix = "Previews/LevelObjects/OverhaulMod";
 
-        private static Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, UnityEngine.Object>();
+        private static readonly Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, UnityEngine.Object>();
 
         private static bool _hasAddedAssets;
 

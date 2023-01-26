@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Enumerators;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -21,15 +22,11 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            GameObject hudFromBundle = AssetController.GetAsset(OverhaulHUDName, EModAssetBundlePart.Part1);
-            GameObject spawnedHud = Instantiate(hudFromBundle);
-
+            GameObject spawnedHud = Instantiate(AssetController.GetAsset(OverhaulHUDName, EModAssetBundlePart.Part1));
             ModdedObject moddedObject = spawnedHud.GetComponent<ModdedObject>();
-            ModdedObject content = moddedObject.GetObject<ModdedObject>(0);
-            ParentTransformToGameUIRoot(content.transform);
+            HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
+            ParentTransformToGameUIRoot(HUDModdedObject.transform);
             setPixelPerfectValue(true);
-
-            HUDModdedObject = content;
 
             ModdedObject prefabsModdedObject = moddedObject.GetObject<ModdedObject>(1);
             HUDPrefabsArray = new GameObject[prefabsModdedObject.objects.Count];
@@ -45,6 +42,9 @@ namespace CDOverhaul.HUD
 
             AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
+
+            spawnedHud.GetComponent<Canvas>().enabled = false;
+            spawnedHud.GetComponent<CanvasScaler>().enabled = false;
 
             base.IsInitialized = true;
         }

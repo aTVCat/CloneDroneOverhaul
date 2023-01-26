@@ -5,7 +5,8 @@ namespace CDOverhaul
 {
     public class ModDataContainerBase
     {
-        private static Dictionary<string, ModDataContainerBase> _cachedDatas = new Dictionary<string, ModDataContainerBase>();
+        [NonSerialized]
+        private static readonly Dictionary<string, ModDataContainerBase> _cachedDatas = new Dictionary<string, ModDataContainerBase>();
 
         [NonSerialized]
         public bool IsLoaded;
@@ -27,19 +28,6 @@ namespace CDOverhaul
             ModDataController.SaveData((T)this, FileName, useModFolder, modFolderName);
         }
 
-        /// <summary>
-        /// Add missing values if you have need
-        /// </summary>
-        public virtual void RepairMissingFields()
-        {
-
-        }
-
-        protected virtual void OnPrepareToSave()
-        {
-
-        }
-
         public static T GetData<T>(in string fileName, in bool useModFolder = false, in string modFolderName = null) where T : ModDataContainerBase
         {
             if (_cachedDatas.ContainsKey(fileName))
@@ -55,6 +43,19 @@ namespace CDOverhaul
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// Add missing values if you have need
+        /// </summary>
+        public virtual void RepairMissingFields()
+        {
+
+        }
+
+        protected virtual void OnPrepareToSave()
+        {
+
         }
     }
 }

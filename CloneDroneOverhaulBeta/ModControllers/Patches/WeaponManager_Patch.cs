@@ -11,34 +11,14 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("GetWeaponModelReplacementPrefab")]
         private static void GetWeaponModelReplacementPrefab_Postfix(ref Transform __result, WeaponType weaponType, bool isOnFire, bool isMultiplayer, bool isEMP)
         {
-            WeaponSkinsController c = MainGameplayController.Instance.WeaponSkins;
-            WeaponSkinModels models = c.GetSkin(weaponType);
+            WeaponSkinModels models = MainGameplayController.Instance.WeaponSkins.GetSkin(weaponType);
             if (models == null)
             {
                 return;
             }
-
-            if (isOnFire)
+            else if (models.GetModel(isOnFire, isMultiplayer) != null)
             {
-                if (isMultiplayer && models.Fire.Item2 != null)
-                {
-                    __result = null;
-                }
-                else if (!isMultiplayer && models.Fire.Item1 != null)
-                {
-                    __result = null;
-                }
-            }
-            else
-            {
-                if (isMultiplayer && models.Normal.Item2 != null)
-                {
-                    __result = null;
-                }
-                else if (!isMultiplayer && models.Normal.Item1 != null)
-                {
-                    __result = null;
-                }
+                __result = null;
             }
         }
     }
