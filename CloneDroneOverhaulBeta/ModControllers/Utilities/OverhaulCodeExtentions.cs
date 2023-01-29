@@ -21,16 +21,6 @@ namespace CDOverhaul
         }
 
         /// <summary>
-        /// Check if weapon model is on fire
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static bool HasReplacedWithFireVariant(this WeaponModel model)
-        {
-            return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
-        }
-
-        /// <summary>
         /// Get component in parents, not only parent
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -46,6 +36,21 @@ namespace CDOverhaul
                 transform2 = transform2.parent;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Check if weapon model is on fire
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static bool HasReplacedWithFireVariant(this WeaponModel model)
+        {
+            return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
+        }
+
+        public static void SetLogoAndRootButtonsVisible(this TitleScreenUI titleScreenUI, in bool value)
+        {
+            titleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { value });
         }
     }
 }

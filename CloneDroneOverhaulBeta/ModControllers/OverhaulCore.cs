@@ -31,7 +31,6 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
-            SettingsController.Initialize();
             EnableCursorController.Reset();
             OverhaulEventManager.Initialize();
             ModControllerManager.Initialize(controllers);
@@ -41,6 +40,7 @@ namespace CDOverhaul
             HUDController = ModControllerManager.NewController<HUDControllers>();
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
 
+            SettingsController.Initialize();
             OverhaulDebugController.Initialize();
 
             ReplacementBase.CreateReplacements();
