@@ -11,7 +11,7 @@ namespace CDOverhaul.Shared
         public List<CustomRobotAnimationKeyframe> Keyframes;
 
         [NonSerialized]
-        private Dictionary<int, int> _cachedPositions = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> _cachedPositions = new Dictionary<int, int>();
 
         public void InitializeAsNewTrack()
         {
@@ -28,7 +28,7 @@ namespace CDOverhaul.Shared
             }
 
             int index = 0;
-            foreach(CustomRobotAnimationKeyframe kFrame in Keyframes)
+            foreach (CustomRobotAnimationKeyframe kFrame in Keyframes)
             {
                 if (kFrame.Frame == frame)
                 {
@@ -37,7 +37,7 @@ namespace CDOverhaul.Shared
                 }
                 index++;
             }
-            if(result == null)
+            if (result == null)
             {
                 result = GetSmoothKeyframeAt(frame);
             }
@@ -53,7 +53,7 @@ namespace CDOverhaul.Shared
             int nextKeyframe = 720; // Animation length
             foreach (CustomRobotAnimationKeyframe keyframe in Keyframes)
             {
-                if(keyframe.Frame == frame)
+                if (keyframe.Frame == frame)
                 {
                     return keyframe;
                 }
@@ -101,7 +101,7 @@ namespace CDOverhaul.Shared
         public CustomRobotAnimationKeyframe CreateKeyframeAt(in int frame)
         {
             int alreadyExistingKFrame = GetKeyFrameListPositionAt(frame);
-            if(alreadyExistingKFrame != -1)
+            if (alreadyExistingKFrame != -1)
             {
                 CustomRobotAnimationKeyframe aKFrame = Keyframes[alreadyExistingKFrame];
                 return aKFrame;

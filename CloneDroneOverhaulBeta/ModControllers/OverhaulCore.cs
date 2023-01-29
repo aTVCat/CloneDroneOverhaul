@@ -31,6 +31,7 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            SettingsController.Initialize();
             EnableCursorController.Reset();
             OverhaulEventManager.Initialize();
             ModControllerManager.Initialize(controllers);
