@@ -29,6 +29,7 @@ namespace CDOverhaul.Patches
             }
             _spawnedPanel = GameObject.Instantiate(panel, _buttonsTransform).transform;
             _spawnedPanel.SetAsFirstSibling();
+            _spawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = _spawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(0).onClick.AddListener(MainGameplayController.Instance.WeaponSkins.EnterSkinSelectionRoom);

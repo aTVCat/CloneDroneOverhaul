@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CDOverhaul.Gameplay;
 using UnityEngine;
 
 namespace CDOverhaul.Shared
@@ -12,7 +11,7 @@ namespace CDOverhaul.Shared
 
         public void SetFrame(in int frame, in CharacterModel modelToUpdate)
         {
-            foreach(CustomRobotAnimationTrack track in Tracks)
+            foreach (CustomRobotAnimationTrack track in Tracks)
             {
                 Transform t = TransformUtils.FindChildRecursive(modelToUpdate.UpperAnimator.transform, track.BodyPartName);
                 if (t != null)
@@ -28,11 +27,11 @@ namespace CDOverhaul.Shared
 
         public void InitializeAnimationAsNew()
         {
-            if(Tracks == null)
+            if (Tracks == null)
             {
                 Tracks = new List<CustomRobotAnimationTrack>();
             }
-            foreach(string str in CustomAnimationsController.GetAllBodyParts())
+            foreach (string str in CustomAnimationsController.GetAllBodyParts())
             {
                 CustomRobotAnimationTrack track = new CustomRobotAnimationTrack();
                 track.InitializeAsNewTrack();
@@ -42,8 +41,10 @@ namespace CDOverhaul.Shared
 
         public static CustomRobotAnimation CreateNewAnimation(in string name)
         {
-            CustomRobotAnimation anim = new CustomRobotAnimation();
-            anim.AnimationName = name;
+            CustomRobotAnimation anim = new CustomRobotAnimation
+            {
+                AnimationName = name
+            };
             anim.RepairMissingFields();
             anim.InitializeAnimationAsNew();
             SaveAnimation(anim);

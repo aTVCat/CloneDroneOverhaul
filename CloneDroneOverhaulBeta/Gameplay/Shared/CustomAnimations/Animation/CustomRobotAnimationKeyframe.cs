@@ -14,8 +14,10 @@ namespace CDOverhaul.Shared
 
         public static CustomRobotAnimationKeyframe NewKeyframe(in int frame)
         {
-            CustomRobotAnimationKeyframe k = new CustomRobotAnimationKeyframe();
-            k.Frame = frame;
+            CustomRobotAnimationKeyframe k = new CustomRobotAnimationKeyframe
+            {
+                Frame = frame
+            };
             return k;
         }
     }
