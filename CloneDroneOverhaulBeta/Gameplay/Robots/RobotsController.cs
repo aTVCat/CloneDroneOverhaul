@@ -14,6 +14,7 @@
         private void onFPMSpawned(FirstPersonMover mover)
         {
             mover.gameObject.AddComponent<RobotDataCollection>();
+            mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
         }
     }
 }

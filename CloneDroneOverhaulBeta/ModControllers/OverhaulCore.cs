@@ -40,7 +40,7 @@ namespace CDOverhaul
             HUDController = ModControllerManager.NewController<HUDControllers>();
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
 
-            OverhaulBenchmarkController.Initialize();
+            OverhaulDebugController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }
