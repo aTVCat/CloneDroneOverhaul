@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.HUD;
+using CDOverhaul.ModControllers.Debug;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace CDOverhaul
@@ -10,10 +12,15 @@ namespace CDOverhaul
         private static readonly List<SettingInfo> _settings = new List<SettingInfo>();
         private static readonly List<string> _hiddenEntries = new List<string>();
 
+        public static UISettingsMenu HUD;
+
         private static bool _hasAddedSettings;
 
         internal static void Initialize()
         {
+            HUDControllers h = OverhaulBase.Core.HUDController;
+            HUD = h.AddHUD<UISettingsMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
+
             if (_hasAddedSettings)
             {
                 return;
