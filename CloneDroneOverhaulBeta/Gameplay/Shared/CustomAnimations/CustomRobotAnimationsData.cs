@@ -6,10 +6,10 @@ namespace CDOverhaul.Shared
 {
     public class CustomRobotAnimationsData : ModDataContainerBase
     {
-        public string[] AllAnimationsUnderModAssetsFolder => Directory.GetFiles(OverhaulBase.Core.ModFolder + "Assets/Animations/");
+        public static string[] AllAnimationsUnderModAssetsFolder => Directory.GetFiles(OverhaulBase.Core.ModFolder + "Assets/Animations/");
 
         [NonSerialized]
-        public Dictionary<string, CustomRobotAnimation> LoadedAnimations;
+        public static Dictionary<string, CustomRobotAnimation> LoadedAnimations;
 
         public override void RepairMissingFields()
         {
@@ -35,23 +35,6 @@ namespace CDOverhaul.Shared
             }
             anim = LoadedAnimations[animName];
             return anim;
-        }
-
-        public CustomRobotAnimation NewAnimation(in string animName)
-        {
-            CustomRobotAnimation anim = new CustomRobotAnimation
-            {
-                AnimationName = animName
-            };
-            anim.RepairMissingFields();
-            SaveAnimation(anim);
-            return anim;
-        }
-
-        public void SaveAnimation(in CustomRobotAnimation anim)
-        {
-            anim.FileName = anim.AnimationName;
-            anim.SaveData<CustomRobotAnimation>(true, "Animations/");
         }
     }
 }

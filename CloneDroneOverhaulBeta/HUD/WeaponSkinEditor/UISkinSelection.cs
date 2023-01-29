@@ -55,9 +55,6 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Button>(3).onClick.AddListener(tryWeapon);
             MyModdedObject.GetObject<Button>(2).onClick.AddListener(goBack);
 
-            UI3DImagePalette palette = MyModdedObject.GetObject<Transform>(13).gameObject.AddComponent<UI3DImagePalette>().Initialize(MyModdedObject.GetObject<Transform>(13), MyModdedObject.GetObject<Transform>(14));
-            palette.SetButtons(MyModdedObject.GetObject<Button>(15), MyModdedObject.GetObject<Button>(16));
-
             activate(false);
 
             HasAddedEventListeners = true;

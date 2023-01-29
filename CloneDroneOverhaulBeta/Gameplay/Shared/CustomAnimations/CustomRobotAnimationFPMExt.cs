@@ -24,14 +24,14 @@ namespace CDOverhaul.Shared
         public bool ForcePlay { get; set; }
 
         public CharacterModel OwnerModel { get; set; }
-        public CustomRobotAnimationPlayInfo CurrentAnimation { get; set; }
+        public CustomRobotAnimationPlayBehaviour CurrentAnimation { get; set; }
 
         protected override void Initialize(FirstPersonMover owner)
         {
             ManualAnimationEnabled = false;
             IsPlayingCustomAnimation = false;
             OwnerModel = owner.GetCharacterModel();
-            CurrentAnimation = new CustomRobotAnimationPlayInfo();
+            CurrentAnimation = new CustomRobotAnimationPlayBehaviour();
         }
 
         public void PlayAnimation(in string name)
@@ -40,6 +40,8 @@ namespace CDOverhaul.Shared
             {
                 return;
             }
+            CustomAnimationsController c = OverhaulBase.Core.Shared.CustomAnimations;
+            CurrentAnimation.ResetToNextPlay(c.AnimationsContainer.GetAnimation(name));
         }
 
         private void FixedUpdate()
@@ -48,6 +50,11 @@ namespace CDOverhaul.Shared
             {
                 OwnerModel.UpperAnimator.enabled = !IsPlayingCustomAnimation;
             }
+        }
+
+        private void Update()
+        {
+            CurrentAnimation.OnNewFrame(this);
         }
     }
 }

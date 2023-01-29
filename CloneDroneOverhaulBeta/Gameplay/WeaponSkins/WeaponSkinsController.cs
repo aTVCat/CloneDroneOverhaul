@@ -113,6 +113,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinModels GetSkin(in WeaponType weaponType)
         {
+            if (!PlayerSelectedSkinsData.Skins.ContainsKey(weaponType) || GameModeManager.IsInLevelEditor())
+            {
+                return GetSkin(weaponType, DefaultWeaponSkinName);
+            }
             return GetSkin(weaponType, PlayerSelectedSkinsData.Skins[weaponType]);
         }
 
@@ -268,14 +272,26 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void EnterSkinSelectionRoom()
         {
-            MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulBase.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate
+            if (GameModeManager.Is(EditorGamemode))
             {
-                LevelSection[] sections = FindObjectsOfType<LevelSection>();
-                foreach (LevelSection s in sections)
+                return;
+            }
+
+            Transform t = SceneTransitionManager.Instance.InstantiateSceneTransitionOverlay();
+            MainGameplayController.Instance.SetGamemode(EditorGamemode);
+            MainGameplayController.Instance.Levels.ArenaIsHidden = true;
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulBase.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate
                 {
-                    s.EnableFromAnimation();
-                }
-            });
+                    LevelSection[] sections = FindObjectsOfType<LevelSection>();
+                    foreach (LevelSection s in sections)
+                    {
+                        s.EnableFromAnimation();
+                    }
+                    Destroy(t.gameObject);
+                });
+            }, 0.1f);
         }
 
         /// <summary>
