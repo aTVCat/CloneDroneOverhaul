@@ -4,6 +4,9 @@ namespace CDOverhaul.Gameplay
 {
     public class FirstPersonMoverOverhaul : FirstPersonMoverExtention
     {
+        [OverhaulSetting("Robots.Events.Death Animation", true)]
+        public static bool AllowDeathAnimation;
+
         public CharacterModel OwnerModel { get; set; }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace CDOverhaul.Gameplay
 
         private void onKill(Character c)
         {
-            if (c.GetInstanceID() == Owner.GetInstanceID())
+            if (AllowDeathAnimation && c.GetInstanceID() == Owner.GetInstanceID())
             {
                 _animatingDeath = true;
                 _diedWhileUsingAbilityOrAsBigRobot = IsBigRobotOrUsingAnyAbility;

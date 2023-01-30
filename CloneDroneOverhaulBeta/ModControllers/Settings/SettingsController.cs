@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using CDOverhaul.ModControllers.Debug;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -10,7 +9,8 @@ namespace CDOverhaul
         public const string SettingChangedEventString = "OnSettingChanged";
 
         private static readonly List<SettingInfo> _settings = new List<SettingInfo>();
-        private static readonly List<string> _hiddenEntries = new List<string>();
+        private static readonly Dictionary<string, SettingDescription> _descriptions = new Dictionary<string, SettingDescription>();
+        private static readonly List<string> _hiddenEntries = new List<string>() { "TestCat" };
 
         public static UISettingsMenu HUD;
 
@@ -36,9 +36,17 @@ namespace CDOverhaul
                     if (neededAttribute != null)
                     {
                         AddSetting(neededAttribute.MySetting, neededAttribute.DefaultValue, field);
+                        if (neededAttribute.IsHidden)
+                        {
+                            _hiddenEntries.Add(neededAttribute.MySetting);
+                        }
                     }
                 }
             }
+
+            AddDescription("TestCat.TestSec.TestSet", "Some description", "TestSet.png", null);
+            AddDescription("Robots.Events.Death Animation", "Robots won't instantly freeze, instead, they will slow down", null, null);
+
             _hasAddedSettings = true;
         }
 
@@ -56,6 +64,16 @@ namespace CDOverhaul
             newSetting.SetUp<T>(path, defaultValue, field);
             _settings.Add(newSetting);
             return newSetting;
+        }
+
+        public static void AddDescription(in string settingPath, in string description, in string img43filename, in string img169filename)
+        {
+            if (GetSetting(settingPath) == null)
+            {
+                return;
+            }
+            SettingDescription desc = new SettingDescription(description, img43filename, img169filename);
+            _descriptions.Add(settingPath, desc);
         }
 
         /// <summary>
@@ -134,6 +152,13 @@ namespace CDOverhaul
                 }
             }
             return null;
+        }
+
+        public static SettingDescription GetSettingDescription(in string path)
+        {
+            SettingDescription result = null;
+            _descriptions.TryGetValue(path, out result);
+            return result;
         }
 
         /// <summary>

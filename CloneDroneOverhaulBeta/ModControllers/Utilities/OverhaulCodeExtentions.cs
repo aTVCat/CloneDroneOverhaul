@@ -20,6 +20,13 @@ namespace CDOverhaul
             return @gameObject.GetComponent<Type>();
         }
 
+        public static Color ConvertHexToColor(this string theString)
+        {
+            Color col;
+            ColorUtility.TryParseHtmlString(theString, out col);
+            return col;
+        }
+
         /// <summary>
         /// Get component in parents, not only parent
         /// </summary>
