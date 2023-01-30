@@ -1,9 +1,6 @@
-﻿using CDOverhaul.Gameplay;
-using ModLibrary;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
@@ -14,6 +11,9 @@ namespace CDOverhaul.HUD
 
         private Transform _mainContainer;
         private ModdedObject _sectionPrefab;
+        private ModdedObject _settingPrefab;
+
+        private Transform _description;
 
         public override void Initialize()
         {
@@ -23,6 +23,9 @@ namespace CDOverhaul.HUD
             _mainContainer = MyModdedObject.GetObject<Transform>(3);
             _sectionPrefab = MyModdedObject.GetObject<ModdedObject>(4);
             _sectionPrefab.gameObject.SetActive(false);
+            _settingPrefab = MyModdedObject.GetObject<ModdedObject>(6);
+            _settingPrefab.gameObject.SetActive(false);
+            _description = MyModdedObject.GetObject<Transform>(7);
 
             MyModdedObject.GetObject<Button>(5).onClick.AddListener(Hide);
 
@@ -41,6 +44,7 @@ namespace CDOverhaul.HUD
 
             base.gameObject.SetActive(true);
             populateCategories();
+            PopulateDescription(null, null);
         }
 
         public void Hide()
@@ -58,7 +62,7 @@ namespace CDOverhaul.HUD
             TransformUtils.DestroyAllChildren(_categoryContainer);
 
             List<string> categories = SettingsController.GetAllCategories();
-            foreach(string category in categories)
+            foreach (string category in categories)
             {
                 ModdedObject categoryEntry = Instantiate(_categoryEntryPrefab, _categoryContainer);
                 categoryEntry.gameObject.SetActive(true);
@@ -72,18 +76,39 @@ namespace CDOverhaul.HUD
             TransformUtils.DestroyAllChildren(_mainContainer);
 
             List<string> sections = SettingsController.GetAllSections(categoryName);
-            foreach(string sectionName in sections)
+            foreach (string sectionName in sections)
             {
+                string[] array = sectionName.Split('.');
                 ModdedObject categoryEntry = Instantiate(_sectionPrefab, _mainContainer);
                 categoryEntry.gameObject.SetActive(true);
-                categoryEntry.GetObject<Text>(0).text = sectionName;
+                categoryEntry.GetObject<Text>(0).text = array[1];
 
-                List<string> settings = SettingsController.GetAllSettings(categoryName, sectionName);
-                foreach(string settingName in settings)
+                List<string> settings = SettingsController.GetAllSettings(categoryName, array[1]);
+                settings.Sort();
+                foreach (string settingName in settings)
                 {
-
+                    ModdedObject setting = Instantiate(_settingPrefab, _mainContainer);
+                    setting.gameObject.SetActive(true);
+                    setting.gameObject.AddComponent<SettingEntryBehaviour>().Initialize(this, setting, settingName);
                 }
             }
+        }
+
+        public void PopulateDescription(in SettingInfo info, in SettingDescription description)
+        {
+            if (info == null || description == null)
+            {
+                _description.gameObject.SetActive(false);
+                return;
+            }
+            _description.gameObject.SetActive(true);
+
+            MyModdedObject.GetObject<Text>(8).text = info.Name;
+            MyModdedObject.GetObject<Text>(9).text = description.Description;
+            MyModdedObject.GetObject<Image>(10).gameObject.SetActive(description.Has43Image);
+            MyModdedObject.GetObject<Image>(11).gameObject.SetActive(description.Has169Image);
+            MyModdedObject.GetObject<Image>(10).sprite = description.Image_4_3;
+            MyModdedObject.GetObject<Image>(11).sprite = description.Image_16_9;
         }
     }
 }

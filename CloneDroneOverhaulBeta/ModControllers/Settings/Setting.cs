@@ -46,7 +46,7 @@ namespace CDOverhaul
                 throw new Exception(OverhaulExceptions.Exc_SettingError);
             }
 
-            Field.SetValue(null, GetPref(this));
+            Field.SetValue(null, GetPref<object>(this));
         }
 
         public static ESettingType GetSettingType<T>()
@@ -148,27 +148,32 @@ namespace CDOverhaul
             PlayerPrefs.Save();
         }
 
-        public static object GetPref(in SettingInfo setting)
+        public static T GetPref<T>(in SettingInfo setting)
         {
             if (setting == null || setting.Error)
             {
                 throw new Exception(OverhaulExceptions.Exc_SettingError);
             }
 
+            object result = null;
             switch (setting.Type)
             {
                 case ESettingType.Bool:
-                    return PlayerPrefs.GetInt(setting.RawPath) == 1;
+                    result = PlayerPrefs.GetInt(setting.RawPath) == 1;
+                    break;
                 case ESettingType.Int:
-                    return PlayerPrefs.GetInt(setting.RawPath);
+                    result = PlayerPrefs.GetInt(setting.RawPath);
+                    break;
                 case ESettingType.Float:
-                    return PlayerPrefs.GetFloat(setting.RawPath);
+                    result = PlayerPrefs.GetFloat(setting.RawPath);
+                    break;
                 case ESettingType.String:
-                    return PlayerPrefs.GetString(setting.RawPath);
+                    result = PlayerPrefs.GetString(setting.RawPath);
+                    break;
                 default:
                     throw new Exception(OverhaulExceptions.Exc_SettingGetError);
             }
-            return null;
+            return (T)result;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CDOverhaul.Shared
     {
         public static float ColorBurnMultipler;
 
-        [OverhaulSetting("TestCat.TestSec.TestSet", true)]
+        [OverhaulSetting("TestCat.TestSec.TestSet", true, true)]
         public static bool NonFireCutBurnEnabled;
 
         public override void Initialize()
