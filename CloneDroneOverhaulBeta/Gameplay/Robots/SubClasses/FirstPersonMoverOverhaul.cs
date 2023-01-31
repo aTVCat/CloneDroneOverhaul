@@ -36,8 +36,13 @@ namespace CDOverhaul.Gameplay
 
         private void onKill(Character c)
         {
-            if (AllowDeathAnimation && c.GetInstanceID() == Owner.GetInstanceID())
+            if (c.GetInstanceID() == Owner.GetInstanceID())
             {
+                if (!AllowDeathAnimation)
+                {
+                    SetAnimatorsSpeed(0f);
+                    return;
+                }
                 _animatingDeath = true;
                 _diedWhileUsingAbilityOrAsBigRobot = IsBigRobotOrUsingAnyAbility;
                 _timeCharacterDied = Time.time;

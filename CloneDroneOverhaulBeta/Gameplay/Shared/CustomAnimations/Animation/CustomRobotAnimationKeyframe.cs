@@ -16,7 +16,8 @@ namespace CDOverhaul.Shared
         {
             CustomRobotAnimationKeyframe k = new CustomRobotAnimationKeyframe
             {
-                Frame = frame
+                Frame = frame,
+                Rotation = Vector3.zero
             };
             return k;
         }

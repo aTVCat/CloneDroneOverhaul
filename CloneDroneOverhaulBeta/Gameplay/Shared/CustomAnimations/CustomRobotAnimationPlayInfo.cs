@@ -4,21 +4,29 @@ namespace CDOverhaul.Shared
 {
     public class CustomRobotAnimationPlayBehaviour
     {
-        public CustomRobotAnimation Animation { get; set; }
+        public CustomRobotAnimation Animation { get; private set; }
+        public bool AnimationIsNull { get; set; }
+
         public float TimeAnimationStartedToPlay { get; set; }
         public float TimePlayedAtAll { get; set; }
         public int CurrentFrame { get; set; }
 
-        public void ResetToNextPlay(in CustomRobotAnimation anim)
+        public CustomRobotAnimationPlayBehaviour()
+        {
+            AnimationIsNull = true;
+        }
+
+        public void StartPlaying(in CustomRobotAnimation anim)
         {
             Animation = anim;
             TimePlayedAtAll = 0f;
             TimeAnimationStartedToPlay = Time.time;
+            AnimationIsNull = anim == null;
         }
 
         public void SetFrame(in CustomRobotAnimationFPMExtention ext, in int frame)
         {
-            if (Animation == null)
+            if (AnimationIsNull)
             {
                 return;
             }
@@ -26,9 +34,9 @@ namespace CDOverhaul.Shared
             Animation.SetFrame(frame, ext.OwnerModel);
         }
 
-        public void OnNewFrame(in CustomRobotAnimationFPMExtention ext)
+        public void OnUpdate(in CustomRobotAnimationFPMExtention ext)
         {
-            if (ext.IsPlayingCustomAnimation)
+            if (ext.IsPlayingCustomAnimation && !AnimationIsNull)
             {
                 TimePlayedAtAll = Time.time - TimeAnimationStartedToPlay;
                 int frame = Mathf.RoundToInt(TimePlayedAtAll * 60f);

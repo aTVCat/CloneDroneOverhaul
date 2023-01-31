@@ -13,12 +13,22 @@ namespace CDOverhaul.Shared
         [NonSerialized]
         private readonly Dictionary<int, int> _cachedPositions = new Dictionary<int, int>();
 
+        /// <summary>
+        /// Called when new track is created
+        /// </summary>
         public void InitializeAsNewTrack()
         {
             Keyframes = new List<CustomRobotAnimationKeyframe>();
+            CreateKeyframeAt(0);
         }
 
-        public CustomRobotAnimationKeyframe GetKeyframeAt(in int frame)
+        /// <summary>
+        /// Get keyframe at <paramref name="frame"/> and if it is null, try get smooth keyframe between two ones if <paramref name="getSmoothKeyframes"/> set to true
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <param name="getSmoothKeyframes"></param>
+        /// <returns></returns>
+        public CustomRobotAnimationKeyframe GetKeyframeAt(in int frame, in bool getSmoothKeyframes = true)
         {
             CustomRobotAnimationKeyframe result = null;
             if (_cachedPositions.ContainsKey(frame))
@@ -37,13 +47,18 @@ namespace CDOverhaul.Shared
                 }
                 index++;
             }
-            if (result == null)
+            if (getSmoothKeyframes && result == null)
             {
                 result = GetSmoothKeyframeAt(frame);
             }
             return result;
         }
 
+        /// <summary>
+        /// Get a keyframe between 2 ones
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         public CustomRobotAnimationKeyframe GetSmoothKeyframeAt(in int frame)
         {
             CustomRobotAnimationKeyframe k = null;
@@ -67,10 +82,28 @@ namespace CDOverhaul.Shared
                 }
                 index++;
             }
-            OverhaulDebugController.Print("Prev keyframe: " + prevKeyframe, Color.white);
-            OverhaulDebugController.Print("Next keyframe: " + nextKeyframe, Color.white);
 
-            Vector3 rotation = GetKeyframeAt(nextKeyframe).Rotation - GetKeyframeAt(prevKeyframe).Rotation;
+            CustomRobotAnimationKeyframe next = GetKeyframeAt(nextKeyframe, false);
+            CustomRobotAnimationKeyframe prev = GetKeyframeAt(prevKeyframe, false);
+
+            if (prev == null)
+            {
+                if (next == null)
+                {
+                    return null;
+                }
+                return next;
+            }
+            if (next == null)
+            {
+                if (prev == null)
+                {
+                    return null;
+                }
+                return prev;
+            }
+
+            Vector3 rotation = next.Rotation - prev.Rotation;
             rotation = rotation / (nextKeyframe - prevKeyframe);
 
             k = CustomRobotAnimationKeyframe.NewKeyframe(frame);
@@ -79,11 +112,21 @@ namespace CDOverhaul.Shared
             return k;
         }
 
+        /// <summary>
+        /// Check if user has placed keyframe at frame
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         public bool HasKeyFrameAt(in int frame)
         {
             return GetKeyFrameListPositionAt(frame) != -1;
         }
 
+        /// <summary>
+        /// Get index of keyframe
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         public int GetKeyFrameListPositionAt(in int frame) // Optimize this
         {
             int index = 0;
@@ -98,6 +141,11 @@ namespace CDOverhaul.Shared
             return -1;
         }
 
+        /// <summary>
+        /// Create new keyframe
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         public CustomRobotAnimationKeyframe CreateKeyframeAt(in int frame)
         {
             int alreadyExistingKFrame = GetKeyFrameListPositionAt(frame);
@@ -111,6 +159,10 @@ namespace CDOverhaul.Shared
             return newKF;
         }
 
+        /// <summary>
+        /// Remove keyframe
+        /// </summary>
+        /// <param name="frame"></param>
         public void RemoveKeyframeAt(in int frame)
         {
             int alreadyExistingKFrame = GetKeyFrameListPositionAt(frame);

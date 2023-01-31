@@ -8,7 +8,10 @@ namespace CDOverhaul.Shared
         public static float ColorBurnMultipler;
 
         [OverhaulSetting("TestCat.TestSec.TestSet", true, true)]
-        public static bool NonFireCutBurnEnabled;
+        public static bool Test;
+
+        [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true)]
+        public static bool MakeLaserBurnVoxels;
 
         public override void Initialize()
         {
@@ -20,6 +23,11 @@ namespace CDOverhaul.Shared
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
+            if (!MakeLaserBurnVoxels)
+            {
+                return;
+            }
+
             PicaVoxelPoint x1 = new PicaVoxelPoint(picaVoxelPoint.X + 1, picaVoxelPoint.Y + 0, picaVoxelPoint.Z + 0);
             PicaVoxelPoint x2 = new PicaVoxelPoint(picaVoxelPoint.X - 1, picaVoxelPoint.Y - 0, picaVoxelPoint.Z - 0);
             PicaVoxelPoint y1 = new PicaVoxelPoint(picaVoxelPoint.X + 0, picaVoxelPoint.Y + 1, picaVoxelPoint.Z + 0);
