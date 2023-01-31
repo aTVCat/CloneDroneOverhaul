@@ -19,6 +19,11 @@ namespace CDOverhaul.Shared
             }
         }
 
+        /// <summary>
+        /// All animations are not usually loaded into memory 
+        /// </summary>
+        /// <param name="animName"></param>
+        /// <returns></returns>
         public bool IsAnimationLoaded(in string animName)
         {
             return LoadedAnimations.ContainsKey(animName);
@@ -31,9 +36,11 @@ namespace CDOverhaul.Shared
             {
                 anim = ModDataContainerBase.GetData<CustomRobotAnimation>(animName, true, "Animations/");
                 LoadedAnimations.Add(animName, anim);
-                return anim;
             }
-            anim = LoadedAnimations[animName];
+            else
+            {
+                anim = LoadedAnimations[animName];
+            }
             return anim;
         }
     }

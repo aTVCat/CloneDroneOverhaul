@@ -46,6 +46,7 @@ namespace CDOverhaul
 
             AddDescription("TestCat.TestSec.TestSet", "Some description", "TestSet.png", null);
             AddDescription("Robots.Events.Death Animation", "Robots won't instantly freeze, instead, they will slow down", null, null);
+            AddDescription("Gameplay.Voxels.Make laser burn voxels", "Cutting robots with normal sword would leave nearby voxels burnt", null, null);
 
             _hasAddedSettings = true;
         }

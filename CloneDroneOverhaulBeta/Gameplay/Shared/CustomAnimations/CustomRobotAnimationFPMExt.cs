@@ -23,6 +23,9 @@ namespace CDOverhaul.Shared
         public bool ManualAnimationEnabled { get; set; }
         public bool ForcePlay { get; set; }
 
+        private bool _hasUpperAnimator;
+        public bool HasUpperAnimator => OwnerModel != null && _hasUpperAnimator;
+
         public CharacterModel OwnerModel { get; set; }
         public CustomRobotAnimationPlayBehaviour CurrentAnimation { get; set; }
 
@@ -32,29 +35,32 @@ namespace CDOverhaul.Shared
             IsPlayingCustomAnimation = false;
             OwnerModel = owner.GetCharacterModel();
             CurrentAnimation = new CustomRobotAnimationPlayBehaviour();
+
+            _hasUpperAnimator = OwnerModel.UpperAnimator != null;
         }
 
+        /// <summary>
+        /// Start playing an animation on robot
+        /// </summary>
+        /// <param name="name"></param>
         public void PlayAnimation(in string name)
         {
-            if (IsPlayingCustomAnimation || OwnerModel == null)
+            if (OwnerModel == null)
             {
                 return;
             }
             CustomAnimationsController c = OverhaulBase.Core.Shared.CustomAnimations;
-            CurrentAnimation.ResetToNextPlay(c.AnimationsContainer.GetAnimation(name));
-        }
-
-        private void FixedUpdate()
-        {
-            if (OwnerModel != null)
-            {
-                OwnerModel.UpperAnimator.enabled = !IsPlayingCustomAnimation;
-            }
+            CurrentAnimation.StartPlaying(c.AnimationsContainer.GetAnimation(name));
+            IsPlayingCustomAnimation = true;
         }
 
         private void Update()
         {
-            CurrentAnimation.OnNewFrame(this);
+            if (HasUpperAnimator)
+            {
+                OwnerModel.UpperAnimator.enabled = !IsPlayingCustomAnimation;
+                CurrentAnimation.OnUpdate(this);
+            }
         }
     }
 }

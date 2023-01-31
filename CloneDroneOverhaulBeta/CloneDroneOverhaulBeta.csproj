@@ -396,6 +396,7 @@
     <Compile Include="ModControllers\Debug\OverhaulBenchmarkController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
+    <Compile Include="ModControllers\Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />

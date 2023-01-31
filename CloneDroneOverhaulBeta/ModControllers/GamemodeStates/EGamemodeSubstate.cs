@@ -6,6 +6,8 @@
 
         WeaponSkinSelection,
 
-        WeaponSkinCreation
+        WeaponSkinCreation,
+
+        AnimatingCustomAnimation
     }
 }

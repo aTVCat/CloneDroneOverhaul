@@ -102,7 +102,7 @@ namespace CDOverhaul
 
             OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
 
-            Object.Destroy(Core.gameObject);
+            UnityEngine.Object.Destroy(Core.gameObject);
             Core = null;
         }
     }
