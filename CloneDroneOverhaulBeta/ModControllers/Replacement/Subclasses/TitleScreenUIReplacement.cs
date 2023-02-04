@@ -52,7 +52,7 @@ namespace CDOverhaul.Patches
 
                 if (_spawnedPanel != null)
                 {
-                    GameObject.Destroy(_spawnedPanel);
+                    GameObject.Destroy(_spawnedPanel.gameObject);
                 }
             }
         }

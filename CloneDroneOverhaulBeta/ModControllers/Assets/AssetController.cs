@@ -11,6 +11,8 @@ namespace CDOverhaul
         /// </summary>
         public const string ModAssetBundle_Part1 = "overhaulassets_p1";
 
+        public const string ModAssetBundle_Part2 = "overhaulassets_p2";
+
         public const string ModAssetBundle_Skins = "overhaulassets_skins";
 
         public const string ModAssetBundle_Objects = "overhaulassets_objects";
@@ -35,6 +37,9 @@ namespace CDOverhaul
             {
                 case EModAssetBundlePart.Part1:
                     result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Part1, assetName);
+                    break;
+                case EModAssetBundlePart.Part2:
+                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Part2, assetName);
                     break;
                 case EModAssetBundlePart.WeaponSkins:
                     result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Skins, assetName);

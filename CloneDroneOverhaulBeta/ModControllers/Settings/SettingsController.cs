@@ -26,8 +26,6 @@ namespace CDOverhaul
                 return;
             }
 
-            OverhaulEventManager.AddEvent(SettingChangedEventString);
-
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public))

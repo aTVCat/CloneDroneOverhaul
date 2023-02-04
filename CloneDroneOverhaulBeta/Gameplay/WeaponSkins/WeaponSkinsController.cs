@@ -34,11 +34,11 @@ namespace CDOverhaul.Gameplay
 
             if (SkinsOnlyForPlayer)
             {
-                OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, onPlayerFound);
+                OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, onPlayerFound);
             }
             else
             {
-                OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
+                OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
             }
 
             AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default(WeaponSkinPlacement));
@@ -329,7 +329,6 @@ namespace CDOverhaul.Gameplay
             }
 
             Volume volumeToEdit = model.GetPrimaryVolume();
-            OverhaulBase.Core.Shared.VolumeEditor.EditVolume(volumeToEdit);
         }
 
         /// <summary>
@@ -337,7 +336,6 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void ExitSkinCreationMode()
         {
-            OverhaulBase.Core.Shared.VolumeEditor.EditVolume(null);
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover == null)
             {

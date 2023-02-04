@@ -22,7 +22,7 @@ namespace CDOverhaul.Patches
         {
             if (!_hasAddedListeners)
             {
-                OverhaulEventManager.AddListenerToEvent(OverhaulBase.ModDeactivatedEventString, Cancel);
+                OverhaulEventManager.AddEventListener(OverhaulBase.ModDeactivatedEventString, Cancel);
                 _hasAddedListeners = true;
             }
 
@@ -34,7 +34,7 @@ namespace CDOverhaul.Patches
         /// </summary>
         public virtual void Cancel()
         {
-            OverhaulEventManager.RemoveListenerFromEvent(OverhaulBase.ModDeactivatedEventString, Cancel);
+            OverhaulEventManager.RemoveEventListener(OverhaulBase.ModDeactivatedEventString, Cancel);
             Replacements.Remove(this);
             HasReplaced = false;
         }
@@ -51,6 +51,7 @@ namespace CDOverhaul.Patches
         {
             NewReplacement<TitleScreenUIReplacement>();
             NewReplacement<PlayerCameraPrefabReplacement>();
+            NewReplacement<OptimizeOnStart>();
         }
     }
 }

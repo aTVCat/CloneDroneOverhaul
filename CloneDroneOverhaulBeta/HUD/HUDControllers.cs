@@ -16,14 +16,16 @@ namespace CDOverhaul.HUD
         /// </summary>
         public ModdedObject HUDModdedObject { get; private set; }
 
+        private GameObject _spawnedCanvas { get; set; }
+
         public GameObject[] HUDPrefabsArray { get; private set; }
 
         public bool HasSpawnedHUD => HUDModdedObject != null;
 
         public override void Initialize()
         {
-            GameObject spawnedHud = Instantiate(AssetController.GetAsset(OverhaulHUDName, EModAssetBundlePart.Part1));
-            ModdedObject moddedObject = spawnedHud.GetComponent<ModdedObject>();
+            _spawnedCanvas = Instantiate(AssetController.GetAsset(OverhaulHUDName, EModAssetBundlePart.Part1));
+            ModdedObject moddedObject = _spawnedCanvas.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
             setPixelPerfectValue(true);
@@ -38,13 +40,13 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            OverhaulEventManager.AddListenerToEvent(OverhaulBase.ModDeactivatedEventString, destroyHUD);
+            OverhaulEventManager.AddEventListener(OverhaulBase.ModDeactivatedEventString, destroyHUD);
 
             AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
 
-            spawnedHud.GetComponent<Canvas>().enabled = false;
-            spawnedHud.GetComponent<CanvasScaler>().enabled = false;
+            _spawnedCanvas.GetComponent<Canvas>().enabled = false;
+            _spawnedCanvas.GetComponent<CanvasScaler>().enabled = false;
 
             base.IsInitialized = true;
         }
@@ -105,6 +107,7 @@ namespace CDOverhaul.HUD
             }
 
             Destroy(HUDModdedObject.gameObject);
+            Destroy(_spawnedCanvas);
         }
     }
 }

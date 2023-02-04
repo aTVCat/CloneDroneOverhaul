@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
@@ -42,6 +43,7 @@ namespace CDOverhaul
 
             SettingsController.Initialize();
             OverhaulDebugController.Initialize();
+            OverhaulGraphicsController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

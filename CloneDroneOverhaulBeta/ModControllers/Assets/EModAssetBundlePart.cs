@@ -4,6 +4,7 @@
     {
         None,
         Part1,
+        Part2,
         WeaponSkins,
         Objects,
     }

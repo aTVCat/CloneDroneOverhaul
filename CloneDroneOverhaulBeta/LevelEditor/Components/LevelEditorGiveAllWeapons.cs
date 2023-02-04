@@ -13,17 +13,24 @@ namespace CDOverhaul.LevelEditor
             Renderer renderer = base.GetComponent<Renderer>();
             renderer.enabled = GameModeManager.IsInLevelEditor();
 
-            OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, delegate (FirstPersonMover mover)
-            {
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.Hammer, 3);
-                    mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
-                    mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
-                    mover.RefreshUpgrades();
+            OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, giveWeapons);
+        }
 
-                }, 0.2f);
-            });
+        private void giveWeapons(FirstPersonMover mover)
+        {
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.Hammer, 3);
+                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
+                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
+                mover.RefreshUpgrades();
+
+            }, 0.2f);
+        }
+
+        private void OnDestroy()
+        {
+            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, giveWeapons);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CDOverhaul
         public static Action EmptyDelegate = delegate { };
 
         private static GlobalEventManager _globalEventManager;
-        private static List<SEventEntry> _events;
+        private static List<EventEntry> _events;
 
         /// <summary>
         /// Check if <see cref="GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
@@ -28,12 +28,11 @@ namespace CDOverhaul
 
             if (_events == null)
             {
-                _events = new List<SEventEntry>();
+                _events = new List<EventEntry>();
             }
             _events.Clear();
 
-            OverhaulEventManager.AddEvent(OverhaulBase.ModDeactivatedEventString);
-            AddListenerToEvent(OverhaulBase.ModDeactivatedEventString, Deconstruct);
+            AddEventListener(OverhaulBase.ModDeactivatedEventString, Deconstruct);
         }
 
         internal static void Deconstruct()
@@ -47,77 +46,34 @@ namespace CDOverhaul
             }
         }
 
-        public static void AddEvent(in string name, in bool dontAddPrefix = false)
-        {
-            AddEventListener(name, EmptyDelegate, dontAddPrefix);
-        }
-
-        public static void RemoveEvent(in string name, in bool dontAddPrefix = false)
-        {
-            RemoveEventListener(name, EmptyDelegate, dontAddPrefix);
-
-            if (MayAddListeners)
-            {
-                string finalString = !dontAddPrefix ? EventPrefix + name : name;
-                foreach (SEventEntry entry in _events)
-                {
-                    if (entry.EventName == finalString)
-                    {
-                        RemoveEventListener(entry.EventName, entry.EventAction);
-                    }
-                }
-            }
-        }
-
-        public static void AddListenerToEvent(in string name, in Action callback, in bool dontAddPrefix = false)
-        {
-            AddEventListener(name, callback, dontAddPrefix);
-        }
-
-        public static void AddListenerToEvent<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
-        {
-            AddEventListener(name, callback, dontAddPrefix);
-        }
-
-        public static void RemoveListenerFromEvent(in string name, in Action callback, in bool dontAddPrefix = false)
-        {
-            RemoveEventListener(name, callback, dontAddPrefix);
-        }
-
-        public static void RemoveListenerFromEvent<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
-        {
-            RemoveEventListener(name, callback, dontAddPrefix);
-        }
-
-
-        public static SEventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
+        public static EventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
-                return default(SEventEntry);
+                return default(EventEntry);
             }
 
             string finalString = !dontAddPrefix ? EventPrefix + name : name;
             _globalEventManager.AddEventListener(finalString, callback);
 
-            SEventEntry newEvent = new SEventEntry(finalString, callback, !dontAddPrefix);
+            EventEntry newEvent = new EventEntry(finalString, callback, !dontAddPrefix);
             _events.Add(newEvent);
 
             return newEvent;
         }
 
-        public static SEventEntry AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
+        public static EventEntry AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
-                return default(SEventEntry);
+                return default(EventEntry);
             }
 
 
             string finalString = !dontAddPrefix ? EventPrefix + name : name;
             _globalEventManager.AddEventListener<T>(finalString, callback);
 
-            SEventEntry newEvent = new SEventEntry(finalString, null, !dontAddPrefix);
+            EventEntry newEvent = new EventEntry(finalString, null, !dontAddPrefix);
             newEvent.SetArgument<T>(callback);
             _events.Add(newEvent);
 
@@ -135,8 +91,8 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener(finalString, callback);
 
             int removeIndex = -1;
-            SEventEntry eventToRemove = new SEventEntry(finalString, callback, !dontAddPrefix);
-            foreach (SEventEntry entry in _events)
+            EventEntry eventToRemove = new EventEntry(finalString, callback, !dontAddPrefix);
+            foreach (EventEntry entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))
@@ -161,9 +117,9 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener<T>(finalString, callback);
 
             int removeIndex = -1;
-            SEventEntry eventToRemove = new SEventEntry(finalString, null, !dontAddPrefix);
+            EventEntry eventToRemove = new EventEntry(finalString, null, !dontAddPrefix);
             eventToRemove.SetArgument<T>(callback);
-            foreach (SEventEntry entry in _events)
+            foreach (EventEntry entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))
