@@ -46,7 +46,7 @@ namespace CDOverhaul
         }
 
         /// <summary>
-        /// Add missing values if you have need
+        /// Add missing values if you have need to
         /// </summary>
         public virtual void RepairMissingFields()
         {

@@ -11,7 +11,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddListenerToEvent(MainGameplayController.GamemodeChangedEventString, onGamemodeUpdated);
+            OverhaulEventManager.AddEventListener(MainGameplayController.GamemodeChangedEventString, onGamemodeUpdated);
 
             _versionLabel = MyModdedObject.GetObject<Text>(0);
 

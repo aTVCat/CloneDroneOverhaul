@@ -14,8 +14,8 @@ namespace CDOverhaul.Shared
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddListenerToEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
-            OverhaulEventManager.AddListenerToEvent(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
+            OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
+            OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
             AnimationsContainer = CustomRobotAnimationsData.GetData<CustomRobotAnimationsData>(AnimsContainerFilename, true, string.Empty);
 
             HasAddedEventListeners = true;
@@ -41,7 +41,7 @@ namespace CDOverhaul.Shared
         }
 
         /// <summary>
-        /// Get all baody parts that may be animated in level editor
+        /// Get all body parts that may be animated in level editor
         /// </summary>
         /// <returns></returns>
         public static List<string> GetAllBodyParts()

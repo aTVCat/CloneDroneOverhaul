@@ -30,7 +30,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddListenerToEvent(GamemodeSubstatesController.SubstateChangedEventString, onGamemodeSubstateUpdated);
+            OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, onGamemodeSubstateUpdated);
 
             _weaponEntry = MyModdedObject.GetObject<ModdedObject>(0);
             _weaponEntry.gameObject.SetActive(false);
@@ -44,11 +44,6 @@ namespace CDOverhaul.HUD
 
             _skinAddingWindow = MyModdedObject.GetObject<ModdedObject>(7);
             _skinAddingWindow.gameObject.AddComponent<DraggableUI>();
-
-            VolumeEditorController controller = OverhaulBase.Core.Shared.VolumeEditor;
-            MyModdedObject.GetObject<Button>(10).onClick.AddListener(controller.SelectToolNone);
-            MyModdedObject.GetObject<Button>(11).onClick.AddListener(controller.SelectToolAdd);
-            MyModdedObject.GetObject<Button>(12).onClick.AddListener(controller.SelectToolDelete);
 
             _bg = MyModdedObject.GetObject<Transform>(8);
 

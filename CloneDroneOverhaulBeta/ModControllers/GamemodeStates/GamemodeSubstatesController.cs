@@ -24,8 +24,6 @@
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddEvent(SubstateChangedEventString);
-
             HasAddedEventListeners = true;
             IsInitialized = true;
         }

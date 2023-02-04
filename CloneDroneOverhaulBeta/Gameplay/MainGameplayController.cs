@@ -1,11 +1,15 @@
 ﻿using ModLibrary;
 using System;
+using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
     public class MainGameplayController : ModController
     {
         public const string GamemodeChangedEventString = "GamemodeChanged";
+        public const string MainCameraSwitchedEventString = "CameraMainSwitched";
+        public const string CurrentCameraSwitchedEventString = "CameraCurrentSwitched";
+
         public const string FirstPersonMoverSpawnedEventString = "FPMSpawned";
         public const string FirstPersonMoverSpawned_DelayEventString = "FPMSpawned_Delay";
 
@@ -29,17 +33,13 @@ namespace CDOverhaul.Gameplay
 
         public GamemodeSubstatesController GamemodeSubstates { get; private set; }
 
-        private GameMode _gamemodeLastFrame { get; set; }
+        private GameMode _gamemodeLastFrame;
+        private Camera _cameraLastFrame;
+        private Camera _cameraCurrentLastFrame;
 
         public override void Initialize()
         {
             Instance = this;
-
-            OverhaulEventManager.AddEvent(GamemodeChangedEventString);
-            OverhaulEventManager.AddEvent(FirstPersonMoverSpawnedEventString);
-            OverhaulEventManager.AddEvent(FirstPersonMoverSpawned_DelayEventString);
-            OverhaulEventManager.AddEvent(PlayerSetAsCharacter);
-            OverhaulEventManager.AddEvent(PlayerSetAsFirstPersonMover);
 
             GameFlow = GameFlowManager.Instance;
             WeaponSkins = ModControllerManager.NewController<WeaponSkinsController>();
@@ -116,9 +116,23 @@ namespace CDOverhaul.Gameplay
             GameMode currentGamemode = GameFlow.GetCurrentGameMode();
             if (currentGamemode != _gamemodeLastFrame)
             {
-                sendGamemodeWasUpdateEvent(); sendGamemodeWasUpdateEvent();
+                sendGamemodeWasUpdateEvent();
             }
             _gamemodeLastFrame = currentGamemode;
+
+            Camera mainCamera = Camera.main;
+            if (mainCamera != _cameraLastFrame)
+            {
+                OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
+            }
+            _cameraLastFrame = mainCamera;
+
+            Camera currentCamera = Camera.current;
+            if (currentCamera != _cameraCurrentLastFrame)
+            {
+                OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
+            }
+            _cameraCurrentLastFrame = currentCamera;
         }
     }
 }
