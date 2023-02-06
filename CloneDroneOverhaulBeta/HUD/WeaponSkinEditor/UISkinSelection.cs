@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Shared;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,7 +42,7 @@ namespace CDOverhaul.HUD
             _skinContainer = MyModdedObject.GetObject<Transform>(5);
 
             _skinAddingWindow = MyModdedObject.GetObject<ModdedObject>(7);
-            _skinAddingWindow.gameObject.AddComponent<DraggableUI>();
+            //_skinAddingWindow.gameObject.AddComponent<DraggableUI>();
 
             _bg = MyModdedObject.GetObject<Transform>(8);
 

@@ -18,7 +18,7 @@ namespace CDOverhaul.Graphics
         public static void Initialize()
         {
             OverhaulEventManager.AddEventListener<Camera>(MainGameplayController.MainCameraSwitchedEventString, mainCameraUpdate);
-            OverhaulEventManager.AddEventListener(OverhaulBase.ModDeactivatedEventString, onModDisabled);
+            OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, onModDisabled);
 
             UICamera = GameUIRoot.Instance.GetComponent<Canvas>().worldCamera;
             addPostProcessingToCamera(UICamera);

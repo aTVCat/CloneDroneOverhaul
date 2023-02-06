@@ -1,15 +1,17 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.LevelEditor;
 using ModLibrary;
+using ModLibrary.YieldInstructions;
+using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul
 {
     /// <summary>
-    /// The base class of the mod. Allows mod startup
+    /// The base class of the mod. Starts up the mod
     /// </summary>
     [MainModClass]
-    public sealed class OverhaulBase : Mod
+    public sealed class OverhaulMod : Mod
     {
         public const string ModDeactivatedEventString = "ModDeactivated";
 
@@ -21,10 +23,10 @@ namespace CDOverhaul
         /// <summary>
         /// The instance of main mod class
         /// </summary>
-        public static OverhaulBase Base { get; internal set; }
+        public static OverhaulMod Base { get; internal set; }
 
         /// <summary>
-        /// Returns <b>True</b> if <b><see cref="OverhaulBase.Core"/></b> is not <b>Null</b>
+        /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
         public static bool IsCoreCreated => Core != null;
 
@@ -63,11 +65,22 @@ namespace CDOverhaul
                 return;
             }
 
-            OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, firstPersonMover);
+            // An event that is usually called before FPM full initialization
+            OverhaulEventManager.DispatchEvent(MainGameplayController.FirstPersonMoverSpawnedEventString, firstPersonMover);
+
+            StaticCoroutineRunner.StartStaticCoroutine(coroutine());
+            IEnumerator coroutine()
+            {
+                yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
+                OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+            }
+
+            /*
             DelegateScheduler.Instance.Schedule(delegate
             {
+                // Called after character model is created & FPM is fully initialized 
                 OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
-            }, 0.1f);
+            }, 0.1f);*/
         }
 
 

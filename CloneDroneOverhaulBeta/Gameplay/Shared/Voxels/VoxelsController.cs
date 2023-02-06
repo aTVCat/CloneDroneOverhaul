@@ -31,14 +31,7 @@ namespace CDOverhaul.Shared
                 return;
             }
 
-            PicaVoxelPoint x1 = new PicaVoxelPoint(picaVoxelPoint.X + 1, picaVoxelPoint.Y + 0, picaVoxelPoint.Z + 0);
-            PicaVoxelPoint x2 = new PicaVoxelPoint(picaVoxelPoint.X - 1, picaVoxelPoint.Y - 0, picaVoxelPoint.Z - 0);
-            PicaVoxelPoint y1 = new PicaVoxelPoint(picaVoxelPoint.X + 0, picaVoxelPoint.Y + 1, picaVoxelPoint.Z + 0);
-            PicaVoxelPoint y2 = new PicaVoxelPoint(picaVoxelPoint.X - 0, picaVoxelPoint.Y - 1, picaVoxelPoint.Z - 0);
-            PicaVoxelPoint z1 = new PicaVoxelPoint(picaVoxelPoint.X + 0, picaVoxelPoint.Y + 0, picaVoxelPoint.Z + 1);
-            PicaVoxelPoint z2 = new PicaVoxelPoint(picaVoxelPoint.X - 0, picaVoxelPoint.Y - 0, picaVoxelPoint.Z - 1);
-
-            foreach (PicaVoxelPoint p in new PicaVoxelPoint[] { x1, x2, y1, y2, z1, z2 })
+            foreach (PicaVoxelPoint p in GetSurroundingPoints(picaVoxelPoint))
             {
                 if (!bodyPart.IsVoxelWaitingToBeDestroyed(p))
                 {
@@ -52,6 +45,22 @@ namespace CDOverhaul.Shared
                     }
                 }
             }
+        }
+
+        public static PicaVoxelPoint GetOffsetPoint(in PicaVoxelPoint picaVoxelPoint, in int OffX, in int OffY, in int OffZ)
+        {
+            return new PicaVoxelPoint(picaVoxelPoint.X + OffX, picaVoxelPoint.Y + OffY, picaVoxelPoint.Z + OffZ);
+        }
+
+        public static PicaVoxelPoint[] GetSurroundingPoints(in PicaVoxelPoint picaVoxelPoint)
+        {
+            PicaVoxelPoint x1 = GetOffsetPoint(picaVoxelPoint, 1, 0, 0);
+            PicaVoxelPoint x2 = GetOffsetPoint(picaVoxelPoint, -1, 0, 0);
+            PicaVoxelPoint y1 = GetOffsetPoint(picaVoxelPoint, 0, 1, 0);
+            PicaVoxelPoint y2 = GetOffsetPoint(picaVoxelPoint, 0, -1, 0);
+            PicaVoxelPoint z1 = GetOffsetPoint(picaVoxelPoint, 0, 0, 1);
+            PicaVoxelPoint z2 = GetOffsetPoint(picaVoxelPoint, 0, 0, -1);
+            return new PicaVoxelPoint[] { x1, x2, y1, y2, z1, z2 };
         }
     }
 }

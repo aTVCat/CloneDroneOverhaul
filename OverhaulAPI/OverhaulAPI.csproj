@@ -267,6 +267,7 @@
     <Compile Include="Gamemodes\GamemodeAPI.cs" />
     <Compile Include="Gamemodes\IOverhaulGamemode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
   </ItemGroup>
   <ItemGroup />

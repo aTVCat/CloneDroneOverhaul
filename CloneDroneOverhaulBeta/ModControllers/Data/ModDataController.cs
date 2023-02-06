@@ -20,7 +20,7 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(data, DataRepository.Instance.GetSettings());
-                File.WriteAllText(OverhaulBase.Core.ModFolder + "Assets/" + modFolder + fileName, str);
+                File.WriteAllText(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + fileName, str);
                 return;
             }
             DataRepository.Instance.Save(data, "Overhaul/" + fileName, false, false);
@@ -37,9 +37,9 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 T result = null;
-                if (File.Exists(OverhaulBase.Core.ModFolder + "Assets/" + modFolder + "/" + fileName))
+                if (File.Exists(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName))
                 {
-                    result = (T)JsonConvert.DeserializeObject(File.ReadAllText(OverhaulBase.Core.ModFolder + "Assets/" + modFolder + "/" + fileName), DataRepository.Instance.GetSettings());
+                    result = (T)JsonConvert.DeserializeObject(File.ReadAllText(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName), DataRepository.Instance.GetSettings());
                 }
                 else
                 {
@@ -48,7 +48,7 @@ namespace CDOverhaul
                 }
                 result.IsLoaded = true;
                 result.FileName = fileName;
-                result.SavePath = OverhaulBase.Core.ModFolder + "Assets/" + modFolder + fileName;
+                result.SavePath = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + fileName;
                 return result;
             }
 

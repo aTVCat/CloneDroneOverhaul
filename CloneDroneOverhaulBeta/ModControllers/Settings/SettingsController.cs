@@ -18,7 +18,7 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            HUDControllers h = OverhaulBase.Core.HUDController;
+            HUDControllers h = OverhaulMod.Core.HUDController;
             HUD = h.AddHUD<UISettingsMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
 
             if (_hasAddedSettings)
@@ -33,18 +33,18 @@ namespace CDOverhaul
                     var neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                     if (neededAttribute != null)
                     {
-                        AddSetting(neededAttribute.MySetting, neededAttribute.DefaultValue, field);
+                        AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field);
                         if (neededAttribute.IsHidden)
                         {
-                            _hiddenEntries.Add(neededAttribute.MySetting);
+                            _hiddenEntries.Add(neededAttribute.SettingRawPath);
                         }
                         if (!string.IsNullOrEmpty(neededAttribute.Description))
                         {
-                            AddDescription(neededAttribute.MySetting, neededAttribute.Description, neededAttribute.Img4_3Path, neededAttribute.Img16_9Path);
+                            AddDescription(neededAttribute.SettingRawPath, neededAttribute.Description, neededAttribute.Img4_3Path, neededAttribute.Img16_9Path);
                         }
-                        if (!string.IsNullOrEmpty(neededAttribute.ParentSetting))
+                        if (!string.IsNullOrEmpty(neededAttribute.ParentSettingRawPath))
                         {
-                            ParentSetting(neededAttribute.MySetting, neededAttribute.ParentSetting);
+                            ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
                         }
                     }
                 }

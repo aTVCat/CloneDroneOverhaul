@@ -401,13 +401,15 @@
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="ModControllers\Settings\SettingDescription.cs" />
     <Compile Include="ModControllers\Settings\SubClasses\ESettingType.cs" />
     <Compile Include="ModControllers\Settings\Setting.cs" />
     <Compile Include="ModControllers\Settings\SubClasses\SettingAttribute.cs" />
     <Compile Include="ModControllers\Settings\SettingsController.cs" />
-    <Compile Include="Shared\DraggableUI.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
@@ -432,7 +434,7 @@
     <Compile Include="ModControllers\Input\EnableCursorController.cs" />
     <Compile Include="ModControllers\OverhaulEventManager.cs" />
     <Compile Include="ModControllers\OverhaulVersion.cs" />
-    <Compile Include="ModControllers\OverhaulBase.cs" />
+    <Compile Include="ModControllers\OverhaulMod.cs" />
     <Compile Include="ModControllers\OverhaulCore.cs" />
     <Compile Include="ModControllers\Patches\PhotoManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\LevelEditorDataManager_Patch.cs" />
@@ -454,6 +456,9 @@
       <Project>{c4055585-9df8-4f16-98ad-8d74f5531ae9}</Project>
       <Name>OverhaulAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gameplay\Combat_Update\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
