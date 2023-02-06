@@ -1,32 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CDOverhaul.Shared
+namespace OverhaulAPI.SharedMonoBehaviours
 {
     /// <summary>
     /// Make UI panel draggable
     /// </summary>
-    public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class OverhaulDraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        private bool _isDragging;
-        private Vector2 _dragOffset;
         private RectTransform _myRectTransform;
-
         private bool _hasInitialized;
+
+        /// <summary>
+        /// Check if we are dragging the UI element
+        /// </summary>
+        public bool IsDragging { get; private set; }
+        private Vector2 _dragOffset;
 
         private void Start()
         {
             _myRectTransform = base.GetComponent<RectTransform>();
-            _hasInitialized = true;
+            _hasInitialized = _myRectTransform != null;
         }
 
         private void Update()
         {
-            if (_isDragging)
-            {
-                Vector2 uirootAnchoredPositionFromMousePosition = UIManager.Instance.GetUIRootAnchoredPositionFromMousePosition();
-                _myRectTransform.anchoredPosition = uirootAnchoredPositionFromMousePosition - _dragOffset;
-            }
+            DragIfPossible();
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -35,7 +34,7 @@ namespace CDOverhaul.Shared
             {
                 return;
             }
-            _isDragging = true;
+            IsDragging = true;
             Vector2 uirootAnchoredPositionFromMousePosition = UIManager.Instance.GetUIRootAnchoredPositionFromMousePosition();
             _dragOffset = uirootAnchoredPositionFromMousePosition - _myRectTransform.anchoredPosition;
         }
@@ -46,7 +45,16 @@ namespace CDOverhaul.Shared
             {
                 return;
             }
-            _isDragging = false;
+            IsDragging = false;
+        }
+
+        public void DragIfPossible()
+        {
+            if (_hasInitialized && IsDragging)
+            {
+                Vector2 uirootAnchoredPositionFromMousePosition = UIManager.Instance.GetUIRootAnchoredPositionFromMousePosition();
+                _myRectTransform.anchoredPosition = uirootAnchoredPositionFromMousePosition - _dragOffset;
+            }
         }
     }
 }

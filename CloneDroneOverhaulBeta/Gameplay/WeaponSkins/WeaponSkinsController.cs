@@ -282,7 +282,7 @@ namespace CDOverhaul.Gameplay
             MainGameplayController.Instance.Levels.ArenaIsHidden = true;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulBase.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate
+                MainGameplayController.Instance.StartGamemode(EditorGamemode, MainGameplayController.Instance.Levels.GetLevelData(OverhaulMod.Core.ModFolder + "Levels/EditorRooms/WeaponSkinEditorMap.json"), delegate
                 {
                     LevelSection[] sections = FindObjectsOfType<LevelSection>();
                     foreach (LevelSection s in sections)
@@ -394,17 +394,13 @@ namespace CDOverhaul.Gameplay
         /// <param name="default">Force use of vanilla skins</param>
         public void RefreshSkins(in FirstPersonMover mover, in bool @default = false)
         {
-            if (mover == null || !mover.HasCharacterModel())
+            if (mover == null || !mover.HasCharacterModel() || mover.IsMindSpaceCharacter)
             {
                 return;
             }
-
-            if (SkinsOnlyForPlayer)
+            if (SkinsOnlyForPlayer && !mover.IsPlayer())
             {
-                if (!mover.IsPlayer())
-                {
-                    return;
-                }
+                return;
             }
 
             RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);

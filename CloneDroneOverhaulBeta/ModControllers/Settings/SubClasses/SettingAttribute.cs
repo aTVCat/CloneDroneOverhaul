@@ -5,9 +5,9 @@ namespace CDOverhaul
     [AttributeUsage(AttributeTargets.All)]
     public class OverhaulSettingAttribute : Attribute
     {
-        public string MySetting;
+        public string SettingRawPath;
 
-        public string ParentSetting;
+        public string ParentSettingRawPath;
 
         public string Description;
 
@@ -21,13 +21,13 @@ namespace CDOverhaul
 
         public OverhaulSettingAttribute(string settingPath, object defValue, bool isHidden = false, string description = null, string img43filename = null, string img169filename = null, string parentSettingPath = null)
         {
-            MySetting = settingPath;
+            SettingRawPath = settingPath;
             DefaultValue = defValue;
             IsHidden = isHidden;
             Description = description;
             Img4_3Path = img43filename;
             Img16_9Path = img169filename;
-            ParentSetting = parentSettingPath;
+            ParentSettingRawPath = parentSettingPath;
         }
     }
 }

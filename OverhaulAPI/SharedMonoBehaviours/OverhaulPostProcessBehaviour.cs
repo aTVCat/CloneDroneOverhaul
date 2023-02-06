@@ -7,7 +7,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
     [RequireComponent(typeof(Camera))]
     public class OverhaulPostProcessBehaviour : MonoBehaviour
     {
-        private static List<OverhaulPostProcessBehaviour> _spawnedBehaviours = new List<OverhaulPostProcessBehaviour>();
+        private static readonly List<OverhaulPostProcessBehaviour> _spawnedBehaviours = new List<OverhaulPostProcessBehaviour>();
 
         /// <summary>
         /// Clear the list of spawned post processing effect
@@ -19,17 +19,24 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         public static void APIUpdate()
         {
-            foreach(OverhaulPostProcessBehaviour b in _spawnedBehaviours)
+            int i = 0;
+            do
             {
-                if(b.EnableCondition == null)
+                if(_spawnedBehaviours.Count == 0)
                 {
-                    b.enabled = true;
+                    return;
                 }
-                else
-                {
-                    b.enabled = b.EnableCondition();
-                }
-            }
+
+                OverhaulPostProcessBehaviour b = _spawnedBehaviours[i];
+                b.enabled = b.EnableCondition == null || b.EnableCondition();
+                i++;
+            } while (i < _spawnedBehaviours.Count);
+
+            /*
+            foreach (OverhaulPostProcessBehaviour b in _spawnedBehaviours)
+            {
+                b.enabled = b.EnableCondition == null || b.EnableCondition();
+            }*/
         }
 
         /// <summary>
@@ -49,7 +56,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
                 API.ThrowException("ImageEffectMaterials are NULL.");
             }
 
-            foreach(Material mat in imageEffectMaterials)
+            foreach (Material mat in imageEffectMaterials)
             {
                 OverhaulPostProcessBehaviour r = cam.gameObject.AddComponent<OverhaulPostProcessBehaviour>();
                 r.PostProcessMaterial = mat;
@@ -57,7 +64,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
                 _spawnedBehaviours.Add(r);
             }
         }
-        
+
         /// <summary>
         /// Make camera use an image effect shader in <paramref name="imageEffectMaterial"/>
         /// </summary>
@@ -78,6 +85,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
             OverhaulPostProcessBehaviour r = cam.gameObject.AddComponent<OverhaulPostProcessBehaviour>();
             r.PostProcessMaterial = imageEffectMaterial;
             r.EnableCondition = enableCondition;
+            r.IsSupported = imageEffectMaterial.shader != null && imageEffectMaterial.shader.isSupported;
             _spawnedBehaviours.Add(r);
         }
 
@@ -88,9 +96,11 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         public Func<bool> EnableCondition;
 
+        public bool IsSupported;
+
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (PostProcessMaterial.shader != null && PostProcessMaterial.shader.isSupported)
+            if (IsSupported)
                 Graphics.Blit(source, destination, PostProcessMaterial);
         }
 

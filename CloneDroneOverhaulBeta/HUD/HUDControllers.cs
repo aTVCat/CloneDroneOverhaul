@@ -40,7 +40,7 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            OverhaulEventManager.AddEventListener(OverhaulBase.ModDeactivatedEventString, destroyHUD);
+            OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, destroyHUD);
 
             AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));

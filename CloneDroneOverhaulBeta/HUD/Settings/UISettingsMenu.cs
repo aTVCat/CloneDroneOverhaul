@@ -90,9 +90,9 @@ namespace CDOverhaul.HUD
                     List<string> childrenSettings = SettingsController.GetChildrenSettings(settingName);
                     PopulateSetting(settingName, childrenSettings.Count == 0 ? ESettingPosition.Normal : ESettingPosition.Top);
                     int index = 0;
-                    if(childrenSettings.Count != 0)
+                    if (childrenSettings.Count != 0)
                     {
-                        foreach(string cSettingName in childrenSettings)
+                        foreach (string cSettingName in childrenSettings)
                         {
                             ESettingPosition pos = ESettingPosition.Center;
                             if (childrenSettings.Count - 1 == index)

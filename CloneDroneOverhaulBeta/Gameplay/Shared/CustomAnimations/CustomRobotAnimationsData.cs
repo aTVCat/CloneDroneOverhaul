@@ -6,7 +6,7 @@ namespace CDOverhaul.Shared
 {
     public class CustomRobotAnimationsData : ModDataContainerBase
     {
-        public static string[] AllAnimationsUnderModAssetsFolder => Directory.GetFiles(OverhaulBase.Core.ModFolder + "Assets/Animations/");
+        public static string[] AllAnimationsUnderModAssetsFolder => Directory.GetFiles(OverhaulMod.Core.ModFolder + "Assets/Animations/");
 
         [NonSerialized]
         public static Dictionary<string, CustomRobotAnimation> LoadedAnimations;

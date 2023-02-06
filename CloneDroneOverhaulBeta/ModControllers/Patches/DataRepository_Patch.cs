@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
             string fullPath = __instance.GetFullPath(fileName, useResourcesFolder);
             EnsureDirectoryForFileCreated(fullPath);
 
-            string file = Application.temporaryCachePath + "CloneDroneLevelData.json";
+            string file = Application.temporaryCachePath + "SaveData.json";
             JsonSerializerSettings settings = __instance.GetSettings();
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
@@ -29,7 +29,10 @@ namespace CDOverhaul.Patches
             w.Close();
             w.Dispose();
 
-            if (File.Exists(fullPath)) File.Delete(fullPath);
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
             File.Move(file, fullPath);
 
             return false;

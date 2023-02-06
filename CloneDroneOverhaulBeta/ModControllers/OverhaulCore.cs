@@ -25,10 +25,10 @@ namespace CDOverhaul
         internal void InitializeCore()
         {
             // Set some references up
-            OverhaulBase.Core = this;
+            OverhaulMod.Core = this;
             OverhaulAPI.API.LoadAPI();
 
-            ModFolder = OverhaulBase.Base.ModInfo.FolderPath;
+            ModFolder = OverhaulMod.Base.ModInfo.FolderPath;
 
             // Initialize controllers
             GameObject controllers = new GameObject("Controllers");

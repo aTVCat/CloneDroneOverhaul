@@ -32,7 +32,7 @@ namespace CDOverhaul
             }
             _events.Clear();
 
-            AddEventListener(OverhaulBase.ModDeactivatedEventString, Deconstruct);
+            AddEventListener(OverhaulMod.ModDeactivatedEventString, Deconstruct);
         }
 
         internal static void Deconstruct()

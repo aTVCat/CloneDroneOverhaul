@@ -22,7 +22,7 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            GameObject panel = OverhaulBase.Core.HUDController.GetHUDPrefab("TitleScreenUI_Buttons");
+            GameObject panel = OverhaulMod.Core.HUDController.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
             {
                 SuccessfullyPatched = false;

@@ -49,7 +49,7 @@ namespace CDOverhaul.Shared
             {
                 return;
             }
-            CustomAnimationsController c = OverhaulBase.Core.Shared.CustomAnimations;
+            CustomAnimationsController c = OverhaulMod.Core.Shared.CustomAnimations;
             CurrentAnimation.StartPlaying(c.AnimationsContainer.GetAnimation(name));
             IsPlayingCustomAnimation = true;
         }

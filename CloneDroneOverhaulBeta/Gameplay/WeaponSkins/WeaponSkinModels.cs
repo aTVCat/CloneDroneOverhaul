@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay
         /// <summary>
         /// Directory where all previews are stored
         /// </summary>
-        public static string SkinPreviewDirectory = OverhaulBase.Core.ModFolder + "Skins/Previews/";
+        public static string SkinPreviewDirectory = OverhaulMod.Core.ModFolder + "Skins/Previews/";
 
         public (GameObject, GameObject) Normal;
         public (GameObject, GameObject) Fire;

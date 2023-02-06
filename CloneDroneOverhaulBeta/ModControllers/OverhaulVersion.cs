@@ -13,7 +13,15 @@ namespace CDOverhaul
         /// </summary>
         public static readonly Version ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-        public static readonly string ModFullName = "Clone drone Overhaul Beta a" + ModVersion.ToString();
-        public static readonly string ModShortName = "CDO a" + ModVersion.ToString();
+        public static readonly string CurrentBranch = Branch.Optimization.ToString();
+
+        public static readonly string ModFullName = "Clone drone Overhaul Beta a" + ModVersion.ToString() + " [" + CurrentBranch + "]";
+        public static readonly string ModShortName = "CDO a" + ModVersion.ToString() + " [" + CurrentBranch + "]";
+
+        public enum Branch
+        {
+            V03Dev,
+            Optimization
+        }
     }
 }
