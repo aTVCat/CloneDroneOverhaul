@@ -87,11 +87,31 @@ namespace CDOverhaul.HUD
                 settings.Sort();
                 foreach (string settingName in settings)
                 {
-                    ModdedObject setting = Instantiate(_settingPrefab, _mainContainer);
-                    setting.gameObject.SetActive(true);
-                    setting.gameObject.AddComponent<SettingEntryBehaviour>().Initialize(this, setting, settingName);
+                    List<string> childrenSettings = SettingsController.GetChildrenSettings(settingName);
+                    PopulateSetting(settingName, childrenSettings.Count == 0 ? ESettingPosition.Normal : ESettingPosition.Top);
+                    int index = 0;
+                    if(childrenSettings.Count != 0)
+                    {
+                        foreach(string cSettingName in childrenSettings)
+                        {
+                            ESettingPosition pos = ESettingPosition.Center;
+                            if (childrenSettings.Count - 1 == index)
+                            {
+                                pos = ESettingPosition.Bottom;
+                            }
+                            PopulateSetting(cSettingName, pos);
+                            index++;
+                        }
+                    }
                 }
             }
+        }
+
+        public void PopulateSetting(in string path, in ESettingPosition position)
+        {
+            ModdedObject setting = Instantiate(_settingPrefab, _mainContainer);
+            setting.gameObject.SetActive(true);
+            setting.gameObject.AddComponent<SettingEntryBehaviour>().Initialize(this, setting, path, position);
         }
 
         public void PopulateDescription(in SettingInfo info, in SettingDescription description)

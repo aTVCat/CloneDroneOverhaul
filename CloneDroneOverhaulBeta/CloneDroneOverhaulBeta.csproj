@@ -388,6 +388,7 @@
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
+    <Compile Include="HUD\Settings\SubClasses\ESettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />

@@ -4,7 +4,7 @@ namespace CDOverhaul.Gameplay
 {
     public class FirstPersonMoverOverhaul : FirstPersonMoverExtention
     {
-        [OverhaulSetting("Robots.Events.Death Animation", true)]
+        [OverhaulSetting("Robots.Events.Death Animation", true, false, "Robots won't instantly freeze, instead, they will slow down")]
         public static bool AllowDeathAnimation;
 
         public CharacterModel OwnerModel { get; set; }

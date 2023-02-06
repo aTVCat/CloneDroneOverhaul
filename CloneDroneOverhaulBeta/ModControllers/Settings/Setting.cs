@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ namespace CDOverhaul
         public string Category { get; set; }
         public string Section { get; set; }
         public string Name { get; set; }
+
+        public bool IsChildSetting { get; set; }
+
+        public readonly List<string> ChildSettings = new List<string>();
 
         public ESettingType Type { get; set; }
 
@@ -47,6 +52,12 @@ namespace CDOverhaul
             }
 
             Field.SetValue(null, GetPref<object>(this));
+        }
+
+        public void ParentSettingToThis(in SettingInfo setting)
+        {
+            this.ChildSettings.Add(setting.RawPath);
+            setting.IsChildSetting = true;
         }
 
         public static ESettingType GetSettingType<T>()

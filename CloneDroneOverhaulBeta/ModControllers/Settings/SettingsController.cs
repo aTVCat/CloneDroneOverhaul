@@ -38,13 +38,17 @@ namespace CDOverhaul
                         {
                             _hiddenEntries.Add(neededAttribute.MySetting);
                         }
+                        if (!string.IsNullOrEmpty(neededAttribute.Description))
+                        {
+                            AddDescription(neededAttribute.MySetting, neededAttribute.Description, neededAttribute.Img4_3Path, neededAttribute.Img16_9Path);
+                        }
+                        if (!string.IsNullOrEmpty(neededAttribute.ParentSetting))
+                        {
+                            ParentSetting(neededAttribute.MySetting, neededAttribute.ParentSetting);
+                        }
                     }
                 }
             }
-
-            AddDescription("TestCat.TestSec.TestSet", "Some description", "TestSet.png", null);
-            AddDescription("Robots.Events.Death Animation", "Robots won't instantly freeze, instead, they will slow down", null, null);
-            AddDescription("Gameplay.Voxels.Make laser burn voxels", "Cutting robots with normal sword would leave nearby voxels burnt", null, null);
 
             _hasAddedSettings = true;
         }
@@ -73,6 +77,13 @@ namespace CDOverhaul
             }
             SettingDescription desc = new SettingDescription(description, img43filename, img169filename);
             _descriptions.Add(settingPath, desc);
+        }
+
+        public static void ParentSetting(in string settingPath, in string targetSettingPath)
+        {
+            SettingInfo s1 = GetSetting(settingPath, true);
+            SettingInfo s2 = GetSetting(targetSettingPath, true);
+            s2.ParentSettingToThis(s1);
         }
 
         /// <summary>
@@ -104,7 +115,7 @@ namespace CDOverhaul
             List<string> result = new List<string>();
             foreach (SettingInfo s in _settings)
             {
-                if (s.Category == categoryToSearchIn && !result.Contains(s.Section))
+                if (s.Category == categoryToSearchIn && !result.Contains(s.Category + "." + s.Section))
                 {
                     if (!IsEntryHidden(s.Category + "." + s.Section) || includeHidden)
                     {
@@ -126,13 +137,18 @@ namespace CDOverhaul
             {
                 if (s.Category == categoryToSearchIn && s.Section == sectionToSearchIn && !result.Contains(s.RawPath))
                 {
-                    if (!IsEntryHidden(s.RawPath) || includeHidden)
+                    if ((!IsEntryHidden(s.RawPath) || includeHidden) && !s.IsChildSetting)
                     {
                         result.Add(s.RawPath);
                     }
                 }
             }
             return result;
+        }
+
+        public static List<string> GetChildrenSettings(in string rawPath)
+        {
+            return GetSetting(rawPath, true).ChildSettings;
         }
 
         /// <summary>
@@ -152,6 +168,7 @@ namespace CDOverhaul
             }
             return null;
         }
+
 
         public static SettingDescription GetSettingDescription(in string path)
         {

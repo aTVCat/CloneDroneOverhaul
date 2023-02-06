@@ -10,6 +10,9 @@ namespace CDOverhaul.HUD
         public const string BGColor_Normal = "#3A3B40";
         public const string BGColor_Error = "#A63C43";
 
+        public static readonly float NormalX = 45f;
+        public static readonly float XWhenNotToggle = 105f;
+
         private Transform Toggle_TickBox;
         private Transform Toggle_BGOff;
         private Transform Toggle_BGOn;
@@ -23,7 +26,7 @@ namespace CDOverhaul.HUD
         public SettingInfo Setting;
         public SettingDescription Description;
 
-        public void Initialize(in UISettingsMenu menu, in ModdedObject moddedObject, in string settingPath)
+        public void Initialize(in UISettingsMenu menu, in ModdedObject moddedObject, in string settingPath, in ESettingPosition position)
         {
             _moddedObject = moddedObject;
             _ui = menu;
@@ -41,11 +44,18 @@ namespace CDOverhaul.HUD
             string[] array = settingPath.Split('.');
 
             _moddedObject.GetObject<Text>(0).text = array[2];
+            _moddedObject.GetObject<Text>(1).text = string.Empty;
+            if (Description != null) _moddedObject.GetObject<Text>(1).text = Description.Description;
 
-            configToggle(moddedObject, Setting.Type == ESettingType.Bool);
+            base.GetComponent<Image>().enabled = position == ESettingPosition.Normal;
+            _moddedObject.GetObject<Transform>(7).gameObject.SetActive(position == ESettingPosition.Top);
+            _moddedObject.GetObject<Transform>(8).gameObject.SetActive(position == ESettingPosition.Center);
+            _moddedObject.GetObject<Transform>(9).gameObject.SetActive(position == ESettingPosition.Bottom);
+
+            configToggle(moddedObject, Setting.Type == ESettingType.Bool, position);
         }
 
-        private void configToggle(in ModdedObject m, in bool isBool)
+        private void configToggle(in ModdedObject m, in bool isBool, in ESettingPosition position)
         {
             Toggle_TickBox = m.GetObject<Transform>(2);
             Toggle_BGOff = m.GetObject<Transform>(3);
@@ -58,6 +68,22 @@ namespace CDOverhaul.HUD
             if (!isBool)
             {
                 return;
+            }
+
+            switch (position)
+            {
+                case ESettingPosition.Normal:
+                    t.targetGraphic = base.GetComponent<Image>();
+                    break;
+                case ESettingPosition.Top:
+                    t.targetGraphic = _moddedObject.GetObject<Image>(7);
+                    break;
+                case ESettingPosition.Center:
+                    t.targetGraphic = _moddedObject.GetObject<Image>(8);
+                    break;
+                case ESettingPosition.Bottom:
+                    t.targetGraphic = _moddedObject.GetObject<Image>(9);
+                    break;
             }
 
             t.isOn = SettingInfo.GetPref<bool>(Setting);
