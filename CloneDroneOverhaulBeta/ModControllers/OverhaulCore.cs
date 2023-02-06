@@ -26,6 +26,8 @@ namespace CDOverhaul
         {
             // Set some references up
             OverhaulBase.Core = this;
+            OverhaulAPI.API.LoadAPI();
+
             ModFolder = OverhaulBase.Base.ModInfo.FolderPath;
 
             // Initialize controllers
