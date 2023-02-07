@@ -38,7 +38,7 @@ namespace CDOverhaul.Gameplay
         {
             if (c.GetInstanceID() == Owner.GetInstanceID())
             {
-                if (!AllowDeathAnimation)
+                if (!AllowDeathAnimation || Owner.CharacterCategory == EnemyCategory.FleetAnalysisBots || Owner.CharacterCategory == EnemyCategory.FleetCommanders)
                 {
                     SetAnimatorsSpeed(0f);
                     return;
