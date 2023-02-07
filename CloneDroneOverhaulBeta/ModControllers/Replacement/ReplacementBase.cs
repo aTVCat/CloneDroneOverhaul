@@ -56,6 +56,7 @@ namespace CDOverhaul.Patches
             NewReplacement<OptimizeOnStart>();
             NewReplacement<BaseFixes>();
             NewReplacement<EnergyUIReplacement>();
+            NewReplacement<OptimizeRuntime>();
         }
     }
 }

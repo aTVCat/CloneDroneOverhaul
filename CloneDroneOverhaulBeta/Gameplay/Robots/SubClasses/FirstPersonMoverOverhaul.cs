@@ -78,7 +78,7 @@ namespace CDOverhaul.Gameplay
             removeEventListeners();
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (_timeCharacterDied != -1)
             {
@@ -102,17 +102,17 @@ namespace CDOverhaul.Gameplay
                 float d = 0f;
                 if (_diedWhileUsingAbilityOrAsBigRobot)
                 {
-                    d = Time.fixedDeltaTime * 0.75f;
+                    d = Time.deltaTime * 0.75f;
                 }
                 else
                 {
                     if (speed < 0.3f)
                     {
-                        d = Time.fixedDeltaTime * 0.1f;
+                        d = Time.deltaTime * 0.1f;
                     }
                     else
                     {
-                        d = Time.fixedDeltaTime * 0.65f;
+                        d = Time.deltaTime * 0.65f;
                     }
                 }
                 float f = Mathf.Clamp(speed - d, 0f, 0.75f);

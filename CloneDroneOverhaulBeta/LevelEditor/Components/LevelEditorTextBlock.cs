@@ -48,7 +48,7 @@ namespace CDOverhaul.LevelEditor
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             _tColor.a = Transparency;
 

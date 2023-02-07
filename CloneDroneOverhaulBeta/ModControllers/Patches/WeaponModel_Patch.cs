@@ -17,5 +17,12 @@ namespace CDOverhaul.Patches
                 c.RefreshSkins(__instance.MeleeImpactArea.Owner);
             }
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("DropWeapon")]
+        private static void DropWeapon_Prefix(WeaponModel __instance)
+        {
+            //DroppedWeaponInfo.OnDropWeapon(__instance);
+        }
     }
 }

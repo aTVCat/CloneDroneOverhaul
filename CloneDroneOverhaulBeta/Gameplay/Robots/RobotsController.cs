@@ -1,4 +1,6 @@
-﻿namespace CDOverhaul.Gameplay
+﻿using CDOverhaul.Gameplay.Combat_Update;
+
+namespace CDOverhaul.Gameplay
 {
     public class RobotsController : ModController
     {
@@ -14,6 +16,7 @@
         {
             mover.gameObject.AddComponent<RobotDataCollection>();
             mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
+            mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
         }
     }
 }

@@ -155,6 +155,7 @@ namespace CDOverhaul
             }
 
             setting.Field.SetValue(null, value);
+            DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();
         }
@@ -185,6 +186,11 @@ namespace CDOverhaul
                     throw new Exception(OverhaulExceptions.Exc_SettingGetError);
             }
             return (T)result;
+        }
+
+        public static void DispatchSettingsRefreshedEvent()
+        {
+            OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
         }
     }
 }

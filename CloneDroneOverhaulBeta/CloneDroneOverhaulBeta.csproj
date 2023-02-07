@@ -367,6 +367,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
@@ -405,6 +406,7 @@
     <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeOnStart.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\OptimizeRuntime.cs" />
     <Compile Include="ModControllers\Settings\SettingDescription.cs" />
     <Compile Include="ModControllers\Settings\SubClasses\ESettingType.cs" />
     <Compile Include="ModControllers\Settings\Setting.cs" />
@@ -457,8 +459,6 @@
       <Name>OverhaulAPI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gameplay\Combat_Update\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
