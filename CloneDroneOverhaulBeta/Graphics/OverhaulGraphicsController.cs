@@ -53,7 +53,7 @@ namespace CDOverhaul.Graphics
             {
                 return;
             }
-            camera.useOcclusionCulling = false;
+            camera.useOcclusionCulling = true;
             camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             Bloom bloom = camera.GetComponent<Bloom>();

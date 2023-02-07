@@ -9,7 +9,9 @@
             DirectionalLightManager.Instance.DirectionalLight.shadowNormalBias = 1.1f;
             DirectionalLightManager.Instance.DirectionalLight.shadowBias = 1f;
 
-            SuccessfullyPatched = true;
+            UnityEngine.Physics.reuseCollisionCallbacks = true;
+
+        SuccessfullyPatched = true;
         }
 
         public override void Cancel()
