@@ -50,6 +50,8 @@ namespace CDOverhaul
                 }
             }
 
+            DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
+
             _hasAddedSettings = true;
         }
 

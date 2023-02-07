@@ -31,7 +31,7 @@ namespace CDOverhaul.LevelEditor
             collider.enabled = GameModeManager.IsInLevelEditor();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             _canvasRectTransform.sizeDelta = new Vector2(X, Y);
             if (_lastPathString != Path)
