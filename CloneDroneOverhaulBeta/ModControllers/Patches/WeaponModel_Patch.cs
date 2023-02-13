@@ -20,9 +20,9 @@ namespace CDOverhaul.Patches
 
         [HarmonyPrefix]
         [HarmonyPatch("DropWeapon")]
-        private static void DropWeapon_Prefix(WeaponModel __instance)
+        private static bool DropWeapon_Prefix(WeaponModel __instance)
         {
-            //DroppedWeaponInfo.OnDropWeapon(__instance);
+            return true;
         }
     }
 }

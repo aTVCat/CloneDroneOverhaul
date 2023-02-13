@@ -88,7 +88,7 @@ namespace CDOverhaul.Gameplay
         #endregion
 
         protected bool IsInitialized { get; private set; }
-        public FirstPersonMover Owner { get; private set; }
+        public FirstPersonMover Owner { get; set; }
 
         private void Start()
         {

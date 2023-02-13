@@ -11,7 +11,7 @@
 
             UnityEngine.Physics.reuseCollisionCallbacks = true;
 
-        SuccessfullyPatched = true;
+            SuccessfullyPatched = true;
         }
 
         public override void Cancel()
