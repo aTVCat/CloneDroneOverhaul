@@ -46,6 +46,7 @@ namespace CDOverhaul
             SettingsController.Initialize();
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();
+            RobotAccessoriesController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

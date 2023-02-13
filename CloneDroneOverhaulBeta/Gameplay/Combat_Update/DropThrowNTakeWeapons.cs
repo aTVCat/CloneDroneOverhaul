@@ -62,7 +62,7 @@ namespace CDOverhaul.Gameplay.Combat_Update
                 return;
             }
             // play animation
-            WeaponModel m = Owner.GetEquippedWeaponModel();
+            Owner.CallPrivateMethod("dropWeapon", new object[] { Owner.GetEquippedWeaponType() });
         }
 
         public void EquipWeapon()

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>RELEASE</DefineConstants>
+    <DefineConstants>DEBUG;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -367,6 +367,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Accessories\RobotAccessoryDestroy_VFX.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessoriesWearer.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessoryBehaviour.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
@@ -393,7 +398,7 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
-    <Compile Include="ModControllers\Debug\OverhaulBenchmarkController.cs" />
+    <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />

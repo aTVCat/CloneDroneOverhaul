@@ -7,5 +7,7 @@
         Part2,
         WeaponSkins,
         Objects,
+        Accessories,
+        Sounds
     }
 }
