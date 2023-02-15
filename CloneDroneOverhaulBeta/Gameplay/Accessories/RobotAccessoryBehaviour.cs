@@ -9,6 +9,13 @@ namespace CDOverhaul.Gameplay
 
         public SerializeTransform TargetTransform;
 
+        public RobotAccessoryItemDefinition Item;
+
+        private void Awake()
+        {
+            Item = RobotAccessoriesController.GetAccessoryByPrefabName(base.gameObject.name);
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             TryDestroyAccessory(collision.collider);
@@ -24,7 +31,8 @@ namespace CDOverhaul.Gameplay
             if (other == null) return;
 
             MeleeImpactArea a = other.GetComponent<MeleeImpactArea>();
-            if (a && a.IsDamageActive() && (Owner == null || a.Owner != Owner))
+            LavaFloor fl = other.GetComponent<LavaFloor>();
+            if (fl != null || (a && a.IsDamageActive() && (Owner == null || a.Owner != Owner)))
             {
                 if (Owner == null) return;
                 RobotAccessoriesWearer w = FirstPersonMoverExtention.GetExtention<RobotAccessoriesWearer>(Owner);
