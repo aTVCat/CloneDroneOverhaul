@@ -49,6 +49,7 @@ namespace CDOverhaul
                 result.IsLoaded = true;
                 result.FileName = fileName;
                 result.SavePath = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + fileName;
+                result.RepairMissingFields();
                 return result;
             }
 

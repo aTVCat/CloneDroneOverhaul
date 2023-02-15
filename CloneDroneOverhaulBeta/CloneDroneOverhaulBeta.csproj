@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\OverhaulCompiled\</OutputPath>
     <DefineConstants>DEBUG;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\OverhaulCompiled\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -372,6 +372,8 @@
     <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryBehaviour.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryItemDefinition.cs" />
+    <Compile Include="Gameplay\Accessories\RobotPlayerAccessoriesData.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessoryTransformData.cs" />
     <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />

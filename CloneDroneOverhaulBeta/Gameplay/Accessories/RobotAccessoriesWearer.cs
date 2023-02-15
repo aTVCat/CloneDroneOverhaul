@@ -23,8 +23,9 @@ namespace CDOverhaul.Gameplay
             OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
         }
 
-        public void RegisterAccessory(in GameObject gameObject)
+        public void RegisterAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
         {
+            GameObject gameObject = RobotAccessoriesController.SpawnAccessory(def, mover);
             if (_accessories.Contains(gameObject)) return;
             _accessories.Add(gameObject);
             SetUpAccessory(gameObject);
@@ -58,6 +59,10 @@ namespace CDOverhaul.Gameplay
             gameObject.transform.SetParent(LevelSpecificWorldRoot.Instance.transform, true);
             gameObject.GetComponent<Rigidbody>().isKinematic = false;
             gameObject.GetComponent<GarbageTarget>().MarkReadyToCollect();
+            if (gameObject.GetComponent<Animator>() != null)
+            {
+                gameObject.GetComponent<Animator>().enabled = false;
+            }
         }
 
         public void DetachAllAccessories()
