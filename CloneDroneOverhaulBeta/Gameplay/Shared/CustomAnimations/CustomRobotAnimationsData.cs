@@ -31,7 +31,7 @@ namespace CDOverhaul.Shared
 
         public CustomRobotAnimation GetAnimation(in string animName)
         {
-            CustomRobotAnimation anim = null;
+            CustomRobotAnimation anim;
             if (!IsAnimationLoaded(animName))
             {
                 anim = ModDataContainerBase.GetData<CustomRobotAnimation>(animName, true, "Animations/");

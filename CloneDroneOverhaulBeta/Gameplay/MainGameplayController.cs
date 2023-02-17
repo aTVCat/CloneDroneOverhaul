@@ -76,7 +76,7 @@ namespace CDOverhaul.Gameplay
 
                 if (spawnLevel)
                 {
-                    Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) { onPlayerSpawned(); } } });
+                    _ = Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) { onPlayerSpawned(); } } });
                 }
             });
         }
@@ -98,7 +98,7 @@ namespace CDOverhaul.Gameplay
             AdventureCheckPoint point = FindObjectOfType<AdventureCheckPoint>();
             if (point != null)
             {
-                GameFlow.SpawnPlayer(point.transform, true, true, null);
+                _ = GameFlow.SpawnPlayer(point.transform, true, true, null);
             }
             //GameFlow.CallPrivateMethod("createPlayerAndSetLift");
         }

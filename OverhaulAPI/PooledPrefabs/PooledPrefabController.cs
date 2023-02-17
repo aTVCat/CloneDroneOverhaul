@@ -34,11 +34,8 @@ namespace OverhaulAPI
 
         public static T SpawnObject<T>(in string containerName, in Vector3 position, in Vector3 rotation) where T : PooledPrefabInstanceBase
         {
-            T result = null;
-
             PooledPrefabContainer container = _containers[containerName];
-            result = container.SpawnPooledPrefab<T>(position, rotation);
-
+            T result = container.SpawnPooledPrefab<T>(position, rotation);
             return result;
         }
     }

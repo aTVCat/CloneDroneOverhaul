@@ -20,7 +20,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulDebugController.Print("No character model!", Color.red);
                 return;
             }
-            OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
+            _ = OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
         }
 
         public void RegisterAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
@@ -35,7 +35,7 @@ namespace CDOverhaul.Gameplay
         public void UnregisterAccessory(in GameObject gameObject, in bool destroy = false)
         {
             if (!_accessories.Contains(gameObject)) return;
-            _accessories.Remove(gameObject);
+            _ = _accessories.Remove(gameObject);
             if (!destroy) return;
             Destroy(gameObject);
         }
@@ -111,7 +111,7 @@ namespace CDOverhaul.Gameplay
             b.TargetTransform = SerializeTransform.SerializeTheTransform(gameObject.transform);
 
             gameObject.layer = Layers.BodyPart;
-            if (gameObject.GetComponent<BoxCollider>() == null) gameObject.AddComponent<BoxCollider>();
+            if (gameObject.GetComponent<BoxCollider>() == null) _ = gameObject.AddComponent<BoxCollider>();
             if (gameObject.GetComponent<Rigidbody>() == null)
             {
                 Rigidbody r = gameObject.AddComponent<Rigidbody>();

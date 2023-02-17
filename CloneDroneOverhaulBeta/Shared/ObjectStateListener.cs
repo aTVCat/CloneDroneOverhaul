@@ -12,9 +12,7 @@ namespace CDOverhaul.Shared
 
         public static ObjectStateListener AddStateListener(in GameObject gameObject)
         {
-            ObjectStateListener result = null;
-
-            result = gameObject.GetComponent<ObjectStateListener>();
+            ObjectStateListener result = gameObject.GetComponent<ObjectStateListener>();
             if (result != null)
             {
                 return result;

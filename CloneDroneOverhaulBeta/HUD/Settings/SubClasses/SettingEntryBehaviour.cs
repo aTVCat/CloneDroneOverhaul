@@ -104,7 +104,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
-            _spawnedBehaviours.Remove(this);
+            _ = _spawnedBehaviours.Remove(this);
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)

@@ -38,8 +38,8 @@ namespace CDOverhaul.Gameplay
                 RobotAccessoriesWearer w = FirstPersonMoverExtention.GetExtention<RobotAccessoriesWearer>(Owner);
                 if (w == null) return;
 
-                PooledPrefabController.SpawnObject<RobotAccessoryDestroy_VFX>(RobotAccessoriesController.AccessoryDestroyVFX_ID, base.transform.position, base.transform.eulerAngles);
-                AudioManager.Instance.PlayClipAtTransform(RobotAccessoriesController.AccessoryDestroyedSound, base.transform, 0f, false, 2f, 0.8f, 0.1f);
+                _ = PooledPrefabController.SpawnObject<RobotAccessoryDestroy_VFX>(RobotAccessoriesController.AccessoryDestroyVFX_ID, base.transform.position, base.transform.eulerAngles);
+                _ = AudioManager.Instance.PlayClipAtTransform(RobotAccessoriesController.AccessoryDestroyedSound, base.transform, 0f, false, 2f, 0.8f, 0.1f);
 
                 w.UnregisterAccessory(base.gameObject);
                 Destroy(base.gameObject);

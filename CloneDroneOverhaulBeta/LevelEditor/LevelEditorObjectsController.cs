@@ -18,28 +18,28 @@ namespace CDOverhaul.LevelEditor
             if (!_hasAddedAssets)
             {
                 GameObject obj1 = AssetController.GetAsset("TextBlock", Enumerators.EModAssetBundlePart.Objects);
-                obj1.AddComponent<LevelEditorTextBlock>();
+                _ = obj1.AddComponent<LevelEditorTextBlock>();
                 AddObject(obj1.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "TextBlock");
 
                 GameObject obj2 = AssetController.GetAsset("ImageBlock", Enumerators.EModAssetBundlePart.Objects);
                 obj2.AddComponent<LevelEditorComponentDescription>().Description = "For internal use only!";
-                obj2.AddComponent<LevelEditorImageBlock>();
+                _ = obj2.AddComponent<LevelEditorImageBlock>();
                 AddObject(obj2.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "ImageBlock");
 
                 GameObject obj3 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.EModAssetBundlePart.Objects);
-                obj3.AddComponent<LevelEditorGamemodeSubstateChanger>();
+                _ = obj3.AddComponent<LevelEditorGamemodeSubstateChanger>();
                 AddObject(obj3.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "G_SChanger");
 
                 GameObject obj4 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.EModAssetBundlePart.Objects);
-                obj4.AddComponent<LevelEditorSkinSpawnpoint>();
+                _ = obj4.AddComponent<LevelEditorSkinSpawnpoint>();
                 AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "SkinSpawnpoint");
 
                 GameObject obj5 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.EModAssetBundlePart.Objects);
-                obj5.AddComponent<LevelEditorGiveAllWeapons>();
+                _ = obj5.AddComponent<LevelEditorGiveAllWeapons>();
                 AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "GiveAllWeapons");
             }
 
-            OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
+            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
 
             _hasAddedAssets = true;
         }
@@ -76,12 +76,8 @@ namespace CDOverhaul.LevelEditor
         /// <param name="displayName"></param>
         public static void AddObject(in Transform theObject, in Texture2D thePreview, in string displayName)
         {
-            string objectKey = null;
-            string previewKey = null;
-
-            objectKey = ObjectPathPrefix + "/" + displayName;
-            previewKey = PreviewPathPrefix + "/" + displayName;
-
+            string objectKey = ObjectPathPrefix + "/" + displayName;
+            string previewKey = PreviewPathPrefix + "/" + displayName;
             if (!_objects.ContainsKey(objectKey))
             {
                 _objects.Add(objectKey, theObject);

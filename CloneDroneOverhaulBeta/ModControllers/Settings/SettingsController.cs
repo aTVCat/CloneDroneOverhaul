@@ -33,7 +33,7 @@ namespace CDOverhaul
                     var neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                     if (neededAttribute != null)
                     {
-                        AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field);
+                        _ = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field);
                         if (neededAttribute.IsHidden)
                         {
                             _hiddenEntries.Add(neededAttribute.SettingRawPath);
@@ -174,8 +174,7 @@ namespace CDOverhaul
 
         public static SettingDescription GetSettingDescription(in string path)
         {
-            SettingDescription result = null;
-            _descriptions.TryGetValue(path, out result);
+            _ = _descriptions.TryGetValue(path, out SettingDescription result);
             return result;
         }
 
@@ -187,8 +186,6 @@ namespace CDOverhaul
         public static bool IsEntryHidden(in string path)
         {
             bool isCategory = !path.Contains(".");
-            bool isSection = false;
-            bool isSetting = false;
             string path1 = null;
 
             if (isCategory)
@@ -199,12 +196,13 @@ namespace CDOverhaul
 
             string[] array = path.Split('.');
 
-            isSection = array.Length == 2;
+            bool isSection = array.Length == 2;
             if (isSection)
             {
                 path1 = array[0] + "." + array[1];
             }
-            isSetting = array.Length == 3;
+
+            bool isSetting = array.Length == 3;
             if (isSetting)
             {
                 path1 = array[0] + "." + array[1] + "." + array[2];

@@ -29,7 +29,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, onGamemodeSubstateUpdated);
+            _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, onGamemodeSubstateUpdated);
 
             _weaponEntry = MyModdedObject.GetObject<ModdedObject>(0);
             _weaponEntry.gameObject.SetActive(false);

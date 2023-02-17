@@ -22,7 +22,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
             int i = 0;
             do
             {
-                if(_spawnedBehaviours.Count == 0)
+                if (_spawnedBehaviours.Count == 0)
                 {
                     return;
                 }
@@ -108,7 +108,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
         {
             if (_spawnedBehaviours.Contains(this))
             {
-                _spawnedBehaviours.Remove(this);
+                _ = _spawnedBehaviours.Remove(this);
             }
         }
 

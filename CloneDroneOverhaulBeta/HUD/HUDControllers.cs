@@ -40,10 +40,10 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, destroyHUD);
+            _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, destroyHUD);
 
-            AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
-            AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
+            _ = AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
+            _ = AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
 
             _spawnedCanvas.GetComponent<Canvas>().enabled = false;
             _spawnedCanvas.GetComponent<CanvasScaler>().enabled = false;

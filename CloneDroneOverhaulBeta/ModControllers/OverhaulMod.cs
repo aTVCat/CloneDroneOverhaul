@@ -68,7 +68,7 @@ namespace CDOverhaul
             // An event that is usually called before FPM full initialization
             OverhaulEventManager.DispatchEvent(MainGameplayController.FirstPersonMoverSpawnedEventString, firstPersonMover);
 
-            StaticCoroutineRunner.StartStaticCoroutine(coroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(coroutine());
             IEnumerator coroutine()
             {
                 yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);

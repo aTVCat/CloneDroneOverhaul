@@ -43,7 +43,7 @@ namespace CDOverhaul
                 byte[] content = FileUtils.LoadBytes(path);
                 if (content != null)
                 {
-                    result.LoadImage(content, false);
+                    _ = result.LoadImage(content, false);
                 }
 
                 return result;
@@ -74,7 +74,7 @@ namespace CDOverhaul
                 {
                     if (array != null)
                     {
-                        result.LoadImage(array);
+                        _ = result.LoadImage(array);
                         result.Apply();
                         onLoaded(result);
                     }
@@ -129,7 +129,7 @@ namespace CDOverhaul
             {
                 if (File.Exists(path + filename))
                 {
-                    StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path + filename, onReadEnd));
+                    _ = StaticCoroutineRunner.StartStaticCoroutine(loadBytesAsync(path + filename, onReadEnd));
                 }
                 else
                 {
@@ -139,10 +139,9 @@ namespace CDOverhaul
 
             private static IEnumerator loadBytesAsync(string filePath, Action<byte[]> onLoaded)
             {
-                byte[] array = null;
                 UnityWebRequest unityWebRequestAsyncOperation = UnityWebRequest.Get("file://" + filePath);
                 yield return unityWebRequestAsyncOperation.SendWebRequest();
-                array = unityWebRequestAsyncOperation.downloadHandler.data;
+                byte[] array = unityWebRequestAsyncOperation.downloadHandler.data;
                 unityWebRequestAsyncOperation.Dispose();
                 onLoaded(array);
                 yield break;
@@ -174,7 +173,7 @@ namespace CDOverhaul
             {
                 if (File.Exists(path + filename))
                 {
-                    StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path + filename, onReadEnd));
+                    _ = StaticCoroutineRunner.StartStaticCoroutine(loadStringAsync(path + filename, onReadEnd));
                 }
                 else
                 {
@@ -184,13 +183,11 @@ namespace CDOverhaul
 
             private static IEnumerator loadStringAsync(string filePath, Action<string> onLoaded)
             {
-                string data = null;
-
                 UnityWebRequest unityWebRequestAsyncOperation = UnityWebRequest.Get("file://" + filePath);
 
                 yield return unityWebRequestAsyncOperation.SendWebRequest();
 
-                data = unityWebRequestAsyncOperation.downloadHandler.text;
+                string data = unityWebRequestAsyncOperation.downloadHandler.text;
                 unityWebRequestAsyncOperation.Dispose();
 
                 onLoaded(data);
@@ -206,7 +203,7 @@ namespace CDOverhaul
             {
                 if (!Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(path);
+                    _ = Directory.CreateDirectory(path);
                 }
             }
 

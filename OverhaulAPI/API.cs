@@ -35,7 +35,7 @@ namespace OverhaulAPI
         /// <returns></returns>
         public static API LoadAPI()
         {
-            if(APIInstance != null)
+            if (APIInstance != null)
             {
                 return null;
             }
