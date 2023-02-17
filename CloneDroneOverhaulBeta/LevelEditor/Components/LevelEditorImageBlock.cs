@@ -40,7 +40,7 @@ namespace CDOverhaul.LevelEditor
                 if (File.Exists(OverhaulMod.Core.ModFolder + Path))
                 {
                     Texture2D texture2D = new Texture2D(1, 1);
-                    texture2D.LoadImage(File.ReadAllBytes(OverhaulMod.Core.ModFolder + Path));
+                    _ = texture2D.LoadImage(File.ReadAllBytes(OverhaulMod.Core.ModFolder + Path));
                     _img.texture = texture2D;
                 }
             }

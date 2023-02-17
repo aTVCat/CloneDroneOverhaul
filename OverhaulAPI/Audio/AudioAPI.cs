@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulAPI
 {
@@ -11,8 +6,10 @@ namespace OverhaulAPI
     {
         public static AudioClipDefinition CreateDefinitionUsingClip(in AudioClip clip)
         {
-            AudioClipDefinition def = new AudioClipDefinition();
-            def.Clip = clip;
+            AudioClipDefinition def = new AudioClipDefinition
+            {
+                Clip = clip
+            };
             return def;
         }
     }

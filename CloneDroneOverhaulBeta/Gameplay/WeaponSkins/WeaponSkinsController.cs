@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.LevelEditor;
 using CDOverhaul.Shared;
-using PicaVoxel;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,18 +33,18 @@ namespace CDOverhaul.Gameplay
 
             if (SkinsOnlyForPlayer)
             {
-                OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, onPlayerFound);
+                _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, onPlayerFound);
             }
             else
             {
-                OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
+                _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
             }
 
-            AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            AddWeaponSkin(null, WeaponType.Hammer, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            AddWeaponSkin(null, WeaponType.Bow, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            AddWeaponSkin(null, WeaponType.Spear, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            AddWeaponSkin(null, WeaponType.Shield, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Hammer, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Bow, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Spear, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Shield, DefaultWeaponSkinName, default(WeaponSkinPlacement));
 
             WeaponSkinModels model1 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "DetailedOne", new WeaponSkinPlacement(UsualPosition, UsualRotation, UsualScale));
             model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins), false);
@@ -319,7 +318,7 @@ namespace CDOverhaul.Gameplay
             FreeCameraMovement camMove = Camera.main.gameObject.GetComponent<FreeCameraMovement>();
             if (camMove == null)
             {
-                Camera.main.gameObject.AddComponent<FreeCameraMovement>();
+                _ = Camera.main.gameObject.AddComponent<FreeCameraMovement>();
             }
 
             _currentCameraMover = Camera.main.GetComponent<PlayerCameraMover>();
@@ -328,7 +327,7 @@ namespace CDOverhaul.Gameplay
                 _currentCameraMover.enabled = false;
             }
 
-            Volume volumeToEdit = model.GetPrimaryVolume();
+            _ = model.GetPrimaryVolume();
         }
 
         /// <summary>
@@ -434,7 +433,7 @@ namespace CDOverhaul.Gameplay
 
                 if (!usingVanillaSkin)
                 {
-                    GetAndSpawnSkin(wModel, skinName, mover, GameModeManager.UsesMultiplayerSpeedMultiplier(), wModel.HasReplacedWithFireVariant());
+                    _ = GetAndSpawnSkin(wModel, skinName, mover, GameModeManager.UsesMultiplayerSpeedMultiplier(), wModel.HasReplacedWithFireVariant());
                 }
             }
         }

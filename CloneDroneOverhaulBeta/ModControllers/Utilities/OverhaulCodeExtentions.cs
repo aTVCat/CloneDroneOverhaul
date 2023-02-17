@@ -22,8 +22,7 @@ namespace CDOverhaul
 
         public static Color ConvertHexToColor(this string theString)
         {
-            Color col;
-            ColorUtility.TryParseHtmlString(theString, out col);
+            _ = ColorUtility.TryParseHtmlString(theString, out Color col);
             return col;
         }
 

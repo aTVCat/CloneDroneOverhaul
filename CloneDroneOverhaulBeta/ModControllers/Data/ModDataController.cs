@@ -36,7 +36,7 @@ namespace CDOverhaul
         {
             if (useModFolder)
             {
-                T result = null;
+                T result;
                 if (File.Exists(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName))
                 {
                     result = (T)JsonConvert.DeserializeObject(File.ReadAllText(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName), DataRepository.Instance.GetSettings());
@@ -53,7 +53,7 @@ namespace CDOverhaul
                 return result;
             }
 
-            DataRepository.Instance.TryLoad("Overhaul/" + fileName, out T data, false);
+            _ = DataRepository.Instance.TryLoad("Overhaul/" + fileName, out T data, false);
             if (data == null)
             {
                 data = Activator.CreateInstance<T>();

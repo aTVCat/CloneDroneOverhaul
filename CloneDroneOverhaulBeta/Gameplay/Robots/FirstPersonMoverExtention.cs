@@ -52,7 +52,7 @@ namespace CDOverhaul.Gameplay
                 {
                     return;
                 }
-                eList.Remove(extention);
+                _ = eList.Remove(extention);
             }
         }
 
@@ -60,7 +60,7 @@ namespace CDOverhaul.Gameplay
         {
             if (_spawnedExtentions.ContainsKey(mover.GetInstanceID()))
             {
-                _spawnedExtentions.Remove(mover.GetInstanceID());
+                _ = _spawnedExtentions.Remove(mover.GetInstanceID());
             }
         }
 
@@ -81,7 +81,7 @@ namespace CDOverhaul.Gameplay
 
         public static List<FirstPersonMoverExtention> GetExtentions(in FirstPersonMover mover)
         {
-            _spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> list);
+            _ = _spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> list);
             return list;
         }
 

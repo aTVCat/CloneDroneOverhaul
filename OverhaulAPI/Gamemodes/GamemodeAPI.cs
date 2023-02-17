@@ -28,11 +28,9 @@ namespace OverhaulAPI
         public static T CreateGamemodeController<T>() where T : IOverhaulGamemode
         {
             T result = Activator.CreateInstance<T>();
-            GameModeCardData newCardData = null;
-
             FindGamemodeErrors(result);
 
-            newCardData = MakeCardData(result);
+            GameModeCardData newCardData = MakeCardData(result);
             ImplementGamemode(result, newCardData);
 
             _gamemodes.Add(result);

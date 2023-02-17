@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
     {
         public override void Initialize()
         {
-            OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
 
             HasAddedEventListeners = true;
             IsInitialized = true;
@@ -14,9 +14,9 @@ namespace CDOverhaul.Gameplay
 
         private void onFPMSpawned(FirstPersonMover mover)
         {
-            mover.gameObject.AddComponent<RobotDataCollection>();
-            mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
-            mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
+            _ = mover.gameObject.AddComponent<RobotDataCollection>();
+            _ = mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
+            _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
         }
     }
 }

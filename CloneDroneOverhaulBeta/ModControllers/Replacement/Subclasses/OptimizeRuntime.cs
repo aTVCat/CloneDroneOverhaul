@@ -19,8 +19,8 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            OverhaulEventManager.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
-            OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
+            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
+            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
 
             SuccessfullyPatched = true;
         }
@@ -33,11 +33,11 @@ namespace CDOverhaul.Patches
             }
 
             GC.Collect();
-            Resources.UnloadUnusedAssets();
+            _ = Resources.UnloadUnusedAssets();
 
             if (FullClean)
             {
-                UnityEngine.Caching.ClearCache();
+                _ = UnityEngine.Caching.ClearCache();
                 CacheManager.Instance.CreateOrClearInstance();
             }
         }

@@ -14,8 +14,8 @@ namespace CDOverhaul.Shared
 
         public override void Initialize()
         {
-            OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
-            OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
+            _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
             AnimationsContainer = CustomRobotAnimationsData.GetData<CustomRobotAnimationsData>(AnimsContainerFilename, true, string.Empty);
 
             HasAddedEventListeners = true;
@@ -28,7 +28,7 @@ namespace CDOverhaul.Shared
             {
                 return;
             }
-            mover.gameObject.AddComponent<CustomRobotAnimationFPMExtention>();
+            _ = mover.gameObject.AddComponent<CustomRobotAnimationFPMExtention>();
         }
 
         private void enterAnimationMode()

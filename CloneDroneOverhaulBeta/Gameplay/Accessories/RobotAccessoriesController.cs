@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay
 
         internal static void Initialize()
         {
-            OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
 
             PlayerData = RobotPlayerAccessoriesData.GetData<RobotPlayerAccessoriesData>("PlayerAccessories.json");
 

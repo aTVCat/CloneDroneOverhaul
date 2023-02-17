@@ -64,7 +64,7 @@ namespace CDOverhaul.Gameplay
 
                 yield break;
             }
-            StaticCoroutineRunner.StartStaticCoroutine(spawnLevelAsync());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(spawnLevelAsync());
 
             if (updateArena)
             {

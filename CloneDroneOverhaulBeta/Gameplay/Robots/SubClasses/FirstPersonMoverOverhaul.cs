@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay
             OwnerModel = owner.GetCharacterModel();
             _timeCharacterDied = -1;
 
-            OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
+            _ = OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
             _hasAddedEventListeners = true;
         }
 
@@ -99,7 +99,7 @@ namespace CDOverhaul.Gameplay
                 }
 
                 float speed = OwnerModel.UpperAnimator.speed;
-                float d = 0f;
+                float d;
                 if (_diedWhileUsingAbilityOrAsBigRobot)
                 {
                     d = Time.deltaTime * 0.75f;

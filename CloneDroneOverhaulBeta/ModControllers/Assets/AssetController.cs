@@ -29,8 +29,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static GameObject GetAsset(in string assetName, in EModAssetBundlePart assetBundlePart)
         {
-            GameObject result = null;
-            result = GetAsset<GameObject>(assetName, assetBundlePart);
+            GameObject result = GetAsset<GameObject>(assetName, assetBundlePart);
             return result;
         }
 
@@ -63,7 +62,7 @@ namespace CDOverhaul
 
         public static void PreloadAsset<T>(in string assetName, in EModAssetBundlePart assetBundlePart) where T : UnityEngine.Object
         {
-            GetAsset<T>(assetName, assetBundlePart);
+            _ = GetAsset<T>(assetName, assetBundlePart);
         }
     }
 }

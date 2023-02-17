@@ -40,7 +40,7 @@ namespace CDOverhaul
         {
             if (_conditionIDs.Contains(id))
             {
-                _conditionIDs.Remove(id);
+                _ = _conditionIDs.Remove(id);
                 GameUIRoot.Instance.RefreshCursorEnabled();
             }
         }

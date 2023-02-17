@@ -46,7 +46,7 @@ namespace CDOverhaul
 
         internal void TuneUpValues()
         {
-            if (this.Error)
+            if (Error)
             {
                 throw new Exception(OverhaulExceptions.Exc_SettingError);
             }
@@ -56,7 +56,7 @@ namespace CDOverhaul
 
         public void ParentSettingToThis(in SettingInfo setting)
         {
-            this.ChildSettings.Add(setting.RawPath);
+            ChildSettings.Add(setting.RawPath);
             setting.IsChildSetting = true;
         }
 
@@ -167,7 +167,7 @@ namespace CDOverhaul
                 throw new Exception(OverhaulExceptions.Exc_SettingError);
             }
 
-            object result = null;
+            object result;
             switch (setting.Type)
             {
                 case ESettingType.Bool:

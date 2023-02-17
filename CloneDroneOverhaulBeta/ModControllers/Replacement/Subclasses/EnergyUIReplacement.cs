@@ -49,7 +49,7 @@ namespace CDOverhaul.Patches
             _glowColor = _glow.color;
             _cantJumpBG = transform.Find("CantJumpBG");
 
-            _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
+            _ = _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
 
             SuccessfullyPatched = true;
 

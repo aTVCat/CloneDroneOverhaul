@@ -75,8 +75,7 @@ namespace OverhaulAPI
         /// <returns></returns>
         public T SpawnPooledPrefab<T>(in Vector3 position, in Vector3 rotation) where T : PooledPrefabInstanceBase
         {
-            T result = null;
-            result = (T)getAvailablePooledPrefab(true);
+            T result = (T)getAvailablePooledPrefab(true);
 
             if (result != null)
             {

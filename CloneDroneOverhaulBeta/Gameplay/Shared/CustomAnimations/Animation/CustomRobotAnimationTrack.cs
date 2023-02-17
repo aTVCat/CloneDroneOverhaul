@@ -19,7 +19,7 @@ namespace CDOverhaul.Shared
         public void InitializeAsNewTrack()
         {
             Keyframes = new List<CustomRobotAnimationKeyframe>();
-            CreateKeyframeAt(0);
+            _ = CreateKeyframeAt(0);
         }
 
         /// <summary>
@@ -61,8 +61,6 @@ namespace CDOverhaul.Shared
         /// <returns></returns>
         public CustomRobotAnimationKeyframe GetSmoothKeyframeAt(in int frame)
         {
-            CustomRobotAnimationKeyframe k = null;
-
             int index = 0;
             int prevKeyframe = 0;
             int nextKeyframe = 720; // Animation length
@@ -106,7 +104,7 @@ namespace CDOverhaul.Shared
             Vector3 rotation = next.Rotation - prev.Rotation;
             rotation = rotation / (nextKeyframe - prevKeyframe);
 
-            k = CustomRobotAnimationKeyframe.NewKeyframe(frame);
+            CustomRobotAnimationKeyframe k = CustomRobotAnimationKeyframe.NewKeyframe(frame);
             k.IsSmooth = true;
             k.Rotation = GetKeyframeAt(prevKeyframe).Rotation + (rotation * (frame - prevKeyframe));
             return k;
