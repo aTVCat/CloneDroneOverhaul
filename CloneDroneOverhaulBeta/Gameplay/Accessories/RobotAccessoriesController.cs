@@ -20,7 +20,7 @@ namespace CDOverhaul.Gameplay
         [OverhaulSetting("Robots.Accessories.Allow enemies to wear accessories", false, false, null)]
         public static bool EnemiesWearAccessories;
 
-        public static RobotPlayerAccessoriesData PlayerData;
+        public static RobotAccessorySaveData PlayerData;
 
         internal static void Initialize()
         {
@@ -29,7 +29,7 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
 
-            PlayerData = RobotPlayerAccessoriesData.GetData<RobotPlayerAccessoriesData>("PlayerAccessories.json");
+            PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories.json");
 
             if (_hasPopulatedAccessories)
             {
@@ -140,10 +140,14 @@ namespace CDOverhaul.Gameplay
         {
             List<string> list = PlayerData.Accessories;
             MultiplayerAPI.Answer = FastSerialization.SerializeObject(list);
+
+            Debug.Log(MultiplayerAPI.Answer);
         }
 
         public static void OnReceivedAnswer(string[] str)
         {
+            Debug.Log(str);
+            Debug.Log(str[3]);
             List<string> list = FastSerialization.DeserializeObject<List<string>>(str[4]);
             FirstPersonMover m = (FirstPersonMover)CharacterTracker.Instance.TryGetLivingCharacterWithPlayFabID(str[3]);
             if (m != null)
@@ -159,8 +163,15 @@ namespace CDOverhaul.Gameplay
 
         public static void RefreshRobot(FirstPersonMover mover)
         {
-            if (GameModeManager.IsMultiplayer() || !mover.IsPlayer())
+            if (GameModeManager.IsMultiplayer())
             {
+                if (!mover.IsPlayer())
+                {
+                    return;
+                }
+
+                MultiplayerAPI.RequestDataFromPlayer(mover, DataID, OverhaulDebugController.PrintError);
+
                 return;
             }
 

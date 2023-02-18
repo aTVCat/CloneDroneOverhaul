@@ -372,7 +372,7 @@
     <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryBehaviour.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryItemDefinition.cs" />
-    <Compile Include="Gameplay\Accessories\RobotPlayerAccessoriesData.cs" />
+    <Compile Include="Gameplay\Accessories\RobotAccessorySaveData.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryTransformData.cs" />
     <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
