@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\OverhaulCompiled\CloneDroneOverhaulBeta.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -409,6 +410,7 @@
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
+    <Compile Include="ModControllers\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />

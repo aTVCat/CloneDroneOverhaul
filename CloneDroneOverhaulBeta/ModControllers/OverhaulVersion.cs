@@ -4,7 +4,7 @@ using System.Reflection;
 namespace CDOverhaul
 {
     /// <summary>
-    /// Mod version manager to be expanded in future builds...
+    /// Mod version controller
     /// </summary>
     public static class OverhaulVersion
     {
@@ -13,11 +13,14 @@ namespace CDOverhaul
         /// </summary>
         public static readonly Version ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-        public static readonly string CurrentBranch = Branch.V03Dev.ToString();
-
-        public static readonly string ModFullName = "Clone drone Overhaul Beta a" + ModVersion.ToString() + " [" + CurrentBranch + "]" + DebugString;
-        public static readonly string ModShortName = "CDO a" + ModVersion.ToString() + " [" + CurrentBranch + "]" + DebugString;
-
+        /// <summary>
+        /// The full name of the mod
+        /// </summary>
+        public static readonly string ModFullName = "Clone Drone Overhaul Beta a" + ModVersion.ToString() + DebugString;
+        /// <summary>
+        /// The shortened name of the mod
+        /// </summary>
+        public static readonly string ModShortName = "Overhaul a" + ModVersion.ToString() + DebugString;
 
 #if DEBUG
         public const bool IsDebugBuild = true;
@@ -27,11 +30,5 @@ namespace CDOverhaul
         private const string DebugString = "";
 #endif
 
-        public enum Branch
-        {
-            V03Dev,
-            V03Dev_Base,
-            Optimization
-        }
     }
 }

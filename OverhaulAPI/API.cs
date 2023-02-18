@@ -37,7 +37,7 @@ namespace OverhaulAPI
         {
             if (APIInstance != null)
             {
-                return null;
+                return APIInstance;
             }
 
             APIInstance = new GameObject("OverhaulAPI v" + APIVersion.ToString()).AddComponent<API>();

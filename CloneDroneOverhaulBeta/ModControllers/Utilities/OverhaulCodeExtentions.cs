@@ -20,28 +20,15 @@ namespace CDOverhaul
             return @gameObject.GetComponent<Type>();
         }
 
+        /// <summary>
+        /// Get color using hex
+        /// </summary>
+        /// <param name="theString"></param>
+        /// <returns></returns>
         public static Color ConvertHexToColor(this string theString)
         {
             _ = ColorUtility.TryParseHtmlString(theString, out Color col);
             return col;
-        }
-
-        /// <summary>
-        /// Get component in parents, not only parent
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="gameObject"></param>
-        /// <returns></returns>
-        public static T GetComponentInParents<T>(this GameObject gameObject) where T : Component
-        {
-            T result = null;
-            Transform transform2 = gameObject.transform;
-            while (result == null && transform2 != null)
-            {
-                result = transform2.GetComponent<T>();
-                transform2 = transform2.parent;
-            }
-            return result;
         }
 
         /// <summary>

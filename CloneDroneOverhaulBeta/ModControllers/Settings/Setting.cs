@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -37,7 +36,7 @@ namespace CDOverhaul
 
             if (Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
             TryAddPref(this);
@@ -48,7 +47,7 @@ namespace CDOverhaul
         {
             if (Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
             Field.SetValue(null, GetPref<object>(this));
@@ -106,7 +105,7 @@ namespace CDOverhaul
         {
             if (setting == null || setting.Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
             if (!PlayerPrefs.HasKey(setting.RawPath))
@@ -119,7 +118,7 @@ namespace CDOverhaul
         {
             if (setting == null || setting.Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
             return PlayerPrefs.HasKey(setting.RawPath);
@@ -129,7 +128,7 @@ namespace CDOverhaul
         {
             if (setting == null || setting.Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
             switch (setting.Type)
@@ -151,7 +150,8 @@ namespace CDOverhaul
                     PlayerPrefs.SetString(setting.RawPath, d);
                     break;
                 default:
-                    throw new Exception(OverhaulExceptions.Exc_SettingSaveError);
+                    OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingSaveError);
+                    break;
             }
 
             setting.Field.SetValue(null, value);
@@ -164,10 +164,10 @@ namespace CDOverhaul
         {
             if (setting == null || setting.Error)
             {
-                throw new Exception(OverhaulExceptions.Exc_SettingError);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
-            object result;
+            object result = null;
             switch (setting.Type)
             {
                 case ESettingType.Bool:
@@ -183,7 +183,8 @@ namespace CDOverhaul
                     result = PlayerPrefs.GetString(setting.RawPath);
                     break;
                 default:
-                    throw new Exception(OverhaulExceptions.Exc_SettingGetError);
+                    OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingGetError);
+                    break;
             }
             return (T)result;
         }

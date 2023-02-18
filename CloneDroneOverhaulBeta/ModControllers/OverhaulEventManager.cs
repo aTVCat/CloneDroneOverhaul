@@ -12,24 +12,18 @@ namespace CDOverhaul
         /// This prefix is automaticaly added to any of mod events
         /// </summary>
         public const string EventPrefix = "Overhaul_";
-        public static Action EmptyDelegate = delegate { };
 
         private static GlobalEventManager _globalEventManager;
-        private static List<EventEntry> _events;
 
         /// <summary>
         /// Check if <see cref="GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
         /// </summary>
         public static bool MayAddListeners => _globalEventManager != null && _events != null;
+        private static readonly List<EventEntry> _events = new List<EventEntry>();
 
         internal static void Initialize()
         {
             _globalEventManager = GlobalEventManager.Instance;
-
-            if (_events == null)
-            {
-                _events = new List<EventEntry>();
-            }
             _events.Clear();
 
             _ = AddEventListener(OverhaulMod.ModDeactivatedEventString, Deconstruct);
@@ -46,14 +40,19 @@ namespace CDOverhaul
             }
         }
 
+        internal static string GetString(in string eventName, in bool prefix)
+        {
+            return !prefix ? EventPrefix + eventName : eventName;
+        }
+
         public static EventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
-                return default(EventEntry);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.AddEventListener(finalString, callback);
 
             EventEntry newEvent = new EventEntry(finalString, callback, !dontAddPrefix);
@@ -66,11 +65,10 @@ namespace CDOverhaul
         {
             if (!MayAddListeners)
             {
-                return default(EventEntry);
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.AddEventListener<T>(finalString, callback);
 
             EventEntry newEvent = new EventEntry(finalString, null, !dontAddPrefix);
@@ -84,10 +82,10 @@ namespace CDOverhaul
         {
             if (!MayAddListeners)
             {
-                return;
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.RemoveEventListener(finalString, callback);
 
             int removeIndex = -1;
@@ -110,10 +108,10 @@ namespace CDOverhaul
         {
             if (!MayAddListeners)
             {
-                return;
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.RemoveEventListener<T>(finalString, callback);
 
             int removeIndex = -1;
@@ -137,10 +135,10 @@ namespace CDOverhaul
         {
             if (!MayAddListeners)
             {
-                return;
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.Dispatch(finalString);
         }
 
@@ -148,10 +146,10 @@ namespace CDOverhaul
         {
             if (!MayAddListeners)
             {
-                return;
+                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_EventControllerUsedTooEarly);
             }
 
-            string finalString = !dontAddPrefix ? EventPrefix + name : name;
+            string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.Dispatch(finalString, argument);
         }
     }

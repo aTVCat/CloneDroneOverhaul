@@ -4,6 +4,8 @@ using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using CDOverhaul.Shared;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -18,19 +20,43 @@ namespace CDOverhaul
         /// </summary>
         public string ModFolder { get; private set; }
 
+        /// <summary>
+        /// The UI controller instance
+        /// </summary>
         public HUDControllers HUDController { get; private set; }
+
+        /// <summary>
+        /// The gameplay features controler instance
+        /// </summary>
         public MainGameplayController GameplayController { get; private set; }
+
+        /// <summary>
+        /// Misc features controller instance
+        /// </summary>
         public SharedControllers Shared { get; private set; }
 
-        internal void InitializeCore()
+        internal bool Initialize(out string errorString)
         {
-            // Set some references up
+            try
+            {
+                initialize();
+            }
+            catch (Exception ex)
+            {
+                errorString = ex.ToString();
+                return false;
+            }
+            errorString = null;
+            return true;
+        }
+
+        private void initialize()
+        {
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
             ModFolder = OverhaulMod.Base.ModInfo.FolderPath;
 
-            // Initialize controllers
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 

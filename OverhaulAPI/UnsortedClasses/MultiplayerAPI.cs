@@ -21,10 +21,14 @@ namespace OverhaulAPI
 
         internal static void Init()
         {
-            new GameObject("MultiplayerAPI, EventListener").AddComponent<MultiplayerEventListener>();
+            _ = new GameObject("MultiplayerAPI, EventListener").AddComponent<MultiplayerEventListener>();
 
             return;
-            if (_added) return;
+            if (_added)
+            {
+                return;
+            }
+
             MultiplayerEventCallback.AddEventListener<GenericStringForModdingEvent>(OnEvent);
             _added = true;
         }
