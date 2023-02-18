@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotPlayerAccessoriesData : ModDataContainerBase
+    public class RobotAccessorySaveData : ModDataContainerBase
     {
         public List<string> Accessories;
 
@@ -10,8 +10,12 @@ namespace CDOverhaul.Gameplay
         {
             if (Accessories == null)
             {
-                Accessories = new List<string>();
+                Accessories = new List<string>
+                {
+                    "Igrok's hat"
+                };
             }
+            SaveAccessories();
         }
 
         protected override void OnPrepareToSave()
@@ -21,7 +25,7 @@ namespace CDOverhaul.Gameplay
 
         public void SaveAccessories()
         {
-            SaveData<RobotPlayerAccessoriesData>();
+            SaveData<RobotAccessorySaveData>();
         }
     }
 }

@@ -281,6 +281,7 @@
     <Compile Include="UnsortedClasses\FastSerialization.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
     <Compile Include="UnsortedClasses\MultiplayerAPI.cs" />
+    <Compile Include="UnsortedClasses\MultiplayerEventListener.cs" />
     <Compile Include="UnsortedClasses\SerializeTransform.cs" />
   </ItemGroup>
   <ItemGroup />

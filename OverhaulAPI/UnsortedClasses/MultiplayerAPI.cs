@@ -1,6 +1,8 @@
 ﻿using ModLibrary;
+using OverhaulAPI.UnsortedClasses;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulAPI
 {
@@ -15,9 +17,16 @@ namespace OverhaulAPI
         public static string[] LatestStringData { get; set; }
         public static string Answer { get; set; }
 
+        private static bool _added;
+
         internal static void Init()
         {
-            MultiplayerEventCallback.AddEventListener<GenericStringForModdingEvent>(OnEvent, false);
+            new GameObject("MultiplayerAPI, EventListener").AddComponent<MultiplayerEventListener>();
+
+            return;
+            if (_added) return;
+            MultiplayerEventCallback.AddEventListener<GenericStringForModdingEvent>(OnEvent);
+            _added = true;
         }
 
         public static void RegisterRequestAndAnswerListener(string id, Action<string[]> action, Action<string[]> onAnswer)
@@ -33,7 +42,7 @@ namespace OverhaulAPI
 
         public static void RequestDataFromPlayer(FirstPersonMover player, string dataID, Action<string> errorString)
         {
-            if (player == null || string.IsNullOrWhiteSpace(player.GetPlayFabID()))
+            if (player == null || string.IsNullOrEmpty(player.GetPlayFabID()))
             {
                 ThrowError(errorString, PlayfabIDNullError);
                 return;
@@ -45,13 +54,16 @@ namespace OverhaulAPI
                 return;
             }
 
+            ThrowError(errorString, "Requesting...");
+
             MultiplayerMessageSender.SendToAllClients(GetEventString(false, dataID, player.GetPlayFabID()));
         }
 
         internal static void OnEvent(GenericStringForModdingEvent moddedEvent)
         {
+            Debug.Log("EVENT EVENT!!: " + moddedEvent.EventData);
             string eventData = moddedEvent.EventData;
-            if (eventData.StartsWith("[OverhaulAPI]"))
+            if (eventData.Contains("[OverhaulAPI]"))
             {
                 string localPlayFabID = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
                 string[] split = eventData.Split('-');
