@@ -26,7 +26,11 @@ namespace OverhaulAPI
 
         public static void ApplyOnTransform(SerializeTransform sTransform, Transform transform)
         {
-            if (sTransform == null || transform == null) return;
+            if (sTransform == null || transform == null)
+            {
+                return;
+            }
+
             transform.localPosition = sTransform.Position;
             transform.localEulerAngles = sTransform.EulerAngles;
             transform.localScale = sTransform.LocalScale;

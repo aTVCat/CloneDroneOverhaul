@@ -15,10 +15,7 @@ namespace CDOverhaul.Shared
                 }
                 return ManualAnimationEnabled || _isPlayingCustomAnimation;
             }
-            set
-            {
-                _isPlayingCustomAnimation = value;
-            }
+            set => _isPlayingCustomAnimation = value;
         }
         public bool ManualAnimationEnabled { get; set; }
         public bool ForcePlay { get; set; }

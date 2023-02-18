@@ -9,6 +9,8 @@ namespace CDOverhaul.Gameplay
     /// </summary>
     public static class RobotAccessoriesController
     {
+        public const string DataID = "AccessoryDataID";
+
         private static readonly List<RobotAccessoryItemDefinition> _accessories = new List<RobotAccessoryItemDefinition>();
         private static bool _hasPopulatedAccessories;
 
@@ -22,11 +24,18 @@ namespace CDOverhaul.Gameplay
 
         internal static void Initialize()
         {
+            MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
+
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
 
             PlayerData = RobotPlayerAccessoriesData.GetData<RobotPlayerAccessoriesData>("PlayerAccessories.json");
 
-            if (_hasPopulatedAccessories) return;
+            if (_hasPopulatedAccessories)
+            {
+                return;
+            }
+
             _hasPopulatedAccessories = true;
 
             PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroy_VFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
@@ -78,17 +87,14 @@ namespace CDOverhaul.Gameplay
             return null;
         }
 
-        public static List<RobotAccessoryItemDefinition> GetAccessoriesForRobot(in FirstPersonMover mover)
+        public static List<RobotAccessoryItemDefinition> GetAccessoriesForRobot(in FirstPersonMover mover, List<string> accessories = null)
         {
             List<RobotAccessoryItemDefinition> result = new List<RobotAccessoryItemDefinition>();
-            if (mover.IsMainPlayer())
+            foreach (RobotAccessoryItemDefinition def in _accessories)
             {
-                foreach (RobotAccessoryItemDefinition def in _accessories)
+                if (accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(OverhaulVersion.IsDebugBuild))
                 {
-                    if (PlayerData.Accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(OverhaulVersion.IsDebugBuild))
-                    {
-                        result.Add(def);
-                    }
+                    result.Add(def);
                 }
             }
 
@@ -130,7 +136,38 @@ namespace CDOverhaul.Gameplay
             return s.gameObject;
         }
 
+        public static void OnReceivedRequest(string[] str)
+        {
+            List<string> list = PlayerData.Accessories;
+            MultiplayerAPI.Answer = FastSerialization.SerializeObject(list);
+        }
+
+        public static void OnReceivedAnswer(string[] str)
+        {
+            List<string> list = FastSerialization.DeserializeObject<List<string>>(str[4]);
+            FirstPersonMover m = (FirstPersonMover)CharacterTracker.Instance.TryGetLivingCharacterWithPlayFabID(str[3]);
+            if (m != null)
+            {
+                UpdateRobot(m, list);
+            }
+        }
+
+        public static void ScheduleRefresingRobot(FirstPersonMover mover)
+        {
+            DelegateScheduler.Instance.Schedule(delegate { RefreshRobot(mover); }, 0.2f);
+        }
+
         public static void RefreshRobot(FirstPersonMover mover)
+        {
+            if (GameModeManager.IsMultiplayer() || !mover.IsPlayer())
+            {
+                return;
+            }
+
+            UpdateRobot(mover, PlayerData.Accessories);
+        }
+
+        public static void UpdateRobot(FirstPersonMover mover, List<string> accs)
         {
             RobotAccessoriesWearer w = mover.GetComponent<RobotAccessoriesWearer>();
             if (w == null)
@@ -140,9 +177,7 @@ namespace CDOverhaul.Gameplay
             }
             w.UnregisterAllAccessories(true);
 
-            //if (!EnemiesWearAccessories) if (GameModeManager.IsMultiplayer() ? !mover.IsMainPlayer() : !mover.IsPlayer()) return;
-
-            foreach (RobotAccessoryItemDefinition def in GetAccessoriesForRobot(mover))
+            foreach (RobotAccessoryItemDefinition def in GetAccessoriesForRobot(mover, accs))
             {
                 w.RegisterAccessory(def, mover);
             }

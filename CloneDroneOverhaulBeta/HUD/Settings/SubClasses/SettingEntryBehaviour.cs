@@ -45,7 +45,10 @@ namespace CDOverhaul.HUD
 
             _moddedObject.GetObject<Text>(0).text = array[2];
             _moddedObject.GetObject<Text>(1).text = string.Empty;
-            if (Description != null) _moddedObject.GetObject<Text>(1).text = Description.Description;
+            if (Description != null)
+            {
+                _moddedObject.GetObject<Text>(1).text = Description.Description;
+            }
 
             base.GetComponent<Image>().enabled = position == ESettingPosition.Normal;
             _moddedObject.GetObject<Transform>(7).gameObject.SetActive(position == ESettingPosition.Top);

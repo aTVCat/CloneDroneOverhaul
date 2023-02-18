@@ -44,6 +44,7 @@ namespace OverhaulAPI
 
             GamemodeAPI.Reset();
             OverhaulPostProcessBehaviour.Reset();
+            MultiplayerAPI.Init();
 
             return APIInstance;
         }

@@ -49,6 +49,10 @@
     <Reference Include="ModLibrary">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\OverhaulCompiled\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -274,7 +278,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
+    <Compile Include="UnsortedClasses\FastSerialization.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
+    <Compile Include="UnsortedClasses\MultiplayerAPI.cs" />
     <Compile Include="UnsortedClasses\SerializeTransform.cs" />
   </ItemGroup>
   <ItemGroup />

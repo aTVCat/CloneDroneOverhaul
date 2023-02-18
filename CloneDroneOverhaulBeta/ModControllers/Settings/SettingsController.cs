@@ -26,11 +26,11 @@ namespace CDOverhaul
                 return;
             }
 
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
+                foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
                 {
-                    var neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
+                    OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                     if (neededAttribute != null)
                     {
                         _ = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field);
