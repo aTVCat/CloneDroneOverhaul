@@ -101,7 +101,9 @@ namespace OverhaulAPI.SharedMonoBehaviours
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
             if (IsSupported)
+            {
                 Graphics.Blit(source, destination, PostProcessMaterial);
+            }
         }
 
         private void OnDestroy()

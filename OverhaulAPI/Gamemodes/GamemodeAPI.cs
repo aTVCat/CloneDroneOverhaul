@@ -8,8 +8,12 @@ namespace OverhaulAPI
     public static class GamemodeAPI
     {
         private static readonly List<IOverhaulGamemode> _gamemodes = new List<IOverhaulGamemode>();
-        public static void Reset() => _gamemodes.Clear();
-        public static bool HasAlreadyAddedSameGamemode(IOverhaulGamemode gamemode) { foreach (IOverhaulGamemode g in _gamemodes) { if (g.GetGameMode() == gamemode.GetGameMode()) return true; } return false; }
+        public static void Reset()
+        {
+            _gamemodes.Clear();
+        }
+
+        public static bool HasAlreadyAddedSameGamemode(IOverhaulGamemode gamemode) { foreach (IOverhaulGamemode g in _gamemodes) { if (g.GetGameMode() == gamemode.GetGameMode()) { return true; } } return false; }
 
         /// <summary>
         /// Set gamemode

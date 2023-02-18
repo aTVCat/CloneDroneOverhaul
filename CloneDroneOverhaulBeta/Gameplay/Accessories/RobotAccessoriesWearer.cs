@@ -26,7 +26,11 @@ namespace CDOverhaul.Gameplay
         public void RegisterAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
         {
             GameObject gameObject = RobotAccessoriesController.SpawnAccessory(def, mover);
-            if (_accessories.Contains(gameObject)) return;
+            if (_accessories.Contains(gameObject))
+            {
+                return;
+            }
+
             _accessories.Add(gameObject);
             SetUpAccessory(gameObject);
             gameObject.SetActive(AccessoriesAreVisible);
@@ -34,15 +38,27 @@ namespace CDOverhaul.Gameplay
 
         public void UnregisterAccessory(in GameObject gameObject, in bool destroy = false)
         {
-            if (!_accessories.Contains(gameObject)) return;
+            if (!_accessories.Contains(gameObject))
+            {
+                return;
+            }
+
             _ = _accessories.Remove(gameObject);
-            if (!destroy) return;
+            if (!destroy)
+            {
+                return;
+            }
+
             Destroy(gameObject);
         }
 
         public void UnregisterAllAccessories(in bool destroy = false)
         {
-            if (_accessories.Count == 0) return;
+            if (_accessories.Count == 0)
+            {
+                return;
+            }
+
             for (int i = _accessories.Count - 1; i > -1; i--)
             {
                 if (_accessories[i] != null)
@@ -54,7 +70,11 @@ namespace CDOverhaul.Gameplay
 
         public void DetachAccessory(in GameObject gameObject)
         {
-            if (gameObject == null) return;
+            if (gameObject == null)
+            {
+                return;
+            }
+
             SetUpAccessory(gameObject);
             gameObject.transform.SetParent(LevelSpecificWorldRoot.Instance.transform, true);
             gameObject.GetComponent<Rigidbody>().isKinematic = false;
@@ -68,7 +88,11 @@ namespace CDOverhaul.Gameplay
         public void DetachAllAccessories()
         {
             SetAllAccessoriesVisibility(true);
-            if (_accessories.Count == 0) return;
+            if (_accessories.Count == 0)
+            {
+                return;
+            }
+
             for (int i = _accessories.Count - 1; i > -1; i--)
             {
                 if (_accessories[i] != null)
@@ -81,7 +105,11 @@ namespace CDOverhaul.Gameplay
 
         public void SetAllAccessoriesVisibility(in bool value)
         {
-            if (_accessories.Count == 0) return;
+            if (_accessories.Count == 0)
+            {
+                return;
+            }
+
             for (int i = _accessories.Count - 1; i > -1; i--)
             {
                 if (_accessories[i] != null)
@@ -111,7 +139,11 @@ namespace CDOverhaul.Gameplay
             b.TargetTransform = SerializeTransform.SerializeTheTransform(gameObject.transform);
 
             gameObject.layer = Layers.BodyPart;
-            if (gameObject.GetComponent<BoxCollider>() == null) _ = gameObject.AddComponent<BoxCollider>();
+            if (gameObject.GetComponent<BoxCollider>() == null)
+            {
+                _ = gameObject.AddComponent<BoxCollider>();
+            }
+
             if (gameObject.GetComponent<Rigidbody>() == null)
             {
                 Rigidbody r = gameObject.AddComponent<Rigidbody>();
@@ -129,7 +161,11 @@ namespace CDOverhaul.Gameplay
         {
             if (c.GetInstanceID() == Owner.GetInstanceID())
             {
-                if (!OwnerHasModel) return;
+                if (!OwnerHasModel)
+                {
+                    return;
+                }
+
                 DetachAllAccessories();
             }
         }
@@ -138,7 +174,10 @@ namespace CDOverhaul.Gameplay
         {
             if (Owner != null && Owner.IsAlive() && Owner.IsMainPlayer())
             {
-                if (Input.GetKeyDown(KeyCode.T)) SwitchAllAccessoriesVisibility();
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    SwitchAllAccessoriesVisibility();
+                }
             }
             if (Time.frameCount % 2 == 0)
             {

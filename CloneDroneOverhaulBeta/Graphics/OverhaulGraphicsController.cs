@@ -48,7 +48,11 @@ namespace CDOverhaul.Graphics
 
         private static void patchAndSetCamera(Camera camera, bool setCamera)
         {
-            if (setCamera) MainCamera = camera;
+            if (setCamera)
+            {
+                MainCamera = camera;
+            }
+
             if (camera == null)
             {
                 return;
