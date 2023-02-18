@@ -1,5 +1,4 @@
 ﻿using ModLibrary;
-using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,10 +36,11 @@ namespace CDOverhaul
             obj.GetObject<Text>(0).text = exc;
             obj.GetObject<Button>(1).onClick.AddListener(delegate
             {
-                GameObject.Destroy(obj.gameObject);
                 TimeManager.Instance.OnGameUnPaused();
                 GameUIRoot.Instance.ErrorWindow.Hide();
                 ErrorManager.Instance.SetPrivateField<bool>("_hasCrashed", false);
+
+                GameObject.Destroy(obj.gameObject);
             });
         }
     }

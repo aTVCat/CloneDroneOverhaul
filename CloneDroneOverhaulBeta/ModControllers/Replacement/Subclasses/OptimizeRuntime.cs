@@ -22,10 +22,15 @@ namespace CDOverhaul.Patches
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
 
+            _ = GameUIRoot.Instance.gameObject.AddComponent<GameUIRootBehaviour>();
+
             SuccessfullyPatched = true;
         }
 
-        public void CollectGarbage()
+        /// <summary>
+        /// Reduce memory usage as much as possible
+        /// </summary>
+        public static void CollectGarbage()
         {
             if (!DoCleanupOnLevelSpawn)
             {
@@ -42,7 +47,7 @@ namespace CDOverhaul.Patches
             }
         }
 
-        public void RefreshGC()
+        private void RefreshGC()
         {
             GarbageCollector.GCMode = GarbageCollectorEnabled ? GarbageCollector.Mode.Enabled : GarbageCollector.Mode.Disabled;
         }

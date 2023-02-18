@@ -248,7 +248,7 @@ namespace CDOverhaul
                 T result;
                 if (flag)
                 {
-                    result = default(T);
+                    result = default;
                 }
                 else
                 {

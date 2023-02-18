@@ -5,7 +5,6 @@ using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using CDOverhaul.Shared;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul
