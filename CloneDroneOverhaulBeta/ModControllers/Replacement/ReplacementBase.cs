@@ -8,12 +8,19 @@ namespace CDOverhaul.Patches
     /// </summary>
     public class ReplacementBase
     {
-        internal static List<ReplacementBase> Replacements = new List<ReplacementBase>();
-
-        public bool HasReplaced { get; private set; }
-        protected bool SuccessfullyPatched { get; set; }
+        internal static readonly List<ReplacementBase> Replacements = new List<ReplacementBase>();
 
         private bool _hasAddedListeners;
+
+        /// <summary>
+        /// Check if replacement is working
+        /// </summary>
+        public bool HasReplaced { get; private set; }
+
+        /// <summary>
+        /// This value doesn't affect anything, use it for marking fine working patches
+        /// </summary>
+        protected bool SuccessfullyPatched { get; set; }
 
         /// <summary>
         /// Do patch

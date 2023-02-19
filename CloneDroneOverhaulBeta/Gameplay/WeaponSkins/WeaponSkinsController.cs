@@ -40,11 +40,11 @@ namespace CDOverhaul.Gameplay
                 _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, onPlayerFound);
             }
 
-            _ = AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            _ = AddWeaponSkin(null, WeaponType.Hammer, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            _ = AddWeaponSkin(null, WeaponType.Bow, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            _ = AddWeaponSkin(null, WeaponType.Spear, DefaultWeaponSkinName, default(WeaponSkinPlacement));
-            _ = AddWeaponSkin(null, WeaponType.Shield, DefaultWeaponSkinName, default(WeaponSkinPlacement));
+            _ = AddWeaponSkin(null, WeaponType.Sword, DefaultWeaponSkinName, default);
+            _ = AddWeaponSkin(null, WeaponType.Hammer, DefaultWeaponSkinName, default);
+            _ = AddWeaponSkin(null, WeaponType.Bow, DefaultWeaponSkinName, default);
+            _ = AddWeaponSkin(null, WeaponType.Spear, DefaultWeaponSkinName, default);
+            _ = AddWeaponSkin(null, WeaponType.Shield, DefaultWeaponSkinName, default);
 
             WeaponSkinModels model1 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "DetailedOne", new WeaponSkinPlacement(UsualPosition, UsualRotation, UsualScale));
             model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins), false);
@@ -204,7 +204,7 @@ namespace CDOverhaul.Gameplay
                 return null;
             }
 
-            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
+            FirstPersonMoverData collection = FirstPersonMoverExtention.GetExtention<FirstPersonMoverData>(mover);
             if (!collection.AllowSkinRegistration(key, isFire, isMultiplayer))
             {
                 return null;
@@ -402,7 +402,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
+            FirstPersonMoverData collection = FirstPersonMoverExtention.GetExtention<FirstPersonMoverData>(mover);
             if (collection == null)
             {
                 return;

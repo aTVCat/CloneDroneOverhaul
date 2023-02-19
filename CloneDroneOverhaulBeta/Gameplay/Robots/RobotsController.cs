@@ -14,7 +14,7 @@ namespace CDOverhaul.Gameplay
 
         private void onFPMSpawned(FirstPersonMover mover)
         {
-            _ = mover.gameObject.AddComponent<RobotDataCollection>();
+            _ = mover.gameObject.AddComponent<FirstPersonMoverData>();
             _ = mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
             _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
         }

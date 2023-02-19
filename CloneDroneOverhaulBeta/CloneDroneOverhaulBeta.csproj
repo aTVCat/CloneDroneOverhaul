@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\OverhaulCompiled\CloneDroneOverhaulBeta.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -367,6 +368,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Accessories\RobotAccessoriesEditorUI.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryDestroy_VFX.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoriesWearer.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
@@ -379,7 +381,7 @@
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
     <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverOverhaul.cs" />
-    <Compile Include="Gameplay\Robots\SubClasses\RobotDataCollection.cs" />
+    <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverData.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationPlayInfo.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationsData.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationFPMExt.cs" />
@@ -409,9 +411,14 @@
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
+    <Compile Include="ModControllers\Patches\ErrorWindow_Patch.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\Components\ArenaCameraBehaviour.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\Components\AudioSourceBehaviour.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\Components\GameUIRootBehaviour.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\NewAudioController.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeRuntime.cs" />
     <Compile Include="ModControllers\Settings\SettingDescription.cs" />
@@ -432,7 +439,7 @@
     <Compile Include="ModControllers\Assets\EModAssetBundlePart.cs" />
     <Compile Include="HUD\HUDControllers.cs" />
     <Compile Include="ModControllers\Data\ModDataContainerBase.cs" />
-    <Compile Include="ModControllers\Data\DataContainers\PlayerSkinsData.cs" />
+    <Compile Include="Gameplay\WeaponSkins\PlayerSkinsData.cs" />
     <Compile Include="ModControllers\Data\ModDataController.cs" />
     <Compile Include="ModControllers\GamemodeStates\EGamemodeSubstate.cs" />
     <Compile Include="ModControllers\GamemodeStates\GamemodeSubstatesController.cs" />

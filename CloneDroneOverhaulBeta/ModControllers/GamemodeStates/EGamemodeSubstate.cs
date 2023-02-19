@@ -8,6 +8,8 @@
 
         WeaponSkinCreation,
 
-        AnimatingCustomAnimation
+        AnimatingCustomAnimation,
+
+        EditingAccessories
     }
 }

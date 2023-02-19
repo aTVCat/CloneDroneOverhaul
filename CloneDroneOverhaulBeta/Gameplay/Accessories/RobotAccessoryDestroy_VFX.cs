@@ -6,6 +6,7 @@ namespace CDOverhaul.Gameplay
     public class RobotAccessoryDestroy_VFX : PooledPrefabInstanceBase
     {
         private ParticleSystem _system;
+
         public override void PreparePrefab()
         {
             _system = GetComponent<ParticleSystem>();

@@ -6,8 +6,9 @@
         Part1,
         Part2,
         WeaponSkins,
-        Objects,
         Accessories,
-        Sounds
+        Objects,
+        Sounds,
+        Main
     }
 }

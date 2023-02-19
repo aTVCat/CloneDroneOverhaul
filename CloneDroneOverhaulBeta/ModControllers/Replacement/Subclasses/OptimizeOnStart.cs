@@ -8,13 +8,14 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            // Optimise cameras
             Camera[] cameras = Camera.allCameras;
             foreach (Camera cam in cameras)
             {
                 if (cam.name == "ArenaCamera")
                 {
+                    // Reducing camera resolution improves performance
                     cam.pixelRect = new Rect(new Vector2(0f, 0f), new Vector2(460f, 240f));
+                    cam.gameObject.AddComponent<ArenaCameraBehaviour>().Initialze(cam);
                 }
             }
 

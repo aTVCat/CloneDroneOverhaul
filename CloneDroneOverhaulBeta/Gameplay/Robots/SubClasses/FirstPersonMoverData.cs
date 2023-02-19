@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
     /// <summary>
     /// The main script with all temp data about <see cref="FirstPersonMover"/>
     /// </summary>
-    public class RobotDataCollection : FirstPersonMoverExtention
+    public class FirstPersonMoverData : FirstPersonMoverExtention
     {
         public const string DataCollectionInitializedEventString = "FPMDataCollectionInitialized";
         private List<(GameObject, string, bool, bool)> _skinsCollection;
@@ -15,7 +15,7 @@ namespace CDOverhaul.Gameplay
         {
             _skinsCollection = new List<(GameObject, string, bool, bool)>();
 
-            OverhaulEventManager.DispatchEvent<RobotDataCollection>(DataCollectionInitializedEventString, this);
+            OverhaulEventManager.DispatchEvent<FirstPersonMoverData>(DataCollectionInitializedEventString, this);
         }
 
         /// <summary>

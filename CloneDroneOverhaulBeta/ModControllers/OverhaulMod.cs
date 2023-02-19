@@ -11,9 +11,17 @@ namespace CDOverhaul
     /// The base class of the mod. Starts up the mod
     /// </summary>
     [MainModClass]
-    public sealed class OverhaulMod : Mod
+    public class OverhaulMod : Mod
     {
+        /// <summary>
+        /// An event that is called when mod was deactivated by user
+        /// </summary>
         public const string ModDeactivatedEventString = "ModDeactivated";
+
+        /// <summary>
+        /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
+        /// </summary>
+        public static bool IsCoreCreated => Core != null;
 
         /// <summary>
         /// The instance of the core
@@ -26,28 +34,37 @@ namespace CDOverhaul
         public static OverhaulMod Base { get; internal set; }
 
         /// <summary>
-        /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
+        /// Create core when mod was loaded
         /// </summary>
-        public static bool IsCoreCreated => Core != null;
-
         protected override void OnModLoaded()
         {
             Base = this;
             TryCreateCore();
         }
 
+        /// <summary>
+        /// Create core when mod was loaded or enabled
+        /// </summary>
         protected override void OnModEnabled()
         {
             Base = this;
             TryCreateCore();
         }
 
+        /// <summary>
+        /// Destroy the when mod was deactivated
+        /// </summary>
         protected override void OnModDeactivated()
         {
             Base = null;
             DeconstructCore();
         }
 
+        /// <summary>
+        /// Currently used to make modded level editor objects real
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
             if (!IsCoreCreated)
@@ -58,6 +75,10 @@ namespace CDOverhaul
             return LevelEditorObjectsController.GetObject(path);
         }
 
+        /// <summary>
+        /// Used for events
+        /// </summary>
+        /// <param name="firstPersonMover"></param>
         protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
             if (!IsCoreCreated)
@@ -67,22 +88,8 @@ namespace CDOverhaul
 
             // An event that is usually called before FPM full initialization
             OverhaulEventManager.DispatchEvent(MainGameplayController.FirstPersonMoverSpawnedEventString, firstPersonMover);
-
-            _ = StaticCoroutineRunner.StartStaticCoroutine(coroutine());
-            IEnumerator coroutine()
-            {
-                yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
-            }
-
-            /*
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                // Called after character model is created & FPM is fully initialized 
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
-            }, 0.1f);*/
+            _ = StaticCoroutineRunner.StartStaticCoroutine(waitFPMToInitialize(firstPersonMover));
         }
-
 
         /// <summary>
         /// Create the instance of mod core monobehaviour
@@ -91,15 +98,18 @@ namespace CDOverhaul
         {
             if (IsCoreCreated)
             {
-                debug.Log("Overhaul: There's no need to create Core class instance.");
                 return;
             }
+            // Make a window that appear when mod was loaded incorrectly (put core creation into try block)
 
             GameObject gameObject = new GameObject("CloneDroneOverhaul_Core");
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
-            core.InitializeCore();
+            _ = core.Initialize(out string errors);
 
-            debug.Log("Overhaul: Created Core class instance");
+            if (errors != null)
+            {
+                OverhaulExceptions.OnModCrashedWhileLoading(errors);
+            }
         }
 
         /// <summary>
@@ -109,14 +119,27 @@ namespace CDOverhaul
         {
             if (!IsCoreCreated)
             {
-                debug.Log("Overhaul: There's no need to deconstruct Core class instance.");
                 return;
             }
 
             OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
 
-            UnityEngine.Object.Destroy(Core.gameObject);
+            Object.Destroy(Core.gameObject);
             Core = null;
+        }
+
+        /// <summary>
+        /// Wait until all things are initiliazed in <see cref="FirstPersonMover"/> and dispatch event if robot isn't null
+        /// </summary>
+        /// <param name="firstPersonMover"></param>
+        /// <returns></returns>
+        private IEnumerator waitFPMToInitialize(FirstPersonMover firstPersonMover)
+        {
+            yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
+            if (firstPersonMover != null)
+            {
+                OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+            }
         }
     }
 }

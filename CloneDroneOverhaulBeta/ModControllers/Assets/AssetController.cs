@@ -21,6 +21,8 @@ namespace CDOverhaul
 
         public const string ModAssetBundle_Sounds = "overhaulassets_sounds";
 
+        public const string ModAssetBundle_Main = "overhaulassets_main";
+
         /// <summary>
         /// Get an asset from bundle
         /// </summary>
@@ -56,10 +58,19 @@ namespace CDOverhaul
                 case EModAssetBundlePart.Sounds:
                     result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Sounds, assetName);
                     break;
+                case EModAssetBundlePart.Main:
+                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Main, assetName);
+                    break;
             }
             return result;
         }
 
+        /// <summary>
+        /// Use for testing purposes
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="assetName"></param>
+        /// <param name="assetBundlePart"></param>
         public static void PreloadAsset<T>(in string assetName, in EModAssetBundlePart assetBundlePart) where T : UnityEngine.Object
         {
             _ = GetAsset<T>(assetName, assetBundlePart);

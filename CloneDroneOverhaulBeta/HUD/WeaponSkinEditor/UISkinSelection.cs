@@ -156,7 +156,7 @@ namespace CDOverhaul.HUD
 
             if (value)
             {
-                EnableCursorConditionID = EnableCursorController.AddCondition();
+                ShowCursor = true;
                 populateWeapons();
 
                 if (m != null && m.GetCameraMover() != null)
@@ -170,7 +170,7 @@ namespace CDOverhaul.HUD
             }
             else
             {
-                EnableCursorController.RemoveCondition(EnableCursorConditionID);
+                ShowCursor = false;
 
                 if (m != null && m.GetCameraMover() != null)
                 {

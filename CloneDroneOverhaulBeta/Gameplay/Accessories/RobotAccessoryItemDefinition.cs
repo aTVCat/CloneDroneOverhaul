@@ -66,6 +66,12 @@ namespace CDOverhaul.Gameplay
             if (TransformData[indexOfModel] == null)
             {
                 TransformData[indexOfModel] = RobotAccessoryTransformData.GetData<RobotAccessoryTransformData>(indexOfModel + "_" + AccessoryName + ".json", true, "Accessories/");
+                if (OverhaulVersion.IsDebugBuild)
+                {
+                    TransformData[indexOfModel].AccessoryName = AccessoryName;
+                    TransformData[indexOfModel].CharacterModelIndex = indexOfModel;
+                    TransformData[indexOfModel].SaveTransforms();
+                }
             }
             return TransformData[indexOfModel].Data;
         }

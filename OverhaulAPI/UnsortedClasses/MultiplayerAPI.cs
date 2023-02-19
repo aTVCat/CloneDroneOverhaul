@@ -8,8 +8,8 @@ namespace OverhaulAPI
 {
     public static class MultiplayerAPI
     {
-        private static Dictionary<string, Action<string[]>> _dataIDs = new Dictionary<string, Action<string[]>>();
-        private static Dictionary<string, Action<string[]>> _dataAnswers = new Dictionary<string, Action<string[]>>();
+        private static readonly Dictionary<string, Action<string[]>> _dataIDs = new Dictionary<string, Action<string[]>>();
+        private static readonly Dictionary<string, Action<string[]>> _dataAnswers = new Dictionary<string, Action<string[]>>();
 
         public const string UnknownDataIDError = "Error: Unknown data ID";
         public const string PlayfabIDNullError = "Error: PlayfabID is empty";
@@ -21,10 +21,14 @@ namespace OverhaulAPI
 
         internal static void Init()
         {
-            new GameObject("MultiplayerAPI, EventListener").AddComponent<MultiplayerEventListener>();
+            _ = new GameObject("MultiplayerAPI, EventListener").AddComponent<MultiplayerEventListener>();
 
             return;
-            if (_added) return;
+            if (_added)
+            {
+                return;
+            }
+
             MultiplayerEventCallback.AddEventListener<GenericStringForModdingEvent>(OnEvent);
             _added = true;
         }

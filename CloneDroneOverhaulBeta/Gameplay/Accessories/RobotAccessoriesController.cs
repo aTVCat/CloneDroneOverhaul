@@ -1,6 +1,8 @@
-﻿using OverhaulAPI;
+﻿using CDOverhaul.HUD;
+using OverhaulAPI;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay
 {
@@ -21,13 +23,16 @@ namespace CDOverhaul.Gameplay
         public static bool EnemiesWearAccessories;
 
         public static RobotAccessorySaveData PlayerData;
+        public static RobotAccessoriesEditorUI EditorUI;
 
         internal static void Initialize()
         {
+            EditorUI = OverhaulMod.Core.HUDController.AddHUD<RobotAccessoriesEditorUI>(OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5));
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
 
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
+            _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, TryEnterEditor);
 
             PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories.json");
 
@@ -60,6 +65,39 @@ namespace CDOverhaul.Gameplay
                 EulerAngles = new Vector3(-11, 0, 0),
                 LocalScale = new Vector3(0.7f, 0.77f, 0.65f),
             });
+
+            AddAccessory("PussHat", MechBodyPartType.Head, new SerializeTransform
+            {
+                Position = new Vector3(0, 0.55f, 0),
+                EulerAngles = new Vector3(3, 0, 3),
+                LocalScale = new Vector3(0.46f, 0.52f, 0.46f),
+            });
+        }
+
+        public static List<RobotAccessoryItemDefinition> GetAllAccessories()
+        {
+            return _accessories;
+        }
+
+        public static List<Dropdown.OptionData> GetAllAccessoriesDropdownOptions()
+        {
+            List<Dropdown.OptionData> l = new List<Dropdown.OptionData>(_accessories.Count);
+            foreach (RobotAccessoryItemDefinition def in GetAllAccessories())
+            {
+                l.Add(new Dropdown.OptionData(def.AccessoryName));
+            }
+            return l;
+        }
+
+        public static void TryEnterEditor()
+        {
+            if (!RobotAccessoriesEditorUI.EditorMayWork || Time.timeSinceLevelLoad < 3f)
+            {
+                return;
+            }
+
+            bool activate = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.EditingAccessories;
+            EditorUI.SetActive(activate);
         }
 
         public static void AddAccessory(in string name, MechBodyPartType bodypart, in SerializeTransform transform)
@@ -92,7 +130,7 @@ namespace CDOverhaul.Gameplay
             List<RobotAccessoryItemDefinition> result = new List<RobotAccessoryItemDefinition>();
             foreach (RobotAccessoryItemDefinition def in _accessories)
             {
-                if (accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(OverhaulVersion.IsDebugBuild))
+                if (accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(false))
                 {
                     result.Add(def);
                 }
