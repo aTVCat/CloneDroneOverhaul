@@ -5,7 +5,7 @@ namespace CDOverhaul
     public static class EnableCursorController
     {
         private static readonly List<byte> _conditionIDs = new List<byte>();
-        private static byte _nextId = 0;
+        private static byte _nextId = 1;
 
         internal static void Reset()
         {
@@ -22,7 +22,7 @@ namespace CDOverhaul
             _nextId++;
             if (_nextId >= 255)
             {
-                _nextId = 0;
+                _nextId = 1;
             }
 
             _conditionIDs.Add(number);
@@ -42,6 +42,11 @@ namespace CDOverhaul
             {
                 _ = _conditionIDs.Remove(id);
                 GameUIRoot.Instance.RefreshCursorEnabled();
+
+                if (_conditionIDs.Count == 0)
+                {
+                    _nextId = 1;
+                }
             }
         }
 

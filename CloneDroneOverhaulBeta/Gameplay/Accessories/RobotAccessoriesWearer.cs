@@ -23,6 +23,15 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
         }
 
+        public RobotAccessoryBehaviour GetEquipedAccessory(int index)
+        {
+            if (index >= _accessories.Count)
+            {
+                return null;
+            }
+            return _accessories[index].GetComponent<RobotAccessoryBehaviour>();
+        }
+
         public void RegisterAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
         {
             GameObject gameObject = RobotAccessoriesController.SpawnAccessory(def, mover);

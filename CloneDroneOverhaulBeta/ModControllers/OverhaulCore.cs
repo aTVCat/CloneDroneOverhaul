@@ -17,7 +17,7 @@ namespace CDOverhaul
         /// <summary>
         /// The mod directory path
         /// </summary>
-        public string ModFolder { get; private set; }
+        public string ModFolder => OverhaulMod.Base.ModInfo.FolderPath;
 
         /// <summary>
         /// The UI controller instance
@@ -53,8 +53,6 @@ namespace CDOverhaul
         {
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
-
-            ModFolder = OverhaulMod.Base.ModInfo.FolderPath;
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);

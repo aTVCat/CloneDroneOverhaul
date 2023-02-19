@@ -368,6 +368,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Accessories\RobotAccessoriesEditorUI.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryDestroy_VFX.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoriesWearer.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
@@ -380,7 +381,7 @@
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
     <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverOverhaul.cs" />
-    <Compile Include="Gameplay\Robots\SubClasses\RobotDataCollection.cs" />
+    <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverData.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationPlayInfo.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationsData.cs" />
     <Compile Include="Gameplay\Shared\CustomAnimations\CustomRobotAnimationFPMExt.cs" />
@@ -438,7 +439,7 @@
     <Compile Include="ModControllers\Assets\EModAssetBundlePart.cs" />
     <Compile Include="HUD\HUDControllers.cs" />
     <Compile Include="ModControllers\Data\ModDataContainerBase.cs" />
-    <Compile Include="ModControllers\Data\DataContainers\PlayerSkinsData.cs" />
+    <Compile Include="Gameplay\WeaponSkins\PlayerSkinsData.cs" />
     <Compile Include="ModControllers\Data\ModDataController.cs" />
     <Compile Include="ModControllers\GamemodeStates\EGamemodeSubstate.cs" />
     <Compile Include="ModControllers\GamemodeStates\GamemodeSubstatesController.cs" />

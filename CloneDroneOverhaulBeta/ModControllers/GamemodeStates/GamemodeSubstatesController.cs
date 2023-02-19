@@ -15,17 +15,12 @@
             {
                 EGamemodeSubstate _prevState = _gamemodeSubstate;
                 _gamemodeSubstate = value;
+
                 if (_gamemodeSubstate != _prevState)
                 {
                     OverhaulEventManager.DispatchEvent(SubstateChangedEventString);
                 }
             }
-        }
-
-        public override void Initialize()
-        {
-            HasAddedEventListeners = true;
-            IsInitialized = true;
         }
     }
 }

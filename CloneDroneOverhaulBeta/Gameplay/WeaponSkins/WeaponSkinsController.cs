@@ -204,7 +204,7 @@ namespace CDOverhaul.Gameplay
                 return null;
             }
 
-            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
+            FirstPersonMoverData collection = FirstPersonMoverExtention.GetExtention<FirstPersonMoverData>(mover);
             if (!collection.AllowSkinRegistration(key, isFire, isMultiplayer))
             {
                 return null;
@@ -402,7 +402,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            RobotDataCollection collection = FirstPersonMoverExtention.GetExtention<RobotDataCollection>(mover);
+            FirstPersonMoverData collection = FirstPersonMoverExtention.GetExtention<FirstPersonMoverData>(mover);
             if (collection == null)
             {
                 return;

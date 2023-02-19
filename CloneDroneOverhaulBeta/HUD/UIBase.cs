@@ -23,6 +23,24 @@ namespace CDOverhaul.HUD
             }
         }
 
-        protected byte EnableCursorConditionID { get; set; }
+        private byte _enableCursorConditionID = 0;
+        protected bool ShowCursor
+        {
+            set
+            {
+                if (value)
+                {
+                    _enableCursorConditionID = EnableCursorController.AddCondition();
+                }
+                else
+                {
+                    if (_enableCursorConditionID != 0)
+                    {
+                        EnableCursorController.RemoveCondition(_enableCursorConditionID);
+                        _enableCursorConditionID = 0;
+                    }
+                }
+            }
+        }
     }
 }
