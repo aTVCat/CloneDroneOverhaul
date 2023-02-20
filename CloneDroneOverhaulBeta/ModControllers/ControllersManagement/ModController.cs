@@ -7,7 +7,7 @@ namespace CDOverhaul
         /// <summary>
         /// This variable doesn't affect anything
         /// </summary>
-        public bool IsInitialized { get; protected set; }
+        public bool HasInitialized { get; protected set; }
 
         /// <summary>
         /// This variable doesn't affect anything

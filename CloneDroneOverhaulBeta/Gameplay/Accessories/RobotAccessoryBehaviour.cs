@@ -40,11 +40,6 @@ namespace CDOverhaul.Gameplay
             LavaFloor fl = other.GetComponent<LavaFloor>();
             if (fl != null || (a && a.IsDamageActive() && (Owner == null || a.Owner != Owner)))
             {
-                if (Owner == null)
-                {
-                    return;
-                }
-
                 RobotAccessoriesWearer w = FirstPersonMoverExtention.GetExtention<RobotAccessoriesWearer>(Owner);
                 if (w == null)
                 {

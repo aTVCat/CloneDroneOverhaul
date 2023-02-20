@@ -22,6 +22,8 @@ namespace CDOverhaul
         /// </summary>
         public static readonly string ModShortName = "Overhaul a" + ModVersion.ToString() + DebugString;
 
+        public const bool ArenaUpdateEnabled = true;
+
 #if DEBUG
         public const bool IsDebugBuild = true;
         private const string DebugString = " [DEBUG]";

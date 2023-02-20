@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using ModLibrary;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace CDOverhaul.Patches
                 jsonReader.Close();
             }
             w.Close();
-            w.Dispose();*/
+            w.Dispose();//
 
             bool fileExists = File.Exists(fullPath);
 
@@ -90,4 +90,4 @@ namespace CDOverhaul.Patches
             return false;
         }
     }
-}
+}*/

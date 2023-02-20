@@ -1,4 +1,5 @@
-﻿using ModLibrary;
+﻿using CDOverhaul.Gameplay.Combat_Update;
+using ModLibrary;
 using System;
 using UnityEngine;
 
@@ -31,6 +32,8 @@ namespace CDOverhaul.Gameplay
 
         public LevelController Levels { get; private set; }
 
+        public OverhaulCombatController Combat { get; private set; }
+
         public GamemodeSubstatesController GamemodeSubstates { get; private set; }
 
         private GameMode _gamemodeLastFrame;
@@ -46,11 +49,12 @@ namespace CDOverhaul.Gameplay
             Robots = ModControllerManager.NewController<RobotsController>();
             GamemodeSubstates = ModControllerManager.NewController<GamemodeSubstatesController>();
             Levels = ModControllerManager.NewController<LevelController>();
+            Combat = ModControllerManager.NewController<OverhaulCombatController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         /// <summary>

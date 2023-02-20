@@ -376,7 +376,10 @@
     <Compile Include="Gameplay\Accessories\RobotAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessorySaveData.cs" />
     <Compile Include="Gameplay\Accessories\RobotAccessoryTransformData.cs" />
+    <Compile Include="Gameplay\Combat_Update\FirstPersonMoverInteractionBehaviour.cs" />
+    <Compile Include="Gameplay\Combat_Update\AdvancedWeaponController.cs" />
     <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
+    <Compile Include="Gameplay\Combat_Update\OverhaulCombatController.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
@@ -397,6 +400,7 @@
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
+    <Compile Include="Graphics\Arena_Update\ArenaRemasterEnemyCounter.cs" />
     <Compile Include="Graphics\Arena_Update\ArenaRemasterArrowBlinker.cs" />
     <Compile Include="Graphics\Arena_Update\ArenaRemasterController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
@@ -411,6 +415,7 @@
     <Compile Include="ModControllers\ExclusiveStuff\ExclusivityController.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
     <Compile Include="ModControllers\Patches\DataRepository_Patch.cs" />
+    <Compile Include="ModControllers\Patches\GameModeManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
     <Compile Include="ModControllers\Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />

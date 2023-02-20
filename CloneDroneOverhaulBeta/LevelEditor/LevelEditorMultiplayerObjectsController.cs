@@ -15,13 +15,15 @@ namespace CDOverhaul.LevelEditor
 
         private bool _ignoreNewSelections;
 
+        public static bool ToolEnabled;
+
         public override void Initialize()
         {
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted, true);
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         private void onLevelEditorStarted()
@@ -31,7 +33,7 @@ namespace CDOverhaul.LevelEditor
 
         private void scheduleOnSelectionChanged()
         {
-            if (_ignoreNewSelections)
+            if (!ToolEnabled || _ignoreNewSelections)
             {
                 return;
             }
@@ -39,7 +41,7 @@ namespace CDOverhaul.LevelEditor
         }
         private void onSelectionChanged()
         {
-            if (_ignoreNewSelections)
+            if (!ToolEnabled || _ignoreNewSelections)
             {
                 return;
             }
@@ -79,6 +81,11 @@ namespace CDOverhaul.LevelEditor
             if (!_isInLevelEditor)
             {
                 return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                ToolEnabled = !ToolEnabled;
             }
 
             if (AttachedToObjectAndReadyToMove && Time.frameCount % 2 == 0)

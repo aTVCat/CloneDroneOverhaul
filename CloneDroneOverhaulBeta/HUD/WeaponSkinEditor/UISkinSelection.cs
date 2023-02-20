@@ -52,7 +52,7 @@ namespace CDOverhaul.HUD
             activate(false);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         /// <summary>

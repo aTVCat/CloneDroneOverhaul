@@ -16,7 +16,7 @@ namespace CDOverhaul.HUD
             _versionLabel = MyModdedObject.GetObject<Text>(0);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         private void onGamemodeUpdated()

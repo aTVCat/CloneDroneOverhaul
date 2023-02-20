@@ -57,7 +57,7 @@ namespace CDOverhaul.Gameplay
                 new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using CDOverhaul.LevelEditor;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -89,6 +90,30 @@ namespace CDOverhaul
             // An event that is usually called before FPM full initialization
             OverhaulEventManager.DispatchEvent(MainGameplayController.FirstPersonMoverSpawnedEventString, firstPersonMover);
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitFPMToInitialize(firstPersonMover));
+        }
+
+        /// <summary>
+        /// Used for extentions
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="upgrades"></param>
+        protected override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
+        {
+            if (!IsCoreCreated || owner == null || upgrades == null)
+            {
+                return;
+            }
+
+            List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(owner);
+            if (list == null || list.Count == 0)
+            {
+                return;
+            }
+
+            foreach (FirstPersonMoverExtention ext in list)
+            {
+                ext.OnUpgradesRefreshed(upgrades);
+            }
         }
 
         /// <summary>

@@ -31,7 +31,7 @@ namespace CDOverhaul.HUD
 
             Hide();
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         public void Show()

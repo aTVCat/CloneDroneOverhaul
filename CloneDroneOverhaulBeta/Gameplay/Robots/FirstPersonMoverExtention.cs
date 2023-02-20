@@ -66,14 +66,16 @@ namespace CDOverhaul.Gameplay
 
         public static T GetExtention<T>(in FirstPersonMover mover) where T : FirstPersonMoverExtention
         {
-            if (_spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> list))
+            if (!_spawnedExtentions.ContainsKey(mover.GetInstanceID()))
             {
-                foreach (FirstPersonMoverExtention extention in list)
+                return null;
+            }
+
+            foreach (FirstPersonMoverExtention extention in _spawnedExtentions[mover.GetInstanceID()])
+            {
+                if (extention.GetType() == typeof(T))
                 {
-                    if (extention.GetType() == typeof(T))
-                    {
-                        return (T)extention;
-                    }
+                    return (T)extention;
                 }
             }
             return null;
@@ -81,8 +83,11 @@ namespace CDOverhaul.Gameplay
 
         public static List<FirstPersonMoverExtention> GetExtentions(in FirstPersonMover mover)
         {
-            _ = _spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> list);
-            return list;
+            if (!_spawnedExtentions.ContainsKey(mover.GetInstanceID()))
+            {
+                return null;
+            }
+            return _spawnedExtentions[mover.GetInstanceID()];
         }
 
         #endregion
@@ -106,6 +111,11 @@ namespace CDOverhaul.Gameplay
         }
 
         public virtual void OnAIUpdate(in AISwordsmanController controller)
+        {
+
+        }
+
+        public virtual void OnUpgradesRefreshed(UpgradeCollection upgrades)
         {
 
         }

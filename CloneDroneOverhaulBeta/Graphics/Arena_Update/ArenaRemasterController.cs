@@ -28,11 +28,18 @@ namespace CDOverhaul.ArenaRemaster
         public Transform ArenaRemasterTransform;
         public ModdedObject ArenaRemasterModdedObject;
 
+        private bool _arenaToggleState = true;
+
         public override void Initialize()
         {
+            if (!OverhaulVersion.ArenaUpdateEnabled)
+            {
+                return;
+            }
+
             AssetController.PreloadAsset<GameObject>("P_AR_Arrow", Enumerators.EModAssetBundlePart.Arena_Update);
 
-            //SetArenaInteriorVisible(false);
+            SetArenaInteriorVisible(false);
 
             ArenaRemasterTransform = Instantiate(AssetController.GetAsset("P_ArenaRemaster", Enumerators.EModAssetBundlePart.Arena_Update)).transform;
             ArenaRemasterTransform.SetParent(TransformUtils.FindChildRecursive(WorldRoot.Instance.transform, "ArenaFinal"));
@@ -45,6 +52,7 @@ namespace CDOverhaul.ArenaRemaster
             ArenaRemasterTransform.eulerAngles = Vector3.zero;
 
             setUpArrows();
+            setUpLabels();
         }
 
         private void setUpArrows()
@@ -56,6 +64,26 @@ namespace CDOverhaul.ArenaRemaster
             b1.ChangeState(true);
             b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
             b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
+        }
+
+        private void setUpLabels()
+        {
+            ArenaRemasterEnemyCounter b1 = ArenaRemasterModdedObject.GetObject<Transform>(3).gameObject.AddComponent<ArenaRemasterEnemyCounter>();
+            b1.Initialize(b1.GetComponent<ModdedObject>());
+        }
+
+        private void Update()
+        {
+            if (!OverhaulVersion.ArenaUpdateEnabled)
+            {
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                _arenaToggleState = !_arenaToggleState;
+                SetArenaInteriorVisible(_arenaToggleState);
+            }
         }
     }
 }

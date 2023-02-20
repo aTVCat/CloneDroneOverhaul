@@ -21,7 +21,7 @@ namespace CDOverhaul.Shared
             ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)

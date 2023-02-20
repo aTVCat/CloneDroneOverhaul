@@ -19,7 +19,7 @@ namespace CDOverhaul.Shared
             AnimationsContainer = CustomRobotAnimationsData.GetData<CustomRobotAnimationsData>(AnimsContainerFilename, true, string.Empty);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         private void configFPM(FirstPersonMover mover)

@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay
         {
             _arenaPartsToHide = FindObjectsOfType<HideIfLevelHidesArena>();
 
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         /// <summary>

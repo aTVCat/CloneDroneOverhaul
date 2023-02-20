@@ -9,14 +9,21 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         private void onFPMSpawned(FirstPersonMover mover)
         {
+            if (mover == null)
+            {
+                return;
+            }
+
             _ = mover.gameObject.AddComponent<FirstPersonMoverData>();
             _ = mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
             _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
+            _ = mover.gameObject.AddComponent<AdvancedWeaponController>();
+            _ = mover.gameObject.AddComponent<FirstPersonMoverInteractionBehaviour>();
         }
     }
 }

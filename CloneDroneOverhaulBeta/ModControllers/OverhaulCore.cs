@@ -67,6 +67,7 @@ namespace CDOverhaul
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
             _ = ModControllerManager.NewController<LevelEditorMultipleObjectsController>();
 
+            FirstPersonMoverExtention.InitializeStatic();
             SettingsController.Initialize();
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();

@@ -75,7 +75,7 @@ namespace CDOverhaul.HUD
             Scale[2].text = "1";
 
             HasAddedEventListeners = true;
-            IsInitialized = true;
+            HasInitialized = true;
         }
 
         /// <summary>

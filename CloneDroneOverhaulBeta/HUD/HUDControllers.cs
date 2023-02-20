@@ -48,7 +48,7 @@ namespace CDOverhaul.HUD
             _spawnedCanvas.GetComponent<Canvas>().enabled = false;
             _spawnedCanvas.GetComponent<CanvasScaler>().enabled = false;
 
-            base.IsInitialized = true;
+            base.HasInitialized = true;
         }
 
         /// <summary>
