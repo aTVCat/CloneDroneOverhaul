@@ -5,19 +5,40 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
+    /// <summary>
+    /// This editor lets you pose accessories
+    /// </summary>
     public class RobotAccessoriesEditorUI : UIBase
     {
-        public static bool EditorMayWork => OverhaulVersion.IsDebugBuild;
+        /// <summary>
+        /// Check if user may use the editor
+        /// </summary>
+        public static bool MayUseEditor => OverhaulVersion.IsDebugBuild;
 
         private Dropdown CharacterModelsDropdown;
         private Dropdown AccessoriesDropdown;
 
+        /// <summary>
+        /// Position related input fields
+        /// </summary>
         public InputField[] Position = new InputField[3];
+        /// <summary>
+        /// Rotation related input fields
+        /// </summary>
         public InputField[] Rotation = new InputField[3];
+        /// <summary>
+        /// Scale related input fields
+        /// </summary>
         public InputField[] Scale = new InputField[3];
 
+        /// <summary>
+        /// Currently editing accessory
+        /// </summary>
         public RobotAccessoryBehaviour EditingAccessory;
 
+        /// <summary>
+        /// TBA?
+        /// </summary>
         public override void Initialize()
         {
             Hide();
@@ -57,6 +78,10 @@ namespace CDOverhaul.HUD
             IsInitialized = true;
         }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
+        /// <param name="value"></param>
         public void SetActive(in bool value)
         {
             if (value)
@@ -67,6 +92,9 @@ namespace CDOverhaul.HUD
             Hide();
         }
 
+        /// <summary>
+        /// Show the editor UI
+        /// </summary>
         public void Show()
         {
             base.gameObject.SetActive(true);
@@ -76,6 +104,9 @@ namespace CDOverhaul.HUD
             CharacterModelsDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(true);
         }
 
+        /// <summary>
+        /// Hide the editor UI
+        /// </summary>
         public void Hide()
         {
             base.gameObject.SetActive(false);
@@ -87,6 +118,10 @@ namespace CDOverhaul.HUD
             ShowCursor = false;
         }
 
+        /// <summary>
+        /// Equip other character model and respawn player
+        /// </summary>
+        /// <param name="index"></param>
         public void SwitchCharacterModel(int index)
         {
             if (!base.gameObject.activeSelf)
@@ -113,11 +148,19 @@ namespace CDOverhaul.HUD
             Destroy(gm);
         }
 
+        /// <summary>
+        /// Equip accessory and respawn player
+        /// </summary>
+        /// <param name="index"></param>
         public void SwitchAccessory(int index)
         {
             SetAccessory(RobotAccessoriesController.GetAllAccessoriesDropdownOptions()[index].text);
         }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
+        /// <param name="accsName"></param>
         public void SetAccessory(in string accsName)
         {
             RobotAccessoriesController.PlayerData.Accessories.Clear();
@@ -133,6 +176,9 @@ namespace CDOverhaul.HUD
             }, 0.2f);
         }
 
+        /// <summary>
+        /// Set default positions on accessory
+        /// </summary>
         public void SetAccessoryDefaultTransform()
         {
             if (EditingAccessory == null)
@@ -151,6 +197,9 @@ namespace CDOverhaul.HUD
             UpdateInputFields();
         }
 
+        /// <summary>
+        /// Save transform
+        /// </summary>
         public void SaveAccessoryTransform()
         {
             if (EditingAccessory == null)
@@ -162,6 +211,9 @@ namespace CDOverhaul.HUD
             EditingAccessory.Item.SaveTransformForAccessory(EditingAccessory);
         }
 
+        /// <summary>
+        /// Update all input fields
+        /// </summary>
         public void UpdateInputFields()
         {
             if (EditingAccessory == null)

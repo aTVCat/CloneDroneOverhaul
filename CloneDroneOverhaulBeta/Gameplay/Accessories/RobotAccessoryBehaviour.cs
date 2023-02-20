@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
+    /// <summary>
+    /// The accessory gameobject controller
+    /// </summary>
     public class RobotAccessoryBehaviour : MonoBehaviour
     {
         public FirstPersonMover Owner;

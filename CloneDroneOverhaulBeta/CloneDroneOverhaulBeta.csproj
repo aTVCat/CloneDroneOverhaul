@@ -397,13 +397,18 @@
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
     <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
+    <Compile Include="Graphics\Arena_Update\ArenaRemasterArrowBlinker.cs" />
+    <Compile Include="Graphics\Arena_Update\ArenaRemasterController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="HUD\Settings\SubClasses\ESettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
+    <Compile Include="LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
+    <Compile Include="ModControllers\ExclusiveStuff\ExclusiveRolesController.cs" />
+    <Compile Include="ModControllers\ExclusiveStuff\ExclusivityController.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
     <Compile Include="ModControllers\Patches\DataRepository_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
@@ -418,6 +423,7 @@
     <Compile Include="ModControllers\Replacement\Subclasses\Components\GameUIRootBehaviour.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />
+    <Compile Include="ModControllers\Replacement\Subclasses\NewArenaActivator.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\NewAudioController.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="ModControllers\Replacement\Subclasses\OptimizeRuntime.cs" />

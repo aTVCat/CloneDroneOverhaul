@@ -9,6 +9,7 @@
         Accessories,
         Objects,
         Sounds,
-        Main
+        Main,
+        Arena_Update
     }
 }

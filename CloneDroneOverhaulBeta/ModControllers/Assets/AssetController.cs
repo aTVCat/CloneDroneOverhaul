@@ -23,6 +23,8 @@ namespace CDOverhaul
 
         public const string ModAssetBundle_Main = "overhaulassets_main";
 
+        public const string ModAssetBundle_ArenaUpdate = "overhaulassets_arenaupdate";
+
         /// <summary>
         /// Get an asset from bundle
         /// </summary>
@@ -60,6 +62,9 @@ namespace CDOverhaul
                     break;
                 case EModAssetBundlePart.Main:
                     result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Main, assetName);
+                    break;
+                case EModAssetBundlePart.Arena_Update:
+                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_ArenaUpdate, assetName);
                     break;
             }
             return result;

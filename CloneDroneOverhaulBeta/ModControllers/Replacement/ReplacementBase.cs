@@ -64,6 +64,7 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<BaseFixes>();
             _ = NewReplacement<EnergyUIReplacement>();
             _ = NewReplacement<OptimizeRuntime>();
+            _ = NewReplacement<NewArenaActivator>();
         }
     }
 }

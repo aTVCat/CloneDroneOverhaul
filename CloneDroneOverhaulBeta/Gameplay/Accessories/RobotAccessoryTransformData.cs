@@ -7,10 +7,10 @@ namespace CDOverhaul.Gameplay
     {
         public SerializeTransform Data;
 
-        public int CharacterModelIndex;
+        public byte CharacterModelIndex;
         public string AccessoryName;
 
-        public string GetFileName => CharacterModelIndex + "_" + AccessoryName + ".json";
+        public string GetFileName() { return CharacterModelIndex + "_" + AccessoryName + ".json"; }
 
         public override void RepairMissingFields()
         {
@@ -25,7 +25,7 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnPrepareToSave()
         {
-            FileName = GetFileName;
+            FileName = GetFileName();
         }
 
         public void SaveTransforms()

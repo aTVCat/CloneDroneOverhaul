@@ -64,9 +64,5 @@ namespace CDOverhaul.Gameplay.Combat_Update
             // play animation
             Owner.CallPrivateMethod("dropWeapon", new object[] { Owner.GetEquippedWeaponType() });
         }
-
-        public void EquipWeapon()
-        {
-        }
     }
 }

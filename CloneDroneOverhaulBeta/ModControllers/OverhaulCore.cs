@@ -65,11 +65,13 @@ namespace CDOverhaul
             Shared = ModControllerManager.NewController<SharedControllers>();
             HUDController = ModControllerManager.NewController<HUDControllers>();
             GameplayController = ModControllerManager.NewController<MainGameplayController>();
+            _ = ModControllerManager.NewController<LevelEditorMultipleObjectsController>();
 
             SettingsController.Initialize();
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();
             RobotAccessoriesController.Initialize();
+            ExclusivityController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

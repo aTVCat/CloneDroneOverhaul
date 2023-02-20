@@ -5,14 +5,30 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
+    /// <summary>
+    /// Extention that controls accessories
+    /// </summary>
     public class RobotAccessoriesWearer : FirstPersonMoverExtention
     {
+        /// <summary>
+        /// Check if robot has own model
+        /// </summary>
         public bool OwnerHasModel => base.Owner.GetCharacterModel() != null;
 
+        /// <summary>
+        /// Currently wearing accessories
+        /// </summary>
         private readonly List<GameObject> _accessories = new List<GameObject>();
 
+        /// <summary>
+        /// Are they visible (put accessories here)
+        /// </summary>
         public bool AccessoriesAreVisible = true;
 
+        /// <summary>
+        /// TBA?
+        /// </summary>
+        /// <param name="owner"></param>
         protected override void Initialize(FirstPersonMover owner)
         {
             if (!OwnerHasModel)
@@ -23,6 +39,11 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulEventManager.AddEventListener<Character>("CharacterKilled", onKill, true);
         }
 
+        /// <summary>
+        /// Get accessory in list
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public RobotAccessoryBehaviour GetEquipedAccessory(int index)
         {
             if (index >= _accessories.Count)
@@ -32,6 +53,11 @@ namespace CDOverhaul.Gameplay
             return _accessories[index].GetComponent<RobotAccessoryBehaviour>();
         }
 
+        /// <summary>
+        /// Make us own the accessory
+        /// </summary>
+        /// <param name="def"></param>
+        /// <param name="mover"></param>
         public void RegisterAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
         {
             GameObject gameObject = RobotAccessoriesController.SpawnAccessory(def, mover);
@@ -45,6 +71,11 @@ namespace CDOverhaul.Gameplay
             gameObject.SetActive(AccessoriesAreVisible);
         }
 
+        /// <summary>
+        /// Make us NOT own the accessory and throw it into garbage room (no)
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="destroy"></param>
         public void UnregisterAccessory(in GameObject gameObject, in bool destroy = false)
         {
             if (!_accessories.Contains(gameObject))
@@ -61,6 +92,10 @@ namespace CDOverhaul.Gameplay
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
+        /// <param name="destroy"></param>
         public void UnregisterAllAccessories(in bool destroy = false)
         {
             if (_accessories.Count == 0)
@@ -77,6 +112,10 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// Detach accessory from the robot and enable physics on it
+        /// </summary>
+        /// <param name="gameObject"></param>
         public void DetachAccessory(in GameObject gameObject)
         {
             if (gameObject == null)
@@ -94,6 +133,9 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// Detach all
+        /// </summary>
         public void DetachAllAccessories()
         {
             SetAllAccessoriesVisibility(true);
@@ -112,6 +154,10 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// Make all accessories visible or not
+        /// </summary>
+        /// <param name="value"></param>
         public void SetAllAccessoriesVisibility(in bool value)
         {
             if (_accessories.Count == 0)
@@ -128,6 +174,9 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// TBA
+        /// </summary>
         public void SwitchAllAccessoriesVisibility()
         {
             if (Owner.IsAlive())
@@ -137,6 +186,10 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// Prepare accessory
+        /// </summary>
+        /// <param name="gameObject"></param>
         public void SetUpAccessory(in GameObject gameObject)
         {
             RobotAccessoryBehaviour b = gameObject.GetComponent<RobotAccessoryBehaviour>();

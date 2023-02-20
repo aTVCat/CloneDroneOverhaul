@@ -11,39 +11,66 @@ namespace CDOverhaul.Gameplay
     /// </summary>
     public static class RobotAccessoriesController
     {
+        /// <summary>
+        /// The data id <see cref="MultiplayerAPI"/> uses for data requests
+        /// </summary>
         public const string DataID = "AccessoryDataID";
 
+        /// <summary>
+        /// All the accessories in da mod
+        /// </summary>
         private static readonly List<RobotAccessoryItemDefinition> _accessories = new List<RobotAccessoryItemDefinition>();
         private static bool _hasPopulatedAccessories;
 
+        /// <summary>
+        /// <see cref="PooledPrefabController"/> needs IDs for pooled objects and this one is not an exception
+        /// </summary>
         public const string AccessoryDestroyVFX_ID = "AccessoryDestroyedVFX";
+        /// <summary>
+        /// The sound that is played when someone hits an accessory
+        /// </summary>
         public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.EModAssetBundlePart.Sounds));
 
+        /// <summary>
+        /// This one is gonna be removed soon...
+        /// </summary>
         [OverhaulSetting("Robots.Accessories.Allow enemies to wear accessories", false, false, null)]
         public static bool EnemiesWearAccessories;
 
+        /// <summary>
+        /// Mainly a collection of accessories that user has equiped
+        /// </summary>
         public static RobotAccessorySaveData PlayerData;
+
+        /// <summary>
+        /// An editor that allows me to make every accessory fit well on every robot
+        /// </summary>
         public static RobotAccessoriesEditorUI EditorUI;
 
         internal static void Initialize()
         {
-            EditorUI = OverhaulMod.Core.HUDController.AddHUD<RobotAccessoriesEditorUI>(OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5));
+            if (OverhaulVersion.IsDebugBuild)
+            {
+                EditorUI = OverhaulMod.Core.HUDController.AddHUD<RobotAccessoriesEditorUI>(OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5));
+            }
+            else
+            {
+                OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5).gameObject.SetActive(false);
+            }
+
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroy_VFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
+            PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories.json");
 
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
             _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, TryEnterEditor);
 
-            PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories.json");
-
             if (_hasPopulatedAccessories)
             {
                 return;
             }
-
             _hasPopulatedAccessories = true;
-
-            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroy_VFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
 
             AddAccessory("Igrok's hat", MechBodyPartType.Head, new SerializeTransform
             {
@@ -74,11 +101,19 @@ namespace CDOverhaul.Gameplay
             });
         }
 
+        /// <summary>
+        /// Get all accessories, including locked ones
+        /// </summary>
+        /// <returns></returns>
         public static List<RobotAccessoryItemDefinition> GetAllAccessories()
         {
             return _accessories;
         }
 
+        /// <summary>
+        /// Get dropdown options
+        /// </summary>
+        /// <returns></returns>
         public static List<Dropdown.OptionData> GetAllAccessoriesDropdownOptions()
         {
             List<Dropdown.OptionData> l = new List<Dropdown.OptionData>(_accessories.Count);
@@ -89,9 +124,12 @@ namespace CDOverhaul.Gameplay
             return l;
         }
 
+        /// <summary>
+        /// Start accessory editing mod if possible
+        /// </summary>
         public static void TryEnterEditor()
         {
-            if (!RobotAccessoriesEditorUI.EditorMayWork || Time.timeSinceLevelLoad < 3f)
+            if (!RobotAccessoriesEditorUI.MayUseEditor || Time.timeSinceLevelLoad < 3f)
             {
                 return;
             }
@@ -100,6 +138,12 @@ namespace CDOverhaul.Gameplay
             EditorUI.SetActive(activate);
         }
 
+        /// <summary>
+        /// Register new accessory
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="bodypart"></param>
+        /// <param name="transform"></param>
         public static void AddAccessory(in string name, MechBodyPartType bodypart, in SerializeTransform transform)
         {
             RobotAccessoryItemDefinition definition = new RobotAccessoryItemDefinition
@@ -113,6 +157,11 @@ namespace CDOverhaul.Gameplay
             _accessories.Add(definition);
         }
 
+        /// <summary>
+        /// Get accessory by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static RobotAccessoryItemDefinition GetAccessory(in string name)
         {
             foreach (RobotAccessoryItemDefinition def in _accessories)
@@ -123,24 +172,13 @@ namespace CDOverhaul.Gameplay
                 }
             }
             return null;
+
         }
-
-        public static List<RobotAccessoryItemDefinition> GetAccessoriesForRobot(in FirstPersonMover mover, List<string> accessories = null)
-        {
-            List<RobotAccessoryItemDefinition> result = new List<RobotAccessoryItemDefinition>();
-            foreach (RobotAccessoryItemDefinition def in _accessories)
-            {
-                if (accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(false))
-                {
-                    result.Add(def);
-                }
-            }
-
-            // make accessories random for enemies
-
-            return result;
-        }
-
+        /// <summary>
+        /// Get accessory by prefab name
+        /// </summary>
+        /// <param name="prefabName"></param>
+        /// <returns></returns>
         public static RobotAccessoryItemDefinition GetAccessoryByPrefabName(in string prefabName)
         {
             foreach (RobotAccessoryItemDefinition def in _accessories)
@@ -153,11 +191,44 @@ namespace CDOverhaul.Gameplay
             return null;
         }
 
-        public static GameObject GetAccessoryPrefab(in string name)
+        /// <summary>
+        /// Get accessories for robot <b>(The result depends on what kind of robot is used. For ex. player)</b>
+        /// </summary>
+        /// <param name="mover"></param>
+        /// <param name="accessories"></param>
+        /// <returns></returns>
+        public static List<RobotAccessoryItemDefinition> GetAccessoriesForRobot(in FirstPersonMover mover, List<string> accessories = null)
         {
-            return GetAccessory(name).AccessoryPrefab;
+            List<RobotAccessoryItemDefinition> result = new List<RobotAccessoryItemDefinition>();
+            foreach (RobotAccessoryItemDefinition def in _accessories)
+            {
+                if (GameModeManager.IsMultiplayer())
+                {
+                    if (accessories.Contains(def.AccessoryName))
+                    {
+                        result.Add(def);
+                    }
+                }
+                else
+                {
+                    if (accessories.Contains(def.AccessoryName) && ((IOverhaulItemDefinition)def).IsUnlocked(false))
+                    {
+                        result.Add(def);
+                    }
+                }
+            }
+
+            // make accessories random for enemies
+
+            return result;
         }
 
+        /// <summary>
+        /// Spawn accessory and attach it to <see cref="FirstPersonMover"/>
+        /// </summary>
+        /// <param name="def"></param>
+        /// <param name="mover"></param>
+        /// <returns></returns>
         public static GameObject SpawnAccessory(in RobotAccessoryItemDefinition def, in FirstPersonMover mover)
         {
             SerializeTransform targetTransform = def.GetTranformForFPM(mover);
@@ -174,18 +245,28 @@ namespace CDOverhaul.Gameplay
             return s.gameObject;
         }
 
+        /// <summary>
+        /// Multiplayer. Called when we someone needs to know, what we are wearing xd
+        /// </summary>
+        /// <param name="str"></param>
         public static void OnReceivedRequest(string[] str)
         {
             List<string> list = PlayerData.Accessories;
             MultiplayerAPI.Answer = FastSerialization.SerializeObject(list);
 
-            Debug.Log(MultiplayerAPI.Answer);
+            OverhaulDebugController.Print(MultiplayerAPI.Answer);
         }
 
+        /// <summary>
+        /// Multiplayer. Called when we got other player's data
+        /// </summary>
+        /// <param name="str"></param>
         public static void OnReceivedAnswer(string[] str)
         {
-            Debug.Log(str);
-            Debug.Log(str[3]);
+            OverhaulDebugController.Print("Answer!!");
+            OverhaulDebugController.Print(str[3]);
+            OverhaulDebugController.Print(str[4]);
+
             List<string> list = FastSerialization.DeserializeObject<List<string>>(str[4]);
             FirstPersonMover m = (FirstPersonMover)CharacterTracker.Instance.TryGetLivingCharacterWithPlayFabID(str[3]);
             if (m != null)
@@ -194,11 +275,22 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        /// <summary>
+        /// Wait 0.2 seconds and refresh robot accessories
+        /// </summary>
+        /// <param name="mover"></param>
         public static void ScheduleRefresingRobot(FirstPersonMover mover)
         {
-            DelegateScheduler.Instance.Schedule(delegate { RefreshRobot(mover); }, 0.2f);
+            if (!GameModeManager.IsMultiplayer())
+            {
+                DelegateScheduler.Instance.Schedule(delegate { RefreshRobot(mover); }, 0.2f);
+            }
         }
 
+        /// <summary>
+        /// Refresh robot accessories. This method is mainly used for multiplayer
+        /// </summary>
+        /// <param name="mover"></param>
         public static void RefreshRobot(FirstPersonMover mover)
         {
             if (GameModeManager.IsMultiplayer())
@@ -216,6 +308,11 @@ namespace CDOverhaul.Gameplay
             UpdateRobot(mover, PlayerData.Accessories);
         }
 
+        /// <summary>
+        /// Refresh robot accessories
+        /// </summary>
+        /// <param name="mover"></param>
+        /// <param name="accs"></param>
         public static void UpdateRobot(FirstPersonMover mover, List<string> accs)
         {
             RobotAccessoriesWearer w = mover.GetComponent<RobotAccessoriesWearer>();
