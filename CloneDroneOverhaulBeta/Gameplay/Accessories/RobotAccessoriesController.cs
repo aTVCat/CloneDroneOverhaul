@@ -315,6 +315,11 @@ namespace CDOverhaul.Gameplay
         /// <param name="accs"></param>
         public static void UpdateRobot(FirstPersonMover mover, List<string> accs)
         {
+            if (mover == null || !OverhaulGamemodeManager.SupportsAccessories())
+            {
+                return;
+            }
+
             RobotAccessoriesWearer w = mover.GetComponent<RobotAccessoriesWearer>();
             if (w == null)
             {
@@ -323,9 +328,20 @@ namespace CDOverhaul.Gameplay
             }
             w.UnregisterAllAccessories(true);
 
-            foreach (RobotAccessoryItemDefinition def in GetAccessoriesForRobot(mover, accs))
+            bool fpmSupportsAccessories = RobotAccessoryItemDefinition.GetIndexOfCharacterModel(mover) != -1;
+            if (!fpmSupportsAccessories)
             {
-                w.RegisterAccessory(def, mover);
+                return;
+            }
+
+            // Todo: make enemies wear different accessories
+            List<RobotAccessoryItemDefinition> list = GetAccessoriesForRobot(mover, accs);
+            if (list != null && list.Count != 0)
+            {
+                foreach (RobotAccessoryItemDefinition def in list)
+                {
+                    w.RegisterAccessory(def, mover);
+                }
             }
         }
     }

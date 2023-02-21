@@ -209,7 +209,6 @@ namespace CDOverhaul.Gameplay
             if (gameObject.GetComponent<Rigidbody>() == null)
             {
                 Rigidbody r = gameObject.AddComponent<Rigidbody>();
-                r.drag = -1;
                 r.isKinematic = true;
             }
             if (gameObject.GetComponent<GarbageTarget>() == null)

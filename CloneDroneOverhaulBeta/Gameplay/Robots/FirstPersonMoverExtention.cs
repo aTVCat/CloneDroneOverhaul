@@ -110,6 +110,11 @@ namespace CDOverhaul.Gameplay
 
         }
 
+        public virtual void OnExecuteCommand(FPMoveCommand command, bool resetState)
+        {
+
+        }
+
         public virtual void OnAIUpdate(in AISwordsmanController controller)
         {
 

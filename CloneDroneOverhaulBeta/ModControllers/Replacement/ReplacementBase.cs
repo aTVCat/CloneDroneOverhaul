@@ -54,6 +54,18 @@ namespace CDOverhaul.Patches
             return newR;
         }
 
+        public static T GetReplacement<T>() where T : ReplacementBase
+        {
+            foreach (ReplacementBase b in Replacements)
+            {
+                if (b.GetType() == typeof(T))
+                {
+                    return (T)b;
+                }
+            }
+            return null;
+        }
+
         internal static void CreateReplacements()
         {
             Replacements.Clear();
@@ -66,5 +78,7 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<OptimizeRuntime>();
             _ = NewReplacement<NewArenaActivator>();
         }
+
+        // Todo: fix chapter 3 ending: restore time & fix no delay in dialogues
     }
 }

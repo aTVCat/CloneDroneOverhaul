@@ -39,7 +39,7 @@ namespace CDOverhaul.ArenaRemaster
 
             AssetController.PreloadAsset<GameObject>("P_AR_Arrow", Enumerators.EModAssetBundlePart.Arena_Update);
 
-            SetArenaInteriorVisible(false);
+            //SetArenaInteriorVisible(false);
 
             ArenaRemasterTransform = Instantiate(AssetController.GetAsset("P_ArenaRemaster", Enumerators.EModAssetBundlePart.Arena_Update)).transform;
             ArenaRemasterTransform.SetParent(TransformUtils.FindChildRecursive(WorldRoot.Instance.transform, "ArenaFinal"));

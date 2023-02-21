@@ -31,6 +31,13 @@ namespace CDOverhaul.ArenaRemaster
 
         private void refreshEnemiesLeft(Character c)
         {
+            int count = CharacterTracker.Instance.GetNumEnemyCharactersAlive();
+            if (!base.gameObject.activeInHierarchy)
+            {
+                refreshLabel(count);
+                return;
+            }
+
             if (_isRefreshingText)
             {
                 _isRefreshingText = false;
@@ -44,15 +51,35 @@ namespace CDOverhaul.ArenaRemaster
             _isRefreshingText = true;
             yield return new WaitForSeconds(0.2f);
 
-            _label.text = count == 0 ? "-" : count.ToString();
+            refreshLabel(count);
 
             _isRefreshingText = false;
             yield break;
         }
 
+        private void refreshLabel(int count)
+        {
+            _label.text = count == 0 ? "-" : count.ToString();
+        }
+
+        private void stopAll()
+        {
+            if (_isRefreshingText)
+            {
+                _isRefreshingText = false;
+                StopAllCoroutines();
+            }
+        }
+
         private void OnDestroy()
         {
             OverhaulEventManager.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, refreshEnemiesLeft, true);
+            stopAll();
+        }
+
+        private void OnDisable()
+        {
+            stopAll();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace CDOverhaul.Gameplay.Combat_Update
         public static float AttackStrength { get; private set; }
 
         private float _attackSpeed;
-        public float AttackSpeed => EquipedWeapon == WeaponType.Hammer && !IsWeaponDamageActive && IsGoingToSwingWeapon ? _attackSpeed : GameModeManager.UsesMultiplayerSpeedMultiplier() ? 0.8f : Owner.AttackSpeed;
+        public float AttackSpeed => EquipedWeapon == WeaponType.Hammer && !IsWeaponDamageActive && IsGoingToSwingWeapon ? _attackSpeed : GameModeManager.IsNonCoopMultiplayer() ? 0.8f : Owner.AttackSpeed;
 
         private float _velocityMultipler;
         private float _defaultSpeed;
@@ -40,24 +40,27 @@ namespace CDOverhaul.Gameplay.Combat_Update
             _speedMultipler = 1f;
             _velocityMultipler = 0f;
             _weaponDamagePrevState = false;
-            _defaultSpeed = owner.MaxSpeed;
+            _defaultSpeed = Mathf.Clamp(owner.MaxSpeed, 7f, float.PositiveInfinity);
+
+            if (!GameModeManager.IsNonCoopMultiplayer())
+            {
+                owner.AttackSpeed = 1f;
+            }
+
+            UpgradeCollection collection = base.GetComponent<UpgradeCollection>();
+            OnUpgradesRefreshed(collection);
         }
 
         public override void OnUpgradesRefreshed(UpgradeCollection upgrades)
         {
+            if (upgrades == null)
+            {
+                return;
+            }
+
             int level = upgrades.GetUpgradeLevel(UpgradeType.Hammer);
             switch (level)
             {
-                case 0:
-                    _attackSpeed = 1f;
-                    _speedMultipler = 1f;
-                    _velocityMultipler = 4f;
-                    break;
-                case 1:
-                    _attackSpeed = 1f;
-                    _speedMultipler = 1f;
-                    _velocityMultipler = 4f;
-                    break;
                 case 2:
                     _attackSpeed = 0.85f;
                     _speedMultipler = 0.9f;
@@ -69,9 +72,9 @@ namespace CDOverhaul.Gameplay.Combat_Update
                     _velocityMultipler = 12f;
                     break;
                 default:
-                    _attackSpeed = 0.62f;
-                    _speedMultipler = 0.7f;
-                    _velocityMultipler = 15f;
+                    _attackSpeed = 1f;
+                    _speedMultipler = 1f;
+                    _velocityMultipler = 4f;
                     break;
             }
         }
@@ -87,6 +90,11 @@ namespace CDOverhaul.Gameplay.Combat_Update
                 AttackStrength = Mathf.Clamp(Mathf.Abs(sensivity * 0.65f), 0f, 16f);
             }
             SeveredVolumeGenerator.Instance.SeveredPartVelocity = 5.5f + AttackStrength;
+        }
+
+        public void SetDefaultSpeed(in float value)
+        {
+            _defaultSpeed = Mathf.Clamp(value, 7f, float.PositiveInfinity);
         }
 
         private void LateUpdate()

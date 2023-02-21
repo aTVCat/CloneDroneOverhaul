@@ -34,6 +34,15 @@ namespace CDOverhaul.Gameplay
             _hasAddedEventListeners = true;
         }
 
+        public override void OnExecuteCommand(FPMoveCommand command, bool resetState)
+        {
+            // Disallow robots to kick while being using mag boots
+            if (Owner.IsUsingMagBoots() && command.Input.SecondAttackDown)
+            {
+                command.Input.SecondAttackDown = false;
+            }
+        }
+
         private void onKill(Character c)
         {
             if (c.GetInstanceID() == Owner.GetInstanceID())

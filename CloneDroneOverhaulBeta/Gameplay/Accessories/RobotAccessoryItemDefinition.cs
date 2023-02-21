@@ -33,7 +33,7 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        public int GetIndexOfCharacterModel(in FirstPersonMover mover)
+        public static int GetIndexOfCharacterModel(in FirstPersonMover mover)
         {
             string modelName = mover.GetCharacterModel().gameObject.name.Replace("(Clone)", string.Empty);
             int indexOfModel = -1;

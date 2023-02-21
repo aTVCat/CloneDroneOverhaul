@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Combat_Update;
+using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
@@ -7,6 +8,7 @@ namespace CDOverhaul.Gameplay
         public override void Initialize()
         {
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, tryFixFPMForPlayer);
 
             HasAddedEventListeners = true;
             HasInitialized = true;
@@ -24,6 +26,25 @@ namespace CDOverhaul.Gameplay
             _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
             _ = mover.gameObject.AddComponent<AdvancedWeaponController>();
             _ = mover.gameObject.AddComponent<FirstPersonMoverInteractionBehaviour>();
+        }
+
+        private void tryFixFPMForPlayer(FirstPersonMover mover)
+        {
+            if (mover == null)
+            {
+                return;
+            }
+            mover.MaxSpeed = Mathf.Clamp(mover.MaxSpeed, 12f, float.PositiveInfinity);
+            if (mover.IsUsingMagBoots())
+            {
+                mover.OverrideBaseMoveSpeed(8f);
+            }
+
+            AdvancedWeaponController weaponController = FirstPersonMoverExtention.GetExtention<AdvancedWeaponController>(mover);
+            if (weaponController != null)
+            {
+                weaponController.SetDefaultSpeed(mover.MaxSpeed);
+            }
         }
     }
 }
