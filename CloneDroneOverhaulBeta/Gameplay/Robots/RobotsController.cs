@@ -20,7 +20,6 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-
             _ = mover.gameObject.AddComponent<FirstPersonMoverData>();
             _ = mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
             _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();

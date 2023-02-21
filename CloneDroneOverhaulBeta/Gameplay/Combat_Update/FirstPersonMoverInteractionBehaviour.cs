@@ -2,7 +2,6 @@
 
 namespace CDOverhaul.Gameplay.Combat_Update
 {
-    [RequireComponent(typeof(AISwordsmanController))]
     public class FirstPersonMoverInteractionBehaviour : FirstPersonMoverExtention
     {
         protected override void Initialize(FirstPersonMover owner)
