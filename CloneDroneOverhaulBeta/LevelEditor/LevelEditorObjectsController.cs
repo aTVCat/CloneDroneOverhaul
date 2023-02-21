@@ -34,19 +34,23 @@ namespace CDOverhaul.LevelEditor
                 _ = obj4.AddComponent<LevelEditorSkinSpawnpoint>();
                 AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "SkinSpawnpoint");
 
-                GameObject obj5 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.EModAssetBundlePart.Objects);
-                _ = obj5.AddComponent<LevelEditorGiveAllWeapons>();
-                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "GiveAllWeapons");
+
+                GameObject obj6 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.EModAssetBundlePart.Objects);
+                _ = obj6.AddComponent<LevelEditorGiveAllWeapons>();
+                AddObject(obj6.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "GiveAllWeapons");
+
+                GameObject obj5 = AssetController.GetAsset("EnemiesLeftPanelPoser", Enumerators.EModAssetBundlePart.Objects);
+                _ = obj5.AddComponent<LevelEditorArenaEnemiesCounterPoser>();
+                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.EModAssetBundlePart.Objects), "AR_EL_Mover");
+                _hasAddedAssets = true;
             }
 
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
-
-            _hasAddedAssets = true;
         }
 
         internal static void UpdateLevelEditor()
         {
-            List<LevelObjectEntry> levelObjects = LevelObjectsLibraryManager.Instance.GetLevelObjectsInLibrary();
+            //List<LevelObjectEntry> levelObjects = LevelObjectsLibraryManager.Instance.GetLevelObjectsInLibrary();
             List<LevelObjectEntry> visibleLevelObjects = LevelObjectsLibraryManager.Instance.GetVisibleLevelEditorObjects();
 
             foreach (string @string in _objects.Keys)
@@ -59,7 +63,7 @@ namespace CDOverhaul.LevelEditor
                     entry.PathUnderResources = @string;
                     entry.PreviewPathUnderResources = @string.Replace(ObjectPathPrefix, PreviewPathPrefix);
 
-                    levelObjects.Add(entry);
+                    //levelObjects.Add(entry);
                     visibleLevelObjects.Add(entry);
                 }
             }

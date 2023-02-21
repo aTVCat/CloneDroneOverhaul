@@ -408,6 +408,7 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
+    <Compile Include="LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
     <Compile Include="LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />

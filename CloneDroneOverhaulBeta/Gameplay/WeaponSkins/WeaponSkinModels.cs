@@ -114,6 +114,15 @@ namespace CDOverhaul.Gameplay
             return GetNormalModel(multiplayer);
         }
 
+        public virtual bool HasFireModel(in bool multiplayer)
+        {
+            if (multiplayer)
+            {
+                return Fire.Item2 != null;
+            }
+            return Fire.Item1 != null;
+        }
+
         public virtual WeaponSkinPlacement GetPlacement()
         {
             return MainGameplayController.Instance.WeaponSkins.GetSkinPlacement(this);

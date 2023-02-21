@@ -15,6 +15,11 @@ namespace CDOverhaul.Patches
             SuccessfullyPatched = true;
         }
 
+        public ArenaRemasterController GetController()
+        {
+            return _controller;
+        }
+
         public override void Cancel()
         {
             base.Cancel();

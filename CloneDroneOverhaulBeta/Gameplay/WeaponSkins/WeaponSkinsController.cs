@@ -55,6 +55,8 @@ namespace CDOverhaul.Gameplay
                 new WeaponSkinPlacement(new Vector3(0, -0.05f, -0.8f), new Vector3(0, 90, 90), Vector3.one));
             WeaponSkinModels model3 = AddWeaponSkin(AssetController.GetAsset("HammerSkinDarkPast", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Hammer, "Dark Past",
                 new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
+            WeaponSkinModels model4 = AddWeaponSkin(AssetController.GetAsset("P_Steel", Enumerators.EModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Steel",
+                new WeaponSkinPlacement(new Vector3(-1.14f, -1.14f, 0.7f), new Vector3(0, 0, 0), Vector3.one));
 
             HasAddedEventListeners = true;
             HasInitialized = true;
@@ -224,10 +226,24 @@ namespace CDOverhaul.Gameplay
                 HSBColor hsbcolor2 = new HSBColor(mover.GetCharacterModel().GetFavouriteColor())
                 {
                     b = 1f,
-                    s = 0.8f
+                    s = 0.7f
                 };
                 material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
             }
+            else
+            {
+                if (!_weaponSkins[key].HasFireModel(GameModeManager.IsNonCoopMultiplayer()))
+                {
+                    Material material = skin.GetComponent<Renderer>().material;
+                    HSBColor hsbcolor2 = new HSBColor(HumanFactsManager.Instance.FavouriteColors[5].ColorValue)
+                    {
+                        b = 1f,
+                        s = 0.7f
+                    };
+                    material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
+                }
+            }
+
 
             collection.RegisterSpawnedSkin(skin, key, isFire, isMultiplayer);
             collection.ShowSkin(key, isFire, isMultiplayer);

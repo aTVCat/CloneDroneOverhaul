@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.LevelEditor;
+using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
@@ -27,6 +28,8 @@ namespace CDOverhaul.ArenaRemaster
 
         public Transform ArenaRemasterTransform;
         public ModdedObject ArenaRemasterModdedObject;
+
+        public LevelEditorArenaEnemiesCounterPoser EnemiesLeftPositionOverride;
 
         private bool _arenaToggleState = true;
 
@@ -69,7 +72,7 @@ namespace CDOverhaul.ArenaRemaster
         private void setUpLabels()
         {
             ArenaRemasterEnemyCounter b1 = ArenaRemasterModdedObject.GetObject<Transform>(3).gameObject.AddComponent<ArenaRemasterEnemyCounter>();
-            b1.Initialize(b1.GetComponent<ModdedObject>());
+            b1.Initialize(b1.GetComponent<ModdedObject>(), this);
         }
 
         private void Update()
