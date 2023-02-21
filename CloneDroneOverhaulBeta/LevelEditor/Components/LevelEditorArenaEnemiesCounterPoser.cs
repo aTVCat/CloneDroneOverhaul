@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Patches;
+﻿using CDOverhaul.Patches;
 using UnityEngine;
 
 namespace CDOverhaul.LevelEditor

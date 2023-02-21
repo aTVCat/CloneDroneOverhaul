@@ -101,7 +101,7 @@ namespace CDOverhaul.ArenaRemaster
             {
                 refreshEnemiesLeft();
             }
-            if(Time.frameCount % 10 == 0)
+            if (Time.frameCount % 10 == 0)
             {
                 LevelEditorArenaEnemiesCounterPoser poser = _controller.EnemiesLeftPositionOverride;
                 if (poser != null)

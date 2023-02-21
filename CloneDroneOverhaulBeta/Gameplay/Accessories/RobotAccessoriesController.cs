@@ -293,6 +293,11 @@ namespace CDOverhaul.Gameplay
         /// <param name="mover"></param>
         public static void RefreshRobot(FirstPersonMover mover)
         {
+            if (mover == null)
+            {
+                return;
+            }
+
             if (GameModeManager.IsMultiplayer())
             {
                 if (!mover.IsPlayer())

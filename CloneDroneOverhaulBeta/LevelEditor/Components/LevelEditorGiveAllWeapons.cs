@@ -20,12 +20,27 @@ namespace CDOverhaul.LevelEditor
         {
             DelegateScheduler.Instance.Schedule(delegate
             {
-                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.Hammer, 3);
-                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
-                mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
-                mover.RefreshUpgrades();
+                GiveAllWeapons(mover);
 
             }, 0.2f);
+        }
+
+        public static void GiveAllWeaponsToPlayer()
+        {
+            GiveAllWeapons(CharacterTracker.Instance.GetPlayerRobot());
+        }
+
+        public static void GiveAllWeapons(in FirstPersonMover mover)
+        {
+            if (mover == null)
+            {
+                return;
+            }
+
+            mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.Hammer, 3);
+            mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
+            mover.GetComponent<UpgradeCollection>().AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
+            mover.RefreshUpgrades();
         }
 
         private void OnDestroy()

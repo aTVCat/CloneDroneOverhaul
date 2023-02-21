@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +104,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Octokit, Version=4.0.4.0, Culture=neutral, PublicKeyToken=0be8860aee462442, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.4.0.4\lib\netstandard2.0\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="Pathfinding.ClipperLib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.ClipperLib.dll</HintPath>
@@ -410,10 +415,15 @@
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
     <Compile Include="LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
     <Compile Include="LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
+    <Compile Include="ModControllers\Console\OverhaulConsoleController.cs" />
+    <Compile Include="ModControllers\Debug\OverhaulDebugCommands.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
+    <Compile Include="ModControllers\Debug\OverhaulDebugHUDV2.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
     <Compile Include="ModControllers\ExclusiveStuff\ExclusiveRolesController.cs" />
     <Compile Include="ModControllers\ExclusiveStuff\ExclusivityController.cs" />
+    <Compile Include="ModControllers\GitHub\OverhaulGitHubController.cs" />
+    <Compile Include="ModControllers\Interfaces\IConsoleCommandReceiver.cs" />
     <Compile Include="ModControllers\OverhaulExceptions.cs" />
     <Compile Include="ModControllers\OverhaulGamemodeManager.cs" />
     <Compile Include="ModControllers\Patches\FirstPersonMover_Patch.cs" />
@@ -426,22 +436,22 @@
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
     <Compile Include="ModControllers\Patches\ErrorWindow_Patch.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\Components\ArenaCameraBehaviour.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\Components\StoryChapter3AllyFix.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\Components\AudioSourceBehaviour.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\Components\GameUIRootBehaviour.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\EnergyUIReplacement.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\BaseFixes.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\NewArenaActivator.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\NewAudioController.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\OptimizeOnStart.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\OptimizeRuntime.cs" />
-    <Compile Include="ModControllers\Settings\SettingDescription.cs" />
-    <Compile Include="ModControllers\Settings\SubClasses\ESettingType.cs" />
-    <Compile Include="ModControllers\Settings\Setting.cs" />
-    <Compile Include="ModControllers\Settings\SubClasses\SettingAttribute.cs" />
-    <Compile Include="ModControllers\Settings\SettingsController.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\ArenaCameraBehaviour.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\StoryChapter3AllyFix.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\AudioSourceBehaviour.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\GameUIRootBehaviour.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\EnergyUIReplacement.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\BaseFixes.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\NewArenaActivator.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\NewAudioController.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\OptimizeOnStart.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\OptimizeRuntime.cs" />
+    <Compile Include="ModControllers\Data\Settings\SettingDescription.cs" />
+    <Compile Include="ModControllers\Data\Settings\SubClasses\ESettingType.cs" />
+    <Compile Include="ModControllers\Data\Settings\Setting.cs" />
+    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingAttribute.cs" />
+    <Compile Include="ModControllers\Data\Settings\SettingsController.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
@@ -473,12 +483,12 @@
     <Compile Include="ModControllers\Patches\CharacterTracker_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponManager_Patch.cs" />
-    <Compile Include="ModControllers\Replacement\ReplacementBase.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
-    <Compile Include="ModControllers\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\ReplacementBase.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
+    <Compile Include="ModControllers\Patches\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="ModControllers\SEventEntry.cs" />
-    <Compile Include="ModControllers\Utilities\OverhaulCodeExtentions.cs" />
-    <Compile Include="ModControllers\Utilities\OverhaulUtilities.cs" />
+    <Compile Include="ModControllers\ControllersManagement\Utilities\OverhaulCodeExtentions.cs" />
+    <Compile Include="ModControllers\ControllersManagement\Utilities\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\FreeCameraMovement.cs" />
     <Compile Include="Shared\ObjectStateListener.cs" />
@@ -489,6 +499,18 @@
       <Name>OverhaulAPI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModControllers\GitHub\ReasonWhyGutHibControllerWontWork.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
 </Project>

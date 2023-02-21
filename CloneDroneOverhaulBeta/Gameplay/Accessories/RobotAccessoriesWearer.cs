@@ -235,7 +235,7 @@ namespace CDOverhaul.Gameplay
         {
             if (Owner != null && Owner.IsAlive() && Owner.IsMainPlayer())
             {
-                if (Input.GetKeyDown(KeyCode.T))
+                if (!Cursor.visible && Input.GetKeyDown(KeyCode.T))
                 {
                     SwitchAllAccessoriesVisibility();
                 }

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CDOverhaul.Gameplay.Combat_Update
+﻿namespace CDOverhaul.Gameplay.Combat_Update
 {
     public class FirstPersonMoverInteractionBehaviour : FirstPersonMoverExtention
     {
