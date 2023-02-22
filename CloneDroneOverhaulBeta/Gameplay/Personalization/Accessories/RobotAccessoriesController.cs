@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5).gameObject.SetActive(false);
             }
 
-            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroy_VFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
             PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories");
 

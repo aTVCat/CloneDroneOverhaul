@@ -51,10 +51,6 @@ namespace CDOverhaul.HUD
 
         private void OnDestroy()
         {
-            if (!_spawnedBehaviours.Contains(this))
-            {
-                return;
-            }
             _ = _spawnedBehaviours.Remove(this);
         }
     }

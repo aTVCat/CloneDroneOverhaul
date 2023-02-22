@@ -17,13 +17,13 @@ namespace CDOverhaul
 
         public static bool AddListener(IConsoleCommandReceiver receiver)
         {
-            if (_commandReceivers.Contains(receiver))
+            if (!_commandReceivers.TryAdd(receiver))
             {
                 return false;
             }
 
             string[] newCommands = receiver.Commands();
-            if (newCommands != null && newCommands.Length != 0)
+            if (!newCommands.IsNullOrEmpty())
             {
                 int i = 0;
                 do
@@ -35,19 +35,12 @@ namespace CDOverhaul
                     i++;
                 } while (i < newCommands.Length);
             }
-
-            _commandReceivers.Add(receiver);
             return true;
         }
 
-        public static bool RemoveListener(IConsoleCommandReceiver receiver)
+        public static void RemoveListener(IConsoleCommandReceiver receiver)
         {
-            if (!_commandReceivers.Contains(receiver))
-            {
-                return false;
-            }
             _ = _commandReceivers.Remove(receiver);
-            return true;
         }
 
         public static void RunCommand(string input, out string output, bool outPutAnything = false)

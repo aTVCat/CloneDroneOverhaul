@@ -78,11 +78,6 @@ namespace CDOverhaul.Gameplay
         /// <param name="destroy"></param>
         public void UnregisterAccessory(in GameObject gameObject, in bool destroy = false)
         {
-            if (!_accessories.Contains(gameObject))
-            {
-                return;
-            }
-
             _ = _accessories.Remove(gameObject);
             if (!destroy)
             {

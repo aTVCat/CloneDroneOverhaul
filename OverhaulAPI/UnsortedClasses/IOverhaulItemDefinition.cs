@@ -2,7 +2,9 @@
 {
     public interface IOverhaulItemDefinition
     {
-        string ItemName();
+        void SetItemName(string newName);
+
+        string GetItemName();
 
         bool IsUnlocked(bool forceTrue);
     }

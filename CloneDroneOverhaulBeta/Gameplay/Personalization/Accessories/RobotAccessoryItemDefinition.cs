@@ -101,7 +101,7 @@ namespace CDOverhaul.Gameplay
             data.SaveTransforms();
         }
 
-        string IOverhaulItemDefinition.ItemName()
+        string IOverhaulItemDefinition.GetItemName()
         {
             return AccessoryName;
         }
@@ -113,6 +113,11 @@ namespace CDOverhaul.Gameplay
                 return true;
             }
             return true;
+        }
+
+        void IOverhaulItemDefinition.SetItemName(string newName)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

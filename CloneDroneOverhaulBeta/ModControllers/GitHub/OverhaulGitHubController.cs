@@ -39,7 +39,7 @@ namespace CDOverhaul
 
         private void OnDestroy()
         {
-            _ = OverhaulConsoleController.RemoveListener(this);
+            OverhaulConsoleController.RemoveListener(this);
         }
 
         public string[] Commands()

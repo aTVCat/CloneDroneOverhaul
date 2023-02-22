@@ -1,5 +1,4 @@
-﻿using InternalModBot;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -18,7 +17,7 @@ namespace CDOverhaul
         /// <param name="fileName"></param>
         public static void SaveData(object data, in string fileName, in bool useModFolder, in string modFolder)
         {
-            if(!(data is ModDataContainerBase))
+            if (!(data is ModDataContainerBase))
             {
                 return;
             }
@@ -42,10 +41,10 @@ namespace CDOverhaul
         {
             if (useModFolder)
             {
-                T result = null;
                 string path = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName + ".json";
                 bool needsToSave = false;
 
+                T result;
                 if (File.Exists(path))
                 {
                     result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path), DataRepository.Instance.GetSettings());

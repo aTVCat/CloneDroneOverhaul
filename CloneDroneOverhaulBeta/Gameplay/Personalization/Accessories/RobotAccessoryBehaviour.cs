@@ -40,7 +40,7 @@ namespace CDOverhaul.Gameplay
             LavaFloor fl = other.GetComponent<LavaFloor>();
             if (fl != null || (a && a.IsDamageActive() && (Owner == null || a.Owner != Owner)))
             {
-                _ = PooledPrefabController.SpawnObject<RobotAccessoryDestroy_VFX>(RobotAccessoriesController.AccessoryDestroyVFX_ID, base.transform.position, base.transform.eulerAngles);
+                _ = PooledPrefabController.SpawnObject<RobotAccessoryDestroyVFX>(RobotAccessoriesController.AccessoryDestroyVFX_ID, base.transform.position, base.transform.eulerAngles);
                 _ = AudioManager.Instance.PlayClipAtTransform(RobotAccessoriesController.AccessoryDestroyedSound, base.transform, 0f, false, 2f, 0.8f, 0.1f);
 
                 RobotAccessoriesWearer w = FirstPersonMoverExtention.GetExtention<RobotAccessoriesWearer>(Owner);

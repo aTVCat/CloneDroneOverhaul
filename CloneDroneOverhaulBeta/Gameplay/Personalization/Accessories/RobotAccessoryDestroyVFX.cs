@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotAccessoryDestroy_VFX : PooledPrefabInstanceBase
+    public class RobotAccessoryDestroyVFX : PooledPrefabInstanceBase
     {
         private ParticleSystem _system;
 

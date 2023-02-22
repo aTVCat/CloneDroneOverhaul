@@ -373,20 +373,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gameplay\Accessories\RobotAccessoriesEditorUI.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoryDestroy_VFX.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoriesWearer.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoriesController.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoryBehaviour.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoryItemDefinition.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessorySaveData.cs" />
-    <Compile Include="Gameplay\Accessories\RobotAccessoryTransformData.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesEditorUI.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryDestroyVFX.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesWearer.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesController.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryItemDefinition.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessorySaveData.cs" />
+    <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryTransformData.cs" />
     <Compile Include="Gameplay\Combat_Update\FirstPersonMoverInteractionBehaviour.cs" />
     <Compile Include="Gameplay\Combat_Update\AdvancedWeaponController.cs" />
     <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
     <Compile Include="Gameplay\Combat_Update\OverhaulCombatController.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
     <Compile Include="Gameplay\Levels\LevelInstance.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\IWeaponSkinsControllerV2.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\IWeaponSkinItemDefinition.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModel.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModelOffset.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsController.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemFilter.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemNullReason.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponVariant.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
     <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverOverhaul.cs" />
     <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverData.cs" />
@@ -400,10 +409,10 @@
     <Compile Include="Gameplay\Shared\CustomAnimations\Animation\CustomRobotAnimationTrack.cs" />
     <Compile Include="Gameplay\Shared\SharedControllers.cs" />
     <Compile Include="Gameplay\Shared\Voxels\VoxelsController.cs" />
-    <Compile Include="Gameplay\WeaponSkins\ESkinModelType.cs" />
-    <Compile Include="Gameplay\WeaponSkins\WeaponSkinModels.cs" />
-    <Compile Include="Gameplay\WeaponSkins\WeaponSkinPlacement.cs" />
-    <Compile Include="Gameplay\WeaponSkins\WeaponSkinsController.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkins\ESkinModelType.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkins\WeaponSkinModels.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkins\WeaponSkinPlacement.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkins\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
     <Compile Include="Gameplay\Arena_Update\ArenaRemasterEnemyCounter.cs" />
     <Compile Include="Gameplay\Arena_Update\ArenaRemasterArrowBlinker.cs" />
@@ -413,8 +422,10 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
-    <Compile Include="LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
+    <Compile Include="ModControllers\OverhaulExtentions.cs" />
+    <Compile Include="ModControllers\OverhaulSessionController.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
+    <Compile Include="Shared\LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
     <Compile Include="ModControllers\Console\OverhaulConsoleController.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugCommands.cs" />
     <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
@@ -455,17 +466,17 @@
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorGiveAllWeapons.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorSkinSpawnpoint.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorTextBlock.cs" />
-    <Compile Include="LevelEditor\Components\LevelEditorImageBlock.cs" />
-    <Compile Include="LevelEditor\LevelEditorObjectsController.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorGiveAllWeapons.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorSkinSpawnpoint.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorTextBlock.cs" />
+    <Compile Include="Shared\LevelEditor\Components\LevelEditorImageBlock.cs" />
+    <Compile Include="Shared\LevelEditor\LevelEditorObjectsController.cs" />
     <Compile Include="ModControllers\Assets\AssetController.cs" />
     <Compile Include="ModControllers\Assets\EModAssetBundlePart.cs" />
     <Compile Include="HUD\HUDControllers.cs" />
     <Compile Include="ModControllers\Data\ModDataContainerBase.cs" />
-    <Compile Include="Gameplay\WeaponSkins\PlayerSkinsData.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkins\PlayerSkinsData.cs" />
     <Compile Include="ModControllers\Data\ModDataController.cs" />
     <Compile Include="ModControllers\GamemodeStates\EGamemodeSubstate.cs" />
     <Compile Include="ModControllers\GamemodeStates\GamemodeSubstatesController.cs" />
@@ -505,9 +516,7 @@
   <ItemGroup>
     <Content Include="ModControllers\GitHub\ReasonWhyGutHibControllerWontWork.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Built\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -23,11 +23,7 @@ namespace CDOverhaul.Gameplay
         {
             if (_spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> eList))
             {
-                if (eList.Contains(extention))
-                {
-                    return;
-                }
-                eList.Add(extention);
+                _ = eList.TryAdd(extention);
             }
             else
             {
@@ -48,10 +44,6 @@ namespace CDOverhaul.Gameplay
         {
             if (_spawnedExtentions.TryGetValue(mover.GetInstanceID(), out List<FirstPersonMoverExtention> eList))
             {
-                if (!eList.Contains(extention))
-                {
-                    return;
-                }
                 _ = eList.Remove(extention);
             }
         }

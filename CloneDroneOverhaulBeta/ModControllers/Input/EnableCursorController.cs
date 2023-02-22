@@ -38,9 +38,8 @@ namespace CDOverhaul
         /// <param name="id"></param>
         public static void RemoveCondition(in byte id)
         {
-            if (_conditionIDs.Contains(id))
+            if (_conditionIDs.Remove(id))
             {
-                _ = _conditionIDs.Remove(id);
                 GameUIRoot.Instance.RefreshCursorEnabled();
 
                 if (_conditionIDs.Count == 0)

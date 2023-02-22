@@ -50,6 +50,7 @@ namespace CDOverhaul.Gameplay
             GamemodeSubstates = ModControllerManager.NewController<GamemodeSubstatesController>();
             Levels = ModControllerManager.NewController<LevelController>();
             Combat = ModControllerManager.NewController<OverhaulCombatController>();
+            _ = ModControllerManager.NewController<WeaponSkinsControllerV2>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
 
