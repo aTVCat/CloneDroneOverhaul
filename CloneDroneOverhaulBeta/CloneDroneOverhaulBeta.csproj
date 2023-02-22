@@ -395,6 +395,8 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemFilter.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemNullReason.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinSpawnInfo.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponVariant.cs" />
     <Compile Include="Gameplay\Robots\FirstPersonMoverExtention.cs" />
     <Compile Include="Gameplay\Robots\SubClasses\FirstPersonMoverOverhaul.cs" />

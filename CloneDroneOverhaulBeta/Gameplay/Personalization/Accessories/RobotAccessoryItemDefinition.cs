@@ -119,5 +119,15 @@ namespace CDOverhaul.Gameplay
         {
             throw new System.NotImplementedException();
         }
+
+        void IOverhaulItemDefinition.SetExclusivePlayerID(string id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        string IOverhaulItemDefinition.GetExclusivePlayerID()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

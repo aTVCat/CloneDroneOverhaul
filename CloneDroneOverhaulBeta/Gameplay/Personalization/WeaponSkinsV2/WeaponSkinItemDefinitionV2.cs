@@ -31,6 +31,13 @@ namespace CDOverhaul.Gameplay
         string IOverhaulItemDefinition.GetItemName() => m_SkinName;
 
         /// <summary>
+        /// Exclusivity
+        /// </summary>
+        private string m_ExclusivePlayerID;
+        void IOverhaulItemDefinition.SetExclusivePlayerID(string id) => m_ExclusivePlayerID = id;
+        string IOverhaulItemDefinition.GetExclusivePlayerID() => m_ExclusivePlayerID;
+
+        /// <summary>
         /// Models
         /// </summary>
         private WeaponSkinModel[] m_Models;
@@ -74,7 +81,15 @@ namespace CDOverhaul.Gameplay
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
-            throw new System.NotImplementedException();
+            if (OverhaulVersion.IsDebugBuild || forceTrue)
+            {
+                return true;
+            }
+            if (!string.IsNullOrEmpty(m_ExclusivePlayerID))
+            {
+                return ExclusivityController.GetLocalPlayfabID().Equals(m_ExclusivePlayerID, System.StringComparison.Ordinal);
+            }
+            return true;
         }
 
         bool IEqualityComparer.Equals(object x, object y)

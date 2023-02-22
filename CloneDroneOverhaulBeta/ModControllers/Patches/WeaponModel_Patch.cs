@@ -11,11 +11,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static void ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
         {
+            /*
             if (__instance.WeaponType == WeaponType.Sword)
             {
                 WeaponSkinsController c = MainGameplayController.Instance.WeaponSkins;
                 c.RefreshSkins(__instance.MeleeImpactArea.Owner);
-            }
+            }*/
         }
 
         [HarmonyPrefix]

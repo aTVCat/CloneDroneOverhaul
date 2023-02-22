@@ -29,13 +29,8 @@ namespace CDOverhaul.Gameplay.Combat_Update
 
         private bool _weaponDamagePrevState;
 
-        private float _ogHorizontalCursorMovement;
-        private float _ogVerticalCursorMovement;
-
         protected override void Initialize(FirstPersonMover owner)
         {
-            _ogHorizontalCursorMovement = owner.CursorRotationSpeedHorizontal;
-            _ogVerticalCursorMovement = owner.CursorRotationSpeedVertical;
             _attackSpeed = 1f;
             _speedMultipler = 1f;
             _velocityMultipler = 0f;
@@ -137,17 +132,6 @@ namespace CDOverhaul.Gameplay.Combat_Update
                     OwnerModel.UpperAnimator.speed = AttackSpeed;
                 }
                 Owner.MaxSpeed = MovementSpeed;
-
-                if (IsWeaponDamageActive || IsGoingToSwingWeapon)
-                {
-                    Owner.CursorRotationSpeedHorizontal = 1f;
-                    Owner.CursorRotationSpeedVertical = -0.7f;
-                }
-                else
-                {
-                    Owner.CursorRotationSpeedHorizontal = _ogHorizontalCursorMovement;
-                    Owner.CursorRotationSpeedVertical = _ogVerticalCursorMovement;
-                }
             }
         }
     }

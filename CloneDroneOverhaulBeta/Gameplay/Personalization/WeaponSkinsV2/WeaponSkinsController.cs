@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BestHTTP.SocketIO;
+using PlayFab.ExperimentationModels;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -17,7 +19,10 @@ namespace CDOverhaul.Gameplay
         {
             Interface = this;
             addSkins();
+
+            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterStarted, ApplySkinsOnCharacter, true);
         }
+
         private void addSkins()
         {
             bool hasAdded = OverhaulSessionController.GetKey<bool>("hasAddedSkins");
@@ -35,6 +40,43 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        public void ApplySkinsOnCharacter(Character character)
+        {
+            if(character == null || !(character is FirstPersonMover))
+            {
+                return;
+            }
+            FirstPersonMover firstPersonMover = character as FirstPersonMover;
+            WeaponSkinsWearer wearer = firstPersonMover.GetComponent<WeaponSkinsWearer>();
+            if(wearer == null)
+            {
+                wearer = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
+            }
+            wearer.Owner = firstPersonMover;
+            if (!firstPersonMover.IsPlayer())
+            {
+                return;
+            }
+            wearer.SpawnSkins();
+        }
+
+        public static WeaponVariant GetVariant(bool fire, bool multiplayer)
+        {
+            if (!fire && !multiplayer)
+            {
+                return WeaponVariant.Default;
+            }
+            else if (!fire && multiplayer)
+            {
+                return WeaponVariant.DefaultMultiplayer;
+            }
+            else if (fire && !multiplayer)
+            {
+                return WeaponVariant.Fire;
+            }
+            return WeaponVariant.FireMultiplayer;
+        }
+
         IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, WeaponSkinItemFilter filter)
         {
             IWeaponSkinItemDefinition newWeaponItem = new WeaponSkinItemDefinitionV2();
@@ -47,7 +89,26 @@ namespace CDOverhaul.Gameplay
 
         IWeaponSkinItemDefinition IWeaponSkinsControllerV2.GetSkinItem(WeaponType weaponType, string skinName, WeaponSkinItemFilter filter, out WeaponSkinItemNullReason error)
         {
-            throw new System.NotImplementedException();
+            IWeaponSkinItemDefinition result = null;
+            error = WeaponSkinItemNullReason.Null;
+
+            foreach(IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
+            {
+                if (weaponSkinItem.IsUnlocked(false))
+                {
+                    if ((filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter) && weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
+                    {
+                        result = weaponSkinItem;
+                    }
+                }
+                else
+                {
+                    // Implement is locked by not exclusivity
+                    error = WeaponSkinItemNullReason.LockedExclusive;
+                }
+            }
+
+            return result;
         }
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(WeaponType weaponType, WeaponSkinItemFilter filter)
@@ -57,12 +118,20 @@ namespace CDOverhaul.Gameplay
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(WeaponSkinItemFilter filter)
         {
-            throw new System.NotImplementedException();
+            List<IWeaponSkinItemDefinition> result = new List<IWeaponSkinItemDefinition>();
+            foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
+            {
+                if (weaponSkinItem.IsUnlocked(false) && (filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                {
+                    result.Add(weaponSkinItem);
+                }
+            }
+            return result.ToArray();
         }
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover)
         {
-            throw new System.NotImplementedException();
+            return Interface.GetSkinItems(WeaponSkinItemFilter.None);
         }
 
         string[] IConsoleCommandReceiver.Commands()

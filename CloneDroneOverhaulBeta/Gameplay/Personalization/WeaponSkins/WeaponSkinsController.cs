@@ -27,8 +27,14 @@ namespace CDOverhaul.Gameplay
 
         private PlayerCameraMover _currentCameraMover;
 
+        public const bool UseThisSystem = false;
+
         public override void Initialize()
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             PlayerSelectedSkinsData = PlayerSkinsData.GetData<PlayerSkinsData>(SaveDataFileName);
 
             if (SkinsOnlyForPlayer)
@@ -97,6 +103,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinModels GetSkin(in WeaponType weaponType, in string skinName)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             foreach (WeaponSkinModels m in _weaponSkins.Values)
             {
                 if (m.WeaponType == weaponType && m.SkinName == skinName)
@@ -114,6 +124,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinModels GetSkin(in WeaponType weaponType)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             if (!PlayerSelectedSkinsData.Skins.ContainsKey(weaponType) || GameModeManager.IsInLevelEditor())
             {
                 return GetSkin(weaponType, DefaultWeaponSkinName);
@@ -128,6 +142,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public string GetSkinName(in WeaponType weaponType)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             if (!PlayerSelectedSkinsData.Skins.ContainsKey(weaponType))
             {
                 return null;
@@ -152,6 +170,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public List<WeaponSkinModels> GetAllSkins(in WeaponType weaponType)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             List<WeaponSkinModels> result = new List<WeaponSkinModels>();
             foreach (string str in _weaponSkins.Keys)
             {
@@ -169,6 +191,10 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public GameObject GetAndSpawnSkin(in WeaponModel model, in string skinName, in FirstPersonMover mover, in bool isMultiplayer, in bool isFire = false)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             GameObject skin = GetAndSpawnSkin(model.WeaponType, null, skinName, mover, isMultiplayer, isFire);
 
             if (skin == null)
@@ -200,6 +226,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public GameObject GetAndSpawnSkin(in WeaponType model, in Transform parent, in string skinName, in FirstPersonMover mover, in bool isMultiplayer, in bool isFire = false)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             string key = CombineWeaponTypeAndSkinName(model, skinName);
             if (!_weaponSkins.ContainsKey(key) || !_modelPlacements.ContainsKey(key) || skinName == DefaultWeaponSkinName)
             {
@@ -268,6 +298,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinPlacement GetSkinPlacement(WeaponSkinModels models)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             return _modelPlacements[CombineWeaponTypeAndSkinName(models.WeaponType, models.SkinName)];
         }
 
@@ -279,6 +313,10 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public string CombineWeaponTypeAndSkinName(in WeaponType type, in string name)
         {
+            if (!UseThisSystem)
+            {
+                return null;
+            }
             return type.ToString() + ":" + name;
         }
 
@@ -287,6 +325,10 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void EnterSkinSelectionRoom()
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             if (GameModeManager.Is(EditorGamemode))
             {
                 return;
@@ -314,6 +356,10 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void EnterSkinCreationMode()
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = EGamemodeSubstate.WeaponSkinCreation;
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover == null || CustomSkinSpawnpointInLevel == null)
@@ -351,6 +397,10 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public void ExitSkinCreationMode()
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover == null)
             {
@@ -385,6 +435,10 @@ namespace CDOverhaul.Gameplay
         /// <param name="skinName"></param>
         public void ConfirmSkinSelect(in WeaponType weaponType, in string skinName)
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinCreation)
             {
                 return;
@@ -409,6 +463,10 @@ namespace CDOverhaul.Gameplay
         /// <param name="default">Force use of vanilla skins</param>
         public void RefreshSkins(in FirstPersonMover mover, in bool @default = false)
         {
+            if (!UseThisSystem)
+            {
+                return;
+            }
             if (mover == null || !mover.HasCharacterModel() || mover.IsMindSpaceCharacter)
             {
                 return;

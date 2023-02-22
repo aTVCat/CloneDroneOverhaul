@@ -7,8 +7,6 @@ namespace CDOverhaul.ArenaRemaster
 {
     public class ArenaRemasterEnemyCounter : MonoBehaviour
     {
-        // Todo: Make a lvl editor objct that allows to move this counter anywhere you want
-
         private TextMeshPro _header;
         private TextMeshPro _label;
 

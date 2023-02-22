@@ -4,6 +4,7 @@ using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -11,6 +12,7 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of the mod. Starts up the mod
     /// </summary>
+    /// Todo: Custom advancements system (or patch vanilla one)
     [MainModClass]
     public class OverhaulMod : Mod
     {
@@ -33,6 +35,11 @@ namespace CDOverhaul
         /// The instance of main mod class
         /// </summary>
         public static OverhaulMod Base { get; internal set; }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowText")]
+        public static extern bool SetWindowText(System.IntPtr hwnd, System.String lpString);
+        [DllImport("user32.dll", EntryPoint = "FindWindow")]
+        public static extern System.IntPtr FindWindow(System.String className, System.String windowName);
 
         /// <summary>
         /// Create core when mod was loaded
@@ -131,6 +138,8 @@ namespace CDOverhaul
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
             _ = core.Initialize(out string errors);
 
+            ChangeWindowTitle();
+
             if (errors != null)
             {
                 OverhaulExceptions.OnModCrashedWhileLoading(errors);
@@ -151,6 +160,12 @@ namespace CDOverhaul
 
             Object.Destroy(Core.gameObject);
             Core = null;
+        }
+
+        internal void ChangeWindowTitle()
+        {
+            var windowPtr = FindWindow(null, Application.productName);
+            SetWindowText(windowPtr, "Clone Drone Overhaul");
         }
 
         /// <summary>
