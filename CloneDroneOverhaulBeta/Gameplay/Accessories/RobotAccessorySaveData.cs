@@ -15,17 +15,12 @@ namespace CDOverhaul.Gameplay
                     "Igrok's hat"
                 };
             }
-            SaveAccessories();
+            SaveData();
         }
 
         protected override void OnPrepareToSave()
         {
             FileName = "PlayerAccessories.json";
-        }
-
-        public void SaveAccessories()
-        {
-            SaveData<RobotAccessorySaveData>();
         }
     }
 }

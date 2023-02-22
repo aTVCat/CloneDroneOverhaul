@@ -65,7 +65,7 @@ namespace CDOverhaul.Gameplay
 
             if (TransformData[indexOfModel] == null)
             {
-                TransformData[indexOfModel] = RobotAccessoryTransformData.GetData<RobotAccessoryTransformData>(indexOfModel + "_" + AccessoryName + ".json", true, "Accessories/");
+                TransformData[indexOfModel] = RobotAccessoryTransformData.GetData<RobotAccessoryTransformData>(indexOfModel + "_" + AccessoryName, true, "Accessories");
                 if (OverhaulVersion.IsDebugBuild)
                 {
                     TransformData[indexOfModel].AccessoryName = AccessoryName;
@@ -93,7 +93,7 @@ namespace CDOverhaul.Gameplay
             RobotAccessoryTransformData data = TransformData[index];
             if (data == null)
             {
-                TransformData[index] = RobotAccessoryTransformData.GetData<RobotAccessoryTransformData>(index + "_" + AccessoryName + ".json", true, "Accessories/");
+                TransformData[index] = RobotAccessoryTransformData.GetData<RobotAccessoryTransformData>(index + "_" + AccessoryName, true, "Accessories");
             }
             data.AccessoryName = AccessoryName;
             data.CharacterModelIndex = (byte)index;

@@ -17,7 +17,7 @@ namespace CDOverhaul
         [NonSerialized]
         public string FileName;
 
-        public void SaveData<T>(in bool useModFolder = false, in string modFolderName = null) where T : ModDataContainerBase
+        public void SaveData(in bool useModFolder = false, in string modFolderName = null)
         {
             if (string.IsNullOrEmpty(FileName))
             {
@@ -25,7 +25,7 @@ namespace CDOverhaul
             }
 
             OnPrepareToSave();
-            ModDataController.SaveData((T)this, FileName, useModFolder, modFolderName);
+            ModDataController.SaveData(this, FileName, useModFolder, modFolderName);
         }
 
         public static T GetData<T>(in string fileName, in bool useModFolder = false, in string modFolderName = null) where T : ModDataContainerBase

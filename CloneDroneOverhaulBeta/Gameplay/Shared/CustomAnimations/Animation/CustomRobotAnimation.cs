@@ -77,7 +77,7 @@ namespace CDOverhaul.Shared
         /// <param name="animation"></param>
         public static void SaveAnimation(in CustomRobotAnimation animation)
         {
-            animation.SaveData<CustomRobotAnimation>(true, "Animations/");
+            animation.SaveData(true, "Animations");
         }
     }
 }

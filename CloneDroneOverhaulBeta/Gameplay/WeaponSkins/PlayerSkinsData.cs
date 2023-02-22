@@ -33,7 +33,7 @@ namespace CDOverhaul.Gameplay
             if (Skins.ContainsKey(type))
             {
                 Skins[type] = skin;
-                saveData();
+                SaveData();
             }
         }
 
@@ -42,13 +42,8 @@ namespace CDOverhaul.Gameplay
             if (Skins.ContainsKey(type))
             {
                 Skins[type] = WeaponSkinsController.DefaultWeaponSkinName;
-                saveData();
+                SaveData();
             }
-        }
-
-        private void saveData()
-        {
-            SaveData<PlayerSkinsData>();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay
 
         public void SaveTransforms()
         {
-            SaveData<RobotAccessoryTransformData>(true, "Accessories/");
+            SaveData(true, "Accessories");
         }
     }
 }

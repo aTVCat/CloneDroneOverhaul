@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using InternalModBot;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -15,8 +16,13 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <param name="fileName"></param>
-        public static void SaveData<T>(T data, in string fileName, in bool useModFolder, in string modFolder) where T : ModDataContainerBase
+        public static void SaveData(object data, in string fileName, in bool useModFolder, in string modFolder)
         {
+            if(!(data is ModDataContainerBase))
+            {
+                return;
+            }
+
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(data, DataRepository.Instance.GetSettings());
@@ -36,32 +42,40 @@ namespace CDOverhaul
         {
             if (useModFolder)
             {
-                T result;
-                if (File.Exists(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName))
+                T result = null;
+                string path = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName + ".json";
+                bool needsToSave = false;
+
+                if (File.Exists(path))
                 {
-                    result = JsonConvert.DeserializeObject<T>(File.ReadAllText(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName), DataRepository.Instance.GetSettings());
+                    result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path), DataRepository.Instance.GetSettings());
                 }
                 else
                 {
                     result = Activator.CreateInstance<T>();
-                    result.SaveData<T>(true, modFolder);
+                    needsToSave = true;
                 }
-                result.IsLoaded = true;
-                result.FileName = fileName;
-                result.SavePath = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + fileName;
-                result.RepairMissingFields();
+
+                SetUpContainer(result, fileName, path);
+                if (needsToSave)
+                {
+                    result.SaveData(true, modFolder);
+                }
+
                 return result;
             }
 
-            _ = DataRepository.Instance.TryLoad("Overhaul/" + fileName, out T data, false);
-            if (data == null)
-            {
-                data = Activator.CreateInstance<T>();
-            }
-            data.IsLoaded = true;
-            data.FileName = fileName;
-            data.SavePath = DataRepository.Instance.GetFullPath(fileName, false);
+            _ = DataRepository.Instance.TryLoad("Overhaul/" + fileName + ".json", out T data, false);
+            SetUpContainer(data, fileName, DataRepository.Instance.GetFullPath(fileName, false));
             return data;
+        }
+
+        internal static void SetUpContainer(in ModDataContainerBase container, in string fileName, in string savePath)
+        {
+            container.IsLoaded = true;
+            container.FileName = fileName;
+            container.SavePath = savePath;
+            container.RepairMissingFields();
         }
     }
 }

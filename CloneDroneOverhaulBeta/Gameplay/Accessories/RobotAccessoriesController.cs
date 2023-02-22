@@ -60,7 +60,7 @@ namespace CDOverhaul.Gameplay
 
             PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroy_VFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
-            PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories.json");
+            PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories");
 
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
