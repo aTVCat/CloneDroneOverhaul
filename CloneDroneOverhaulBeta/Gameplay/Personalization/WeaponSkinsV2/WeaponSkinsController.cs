@@ -1,6 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using PlayFab.ExperimentationModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -14,6 +12,15 @@ namespace CDOverhaul.Gameplay
         }
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
+
+        [OverhaulSettingAttribute("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
+        public static string EquipedSwordSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.Bow", "Default", !OverhaulVersion.IsDebugBuild)]
+        public static string EquipedBowSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.Hammer", "Default", !OverhaulVersion.IsDebugBuild)]
+        public static string EquipedHammerSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.Spear", "Default", !OverhaulVersion.IsDebugBuild)]
+        public static string EquipedSpearSkin;
 
         public override void Initialize()
         {
@@ -30,12 +37,17 @@ namespace CDOverhaul.Gameplay
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
 
+                WeaponSkinModelOffset swordDetailedSkinOffset = new WeaponSkinModelOffset(new Vector3(0, 0, -0.7f),
+                    new Vector3(0, 270, 270),
+                    new Vector3(0.55f, 0.55f, 0.55f));
                 IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", WeaponSkinItemFilter.None);
                 swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.EModAssetBundlePart.WeaponSkins),
-                    new WeaponSkinModelOffset(new Vector3(0, 0, -0.7f),
-                    new Vector3(0, 270, 270),
-                    new Vector3(0.55f, 0.55f, 0.55f)),
+                    swordDetailedSkinOffset,
                     false,
+                    false);
+                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins),
+                    swordDetailedSkinOffset,
+                    true,
                     false);
             }
         }
@@ -119,11 +131,51 @@ namespace CDOverhaul.Gameplay
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(WeaponSkinItemFilter filter)
         {
             List<IWeaponSkinItemDefinition> result = new List<IWeaponSkinItemDefinition>();
-            foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
+            if(filter == WeaponSkinItemFilter.Equipped)
             {
-                if (weaponSkinItem.IsUnlocked(false) && (filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
-                    result.Add(weaponSkinItem);
+                    if (weaponSkinItem.IsUnlocked(false))
+                    {
+                        string itemName = weaponSkinItem.GetItemName();
+                        switch (weaponSkinItem.GetWeaponType())
+                        {
+                            case WeaponType.Sword:
+                                if(itemName == EquipedSwordSkin)
+                                {
+                                    result.Add(weaponSkinItem);
+                                }
+                                break;
+                            case WeaponType.Bow:
+                                if (itemName == EquipedBowSkin)
+                                {
+                                    result.Add(weaponSkinItem);
+                                }
+                                break;
+                            case WeaponType.Hammer:
+                                if (itemName == EquipedHammerSkin)
+                                {
+                                    result.Add(weaponSkinItem);
+                                }
+                                break;
+                            case WeaponType.Spear:
+                                if (itemName == EquipedSpearSkin)
+                                {
+                                    result.Add(weaponSkinItem);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
+                {
+                    if (weaponSkinItem.IsUnlocked(false) && (filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                    {
+                        result.Add(weaponSkinItem);
+                    }
                 }
             }
             return result.ToArray();

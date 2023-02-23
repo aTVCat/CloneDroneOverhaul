@@ -17,6 +17,10 @@ namespace CDOverhaul.HUD
 
         private Slider m_Slider;
         private Dropdown m_Dropdown;
+        private InputField m_InputField;
+
+        private Button m_IDButton;
+        private Button m_DefValueButton;
 
         private static readonly List<SettingEntryBehaviour> _spawnedBehaviours = new List<SettingEntryBehaviour>();
 
@@ -30,6 +34,11 @@ namespace CDOverhaul.HUD
         {
             m_ModdedObject = moddedObject;
             m_UI = menu;
+
+            m_IDButton = m_ModdedObject.GetObject<Button>(6);
+            m_IDButton.onClick.AddListener(copyID);
+            m_DefValueButton = m_ModdedObject.GetObject<Button>(12);
+            m_DefValueButton.onClick.AddListener(setDefValue);
 
             Setting = SettingsController.GetSetting(settingPath);
             Description = SettingsController.GetSettingDescription(settingPath);
@@ -56,6 +65,20 @@ namespace CDOverhaul.HUD
             configToggle(moddedObject, Setting.Type == ESettingType.Bool, position);
             configSlider(moddedObject, Setting.SliderParameters);
             configDropdown(moddedObject, Setting.DropdownParameters);
+            configInputField(moddedObject);
+        }
+
+        private void configInputField(in ModdedObject m)
+        {
+            m_InputField = m.GetObject<InputField>(13);
+            m_InputField.gameObject.SetActive(Setting.Type == ESettingType.String);
+            if (!m_InputField.gameObject.activeSelf)
+            {
+                return;
+            }
+
+            m_InputField.text = SettingInfo.GetPref<string>(Setting);
+            m_InputField.onEndEdit.AddListener(setInputFieldValue);
         }
 
         private void configDropdown(in ModdedObject m, in SettingDropdownParameters parameters)
@@ -131,6 +154,11 @@ namespace CDOverhaul.HUD
             t.onValueChanged.AddListener(setToggleValue);
         }
 
+        private void setInputFieldValue(string value)
+        {
+            SettingInfo.SavePref(Setting, value);
+        }
+
         private void setToggleValue(bool value)
         {
             m_ToggleBGOff.gameObject.SetActive(!value);
@@ -154,6 +182,22 @@ namespace CDOverhaul.HUD
             {
                 SettingInfo.SavePref(Setting, value);
             }
+        }
+
+        private void copyID()
+        {
+            TextEditor editor = new TextEditor
+            {
+                text = Setting.RawPath
+            };
+            editor.SelectAll();
+            editor.Copy();
+        }
+
+        private void setDefValue()
+        {
+            SettingInfo.SavePref(Setting, Setting.DefaultValue);
+            m_UI.PopulateCategory(Setting.Category);
         }
 
         private void OnDestroy()

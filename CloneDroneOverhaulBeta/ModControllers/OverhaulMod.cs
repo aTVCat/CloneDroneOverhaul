@@ -37,9 +37,9 @@ namespace CDOverhaul
         public static OverhaulMod Base { get; internal set; }
 
         [DllImport("user32.dll", EntryPoint = "SetWindowText")]
-        public static extern bool SetWindowText(System.IntPtr hwnd, System.String lpString);
+        public static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
         [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        public static extern System.IntPtr FindWindow(System.String className, System.String windowName);
+        public static extern System.IntPtr FindWindow(string className, string windowName);
 
         /// <summary>
         /// Create core when mod was loaded
@@ -164,8 +164,8 @@ namespace CDOverhaul
 
         internal void ChangeWindowTitle()
         {
-            var windowPtr = FindWindow(null, Application.productName);
-            SetWindowText(windowPtr, "Clone Drone Overhaul");
+            System.IntPtr windowPtr = FindWindow(null, Application.productName);
+            _ = SetWindowText(windowPtr, "Clone Drone Overhaul");
         }
 
         /// <summary>

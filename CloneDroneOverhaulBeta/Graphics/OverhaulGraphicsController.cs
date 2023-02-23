@@ -29,10 +29,14 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", true, false, "All things on the screen will get colored edges")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", true, false, "All things on the screen will get colored edges", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
 
-        private static List<Bloom> m_BloomEffects = new List<Bloom>();
+        [SettingSliderParameters(false, 0f, 0.001f)]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
+        public static float ChromaticAberrationIntensity;
+
+        private static readonly List<Bloom> m_BloomEffects = new List<Bloom>();
 
         private static Material m_VignetteMaterial;
         private static Material m_ChromaMaterial;
@@ -122,11 +126,15 @@ namespace CDOverhaul.Graphics
             {
                 m_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
             }
+            if (m_ChromaMaterial != null)
+            {
+                m_ChromaMaterial.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
+                m_ChromaMaterial.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);
+            }
         }
 
         private static void refreshTargetFramerate()
         {
-            string str = "Unlimited@30@60@75@90@120@144@240";
             SettingsManager.Instance.SetVsyncOn(false);
             switch (TargetFPS)
             {

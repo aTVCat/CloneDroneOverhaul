@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using ModLibrary;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 

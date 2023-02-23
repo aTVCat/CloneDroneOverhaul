@@ -1,7 +1,5 @@
 ﻿using ModLibrary;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -13,7 +11,7 @@ namespace CDOverhaul.Gameplay
 
         public override void OnUpgradesRefreshed(UpgradeCollection upgrades)
         {
-            ModControllerManager.GetController<WeaponSkinsControllerV2>().Interface.GetSkinItems(Owner);
+            SpawnSkins();
         }
 
         public void SpawnSkins()
@@ -55,18 +53,18 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            WeaponModel weaponModel = model.GetWeaponModel(item.GetWeaponType());
+            WeaponModel weaponModel = Owner.GetEquippedWeaponModel();
             if(weaponModel == null)
             {
                 return;
             }
             SetDefaultModelsVisible(false, weaponModel);
-            if (item.GetItemName() == "Default")
+            if (item.GetItemName() == "Default" || weaponModel.WeaponType != item.GetWeaponType())
             {
                 SetDefaultModelsVisible(true, weaponModel);
                 return;
             }
-            bool fire = weaponModel.GetPrivateField<bool>("_hasReplacedWithFireVariant");
+            bool fire = IsFireVariant(weaponModel);
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier();
             WeaponVariant variant = WeaponSkinsControllerV2.GetVariant(fire, multiplayer);
 
@@ -78,11 +76,10 @@ namespace CDOverhaul.Gameplay
                     break;
                 }
             }
-            WeaponSkins.Remove(item);
-
-            WeaponSkinModel newModel = item.GetModel(fire, multiplayer);
-            /*
-            OverhaulDebugController.Print("Fire: " + fire);
+            _ = WeaponSkins.Remove(item);
+            
+            WeaponSkinModel newModel = item.GetModel(fire, multiplayer);            
+            /*OverhaulDebugController.Print("Fire: " + fire);
             OverhaulDebugController.Print("Multiplayer: " + multiplayer);
             OverhaulDebugController.Print((newModel == null).ToString());*/
             if (newModel != null)
@@ -92,10 +89,12 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 SetModelColor(spawnedModel.gameObject, fire);
-                WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo();
-                newInfo.Model = spawnedModel.gameObject;
-                newInfo.Type = item.GetWeaponType();
-                newInfo.Variant = variant;
+                WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo
+                {
+                    Model = spawnedModel.gameObject,
+                    Type = item.GetWeaponType(),
+                    Variant = variant
+                };
                 WeaponSkins.Add(item, newInfo);
             }
             else
@@ -133,6 +132,32 @@ namespace CDOverhaul.Gameplay
                 };
                 material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
             }
+        }
+
+        public bool IsFireVariant(WeaponModel model)
+        {
+            if(model.WeaponType == WeaponType.Sword)
+            {
+                if (Owner.HasUpgrade(UpgradeType.FireSword))
+                {
+                    return true;
+                }
+            }
+            else if (model.WeaponType == WeaponType.Hammer)
+            {
+                if (Owner.HasUpgrade(UpgradeType.FireHammer))
+                {
+                    return true;
+                }
+            }
+            else if (model.WeaponType == WeaponType.Spear)
+            {
+                if (Owner.HasUpgrade(UpgradeType.FireSpear))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
