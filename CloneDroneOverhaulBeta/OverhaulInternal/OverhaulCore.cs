@@ -15,9 +15,10 @@ namespace CDOverhaul
     public sealed class OverhaulCore : MonoBehaviour
     {
         /// <summary>
-        /// The mod directory path
+        /// The mod directory path.
+        /// Ends with '/'
         /// </summary>
-        public string ModFolder => OverhaulMod.Base.ModInfo.FolderPath;
+        public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
 
         /// <summary>
         /// The UI controller instance
@@ -57,17 +58,16 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
-            OverhaulGitHubController.InitializeStatic();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulEventManager.Initialize();
             ModControllerManager.Initialize(controllers);
             LevelEditorObjectsController.Initialize();
 
-            Shared = ModControllerManager.NewController<SharedControllers>();
-            HUDController = ModControllerManager.NewController<HUDControllers>();
-            GameplayController = ModControllerManager.NewController<MainGameplayController>();
-            _ = ModControllerManager.NewController<LevelEditorMultipleObjectsController>();
+            Shared = ModControllerManager.InitializeController<SharedControllers>();
+            HUDController = ModControllerManager.InitializeController<HUDControllers>();
+            GameplayController = ModControllerManager.InitializeController<MainGameplayController>();
+            _ = ModControllerManager.InitializeController<LevelEditorMultipleObjectsController>();
 
             FirstPersonMoverExtention.InitializeStatic();
             SettingsController.Initialize();

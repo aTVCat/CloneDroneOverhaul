@@ -61,7 +61,7 @@ namespace CDOverhaul.HUD
         /// <param name="entry"></param>
         public void OnSelectWeapon(in UIWeaponEntry entry)
         {
-            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinCreation)
+            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.WeaponSkinCreation)
             {
                 return;
             }
@@ -187,10 +187,10 @@ namespace CDOverhaul.HUD
         /// </summary>
         private void onGamemodeSubstateUpdated()
         {
-            EGamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
-            activate(s == EGamemodeSubstate.WeaponSkinSelection || s == EGamemodeSubstate.WeaponSkinCreation);
-            _skinAddingWindow.gameObject.SetActive(s == EGamemodeSubstate.WeaponSkinCreation);
-            _bg.gameObject.SetActive(s != EGamemodeSubstate.WeaponSkinCreation);
+            GamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
+            activate(s == GamemodeSubstate.WeaponSkinSelection || s == GamemodeSubstate.WeaponSkinCreation);
+            _skinAddingWindow.gameObject.SetActive(s == GamemodeSubstate.WeaponSkinCreation);
+            _bg.gameObject.SetActive(s != GamemodeSubstate.WeaponSkinCreation);
         }
 
         /// <summary>
@@ -206,11 +206,11 @@ namespace CDOverhaul.HUD
         /// </summary>
         private void tryWeapon()
         {
-            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.WeaponSkinCreation)
+            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.WeaponSkinCreation)
             {
                 MainGameplayController.Instance.WeaponSkins.ExitSkinCreationMode();
             }
-            MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = EGamemodeSubstate.None;
+            MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = GamemodeSubstate.None;
         }
 
         /// <summary>

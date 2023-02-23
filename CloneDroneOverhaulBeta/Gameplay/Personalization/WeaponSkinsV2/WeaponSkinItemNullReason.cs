@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay
 {
-    public enum WeaponSkinItemNullReason
+    public enum ItemNullResult
     {
         None,
 

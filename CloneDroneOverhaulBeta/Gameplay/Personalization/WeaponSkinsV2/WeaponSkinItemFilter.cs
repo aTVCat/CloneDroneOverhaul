@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay
 {
-    public enum WeaponSkinItemFilter
+    public enum ItemFilter
     {
         None,
 

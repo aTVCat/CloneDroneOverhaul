@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay.Combat_Update;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -10,10 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ShouldRestrictWeaponSpinningToWin")]
         private static void RefreshCursorEnabled_Postfix(ref bool __result)
         {
-            if (OverhaulCombatController.AllowNewCombat)
-            {
-                __result = true;
-            }
+            __result = true;
         }
     }
 }

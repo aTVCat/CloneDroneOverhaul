@@ -24,7 +24,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            _spawnedCanvas = Instantiate(AssetController.GetAsset(OverhaulHUDName, EModAssetBundlePart.Part1));
+            _spawnedCanvas = Instantiate(AssetController.GetAsset(OverhaulHUDName, ModAssetBundlePart.Part1));
             ModdedObject moddedObject = _spawnedCanvas.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
@@ -59,7 +59,7 @@ namespace CDOverhaul.HUD
         /// <returns></returns>
         public T AddHUD<T>(in ModdedObject moddedObject) where T : UIBase
         {
-            return ModControllerManager.NewController<T>(moddedObject.transform);
+            return ModControllerManager.InitializeController<T>(moddedObject.transform);
         }
 
         /// <summary>

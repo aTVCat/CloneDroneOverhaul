@@ -60,8 +60,8 @@ namespace CDOverhaul.Graphics
                 return;
             }
 
-            m_ChromaMaterial = AssetController.GetAsset<Material>("M_IE_ChromaticAb", Enumerators.EModAssetBundlePart.Part2);
-            m_VignetteMaterial = AssetController.GetAsset<Material>("M_IE_Spotlight", Enumerators.EModAssetBundlePart.Part2);
+            m_ChromaMaterial = AssetController.GetAsset<Material>("M_IE_ChromaticAb", Enumerators.ModAssetBundlePart.Part2);
+            m_VignetteMaterial = AssetController.GetAsset<Material>("M_IE_Spotlight", Enumerators.ModAssetBundlePart.Part2);
 
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, new System.Func<bool>(() => MainCamera != null && ChromaticAberrationEnabled));
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, new System.Func<bool>(() => MainCamera != null && VignetteEnabled));

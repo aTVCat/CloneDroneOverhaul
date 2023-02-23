@@ -10,8 +10,8 @@
 
         public override void Initialize()
         {
-            CustomAnimations = ModControllerManager.NewController<CustomAnimationsController>();
-            Voxels = ModControllerManager.NewController<VoxelsController>();
+            CustomAnimations = ModControllerManager.InitializeController<CustomAnimationsController>();
+            Voxels = ModControllerManager.InitializeController<VoxelsController>();
         }
     }
 }

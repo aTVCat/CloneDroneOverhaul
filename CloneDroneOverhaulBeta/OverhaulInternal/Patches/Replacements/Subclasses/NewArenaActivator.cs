@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            _controller = ModControllerManager.NewController<ArenaRemasterController>();
+            _controller = ModControllerManager.InitializeController<ArenaRemasterController>();
 
             SuccessfullyPatched = true;
         }

@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay.Combat_Update;
-using ModLibrary;
+﻿using ModLibrary;
 using System;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ namespace CDOverhaul.Gameplay
 {
     public class MainGameplayController : ModController
     {
+        #region Events
         public const string GamemodeChangedEventString = "GamemodeChanged";
         public const string MainCameraSwitchedEventString = "CameraMainSwitched";
         public const string CurrentCameraSwitchedEventString = "CameraCurrentSwitched";
@@ -16,23 +16,42 @@ namespace CDOverhaul.Gameplay
 
         public const string PlayerSetAsCharacter = "PlayerSet_Base";
         public const string PlayerSetAsFirstPersonMover = "PlayerSet_FirstPersonMover";
+        #endregion
 
         /// <summary>
         /// The start index of mod gamemodes
         /// </summary>
         public const int GamemodeStartIndex = 2000;
 
-        public static MainGameplayController Instance;
+        public static MainGameplayController Instance
+        {
+            get;
+            private set;
+        }
 
-        public GameFlowManager GameFlow { get; private set; }
+        public GameFlowManager GameFlowManager
+        {
+            get;
+            private set;
+        }
 
-        public WeaponSkinsController WeaponSkins { get; private set; }
+        public WeaponSkinsController WeaponSkins
+        {
+            get;
+            private set;
+        }
 
-        public RobotsController Robots { get; private set; }
+        public RobotsController Robots
+        {
+            get;
+            private set;
+        }
 
-        public LevelController Levels { get; private set; }
-
-        public OverhaulCombatController Combat { get; private set; }
+        public LevelController Levels
+        {
+            get;
+            private set;
+        }
 
         public GamemodeSubstatesController GamemodeSubstates { get; private set; }
 
@@ -44,13 +63,12 @@ namespace CDOverhaul.Gameplay
         {
             Instance = this;
 
-            GameFlow = GameFlowManager.Instance;
-            WeaponSkins = ModControllerManager.NewController<WeaponSkinsController>();
-            Robots = ModControllerManager.NewController<RobotsController>();
-            GamemodeSubstates = ModControllerManager.NewController<GamemodeSubstatesController>();
-            Levels = ModControllerManager.NewController<LevelController>();
-            Combat = ModControllerManager.NewController<OverhaulCombatController>();
-            _ = ModControllerManager.NewController<WeaponSkinsControllerV2>();
+            GameFlowManager = GameFlowManager.Instance;
+            WeaponSkins = ModControllerManager.InitializeController<WeaponSkinsController>();
+            Robots = ModControllerManager.InitializeController<RobotsController>();
+            GamemodeSubstates = ModControllerManager.InitializeController<GamemodeSubstatesController>();
+            Levels = ModControllerManager.InitializeController<LevelController>();
+            _ = ModControllerManager.InitializeController<WeaponSkinsControllerV2>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
 
@@ -92,7 +110,7 @@ namespace CDOverhaul.Gameplay
         /// <param name="mode"></param>
         public void SetGamemode(in GameMode mode)
         {
-            GameFlow.SetPrivateField<GameMode>("_gameMode", mode);
+            GameFlowManager.SetPrivateField<GameMode>("_gameMode", mode);
         }
 
         /// <summary>
@@ -103,7 +121,7 @@ namespace CDOverhaul.Gameplay
             AdventureCheckPoint point = FindObjectOfType<AdventureCheckPoint>();
             if (point != null)
             {
-                _ = GameFlow.SpawnPlayer(point.transform, true, true, null);
+                _ = GameFlowManager.SpawnPlayer(point.transform, true, true, null);
             }
             //GameFlow.CallPrivateMethod("createPlayerAndSetLift");
         }
@@ -118,7 +136,7 @@ namespace CDOverhaul.Gameplay
 
         private void Update()
         {
-            GameMode currentGamemode = GameFlow.GetCurrentGameMode();
+            GameMode currentGamemode = GameFlowManager.GetCurrentGameMode();
             if (currentGamemode != _gamemodeLastFrame)
             {
                 sendGamemodeWasUpdateEvent();

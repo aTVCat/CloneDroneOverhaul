@@ -25,12 +25,12 @@ namespace CDOverhaul.Gameplay
         /// TBA
         /// </summary>
         /// <param name="filter"></param>
-        void SetFilter(WeaponSkinItemFilter filter);
+        void SetFilter(ItemFilter filter);
         /// <summary>
         /// TBA
         /// </summary>
         /// <returns></returns>
-        WeaponSkinItemFilter GetFilter();
+        ItemFilter GetFilter();
 
         /// <summary>
         /// TBA

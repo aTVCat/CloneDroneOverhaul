@@ -25,7 +25,7 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(data, DataRepository.Instance.GetSettings());
-                File.WriteAllText(OverhaulMod.Core.ModFolder + "Assets/" + modFolder + fileName, str);
+                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + fileName, str);
                 return;
             }
             DataRepository.Instance.Save(data, "Overhaul/" + fileName, false, false);
@@ -41,7 +41,7 @@ namespace CDOverhaul
         {
             if (useModFolder)
             {
-                string path = OverhaulMod.Core.ModFolder + "Assets/" + modFolder + "/" + fileName + ".json";
+                string path = OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json";
                 bool needsToSave = false;
 
                 T result;

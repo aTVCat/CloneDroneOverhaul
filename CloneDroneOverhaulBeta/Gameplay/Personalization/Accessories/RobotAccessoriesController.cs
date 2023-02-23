@@ -29,7 +29,7 @@ namespace CDOverhaul.Gameplay
         /// <summary>
         /// The sound that is played when someone hits an accessory
         /// </summary>
-        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.EModAssetBundlePart.Sounds));
+        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.ModAssetBundlePart.Sounds));
 
         /// <summary>
         /// This one is gonna be removed soon...
@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5).gameObject.SetActive(false);
             }
 
-            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.EModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.ModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
             PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories");
 
@@ -134,7 +134,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            bool activate = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == EGamemodeSubstate.EditingAccessories;
+            bool activate = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.EditingAccessories;
             EditorUI.SetActive(activate);
         }
 

@@ -18,12 +18,12 @@ namespace CDOverhaul
 
             if (!string.IsNullOrEmpty(img43fileName))
             {
-                Image_4_3 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModFolder + "Assets/Settings/" + img43fileName));
+                Image_4_3 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModDirectory + "Assets/Settings/" + img43fileName));
                 return;
             }
             if (!string.IsNullOrEmpty(img169fileName))
             {
-                Image_16_9 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModFolder + "Assets/Settings/" + img169fileName));
+                Image_16_9 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModDirectory + "Assets/Settings/" + img169fileName));
             }
         }
     }

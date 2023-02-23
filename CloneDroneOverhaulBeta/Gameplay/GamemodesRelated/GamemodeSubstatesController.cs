@@ -7,13 +7,13 @@
     {
         public const string SubstateChangedEventString = "GamemodeSubstateChanged";
 
-        private EGamemodeSubstate _gamemodeSubstate;
-        public EGamemodeSubstate GamemodeSubstate
+        private GamemodeSubstate _gamemodeSubstate;
+        public GamemodeSubstate GamemodeSubstate
         {
             get => _gamemodeSubstate;
             set
             {
-                EGamemodeSubstate _prevState = _gamemodeSubstate;
+                GamemodeSubstate _prevState = _gamemodeSubstate;
                 _gamemodeSubstate = value;
 
                 if (_gamemodeSubstate != _prevState)

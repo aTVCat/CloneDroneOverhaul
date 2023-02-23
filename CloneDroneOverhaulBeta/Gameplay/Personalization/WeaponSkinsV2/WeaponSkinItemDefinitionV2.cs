@@ -19,9 +19,9 @@ namespace CDOverhaul.Gameplay
         /// <summary>
         /// Filter
         /// </summary>
-        private WeaponSkinItemFilter m_SkinFilter;
-        void IWeaponSkinItemDefinition.SetFilter(WeaponSkinItemFilter filter) => m_SkinFilter = filter;
-        WeaponSkinItemFilter IWeaponSkinItemDefinition.GetFilter() => m_SkinFilter;
+        private ItemFilter m_SkinFilter;
+        void IWeaponSkinItemDefinition.SetFilter(ItemFilter filter) => m_SkinFilter = filter;
+        ItemFilter IWeaponSkinItemDefinition.GetFilter() => m_SkinFilter;
 
         /// <summary>
         /// Skin name

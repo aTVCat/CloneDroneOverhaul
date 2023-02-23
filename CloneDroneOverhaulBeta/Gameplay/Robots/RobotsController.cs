@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay.Combat_Update;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
@@ -22,9 +21,6 @@ namespace CDOverhaul.Gameplay
             }
             _ = mover.gameObject.AddComponent<FirstPersonMoverData>();
             _ = mover.gameObject.AddComponent<FirstPersonMoverOverhaul>();
-            _ = mover.gameObject.AddComponent<DropThrowNTakeWeapons>();
-            _ = mover.gameObject.AddComponent<AdvancedWeaponController>();
-            _ = mover.gameObject.AddComponent<FirstPersonMoverInteractionBehaviour>();
         }
 
         private void tryFixFPMForPlayer(FirstPersonMover mover)
@@ -39,11 +35,12 @@ namespace CDOverhaul.Gameplay
                 mover.OverrideBaseMoveSpeed(8f);
             }
 
+            /*
             AdvancedWeaponController weaponController = FirstPersonMoverExtention.GetExtention<AdvancedWeaponController>(mover);
             if (weaponController != null)
             {
                 weaponController.SetDefaultSpeed(mover.MaxSpeed);
-            }
+            }*/
         }
     }
 }

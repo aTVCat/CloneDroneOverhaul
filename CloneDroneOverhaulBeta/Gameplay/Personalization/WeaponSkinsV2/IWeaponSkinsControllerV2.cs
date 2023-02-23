@@ -13,7 +13,7 @@ namespace CDOverhaul.Gameplay
         /// <param name="weapon"></param>
         /// <param name="skinName"></param>
         /// <returns></returns>
-        IWeaponSkinItemDefinition NewSkinItem(WeaponType weapon, string skinName, WeaponSkinItemFilter filter);
+        IWeaponSkinItemDefinition NewSkinItem(WeaponType weapon, string skinName, ItemFilter filter);
 
         /// <summary>
         /// Get specific weapon skin item using <paramref name="weaponType"/> and <paramref name="filter"/>.
@@ -24,21 +24,13 @@ namespace CDOverhaul.Gameplay
         /// <param name="filter"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        IWeaponSkinItemDefinition GetSkinItem(WeaponType weaponType, string skinName, WeaponSkinItemFilter filter, out WeaponSkinItemNullReason error);
-        /// <summary>
-        /// Get multiple skins items. The way how you get them is the same as in <see cref="NewSkinItem(WeaponType, string)"/>
-        /// </summary>
-        /// <param name="weaponType"></param>
-        /// <param name="skinName"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        IWeaponSkinItemDefinition[] GetSkinItems(WeaponType weaponType, WeaponSkinItemFilter filter);
+        IWeaponSkinItemDefinition GetSkinItem(WeaponType weaponType, string skinName, ItemFilter filter, out ItemNullResult error);
         /// <summary>
         /// Get all weapon skins that match <paramref name="filter"/> parameter.
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        IWeaponSkinItemDefinition[] GetSkinItems(WeaponSkinItemFilter filter);
+        IWeaponSkinItemDefinition[] GetSkinItems(ItemFilter filter);
         /// <summary>
         /// Get all weapon skins that <paramref name="firstPersonMover"/> is allowed to use
         /// </summary>

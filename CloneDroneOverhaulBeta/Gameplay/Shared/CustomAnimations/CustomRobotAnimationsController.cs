@@ -33,8 +33,8 @@ namespace CDOverhaul.Shared
 
         private void enterAnimationMode()
         {
-            EGamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
-            if (s != EGamemodeSubstate.AnimatingCustomAnimation)
+            GamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
+            if (s != GamemodeSubstate.AnimatingCustomAnimation)
             {
                 return;
             }

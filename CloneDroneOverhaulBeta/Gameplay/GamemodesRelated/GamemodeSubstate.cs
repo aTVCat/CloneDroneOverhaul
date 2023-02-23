@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul
 {
-    public enum EGamemodeSubstate
+    public enum GamemodeSubstate
     {
         None,
 

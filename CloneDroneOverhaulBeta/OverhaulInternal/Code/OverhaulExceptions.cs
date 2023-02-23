@@ -32,7 +32,7 @@ namespace CDOverhaul
         /// <param name="exc"></param>
         internal static void OnModCrashedWhileLoading(in string exc)
         {
-            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", Enumerators.EModAssetBundlePart.Main)).GetComponent<ModdedObject>();
+            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", Enumerators.ModAssetBundlePart.Main)).GetComponent<ModdedObject>();
             obj.GetObject<Text>(0).text = exc;
             obj.GetObject<Button>(1).onClick.AddListener(delegate
             {

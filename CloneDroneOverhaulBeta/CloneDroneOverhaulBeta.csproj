@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\OverhaulCompiled\</OutputPath>
-    <DefineConstants>DEBUG;RELEASE</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\OverhaulCompiled\CloneDroneOverhaulBeta.xml</DocumentationFile>
@@ -373,6 +373,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Personalization\AccessoriesV2\IPlayerAccessoryItemDefinition.cs" />
+    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryItemDefinition.cs" />
+    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerOutfitController.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesEditorUI.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryDestroyVFX.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesWearer.cs" />
@@ -381,20 +384,16 @@
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessorySaveData.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoryTransformData.cs" />
-    <Compile Include="Gameplay\Combat_Update\FirstPersonMoverInteractionBehaviour.cs" />
-    <Compile Include="Gameplay\Combat_Update\AdvancedWeaponController.cs" />
-    <Compile Include="Gameplay\Combat_Update\DropThrowNTakeWeapons.cs" />
-    <Compile Include="Gameplay\Combat_Update\OverhaulCombatController.cs" />
     <Compile Include="Gameplay\Levels\LevelController.cs" />
-    <Compile Include="Gameplay\Levels\LevelInstance.cs" />
+    <Compile Include="Gameplay\Personalization\AccessoriesV2\IPlayerOutfitController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModel.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModelOffset.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemFilter.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemNullReason.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinSpawnInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponVariant.cs" />
@@ -424,48 +423,47 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
-    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingDropdownParameters.cs" />
-    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingSliderParameters.cs" />
-    <Compile Include="ModControllers\OverhaulExtentions.cs" />
-    <Compile Include="ModControllers\OverhaulSessionController.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingDropdownParameters.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingSliderParameters.cs" />
+    <Compile Include="OverhaulInternal\Code\OverhaulExtentions.cs" />
+    <Compile Include="OverhaulInternal\OverhaulSessionController.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
     <Compile Include="Shared\LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
-    <Compile Include="ModControllers\Console\OverhaulConsoleController.cs" />
-    <Compile Include="ModControllers\Debug\OverhaulDebugCommands.cs" />
-    <Compile Include="ModControllers\Debug\OverhaulDebugController.cs" />
-    <Compile Include="ModControllers\Debug\OverhaulDebugHUDV2.cs" />
-    <Compile Include="ModControllers\Debug\OverhaulDebugOutputHUD.cs" />
-    <Compile Include="ModControllers\ExclusiveStuff\ExclusiveRolesController.cs" />
-    <Compile Include="ModControllers\ExclusiveStuff\ExclusivityController.cs" />
-    <Compile Include="ModControllers\GitHub\OverhaulGitHubController.cs" />
-    <Compile Include="ModControllers\Interfaces\IConsoleCommandReceiver.cs" />
-    <Compile Include="ModControllers\OverhaulExceptions.cs" />
-    <Compile Include="ModControllers\OverhaulGamemodeManager.cs" />
-    <Compile Include="ModControllers\Patches\FirstPersonMover_Patch.cs" />
-    <Compile Include="ModControllers\Patches\DataRepository_Patch.cs" />
-    <Compile Include="ModControllers\Patches\GameModeManager_Patch.cs" />
-    <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
-    <Compile Include="ModControllers\Patches\TitleScreenUI_Patch.cs" />
-    <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
-    <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
-    <Compile Include="ModControllers\Patches\AISwordsmanController_Patch.cs" />
-    <Compile Include="ModControllers\Patches\ErrorWindow_Patch.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\ArenaCameraBehaviour.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\StoryChapter3AllyFix.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\AudioSourceBehaviour.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\Components\GameUIRootBehaviour.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\EnergyUIReplacement.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\BaseFixes.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\NewArenaActivator.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\NewAudioController.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\OptimizeOnStart.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\OptimizeRuntime.cs" />
-    <Compile Include="ModControllers\Data\Settings\SettingDescription.cs" />
-    <Compile Include="ModControllers\Data\Settings\SubClasses\ESettingType.cs" />
-    <Compile Include="ModControllers\Data\Settings\Setting.cs" />
-    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingAttribute.cs" />
-    <Compile Include="ModControllers\Data\Settings\SettingsController.cs" />
+    <Compile Include="OverhaulInternal\Debug\Console\OverhaulConsoleController.cs" />
+    <Compile Include="OverhaulInternal\Debug\OverhaulDebugCommands.cs" />
+    <Compile Include="OverhaulInternal\Debug\OverhaulDebugController.cs" />
+    <Compile Include="OverhaulInternal\Debug\OverhaulDebugHUDV2.cs" />
+    <Compile Include="OverhaulInternal\Debug\OverhaulDebugOutputHUD.cs" />
+    <Compile Include="Gameplay\ExclusiveStuff\ExclusiveRolesController.cs" />
+    <Compile Include="Gameplay\ExclusiveStuff\ExclusivityController.cs" />
+    <Compile Include="OverhaulInternal\Debug\Console\IConsoleCommandReceiver.cs" />
+    <Compile Include="OverhaulInternal\Code\OverhaulExceptions.cs" />
+    <Compile Include="Gameplay\GamemodesRelated\OverhaulGamemodeManager.cs" />
+    <Compile Include="OverhaulInternal\Patches\FirstPersonMover_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\DataRepository_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\GameModeManager_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\TitleScreenUI_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\MechBodyPart_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\CharacterModel_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\AISwordsmanController_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\ErrorWindow_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\ArenaCameraBehaviour.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\StoryChapter3AllyFix.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\AudioSourceBehaviour.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\GameUIRootBehaviour.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\EnergyUIReplacement.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\BaseFixes.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\NewArenaActivator.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\NewAudioController.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\OptimizeOnStart.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\OptimizeRuntime.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SettingDescription.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SubClasses\ESettingType.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\Setting.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingAttribute.cs" />
+    <Compile Include="OverhaulInternal\Data\Settings\SettingsController.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
     <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
@@ -475,33 +473,33 @@
     <Compile Include="Shared\LevelEditor\Components\LevelEditorTextBlock.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorImageBlock.cs" />
     <Compile Include="Shared\LevelEditor\LevelEditorObjectsController.cs" />
-    <Compile Include="ModControllers\Assets\AssetController.cs" />
-    <Compile Include="ModControllers\Assets\EModAssetBundlePart.cs" />
+    <Compile Include="OverhaulInternal\AssetsManagement\AssetController.cs" />
+    <Compile Include="OverhaulInternal\AssetsManagement\EModAssetBundlePart.cs" />
     <Compile Include="HUD\HUDControllers.cs" />
-    <Compile Include="ModControllers\Data\ModDataContainerBase.cs" />
+    <Compile Include="OverhaulInternal\Data\ModDataContainerBase.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\PlayerSkinsData.cs" />
-    <Compile Include="ModControllers\Data\ModDataController.cs" />
-    <Compile Include="ModControllers\GamemodeStates\EGamemodeSubstate.cs" />
-    <Compile Include="ModControllers\GamemodeStates\GamemodeSubstatesController.cs" />
-    <Compile Include="ModControllers\ControllersManagement\ModController.cs" />
-    <Compile Include="ModControllers\ControllersManagement\ModControllerManager.cs" />
+    <Compile Include="OverhaulInternal\Data\ModDataController.cs" />
+    <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstate.cs" />
+    <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstatesController.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\ModController.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\ModControllerManager.cs" />
     <Compile Include="HUD\UIBase.cs" />
     <Compile Include="HUD\VersionLabel\UIVersionLabel.cs" />
-    <Compile Include="ModControllers\Input\EnableCursorController.cs" />
-    <Compile Include="ModControllers\OverhaulEventManager.cs" />
-    <Compile Include="ModControllers\OverhaulVersion.cs" />
-    <Compile Include="ModControllers\OverhaulMod.cs" />
-    <Compile Include="ModControllers\OverhaulCore.cs" />
-    <Compile Include="ModControllers\Patches\PhotoManager_Patch.cs" />
-    <Compile Include="ModControllers\Patches\LevelEditorDataManager_Patch.cs" />
-    <Compile Include="ModControllers\Patches\CharacterTracker_Patch.cs" />
-    <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\ReplacementBase.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
-    <Compile Include="ModControllers\Patches\Replacement\Subclasses\TitleScreenUIReplacement.cs" />
-    <Compile Include="ModControllers\SEventEntry.cs" />
-    <Compile Include="ModControllers\ControllersManagement\Utilities\OverhaulCodeExtentions.cs" />
-    <Compile Include="ModControllers\ControllersManagement\Utilities\OverhaulUtilities.cs" />
+    <Compile Include="OverhaulInternal\Patches\Input\EnableCursorController.cs" />
+    <Compile Include="OverhaulInternal\EventsManagement\OverhaulEventManager.cs" />
+    <Compile Include="OverhaulInternal\OverhaulVersion.cs" />
+    <Compile Include="OverhaulInternal\OverhaulMod.cs" />
+    <Compile Include="OverhaulInternal\OverhaulCore.cs" />
+    <Compile Include="OverhaulInternal\Patches\PhotoManager_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\LevelEditorDataManager_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\CharacterTracker_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\WeaponModel_Patch.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\ReplacementBase.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\PlayerCameraPrefabReplacement.cs" />
+    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />
+    <Compile Include="OverhaulInternal\EventsManagement\EventEntry.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\Utilities\OverhaulCodeExtentions.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\Utilities\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\FreeCameraMovement.cs" />
     <Compile Include="Shared\ObjectStateListener.cs" />
@@ -514,9 +512,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ModControllers\GitHub\ReasonWhyGutHibControllerWontWork.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -40,15 +40,17 @@ namespace CDOverhaul.Gameplay
                 WeaponSkinModelOffset swordDetailedSkinOffset = new WeaponSkinModelOffset(new Vector3(0, 0, -0.7f),
                     new Vector3(0, 270, 270),
                     new Vector3(0.55f, 0.55f, 0.55f));
-                IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", WeaponSkinItemFilter.None);
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.EModAssetBundlePart.WeaponSkins),
+                IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", ItemFilter.None);
+                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.ModAssetBundlePart.WeaponSkins),
                     swordDetailedSkinOffset,
                     false,
                     false);
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.EModAssetBundlePart.WeaponSkins),
+                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.ModAssetBundlePart.WeaponSkins),
                     swordDetailedSkinOffset,
                     true,
                     false);
+
+
             }
         }
 
@@ -89,7 +91,7 @@ namespace CDOverhaul.Gameplay
             return WeaponVariant.FireMultiplayer;
         }
 
-        IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, WeaponSkinItemFilter filter)
+        IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, ItemFilter filter)
         {
             IWeaponSkinItemDefinition newWeaponItem = new WeaponSkinItemDefinitionV2();
             newWeaponItem.SetItemName(skinName);
@@ -99,16 +101,16 @@ namespace CDOverhaul.Gameplay
             return newWeaponItem;
         }
 
-        IWeaponSkinItemDefinition IWeaponSkinsControllerV2.GetSkinItem(WeaponType weaponType, string skinName, WeaponSkinItemFilter filter, out WeaponSkinItemNullReason error)
+        IWeaponSkinItemDefinition IWeaponSkinsControllerV2.GetSkinItem(WeaponType weaponType, string skinName, ItemFilter filter, out ItemNullResult error)
         {
             IWeaponSkinItemDefinition result = null;
-            error = WeaponSkinItemNullReason.Null;
+            error = ItemNullResult.Null;
 
             foreach(IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
             {
                 if (weaponSkinItem.IsUnlocked(false))
                 {
-                    if ((filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter) && weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
+                    if ((filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter) && weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
                     {
                         result = weaponSkinItem;
                     }
@@ -116,22 +118,17 @@ namespace CDOverhaul.Gameplay
                 else
                 {
                     // Implement is locked by not exclusivity
-                    error = WeaponSkinItemNullReason.LockedExclusive;
+                    error = ItemNullResult.LockedExclusive;
                 }
             }
 
             return result;
         }
 
-        IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(WeaponType weaponType, WeaponSkinItemFilter filter)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(WeaponSkinItemFilter filter)
+        IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(ItemFilter filter)
         {
             List<IWeaponSkinItemDefinition> result = new List<IWeaponSkinItemDefinition>();
-            if(filter == WeaponSkinItemFilter.Equipped)
+            if(filter == ItemFilter.Equipped)
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
@@ -172,7 +169,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
-                    if (weaponSkinItem.IsUnlocked(false) && (filter == WeaponSkinItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                    if (weaponSkinItem.IsUnlocked(false) && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
                     {
                         result.Add(weaponSkinItem);
                     }
@@ -183,7 +180,7 @@ namespace CDOverhaul.Gameplay
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover)
         {
-            return Interface.GetSkinItems(WeaponSkinItemFilter.Equipped);
+            return Interface.GetSkinItems(ItemFilter.Equipped);
         }
 
         string[] IConsoleCommandReceiver.Commands()

@@ -50,9 +50,9 @@ namespace CDOverhaul.Gameplay
         /// <param name="data"></param>
         /// <param name="levelName"></param>
         /// <returns></returns>
-        public LevelInstance SpawnLevel(LevelEditorLevelData data, in string levelName, in bool updateArena = false, Action callback = null)
+        public GameObject SpawnLevel(LevelEditorLevelData data, in string levelName, in bool updateArena = false, Action callback = null)
         {
-            GameObject @object = new GameObject(levelName, new Type[] { typeof(LevelInstance) });
+            GameObject @object = new GameObject(levelName);
 
             IEnumerator spawnLevelAsync()
             {
@@ -71,7 +71,7 @@ namespace CDOverhaul.Gameplay
                 ArenaIsHidden = data.ArenaIsHidden;
             }
 
-            return @object.GetComponent<LevelInstance>();
+            return @object;
         }
 
         internal void SetArenaVisibility(in bool value)

@@ -30,7 +30,7 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="transformOverride"></param>
         /// <returns></returns>
-        public static T NewController<T>(in Transform transformOverride = null) where T : ModController
+        public static T InitializeController<T>(in Transform transformOverride = null) where T : ModController
         {
             Transform transform = transformOverride != null ? transformOverride : ControllersGameObject.transform;
 
