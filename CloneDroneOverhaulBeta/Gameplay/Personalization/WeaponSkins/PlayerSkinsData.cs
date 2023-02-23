@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
     {
         public Dictionary<WeaponType, string> Skins;
 
-        public override void RepairMissingFields()
+        public override void RepairFields()
         {
             if (Skins == null)
             {

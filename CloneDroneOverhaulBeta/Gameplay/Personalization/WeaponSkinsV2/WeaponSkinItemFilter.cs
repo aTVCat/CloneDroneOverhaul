@@ -8,6 +8,8 @@
 
         Locked,
 
-        Everything
+        Everything,
+
+        Equipped
     }
 }

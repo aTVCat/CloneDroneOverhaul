@@ -10,26 +10,26 @@ namespace CDOverhaul.HUD
         public const string BGColor_Normal = "#3A3B40";
         public const string BGColor_Error = "#A63C43";
 
-        public static readonly float NormalX = 45f;
-        public static readonly float XWhenNotToggle = 105f;
+        private Transform m_ToggleTickBox;
+        private Transform m_ToggleBGOff;
+        private Transform m_ToggleBGOn;
+        private Transform m_ToggleTick;
 
-        private Transform Toggle_TickBox;
-        private Transform Toggle_BGOff;
-        private Transform Toggle_BGOn;
-        private Transform Toggle_Tick;
+        private Slider m_Slider;
+        private Dropdown m_Dropdown;
 
         private static readonly List<SettingEntryBehaviour> _spawnedBehaviours = new List<SettingEntryBehaviour>();
 
-        private ModdedObject _moddedObject;
-        private UISettingsMenu _ui;
+        private ModdedObject m_ModdedObject;
+        private UISettingsMenu m_UI;
 
         public SettingInfo Setting;
         public SettingDescription Description;
 
         public void Initialize(in UISettingsMenu menu, in ModdedObject moddedObject, in string settingPath, in ESettingPosition position)
         {
-            _moddedObject = moddedObject;
-            _ui = menu;
+            m_ModdedObject = moddedObject;
+            m_UI = menu;
 
             Setting = SettingsController.GetSetting(settingPath);
             Description = SettingsController.GetSettingDescription(settingPath);
@@ -39,32 +39,69 @@ namespace CDOverhaul.HUD
                 moddedObject.GetObject<Text>(0).text = settingPath;
                 return;
             }
-            base.GetComponent<Image>().color = BGColor_Normal.ConvertHexToColor();
-
             string[] array = settingPath.Split('.');
 
-            _moddedObject.GetObject<Text>(0).text = array[2];
-            _moddedObject.GetObject<Text>(1).text = string.Empty;
+            m_ModdedObject.GetObject<Text>(0).text = array[2];
+            m_ModdedObject.GetObject<Text>(1).text = string.Empty;
             if (Description != null)
             {
-                _moddedObject.GetObject<Text>(1).text = Description.Description;
+                m_ModdedObject.GetObject<Text>(1).text = Description.Description;
             }
 
             base.GetComponent<Image>().enabled = position == ESettingPosition.Normal;
-            _moddedObject.GetObject<Transform>(7).gameObject.SetActive(position == ESettingPosition.Top);
-            _moddedObject.GetObject<Transform>(8).gameObject.SetActive(position == ESettingPosition.Center);
-            _moddedObject.GetObject<Transform>(9).gameObject.SetActive(position == ESettingPosition.Bottom);
+            m_ModdedObject.GetObject<Transform>(7).gameObject.SetActive(position == ESettingPosition.Top);
+            m_ModdedObject.GetObject<Transform>(8).gameObject.SetActive(position == ESettingPosition.Center);
+            m_ModdedObject.GetObject<Transform>(9).gameObject.SetActive(position == ESettingPosition.Bottom);
 
             configToggle(moddedObject, Setting.Type == ESettingType.Bool, position);
+            configSlider(moddedObject, Setting.SliderParameters);
+            configDropdown(moddedObject, Setting.DropdownParameters);
+        }
+
+        private void configDropdown(in ModdedObject m, in SettingDropdownParameters parameters)
+        {
+            m_Dropdown = m.GetObject<Dropdown>(11);
+            m_Dropdown.gameObject.SetActive(parameters != null);
+            if(!m_Dropdown.gameObject.activeSelf)
+            {
+                return;
+            }
+
+            m_Dropdown.options = parameters.Options;
+            m_Dropdown.value = SettingInfo.GetPref<int>(Setting);
+            m_Dropdown.onValueChanged.AddListener(setDropdownValue);
+        }
+
+        private void configSlider(in ModdedObject m, in SettingSliderParameters parameters)
+        {
+            m_Slider = m.GetObject<Slider>(10);
+            m_Slider.gameObject.SetActive(parameters != null);
+            if (!m_Slider.gameObject.activeSelf)
+            {
+                return;
+            }
+
+            m_Slider.wholeNumbers = parameters.IsInt;
+            m_Slider.minValue = parameters.Min;
+            m_Slider.maxValue = parameters.Max;
+            if (parameters.IsInt)
+            {
+                m_Slider.value = SettingInfo.GetPref<int>(Setting);
+            }
+            else
+            {
+                m_Slider.value = SettingInfo.GetPref<float>(Setting);
+            }
+            m_Slider.onValueChanged.AddListener(setSliderValue);
         }
 
         private void configToggle(in ModdedObject m, in bool isBool, in ESettingPosition position)
         {
-            Toggle_TickBox = m.GetObject<Transform>(2);
-            Toggle_BGOff = m.GetObject<Transform>(3);
-            Toggle_BGOn = m.GetObject<Transform>(4);
-            Toggle_Tick = m.GetObject<Transform>(5);
-            Toggle_TickBox.gameObject.SetActive(isBool);
+            m_ToggleTickBox = m.GetObject<Transform>(2);
+            m_ToggleBGOff = m.GetObject<Transform>(3);
+            m_ToggleBGOn = m.GetObject<Transform>(4);
+            m_ToggleTick = m.GetObject<Transform>(5);
+            m_ToggleTickBox.gameObject.SetActive(isBool);
 
             Toggle t = base.GetComponent<Toggle>();
             t.enabled = isBool;
@@ -79,13 +116,13 @@ namespace CDOverhaul.HUD
                     t.targetGraphic = base.GetComponent<Image>();
                     break;
                 case ESettingPosition.Top:
-                    t.targetGraphic = _moddedObject.GetObject<Image>(7);
+                    t.targetGraphic = m_ModdedObject.GetObject<Image>(7);
                     break;
                 case ESettingPosition.Center:
-                    t.targetGraphic = _moddedObject.GetObject<Image>(8);
+                    t.targetGraphic = m_ModdedObject.GetObject<Image>(8);
                     break;
                 case ESettingPosition.Bottom:
-                    t.targetGraphic = _moddedObject.GetObject<Image>(9);
+                    t.targetGraphic = m_ModdedObject.GetObject<Image>(9);
                     break;
             }
 
@@ -93,12 +130,30 @@ namespace CDOverhaul.HUD
             setToggleValue(t.isOn);
             t.onValueChanged.AddListener(setToggleValue);
         }
+
         private void setToggleValue(bool value)
         {
-            Toggle_BGOff.gameObject.SetActive(!value);
-            Toggle_BGOn.gameObject.SetActive(value);
-            Toggle_Tick.gameObject.SetActive(value);
+            m_ToggleBGOff.gameObject.SetActive(!value);
+            m_ToggleBGOn.gameObject.SetActive(value);
+            m_ToggleTick.gameObject.SetActive(value);
             SettingInfo.SavePref(Setting, value);
+        }
+
+        private void setDropdownValue(int value)
+        {
+            SettingInfo.SavePref(Setting, value);
+        }
+
+        private void setSliderValue(float value)
+        {
+            if (Setting.SliderParameters.IsInt)
+            {
+                SettingInfo.SavePref(Setting, Mathf.RoundToInt(value));
+            }
+            else
+            {
+                SettingInfo.SavePref(Setting, value);
+            }
         }
 
         private void OnDestroy()
@@ -108,12 +163,12 @@ namespace CDOverhaul.HUD
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            _ui.PopulateDescription(Setting, Description);
+            m_UI.PopulateDescription(Setting, Description);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            _ui.PopulateDescription(null, null);
+            m_UI.PopulateDescription(null, null);
         }
     }
 }

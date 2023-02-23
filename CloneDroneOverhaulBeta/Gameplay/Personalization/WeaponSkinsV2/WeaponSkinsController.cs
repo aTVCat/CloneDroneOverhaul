@@ -131,7 +131,7 @@ namespace CDOverhaul.Gameplay
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover)
         {
-            return Interface.GetSkinItems(WeaponSkinItemFilter.None);
+            return Interface.GetSkinItems(WeaponSkinItemFilter.Equipped);
         }
 
         string[] IConsoleCommandReceiver.Commands()

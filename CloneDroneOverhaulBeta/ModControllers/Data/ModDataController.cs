@@ -71,10 +71,10 @@ namespace CDOverhaul
 
         internal static void SetUpContainer(in ModDataContainerBase container, in string fileName, in string savePath)
         {
-            container.IsLoaded = true;
+            container.IsLoadedFromFile = true;
             container.FileName = fileName;
             container.SavePath = savePath;
-            container.RepairMissingFields();
+            container.RepairFields();
         }
     }
 }

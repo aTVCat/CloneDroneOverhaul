@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
 using ModLibrary;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,32 +8,36 @@ namespace CDOverhaul.HUD
 {
     public class UIVersionLabel : UIBase
     {
-        private Text _versionLabel;
+        private Text m_VersionLabel;
+        private TextMeshProUGUI m_VersionLabelTextMeshPro;
+        private Text m_TitleScreenUIVersionLabel;
 
         public override void Initialize()
         {
-            _ = OverhaulEventManager.AddEventListener(MainGameplayController.GamemodeChangedEventString, onGamemodeUpdated);
-
-            _versionLabel = MyModdedObject.GetObject<Text>(0);
+            m_VersionLabel = MyModdedObject.GetObject<Text>(2);
+            m_VersionLabelTextMeshPro = MyModdedObject.GetObject<TextMeshProUGUI>(1);
+            m_VersionLabelTextMeshPro.gameObject.SetActive(false);
+            m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
+            m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
 
             HasAddedEventListeners = true;
             HasInitialized = true;
         }
 
-        private void onGamemodeUpdated()
+        private void Update()
         {
-            if (_versionLabel == null)
+            if (Time.frameCount % 30 == 0)
             {
-                return;
-            }
-
-            try
-            {
-                _versionLabel.text = GameModeManager.IsOnTitleScreen() ? OverhaulVersion.ModFullName : OverhaulVersion.ModShortName;
-            }
-            catch
-            {
-                debug.Log("Version label: Problem encountered with _versionLabel", Color.red);
+                if (GameModeManager.IsOnTitleScreen())
+                {
+                    m_VersionLabel.text = string.Concat(m_TitleScreenUIVersionLabel.text,
+                   "\n",
+                    OverhaulVersion.ModFullName);
+                }
+                else
+                {
+                    m_VersionLabel.text = OverhaulVersion.ModShortName;
+                }
             }
         }
     }

@@ -11,7 +11,7 @@ namespace CDOverhaul.Shared
         [NonSerialized]
         public static Dictionary<string, CustomRobotAnimation> LoadedAnimations;
 
-        public override void RepairMissingFields()
+        public override void RepairFields()
         {
             if (LoadedAnimations == null)
             {

@@ -18,11 +18,14 @@ namespace CDOverhaul
 
         public readonly List<string> ChildSettings = new List<string>();
 
+        public SettingSliderParameters SliderParameters { get; set; }
+        public SettingDropdownParameters DropdownParameters { get; set; }
+
         public ESettingType Type { get; set; }
 
         public bool Error => Type == ESettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
 
-        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field)
+        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
         {
             RawPath = path;
             Type = GetSettingType(defValue);
@@ -33,6 +36,9 @@ namespace CDOverhaul
             Category = array[0];
             Section = array[1];
             Name = array[2];
+
+            SliderParameters = sliderParams;
+            DropdownParameters = dropdownParams;
 
             if (Error)
             {

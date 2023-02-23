@@ -33,7 +33,9 @@ namespace CDOverhaul
                     OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                     if (neededAttribute != null)
                     {
-                        _ = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field);
+                        SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
+                        SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
+                        _ = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
                         if (neededAttribute.IsHidden)
                         {
                             _hiddenEntries.Add(neededAttribute.SettingRawPath);
@@ -63,10 +65,10 @@ namespace CDOverhaul
         /// <param name="defaultValue"></param>
         /// <param name="field"></param>
         /// <returns></returns>
-        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field)
+        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
         {
             SettingInfo newSetting = new SettingInfo();
-            newSetting.SetUp<T>(path, defaultValue, field);
+            newSetting.SetUp<T>(path, defaultValue, field, sliderParams, dropdownParams);
             _settings.Add(newSetting);
             return newSetting;
         }

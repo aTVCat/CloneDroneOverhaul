@@ -10,12 +10,6 @@ namespace CDOverhaul.Shared
         [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
         public static bool MakeLaserBurnVoxels;
 
-        [OverhaulSetting("Gameplay.Voxels.TES12345TMake laser burn voxels", true, false, "12345671332289", null, null, "Gameplay.Voxels.Make laser burn voxels")]
-        public static bool Test2;
-
-        [OverhaulSetting("Gameplay.Voxels.TESTMake laser burn voxels", true, false, "123456789", null, null, "Gameplay.Voxels.Make laser burn voxels")]
-        public static bool Test;
-
         public override void Initialize()
         {
             ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;

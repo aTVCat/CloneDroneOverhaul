@@ -424,6 +424,8 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
+    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingDropdownParameters.cs" />
+    <Compile Include="ModControllers\Data\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="ModControllers\OverhaulExtentions.cs" />
     <Compile Include="ModControllers\OverhaulSessionController.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
@@ -443,7 +445,6 @@
     <Compile Include="ModControllers\Patches\DataRepository_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameModeManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\GameUIRoot_Patch.cs" />
-    <Compile Include="ModControllers\Patches\Story3_EndCutscene_Patch.cs" />
     <Compile Include="ModControllers\Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="ModControllers\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterModel_Patch.cs" />
@@ -495,7 +496,6 @@
     <Compile Include="ModControllers\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\CharacterTracker_Patch.cs" />
     <Compile Include="ModControllers\Patches\WeaponModel_Patch.cs" />
-    <Compile Include="ModControllers\Patches\WeaponManager_Patch.cs" />
     <Compile Include="ModControllers\Patches\Replacement\ReplacementBase.cs" />
     <Compile Include="ModControllers\Patches\Replacement\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="ModControllers\Patches\Replacement\Subclasses\TitleScreenUIReplacement.cs" />

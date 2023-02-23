@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay
 
         public string GetFileName() { return CharacterModelIndex + "_" + AccessoryName + ".json"; }
 
-        public override void RepairMissingFields()
+        public override void RepairFields()
         {
             if (Data == null)
             {
@@ -23,7 +23,7 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        protected override void OnPrepareToSave()
+        protected override void OnPreSave()
         {
             FileName = GetFileName();
         }

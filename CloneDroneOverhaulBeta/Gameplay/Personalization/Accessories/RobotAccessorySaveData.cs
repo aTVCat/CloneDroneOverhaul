@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
     {
         public List<string> Accessories;
 
-        public override void RepairMissingFields()
+        public override void RepairFields()
         {
             if (Accessories == null)
             {
@@ -18,7 +18,7 @@ namespace CDOverhaul.Gameplay
             SaveData();
         }
 
-        protected override void OnPrepareToSave()
+        protected override void OnPreSave()
         {
             FileName = "PlayerAccessories.json";
         }

@@ -65,7 +65,7 @@ namespace CDOverhaul.Shared
                 AnimationName = name,
                 FileName = name
             };
-            anim.RepairMissingFields();
+            anim.RepairFields();
             anim.InitializeAnimationAsNew();
             SaveAnimation(anim);
             return anim;

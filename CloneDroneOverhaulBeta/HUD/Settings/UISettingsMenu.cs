@@ -84,7 +84,6 @@ namespace CDOverhaul.HUD
                 categoryEntry.GetObject<Text>(0).text = array[1];
 
                 List<string> settings = SettingsController.GetAllSettings(categoryName, array[1]);
-                settings.Sort();
                 foreach (string settingName in settings)
                 {
                     List<string> childrenSettings = SettingsController.GetChildrenSettings(settingName);

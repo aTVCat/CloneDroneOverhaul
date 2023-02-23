@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace CDOverhaul
 {
@@ -8,8 +9,11 @@ namespace CDOverhaul
         [NonSerialized]
         private static readonly Dictionary<string, ModDataContainerBase> _cachedDatas = new Dictionary<string, ModDataContainerBase>();
 
+        /// <summary>
+        /// Define if this container base was loaded from file
+        /// </summary>
         [NonSerialized]
-        public bool IsLoaded;
+        public bool IsLoadedFromFile;
 
         [NonSerialized]
         public string SavePath;
@@ -17,45 +21,50 @@ namespace CDOverhaul
         [NonSerialized]
         public string FileName;
 
-        public void SaveData(in bool useModFolder = false, in string modFolderName = null)
+        public virtual void RepairFields()
         {
-            if (string.IsNullOrEmpty(FileName))
-            {
-                return;
-            }
 
-            OnPrepareToSave();
-            ModDataController.SaveData(this, FileName, useModFolder, modFolderName);
         }
 
-        public static T GetData<T>(in string fileName, in bool useModFolder = false, in string modFolderName = null) where T : ModDataContainerBase
+        protected virtual void OnPreSave()
         {
-            if (_cachedDatas.ContainsKey(fileName))
+
+        }
+
+        protected virtual void OnPostSave()
+        {
+
+        }
+
+        public void SaveData(bool useModFolder = false, string modFolderName = null)
+        {
+            if (string.IsNullOrEmpty(FileName)) return;
+
+            ThreadStart start = new ThreadStart(delegate
+            {
+                OnPreSave();
+                ModDataController.SaveData(this, FileName, useModFolder, modFolderName);
+                OnPostSave();
+            });
+            Thread newThread = new Thread(start);
+        }
+
+        public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null) where T : ModDataContainerBase
+        {
+            bool containsKey = _cachedDatas.ContainsKey(fileName);
+            if (containsKey)
             {
                 return (T)_cachedDatas[fileName];
             }
 
             T data = ModDataController.GetData<T>(fileName, useModFolder, modFolderName);
-            data.RepairMissingFields();
-            if (!_cachedDatas.ContainsKey(fileName))
+            data.RepairFields();
+            if (!containsKey)
             {
                 _cachedDatas.Add(fileName, data);
             }
 
             return data;
-        }
-
-        /// <summary>
-        /// Add missing values if you have need to
-        /// </summary>
-        public virtual void RepairMissingFields()
-        {
-
-        }
-
-        protected virtual void OnPrepareToSave()
-        {
-
         }
     }
 }
