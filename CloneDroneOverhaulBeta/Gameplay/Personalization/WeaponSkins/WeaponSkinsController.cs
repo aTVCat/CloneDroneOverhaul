@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsController : ModController
+    public class WeaponSkinsController : OverhaulController
     {
         public static readonly GameMode EditorGamemode = (GameMode)(MainGameplayController.GamemodeStartIndex + 1);
         public const string SaveDataFileName = "SkinSelection";
@@ -63,9 +63,6 @@ namespace CDOverhaul.Gameplay
                 new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
             WeaponSkinModels model4 = AddWeaponSkin(AssetController.GetAsset("P_Steel", Enumerators.ModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Steel",
                 new WeaponSkinPlacement(new Vector3(-1.14f, -1.14f, 0.7f), new Vector3(0, 0, 0), Vector3.one));
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         /// <summary>
@@ -510,6 +507,16 @@ namespace CDOverhaul.Gameplay
                     _ = GetAndSpawnSkin(wModel, skinName, mover, GameModeManager.UsesMultiplayerSpeedMultiplier(), wModel.HasReplacedWithFireVariant());
                 }
             }
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

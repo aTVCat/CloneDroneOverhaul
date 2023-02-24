@@ -1,10 +1,21 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay
+﻿namespace CDOverhaul.Gameplay
 {
-    public class PlayerOutfitController : ModController, IPlayerOutfitController
+    public class PlayerOutfitController : OverhaulController, IPlayerOutfitController
     {
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Initialize()
+        {
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
+        }
+
         IWeaponSkinItemDefinition IPlayerOutfitController.GetAccessoryItem(string skinName, out ItemNullResult error)
         {
             throw new System.NotImplementedException();

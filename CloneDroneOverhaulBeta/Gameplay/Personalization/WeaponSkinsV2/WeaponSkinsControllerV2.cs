@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsControllerV2 : ModController, IWeaponSkinsControllerV2, IConsoleCommandReceiver
+    public class WeaponSkinsControllerV2 : OverhaulController, IWeaponSkinsControllerV2, IConsoleCommandReceiver
     {
         public IWeaponSkinsControllerV2 Interface
         {
@@ -189,6 +189,16 @@ namespace CDOverhaul.Gameplay
         }
 
         string IConsoleCommandReceiver.OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
         {
             throw new System.NotImplementedException();
         }

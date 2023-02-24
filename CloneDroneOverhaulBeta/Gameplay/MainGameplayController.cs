@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class MainGameplayController : ModController
+    public class MainGameplayController : OverhaulController
     {
         #region Events
         public const string GamemodeChangedEventString = "GamemodeChanged";
@@ -64,16 +64,13 @@ namespace CDOverhaul.Gameplay
             Instance = this;
 
             GameFlowManager = GameFlowManager.Instance;
-            WeaponSkins = ModControllerManager.InitializeController<WeaponSkinsController>();
-            Robots = ModControllerManager.InitializeController<RobotsController>();
-            GamemodeSubstates = ModControllerManager.InitializeController<GamemodeSubstatesController>();
-            Levels = ModControllerManager.InitializeController<LevelController>();
-            _ = ModControllerManager.InitializeController<WeaponSkinsControllerV2>();
+            WeaponSkins = OverhaulController.InitializeController<WeaponSkinsController>();
+            Robots = OverhaulController.InitializeController<RobotsController>();
+            GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
+            Levels = OverhaulController.InitializeController<LevelController>();
+            _ = OverhaulController.InitializeController<WeaponSkinsControllerV2>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         /// <summary>
@@ -156,6 +153,16 @@ namespace CDOverhaul.Gameplay
                 OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             }
             _cameraCurrentLastFrame = currentCamera;
+        }
+
+        public override string[] Commands()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new NotImplementedException();
         }
     }
 }

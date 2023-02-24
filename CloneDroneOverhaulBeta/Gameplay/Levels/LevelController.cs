@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class LevelController : ModController
+    public class LevelController : OverhaulController
     {
         private bool _arenaIsHidden;
 
@@ -30,8 +30,6 @@ namespace CDOverhaul.Gameplay
         public override void Initialize()
         {
             _arenaPartsToHide = FindObjectsOfType<HideIfLevelHidesArena>();
-
-            HasInitialized = true;
         }
 
         /// <summary>
@@ -101,6 +99,16 @@ namespace CDOverhaul.Gameplay
         public void DispatchArenaVisibilityToggleUpdatedEvent()
         {
             OverhaulEventManager.DispatchEvent(GlobalEvents.HideArenaToggleChanged, true);
+        }
+
+        public override string[] Commands()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new NotImplementedException();
         }
     }
 }

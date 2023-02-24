@@ -23,7 +23,7 @@ namespace CDOverhaul.Patches
 
         private void Update()
         {
-            if (_initialized)
+            if (_initialized && _energyUI && _canvasGroup)
             {
                 float amount = _energyUI.GetPrivateField<float>("_lastAmount");
                 float maxAmount = _energyUI.GetPrivateField<int>("_lastRenderedMaxEnergy");

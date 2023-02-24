@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Shared
 {
-    public class VoxelsController : ModController
+    public class VoxelsController : OverhaulController
     {
         public static float ColorBurnMultipler;
 
@@ -13,9 +13,6 @@ namespace CDOverhaul.Shared
         public override void Initialize()
         {
             ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
@@ -55,6 +52,16 @@ namespace CDOverhaul.Shared
             PicaVoxelPoint z1 = GetOffsetPoint(picaVoxelPoint, 0, 0, 1);
             PicaVoxelPoint z2 = GetOffsetPoint(picaVoxelPoint, 0, 0, -1);
             return new PicaVoxelPoint[] { x1, x2, y1, y2, z1, z2 };
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

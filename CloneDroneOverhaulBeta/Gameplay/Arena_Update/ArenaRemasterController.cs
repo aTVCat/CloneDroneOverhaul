@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterController : ModController
+    public class ArenaRemasterController : OverhaulController
     {
         private bool _arenaToggleState = true;
 
@@ -31,6 +31,11 @@ namespace CDOverhaul.ArenaRemaster
             setUpLabels();
         }
 
+        public override void OnModDeactivated()
+        {
+            SetOgArenaInteriorVisible(true);
+        }
+
         public GameObject GetArenaRemasterPrefab()
         {
             return AssetController.GetAsset("P_ArenaRemaster", Enumerators.ModAssetBundlePart.Arena_Update);
@@ -40,7 +45,7 @@ namespace CDOverhaul.ArenaRemaster
         /// Set "Arena2019" (Arena interior) gameobject visible
         /// </summary>
         /// <param name="value"></param>
-        public void SetArenaInteriorVisible(in bool value)
+        public void SetOgArenaInteriorVisible(in bool value)
         {
             Transform arena2019 = TransformUtils.FindChildRecursive(ArenaTransform, "Arena2019");
             if (arena2019 != null)
@@ -89,8 +94,18 @@ namespace CDOverhaul.ArenaRemaster
             if (Input.GetKeyDown(KeyCode.F6))
             {
                 _arenaToggleState = !_arenaToggleState;
-                SetArenaInteriorVisible(_arenaToggleState);
+                SetOgArenaInteriorVisible(_arenaToggleState);
             }
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

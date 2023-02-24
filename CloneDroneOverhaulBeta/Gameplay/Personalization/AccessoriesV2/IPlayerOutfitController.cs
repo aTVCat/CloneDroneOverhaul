@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CDOverhaul.Gameplay
+﻿namespace CDOverhaul.Gameplay
 {
     public interface IPlayerOutfitController
     {

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-namespace CDOverhaul.HUD
+namespace CDOverhaul
 {
     [RequireComponent(typeof(ModdedObject))]
-    public class UIBase : ModController
+    public class OverhaulUI : OverhaulController
     {
-        private ModdedObject _moddedObject;
-
+        private ModdedObject m_ModdedObject;
         /// <summary>
         /// The instance of <see cref="ModdedObject"/>
         /// <b>Note: gameobject with this script must have <see cref="ModdedObject"/></b>
@@ -15,11 +14,15 @@ namespace CDOverhaul.HUD
         {
             get
             {
-                if (_moddedObject == null)
+                if(IsDestroyed || IsDisposed)
                 {
-                    _moddedObject = base.GetComponent<ModdedObject>();
+                    return null;
                 }
-                return _moddedObject;
+                if (m_ModdedObject == null)
+                {
+                    m_ModdedObject = base.GetComponent<ModdedObject>();
+                }
+                return m_ModdedObject;
             }
         }
 
@@ -41,6 +44,26 @@ namespace CDOverhaul.HUD
                     }
                 }
             }
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Initialize()
+        {
+        }
+
+        protected override void OnDisposed()
+        {
+            m_ModdedObject = null;
+            ShowCursor = false;
         }
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// A gamemode in gamemode?
     /// </summary>
-    public class GamemodeSubstatesController : ModController
+    public class GamemodeSubstatesController : OverhaulController
     {
         public const string SubstateChangedEventString = "GamemodeSubstateChanged";
 
@@ -21,6 +21,20 @@
                     OverhaulEventManager.DispatchEvent(SubstateChangedEventString);
                 }
             }
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Initialize()
+        {
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

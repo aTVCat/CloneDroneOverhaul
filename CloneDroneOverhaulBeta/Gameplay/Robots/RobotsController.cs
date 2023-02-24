@@ -2,15 +2,22 @@
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotsController : ModController
+    public class RobotsController : OverhaulController
     {
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Initialize()
         {
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, tryFixFPMForPlayer);
+        }
 
-            HasAddedEventListeners = true;
-            HasInitialized = true;
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void onFPMSpawned(FirstPersonMover mover)

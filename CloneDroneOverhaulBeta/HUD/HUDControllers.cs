@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class HUDControllers : ModController
+    public class HUDControllers : OverhaulController
     {
         /// <summary>
         /// The prefab name of HUD
@@ -14,21 +14,28 @@ namespace CDOverhaul.HUD
         /// <summary>
         /// The modded object with all UI references
         /// </summary>
-        public ModdedObject HUDModdedObject { get; private set; }
+        public ModdedObject HUDModdedObject
+        {
+            get;
+            private set;
+        }
+        public GameObject[] HUDPrefabsArray
+        {
+            get;
+            private set;
+        }
 
-        private GameObject _spawnedCanvas { get; set; }
-
-        public GameObject[] HUDPrefabsArray { get; private set; }
+        private GameObject m_CanvasFromPrefab;
 
         public bool HasSpawnedHUD => HUDModdedObject != null;
 
         public override void Initialize()
         {
-            _spawnedCanvas = Instantiate(AssetController.GetAsset(OverhaulHUDName, ModAssetBundlePart.Part1));
-            ModdedObject moddedObject = _spawnedCanvas.GetComponent<ModdedObject>();
+            m_CanvasFromPrefab = Instantiate(AssetController.GetAsset(OverhaulHUDName, ModAssetBundlePart.Part1));
+            ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
-            setPixelPerfectValue(true);
+            SetCanvasPixelPerfect(true);
 
             ModdedObject prefabsModdedObject = moddedObject.GetObject<ModdedObject>(1);
             HUDPrefabsArray = new GameObject[prefabsModdedObject.objects.Count];
@@ -40,15 +47,11 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, destroyHUD);
-
             _ = AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             _ = AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
 
-            _spawnedCanvas.GetComponent<Canvas>().enabled = false;
-            _spawnedCanvas.GetComponent<CanvasScaler>().enabled = false;
-
-            base.HasInitialized = true;
+            m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
+            m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
         }
 
         /// <summary>
@@ -57,13 +60,13 @@ namespace CDOverhaul.HUD
         /// <typeparam name="T"></typeparam>
         /// <param name="moddedObject"></param>
         /// <returns></returns>
-        public T AddHUD<T>(in ModdedObject moddedObject) where T : UIBase
+        public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
         {
-            return ModControllerManager.InitializeController<T>(moddedObject.transform);
+            return OverhaulController.InitializeController<T>(moddedObject.transform);
         }
 
         /// <summary>
-        /// Get a <see cref="GameObject"/> from Overhaul spawned hud
+        /// TBA
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -94,9 +97,18 @@ namespace CDOverhaul.HUD
             transform.localScale = Vector3.one;
         }
 
-        private void setPixelPerfectValue(in bool value)
+        /// <summary>
+        /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetCanvasPixelPerfect(in bool value)
         {
             GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
+        }
+
+        public override void OnModDeactivated()
+        {
+            destroyHUD();
         }
 
         private void destroyHUD()
@@ -107,7 +119,17 @@ namespace CDOverhaul.HUD
             }
 
             Destroy(HUDModdedObject.gameObject);
-            Destroy(_spawnedCanvas);
+            Destroy(m_CanvasFromPrefab);
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

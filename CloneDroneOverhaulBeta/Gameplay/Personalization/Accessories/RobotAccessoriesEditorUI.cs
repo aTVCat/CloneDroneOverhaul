@@ -8,7 +8,7 @@ namespace CDOverhaul.HUD
     /// <summary>
     /// This editor lets you pose accessories
     /// </summary>
-    public class RobotAccessoriesEditorUI : UIBase
+    public class RobotAccessoriesEditorUI : OverhaulUI
     {
         /// <summary>
         /// Check if user may use the editor
@@ -73,9 +73,6 @@ namespace CDOverhaul.HUD
             Scale[1].text = "1";
             Scale[2] = MyModdedObject.GetObject<InputField>(13);
             Scale[2].text = "1";
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         /// <summary>

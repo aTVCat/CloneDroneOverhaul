@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
-            IWeaponSkinItemDefinition[] skins = ModControllerManager.GetController<WeaponSkinsControllerV2>().Interface.GetSkinItems(Owner);
+            IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsControllerV2>().Interface.GetSkinItems(Owner);
             if (skins.IsNullOrEmpty())
             {
                 return;

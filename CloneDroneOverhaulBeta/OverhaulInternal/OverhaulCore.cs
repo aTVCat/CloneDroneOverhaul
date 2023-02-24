@@ -12,7 +12,7 @@ namespace CDOverhaul
     /// <summary>
     /// The core of the mod. Contains important variables
     /// </summary>
-    public sealed class OverhaulCore : MonoBehaviour
+    public sealed class OverhaulCore : OverhaulMonoBehaviour
     {
         /// <summary>
         /// The mod directory path.
@@ -61,13 +61,13 @@ namespace CDOverhaul
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulEventManager.Initialize();
-            ModControllerManager.Initialize(controllers);
+            OverhaulController.InitializeStatic(controllers);
             LevelEditorObjectsController.Initialize();
 
-            Shared = ModControllerManager.InitializeController<SharedControllers>();
-            HUDController = ModControllerManager.InitializeController<HUDControllers>();
-            GameplayController = ModControllerManager.InitializeController<MainGameplayController>();
-            _ = ModControllerManager.InitializeController<LevelEditorMultipleObjectsController>();
+            Shared = OverhaulController.InitializeController<SharedControllers>();
+            HUDController = OverhaulController.InitializeController<HUDControllers>();
+            GameplayController = OverhaulController.InitializeController<MainGameplayController>();
+            _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
 
             FirstPersonMoverExtention.InitializeStatic();
             SettingsController.Initialize();
@@ -77,6 +77,13 @@ namespace CDOverhaul
             ExclusivityController.Initialize();
 
             ReplacementBase.CreateReplacements();
+        }
+
+        protected override void OnDisposed()
+        {
+            HUDController = null;
+            GameplayController = null;
+            Shared = null;
         }
     }
 }

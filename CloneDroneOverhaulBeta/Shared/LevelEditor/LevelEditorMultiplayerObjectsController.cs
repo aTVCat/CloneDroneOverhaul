@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
-    public class LevelEditorMultipleObjectsController : ModController
+    public class LevelEditorMultipleObjectsController : OverhaulController
     {
         private bool _isInLevelEditor;
 
@@ -21,9 +21,6 @@ namespace CDOverhaul.LevelEditor
         {
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted, true);
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         private void onLevelEditorStarted()
@@ -95,6 +92,16 @@ namespace CDOverhaul.LevelEditor
                     obj.transform.position = _mainObject.transform.position - _objectsToMove[obj];
                 }
             }
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

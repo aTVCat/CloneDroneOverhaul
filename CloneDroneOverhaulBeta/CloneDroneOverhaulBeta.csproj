@@ -423,6 +423,7 @@
     <Compile Include="HUD\Settings\SubClasses\SettingEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\SubClasses\SettingsMenuCategoryEntryBehaviour.cs" />
     <Compile Include="HUD\Settings\UISettingsMenu.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\OverhaulMonoBehaviour.cs" />
     <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingDropdownParameters.cs" />
     <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="OverhaulInternal\Code\OverhaulExtentions.cs" />
@@ -481,9 +482,8 @@
     <Compile Include="OverhaulInternal\Data\ModDataController.cs" />
     <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstate.cs" />
     <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstatesController.cs" />
-    <Compile Include="OverhaulInternal\ControllersManagement\ModController.cs" />
-    <Compile Include="OverhaulInternal\ControllersManagement\ModControllerManager.cs" />
-    <Compile Include="HUD\UIBase.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\OverhaulController.cs" />
+    <Compile Include="OverhaulInternal\ControllersManagement\OverhaulUI.cs" />
     <Compile Include="HUD\VersionLabel\UIVersionLabel.cs" />
     <Compile Include="OverhaulInternal\Patches\Input\EnableCursorController.cs" />
     <Compile Include="OverhaulInternal\EventsManagement\OverhaulEventManager.cs" />
@@ -498,8 +498,7 @@
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="OverhaulInternal\EventsManagement\EventEntry.cs" />
-    <Compile Include="OverhaulInternal\ControllersManagement\Utilities\OverhaulCodeExtentions.cs" />
-    <Compile Include="OverhaulInternal\ControllersManagement\Utilities\OverhaulUtilities.cs" />
+    <Compile Include="OverhaulInternal\Code\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\FreeCameraMovement.cs" />
     <Compile Include="Shared\ObjectStateListener.cs" />

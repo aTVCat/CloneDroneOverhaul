@@ -9,7 +9,7 @@ namespace CDOverhaul.HUD
     /// <summary>
     /// UI that lets you freely manage weapon skins
     /// </summary>
-    public class UISkinSelection : UIBase
+    public class UISkinSelection : OverhaulUI
     {
         private ModdedObject _weaponEntry;
         private Transform _weaponContainer;
@@ -50,9 +50,6 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Button>(2).onClick.AddListener(goBack);
 
             activate(false);
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         /// <summary>

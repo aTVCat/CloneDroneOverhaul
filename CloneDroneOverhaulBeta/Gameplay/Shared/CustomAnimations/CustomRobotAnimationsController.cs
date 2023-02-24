@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CDOverhaul.Shared
 {
-    public class CustomAnimationsController : ModController
+    public class CustomAnimationsController : OverhaulController
     {
         public bool ShouldWork => !GameModeManager.IsMultiplayer();
 
@@ -17,9 +17,6 @@ namespace CDOverhaul.Shared
             _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
             _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
             AnimationsContainer = CustomRobotAnimationsData.GetData<CustomRobotAnimationsData>(AnimsContainerFilename, true, string.Empty);
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         private void configFPM(FirstPersonMover mover)
@@ -50,6 +47,16 @@ namespace CDOverhaul.Shared
             list.AddRange(CharacterAnimationManager.Instance.UpperBodyPartNames);
             list.AddRange(Singleton<CharacterAnimationManager>.Instance.LegsBodyPartNames);
             return list;
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

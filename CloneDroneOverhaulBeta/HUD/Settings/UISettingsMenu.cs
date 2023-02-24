@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class UISettingsMenu : UIBase
+    public class UISettingsMenu : OverhaulUI
     {
         private ModdedObject _categoryEntryPrefab;
         private Transform _categoryContainer;
@@ -30,8 +30,6 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Button>(5).onClick.AddListener(Hide);
 
             Hide();
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         public void Show()

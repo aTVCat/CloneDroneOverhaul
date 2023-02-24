@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class UIVersionLabel : UIBase
+    public class UIVersionLabel : OverhaulUI
     {
         private Text m_VersionLabel;
         private TextMeshProUGUI m_VersionLabelTextMeshPro;
@@ -17,9 +17,6 @@ namespace CDOverhaul.HUD
             m_VersionLabelTextMeshPro.gameObject.SetActive(false);
             m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
-
-            HasAddedEventListeners = true;
-            HasInitialized = true;
         }
 
         private void Update()
@@ -36,6 +33,14 @@ namespace CDOverhaul.HUD
                 {
                     m_VersionLabel.text = OverhaulVersion.ModShortName;
                 }
+            }
+        }
+
+        public override void OnModDeactivated()
+        {
+            if (m_TitleScreenUIVersionLabel != null)
+            {
+                m_TitleScreenUIVersionLabel.gameObject.SetActive(true);
             }
         }
     }
