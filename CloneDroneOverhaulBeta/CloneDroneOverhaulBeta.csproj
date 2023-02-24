@@ -374,6 +374,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gameplay\Personalization\AccessoriesV2\IPlayerAccessoryItemDefinition.cs" />
+    <Compile Include="Gameplay\Personalization\AccessoriesV2\IPlayerAccessoryModel.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerOutfitController.cs" />
     <Compile Include="Gameplay\Personalization\Accessories\RobotAccessoriesEditorUI.cs" />
@@ -390,7 +391,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModel.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinModelOffset.cs" />
+    <Compile Include="Gameplay\Personalization\ModelOffset.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemFilter.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemNullReason.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsControllerV2.cs" />
@@ -435,8 +436,8 @@
     <Compile Include="OverhaulInternal\Debug\OverhaulDebugController.cs" />
     <Compile Include="OverhaulInternal\Debug\OverhaulDebugHUDV2.cs" />
     <Compile Include="OverhaulInternal\Debug\OverhaulDebugOutputHUD.cs" />
-    <Compile Include="Gameplay\ExclusiveStuff\ExclusiveRolesController.cs" />
-    <Compile Include="Gameplay\ExclusiveStuff\ExclusivityController.cs" />
+    <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusiveRolesController.cs" />
+    <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivityController.cs" />
     <Compile Include="OverhaulInternal\Debug\Console\IConsoleCommandReceiver.cs" />
     <Compile Include="OverhaulInternal\Code\OverhaulExceptions.cs" />
     <Compile Include="Gameplay\GamemodesRelated\OverhaulGamemodeManager.cs" />
@@ -448,9 +449,7 @@
     <Compile Include="OverhaulInternal\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\CharacterModel_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\AISwordsmanController_Patch.cs" />
-    <Compile Include="OverhaulInternal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\ArenaCameraBehaviour.cs" />
-    <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\StoryChapter3AllyFix.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\AudioSourceBehaviour.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\Components\GameUIRootBehaviour.cs" />
@@ -465,9 +464,6 @@
     <Compile Include="OverhaulInternal\Data\Settings\Setting.cs" />
     <Compile Include="OverhaulInternal\Data\Settings\SubClasses\SettingAttribute.cs" />
     <Compile Include="OverhaulInternal\Data\Settings\SettingsController.cs" />
-    <Compile Include="HUD\WeaponSkinEditor\UISkinEntry.cs" />
-    <Compile Include="HUD\WeaponSkinEditor\UIWeaponEntry.cs" />
-    <Compile Include="HUD\WeaponSkinEditor\UISkinSelection.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorGiveAllWeapons.cs" />
     <Compile Include="Shared\LevelEditor\Components\LevelEditorSkinSpawnpoint.cs" />
@@ -475,8 +471,8 @@
     <Compile Include="Shared\LevelEditor\Components\LevelEditorImageBlock.cs" />
     <Compile Include="Shared\LevelEditor\LevelEditorObjectsController.cs" />
     <Compile Include="OverhaulInternal\AssetsManagement\AssetController.cs" />
-    <Compile Include="OverhaulInternal\AssetsManagement\EModAssetBundlePart.cs" />
-    <Compile Include="HUD\HUDControllers.cs" />
+    <Compile Include="OverhaulInternal\AssetsManagement\OverhaulAssetsPart.cs" />
+    <Compile Include="OverhaulInternal\OverhaulCanvasController.cs" />
     <Compile Include="OverhaulInternal\Data\ModDataContainerBase.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\PlayerSkinsData.cs" />
     <Compile Include="OverhaulInternal\Data\ModDataController.cs" />
@@ -493,7 +489,6 @@
     <Compile Include="OverhaulInternal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\CharacterTracker_Patch.cs" />
-    <Compile Include="OverhaulInternal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\ReplacementBase.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="OverhaulInternal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />

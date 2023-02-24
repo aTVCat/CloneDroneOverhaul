@@ -8,9 +8,9 @@ namespace CDOverhaul
     {
         public const string SettingChangedEventString = "OnSettingChanged";
 
-        private static readonly List<SettingInfo> _settings = new List<SettingInfo>();
-        private static readonly Dictionary<string, SettingDescription> _descriptions = new Dictionary<string, SettingDescription>();
-        private static readonly List<string> _hiddenEntries = new List<string>() { "TestCat" };
+        private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
+        private static readonly Dictionary<string, SettingDescription> m_SettingDescriptions = new Dictionary<string, SettingDescription>();
+        private static readonly List<string> m_HiddenEntries = new List<string>() { "WeaponSkins" };
 
         public static UISettingsMenu HUD;
 
@@ -18,7 +18,7 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            HUDControllers h = OverhaulMod.Core.HUDController;
+            OverhaulCanvasController h = OverhaulMod.Core.HUDController;
             HUD = h.AddHUD<UISettingsMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
 
             if (_hasAddedSettings)
@@ -35,10 +35,10 @@ namespace CDOverhaul
                     {
                         SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
                         SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
-                        _ = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
+                        SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
                         if (neededAttribute.IsHidden)
                         {
-                            _hiddenEntries.Add(neededAttribute.SettingRawPath);
+                            m_HiddenEntries.Add(info.RawPath);
                         }
                         if (!string.IsNullOrEmpty(neededAttribute.Description))
                         {
@@ -69,7 +69,7 @@ namespace CDOverhaul
         {
             SettingInfo newSetting = new SettingInfo();
             newSetting.SetUp<T>(path, defaultValue, field, sliderParams, dropdownParams);
-            _settings.Add(newSetting);
+            m_Settings.Add(newSetting);
             return newSetting;
         }
 
@@ -80,7 +80,7 @@ namespace CDOverhaul
                 return;
             }
             SettingDescription desc = new SettingDescription(description, img43filename, img169filename);
-            _descriptions.Add(settingPath, desc);
+            m_SettingDescriptions.Add(settingPath, desc);
         }
 
         public static void ParentSetting(in string settingPath, in string targetSettingPath)
@@ -97,7 +97,7 @@ namespace CDOverhaul
         public static List<string> GetAllCategories(in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in _settings)
+            foreach (SettingInfo s in m_Settings)
             {
                 if (!result.Contains(s.Category))
                 {
@@ -117,7 +117,7 @@ namespace CDOverhaul
         public static List<string> GetAllSections(in string categoryToSearchIn, in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in _settings)
+            foreach (SettingInfo s in m_Settings)
             {
                 if (s.Category == categoryToSearchIn && !result.Contains(s.Category + "." + s.Section))
                 {
@@ -137,7 +137,7 @@ namespace CDOverhaul
         public static List<string> GetAllSettings(in string categoryToSearchIn, in string sectionToSearchIn, in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in _settings)
+            foreach (SettingInfo s in m_Settings)
             {
                 if (s.Category == categoryToSearchIn && s.Section == sectionToSearchIn && !result.Contains(s.RawPath))
                 {
@@ -163,7 +163,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static SettingInfo GetSetting(in string path, in bool includeHidden = false)
         {
-            foreach (SettingInfo s in _settings)
+            foreach (SettingInfo s in m_Settings)
             {
                 if (s.RawPath == path && (!IsEntryHidden(s.RawPath) || includeHidden))
                 {
@@ -176,7 +176,7 @@ namespace CDOverhaul
 
         public static SettingDescription GetSettingDescription(in string path)
         {
-            _ = _descriptions.TryGetValue(path, out SettingDescription result);
+            _ = m_SettingDescriptions.TryGetValue(path, out SettingDescription result);
             return result;
         }
 
@@ -187,13 +187,18 @@ namespace CDOverhaul
         /// <returns></returns>
         public static bool IsEntryHidden(in string path)
         {
+            if (OverhaulVersion.IsDebugBuild)
+            {
+                return false;
+            }
+
             bool isCategory = !path.Contains(".");
             string path1 = null;
 
             if (isCategory)
             {
                 path1 = path;
-                return _hiddenEntries.Contains(path1);
+                return m_HiddenEntries.Contains(path1);
             }
 
             string[] array = path.Split('.');
@@ -209,7 +214,7 @@ namespace CDOverhaul
             {
                 path1 = array[0] + "." + array[1] + "." + array[2];
             }
-            return _hiddenEntries.Contains(path1);
+            return m_HiddenEntries.Contains(path1);
         }
     }
 }

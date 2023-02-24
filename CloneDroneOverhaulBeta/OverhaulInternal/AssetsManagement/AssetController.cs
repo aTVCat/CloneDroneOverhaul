@@ -31,42 +31,44 @@ namespace CDOverhaul
         /// <param name="assetName"></param>
         /// <param name="assetBundlePart"></param>
         /// <returns></returns>
-        public static GameObject GetAsset(in string assetName, in ModAssetBundlePart assetBundlePart)
+        public static GameObject GetAsset(in string assetName, in OverhaulAssetsPart assetBundlePart)
         {
             GameObject result = GetAsset<GameObject>(assetName, assetBundlePart);
             return result;
         }
 
-        public static T GetAsset<T>(in string assetName, in ModAssetBundlePart assetBundlePart) where T : UnityEngine.Object
+        public static T GetAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             T result = null;
+            string assetBundle = null;
             switch (assetBundlePart)
             {
-                case ModAssetBundlePart.Part1:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Part1, assetName);
+                case OverhaulAssetsPart.Part1:
+                    assetBundle = ModAssetBundle_Part1;
                     break;
-                case ModAssetBundlePart.Part2:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Part2, assetName);
+                case OverhaulAssetsPart.Part2:
+                    assetBundle = ModAssetBundle_Part2;
                     break;
-                case ModAssetBundlePart.WeaponSkins:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Skins, assetName);
+                case OverhaulAssetsPart.WeaponSkins:
+                    assetBundle = ModAssetBundle_Skins;
                     break;
-                case ModAssetBundlePart.Objects:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Objects, assetName);
+                case OverhaulAssetsPart.Objects:
+                    assetBundle = ModAssetBundle_Objects;
                     break;
-                case ModAssetBundlePart.Accessories:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Accessouries, assetName);
+                case OverhaulAssetsPart.Accessories:
+                    assetBundle = ModAssetBundle_Accessouries;
                     break;
-                case ModAssetBundlePart.Sounds:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Sounds, assetName);
+                case OverhaulAssetsPart.Sounds:
+                    assetBundle = ModAssetBundle_Sounds;
                     break;
-                case ModAssetBundlePart.Main:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_Main, assetName);
+                case OverhaulAssetsPart.Main:
+                    assetBundle = ModAssetBundle_Main;
                     break;
-                case ModAssetBundlePart.Arena_Update:
-                    result = AssetLoader.GetObjectFromFile<T>(ModAssetBundle_ArenaUpdate, assetName);
+                case OverhaulAssetsPart.Arena_Update:
+                    assetBundle = ModAssetBundle_ArenaUpdate;
                     break;
             }
+            result = AssetLoader.GetObjectFromFile<T>(assetBundle, assetName);
             return result;
         }
 
@@ -76,7 +78,7 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="assetName"></param>
         /// <param name="assetBundlePart"></param>
-        public static void PreloadAsset<T>(in string assetName, in ModAssetBundlePart assetBundlePart) where T : UnityEngine.Object
+        public static void PreloadAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             _ = GetAsset<T>(assetName, assetBundlePart);
         }

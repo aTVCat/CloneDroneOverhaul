@@ -2,7 +2,10 @@
 
 namespace CDOverhaul
 {
-    [RequireComponent(typeof(ModdedObject))]
+    /// <summary>
+    /// The base class of any HUD in the mod
+    /// </summary>
+    [RequireComponent(typeof(ModdedObject), typeof(RectTransform))]
     public class OverhaulUI : OverhaulController
     {
         private ModdedObject m_ModdedObject;
@@ -27,11 +30,14 @@ namespace CDOverhaul
         }
 
         private byte _enableCursorConditionID = 0;
+        /// <summary>
+        /// Make the game to force show system cursor
+        /// </summary>
         protected bool ShowCursor
         {
             set
             {
-                if (value)
+                if (value && !(IsDestroyed || IsDisposed))
                 {
                     _enableCursorConditionID = EnableCursorController.AddCondition();
                 }

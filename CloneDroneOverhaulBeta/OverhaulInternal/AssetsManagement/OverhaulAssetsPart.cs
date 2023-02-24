@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Enumerators
 {
-    public enum ModAssetBundlePart
+    public enum OverhaulAssetsPart
     {
         None,
         Part1,

@@ -38,6 +38,12 @@ namespace CDOverhaul
         /// <returns></returns>
         public abstract string OnCommandRan(string[] command);
 
+        protected override void OnDisposed()
+        {
+            OverhaulConsoleController.RemoveListener(this);
+            RemoveController(this);
+        }
+
         internal void InitializeInternal()
         {
             _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);

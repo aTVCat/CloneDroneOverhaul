@@ -17,31 +17,31 @@ namespace CDOverhaul.LevelEditor
         {
             if (!_hasAddedAssets)
             {
-                GameObject obj1 = AssetController.GetAsset("TextBlock", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj1 = AssetController.GetAsset("TextBlock", Enumerators.OverhaulAssetsPart.Objects);
                 _ = obj1.AddComponent<LevelEditorTextBlock>();
-                AddObject(obj1.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "TextBlock");
+                AddObject(obj1.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "TextBlock");
 
-                GameObject obj2 = AssetController.GetAsset("ImageBlock", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj2 = AssetController.GetAsset("ImageBlock", Enumerators.OverhaulAssetsPart.Objects);
                 obj2.AddComponent<LevelEditorComponentDescription>().Description = "For internal use only!";
                 _ = obj2.AddComponent<LevelEditorImageBlock>();
-                AddObject(obj2.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "ImageBlock");
+                AddObject(obj2.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "ImageBlock");
 
-                GameObject obj3 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj3 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.OverhaulAssetsPart.Objects);
                 _ = obj3.AddComponent<LevelEditorGamemodeSubstateChanger>();
-                AddObject(obj3.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "G_SChanger");
+                AddObject(obj3.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "G_SChanger");
 
-                GameObject obj4 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj4 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", Enumerators.OverhaulAssetsPart.Objects);
                 _ = obj4.AddComponent<LevelEditorSkinSpawnpoint>();
-                AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "SkinSpawnpoint");
+                AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "SkinSpawnpoint");
 
 
-                GameObject obj6 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj6 = AssetController.GetAsset("GamemodeSubstateChanger", Enumerators.OverhaulAssetsPart.Objects);
                 _ = obj6.AddComponent<LevelEditorGiveAllWeapons>();
-                AddObject(obj6.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "GiveAllWeapons");
+                AddObject(obj6.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "GiveAllWeapons");
 
-                GameObject obj5 = AssetController.GetAsset("EnemiesLeftPanelPoser", Enumerators.ModAssetBundlePart.Objects);
+                GameObject obj5 = AssetController.GetAsset("EnemiesLeftPanelPoser", Enumerators.OverhaulAssetsPart.Objects);
                 _ = obj5.AddComponent<LevelEditorArenaEnemiesCounterPoser>();
-                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.ModAssetBundlePart.Objects), "AR_EL_Mover");
+                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", Enumerators.OverhaulAssetsPart.Objects), "AR_EL_Mover");
                 _hasAddedAssets = true;
             }
 

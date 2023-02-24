@@ -17,6 +17,12 @@ namespace CDOverhaul
 
         public const string Exc_EventControllerUsedTooEarly = Prefix + "EventControllerUsedTooEarly";
 
+        /// <summary>
+        /// Just throw an exception
+        /// </summary>
+        /// <param name="exc"></param>
+        /// <param name="message"></param>
+        /// <exception cref="System.Exception"></exception>
         public static void ThrowException(in string exc, in string message = null)
         {
             if (message == null)
@@ -30,9 +36,10 @@ namespace CDOverhaul
         /// Called when game crashed too early
         /// </summary>
         /// <param name="exc"></param>
-        internal static void OnModCrashedWhileLoading(in string exc)
+        internal static void OnModEarlyCrash(in string exc)
         {
-            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", Enumerators.ModAssetBundlePart.Main)).GetComponent<ModdedObject>();
+            OverhaulMod.IsCoreLoadedIncorrectly = true;
+            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", Enumerators.OverhaulAssetsPart.Main)).GetComponent<ModdedObject>();
             obj.GetObject<Text>(0).text = exc;
             obj.GetObject<Button>(1).onClick.AddListener(delegate
             {
@@ -42,6 +49,7 @@ namespace CDOverhaul
 
                 GameObject.Destroy(obj.gameObject);
             });
+            EnableCursorController.AddCondition();
         }
     }
 }

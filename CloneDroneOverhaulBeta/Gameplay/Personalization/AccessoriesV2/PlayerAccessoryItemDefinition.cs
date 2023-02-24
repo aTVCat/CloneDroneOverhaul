@@ -6,25 +6,33 @@ namespace CDOverhaul.Gameplay
 {
     public class PlayerAccessoryItemDefinition : IPlayerAccessoryItemDefinition
     {
-        MechBodyPartType IPlayerAccessoryItemDefinition.GetBodypartType()
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Filter
+        /// </summary>
+        private ItemFilter m_Filter;
+        void IPlayerAccessoryItemDefinition.SetFilter(ItemFilter filter) => m_Filter = filter;
+        ItemFilter IPlayerAccessoryItemDefinition.GetFilter() => m_Filter;
 
-        string IOverhaulItemDefinition.GetExclusivePlayerID()
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Item name
+        /// </summary>
+        private string m_ItemName;
+        void IOverhaulItemDefinition.SetItemName(string newName) => m_ItemName = newName;
+        string IOverhaulItemDefinition.GetItemName() => m_ItemName;
 
-        ItemFilter IPlayerAccessoryItemDefinition.GetFilter()
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Exclusivity
+        /// </summary>
+        private string m_ExclusivePlayerID;
+        void IOverhaulItemDefinition.SetExclusivePlayerID(string id) => m_ExclusivePlayerID = id;
+        string IOverhaulItemDefinition.GetExclusivePlayerID() => m_ExclusivePlayerID;
 
-        string IOverhaulItemDefinition.GetItemName()
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Body part
+        /// </summary>
+        private MechBodyPartType m_BodyPartType;
+        void IPlayerAccessoryItemDefinition.SetBodypartType(MechBodyPartType bodyPart) => m_BodyPartType = bodyPart;
+        MechBodyPartType IPlayerAccessoryItemDefinition.GetBodypartType() => m_BodyPartType;
 
         GameObject IPlayerAccessoryItemDefinition.GetModel(bool fire, bool multiplayer)
         {
@@ -32,26 +40,6 @@ namespace CDOverhaul.Gameplay
         }
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IPlayerAccessoryItemDefinition.SetBodypartType(MechBodyPartType weaponType)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IOverhaulItemDefinition.SetExclusivePlayerID(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IPlayerAccessoryItemDefinition.SetFilter(ItemFilter filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IOverhaulItemDefinition.SetItemName(string newName)
         {
             throw new NotImplementedException();
         }

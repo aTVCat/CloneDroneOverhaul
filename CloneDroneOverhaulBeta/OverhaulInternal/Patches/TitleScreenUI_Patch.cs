@@ -9,6 +9,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("setLogoAndRootButtonsVisible")]
         private static void setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
         {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
             __instance.transform.GetChild(1).gameObject.SetActive(visible);
         }
     }

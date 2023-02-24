@@ -23,17 +23,29 @@ namespace CDOverhaul
         /// <summary>
         /// The UI controller instance
         /// </summary>
-        public HUDControllers HUDController { get; private set; }
+        public OverhaulCanvasController HUDController
+        { 
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The gameplay features controler instance
         /// </summary>
-        public MainGameplayController GameplayController { get; private set; }
+        public MainGameplayController GameplayController 
+        { 
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Misc features controller instance
         /// </summary>
-        public SharedControllers Shared { get; private set; }
+        public SharedControllers Shared 
+        {
+            get; 
+            private set;
+        }
 
         internal bool Initialize(out string errorString)
         {
@@ -65,7 +77,7 @@ namespace CDOverhaul
             LevelEditorObjectsController.Initialize();
 
             Shared = OverhaulController.InitializeController<SharedControllers>();
-            HUDController = OverhaulController.InitializeController<HUDControllers>();
+            HUDController = OverhaulController.InitializeController<OverhaulCanvasController>();
             GameplayController = OverhaulController.InitializeController<MainGameplayController>();
             _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
 
@@ -84,6 +96,7 @@ namespace CDOverhaul
             HUDController = null;
             GameplayController = null;
             Shared = null;
+            OverhaulMod.Core = null;
         }
     }
 }

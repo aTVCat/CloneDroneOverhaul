@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class HUDControllers : OverhaulController
+    public class OverhaulCanvasController : OverhaulController
     {
         /// <summary>
         /// The prefab name of HUD
@@ -31,7 +31,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            m_CanvasFromPrefab = Instantiate(AssetController.GetAsset(OverhaulHUDName, ModAssetBundlePart.Part1));
+            m_CanvasFromPrefab = Instantiate(AssetController.GetAsset(OverhaulHUDName, OverhaulAssetsPart.Part1));
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
@@ -48,7 +48,6 @@ namespace CDOverhaul.HUD
             prefabsModdedObject.gameObject.SetActive(false);
 
             _ = AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
-            _ = AddHUD<UISkinSelection>(HUDModdedObject.GetObject<ModdedObject>(1));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

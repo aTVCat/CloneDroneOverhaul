@@ -11,18 +11,19 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("FixedUpdate")]
         private static void FixedUpdate_Postfix(AISwordsmanController __instance)
         {
-            List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(__instance.GetComponent<FirstPersonMover>());
-            if (list == null)
+            if (!OverhaulMod.IsCoreCreated)
             {
                 return;
             }
 
+            List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(__instance.GetComponent<FirstPersonMover>());
+            if (list.IsNullOrEmpty())
+            {
+                return;
+            }
             foreach (FirstPersonMoverExtention ext in list)
             {
-                if (ext != null)
-                {
-                    ext.OnAIUpdate(__instance);
-                }
+                ext.OnAIUpdate(__instance);
             }
         }
     }

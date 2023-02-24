@@ -11,6 +11,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("SetManualUpperAnimationEnabled")]
         private static void SetManualUpperAnimationEnabled_Postfix(CharacterModel __instance, bool animationIsManual)
         {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
             FirstPersonMover mover = __instance.GetOwner();
             if (mover != null)
             {

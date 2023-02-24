@@ -12,6 +12,7 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of the mod. Starts up the mod
     /// </summary>
+    /// Todo: rewrite and adapt all controllers and HUDs to new controller code
     /// Todo: Custom advancements system (or patch vanilla one)
     [MainModClass]
     public class OverhaulMod : Mod
@@ -22,9 +23,14 @@ namespace CDOverhaul
         public const string ModDeactivatedEventString = "ModDeactivated";
 
         /// <summary>
+        /// Define if we got errors while starting up the mod
+        /// </summary>
+        internal static bool IsCoreLoadedIncorrectly;
+
+        /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
-        public static bool IsCoreCreated => Core != null;
+        public static bool IsCoreCreated => !IsCoreLoadedIncorrectly && Core != null;
 
         /// <summary>
         /// The instance of the core
@@ -112,11 +118,10 @@ namespace CDOverhaul
             }
 
             List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(owner);
-            if (list == null || list.Count == 0)
+            if (list.IsNullOrEmpty())
             {
                 return;
             }
-
             foreach (FirstPersonMoverExtention ext in list)
             {
                 ext.OnUpgradesRefreshed(upgrades);
@@ -138,12 +143,12 @@ namespace CDOverhaul
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
             _ = core.Initialize(out string errors);
 
-            ChangeWindowTitle();
-
             if (errors != null)
             {
-                OverhaulExceptions.OnModCrashedWhileLoading(errors);
+                OverhaulExceptions.OnModEarlyCrash(errors);
+                return;
             }
+            ChangeWindowTitle();
         }
 
         /// <summary>
@@ -157,13 +162,17 @@ namespace CDOverhaul
             }
 
             OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
-
-            Object.Destroy(Core.gameObject);
+            Core.DestroyGameObject();
             Core = null;
         }
 
         internal void ChangeWindowTitle()
         {
+            if (!OverhaulVersion.AllowWindowNameChanging)
+            {
+                return;
+            }
+
             System.IntPtr windowPtr = FindWindow(null, Application.productName);
             _ = SetWindowText(windowPtr, "Clone Drone Overhaul");
         }

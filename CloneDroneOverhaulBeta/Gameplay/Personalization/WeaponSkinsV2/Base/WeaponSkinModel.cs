@@ -10,13 +10,13 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public WeaponSkinModelOffset Offset
+        public ModelOffset Offset
         {
             get;
             set;
         }
 
-        public WeaponSkinModel(GameObject model, WeaponSkinModelOffset offset)
+        public WeaponSkinModel(GameObject model, ModelOffset offset)
         {
             Model = model;
             Offset = offset;

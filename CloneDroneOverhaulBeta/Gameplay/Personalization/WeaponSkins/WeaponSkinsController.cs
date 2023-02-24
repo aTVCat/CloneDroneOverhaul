@@ -52,16 +52,16 @@ namespace CDOverhaul.Gameplay
             _ = AddWeaponSkin(null, WeaponType.Spear, DefaultWeaponSkinName, default);
             _ = AddWeaponSkin(null, WeaponType.Shield, DefaultWeaponSkinName, default);
 
-            WeaponSkinModels model1 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.ModAssetBundlePart.WeaponSkins), WeaponType.Sword, "DetailedOne", new WeaponSkinPlacement(UsualPosition, UsualRotation, UsualScale));
-            model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.ModAssetBundlePart.WeaponSkins), false);
-            model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.ModAssetBundlePart.WeaponSkins), true);
+            WeaponSkinModels model1 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.OverhaulAssetsPart.WeaponSkins), WeaponType.Sword, "DetailedOne", new WeaponSkinPlacement(UsualPosition, UsualRotation, UsualScale));
+            model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.OverhaulAssetsPart.WeaponSkins), false);
+            model1.SetFireModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.OverhaulAssetsPart.WeaponSkins), true);
             model1.SetNormalModel(model1.Normal.Item1, true);
 
-            WeaponSkinModels model2 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDarkPast", Enumerators.ModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Dark Past",
+            WeaponSkinModels model2 = AddWeaponSkin(AssetController.GetAsset("SwordSkinDarkPast", Enumerators.OverhaulAssetsPart.WeaponSkins), WeaponType.Sword, "Dark Past",
                 new WeaponSkinPlacement(new Vector3(0, -0.05f, -0.8f), new Vector3(0, 90, 90), Vector3.one));
-            WeaponSkinModels model3 = AddWeaponSkin(AssetController.GetAsset("HammerSkinDarkPast", Enumerators.ModAssetBundlePart.WeaponSkins), WeaponType.Hammer, "Dark Past",
+            WeaponSkinModels model3 = AddWeaponSkin(AssetController.GetAsset("HammerSkinDarkPast", Enumerators.OverhaulAssetsPart.WeaponSkins), WeaponType.Hammer, "Dark Past",
                 new WeaponSkinPlacement(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one));
-            WeaponSkinModels model4 = AddWeaponSkin(AssetController.GetAsset("P_Steel", Enumerators.ModAssetBundlePart.WeaponSkins), WeaponType.Sword, "Steel",
+            WeaponSkinModels model4 = AddWeaponSkin(AssetController.GetAsset("P_Steel", Enumerators.OverhaulAssetsPart.WeaponSkins), WeaponType.Sword, "Steel",
                 new WeaponSkinPlacement(new Vector3(-1.14f, -1.14f, 0.7f), new Vector3(0, 0, 0), Vector3.one));
         }
 

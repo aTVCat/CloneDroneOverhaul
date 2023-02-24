@@ -12,6 +12,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("destroyVoxelAtPositionFromCut")]
         private static void destroyVoxelAtPositionFromCut(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
             VoxelsController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
         }
     }

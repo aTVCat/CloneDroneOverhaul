@@ -18,7 +18,7 @@ namespace CDOverhaul.Patches
             }
 
             List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(__instance);
-            if (list == null || list.Count == 0)
+            if (list.IsNullOrEmpty())
             {
                 return;
             }

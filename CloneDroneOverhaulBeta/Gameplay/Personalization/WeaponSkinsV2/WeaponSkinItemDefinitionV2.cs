@@ -41,7 +41,7 @@ namespace CDOverhaul.Gameplay
         /// Models
         /// </summary>
         private WeaponSkinModel[] m_Models;
-        void IWeaponSkinItemDefinition.SetModel(GameObject prefab, WeaponSkinModelOffset offset, bool fire, bool multiplayer)
+        void IWeaponSkinItemDefinition.SetModel(GameObject prefab, ModelOffset offset, bool fire, bool multiplayer)
         {
             createArrayIfNesseccerary();
             WeaponSkinModel newModel = new WeaponSkinModel(prefab, offset);

@@ -38,7 +38,7 @@ namespace CDOverhaul.ArenaRemaster
 
         public GameObject GetArenaRemasterPrefab()
         {
-            return AssetController.GetAsset("P_ArenaRemaster", Enumerators.ModAssetBundlePart.Arena_Update);
+            return AssetController.GetAsset("P_ArenaRemaster", Enumerators.OverhaulAssetsPart.Arena_Update);
         }
 
         /// <summary>

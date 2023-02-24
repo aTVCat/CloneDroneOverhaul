@@ -9,6 +9,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("RefreshCursorEnabled")]
         private static void RefreshCursorEnabled_Postfix()
         {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
             if (EnableCursorController.HasToEnableCursor())
             {
                 InputManager.Instance.SetCursorEnabled(true);

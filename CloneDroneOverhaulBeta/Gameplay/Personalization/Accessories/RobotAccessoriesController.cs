@@ -29,7 +29,7 @@ namespace CDOverhaul.Gameplay
         /// <summary>
         /// The sound that is played when someone hits an accessory
         /// </summary>
-        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.ModAssetBundlePart.Sounds));
+        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.OverhaulAssetsPart.Sounds));
 
         /// <summary>
         /// This one is gonna be removed soon...
@@ -49,6 +49,7 @@ namespace CDOverhaul.Gameplay
 
         internal static void Initialize()
         {
+            return;
             if (OverhaulVersion.IsDebugBuild)
             {
                 EditorUI = OverhaulMod.Core.HUDController.AddHUD<RobotAccessoriesEditorUI>(OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5));
@@ -58,7 +59,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulMod.Core.HUDController.HUDModdedObject.GetObject<ModdedObject>(5).gameObject.SetActive(false);
             }
 
-            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.ModAssetBundlePart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.OverhaulAssetsPart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
             PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories");
 

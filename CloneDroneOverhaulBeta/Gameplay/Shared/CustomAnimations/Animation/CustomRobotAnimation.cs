@@ -6,8 +6,19 @@ namespace CDOverhaul.Shared
     public class CustomRobotAnimation : ModDataContainerBase
     {
         public string AnimationName;
-
         public List<CustomRobotAnimationTrack> Tracks;
+
+        public override void RepairFields()
+        {
+            if(Tracks == null)
+            {
+                Tracks = new List<CustomRobotAnimationTrack>();
+            }
+            if(AnimationName == null)
+            {
+                AnimationName = "DefaultAnimation";
+            }
+        }
 
         /// <summary>
         /// Set animation frame and update robot model
@@ -40,10 +51,6 @@ namespace CDOverhaul.Shared
         /// </summary>
         public void InitializeAnimationAsNew()
         {
-            if (Tracks == null)
-            {
-                Tracks = new List<CustomRobotAnimationTrack>();
-            }
             foreach (string str in CustomAnimationsController.GetAllBodyParts())
             {
                 CustomRobotAnimationTrack track = new CustomRobotAnimationTrack();
@@ -52,6 +59,8 @@ namespace CDOverhaul.Shared
                 Tracks.Add(track);
             }
         }
+
+        #region Static
 
         /// <summary>
         /// Create and save animation
@@ -79,5 +88,7 @@ namespace CDOverhaul.Shared
         {
             animation.SaveData(true, "Animations");
         }
+
+        #endregion
     }
 }

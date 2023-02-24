@@ -2,18 +2,9 @@
 {
     public class PlayerOutfitController : OverhaulController, IPlayerOutfitController
     {
-        public override string[] Commands()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Initialize()
         {
-        }
 
-        public override string OnCommandRan(string[] command)
-        {
-            throw new System.NotImplementedException();
         }
 
         IWeaponSkinItemDefinition IPlayerOutfitController.GetAccessoryItem(string skinName, out ItemNullResult error)
@@ -32,6 +23,16 @@
         }
 
         IWeaponSkinItemDefinition IPlayerOutfitController.NewAccessoryItem(MechBodyPartType partType, string itemName, ItemFilter filter)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string[] Commands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string OnCommandRan(string[] command)
         {
             throw new System.NotImplementedException();
         }

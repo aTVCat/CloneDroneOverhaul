@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsControllerV2 : OverhaulController, IWeaponSkinsControllerV2, IConsoleCommandReceiver
+    public class WeaponSkinsControllerV2 : OverhaulController, IWeaponSkinsControllerV2
     {
         public IWeaponSkinsControllerV2 Interface
         {
@@ -37,15 +37,15 @@ namespace CDOverhaul.Gameplay
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
 
-                WeaponSkinModelOffset swordDetailedSkinOffset = new WeaponSkinModelOffset(new Vector3(0, 0, -0.7f),
+                ModelOffset swordDetailedSkinOffset = new ModelOffset(new Vector3(0, 0, -0.7f),
                     new Vector3(0, 270, 270),
                     new Vector3(0.55f, 0.55f, 0.55f));
                 IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", ItemFilter.None);
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.ModAssetBundlePart.WeaponSkins),
+                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", Enumerators.OverhaulAssetsPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     false,
                     false);
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.ModAssetBundlePart.WeaponSkins),
+                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", Enumerators.OverhaulAssetsPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     true,
                     false);
@@ -181,16 +181,6 @@ namespace CDOverhaul.Gameplay
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover)
         {
             return Interface.GetSkinItems(ItemFilter.Equipped);
-        }
-
-        string[] IConsoleCommandReceiver.Commands()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        string IConsoleCommandReceiver.OnCommandRan(string[] command)
-        {
-            throw new System.NotImplementedException();
         }
 
         public override string[] Commands()

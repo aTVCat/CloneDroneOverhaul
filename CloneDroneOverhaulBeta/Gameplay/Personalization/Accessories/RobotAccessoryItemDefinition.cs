@@ -21,7 +21,7 @@ namespace CDOverhaul.Gameplay
         public void SetPrefabUp()
         {
             PrefabName = "P_Acc_" + PartType.ToString() + "_" + AccessoryName;
-            AccessoryPrefab = AssetController.GetAsset<GameObject>(PrefabName, Enumerators.ModAssetBundlePart.Accessories);
+            AccessoryPrefab = AssetController.GetAsset<GameObject>(PrefabName, Enumerators.OverhaulAssetsPart.Accessories);
         }
 
         public void SetTransformsUp()

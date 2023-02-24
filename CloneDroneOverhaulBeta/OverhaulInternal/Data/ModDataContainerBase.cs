@@ -4,11 +4,8 @@ using System.Threading;
 
 namespace CDOverhaul
 {
-    public class ModDataContainerBase
+    public abstract class ModDataContainerBase
     {
-        [NonSerialized]
-        private static readonly Dictionary<string, ModDataContainerBase> _cachedDatas = new Dictionary<string, ModDataContainerBase>();
-
         /// <summary>
         /// Define if this container base was loaded from file
         /// </summary>
@@ -21,10 +18,7 @@ namespace CDOverhaul
         [NonSerialized]
         public string FileName;
 
-        public virtual void RepairFields()
-        {
-
-        }
+        public abstract void RepairFields();
 
         protected virtual void OnPreSave()
         {
@@ -36,6 +30,11 @@ namespace CDOverhaul
 
         }
 
+        #region Static
+
+        [NonSerialized]
+        private static readonly Dictionary<string, ModDataContainerBase> m_CachedDatas = new Dictionary<string, ModDataContainerBase>();
+
         public void SaveData(bool useModFolder = false, string modFolderName = null)
         {
             if (string.IsNullOrEmpty(FileName)) return;
@@ -43,7 +42,7 @@ namespace CDOverhaul
             ThreadStart start = new ThreadStart(delegate
             {
                 OnPreSave();
-                ModDataController.SaveData(this, FileName, useModFolder, modFolderName);
+                OverhaulDataController.SaveData(this, FileName, useModFolder, modFolderName);
                 OnPostSave();
             });
             Thread newThread = new Thread(start);
@@ -51,20 +50,22 @@ namespace CDOverhaul
 
         public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null) where T : ModDataContainerBase
         {
-            bool containsKey = _cachedDatas.ContainsKey(fileName);
+            bool containsKey = m_CachedDatas.ContainsKey(fileName);
             if (containsKey)
             {
-                return (T)_cachedDatas[fileName];
+                return (T)m_CachedDatas[fileName];
             }
 
-            T data = ModDataController.GetData<T>(fileName, useModFolder, modFolderName);
+            T data = OverhaulDataController.GetData<T>(fileName, useModFolder, modFolderName);
             data.RepairFields();
             if (!containsKey)
             {
-                _cachedDatas.Add(fileName, data);
+                m_CachedDatas.Add(fileName, data);
             }
 
             return data;
         }
+
+        #endregion
     }
 }

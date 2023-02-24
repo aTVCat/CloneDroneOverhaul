@@ -22,16 +22,8 @@ namespace CDOverhaul
             private set;
         }
 
-        public int ID
-        {
-            get;
-            private set;
-        }
-
         public virtual void Awake()
         {
-            ID = GetID();
-            m_Behaviours.Add(ID, this);
         }
         public virtual void Start()
         {
@@ -67,7 +59,6 @@ namespace CDOverhaul
             GC.SuppressFinalize(this);
             if (!this.IsDestroyed)
             {
-                m_Behaviours.Remove(ID);
                 this.IsDestroyed = true;
                 UnityEngine.Object.Destroy(this.gameObject);
             }
@@ -79,7 +70,6 @@ namespace CDOverhaul
             {
                 return;
             }
-            m_Behaviours.Remove(ID);
             this.IsDestroyed = true;
             this.Dispose();
         }
@@ -87,15 +77,7 @@ namespace CDOverhaul
 
         #region Static
 
-        private static System.Random m_Random = new System.Random();
-
-        private static Dictionary<int, OverhaulMonoBehaviour> m_Behaviours = new Dictionary<int, OverhaulMonoBehaviour>();
-
-        public static OverhaulMonoBehaviour GetBehaviour(int id)
-        {
-            m_Behaviours.TryGetValue(id, out OverhaulMonoBehaviour result);
-            return result;
-        }
+        protected static System.Random m_Random = new System.Random();
 
         public static OverhaulMonoBehaviour AddBehaviour<T>(GameObject gameObject) where T : OverhaulMonoBehaviour
         {
@@ -105,11 +87,6 @@ namespace CDOverhaul
             }
 
             return (T)gameObject.AddComponent(typeof(T));
-        }
-
-        private static int GetID()
-        {
-            return m_Random.Next();
         }
 
         #endregion
