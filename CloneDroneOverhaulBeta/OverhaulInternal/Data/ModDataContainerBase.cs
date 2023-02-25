@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ModLibrary;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace CDOverhaul
 {
-    public abstract class ModDataContainerBase
+    public abstract class OverhaulDataBase
     {
         /// <summary>
         /// Define if this container base was loaded from file
@@ -17,6 +18,8 @@ namespace CDOverhaul
 
         [NonSerialized]
         public string FileName;
+
+        public Version SavedInVersion;
 
         public abstract void RepairFields();
 
@@ -33,22 +36,18 @@ namespace CDOverhaul
         #region Static
 
         [NonSerialized]
-        private static readonly Dictionary<string, ModDataContainerBase> m_CachedDatas = new Dictionary<string, ModDataContainerBase>();
+        private static readonly Dictionary<string, OverhaulDataBase> m_CachedDatas = new Dictionary<string, OverhaulDataBase>();
 
         public void SaveData(bool useModFolder = false, string modFolderName = null)
         {
             if (string.IsNullOrEmpty(FileName)) return;
-
-            ThreadStart start = new ThreadStart(delegate
-            {
-                OnPreSave();
-                OverhaulDataController.SaveData(this, FileName, useModFolder, modFolderName);
-                OnPostSave();
-            });
-            Thread newThread = new Thread(start);
+            OnPreSave();
+            SavedInVersion = OverhaulVersion.ModVersion;
+            OverhaulDataController.SaveData(this, FileName, useModFolder, modFolderName);
+            OnPostSave();
         }
 
-        public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null) where T : ModDataContainerBase
+        public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null) where T : OverhaulDataBase
         {
             bool containsKey = m_CachedDatas.ContainsKey(fileName);
             if (containsKey)

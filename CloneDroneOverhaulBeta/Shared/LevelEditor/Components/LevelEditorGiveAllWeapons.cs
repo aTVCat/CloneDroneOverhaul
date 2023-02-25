@@ -13,7 +13,7 @@ namespace CDOverhaul.LevelEditor
             Renderer renderer = base.GetComponent<Renderer>();
             renderer.enabled = GameModeManager.IsInLevelEditor();
 
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, giveWeapons);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, giveWeapons);
         }
 
         private void giveWeapons(FirstPersonMover mover)
@@ -45,7 +45,7 @@ namespace CDOverhaul.LevelEditor
 
         private void OnDestroy()
         {
-            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, giveWeapons);
+            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, giveWeapons);
         }
     }
 }

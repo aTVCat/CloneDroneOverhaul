@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ModLibrary;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace CDOverhaul
         /// <param name="fileName"></param>
         public static void SaveData(object dataContainer, in string fileName, in bool useModFolder, in string modFolder)
         {
-            if (!(dataContainer is ModDataContainerBase))
+            if (!(dataContainer is OverhaulDataBase))
             {
                 return;
             }
@@ -28,7 +29,7 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(dataContainer, DataRepository.Instance.GetSettings());
-                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + fileName, str);
+                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json", str);
                 return;
             }
 
@@ -36,7 +37,7 @@ namespace CDOverhaul
             {
                 Directory.CreateDirectory(Application.persistentDataPath + OverhaulDataDirectoryName);
             }
-            DataRepository.Instance.Save(dataContainer, OverhaulDataDirectoryName + fileName, false, false);
+            DataRepository.Instance.Save(dataContainer, OverhaulDataDirectoryName + fileName + ".json", false, false);
         }
 
         /// <summary>
@@ -45,38 +46,33 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static T GetData<T>(in string fileName, in bool useModFolder, in string modFolder) where T : ModDataContainerBase
+        public static T GetData<T>(in string fileName, in bool useModFolder, in string modFolder) where T : OverhaulDataBase
         {
             if (useModFolder)
             {
                 string path = OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json";
-                bool needsToSave = false;
 
-                T result = Activator.CreateInstance<T>();
+                T result;
                 if (File.Exists(path))
                 {
                     result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path), DataRepository.Instance.GetSettings());
                 }
                 else
                 {
-                    needsToSave = true;
+                    result = Activator.CreateInstance<T>();
                 }
 
                 SetUpContainer(result, fileName, path);
-                if (needsToSave)
-                {
-                    result.SaveData(true, modFolder);
-                }
-
                 return result;
             }
 
             _ = DataRepository.Instance.TryLoad(OverhaulDataDirectoryName + fileName + ".json", out T data, false);
+            if(data == null) data = Activator.CreateInstance<T>();
             SetUpContainer(data, fileName, DataRepository.Instance.GetFullPath(fileName, false));
             return data;
         }
 
-        internal static void SetUpContainer(in ModDataContainerBase container, in string fileName, in string savePath)
+        internal static void SetUpContainer(in OverhaulDataBase container, in string fileName, in string savePath)
         {
             if(container == null)
             {

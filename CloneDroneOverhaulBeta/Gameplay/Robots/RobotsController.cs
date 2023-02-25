@@ -11,8 +11,8 @@ namespace CDOverhaul.Gameplay
 
         public override void Initialize()
         {
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, tryFixFPMForPlayer);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, onFPMSpawned);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, tryFixFPMForPlayer);
         }
 
         public override string OnCommandRan(string[] command)

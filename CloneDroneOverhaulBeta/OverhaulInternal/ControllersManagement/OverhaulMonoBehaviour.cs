@@ -22,6 +22,8 @@ namespace CDOverhaul
             private set;
         }
 
+        public bool IsDisposedOrDestroyed() => IsDestroyed || IsDestroyed;
+
         public virtual void Awake()
         {
         }

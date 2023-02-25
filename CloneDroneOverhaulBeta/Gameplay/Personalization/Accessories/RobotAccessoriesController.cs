@@ -63,8 +63,8 @@ namespace CDOverhaul.Gameplay
             MultiplayerAPI.RegisterRequestAndAnswerListener(DataID, OnReceivedRequest, OnReceivedAnswer);
             PlayerData = RobotAccessorySaveData.GetData<RobotAccessorySaveData>("PlayerAccessories");
 
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, RefreshRobot);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ScheduleRefresingRobot);
             _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, TryEnterEditor);
 
             if (_hasPopulatedAccessories)
@@ -135,7 +135,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            bool activate = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.EditingAccessories;
+            bool activate = OverhaulGameplayCoreController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.EditingAccessories;
             EditorUI.SetActive(activate);
         }
 
@@ -321,7 +321,7 @@ namespace CDOverhaul.Gameplay
         /// <param name="accs"></param>
         public static void UpdateRobot(FirstPersonMover mover, List<string> accs)
         {
-            if (mover == null || !OverhaulGamemodeManager.SupportsAccessories())
+            if (mover == null || !OverhaulGamemodeManager.SupportsOutfits())
             {
                 return;
             }

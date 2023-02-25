@@ -12,7 +12,7 @@ namespace CDOverhaul
     /// <summary>
     /// The core of the mod. Contains important variables
     /// </summary>
-    public sealed class OverhaulCore : OverhaulMonoBehaviour
+    public class OverhaulCore : OverhaulMonoBehaviour
     {
         /// <summary>
         /// The mod directory path.
@@ -32,7 +32,7 @@ namespace CDOverhaul
         /// <summary>
         /// The gameplay features controler instance
         /// </summary>
-        public MainGameplayController GameplayController 
+        public OverhaulGameplayCoreController GameplayController 
         { 
             get;
             private set;
@@ -78,14 +78,13 @@ namespace CDOverhaul
 
             Shared = OverhaulController.InitializeController<SharedControllers>();
             HUDController = OverhaulController.InitializeController<OverhaulCanvasController>();
-            GameplayController = OverhaulController.InitializeController<MainGameplayController>();
+            GameplayController = OverhaulController.InitializeController<OverhaulGameplayCoreController>();
             _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
 
             FirstPersonMoverExtention.InitializeStatic();
             SettingsController.Initialize();
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();
-            RobotAccessoriesController.Initialize();
             ExclusivityController.Initialize();
 
             ReplacementBase.CreateReplacements();

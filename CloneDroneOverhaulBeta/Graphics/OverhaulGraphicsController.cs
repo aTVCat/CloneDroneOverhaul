@@ -43,7 +43,7 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            _ = OverhaulEventManager.AddEventListener<Camera>(MainGameplayController.MainCameraSwitchedEventString, patchCamera);
+            _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, patchCamera);
             _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, onModDisabled);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class MainGameplayController : OverhaulController
+    public class OverhaulGameplayCoreController : OverhaulController
     {
         #region Events
         public const string GamemodeChangedEventString = "GamemodeChanged";
@@ -23,19 +23,13 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public const int GamemodeStartIndex = 2000;
 
-        public static MainGameplayController Instance
+        public static OverhaulGameplayCoreController Instance
         {
             get;
             private set;
         }
 
         public GameFlowManager GameFlowManager
-        {
-            get;
-            private set;
-        }
-
-        public WeaponSkinsController WeaponSkins
         {
             get;
             private set;
@@ -53,6 +47,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public PlayerOutfitController Outfit
+        {
+            get;
+            private set;
+        }
+
         public GamemodeSubstatesController GamemodeSubstates { get; private set; }
 
         private GameMode _gamemodeLastFrame;
@@ -64,11 +64,11 @@ namespace CDOverhaul.Gameplay
             Instance = this;
 
             GameFlowManager = GameFlowManager.Instance;
-            WeaponSkins = OverhaulController.InitializeController<WeaponSkinsController>();
             Robots = OverhaulController.InitializeController<RobotsController>();
             GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
             Levels = OverhaulController.InitializeController<LevelController>();
             _ = OverhaulController.InitializeController<WeaponSkinsControllerV2>();
+            Outfit = OverhaulController.InitializeController<PlayerOutfitController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }

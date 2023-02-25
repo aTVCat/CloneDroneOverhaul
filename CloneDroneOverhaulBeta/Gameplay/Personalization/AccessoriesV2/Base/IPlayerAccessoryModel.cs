@@ -11,8 +11,5 @@ namespace CDOverhaul.Gameplay
     {
         void SetModel(GameObject model);
         GameObject GetModel();
-
-        void SetOffset(ModelOffset offset);
-        ModelOffset GetOffset();
     }
 }

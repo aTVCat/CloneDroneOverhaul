@@ -17,11 +17,11 @@ namespace CDOverhaul.Patches
 
             if (player is FirstPersonMover)
             {
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(MainGameplayController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
+                OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
             }
             else
             {
-                OverhaulEventManager.DispatchEvent<Character>(MainGameplayController.PlayerSetAsCharacter, player);
+                OverhaulEventManager.DispatchEvent<Character>(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
             }
         }
     }

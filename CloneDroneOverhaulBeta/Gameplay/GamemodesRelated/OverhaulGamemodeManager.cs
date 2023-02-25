@@ -6,9 +6,9 @@
         /// Check if we can see accessories on robots
         /// </summary>
         /// <returns></returns>
-        public static bool SupportsAccessories()
+        public static bool SupportsOutfits()
         {
-            return !GameModeManager.Is(GameMode.Story);
+            return !GameModeManager.Is(GameMode.Story) && !GameModeManager.ConsciousnessTransferToAlliesEnabled() && !GameModeManager.ConsciousnessTransferToKillerEnabled();
         }
     }
 }

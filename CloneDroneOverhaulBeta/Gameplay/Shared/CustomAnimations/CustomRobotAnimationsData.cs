@@ -4,7 +4,7 @@ using System.IO;
 
 namespace CDOverhaul.Shared
 {
-    public class CustomRobotAnimationsData : ModDataContainerBase
+    public class CustomRobotAnimationsData : OverhaulDataBase
     {
         public static string[] AllAnimationsUnderModAssetsFolder => Directory.GetFiles(OverhaulMod.Core.ModDirectory + "Assets/Animations/");
 
@@ -34,7 +34,7 @@ namespace CDOverhaul.Shared
             CustomRobotAnimation anim;
             if (!IsAnimationLoaded(animName))
             {
-                anim = ModDataContainerBase.GetData<CustomRobotAnimation>(animName, true, "Animations");
+                anim = OverhaulDataBase.GetData<CustomRobotAnimation>(animName, true, "Animations");
                 LoadedAnimations.Add(animName, anim);
             }
             else

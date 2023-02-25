@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Shared
 {
-    public class CustomRobotAnimation : ModDataContainerBase
+    public class CustomRobotAnimation : OverhaulDataBase
     {
         public string AnimationName;
         public List<CustomRobotAnimationTrack> Tracks;

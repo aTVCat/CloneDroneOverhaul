@@ -1,30 +1,91 @@
-﻿namespace CDOverhaul.Gameplay
+﻿using OverhaulAPI;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CDOverhaul.Gameplay
 {
-    public class PlayerOutfitController : OverhaulController, IPlayerOutfitController
+    public class PlayerOutfitController : OverhaulGameplayController, IPlayerOutfitController
     {
+        public const string AccessoryDestroyVFX_ID = "AccessoryDestroyedVFX";
+        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.OverhaulAssetsPart.Sounds));
+
+        public IPlayerOutfitController Interface;
+
+        private PlayerOutfitData m_PlayerData;
+        private static List<IPlayerAccessoryItemDefinition> m_Items;
+
         public override void Initialize()
         {
+            base.Initialize();
+            Interface = this;
+            m_PlayerData = PlayerOutfitData.GetData<PlayerOutfitData>(PlayerOutfitData.Filename);
 
+
+            if (OverhaulSessionController.GetKey<bool>("HasLoadedAccessories"))
+            {
+                return;
+            }
+            OverhaulSessionController.SetKey("HasLoadedAccessories", true);
+            m_Items = new List<IPlayerAccessoryItemDefinition>();
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.OverhaulAssetsPart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
+
+            // Igrok's Hat
+            IPlayerAccessoryItemDefinition item1 = Interface.NewAccessoryItem(MechBodyPartType.Head, "Igrok's Hat", ItemFilter.None);
+            IPlayerAccessoryModel model1 = new PlayerAccessoryModel();
+            model1.SetModel(AssetController.GetAsset("P_Acc_Head_Igrok's hat", Enumerators.OverhaulAssetsPart.Accessories));
+            item1.SetModel(model1);
         }
 
-        IWeaponSkinItemDefinition IPlayerOutfitController.GetAccessoryItem(string skinName, out ItemNullResult error)
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+        }
+
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if (!hasInitializedModel)
+            {
+                return;
+            }
+            firstPersonMover.gameObject.AddComponent<RobotOutfitWearerExpansion>();
+        }
+
+        IPlayerAccessoryItemDefinition IPlayerOutfitController.NewAccessoryItem(MechBodyPartType partType, string itemName, ItemFilter filter)
+        {
+            IPlayerAccessoryItemDefinition item = new PlayerAccessoryItemDefinition();
+            item.SetItemName(itemName);
+            item.SetBodypartType(partType);
+            item.SetFilter(filter);
+            (item as PlayerAccessoryItemDefinition).LoadOffsets();
+            m_Items.Add(item);
+            return item;
+        }
+
+        IPlayerAccessoryItemDefinition IPlayerOutfitController.GetAccessoryItem(string skinName, out ItemNullResult error)
         {
             throw new System.NotImplementedException();
         }
 
-        IWeaponSkinItemDefinition[] IPlayerOutfitController.GetAccessoryItems(ItemFilter filter)
+        IPlayerAccessoryItemDefinition[] IPlayerOutfitController.GetAccessoryItems(ItemFilter filter)
         {
-            throw new System.NotImplementedException();
+            List<IPlayerAccessoryItemDefinition> list = new List<IPlayerAccessoryItemDefinition>();
+            if(filter == ItemFilter.Equipped)
+            {
+                foreach(IPlayerAccessoryItemDefinition def in m_Items)
+                {
+                    if (m_PlayerData.EquipedAccessories.Contains(def.GetItemName()))
+                    {
+                        list.Add(def);
+                    }
+                }
+                return list.ToArray();
+            }
+            return null;
         }
 
-        IWeaponSkinItemDefinition[] IPlayerOutfitController.GetAccessoryItems(FirstPersonMover firstPersonMover)
+        IPlayerAccessoryItemDefinition[] IPlayerOutfitController.GetAccessoryItems(FirstPersonMover firstPersonMover)
         {
-            throw new System.NotImplementedException();
-        }
-
-        IWeaponSkinItemDefinition IPlayerOutfitController.NewAccessoryItem(MechBodyPartType partType, string itemName, ItemFilter filter)
-        {
-            throw new System.NotImplementedException();
+            return Interface.GetAccessoryItems(ItemFilter.Equipped);
         }
 
         public override string[] Commands()

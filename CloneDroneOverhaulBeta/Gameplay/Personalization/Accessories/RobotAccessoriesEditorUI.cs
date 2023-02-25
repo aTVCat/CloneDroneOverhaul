@@ -107,9 +107,9 @@ namespace CDOverhaul.HUD
         public void Hide()
         {
             base.gameObject.SetActive(false);
-            if (MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.EditingAccessories)
+            if (OverhaulGameplayCoreController.Instance.GamemodeSubstates.GamemodeSubstate == GamemodeSubstate.EditingAccessories)
             {
-                MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate = GamemodeSubstate.None;
+                OverhaulGameplayCoreController.Instance.GamemodeSubstates.GamemodeSubstate = GamemodeSubstate.None;
             }
 
             ShowCursor = false;

@@ -17,6 +17,13 @@ namespace CDOverhaul.Patches
                 return;
             }
 
+            FirstPersonMoverExpansionBase[] expansionBases = __instance.GetComponents<FirstPersonMoverExpansionBase>();
+            foreach(FirstPersonMoverExpansionBase b in expansionBases)
+            {
+                b.OnPreCommandExecute((FPMoveCommand)command);
+            }
+            expansionBases = null;
+
             List<FirstPersonMoverExtention> list = FirstPersonMoverExtention.GetExtentions(__instance);
             if (list.IsNullOrEmpty())
             {
@@ -27,6 +34,23 @@ namespace CDOverhaul.Patches
             {
                 ext.OnExecuteCommand((FPMoveCommand)command, resetState);
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("ExecuteCommand")]
+        private static void ExecuteCommand_Postfix(FirstPersonMover __instance, Command command, bool resetState)
+        {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
+            FirstPersonMoverExpansionBase[] expansionBases = __instance.GetComponents<FirstPersonMoverExpansionBase>();
+            foreach (FirstPersonMoverExpansionBase b in expansionBases)
+            {
+                b.OnPostCommandExecute((FPMoveCommand)command);
+            }
+            expansionBases = null;
         }
     }
 }

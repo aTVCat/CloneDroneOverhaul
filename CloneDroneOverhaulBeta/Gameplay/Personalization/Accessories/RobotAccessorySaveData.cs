@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotAccessorySaveData : ModDataContainerBase
+    public class RobotAccessorySaveData : OverhaulDataBase
     {
         public List<string> Accessories;
 

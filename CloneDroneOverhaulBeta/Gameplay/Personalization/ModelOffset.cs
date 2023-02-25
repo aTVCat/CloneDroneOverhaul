@@ -1,25 +1,32 @@
-﻿using UnityEngine;
+﻿using Esprima;
+using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
     public class ModelOffset
     {
+        public static readonly ModelOffset Default = new ModelOffset(Vector3.zero, Vector3.zero, Vector3.one); 
+
         public Vector3 OffsetPosition
         {
             get;
-            private set;
+            set;
         }
 
         public Vector3 OffsetEulerAngles
         {
             get;
-            private set;
+            set;
         }
 
         public Vector3 OffsetLocalScale
         {
             get;
-            private set;
+            set;
+        }
+
+        public ModelOffset()
+        {
         }
 
         public ModelOffset(Vector3 position)

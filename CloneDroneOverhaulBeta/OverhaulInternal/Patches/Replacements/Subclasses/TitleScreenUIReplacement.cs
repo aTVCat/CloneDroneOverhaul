@@ -33,7 +33,6 @@ namespace CDOverhaul.Patches
             _spawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = _spawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(0).onClick.AddListener(MainGameplayController.Instance.WeaponSkins.EnterSkinSelectionRoom);
             moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<UISettingsMenu>().Show);
 
             _buttonsTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);

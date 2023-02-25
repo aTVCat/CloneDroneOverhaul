@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotAccessoryTransformData : ModDataContainerBase
+    public class RobotAccessoryTransformData : OverhaulDataBase
     {
         public SerializeTransform Data;
 

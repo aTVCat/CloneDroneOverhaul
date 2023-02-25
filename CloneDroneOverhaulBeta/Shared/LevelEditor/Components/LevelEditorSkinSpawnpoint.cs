@@ -12,13 +12,6 @@ namespace CDOverhaul.LevelEditor
             collider.enabled = GameModeManager.IsInLevelEditor();
             Renderer renderer = base.GetComponent<Renderer>();
             renderer.enabled = GameModeManager.IsInLevelEditor();
-
-            MainGameplayController.Instance.WeaponSkins.CustomSkinSpawnpointInLevel = this;
-        }
-
-        private void OnDestroy()
-        {
-            MainGameplayController.Instance.WeaponSkins.CustomSkinSpawnpointInLevel = null;
         }
     }
 }

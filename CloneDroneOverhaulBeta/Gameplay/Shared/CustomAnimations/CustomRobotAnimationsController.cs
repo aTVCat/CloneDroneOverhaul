@@ -7,14 +7,14 @@ namespace CDOverhaul.Shared
     {
         public bool ShouldWork => !GameModeManager.IsMultiplayer();
 
-        public static readonly GameMode EditorGamemode = (GameMode)(MainGameplayController.GamemodeStartIndex + 2);
+        public static readonly GameMode EditorGamemode = (GameMode)(OverhaulGameplayCoreController.GamemodeStartIndex + 2);
 
         public CustomRobotAnimationsData AnimationsContainer;
         public const string AnimsContainerFilename = "AnimationsContainerAnimationsContainer";
 
         public override void Initialize()
         {
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(MainGameplayController.FirstPersonMoverSpawned_DelayEventString, configFPM);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, configFPM);
             _ = OverhaulEventManager.AddEventListener(GamemodeSubstatesController.SubstateChangedEventString, enterAnimationMode);
             AnimationsContainer = CustomRobotAnimationsData.GetData<CustomRobotAnimationsData>(AnimsContainerFilename, true, string.Empty);
         }
@@ -30,7 +30,7 @@ namespace CDOverhaul.Shared
 
         private void enterAnimationMode()
         {
-            GamemodeSubstate s = MainGameplayController.Instance.GamemodeSubstates.GamemodeSubstate;
+            GamemodeSubstate s = OverhaulGameplayCoreController.Instance.GamemodeSubstates.GamemodeSubstate;
             if (s != GamemodeSubstate.AnimatingCustomAnimation)
             {
                 return;
