@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -18,102 +17,97 @@ namespace CDOverhaul.Gameplay
         public const string PlayerSetAsFirstPersonMover = "PlayerSet_FirstPersonMover";
         #endregion
 
+        #region Some variables
+
+        private GameMode m_GameModeLastTimeCheck;
+
         /// <summary>
         /// The start index of mod gamemodes
         /// </summary>
         public const int GamemodeStartIndex = 2000;
 
-        public static OverhaulGameplayCoreController Instance
+        #endregion
+
+        public static OverhaulGameplayCoreController Core
         {
             get;
             private set;
         }
 
-        public GameFlowManager GameFlowManager
+        public Camera MainCamera
         {
             get;
             private set;
         }
 
-        public LevelController Levels
+        public Camera CurrentCamera
         {
             get;
             private set;
         }
 
-        public PlayerOutfitController Outfit
+        public PlayerOutfitController Outfits
+        {
+            get;
+            private set;
+        }
+        public WeaponSkinsController WeaponSkins
         {
             get;
             private set;
         }
 
-        public GamemodeSubstatesController GamemodeSubstates { get; private set; }
-
-        private GameMode _gamemodeLastFrame;
-        private Camera _cameraLastFrame;
-        private Camera _cameraCurrentLastFrame;
+        public GamemodeSubstatesController GamemodeSubstates
+        {
+            get;
+            private set;
+        }
 
         public override void Initialize()
         {
-            Instance = this;
+            Core = this;
 
-            GameFlowManager = GameFlowManager.Instance;
             GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
-            Levels = OverhaulController.InitializeController<LevelController>();
-            _ = OverhaulController.InitializeController<WeaponSkinsControllerV2>();
-            Outfit = OverhaulController.InitializeController<PlayerOutfitController>();
-
+            WeaponSkins = OverhaulController.InitializeController<WeaponSkinsController>();
+            Outfits = OverhaulController.InitializeController<PlayerOutfitController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 
-        /// <summary>
-        /// Set gamemode, spawn level and player
-        /// </summary>
-        /// <param name="gamemode"></param>
-        /// <param name="levelData"></param>
-        /// <param name="spawnLevel"></param>
-        /// <param name="spawnPlayer"></param>
-        public void StartGamemode(GameMode gamemode, LevelEditorLevelData levelData, Action onPlayerSpawned = null, bool spawnLevel = true, bool spawnPlayer = true)
+        protected override void OnDisposed()
         {
-            SingleplayerServerStarter.Instance.StartServerThenCall(delegate
-            {
-                SetGamemode(gamemode);
-
-                GameUIRoot.Instance.TitleScreenUI.Hide();
-                GameUIRoot.Instance.SetPlayerHUDVisible(spawnPlayer);
-
-                if (spawnLevel)
-                {
-                    LevelManager.Instance.CleanUpLevelThisFrame();
-                }
-
-                if (spawnLevel)
-                {
-                    _ = Levels.SpawnLevel(levelData, "Level" + UnityEngine.Random.Range(0, 100).ToString(), true, delegate { if (spawnPlayer) { SpawnPlayer(); if (onPlayerSpawned != null) { onPlayerSpawned(); } } });
-                }
-            });
+            Core = null;
+            MainCamera = null;
+            CurrentCamera = null;
+            Outfits = null;
         }
 
-        /// <summary>
-        /// Set gamemode specified in <paramref name="mode"/>
-        /// </summary>
-        /// <param name="mode"></param>
-        public void SetGamemode(in GameMode mode)
+        private void Update()
         {
-            GameFlowManager.SetPrivateField<GameMode>("_gameMode", mode);
-        }
-
-        /// <summary>
-        /// Spawn player if <see cref="AdventureCheckPoint"/> would be found
-        /// </summary>
-        public void SpawnPlayer()
-        {
-            AdventureCheckPoint point = FindObjectOfType<AdventureCheckPoint>();
-            if (point != null)
+            if (IsDisposedOrDestroyed())
             {
-                _ = GameFlowManager.SpawnPlayer(point.transform, true, true, null);
+                return;
             }
-            //GameFlow.CallPrivateMethod("createPlayerAndSetLift");
+
+            GameMode currentGamemode = GameFlowManager.Instance.GetCurrentGameMode();
+            if (currentGamemode != m_GameModeLastTimeCheck)
+            {
+                sendGamemodeWasUpdateEvent();
+            }
+            m_GameModeLastTimeCheck = currentGamemode;
+
+            Camera mainCamera = Camera.main;
+            if (mainCamera != MainCamera)
+            {
+                OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
+            }
+            MainCamera = mainCamera;
+
+            Camera currentCamera = Camera.current;
+            if (currentCamera != CurrentCamera)
+            {
+                OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
+            }
+            CurrentCamera = currentCamera;
         }
 
         /// <summary>
@@ -121,31 +115,12 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         private void sendGamemodeWasUpdateEvent()
         {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
             OverhaulEventManager.DispatchEvent(GamemodeChangedEventString);
-        }
-
-        private void Update()
-        {
-            GameMode currentGamemode = GameFlowManager.GetCurrentGameMode();
-            if (currentGamemode != _gamemodeLastFrame)
-            {
-                sendGamemodeWasUpdateEvent();
-            }
-            _gamemodeLastFrame = currentGamemode;
-
-            Camera mainCamera = Camera.main;
-            if (mainCamera != _cameraLastFrame)
-            {
-                OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
-            }
-            _cameraLastFrame = mainCamera;
-
-            Camera currentCamera = Camera.current;
-            if (currentCamera != _cameraCurrentLastFrame)
-            {
-                OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
-            }
-            _cameraCurrentLastFrame = currentCamera;
         }
 
         public override string[] Commands()

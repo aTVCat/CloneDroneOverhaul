@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsControllerV2 : OverhaulController, IWeaponSkinsControllerV2
+    public class WeaponSkinsController : OverhaulController, IWeaponSkinsControllerV2
     {
         public IWeaponSkinsControllerV2 Interface
         {

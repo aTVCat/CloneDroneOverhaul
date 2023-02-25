@@ -5,14 +5,14 @@ namespace CDOverhaul.Shared
 {
     public class VoxelsController : OverhaulController
     {
-        public static float ColorBurnMultipler;
+        private static float m_ColorBurnMultipler;
 
         [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
         public static bool MakeLaserBurnVoxels;
 
         public override void Initialize()
         {
-            ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;
+            m_ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;
         }
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
@@ -30,7 +30,7 @@ namespace CDOverhaul.Shared
                     if (vox != null)
                     {
                         Voxel newVox = vox.Value;
-                        Color32 color = new Color32((byte)Mathf.RoundToInt(vox.Value.Color.r * ColorBurnMultipler), (byte)Mathf.RoundToInt(vox.Value.Color.g * ColorBurnMultipler), (byte)Mathf.RoundToInt(vox.Value.Color.b * ColorBurnMultipler), vox.Value.Color.a);
+                        Color32 color = new Color32((byte)Mathf.RoundToInt(vox.Value.Color.r * m_ColorBurnMultipler), (byte)Mathf.RoundToInt(vox.Value.Color.g * m_ColorBurnMultipler), (byte)Mathf.RoundToInt(vox.Value.Color.b * m_ColorBurnMultipler), vox.Value.Color.a);
                         newVox.Color = color;
                         currentFrame.SetVoxelAtArrayPosition(p, newVox);
                     }

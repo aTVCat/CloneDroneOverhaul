@@ -77,6 +77,8 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<EnergyUIReplacement>();
             _ = NewReplacement<OptimizeRuntime>();
             _ = NewReplacement<NewArenaActivator>();
+            _ = NewReplacement<EscMenuReplacement>();
+            _ = NewReplacement<SettingsMenuReplacement>();
         }
 
         // Todo: fix chapter 3 ending: restore time & fix no delay in dialogues

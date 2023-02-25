@@ -20,7 +20,7 @@ namespace CDOverhaul.LevelEditor
         [CallFromAnimation]
         public void SetGamemodeSubstate()
         {
-            OverhaulGameplayCoreController.Instance.GamemodeSubstates.GamemodeSubstate = (GamemodeSubstate)Index;
+            OverhaulGameplayCoreController.Core.GamemodeSubstates.GamemodeSubstate = (GamemodeSubstate)Index;
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null)
             {

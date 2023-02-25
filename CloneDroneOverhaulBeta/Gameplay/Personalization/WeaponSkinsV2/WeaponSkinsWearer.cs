@@ -22,6 +22,10 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkins()
         {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
             if (m_WaitingToSpawnSkins)
             {
                 return;
@@ -37,7 +41,7 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
-            IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsControllerV2>().Interface.GetSkinItems(FirstPersonMover);
+            IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsController>().Interface.GetSkinItems(FirstPersonMover);
             if (skins.IsNullOrEmpty())
             {
                 return;
@@ -72,7 +76,7 @@ namespace CDOverhaul.Gameplay
             }
             bool fire = IsFireVariant(weaponModel);
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier();
-            WeaponVariant variant = WeaponSkinsControllerV2.GetVariant(fire, multiplayer);
+            WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
 
             foreach(WeaponSkinSpawnInfo wsInfo in WeaponSkins.Values)
             {

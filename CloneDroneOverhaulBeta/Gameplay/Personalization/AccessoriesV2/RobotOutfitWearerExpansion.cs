@@ -13,7 +13,7 @@ namespace CDOverhaul.Gameplay
         {
             base.Start();
 
-            m_OutfitController = OverhaulGameplayCoreController.Instance.Outfit;
+            m_OutfitController = OverhaulGameplayCoreController.Core.Outfits;
             ReApplyOutfit();
         }
 
