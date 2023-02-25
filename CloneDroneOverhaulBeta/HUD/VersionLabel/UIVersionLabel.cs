@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -7,20 +6,34 @@ namespace CDOverhaul.HUD
     public class UIVersionLabel : OverhaulUI
     {
         private Text m_VersionLabel;
-        private TextMeshProUGUI m_VersionLabelTextMeshPro;
         private Text m_TitleScreenUIVersionLabel;
 
         public override void Initialize()
         {
             m_VersionLabel = MyModdedObject.GetObject<Text>(2);
-            m_VersionLabelTextMeshPro = MyModdedObject.GetObject<TextMeshProUGUI>(1);
-            m_VersionLabelTextMeshPro.gameObject.SetActive(false);
             m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
+
+            if(m_VersionLabel == null || m_TitleScreenUIVersionLabel == null)
+            {
+                throw new System.NullReferenceException("Overhaul version label: m_VersionLabel or m_TitleScreenUIVersionLabel is null");
+            }
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            m_VersionLabel = null;
+            m_TitleScreenUIVersionLabel = null;
         }
 
         private void Update()
         {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
             if (Time.frameCount % 30 == 0)
             {
                 if (GameModeManager.IsOnTitleScreen())
@@ -38,6 +51,11 @@ namespace CDOverhaul.HUD
 
         public override void OnModDeactivated()
         {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
             if (m_TitleScreenUIVersionLabel != null)
             {
                 m_TitleScreenUIVersionLabel.gameObject.SetActive(true);

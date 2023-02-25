@@ -2,41 +2,55 @@
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterArrowBlinker : MonoBehaviour
+    public class ArenaRemasterArrowBlinker : OverhaulMonoBehaviour
     {
-        private float _timeToUpdate = -1;
-
+        private float m_TimeToUpdate = -1;
         private GameObject Off;
         private GameObject On;
-
-        private ArenaRemasterArrowBlinker _nextArrowBlinker;
+        private ArenaRemasterArrowBlinker m_NextArrowBlinker;
 
         public void Initialize(in ModdedObject moddedObject, in ArenaRemasterArrowBlinker nextArrow)
         {
-            _nextArrowBlinker = nextArrow;
+            m_NextArrowBlinker = nextArrow;
             Off = moddedObject.GetObject<Transform>(0).gameObject;
             On = moddedObject.GetObject<Transform>(1).gameObject;
             ChangeState(false);
         }
 
+        protected override void OnDisposed()
+        {
+            Off = null;
+            On = null;
+            m_NextArrowBlinker = null;
+        }
+
         public void ChangeState(in bool value)
         {
-            if (value)
+            if (IsDisposedOrDestroyed())
             {
-                _timeToUpdate = Time.time + 0.5f;
+                return;
             }
 
+            if (value)
+            {
+                m_TimeToUpdate = Time.time + 0.5f;
+            }
             Off.SetActive(!value);
             On.SetActive(value);
         }
 
         private void Update()
         {
-            if (_timeToUpdate != -1 && Time.time >= _timeToUpdate)
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
+            if (m_TimeToUpdate != -1 && Time.time >= m_TimeToUpdate)
             {
                 ChangeState(false);
-                _nextArrowBlinker.ChangeState(true);
-                _timeToUpdate = -1;
+                m_NextArrowBlinker.ChangeState(true);
+                m_TimeToUpdate = -1;
             }
         }
     }

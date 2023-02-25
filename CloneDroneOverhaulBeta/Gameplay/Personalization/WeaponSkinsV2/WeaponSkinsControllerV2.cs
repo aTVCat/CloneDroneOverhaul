@@ -87,11 +87,7 @@ namespace CDOverhaul.Gameplay
             WeaponSkinsWearer wearer = firstPersonMover.GetComponent<WeaponSkinsWearer>();
             if(wearer == null)
             {
-                wearer = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
-            }
-            wearer.Owner = firstPersonMover;
-            if (!firstPersonMover.IsPlayer())
-            {
+                _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
                 return;
             }
             wearer.SpawnSkins();

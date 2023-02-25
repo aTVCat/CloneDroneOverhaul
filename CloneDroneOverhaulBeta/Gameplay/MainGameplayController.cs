@@ -35,12 +35,6 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public RobotsController Robots
-        {
-            get;
-            private set;
-        }
-
         public LevelController Levels
         {
             get;
@@ -64,7 +58,6 @@ namespace CDOverhaul.Gameplay
             Instance = this;
 
             GameFlowManager = GameFlowManager.Instance;
-            Robots = OverhaulController.InitializeController<RobotsController>();
             GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
             Levels = OverhaulController.InitializeController<LevelController>();
             _ = OverhaulController.InitializeController<WeaponSkinsControllerV2>();

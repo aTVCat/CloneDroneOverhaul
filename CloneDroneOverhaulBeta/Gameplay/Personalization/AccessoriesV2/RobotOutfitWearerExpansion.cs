@@ -1,5 +1,4 @@
 ﻿using ModLibrary;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -143,7 +142,7 @@ namespace CDOverhaul.Gameplay
 
         public void RemoveAccessory(IPlayerAccessoryItemDefinition item)
         {
-            m_SpawnedModels.Remove(item);
+            _ = m_SpawnedModels.Remove(item);
         }
     }
 }

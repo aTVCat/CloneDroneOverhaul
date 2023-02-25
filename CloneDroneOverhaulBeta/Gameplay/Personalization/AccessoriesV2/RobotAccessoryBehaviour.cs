@@ -10,14 +10,25 @@ namespace CDOverhaul.Gameplay
     {
         private FirstPersonMover m_Owner;
         private IPlayerAccessoryItemDefinition m_Item;
+        private Vector3 m_TargetPosition;
 
         protected override void OnDisposed()
         {
             m_Owner = null;
         }
 
+        private void LateUpdate()
+        {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+            base.transform.localPosition = m_TargetPosition;
+        }
+
         public void Initialize(FirstPersonMover mover, IPlayerAccessoryItemDefinition item)
         {
+            m_TargetPosition = base.transform.localPosition;
             m_Item = item;
             m_Owner = mover;
         }

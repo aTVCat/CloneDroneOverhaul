@@ -5,7 +5,6 @@
     /// </summary>
     public class SharedControllers : OverhaulController
     {
-        public CustomAnimationsController CustomAnimations { get; private set; }
         public VoxelsController Voxels { get; private set; }
 
         public override string[] Commands()
@@ -15,7 +14,6 @@
 
         public override void Initialize()
         {
-            CustomAnimations = OverhaulController.InitializeController<CustomAnimationsController>();
             Voxels = OverhaulController.InitializeController<VoxelsController>();
         }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CDOverhaul.Gameplay
+﻿namespace CDOverhaul.Gameplay
 {
     public class PlayerOutfitData : OverhaulDataBase
     {
@@ -17,7 +11,7 @@ namespace CDOverhaul.Gameplay
         {
             if(EquipedAccessories == null)
             {
-                EquipedAccessories = string.Empty;
+                EquipedAccessories = "Igrok's Hat@";
             }
         }
 

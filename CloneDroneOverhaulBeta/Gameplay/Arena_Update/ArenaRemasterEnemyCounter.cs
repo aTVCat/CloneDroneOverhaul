@@ -1,107 +1,64 @@
 ﻿using CDOverhaul.LevelEditor;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterEnemyCounter : MonoBehaviour
+    public class ArenaRemasterEnemyCounter : OverhaulMonoBehaviour
     {
-        private TextMeshPro _header;
-        private TextMeshPro _label;
+        private TextMeshPro m_Header;
+        private TextMeshPro m_Label;
 
-        private bool _isRefreshingText;
+        private ArenaRemasterController m_Controller;
+        private Vector3 m_originalPosition;
+        private Vector3 m_originalEulerAngles;
 
-        private ArenaRemasterController _controller;
-        private Vector3 _ogPos;
-        private Vector3 _ogRot;
+        private int m_EnemiesLeftLastTimeChecked;
 
         public void Initialize(in ModdedObject moddedObject, in ArenaRemasterController arenaController)
         {
-            _ogPos = base.transform.position;
-            _ogRot = base.transform.eulerAngles;
-            _controller = arenaController;
+            m_originalPosition = base.transform.position;
+            m_originalEulerAngles = base.transform.eulerAngles;
+            m_Controller = arenaController;
 
-            _label = moddedObject.GetObject<TextMeshPro>(0);
-            _label.text = "-";
-            _header = moddedObject.GetObject<TextMeshPro>(1);
-
-            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterKilled, refreshEnemiesLeft, true);
-            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterStarted, refreshEnemiesLeft, true);
+            m_Label = moddedObject.GetObject<TextMeshPro>(0);
+            m_Label.text = "-";
+            m_Header = moddedObject.GetObject<TextMeshPro>(1);
         }
 
-        private void refreshEnemiesLeft()
+        protected override void OnDisposed()
         {
-            if (GameModeManager.IsInLevelEditor())
+            m_Header = null;
+            m_Label = null;
+            m_Controller = null;
+        }
+
+        private void eventRefreshEnemiesLeft(Character c)
+        {
+            if (IsDisposedOrDestroyed())
             {
-                refreshLabel(CharacterTracker.Instance.GetNumEnemyCharactersAlive());
                 return;
             }
-            refreshEnemiesLeft(null);
-        }
 
-        private void refreshEnemiesLeft(Character c)
-        {
             int count = CharacterTracker.Instance.GetNumEnemyCharactersAlive();
-            if (!base.gameObject.activeInHierarchy)
+            if(count != m_EnemiesLeftLastTimeChecked)
             {
-                refreshLabel(count);
-                return;
+                m_Label.text = count == 0 ? "-" : count.ToString();
             }
-
-            if (_isRefreshingText)
-            {
-                _isRefreshingText = false;
-                StopAllCoroutines();
-            }
-            _ = StartCoroutine(refreshText(CharacterTracker.Instance.GetNumEnemyCharactersAlive()));
-        }
-
-        private IEnumerator refreshText(int count)
-        {
-            _isRefreshingText = true;
-            yield return new WaitForSeconds(0.2f);
-
-            refreshLabel(count);
-
-            _isRefreshingText = false;
-            yield break;
-        }
-
-        private void refreshLabel(int count)
-        {
-            _label.text = count == 0 ? "-" : count.ToString();
-        }
-
-        private void stopAll()
-        {
-            if (_isRefreshingText)
-            {
-                _isRefreshingText = false;
-                StopAllCoroutines();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            OverhaulEventManager.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, refreshEnemiesLeft, true);
-            stopAll();
-        }
-
-        private void OnDisable()
-        {
-            stopAll();
+            m_EnemiesLeftLastTimeChecked = count;
         }
 
         private void Update()
         {
-            if (GameModeManager.IsInLevelEditor() && Time.frameCount % 30 == 0)
+            if (IsDisposedOrDestroyed())
             {
-                refreshEnemiesLeft();
+                return;
             }
+
             if (Time.frameCount % 10 == 0)
             {
-                LevelEditorArenaEnemiesCounterPoser poser = _controller.EnemiesLeftPositionOverride;
+                eventRefreshEnemiesLeft(null);
+                LevelEditorArenaEnemiesCounterPoser poser = m_Controller.EnemiesLeftPositionOverride;
                 if (poser != null)
                 {
                     base.transform.position = poser.transform.position;
@@ -109,8 +66,8 @@ namespace CDOverhaul.ArenaRemaster
                 }
                 else
                 {
-                    base.transform.transform.position = _ogPos;
-                    base.transform.transform.eulerAngles = _ogRot;
+                    base.transform.transform.position = m_originalPosition;
+                    base.transform.transform.eulerAngles = m_originalEulerAngles;
                 }
             }
         }

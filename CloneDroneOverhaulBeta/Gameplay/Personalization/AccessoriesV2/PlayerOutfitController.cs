@@ -47,7 +47,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            firstPersonMover.gameObject.AddComponent<RobotOutfitWearerExpansion>();
+            _ = firstPersonMover.gameObject.AddComponent<RobotOutfitWearerExpansion>();
         }
 
         IPlayerAccessoryItemDefinition IPlayerOutfitController.NewAccessoryItem(MechBodyPartType partType, string itemName, ItemFilter filter)

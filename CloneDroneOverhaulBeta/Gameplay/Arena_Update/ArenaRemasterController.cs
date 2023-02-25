@@ -5,7 +5,9 @@ namespace CDOverhaul.ArenaRemaster
 {
     public class ArenaRemasterController : OverhaulController
     {
-        private bool _arenaToggleState = true;
+        public const bool SupportEnemiesLeftLabel = true;
+
+        private bool m_DebugArenaToggleState;
 
         public Transform WorldRootTransform;
         public Transform ArenaTransform;
@@ -20,6 +22,7 @@ namespace CDOverhaul.ArenaRemaster
                 return;
             }
 
+            m_DebugArenaToggleState = true;
             GameObject spawnedPrefab = Instantiate(GetArenaRemasterPrefab());
             Transform spawnedPrefabTransform = spawnedPrefab.transform;
             spawnedPrefabTransform.SetParent(ArenaTransform);
@@ -27,13 +30,22 @@ namespace CDOverhaul.ArenaRemaster
             spawnedPrefabTransform.eulerAngles = Vector3.zero;
             ArenaRemaster = spawnedPrefab.GetComponent<ModdedObject>();
 
-            setUpArrows();
-            setUpLabels();
+            setUpArrowsInterior();
+            if(SupportEnemiesLeftLabel) setUpLabelsInterior();
+        }
+
+        protected override void OnDisposed()
+        {
+            WorldRootTransform = null;
+            ArenaTransform = null;
+            ArenaRemaster = null;
+            EnemiesLeftPositionOverride = null;
         }
 
         public override void OnModDeactivated()
         {
-            SetOgArenaInteriorVisible(true);
+            SetOriginalArenaInteriorVisible(true);
+            DestroyBehaviour();
         }
 
         public GameObject GetArenaRemasterPrefab()
@@ -45,7 +57,7 @@ namespace CDOverhaul.ArenaRemaster
         /// Set "Arena2019" (Arena interior) gameobject visible
         /// </summary>
         /// <param name="value"></param>
-        public void SetOgArenaInteriorVisible(in bool value)
+        public void SetOriginalArenaInteriorVisible(in bool value)
         {
             Transform arena2019 = TransformUtils.FindChildRecursive(ArenaTransform, "Arena2019");
             if (arena2019 != null)
@@ -62,12 +74,22 @@ namespace CDOverhaul.ArenaRemaster
 
         private bool makeSureNewArenaWillWork()
         {
-            WorldRootTransform = WorldRoot.Instance.transform;
+            WorldRoot root = WorldRoot.Instance;
+            if(root == null)
+            {
+                return false;
+            }
+
+            WorldRootTransform = root.transform;
+            if(WorldRootTransform == null)
+            {
+                return false;
+            }
             ArenaTransform = TransformUtils.FindChildRecursive(WorldRootTransform, "ArenaFinal");
-            return ArenaTransform != null && WorldRootTransform != null;
+            return ArenaTransform != null;
         }
 
-        private void setUpArrows()
+        private void setUpArrowsInterior()
         {
             ArenaRemasterArrowBlinker b1 = ArenaRemaster.GetObject<Transform>(2).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
             ArenaRemasterArrowBlinker b2 = ArenaRemaster.GetObject<Transform>(1).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
@@ -78,7 +100,7 @@ namespace CDOverhaul.ArenaRemaster
             b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
         }
 
-        private void setUpLabels()
+        private void setUpLabelsInterior()
         {
             ArenaRemasterEnemyCounter b1 = ArenaRemaster.GetObject<Transform>(3).gameObject.AddComponent<ArenaRemasterEnemyCounter>();
             b1.Initialize(b1.GetComponent<ModdedObject>(), this);
@@ -86,15 +108,19 @@ namespace CDOverhaul.ArenaRemaster
 
         private void Update()
         {
-            if (!OverhaulVersion.ArenaUpdateEnabled)
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+            if (!OverhaulVersion.IsDebugBuild)
             {
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.F6))
             {
-                _arenaToggleState = !_arenaToggleState;
-                SetOgArenaInteriorVisible(_arenaToggleState);
+                m_DebugArenaToggleState = !m_DebugArenaToggleState;
+                SetOriginalArenaInteriorVisible(m_DebugArenaToggleState);
             }
         }
 
