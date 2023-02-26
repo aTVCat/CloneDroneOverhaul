@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloneDroneOverhaulBeta", "CloneDroneOverhaulBeta\CloneDroneOverhaulBeta.csproj", "{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverhaulMod", "CloneDroneOverhaulBeta\OverhaulMod.csproj", "{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverhaulAPI", "OverhaulAPI\OverhaulAPI.csproj", "{C4055585-9DF8-4F16-98AD-8D74F5531AE9}"
 EndProject
