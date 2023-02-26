@@ -37,7 +37,16 @@ namespace CDOverhaul
             private set;
         }
 
+        /// <summary>
+        /// Voxels management controller
+        /// </summary>
         public VoxelsController VoxelsController
+        {
+            get;
+            private set;
+        }
+
+        public LevelEditorLuaController EditorLua
         {
             get;
             private set;
@@ -76,6 +85,7 @@ namespace CDOverhaul
             VoxelsController = OverhaulController.InitializeController<VoxelsController>();
             HUDController = OverhaulController.InitializeController<OverhaulCanvasController>();
             GameplayController = OverhaulController.InitializeController<OverhaulGameplayCoreController>();
+            EditorLua = OverhaulController.InitializeController<LevelEditorLuaController>();
             _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
 
             SettingsController.Initialize();

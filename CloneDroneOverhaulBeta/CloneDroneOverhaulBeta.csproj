@@ -75,6 +75,14 @@
     <Reference Include="Klattersynth">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Klattersynth.dll</HintPath>
     </Reference>
+    <Reference Include="KopiLua, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExternalDLLs\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExternalDLLs\LuaInterface.dll</HintPath>
+    </Reference>
     <Reference Include="ModBotWebsiteAPI">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModBotWebsiteAPI.dll</HintPath>
     </Reference>
@@ -395,6 +403,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponSkinSpawnInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponVariant.cs" />
+    <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\MainGameplayController.cs" />
     <Compile Include="Gameplay\Arena_Update\ArenaRemasterEnemyCounter.cs" />
@@ -491,7 +500,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ExternalDLLs\KopiLua.dll" />
+    <Content Include="ExternalDLLs\LuaInterface.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

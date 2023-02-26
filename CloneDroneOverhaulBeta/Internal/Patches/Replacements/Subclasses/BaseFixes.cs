@@ -18,6 +18,9 @@ namespace CDOverhaul.Patches
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
 
+            LocalizationManager.Instance.SupportedLanguages[0].UIFont = LocalizationManager.Instance.SupportedLanguages[7].UIFont;
+            LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
+            LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.7f;
 
             foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {
