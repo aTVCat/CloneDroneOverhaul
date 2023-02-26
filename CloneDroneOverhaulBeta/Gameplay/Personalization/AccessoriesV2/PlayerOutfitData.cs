@@ -11,7 +11,7 @@
         {
             if(EquipedAccessories == null)
             {
-                EquipedAccessories = "Igrok's Hat@";
+                EquipedAccessories = string.Empty;
             }
         }
 

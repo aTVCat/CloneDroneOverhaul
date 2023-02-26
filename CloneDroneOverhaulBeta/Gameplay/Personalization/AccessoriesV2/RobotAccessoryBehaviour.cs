@@ -15,6 +15,7 @@ namespace CDOverhaul.Gameplay
         protected override void OnDisposed()
         {
             m_Owner = null;
+            m_Item = null;
         }
 
         private void LateUpdate()
@@ -23,7 +24,12 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            base.transform.localPosition = m_TargetPosition;
+
+            Transform parent = base.transform.parent;
+            if (parent != null && parent != LevelSpecificWorldRoot.Instance.transform)
+            {
+                base.transform.localPosition = m_TargetPosition;
+            }
         }
 
         public void Initialize(FirstPersonMover mover, IPlayerAccessoryItemDefinition item)

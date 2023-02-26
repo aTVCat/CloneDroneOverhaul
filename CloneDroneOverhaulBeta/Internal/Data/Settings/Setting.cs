@@ -21,9 +21,9 @@ namespace CDOverhaul
         public SettingSliderParameters SliderParameters { get; set; }
         public SettingDropdownParameters DropdownParameters { get; set; }
 
-        public ESettingType Type { get; set; }
+        public SettingType Type { get; set; }
 
-        public bool Error => Type == ESettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
+        public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
 
         internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
         {
@@ -65,46 +65,46 @@ namespace CDOverhaul
             setting.IsChildSetting = true;
         }
 
-        public static ESettingType GetSettingType<T>()
+        public static SettingType GetSettingType<T>()
         {
             if (typeof(T) == typeof(bool))
             {
-                return ESettingType.Bool;
+                return SettingType.Bool;
             }
             if (typeof(T) == typeof(int))
             {
-                return ESettingType.Int;
+                return SettingType.Int;
             }
             if (typeof(T) == typeof(float))
             {
-                return ESettingType.Float;
+                return SettingType.Float;
             }
             if (typeof(T) == typeof(string))
             {
-                return ESettingType.String;
+                return SettingType.String;
             }
-            return ESettingType.None;
+            return SettingType.None;
         }
 
-        public static ESettingType GetSettingType(in object @object)
+        public static SettingType GetSettingType(in object @object)
         {
             if (@object is bool)
             {
-                return ESettingType.Bool;
+                return SettingType.Bool;
             }
             if (@object is int)
             {
-                return ESettingType.Int;
+                return SettingType.Int;
             }
             if (@object is float)
             {
-                return ESettingType.Float;
+                return SettingType.Float;
             }
             if (@object is string)
             {
-                return ESettingType.String;
+                return SettingType.String;
             }
-            return ESettingType.None;
+            return SettingType.None;
         }
 
         public static void TryAddPref(in SettingInfo setting)
@@ -139,19 +139,19 @@ namespace CDOverhaul
 
             switch (setting.Type)
             {
-                case ESettingType.Bool:
+                case SettingType.Bool:
                     int a = (bool)value ? 1 : 0;
                     PlayerPrefs.SetInt(setting.RawPath, a);
                     break;
-                case ESettingType.Int:
+                case SettingType.Int:
                     int b = (int)value;
                     PlayerPrefs.SetInt(setting.RawPath, b);
                     break;
-                case ESettingType.Float:
+                case SettingType.Float:
                     float c = (float)value;
                     PlayerPrefs.SetFloat(setting.RawPath, c);
                     break;
-                case ESettingType.String:
+                case SettingType.String:
                     string d = (string)value;
                     PlayerPrefs.SetString(setting.RawPath, d);
                     break;
@@ -176,16 +176,16 @@ namespace CDOverhaul
             object result = null;
             switch (setting.Type)
             {
-                case ESettingType.Bool:
+                case SettingType.Bool:
                     result = PlayerPrefs.GetInt(setting.RawPath) == 1;
                     break;
-                case ESettingType.Int:
+                case SettingType.Int:
                     result = PlayerPrefs.GetInt(setting.RawPath);
                     break;
-                case ESettingType.Float:
+                case SettingType.Float:
                     result = PlayerPrefs.GetFloat(setting.RawPath);
                     break;
-                case ESettingType.String:
+                case SettingType.String:
                     result = PlayerPrefs.GetString(setting.RawPath);
                     break;
                 default:

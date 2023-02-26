@@ -26,21 +26,14 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         public const int GamemodeStartIndex = 2000;
 
+
+        private Camera m_MainCamera;
+
+        private Camera m_CurrentCamera;
+
         #endregion
 
         public static OverhaulGameplayCoreController Core
-        {
-            get;
-            private set;
-        }
-
-        public Camera MainCamera
-        {
-            get;
-            private set;
-        }
-
-        public Camera CurrentCamera
         {
             get;
             private set;
@@ -76,8 +69,8 @@ namespace CDOverhaul.Gameplay
         protected override void OnDisposed()
         {
             Core = null;
-            MainCamera = null;
-            CurrentCamera = null;
+            m_MainCamera = null;
+            m_CurrentCamera = null;
             Outfits = null;
         }
 
@@ -96,18 +89,18 @@ namespace CDOverhaul.Gameplay
             m_GameModeLastTimeCheck = currentGamemode;
 
             Camera mainCamera = Camera.main;
-            if (mainCamera != MainCamera)
+            if (mainCamera != m_MainCamera)
             {
                 OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
             }
-            MainCamera = mainCamera;
+            m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
-            if (currentCamera != CurrentCamera)
+            if (currentCamera != m_CurrentCamera)
             {
                 OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             }
-            CurrentCamera = currentCamera;
+            m_CurrentCamera = currentCamera;
         }
 
         /// <summary>

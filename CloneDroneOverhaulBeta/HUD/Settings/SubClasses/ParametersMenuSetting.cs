@@ -30,7 +30,7 @@ namespace CDOverhaul.HUD
         public SettingInfo Setting;
         public SettingDescription Description;
 
-        public void Initialize(in OverhaulParametersMenu menu, in ModdedObject moddedObject, in string settingPath, in PerametersMenuSettingPosition position)
+        public void Initialize(in OverhaulParametersMenu menu, in ModdedObject moddedObject, in string settingPath, in ParametersMenuSettingPosition position)
         {
             if (IsDisposedOrDestroyed())
             {
@@ -62,12 +62,12 @@ namespace CDOverhaul.HUD
                 m_ModdedObject.GetObject<Text>(1).text = Description.Description;
             }
 
-            base.GetComponent<Image>().enabled = position == PerametersMenuSettingPosition.Normal;
-            m_ModdedObject.GetObject<Transform>(7).gameObject.SetActive(position == PerametersMenuSettingPosition.Top);
-            m_ModdedObject.GetObject<Transform>(8).gameObject.SetActive(position == PerametersMenuSettingPosition.Center);
-            m_ModdedObject.GetObject<Transform>(9).gameObject.SetActive(position == PerametersMenuSettingPosition.Bottom);
+            base.GetComponent<Image>().enabled = position == ParametersMenuSettingPosition.Normal;
+            m_ModdedObject.GetObject<Transform>(7).gameObject.SetActive(position == ParametersMenuSettingPosition.Top);
+            m_ModdedObject.GetObject<Transform>(8).gameObject.SetActive(position == ParametersMenuSettingPosition.Center);
+            m_ModdedObject.GetObject<Transform>(9).gameObject.SetActive(position == ParametersMenuSettingPosition.Bottom);
 
-            configToggle(moddedObject, Setting.Type == ESettingType.Bool, position);
+            configToggle(moddedObject, Setting.Type == SettingType.Bool, position);
             configSlider(moddedObject, Setting.SliderParameters);
             configDropdown(moddedObject, Setting.DropdownParameters);
             configInputField(moddedObject);
@@ -94,7 +94,7 @@ namespace CDOverhaul.HUD
         private void configInputField(in ModdedObject m)
         {
             m_InputField = m.GetObject<InputField>(13);
-            m_InputField.gameObject.SetActive(Setting.Type == ESettingType.String);
+            m_InputField.gameObject.SetActive(Setting.Type == SettingType.String);
             if (!m_InputField.gameObject.activeSelf)
             {
                 return;
@@ -141,7 +141,7 @@ namespace CDOverhaul.HUD
             m_Slider.onValueChanged.AddListener(setSliderValue);
         }
 
-        private void configToggle(in ModdedObject m, in bool isBool, in PerametersMenuSettingPosition position)
+        private void configToggle(in ModdedObject m, in bool isBool, in ParametersMenuSettingPosition position)
         {
             m_ToggleTickBox = m.GetObject<Transform>(2);
             m_ToggleBGOff = m.GetObject<Transform>(3);
@@ -158,16 +158,16 @@ namespace CDOverhaul.HUD
 
             switch (position)
             {
-                case PerametersMenuSettingPosition.Normal:
+                case ParametersMenuSettingPosition.Normal:
                     t.targetGraphic = base.GetComponent<Image>();
                     break;
-                case PerametersMenuSettingPosition.Top:
+                case ParametersMenuSettingPosition.Top:
                     t.targetGraphic = m_ModdedObject.GetObject<Image>(7);
                     break;
-                case PerametersMenuSettingPosition.Center:
+                case ParametersMenuSettingPosition.Center:
                     t.targetGraphic = m_ModdedObject.GetObject<Image>(8);
                     break;
-                case PerametersMenuSettingPosition.Bottom:
+                case ParametersMenuSettingPosition.Bottom:
                     t.targetGraphic = m_ModdedObject.GetObject<Image>(9);
                     break;
             }

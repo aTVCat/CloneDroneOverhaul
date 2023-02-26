@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Enumerators;
-using ModLibrary;
+﻿using ModLibrary;
 using UnityEngine;
 
 namespace CDOverhaul

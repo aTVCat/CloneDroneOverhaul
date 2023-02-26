@@ -25,16 +25,16 @@ namespace CDOverhaul.Patches
                 {
                     if (image.sprite.name == "UISprite" || image.sprite.name == "Knob")
                     {
-                        image.sprite = AssetController.GetAsset<Sprite>("CanvasDark-Small2-16x16", Enumerators.OverhaulAssetsPart.Part1);
+                        image.sprite = AssetController.GetAsset<Sprite>("CanvasDark-Small2-16x16", OverhaulAssetsPart.Part1);
                     }
                     if (image.sprite.name == "Checkmark")
                     {
-                        image.sprite = AssetController.GetAsset<Sprite>("CheckmarkSmall", Enumerators.OverhaulAssetsPart.Part1);
+                        image.sprite = AssetController.GetAsset<Sprite>("CheckmarkSmall", OverhaulAssetsPart.Part1);
                         image.color = Color.black;
                     }
                     if (image.sprite.name == "Background")
                     {
-                        image.sprite = AssetController.GetAsset<Sprite>("CanvasBright-Small-16x16", Enumerators.OverhaulAssetsPart.Part1);
+                        image.sprite = AssetController.GetAsset<Sprite>("CanvasBright-Small-16x16", OverhaulAssetsPart.Part1);
                     }
                     /*
                     Outline component = image.GetComponent<Outline>();

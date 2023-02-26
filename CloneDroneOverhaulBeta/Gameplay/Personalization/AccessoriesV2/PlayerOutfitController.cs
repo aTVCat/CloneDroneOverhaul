@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay
     public class PlayerOutfitController : OverhaulGameplayController, IPlayerOutfitController
     {
         public const string AccessoryDestroyVFX_ID = "AccessoryDestroyedVFX";
-        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", Enumerators.OverhaulAssetsPart.Sounds));
+        public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetController.GetAsset<AudioClip>("BallonExplosion", OverhaulAssetsPart.Sounds));
 
         public IPlayerOutfitController Interface;
 
@@ -27,12 +27,12 @@ namespace CDOverhaul.Gameplay
             }
             OverhaulSessionController.SetKey("HasLoadedAccessories", true);
             m_Items = new List<IPlayerAccessoryItemDefinition>();
-            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", Enumerators.OverhaulAssetsPart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetController.GetAsset("VFX_AccessoryDestroy", OverhaulAssetsPart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
 
             // Igrok's Hat
             IPlayerAccessoryItemDefinition item1 = Interface.NewAccessoryItem(MechBodyPartType.Head, "Igrok's Hat", ItemFilter.None);
             IPlayerAccessoryModel model1 = new PlayerAccessoryModel();
-            model1.SetModel(AssetController.GetAsset("P_Acc_Head_Igrok's hat", Enumerators.OverhaulAssetsPart.Accessories));
+            model1.SetModel(AssetController.GetAsset("P_Acc_Head_Igrok's hat", OverhaulAssetsPart.Accessories));
             item1.SetModel(model1);
         }
 

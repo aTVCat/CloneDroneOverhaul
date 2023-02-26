@@ -1,6 +1,6 @@
-﻿namespace CDOverhaul
+﻿namespace CDOverhaul.HUD
 {
-    public enum PerametersMenuSettingPosition
+    public enum ParametersMenuSettingPosition
     {
         Normal,
         Top,

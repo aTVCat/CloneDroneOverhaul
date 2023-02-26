@@ -39,7 +39,7 @@ namespace CDOverhaul
         internal static void OnModEarlyCrash(in string exc)
         {
             OverhaulMod.IsCoreLoadedIncorrectly = true;
-            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", Enumerators.OverhaulAssetsPart.Main)).GetComponent<ModdedObject>();
+            ModdedObject obj = GameObject.Instantiate(AssetController.GetAsset<GameObject>("LoadErrorCanvas", OverhaulAssetsPart.Main)).GetComponent<ModdedObject>();
             obj.GetObject<Text>(0).text = exc;
             obj.GetObject<Button>(1).onClick.AddListener(delegate
             {

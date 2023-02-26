@@ -3,7 +3,6 @@ using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
-using CDOverhaul.Shared;
 using System;
 using UnityEngine;
 
@@ -21,6 +20,15 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
 
         /// <summary>
+        /// The gameplay features controler instance
+        /// </summary>
+        public OverhaulGameplayCoreController GameplayController
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// The UI controller instance
         /// </summary>
         public OverhaulCanvasController HUDController
@@ -29,21 +37,9 @@ namespace CDOverhaul
             private set;
         }
 
-        /// <summary>
-        /// The gameplay features controler instance
-        /// </summary>
-        public OverhaulGameplayCoreController GameplayController 
-        { 
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Misc features controller instance
-        /// </summary>
-        public SharedControllers Shared 
+        public VoxelsController VoxelsController
         {
-            get; 
+            get;
             private set;
         }
 
@@ -77,7 +73,7 @@ namespace CDOverhaul
             OverhaulController.InitializeStatic(controllers);
             LevelEditorObjectsController.Initialize();
 
-            Shared = OverhaulController.InitializeController<SharedControllers>();
+            VoxelsController = OverhaulController.InitializeController<VoxelsController>();
             HUDController = OverhaulController.InitializeController<OverhaulCanvasController>();
             GameplayController = OverhaulController.InitializeController<OverhaulGameplayCoreController>();
             _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
@@ -94,7 +90,7 @@ namespace CDOverhaul
         {
             HUDController = null;
             GameplayController = null;
-            Shared = null;
+            VoxelsController = null;
             OverhaulMod.Core = null;
         }
     }

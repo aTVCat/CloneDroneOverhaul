@@ -1,4 +1,4 @@
-﻿namespace CDOverhaul.Enumerators
+﻿namespace CDOverhaul
 {
     public enum OverhaulAssetsPart
     {

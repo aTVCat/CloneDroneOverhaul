@@ -1,7 +1,6 @@
-﻿using CDOverhaul.Gameplay;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace CDOverhaul
+namespace CDOverhaul.Gameplay
 {
     public class WeaponSkinSpawnInfo
     {

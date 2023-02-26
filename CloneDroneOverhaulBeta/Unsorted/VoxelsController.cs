@@ -1,7 +1,7 @@
 ﻿using PicaVoxel;
 using UnityEngine;
 
-namespace CDOverhaul.Shared
+namespace CDOverhaul
 {
     public class VoxelsController : OverhaulController
     {
@@ -13,6 +13,13 @@ namespace CDOverhaul.Shared
         public override void Initialize()
         {
             m_ColorBurnMultipler = AttackManager.Instance.FireBurnColorMultiplier;
+            updateColorsOfOGGame();
+        }
+
+        private void updateColorsOfOGGame()
+        {
+            AttackManager.Instance.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
+            AttackManager.Instance.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
         }
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)

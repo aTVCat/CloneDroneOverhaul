@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul
 {
-    public enum ESettingType
+    public enum SettingType
     {
         None,
         Bool,

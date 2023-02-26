@@ -57,11 +57,6 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(true);
             populateCategories();
             PopulateDescription(null, null);
-
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                ParametersMenuCategoryButton.SetSelectedFirst();
-            }, 0.1f);
         }
 
         public void Hide()
@@ -71,6 +66,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            TransformUtils.DestroyAllChildren(m_CategoryContainer);
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)
             {
@@ -118,16 +114,16 @@ namespace CDOverhaul.HUD
                 foreach (string settingName in settings)
                 {
                     List<string> childrenSettings = SettingsController.GetChildrenSettings(settingName);
-                    PopulateSetting(settingName, childrenSettings.Count == 0 ? PerametersMenuSettingPosition.Normal : PerametersMenuSettingPosition.Top);
+                    PopulateSetting(settingName, childrenSettings.Count == 0 ? ParametersMenuSettingPosition.Normal : ParametersMenuSettingPosition.Top);
                     int index = 0;
                     if (childrenSettings.Count != 0)
                     {
                         foreach (string cSettingName in childrenSettings)
                         {
-                            PerametersMenuSettingPosition pos = PerametersMenuSettingPosition.Center;
+                            ParametersMenuSettingPosition pos = ParametersMenuSettingPosition.Center;
                             if (childrenSettings.Count - 1 == index)
                             {
-                                pos = PerametersMenuSettingPosition.Bottom;
+                                pos = ParametersMenuSettingPosition.Bottom;
                             }
                             PopulateSetting(cSettingName, pos);
                             index++;
@@ -137,7 +133,7 @@ namespace CDOverhaul.HUD
             }
         }
 
-        public void PopulateSetting(in string path, in PerametersMenuSettingPosition position)
+        public void PopulateSetting(in string path, in ParametersMenuSettingPosition position)
         {
             if (IsDisposedOrDestroyed())
             {

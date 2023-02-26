@@ -11,7 +11,6 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of the mod. Starts up the mod
     /// </summary>
-    /// Todo: rewrite and adapt all controllers and HUDs to new controller code
     /// Todo: Custom advancements system (or patch vanilla one)
     [MainModClass]
     public class OverhaulMod : Mod
@@ -40,11 +39,6 @@ namespace CDOverhaul
         /// The instance of main mod class
         /// </summary>
         public static OverhaulMod Base { get; internal set; }
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowText")]
-        public static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
-        [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        public static extern System.IntPtr FindWindow(string className, string windowName);
 
         /// <summary>
         /// Create core when mod was loaded
@@ -166,5 +160,10 @@ namespace CDOverhaul
                 OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
             }
         }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowText")]
+        public static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
+        [DllImport("user32.dll", EntryPoint = "FindWindow")]
+        public static extern System.IntPtr FindWindow(string className, string windowName);
     }
 }

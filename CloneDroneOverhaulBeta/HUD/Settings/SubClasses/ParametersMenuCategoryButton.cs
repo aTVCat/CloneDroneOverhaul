@@ -20,6 +20,11 @@ namespace CDOverhaul.HUD
             base.GetComponent<Button>().onClick.AddListener(select);
 
             _spawnedBehaviours.Add(this);
+            if(_spawnedBehaviours.Count == 1)
+            {
+                SetSelected(true, false);
+                return;
+            }
             SetSelected(false, false);
         }
 
@@ -53,15 +58,6 @@ namespace CDOverhaul.HUD
         private void select()
         {
             SetSelected(true);
-        }
-
-        public static void SetSelectedFirst()
-        {
-            if (_spawnedBehaviours.IsNullOrEmpty())
-            {
-                return;
-            }
-            _spawnedBehaviours[0].SetSelected(true, false);
         }
     }
 }

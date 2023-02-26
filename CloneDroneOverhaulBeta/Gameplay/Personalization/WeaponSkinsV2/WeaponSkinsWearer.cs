@@ -54,12 +54,7 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)
         {
-            if (item == null)
-            {
-                return;
-            }
-            CharacterModel model = FirstPersonMover.GetCharacterModel();
-            if(model == null)
+            if (item == null || FirstPersonMover == null || !FirstPersonMover.HasCharacterModel())
             {
                 return;
             }

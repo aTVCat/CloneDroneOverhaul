@@ -50,7 +50,7 @@ namespace CDOverhaul.ArenaRemaster
 
         public GameObject GetArenaRemasterPrefab()
         {
-            return AssetController.GetAsset("P_ArenaRemaster", Enumerators.OverhaulAssetsPart.Arena_Update);
+            return AssetController.GetAsset("P_ArenaRemaster", OverhaulAssetsPart.Arena_Update);
         }
 
         /// <summary>
@@ -98,6 +98,9 @@ namespace CDOverhaul.ArenaRemaster
             b1.ChangeState(true);
             b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
             b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
+
+            ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(false);
+            ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = b1.transform.parent.gameObject;
         }
 
         private void setUpLabelsInterior()
