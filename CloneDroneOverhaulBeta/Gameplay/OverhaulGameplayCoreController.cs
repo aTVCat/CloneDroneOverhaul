@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CDOverhaul.Gameplay.Combat;
+using CDOverhaul.Gameplay.Combat.Animations;
+using System;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -39,6 +41,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public AdditionalAnimationsController AdditionalAnimations
+        {
+            get;
+            private set;
+        }
+
         public PlayerOutfitController Outfits
         {
             get;
@@ -63,6 +71,7 @@ namespace CDOverhaul.Gameplay
             GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
             WeaponSkins = OverhaulController.InitializeController<WeaponSkinsController>();
             Outfits = OverhaulController.InitializeController<PlayerOutfitController>();
+            AdditionalAnimations = OverhaulController.InitializeController<AdditionalAnimationsController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 

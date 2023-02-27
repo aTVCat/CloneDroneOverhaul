@@ -381,6 +381,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Combat\Animations\AdditionalAnimation.cs" />
+    <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryModel.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryModel.cs" />
@@ -403,12 +405,13 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponSkinSpawnInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponVariant.cs" />
+    <Compile Include="Internal\Intro\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
-    <Compile Include="Gameplay\MainGameplayController.cs" />
-    <Compile Include="Gameplay\Arena_Update\ArenaRemasterEnemyCounter.cs" />
-    <Compile Include="Gameplay\Arena_Update\ArenaRemasterArrowBlinker.cs" />
-    <Compile Include="Gameplay\Arena_Update\ArenaRemasterController.cs" />
+    <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
+    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterEnemyCounter.cs" />
+    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterArrowBlinker.cs" />
+    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSetting.cs" />

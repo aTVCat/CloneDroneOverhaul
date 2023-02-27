@@ -10,6 +10,7 @@
         Objects,
         Sounds,
         Main,
-        Arena_Update
+        Arena_Update,
+        Combat_Update
     }
 }
