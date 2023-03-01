@@ -381,7 +381,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gameplay\Combat\Animations\AdditionalAnimation.cs" />
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryModel.cs" />
@@ -394,6 +393,7 @@
     <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotAccessoryDestroyVFX.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotAccessoryBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerOutfitController.cs" />
+    <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivePlayerInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
@@ -407,6 +407,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponVariant.cs" />
     <Compile Include="Internal\Intro\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
+    <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
     <Compile Include="Gameplay\Combat\Arena\ArenaRemasterEnemyCounter.cs" />

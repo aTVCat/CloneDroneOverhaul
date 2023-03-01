@@ -2,8 +2,11 @@
 
 namespace CDOverhaul
 {
-    internal class ExclusivityController
+    internal static class ExclusivityController
     {
+        [OverhaulSettingAttribute("Player.VanillaAdditions.FavColorOffset", 0, false/*!OverhaulVersion.IsDebugBuild*/)]
+        public static int ColorOffset;
+
         public const string OnLoginSuccessEventString = "PlayfabLoginSuccessOverhaulMod";
 
         private static string _playfabId;
@@ -13,6 +16,7 @@ namespace CDOverhaul
         {
             if (_hasInitialized)
             {
+                ExclusiveRolesController.OnGotPlayfabID(_playfabId);
                 return;
             }
 
@@ -24,6 +28,7 @@ namespace CDOverhaul
             _playfabId = GetLocalPlayfabID();
             OverhaulEventManager.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             OverhaulEventManager.DispatchEvent(OnLoginSuccessEventString);
+            ExclusiveRolesController.OnGotPlayfabID(_playfabId);
         }
 
         public static string GetLocalPlayfabID()

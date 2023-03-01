@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -77,6 +78,13 @@ namespace CDOverhaul
         public static void SetLogoAndRootButtonsVisible(this TitleScreenUI titleScreenUI, in bool value)
         {
             titleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { value });
+        }
+
+        public static void AddColor(this HumanFactsManager manager, string colorName, Color color)
+        {
+            List<HumanFavouriteColor> list = HumanFactsManager.Instance.FavouriteColors.ToList();
+            list.Add(new HumanFavouriteColor() { ColorName = colorName, ColorValue = color });
+            HumanFactsManager.Instance.FavouriteColors = list.ToArray();
         }
     }
 }

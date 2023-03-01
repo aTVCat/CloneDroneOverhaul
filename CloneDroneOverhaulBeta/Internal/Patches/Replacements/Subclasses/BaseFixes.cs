@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
@@ -21,6 +23,8 @@ namespace CDOverhaul.Patches
             LocalizationManager.Instance.SupportedLanguages[0].UIFont = LocalizationManager.Instance.SupportedLanguages[7].UIFont;
             LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
             LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.7f;
+
+            HumanFactsManager.Instance.AddColor("Prototype", Color.white);
 
             foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {

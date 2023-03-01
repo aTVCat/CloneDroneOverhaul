@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Combat;
-using CDOverhaul.Gameplay.Combat.Animations;
 using System;
 using UnityEngine;
 
