@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -55,8 +56,15 @@ namespace CDOverhaul
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
-
-            Field.SetValue(null, GetPref<object>(this));
+            object obj = GetPref<object>(this);
+            try
+            {
+                Field.SetValue(null, obj);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         public void ParentSettingToThis(in SettingInfo setting)
@@ -142,25 +150,28 @@ namespace CDOverhaul
                 case SettingType.Bool:
                     int a = (bool)value ? 1 : 0;
                     PlayerPrefs.SetInt(setting.RawPath, a);
+                    setting.Field.SetValue(null, (bool)value);
                     break;
                 case SettingType.Int:
                     int b = (int)value;
                     PlayerPrefs.SetInt(setting.RawPath, b);
+                    setting.Field.SetValue(null, (int)value);
                     break;
                 case SettingType.Float:
                     float c = (float)value;
                     PlayerPrefs.SetFloat(setting.RawPath, c);
+                    setting.Field.SetValue(null, (float)value);
                     break;
                 case SettingType.String:
                     string d = (string)value;
                     PlayerPrefs.SetString(setting.RawPath, d);
+                    setting.Field.SetValue(null, (string)value);
                     break;
                 default:
                     OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingSaveError);
                     break;
             }
 
-            setting.Field.SetValue(null, value);
             DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();

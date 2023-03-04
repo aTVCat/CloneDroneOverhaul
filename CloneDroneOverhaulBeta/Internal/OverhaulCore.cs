@@ -73,9 +73,15 @@ namespace CDOverhaul
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
+            if(ExperimentalBranchManager.Instance != null)
+            {
+                ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
+            }
+
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            SettingsController.Initialize();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulEventManager.Initialize();
@@ -88,7 +94,7 @@ namespace CDOverhaul
             EditorLua = OverhaulController.InitializeController<LevelEditorLuaController>();
             _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
 
-            SettingsController.Initialize();
+            SettingsController.PostInitialize();
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();

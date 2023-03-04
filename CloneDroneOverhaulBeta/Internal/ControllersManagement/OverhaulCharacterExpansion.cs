@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [RequireComponent(typeof(FirstPersonMover), typeof(UpgradeCollection), typeof(EnergySource))]
-    public class FirstPersonMoverExpansionBase : OverhaulMonoBehaviour
+    public class OverhaulCharacterExpansion : OverhaulMonoBehaviour
     {
         /// <summary>
         /// Owner of the expansion script
@@ -36,6 +36,34 @@ namespace CDOverhaul
         public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover.IsPlayer();
         public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && string.IsNullOrEmpty(FirstPersonMover.GetPlayFabID());
         public bool IsOwnerMultiplayerNotMainPlayer() => !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
+        public bool IsEnemy() => !IsOwnerPlayer() && !FirstPersonMover.IsPlayerTeam;
+        public bool IsAlly() => !IsOwnerPlayer() && FirstPersonMover.IsPlayerTeam;
+
+        /// <summary>
+        /// Check if user, if <paramref name="type"/> is 0 - pressed key this frame, 1 - holding the key, 2 - ended pressing key this frame
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool IsPressed(KeyCode code, byte type)
+        {
+            bool result;
+            switch (type)
+            {
+                case 0:
+                    result = Input.GetKeyDown(code);
+                    break;
+                case 1:
+                    result = Input.GetKey(code) && !IsPressed(code, 0);
+                    break;
+                case 2:
+                    result = Input.GetKeyUp(code);
+                    break;
+                default:
+                    return false;
+            }
+            return result;
+        }
 
         protected override void OnDisposed()
         {

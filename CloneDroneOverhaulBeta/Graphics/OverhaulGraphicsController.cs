@@ -1,6 +1,8 @@
 ﻿using CDOverhaul.Gameplay;
 using OverhaulAPI.SharedMonoBehaviours;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -8,8 +10,7 @@ namespace CDOverhaul.Graphics
 {
     public static class OverhaulGraphicsController
     {
-        public static Camera UICamera { get; private set; }
-        public static Camera MainCamera { get; private set; }
+        #region Settings
 
         [SettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
         [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, null)]
@@ -18,12 +19,26 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Rendering.Deffered rendering", false, false, "Improve lights renderer\nMedium performance impact!")]
         public static bool DefferedRenderer;
 
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make everything glow")]
+        public static bool BloomEnabled;
+
         [SettingSliderParameters(true, 1, 10)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, null)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, null, null, null, "Graphics.Post effects.Bloom")]
         public static int BloomIterations;
+
+        [SettingSliderParameters(false, 0.1f, 2f)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, null, null, "Graphics.Post effects.Bloom")]
+        public static float BloomIntensity;
+
+        [SettingSliderParameters(false, 0.3f, 2f)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, null, null, "Graphics.Post effects.Bloom")]
+        public static float BloomThreshold;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
+
+        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", true, false, "I don't really like it, but you may turn this setting on for some fun, I guess")]
+        public static bool BlurEdgesEnabled;
 
         [SettingSliderParameters(false, -0.2f, 0.3f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
@@ -36,49 +51,46 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
+        #endregion
+
+        #region Some static stuff
+
         private static readonly List<Bloom> m_BloomEffects = new List<Bloom>();
 
         private static Material m_VignetteMaterial;
         private static Material m_ChromaMaterial;
+        private static Material m_EdgeBlur;
+
+        private static Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
+        private static Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
+        private static Func<bool> m_EnableBEFunc = new System.Func<bool>(() => BlurEdgesEnabled);
+
+        public static OverhaulCameraController CameraController { get; private set; }
+
+        private static readonly string[] m_IgnoredCameras = new string[]
+        {
+            "TitleScreenLogoCamera",
+            "UICamera",
+            "ArenaCamera"
+        };
+
+        #endregion
 
         public static void Initialize()
         {
+            CameraController = OverhaulController.InitializeController<OverhaulCameraController>();
             _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, patchCamera);
-            _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, onModDisabled);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
-
-            UICamera = GameUIRoot.Instance.GetComponent<Canvas>().worldCamera;
-            addPostProcessingToCamera(UICamera);
-            refreshMaterials();
-        }
-
-        private static void addPostProcessingToCamera(Camera camera)
-        {
-            patchAndSetCamera(camera, false);
-            if (camera == null)
-            {
-                return;
-            }
 
             m_ChromaMaterial = AssetController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
             m_VignetteMaterial = AssetController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetsPart.Part2);
-
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, new System.Func<bool>(() => MainCamera != null && ChromaticAberrationEnabled));
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, new System.Func<bool>(() => MainCamera != null && VignetteEnabled));
+            m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
+            m_EdgeBlur = AssetController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetsPart.Part2);
+            patchAllCameras();
         }
 
         private static void patchCamera(Camera camera)
         {
-            patchAndSetCamera(camera, true);
-        }
-
-        private static void patchAndSetCamera(Camera camera, bool setCamera)
-        {
-            if (setCamera)
-            {
-                MainCamera = camera;
-            }
-
             if (camera == null)
             {
                 return;
@@ -90,24 +102,38 @@ namespace CDOverhaul.Graphics
             if (bloom != null)
             {
                 bloom.bloomBlurIterations = BloomIterations;
-                bloom.bloomIntensity = 0.7f;
-                bloom.bloomThreshold = 1.25f;
+                bloom.bloomIntensity = BloomIntensity;
+                bloom.bloomThreshold = BloomThreshold;
                 bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+                bloom.enabled = BloomEnabled;
                 m_BloomEffects.Add(bloom);
             }
+            addShaderPassesToCamera(camera);
+            refreshShaderMaterials();
+        }
+
+        private static void addShaderPassesToCamera(Camera camera)
+        {
+            if (camera == null || m_IgnoredCameras.Contains(camera.gameObject.name) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
+            {
+                return;
+            }
+
+            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableVignetteFunc);
+            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
+            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableBEFunc);
         }
 
         private static void patchAllCameras()
         {
-            refreshTargetFramerate();
-            refreshMaterials();
-            foreach (Camera cam in Camera.allCameras)
+            refreshApplicationTargetFramerate();
+            foreach (Camera cam in CameraController.GetAllCameras())
             {
-                patchAndSetCamera(cam, false);
+                patchCamera(cam);
             }
         }
 
-        private static void refreshMaterials()
+        private static void refreshShaderMaterials()
         {
             if (!m_BloomEffects.IsNullOrEmpty())
             {
@@ -133,9 +159,8 @@ namespace CDOverhaul.Graphics
             }
         }
 
-        private static void refreshTargetFramerate()
+        private static void refreshApplicationTargetFramerate()
         {
-            SettingsManager.Instance.SetVsyncOn(false);
             switch (TargetFPS)
             {
                 case 1:
@@ -143,7 +168,6 @@ namespace CDOverhaul.Graphics
                     break;
                 case 2:
                     Application.targetFrameRate = 60;
-                    SettingsManager.Instance.SetVsyncOn(true);
                     break;
                 case 3:
                     Application.targetFrameRate = 75;
@@ -163,14 +187,6 @@ namespace CDOverhaul.Graphics
                 default:
                     Application.targetFrameRate = -1;
                     break;
-            }
-        }
-
-        private static void onModDisabled()
-        {
-            foreach (OverhaulPostProcessBehaviour b in UICamera.GetComponents<OverhaulPostProcessBehaviour>())
-            {
-                Object.Destroy(b);
             }
         }
     }

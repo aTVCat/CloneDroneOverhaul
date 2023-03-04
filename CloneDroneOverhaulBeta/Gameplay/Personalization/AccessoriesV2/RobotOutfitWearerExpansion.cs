@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class RobotOutfitWearerExpansion : FirstPersonMoverExpansionBase
+    public class RobotOutfitWearerExpansion : OverhaulCharacterExpansion
     {
         private PlayerOutfitController m_OutfitController;
         private Dictionary<IPlayerAccessoryItemDefinition, GameObject> m_SpawnedModels = new Dictionary<IPlayerAccessoryItemDefinition, GameObject>();

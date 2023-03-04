@@ -14,8 +14,8 @@ namespace CDOverhaul.Patches
                 return true;
             }
 
-            FirstPersonMoverExpansionBase[] expansionBases = __instance.GetComponents<FirstPersonMoverExpansionBase>();
-            foreach (FirstPersonMoverExpansionBase b in expansionBases)
+            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
+            foreach (OverhaulCharacterExpansion b in expansionBases)
             {
                 b.OnPreAIUpdate(__instance, out bool continueEx);
                 if (!continueEx)
@@ -37,8 +37,8 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            FirstPersonMoverExpansionBase[] expansionBases = __instance.GetComponents<FirstPersonMoverExpansionBase>();
-            foreach (FirstPersonMoverExpansionBase b in expansionBases)
+            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
+            foreach (OverhaulCharacterExpansion b in expansionBases)
             {
                 b.OnPostAIUpdate(__instance);
             }

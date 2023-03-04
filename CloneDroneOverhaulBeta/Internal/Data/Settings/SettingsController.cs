@@ -18,9 +18,6 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            OverhaulCanvasController h = OverhaulMod.Core.HUDController;
-            HUD = h.AddHUD<OverhaulParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
-
             if (_hasAddedSettings)
             {
                 return;
@@ -57,6 +54,12 @@ namespace CDOverhaul
             _hasAddedSettings = true;
         }
 
+        internal static void PostInitialize()
+        {
+            OverhaulCanvasController h = OverhaulMod.Core.HUDController;
+            HUD = h.AddHUD<OverhaulParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
+        }
+
         /// <summary>
         /// Add a setting and get full info about one
         /// </summary>
@@ -80,7 +83,10 @@ namespace CDOverhaul
                 return;
             }
             SettingDescription desc = new SettingDescription(description, img43filename, img169filename);
-            m_SettingDescriptions.Add(settingPath, desc);
+            if (!m_SettingDescriptions.ContainsKey(settingPath))
+            {
+                m_SettingDescriptions.Add(settingPath, desc);
+            }
         }
 
         public static void ParentSetting(in string settingPath, in string targetSettingPath)

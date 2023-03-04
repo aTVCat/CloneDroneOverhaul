@@ -5,6 +5,11 @@ namespace CDOverhaul.Patches
 {
     public class EnergyUIReplacement : ReplacementBase
     {
+        [OverhaulSetting("Game interface.Gameplay.New Energy UI", true)]
+        public static bool PatchHUD;
+
+        private bool m_AddedListeners;
+
         private EnergyUI _energyUI;
 
         private (Vector3, Vector3) _positions;
@@ -29,6 +34,12 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
+            if (!m_AddedListeners)
+            {
+                OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, togglePatch);
+            }
+            m_AddedListeners = true;
+
             _energyUI = GameUIRoot.Instance.EnergyUI;
             if (_energyUI == null)
             {
@@ -52,14 +63,17 @@ namespace CDOverhaul.Patches
             _ = _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
 
             SuccessfullyPatched = true;
-
-            PatchEnergyUI(false);
         }
 
         public override void Cancel()
         {
             base.Cancel();
             PatchEnergyUI(true);
+        }
+
+        private void togglePatch()
+        {
+            PatchEnergyUI(!PatchHUD);
         }
 
         public void PatchEnergyUI(in bool recover)

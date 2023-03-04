@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsWearer : FirstPersonMoverExpansionBase
+    public class WeaponSkinsWearer : OverhaulCharacterExpansion
     {
         public readonly Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo> WeaponSkins = new Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo>();
         private bool m_WaitingToSpawnSkins;

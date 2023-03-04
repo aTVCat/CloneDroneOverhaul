@@ -10,5 +10,10 @@
         {
             return !GameModeManager.Is(GameMode.Story) && !GameModeManager.ConsciousnessTransferToAlliesEnabled() && !GameModeManager.ConsciousnessTransferToKillerEnabled();
         }
+
+        public static bool SupportsCombatOverhaul()
+        {
+            return !GameModeManager.IsMultiplayer();
+        }
     }
 }
