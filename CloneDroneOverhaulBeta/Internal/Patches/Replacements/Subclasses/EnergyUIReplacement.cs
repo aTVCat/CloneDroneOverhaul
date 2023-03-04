@@ -36,7 +36,7 @@ namespace CDOverhaul.Patches
 
             if (!m_AddedListeners)
             {
-                OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, togglePatch);
+                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, togglePatch);
             }
             m_AddedListeners = true;
 
@@ -61,6 +61,8 @@ namespace CDOverhaul.Patches
             _cantJumpBG = transform.Find("CantJumpBG");
 
             _ = _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
+
+            PatchEnergyUI(!PatchHUD);
 
             SuccessfullyPatched = true;
         }

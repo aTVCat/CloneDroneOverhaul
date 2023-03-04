@@ -18,11 +18,11 @@ namespace CDOverhaul
         /// <summary>
         /// The full name of the mod
         /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul Beta a" + ModVersion.ToString() + " Technical Demo" + DebugString;
+        public static readonly string ModFullName = "Clone Drone Overhaul Beta a" + ModVersion.ToString() + DebugString;
         /// <summary>
         /// The shortened name of the mod
         /// </summary>
-        public static readonly string ModShortName = "Overhaul a" + ModVersion.ToString() + " Technical Demo" + DebugString;
+        public static readonly string ModShortName = "Overhaul a" + ModVersion.ToString() + DebugString;
 
         public const bool ArenaUpdateEnabled = true;
         public const bool AllowWindowNameChanging = false;

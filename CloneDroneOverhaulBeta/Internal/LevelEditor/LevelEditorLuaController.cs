@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using LuaInterface;
+﻿using LuaInterface;
 using System.IO;
 
 namespace CDOverhaul.LevelEditor
@@ -32,7 +30,7 @@ namespace CDOverhaul.LevelEditor
             }
 
             Lua lua = new Lua();
-            lua.DoFile(path);
+            _ = lua.DoFile(path);
         }
 
         /// <summary>

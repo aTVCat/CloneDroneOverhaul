@@ -106,7 +106,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
         private void Awake()
         {
             _spawnedBehaviours.Add(this);
-            this.enabled = true;
+            enabled = true;
         }
 
         private void OnDestroy()

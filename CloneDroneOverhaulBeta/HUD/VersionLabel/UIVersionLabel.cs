@@ -22,8 +22,8 @@ namespace CDOverhaul.HUD
             m_ExclusiveLabel = MyModdedObject.GetObject<Text>(3);
             m_ExclusiveLabel.gameObject.SetActive(false);
 
-            OverhaulEventManager.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
-            OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            _ = OverhaulEventManager.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
             m_wasOnTitleScreenBefore = true;
 
             if (m_VersionLabel == null || m_TitleScreenUIVersionLabel == null)

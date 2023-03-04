@@ -61,9 +61,9 @@ namespace CDOverhaul.Graphics
         private static Material m_ChromaMaterial;
         private static Material m_EdgeBlur;
 
-        private static Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
-        private static Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
-        private static Func<bool> m_EnableBEFunc = new System.Func<bool>(() => BlurEdgesEnabled);
+        private static readonly Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
+        private static readonly Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
+        private static readonly Func<bool> m_EnableBEFunc = new System.Func<bool>(() => BlurEdgesEnabled);
 
         public static OverhaulCameraController CameraController { get; private set; }
 
