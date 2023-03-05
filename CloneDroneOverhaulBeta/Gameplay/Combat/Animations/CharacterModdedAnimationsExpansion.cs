@@ -41,12 +41,15 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
+            FirstPersonMover.SetActiveEmoteIndex(-1);
+
             if (m_HasUpperAnimator && m_UpperAnimation != null)
             {
                 AnimationClip clip = m_UpperAnimation.GetClip(animationName);
                 if(clip != null)
                 {
-                    m_UpperAnimation.CrossFade(animationName, 0.2f);
+                    m_UpperAnimation.CrossFade(animationName, 0.35f);
+                    m_UpperAnimation.clip = clip;
                 }
             }
             if (m_HasLowerAnimator && m_LowerAnimation != null)
@@ -54,7 +57,8 @@ namespace CDOverhaul.Gameplay.Combat
                 AnimationClip clip = m_LowerAnimation.GetClip(animationName);
                 if (clip != null)
                 {
-                    m_LowerAnimation.CrossFade(animationName, 0.2f);
+                    m_LowerAnimation.CrossFade(animationName, 0.35f);
+                    m_LowerAnimation.clip = clip;
                 }
             }
         }
@@ -80,17 +84,19 @@ namespace CDOverhaul.Gameplay.Combat
         {
             if (!HasAnimator(animationType))
             {
-                return null;
+                return string.Empty;
             }
 
             switch (animationType)
             {
                 case CombatOverhaulAnimatorType.Upper:
-                    return m_UpperAnimation.clip.name;
+                    return m_UpperAnimation != null ? m_UpperAnimation.clip.name : string.Empty;
+                    break;
                 case CombatOverhaulAnimatorType.Legs:
-                    return m_LowerAnimation.clip.name;
+                    return m_LowerAnimation != null ? m_LowerAnimation.clip.name : string.Empty;
+                    break;
             }
-            return null;
+            return string.Empty;
         }
 
         private void LateUpdate()

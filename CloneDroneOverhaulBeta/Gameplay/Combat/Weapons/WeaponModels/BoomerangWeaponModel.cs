@@ -54,7 +54,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            if (AnimationController != null && !AnimationController.IsPlayingCustomUpperAnimation)
+            if (AnimationController != null && (!AnimationController.IsPlayingCustomUpperAnimation || AnimationController.GetPlayingCustomAnimationName(CombatOverhaulAnimatorType.Upper).Equals("WeaponUse_PickUpBoomerang")))
             {
                 m_TimeStartedAttacking = Time.time;
                 m_TimeToAllowRegisteringTheThrow = Time.time + 0.2f;
@@ -72,7 +72,7 @@ namespace CDOverhaul.Gameplay.Combat
                 m_IsPlayingAttackAnimation = false;
                 AnimationController.ForceSetIsPlayingUpperAnimation = false;
                 AnimationController.PlayCustomAnimaton("WeaponUse_ThrowBoomerang");
-                DelegateScheduler.Instance.Schedule(Throw, 0.1f);
+                DelegateScheduler.Instance.Schedule(Throw, 0.2f);
                 return;
             }
             m_IsPlayingAttackAnimation = false;
@@ -83,21 +83,22 @@ namespace CDOverhaul.Gameplay.Combat
 
         public void Throw()
         {
-            m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedAttacking) / (m_TimeToAllowRegisteringTheThrow - m_TimeStartedAttacking + 1f), 0.3f, 1.5f);
+            m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedAttacking) / (m_TimeToAllowRegisteringTheThrow - m_TimeStartedAttacking + 1f), 0.45f, 1.5f);
             m_Parent = base.transform.parent;
             m_RigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
             m_IsThrown = true;
             m_TimeToAllowPickingUp = Time.time + 0.3f;
             m_RigidBody.isKinematic = false;
-            m_RigidBody.velocity = (m_TransformToUse.position + m_TransformToUse.forward - m_TransformToUse.position) * (40 * m_ThrowStrength);
+            m_RigidBody.velocity = GetOwner().transform.forward * (40 * m_ThrowStrength);
             base.transform.SetParent(null, true);
             base.transform.eulerAngles = Vector3.zero;
-            base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 2) + new Vector3(0, 1.75f, 0);
+            base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 1.3f) + new Vector3(0, 1.6f + (Random.value * 0.5f), 0);
             base.MeleeImpactArea.SetDamageActive(true);
         }
 
         public void PickUp()
         {
+            AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
             base.MeleeImpactArea.SetDamageActive(false);
             m_IsThrown = false;
             m_RigidBody.isKinematic = true;
