@@ -52,6 +52,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public NewWeaponsController NewWeapons
+        {
+            get;
+            private set;
+        }
+
         public PlayerOutfitController Outfits
         {
             get;
@@ -78,6 +84,7 @@ namespace CDOverhaul.Gameplay
             Outfits = OverhaulController.InitializeController<PlayerOutfitController>();
             AdditionalAnimations = OverhaulController.InitializeController<AdditionalAnimationsController>();
             CombatOverhaul = OverhaulController.InitializeController<CombatOverhaulController>();
+            NewWeapons = OverhaulController.InitializeController<NewWeaponsController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 

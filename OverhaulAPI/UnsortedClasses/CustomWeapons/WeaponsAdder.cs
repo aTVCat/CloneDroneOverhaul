@@ -1,0 +1,90 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using ModLibrary;   
+
+namespace OverhaulAPI
+{
+    public static class WeaponsAdder 
+    {
+        internal const int Start_WeaponType_Index = 20;
+        private static int m_NextID = Start_WeaponType_Index;
+
+        private static Transform m_WeaponsStorage;
+        private static readonly List<AddedWeaponModel> m_AddedWeapons = new List<AddedWeaponModel>(); 
+
+        internal static void Init()
+        {
+            m_AddedWeapons.Clear();
+            m_WeaponsStorage = new GameObject("OverhaulAPI WeaponsStorage").transform;
+            m_WeaponsStorage.gameObject.SetActive(false);
+        }
+
+        public static T AddWeaponModel<T>(Transform prefab, ModelOffset offset, MechBodyPartType bodyPart = MechBodyPartType.RightArm) where T : AddedWeaponModel
+        {
+            Transform transform = GameObject.Instantiate(prefab, m_WeaponsStorage);
+            AddedWeaponModel addedWeaponModel = transform.gameObject.AddComponent<T>();
+            addedWeaponModel.SetWeaponType((WeaponType)m_NextID);
+            addedWeaponModel.ModelOffset = offset;
+            addedWeaponModel.BodyPartType = bodyPart;
+            addedWeaponModel.gameObject.layer = Layers.BodyPart;
+            m_AddedWeapons.Add(addedWeaponModel);
+            m_NextID++;
+            return (T)addedWeaponModel;
+        }
+
+        /// <summary>
+        /// Call this in your mod to add
+        /// </summary>
+        /// <param name="mover"></param>
+        public static void AddWeaponModelsToFirstPersonMover(FirstPersonMover mover, List<AddedWeaponModel> weapons)
+        {
+            if(mover == null)
+            {
+                return;
+            }
+            if (!mover.HasCharacterModel())
+            {
+                API.ThrowException("NullReferenceExcepton: Make sure that FirstPersonMover's CharacterModel is already initialized at the moment you add weapons. Call this method after robot's model is initialized.\n");
+            }
+            if(weapons == null || weapons.Count == 0)
+            {
+                API.ThrowException("NullReferenceExcepton: You're trying to add 0 new weapons to robots.");
+            }
+
+            CharacterModel model = mover.GetCharacterModel();
+            List<WeaponModel> weaponModels = model.WeaponModels.ToList();
+            List<WeaponType> weaponTypes = mover.GetPrivateField<List<WeaponType>>("_equippedWeapons");
+
+            foreach(AddedWeaponModel addedModel in weapons)
+            {
+                MechBodyPartType bodyPartToUse = addedModel.BodyPartType;
+                MechBodyPart bodyPart = mover.GetBodyPart(bodyPartToUse);
+                if(bodyPart == null)
+                {
+                    continue;
+                }
+                Transform parent = bodyPart.transform.parent;
+                if(parent == null)
+                {
+                    continue;
+                }
+
+                AddedWeaponModel spawnedModel = GameObject.Instantiate(addedModel, parent);
+                spawnedModel.SetOwner(mover);
+                spawnedModel.transform.localPosition = addedModel.ModelOffset.OffsetPosition;
+                spawnedModel.transform.localEulerAngles = addedModel.ModelOffset.OffsetEulerAngles;
+                spawnedModel.transform.localScale = addedModel.ModelOffset.OffsetLocalScale;
+                spawnedModel.ModelOffset = addedModel.ModelOffset;
+                spawnedModel.gameObject.SetActive(mover.GetEquippedWeaponType() == spawnedModel.WeaponType);
+
+                weaponModels.Add(spawnedModel);
+                weaponTypes.Add(spawnedModel.WeaponType);
+            }
+
+            model.WeaponModels = weaponModels.ToArray();
+            mover.SetPrivateField("_equippedWeapons", weaponTypes);
+        }
+    }
+}

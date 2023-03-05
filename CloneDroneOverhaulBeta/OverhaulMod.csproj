@@ -382,10 +382,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
+    <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulController.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulMechanic.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\Subclasses\CombatSprintAndStance.cs" />
+    <Compile Include="Gameplay\Combat\Weapons\NewWeaponsController.cs" />
+    <Compile Include="Gameplay\Combat\Weapons\NewWeaponsRobotExpansion.cs" />
+    <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
+    <Compile Include="Gameplay\Combat\Weapons\WeaponModels\BoomerangWeaponModel.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryModel.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryModel.cs" />
@@ -402,7 +407,6 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponSkinModel.cs" />
-    <Compile Include="Gameplay\Personalization\ModelOffset.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponSkinItemFilter.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\WeaponSkinItemNullReason.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinsControllerV2.cs" />

@@ -14,7 +14,7 @@ namespace CDOverhaul.Patches
             DirectionalLightManager.Instance.DirectionalLight.shadowBias = 1f;
 
             // This may reduce RAM usage & improve performacne a bit
-            UnityEngine.Physics.reuseCollisionCallbacks = true;
+            //UnityEngine.Physics.reuseCollisionCallbacks = true;
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
 

@@ -25,12 +25,14 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
             CharacterModel model = firstPersonMover.GetCharacterModel();
+            Animation animationComponent = null;
+            Animation animationComponent2 = null;
 
             Animator upperAnimator = model.UpperAnimator;
             bool hasUpperAnimator = upperAnimator != null;
             if (hasUpperAnimator)
             {
-                Animation animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
+                animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
                 AnimationClip clip = AssetController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetsPart.Combat_Update);
                 animationComponent.AddClip(clip, clip.name);
             }
@@ -39,8 +41,10 @@ namespace CDOverhaul.Gameplay.Combat
             bool hasLegsAnimator = legsAnimator != null;
             if (hasLegsAnimator)
             {
-
+                animationComponent2 = upperAnimator.gameObject.AddComponent<Animation>();
             }
+
+            firstPersonMover.gameObject.AddComponent<CharacterModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);
         }
 
         public override string[] Commands()

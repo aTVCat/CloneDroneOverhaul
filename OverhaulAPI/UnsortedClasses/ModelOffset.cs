@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CDOverhaul.Gameplay
+namespace OverhaulAPI
 {
     public class ModelOffset
     {
