@@ -1,6 +1,4 @@
 ﻿using OverhaulAPI;
-using System.Collections;
-using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
 {
@@ -44,11 +42,12 @@ namespace CDOverhaul.Gameplay.Combat
             }
         }
 
-        public bool AllowChangingWeapon { get; set; }
+        public bool AllowRobotToSwitchWeapons { get; set; }
 
         public virtual void Start()
         {
-            AllowChangingWeapon = true;
+            AllowRobotToSwitchWeapons = true;
+            SetOwner(base.GetComponentInParent<FirstPersonMover>());
         }
 
         public virtual void TryAttack()

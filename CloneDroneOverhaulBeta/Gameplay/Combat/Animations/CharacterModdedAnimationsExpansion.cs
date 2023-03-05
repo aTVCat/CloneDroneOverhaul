@@ -46,8 +46,7 @@ namespace CDOverhaul.Gameplay.Combat
                 AnimationClip clip = m_UpperAnimation.GetClip(animationName);
                 if(clip != null)
                 {
-                    m_UpperAnimation.clip = clip;
-                    m_UpperAnimation.Play();
+                    m_UpperAnimation.CrossFade(animationName, 0.2f);
                 }
             }
             if (m_HasLowerAnimator && m_LowerAnimation != null)
@@ -55,8 +54,7 @@ namespace CDOverhaul.Gameplay.Combat
                 AnimationClip clip = m_LowerAnimation.GetClip(animationName);
                 if (clip != null)
                 {
-                    m_LowerAnimation.clip = clip;
-                    m_LowerAnimation.Play();
+                    m_LowerAnimation.CrossFade(animationName, 0.2f);
                 }
             }
         }

@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using ModLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using ModLibrary;   
 
 namespace OverhaulAPI
 {
@@ -16,6 +15,7 @@ namespace OverhaulAPI
 
         internal static void Init()
         {
+            m_NextID = Start_WeaponType_Index;
             m_AddedWeapons.Clear();
             m_WeaponsStorage = new GameObject("OverhaulAPI WeaponsStorage").transform;
             m_WeaponsStorage.gameObject.SetActive(false);
@@ -23,14 +23,15 @@ namespace OverhaulAPI
 
         public static T AddWeaponModel<T>(Transform prefab, ModelOffset offset, MechBodyPartType bodyPart = MechBodyPartType.RightArm) where T : AddedWeaponModel
         {
-            Transform transform = GameObject.Instantiate(prefab, m_WeaponsStorage);
+            Transform transform = Object.Instantiate(prefab, m_WeaponsStorage);
+
             AddedWeaponModel addedWeaponModel = transform.gameObject.AddComponent<T>();
-            addedWeaponModel.SetWeaponType((WeaponType)m_NextID);
+            addedWeaponModel.WeaponType = (WeaponType)m_NextID;
             addedWeaponModel.ModelOffset = offset;
             addedWeaponModel.BodyPartType = bodyPart;
-            addedWeaponModel.gameObject.layer = Layers.BodyPart;
             m_AddedWeapons.Add(addedWeaponModel);
             m_NextID++;
+
             return (T)addedWeaponModel;
         }
 
@@ -72,6 +73,8 @@ namespace OverhaulAPI
                 }
 
                 AddedWeaponModel spawnedModel = GameObject.Instantiate(addedModel, parent);
+                spawnedModel.WeaponType = addedModel.WeaponType;
+                spawnedModel.gameObject.layer = Layers.BodyPart;
                 spawnedModel.SetOwner(mover);
                 spawnedModel.transform.localPosition = addedModel.ModelOffset.OffsetPosition;
                 spawnedModel.transform.localEulerAngles = addedModel.ModelOffset.OffsetEulerAngles;

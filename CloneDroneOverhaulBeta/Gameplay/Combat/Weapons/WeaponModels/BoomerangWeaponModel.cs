@@ -6,6 +6,7 @@ namespace CDOverhaul.Gameplay.Combat
     public class BoomerangWeaponModel : OverhaulWeaponModel
     {
         private bool m_IsPlayingAttackAnimation;
+        private float m_TimeStartedAttacking;
         private float m_TimeToAllowRegisteringTheThrow;
 
         private bool m_IsThrown;
@@ -15,10 +16,13 @@ namespace CDOverhaul.Gameplay.Combat
         private BoxCollider m_Collider;
 
         private Transform m_Parent;
+        private Transform m_TransformToUse;
+
+        private float m_ThrowStrength;
+  
 
         public override void Start()
         {
-            base.Start();
             if (base.MeleeImpactArea == null)
             {
                 BladeCutArea blade = base.gameObject.AddComponent<BladeCutArea>();
@@ -28,7 +32,6 @@ namespace CDOverhaul.Gameplay.Combat
                 blade.EdgePoint2.gameObject.layer = Layers.BodyPart;
                 blade.DamageSourceType = DamageSourceType.Sword;
                 base.MeleeImpactArea = blade;
-                SetOwner(base.GetComponentInParent<FirstPersonMover>());
             }
             if (m_RigidBody == null)
             {
@@ -40,8 +43,9 @@ namespace CDOverhaul.Gameplay.Combat
                 base.MeleeImpactArea.SetPrivateField<Collider>("_collider", m_Collider);
                 base.AddImmuneCharacter(GetOwner());
             }
+            base.Start();
+            m_TransformToUse = GetOwner().GetBodyPart(MechBodyPartType.Head).transform.parent;
         }
-
 
         public override void TryAttack()
         {
@@ -52,11 +56,12 @@ namespace CDOverhaul.Gameplay.Combat
 
             if (AnimationController != null && !AnimationController.IsPlayingCustomUpperAnimation)
             {
-                m_TimeToAllowRegisteringTheThrow = Time.time + 0.3f;
+                m_TimeStartedAttacking = Time.time;
+                m_TimeToAllowRegisteringTheThrow = Time.time + 0.2f;
                 m_IsPlayingAttackAnimation = true;
-                AllowChangingWeapon = false;
+                AllowRobotToSwitchWeapons = false;
                 AnimationController.ForceSetIsPlayingUpperAnimation = true;
-                AnimationController.PlayCustomAnimaton("TestAnim");
+                AnimationController.PlayCustomAnimaton("WeaponUse_PrepareBoomerang");
             }
         }
 
@@ -66,23 +71,25 @@ namespace CDOverhaul.Gameplay.Combat
             {
                 m_IsPlayingAttackAnimation = false;
                 AnimationController.ForceSetIsPlayingUpperAnimation = false;
-                Throw();
+                AnimationController.PlayCustomAnimaton("WeaponUse_ThrowBoomerang");
+                DelegateScheduler.Instance.Schedule(Throw, 0.1f);
                 return;
             }
             m_IsPlayingAttackAnimation = false;
-            AllowChangingWeapon = true;
+            AllowRobotToSwitchWeapons = true;
             AnimationController.ForceSetIsPlayingUpperAnimation = false;
             AnimationController.StopPlayingCustomAnimations();
         }
 
         public void Throw()
         {
+            m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedAttacking) / (m_TimeToAllowRegisteringTheThrow - m_TimeStartedAttacking + 1f), 0.3f, 1.5f);
             m_Parent = base.transform.parent;
             m_RigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
             m_IsThrown = true;
-            m_TimeToAllowPickingUp = Time.time + 0.5f;
+            m_TimeToAllowPickingUp = Time.time + 0.3f;
             m_RigidBody.isKinematic = false;
-            m_RigidBody.velocity = GetOwner().transform.forward * 50;
+            m_RigidBody.velocity = (m_TransformToUse.position + m_TransformToUse.forward - m_TransformToUse.position) * (40 * m_ThrowStrength);
             base.transform.SetParent(null, true);
             base.transform.eulerAngles = Vector3.zero;
             base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 2) + new Vector3(0, 1.75f, 0);
@@ -97,7 +104,7 @@ namespace CDOverhaul.Gameplay.Combat
             base.transform.SetParent(m_Parent, false);
             base.transform.localPosition = ModelOffset.OffsetPosition;
             base.transform.localEulerAngles = ModelOffset.OffsetEulerAngles;
-            AllowChangingWeapon = true;
+            AllowRobotToSwitchWeapons = true;
         }
 
         public override void OnUnequipped()
@@ -126,6 +133,7 @@ namespace CDOverhaul.Gameplay.Combat
                 {
                     PickUp();
                 }
+                m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, m_RigidBody.velocity.y * 0.01f, m_RigidBody.velocity.z);
             }
 
             if (!m_IsPlayingAttackAnimation)

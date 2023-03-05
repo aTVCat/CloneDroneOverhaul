@@ -35,6 +35,10 @@ namespace CDOverhaul.Gameplay.Combat
                 animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
                 AnimationClip clip = AssetController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetsPart.Combat_Update);
                 animationComponent.AddClip(clip, clip.name);
+                AnimationClip clip2 = AssetController.GetAsset<AnimationClip>("WeaponUse_PrepareBoomerang", OverhaulAssetsPart.Combat_Update);
+                animationComponent.AddClip(clip2, clip2.name);
+                AnimationClip clip3 = AssetController.GetAsset<AnimationClip>("WeaponUse_ThrowBoomerang", OverhaulAssetsPart.Combat_Update);
+                animationComponent.AddClip(clip3, clip3.name);
             }
 
             Animator legsAnimator = model.LegsAnimator;
