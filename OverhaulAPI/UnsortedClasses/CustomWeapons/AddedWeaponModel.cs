@@ -1,6 +1,4 @@
-﻿using ModLibrary;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulAPI
 {
@@ -8,5 +6,9 @@ namespace OverhaulAPI
     {
         public ModelOffset ModelOffset { get; internal set; }
         public MechBodyPartType BodyPartType { get; internal set; }
+
+        public virtual void Initialize(FirstPersonMover newOwner) { }
+
+        public virtual void ApplyColor(Color color) { }
     }
 }

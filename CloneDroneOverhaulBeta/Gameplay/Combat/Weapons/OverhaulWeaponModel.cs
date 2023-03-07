@@ -1,4 +1,6 @@
-﻿using OverhaulAPI;
+﻿using ModLibrary;
+using OverhaulAPI;
+using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay.Combat
 {
@@ -44,10 +46,33 @@ namespace CDOverhaul.Gameplay.Combat
 
         public bool AllowRobotToSwitchWeapons { get; set; }
 
+        public void SetCanBeEquiped()
+        {
+            List<WeaponType> list = GetOwner().GetPrivateField<List<WeaponType>>("_equippedWeapons");
+            if (!list.Contains(base.WeaponType))
+            {
+                list.Add(base.WeaponType);
+            }
+        }
+
+        public void SetCannotBeEquiped(bool setIsDropped = false)
+        {
+            List<WeaponType> list = GetOwner().GetPrivateField<List<WeaponType>>("_equippedWeapons");
+            if (list.Contains(base.WeaponType))
+            {
+                _ = list.Remove(base.WeaponType);
+            }
+
+            List<WeaponType> list2 = GetOwner().GetPrivateField<List<WeaponType>>("_droppedWeapons");
+            if(!list2.Contains(base.WeaponType))
+            {
+                list2.Add(base.WeaponType);
+            }
+        }
+
         public virtual void Start()
         {
             AllowRobotToSwitchWeapons = true;
-            SetOwner(base.GetComponentInParent<FirstPersonMover>());
         }
 
         public virtual void TryAttack()
@@ -61,6 +86,11 @@ namespace CDOverhaul.Gameplay.Combat
         }
 
         public virtual void OnUnequipped()
+        {
+
+        }
+
+        public virtual void OnUpgradesRefreshed(UpgradeCollection collection)
         {
 
         }

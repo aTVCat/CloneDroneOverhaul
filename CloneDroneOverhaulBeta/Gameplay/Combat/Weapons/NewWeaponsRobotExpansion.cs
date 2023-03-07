@@ -1,4 +1,7 @@
 ﻿using ModLibrary;
+using OverhaulAPI;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
 {
@@ -9,6 +12,10 @@ namespace CDOverhaul.Gameplay.Combat
 
         private FPMoveCommand m_MoveCommand;
         public FPMoveCommand MoveCommand => m_MoveCommand;
+
+        internal List<AddedWeaponModel> AllCustomWeapons;
+
+        private float m_TimeToRefreshWeapons = -1f;
 
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
@@ -42,6 +49,42 @@ namespace CDOverhaul.Gameplay.Combat
             if (command.Input.AttackKeyDown)
             {
                 m_CurrentWeaponModel.TryAttack();
+            }
+        }
+
+        protected override void OnRefresh()
+        {
+            m_TimeToRefreshWeapons = Time.unscaledTime + 0.2f;
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            OnRefresh();
+        }
+
+        private void Update()
+        {
+            if(m_TimeToRefreshWeapons != -1f && Time.unscaledTime >= m_TimeToRefreshWeapons)
+            {
+                refreshWeapons();
+                m_TimeToRefreshWeapons = -1f;
+            }
+        }
+
+        private void refreshWeapons()
+        {
+            UpgradeCollection collection = UpgradeCollection;
+            if(collection == null)
+            {
+                return;
+            }
+            foreach (AddedWeaponModel m in AllCustomWeapons)
+            {
+                if (m != null && m is OverhaulWeaponModel)
+                {
+                    (m as OverhaulWeaponModel).OnUpgradesRefreshed(collection);
+                }
             }
         }
     }

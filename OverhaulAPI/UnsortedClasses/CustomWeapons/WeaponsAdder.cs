@@ -39,10 +39,11 @@ namespace OverhaulAPI
         /// Call this in your mod to add
         /// </summary>
         /// <param name="mover"></param>
-        public static void AddWeaponModelsToFirstPersonMover(FirstPersonMover mover, List<AddedWeaponModel> weapons)
+        public static void AddWeaponModelsToFirstPersonMover(FirstPersonMover mover, List<AddedWeaponModel> weapons, bool equip, out List<AddedWeaponModel> spawnedWeapons)
         {
             if(mover == null)
             {
+                spawnedWeapons = null;
                 return;
             }
             if (!mover.HasCharacterModel())
@@ -54,6 +55,7 @@ namespace OverhaulAPI
                 API.ThrowException("NullReferenceExcepton: You're trying to add 0 new weapons to robots.");
             }
 
+            spawnedWeapons = new List<AddedWeaponModel>();
             CharacterModel model = mover.GetCharacterModel();
             List<WeaponModel> weaponModels = model.WeaponModels.ToList();
             List<WeaponType> weaponTypes = mover.GetPrivateField<List<WeaponType>>("_equippedWeapons");
@@ -75,19 +77,26 @@ namespace OverhaulAPI
                 AddedWeaponModel spawnedModel = GameObject.Instantiate(addedModel, parent);
                 spawnedModel.WeaponType = addedModel.WeaponType;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
-                spawnedModel.SetOwner(mover);
                 spawnedModel.transform.localPosition = addedModel.ModelOffset.OffsetPosition;
                 spawnedModel.transform.localEulerAngles = addedModel.ModelOffset.OffsetEulerAngles;
                 spawnedModel.transform.localScale = addedModel.ModelOffset.OffsetLocalScale;
                 spawnedModel.ModelOffset = addedModel.ModelOffset;
                 spawnedModel.gameObject.SetActive(mover.GetEquippedWeaponType() == spawnedModel.WeaponType);
+                spawnedModel.Initialize(mover);
+                HSBColor hsbcolor2 = new HSBColor(mover.GetCharacterModel().GetFavouriteColor())
+                {
+                    b = 1f,
+                    s = 0.75f
+                };
+                spawnedModel.ApplyColor(hsbcolor2.ToColor() * 2.5f);
+                spawnedWeapons.Add(spawnedModel);
 
                 weaponModels.Add(spawnedModel);
-                weaponTypes.Add(spawnedModel.WeaponType);
+                if(equip) weaponTypes.Add(spawnedModel.WeaponType);
             }
 
             model.WeaponModels = weaponModels.ToArray();
-            mover.SetPrivateField("_equippedWeapons", weaponTypes);
+            if (equip) mover.SetPrivateField("_equippedWeapons", weaponTypes);
         }
     }
 }

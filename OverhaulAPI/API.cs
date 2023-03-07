@@ -46,6 +46,7 @@ namespace OverhaulAPI
             OverhaulPostProcessBehaviour.Reset();
             MultiplayerAPI.Init();
             WeaponsAdder.Init();
+            UpgradesAdder.Init();
 
             return APIInstance;
         }

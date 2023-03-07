@@ -278,6 +278,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
+    <Compile Include="UnsortedClasses\CustomUpgrades\UpgradesAdder.cs" />
     <Compile Include="UnsortedClasses\CustomWeapons\AddedWeaponModel.cs" />
     <Compile Include="UnsortedClasses\FastSerialization.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
