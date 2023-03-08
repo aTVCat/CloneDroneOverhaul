@@ -69,8 +69,7 @@ namespace CDOverhaul.Gameplay.Combat
             if (m_RigidBody == null)
             {
                 m_RigidBody = gameObject.GetComponent<Rigidbody>();
-                m_RigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-                m_RigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+                m_RigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             }
             if (m_Collider == null)
             {
