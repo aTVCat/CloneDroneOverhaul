@@ -88,7 +88,7 @@ namespace OverhaulAPI
                     b = 1f,
                     s = 0.75f
                 };
-                spawnedModel.ApplyColor(hsbcolor2.ToColor() * 2.5f);
+                spawnedModel.ApplyOwnersFavouriteColor(hsbcolor2.ToColor() * 2.5f);
                 spawnedWeapons.Add(spawnedModel);
 
                 weaponModels.Add(spawnedModel);

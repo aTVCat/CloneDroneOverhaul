@@ -5,7 +5,7 @@ namespace CDOverhaul.Gameplay.Combat
 {
     public class BoomerangWeaponModel : OverhaulWeaponModel
     {
-        private static readonly FireSpreadDefinition lvl1Fire = new FireSpreadDefinition()
+        public static readonly FireSpreadDefinition Level1FireSpreadParameters = new FireSpreadDefinition()
         {
             DamageSourceType = DamageSourceType.Sword,
             FireType = FireType.Weapon1,
@@ -17,106 +17,109 @@ namespace CDOverhaul.Gameplay.Combat
             WaitBeforeDestroy = 0.65f
         };
 
-        private BladeCutArea m_BladeCutArea;
-        private Transform m_FireParticles;
+        public static float WaitBetweenVelocityCalculations => Time.fixedDeltaTime;
 
-        private bool m_IsPlayingAttackAnimation;
-        private float m_TimeStartedAttacking;
-        private float m_TimeToAllowRegisteringTheThrow;
+        private BladeCutArea m_BladeCutArena;
+        private Transform m_FireVFXTransform;
 
-        private float m_TimeToEnableColliders;
-        private bool m_HasDisabledCollidersForThisThrow;
+        private bool m_IsPreparingToThrow;
+        private float m_TimeStartedPreparing;
+        private float m_TimeToAllowThrowing;
+        private float m_ThrowStrength;
+
+        private float m_TimeToAllowCalculatingEnvironmentCollisions;
+        private bool m_HasAlreadyDisabledCollidersThisThrow;
 
         private bool m_IsThrown;
         private float m_TimeToAllowPickingUp;
 
         private Rigidbody m_RigidBody;
         private BoxCollider m_Collider;
-        private BoxCollider m_EnvCollider;
+        private BoxCollider m_EnvironmentCollider;
 
-        private Transform m_Parent;
+        private Transform m_InitialParentTransform;
 
-        private bool m_CollidedWithEnvironment;
+        private bool m_HasCollidedWithEnvironment;
         private float m_TimeToAllowVFX = -1f;
 
-        private bool m_AllowTargeting;
-        private Character m_CharacterToTarget;
+        private bool m_AllowAutoTargeting;
+        private Character m_TargetCharacter;
         private float m_TimeToRefreshTarget;
 
-        private float m_Range;
+        private float m_ThrowRange;
 
-        private Color m_CurrentColor;
-        private Material m_OwnMaterial;
+        private Color m_MainColor;
+        private Material m_Material;
 
-        private float m_ThrowStrength;
+        private float m_TimeToCalculateNewVelocityValue;
 
         public override void Initialize(FirstPersonMover newOwner)
         {
-            m_Range = 30f;
-            m_OwnMaterial = base.GetComponent<ModdedObject>().GetObject<Renderer>(2).material;
-            if (base.MeleeImpactArea == null)
-            {
-                BladeCutArea blade = base.gameObject.AddComponent<BladeCutArea>();
-                blade.EdgePoint1 = GetComponent<ModdedObject>().GetObject<Transform>(0);
-                blade.EdgePoint1.gameObject.layer = Layers.BodyPart;
-                blade.EdgePoint2 = GetComponent<ModdedObject>().GetObject<Transform>(1);
-                blade.EdgePoint2.gameObject.layer = Layers.BodyPart;
-                blade.DamageSourceType = DamageSourceType.Sword;
-                m_BladeCutArea = blade;
-                base.MeleeImpactArea = blade;
-            }
+            m_ThrowRange = 30f;
+            m_Material = base.GetComponent<ModdedObject>().GetObject<Renderer>(2).material;
+
+            BladeCutArea blade = base.gameObject.AddComponent<BladeCutArea>();
+            blade.EdgePoint1 = GetComponent<ModdedObject>().GetObject<Transform>(0);
+            blade.EdgePoint1.gameObject.layer = Layers.BodyPart;
+            blade.EdgePoint2 = GetComponent<ModdedObject>().GetObject<Transform>(1);
+            blade.EdgePoint2.gameObject.layer = Layers.BodyPart;
+            blade.DamageSourceType = DamageSourceType.Sword;
+            m_BladeCutArena = blade;
+            base.MeleeImpactArea = blade;
+
             SetOwner(newOwner);
-            if (m_RigidBody == null)
-            {
-                m_RigidBody = gameObject.GetComponent<Rigidbody>();
-                m_RigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            }
-            if (m_Collider == null)
-            {
-                BoxCollider[] c = gameObject.GetComponents<BoxCollider>();
-                m_Collider = c[0];
-                m_EnvCollider = c[1];
-                base.MeleeImpactArea.SetPrivateField<Collider>("_collider", m_Collider);
-                base.AddImmuneCharacter(GetOwner());
-            }
-            m_FireParticles = base.GetComponent<ModdedObject>().GetObject<Transform>(3);
+
+            m_RigidBody = gameObject.GetComponent<Rigidbody>();
+            m_RigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+            BoxCollider[] c = gameObject.GetComponents<BoxCollider>();
+            m_Collider = c[0];
+            m_EnvironmentCollider = c[1];
+            base.MeleeImpactArea.SetPrivateField<Collider>("_collider", m_Collider);
+            base.AddImmuneCharacter(GetOwner());
+
+            m_FireVFXTransform = base.GetComponent<ModdedObject>().GetObject<Transform>(3);
         }
 
-        public override void ApplyColor(Color color)
+        public override void ApplyOwnersFavouriteColor(Color color)
         {
-            m_CurrentColor = color;
-            m_OwnMaterial.SetColor("_EmissionColor", m_CurrentColor);
+            m_MainColor = color;
+            m_Material.SetColor("_EmissionColor", m_MainColor);
         }
 
         public override void OnUpgradesRefreshed(UpgradeCollection collection)
         {
-            m_AllowTargeting = false;
-            m_FireParticles.gameObject.SetActive(false);
+            m_AllowAutoTargeting = false;
+            m_FireVFXTransform.gameObject.SetActive(false);
+
             if (collection.HasUpgrade((UpgradeType)6700))
             {
                 SetCanBeEquiped();
             }
+
             if (collection.HasUpgrade((UpgradeType)6701))
             {
-                m_BladeCutArea.SetFireSpreadDefinition(lvl1Fire);
-                m_FireParticles.gameObject.SetActive(true);
+                m_BladeCutArena.SetFireSpreadDefinition(Level1FireSpreadParameters);
+                m_FireVFXTransform.gameObject.SetActive(true);
             }
+
             if (collection.HasUpgrade((UpgradeType)6702))
             {
-                m_AllowTargeting = true;
+                m_AllowAutoTargeting = true;
             }
+
             if (collection.HasUpgrade((UpgradeType)6703))
             {
                 switch (collection.GetUpgradeLevel((UpgradeType)6703))
                 {
                     case 1:
-                        m_Range = 40f;
+                        m_ThrowRange = 40f;
                         break;
                     case 2:
-                        m_Range = 55f;
+                        m_ThrowRange = 55f;
                         break;
                     default:
-                        m_Range = 30f;
+                        m_ThrowRange = 30f;
                         break;
                 }
             }
@@ -129,67 +132,17 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            if (AnimationController != null && (!AnimationController.IsPlayingCustomUpperAnimation || AnimationController.GetPlayingCustomAnimationName(CombatOverhaulAnimatorType.Upper).Equals("WeaponUse_PickUpBoomerang")))
+            if (AnimationController != null &&
+                (!AnimationController.IsPlayingCustomUpperAnimation ||
+                  AnimationController.GetPlayingCustomAnimationName(CombatOverhaulAnimatorType.Upper).Equals("WeaponUse_PickUpBoomerang")))
             {
-                m_TimeStartedAttacking = Time.time;
-                m_TimeToAllowRegisteringTheThrow = Time.time + 0.2f;
-                m_IsPlayingAttackAnimation = true;
-                AllowRobotToSwitchWeapons = false;
+                m_TimeStartedPreparing = Time.time;
+                m_TimeToAllowThrowing = Time.time + 0.2f;
+                m_IsPreparingToThrow = true;
+
+                AllowSwitchingWeapons = false;
                 AnimationController.ForceSetIsPlayingUpperAnimation = true;
                 AnimationController.PlayCustomAnimaton("WeaponUse_PrepareBoomerang");
-            }
-        }
-
-        public void StopIncreasingStrength()
-        {
-            if (Time.time >= m_TimeToAllowRegisteringTheThrow)
-            {
-                m_IsPlayingAttackAnimation = false;
-                AnimationController.ForceSetIsPlayingUpperAnimation = false;
-                AnimationController.PlayCustomAnimaton("WeaponUse_ThrowBoomerang");
-                DelegateScheduler.Instance.Schedule(Throw, 0.235f);
-                return;
-            }
-            m_IsPlayingAttackAnimation = false;
-            AllowRobotToSwitchWeapons = true;
-            AnimationController.ForceSetIsPlayingUpperAnimation = false;
-            AnimationController.StopPlayingCustomAnimations();
-        }
-
-        public void Throw()
-        {
-            m_HasDisabledCollidersForThisThrow = false;
-            m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedAttacking) / (m_TimeToAllowRegisteringTheThrow - m_TimeStartedAttacking + 1f), 0.7f, 1.5f);
-            m_Parent = base.transform.parent;
-            m_RigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-            m_IsThrown = true;
-            m_TimeToAllowPickingUp = Time.time + 0.3f + (!m_AllowTargeting ? 0 : 3f);
-            m_RigidBody.isKinematic = false;
-            m_RigidBody.velocity = GetOwner().transform.forward * (m_Range * m_ThrowStrength);
-            base.transform.SetParent(null, true);
-            base.transform.eulerAngles = new Vector3(Random.value * 20, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
-            base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 1.3f) + new Vector3(0, 1.6f + (Random.value * 0.5f), 0);
-            base.MeleeImpactArea.SetDamageActive(true);
-        }
-
-        public void PickUp()
-        {
-            AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
-            base.MeleeImpactArea.SetDamageActive(false);
-            m_IsThrown = false;
-            m_RigidBody.isKinematic = true;
-            base.transform.SetParent(m_Parent, false);
-            base.transform.localPosition = ModelOffset.OffsetPosition;
-            base.transform.localEulerAngles = ModelOffset.OffsetEulerAngles;
-            base.transform.localScale = ModelOffset.OffsetLocalScale;
-            AllowRobotToSwitchWeapons = true;
-        }
-
-        private void checkPickUp()
-        {
-            if (Time.time > m_TimeToAllowPickingUp && Vector3.Distance(GetOwner().transform.position, base.transform.position) < 4)
-            {
-                PickUp();
             }
         }
 
@@ -198,46 +151,107 @@ namespace CDOverhaul.Gameplay.Combat
             AnimationController.ForceSetIsPlayingUpperAnimation = false;
         }
 
-        private void LateUpdate()
+        public void StopPreparing()
         {
-            if(m_AllowTargeting && Time.time >= m_TimeToRefreshTarget)
+            m_IsPreparingToThrow = false;
+            AnimationController.ForceSetIsPlayingUpperAnimation = false;
+
+            if (Time.time >= m_TimeToAllowThrowing)
             {
-                m_TimeToRefreshTarget = Time.time + 1f;
-                m_CharacterToTarget = CharacterTracker.Instance.GetClosestLivingEnemyCharacter(base.transform.position);
-                m_RigidBody.velocity *= 0.2f;
-            }
-            if (m_AllowTargeting)
-            {
-                m_OwnMaterial.SetColor("_EmissionColor", m_CurrentColor * (Mathf.PingPong(Time.time, 0.75f) + 0.75f));
+                AnimationController.PlayCustomAnimaton("WeaponUse_ThrowBoomerang");
+                DelegateScheduler.Instance.Schedule(Throw, 0.235f);
+                return;
             }
 
-            m_FireParticles.transform.eulerAngles = Vector3.zero;
-            if (m_Collider != null) m_Collider.enabled = m_IsThrown;
-            if (m_EnvCollider != null) m_EnvCollider.enabled = Time.time >= m_TimeToEnableColliders;
+            AllowSwitchingWeapons = true;
+            AnimationController.StopPlayingCustomAnimations();
+        }
+
+        public void Throw()
+        {
+            m_InitialParentTransform = base.transform.parent;
+
+            m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedPreparing) / (m_TimeToAllowThrowing - m_TimeStartedPreparing + 1f), 0.7f, 1.5f);
+            m_TimeToAllowPickingUp = Time.time + 0.3f + (!m_AllowAutoTargeting ? 0 : 3f);
+            m_HasAlreadyDisabledCollidersThisThrow = false;
+
+            m_RigidBody.isKinematic = false;
+            m_RigidBody.velocity = GetOwner().transform.forward * (m_ThrowRange * m_ThrowStrength);
+            m_RigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+
+            m_Collider.enabled = true;
+
+            base.transform.SetParent(null, true);
+            base.transform.eulerAngles = new Vector3(Random.value * 20, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
+            base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 1.3f) + new Vector3(0, 1.6f + (Random.value * 0.5f), 0);
+            base.MeleeImpactArea.SetDamageActive(true);
+
+            m_IsThrown = true;
+        }
+
+        public void PickUp()
+        {
+            base.MeleeImpactArea.SetDamageActive(false);
+            m_RigidBody.isKinematic = true;
+
+            base.transform.SetParent(m_InitialParentTransform, false);
+            base.transform.localPosition = ModelOffset.OffsetPosition;
+            base.transform.localEulerAngles = ModelOffset.OffsetEulerAngles;
+            base.transform.localScale = ModelOffset.OffsetLocalScale;
+
+            AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
+
+            AllowSwitchingWeapons = true;
+            m_IsThrown = false;
+        }
+
+        public Vector3 GetVelocityForTransform(Transform transform)
+        {
+            float time = Time.time;
+            if (time < m_TimeToCalculateNewVelocityValue)
+            {
+                return Vector3.zero;
+            }
+            m_TimeToCalculateNewVelocityValue = time + WaitBetweenVelocityCalculations;
+
+            return ((transform.position - base.transform.position + new Vector3(0, 1, 0)) * (m_HasCollidedWithEnvironment ? 2f : 0.5f)).normalized;
+        }
+
+        private void LateUpdate()
+        {
+            float time = Time.time;
+
+            if (m_AllowAutoTargeting)
+            {
+                if(time >= m_TimeToRefreshTarget)
+                {
+                    m_TimeToRefreshTarget = time + 1f;
+                    m_TargetCharacter = CharacterTracker.Instance.GetClosestLivingEnemyCharacter(base.transform.position);
+                    m_RigidBody.velocity *= 0.2f;
+                }
+                m_Material.SetColor("_EmissionColor", m_MainColor * (Mathf.PingPong(time, 0.75f) + 0.75f));
+            }
+
+            m_FireVFXTransform.transform.eulerAngles = Vector3.zero;
+            m_EnvironmentCollider.enabled = time >= m_TimeToAllowCalculatingEnvironmentCollisions;
+
             if (m_IsThrown)
             {
-                MeleeImpactArea.SetPrivateField<bool>("_isDamageActive", true);
-                if (Time.time > m_TimeToAllowPickingUp)
+                MeleeImpactArea.SetPrivateField("_isDamageActive", true);
+                if (time > m_TimeToAllowPickingUp)
                 {
-                    if (!m_CollidedWithEnvironment) m_RigidBody.velocity += GetVelocityForTransform(GetOwner().transform);
-                    checkPickUp();
+                    if (!m_HasCollidedWithEnvironment) m_RigidBody.velocity += GetVelocityForTransform(GetOwner().transform);
                 }
-                else if (m_AllowTargeting && m_CharacterToTarget != null)
+                else if (m_AllowAutoTargeting && m_TargetCharacter != null)
                 {
-                    if (!m_CollidedWithEnvironment) m_RigidBody.velocity += GetVelocityForTransform(m_CharacterToTarget.transform) * 1.5f;
-                    checkPickUp();
+                    if (!m_HasCollidedWithEnvironment) m_RigidBody.velocity += GetVelocityForTransform(m_TargetCharacter.transform) * 1.5f;
                 }
 
                 base.transform.eulerAngles -= new Vector3(0, 480, 0) * Time.deltaTime;
-
-                if (Time.time > m_TimeToAllowPickingUp + 5f)
-                {
-                    PickUp();
-                }
-                //m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, m_RigidBody.velocity.y * 0.03f, m_RigidBody.velocity.z);
+                tryPickUp();
             }
 
-            if (!m_IsPlayingAttackAnimation)
+            if (!m_IsPreparingToThrow)
             {
                 return;
             }
@@ -245,33 +259,38 @@ namespace CDOverhaul.Gameplay.Combat
             bool isIncreasingDistance = Input.GetMouseButton(0);
             if (!isIncreasingDistance)
             {
-                StopIncreasingStrength();
+                StopPreparing();
             }
-        }
-
-        private Vector3 GetVelocityForTransform(Transform transform)
-        {
-            return ((transform.position - base.transform.position + new Vector3(0, 1, 0)) * Time.deltaTime * (m_CollidedWithEnvironment ? 2f : 0.5f)).normalized;
         }
 
         private void OnCollisionStay(Collision collision)
         {
-            if (!m_HasDisabledCollidersForThisThrow && !collision.collider.CompareTag("Environment"))
+            if (!m_IsThrown)
             {
-                m_TimeToEnableColliders = Time.time + 0.3f;
-                m_HasDisabledCollidersForThisThrow = true;
+                return;
+            }
+
+            if (!m_HasAlreadyDisabledCollidersThisThrow && !collision.collider.CompareTag("Environment"))
+            {
+                m_TimeToAllowCalculatingEnvironmentCollisions = Time.time + 0.3f;
+                m_HasAlreadyDisabledCollidersThisThrow = true;
 
                 BaseBodyPart part = CacheManager.Instance.GetBaseBodyPart(collision.transform);
                 if(part != null)
                 {
-                    _ = part.TryCutVolume(m_BladeCutArea.GetPrivateField<Vector3>("_lastEdgePosition1"), m_BladeCutArea.GetPrivateField<Vector3>("_lastEdgePosition2"),
-                        m_BladeCutArea.EdgePoint1.transform.position, m_BladeCutArea.EdgePoint2.transform.position, -1, false, GetOwner(), DamageSourceType.Sword, null, true);
+                    _ = part.TryCutVolume(m_BladeCutArena.GetPrivateField<Vector3>("_lastEdgePosition1"), m_BladeCutArena.GetPrivateField<Vector3>("_lastEdgePosition2"),
+                        m_BladeCutArena.EdgePoint1.transform.position, m_BladeCutArena.EdgePoint2.transform.position, -1, false, GetOwner(), DamageSourceType.Sword, null, true);
                 }
             }
         }
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (!m_IsThrown)
+            {
+                return;
+            }
+
             if (collision.collider.CompareTag("Environment"))
             {
                 if(Time.time >= m_TimeToAllowVFX)
@@ -280,13 +299,33 @@ namespace CDOverhaul.Gameplay.Combat
                     _ = AudioManager.Instance.PlayClipAtTransform(AudioLibrary.Instance.SwordBlocks, base.transform, 0f, false, 1f, GetOwner().WeaponEnvironmentImpactPitch, 0f);
                     m_TimeToAllowVFX = Time.time + 1f;
                 }
-                m_CollidedWithEnvironment = true;
+                m_HasCollidedWithEnvironment = true;
             }
         }
 
         private void OnCollisionExit(Collision collision)
         {
-            m_CollidedWithEnvironment = false;
+            if (!m_IsThrown)
+            {
+                return;
+            }
+
+            m_HasCollidedWithEnvironment = false;
+        }
+
+        private void tryPickUp()
+        {
+            if (!m_IsThrown)
+            {
+                return;
+            }
+
+            float time = Time.time;
+
+            if (time >= m_TimeToAllowPickingUp + 5 || (time > m_TimeToAllowPickingUp && Vector3.Distance(GetOwner().transform.position, base.transform.position) < 4))
+            {
+                PickUp();
+            }
         }
     }
 }

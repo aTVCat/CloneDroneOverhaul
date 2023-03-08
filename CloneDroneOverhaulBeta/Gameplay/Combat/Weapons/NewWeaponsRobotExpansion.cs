@@ -20,7 +20,7 @@ namespace CDOverhaul.Gameplay.Combat
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
             m_MoveCommand = command;
-            if (m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowRobotToSwitchWeapons)
+            if (m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowSwitchingWeapons)
             {
                 command.Input.Weapon1 = false;
                 command.Input.Weapon2 = false;

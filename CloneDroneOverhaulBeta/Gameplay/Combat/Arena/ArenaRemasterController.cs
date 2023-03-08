@@ -7,6 +7,8 @@ namespace CDOverhaul.ArenaRemaster
     {
         public const bool SupportEnemiesLeftLabel = true;
 
+        private GameObject m_OgArrows;
+
         private bool m_DebugArenaToggleState;
 
         public Transform WorldRootTransform;
@@ -44,6 +46,13 @@ namespace CDOverhaul.ArenaRemaster
 
         public override void OnModDeactivated()
         {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
+            if (m_OgArrows != null) ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = m_OgArrows;
+            if(ArenaRemaster != null) Destroy(ArenaRemaster.gameObject);
             SetOriginalArenaInteriorVisible(true);
             DestroyBehaviour();
         }
@@ -99,8 +108,10 @@ namespace CDOverhaul.ArenaRemaster
             b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
             b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
 
-            ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(false);
+            m_OgArrows = ArenaArrowManager.Instance.TopGotoElevatorArrows[0];
             ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = b1.transform.parent.gameObject;
+            ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(m_OgArrows.activeSelf); 
+            m_OgArrows.SetActive(false);
         }
 
         private void setUpLabelsInterior()
@@ -109,13 +120,10 @@ namespace CDOverhaul.ArenaRemaster
             b1.Initialize(b1.GetComponent<ModdedObject>(), this);
         }
 
+#if DEBUG
         private void Update()
         {
             if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
-            if (!OverhaulVersion.IsDebugBuild)
             {
                 return;
             }
@@ -126,6 +134,7 @@ namespace CDOverhaul.ArenaRemaster
                 SetOriginalArenaInteriorVisible(m_DebugArenaToggleState);
             }
         }
+#endif
 
         public override string[] Commands()
         {

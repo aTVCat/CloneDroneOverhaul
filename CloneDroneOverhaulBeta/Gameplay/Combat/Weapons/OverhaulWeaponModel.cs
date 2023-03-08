@@ -44,7 +44,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
         }
 
-        public bool AllowRobotToSwitchWeapons { get; set; }
+        public bool AllowSwitchingWeapons { get; set; }
 
         public void SetCanBeEquiped()
         {
@@ -72,7 +72,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public virtual void Start()
         {
-            AllowRobotToSwitchWeapons = true;
+            AllowSwitchingWeapons = true;
         }
 
         public virtual void TryAttack()

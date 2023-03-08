@@ -45,6 +45,11 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModLoaded()
         {
+            if (IsCoreCreated)
+            {
+                return;
+            }
+
             Base = this;
             TryCreateCore();
         }
@@ -54,6 +59,11 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModEnabled()
         {
+            if (IsCoreCreated)
+            {
+                return;
+            }
+
             Base = this;
             TryCreateCore();
         }
@@ -63,6 +73,11 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModDeactivated()
         {
+            if (!IsCoreCreated)
+            {
+                return;
+            }
+
             Base = null;
             DeconstructCore();
         }
@@ -107,7 +122,6 @@ namespace CDOverhaul
             {
                 return;
             }
-            // Make a window that appear when mod was loaded incorrectly (put core creation into try block)
 
             GameObject gameObject = new GameObject("CloneDroneOverhaul_Core");
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();

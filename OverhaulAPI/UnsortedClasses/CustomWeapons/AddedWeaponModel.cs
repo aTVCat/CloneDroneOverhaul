@@ -9,6 +9,6 @@ namespace OverhaulAPI
 
         public virtual void Initialize(FirstPersonMover newOwner) { }
 
-        public virtual void ApplyColor(Color color) { }
+        public virtual void ApplyOwnersFavouriteColor(Color color) { }
     }
 }

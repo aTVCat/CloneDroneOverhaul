@@ -10,7 +10,7 @@ namespace CDOverhaul
 
         private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
         private static readonly Dictionary<string, SettingDescription> m_SettingDescriptions = new Dictionary<string, SettingDescription>();
-        private static readonly List<string> m_HiddenEntries = new List<string>() { "WeaponSkins" };
+        private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins" };
 
         public static OverhaulParametersMenu HUD;
 

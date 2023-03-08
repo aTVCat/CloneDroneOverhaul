@@ -39,7 +39,7 @@ namespace CDOverhaul.Gameplay.Combat
                 (UpgradeType)6702,
                 1,
                 "Auto-Targeting",
-                "TBA",
+                "This one will be probably scrapped",
                 null, (UpgradeType)6700);
             autoTargeting.SkillPointCostDefault = 4;
             UpgradeDescription throwRange1 = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,

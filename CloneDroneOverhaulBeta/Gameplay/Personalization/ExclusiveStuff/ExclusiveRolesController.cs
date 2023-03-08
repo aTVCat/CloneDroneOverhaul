@@ -8,8 +8,10 @@ namespace CDOverhaul
         private static readonly Dictionary<string, ExclusivePlayerInfo> _players = new Dictionary<string, ExclusivePlayerInfo>()
         {
             { "883CC7F4CA3155A3", new ExclusivePlayerInfo("A TVHuman", "Programmer,Clan Memeber,FCI", new Color(0.76f, 0.85f, 1, 0.95f), 4, "All@") },
-             { "193564D7A14F9C33", new ExclusivePlayerInfo("Zolor", "Clan Memeber,FCI", new Color(0.45f, 0.04f, 0.65f, 0.1f), 10, "Purple Power Blade@") },
+             { "193564D7A14F9C33", new ExclusivePlayerInfo("Zolor", "Clan Memeber,FCI", new Color(0.45f, 0.04f, 0.65f, 0.96f), 10, "Purple Power Blade@") },
         };
+
+        public static bool HasExclusiveAccess { get; private set; }
 
         public static void TryApplyExclusivityOnRobot(FirstPersonMover mover, Color curColor, out Color color)
         {
@@ -42,6 +44,7 @@ namespace CDOverhaul
 
         public static void OnGotPlayfabID(string playfabID)
         {
+            HasExclusiveAccess = false; 
             if (string.IsNullOrWhiteSpace(playfabID))
             {
                 return;
@@ -52,6 +55,7 @@ namespace CDOverhaul
                 {
                     return;
                 }
+                HasExclusiveAccess = true;
                 HumanFactsManager.Instance.FavouriteColors[info.Value.ReplaceColorIndex].ColorValue = info.Value.FavColor;
             }
         }

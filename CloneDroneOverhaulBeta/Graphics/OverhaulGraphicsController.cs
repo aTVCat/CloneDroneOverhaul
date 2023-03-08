@@ -30,14 +30,14 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, null, null, "Graphics.Post effects.Bloom")]
         public static float BloomIntensity;
 
-        [SettingSliderParameters(false, 0.3f, 2f)]
+        [SettingSliderParameters(false, 0.85f, 2f)]
         [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, null, null, "Graphics.Post effects.Bloom")]
         public static float BloomThreshold;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", true, false, "I don't really like it, but you may turn this setting on for some fun, I guess")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for some fun, I guess")]
         public static bool BlurEdgesEnabled;
 
         [SettingSliderParameters(false, -0.2f, 0.3f)]
@@ -79,7 +79,7 @@ namespace CDOverhaul.Graphics
         public static void Initialize()
         {
             CameraController = OverhaulController.InitializeController<OverhaulCameraController>();
-            _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, patchCamera);
+            _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 
             m_ChromaMaterial = AssetController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
@@ -89,7 +89,7 @@ namespace CDOverhaul.Graphics
             patchAllCameras();
         }
 
-        private static void patchCamera(Camera camera)
+        public static void PatchCamera(Camera camera)
         {
             if (camera == null)
             {
@@ -98,18 +98,24 @@ namespace CDOverhaul.Graphics
             camera.useOcclusionCulling = true;
             camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
-            Bloom bloom = camera.GetComponent<Bloom>();
-            if (bloom != null)
-            {
-                bloom.bloomBlurIterations = BloomIterations;
-                bloom.bloomIntensity = BloomIntensity;
-                bloom.bloomThreshold = BloomThreshold;
-                bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
-                bloom.enabled = BloomEnabled;
-                m_BloomEffects.Add(bloom);
-            }
+            PatchBloom(camera.GetComponent<Bloom>());
             addShaderPassesToCamera(camera);
             refreshShaderMaterials();
+        }
+
+        public static void PatchBloom(Bloom bloom)
+        {
+            if(bloom == null)
+            {
+                return;
+            }
+
+            bloom.bloomBlurIterations = BloomIterations;
+            bloom.bloomIntensity = BloomIntensity;
+            bloom.bloomThreshold = BloomThreshold;
+            bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+            bloom.enabled = BloomEnabled;
+            if(!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
         }
 
         private static void addShaderPassesToCamera(Camera camera)
@@ -119,9 +125,9 @@ namespace CDOverhaul.Graphics
                 return;
             }
 
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableVignetteFunc);
+            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableBEFunc);
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableBEFunc);
+            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
         }
 
         private static void patchAllCameras()
@@ -129,11 +135,11 @@ namespace CDOverhaul.Graphics
             refreshApplicationTargetFramerate();
             foreach (Camera cam in CameraController.GetAllCameras())
             {
-                patchCamera(cam);
+                PatchCamera(cam);
             }
         }
 
-        private static void refreshShaderMaterials()
+        private static void refreshShaderMaterials() // Todo: Make PatchBloom method
         {
             if (!m_BloomEffects.IsNullOrEmpty())
             {
@@ -145,7 +151,8 @@ namespace CDOverhaul.Graphics
                         m_BloomEffects.RemoveAt(i);
                         continue;
                     }
-                    b.bloomBlurIterations = BloomIterations;
+
+                    PatchBloom(b);
                 }
             }
             if(m_VignetteMaterial != null)

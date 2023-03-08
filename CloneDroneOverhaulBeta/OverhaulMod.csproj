@@ -416,7 +416,9 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="Internal\Intro\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
+    <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
+    <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
     <Compile Include="Gameplay\Combat\Arena\ArenaRemasterEnemyCounter.cs" />
@@ -429,8 +431,8 @@
     <Compile Include="HUD\Settings\OverhaulParametersMenu.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulGameplayController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulMonoBehaviour.cs" />
-    <Compile Include="Internal\Data\Settings\SubClasses\SettingDropdownParameters.cs" />
-    <Compile Include="Internal\Data\Settings\SubClasses\SettingSliderParameters.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingDropdownParameters.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="Internal\Code\OverhaulExtentions.cs" />
     <Compile Include="Internal\Debug\CrashPrevention\OverhaulCrashPreventionController.cs" />
     <Compile Include="Internal\OverhaulSessionController.cs" />
@@ -468,11 +470,11 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\NewAudioController.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeRuntime.cs" />
-    <Compile Include="Internal\Data\Settings\SettingDescription.cs" />
-    <Compile Include="Internal\Data\Settings\SubClasses\SettingType.cs" />
-    <Compile Include="Internal\Data\Settings\Setting.cs" />
-    <Compile Include="Internal\Data\Settings\SubClasses\SettingAttribute.cs" />
-    <Compile Include="Internal\Data\Settings\SettingsController.cs" />
+    <Compile Include="Internal\Settings\SettingDescription.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingType.cs" />
+    <Compile Include="Internal\Settings\Setting.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingAttribute.cs" />
+    <Compile Include="Internal\Settings\SettingsController.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGamemodeSubstateChanger.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGiveAllWeapons.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorSkinSpawnpoint.cs" />
@@ -488,7 +490,7 @@
     <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstatesController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulUI.cs" />
-    <Compile Include="HUD\VersionLabel\UIVersionLabel.cs" />
+    <Compile Include="HUD\VersionLabel\OverhaulVersionLabel.cs" />
     <Compile Include="Internal\Patches\Input\EnableCursorController.cs" />
     <Compile Include="Internal\EventsManagement\OverhaulEventManager.cs" />
     <Compile Include="Internal\OverhaulVersion.cs" />

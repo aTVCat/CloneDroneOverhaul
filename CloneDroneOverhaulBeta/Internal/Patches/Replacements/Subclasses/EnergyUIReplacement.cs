@@ -36,7 +36,7 @@ namespace CDOverhaul.Patches
 
             if (!m_AddedListeners)
             {
-                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, togglePatch);
+                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshPatch);
             }
             m_AddedListeners = true;
 
@@ -62,8 +62,6 @@ namespace CDOverhaul.Patches
 
             _ = _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
 
-            PatchEnergyUI(!PatchHUD);
-
             SuccessfullyPatched = true;
         }
 
@@ -73,7 +71,7 @@ namespace CDOverhaul.Patches
             PatchEnergyUI(true);
         }
 
-        private void togglePatch()
+        public void RefreshPatch()
         {
             PatchEnergyUI(!PatchHUD);
         }
@@ -93,6 +91,11 @@ namespace CDOverhaul.Patches
             _glow.color = recover ? _glowColor : _glowPatchedColor;
             _glow.transform.localScale = recover ? _glowScale.Item1 : _glowScale.Item2;
             _cantJumpBG.localScale = recover ? _cantJumpBGScale.Item1 : _cantJumpBGScale.Item2;
+        }
+
+        public static void DirectRefreshPatch()
+        {
+            ReplacementBase.GetReplacement<EnergyUIReplacement>().RefreshPatch();
         }
     }
 }

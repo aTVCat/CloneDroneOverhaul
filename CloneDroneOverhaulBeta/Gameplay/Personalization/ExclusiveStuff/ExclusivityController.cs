@@ -16,7 +16,7 @@ namespace CDOverhaul
         {
             if (_hasInitialized)
             {
-                ExclusiveRolesController.OnGotPlayfabID(_playfabId);
+                DelegateScheduler.Instance.Schedule(scheduledOnLogin, 0.1f);
                 return;
             }
 
@@ -29,6 +29,16 @@ namespace CDOverhaul
             OverhaulEventManager.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             OverhaulEventManager.DispatchEvent(OnLoginSuccessEventString);
             ExclusiveRolesController.OnGotPlayfabID(_playfabId);
+        }
+        private static void scheduledOnLogin()
+        {
+            if (string.IsNullOrEmpty(_playfabId))
+            {
+                _playfabId = GetLocalPlayfabID();
+            }
+
+            ExclusiveRolesController.OnGotPlayfabID(_playfabId);
+            OverhaulEventManager.DispatchEvent(OnLoginSuccessEventString);
         }
 
         public static string GetLocalPlayfabID()

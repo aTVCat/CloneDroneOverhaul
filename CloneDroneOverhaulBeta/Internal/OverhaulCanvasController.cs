@@ -46,7 +46,7 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            _ = AddHUD<UIVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
+            _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
