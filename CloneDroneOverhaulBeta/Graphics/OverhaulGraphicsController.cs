@@ -78,7 +78,7 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            CameraController = OverhaulController.InitializeController<OverhaulCameraController>();
+            CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 

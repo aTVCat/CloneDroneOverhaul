@@ -47,6 +47,7 @@ namespace CDOverhaul.HUD
             prefabsModdedObject.gameObject.SetActive(false);
 
             _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
+            _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -60,7 +61,7 @@ namespace CDOverhaul.HUD
         /// <returns></returns>
         public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
         {
-            return OverhaulController.InitializeController<T>(moddedObject.transform);
+            return OverhaulController.AddController<T>(moddedObject.transform);
         }
 
         /// <summary>

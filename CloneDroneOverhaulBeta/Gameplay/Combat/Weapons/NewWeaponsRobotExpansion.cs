@@ -54,7 +54,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         protected override void OnRefresh()
         {
-            m_TimeToRefreshWeapons = Time.unscaledTime + 0.2f;
+            m_TimeToRefreshWeapons = Time.unscaledTime + 1f;
         }
 
         public override void Start()

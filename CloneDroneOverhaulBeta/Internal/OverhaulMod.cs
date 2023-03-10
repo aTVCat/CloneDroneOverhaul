@@ -94,7 +94,13 @@ namespace CDOverhaul
                 return null;
             }
 
-            return LevelEditorObjectsController.GetObject(path);
+            UnityEngine.Object @object = LevelEditorObjectsController.GetObject(path);
+            if(@object == null && OverhaulLevelAdder.HasLevel(path))
+            {
+                @object = new TextAsset(OverhaulLevelAdder.GetLevel(ref path));
+            }
+
+            return @object;
         }
 
         /// <summary>

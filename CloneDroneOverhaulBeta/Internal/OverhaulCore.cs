@@ -81,18 +81,19 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            OverhaulLevelAdder.Initialize();
+            OverhaulEventManager.Initialize();
             SettingsController.Initialize();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
-            OverhaulEventManager.Initialize();
             OverhaulController.InitializeStatic(controllers);
             LevelEditorObjectsController.Initialize();
 
-            VoxelsController = OverhaulController.InitializeController<VoxelsController>();
-            HUDController = OverhaulController.InitializeController<OverhaulCanvasController>();
-            GameplayController = OverhaulController.InitializeController<OverhaulGameplayCoreController>();
-            EditorLua = OverhaulController.InitializeController<LevelEditorLuaController>();
-            _ = OverhaulController.InitializeController<LevelEditorMultipleObjectsController>();
+            VoxelsController = OverhaulController.AddController<VoxelsController>();
+            HUDController = OverhaulController.AddController<OverhaulCanvasController>();
+            GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
+            EditorLua = OverhaulController.AddController<LevelEditorLuaController>();
+            _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
 
             SettingsController.PostInitialize();
             OverhaulDebugController.Initialize();

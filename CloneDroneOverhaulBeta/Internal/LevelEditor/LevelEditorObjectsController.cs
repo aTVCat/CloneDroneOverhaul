@@ -34,7 +34,6 @@ namespace CDOverhaul.LevelEditor
                 _ = obj4.AddComponent<LevelEditorSkinSpawnpoint>();
                 AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "SkinSpawnpoint");
 
-
                 GameObject obj6 = AssetController.GetAsset("GamemodeSubstateChanger", OverhaulAssetsPart.Objects);
                 _ = obj6.AddComponent<LevelEditorGiveAllWeapons>();
                 AddObject(obj6.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GiveAllWeapons");
@@ -42,6 +41,25 @@ namespace CDOverhaul.LevelEditor
                 GameObject obj5 = AssetController.GetAsset("EnemiesLeftPanelPoser", OverhaulAssetsPart.Objects);
                 _ = obj5.AddComponent<LevelEditorArenaEnemiesCounterPoser>();
                 AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "AR_EL_Mover");
+                _hasAddedAssets = true;
+
+                GameObject obj7 = AssetController.GetAsset("GarbageBotSpawnPoint", OverhaulAssetsPart.Objects);
+                _ = obj7.AddComponent<LevelEditorGarbageBotSpawnpoint>();
+                AddObject(obj7.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageBotSpawnpoint");
+
+                GameObject obj8 = AssetController.GetAsset("GarbageDropPoint", OverhaulAssetsPart.Objects);
+                _ = obj8.AddComponent<LevelEditorGarbageDropPoint>();
+                AddObject(obj8.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageDropPoint");
+                
+                GameObject obj9 = AssetController.GetAsset("GarbageCustomForcefield", OverhaulAssetsPart.Objects);
+                _ = obj9.AddComponent<LevelEditorGarbageCustomForcefield>();
+                AddObject(obj9.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageCustomForcefield");
+
+                GameObject obj10 = AssetController.GetAsset("PickableWeapon", OverhaulAssetsPart.Objects);
+                _ = obj10.AddComponent<LevelEditorPickableWeapon>();
+                _ = obj10.AddComponent<LevelEditorTriggerPlayAnimation>();
+                AddObject(obj10.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "PickableWeapon");
+
                 _hasAddedAssets = true;
             }
 

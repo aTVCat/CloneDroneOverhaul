@@ -75,16 +75,23 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public AdvancedGarbageController AdvancedGarbageController
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             Core = this;
 
-            GamemodeSubstates = OverhaulController.InitializeController<GamemodeSubstatesController>();
-            WeaponSkins = OverhaulController.InitializeController<WeaponSkinsController>();
-            Outfits = OverhaulController.InitializeController<PlayerOutfitController>();
-            AdditionalAnimations = OverhaulController.InitializeController<AdditionalAnimationsController>();
-            CombatOverhaul = OverhaulController.InitializeController<CombatOverhaulController>();
-            NewWeapons = OverhaulController.InitializeController<NewWeaponsController>();
+            GamemodeSubstates = OverhaulController.AddController<GamemodeSubstatesController>();
+            WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
+            Outfits = OverhaulController.AddController<PlayerOutfitController>();
+            AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
+            CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();
+            NewWeapons = OverhaulController.AddController<NewWeaponsController>();
+            AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 

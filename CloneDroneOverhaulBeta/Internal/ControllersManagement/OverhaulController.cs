@@ -79,7 +79,7 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="transformOverride"></param>
         /// <returns></returns>
-        public static T InitializeController<T>(in Transform transformOverride = null) where T : OverhaulController
+        public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
         {
             Transform transform = transformOverride != null ? transformOverride : m_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
