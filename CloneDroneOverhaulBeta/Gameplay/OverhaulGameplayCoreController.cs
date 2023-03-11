@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Combat;
+using CDOverhaul.Gameplay.Mindspace;
 using System;
 using UnityEngine;
 
@@ -81,6 +82,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public MindspaceOverhaulController MindspaceOverhaul
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             Core = this;
@@ -92,6 +99,7 @@ namespace CDOverhaul.Gameplay
             CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();
             NewWeapons = OverhaulController.AddController<NewWeaponsController>();
             AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
+            MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 

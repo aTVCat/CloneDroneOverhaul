@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
+using CDOverhaul.Internal.Transitions;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using System;
@@ -99,6 +100,7 @@ namespace CDOverhaul
             OverhaulDebugController.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
+            OverhaulTransitionController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

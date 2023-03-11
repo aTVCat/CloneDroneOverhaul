@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
 {
-    public class RobotsInventoryController : OverhaulGameplayController
+    public class GarbagePickerWeaponModel : OverhaulWeaponModel
     {
 
     }

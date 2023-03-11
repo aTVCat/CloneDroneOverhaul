@@ -385,17 +385,20 @@
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
+    <Compile Include="Gameplay\Combat\Inventory\RobotInventory.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulController.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulMechanic.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\Subclasses\CombatSprintAndStance.cs" />
-    <Compile Include="Gameplay\Combat\Inventory\RobotsInventoryController.cs" />
+    <Compile Include="Gameplay\Combat\Inventory\CombatOverhaulInventoryController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsRobotExpansion.cs" />
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\BoomerangWeaponModel.cs" />
+    <Compile Include="Gameplay\Combat\Weapons\WeaponModels\GarbagePickerWeaponModel.cs" />
     <Compile Include="Gameplay\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
+    <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryModel.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryModel.cs" />
@@ -421,6 +424,9 @@
     <Compile Include="Gameplay\Combat\Tutorial\CombatOverhaulTutorialController.cs" />
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
+    <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
+    <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
+    <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
     <Compile Include="Internal\Intro\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageCustomForcefield.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorPickableWeapon.cs" />
@@ -433,6 +439,7 @@
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
+    <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
     <Compile Include="Gameplay\Combat\Arena\ArenaRemasterEnemyCounter.cs" />
@@ -533,9 +540,7 @@
     <Content Include="ExternalDLLs\KopiLua.dll" />
     <Content Include="ExternalDLLs\LuaInterface.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Internal\Transitions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -76,6 +76,7 @@ namespace OverhaulAPI
 
                 AddedWeaponModel spawnedModel = GameObject.Instantiate(addedModel, parent);
                 spawnedModel.WeaponType = addedModel.WeaponType;
+                spawnedModel.BodyPartType = addedModel.BodyPartType;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
                 spawnedModel.transform.localPosition = addedModel.ModelOffset.OffsetPosition;
                 spawnedModel.transform.localEulerAngles = addedModel.ModelOffset.OffsetEulerAngles;

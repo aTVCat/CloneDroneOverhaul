@@ -5,12 +5,14 @@ namespace CDOverhaul.Gameplay.Combat
     public class CombatOverhaulController : OverhaulGameplayController
     {
         private CombatOverhaulTutorialController m_TutorialController;
+        private CombatOverhaulInventoryController m_InventoryController;
 
         public override void Initialize()
         {
             base.Initialize();
 
             m_TutorialController = AddController<CombatOverhaulTutorialController>();
+            m_InventoryController = AddController<CombatOverhaulInventoryController>();
         }
 
         public void StartTutorial()
