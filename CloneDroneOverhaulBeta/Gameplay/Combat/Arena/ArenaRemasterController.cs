@@ -13,13 +13,17 @@ namespace CDOverhaul.ArenaRemaster
 
         public Transform WorldRootTransform;
         public Transform ArenaTransform;
+        public Transform OgArenaColliders;
         public ModdedObject ArenaRemaster;
+
+        private Transform m_StandsRight;
+        private Transform m_StandsLeft;
 
         public LevelEditorArenaEnemiesCounterPoser EnemiesLeftPositionOverride;
 
         public override void Initialize()
         {
-            if (!OverhaulVersion.ArenaUpdateEnabled || !makeSureNewArenaWillWork())
+            if (!OverhaulVersion.ArenaUpdateEnabled || !getAllRequiredReferences())
             {
                 return;
             }
@@ -31,9 +35,13 @@ namespace CDOverhaul.ArenaRemaster
             spawnedPrefabTransform.position = Vector3.zero;
             spawnedPrefabTransform.eulerAngles = Vector3.zero;
             ArenaRemaster = spawnedPrefab.GetComponent<ModdedObject>();
+            ArenaRemaster.gameObject.AddComponent<ArenaRemasterColorSwaper>();
 
+            setUpStandsInterior();
             setUpArrowsInterior();
             if(SupportEnemiesLeftLabel) setUpLabelsInterior();
+
+            SetOriginalArenaCollidersActive(false);
         }
 
         protected override void OnDisposed()
@@ -81,21 +89,36 @@ namespace CDOverhaul.ArenaRemaster
             }
         }
 
-        private bool makeSureNewArenaWillWork()
+        public void SetOriginalArenaCollidersActive(in bool value)
+        {
+            OgArenaColliders.gameObject.SetActive(value);
+        }
+
+        private bool getAllRequiredReferences()
         {
             WorldRoot root = WorldRoot.Instance;
             if(root == null)
             {
                 return false;
             }
-
             WorldRootTransform = root.transform;
             if(WorldRootTransform == null)
             {
                 return false;
             }
+            OgArenaColliders = TransformUtils.FindChildRecursive(WorldRootTransform, "ArenaColliders");
+            if(OgArenaColliders == null)
+            {
+                return false;
+            }
             ArenaTransform = TransformUtils.FindChildRecursive(WorldRootTransform, "ArenaFinal");
-            return ArenaTransform != null;
+            if(ArenaTransform == null)
+            {
+                return false;
+            }
+            m_StandsRight = TransformUtils.FindChildRecursive(ArenaTransform, "StandsRight");
+            m_StandsLeft = TransformUtils.FindChildRecursive(ArenaTransform, "StandsLeft");
+            return m_StandsLeft != null && m_StandsRight != null;
         }
 
         private void setUpArrowsInterior()
@@ -118,6 +141,12 @@ namespace CDOverhaul.ArenaRemaster
         {
             ArenaRemasterEnemyCounter b1 = ArenaRemaster.GetObject<Transform>(3).gameObject.AddComponent<ArenaRemasterEnemyCounter>();
             b1.Initialize(b1.GetComponent<ModdedObject>(), this);
+        }
+
+        private void setUpStandsInterior()
+        {
+            m_StandsLeft.gameObject.SetActive(false);
+            m_StandsRight.gameObject.SetActive(false);
         }
 
 #if DEBUG

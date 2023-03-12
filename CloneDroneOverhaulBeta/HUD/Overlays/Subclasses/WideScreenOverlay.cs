@@ -32,11 +32,11 @@ namespace CDOverhaul.HUD.Overlays
             }
 
             Vector3 newVector = m_UpperBar.anchoredPosition;
-            newVector.y += ((m_IsInCutscene ? 0f : 80f) - newVector.y) * Time.unscaledDeltaTime * 2f;
+            newVector.y += ((m_IsInCutscene ? 20f : 80f) - newVector.y) * Time.unscaledDeltaTime * 2f;
             m_UpperBar.anchoredPosition = newVector;
 
             Vector3 newVector2 = m_LowerBar.anchoredPosition;
-            newVector2.y += ((m_IsInCutscene ? 0f : -80f) - newVector2.y) * Time.unscaledDeltaTime * 2f;
+            newVector2.y += ((m_IsInCutscene ? -20f : -80f) - newVector2.y) * Time.unscaledDeltaTime * 2f;
             m_LowerBar.anchoredPosition = newVector2;
         }
     }

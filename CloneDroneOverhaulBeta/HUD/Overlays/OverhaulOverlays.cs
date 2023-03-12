@@ -9,6 +9,11 @@ namespace CDOverhaul.HUD
         public override void Initialize()
         {
             MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
+
+            base.transform.SetParent(GameUIRoot.Instance.transform);
+            base.transform.SetAsFirstSibling();
+            base.transform.localScale = Vector3.one;
+            base.transform.localPosition = Vector3.zero;
         }
 
         protected override void OnDisposed()

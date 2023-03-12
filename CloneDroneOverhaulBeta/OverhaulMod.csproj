@@ -384,6 +384,7 @@
     <Compile Include="Gameplay\Combat\AI\RobotsAdvancedAIController.cs" />
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
+    <Compile Include="Gameplay\Combat\Arena\Colors\ArenaRemasterColorSwaper.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
     <Compile Include="Gameplay\Combat\Inventory\RobotInventory.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulAnimatorType.cs" />
