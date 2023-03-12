@@ -10,6 +10,9 @@ namespace CDOverhaul.HUD.Overlays
 
         private bool m_IsInCutscene;
 
+        public static bool ForceSetIsInCutscene;
+        public static float TargetY = 38.0f;
+
         private void Awake()
         {
             base.gameObject.SetActive(true);
@@ -28,15 +31,15 @@ namespace CDOverhaul.HUD.Overlays
         {
             if(Time.frameCount % 10 == 0)
             {
-                m_IsInCutscene = CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf;
+                m_IsInCutscene = ForceSetIsInCutscene || (CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf);
             }
 
             Vector3 newVector = m_UpperBar.anchoredPosition;
-            newVector.y += ((m_IsInCutscene ? 20f : 80f) - newVector.y) * Time.unscaledDeltaTime * 2f;
+            newVector.y += ((m_IsInCutscene ? TargetY : 80f) - newVector.y) * Time.unscaledDeltaTime * 2f;
             m_UpperBar.anchoredPosition = newVector;
 
             Vector3 newVector2 = m_LowerBar.anchoredPosition;
-            newVector2.y += ((m_IsInCutscene ? -20f : -80f) - newVector2.y) * Time.unscaledDeltaTime * 2f;
+            newVector2.y += ((m_IsInCutscene ? -TargetY : -80f) - newVector2.y) * Time.unscaledDeltaTime * 2f;
             m_LowerBar.anchoredPosition = newVector2;
         }
     }

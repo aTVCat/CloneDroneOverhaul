@@ -70,7 +70,7 @@ namespace CDOverhaul
 
         private void initialize()
         {
-            OverhaulCrashPreventionController.CheckGameVersion();
+            OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
@@ -82,6 +82,7 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            OverhaulAudioLibrary.Initialize();
             OverhaulLevelAdder.Initialize();
             OverhaulEventManager.Initialize();
             SettingsController.Initialize();

@@ -88,6 +88,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public OverhaulCustomGarbageBotsController CustomGarbageBots
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             Core = this;
@@ -100,6 +106,8 @@ namespace CDOverhaul.Gameplay
             NewWeapons = OverhaulController.AddController<NewWeaponsController>();
             AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
             MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
+            CustomGarbageBots = OverhaulController.AddController<OverhaulCustomGarbageBotsController>();
+
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 

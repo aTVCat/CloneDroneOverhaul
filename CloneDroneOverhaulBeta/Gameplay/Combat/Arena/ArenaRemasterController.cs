@@ -7,7 +7,8 @@ namespace CDOverhaul.ArenaRemaster
     {
         public const bool SupportEnemiesLeftLabel = true;
 
-        private GameObject m_OgArrows;
+        private GameObject m_OgTopGotoElevatorArrows;
+        private GameObject m_OgUpgradeRoomGoToArenaArrows;
 
         private bool m_DebugArenaToggleState;
 
@@ -21,13 +22,17 @@ namespace CDOverhaul.ArenaRemaster
 
         public LevelEditorArenaEnemiesCounterPoser EnemiesLeftPositionOverride;
 
+        private AudienceManager m_AudienceManager;
+
         public override void Initialize()
         {
-            if (!OverhaulVersion.ArenaUpdateEnabled || !getAllRequiredReferences())
+            if (!OverhaulVersion.UseArenaRemaster || !getAllRequiredReferences())
             {
                 return;
             }
 
+            m_AudienceManager = AudienceManager.Instance;
+            m_AudienceManager.enabled = false;
             m_DebugArenaToggleState = true;
             GameObject spawnedPrefab = Instantiate(GetArenaRemasterPrefab());
             Transform spawnedPrefabTransform = spawnedPrefab.transform;
@@ -36,6 +41,7 @@ namespace CDOverhaul.ArenaRemaster
             spawnedPrefabTransform.eulerAngles = Vector3.zero;
             ArenaRemaster = spawnedPrefab.GetComponent<ModdedObject>();
             ArenaRemaster.gameObject.AddComponent<ArenaRemasterColorSwaper>();
+
 
             setUpStandsInterior();
             setUpArrowsInterior();
@@ -59,7 +65,7 @@ namespace CDOverhaul.ArenaRemaster
                 return;
             }
 
-            if (m_OgArrows != null) ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = m_OgArrows;
+            if (m_OgTopGotoElevatorArrows != null) ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = m_OgTopGotoElevatorArrows;
             if(ArenaRemaster != null) Destroy(ArenaRemaster.gameObject);
             SetOriginalArenaInteriorVisible(true);
             DestroyBehaviour();
@@ -67,7 +73,7 @@ namespace CDOverhaul.ArenaRemaster
 
         public GameObject GetArenaRemasterPrefab()
         {
-            return AssetController.GetAsset("P_ArenaRemaster", OverhaulAssetsPart.Arena_Update);
+            return AssetsController.GetAsset("P_ArenaRemaster", OverhaulAssetsPart.Arena_Update);
         }
 
         /// <summary>
@@ -131,10 +137,29 @@ namespace CDOverhaul.ArenaRemaster
             b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
             b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
 
-            m_OgArrows = ArenaArrowManager.Instance.TopGotoElevatorArrows[0];
+            ArenaRemasterArrowBlinker ur1 = ArenaRemaster.GetObject<Transform>(8).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
+            ArenaRemasterArrowBlinker ur2 = ArenaRemaster.GetObject<Transform>(7).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, ur1);
+            ArenaRemasterArrowBlinker ur3 = ArenaRemaster.GetObject<Transform>(6).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, ur2);
+            ur1.Initialize(null, ur3);
+            ur1.ChangeState(true);
+
+            ArenaRemasterArrowBlinker un1 = ArenaRemaster.GetObject<Transform>(14).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
+            ArenaRemasterArrowBlinker un2 = ArenaRemaster.GetObject<Transform>(13).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un1);
+            ArenaRemasterArrowBlinker un3 = ArenaRemaster.GetObject<Transform>(12).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un2);
+            ArenaRemasterArrowBlinker un4 = ArenaRemaster.GetObject<Transform>(11).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un3);
+            ArenaRemasterArrowBlinker un5 = ArenaRemaster.GetObject<Transform>(10).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un4);
+            un1.Initialize(null, un5);
+            un1.ChangeState(true);
+
+            m_OgTopGotoElevatorArrows = ArenaArrowManager.Instance.TopGotoElevatorArrows[0];
             ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = b1.transform.parent.gameObject;
-            ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(m_OgArrows.activeSelf); 
-            m_OgArrows.SetActive(false);
+            ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(m_OgTopGotoElevatorArrows.activeSelf); 
+            m_OgTopGotoElevatorArrows.SetActive(false);
+
+            m_OgUpgradeRoomGoToArenaArrows = ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0];
+            ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0] = ur1.transform.parent.gameObject;
+            ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0].SetActive(m_OgUpgradeRoomGoToArenaArrows.activeSelf);
+            m_OgUpgradeRoomGoToArenaArrows.SetActive(false);
         }
 
         private void setUpLabelsInterior()

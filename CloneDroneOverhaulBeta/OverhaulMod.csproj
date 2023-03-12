@@ -386,6 +386,7 @@
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Arena\Colors\ArenaRemasterColorSwaper.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
+    <Compile Include="Gameplay\Combat\Inventory\InventoryItemDefinition.cs" />
     <Compile Include="Gameplay\Combat\Inventory\RobotInventory.cs" />
     <Compile Include="Gameplay\Combat\Mechnanics\CombatOverhaulAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulController.cs" />
@@ -412,6 +413,7 @@
     <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotAccessoryBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerOutfitController.cs" />
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivePlayerInfo.cs" />
+    <Compile Include="Gameplay\Personalization\GarbageBots\OverhaulCustomGarbageBotsController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinItemDefinitionV2.cs" />
@@ -435,11 +437,15 @@
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageBotSpawnpoint.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorTriggerPlayAnimation.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
+    <Compile Include="Internal\OverhaulAudioLibrary.cs" />
+    <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
+    <Compile Include="Internal\Patches\LevelEditorCameraManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
+    <Compile Include="Internal\Patches\AlwaysHideFromLevelEditor_Patch.cs" />
     <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
@@ -456,7 +462,7 @@
     <Compile Include="Internal\Settings\SubClasses\SettingDropdownParameters.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="Internal\Code\OverhaulExtentions.cs" />
-    <Compile Include="Internal\Debug\CrashPrevention\OverhaulCrashPreventionController.cs" />
+    <Compile Include="Internal\CrashPrevention\OverhaulCompatibilityChecker.cs" />
     <Compile Include="Internal\OverhaulSessionController.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\SettingsMenuReplacement.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\EscMenuReplacement.cs" />

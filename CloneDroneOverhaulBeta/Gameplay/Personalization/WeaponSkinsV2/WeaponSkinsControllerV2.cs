@@ -43,11 +43,11 @@ namespace CDOverhaul.Gameplay
                     new Vector3(0, 270, 270),
                     new Vector3(0.55f, 0.55f, 0.55f));
                 IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", ItemFilter.None);
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne", OverhaulAssetsPart.WeaponSkins),
+                swordDetailedSkin.SetModel(AssetsController.GetAsset("SwordSkinDetailedOne", OverhaulAssetsPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     false,
                     false); // Normal singleplayer model
-                swordDetailedSkin.SetModel(AssetController.GetAsset("SwordSkinDetailedOne_Fire", OverhaulAssetsPart.WeaponSkins),
+                swordDetailedSkin.SetModel(AssetsController.GetAsset("SwordSkinDetailedOne_Fire", OverhaulAssetsPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     true,
                     false); // Fire singleplayer model
@@ -55,7 +55,7 @@ namespace CDOverhaul.Gameplay
                 // Dark past sword
                 ModelOffset darkPastSwordSkinOffset = new ModelOffset(new Vector3(0, -0.05f, -0.8f), new Vector3(0, 90, 90), Vector3.one);
                 IWeaponSkinItemDefinition darkPastSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Dark Past", ItemFilter.None);
-                darkPastSwordSkin.SetModel(AssetController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
                     darkPastSwordSkinOffset,
                     false,
                     false);
@@ -63,7 +63,7 @@ namespace CDOverhaul.Gameplay
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
                 IWeaponSkinItemDefinition steelSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "The Steel", ItemFilter.None);
-                steelSwordSkin.SetModel(AssetController.GetAsset("P_Steel", OverhaulAssetsPart.WeaponSkins),
+                steelSwordSkin.SetModel(AssetsController.GetAsset("P_Steel", OverhaulAssetsPart.WeaponSkins),
                     steelSwordSkinOffset,
                     false,
                     false);
@@ -71,7 +71,7 @@ namespace CDOverhaul.Gameplay
                 // Dark past hammer
                 ModelOffset darkPastHammerSkinOffset = new ModelOffset(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition darkPastHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Dark Past", ItemFilter.None);
-                darkPastHammerSkin.SetModel(AssetController.GetAsset("HammerSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
                     darkPastHammerSkinOffset,
                     false,
                     false);

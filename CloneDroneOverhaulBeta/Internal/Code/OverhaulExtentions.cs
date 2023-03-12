@@ -86,5 +86,34 @@ namespace CDOverhaul
             list.Add(new HumanFavouriteColor() { ColorName = colorName, ColorValue = color });
             HumanFactsManager.Instance.FavouriteColors = list.ToArray();
         }
+
+        public static bool IsHeavyRobot(this CharacterModel model, out bool shouldUseLowerPitchValues, out bool shouldUseMSSounds, out bool shouldNotPlaySound)
+        {
+            shouldNotPlaySound = false;
+            shouldUseMSSounds = false;
+            shouldUseLowerPitchValues = false;
+            if(model == null)
+            {
+                return false;
+            }
+
+            FirstPersonMover mover = model.GetOwner();
+            if(mover == null)
+            {
+                return false;
+            }
+
+            shouldNotPlaySound = !mover.IsOnGroundServer();
+
+            EnemyType type = mover.CharacterType;
+            shouldUseLowerPitchValues = type == EnemyType.EmperorCombat || type == EnemyType.EmperorNonCombat;
+            shouldUseMSSounds = mover.IsMindSpaceCharacter;
+            return type == EnemyType.Hammer1 || type == EnemyType.Hammer2 ||
+                type == EnemyType.Hammer3 || type == EnemyType.JetpackHammer ||
+                type == EnemyType.EmperorCombat ||
+                type == EnemyType.EmperorNonCombat || type == EnemyType.FireRaptor ||
+                type == EnemyType.Hammer5 || type == EnemyType.LaserRaptor ||
+                type == EnemyType.Spear3 || type == EnemyType.Spear4;
+        }
     }
 }

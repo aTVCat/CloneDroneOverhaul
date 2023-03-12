@@ -17,48 +17,48 @@ namespace CDOverhaul.LevelEditor
         {
             if (!_hasAddedAssets)
             {
-                GameObject obj1 = AssetController.GetAsset("TextBlock", OverhaulAssetsPart.Objects);
+                GameObject obj1 = AssetsController.GetAsset("TextBlock", OverhaulAssetsPart.Objects);
                 _ = obj1.AddComponent<LevelEditorTextBlock>();
-                AddObject(obj1.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "TextBlock");
+                AddObject(obj1.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "TextBlock");
 
-                GameObject obj2 = AssetController.GetAsset("ImageBlock", OverhaulAssetsPart.Objects);
+                GameObject obj2 = AssetsController.GetAsset("ImageBlock", OverhaulAssetsPart.Objects);
                 obj2.AddComponent<LevelEditorComponentDescription>().Description = "For internal use only!";
                 _ = obj2.AddComponent<LevelEditorImageBlock>();
-                AddObject(obj2.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "ImageBlock");
+                AddObject(obj2.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "ImageBlock");
 
-                GameObject obj3 = AssetController.GetAsset("GamemodeSubstateChanger", OverhaulAssetsPart.Objects);
+                GameObject obj3 = AssetsController.GetAsset("GamemodeSubstateChanger", OverhaulAssetsPart.Objects);
                 _ = obj3.AddComponent<LevelEditorGamemodeSubstateChanger>();
-                AddObject(obj3.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "G_SChanger");
+                AddObject(obj3.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "G_SChanger");
 
-                GameObject obj4 = AssetController.GetAsset("SkinEdit_SkinSpawnpoint", OverhaulAssetsPart.Objects);
+                GameObject obj4 = AssetsController.GetAsset("SkinEdit_SkinSpawnpoint", OverhaulAssetsPart.Objects);
                 _ = obj4.AddComponent<LevelEditorSkinSpawnpoint>();
-                AddObject(obj4.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "SkinSpawnpoint");
+                AddObject(obj4.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "SkinSpawnpoint");
 
-                GameObject obj6 = AssetController.GetAsset("GamemodeSubstateChanger", OverhaulAssetsPart.Objects);
+                GameObject obj6 = AssetsController.GetAsset("GamemodeSubstateChanger", OverhaulAssetsPart.Objects);
                 _ = obj6.AddComponent<LevelEditorGiveAllWeapons>();
-                AddObject(obj6.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GiveAllWeapons");
+                AddObject(obj6.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GiveAllWeapons");
 
-                GameObject obj5 = AssetController.GetAsset("EnemiesLeftPanelPoser", OverhaulAssetsPart.Objects);
+                GameObject obj5 = AssetsController.GetAsset("EnemiesLeftPanelPoser", OverhaulAssetsPart.Objects);
                 _ = obj5.AddComponent<LevelEditorArenaEnemiesCounterPoser>();
-                AddObject(obj5.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "AR_EL_Mover");
+                AddObject(obj5.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "AR_EL_Mover");
                 _hasAddedAssets = true;
 
-                GameObject obj7 = AssetController.GetAsset("GarbageBotSpawnPoint", OverhaulAssetsPart.Objects);
+                GameObject obj7 = AssetsController.GetAsset("GarbageBotSpawnPoint", OverhaulAssetsPart.Objects);
                 _ = obj7.AddComponent<LevelEditorGarbageBotSpawnpoint>();
-                AddObject(obj7.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageBotSpawnpoint");
+                AddObject(obj7.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageBotSpawnpoint");
 
-                GameObject obj8 = AssetController.GetAsset("GarbageDropPoint", OverhaulAssetsPart.Objects);
+                GameObject obj8 = AssetsController.GetAsset("GarbageDropPoint", OverhaulAssetsPart.Objects);
                 _ = obj8.AddComponent<LevelEditorGarbageDropPoint>();
-                AddObject(obj8.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageDropPoint");
+                AddObject(obj8.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageDropPoint");
                 
-                GameObject obj9 = AssetController.GetAsset("GarbageCustomForcefield", OverhaulAssetsPart.Objects);
+                GameObject obj9 = AssetsController.GetAsset("GarbageCustomForcefield", OverhaulAssetsPart.Objects);
                 _ = obj9.AddComponent<LevelEditorGarbageCustomForcefield>();
-                AddObject(obj9.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageCustomForcefield");
+                AddObject(obj9.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageCustomForcefield");
 
-                GameObject obj10 = AssetController.GetAsset("PickableWeapon", OverhaulAssetsPart.Objects);
+                GameObject obj10 = AssetsController.GetAsset("PickableWeapon", OverhaulAssetsPart.Objects);
                 _ = obj10.AddComponent<LevelEditorPickableWeapon>();
                 _ = obj10.AddComponent<LevelEditorTriggerPlayAnimation>();
-                AddObject(obj10.transform, AssetController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "PickableWeapon");
+                AddObject(obj10.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "PickableWeapon");
 
                 _hasAddedAssets = true;
             }

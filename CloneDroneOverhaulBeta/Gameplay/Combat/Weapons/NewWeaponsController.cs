@@ -21,7 +21,7 @@ namespace CDOverhaul.Gameplay.Combat
 
             addUpgrades();
 
-            BoomerangWeaponModel boomerang = WeaponsAdder.AddWeaponModel<BoomerangWeaponModel>(AssetController.GetAsset("P_WM_Boomerang_2", OverhaulAssetsPart.Part2).transform, m_BoomerangModelOffset);
+            BoomerangWeaponModel boomerang = WeaponsAdder.AddWeaponModel<BoomerangWeaponModel>(AssetsController.GetAsset("P_WM_Boomerang_2", OverhaulAssetsPart.Part2).transform, m_BoomerangModelOffset);
             m_AddedWeaponModels.Add(boomerang);
 
             GameObject garbagePickerWeaponModelObject = new GameObject("GarbagePickerWeapon");

@@ -9,12 +9,19 @@ namespace CDOverhaul.ArenaRemaster
         private GameObject On;
         private ArenaRemasterArrowBlinker m_NextArrowBlinker;
 
-        public void Initialize(in ModdedObject moddedObject, in ArenaRemasterArrowBlinker nextArrow)
+        public ArenaRemasterArrowBlinker Initialize(ModdedObject moddedObject, in ArenaRemasterArrowBlinker nextArrow)
         {
+            if(moddedObject == null)
+            {
+                moddedObject = GetComponent<ModdedObject>();
+            }
+
             m_NextArrowBlinker = nextArrow;
             Off = moddedObject.GetObject<Transform>(0).gameObject;
             On = moddedObject.GetObject<Transform>(1).gameObject;
             ChangeState(false);
+
+            return this;
         }
 
         protected override void OnDisposed()

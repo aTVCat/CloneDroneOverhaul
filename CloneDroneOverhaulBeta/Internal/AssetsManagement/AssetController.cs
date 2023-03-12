@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class AssetController
+    public static class AssetsController
     {
         /// <summary>
         /// The asset bundle is split in several parts. This is the file name of first part

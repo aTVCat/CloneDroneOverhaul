@@ -30,7 +30,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            m_CanvasFromPrefab = Instantiate(AssetController.GetAsset(OverhaulHUDName, OverhaulAssetsPart.Part1));
+            m_CanvasFromPrefab = Instantiate(AssetsController.GetAsset(OverhaulHUDName, OverhaulAssetsPart.Part1));
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);

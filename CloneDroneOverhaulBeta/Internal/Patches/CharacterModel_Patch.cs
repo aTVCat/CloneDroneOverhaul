@@ -18,5 +18,39 @@ namespace CDOverhaul.Patches
             ExclusiveRolesController.TryApplyExclusivityOnRobot(__instance.GetOwner(), newColor, out Color toReplace);
             newColor = toReplace;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("OnFootDown")]
+        private static bool OnFootDown_Prefix(CharacterModel __instance)
+        {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return true;
+            }
+
+            if(!AudioManager.Instance.ShouldPlayLowPrioritySound() || !AudioManager.Instance.ShouldPlaySound(__instance.transform.position, false))
+            {
+                return false;
+            }
+
+            bool isHeavy = __instance.IsHeavyRobot(out bool lowPitch, out bool ms, out bool dontPlaySound);
+            if (dontPlaySound)
+            {
+                return false;
+            }
+            if (isHeavy)
+            {
+                AudioManager.Instance.PlayClipAtPosition(OverhaulAudioLibrary.HeavyRobotFootsteps, __instance.transform.position, 0f, false, lowPitch ? 0.35f : 0.16f, lowPitch ? 0.85f : 0.98f, 0f);
+                return false;
+            }
+            /*
+            if (ms)
+            {
+                AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.MagBootsStep, __instance.transform.position, 0f, false, 0.16f, 1.1f, 0.05f);
+                return false;
+            }*/
+
+            return true;
+        }
     }
 }

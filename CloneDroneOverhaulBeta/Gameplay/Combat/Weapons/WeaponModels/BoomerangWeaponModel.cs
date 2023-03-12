@@ -140,7 +140,6 @@ namespace CDOverhaul.Gameplay.Combat
                 m_TimeToAllowThrowing = Time.time + 0.2f;
                 m_IsPreparingToThrow = true;
 
-                AllowSwitchingWeapons = false;
                 AnimationController.ForceSetIsPlayingUpperAnimation = true;
                 AnimationController.PlayCustomAnimaton("WeaponUse_PrepareBoomerang");
             }
@@ -149,6 +148,7 @@ namespace CDOverhaul.Gameplay.Combat
         public override void OnUnequipped()
         {
             AnimationController.ForceSetIsPlayingUpperAnimation = false;
+            PickUp();
         }
 
         public void StopPreparing()
@@ -163,7 +163,6 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            AllowSwitchingWeapons = true;
             AnimationController.StopPlayingCustomAnimations();
         }
 
@@ -199,9 +198,8 @@ namespace CDOverhaul.Gameplay.Combat
             base.transform.localEulerAngles = ModelOffset.OffsetEulerAngles;
             base.transform.localScale = ModelOffset.OffsetLocalScale;
 
-            AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
+            if(GetOwner().GetEquippedWeaponType() == base.WeaponType) AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
 
-            AllowSwitchingWeapons = true;
             m_IsThrown = false;
         }
 

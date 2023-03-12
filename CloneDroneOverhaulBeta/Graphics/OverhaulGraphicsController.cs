@@ -82,10 +82,10 @@ namespace CDOverhaul.Graphics
             _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 
-            m_ChromaMaterial = AssetController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
-            m_VignetteMaterial = AssetController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetsPart.Part2);
+            m_ChromaMaterial = AssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
+            m_VignetteMaterial = AssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetsPart.Part2);
             m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
-            m_EdgeBlur = AssetController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetsPart.Part2);
+            m_EdgeBlur = AssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetsPart.Part2);
             patchAllCameras();
         }
 
