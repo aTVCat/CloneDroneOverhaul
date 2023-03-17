@@ -18,34 +18,44 @@ namespace CDOverhaul
         /// <summary>
         /// The full name of the mod
         /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul Tech-Demo 2 " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
+        public static readonly string ModFullName = "Clone Drone Overhaul Tech-Demo 1 " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
         /// <summary>
         /// The shortened name of the mod
         /// </summary>
         public static readonly string ModShortName = "Overhaul " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
-        public const bool UseArenaRemaster = true;
+        public const bool UseArenaRemaster = false;
         public const bool AllowWindowNameChanging = false;
+
+        /// <summary>
+        /// Enable 0.3 Tech-Demo 2 Update things
+        /// </summary>
+        public const bool TechDemo2Enabled = false;
+
+        /// <summary>
+        /// Enable 0.3 June demo Update things
+        /// </summary>
+        public const bool JuneDemoEnabled = false;
 
         /// <summary>
         /// Enable 0.4 Update things
         /// </summary>
-        public const bool LevelEditorUpdateEnabled = true;
+        public const bool LevelEditorUpdateEnabled = false;
 
         /// <summary>
         /// Enable 0.5 Update things
         /// </summary>
-        public const bool RandomPatchesUpdateEnabled = true;
+        public const bool RandomPatchesUpdateEnabled = false;
 
         /// <summary>
         /// Enable 0.6 Update things
         /// </summary>
-        public const bool CommunityUpdateEnabled = true;
+        public const bool CommunityUpdateEnabled = false;
 
         /// <summary>
         /// Enable 0.7 Update things
         /// </summary>
-        public const bool BalancingUpdateEnabled = true;
+        public const bool BalancingUpdateEnabled = false;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

@@ -60,7 +60,7 @@ namespace CDOverhaul.ArenaRemaster
 
         public override void OnModDeactivated()
         {
-            if (IsDisposedOrDestroyed())
+            if (IsDisposedOrDestroyed() || !OverhaulVersion.UseArenaRemaster)
             {
                 return;
             }

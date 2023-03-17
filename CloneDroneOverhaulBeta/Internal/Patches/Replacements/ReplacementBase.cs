@@ -80,7 +80,5 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
         }
-
-        // Todo: fix chapter 3 ending: restore time & fix no delay in dialogues
     }
 }

@@ -19,8 +19,8 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
-            m_MoveCommand = command;
-            if (m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowSwitchingWeapons)
+            m_MoveCommand = command; // Todo: Make this better
+            if (IsOwnerPlayer()/*Temporary fleet bots AI fix*/ && m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowSwitchingWeapons)
             {
                 command.Input.Weapon1 = false;
                 command.Input.Weapon2 = false;

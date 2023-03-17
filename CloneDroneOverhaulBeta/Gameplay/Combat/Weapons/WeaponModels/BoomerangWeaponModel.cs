@@ -79,6 +79,8 @@ namespace CDOverhaul.Gameplay.Combat
             base.AddImmuneCharacter(GetOwner());
 
             m_FireVFXTransform = base.GetComponent<ModdedObject>().GetObject<Transform>(3);
+
+            m_InitialParentTransform = base.transform.parent;
         }
 
         public override void ApplyOwnersFavouriteColor(Color color)
@@ -139,6 +141,7 @@ namespace CDOverhaul.Gameplay.Combat
                 m_TimeStartedPreparing = Time.time;
                 m_TimeToAllowThrowing = Time.time + 0.2f;
                 m_IsPreparingToThrow = true;
+                AllowSwitchingWeapons = false;
 
                 AnimationController.ForceSetIsPlayingUpperAnimation = true;
                 AnimationController.PlayCustomAnimaton("WeaponUse_PrepareBoomerang");
@@ -155,6 +158,7 @@ namespace CDOverhaul.Gameplay.Combat
         {
             m_IsPreparingToThrow = false;
             AnimationController.ForceSetIsPlayingUpperAnimation = false;
+            AllowSwitchingWeapons = true;
 
             if (Time.time >= m_TimeToAllowThrowing)
             {
@@ -168,8 +172,6 @@ namespace CDOverhaul.Gameplay.Combat
 
         public void Throw()
         {
-            m_InitialParentTransform = base.transform.parent;
-
             m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedPreparing) / (m_TimeToAllowThrowing - m_TimeStartedPreparing + 1f), 0.7f, 1.5f);
             m_TimeToAllowPickingUp = Time.time + 0.3f + (!m_AllowAutoTargeting ? 0 : 3f);
             m_HasAlreadyDisabledCollidersThisThrow = false;
@@ -186,6 +188,7 @@ namespace CDOverhaul.Gameplay.Combat
             base.MeleeImpactArea.SetDamageActive(true);
 
             m_IsThrown = true;
+            AllowSwitchingWeapons = true;
         }
 
         public void PickUp()

@@ -96,7 +96,7 @@ namespace CDOverhaul.Graphics
                 return;
             }
             camera.useOcclusionCulling = true;
-            camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+            if(!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
             addShaderPassesToCamera(camera);

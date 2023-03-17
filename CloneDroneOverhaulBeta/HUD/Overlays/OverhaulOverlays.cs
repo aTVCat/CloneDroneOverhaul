@@ -8,6 +8,11 @@ namespace CDOverhaul.HUD
     {
         public override void Initialize()
         {
+            if (!OverhaulVersion.TechDemo2Enabled)
+            {
+                return;
+            }
+
             MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
 
             base.transform.SetParent(GameUIRoot.Instance.transform);
