@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CDOverhaul.Internal.Transitions
+namespace CDOverhaul
 {
     /// <summary>
     /// Todo: Add better transitions without bugs and with cool loading animation

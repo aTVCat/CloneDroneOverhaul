@@ -5,7 +5,7 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPauseMenu : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, OverhaulVersion.TechDemo2Enabled, "wip")]
+        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, !OverhaulVersion.TechDemo2Enabled, "wip")]
         public static bool UseThisMenu;
 
         public static bool ForceUseOldMenu;

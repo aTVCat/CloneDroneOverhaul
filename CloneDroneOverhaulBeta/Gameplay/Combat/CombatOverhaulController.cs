@@ -1,4 +1,5 @@
-﻿using ModLibrary;
+﻿using CDOverhaul.Gameplay.Combat.Fights;
+using ModLibrary;
 
 namespace CDOverhaul.Gameplay.Combat
 {
@@ -6,6 +7,7 @@ namespace CDOverhaul.Gameplay.Combat
     {
         private CombatOverhaulTutorialController m_TutorialController;
         private CombatOverhaulInventoryController m_InventoryController;
+        private CombatOverhaulCombosController m_CombosController;
 
         public override void Initialize()
         {
@@ -13,6 +15,7 @@ namespace CDOverhaul.Gameplay.Combat
 
             m_TutorialController = AddController<CombatOverhaulTutorialController>();
             m_InventoryController = AddController<CombatOverhaulInventoryController>();
+            m_CombosController = AddController<CombatOverhaulCombosController>();
         }
 
         public void StartTutorial()
@@ -30,7 +33,9 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            _ = firstPersonMover.gameObject.AddComponent<CombatSprintAndStance>();
+            CombatSprintAndStance stance = firstPersonMover.gameObject.AddComponent<CombatSprintAndStance>();
+            CombatOverhaulUnbalancing unbalancing = firstPersonMover.gameObject.AddComponent<CombatOverhaulUnbalancing>();
+            unbalancing.SprintAndStance = stance;
         }
     }
 }

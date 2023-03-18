@@ -51,11 +51,23 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false)]
+        public static bool AOEnabled;
+
+        [SettingSliderParameters(false, 0.7f, 1.3f)]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 1.1f, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        public static float AOIntensity;
+
+        [SettingDropdownParameters("Low@Medium@High@Very high")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 2, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        public static int AOSampleCount;
+
         #endregion
 
-        #region Some static stuff
+        #region Some stuff
 
         private static readonly List<Bloom> m_BloomEffects = new List<Bloom>();
+        private static readonly List<AmplifyOcclusionEffect> m_AOEffects = new List<AmplifyOcclusionEffect>();
 
         private static Material m_VignetteMaterial;
         private static Material m_ChromaMaterial;
@@ -73,6 +85,8 @@ namespace CDOverhaul.Graphics
             "UICamera",
             "ArenaCamera"
         };
+
+        public static bool IgnoreCamera(Camera camera) { return camera == null || m_IgnoredCameras.Contains(camera.gameObject.name); }
 
         #endregion
 
@@ -95,10 +109,10 @@ namespace CDOverhaul.Graphics
             {
                 return;
             }
-            camera.useOcclusionCulling = true;
             if(!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
+            refreshAmplifyOcclusionOnCamera(camera);
             addShaderPassesToCamera(camera);
             refreshShaderMaterials();
         }
@@ -120,7 +134,7 @@ namespace CDOverhaul.Graphics
 
         private static void addShaderPassesToCamera(Camera camera)
         {
-            if (camera == null || m_IgnoredCameras.Contains(camera.gameObject.name) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
+            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
             {
                 return;
             }
@@ -129,6 +143,50 @@ namespace CDOverhaul.Graphics
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
         }
+
+        private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
+        {
+            if (IgnoreCamera(camera) || camera != Camera.main)
+            {
+                return;
+            }
+
+            AmplifyOcclusionEffect effect = camera.GetComponent<AmplifyOcclusionEffect>();
+            if (!effect)
+            {
+                effect = camera.gameObject.AddComponent<AmplifyOcclusionEffect>();
+                m_AOEffects.Add(effect);
+            }
+            refreshAmplifyOcclusion(effect, updateList);
+        }
+
+        private static void refreshAmplifyOcclusion(AmplifyOcclusionEffect effect, bool updateList = true)
+        {
+            effect.BlurSharpness = 4f;
+            effect.FilterResponse = 0.7f;
+            effect.Bias = 0.8f;
+            effect.SampleCount = (AmplifyOcclusion.SampleCountLevel)AOSampleCount;
+            effect.Intensity = AOIntensity;
+            effect.enabled = AOEnabled;
+
+            // Remove destroyed instances
+            if (!updateList || m_AOEffects.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            int i = m_AOEffects.Count - 1;
+            do
+            {
+                if (m_AOEffects[i] == null)
+                {
+                    m_AOEffects.RemoveAt(i);
+                }
+                i--;
+
+            } while (i > -1);
+        }
+
 
         private static void patchAllCameras()
         {
@@ -141,6 +199,20 @@ namespace CDOverhaul.Graphics
 
         private static void refreshShaderMaterials() // Todo: Make PatchBloom method
         {
+            if (!m_AOEffects.IsNullOrEmpty())
+            {
+                for (int i = m_AOEffects.Count - 1; i > -1; i--)
+                {
+                    AmplifyOcclusionEffect b = m_AOEffects[i];
+                    if (!b)
+                    {
+                        m_AOEffects.RemoveAt(i);
+                        continue;
+                    }
+
+                    refreshAmplifyOcclusion(b, false);
+                }
+            }
             if (!m_BloomEffects.IsNullOrEmpty())
             {
                 for (int i = m_BloomEffects.Count - 1; i > -1; i--)

@@ -34,7 +34,15 @@ namespace CDOverhaul.Gameplay.Combat
             m_LowerAnimation = null;
         }
 
-        public void PlayCustomAnimaton(string animationName)
+        public override void OnEvent(SendFallingEvent sendFallingEvent)
+        {
+            if(FirstPersonMover.entity.IsOwner && FirstPersonMover.HasLocalControl())
+            {
+                StopPlayingCustomAnimations();
+            }
+        }
+
+        public void PlayCustomAnimaton(string animationName, bool dontPlayIfFell = true)
         {
             if (IsDisposedOrDestroyed())
             {
@@ -42,6 +50,10 @@ namespace CDOverhaul.Gameplay.Combat
             }
 
             FirstPersonMover.SetActiveEmoteIndex(-1);
+            if (dontPlayIfFell && FirstPersonMover.GetState().IsFalling)
+            {
+                return;
+            }
 
             if (m_HasUpperAnimator && m_UpperAnimation != null)
             {
@@ -50,6 +62,10 @@ namespace CDOverhaul.Gameplay.Combat
                 {
                     m_UpperAnimation.CrossFade(animationName, 0.35f);
                     m_UpperAnimation.clip = clip;
+                    DelegateScheduler.Instance.Schedule(delegate
+                    {
+                        if(!FirstPersonMover.GetState().IsFalling) CharacterModel.RenderUpperAnimationFrame("Idle_Sword", 1000f);
+                    }, Time.deltaTime);
                 }
             }
             if (m_HasLowerAnimator && m_LowerAnimation != null)

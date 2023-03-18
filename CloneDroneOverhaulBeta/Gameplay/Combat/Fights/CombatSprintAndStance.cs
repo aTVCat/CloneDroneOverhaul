@@ -24,6 +24,8 @@ namespace CDOverhaul.Gameplay.Combat
         private bool m_PressedCtrlThisFrame;
         private bool m_HoldingCtrl;
 
+        public float MaxSpeedOffset { get; set; }
+
         public override void Start()
         {
             base.Start();
@@ -130,15 +132,15 @@ namespace CDOverhaul.Gameplay.Combat
         {
             if(state == null)
             {
-                return GetDefaultSpeed();
+                return GetDefaultSpeed() + MaxSpeedOffset;
             }
             if (state.Value)
             {
-                return GetDefaultSpeed() + 5f;
+                return GetDefaultSpeed() + 5f + MaxSpeedOffset;
             }
             else
             {
-                return 4.5f;
+                return 4.5f + MaxSpeedOffset;
             }
         }
 

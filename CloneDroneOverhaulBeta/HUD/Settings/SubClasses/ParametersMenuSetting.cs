@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
 {
     public class ParametersMenuSetting : OverhaulMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public const string BGColor_Normal = "#3A3B40";
+        public const string BGColor_Normal = "#242528";
         public const string BGColor_Error = "#A63C43";
 
         private Transform m_ToggleTickBox;
@@ -64,8 +64,11 @@ namespace CDOverhaul.HUD
 
             base.GetComponent<Image>().enabled = position == ParametersMenuSettingPosition.Normal;
             m_ModdedObject.GetObject<Transform>(7).gameObject.SetActive(position == ParametersMenuSettingPosition.Top);
+            m_ModdedObject.GetObject<Image>(7).color = BGColor_Normal.ConvertHexToColor();
             m_ModdedObject.GetObject<Transform>(8).gameObject.SetActive(position == ParametersMenuSettingPosition.Center);
+            m_ModdedObject.GetObject<Image>(8).color = BGColor_Normal.ConvertHexToColor();
             m_ModdedObject.GetObject<Transform>(9).gameObject.SetActive(position == ParametersMenuSettingPosition.Bottom);
+            m_ModdedObject.GetObject<Image>(9).color = BGColor_Normal.ConvertHexToColor();
 
             configToggle(moddedObject, Setting.Type == SettingType.Bool, position);
             configSlider(moddedObject, Setting.SliderParameters);

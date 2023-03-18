@@ -109,6 +109,11 @@ namespace CDOverhaul
 
         }
 
+        public virtual void OnEvent(SendFallingEvent sendFallingEvent)
+        {
+
+        }
+
         private void onDeath(Character c)
         {
             if (IsDisposedOrDestroyed())

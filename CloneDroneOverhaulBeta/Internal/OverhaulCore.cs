@@ -1,7 +1,7 @@
-﻿using CDOverhaul.Gameplay;
+﻿using Bolt;
+using CDOverhaul.Gameplay;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
-using CDOverhaul.Internal.Transitions;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using System;
@@ -12,7 +12,7 @@ namespace CDOverhaul
     /// <summary>
     /// The core of the mod. Contains important variables
     /// </summary>
-    public class OverhaulCore : OverhaulMonoBehaviour
+    public class OverhaulCore : GlobalEventListener
     {
         /// <summary>
         /// The mod directory path.
@@ -106,7 +106,7 @@ namespace CDOverhaul
             ReplacementBase.CreateReplacements();
         }
 
-        protected override void OnDisposed()
+        private void OnDestroy()
         {
             HUDController = null;
             GameplayController = null;

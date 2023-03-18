@@ -152,7 +152,7 @@ namespace CDOverhaul
             }
 
             OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
-            Core.DestroyGameObject();
+            GameObject.Destroy(Core.gameObject);
             Core = null;
         }
 
@@ -164,6 +164,11 @@ namespace CDOverhaul
             }
 
             System.IntPtr windowPtr = FindWindow(null, Application.productName);
+            if (windowPtr.Equals(System.IntPtr.Zero))
+            {
+                return;
+            }
+
             _ = SetWindowText(windowPtr, "Clone Drone Overhaul");
         }
 
