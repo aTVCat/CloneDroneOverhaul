@@ -45,7 +45,7 @@ namespace CDOverhaul.Gameplay.Combat
         {
             if (!m_ShouldDash)
             {
-                command.Input.JetpackHeld = false;
+                if(IsOwnerMainPlayer()) command.Input.JetpackHeld = false;
             }
             else
             {
@@ -53,9 +53,12 @@ namespace CDOverhaul.Gameplay.Combat
             }
             if(m_MovementState == false)
             {
-                if (FirstPersonMover.IsOnGroundServer() && command.Input.SecondAttackDown)
+                if (OverhaulVersion.JuneDemoEnabled)
                 {
-                    FirstPersonMover.AddVelocity(FirstPersonMover.transform.right * (30 * command.Input.HorizontalMovement));
+                    if (FirstPersonMover.IsOnGroundServer() && command.Input.SecondAttackDown)
+                    {
+                        FirstPersonMover.AddVelocity(FirstPersonMover.transform.right * (30 * command.Input.HorizontalMovement));
+                    }
                 }
                 command.Input.SecondAttackDown = false;
                 command.Input.Jump = false;

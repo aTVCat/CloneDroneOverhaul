@@ -15,6 +15,7 @@ namespace CDOverhaul.ArenaRemaster
         public Transform WorldRootTransform;
         public Transform ArenaTransform;
         public Transform OgArenaColliders;
+        public Transform OgBattleCruiser;
         public ModdedObject ArenaRemaster;
 
         private Transform m_StandsRight;
@@ -42,9 +43,9 @@ namespace CDOverhaul.ArenaRemaster
             ArenaRemaster = spawnedPrefab.GetComponent<ModdedObject>();
             ArenaRemaster.gameObject.AddComponent<ArenaRemasterColorSwaper>();
 
-
             setUpStandsInterior();
             setUpArrowsInterior();
+            setUpBattleCruiser();
             if(SupportEnemiesLeftLabel) setUpLabelsInterior();
 
             SetOriginalArenaCollidersActive(false);
@@ -125,6 +126,29 @@ namespace CDOverhaul.ArenaRemaster
             m_StandsRight = TransformUtils.FindChildRecursive(ArenaTransform, "StandsRight");
             m_StandsLeft = TransformUtils.FindChildRecursive(ArenaTransform, "StandsLeft");
             return m_StandsLeft != null && m_StandsRight != null;
+        }
+
+        private void setUpBattleCruiser()
+        {
+            OgBattleCruiser = TransformUtils.FindChildRecursive(ArenaTransform, "Battlecruiser");
+
+            Transform transformBC = UnityEngine.Object.Instantiate<Transform>(Singleton<EnemyFactory>.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
+            foreach (MonoBehaviour proj in transformBC.GetComponentsInChildren<MonoBehaviour>())
+            {
+                UnityEngine.Object.Destroy(proj);
+            }
+            foreach (Renderer proj in transformBC.GetComponentsInChildren<Renderer>())
+            {
+                proj.material = AssetsController.GetAsset<Material>("M_NoFog", OverhaulAssetsPart.Part2);
+            }
+            TransformUtils.HideAllChildren(transformBC);
+            transformBC.GetChild(0).gameObject.SetActive(true);
+            transformBC.SetParent(OgBattleCruiser, false);
+            transformBC.localPosition = new Vector3(0f, 0f, -0.65f);
+            transformBC.localEulerAngles = Vector3.zero;
+            transformBC.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+
+            OgBattleCruiser.GetComponent<MeshRenderer>().enabled = false;
         }
 
         private void setUpArrowsInterior()

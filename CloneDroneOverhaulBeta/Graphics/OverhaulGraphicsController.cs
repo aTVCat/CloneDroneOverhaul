@@ -51,7 +51,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false)]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Currently it doesn't work")]
         public static bool AOEnabled;
 
         [SettingSliderParameters(false, 0.7f, 1.3f)]
@@ -105,7 +105,7 @@ namespace CDOverhaul.Graphics
 
         public static void PatchCamera(Camera camera)
         {
-            if (camera == null)
+            if (camera == null || camera.orthographic)
             {
                 return;
             }
@@ -115,6 +115,8 @@ namespace CDOverhaul.Graphics
             refreshAmplifyOcclusionOnCamera(camera);
             addShaderPassesToCamera(camera);
             refreshShaderMaterials();
+
+            //camera.gameObject.AddComponent<MotionBlur>().shader = AssetsController.GetAsset<Shader>("MotionBlur", OverhaulAssetsPart.Part2);
         }
 
         public static void PatchBloom(Bloom bloom)
@@ -147,6 +149,11 @@ namespace CDOverhaul.Graphics
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
         {
             if (IgnoreCamera(camera) || camera != Camera.main)
+            {
+                return;
+            }
+
+            if (!OverhaulVersion.TechDemo2Enabled)
             {
                 return;
             }

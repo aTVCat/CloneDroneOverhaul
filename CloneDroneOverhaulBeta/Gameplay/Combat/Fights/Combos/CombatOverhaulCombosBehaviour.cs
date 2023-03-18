@@ -23,7 +23,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
 
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
-            if (m_Combos.IsNullOrEmpty())
+            if (m_Combos.IsNullOrEmpty() || !OverhaulGamemodeManager.SupportsCombatOverhaul())
             {
                 return;
             }

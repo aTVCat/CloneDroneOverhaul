@@ -24,18 +24,18 @@ namespace CDOverhaul
         /// </summary>
         public static readonly string ModShortName = "Overhaul " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
-        public const bool UseArenaRemaster = true;
-        public const bool AllowWindowNameChanging = true;
+        public const bool UseArenaRemaster = false;
+        public const bool AllowWindowNameChanging = false;
 
         /// <summary>
         /// Enable 0.3 Tech-Demo 2 Update things
         /// </summary>
-        public const bool TechDemo2Enabled = true;
+        public const bool TechDemo2Enabled = false;
 
         /// <summary>
         /// Enable 0.3 June demo Update things
         /// </summary>
-        public const bool JuneDemoEnabled = true;
+        public const bool JuneDemoEnabled = false;
 
         /// <summary>
         /// Enable 0.4 Update things
