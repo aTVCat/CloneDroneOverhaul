@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay
+﻿namespace CDOverhaul.Gameplay
 {
     public class OverhaulGamemodeController : OverhaulGameplayController
     {
@@ -11,7 +8,7 @@ namespace CDOverhaul.Gameplay
         {
             base.Initialize();
 
-            OverhaulEventManager.AddEventListener("GameInitializtionCompleted", onGameInitialized, true);
+            _ = OverhaulEventManager.AddEventListener("GameInitializtionCompleted", onGameInitialized, true);
         }
 
         private void onGameInitialized()

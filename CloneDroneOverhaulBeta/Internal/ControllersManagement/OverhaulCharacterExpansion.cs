@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [RequireComponent(typeof(FirstPersonMover), typeof(UpgradeCollection), typeof(EnergySource))]
-    public class OverhaulCharacterExpansion : OverhaulMonoBehaviour
+    public class OverhaulCharacterExpansion : OverhaulBehaviour
     {
         /// <summary>
         /// Owner of the expansion script

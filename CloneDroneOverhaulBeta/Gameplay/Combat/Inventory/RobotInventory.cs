@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay.Combat
+﻿namespace CDOverhaul.Gameplay.Combat
 {
     public class RobotInventory : CombatOverhaulMechanic
     {

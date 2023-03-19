@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.LevelEditor;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +7,10 @@ namespace CDOverhaul.Gameplay
     public class AdvancedGarbageController : OverhaulController
     {
         private Transform[] m_OgGarbageBotSpawns;
-        private List<Transform> m_ModdedGarbageBotSpawns = new List<Transform>();
+        private readonly List<Transform> m_ModdedGarbageBotSpawns = new List<Transform>();
 
         private Transform[] m_OgGarbageDropPoints;
-        private List<Transform> m_ModdedGarbageDropPoints = new List<Transform>();
+        private readonly List<Transform> m_ModdedGarbageDropPoints = new List<Transform>();
 
         public override void Initialize()
         {
@@ -45,7 +44,7 @@ namespace CDOverhaul.Gameplay
 
         public void RemoveGarbageDropPoint(Transform point)
         {
-            m_ModdedGarbageDropPoints.Remove(point);
+            _ = m_ModdedGarbageDropPoints.Remove(point);
             if(m_ModdedGarbageDropPoints.Count == 0)
             {
                 ReplaceVanillaDropPoints(false);
@@ -77,7 +76,7 @@ namespace CDOverhaul.Gameplay
 
         public void RemoveGarbageBotSpawnPoint(Transform point)
         {
-            m_ModdedGarbageBotSpawns.Remove(point);
+            _ = m_ModdedGarbageBotSpawns.Remove(point);
             if (m_ModdedGarbageBotSpawns.Count == 0)
             {
                 ReplaceGarbageBotSpawnPoints(false);

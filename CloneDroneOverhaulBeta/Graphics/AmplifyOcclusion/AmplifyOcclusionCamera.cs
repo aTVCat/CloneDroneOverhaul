@@ -1,10 +1,10 @@
 ﻿// Amplify Occlusion 2 - Robust Ambient Occlusion for Unity
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Profiling;
 using AmplifyOcclusion;
+using UnityEngine;
+using UnityEngine.Profiling;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Camera))]
 public class AmplifyOcclusionEffect : MonoBehaviour
@@ -13,7 +13,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
     private int m_myID;
     private string m_myIDstring;
 
-    private float m_oneOverDepthScale = (1.0f / 65504.0f); // 65504.0f max half float
+    private readonly float m_oneOverDepthScale = 1.0f / 65504.0f; // 65504.0f max half float
 
     public enum ApplicationMethod
     {
@@ -147,11 +147,11 @@ public class AmplifyOcclusionEffect : MonoBehaviour
 
     private Camera m_targetCamera = null;
 
-    private RenderTargetIdentifier[] applyDebugTargetsTemporal = new RenderTargetIdentifier[2];
-    private RenderTargetIdentifier[] applyDeferredTargets_Log_Temporal = new RenderTargetIdentifier[3];
-    private RenderTargetIdentifier[] applyDeferredTargetsTemporal = new RenderTargetIdentifier[3];
-    private RenderTargetIdentifier[] applyOcclusionTemporal = new RenderTargetIdentifier[2];
-    private RenderTargetIdentifier[] applyPostEffectTargetsTemporal = new RenderTargetIdentifier[2];
+    private readonly RenderTargetIdentifier[] applyDebugTargetsTemporal = new RenderTargetIdentifier[2];
+    private readonly RenderTargetIdentifier[] applyDeferredTargets_Log_Temporal = new RenderTargetIdentifier[3];
+    private readonly RenderTargetIdentifier[] applyDeferredTargetsTemporal = new RenderTargetIdentifier[3];
+    private readonly RenderTargetIdentifier[] applyOcclusionTemporal = new RenderTargetIdentifier[2];
+    private readonly RenderTargetIdentifier[] applyPostEffectTargetsTemporal = new RenderTargetIdentifier[2];
 
     // NOTE: MotionVectors are not supported in Deferred Injection mode due to 1 frame delay
     private bool UsingTemporalFilter => (m_sampleStep > 0) && (FilterEnabled == true) && (m_targetCamera.cameraType != UnityEngine.CameraType.SceneView);
@@ -268,9 +268,9 @@ public class AmplifyOcclusionEffect : MonoBehaviour
     }
 
     private RenderTextureFormat m_occlusionRTFormat = RenderTextureFormat.RGHalf;
-    private RenderTextureFormat m_accumTemporalRTFormat = RenderTextureFormat.ARGB32;
-    private RenderTextureFormat m_temporaryEmissionRTFormat = RenderTextureFormat.ARGB2101010;
-    private RenderTextureFormat m_motionIntensityRTFormat = RenderTextureFormat.R8;
+    private readonly RenderTextureFormat m_accumTemporalRTFormat = RenderTextureFormat.ARGB32;
+    private readonly RenderTextureFormat m_temporaryEmissionRTFormat = RenderTextureFormat.ARGB2101010;
+    private readonly RenderTextureFormat m_motionIntensityRTFormat = RenderTextureFormat.R8;
 
 
     private bool checkRenderTextureFormats()
@@ -507,8 +507,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
                                                                     1,
                                                                     true);
 
-            int minSize = (int)Mathf.Min(m_target.fullWidth, m_target.fullHeight);
-            m_numberMips = (int)(Mathf.Log((float)minSize, 2.0f) + 1.0f) - 1;
+            int minSize = Mathf.Min(m_target.fullWidth, m_target.fullHeight);
+            m_numberMips = (int)(Mathf.Log(minSize, 2.0f) + 1.0f) - 1;
 
             m_tmpMipString = null;
             m_tmpMipString = new string[m_numberMips];
@@ -538,8 +538,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             (m_prevHDR != HDR) ||
             (m_prevMSAA != MSAA))
         {
-            m_clearHistory |= (m_prevHDR != HDR);
-            m_clearHistory |= (m_prevMSAA != MSAA);
+            m_clearHistory |= m_prevHDR != HDR;
+            m_clearHistory |= m_prevMSAA != MSAA;
 
             m_HDR = HDR;
             m_MSAA = MSAA;
@@ -660,7 +660,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
 			}
 #endif
 
-            bool deferredReflections = (GraphicsSettings.GetShaderMode(BuiltinShaderType.DeferredReflections) != BuiltinShaderMode.Disabled);
+            bool deferredReflections = GraphicsSettings.GetShaderMode(BuiltinShaderType.DeferredReflections) != BuiltinShaderMode.Disabled;
 
             if ((m_prevPerPixelNormals != PerPixelNormals) ||
                 (m_prevApplyMethod != ApplyMethod) ||
@@ -694,8 +694,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
                 if (AmplifyOcclusionCommon.IsStereoMultiPassEnabled(m_targetCamera) == true)
                 {
                     uint curStepIdx = (m_sampleStep >> 1) & 1;
-                    uint curEyeIdx = (m_sampleStep & 1);
-                    m_curTemporalIdx = (curEyeIdx * 2) + (0 + curStepIdx);
+                    uint curEyeIdx = m_sampleStep & 1;
+                    m_curTemporalIdx = (curEyeIdx * 2) + 0 + curStepIdx;
                     m_prevTemporalIdx = (curEyeIdx * 2) + (1 - curStepIdx);
                 }
                 else
@@ -779,7 +779,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
         }
         if (m_temporalAccumRT != null)
         {
-            foreach (var rt in m_temporalAccumRT)
+            foreach (RenderTexture rt in m_temporalAccumRT)
             {
                 rt.MarkRestoreExpected();
             }
@@ -807,16 +807,16 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             cb.SetGlobalTexture(PropertyID._AO_GBufferNormals, BuiltinRenderTextureType.GBuffer2);
         }
 
-        Vector4 oneOverFullSize_Size = new Vector4(1.0f / (float)m_target.fullWidth,
-                                                    1.0f / (float)m_target.fullHeight,
+        Vector4 oneOverFullSize_Size = new Vector4(1.0f / m_target.fullWidth,
+                                                    1.0f / m_target.fullHeight,
                                                     m_target.fullWidth,
                                                     m_target.fullHeight);
 
         int sampleCountPass = ((int)SampleCount) * AmplifyOcclusionCommon.PerPixelNormalSourceCount;
 
-        int occlusionPass = (ShaderPass.OcclusionLow_None +
+        int occlusionPass = ShaderPass.OcclusionLow_None +
                                 sampleCountPass +
-                                ((int)PerPixelNormals));
+                                ((int)PerPixelNormals);
 
         if (CacheAware == true)
         {
@@ -841,7 +841,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
                 // _AO_CurrDepthSource was previously set
                 cb.SetRenderTarget(tmpMipRT);
 
-                PerformBlit(cb, m_occlusionMat, ((i == 0) ? ShaderPass.ScaleDownCloserDepthEven_CameraDepthTexture : ShaderPass.ScaleDownCloserDepthEven));
+                PerformBlit(cb, m_occlusionMat, (i == 0) ? ShaderPass.ScaleDownCloserDepthEven_CameraDepthTexture : ShaderPass.ScaleDownCloserDepthEven);
 
                 cb.CopyTexture(tmpMipRT, 0, 0, m_depthMipmap, 0, i);
 
@@ -918,8 +918,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             }
             else
             {
-                cb.SetGlobalVector(PropertyID._AO_Target_TexelSize, new Vector4(1.0f / (float)m_target.width,
-                                                                                  1.0f / (float)m_target.height,
+                cb.SetGlobalVector(PropertyID._AO_Target_TexelSize, new Vector4(1.0f / m_target.width,
+                                                                                  1.0f / m_target.height,
                                                                                   m_target.width,
                                                                                   m_target.height));
             }
@@ -994,7 +994,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             // Horizontal
             cb.SetGlobalTexture(PropertyID._AO_CurrOcclusionDepth, aSourceRT);
 
-            int blurHorizontalPass = ShaderPass.BlurHorizontal1 + (BlurRadius - 1) * 2;
+            int blurHorizontalPass = ShaderPass.BlurHorizontal1 + ((BlurRadius - 1) * 2);
 
             cb.SetRenderTarget(tmpBlurRT);
 
@@ -1004,7 +1004,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             // Vertical
             cb.SetGlobalTexture(PropertyID._AO_CurrOcclusionDepth, tmpBlurRT);
 
-            int blurVerticalPass = ShaderPass.BlurVertical1 + (BlurRadius - 1) * 2;
+            int blurVerticalPass = ShaderPass.BlurVertical1 + ((BlurRadius - 1) * 2);
 
             cb.SetRenderTarget(aSourceRT);
 
@@ -1019,7 +1019,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
 
     private int getTemporalPass()
     {
-        return (((UsingMotionVectors == true) && (m_sampleStep > 1)) ? (1 << 0) : 0);
+        return ((UsingMotionVectors == true) && (m_sampleStep > 1)) ? (1 << 0) : 0;
     }
 
     private void commandBuffer_TemporalFilter(CommandBuffer cb)
@@ -1033,7 +1033,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
         float temporalAdj = Mathf.Lerp(0.01f, 0.99f, FilterBlending);
 
         cb.SetGlobalFloat(PropertyID._AO_TemporalCurveAdj, temporalAdj);
-        cb.SetGlobalFloat(PropertyID._AO_TemporalMotionSensibility, FilterResponse * FilterResponse + 0.01f);
+        cb.SetGlobalFloat(PropertyID._AO_TemporalMotionSensibility, (FilterResponse * FilterResponse) + 0.01f);
 
         cb.SetGlobalTexture(PropertyID._AO_CurrOcclusionDepth, m_occlusionDepthRT);
         cb.SetGlobalTexture(PropertyID._AO_TemporalAccumm, m_temporalAccumRT[m_prevTemporalIdx]);
@@ -1347,8 +1347,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
         cb.SetGlobalFloat(PropertyID._AO_Bias, Bias * Bias);
         cb.SetGlobalColor(PropertyID._AO_Levels, new Color(Tint.r, Tint.g, Tint.b, Intensity));
 
-        float invThickness = (1.0f - Thickness);
-        cb.SetGlobalFloat(PropertyID._AO_ThicknessDecay, (1.0f - invThickness * invThickness) * 0.98f);
+        float invThickness = 1.0f - Thickness;
+        cb.SetGlobalFloat(PropertyID._AO_ThicknessDecay, (1.0f - (invThickness * invThickness)) * 0.98f);
 
         float AO_BufDepthToLinearEye = m_targetCamera.farClipPlane * m_oneOverDepthScale;
         cb.SetGlobalFloat(PropertyID._AO_BufDepthToLinearEye, AO_BufDepthToLinearEye);
@@ -1369,8 +1369,8 @@ public class AmplifyOcclusionEffect : MonoBehaviour
             float rcpFadeLength = 1.0f / FadeLength;
 
             cb.SetGlobalVector(PropertyID._AO_FadeParams, new Vector2(FadeStart, rcpFadeLength));
-            float invFadeThickness = (1.0f - FadeToThickness);
-            cb.SetGlobalVector(PropertyID._AO_FadeValues, new Vector4(FadeToIntensity, FadeToRadius, FadeToPowerExponent, (1.0f - invFadeThickness * invFadeThickness) * 0.98f));
+            float invFadeThickness = 1.0f - FadeToThickness;
+            cb.SetGlobalVector(PropertyID._AO_FadeValues, new Vector4(FadeToIntensity, FadeToRadius, FadeToPowerExponent, (1.0f - (invFadeThickness * invFadeThickness)) * 0.98f));
             cb.SetGlobalColor(PropertyID._AO_FadeToTint, new Color(FadeToTint.r, FadeToTint.g, FadeToTint.b, 0.0f));
         }
         else
@@ -1389,7 +1389,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
         }
     }
 
-    private AmplifyOcclusionViewProjMatrix m_viewProjMatrix = new AmplifyOcclusionViewProjMatrix();
+    private readonly AmplifyOcclusionViewProjMatrix m_viewProjMatrix = new AmplifyOcclusionViewProjMatrix();
 
     private void UpdateGlobalShaderConstants_Matrices(CommandBuffer cb)
     {

@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Patches;
-using ModLibrary;
+﻿using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -76,7 +74,7 @@ namespace CDOverhaul.LevelEditor
                 }
 
                 float distance = Vector3.Distance(player.transform.position, base.transform.position);
-                bool enoughClose = distance < Distance;
+                _ = distance < Distance;
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {

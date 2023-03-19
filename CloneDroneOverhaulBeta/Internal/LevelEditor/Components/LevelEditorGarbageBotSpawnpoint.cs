@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Patches;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace CDOverhaul.LevelEditor
             if (!GameModeManager.IsInLevelEditor())
             {
                 m_Controller = OverhaulController.GetController<AdvancedGarbageController>();
-                m_Controller.AddGarbageBotSpawnPoint(this.transform);
+                m_Controller.AddGarbageBotSpawnPoint(transform);
             }
         }
 
@@ -79,7 +78,7 @@ namespace CDOverhaul.LevelEditor
 
         private void OnDestroy()
         {
-            OverhaulController.GetController<AdvancedGarbageController>().RemoveGarbageBotSpawnPoint(this.transform);
+            OverhaulController.GetController<AdvancedGarbageController>().RemoveGarbageBotSpawnPoint(transform);
         }
     }
 }

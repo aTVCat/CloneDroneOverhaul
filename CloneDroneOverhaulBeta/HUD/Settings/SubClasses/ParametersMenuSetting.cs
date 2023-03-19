@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class ParametersMenuSetting : OverhaulMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ParametersMenuSetting : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public const string BGColor_Normal = "#242528";
         public const string BGColor_Error = "#A63C43";

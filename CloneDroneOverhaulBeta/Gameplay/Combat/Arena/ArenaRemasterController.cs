@@ -41,7 +41,7 @@ namespace CDOverhaul.ArenaRemaster
             spawnedPrefabTransform.position = Vector3.zero;
             spawnedPrefabTransform.eulerAngles = Vector3.zero;
             ArenaRemaster = spawnedPrefab.GetComponent<ModdedObject>();
-            ArenaRemaster.gameObject.AddComponent<ArenaRemasterColorSwaper>();
+            _ = ArenaRemaster.gameObject.AddComponent<ArenaRemasterColorSwaper>();
 
             setUpStandsInterior();
             setUpArrowsInterior();
@@ -156,15 +156,15 @@ namespace CDOverhaul.ArenaRemaster
             ArenaRemasterArrowBlinker b1 = ArenaRemaster.GetObject<Transform>(2).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
             ArenaRemasterArrowBlinker b2 = ArenaRemaster.GetObject<Transform>(1).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
             ArenaRemasterArrowBlinker b3 = ArenaRemaster.GetObject<Transform>(0).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
-            b1.Initialize(b1.GetComponent<ModdedObject>(), b2);
+            _ = b1.Initialize(b1.GetComponent<ModdedObject>(), b2);
             b1.ChangeState(true);
-            b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
-            b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
+            _ = b2.Initialize(b2.GetComponent<ModdedObject>(), b3);
+            _ = b3.Initialize(b3.GetComponent<ModdedObject>(), b1);
 
             ArenaRemasterArrowBlinker ur1 = ArenaRemaster.GetObject<Transform>(8).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
             ArenaRemasterArrowBlinker ur2 = ArenaRemaster.GetObject<Transform>(7).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, ur1);
             ArenaRemasterArrowBlinker ur3 = ArenaRemaster.GetObject<Transform>(6).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, ur2);
-            ur1.Initialize(null, ur3);
+            _ = ur1.Initialize(null, ur3);
             ur1.ChangeState(true);
 
             ArenaRemasterArrowBlinker un1 = ArenaRemaster.GetObject<Transform>(14).gameObject.AddComponent<ArenaRemasterArrowBlinker>();
@@ -172,7 +172,7 @@ namespace CDOverhaul.ArenaRemaster
             ArenaRemasterArrowBlinker un3 = ArenaRemaster.GetObject<Transform>(12).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un2);
             ArenaRemasterArrowBlinker un4 = ArenaRemaster.GetObject<Transform>(11).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un3);
             ArenaRemasterArrowBlinker un5 = ArenaRemaster.GetObject<Transform>(10).gameObject.AddComponent<ArenaRemasterArrowBlinker>().Initialize(null, un4);
-            un1.Initialize(null, un5);
+            _ = un1.Initialize(null, un5);
             un1.ChangeState(true);
 
             m_OgTopGotoElevatorArrows = ArenaArrowManager.Instance.TopGotoElevatorArrows[0];

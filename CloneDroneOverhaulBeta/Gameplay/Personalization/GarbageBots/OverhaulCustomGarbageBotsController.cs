@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay
+﻿namespace CDOverhaul.Gameplay
 {
     public class OverhaulCustomGarbageBotsController : OverhaulController
     {

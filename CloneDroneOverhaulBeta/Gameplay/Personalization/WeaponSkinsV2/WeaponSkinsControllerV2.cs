@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsController : OverhaulController, IWeaponSkinsControllerV2
+    public class WeaponSkinsController : OverhaulGameplayController, IWeaponSkinsControllerV2
     {
         public IWeaponSkinsControllerV2 Interface
         {
@@ -25,16 +25,25 @@ namespace CDOverhaul.Gameplay
 
         public override void Initialize()
         {
+            base.Initialize();
+
             Interface = this;
             addSkins();
+        }
 
-            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterStarted, ApplySkinsOnCharacter, true);
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if (!hasInitializedModel)
+            {
+                return;
+            }
+
+            ApplySkinsOnCharacter(firstPersonMover);
         }
 
         private void addSkins()
         {
-            bool hasAdded = OverhaulSessionController.GetKey<bool>("hasAddedSkins");
-            if (!hasAdded)
+            if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
 
@@ -59,6 +68,23 @@ namespace CDOverhaul.Gameplay
                     darkPastSwordSkinOffset,
                     false,
                     false);
+
+                // Voilet violence sword
+                ModelOffset violetViolenceSkinOffset = new ModelOffset(new Vector3(-0.75f, 0.65f, -0.85f), new Vector3(0, 90, 90), Vector3.one * 0.525f);
+                IWeaponSkinItemDefinition violetViolenceSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Violet Violence", ItemFilter.Exclusive);
+                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
+                    violetViolenceSkinOffset,
+                    false,
+                    false);
+                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
+                    violetViolenceSkinOffset,
+                    false,
+                    true);
+                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
+                    violetViolenceSkinOffset,
+                    true,
+                    true);
+                violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33");
 
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
@@ -88,8 +114,7 @@ namespace CDOverhaul.Gameplay
             WeaponSkinsWearer wearer = firstPersonMover.GetComponent<WeaponSkinsWearer>();
             if(wearer == null)
             {
-                _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
-                return;
+                wearer = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
             }
             wearer.SpawnSkins();
         }
@@ -152,7 +177,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
-                    if (weaponSkinItem.IsUnlocked(false))
+                    if (weaponSkinItem.IsUnlocked(OverhaulVersion.IsDebugBuild))
                     {
                         string itemName = weaponSkinItem.GetItemName();
                         switch (weaponSkinItem.GetWeaponType())
@@ -189,7 +214,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
-                    if (weaponSkinItem.IsUnlocked(false) && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                    if (weaponSkinItem.IsUnlocked(OverhaulVersion.IsDebugBuild) && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
                     {
                         result.Add(weaponSkinItem);
                     }

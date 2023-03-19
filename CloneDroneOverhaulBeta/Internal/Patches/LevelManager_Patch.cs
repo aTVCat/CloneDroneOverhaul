@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("parseLevelSpreadSheets")]
         private static void parseLevelSpreadSheets_Postfix()
         {
-            OverhaulLevelAdder.AddLevel("FUSRoom", "CombatTutorial", GameMode.Story, out string guid);
+            OverhaulLevelAdder.AddLevel("FUSRoom", "CombatTutorial", GameMode.Story, out _);
         }
     }
 }

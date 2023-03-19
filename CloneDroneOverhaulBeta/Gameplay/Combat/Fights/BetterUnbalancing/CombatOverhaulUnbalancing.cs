@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat.Fights
 {
@@ -43,7 +42,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
         public void Unbalance(float value)
         {
             UnbalancedValue += value;
-            if(FirstPersonMover.IsOnGroundServer()) FirstPersonMover.AddVelocity(base.transform.up + base.transform.forward * 6);
+            if(FirstPersonMover.IsOnGroundServer()) FirstPersonMover.AddVelocity(base.transform.up + (base.transform.forward * 6));
         }
 
         public override void Start()

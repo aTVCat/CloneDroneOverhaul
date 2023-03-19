@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat.Fights
 {
-    public class ComboBase : OverhaulMonoBehaviour
+    public class ComboBase : OverhaulBehaviour
     {
         private float m_TimeToAllowTriggering;
         public bool CanTrigger => Time.time >= m_TimeToAllowTriggering;

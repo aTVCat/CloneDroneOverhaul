@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay.Combat
+﻿namespace CDOverhaul.Gameplay.Combat
 {
     /// <summary>
     /// I might scrap it for future updates
@@ -16,7 +13,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            firstPersonMover.gameObject.AddComponent<RobotInventory>();
+            _ = firstPersonMover.gameObject.AddComponent<RobotInventory>();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
     /// <summary>
     /// The accessory gameobject controller
     /// </summary>
-    public class RobotAccessoryBehaviour : OverhaulMonoBehaviour
+    public class RobotAccessoryBehaviour : OverhaulBehaviour
     {
         private FirstPersonMover m_Owner;
         private IPlayerAccessoryItemDefinition m_Item;

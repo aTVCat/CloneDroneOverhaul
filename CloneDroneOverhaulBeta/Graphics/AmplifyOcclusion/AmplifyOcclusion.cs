@@ -17,7 +17,7 @@ namespace AmplifyOcclusion
         public static void CommandBuffer_TemporalFilterDirectionsOffsets(CommandBuffer cb, uint aSampleStep)
         {
             float temporalRotation = AmplifyOcclusionCommon.m_temporalRotations[aSampleStep % 6];
-            float temporalOffset = AmplifyOcclusionCommon.m_spatialOffsets[(aSampleStep / 6) % 4];
+            float temporalOffset = AmplifyOcclusionCommon.m_spatialOffsets[aSampleStep / 6 % 4];
 
             cb.SetGlobalFloat(PropertyID._AO_TemporalDirections, temporalRotation / 360.0f);
             cb.SetGlobalFloat(PropertyID._AO_TemporalOffsets, temporalOffset);
@@ -73,14 +73,16 @@ namespace AmplifyOcclusion
             width = Mathf.Clamp(width, 1, 65536);
             height = Mathf.Clamp(height, 1, 65536);
 
-            RenderTexture rt = new RenderTexture(width, height, 0, format, readWrite) { hideFlags = HideFlags.DontSave };
-
-            rt.name = name;
-            rt.filterMode = filterMode;
-            rt.wrapMode = TextureWrapMode.Clamp;
-            rt.antiAliasing = Mathf.Max(antiAliasing, 1);
-            rt.useMipMap = aUseMipMap;
-            rt.Create();
+            RenderTexture rt = new RenderTexture(width, height, 0, format, readWrite)
+            {
+                hideFlags = HideFlags.DontSave,
+                name = name,
+                filterMode = filterMode,
+                wrapMode = TextureWrapMode.Clamp,
+                antiAliasing = Mathf.Max(antiAliasing, 1),
+                useMipMap = aUseMipMap
+            };
+            _ = rt.Create();
 
             return rt;
         }
@@ -159,8 +161,8 @@ namespace AmplifyOcclusion
                 aTarget.height = aTarget.fullHeight;
             }
 
-            aTarget.oneOverWidth = 1.0f / (float)aTarget.width;
-            aTarget.oneOverHeight = 1.0f / (float)aTarget.height;
+            aTarget.oneOverWidth = 1.0f / aTarget.width;
+            aTarget.oneOverHeight = 1.0f / aTarget.height;
 
             float fovRad = aCamera.fieldOfView * Mathf.Deg2Rad;
 
@@ -181,11 +183,11 @@ namespace AmplifyOcclusion
 
             if (aCamera.orthographic)
             {
-                projScale = ((float)aTarget.fullHeight) / aCamera.orthographicSize;
+                projScale = aTarget.fullHeight / aCamera.orthographicSize;
             }
             else
             {
-                projScale = ((float)aTarget.fullHeight) / (Mathf.Tan(fovRad * 0.5f) * 2.0f);
+                projScale = aTarget.fullHeight / (Mathf.Tan(fovRad * 0.5f) * 2.0f);
             }
 
             if ((isDownsample == true) || (isFilterDownsample == true))

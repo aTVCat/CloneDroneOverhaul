@@ -33,14 +33,14 @@ namespace CDOverhaul.Patches
                 return false;
             }
 
-            bool isHeavy = __instance.IsHeavyRobot(out bool lowPitch, out bool ms, out bool dontPlaySound);
+            bool isHeavy = __instance.IsHeavyRobot(out bool lowPitch, out _, out bool dontPlaySound);
             if (dontPlaySound)
             {
                 return false;
             }
             if (isHeavy)
             {
-                AudioManager.Instance.PlayClipAtPosition(OverhaulAudioLibrary.HeavyRobotFootsteps, __instance.transform.position, 0f, false, lowPitch ? 0.35f : 0.16f, lowPitch ? 0.85f : 0.98f, 0f);
+                _ = AudioManager.Instance.PlayClipAtPosition(OverhaulAudioLibrary.HeavyRobotFootsteps, __instance.transform.position, 0f, false, lowPitch ? 0.35f : 0.16f, lowPitch ? 0.85f : 0.98f, 0f);
                 return false;
             }
             /*

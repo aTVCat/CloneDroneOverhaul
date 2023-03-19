@@ -435,8 +435,11 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
+    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
+    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuSkinBehaviour.cs" />
+    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
     <Compile Include="Internal\Intro\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageCustomForcefield.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorPickableWeapon.cs" />

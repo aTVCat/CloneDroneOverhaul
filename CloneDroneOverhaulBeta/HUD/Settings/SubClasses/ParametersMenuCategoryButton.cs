@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class ParametersMenuCategoryButton : OverhaulMonoBehaviour
+    public class ParametersMenuCategoryButton : OverhaulBehaviour
     {
         private static readonly List<ParametersMenuCategoryButton> _spawnedBehaviours = new List<ParametersMenuCategoryButton>();
 

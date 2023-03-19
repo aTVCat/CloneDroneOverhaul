@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterArrowBlinker : OverhaulMonoBehaviour
+    public class ArenaRemasterArrowBlinker : OverhaulBehaviour
     {
         private float m_TimeToUpdate = -1;
         private GameObject Off;

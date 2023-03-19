@@ -1,12 +1,11 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Patches;
 using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
     public class LevelEditorGarbageDropPoint : MonoBehaviour
     {
-        private Transform m_Bot;
+        private readonly Transform m_Bot;
 
         private void Start()
         {
@@ -14,13 +13,13 @@ namespace CDOverhaul.LevelEditor
 
             if (!GameModeManager.IsInLevelEditor())
             {
-                OverhaulController.GetController<AdvancedGarbageController>().AddGarbageDropPoint(this.transform);
+                OverhaulController.GetController<AdvancedGarbageController>().AddGarbageDropPoint(transform);
             }
         }
 
         private void OnDestroy()
         {
-            OverhaulController.GetController<AdvancedGarbageController>().RemoveGarbageDropPoint(this.transform);
+            OverhaulController.GetController<AdvancedGarbageController>().RemoveGarbageDropPoint(transform);
         }
     }
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterColorSwaper : OverhaulMonoBehaviour
+    public class ArenaRemasterColorSwaper : OverhaulBehaviour
     {
-        private List<Material> m_ColorMaterials = new List<Material>();
+        private readonly List<Material> m_ColorMaterials = new List<Material>();
         private Color m_TargetColor;
         private Color m_CurrentColor;
         private Color m_PrevColor;
 
-        private List<Material> m_LightsMaterials = new List<Material>();
+        private readonly List<Material> m_LightsMaterials = new List<Material>();
 
         public override void Start()
         {
@@ -27,8 +27,8 @@ namespace CDOverhaul.ArenaRemaster
                 m_LightsMaterials.Add((obj as GameObject).GetComponent<Renderer>().material);
             }
 
-            OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLoadedLevel, true);
-            OverhaulEventManager.AddEventListener("LevelSpawned", onLoadedLevel, true);
+            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLoadedLevel, true);
+            _ = OverhaulEventManager.AddEventListener("LevelSpawned", onLoadedLevel, true);
         }
 
         protected override void OnDisposed()

@@ -1,7 +1,4 @@
-﻿using ModLibrary;
-using UnityEngine;
-
-namespace CDOverhaul
+﻿namespace CDOverhaul
 {
     internal class OverhaulCompatibilityChecker
     {

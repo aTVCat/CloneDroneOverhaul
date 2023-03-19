@@ -6,7 +6,7 @@ namespace CDOverhaul
     /// <summary>
     /// MonoBehaviour class that will be used in mod
     /// </summary>
-    public class OverhaulMonoBehaviour : MonoBehaviour, IDisposable
+    public class OverhaulBehaviour : MonoBehaviour, IDisposable
     {
         public bool IsDisposed
         {
@@ -79,7 +79,7 @@ namespace CDOverhaul
 
         protected static System.Random m_Random = new System.Random();
 
-        public static OverhaulMonoBehaviour AddBehaviour<T>(GameObject gameObject) where T : OverhaulMonoBehaviour
+        public static OverhaulBehaviour AddBehaviour<T>(GameObject gameObject) where T : OverhaulBehaviour
         {
             if(gameObject == null)
             {

@@ -7,7 +7,7 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of any controller in this mod.
     /// </summary>
-    public abstract class OverhaulController : OverhaulMonoBehaviour, IConsoleCommandReceiver
+    public abstract class OverhaulController : OverhaulBehaviour, IConsoleCommandReceiver
     {
         private bool m_HadBadStart;
         /// <summary>

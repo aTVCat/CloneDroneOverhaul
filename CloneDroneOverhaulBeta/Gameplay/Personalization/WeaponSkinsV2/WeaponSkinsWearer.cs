@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -42,13 +41,49 @@ namespace CDOverhaul.Gameplay
         private void spawnSkins()
         {
             IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsController>().Interface.GetSkinItems(FirstPersonMover);
-            if (skins.IsNullOrEmpty())
+            if (skins == null)
             {
                 return;
             }
+
+            SetDefaultModelsActive();
+
+            if (!WeaponSkins.Values.IsNullOrEmpty())
+            {
+                foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
+                {
+                    info.DestroyModel();
+                }
+                WeaponSkins.Clear();
+            }
+
             foreach (IWeaponSkinItemDefinition skin in skins)
             {
                 SpawnSkin(skin);
+            }
+        }
+
+        public void SetDefaultModelsActive()
+        {
+            WeaponModel weaponModel1 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Sword);
+            if (weaponModel1 != null)
+            {
+                SetDefaultModelsVisible(true, weaponModel1);
+            }
+            WeaponModel weaponModel2 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Bow);
+            if (weaponModel2 != null)
+            {
+                SetDefaultModelsVisible(true, weaponModel2);
+            }
+            WeaponModel weaponModel3 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Hammer);
+            if (weaponModel3 != null)
+            {
+                SetDefaultModelsVisible(true, weaponModel3);
+            }
+            WeaponModel weaponModel4 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Spear);
+            if (weaponModel4 != null)
+            {
+                SetDefaultModelsVisible(true, weaponModel4);
             }
         }
 
@@ -58,7 +93,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            WeaponModel weaponModel = FirstPersonMover.GetEquippedWeaponModel();
+            WeaponModel weaponModel = FirstPersonMover.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
             if(weaponModel == null)
             {
                 return;

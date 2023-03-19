@@ -81,7 +81,7 @@ namespace CDOverhaul.Gameplay
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
-            if (OverhaulVersion.IsDebugBuild || forceTrue)
+            if (forceTrue)
             {
                 return true;
             }

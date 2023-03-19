@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterEnemyCounter : OverhaulMonoBehaviour
+    public class ArenaRemasterEnemyCounter : OverhaulBehaviour
     {
         private TextMeshPro m_Header;
         private TextMeshPro m_Label;

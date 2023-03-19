@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.HUD.Overlays;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -13,7 +12,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
+            _ = MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
 
             base.transform.SetParent(GameUIRoot.Instance.transform);
             base.transform.SetAsFirstSibling();
