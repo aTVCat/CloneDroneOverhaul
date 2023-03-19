@@ -1,20 +1,20 @@
 ﻿using CDOverhaul.LevelEditor;
 using ModLibrary;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
 {
-    public class ArenaRemasterController : OverhaulController
+    /// <summary>
+    /// The prototype variant of new arena.
+    /// </summary>
+    [Obsolete("The prototyping phase has ended")]
+    public class ArenaRemasterPrototypeController : OverhaulController
     {
         public const bool SupportEnemiesLeftLabel = true;
 
         private List<MeshCollider> m_ModdedColliders;
-
-        private GameObject m_OgTopGotoElevatorArrows;
-        private GameObject m_OgUpgradeRoomGoToArenaArrows;
-
-        private bool m_DebugArenaToggleState;
 
         public Transform WorldRootTransform;
         public Transform ArenaTransform;
@@ -43,7 +43,6 @@ namespace CDOverhaul.ArenaRemaster
 
             m_AudienceManager = AudienceManager.Instance;
             m_AudienceManager.enabled = false;
-            m_DebugArenaToggleState = true;
             GameObject spawnedPrefab = Instantiate(GetArenaRemasterPrefab());
             Transform spawnedPrefabTransform = spawnedPrefab.transform;
             spawnedPrefabTransform.SetParent(ArenaTransform);
@@ -80,7 +79,6 @@ namespace CDOverhaul.ArenaRemaster
                 return;
             }
 
-            if (m_OgTopGotoElevatorArrows != null) ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = m_OgTopGotoElevatorArrows;
             if(ArenaRemaster != null) Destroy(ArenaRemaster.gameObject);
             SetOriginalArenaInteriorVisible(true);
             DestroyBehaviour();
@@ -200,6 +198,7 @@ namespace CDOverhaul.ArenaRemaster
             _ = un1.Initialize(null, un5);
             un1.ChangeState(true);
 
+            /*
             m_OgTopGotoElevatorArrows = ArenaArrowManager.Instance.TopGotoElevatorArrows[0];
             ArenaArrowManager.Instance.TopGotoElevatorArrows[0] = b1.transform.parent.gameObject;
             ArenaArrowManager.Instance.TopGotoElevatorArrows[0].SetActive(m_OgTopGotoElevatorArrows.activeSelf); 
@@ -208,7 +207,7 @@ namespace CDOverhaul.ArenaRemaster
             m_OgUpgradeRoomGoToArenaArrows = ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0];
             ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0] = ur1.transform.parent.gameObject;
             ArenaArrowManager.Instance.UpgradeRoomGoToArenaArrows[0].SetActive(m_OgUpgradeRoomGoToArenaArrows.activeSelf);
-            m_OgUpgradeRoomGoToArenaArrows.SetActive(false);
+            m_OgUpgradeRoomGoToArenaArrows.SetActive(false);*/
         }
 
         private void setUpLabelsInterior()

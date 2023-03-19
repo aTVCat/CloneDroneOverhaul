@@ -384,7 +384,8 @@
     <Compile Include="Gameplay\Combat\AI\RobotsAdvancedAIController.cs" />
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
-    <Compile Include="Gameplay\Combat\Arena\Colors\ArenaRemasterColorSwaper.cs" />
+    <Compile Include="Gameplay\Combat\Arena\ArenaRevampController.cs" />
+    <Compile Include="Gameplay\Combat\Arena\Prototype\Colors\ArenaRemasterColorSwaper.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
     <Compile Include="Gameplay\Combat\Fights\BetterUnbalancing\CombatOverhaulUnbalancing.cs" />
     <Compile Include="Gameplay\Combat\Fights\Combos\CombatOverhaulCombosController.cs" />
@@ -459,9 +460,9 @@
     <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
-    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterEnemyCounter.cs" />
-    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterArrowBlinker.cs" />
-    <Compile Include="Gameplay\Combat\Arena\ArenaRemasterController.cs" />
+    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterEnemyCounter.cs" />
+    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterArrowBlinker.cs" />
+    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSetting.cs" />

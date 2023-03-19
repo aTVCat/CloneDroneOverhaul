@@ -8,7 +8,7 @@ namespace CDOverhaul.LevelEditor
     {
         private void Start()
         {
-            ReplacementBase.GetReplacement<NewArenaActivator>().GetController().EnemiesLeftPositionOverride = this;
+            //ReplacementBase.GetReplacement<NewArenaActivator>().GetController().EnemiesLeftPositionOverride = this;
             Collider collider = base.GetComponent<Collider>();
             collider.enabled = GameModeManager.IsInLevelEditor();
             Renderer renderer = base.GetComponent<Renderer>();
@@ -17,7 +17,7 @@ namespace CDOverhaul.LevelEditor
 
         private void OnDestroy()
         {
-            ReplacementBase.GetReplacement<NewArenaActivator>().GetController().EnemiesLeftPositionOverride = null;
+            //ReplacementBase.GetReplacement<NewArenaActivator>().GetController().EnemiesLeftPositionOverride = null;
         }
     }
 }

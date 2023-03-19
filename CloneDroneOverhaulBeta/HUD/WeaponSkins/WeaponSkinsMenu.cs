@@ -28,6 +28,7 @@ namespace CDOverhaul.HUD
             (m_HashtableTest["weaponSkin"] as ModdedObject).gameObject.SetActive(false);
             m_HashtableTest["weaponsSkinsContainer"] = m.GetObject<Transform>(1);
             m.GetObject<Button>(6).onClick.AddListener(SetDefaultSkin);
+            m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
 
             SetMenuActive(false);
         }
@@ -94,6 +95,11 @@ namespace CDOverhaul.HUD
             }
 
             PopulateWeapons();
+        }
+
+        public void OnDoneButtonClicked()
+        {
+            SetMenuActive(false);
         }
 
         public void PopulateWeapons()
@@ -177,16 +183,16 @@ namespace CDOverhaul.HUD
             switch (weaponType)
             {
                 case WeaponType.Sword:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Sword"), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
                     break;
                 case WeaponType.Bow:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Bow"), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
                     break;
                 case WeaponType.Hammer:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Hammer"), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
                     break;
                 case WeaponType.Spear:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Spear"), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
                     break;
             }
 

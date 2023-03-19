@@ -9,13 +9,13 @@ namespace CDOverhaul.ArenaRemaster
         private TextMeshPro m_Header;
         private TextMeshPro m_Label;
 
-        private ArenaRemasterController m_Controller;
+        private ArenaRemasterPrototypeController m_Controller;
         private Vector3 m_originalPosition;
         private Vector3 m_originalEulerAngles;
 
         private int m_EnemiesLeftLastTimeChecked;
 
-        public void Initialize(in ModdedObject moddedObject, in ArenaRemasterController arenaController)
+        public void Initialize(in ModdedObject moddedObject, in ArenaRemasterPrototypeController arenaController)
         {
             m_originalPosition = base.transform.position;
             m_originalEulerAngles = base.transform.eulerAngles;

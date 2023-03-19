@@ -41,15 +41,19 @@ namespace CDOverhaul.HUD
 
         #endregion
 
-        private readonly Button m_PersonalizationButton;
+        private Button m_PersonalizationButton;
+        private Transform m_PersonalizationPanel;
+        private Button m_PersonalizationSkinsButton;
 
         public override void Initialize()
         {
-            if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
             m_Instance = this;
+
+            m_PersonalizationButton = MyModdedObject.GetObject<Button>(0);
+            m_PersonalizationButton.onClick.AddListener(OnPersonalizationButtonClicked);
+            m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
+            m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
+            m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
 
             Hide();
         }
@@ -57,6 +61,38 @@ namespace CDOverhaul.HUD
         protected override void OnDisposed()
         {
             base.OnDisposed();
+        }
+
+        public void AlignTransformY(Transform targetTransform, Transform transformToUse)
+        {
+            targetTransform.position = new Vector3(targetTransform.position.x, transformToUse.position.y, targetTransform.position.z);
+        }
+
+        public void OnPersonalizationButtonClicked()
+        {
+            SetPersonalizationPanelActive(!m_PersonalizationPanel.gameObject.activeSelf);
+        }
+        public void SetPersonalizationPanelActive(bool value)
+        {
+            if (value)
+            {
+                AlignTransformY(m_PersonalizationPanel, m_PersonalizationButton.transform);
+            }
+            m_PersonalizationPanel.gameObject.SetActive(value);
+        }
+
+        public void OnSkinsButtonClicked()
+        {
+            WeaponSkinsMenu menu = GetController<WeaponSkinsMenu>();
+            if (menu == null)
+            {
+                return;
+            }
+
+            // Todo: Notify player about unpausing the game OR make it possible to change skins while under arena
+            Hide();
+
+            menu.SetMenuActive(true);
         }
 
         public void Show()
@@ -72,10 +108,11 @@ namespace CDOverhaul.HUD
 
         public void Hide()
         {
+            TimeManager.Instance.OnGameUnPaused();
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 
-            TimeManager.Instance.OnGameUnPaused();
+            SetPersonalizationPanelActive(false);
 
             if (!m_IsAnimatingCamera && m_CameraAnimator != null)
             {
@@ -96,6 +133,8 @@ namespace CDOverhaul.HUD
                 ForceUseOldMenu = false;
             }
         }
+
+        #region Camera Animation
 
         private void animateCamera()
         {
@@ -158,5 +197,7 @@ namespace CDOverhaul.HUD
             m_IsAnimatingCamera = false;
             yield break;
         }
+
+        #endregion
     }
 }

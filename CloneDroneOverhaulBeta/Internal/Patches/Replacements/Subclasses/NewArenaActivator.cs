@@ -1,23 +1,17 @@
 ﻿using CDOverhaul.ArenaRemaster;
+using CDOverhaul.Graphics.ArenaRevamp;
 
 namespace CDOverhaul.Patches
 {
-    public class NewArenaActivator : ReplacementBase
+    public class ArenaRevampActivator : ReplacementBase
     {
-        private ArenaRemasterController _controller;
-
         public override void Replace()
         {
             base.Replace();
 
-            _controller = OverhaulController.AddController<ArenaRemasterController>();
+            OverhaulController.AddController<ArenaRevampController>();
 
             SuccessfullyPatched = true;
-        }
-
-        public ArenaRemasterController GetController()
-        {
-            return _controller;
         }
 
         public override void Cancel()
