@@ -1,4 +1,6 @@
 ﻿using CDOverhaul.LevelEditor;
+using ModLibrary;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.ArenaRemaster
@@ -6,6 +8,8 @@ namespace CDOverhaul.ArenaRemaster
     public class ArenaRemasterController : OverhaulController
     {
         public const bool SupportEnemiesLeftLabel = true;
+
+        private List<MeshCollider> m_ModdedColliders;
 
         private GameObject m_OgTopGotoElevatorArrows;
         private GameObject m_OgUpgradeRoomGoToArenaArrows;
@@ -16,6 +20,11 @@ namespace CDOverhaul.ArenaRemaster
         public Transform ArenaTransform;
         public Transform OgArenaColliders;
         public Transform OgBattleCruiser;
+        public Transform OgArenaFloor;
+        public Transform OgArenaLvlEditorFloor;
+        public Transform OgArenaGarbageDoor;
+        public Transform OgArenaGarbageDoorStatic;
+        public Transform OgArenaLift;
         public ModdedObject ArenaRemaster;
 
         private Transform m_StandsRight;
@@ -46,8 +55,13 @@ namespace CDOverhaul.ArenaRemaster
             setUpStandsInterior();
             setUpArrowsInterior();
             setUpBattleCruiser();
+            setUpColliders();
+            setUpFloor();
+            setUpGarbageDoor();
+            setUpLift();
             if(SupportEnemiesLeftLabel) setUpLabelsInterior();
 
+            SetOriginalArenaInteriorVisible(false);
             SetOriginalArenaCollidersActive(false);
         }
 
@@ -94,11 +108,22 @@ namespace CDOverhaul.ArenaRemaster
             {
                 liftwall1.gameObject.SetActive(value);
             }
+
+            OgArenaFloor.gameObject.SetActive(value);
+            OgArenaLvlEditorFloor.gameObject.SetActive(value && GameModeManager.IsInLevelEditor());
+            OgArenaGarbageDoor.gameObject.SetActive(true);
         }
 
         public void SetOriginalArenaCollidersActive(in bool value)
         {
             OgArenaColliders.gameObject.SetActive(value);
+            if (!m_ModdedColliders.IsNullOrEmpty())
+            {
+                foreach(MeshCollider c in m_ModdedColliders)
+                {
+                    c.enabled = !value;
+                }
+            }
         }
 
         private bool getAllRequiredReferences()
@@ -196,6 +221,46 @@ namespace CDOverhaul.ArenaRemaster
         {
             m_StandsLeft.gameObject.SetActive(false);
             m_StandsRight.gameObject.SetActive(false);
+        }
+
+        private void setUpColliders()
+        {
+            m_ModdedColliders = new List<MeshCollider>();
+            foreach (MeshCollider c in ArenaRemaster.GetObject<Transform>(15).GetComponentsInChildren<MeshCollider>())
+            {
+                MeshFilter f = c.transform.GetChild(0).GetComponent<MeshFilter>();
+                f.gameObject.layer = Layers.Environment;
+                c.sharedMesh = f.mesh;
+                c.gameObject.layer = Layers.Environment;
+                m_ModdedColliders.Add(c);
+            } 
+        }
+
+        private void setUpFloor()
+        {
+            OgArenaFloor = TransformUtils.FindChildRecursive(WorldRootTransform, "ArenaFloor");
+            OgArenaLvlEditorFloor = TransformUtils.FindChildRecursive(WorldRootTransform, "EditorArenaFloor");
+        }
+
+        private void setUpGarbageDoor()
+        {
+            OgArenaGarbageDoorStatic = GarbageManager.Instance.Shute.StaticDoor.transform;
+            OgArenaGarbageDoorStatic.gameObject.SetActive(false);
+            GarbageManager.Instance.Shute.StaticDoor = ArenaRemaster.GetObject<Transform>(16).gameObject;
+
+            OgArenaGarbageDoor = TransformUtils.FindChildRecursive(WorldRootTransform, "GarbageDoor2019");
+        }
+
+        private void setUpLift()
+        {
+            OgArenaLift = ArenaLiftManager.Instance.Lift.transform.GetChild(0);
+            OgArenaLift.gameObject.SetActive(false);
+
+            Transform newLift = ArenaRemaster.GetObject<Transform>(17);
+            newLift.SetParent(ArenaLiftManager.Instance.Lift.transform, true);
+            newLift.localScale = new Vector3(4.9f, 4.9f, 4.9f);
+            newLift.localPosition = new Vector3(-98.3f, -122.5f, -7.85f);
+
         }
 
 #if DEBUG

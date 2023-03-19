@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -32,14 +33,15 @@ namespace CDOverhaul.HUD
             m_Instance.Show();
         }
 
-        #endregion
-
         private Animator m_CameraAnimator;
         private Camera m_Camera;
 
         private float m_TimeMenuChangedItsState;
         public bool AllowToggleMenu => Time.unscaledTime >= m_TimeMenuChangedItsState + 0.45f;
 
+        #endregion
+
+        private readonly Button m_PersonalizationButton;
 
         public override void Initialize()
         {
