@@ -45,6 +45,11 @@ namespace CDOverhaul.HUD
         private Transform m_PersonalizationPanel;
         private Button m_PersonalizationSkinsButton;
 
+        private Button m_ExitButton;
+        private Transform m_ExitSelectPanel;
+        private Button m_ExitSelectToMainMenuButton;
+        private Button m_ExitSelectToDesktopButton;
+
         public override void Initialize()
         {
             m_Instance = this;
@@ -54,6 +59,14 @@ namespace CDOverhaul.HUD
             m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
             m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
+
+            m_ExitButton = MyModdedObject.GetObject<Button>(4);
+            m_ExitButton.onClick.AddListener(OnExitClicked);
+            m_ExitSelectPanel = MyModdedObject.GetObject<Transform>(5);
+            m_ExitSelectToMainMenuButton = MyModdedObject.GetObject<Button>(6);
+            m_ExitSelectToMainMenuButton.onClick.AddListener(OnMainMenuClicked);
+            m_ExitSelectToDesktopButton = MyModdedObject.GetObject<Button>(7);
+            m_ExitSelectToDesktopButton.onClick.AddListener(OnDesktopClicked);
 
             Hide();
         }
@@ -68,6 +81,8 @@ namespace CDOverhaul.HUD
             targetTransform.position = new Vector3(targetTransform.position.x, transformToUse.position.y, targetTransform.position.z);
         }
 
+        #region Personalization
+
         public void OnPersonalizationButtonClicked()
         {
             SetPersonalizationPanelActive(!m_PersonalizationPanel.gameObject.activeSelf);
@@ -76,6 +91,7 @@ namespace CDOverhaul.HUD
         {
             if (value)
             {
+                SetExitPanelActive(false);
                 AlignTransformY(m_PersonalizationPanel, m_PersonalizationButton.transform);
             }
             m_PersonalizationPanel.gameObject.SetActive(value);
@@ -95,6 +111,37 @@ namespace CDOverhaul.HUD
             menu.SetMenuActive(true);
         }
 
+        #endregion
+
+
+        #region Exit
+
+        public void OnExitClicked()
+        {
+            SetExitPanelActive(!m_ExitSelectPanel.gameObject.activeSelf);
+        }
+        public void SetExitPanelActive(bool value)
+        {
+            if (value)
+            {
+                SetPersonalizationPanelActive(false);
+                AlignTransformY(m_ExitSelectPanel, m_ExitButton.transform);
+            }
+            m_ExitSelectPanel.gameObject.SetActive(value);
+        }
+
+        public void OnMainMenuClicked()
+        {
+            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+        }
+
+        public void OnDesktopClicked()
+        {
+            Application.Quit();
+        }
+
+        #endregion
+
         public void Show()
         {
             m_TimeMenuChangedItsState = Time.unscaledTime;
@@ -113,6 +160,7 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(false);
 
             SetPersonalizationPanelActive(false);
+            SetExitPanelActive(false);
 
             if (!m_IsAnimatingCamera && m_CameraAnimator != null)
             {

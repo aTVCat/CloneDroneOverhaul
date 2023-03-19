@@ -103,7 +103,9 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if(ExclusiveRolesController.GetExclusivePlayerInfo(ExclusivityController.GetLocalPlayfabID(), out ExclusivePlayerInfo? info))
+            RefreshVersionLabel();
+
+            if (ExclusiveRolesController.GetExclusivePlayerInfo(ExclusivityController.GetLocalPlayfabID(), out ExclusivePlayerInfo? info))
             {
                 if(info == null)
                 {

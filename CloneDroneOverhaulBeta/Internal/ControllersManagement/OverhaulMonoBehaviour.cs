@@ -77,7 +77,7 @@ namespace CDOverhaul
 
         #region Static
 
-        protected static System.Random m_Random = new System.Random();
+        protected static readonly System.Random m_Random = new System.Random();
 
         public static OverhaulBehaviour AddBehaviour<T>(GameObject gameObject) where T : OverhaulBehaviour
         {

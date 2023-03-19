@@ -15,5 +15,10 @@
         {
             return !GameModeManager.IsMultiplayer();
         }
+
+        public static bool SupportsArenaRevamp()
+        {
+            return !GameModeManager.IsMultiplayer();
+        }
     }
 }

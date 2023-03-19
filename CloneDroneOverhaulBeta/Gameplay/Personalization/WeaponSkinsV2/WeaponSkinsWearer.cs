@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ModLibrary;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace CDOverhaul.Gameplay
 {
@@ -40,6 +42,15 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
+            if(GameModeManager.IsMultiplayer() && !IsOwnerMainPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
+            {
+                return;
+            }
+            if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
+            {
+                return;
+            }
+
             IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsController>().Interface.GetSkinItems(FirstPersonMover);
             if (skins == null)
             {
@@ -52,6 +63,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
                 {
+                    SetDefaultModelsActive(info.Model.transform);
                     info.DestroyModel();
                 }
                 WeaponSkins.Clear();
@@ -63,27 +75,69 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        public void SetDefaultModelsActive()
+        public void SetDefaultModelsActive(Transform transformToRemove = null)
         {
-            WeaponModel weaponModel1 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Sword);
+            if (!FirstPersonMover.HasCharacterModel())
+            {
+                return;
+            }
+            CharacterModel model = FirstPersonMover.GetCharacterModel();
+
+            WeaponModel weaponModel1 = model.GetWeaponModel(WeaponType.Sword);
             if (weaponModel1 != null)
             {
-                SetDefaultModelsVisible(true, weaponModel1);
+                if(transformToRemove != null)
+                {
+                    List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
+                    t1.Remove(transformToRemove);
+                    weaponModel1.PartsToDrop = t1.ToArray();
+                }
+                else
+                {
+                    SetDefaultModelsVisible(true, weaponModel1);
+                }
             }
-            WeaponModel weaponModel2 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Bow);
+            WeaponModel weaponModel2 = model.GetWeaponModel(WeaponType.Bow);
             if (weaponModel2 != null)
             {
-                SetDefaultModelsVisible(true, weaponModel2);
+                if (transformToRemove != null)
+                {
+                    List<Transform> t1 = weaponModel2.PartsToDrop.ToList();
+                    t1.Remove(transformToRemove);
+                    weaponModel2.PartsToDrop = t1.ToArray();
+                }
+                else
+                {
+                    SetDefaultModelsVisible(true, weaponModel2);
+                }
             }
-            WeaponModel weaponModel3 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Hammer);
+            WeaponModel weaponModel3 = model.GetWeaponModel(WeaponType.Hammer);
             if (weaponModel3 != null)
             {
-                SetDefaultModelsVisible(true, weaponModel3);
+                if (transformToRemove != null)
+                {
+                    List<Transform> t1 = weaponModel3.PartsToDrop.ToList();
+                    t1.Remove(transformToRemove);
+                    weaponModel3.PartsToDrop = t1.ToArray();
+                }
+                else
+                {
+                    SetDefaultModelsVisible(true, weaponModel3);
+                }
             }
-            WeaponModel weaponModel4 = FirstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Spear);
+            WeaponModel weaponModel4 = model.GetWeaponModel(WeaponType.Spear);
             if (weaponModel4 != null)
             {
-                SetDefaultModelsVisible(true, weaponModel4);
+                if (transformToRemove != null)
+                {
+                    List<Transform> t1 = weaponModel4.PartsToDrop.ToList();
+                    t1.Remove(transformToRemove);
+                    weaponModel4.PartsToDrop = t1.ToArray();
+                }
+                else
+                {
+                    SetDefaultModelsVisible(true, weaponModel4);
+                }
             }
         }
 
@@ -108,6 +162,7 @@ namespace CDOverhaul.Gameplay
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier();
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
 
+            /*
             foreach(WeaponSkinSpawnInfo wsInfo in WeaponSkins.Values)
             {
                 if (wsInfo.Type == item.GetWeaponType() && wsInfo != null)
@@ -116,7 +171,7 @@ namespace CDOverhaul.Gameplay
                     break;
                 }
             }
-            _ = WeaponSkins.Remove(item);
+            _ = WeaponSkins.Remove(item);*/
             
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer);            
             /*OverhaulDebugController.Print("Fire: " + fire);
@@ -128,6 +183,7 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localPosition = newModel.Offset.OffsetPosition;
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
+                spawnedModel.gameObject.layer = Layers.BodyPart;
                 SetModelColor(spawnedModel.gameObject, fire);
                 WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo
                 {
@@ -136,6 +192,12 @@ namespace CDOverhaul.Gameplay
                     Variant = variant
                 };
                 WeaponSkins.Add(item, newInfo);
+
+                spawnedModel.gameObject.AddComponent<BoxCollider>();
+
+                List<Transform> t1 = weaponModel.PartsToDrop.ToList();
+                t1.Add(spawnedModel);
+                weaponModel.PartsToDrop = t1.ToArray();
             }
             else
             {

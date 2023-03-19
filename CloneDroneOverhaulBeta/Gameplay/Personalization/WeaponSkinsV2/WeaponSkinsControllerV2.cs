@@ -15,20 +15,30 @@ namespace CDOverhaul.Gameplay
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
 
         [OverhaulSettingAttribute("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
-        public static string EquipedSwordSkin;
+        public static string EquippedSwordSkin;
         [OverhaulSettingAttribute("Player.WeaponSkins.Bow", "Default", !OverhaulVersion.IsDebugBuild)]
-        public static string EquipedBowSkin;
+        public static string EquippedBowSkin;
         [OverhaulSettingAttribute("Player.WeaponSkins.Hammer", "Default", !OverhaulVersion.IsDebugBuild)]
-        public static string EquipedHammerSkin;
+        public static string EquippedHammerSkin;
         [OverhaulSettingAttribute("Player.WeaponSkins.Spear", "Default", !OverhaulVersion.IsDebugBuild)]
-        public static string EquipedSpearSkin;
+        public static string EquippedSpearSkin;
+
+        [OverhaulSettingAttribute("Player.WeaponSkins.EnemiesUseSkins", false, !OverhaulVersion.IsDebugBuild)]
+        public static bool AllowEnemiesWearSkins;
 
         public override void Initialize()
         {
             base.Initialize();
 
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
+
             Interface = this;
             addSkins();
+        }
+
+        protected override void OnDisposed()
+        {
+            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -75,6 +85,10 @@ namespace CDOverhaul.Gameplay
                 violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
                     violetViolenceSkinOffset,
                     false,
+                    false);
+                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
+                    violetViolenceSkinOffset,
+                    true,
                     false);
                 violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
                     violetViolenceSkinOffset,
@@ -183,25 +197,25 @@ namespace CDOverhaul.Gameplay
                         switch (weaponSkinItem.GetWeaponType())
                         {
                             case WeaponType.Sword:
-                                if(itemName == EquipedSwordSkin)
+                                if(itemName == EquippedSwordSkin)
                                 {
                                     result.Add(weaponSkinItem);
                                 }
                                 break;
                             case WeaponType.Bow:
-                                if (itemName == EquipedBowSkin)
+                                if (itemName == EquippedBowSkin)
                                 {
                                     result.Add(weaponSkinItem);
                                 }
                                 break;
                             case WeaponType.Hammer:
-                                if (itemName == EquipedHammerSkin)
+                                if (itemName == EquippedHammerSkin)
                                 {
                                     result.Add(weaponSkinItem);
                                 }
                                 break;
                             case WeaponType.Spear:
-                                if (itemName == EquipedSpearSkin)
+                                if (itemName == EquippedSpearSkin)
                                 {
                                     result.Add(weaponSkinItem);
                                 }

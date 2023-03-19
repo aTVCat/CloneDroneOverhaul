@@ -32,12 +32,12 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover.IsMainPlayer();
-        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover.IsPlayer();
-        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && string.IsNullOrEmpty(FirstPersonMover.GetPlayFabID());
+        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && FirstPersonMover.IsMainPlayer();
+        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && FirstPersonMover.IsPlayer();
+        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && string.IsNullOrEmpty(FirstPersonMover.GetPlayFabID());
         public bool IsOwnerMultiplayerNotMainPlayer() => !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
-        public bool IsEnemy() => !IsOwnerPlayer() && !FirstPersonMover.IsPlayerTeam;
-        public bool IsAlly() => !IsOwnerPlayer() && FirstPersonMover.IsPlayerTeam;
+        public bool IsEnemy() => !IsOwnerPlayer() && FirstPersonMover != null && !FirstPersonMover.IsPlayerTeam;
+        public bool IsAlly() => !IsOwnerPlayer() && FirstPersonMover != null && FirstPersonMover.IsPlayerTeam;
 
         /// <summary>
         /// Check if user, if <paramref name="type"/> is 0 - pressed key this frame, 1 - holding the key, 2 - ended pressing key this frame

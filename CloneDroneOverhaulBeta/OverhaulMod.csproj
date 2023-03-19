@@ -404,7 +404,7 @@
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\BoomerangWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\GarbagePickerWeaponModel.cs" />
-    <Compile Include="Gameplay\GamemodesRelated\OverhaulGamemodeController.cs" />
+    <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
@@ -490,7 +490,7 @@
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivityController.cs" />
     <Compile Include="Internal\Debug\Console\IConsoleCommandReceiver.cs" />
     <Compile Include="Internal\Code\OverhaulExceptions.cs" />
-    <Compile Include="Gameplay\GamemodesRelated\OverhaulGamemodeManager.cs" />
+    <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeManager.cs" />
     <Compile Include="Internal\Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\GameModeManager_Patch.cs" />
@@ -525,8 +525,8 @@
     <Compile Include="Internal\OverhaulCanvasController.cs" />
     <Compile Include="Internal\Data\ModDataContainerBase.cs" />
     <Compile Include="Internal\Data\ModDataController.cs" />
-    <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstate.cs" />
-    <Compile Include="Gameplay\GamemodesRelated\GamemodeSubstatesController.cs" />
+    <Compile Include="Internal\GamemodesRelated\GamemodeSubstate.cs" />
+    <Compile Include="Internal\GamemodesRelated\GamemodeSubstatesController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulUI.cs" />
     <Compile Include="HUD\VersionLabel\OverhaulVersionLabel.cs" />

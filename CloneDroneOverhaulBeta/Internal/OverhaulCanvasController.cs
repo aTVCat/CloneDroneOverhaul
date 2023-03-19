@@ -48,7 +48,7 @@ namespace CDOverhaul.HUD
 
             _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
-            _ = AddHUD<OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
+            _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;

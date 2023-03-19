@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.HUD.WeaponSkins;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +28,7 @@ namespace CDOverhaul.HUD
             m_HashtableTest["weaponsSkinsContainer"] = m.GetObject<Transform>(1);
             m.GetObject<Button>(6).onClick.AddListener(SetDefaultSkin);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
+            m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
 
             SetMenuActive(false);
         }
@@ -94,6 +94,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
         }
 
@@ -213,6 +214,11 @@ namespace CDOverhaul.HUD
             }
 
             SelectSkin(m_SelectedWeapon, "Default");
+        }
+
+        public void SetAllowEnemiesUseSkins(bool value)
+        {
+            SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
         }
     }
 }

@@ -41,6 +41,14 @@ namespace CDOverhaul.HUD
             m_DescriptionTransform = null;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Hide();
+            }
+        }
+
         public void Show()
         {
             if (IsDisposedOrDestroyed())

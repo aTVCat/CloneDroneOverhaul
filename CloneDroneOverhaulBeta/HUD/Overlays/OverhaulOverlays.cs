@@ -1,7 +1,7 @@
 ﻿using CDOverhaul.HUD.Overlays;
 using UnityEngine;
 
-namespace CDOverhaul.HUD
+namespace CDOverhaul.HUD.Overlays
 {
     public class OverhaulOverlays : OverhaulUI
     {

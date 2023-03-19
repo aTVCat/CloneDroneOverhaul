@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CDOverhaul.HUD.WeaponSkins
+namespace CDOverhaul.HUD
 {
     public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour
     {
@@ -114,16 +114,16 @@ namespace CDOverhaul.HUD.WeaponSkins
             switch (m_WeaponType)
             {
                 case WeaponType.Sword:
-                    SetSelected(WeaponSkinsController.EquipedSwordSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSwordSkin == m_Skin);
                     break;
                 case WeaponType.Bow:
-                    SetSelected(WeaponSkinsController.EquipedBowSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedBowSkin == m_Skin);
                     break;
                 case WeaponType.Hammer:
-                    SetSelected(WeaponSkinsController.EquipedHammerSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedHammerSkin == m_Skin);
                     break;
                 case WeaponType.Spear:
-                    SetSelected(WeaponSkinsController.EquipedSpearSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin);
                     break;
             }
         }
