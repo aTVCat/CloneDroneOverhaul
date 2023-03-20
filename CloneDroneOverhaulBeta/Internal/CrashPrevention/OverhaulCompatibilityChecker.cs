@@ -2,7 +2,7 @@
 {
     internal class OverhaulCompatibilityChecker
     {
-        private static bool m_HasNotifiedPlayerAboutUnsupportedVersion;
+        private static readonly bool m_HasNotifiedPlayerAboutUnsupportedVersion;
 
         public static void CheckGameVersion()
         {

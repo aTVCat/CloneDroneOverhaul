@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Graphics.ArenaRevamp
+﻿namespace CDOverhaul.Graphics.ArenaRevamp
 {
     /// <summary>
     /// The main controller of arena revamp

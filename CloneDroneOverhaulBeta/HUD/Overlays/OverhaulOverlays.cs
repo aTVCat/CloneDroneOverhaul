@@ -1,5 +1,4 @@
-﻿using CDOverhaul.HUD.Overlays;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.HUD.Overlays
 {

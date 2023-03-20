@@ -180,6 +180,7 @@ namespace CDOverhaul
         private IEnumerator waitFPMToInitialize(FirstPersonMover firstPersonMover)
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
+            yield return new WaitForSecondsRealtime(0.15f);
             if (firstPersonMover != null)
             {
                 OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);

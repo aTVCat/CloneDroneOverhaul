@@ -123,7 +123,6 @@ namespace CDOverhaul.Gameplay.Combat
             if(m_CachedCharacterModel == null)
             {
                 base.enabled = false;
-                throw new System.NullReferenceException("CombatOverhaul: We can't continue without robot models...");
             }
         }
 

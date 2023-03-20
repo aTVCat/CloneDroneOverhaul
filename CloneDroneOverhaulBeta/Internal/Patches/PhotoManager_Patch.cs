@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Misc;
+using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -13,12 +14,7 @@ namespace CDOverhaul.Patches
             {
                 return true;
             }
-
-            if (EnableCursorController.HasToEnableCursor())
-            {
-                return false;
-            }
-            return true;
+            return !PhotoModeRevampController.Revamp;
         }
     }
 }

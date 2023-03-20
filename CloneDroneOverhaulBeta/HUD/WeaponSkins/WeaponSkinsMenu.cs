@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
 {
     public class WeaponSkinsMenu : OverhaulUI
     {
-        private IWeaponSkinItemDefinition[] m_CachedItems;
+        private IWeaponSkinItemDefinition[] m_Items;
 
         private Hashtable m_HashtableTest;
         private WeaponSkinsController m_Controller;
@@ -86,6 +86,12 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if(mover != null && mover.HasCharacterModel())
+            {
+                mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 90, 0) : Vector3.zero;
+            }
+
             base.gameObject.SetActive(value);
             ShowCursor = value;
 
@@ -148,18 +154,24 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if (mover != null && mover.HasCharacterModel() && mover.HasWeapon(weaponType))
+            {
+                mover.SetEquippedWeaponType(weaponType);
+            }
+
             WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
             TransformUtils.DestroyAllChildren(GetContainer(true));
 
             m_SelectedWeapon = weaponType;
 
-            if (m_CachedItems == null) m_CachedItems = m_Controller.Interface.GetSkinItems(ItemFilter.Everything);
-            if (m_CachedItems.IsNullOrEmpty())
+            m_Items = m_Controller.Interface.GetSkinItems(ItemFilter.Everything);
+            if (m_Items.IsNullOrEmpty())
             {
                 return;
             }
 
-            foreach(IWeaponSkinItemDefinition skin in m_CachedItems)
+            foreach(IWeaponSkinItemDefinition skin in m_Items)
             {
                 if(skin.GetWeaponType() != weaponType)
                 {

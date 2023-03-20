@@ -392,13 +392,10 @@
     <Compile Include="Gameplay\Combat\Fights\Combos\CombatOverhaulCombosBehaviour.cs" />
     <Compile Include="Gameplay\Combat\Fights\Combos\ComboBase.cs" />
     <Compile Include="Gameplay\Combat\Fights\Combos\Subclasses\DoubleStrike.cs" />
-    <Compile Include="Gameplay\Combat\Inventory\InventoryItemDefinition.cs" />
-    <Compile Include="Gameplay\Combat\Inventory\RobotInventory.cs" />
     <Compile Include="Gameplay\Combat\Animations\CombatOverhaulAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulController.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulMechanic.cs" />
     <Compile Include="Gameplay\Combat\Fights\CombatSprintAndStance.cs" />
-    <Compile Include="Gameplay\Combat\Inventory\CombatOverhaulInventoryController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsRobotExpansion.cs" />
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
@@ -449,6 +446,7 @@
     <Compile Include="Internal\LevelEditor\Components\LevelEditorTriggerPlayAnimation.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
+    <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorCameraManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
@@ -458,6 +456,7 @@
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AlwaysHideFromLevelEditor_Patch.cs" />
     <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
+    <Compile Include="Misc\PhotoModeRevampController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
     <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterEnemyCounter.cs" />
@@ -535,7 +534,6 @@
     <Compile Include="Internal\OverhaulVersion.cs" />
     <Compile Include="Internal\OverhaulMod.cs" />
     <Compile Include="Internal\OverhaulCore.cs" />
-    <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\CharacterTracker_Patch.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementBase.cs" />

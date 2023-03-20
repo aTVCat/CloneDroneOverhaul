@@ -37,8 +37,12 @@ namespace CDOverhaul
         {
             set
             {
-                if (value && !(IsDestroyed || IsDisposed))
+                if (value && !IsDisposedOrDestroyed())
                 {
+                    if (_enableCursorConditionID != 0)
+                    {
+                        return;
+                    }
                     _enableCursorConditionID = EnableCursorController.AddCondition();
                 }
                 else

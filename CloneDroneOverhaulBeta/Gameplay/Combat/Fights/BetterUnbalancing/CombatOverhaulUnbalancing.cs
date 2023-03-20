@@ -25,7 +25,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
         {
             LowerUnbalancedValue();
             float pong = Mathf.PingPong(Time.time, 1.5f) - 0.75f;
-            command.Input.HorizontalMovement += pong * UnbalancedValue;
+            //command.Input.HorizontalMovement += pong * UnbalancedValue;
             SprintAndStance.MaxSpeedOffset = pong * UnbalancedValue;
 
             if (!FirstPersonMover.HasFallenDown() && UnbalancedValue >= 4f)

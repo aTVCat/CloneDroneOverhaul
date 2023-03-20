@@ -20,14 +20,19 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (!hasInitializedModel)
+            if (!hasInitializedModel || firstPersonMover == null)
             {
                 return;
             }
+
             CharacterModel model = firstPersonMover.GetCharacterModel();
+            if(model == null)
+            {
+                return;
+            }
+
             Animation animationComponent = null;
             Animation animationComponent2 = null;
-
             Animator upperAnimator = model.UpperAnimator;
             bool hasUpperAnimator = upperAnimator != null;
             if (hasUpperAnimator)

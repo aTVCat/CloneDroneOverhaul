@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CDOverhaul.Misc;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -155,7 +156,7 @@ namespace CDOverhaul.HUD
 
         public void Hide()
         {
-            TimeManager.Instance.OnGameUnPaused();
+            if(!PhotoModeRevampController.IsInPhotoMode) TimeManager.Instance.OnGameUnPaused();
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 

@@ -3,6 +3,7 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
+using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
 using UnityEngine;
@@ -53,6 +54,12 @@ namespace CDOverhaul
             private set;
         }
 
+        public PhotoModeRevampController PhotoModeRevamp
+        {
+            get;
+            private set;
+        }
+
         internal bool Initialize(out string errorString)
         {
             try
@@ -95,6 +102,7 @@ namespace CDOverhaul
             HUDController = OverhaulController.AddController<OverhaulCanvasController>();
             GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
             EditorLua = OverhaulController.AddController<LevelEditorLuaController>();
+            PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
             _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
 
             SettingsController.PostInitialize();

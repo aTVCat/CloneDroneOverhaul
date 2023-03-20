@@ -1,7 +1,7 @@
 ﻿using ModLibrary;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
@@ -64,6 +64,13 @@ namespace CDOverhaul.Gameplay
                 foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
                 {
                     SetDefaultModelsActive(info.Model.transform);
+
+                    if (info.Type == WeaponType.Bow)
+                    {
+                        ModdedObject m = info.Model.GetComponent<ModdedObject>();
+                        Destroy(m.GetObject<Transform>(0).gameObject);
+                        Destroy(m.GetObject<Transform>(1).gameObject);
+                    }
                     info.DestroyModel();
                 }
                 WeaponSkins.Clear();
@@ -89,7 +96,7 @@ namespace CDOverhaul.Gameplay
                 if(transformToRemove != null)
                 {
                     List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
-                    t1.Remove(transformToRemove);
+                    _ = t1.Remove(transformToRemove);
                     weaponModel1.PartsToDrop = t1.ToArray();
                 }
                 else
@@ -103,7 +110,7 @@ namespace CDOverhaul.Gameplay
                 if (transformToRemove != null)
                 {
                     List<Transform> t1 = weaponModel2.PartsToDrop.ToList();
-                    t1.Remove(transformToRemove);
+                    _ = t1.Remove(transformToRemove);
                     weaponModel2.PartsToDrop = t1.ToArray();
                 }
                 else
@@ -117,7 +124,7 @@ namespace CDOverhaul.Gameplay
                 if (transformToRemove != null)
                 {
                     List<Transform> t1 = weaponModel3.PartsToDrop.ToList();
-                    t1.Remove(transformToRemove);
+                    _ = t1.Remove(transformToRemove);
                     weaponModel3.PartsToDrop = t1.ToArray();
                 }
                 else
@@ -131,7 +138,7 @@ namespace CDOverhaul.Gameplay
                 if (transformToRemove != null)
                 {
                     List<Transform> t1 = weaponModel4.PartsToDrop.ToList();
-                    t1.Remove(transformToRemove);
+                    _ = t1.Remove(transformToRemove);
                     weaponModel4.PartsToDrop = t1.ToArray();
                 }
                 else
@@ -158,8 +165,8 @@ namespace CDOverhaul.Gameplay
                 SetDefaultModelsVisible(true, weaponModel);
                 return;
             }
-            bool fire = IsFireVariant(weaponModel);
-            bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier();
+            bool fire = IsFireVariant(weaponModel) && item.GetWeaponType() != WeaponType.Bow;
+            bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
 
             /*
@@ -193,11 +200,24 @@ namespace CDOverhaul.Gameplay
                 };
                 WeaponSkins.Add(item, newInfo);
 
-                spawnedModel.gameObject.AddComponent<BoxCollider>();
+                BoxCollider collider = spawnedModel.gameObject.AddComponent<BoxCollider>();
+                collider.size *= 0.5f;
 
                 List<Transform> t1 = weaponModel.PartsToDrop.ToList();
                 t1.Add(spawnedModel);
                 weaponModel.PartsToDrop = t1.ToArray();
+
+                if(weaponModel.WeaponType == WeaponType.Bow)
+                {
+                    ModdedObject m = spawnedModel.GetComponent<ModdedObject>();
+                    Transform bowStringUpper = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringUpper");
+                    Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
+                    if(bowStringLower != null && bowStringUpper != null)
+                    {
+                        m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
+                        m.GetObject<Transform>(1).SetParent(bowStringLower, true);
+                    }
+                }
             }
             else
             {

@@ -1,5 +1,4 @@
-﻿using CDOverhaul.ArenaRemaster;
-using CDOverhaul.Graphics.ArenaRevamp;
+﻿using CDOverhaul.Graphics.ArenaRevamp;
 
 namespace CDOverhaul.Patches
 {
@@ -9,7 +8,7 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            OverhaulController.AddController<ArenaRevampController>();
+            _ = OverhaulController.AddController<ArenaRevampController>();
 
             SuccessfullyPatched = true;
         }
