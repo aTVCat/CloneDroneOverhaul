@@ -43,6 +43,8 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
+            return;
+
             if (!m_ShouldDash)
             {
                 if(IsOwnerMainPlayer()) command.Input.JetpackHeld = false;
@@ -67,6 +69,8 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void Update()
         {
+            return;
+
             if (IsOwnerMainPlayer())
             {
                 SetCtrlDown(IsPressed(KeyCode.LeftControl, 1));

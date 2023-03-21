@@ -35,8 +35,15 @@ namespace CDOverhaul.Gameplay
             m_WaitingToSpawnSkins = true;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                spawnSkins();
                 m_WaitingToSpawnSkins = false;
+                try
+                {
+                    spawnSkins();
+                }
+                catch
+                {
+
+                }
             }, 0.2f);
         }
 
@@ -95,9 +102,12 @@ namespace CDOverhaul.Gameplay
             {
                 if(transformToRemove != null)
                 {
-                    List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
-                    _ = t1.Remove(transformToRemove);
-                    weaponModel1.PartsToDrop = t1.ToArray();
+                    if(weaponModel1.PartsToDrop != null)
+                    {
+                        List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
+                        _ = t1.Remove(transformToRemove);
+                        weaponModel1.PartsToDrop = t1.ToArray();
+                    }
                 }
                 else
                 {
@@ -109,9 +119,12 @@ namespace CDOverhaul.Gameplay
             {
                 if (transformToRemove != null)
                 {
-                    List<Transform> t1 = weaponModel2.PartsToDrop.ToList();
-                    _ = t1.Remove(transformToRemove);
-                    weaponModel2.PartsToDrop = t1.ToArray();
+                    if (weaponModel2.PartsToDrop != null)
+                    {
+                        List<Transform> t1 = weaponModel2.PartsToDrop.ToList();
+                        _ = t1.Remove(transformToRemove);
+                        weaponModel2.PartsToDrop = t1.ToArray();
+                    }
                 }
                 else
                 {
@@ -123,9 +136,12 @@ namespace CDOverhaul.Gameplay
             {
                 if (transformToRemove != null)
                 {
-                    List<Transform> t1 = weaponModel3.PartsToDrop.ToList();
-                    _ = t1.Remove(transformToRemove);
-                    weaponModel3.PartsToDrop = t1.ToArray();
+                    if (weaponModel3.PartsToDrop != null)
+                    {
+                        List<Transform> t1 = weaponModel3.PartsToDrop.ToList();
+                        _ = t1.Remove(transformToRemove);
+                        weaponModel3.PartsToDrop = t1.ToArray();
+                    }
                 }
                 else
                 {
@@ -137,9 +153,12 @@ namespace CDOverhaul.Gameplay
             {
                 if (transformToRemove != null)
                 {
-                    List<Transform> t1 = weaponModel4.PartsToDrop.ToList();
-                    _ = t1.Remove(transformToRemove);
-                    weaponModel4.PartsToDrop = t1.ToArray();
+                    if (weaponModel4.PartsToDrop != null)
+                    {
+                        List<Transform> t1 = weaponModel4.PartsToDrop.ToList();
+                        _ = t1.Remove(transformToRemove);
+                        weaponModel4.PartsToDrop = t1.ToArray();
+                    }
                 }
                 else
                 {
@@ -191,7 +210,20 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
-                SetModelColor(spawnedModel.gameObject, fire);
+                if((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
+                {
+                    Color? forcedColor = null;
+                    if(fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
+                    {
+                        forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor).ColorValue;
+                    }
+                    else if(!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
+                    {
+                        forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor).ColorValue;
+                    }
+
+                    SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor);
+                }
                 WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo
                 {
                     Model = spawnedModel.gameObject,
@@ -227,32 +259,51 @@ namespace CDOverhaul.Gameplay
 
         public void SetDefaultModelsVisible(bool value, WeaponModel model)
         {
+            if(model == null)
+            {
+                return;
+            }
+
             Transform[] partsToDropArray = model.PartsToDrop;
             if (!partsToDropArray.IsNullOrEmpty())
             {
                 foreach (Transform part in partsToDropArray)
                 {
+                    if(part != null)
                     part.gameObject.SetActive(value);
                 }
             }
         }
 
-        public void SetModelColor(GameObject model, bool fire)
+        public void SetModelColor(GameObject model, bool fire, float saturation, Color? forceColor = null)
         {
-            if (!fire)
+            Renderer renderer = model.GetComponent<Renderer>();
+            if (renderer == null || renderer.material == null)
             {
-                Renderer renderer = model.GetComponent<Renderer>();
-                if(renderer == null || renderer.material == null)
-                {
-                    return;
-                }
-                Material material = renderer.material;
-                HSBColor hsbcolor2 = new HSBColor(FirstPersonMover.GetCharacterModel().GetFavouriteColor())
-                {
-                    b = 1f,
-                    s = 0.75f
-                };
-                material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
+                return;
+            }
+            Material material = renderer.material;
+
+            Color? color = null;
+            if (forceColor == null)
+            {
+                color = FirstPersonMover.GetCharacterModel().GetFavouriteColor();
+            }
+            else
+            {
+                color = forceColor;
+            }
+
+            HSBColor hsbcolor2 = new HSBColor(color.Value)
+            {
+                b = 1f,
+                s = saturation
+            };
+            material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
+
+            if (model.GetComponent<WeaponSkinFireAnimator>())
+            {
+                model.GetComponent<WeaponSkinFireAnimator>().TargetColor = hsbcolor2.ToColor();
             }
         }
 

@@ -401,6 +401,7 @@
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\BoomerangWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\GarbagePickerWeaponModel.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinFireAnimator.cs" />
     <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />

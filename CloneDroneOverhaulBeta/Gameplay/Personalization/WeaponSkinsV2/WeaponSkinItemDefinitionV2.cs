@@ -60,6 +60,10 @@ namespace CDOverhaul.Gameplay
             if (!fire && multiplayer)
             {
                 result = 1;
+                if (UseSingleplayerVariantInMultiplayer)
+                {
+                    result = 0;
+                }
             }
             else if (fire && !multiplayer)
             {
@@ -68,6 +72,10 @@ namespace CDOverhaul.Gameplay
             else if (fire && multiplayer)
             {
                 result = 3;
+                if (UseSingleplayerVariantInMultiplayer)
+                {
+                    result = 2;
+                }
             }
             return result;
         }
@@ -78,6 +86,13 @@ namespace CDOverhaul.Gameplay
                 m_Models = new WeaponSkinModel[4];
             }
         }
+
+        public bool UseSingleplayerVariantInMultiplayer;
+        public bool DontUseCustomColorsWhenFire;
+        public bool DontUseCustomColorsWhenNormal;
+        public float Saturation = 0.75f;
+        public int IndexOfForcedNormalVanillaColor = -1;
+        public int IndexOfForcedFireVanillaColor = -1;
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
