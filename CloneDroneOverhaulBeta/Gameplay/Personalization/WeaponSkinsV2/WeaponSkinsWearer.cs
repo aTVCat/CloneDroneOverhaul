@@ -284,7 +284,7 @@ namespace CDOverhaul.Gameplay
             }
             Material material = renderer.material;
 
-            Color? color = null;
+            Color? color;
             if (forceColor == null)
             {
                 color = FirstPersonMover.GetCharacterModel().GetFavouriteColor();

@@ -262,22 +262,6 @@ namespace CDOverhaul.ArenaRemaster
 
         }
 
-#if DEBUG
-        private void Update()
-        {
-            if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.F6))
-            {
-                m_DebugArenaToggleState = !m_DebugArenaToggleState;
-                SetOriginalArenaInteriorVisible(m_DebugArenaToggleState);
-            }
-        }
-#endif
-
         public override string[] Commands()
         {
             throw new System.NotImplementedException();

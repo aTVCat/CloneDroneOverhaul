@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -170,6 +171,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
+            m_Items = m_Items.OrderBy(f => f.GetItemName()).ToArray();
 
             foreach(IWeaponSkinItemDefinition skin in m_Items)
             {
@@ -186,7 +188,7 @@ namespace CDOverhaul.HUD
                 WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
                 b.SetMenu(this);
                 b.SetWeaponType(weaponType);
-                b.SetSkin(skinName);
+                b.SetSkin(skinName, (skin as WeaponSkinItemDefinitionV2).AuthorDiscord, !string.IsNullOrEmpty(skin.GetExclusivePlayerID()));
                 b.TrySelect();
             }
         }
@@ -216,6 +218,7 @@ namespace CDOverhaul.HUD
                 return;
             }
             m_Controller.ApplySkinsOnCharacter(CharacterTracker.Instance.GetPlayer());
+            ShowSkinInfo(weaponType, skinName);
         }
 
         public void SetDefaultSkin()
@@ -228,9 +231,39 @@ namespace CDOverhaul.HUD
             SelectSkin(m_SelectedWeapon, "Default");
         }
 
+        public void ShowSkinInfo(WeaponType type, string skinName)
+        {
+            MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
+            MyModdedObject.GetObject<Text>(8).text = skinName;
+            if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
+            {
+                return;
+            }
+
+            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.Everything, out _);
+            if(item == null)
+            {
+                return;
+            }
+
+            MyModdedObject.GetObject<Transform>(9).gameObject.SetActive(item.GetModel(false, false) != null);
+            MyModdedObject.GetObject<Transform>(10).gameObject.SetActive(item.GetModel(false, true) != null || item.GetWeaponType() != WeaponType.Sword || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
+            MyModdedObject.GetObject<Transform>(11).gameObject.SetActive(item.GetModel(true, false) != null || item.GetWeaponType() == WeaponType.Bow);
+            MyModdedObject.GetObject<Transform>(12).gameObject.SetActive(item.GetModel(true, true) != null || item.GetWeaponType() != WeaponType.Sword || item.GetWeaponType() == WeaponType.Bow || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
+            MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(true);
+        }
+
         public void SetAllowEnemiesUseSkins(bool value)
         {
             SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SetMenuActive(false);
+            }
         }
     }
 }

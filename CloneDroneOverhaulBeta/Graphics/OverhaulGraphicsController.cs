@@ -169,6 +169,7 @@ namespace CDOverhaul.Graphics
 
         private static void refreshAmplifyOcclusion(AmplifyOcclusionEffect effect, bool updateList = true)
         {
+            effect.Bias = 0f;
             effect.BlurSharpness = 4f;
             effect.FilterResponse = 0.7f;
             effect.Bias = 0.8f;

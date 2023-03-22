@@ -7,6 +7,9 @@ namespace CDOverhaul.HUD
 {
     public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour
     {
+        public const string Normal = "#1C6BFF";
+        public const string Exclusive = "#1C6BFF";
+
         #region Static
 
         private static readonly List<WeaponSkinsMenuSkinBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuSkinBehaviour>();
@@ -31,6 +34,9 @@ namespace CDOverhaul.HUD
         private string m_Skin;
         private WeaponType m_WeaponType;
 
+        private GameObject m_ExclusiveIcon;
+        private InputField m_Author;
+
         private bool m_IsSelected;
 
         public override void Awake()
@@ -42,6 +48,8 @@ namespace CDOverhaul.HUD
 
             ModdedObject m = GetComponent<ModdedObject>();
             m_SelectedImage = m.GetObject<Transform>(0).gameObject;
+            m_ExclusiveIcon = m.GetObject<Transform>(3).gameObject;
+            m_Author = m.GetObject<InputField>(2);
             m_InstantiatedButtons.Add(this);
 
             Button b = GetComponent<Button>();
@@ -54,6 +62,8 @@ namespace CDOverhaul.HUD
             m_SelectedImage = null;
             m_SkinsMenu = null;
             m_Skin = null;
+            m_Author = null;
+            m_ExclusiveIcon = null;
         }
 
         public void SetMenu(WeaponSkinsMenu menu)
@@ -70,7 +80,7 @@ namespace CDOverhaul.HUD
             m_SkinsMenu = menu;
         }
 
-        public void SetSkin(string skin)
+        public void SetSkin(string skin, string author, bool exclusive)
         {
             if (IsDisposedOrDestroyed())
             {
@@ -82,6 +92,8 @@ namespace CDOverhaul.HUD
                 return;
             }
             m_Skin = skin;
+            m_Author.text = "By " + author;
+            m_ExclusiveIcon.SetActive(exclusive);
         }
 
         public void SetWeaponType(WeaponType weaponType)

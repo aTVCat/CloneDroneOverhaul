@@ -22,6 +22,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
+            return;
             if (!hasInitializedModel)
             {
                 return;

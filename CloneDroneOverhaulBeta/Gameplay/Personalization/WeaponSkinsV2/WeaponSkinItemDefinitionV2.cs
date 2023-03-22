@@ -94,6 +94,8 @@ namespace CDOverhaul.Gameplay
         public int IndexOfForcedNormalVanillaColor = -1;
         public int IndexOfForcedFireVanillaColor = -1;
 
+        public string AuthorDiscord;
+
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
             if (forceTrue)
