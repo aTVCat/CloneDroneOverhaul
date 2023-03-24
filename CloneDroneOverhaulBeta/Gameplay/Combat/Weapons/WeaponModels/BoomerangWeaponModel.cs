@@ -172,19 +172,25 @@ namespace CDOverhaul.Gameplay.Combat
 
         public void Throw()
         {
+            FirstPersonMover owner = GetOwner();
+            if(owner == null)
+            {
+                return;
+            }
+
             m_ThrowStrength = Mathf.Clamp((Time.time - m_TimeStartedPreparing) / (m_TimeToAllowThrowing - m_TimeStartedPreparing + 1f), 0.7f, 1.5f);
             m_TimeToAllowPickingUp = Time.time + 0.3f + (!m_AllowAutoTargeting ? 0 : 3f);
             m_HasAlreadyDisabledCollidersThisThrow = false;
 
             m_RigidBody.isKinematic = false;
-            m_RigidBody.velocity = GetOwner().transform.forward * (m_ThrowRange * m_ThrowStrength);
+            m_RigidBody.velocity = owner.transform.forward * (m_ThrowRange * m_ThrowStrength);
             m_RigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
 
             m_Collider.enabled = true;
 
             base.transform.SetParent(null, true);
             base.transform.eulerAngles = new Vector3(Random.value * 20, base.transform.eulerAngles.y, base.transform.eulerAngles.z);
-            base.transform.position = GetOwner().transform.position + (GetOwner().transform.forward * 1.3f) + new Vector3(0, 1.6f + (Random.value * 0.5f), 0);
+            base.transform.position = owner.transform.position + (owner.transform.forward * 1.3f) + new Vector3(0, 1.6f + (Random.value * 0.5f), 0);
             base.MeleeImpactArea.SetDamageActive(true);
 
             m_IsThrown = true;

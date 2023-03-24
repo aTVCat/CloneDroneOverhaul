@@ -92,7 +92,14 @@ namespace CDOverhaul.HUD
                 return;
             }
             m_Skin = skin;
-            m_Author.text = "By " + author;
+            if (string.IsNullOrEmpty(author))
+            {
+                m_Author.text = string.Empty;
+            }
+            else
+            {
+                m_Author.text = "By " + author;
+            }
             m_ExclusiveIcon.SetActive(exclusive);
         }
 

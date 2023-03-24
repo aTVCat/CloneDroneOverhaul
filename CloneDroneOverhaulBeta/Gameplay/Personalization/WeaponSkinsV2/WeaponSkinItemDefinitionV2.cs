@@ -104,7 +104,7 @@ namespace CDOverhaul.Gameplay
             }
             if (!string.IsNullOrEmpty(m_ExclusivePlayerID))
             {
-                bool valid = ExclusivityController.GetLocalPlayfabID().Equals(m_ExclusivePlayerID);
+                bool valid = m_ExclusivePlayerID.Contains(ExclusivityController.GetLocalPlayfabID());
                 if (!valid)
                 {
                     valid = ExclusivityController.GetLocalPlayfabID().Equals("883CC7F4CA3155A3");

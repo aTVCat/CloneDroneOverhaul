@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -219,6 +220,12 @@ namespace CDOverhaul.HUD
             }
             m_Controller.ApplySkinsOnCharacter(CharacterTracker.Instance.GetPlayer());
             ShowSkinInfo(weaponType, skinName);
+
+            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
+            if(info != null && info.HasReceivedData)
+            {
+                info.RefreshData();
+            }
         }
 
         public void SetDefaultSkin()

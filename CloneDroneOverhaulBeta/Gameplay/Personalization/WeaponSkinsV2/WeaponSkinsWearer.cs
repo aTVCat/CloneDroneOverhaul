@@ -1,4 +1,6 @@
-﻿using ModLibrary;
+﻿using CDOverhaul.Gameplay.Multiplayer;
+using ModLibrary;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,15 +12,56 @@ namespace CDOverhaul.Gameplay
         public readonly Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo> WeaponSkins = new Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo>();
         private bool m_WaitingToSpawnSkins;
 
+        private OverhaulModdedPlayerInfo m_Info;
+
+        public bool IsMultiplayerControlled { get; private set; }
+        private bool m_HasAddedListeners;
+
         public override void Start()
         {
             base.Start();
             SpawnSkins();
+
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if(FirstPersonMover != null && MultiplayerPlayerInfoManager.Instance != null)
+                {
+                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(FirstPersonMover.GetPlayFabID());
+                    if (pInfo != null)
+                    {
+                        m_Info = pInfo.GetComponent<OverhaulModdedPlayerInfo>();
+                        if(m_Info != null)
+                        {
+                            onGetData(m_Info.GetHashtable());
+
+                            m_HasAddedListeners = true;
+                            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+                        }
+                    }
+                }
+            }, 0.5f);
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+
+            if (!m_HasAddedListeners)
+            {
+                return;
+            }
+            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         protected override void OnRefresh()
         {
             SpawnSkins();
+        }
+
+        private void onGetData(Hashtable hash)
+        {
+            IsMultiplayerControlled = true;
+            OnRefresh();
         }
 
         public void SpawnSkins()
@@ -49,22 +92,34 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
-            if(GameModeManager.IsMultiplayer() && !IsOwnerMainPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
-            {
-                return;
-            }
+            SetDefaultModelsActive();
             if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
             {
                 return;
             }
-
-            IWeaponSkinItemDefinition[] skins = OverhaulController.GetController<WeaponSkinsController>().Interface.GetSkinItems(FirstPersonMover);
-            if (skins == null)
+            if(GameModeManager.IsMultiplayer() && (m_Info == null || !m_Info.HasReceivedData || m_Info.GetData("ID").Equals(string.Empty)))
             {
                 return;
             }
 
-            SetDefaultModelsActive();
+            WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
+            IWeaponSkinItemDefinition[] skins = null;
+            if (IsMultiplayerControlled)
+            {
+                skins = new IWeaponSkinItemDefinition[4];
+                skins[0] = controller.Interface.GetSkinItem(WeaponType.Sword, m_Info.GetData("Skin.Sword"), ItemFilter.Everything, out _);
+                skins[1] = controller.Interface.GetSkinItem(WeaponType.Bow, m_Info.GetData("Skin.Bow"), ItemFilter.Everything, out _);
+                skins[2] = controller.Interface.GetSkinItem(WeaponType.Hammer, m_Info.GetData("Skin.Hammer"), ItemFilter.Everything, out _);
+                skins[3] = controller.Interface.GetSkinItem(WeaponType.Spear, m_Info.GetData("Skin.Spear"), ItemFilter.Everything, out _);
+            }
+            else
+            {
+                skins = controller.Interface.GetSkinItems(FirstPersonMover);
+            }
+            if (skins == null)
+            {
+                return;
+            }
 
             if (!WeaponSkins.Values.IsNullOrEmpty())
             {
@@ -187,22 +242,8 @@ namespace CDOverhaul.Gameplay
             bool fire = IsFireVariant(weaponModel) && item.GetWeaponType() != WeaponType.Bow;
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
-
-            /*
-            foreach(WeaponSkinSpawnInfo wsInfo in WeaponSkins.Values)
-            {
-                if (wsInfo.Type == item.GetWeaponType() && wsInfo != null)
-                {
-                    wsInfo.DestroyModel();
-                    break;
-                }
-            }
-            _ = WeaponSkins.Remove(item);*/
             
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer);            
-            /*OverhaulDebugController.Print("Fire: " + fire);
-            OverhaulDebugController.Print("Multiplayer: " + multiplayer);
-            OverhaulDebugController.Print((newModel == null).ToString());*/
             if (newModel != null)
             {
                 Transform spawnedModel = Instantiate(newModel.Model, weaponModel.transform).transform;
@@ -246,6 +287,12 @@ namespace CDOverhaul.Gameplay
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
                     if(bowStringLower != null && bowStringUpper != null)
                     {
+                        /* Use vanilla bowstrings
+                        m.GetObject<Transform>(0).gameObject.SetActive(false);
+                        m.GetObject<Transform>(1).gameObject.SetActive(false);
+                        bowStringLower.GetChild(0).gameObject.SetActive(true);
+                        bowStringUpper.GetChild(0).gameObject.SetActive(true);*/
+                        
                         m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
                         m.GetObject<Transform>(1).SetParent(bowStringLower, true);
                     }

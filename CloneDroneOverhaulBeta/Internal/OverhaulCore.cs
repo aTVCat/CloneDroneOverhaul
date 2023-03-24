@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
@@ -104,6 +105,7 @@ namespace CDOverhaul
             EditorLua = OverhaulController.AddController<LevelEditorLuaController>();
             PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
             _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
+            _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
             OverhaulDebugController.Initialize();

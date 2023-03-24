@@ -44,14 +44,14 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", true, false, "All things on the screen will get colored edges", "Chromatic Aberration.png")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "All things on the screen will get colored edges", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
 
         [SettingSliderParameters(false, 0f, 0.001f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Currently it doesn't work")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add more shadows to everything")]
         public static bool AOEnabled;
 
         [SettingSliderParameters(false, 0.7f, 1.3f)]

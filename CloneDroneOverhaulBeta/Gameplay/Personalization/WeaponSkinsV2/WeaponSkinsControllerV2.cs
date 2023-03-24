@@ -19,6 +19,7 @@ namespace CDOverhaul.Gameplay
         private const string SonicGlebDiscord = "SonicGleb#4862";
         private const string WaterDiscord = "Water#2977";
         private const string LostCatDiscord = "TheLostCat#8845";
+        private const string ZoloRDiscord = "ZoloR#3380";
         private const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
@@ -123,6 +124,62 @@ namespace CDOverhaul.Gameplay
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = Igrok_X_XPDiscord;
 
+
+                ModelOffset impSwordSkinOffset = new ModelOffset(new Vector3(-2.88f, 0f, -0.425f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition impSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Imperial", ItemFilter.None);
+                impSwordSkin.SetModel(AssetsController.GetAsset("ImperialSword", OverhaulAssetsPart.WeaponSkins),
+                    impSwordSkinOffset,
+                    false,
+                    false);
+                impSwordSkin.SetModel(AssetsController.GetAsset("ImperialSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    impSwordSkinOffset,
+                    true,
+                    false);
+                impSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                (impSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (impSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
+                (impSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
+                (impSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = string.Empty;
+
+                ModelOffset pojSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.185f, -0.9f), new Vector3(90, 2, 0), Vector3.one * 0.25f);
+                IWeaponSkinItemDefinition pojSkin = Interface.NewSkinItem(WeaponType.Sword, "Pearl Of Justice", ItemFilter.Exclusive);
+                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetsPart.WeaponSkins),
+                    pojSkinOffset,
+                    false,
+                    true);
+                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetsPart.WeaponSkins),
+                    pojSkinOffset,
+                    false,
+                    false);
+                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetsPart.WeaponSkins),
+                    pojSkinOffset,
+                    true,
+                    true);
+                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetsPart.WeaponSkins),
+                    pojSkinOffset,
+                    true,
+                    false);
+                pojSkin.SetExclusivePlayerID("193564D7A14F9C33");
+                pojSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                pojSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
+                (pojSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
+                (pojSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (pojSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+
+                ModelOffset ancientSwordSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.36f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.32f, 0.32f, 0.48f));
+                IWeaponSkinItemDefinition ancientSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Ancient", ItemFilter.Exclusive);
+                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
+                    ancientSwordSkinOffset,
+                    false,
+                    false);
+                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
+                    ancientSwordSkinOffset,
+                    true,
+                    false);
+                (ancientSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
+                (ancientSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (ancientSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
+
                 ModelOffset hellFireSwordSkinOffset = new ModelOffset(new Vector3(0.06f, 0.01f, -1.1f), new Vector3(0, 92, 90), Vector3.one * 0.55f);
                 IWeaponSkinItemDefinition hellFireSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Infernal", ItemFilter.None);
                 hellFireSwordSkin.SetModel(AssetsController.GetAsset("P_HellFireSwordNormal", OverhaulAssetsPart.WeaponSkins),
@@ -158,7 +215,10 @@ namespace CDOverhaul.Gameplay
                     true,
                     true);
                 violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33");
+                violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord + And + Igrok_X_XPDiscord;
+                //(violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;                
 
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
@@ -223,7 +283,6 @@ namespace CDOverhaul.Gameplay
                 (garbageBotHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (garbageBotHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = LostCatDiscord;
 
-                // Dark past hammer
                 ModelOffset toyHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition toyHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Toy", ItemFilter.None);
                 toyHammerSkin.SetModel(AssetsController.GetAsset("ToyHammer", OverhaulAssetsPart.WeaponSkins),
@@ -235,6 +294,62 @@ namespace CDOverhaul.Gameplay
                     true,
                     false);
                 (toyHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
+
+                ModelOffset voidCoreSkinOffset = new ModelOffset(new Vector3(-2.7f, 0.05f, -0.15f), new Vector3(0, 0, 270), Vector3.one);
+                IWeaponSkinItemDefinition voidCoreSkin = Interface.NewSkinItem(WeaponType.Hammer, "Void Core", ItemFilter.None);
+                voidCoreSkin.SetModel(AssetsController.GetAsset("VoidCoreHammer", OverhaulAssetsPart.WeaponSkins),
+                    voidCoreSkinOffset,
+                    false,
+                    false);
+                voidCoreSkin.SetModel(AssetsController.GetAsset("VoidCoreHammerFire", OverhaulAssetsPart.WeaponSkins),
+                    voidCoreSkinOffset,
+                    true,
+                    false);
+                (voidCoreSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+                (voidCoreSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (voidCoreSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true; // Tester's exclusive
+
+                ModelOffset relicHammerSkinOffset = new ModelOffset(new Vector3(-1.275f, -0.075f, -0.05f), new Vector3(0, 0, 270), Vector3.one * 0.3f);
+                IWeaponSkinItemDefinition relicHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Relic", ItemFilter.None);
+                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammer", OverhaulAssetsPart.WeaponSkins),
+                    relicHammerSkinOffset,
+                    false,
+                    false);
+                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammer", OverhaulAssetsPart.WeaponSkins),
+                    relicHammerSkinOffset,
+                    true,
+                    false);
+                (relicHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+                (relicHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (relicHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
+
+                ModelOffset wbdHammerSkinOffset = new ModelOffset(new Vector3(-1f, 0.03f, 0.22f), new Vector3(0, 0, 265), Vector3.one * 0.9f);
+                IWeaponSkinItemDefinition wbdHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Water Based Drink", ItemFilter.None);
+                wbdHammerSkin.SetModel(AssetsController.GetAsset("WBD", OverhaulAssetsPart.WeaponSkins),
+                    wbdHammerSkinOffset,
+                    false,
+                    false);
+                wbdHammerSkin.SetModel(AssetsController.GetAsset("WBDFire", OverhaulAssetsPart.WeaponSkins),
+                    wbdHammerSkinOffset,
+                    true,
+                    false);
+                (wbdHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = LostCatDiscord + And + ATVCatDiscord;
+                (wbdHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+
+                ModelOffset impHammerSkinOffset = new ModelOffset(new Vector3(-1.59f, -1.845f, -0.36f), new Vector3(0, 0, 270), Vector3.one * 0.5f);
+                ModelOffset impHammerSkin2Offset = new ModelOffset(new Vector3(-1.59f, 0.825f, -0.455f), new Vector3(0, 0, 270), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition impHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Imperial", ItemFilter.None);
+                impHammerSkin.SetModel(AssetsController.GetAsset("ImperialHammer", OverhaulAssetsPart.WeaponSkins),
+                     impHammerSkinOffset,
+                    false,
+                    false);
+                impHammerSkin.SetModel(AssetsController.GetAsset("ImperialHammerFire", OverhaulAssetsPart.WeaponSkins),
+                     impHammerSkin2Offset,
+                    true,
+                    false);
+                (impHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = string.Empty;
+                (impHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (impHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
 
                 ModelOffset iHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.245f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition iHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Igrok_x_xp", ItemFilter.None);
@@ -312,6 +427,19 @@ namespace CDOverhaul.Gameplay
                     false);
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
 
+                ModelOffset ancientSpearSkinOffset = new ModelOffset(new Vector3(-0.8f, -1.1f, -0.5f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition ancientSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Ancient", ItemFilter.None);
+                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpear", OverhaulAssetsPart.WeaponSkins),
+                    ancientSpearSkinOffset,
+                    false,
+                    false);
+                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpear", OverhaulAssetsPart.WeaponSkins),
+                    ancientSpearSkinOffset,
+                    true,
+                    false);
+                (ancientSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
+                (ancientSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+
                 ModelOffset breadSkinOffset = new ModelOffset(new Vector3(0.95f, -1.1f, -0.08f), new Vector3(0, 270, 0), new Vector3(0.5f, 0.5f, 0.9f));
                 IWeaponSkinItemDefinition breadPastSkin = Interface.NewSkinItem(WeaponType.Spear, "Le baguet", ItemFilter.None);
                 breadPastSkin.SetModel(AssetsController.GetAsset("P_Baget", OverhaulAssetsPart.WeaponSkins),
@@ -350,7 +478,7 @@ namespace CDOverhaul.Gameplay
                 (glSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (glSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
-                ModelOffset bionicSpearSkinOffset = new ModelOffset(new Vector3(2.5f, -1.65f, 0.09f), new Vector3(0, -90, 0), Vector3.one * 0.6f);
+                ModelOffset bionicSpearSkinOffset = new ModelOffset(new Vector3(-0.45f, -7.1075f, -0.03f), new Vector3(0, -90, 0), Vector3.one * 0.6f);
                 IWeaponSkinItemDefinition bionicSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Bionic", ItemFilter.None);
                 bionicSpearSkin.SetModel(AssetsController.GetAsset("BionicSpear", OverhaulAssetsPart.WeaponSkins),
                     bionicSpearSkinOffset,
@@ -428,7 +556,7 @@ namespace CDOverhaul.Gameplay
 
             foreach(IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
             {
-                if (weaponSkinItem.IsUnlocked(false))
+                if (filter == ItemFilter.Everything || weaponSkinItem.IsUnlocked(false))
                 {
                     if ((filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter) && weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
                     {

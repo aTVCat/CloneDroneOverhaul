@@ -18,7 +18,7 @@ namespace CDOverhaul
         /// <summary>
         /// The full name of the mod
         /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul Tech-Demo 2 " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
+        public static readonly string ModFullName = "Clone Drone Overhaul Tech-Demo 1.5 " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
         /// <summary>
         /// The shortened name of the mod
         /// </summary>
@@ -35,7 +35,7 @@ namespace CDOverhaul
         /// <summary>
         /// Enable 0.3 June demo Update things
         /// </summary>
-        public const bool JuneDemoEnabled = true;
+        public const bool JuneDemoEnabled = false;
 
         /// <summary>
         /// Enable 0.4 Update things

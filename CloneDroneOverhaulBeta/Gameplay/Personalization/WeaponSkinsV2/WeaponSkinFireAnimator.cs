@@ -40,7 +40,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            m_Material.SetColor(Emission, TargetColor * (Mathf.PingPong(Time.time, 3f) + 3f));
+            m_Material.SetColor(Emission, TargetColor * (Mathf.PingPong(Time.time, 2f) + 3f));
         }
     }
 }
