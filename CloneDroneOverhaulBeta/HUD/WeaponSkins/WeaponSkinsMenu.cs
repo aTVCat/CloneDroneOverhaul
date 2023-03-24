@@ -9,6 +9,14 @@ namespace CDOverhaul.HUD
 {
     public class WeaponSkinsMenu : OverhaulUI
     {
+        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
+        {
+            WeaponType.Sword,
+            WeaponType.Bow,
+            WeaponType.Hammer,
+            WeaponType.Spear
+        };
+
         private static float m_TimeToAllowChangingSkins = 0f;
         private static float m_TimeChangedSkins = 0f;
         public static float GetSkinChangeCooldown() => 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
@@ -129,6 +137,17 @@ namespace CDOverhaul.HUD
             PopulateWeapon(WeaponType.Bow);
             PopulateWeapon(WeaponType.Hammer);
             PopulateWeapon(WeaponType.Spear);
+
+            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+            if(player != null)
+            {
+                WeaponType wType = player.GetEquippedWeaponType();
+                if (SupportedWeapons.Contains(wType))
+                {
+                    PopulateSkins(wType);
+                    return;
+                }
+            }
 
             PopulateSkins(WeaponType.Sword);
         }

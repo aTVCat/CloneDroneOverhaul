@@ -308,6 +308,7 @@ namespace CDOverhaul.Gameplay
                     toyHammerSkinOffset,
                     true,
                     false);
+                //toyHammerSkin.SetExclusivePlayerID("47A1CD84FD538A2E");
                 (toyHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
 
                 ModelOffset voidCoreSkinOffset = new ModelOffset(new Vector3(-2.7f, 0.05f, -0.15f), new Vector3(0, 0, 270), Vector3.one);
@@ -367,7 +368,7 @@ namespace CDOverhaul.Gameplay
                 (impHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
 
                 ModelOffset iHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.245f), new Vector3(0, 0, 270), Vector3.one);
-                IWeaponSkinItemDefinition iHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Igrok_x_xp", ItemFilter.None);
+                IWeaponSkinItemDefinition iHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Igrok_x_xp", ItemFilter.Exclusive);
                 iHammerSkin.SetModel(AssetsController.GetAsset("IgroksHammer", OverhaulAssetsPart.WeaponSkins),
                     iHammerSkinOffset,
                     false,
@@ -376,6 +377,7 @@ namespace CDOverhaul.Gameplay
                     iHammerSkinOffset,
                     true,
                     false);
+                iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C");
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
