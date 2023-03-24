@@ -92,8 +92,13 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(FirstPersonMover))
+            {
+                return;
+            }
+
             SetDefaultModelsActive();
-            if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
+            if ((!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins))
             {
                 return;
             }
@@ -103,7 +108,7 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
-            IWeaponSkinItemDefinition[] skins = null;
+            IWeaponSkinItemDefinition[] skins;
             if (IsMultiplayerControlled)
             {
                 skins = new IWeaponSkinItemDefinition[4];

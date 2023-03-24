@@ -36,6 +36,11 @@ namespace CDOverhaul.Gameplay
         [OverhaulSettingAttribute("Player.WeaponSkins.EnemiesUseSkins", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearSkins;
 
+        public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover)
+        {
+            return !GameModeManager.IsInLevelEditor() && firstPersonMover != null && !firstPersonMover.IsMindSpaceCharacter;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -135,13 +140,13 @@ namespace CDOverhaul.Gameplay
                     impSwordSkinOffset,
                     true,
                     false);
-                impSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = impSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (impSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (impSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (impSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (impSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = string.Empty;
 
-                ModelOffset pojSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.185f, -0.9f), new Vector3(90, 2, 0), Vector3.one * 0.25f);
+                ModelOffset pojSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.36f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.32f, 0.32f, 0.48f));
                 IWeaponSkinItemDefinition pojSkin = Interface.NewSkinItem(WeaponType.Sword, "Pearl Of Justice", ItemFilter.Exclusive);
                 pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetsPart.WeaponSkins),
                     pojSkinOffset,
@@ -160,13 +165,13 @@ namespace CDOverhaul.Gameplay
                     true,
                     false);
                 pojSkin.SetExclusivePlayerID("193564D7A14F9C33");
-                pojSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
-                pojSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = pojSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = pojSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (pojSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (pojSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (pojSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
 
-                ModelOffset ancientSwordSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.36f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.32f, 0.32f, 0.48f));
+                ModelOffset ancientSwordSkinOffset = new ModelOffset(new Vector3(-0.35f, -0.55f, -1f), new Vector3(90, 2, 0), Vector3.one * 0.45f);
                 IWeaponSkinItemDefinition ancientSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Ancient", ItemFilter.Exclusive);
                 ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
                     ancientSwordSkinOffset,
@@ -202,7 +207,7 @@ namespace CDOverhaul.Gameplay
                     violetViolenceSkinOffset,
                     false,
                     false);
-                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolence", OverhaulAssetsPart.WeaponSkins),
+                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceF", OverhaulAssetsPart.WeaponSkins),
                     violetViolenceSkinOffset,
                     true,
                     false);
@@ -215,8 +220,8 @@ namespace CDOverhaul.Gameplay
                     true,
                     true);
                 violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33");
-                violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
-                violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord + And + Igrok_X_XPDiscord;
                 //(violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;                
 

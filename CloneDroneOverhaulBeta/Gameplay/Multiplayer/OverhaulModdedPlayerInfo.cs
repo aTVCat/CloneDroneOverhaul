@@ -47,7 +47,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 m_TimeToReceiveData = -1;
                 m_TimeToStopWaiting = Time.time + 5f;
-                StartCoroutine(getDataCoroutine());
+                _ = StartCoroutine(getDataCoroutine());
             }
         }
 
@@ -102,12 +102,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static string SerializeData()
         {
-            Hashtable newHashTable = new Hashtable();
-            newHashTable["ID"] = ExclusivityController.GetLocalPlayfabID();
-            newHashTable["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin;
-            newHashTable["Skin.Bow"] = WeaponSkinsController.EquippedBowSkin;
-            newHashTable["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin;
-            newHashTable["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin;
+            Hashtable newHashTable = new Hashtable
+            {
+                ["ID"] = ExclusivityController.GetLocalPlayfabID(),
+                ["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin,
+                ["Skin.Bow"] = WeaponSkinsController.EquippedBowSkin,
+                ["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin,
+                ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin
+            };
 
             string serializedData = JsonConvert.SerializeObject(newHashTable);
 

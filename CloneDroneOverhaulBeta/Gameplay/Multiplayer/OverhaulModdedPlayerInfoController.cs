@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Multiplayer
 {
@@ -20,7 +16,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 MultiplayerPlayerInfoState mstate = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(state.PlayFabID);
                 if(mstate != null)
                 {
-                    mstate.gameObject.AddComponent<OverhaulModdedPlayerInfo>();
+                    _ = mstate.gameObject.AddComponent<OverhaulModdedPlayerInfo>();
                 }
             }, 0.1f);
         }

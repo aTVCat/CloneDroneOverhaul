@@ -274,6 +274,8 @@ namespace CDOverhaul.HUD
 
             RefreshAdvancements();
 
+            m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
+
             ShowCursor = true;
         }
 
