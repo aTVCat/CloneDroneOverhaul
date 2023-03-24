@@ -12,18 +12,25 @@ namespace CDOverhaul.HUD.Overlays
         public static bool ForceSetIsInCutscene;
         public static float TargetY = 38.0f;
 
-        private void Awake()
+        public override void Awake()
         {
             base.gameObject.SetActive(true);
         }
 
-        private void Start()
+        public override void Start()
         {
             ModdedObject m = GetComponent<ModdedObject>();
             m_UpperBar = m.GetObject<RectTransform>(0);
             m_UpperBar.anchoredPosition = new Vector3(0, 80f, 0);
             m_LowerBar = m.GetObject<RectTransform>(1);
             m_LowerBar.anchoredPosition = new Vector3(0, -80f, 0);
+        }
+
+        protected override void OnDisposed()
+        {
+            m_UpperBar = null;
+            m_LowerBar = null;
+            ForceSetIsInCutscene = false;
         }
 
         private void Update()

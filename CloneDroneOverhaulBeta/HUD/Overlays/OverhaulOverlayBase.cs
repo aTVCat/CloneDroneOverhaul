@@ -2,11 +2,7 @@
 
 namespace CDOverhaul.HUD.Overlays
 {
-    public class OverhaulOverlayBase : MonoBehaviour
+    public class OverhaulOverlayBase : OverhaulBehaviour
     {
-        private void Awake()
-        {
-            base.gameObject.SetActive(false);
-        }
     }
 }

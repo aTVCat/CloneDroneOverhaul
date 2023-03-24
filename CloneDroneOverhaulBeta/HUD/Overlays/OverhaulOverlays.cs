@@ -12,6 +12,7 @@ namespace CDOverhaul.HUD.Overlays
             }
 
             _ = MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
+            MyModdedObject.GetObject<Transform>(0).gameObject.SetActive(true);
 
             base.transform.SetParent(GameUIRoot.Instance.transform);
             base.transform.SetAsFirstSibling();
