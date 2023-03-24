@@ -86,9 +86,11 @@ namespace CDOverhaul.Gameplay
                     true,
                     false); // Fire singleplayer model
                 (swordDetailedSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = WaterDiscord;
+                (swordDetailedSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
+                (swordDetailedSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
-            // Dark past sword
-            ModelOffset darkPastSwordSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.25f, -1f), new Vector3(0, 90, 90), Vector3.one);
+                // Dark past sword
+                ModelOffset darkPastSwordSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.25f, -1f), new Vector3(0, 90, 90), Vector3.one);
                 IWeaponSkinItemDefinition darkPastSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Dark Past", ItemFilter.None);
                 darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
                     darkPastSwordSkinOffset,
@@ -99,6 +101,8 @@ namespace CDOverhaul.Gameplay
                     true,
                     false);
                 (darkPastSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
+                (darkPastSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
+                (darkPastSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset redMetalSwordSkinOffset = new ModelOffset(new Vector3(0.45f, 0.05f, -2.55f), new Vector3(0, 90, 90), Vector3.one);
                 IWeaponSkinItemDefinition redMetalSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Red Metal", ItemFilter.None);
@@ -112,6 +116,7 @@ namespace CDOverhaul.Gameplay
                     false);
                 (redMetalSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (redMetalSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+                (redMetalSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
 
                 ModelOffset terraBladeSkinOffset = new ModelOffset(new Vector3(0.48f, -1.1f, -0.55f), new Vector3(90, 2, 0), Vector3.one * 0.7f);
                 IWeaponSkinItemDefinition terraBladeSkin = Interface.NewSkinItem(WeaponType.Sword, "TerraBlade", ItemFilter.None);
@@ -128,7 +133,6 @@ namespace CDOverhaul.Gameplay
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = Igrok_X_XPDiscord;
-
 
                 ModelOffset impSwordSkinOffset = new ModelOffset(new Vector3(-2.88f, 0f, -0.425f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition impSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Imperial", ItemFilter.None);
@@ -198,6 +202,7 @@ namespace CDOverhaul.Gameplay
                 (hellFireSwordSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (hellFireSwordSkin as WeaponSkinItemDefinitionV2).Saturation = 0.6f;
                 (hellFireSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+                (hellFireSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
 
                 // Voilet violence sword
                 ModelOffset violetViolenceSkinOffset = new ModelOffset(new Vector3(-0.75f, 0.65f, -0.85f), new Vector3(0, 90, 90), Vector3.one * 0.525f);
@@ -273,7 +278,12 @@ namespace CDOverhaul.Gameplay
                     darkPastHammerSkinOffset,
                     false,
                     false);
+                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                    darkPastHammerSkinOffset,
+                    true,
+                    false);
                 (darkPastHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
+                (darkPastHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset garbageBotHammerSkinOffset = new ModelOffset(new Vector3(-1, -0.05f, 0.06f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition garbageBotHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Garbage Bot", ItemFilter.None);
@@ -380,7 +390,7 @@ namespace CDOverhaul.Gameplay
                 (testBowSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
 
                 ModelOffset testBow2SkinOffset = new ModelOffset(new Vector3(0.35f, -1.5f, 0.45f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
-                IWeaponSkinItemDefinition testBow2Skin = Interface.NewSkinItem(WeaponType.Bow, "Glass", ItemFilter.None);
+                IWeaponSkinItemDefinition testBow2Skin = Interface.NewSkinItem(WeaponType.Bow, "Neon", ItemFilter.None);
                 testBow2Skin.SetModel(AssetsController.GetAsset("GlassBow", OverhaulAssetsPart.WeaponSkins),
                     testBow2SkinOffset,
                     false,
@@ -388,7 +398,7 @@ namespace CDOverhaul.Gameplay
                 (testBow2Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
 
                 ModelOffset testBow3SkinOffset = new ModelOffset(new Vector3(0.05f, -0.7f, 0f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
-                IWeaponSkinItemDefinition testBow3Skin = Interface.NewSkinItem(WeaponType.Bow, "Iron", ItemFilter.None);
+                IWeaponSkinItemDefinition testBow3Skin = Interface.NewSkinItem(WeaponType.Bow, "Futuristic Iron", ItemFilter.None);
                 testBow3Skin.SetModel(AssetsController.GetAsset("IronBow", OverhaulAssetsPart.WeaponSkins),
                     testBow3SkinOffset,
                     false,
@@ -413,7 +423,7 @@ namespace CDOverhaul.Gameplay
                 (testBow5Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
                 ModelOffset testBow6SkinOffset = new ModelOffset(new Vector3(-0.85f, -0.95f, 0.05f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
-                IWeaponSkinItemDefinition testBow6Skin = Interface.NewSkinItem(WeaponType.Bow, "Tactical", ItemFilter.None);
+                IWeaponSkinItemDefinition testBow6Skin = Interface.NewSkinItem(WeaponType.Bow, "Hunter", ItemFilter.None);
                 testBow6Skin.SetModel(AssetsController.GetAsset("TacticalBow", OverhaulAssetsPart.WeaponSkins),
                     testBow6SkinOffset,
                     false,
