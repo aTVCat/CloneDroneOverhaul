@@ -9,6 +9,11 @@ namespace CDOverhaul.HUD
 {
     public class WeaponSkinsMenu : OverhaulUI
     {
+        private static float m_TimeToAllowChangingSkins = 0f;
+        private static float m_TimeChangedSkins = 0f;
+        public static float GetSkinChangeCooldown() => 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
+        public static bool AllowChangingSkins() => Time.unscaledTime >= m_TimeToAllowChangingSkins;
+
         private IWeaponSkinItemDefinition[] m_Items;
 
         private Hashtable m_HashtableTest;
@@ -225,6 +230,12 @@ namespace CDOverhaul.HUD
             if(info != null && info.HasReceivedData)
             {
                 info.RefreshData();
+            }
+
+            if (GameModeManager.IsMultiplayer())
+            {
+                m_TimeChangedSkins = Time.unscaledTime;
+                m_TimeToAllowChangingSkins = m_TimeChangedSkins + 2f;
             }
         }
 

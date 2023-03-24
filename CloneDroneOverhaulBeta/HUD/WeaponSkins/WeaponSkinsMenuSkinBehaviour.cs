@@ -36,6 +36,7 @@ namespace CDOverhaul.HUD
 
         private GameObject m_ExclusiveIcon;
         private InputField m_Author;
+        private Image m_Cooldown;
 
         private bool m_IsSelected;
 
@@ -50,6 +51,8 @@ namespace CDOverhaul.HUD
             m_SelectedImage = m.GetObject<Transform>(0).gameObject;
             m_ExclusiveIcon = m.GetObject<Transform>(3).gameObject;
             m_Author = m.GetObject<InputField>(2);
+            m_Cooldown = m.GetObject<Image>(4);
+            m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
             m_InstantiatedButtons.Add(this);
 
             Button b = GetComponent<Button>();
@@ -64,6 +67,15 @@ namespace CDOverhaul.HUD
             m_Skin = null;
             m_Author = null;
             m_ExclusiveIcon = null;
+            m_Cooldown = null;
+        }
+
+        private void Update()
+        {
+            if(Time.frameCount % 2 == 0)
+            {
+                m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
+            }
         }
 
         public void SetMenu(WeaponSkinsMenu menu)
@@ -94,7 +106,7 @@ namespace CDOverhaul.HUD
             m_Skin = skin;
             if (string.IsNullOrEmpty(author))
             {
-                m_Author.text = string.Empty;
+                m_Author.text = "Original game";
             }
             else
             {
@@ -149,7 +161,7 @@ namespace CDOverhaul.HUD
 
         public void SelectThis()
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
             {
                 return;
             }

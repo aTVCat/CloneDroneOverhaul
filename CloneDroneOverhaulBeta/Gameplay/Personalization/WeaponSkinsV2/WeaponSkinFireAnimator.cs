@@ -11,21 +11,45 @@ namespace CDOverhaul.Gameplay
 
         private const string Emission = "_EmissionColor";
 
+        public override void Awake()
+        {
+            refresh();
+        }
+
         public override void OnEnable()
         {
-            m_Renderer = base.GetComponent<Renderer>();
-            if(m_Renderer == null)
-            {
-                return;
-            }
-
-            m_Material = m_Renderer.material;
+            refresh();
         }
 
         protected override void OnDisposed()
         {
             m_Renderer = null;
             m_Material = null;
+        }
+
+        private void refresh()
+        {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+            m_Renderer = base.GetComponent<Renderer>();
+            if (m_Renderer == null)
+            {
+                return;
+            }
+
+            m_Material = m_Renderer.material;
+            updateColor();
+        }
+
+        private void updateColor()
+        {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+            m_Material.SetColor(Emission, TargetColor * (Mathf.PingPong(Time.time, 2f) + 3f));
         }
 
         private void Update()
@@ -40,7 +64,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            m_Material.SetColor(Emission, TargetColor * (Mathf.PingPong(Time.time, 2f) + 3f));
+            updateColor();
         }
     }
 }
