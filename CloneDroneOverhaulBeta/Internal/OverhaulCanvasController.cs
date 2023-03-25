@@ -50,6 +50,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
             _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
+            _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
