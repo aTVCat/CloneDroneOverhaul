@@ -37,7 +37,7 @@ namespace CDOverhaul.HUD.Overlays
         {
             if(Time.frameCount % 10 == 0)
             {
-                m_IsInCutscene = ForceSetIsInCutscene || (CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf);
+                m_IsInCutscene = ShouldActivateOverlay();
             }
 
             Vector3 newVector = m_UpperBar.anchoredPosition;
@@ -47,6 +47,12 @@ namespace CDOverhaul.HUD.Overlays
             Vector3 newVector2 = m_LowerBar.anchoredPosition;
             newVector2.y += ((m_IsInCutscene ? -TargetY : -80f) - newVector2.y) * Time.unscaledDeltaTime * 2f;
             m_LowerBar.anchoredPosition = newVector2;
+        }
+
+        public static bool ShouldActivateOverlay() // Todo: Optimize this
+        {
+            return ForceSetIsInCutscene || ((CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf) ||
+                (GameModeManager.IsBattleRoyale() && BattleRoyaleManager.Instance != null && BattleRoyaleManager.Instance.state.TimeToGameStart >= 0 && BattleRoyaleManager.Instance.state.TimeToGameStart <= 16f));
         }
     }
 }

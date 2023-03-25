@@ -410,6 +410,7 @@
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
+    <Compile Include="HUD\PhotoMode\OverhaulPhotoModeControls.cs" />
     <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />

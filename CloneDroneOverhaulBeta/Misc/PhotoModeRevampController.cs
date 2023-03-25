@@ -17,10 +17,18 @@ namespace CDOverhaul.Misc
 
         private bool m_WasInputEnabled;
 
+        private byte m_Condition = 0;
+
         public override void Initialize()
         {
             m_Manager = PhotoManager.Instance;
-            //m_Manager.enabled = false;
+            m_Manager.enabled = false;
+
+            OverhaulCanvasController c = GetController<OverhaulCanvasController>();
+            if(c != null)
+            {
+                OverhaulPhotoModeControls controls = c.AddHUD<OverhaulPhotoModeControls>(c.HUDModdedObject.GetObject<ModdedObject>(1));
+            }
         }
 
         protected override void OnDisposed()
@@ -28,6 +36,11 @@ namespace CDOverhaul.Misc
             CameraFlyController = null;
             m_OriginalPauseMenu = null;
             m_PauseMenu = null;
+        }
+
+        public bool IsAbleToTogglePhotoMode()
+        {
+            return IsInPhotoMode || ((m_OriginalPauseMenu == null || !m_OriginalPauseMenu.gameObject.activeSelf) && (m_PauseMenu == null || !m_PauseMenu.gameObject.activeSelf));
         }
 
         private void getReferences()
@@ -38,9 +51,39 @@ namespace CDOverhaul.Misc
 
         private void Update()
         {
-            if(!Cursor.visible && !EnableCursorController.HasToEnableCursor() && Input.GetKeyDown(KeyCode.BackQuote) && Revamp)
+            if((!Cursor.visible || IsInPhotoMode) && IsAbleToTogglePhotoMode() && !EnableCursorController.HasToEnableCursor() && Input.GetKeyDown(KeyCode.BackQuote) && Revamp)
             {
                 TogglePhotoMode();
+            }
+
+            if (IsInPhotoMode)
+            {
+                bool mouseDown = Input.GetMouseButton(1);
+
+                if (mouseDown)
+                {
+                    if (m_Condition != 0)
+                    {
+                        EnableCursorController.RemoveCondition(m_Condition);
+                        m_Condition = 0;
+                    }
+                }
+                else
+                {
+                    if (m_Condition == 0)
+                    {
+                        byte c = EnableCursorController.AddCondition();
+                        m_Condition = c;
+                    }
+                }
+            }
+            else
+            {
+                if (m_Condition != 0)
+                {
+                    EnableCursorController.RemoveCondition(m_Condition);
+                    m_Condition = 0;
+                }
             }
         }
 
@@ -52,10 +95,6 @@ namespace CDOverhaul.Misc
             }
 
             getReferences();
-            if((m_OriginalPauseMenu.gameObject.activeSelf || m_PauseMenu.gameObject.activeSelf) && !IsInPhotoMode)
-            {
-                return;
-            }
 
             Character player = CharacterTracker.Instance.GetPlayer();
             if (player == null)
