@@ -245,11 +245,50 @@ namespace CDOverhaul.Gameplay
                     violetViolenceSkinOffset2,
                     true,
                     true);
-                violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33");
+                violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 78E35D43F7CA4E5");
                 _ = violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 _ = violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord + And + Igrok_X_XPDiscord;
-                //(violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;                
+                //(violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+
+                ModelOffset frostmourneSkinOffset = new ModelOffset(new Vector3(0f, -0.03f, 1.3f), new Vector3(270, 180, 0), Vector3.one * 0.3f);
+                ModelOffset frostmourneSkinOffsetM = new ModelOffset(new Vector3(0f, -0.03f, 1.5f), new Vector3(270, 180, 0), Vector3.one * 0.35f);
+                IWeaponSkinItemDefinition frostmourneSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Frostmourne", ItemFilter.Exclusive);
+                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSword", OverhaulAssetsPart.WeaponSkins),
+                    frostmourneSkinOffset,
+                    false,
+                    false);
+                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    frostmourneSkinOffset,
+                    true,
+                    false);
+                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSword", OverhaulAssetsPart.WeaponSkins),
+                    frostmourneSkinOffsetM,
+                    false,
+                    true);
+                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    frostmourneSkinOffsetM,
+                    true,
+                    true);
+                frostmourneSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 FEA5A0978276D0FB 78E35D43F7CA4E5");
+                _ = frostmourneSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = frostmourneSwordSkin.GetModel(false, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                (frostmourneSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+                (frostmourneSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (frostmourneSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 3;
+
+                ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(270, 180, 0), Vector3.one);
+                IWeaponSkinItemDefinition LightSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Light", ItemFilter.None);
+                LightSwordSkin.SetModel(AssetsController.GetAsset("LightSword", OverhaulAssetsPart.WeaponSkins),
+                    LightSkinOffset,
+                    false,
+                    false);
+                LightSwordSkin.SetModel(AssetsController.GetAsset("LightSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    LightSkinOffset,
+                    true,
+                    false);
+                (LightSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
+                (LightSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
@@ -411,7 +450,7 @@ namespace CDOverhaul.Gameplay
                     iHammerSkinOffset,
                     true,
                     false);
-                iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C");
+                iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C 78E35D43F7CA4E5");
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
