@@ -130,6 +130,11 @@ namespace CDOverhaul.Gameplay
             {
                 foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
                 {
+                    if(info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
+                    {
+                        continue;
+                    }
+
                     SetDefaultModelsActive(info.Model.transform);
 
                     if (info.Type == WeaponType.Bow)
@@ -175,7 +180,7 @@ namespace CDOverhaul.Gameplay
                 }
             }
             WeaponModel weaponModel2 = model.GetWeaponModel(WeaponType.Bow);
-            if (weaponModel2 != null)
+            if (weaponModel2 != null && OverhaulGamemodeManager.SupportsBowSkins())
             {
                 if (transformToRemove != null)
                 {
@@ -234,7 +239,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
             WeaponModel weaponModel = FirstPersonMover.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
-            if(weaponModel == null)
+            if(weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
             {
                 return;
             }

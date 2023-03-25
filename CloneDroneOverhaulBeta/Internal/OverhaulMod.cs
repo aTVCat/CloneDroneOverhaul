@@ -1,8 +1,10 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.LevelEditor;
+using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -173,7 +175,7 @@ namespace CDOverhaul
         }
 
         /// <summary>
-        /// Wait until all things are initiliazed in <see cref="FirstPersonMover"/> and dispatch event if robot isn't null
+        /// Wait until all things are initialized in <see cref="FirstPersonMover"/> and dispatch event if robot isn't null
         /// </summary>
         /// <param name="firstPersonMover"></param>
         /// <returns></returns>
@@ -185,6 +187,24 @@ namespace CDOverhaul
             {
                 OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
             }
+        }
+
+        public static bool IsModEnabled(string modID)
+        {
+            List<ModInfo> infos = ModsManager.Instance.GetActiveModInfos();
+            if (infos.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            foreach(ModInfo info in infos)
+            {
+                if (info.UniqueID.Equals(modID))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         [DllImport("user32.dll", EntryPoint = "SetWindowText")]

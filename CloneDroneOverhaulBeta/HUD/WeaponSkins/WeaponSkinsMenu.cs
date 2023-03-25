@@ -25,6 +25,7 @@ namespace CDOverhaul.HUD
         private IWeaponSkinItemDefinition[] m_Items;
 
         private Hashtable m_HashtableTest;
+        private Text m_TextPrefab;
         private WeaponSkinsController m_Controller;
 
         private WeaponType m_SelectedWeapon;
@@ -41,6 +42,8 @@ namespace CDOverhaul.HUD
             m_HashtableTest["weaponSkin"] = m.GetObject<ModdedObject>(0);
             (m_HashtableTest["weaponSkin"] as ModdedObject).gameObject.SetActive(false);
             m_HashtableTest["weaponsSkinsContainer"] = m.GetObject<Transform>(1);
+            m_TextPrefab = m.GetObject<Text>(14);
+            m_TextPrefab.gameObject.SetActive(false);
             m.GetObject<Button>(6).onClick.AddListener(SetDefaultSkin);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
@@ -192,6 +195,14 @@ namespace CDOverhaul.HUD
             TransformUtils.DestroyAllChildren(GetContainer(true));
 
             m_SelectedWeapon = weaponType;
+
+            if (m_SelectedWeapon.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins())
+            {
+                Text newPrefab = Instantiate<Text>(m_TextPrefab, GetContainer(true));
+                newPrefab.text = "Bow skins are not supported in singleplayer when Gun mod is enabled";
+                newPrefab.gameObject.SetActive(true);
+                return;
+            }
 
             m_Items = m_Controller.Interface.GetSkinItems(ItemFilter.Everything);
             if (m_Items.IsNullOrEmpty())

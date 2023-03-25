@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -51,6 +52,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
+            _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -86,6 +88,29 @@ namespace CDOverhaul.HUD
                 }
             }
             return null;
+        }
+
+        /// Todo: test it
+        public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
+        {
+            List<T> list = new List<T>();
+            if(targetTransform == null || targetTransform.childCount == 0)
+            {
+                return list;
+            }
+
+            for(int i = 0; i < targetTransform.childCount; i++)
+            {
+                Transform t = targetTransform.GetChild(i);
+                T component = t.GetComponent<T>();
+                ModdedObject m = t.GetComponent<ModdedObject>();
+                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Equals(targetModdedObjectId))
+                {
+                    list.Add(component);
+                }
+                list.AddRange(GetAllComponentsWithModdedObjectRecursive<T>(targetModdedObjectId, t));
+            }
+            return list;
         }
 
         /// <summary>
