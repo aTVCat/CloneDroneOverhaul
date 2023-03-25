@@ -403,6 +403,9 @@
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\GarbagePickerWeaponModel.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfo.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfoController.cs" />
+    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
+    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
+    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinFireAnimator.cs" />
     <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />

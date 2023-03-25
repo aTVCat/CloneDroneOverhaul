@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPrefix]
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
-        {
+        {            
             if (!OverhaulMod.IsCoreCreated)
             {
                 return true;

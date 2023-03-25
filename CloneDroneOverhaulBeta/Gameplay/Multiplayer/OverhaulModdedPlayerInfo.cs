@@ -108,14 +108,36 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin,
                 ["Skin.Bow"] = WeaponSkinsController.EquippedBowSkin,
                 ["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin,
-                ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin
+                ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin,
+                ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
+                ["State.Version"] = OverhaulVersion.ModVersion.ToString()
             };
 
             string serializedData = JsonConvert.SerializeObject(newHashTable);
-
             return serializedData;
         }
 
         public static OverhaulModdedPlayerInfo GetLocalPlayerInfo() => m_LocalPlayerInfo;
+        public static OverhaulModdedPlayerInfo GetPlayerInfo(FirstPersonMover mover)
+        {
+            if(!GameModeManager.IsMultiplayer() || MultiplayerPlayerInfoManager.Instance == null || mover == null)
+            {
+                return null;
+            }
+
+            string playfabID = mover.GetPlayFabID();
+            if (string.IsNullOrEmpty(playfabID))
+            {
+                return null;
+            }
+
+            MultiplayerPlayerInfoState state = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(playfabID);
+            if(state == null)
+            {
+                return null;
+            }
+
+            return state.GetComponent<OverhaulModdedPlayerInfo>();
+        }
     }
 }

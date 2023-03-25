@@ -107,6 +107,8 @@ namespace CDOverhaul.HUD
                 mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 90, 0) : Vector3.zero;
             }
 
+            PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.SwitchingSkins : PlayerStatusType.Idle);
+
             base.gameObject.SetActive(value);
             ShowCursor = value;
 
