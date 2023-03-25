@@ -281,7 +281,7 @@ namespace CDOverhaul.HUD
 
         public void HideMenu(bool dontUnpause = false)
         {
-            if(!PhotoModeRevampController.IsInPhotoMode && !dontUnpause) TimeManager.Instance.OnGameUnPaused();
+            if(!dontUnpause) TimeManager.Instance.OnGameUnPaused();
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 

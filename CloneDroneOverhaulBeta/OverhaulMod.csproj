@@ -381,11 +381,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gameplay\Combat\AI\RobotsAdvancedAIController.cs" />
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Arena\ArenaRevampController.cs" />
-    <Compile Include="Gameplay\Combat\Arena\Prototype\Colors\ArenaRemasterColorSwaper.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
     <Compile Include="Gameplay\Combat\Fights\BetterUnbalancing\CombatOverhaulUnbalancing.cs" />
     <Compile Include="Gameplay\Combat\Fights\Combos\CombatOverhaulCombosController.cs" />
@@ -471,9 +469,6 @@
     <Compile Include="Misc\PhotoModeRevampController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
-    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterEnemyCounter.cs" />
-    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterArrowBlinker.cs" />
-    <Compile Include="Gameplay\Combat\Arena\Prototype\ArenaRemasterController.cs" />
     <Compile Include="Graphics\OverhaulGraphicsController.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSetting.cs" />
@@ -484,7 +479,7 @@
     <Compile Include="Internal\Settings\SubClasses\SettingDropdownParameters.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="Internal\Code\OverhaulExtentions.cs" />
-    <Compile Include="Internal\CrashPrevention\OverhaulCompatibilityChecker.cs" />
+    <Compile Include="Internal\OverhaulCompatibilityChecker.cs" />
     <Compile Include="Internal\OverhaulSessionController.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\SettingsMenuReplacement.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\EscMenuReplacement.cs" />

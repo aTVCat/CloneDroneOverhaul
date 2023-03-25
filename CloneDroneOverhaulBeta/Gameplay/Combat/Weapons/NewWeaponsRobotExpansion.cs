@@ -10,17 +10,13 @@ namespace CDOverhaul.Gameplay.Combat
         private OverhaulWeaponModel m_CurrentWeaponModel;
         public OverhaulWeaponModel EquipedOverhaulWeapon => FirstPersonMover.GetEquippedWeaponModel() as OverhaulWeaponModel;
 
-        private FPMoveCommand m_MoveCommand;
-        public FPMoveCommand MoveCommand => m_MoveCommand;
-
         internal List<AddedWeaponModel> AllCustomWeapons;
 
         private float m_TimeToRefreshWeapons = -1f;
 
         public override void OnPreCommandExecute(FPMoveCommand command)
         {
-            m_MoveCommand = command; // Todo: Make this better
-            if (IsOwnerPlayer()/*Temporary fleet bots AI fix*/ && m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowSwitchingWeapons)
+            if (IsOwnerPlayer() && m_CurrentWeaponModel != null && !m_CurrentWeaponModel.AllowSwitchingWeapons)
             {
                 command.Input.Weapon1 = false;
                 command.Input.Weapon2 = false;

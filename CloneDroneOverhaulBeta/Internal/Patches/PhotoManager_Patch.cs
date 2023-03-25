@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Misc;
+﻿/*using CDOverhaul.Misc;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches
@@ -17,4 +17,4 @@ namespace CDOverhaul.Patches
             return !PhotoModeRevampController.Revamp;
         }
     }
-}
+}*/

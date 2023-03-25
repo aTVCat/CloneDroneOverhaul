@@ -26,7 +26,7 @@
             {
                 return;
             }
-            EquipedAccessories = EquipedAccessories + accsName + Separator;
+            EquipedAccessories += accsName + Separator;
             SaveData();
         }
 

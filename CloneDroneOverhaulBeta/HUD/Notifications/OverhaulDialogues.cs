@@ -25,7 +25,7 @@ namespace CDOverhaul
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                CreateDialogueInstance("Notification Test", "Notifications are back!", null, new Button[] { new Button() { Title = "OK", Action = null } });
+                CreateDialogueInstance("Notification Test", "Notifications are back!", 0f, null, new Button[] { new Button() { Title = "OK", Action = null } });
             }, 1f);
         }
 
@@ -39,7 +39,7 @@ namespace CDOverhaul
             IsInitialized = false;
         }
 
-        internal void CreateDialogueInstance(string title, string description, Vector2? size, Button[] buttons)
+        internal void CreateDialogueInstance(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
             Vector2? theSize = size;
             if(theSize == null)
@@ -54,35 +54,21 @@ namespace CDOverhaul
             moddedObject.GetObject<Transform>(4).gameObject.SetActive(true);
             (moddedObject.transform as RectTransform).sizeDelta = theSize.Value;
 
-            if (!buttons.IsNullOrEmpty())
-            {
-                foreach(Button b in buttons)
-                {
-                    ModdedObject mb = Instantiate(moddedObject.GetObject<Transform>(3).gameObject, moddedObject.GetObject<Transform>(4)).GetComponent<ModdedObject>();
-                    mb.GetObject<Text>(0).text = b.Title;
-                    if(b.Action != null)
-                    {
-                        mb.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(b.Action);
-                    }
-                    mb.gameObject.SetActive(true);
-                }
-            }
-
             moddedObject.gameObject.SetActive(true);
-            moddedObject.gameObject.AddComponent<OverhaulDialogueInstance>().Initialize();
+            moddedObject.gameObject.AddComponent<OverhaulDialogueInstance>().Initialize(additionalTime, buttons);
         }
 
 
-        public static void CreateDialogue(string title, string description, Vector2? size, Button[] buttons)
+        public static void CreateDialogue(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
             if(m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
             {
                 return;
             }
-            m_Instance.CreateDialogueInstance(title, description, size, buttons);
+            m_Instance.CreateDialogueInstance(title, description, additionalTime, size, buttons);
         }
 
-        public static void Create2BDialogue(string title, string description, string b1Text, UnityAction b1Act, string b2Text, UnityAction b2Act)
+        public static void Create2BDialogue(string title, string description, float additionalTime, string b1Text, UnityAction b1Act, string b2Text, UnityAction b2Act, Vector2? size)
         {
             if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
             {
@@ -92,7 +78,7 @@ namespace CDOverhaul
             Button[] buttons = new Button[2];
             buttons[0] = new Button() { Title = b1Text, Action = b1Act };
             buttons[1] = new Button() { Title = b2Text, Action = b2Act };
-            m_Instance.CreateDialogueInstance(title, description, null, buttons);
+            m_Instance.CreateDialogueInstance(title, description, additionalTime, size, buttons);
         }
 
         public class Button
