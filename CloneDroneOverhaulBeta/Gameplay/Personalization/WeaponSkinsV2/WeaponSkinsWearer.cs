@@ -297,14 +297,22 @@ namespace CDOverhaul.Gameplay
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
                     if(bowStringLower != null && bowStringUpper != null)
                     {
-                        /* Use vanilla bowstrings
-                        m.GetObject<Transform>(0).gameObject.SetActive(false);
-                        m.GetObject<Transform>(1).gameObject.SetActive(false);
-                        bowStringLower.GetChild(0).gameObject.SetActive(true);
-                        bowStringUpper.GetChild(0).gameObject.SetActive(true);*/
-                        
-                        m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
-                        m.GetObject<Transform>(1).SetParent(bowStringLower, true);
+                        bowStringLower.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
+                        bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
+                        if ((item as WeaponSkinItemDefinitionV2).UseVanillaBowStrings)
+                        {
+                            m.GetObject<Transform>(0).gameObject.SetActive(false);
+                            m.GetObject<Transform>(1).gameObject.SetActive(false);
+                            bowStringLower.GetChild(0).gameObject.SetActive(true);
+                            bowStringLower.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
+                            bowStringUpper.GetChild(0).gameObject.SetActive(true);
+                            bowStringUpper.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
+                        }
+                        else
+                        {
+                            m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
+                            m.GetObject<Transform>(1).SetParent(bowStringLower, true);
+                        }
                     }
                 }
             }

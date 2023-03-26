@@ -277,7 +277,7 @@ namespace CDOverhaul.Gameplay
                 (frostmourneSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (frostmourneSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 3;
 
-                ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(270, 180, 0), Vector3.one);
+                ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(270, 180, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition LightSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Light", ItemFilter.None);
                 LightSwordSkin.SetModel(AssetsController.GetAsset("LightSword", OverhaulAssetsPart.WeaponSkins),
                     LightSkinOffset,
@@ -289,6 +289,19 @@ namespace CDOverhaul.Gameplay
                     false);
                 (LightSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
                 (LightSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+
+                ModelOffset jetsamOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition jetsamSkin = Interface.NewSkinItem(WeaponType.Sword, "Jet Sam", ItemFilter.None);
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSword", OverhaulAssetsPart.WeaponSkins),
+                    jetsamOffset,
+                    false,
+                    false);
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSword", OverhaulAssetsPart.WeaponSkins),
+                    jetsamOffset,
+                    true,
+                    false);
+                (jetsamSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 2;
+                (jetsamSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
@@ -518,6 +531,25 @@ namespace CDOverhaul.Gameplay
                     false);
                 (testBow6Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = Igrok_X_XPDiscord;
 
+                ModelOffset testBow7SkinOffset = new ModelOffset(new Vector3(0.15f, 0f, 0f), new Vector3(0, 270, 0), Vector3.one * 0.52f);
+                IWeaponSkinItemDefinition testBow7Skin = Interface.NewSkinItem(WeaponType.Bow, "Devil's Horn", ItemFilter.None);
+                testBow7Skin.SetModel(AssetsController.GetAsset("DevilHornBow", OverhaulAssetsPart.WeaponSkins),
+                    testBow7SkinOffset,
+                    false,
+                    false);
+                (testBow7Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+                (testBow7Skin as WeaponSkinItemDefinitionV2).UseVanillaBowStrings = true;
+
+                ModelOffset testBow8SkinOffset = new ModelOffset(new Vector3(0.09f, 0f, -0.08f), new Vector3(0, 90, 0), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition testBow8Skin = Interface.NewSkinItem(WeaponType.Bow, "Skull", ItemFilter.None);
+                testBow8Skin.SetModel(AssetsController.GetAsset("SkullBow", OverhaulAssetsPart.WeaponSkins),
+                    testBow8SkinOffset,
+                    false,
+                    false);
+                (testBow8Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+                (testBow8Skin as WeaponSkinItemDefinitionV2).Saturation = 0.55f;
+                (testBow8Skin as WeaponSkinItemDefinitionV2).UseVanillaBowStrings = true;
+
                 ModelOffset spearDarkPastSkinOffset = new ModelOffset(new Vector3(1.375f, -4.35f, 0.15f), new Vector3(0, 270, 0), Vector3.one);
                 IWeaponSkinItemDefinition spearDarkPastSkin = Interface.NewSkinItem(WeaponType.Spear, "Dark Past", ItemFilter.None);
                 spearDarkPastSkin.SetModel(AssetsController.GetAsset("DarkPastSpear", OverhaulAssetsPart.WeaponSkins),
@@ -645,6 +677,19 @@ namespace CDOverhaul.Gameplay
                     false);
                 (ksSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (ksSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+
+                ModelOffset shSpearSkinOffset = new ModelOffset(new Vector3(0.7f, 0f, 0f), new Vector3(0, -90, 0), Vector3.one * 0.5f);
+                IWeaponSkinItemDefinition shSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Shrilling", ItemFilter.None);
+                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpear", OverhaulAssetsPart.WeaponSkins),
+                    shSpearSkinOffset,
+                    false,
+                    false);
+                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpear", OverhaulAssetsPart.WeaponSkins),
+                    shSpearSkinOffset,
+                    true,
+                    false);
+                (shSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (shSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
             }
         }
 

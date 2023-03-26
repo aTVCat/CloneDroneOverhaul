@@ -90,6 +90,7 @@ namespace CDOverhaul.Gameplay
         public bool UseSingleplayerVariantInMultiplayer;
         public bool DontUseCustomColorsWhenFire;
         public bool DontUseCustomColorsWhenNormal;
+        public bool UseVanillaBowStrings;
         public float Saturation = 0.75f;
         public int IndexOfForcedNormalVanillaColor = -1;
         public int IndexOfForcedFireVanillaColor = -1;
