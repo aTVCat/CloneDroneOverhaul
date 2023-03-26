@@ -20,6 +20,7 @@ namespace CDOverhaul.Gameplay
         private const string WaterDiscord = "Water#2977";
         private const string LostCatDiscord = "TheLostCat#8845";
         private const string ZoloRDiscord = "ZoloR#3380";
+        private const string SharpDiscord = "Luceferus#2219";
         private const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
@@ -290,18 +291,72 @@ namespace CDOverhaul.Gameplay
                 (LightSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
                 (LightSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
-                ModelOffset jetsamOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
+                ModelOffset jetsamOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));
+                ModelOffset jetsamOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.15f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));
                 IWeaponSkinItemDefinition jetsamSkin = Interface.NewSkinItem(WeaponType.Sword, "Jet Sam", ItemFilter.None);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSword", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2", OverhaulAssetsPart.WeaponSkins),
                     jetsamOffset,
                     false,
                     false);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSword", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetsPart.WeaponSkins),
                     jetsamOffset,
                     true,
                     false);
-                (jetsamSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 2;
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2", OverhaulAssetsPart.WeaponSkins),
+                    jetsamOffsetM,
+                    false,
+                    true);
+                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetsPart.WeaponSkins),
+                    jetsamOffsetM,
+                    true,
+                    true);
+                (jetsamSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (jetsamSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (jetsamSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
+
+                ModelOffset gvostOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.4f);
+                ModelOffset gvostOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.45f);
+                IWeaponSkinItemDefinition gvostSkin = Interface.NewSkinItem(WeaponType.Sword, "Gvost", ItemFilter.None);
+                gvostSkin.SetModel(AssetsController.GetAsset("GvostSword", OverhaulAssetsPart.WeaponSkins),
+                    gvostOffset,
+                    false,
+                    false);
+                gvostSkin.SetModel(AssetsController.GetAsset("GvostSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    gvostOffset,
+                    true,
+                    false);
+                gvostSkin.SetModel(AssetsController.GetAsset("GvostSword", OverhaulAssetsPart.WeaponSkins),
+                    gvostOffsetM,
+                    false,
+                    true);
+                gvostSkin.SetModel(AssetsController.GetAsset("GvostSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    gvostOffsetM,
+                    true,
+                    true);
+                gvostSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                (gvostSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (gvostSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
+
+                ModelOffset fishOffset = new ModelOffset(new Vector3(0f, 0f, -0.35f), new Vector3(90, 0, 0), new Vector3(0.45f, 0.5f, 0.4f));
+                ModelOffset fishOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.2f), new Vector3(90, 0, 0), new Vector3(0.5f, 0.55f, 0.45f));
+                IWeaponSkinItemDefinition fishSkin = Interface.NewSkinItem(WeaponType.Sword, "Fish", ItemFilter.None);
+                fishSkin.SetModel(AssetsController.GetAsset("FishSword", OverhaulAssetsPart.WeaponSkins),
+                    fishOffset,
+                    false,
+                    false);
+                fishSkin.SetModel(AssetsController.GetAsset("FishSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    fishOffset,
+                    true,
+                    false);
+                fishSkin.SetModel(AssetsController.GetAsset("FishSword", OverhaulAssetsPart.WeaponSkins),
+                    fishOffsetM,
+                    false,
+                    true);
+                fishSkin.SetModel(AssetsController.GetAsset("FishSwordFire", OverhaulAssetsPart.WeaponSkins),
+                    fishOffsetM,
+                    true,
+                    true);
+                (fishSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
 
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
@@ -480,6 +535,32 @@ namespace CDOverhaul.Gameplay
                     false);
                 (kgHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (kgHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+
+                ModelOffset hammesusSkinOffset = new ModelOffset(new Vector3(0.3f, -0.05f, 0.135f), new Vector3(0, 0, 270), Vector3.one * 0.45f);
+                IWeaponSkinItemDefinition hammesusSkin = Interface.NewSkinItem(WeaponType.Hammer, "Hammesus", ItemFilter.None);
+                hammesusSkin.SetModel(AssetsController.GetAsset("Hammesus", OverhaulAssetsPart.WeaponSkins),
+                    hammesusSkinOffset,
+                    false,
+                    false);
+                hammesusSkin.SetModel(AssetsController.GetAsset("HammesusFire", OverhaulAssetsPart.WeaponSkins),
+                    hammesusSkinOffset,
+                    true,
+                    false);
+                (hammesusSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (hammesusSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
+
+                ModelOffset SkalkaSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.05f, 0.05f), new Vector3(0, 0, 270), Vector3.one * 0.9f);
+                IWeaponSkinItemDefinition SkalkaSkin = Interface.NewSkinItem(WeaponType.Hammer, "Skalka", ItemFilter.None);
+                SkalkaSkin.SetModel(AssetsController.GetAsset("SkalkaHammer", OverhaulAssetsPart.WeaponSkins),
+                    SkalkaSkinOffset,
+                    false,
+                    false);
+                SkalkaSkin.SetModel(AssetsController.GetAsset("SkalkaHammerFire", OverhaulAssetsPart.WeaponSkins),
+                    SkalkaSkinOffset,
+                    true,
+                    false);
+                (SkalkaSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (SkalkaSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord + And + ATVCatDiscord;
 
                 // Duxa Bow 
                 ModelOffset testBowSkinOffset = new ModelOffset(new Vector3(0.65f, -1.66f, 0.65f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
