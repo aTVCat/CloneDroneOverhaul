@@ -6,8 +6,11 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPauseMenu : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, !OverhaulVersion.TechDemo2Enabled, "The full redesign with new features implemented")]
+        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, false, "The full redesign with new features implemented")]
         public static bool UseThisMenu;
+
+        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu")]
+        public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
 
@@ -27,9 +30,11 @@ namespace CDOverhaul.HUD
 
             if (m_Instance.gameObject.activeSelf)
             {
+                AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
                 m_Instance.Hide();
                 return;
             }
+            AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
             m_Instance.Show();
         }
 
@@ -346,11 +351,23 @@ namespace CDOverhaul.HUD
             }
 
             m_TargetFoV = m_Camera.fieldOfView;
+
+            if (!UseZoom)
+            {
+                return;
+            }
             _ = StaticCoroutineRunner.StartStaticCoroutine(animateCameraCoroutine(m_Camera, m_CameraAnimator, false));
         }
 
         private IEnumerator animateCameraCoroutine(Camera camera, Animator animator, bool animatorState)
         {
+            if (!UseZoom)
+            {
+                if (camera != null) camera.fieldOfView = m_TargetFoV;
+                if (animator != null) animator.enabled = true;
+                yield break;
+            }
+
             m_IsAnimatingCamera = true;
             int iterations = 20;
             if (!animatorState)

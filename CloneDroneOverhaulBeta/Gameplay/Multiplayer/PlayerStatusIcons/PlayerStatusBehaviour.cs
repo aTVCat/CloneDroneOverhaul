@@ -43,6 +43,19 @@ namespace CDOverhaul.Gameplay.Multiplayer
             m_WorldCanvasHolder = null;
         }
 
+        protected override void OnDeath()
+        {
+            if (m_WorldCanvas != null)
+            {
+                m_WorldCanvas.DestroyGameObject();
+            }
+            if (m_WorldCanvasHolder != null)
+            {
+                Destroy(m_WorldCanvasHolder);
+            }
+            Destroy(this);
+        }
+
         public void SetStatus(PlayerStatusType type)
         {
             if (IsDisposedOrDestroyed())

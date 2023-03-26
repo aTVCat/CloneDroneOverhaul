@@ -337,7 +337,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset gvostOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.4f);
                 ModelOffset gvostOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.45f);
-                IWeaponSkinItemDefinition gvostSkin = Interface.NewSkinItem(WeaponType.Sword, "Gvost", ItemFilter.None);
+                IWeaponSkinItemDefinition gvostSkin = Interface.NewSkinItem(WeaponType.Sword, "Spike", ItemFilter.None);
                 gvostSkin.SetModel(AssetsController.GetAsset("GvostSword", OverhaulAssetsPart.WeaponSkins),
                     gvostOffset,
                     false,
@@ -461,7 +461,7 @@ namespace CDOverhaul.Gameplay
                 (bsHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = LostCatDiscord;
 
                 ModelOffset toyHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one);
-                IWeaponSkinItemDefinition toyHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Toy", ItemFilter.None);
+                IWeaponSkinItemDefinition toyHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Toy", ItemFilter.Exclusive);
                 toyHammerSkin.SetModel(AssetsController.GetAsset("ToyHammer", OverhaulAssetsPart.WeaponSkins),
                     toyHammerSkinOffset,
                     false,
@@ -470,7 +470,7 @@ namespace CDOverhaul.Gameplay
                     toyHammerSkinOffset,
                     true,
                     false);
-                //toyHammerSkin.SetExclusivePlayerID("47A1CD84FD538A2E");
+                toyHammerSkin.SetExclusivePlayerID("8A75F77DD769072C 78E35D43F7CA4E5");
                 (toyHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
 
                 ModelOffset voidCoreSkinOffset = new ModelOffset(new Vector3(-2.7f, 0.05f, -0.15f), new Vector3(0, 0, 270), Vector3.one);
@@ -535,13 +535,13 @@ namespace CDOverhaul.Gameplay
                     iHammerSkinOffset,
                     false,
                     false);
-                iHammerSkin.SetModel(AssetsController.GetAsset("IgroksHammer", OverhaulAssetsPart.WeaponSkins),
+                iHammerSkin.SetModel(AssetsController.GetAsset("IgroksHammerFire", OverhaulAssetsPart.WeaponSkins),
                     iHammerSkinOffset,
                     true,
                     false);
                 iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C 78E35D43F7CA4E5");
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
-                (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (iHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
                 ModelOffset kgHammerSkinOffset = new ModelOffset(new Vector3(0.5f, 0.01f, -0.005f), new Vector3(0, 0, 270), new Vector3(0.5f, 0.575f, 0.5f));
@@ -571,7 +571,7 @@ namespace CDOverhaul.Gameplay
                 (hammesusSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
 
                 ModelOffset SkalkaSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.05f, 0.05f), new Vector3(0, 0, 270), Vector3.one * 0.9f);
-                IWeaponSkinItemDefinition SkalkaSkin = Interface.NewSkinItem(WeaponType.Hammer, "Skalka", ItemFilter.None);
+                IWeaponSkinItemDefinition SkalkaSkin = Interface.NewSkinItem(WeaponType.Hammer, "Battledore", ItemFilter.None);
                 SkalkaSkin.SetModel(AssetsController.GetAsset("SkalkaHammer", OverhaulAssetsPart.WeaponSkins),
                     SkalkaSkinOffset,
                     false,
@@ -585,7 +585,7 @@ namespace CDOverhaul.Gameplay
 
                 // Duxa Bow 
                 ModelOffset testBowSkinOffset = new ModelOffset(new Vector3(0.65f, -1.66f, 0.65f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
-                IWeaponSkinItemDefinition testBowSkin = Interface.NewSkinItem(WeaponType.Bow, "Plasmatic", ItemFilter.None);
+                IWeaponSkinItemDefinition testBowSkin = Interface.NewSkinItem(WeaponType.Bow, "Plasma", ItemFilter.None);
                 testBowSkin.SetModel(AssetsController.GetAsset("PlamaticBow", OverhaulAssetsPart.WeaponSkins),
                     testBowSkinOffset,
                     false,
@@ -792,6 +792,19 @@ namespace CDOverhaul.Gameplay
                     false);
                 (shSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (shSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
+
+                ModelOffset opspearSkinOffset = new ModelOffset(new Vector3(-0.35f, 0.05f, 0.05f), new Vector3(0, -90, 0), Vector3.one);
+                IWeaponSkinItemDefinition opspearSkin = Interface.NewSkinItem(WeaponType.Spear, "Overhaul Prototype", ItemFilter.None);
+                opspearSkin.SetModel(AssetsController.GetAsset("OLSpear", OverhaulAssetsPart.WeaponSkins),
+                    opspearSkinOffset,
+                    false,
+                    false);
+                opspearSkin.SetModel(AssetsController.GetAsset("OLSpearFire", OverhaulAssetsPart.WeaponSkins),
+                   opspearSkinOffset,
+                    true,
+                    false);
+                (opspearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (opspearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ATVCatDiscord;
             }
         }
 

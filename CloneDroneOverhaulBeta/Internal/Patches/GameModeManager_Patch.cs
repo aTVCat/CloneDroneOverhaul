@@ -9,6 +9,10 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ShouldRestrictWeaponSpinningToWin")]
         private static void RefreshCursorEnabled_Postfix(ref bool __result)
         {
+            if (!OverhaulVersion.JuneDemoEnabled)
+            {
+                return;
+            }
             __result = true;
         }
     }
