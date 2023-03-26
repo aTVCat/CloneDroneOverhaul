@@ -19,7 +19,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                _ = firstPersonMover.gameObject.AddComponent<PlayerStatusBehaviour>();
+                if(firstPersonMover != null)
+                {
+                    _ = firstPersonMover.gameObject.AddComponent<PlayerStatusBehaviour>();
+                }
             }, 0.2f);
         }
 
@@ -27,10 +30,13 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             DelegateScheduler.Instance.Schedule(delegate
             {
-                MultiplayerPlayerInfoState mstate = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(state.PlayFabID);
-                if(mstate != null)
+                if(state != null)
                 {
-                    _ = mstate.gameObject.AddComponent<OverhaulModdedPlayerInfo>();
+                    MultiplayerPlayerInfoState mstate = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(state.PlayFabID);
+                    if (mstate != null)
+                    {
+                        _ = mstate.gameObject.AddComponent<OverhaulModdedPlayerInfo>();
+                    }
                 }
             }, 0.1f);
         }
