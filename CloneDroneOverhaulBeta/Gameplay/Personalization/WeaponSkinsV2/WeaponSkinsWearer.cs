@@ -98,7 +98,7 @@ namespace CDOverhaul.Gameplay
             }
 
             SetDefaultModelsActive();
-            if ((!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins))
+            if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
             {
                 return;
             }

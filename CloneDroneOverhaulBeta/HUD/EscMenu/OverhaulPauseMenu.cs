@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Misc;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -356,11 +355,11 @@ namespace CDOverhaul.HUD
             int iterations = 20;
             if (!animatorState)
             {
-                animator.enabled = false;
+                if (animator != null) animator.enabled = false;
                 while (iterations > -1)
                 {
                     iterations--;
-                    camera.fieldOfView += (40 - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
+                    if (camera != null) camera.fieldOfView += (40 - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
                     yield return null;
                 }
             }
@@ -369,10 +368,10 @@ namespace CDOverhaul.HUD
                 while (iterations > -1)
                 {
                     iterations--;
-                    camera.fieldOfView += (m_TargetFoV - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
+                    if (camera != null) camera.fieldOfView += (m_TargetFoV - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
                     yield return null;
                 }
-                animator.enabled = true;
+                if(animator != null) animator.enabled = true;
             }
             m_IsAnimatingCamera = false;
             yield break;

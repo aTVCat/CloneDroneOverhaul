@@ -1,6 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using ModLibrary;
-using UnityEngine;
 
 namespace CDOverhaul.Misc
 {
@@ -15,7 +13,7 @@ namespace CDOverhaul.Misc
             OverhaulCanvasController c = GetController<OverhaulCanvasController>();
             if(c != null)
             {
-                OverhaulPhotoModeControls controls = c.AddHUD<OverhaulPhotoModeControls>(c.HUDModdedObject.GetObject<ModdedObject>(1));
+                _ = c.AddHUD<OverhaulPhotoModeControls>(c.HUDModdedObject.GetObject<ModdedObject>(1));
             }
         }
 

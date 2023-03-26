@@ -39,7 +39,7 @@ namespace CDOverhaul.Gameplay
 
         public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover)
         {
-            return !GameModeManager.IsInLevelEditor() && firstPersonMover != null && !firstPersonMover.IsMindSpaceCharacter;
+            return !GameModeManager.IsInLevelEditor() && firstPersonMover != null && !firstPersonMover.IsMindSpaceCharacter && firstPersonMover.CharacterCategory != EnemyCategory.FleetAnalysisBots && firstPersonMover.CharacterCategory != EnemyCategory.FleetCommanders;
         }
 
         public override void Initialize()
@@ -197,6 +197,27 @@ namespace CDOverhaul.Gameplay
                     true);
                 (yamatoSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
+                ModelOffset AmenohabakiriOffset = new ModelOffset(new Vector3(0f, 0.02f, -0.4f), new Vector3(90, 0, 0), new Vector3(0.4f, 0.35f, 0.5f));
+                ModelOffset AmenohabakiriOffsetM = new ModelOffset(new Vector3(0f, 0.02f, -0.4f), new Vector3(90, 0, 0), new Vector3(0.42f, 0.42f, 0.52f));
+                IWeaponSkinItemDefinition AmenohabakiriSkin = Interface.NewSkinItem(WeaponType.Sword, "Amenohabakiri", ItemFilter.None);
+                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetsPart.WeaponSkins),
+                    AmenohabakiriOffset,
+                    false,
+                    false);
+                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("EnmaSword", OverhaulAssetsPart.WeaponSkins),
+                    AmenohabakiriOffset,
+                    true,
+                    false);
+                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetsPart.WeaponSkins),
+                    AmenohabakiriOffsetM,
+                    false,
+                    true);
+                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("EnmaSword", OverhaulAssetsPart.WeaponSkins),
+                    AmenohabakiriOffsetM,
+                    true,
+                    true);
+                (AmenohabakiriSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+
                 ModelOffset ancientSwordSkinOffset = new ModelOffset(new Vector3(-0.35f, -0.55f, -1f), new Vector3(90, 2, 0), Vector3.one * 0.45f);
                 IWeaponSkinItemDefinition ancientSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Ancient", ItemFilter.Exclusive);
                 ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
@@ -333,7 +354,7 @@ namespace CDOverhaul.Gameplay
                     gvostOffsetM,
                     true,
                     true);
-                gvostSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = gvostSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (gvostSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (gvostSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
 

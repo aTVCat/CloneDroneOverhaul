@@ -51,8 +51,10 @@ namespace CDOverhaul.HUD.Overlays
 
         public static bool ShouldActivateOverlay() // Todo: Optimize this
         {
+            return ForceSetIsInCutscene || (CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf);
+            /*
             return ForceSetIsInCutscene || ((CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf) ||
-                (GameModeManager.IsBattleRoyale() && BattleRoyaleManager.Instance != null && BattleRoyaleManager.Instance.state.TimeToGameStart >= 0 && BattleRoyaleManager.Instance.state.TimeToGameStart <= 16f));
+                (GameModeManager.IsBattleRoyale() && BattleRoyaleManager.Instance != null && BattleRoyaleManager.Instance.state.TimeToGameStart >= 0 && BattleRoyaleManager.Instance.state.TimeToGameStart <= 16f));*/
         }
     }
 }

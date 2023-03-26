@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul
 {

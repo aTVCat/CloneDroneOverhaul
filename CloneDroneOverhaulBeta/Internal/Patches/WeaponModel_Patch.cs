@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Gameplay.Multiplayer;
+using HarmonyLib;
+using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -15,11 +17,22 @@ namespace CDOverhaul.Patches
                 return true;
             }
 
-            if(isMultiplayer && __instance.WeaponType.Equals(WeaponType.Spear))
+            if(isMultiplayer && __instance.WeaponType.Equals(WeaponType.Spear) && __instance.MeleeImpactArea != null)
             {
-                return false;
+                FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
+                if(owner != null)
+                {
+                    OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
+                    if(info != null)
+                    {
+                        Hashtable t = info.GetHashtable();
+                        if(t != null && t.Contains("Skin.Spear") && !t["Skin.Spear"].Equals("Default"))
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
-
             return true;
         }
     }

@@ -19,7 +19,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                firstPersonMover.gameObject.AddComponent<PlayerStatusBehaviour>();
+                _ = firstPersonMover.gameObject.AddComponent<PlayerStatusBehaviour>();
             }, 0.2f);
         }
 

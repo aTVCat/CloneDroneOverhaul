@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.Misc
+﻿namespace CDOverhaul.Misc
 {
     public class OverhaulPhotoModeControls : OverhaulUI
     {

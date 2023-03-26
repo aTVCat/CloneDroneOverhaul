@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CDOverhaul.HUD.Overlays
+﻿namespace CDOverhaul.HUD.Overlays
 {
     public class OverhaulOverlayBase : OverhaulBehaviour
     {

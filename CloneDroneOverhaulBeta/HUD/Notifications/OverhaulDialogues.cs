@@ -22,11 +22,6 @@ namespace CDOverhaul
 
             m_Instance = this;
             IsInitialized = m_DialoguePrefab && m_DialoguesContainer;
-
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                CreateDialogueInstance("Notification Test", "Notifications are back!", 0f, null, new Button[] { new Button() { Title = "OK", Action = null } });
-            }, 1f);
         }
 
         protected override void OnDisposed()
