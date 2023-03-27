@@ -278,11 +278,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
+    <Compile Include="UnsortedClasses\CustomUpgrades\UpgradesAdder.cs" />
+    <Compile Include="UnsortedClasses\CustomWeapons\AddedWeaponModel.cs" />
     <Compile Include="UnsortedClasses\FastSerialization.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
+    <Compile Include="UnsortedClasses\ModelOffset.cs" />
     <Compile Include="UnsortedClasses\MultiplayerAPI.cs" />
     <Compile Include="UnsortedClasses\MultiplayerEventListener.cs" />
     <Compile Include="UnsortedClasses\SerializeTransform.cs" />
+    <Compile Include="UnsortedClasses\CustomWeapons\WeaponsAdder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

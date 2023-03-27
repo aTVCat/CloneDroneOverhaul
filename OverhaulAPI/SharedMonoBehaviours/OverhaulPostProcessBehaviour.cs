@@ -19,14 +19,13 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         public static void APIUpdate()
         {
+            if (_spawnedBehaviours.Count == 0)
+            {
+                return;
+            }
             int i = 0;
             do
             {
-                if (_spawnedBehaviours.Count == 0)
-                {
-                    return;
-                }
-
                 OverhaulPostProcessBehaviour b = _spawnedBehaviours[i];
                 b.enabled = b.EnableCondition == null || b.EnableCondition();
                 i++;
@@ -61,7 +60,6 @@ namespace OverhaulAPI.SharedMonoBehaviours
                 OverhaulPostProcessBehaviour r = cam.gameObject.AddComponent<OverhaulPostProcessBehaviour>();
                 r.PostProcessMaterial = mat;
                 r.EnableCondition = enableCondition;
-                _spawnedBehaviours.Add(r);
             }
         }
 
@@ -86,7 +84,6 @@ namespace OverhaulAPI.SharedMonoBehaviours
             r.PostProcessMaterial = imageEffectMaterial;
             r.EnableCondition = enableCondition;
             r.IsSupported = imageEffectMaterial.shader != null && imageEffectMaterial.shader.isSupported;
-            _spawnedBehaviours.Add(r);
         }
 
         /// <summary>
@@ -104,6 +101,12 @@ namespace OverhaulAPI.SharedMonoBehaviours
             {
                 Graphics.Blit(source, destination, PostProcessMaterial);
             }
+        }
+
+        private void Awake()
+        {
+            _spawnedBehaviours.Add(this);
+            enabled = true;
         }
 
         private void OnDestroy()

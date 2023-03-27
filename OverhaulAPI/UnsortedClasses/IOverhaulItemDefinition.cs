@@ -2,7 +2,11 @@
 {
     public interface IOverhaulItemDefinition
     {
-        string ItemName();
+        void SetItemName(string newName);
+        string GetItemName();
+
+        void SetExclusivePlayerID(string id);
+        string GetExclusivePlayerID();
 
         bool IsUnlocked(bool forceTrue);
     }
