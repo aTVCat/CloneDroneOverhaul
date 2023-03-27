@@ -169,7 +169,7 @@ namespace CDOverhaul.Gameplay
                     pojSkinOffset,
                     true,
                     false);
-                pojSkin.SetExclusivePlayerID("193564D7A14F9C33 F08DA308234126FB");
+                pojSkin.SetExclusivePlayerID("193564D7A14F9C33 F08DA308234126FB 78E35D43F7CA4E5");
                 _ = pojSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 _ = pojSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (pojSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
