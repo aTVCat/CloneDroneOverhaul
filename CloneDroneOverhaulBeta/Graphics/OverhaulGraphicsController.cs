@@ -129,7 +129,7 @@ namespace CDOverhaul.Graphics
             bloom.bloomBlurIterations = BloomIterations;
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
-            bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+            //bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
             bloom.enabled = BloomEnabled;
             if(!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
         }

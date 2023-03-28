@@ -41,14 +41,14 @@ namespace CDOverhaul.Gameplay
         /// Models
         /// </summary>
         private WeaponSkinModel[] m_Models;
-        void IWeaponSkinItemDefinition.SetModel(GameObject prefab, ModelOffset offset, bool fire, bool multiplayer)
+        void IWeaponSkinItemDefinition.SetModel(GameObject prefab, ModelOffset offset, bool fire, bool multiplayer, byte variant = 0)
         {
             createArrayIfNesseccerary();
             WeaponSkinModel newModel = new WeaponSkinModel(prefab, offset);
             byte index = getIndexOfModelsArray(fire, multiplayer);
             m_Models[index] = newModel;
         }
-        WeaponSkinModel IWeaponSkinItemDefinition.GetModel(bool fire, bool multiplayer)
+        WeaponSkinModel IWeaponSkinItemDefinition.GetModel(bool fire, bool multiplayer, byte variant = 0)
         {
             createArrayIfNesseccerary();
             byte index = getIndexOfModelsArray(fire, multiplayer);
@@ -88,14 +88,16 @@ namespace CDOverhaul.Gameplay
         }
 
         public bool UseSingleplayerVariantInMultiplayer;
-        public bool DontUseCustomColorsWhenFire;
-        public bool DontUseCustomColorsWhenNormal;
         public bool UseVanillaBowStrings;
-        public float Saturation = 0.75f;
+
         public int IndexOfForcedNormalVanillaColor = -1;
         public int IndexOfForcedFireVanillaColor = -1;
+        public bool DontUseCustomColorsWhenFire;
+        public bool DontUseCustomColorsWhenNormal;
+        public float Saturation = 0.75f;
 
         public string AuthorDiscord;
+        public string Description;
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
@@ -105,12 +107,12 @@ namespace CDOverhaul.Gameplay
             }
             if (!string.IsNullOrEmpty(m_ExclusivePlayerID))
             {
-                bool valid = m_ExclusivePlayerID.Contains(ExclusivityController.GetLocalPlayfabID());
+                bool valid = m_ExclusivePlayerID.Contains(ExclusivityController.GetLocalPlayfabID());                
                 if (!valid)
                 {
                     valid = ExclusivityController.GetLocalPlayfabID().Equals("883CC7F4CA3155A3");
                 }
-                return valid;
+                return valid || OverhaulVersion.IsDebugBuild;
             }
             return true;
         }

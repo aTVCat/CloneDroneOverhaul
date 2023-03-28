@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.HUD;
 using ModLibrary;
 using System.Collections;
 using System.Collections.Generic;
@@ -253,7 +254,7 @@ namespace CDOverhaul.Gameplay
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
             
-            WeaponSkinModel newModel = item.GetModel(fire, multiplayer);            
+            WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);            
             if (newModel != null)
             {
                 Transform spawnedModel = Instantiate(newModel.Model, weaponModel.transform).transform;
@@ -398,5 +399,107 @@ namespace CDOverhaul.Gameplay
             return false;
         }
 
+#if DEBUG
+
+        private void Update()
+        {
+            if (!IsOwnerMainPlayer())
+            {
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                Transform model = getTransform();
+                if(model == null)
+                {
+                    return;
+                }
+                copyVector(model.localPosition);
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                Transform model = getTransform();
+                if (model == null)
+                {
+                    return;
+                }
+                copyVector(model.localEulerAngles);
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Transform model = getTransform();
+                if (model == null)
+                {
+                    return;
+                }
+                copyVector(model.localScale);
+            }
+        }
+
+        private void copyVector(Vector3 vector)
+        {
+            string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";
+            TextEditor editor = new TextEditor();
+            editor.text = toCopy;
+            editor.SelectAll();
+            editor.Copy();
+        }
+
+        private Transform getTransform()
+        {
+            if(FirstPersonMover == null || WeaponSkins.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            WeaponType weaponType = FirstPersonMover.GetEquippedWeaponType();
+            if (!WeaponSkinsMenu.SupportedWeapons.Contains(weaponType))
+            {
+                return null;
+            }
+
+            WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
+            if (controller == null || controller.Interface == null)
+            {
+                return null;
+            }
+
+            string w = null;
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    w = WeaponSkinsController.EquippedSwordSkin;
+                    break;
+                case WeaponType.Hammer:
+                    w = WeaponSkinsController.EquippedHammerSkin;
+                    break;
+                case WeaponType.Bow:
+                    w = WeaponSkinsController.EquippedBowSkin;
+                    break;
+                case WeaponType.Spear:
+                    w = WeaponSkinsController.EquippedSpearSkin;
+                    break;
+            }
+            if (string.IsNullOrEmpty(w))
+            {
+                return null;
+            }
+
+            IWeaponSkinItemDefinition item = controller.Interface.GetSkinItem(weaponType, w, ItemFilter.Everything, out _);
+            if (item == null)
+            {
+                return null;
+            }
+
+            WeaponSkins.TryGetValue(item, out WeaponSkinSpawnInfo model);
+            if (model == null)
+            {
+                return null;
+            }
+
+            return model.Model.transform;
+        }
+#endif
     }
 }

@@ -20,7 +20,6 @@ namespace CDOverhaul.Gameplay
             Interface = this;
             m_PlayerData = PlayerOutfitData.GetData<PlayerOutfitData>(PlayerOutfitData.Filename);
 
-
             if (OverhaulSessionController.GetKey<bool>("HasLoadedAccessories"))
             {
                 return;

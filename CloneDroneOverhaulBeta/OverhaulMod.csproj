@@ -404,7 +404,9 @@
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\ICustomWeaponSkins.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinFireAnimator.cs" />
+    <Compile Include="Graphics\OverhaulDitheringEffect.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />

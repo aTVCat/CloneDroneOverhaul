@@ -1,6 +1,8 @@
 ﻿using OverhaulAPI;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using static RootMotion.FinalIK.HitReactionVRIK;
 
 namespace CDOverhaul.Gameplay
 {
@@ -27,12 +29,23 @@ namespace CDOverhaul.Gameplay
 
         [OverhaulSettingAttribute("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedSwordSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.SwordVar", 0, !OverhaulVersion.IsDebugBuild)]
+        public static int EquippedSwordSkinVariant;
+
         [OverhaulSettingAttribute("Player.WeaponSkins.Bow", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedBowSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.BowVar", 0, !OverhaulVersion.IsDebugBuild)]
+        public static int EquippedBowSkinVariant;
+
         [OverhaulSettingAttribute("Player.WeaponSkins.Hammer", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedHammerSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.HammerVar", 0, !OverhaulVersion.IsDebugBuild)]
+        public static int EquippedBowHammerVariant;
+
         [OverhaulSettingAttribute("Player.WeaponSkins.Spear", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedSpearSkin;
+        [OverhaulSettingAttribute("Player.WeaponSkins.SpearVar", 0, !OverhaulVersion.IsDebugBuild)]
+        public static int EquippedBowSpearVariant;
 
         [OverhaulSettingAttribute("Player.WeaponSkins.EnemiesUseSkins", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearSkins;
@@ -65,6 +78,116 @@ namespace CDOverhaul.Gameplay
             }
 
             ApplySkinsOnCharacter(firstPersonMover);
+        }
+
+        /// <summary>
+        /// Add a skin definition
+        /// </summary>
+        /// <param name="weaponType"></param>
+        /// <param name="name"></param>
+        /// <param name="author"></param>
+        /// <param name="singleplayerNormalModel"></param>
+        /// <param name="singleplayerFireModel"></param>
+        /// <param name="multiplayerNormalModel"></param>
+        /// <param name="multiplayerFireModel"></param>
+        public void AddSkinQuick(WeaponType weaponType,
+            string name,
+            string author,
+            string singleplayerNormalModel,
+            string singleplayerFireModel,
+            string multiplayerNormalModel,
+            string multiplayerFireModel)
+        {
+            WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
+            if (!string.IsNullOrEmpty(singleplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(singleplayerNormalModel, OverhaulAssetsPart.WeaponSkins), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(singleplayerFireModel, OverhaulAssetsPart.WeaponSkins), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(multiplayerNormalModel, OverhaulAssetsPart.WeaponSkins), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(multiplayerFireModel, OverhaulAssetsPart.WeaponSkins), null, true, true);
+            skin.AuthorDiscord = author;
+        }
+
+        /// <summary>
+        /// Set recently skin model offset
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="fire"></param>
+        /// <param name="multiplayer"></param>
+        public void SetSkinModelOffsetQuick(ModelOffset offset,
+            bool fire,
+            bool multiplayer)
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            (item as IWeaponSkinItemDefinition).GetModel(fire, multiplayer).Offset = offset;
+        }
+
+        public void SetSkinModelVariant(GameObject model, byte variant, bool fire, bool multiplayer)
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            WeaponSkinModel theModel = (item as IWeaponSkinItemDefinition).GetModel(fire, multiplayer);
+            theModel.SetModelVariant(model, variant);
+        }
+
+        /// <summary>
+        /// Mark recently added skin as exclusive
+        /// </summary>
+        /// <param name="playerIds"></param>
+        public void SetSkinExclusiveQuick(string playerIds)
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            (item as IWeaponSkinItemDefinition).SetExclusivePlayerID(playerIds);
+            (item as IWeaponSkinItemDefinition).SetFilter(ItemFilter.Exclusive);
+        }
+
+        /// <summary>
+        /// Set color parameters of recently added skin
+        /// </summary>
+        /// <param name="applyFavColorNormal"></param>
+        /// <param name="forcedColorIndexNormal"></param>
+        /// <param name="applyFavColorFire"></param>
+        /// <param name="forcedColorIndexFire"></param>
+        /// <param name="saturation"></param>
+        public void SetSkinColorParameters(bool applyFavColorNormal = true, int forcedColorIndexNormal = -1, bool applyFavColorFire = false, int forcedColorIndexFire = 5, float saturation = 0.75f)
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            item.Saturation = saturation;
+            item.IndexOfForcedFireVanillaColor = forcedColorIndexFire;
+            item.IndexOfForcedNormalVanillaColor = forcedColorIndexNormal;
+            item.DontUseCustomColorsWhenFire = !applyFavColorFire;
+            item.DontUseCustomColorsWhenNormal = !applyFavColorNormal;
+        }
+
+        /// <summary>
+        /// Set misc parameters of recently added skin
+        /// </summary>
+        /// <param name="singleplayerVariantInMultiplayer"></param>
+        /// <param name="vanillaBowStrings"></param>
+        public void SetSkinMiscParameters(bool singleplayerVariantInMultiplayer = false, bool vanillaBowStrings = true)
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            item.UseSingleplayerVariantInMultiplayer = singleplayerVariantInMultiplayer;
+            item.UseVanillaBowStrings = vanillaBowStrings;
+        }
+
+        /// <summary>
+        /// Set recently added skin description
+        /// </summary>
+        /// <param name="descriptionFilename"></param>
+        public void SetSkinDescription(string descriptionFilename = "")
+        {
+            string path = OverhaulMod.Core.ModDirectory + "Assets/WeaponSkinsDescriptions/" + descriptionFilename + ".txt";
+            bool fileExists = File.Exists(path);
+            if (!fileExists)
+            {
+                return;
+            }
+
+            // Make @loc[lang ID] separator
+            StreamReader r = File.OpenText(path);
+            string desc = r.ReadToEnd();
+            r.Close();
+
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            item.Description = desc;
         }
 
         private void addSkins()
@@ -175,6 +298,7 @@ namespace CDOverhaul.Gameplay
                 (pojSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (pojSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (pojSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
+                SetSkinDescription("JusticePearl");
 
                 ModelOffset yamatoSkinOffset = new ModelOffset(new Vector3(0.25f, 0.15f, -0.05f), new Vector3(0, 90, 90), Vector3.one * 0.4f);
                 ModelOffset yamatoSkinOffsetM = new ModelOffset(new Vector3(0.3f, 0.225f, 0f), new Vector3(0, 90, 90), new Vector3(0.65f, 0.5f, 0.5f));
@@ -271,6 +395,7 @@ namespace CDOverhaul.Gameplay
                 _ = violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 _ = violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord + And + Igrok_X_XPDiscord;
+                SetSkinDescription("VioletVio");
                 //(violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset frostmourneSkinOffset = new ModelOffset(new Vector3(0f, -0.03f, 1.3f), new Vector3(270, 180, 0), Vector3.one * 0.3f);
@@ -346,6 +471,7 @@ namespace CDOverhaul.Gameplay
                 seSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 FEA5A0978276D0FB 78E35D43F7CA4E5");
                 (seSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
                 (seSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                SetSkinDescription("SoulEater");
 
                 ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(270, 180, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition LightSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Light", ItemFilter.None);
@@ -951,7 +1077,7 @@ namespace CDOverhaul.Gameplay
             {
                 if (filter == ItemFilter.Everything || weaponSkinItem.IsUnlocked(false))
                 {
-                    if ((filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter) && weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
+                    if (weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
                     {
                         result = weaponSkinItem;
                     }

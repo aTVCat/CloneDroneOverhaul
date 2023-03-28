@@ -12,14 +12,14 @@ namespace CDOverhaul.Gameplay
         /// <param name="prefab"></param>
         /// <param name="fire"></param>
         /// <param name="multiplayer"></param>
-        void SetModel(GameObject prefab, ModelOffset offset, bool fire, bool multiplayer);
+        void SetModel(GameObject prefab, ModelOffset offset, bool fire, bool multiplayer, byte variant = 0);
         /// <summary>
         /// Get model
         /// </summary>
         /// <param name="fire"></param>
         /// <param name="multiplayer"></param>
         /// <returns></returns>
-        WeaponSkinModel GetModel(bool fire, bool multiplayer);
+        WeaponSkinModel GetModel(bool fire, bool multiplayer, byte variant = 0);
 
         /// <summary>
         /// TBA

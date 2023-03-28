@@ -1,11 +1,12 @@
 ﻿using CDOverhaul.Gameplay;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour
+    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         public const string Normal = "#1C6BFF";
         public const string Exclusive = "#1C6BFF";
@@ -39,6 +40,7 @@ namespace CDOverhaul.HUD
         private Image m_Cooldown;
 
         private bool m_IsSelected;
+        private bool m_IsMouseOverElement;
 
         public override void Awake()
         {
@@ -167,6 +169,33 @@ namespace CDOverhaul.HUD
             }
 
             m_SkinsMenu.SelectSkin(m_WeaponType, m_Skin);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            {
+                return;
+            }
+
+            m_SkinsMenu.ShowDescriptionTooltip(m_WeaponType, m_Skin);
+            m_IsMouseOverElement = true;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            {
+                return;
+            }
+
+            m_SkinsMenu.ShowDescriptionTooltip(WeaponType.None, null);
+            m_IsMouseOverElement = false;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            OnPointerExit(null);
         }
     }
 }

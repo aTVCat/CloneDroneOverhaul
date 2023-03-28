@@ -27,6 +27,7 @@ namespace CDOverhaul.HUD
         private Hashtable m_HashtableTest;
         private Text m_TextPrefab;
         private WeaponSkinsController m_Controller;
+        private Text m_Description;
 
         private WeaponType m_SelectedWeapon;
 
@@ -44,6 +45,9 @@ namespace CDOverhaul.HUD
             m_HashtableTest["weaponsSkinsContainer"] = m.GetObject<Transform>(1);
             m_TextPrefab = m.GetObject<Text>(14);
             m_TextPrefab.gameObject.SetActive(false);
+            m_Description = m.GetObject<Text>(15);
+            m_Description.text = string.Empty;
+            MyModdedObject.GetObject<Text>(8).text = string.Empty;
             m.GetObject<Button>(6).onClick.AddListener(SetDefaultSkin);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
@@ -228,24 +232,40 @@ namespace CDOverhaul.HUD
                 b.SetWeaponType(weaponType);
                 b.SetSkin(skinName, (skin as WeaponSkinItemDefinitionV2).AuthorDiscord, !string.IsNullOrEmpty(skin.GetExclusivePlayerID()));
                 b.TrySelect();
+                b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
+                b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
             }
         }
 
         public void SelectSkin(WeaponType weaponType, string skinName)
         {
+            if (m_Controller == null || m_Controller.Interface == null)
+            {
+                return;
+            }
+            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(weaponType, skinName, ItemFilter.None, out _);
+            if(item == null || !item.IsUnlocked(false))
+            {
+                return;
+            }
+
             switch (weaponType)
             {
                 case WeaponType.Sword:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.SwordVar", true), 0);
                     break;
                 case WeaponType.Bow:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.BowVar", true), 0);
                     break;
                 case WeaponType.Hammer:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.HammerVar", true), 0);
                     break;
                 case WeaponType.Spear:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.SpearVar", true), 0);
                     break;
             }
 
@@ -271,6 +291,23 @@ namespace CDOverhaul.HUD
             }
         }
 
+        public void ShowDescriptionTooltip(WeaponType type, string skinName)
+        {
+            MyModdedObject.GetObject<Transform>(16).parent.gameObject.SetActive(false);
+            if (m_Controller == null || m_Controller.Interface == null || type == WeaponType.None)
+            {
+                return;
+            }
+            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.None, out _);
+            if (item == null || string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
+            {
+                return;
+            }
+
+            MyModdedObject.GetObject<Text>(16).text = (item as WeaponSkinItemDefinitionV2).Description;
+            MyModdedObject.GetObject<Transform>(16).parent.gameObject.SetActive(true);
+        }
+
         public void SetDefaultSkin()
         {
             if (m_SelectedWeapon == default)
@@ -285,6 +322,7 @@ namespace CDOverhaul.HUD
         {
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
             MyModdedObject.GetObject<Text>(8).text = skinName;
+            m_Description.text = "No description provided.";
             if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
             {
                 return;
@@ -301,6 +339,11 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Transform>(11).gameObject.SetActive(item.GetModel(true, false) != null || item.GetWeaponType() == WeaponType.Bow);
             MyModdedObject.GetObject<Transform>(12).gameObject.SetActive(item.GetModel(true, true) != null || item.GetWeaponType() != WeaponType.Sword || item.GetWeaponType() == WeaponType.Bow || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(true);
+
+            if(!string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
+            {
+                m_Description.text = (item as WeaponSkinItemDefinitionV2).Description;
+            }
         }
 
         public void SetAllowEnemiesUseSkins(bool value)
