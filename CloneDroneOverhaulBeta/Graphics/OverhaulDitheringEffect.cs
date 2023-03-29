@@ -13,9 +13,9 @@ namespace CDOverhaul.Graphics
         public static bool CanDither => m_GeneratedDithering;
         private static bool m_GeneratedDithering;
 
-        private static IEnumerator generateNoiseTexture(int width, int height, int iterations = 2, Action<Texture2D[]> onComplete = null)
+        private static IEnumerator generateNoiseTexture(int width, int height, int iterations, Action<Texture2D[]> onComplete)
         {
-            yield return null;
+            yield return new WaitForEndOfFrame();
 
             Texture2D[] textures = new Texture2D[iterations];
             for(int i = 0; i < iterations; i++)
@@ -24,18 +24,15 @@ namespace CDOverhaul.Graphics
                 Texture2D newTex = new Texture2D(width, height);
                 for(int x = 0; x < width; x++)
                 {
-                    pixels[x] = Color.white * ((float)m_Random.Next(20, 100) / 100);
-                    for (int y = 0; y < width; y++)
+                    for (int y = 0; y < height; y++)
                     {
-                        pixels[y] = Color.white * ((float)m_Random.Next(20, 100) / 100);
-                        if(y % Mathf.Round(width / 8) == 0)
-                        {
-                            yield return null;
-                        }
+                        pixels[x+y] = Color.white * ((float)m_Random.Next(20, 100) / 100);
                     }
                 }
                 newTex.SetPixels(pixels);
                 newTex.Apply();
+
+                textures[i] = newTex;
             }
 
             onComplete(textures);
