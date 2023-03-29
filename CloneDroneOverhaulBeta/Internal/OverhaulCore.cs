@@ -108,7 +108,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
-            OverhaulDebugController.Initialize();
+            OverhaulDebugger.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();

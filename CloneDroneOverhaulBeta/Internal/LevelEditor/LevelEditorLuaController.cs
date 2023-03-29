@@ -25,7 +25,7 @@ namespace CDOverhaul.LevelEditor
             string path = GetPath(luaFile, out bool fileExists);
             if (!fileExists)
             {
-                OverhaulDebugController.PrintError("Lua file named " + luaFile + " not found! (" + path + ")");
+                OverhaulDebugger.PrintError("Lua file named " + luaFile + " not found! (" + path + ")");
                 return;
             }
 

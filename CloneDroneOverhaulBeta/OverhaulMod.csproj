@@ -491,7 +491,7 @@
     <Compile Include="Internal\LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugCommands.cs" />
-    <Compile Include="Internal\Debug\OverhaulDebugController.cs" />
+    <Compile Include="Internal\Debug\OverhaulDebugger.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugHUDV2.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugOutputHUD.cs" />
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusiveRolesController.cs" />
