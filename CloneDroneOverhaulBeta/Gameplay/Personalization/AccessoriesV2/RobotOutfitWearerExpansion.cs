@@ -89,13 +89,13 @@ namespace CDOverhaul.Gameplay
             IPlayerAccessoryModel model = item.GetModel();
             if(model == null)
             {
-                OverhaulDebugController.PrintError("No accessory model and offset! " + item.GetItemName());
+                OverhaulDebugger.PrintError("No accessory model and offset! " + item.GetItemName());
                 return;
             }
             GameObject modelGameObject = model.GetModel();
             if (model == null)
             {
-                OverhaulDebugController.PrintError("No accessory model! " + item.GetItemName());
+                OverhaulDebugger.PrintError("No accessory model! " + item.GetItemName());
                 return;
             }
             ModelOffset offset = (item as PlayerAccessoryItemDefinition).GetFirstPersonMoverOffset(FirstPersonMover);
