@@ -37,19 +37,15 @@ namespace CDOverhaul.Localization
             Translations.Add(langID, new Dictionary<string, string>());
         }
 
-        public void AddTranslation(string langID, string translationID)
+        public void AddTranslation(string translationID)
         {
-            if (!Translations.ContainsKey(langID))
+            foreach(string key in Translations.Keys)
             {
-                return;
+                if (!Translations[key].ContainsKey(translationID))
+                {
+                    Translations[key].Add(translationID, string.Empty);
+                }
             }
-
-            if (Translations[langID].ContainsKey(translationID))
-            {
-                return;
-            }
-
-            Translations[langID].Add(translationID, string.Empty);
         }
 
         public string GetTranslation(string langID, string translationID)

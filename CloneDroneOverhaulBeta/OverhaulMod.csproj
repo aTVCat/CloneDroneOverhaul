@@ -455,6 +455,8 @@
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageBotSpawnpoint.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorTriggerPlayAnimation.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
+    <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditor.cs" />
+    <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditorTranslationField.cs" />
     <Compile Include="Internal\ModTranslation\OverhaulLocalizationController.cs" />
     <Compile Include="Internal\ModTranslation\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
@@ -564,6 +566,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ExternalDLLs\DiscordRPC.dll" />
     <Content Include="ExternalDLLs\KopiLua.dll" />
     <Content Include="ExternalDLLs\LuaInterface.dll" />
   </ItemGroup>

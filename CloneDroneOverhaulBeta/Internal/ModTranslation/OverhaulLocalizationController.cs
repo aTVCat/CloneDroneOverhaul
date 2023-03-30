@@ -10,9 +10,10 @@ namespace CDOverhaul.Localization
 {
     public static class OverhaulLocalizationController
     {
-        public const string LocalizationFileName = "Localization";
         private static bool? m_Error;
+        public static bool Error => !m_Error.HasValue || m_Error.Value || m_Data == null;
 
+        public const string LocalizationFileName = "Localization";
         private static OverhaulLocalizationData m_Data;
         public static OverhaulLocalizationData Localization
         {
@@ -42,11 +43,12 @@ namespace CDOverhaul.Localization
             string path = OverhaulMod.Core.ModDirectory + "Assets/" + LocalizationFileName + ".json";
             if (!File.Exists(path))
             {
-                File.CreateText(path);
+                File.Create(path);
                 m_Error = false;
                 m_Data = new OverhaulLocalizationData();
                 m_Data.RepairFields();
                 m_Data.SavedInVersion = OverhaulVersion.ModVersion;
+                SaveData();
                 return;
             }
             StreamReader reader = File.OpenText(path);

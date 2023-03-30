@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Localization;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,6 +54,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
             _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
