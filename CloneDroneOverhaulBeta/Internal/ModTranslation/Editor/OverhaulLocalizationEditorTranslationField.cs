@@ -51,9 +51,7 @@ namespace CDOverhaul.Localization
 
         public void UpdateID(string str)
         {
-            string prevString = OverhaulLocalizationController.Localization.Translations[MyLang][MyID];
-            OverhaulLocalizationController.Localization.Translations[MyLang].Remove(MyID);
-            OverhaulLocalizationController.Localization.Translations[MyLang].Add(str, prevString);
+            OverhaulLocalizationController.Localization.ReplaceTranslation(MyID, str);
             MyID = str;
         }
     }

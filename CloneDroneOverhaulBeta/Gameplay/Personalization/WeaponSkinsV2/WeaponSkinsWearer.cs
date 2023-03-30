@@ -408,7 +408,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftAlt))
             {
                 Transform model = getTransform();
                 if(model == null)
@@ -417,7 +417,7 @@ namespace CDOverhaul.Gameplay
                 }
                 copyVector(model.localPosition);
             }
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.LeftAlt))
             {
                 Transform model = getTransform();
                 if (model == null)
@@ -426,7 +426,7 @@ namespace CDOverhaul.Gameplay
                 }
                 copyVector(model.localEulerAngles);
             }
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftAlt))
             {
                 Transform model = getTransform();
                 if (model == null)

@@ -35,6 +35,7 @@ namespace CDOverhaul.Patches
             ModdedObject moddedObject = _spawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<OverhaulParametersMenu>().Show);
             moddedObject.GetObject<Button>(3).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
+            moddedObject.GetObject<Transform>(3).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
 
             _buttonsTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             _buttonsTransform.localPosition = new Vector3(0, -170f, 0);

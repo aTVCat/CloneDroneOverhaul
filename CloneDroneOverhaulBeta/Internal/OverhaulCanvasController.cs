@@ -106,7 +106,7 @@ namespace CDOverhaul.HUD
                 Transform t = targetTransform.GetChild(i);
                 T component = t.GetComponent<T>();
                 ModdedObject m = t.GetComponent<ModdedObject>();
-                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Equals(targetModdedObjectId))
+                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Contains(targetModdedObjectId))
                 {
                     list.Add(component);
                 }

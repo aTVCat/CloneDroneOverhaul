@@ -5,6 +5,9 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using CDOverhaul.HUD;
+using UnityEngine.UI;
+using System.Collections;
 
 namespace CDOverhaul.Localization
 {
@@ -27,8 +30,14 @@ namespace CDOverhaul.Localization
             }
         }
 
+        private static readonly List<Text> m_ListOfTexts = new List<Text>();
+
         public static void Initialize()
         {
+            OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
+            m_ListOfTexts.Clear();
+            m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
+
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
             {
                 return;
@@ -67,6 +76,8 @@ namespace CDOverhaul.Localization
             {
                 m_Data.RepairFields();
             }
+
+            TryLocalizeHUD();
         }
 
         public static void SaveData()
@@ -77,6 +88,30 @@ namespace CDOverhaul.Localization
                 File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + OverhaulLocalizationController.LocalizationFileName + ".json",
                  Newtonsoft.Json.JsonConvert.SerializeObject(m_Data, Newtonsoft.Json.Formatting.None, DataRepository.CreateSettings()));
             }
+        }
+
+        public static void TryLocalizeHUD()
+        {
+            StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());
+        }
+
+        private static IEnumerator localizeHUDCoroutine()
+        {
+            int iteration = 0;
+            foreach(Text text in m_ListOfTexts)
+            {
+                if(text != null)
+                {
+                    if(iteration % 10 == 0)
+                    {
+                        yield return null;
+                    }
+
+                    m_Data.GetTranslation(text.GetComponent<ModdedObject>(), true);
+                }
+                iteration++;
+            }
+            yield break;
         }
     }
 }

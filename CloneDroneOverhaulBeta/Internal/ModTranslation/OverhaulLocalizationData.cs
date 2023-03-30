@@ -110,5 +110,18 @@ namespace CDOverhaul.Localization
 
             text.text = mObj.ID.Substring(4);
         }
+
+        public void ReplaceTranslation(string id, string newId)
+        {
+            foreach (string key in Translations.Keys)
+            {
+                if (Translations[key].ContainsKey(id))
+                {
+                    string old = Translations[key][id];
+                    Translations[key].Remove(id);
+                    Translations[key].Add(newId, old);
+                }
+            }
+        }
     }
 }
