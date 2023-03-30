@@ -28,7 +28,9 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(dataContainer, DataRepository.Instance.GetSettings());
-                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json", str);
+                StreamWriter wr = File.CreateText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json");
+                wr.Write(str);
+                wr.Close();
                 return;
             }
 

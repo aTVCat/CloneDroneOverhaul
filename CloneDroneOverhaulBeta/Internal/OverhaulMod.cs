@@ -13,7 +13,6 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of the mod. Starts up the mod
     /// </summary>
-    /// Todo: Custom advancements system (or patch vanilla one)
     [MainModClass]
     public class OverhaulMod : Mod
     {

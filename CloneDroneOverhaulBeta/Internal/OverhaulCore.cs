@@ -4,6 +4,7 @@ using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
+using CDOverhaul.Localization;
 using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
@@ -78,6 +79,10 @@ namespace CDOverhaul
 
         private void initialize()
         {
+            if (OverhaulMod.Core != null)
+            {
+                return;
+            }
             OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
@@ -112,6 +117,7 @@ namespace CDOverhaul
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();
+            OverhaulLocalizationController.Initialize();
 
             ReplacementBase.CreateReplacements();
         }

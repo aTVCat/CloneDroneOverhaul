@@ -455,6 +455,8 @@
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageBotSpawnpoint.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorTriggerPlayAnimation.cs" />
     <Compile Include="Internal\LevelEditor\LevelEditorLuaController.cs" />
+    <Compile Include="Internal\ModTranslation\OverhaulLocalizationController.cs" />
+    <Compile Include="Internal\ModTranslation\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\Patches\MeleeImpactArea_Patch.cs" />
     <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />

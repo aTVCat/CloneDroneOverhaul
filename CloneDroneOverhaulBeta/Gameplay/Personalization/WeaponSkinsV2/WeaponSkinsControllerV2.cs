@@ -844,7 +844,7 @@ namespace CDOverhaul.Gameplay
                 (testBow7Skin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
                 (testBow7Skin as WeaponSkinItemDefinitionV2).UseVanillaBowStrings = true;
 
-                ModelOffset testBow8SkinOffset = new ModelOffset(new Vector3(0.09f, 0f, -0.08f), new Vector3(0, 90, 0), Vector3.one * 0.5f);
+                ModelOffset testBow8SkinOffset = new ModelOffset(new Vector3(0.09f, 0f, -0.1f), new Vector3(0, 90, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow8Skin = Interface.NewSkinItem(WeaponType.Bow, "Skull", ItemFilter.None);
                 testBow8Skin.SetModel(AssetsController.GetAsset("SkullBow", OverhaulAssetsPart.WeaponSkins),
                     testBow8SkinOffset,

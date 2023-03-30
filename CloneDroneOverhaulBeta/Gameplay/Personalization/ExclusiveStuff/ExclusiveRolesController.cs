@@ -32,7 +32,7 @@ namespace CDOverhaul
 
             foreach(HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
             {
-                if(favColor.ColorValue == curColor)
+                if(favColor.ColorValue.Equals(curColor))
                 {
                     ExclusivePlayerInfo info = _players[playfabID];
                     color = info.FavColor;
