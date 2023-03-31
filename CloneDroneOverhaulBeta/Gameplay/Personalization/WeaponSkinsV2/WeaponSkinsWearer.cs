@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.HUD;
 using ModLibrary;
 using System.Collections;
 using System.Collections.Generic;

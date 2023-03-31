@@ -30,11 +30,11 @@ namespace CDOverhaul.HUD
 
             if (m_Instance.gameObject.activeSelf)
             {
-                AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+                _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
                 m_Instance.Hide();
                 return;
             }
-            AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
             m_Instance.Show();
         }
 

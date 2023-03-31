@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static RootMotion.FinalIK.HitReactionVRIK;
 
 namespace CDOverhaul.Gameplay
 {
@@ -467,7 +466,7 @@ namespace CDOverhaul.Gameplay
                     seSkinOffsetM,
                     true,
                     true);
-                seSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = seSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 seSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 FEA5A0978276D0FB 78E35D43F7CA4E5");
                 (seSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
                 (seSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
@@ -1018,7 +1017,7 @@ namespace CDOverhaul.Gameplay
                    ftspearSkinOffset,
                     true,
                     false);
-                ftspearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = ftspearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (ftspearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (ftspearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 2;
                 (ftspearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;

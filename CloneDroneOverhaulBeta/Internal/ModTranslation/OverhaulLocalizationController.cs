@@ -1,13 +1,10 @@
-﻿using System;
+﻿using CDOverhaul.HUD;
+using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using CDOverhaul.HUD;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace CDOverhaul.Localization
 {
@@ -44,7 +41,7 @@ namespace CDOverhaul.Localization
                 return;
             }
             OverhaulSessionController.SetKey("LoadedTranslations", true);
-            OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
+            _ = OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
             loadData();
         }
         
@@ -53,7 +50,7 @@ namespace CDOverhaul.Localization
             string path = OverhaulMod.Core.ModDirectory + "Assets/" + LocalizationFileName + ".json";
             if (!File.Exists(path))
             {
-                File.Create(path);
+                _ = File.Create(path);
                 m_Error = false;
                 m_Data = new OverhaulLocalizationData();
                 m_Data.RepairFields();
@@ -64,7 +61,7 @@ namespace CDOverhaul.Localization
             StreamReader reader = File.OpenText(path);
 
             Task<string> task = reader.ReadToEndAsync();
-            await task;
+            _ = await task;
             if(task.IsCanceled || task.IsFaulted)
             {
                 m_Error = true;
@@ -97,7 +94,7 @@ namespace CDOverhaul.Localization
             {
                 return;
             }
-            StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());
         }
 
         private static IEnumerator localizeHUDCoroutine()

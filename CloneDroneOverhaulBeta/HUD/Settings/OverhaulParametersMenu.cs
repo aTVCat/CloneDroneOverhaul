@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -112,6 +111,7 @@ namespace CDOverhaul.HUD
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);
                 categoryEntry.gameObject.SetActive(true);
                 categoryEntry.GetObject<Text>(0).text = category;
+                categoryEntry.GetObject<UnityEngine.UI.Image>(1).sprite = SettingsController.GetSpriteForCategory(category);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
             }
         }
@@ -123,7 +123,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName));
         }
 
         private IEnumerator populateCategoryCoroutine(string categoryName)

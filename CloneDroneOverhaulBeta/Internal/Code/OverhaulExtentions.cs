@@ -103,7 +103,7 @@ namespace CDOverhaul
                 return false;
             }
 
-            bool m = GameModeManager.IsMultiplayer();
+            _ = GameModeManager.IsMultiplayer();
             shouldNotPlaySound = false;//!m || (m && !mover.IsOnGroundServer());
 
             EnemyType type = mover.CharacterType;

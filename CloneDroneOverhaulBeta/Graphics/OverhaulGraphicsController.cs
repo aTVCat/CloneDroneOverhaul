@@ -19,7 +19,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Rendering.Deffered rendering", false, false, "Improve lights renderer\nMedium performance impact!")]
         public static bool DefferedRenderer;
 
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make everything glow")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make everything glow", "Bloom.png")]
         public static bool BloomEnabled;
 
         [SettingSliderParameters(true, 1, 10)]
@@ -51,7 +51,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add more shadows to everything")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add more shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;
 
         [SettingSliderParameters(false, 0.7f, 1.3f)]

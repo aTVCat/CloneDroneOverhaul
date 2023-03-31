@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Discord;
+﻿using Discord;
 using ModLibrary;
 using UnityEngine;
 
@@ -50,19 +46,23 @@ namespace CDOverhaul
         {
             if (!m_HasInitialized)
             {
-                ActivityAssets actAssets = new ActivityAssets();
-                actAssets.LargeImage = "clonedroneoverhaulimage03placeholder";
+                ActivityAssets actAssets = new ActivityAssets
+                {
+                    LargeImage = "defaultimage"
+                };
 
-                m_ClientActivity = new Activity();
-                m_ClientActivity.Assets = actAssets;
-                m_ClientActivity.ApplicationId = 1091373211163308073;
-                m_ClientActivity.Name = "Overhaul mod";
-                m_ClientActivity.Details = "v" + OverhaulVersion.ModVersion.ToString();
-                m_ClientActivity.Type = ActivityType.Playing;
+                m_ClientActivity = new Activity
+                {
+                    Assets = actAssets,
+                    ApplicationId = 1091373211163308073,
+                    Name = "Overhaul mod",
+                    Details = "v" + OverhaulVersion.ModVersion.ToString(),
+                    Type = ActivityType.Playing
+                };
 
                 m_ActUpdHandler = new ActivityManager.UpdateActivityHandler(handleActUpdate);
 
-                m_Client = new Discord.Discord(1091373211163308073, (UInt64)global::Discord.CreateFlags.Default);
+                m_Client = new Discord.Discord(1091373211163308073, (ulong)global::Discord.CreateFlags.Default);
                 m_HasInitialized = true;
             }
             Instance = this;

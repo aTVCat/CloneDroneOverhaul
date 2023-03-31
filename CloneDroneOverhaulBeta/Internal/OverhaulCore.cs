@@ -121,7 +121,7 @@ namespace CDOverhaul
 
             if(OverhaulDiscordRPCController.Instance == null)
             {
-                new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordRPCController>();
+                _ = new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordRPCController>();
             }
 
             ReplacementBase.CreateReplacements();

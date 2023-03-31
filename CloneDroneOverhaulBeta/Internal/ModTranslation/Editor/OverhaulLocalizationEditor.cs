@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using BestHTTP.SocketIO;
-using CDOverhaul;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Localization

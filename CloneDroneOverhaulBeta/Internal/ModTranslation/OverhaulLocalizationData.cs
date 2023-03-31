@@ -1,12 +1,7 @@
 ﻿using ModLibrary;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.UI;
-using System.IO;
 using System;
-using static Sony.NP.Core;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace CDOverhaul.Localization
 {
@@ -114,7 +109,7 @@ namespace CDOverhaul.Localization
                 if (Translations[key].ContainsKey(id))
                 {
                     string old = Translations[key][id];
-                    Translations[key].Remove(id);
+                    _ = Translations[key].Remove(id);
                     Translations[key].Add(newId, old);
                 }
             }
@@ -124,7 +119,7 @@ namespace CDOverhaul.Localization
         {
             foreach (string key in Translations.Keys)
             {
-                Translations[key].Remove(id);
+                _ = Translations[key].Remove(id);
             }
         }
     }

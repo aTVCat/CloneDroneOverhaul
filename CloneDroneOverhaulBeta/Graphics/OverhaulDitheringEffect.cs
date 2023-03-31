@@ -1,5 +1,4 @@
-﻿using RootMotion.FinalIK;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -55,8 +54,8 @@ namespace CDOverhaul.Graphics
             {
                 OverhaulSessionController.SetKey("GeneratedDithering", true);
 
-                StaticCoroutineRunner.StartStaticCoroutine(generateNoiseTexture(1600, 900, 3, onGeneratedHighQuality));
-                StaticCoroutineRunner.StartStaticCoroutine(generateNoiseTexture(640, 360, 3, onGeneratedLowQuality));
+                _ = StaticCoroutineRunner.StartStaticCoroutine(generateNoiseTexture(1600, 900, 3, onGeneratedHighQuality));
+                _ = StaticCoroutineRunner.StartStaticCoroutine(generateNoiseTexture(640, 360, 3, onGeneratedLowQuality));
             }
         }
     }

@@ -89,7 +89,7 @@ namespace CDOverhaul.HUD
 
             if (!notFirstInit)
             {
-                OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
+                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
             }
             onSettingRefreshed();
         }
@@ -215,7 +215,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
-            object toSet = null;
+            object toSet;
             switch (Setting.Type)
             {
                 case SettingType.Bool:

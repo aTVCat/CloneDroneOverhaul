@@ -1,6 +1,8 @@
 ﻿using CDOverhaul.HUD;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -11,6 +13,8 @@ namespace CDOverhaul
         private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
         private static readonly Dictionary<string, SettingDescription> m_SettingDescriptions = new Dictionary<string, SettingDescription>();
         private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins" };
+
+        private static readonly Dictionary<string, Sprite> m_CachedIcons = new Dictionary<string, Sprite>();
 
         public static OverhaulParametersMenu HUD;
 
@@ -119,6 +123,28 @@ namespace CDOverhaul
             SettingInfo s1 = GetSetting(settingPath, true);
             SettingInfo s2 = GetSetting(targetSettingPath, true);
             s2.ParentSettingToThis(s1);
+        }
+
+        public static Sprite GetSpriteForCategory(in string categoryName)
+        {
+            string path = OverhaulMod.Core.ModDirectory + "Assets/Settings/Ico/" + categoryName + "-S-16x16.png";
+            bool exists = File.Exists(path);
+            if (!exists)
+            {
+                return null;
+            }
+
+            if (m_CachedIcons.ContainsKey(categoryName))
+            {
+                return m_CachedIcons[categoryName];
+            }
+
+            Texture2D texture = OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(path);
+            texture.filterMode = FilterMode.Point;
+            texture.Apply();
+            Sprite sprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(texture);
+            m_CachedIcons.Add(categoryName, sprite);
+            return sprite;
         }
 
         /// <summary>
