@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.HUD;
 using ModLibrary;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace CDOverhaul.Gameplay
         public bool IsMultiplayerControlled { get; private set; }
         private bool m_HasAddedListeners;
 
+        private WeaponSkinsController m_Controller;
+
         public override void Start()
         {
             base.Start();
             SpawnSkins();
-
+            m_Controller = OverhaulController.GetController<WeaponSkinsController>();
             DelegateScheduler.Instance.Schedule(delegate
             {
                 if(FirstPersonMover != null && MultiplayerPlayerInfoManager.Instance != null)
@@ -62,6 +65,22 @@ namespace CDOverhaul.Gameplay
         {
             IsMultiplayerControlled = true;
             OnRefresh();
+        }
+
+        public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinSpecialBehaviour
+        {
+            if(FirstPersonMover == null)
+            {
+                return null;
+            }
+
+            WeaponModel m = FirstPersonMover.GetEquippedWeaponModel();
+            if (m == null)
+            {
+                return null;
+            }
+
+            return (T)m.GetComponentInChildren<WeaponSkinSpecialBehaviour>();
         }
 
         public void SpawnSkins()

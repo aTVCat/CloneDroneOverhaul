@@ -1,0 +1,118 @@
+﻿using System.Collections;
+using UnityEngine;
+
+namespace CDOverhaul.Gameplay
+{
+    public class MCBowSpecialSkinBehaviour : WeaponSkinSpecialBehaviour
+    {
+        private static bool m_HasFrames;
+        private static Mesh m_Frame1;
+        private static Mesh m_Frame2;
+        private static Mesh m_Frame3;
+        private static Mesh m_Frame4;
+
+        private MeshFilter m_Filter;
+        private float m_TimeBeganDrawing;
+
+        private int m_CurrentFrame;
+
+        public override void OnBeginDraw()
+        {
+            if(m_TimeBeganDrawing != -1f)
+            {
+                return;
+            }
+            m_TimeBeganDrawing = Time.time;
+        }
+
+        public override void OnEndDraw()
+        {
+            m_TimeBeganDrawing = -1f;
+        }
+
+        public override void Start()
+        {
+            m_TimeBeganDrawing = -1f;
+            m_Filter = base.GetComponent<MeshFilter>();
+;           if (!m_HasFrames)
+            {
+                m_HasFrames = true;
+                m_Frame1 = AssetsController.GetAsset<Mesh>("MCBowMesh1", OverhaulAssetsPart.WeaponSkins);
+                m_Frame2 = AssetsController.GetAsset<Mesh>("MCBowMesh2", OverhaulAssetsPart.WeaponSkins);
+                m_Frame3 = AssetsController.GetAsset<Mesh>("MCBowMesh3", OverhaulAssetsPart.WeaponSkins);
+                m_Frame4 = AssetsController.GetAsset<Mesh>("MCBowMesh4", OverhaulAssetsPart.WeaponSkins);
+            }
+        }
+
+        public override void OnDisable()
+        {
+            OnEndDraw();
+        }
+
+        protected override void OnDisposed()
+        {
+            m_Filter = null;
+        }
+
+        private void Update()
+        {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+
+            float time = Time.time;
+            if(m_TimeBeganDrawing != -1f && time >= m_TimeBeganDrawing)
+            {
+                if (time >= m_TimeBeganDrawing + 0.45f)
+                {
+                    SetFrame(4);
+                }
+                else if (time >= m_TimeBeganDrawing + 0.3f)
+                {
+                    SetFrame(3);
+                }
+                else if (time >= m_TimeBeganDrawing + 0.15f)
+                {
+                    SetFrame(2);
+                }
+            }
+            else
+            {
+                SetFrame(1);
+            }
+        }
+
+        public void SetFrame(byte frame)
+        {
+            if (IsDisposedOrDestroyed())
+            {
+                return;
+            }
+            if (m_CurrentFrame == frame)
+            {
+                return;
+            }
+
+            m_CurrentFrame = frame;
+            switch (frame)
+            {
+                case 1:
+                    m_Filter.mesh = m_Frame1;
+                    break;
+                case 2:
+                    m_Filter.mesh = m_Frame2;
+                    break;
+                case 3:
+                    m_Filter.mesh = m_Frame3;
+                    break;
+                case 4:
+                    m_Filter.mesh = m_Frame4;
+                    break;
+                default:
+                    m_Filter.mesh = m_Frame1;
+                    break;
+            }
+        }
+    }
+}

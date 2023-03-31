@@ -22,6 +22,9 @@ namespace CDOverhaul.Gameplay
         private const string LostCatDiscord = "TheLostCat#8845";
         private const string ZoloRDiscord = "ZoloR#3380";
         private const string SharpDiscord = "Luceferus#2219";
+        private const string HumanDiscord = "Human#8570";
+        private const string HizDiscord = "TheHiz#6138";
+        private const string KegaDiscord = "Mr. КеГ#3924";
         private const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
@@ -92,10 +95,10 @@ namespace CDOverhaul.Gameplay
         public void AddSkinQuick(WeaponType weaponType,
             string name,
             string author,
-            string singleplayerNormalModel,
-            string singleplayerFireModel,
-            string multiplayerNormalModel,
-            string multiplayerFireModel)
+            string singleplayerNormalModel = null,
+            string singleplayerFireModel = null,
+            string multiplayerNormalModel = null,
+            string multiplayerFireModel = null)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
             if (!string.IsNullOrEmpty(singleplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(singleplayerNormalModel, OverhaulAssetsPart.WeaponSkins), null, false, false);
@@ -187,6 +190,15 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
             item.Description = desc;
+        }
+
+        public void AddSpecialBehaviourToAllSkinModels<T>() where T : WeaponSkinSpecialBehaviour
+        {
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>();
+            if ((item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>();
+            if ((item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<T>();
+            if ((item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>();
         }
 
         private void addSkins()
@@ -658,6 +670,7 @@ namespace CDOverhaul.Gameplay
                     false);
                 toyHammerSkin.SetExclusivePlayerID("8A75F77DD769072C 78E35D43F7CA4E5");
                 (toyHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
+                (toyHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset voidCoreSkinOffset = new ModelOffset(new Vector3(-2.7f, 0.05f, -0.15f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition voidCoreSkin = Interface.NewSkinItem(WeaponType.Hammer, "Void Core", ItemFilter.None);
@@ -673,18 +686,18 @@ namespace CDOverhaul.Gameplay
                 (voidCoreSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
                 (voidCoreSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true; // Tester's exclusive
 
-                ModelOffset relicHammerSkinOffset = new ModelOffset(new Vector3(-1.275f, -0.075f, -0.05f), new Vector3(0, 0, 270), Vector3.one * 0.3f);
+                ModelOffset relicHammerSkinOffset = new ModelOffset(new Vector3(-0.7f, 0f, -0.025f), new Vector3(0, 0, 270), Vector3.one * 0.3f);
                 IWeaponSkinItemDefinition relicHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Relic", ItemFilter.None);
                 relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammer", OverhaulAssetsPart.WeaponSkins),
                     relicHammerSkinOffset,
                     false,
                     false);
-                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammer", OverhaulAssetsPart.WeaponSkins),
+                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammerFire", OverhaulAssetsPart.WeaponSkins),
                     relicHammerSkinOffset,
                     true,
                     false);
                 (relicHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
-                (relicHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire = true;
+                (relicHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (relicHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
 
                 ModelOffset wbdHammerSkinOffset = new ModelOffset(new Vector3(-1f, 0.03f, 0.22f), new Vector3(0, 0, 265), Vector3.one * 0.9f);
@@ -864,6 +877,7 @@ namespace CDOverhaul.Gameplay
                     true,
                     false);
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
+                (spearDarkPastSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset ancientSpearSkinOffset = new ModelOffset(new Vector3(-0.8f, -1.1f, -0.5f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition ancientSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Ancient", ItemFilter.None);
@@ -900,7 +914,7 @@ namespace CDOverhaul.Gameplay
                     spearGoldSkinOffset,
                     true,
                     false);
-                (spearGoldSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
+                (spearGoldSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (spearGoldSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
                 ModelOffset glSpearSkinOffset = new ModelOffset(new Vector3(0.5f, -2.35f, 0.035f), new Vector3(0, -90, 0), new Vector3(0.75f, 0.75f, 1f));
@@ -913,7 +927,7 @@ namespace CDOverhaul.Gameplay
                     glSpearSkinOffset,
                     true,
                     false);
-                (glSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
+                (glSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (glSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
                 ModelOffset bionicSpearSkinOffset = new ModelOffset(new Vector3(-0.45f, -7.1075f, -0.03f), new Vector3(0, -90, 0), Vector3.one * 0.6f);
@@ -1021,6 +1035,40 @@ namespace CDOverhaul.Gameplay
                 (ftspearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (ftspearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 2;
                 (ftspearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
+
+                AddSkinQuick(WeaponType.Spear, "Minecraft", Igrok_X_XPDiscord, "MCTridentSpear", "MCTridentSpearFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.85f, -0.05f, 0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1.25f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.85f, -0.05f, 0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1.25f)), true, false);
+
+                AddSkinQuick(WeaponType.Spear, "Arrow", KegaDiscord, "ArrowSpear", "ArrowSpearFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.4f, 0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.4f, 0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+
+                AddSkinQuick(WeaponType.Sword, "Minecraft", HumanDiscord, "MCSword", "MCSwordFire", "MCSwordLBS", "MCSwordFireLBS");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, true);
+
+                AddSkinQuick(WeaponType.Sword, "Minecraft-Golden", HumanDiscord, "MCGoldenSword", "MCGoldenSwordFire", "MCGoldenSwordLBS", "MCGoldenSwordLBSFire");
+                SetSkinExclusiveQuick("47A1CD84FD538A2E");
+                SetSkinColorParameters(false, -1, false, -1);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, true);
+
+                AddSkinQuick(WeaponType.Bow, "Minecraft", HumanDiscord, "MCBow_1");
+                AddSpecialBehaviourToAllSkinModels<MCBowSpecialSkinBehaviour>();
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.375f, 0.05f, 0.05f), new Vector3(0f, 0f, 135f), new Vector3(1f, 1f, 1f)), false, false);
+
+                AddSkinQuick(WeaponType.Sword, "Machette", HizDiscord + And + ATVCatDiscord, "MachetteSword", "MachetteSwordFire", "MachetteSword", "MachetteSwordFire");
+                SetSkinColorParameters(true, -1, false, -1);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), true, true);
+
             }
         }
 

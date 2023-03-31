@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using CDOverhaul.Gameplay;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches
@@ -36,6 +37,52 @@ namespace CDOverhaul.Patches
             {
                 b.OnPostCommandExecute((FPMoveCommand)command);
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("CreateArrowAndDrawBow")]
+        private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
+        {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
+            WeaponSkinsWearer w = __instance.GetComponent<WeaponSkinsWearer>();
+            if(w == null)
+            {
+                return;
+            }
+
+            WeaponSkinSpecialBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            if(s == null)
+            {
+                return;
+            }
+            s.OnBeginDraw();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("ReleaseNockedArrow")]
+        private static void ReleaseNockedArrow_Postfix(FirstPersonMover __instance)
+        {
+            if (!OverhaulMod.IsCoreCreated)
+            {
+                return;
+            }
+
+            WeaponSkinsWearer w = __instance.GetComponent<WeaponSkinsWearer>();
+            if (w == null)
+            {
+                return;
+            }
+
+            WeaponSkinSpecialBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            if (s == null)
+            {
+                return;
+            }
+            s.OnEndDraw();
         }
 
         [HarmonyPrefix]
