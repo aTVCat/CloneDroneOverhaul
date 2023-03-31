@@ -31,6 +31,7 @@ namespace CDOverhaul.Localization
         }
 
         private static readonly List<Text> m_ListOfTexts = new List<Text>();
+        private static bool m_TryingToLocalizeHUD;
 
         public static void Initialize()
         {
@@ -43,7 +44,7 @@ namespace CDOverhaul.Localization
                 return;
             }
             OverhaulSessionController.SetKey("LoadedTranslations", true);
-
+            OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
             loadData();
         }
         
@@ -92,11 +93,19 @@ namespace CDOverhaul.Localization
 
         public static void TryLocalizeHUD()
         {
+            if (m_TryingToLocalizeHUD)
+            {
+                return;
+            }
             StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());
         }
 
         private static IEnumerator localizeHUDCoroutine()
         {
+            m_TryingToLocalizeHUD = true;
+            yield return null;
+            yield return null;
+
             int iteration = 0;
             foreach(Text text in m_ListOfTexts)
             {
@@ -111,6 +120,8 @@ namespace CDOverhaul.Localization
                 }
                 iteration++;
             }
+
+            m_TryingToLocalizeHUD = false;
             yield break;
         }
     }

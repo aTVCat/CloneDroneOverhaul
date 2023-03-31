@@ -23,6 +23,15 @@ namespace CDOverhaul
 
         public SettingType Type { get; set; }
 
+        public SettingInfo CanBeLockedBy { get; set; }
+        public object ValueToUnlock { get; set; }
+        public bool IsUnlocked()
+        {
+            return CanBeLockedBy == null || object.Equals(CanBeLockedBy.Field.GetValue(null), ValueToUnlock);
+        }
+
+        public bool ForceInputField { get; set; }
+
         public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
 
         internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)

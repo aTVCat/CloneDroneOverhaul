@@ -76,6 +76,11 @@ namespace CDOverhaul.Localization
                 ModdedObject m = Instantiate(MyModdedObject.GetObject<ModdedObject>(4), MyModdedObject.GetObject<Transform>(5));
                 m.gameObject.SetActive(true);
                 m.gameObject.AddComponent<OverhaulLocalizationEditorTranslationField>().Initialize(lang, str, m.GetObject<InputField>(0), m.GetObject<InputField>(1));
+                m.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    OverhaulLocalizationController.Localization.RemoveTranslation(str);
+                    EditLang(lang);
+                });
             }
         }
 
@@ -102,6 +107,7 @@ namespace CDOverhaul.Localization
             if (Input.GetKeyDown(KeyCode.S))
             {
                 OverhaulLocalizationController.SaveData();
+                OverhaulLocalizationController.TryLocalizeHUD();
             }
         }
 #endif

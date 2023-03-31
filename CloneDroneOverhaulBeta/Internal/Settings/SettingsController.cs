@@ -32,7 +32,9 @@ namespace CDOverhaul
                     {
                         SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
                         SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
+                        SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
                         SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
+                        info.ForceInputField = inputField != null;
                         if (neededAttribute.IsHidden)
                         {
                             m_HiddenEntries.Add(info.RawPath);
@@ -50,6 +52,16 @@ namespace CDOverhaul
             }
 
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
+
+            MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
+
+            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom iterations", true);
+            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom intensity", true);
+            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom Threshold", true);
+            MakeSettingDependingOn("Graphics.Shaders.Vignette", "Graphics.Shaders.Vignette Intensity", true);
+            MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
+            MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);
+            MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Sample Count", true);
 
             _hasAddedSettings = true;
         }
@@ -87,6 +99,19 @@ namespace CDOverhaul
             {
                 m_SettingDescriptions.Add(settingPath, desc);
             }
+        }
+
+        public static void MakeSettingDependingOn(in string toDepend, in string targetSetting, in object targetValue)
+        {
+            SettingInfo info = GetSetting(targetSetting);
+            SettingInfo info2 = GetSetting(toDepend);
+            if(info == null || info2 == null)
+            {
+                return;
+            }
+
+            info.CanBeLockedBy = info2;
+            info.ValueToUnlock = targetValue;
         }
 
         public static void ParentSetting(in string settingPath, in string targetSettingPath)

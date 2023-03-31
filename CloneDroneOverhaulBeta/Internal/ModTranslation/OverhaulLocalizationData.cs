@@ -6,6 +6,7 @@ using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
 using System.IO;
 using System;
+using static Sony.NP.Core;
 
 namespace CDOverhaul.Localization
 {
@@ -52,12 +53,12 @@ namespace CDOverhaul.Localization
         {
             if (!Translations.ContainsKey(langID))
             {
-                return string.Empty;
+                return langID + "_" + translationID;
             }
 
-            if (!Translations[langID].ContainsKey(translationID))
+            if (string.IsNullOrEmpty(Translations[langID][translationID]))
             {
-                return string.Empty;
+                return Translations["en"][translationID];
             }
 
             return Translations[langID][translationID];
@@ -103,12 +104,7 @@ namespace CDOverhaul.Localization
             }
 
             Text text = mObj.GetComponent<Text>();
-            if(checkComponent && text == null)
-            {
-                return;
-            }
-
-            text.text = mObj.ID.Substring(4);
+            GetTranslation(text, mObj.ID.Substring(4));
         }
 
         public void ReplaceTranslation(string id, string newId)
@@ -121,6 +117,14 @@ namespace CDOverhaul.Localization
                     Translations[key].Remove(id);
                     Translations[key].Add(newId, old);
                 }
+            }
+        }
+
+        public void RemoveTranslation(string id)
+        {
+            foreach (string key in Translations.Keys)
+            {
+                Translations[key].Remove(id);
             }
         }
     }

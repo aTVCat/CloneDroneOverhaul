@@ -471,6 +471,7 @@
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AlwaysHideFromLevelEditor_Patch.cs" />
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingForceInputField.cs" />
     <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Misc\PhotoModeRevampController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
