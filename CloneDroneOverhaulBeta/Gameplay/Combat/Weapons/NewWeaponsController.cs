@@ -24,7 +24,7 @@ namespace CDOverhaul.Gameplay.Combat
             BoomerangWeaponModel boomerang = WeaponsAdder.AddWeaponModel<BoomerangWeaponModel>(AssetsController.GetAsset("P_WM_Boomerang_2", OverhaulAssetsPart.Part2).transform, m_BoomerangModelOffset);
             m_AddedWeaponModels.Add(boomerang);
 
-            if (!OverhaulVersion.JuneDemoEnabled)
+            if (!OverhaulVersion.Upd3JunePreview)
             {
                 return;
             }
@@ -82,7 +82,7 @@ namespace CDOverhaul.Gameplay.Combat
             WeaponsAdder.AddWeaponModelsToFirstPersonMover(firstPersonMover, m_AddedWeaponModels, false, out List<AddedWeaponModel> models);
             NewWeaponsRobotExpansion exp = firstPersonMover.gameObject.AddComponent<NewWeaponsRobotExpansion>();
             exp.AllCustomWeapons = models;
-            if (OverhaulVersion.JuneDemoEnabled)
+            if (OverhaulVersion.Upd3JunePreview)
             {
                 WeaponsAdder.AddWeaponModelsToFirstPersonMover(firstPersonMover, m_AlwaysEquippedWeaponModels, true, out List<AddedWeaponModel> models1);
                 exp.AllCustomWeapons.AddRange(models1);

@@ -153,7 +153,7 @@ namespace CDOverhaul.Graphics
                 return;
             }
 
-            if (!OverhaulVersion.TechDemo2Enabled)
+            if (!OverhaulVersion.Upd3TechDemo2)
             {
                 return;
             }

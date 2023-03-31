@@ -159,7 +159,7 @@ namespace CDOverhaul
 
         internal void ChangeWindowTitle()
         {
-            if (!OverhaulVersion.AllowWindowNameChanging)
+            if (!OverhaulVersion.AllowRPC)
             {
                 return;
             }

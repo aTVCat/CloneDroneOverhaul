@@ -119,6 +119,11 @@ namespace CDOverhaul
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
 
+            if(OverhaulDiscordRPCController.Instance == null)
+            {
+                new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordRPCController>();
+            }
+
             ReplacementBase.CreateReplacements();
         }
 

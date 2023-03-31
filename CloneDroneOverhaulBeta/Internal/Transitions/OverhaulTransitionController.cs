@@ -11,7 +11,7 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            if (!OverhaulVersion.TechDemo2Enabled)
+            if (!OverhaulVersion.Upd3TechDemo2)
             {
                 return;
             }

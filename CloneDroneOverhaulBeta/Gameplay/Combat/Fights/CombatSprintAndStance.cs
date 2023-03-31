@@ -55,7 +55,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
             if(m_MovementState == false)
             {
-                if (OverhaulVersion.JuneDemoEnabled)
+                if (OverhaulVersion.Upd3JunePreview)
                 {
                     if (FirstPersonMover.IsOnGroundServer() && command.Input.SecondAttackDown)
                     {

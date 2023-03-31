@@ -24,45 +24,31 @@ namespace CDOverhaul
         /// </summary>
         public static readonly string ModShortName = "Overhaul " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
+        /// <summary>
+        /// Enable arena remaster in the build
+        /// </summary>
         public const bool UseArenaRemaster = true;
-        public const bool AllowWindowNameChanging = false;
+        /// <summary>
+        /// Enable usage of Discord RPC
+        /// </summary>
+        public const bool AllowRPC = false;
 
         /// <summary>
         /// Enable 0.3 Tech-Demo 2 Update things
         /// </summary>
-        public const bool TechDemo2Enabled = true;
+        public const bool Upd3TechDemo2 = true;
 
         /// <summary>
         /// Enable 0.3 June demo Update things
         /// </summary>
-        public const bool JuneDemoEnabled = false;
-
-        /// <summary>
-        /// Enable 0.4 Update things
-        /// </summary>
-        public const bool LevelEditorUpdateEnabled = false;
-
-        /// <summary>
-        /// Enable 0.5 Update things
-        /// </summary>
-        public const bool RandomPatchesUpdateEnabled = false;
-
-        /// <summary>
-        /// Enable 0.6 Update things
-        /// </summary>
-        public const bool CommunityUpdateEnabled = false;
-
-        /// <summary>
-        /// Enable 0.7 Update things
-        /// </summary>
-        public const bool BalancingUpdateEnabled = false;
+        public const bool Upd3JunePreview = false;
 
 #if DEBUG
         public const bool IsDebugBuild = true;
-        private const string DebugString = " [DEBUG]";
+        public const string DebugString = " [DEBUG]";
 #else
         public const bool IsDebugBuild = false;
-        private const string DebugString = "";
+        public const string DebugString = "";
 #endif
 
         private static char getVersionPrefixChar()
