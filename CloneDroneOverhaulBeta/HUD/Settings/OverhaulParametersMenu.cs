@@ -21,6 +21,8 @@ namespace CDOverhaul.HUD
         private CanvasGroup m_MainCanvasGroup;
         private bool m_IsPopulatingSettings;
 
+        public bool AllowSwitchingCategories => !m_IsPopulatingSettings;
+
         public override void Initialize()
         {
             m_CategoryEntryPrefab = MyModdedObject.GetObject<ModdedObject>(1);

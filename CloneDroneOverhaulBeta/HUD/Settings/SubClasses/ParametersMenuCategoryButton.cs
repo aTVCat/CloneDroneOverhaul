@@ -12,6 +12,8 @@ namespace CDOverhaul.HUD
         private OverhaulParametersMenu m_UI;
         public string Category;
 
+        private bool m_IsSelected;
+
         public void Initialize(in OverhaulParametersMenu menu, in ModdedObject moddedObject, in string categoryName)
         {
             m_ModdedObject = moddedObject;
@@ -38,6 +40,7 @@ namespace CDOverhaul.HUD
 
         public void SetSelected(in bool value, in bool checkOthers = true)
         {
+            m_IsSelected = value;
             if (checkOthers)
             {
                 foreach (ParametersMenuCategoryButton b in _spawnedBehaviours)
@@ -57,6 +60,10 @@ namespace CDOverhaul.HUD
 
         private void select()
         {
+            if (!m_UI.AllowSwitchingCategories || m_IsSelected)
+            {
+                return;
+            }
             SetSelected(true);
         }
     }

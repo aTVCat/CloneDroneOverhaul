@@ -45,7 +45,7 @@ namespace CDOverhaul
 
 #if DEBUG
         public const bool IsDebugBuild = true;
-        public const string DebugString = " [DEBUG]";
+        public const string DebugString = " (Debug)";
 #else
         public const bool IsDebugBuild = false;
         public const string DebugString = "";
