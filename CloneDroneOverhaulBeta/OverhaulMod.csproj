@@ -415,6 +415,11 @@
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
+    <Compile Include="Gameplay\Personalization\OutfitsV3\AccessoryItem.cs" />
+    <Compile Include="Gameplay\Personalization\OutfitsV3\AccessoryType.cs" />
+    <Compile Include="Gameplay\Personalization\OutfitsV3\DefaultAccessoryItem.cs" />
+    <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsController.cs" />
+    <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\ICustomWeaponSkins.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\SpecialBehaviours\MCBowSpecialSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinSpecialBehaviour.cs" />

@@ -42,6 +42,8 @@ namespace CDOverhaul.HUD
         private bool m_IsSelected;
         private bool m_IsMouseOverElement;
 
+        public bool IsSelected => m_IsSelected;
+
         public override void Awake()
         {
             if (IsDisposedOrDestroyed())
@@ -144,19 +146,20 @@ namespace CDOverhaul.HUD
 
         public void TrySelect()
         {
+            m_IsSelected = false;
             switch (m_WeaponType)
             {
                 case WeaponType.Sword:
-                    SetSelected(WeaponSkinsController.EquippedSwordSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSwordSkin == m_Skin, true);
                     break;
                 case WeaponType.Bow:
-                    SetSelected(WeaponSkinsController.EquippedBowSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedBowSkin == m_Skin, true);
                     break;
                 case WeaponType.Hammer:
-                    SetSelected(WeaponSkinsController.EquippedHammerSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedHammerSkin == m_Skin, true);
                     break;
                 case WeaponType.Spear:
-                    SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin, true);
                     break;
             }
         }

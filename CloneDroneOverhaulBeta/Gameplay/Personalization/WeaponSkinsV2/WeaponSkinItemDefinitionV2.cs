@@ -105,16 +105,19 @@ namespace CDOverhaul.Gameplay
             {
                 return true;
             }
-            if (!string.IsNullOrEmpty(m_ExclusivePlayerID))
+
+            if(OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
             {
-                bool valid = m_ExclusivePlayerID.Contains(ExclusivityController.GetLocalPlayfabID());                
-                if (!valid)
-                {
-                    valid = ExclusivityController.GetLocalPlayfabID().Equals("883CC7F4CA3155A3");
-                }
-                return valid || OverhaulVersion.IsDebugBuild;
+                return true;
             }
-            return true;
+
+            string localID = ExclusivityController.GetLocalPlayfabID();
+            bool isUnlocked = m_ExclusivePlayerID.Contains(localID);
+            if (!isUnlocked)
+            {
+                isUnlocked = localID.Equals("883CC7F4CA3155A3");
+            }
+            return isUnlocked;
         }
 
         bool IEqualityComparer.Equals(object x, object y)

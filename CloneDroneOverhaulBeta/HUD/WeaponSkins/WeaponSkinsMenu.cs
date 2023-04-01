@@ -23,17 +23,20 @@ namespace CDOverhaul.HUD
         public static bool AllowChangingSkins() => Time.unscaledTime >= m_TimeToAllowChangingSkins;
 
         private IWeaponSkinItemDefinition[] m_Items;
+        private WeaponSkinsController m_Controller;
 
         private Hashtable m_HashtableTest;
         private Text m_TextPrefab;
-        private WeaponSkinsController m_Controller;
-        private Text m_Description;
 
+        private Text m_Description;
         private WeaponType m_SelectedWeapon;
+        private Button m_DefaultSkinButton;
+        private ScrollRect m_ScrollRect;
 
         public override void Initialize()
         {
             ModdedObject m = MyModdedObject;
+            m_ScrollRect = m.GetObject<ScrollRect>(17);
             m_HashtableTest = new Hashtable
             {
                 ["weapon"] = m.GetObject<ModdedObject>(2)
@@ -47,10 +50,11 @@ namespace CDOverhaul.HUD
             m_TextPrefab.gameObject.SetActive(false);
             m_Description = m.GetObject<Text>(15);
             m_Description.text = string.Empty;
-            MyModdedObject.GetObject<Text>(8).text = string.Empty;
-            m.GetObject<Button>(6).onClick.AddListener(SetDefaultSkin);
+            m_DefaultSkinButton = m.GetObject<Button>(6);
+            m_DefaultSkinButton.onClick.AddListener(SetDefaultSkin);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
+            MyModdedObject.GetObject<Text>(8).text = string.Empty;
 
             SetMenuActive(false);
         }
@@ -128,6 +132,25 @@ namespace CDOverhaul.HUD
             PopulateWeapons();
         }
 
+        public void RefreshDefaultSkinButton()
+        {
+            switch (m_SelectedWeapon)
+            {
+                case WeaponType.Sword:
+                    m_DefaultSkinButton.interactable = !WeaponSkinsController.EquippedSwordSkin.Equals("Default");
+                    break;
+                case WeaponType.Bow:
+                    m_DefaultSkinButton.interactable = !WeaponSkinsController.EquippedBowSkin.Equals("Default");
+                    break;
+                case WeaponType.Hammer:
+                    m_DefaultSkinButton.interactable = !WeaponSkinsController.EquippedHammerSkin.Equals("Default");
+                    break;
+                case WeaponType.Spear:
+                    m_DefaultSkinButton.interactable = !WeaponSkinsController.EquippedSpearSkin.Equals("Default");
+                    break;
+            }
+        }
+
         public void OnDoneButtonClicked()
         {
             SetMenuActive(false);
@@ -195,6 +218,7 @@ namespace CDOverhaul.HUD
                 mover.SetEquippedWeaponType(weaponType);
             }
 
+            m_ScrollRect.verticalNormalizedPosition = 1f;
             WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
             TransformUtils.DestroyAllChildren(GetContainer(true));
 
@@ -235,18 +259,40 @@ namespace CDOverhaul.HUD
                 b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
                 b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
             }
+
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    ShowSkinInfo(weaponType, WeaponSkinsController.EquippedSwordSkin);
+                    break;
+                case WeaponType.Bow:
+                    ShowSkinInfo(weaponType, WeaponSkinsController.EquippedBowSkin);
+                    break;
+                case WeaponType.Hammer:
+                    ShowSkinInfo(weaponType, WeaponSkinsController.EquippedHammerSkin);
+                    break;
+                case WeaponType.Spear:
+                    ShowSkinInfo(weaponType, WeaponSkinsController.EquippedSpearSkin);
+                    break;
+            }
+            RefreshDefaultSkinButton();
         }
 
         public void SelectSkin(WeaponType weaponType, string skinName)
         {
-            if (m_Controller == null || m_Controller.Interface == null)
+            if (m_Controller == null || m_Controller.Interface == null || string.IsNullOrEmpty(skinName))
             {
                 return;
             }
-            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(weaponType, skinName, ItemFilter.None, out _);
-            if(item == null || !item.IsUnlocked(false))
+
+            if (!skinName.Equals("Default"))
             {
-                return;
+                // Check this skin is unlocked
+                IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(weaponType, skinName, ItemFilter.None, out _);
+                if (item == null || !item.IsUnlocked(false))
+                {
+                    return;
+                }
             }
 
             switch (weaponType)
@@ -268,6 +314,7 @@ namespace CDOverhaul.HUD
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.SpearVar", true), 0);
                     break;
             }
+            RefreshDefaultSkinButton();
 
             WeaponSkinsMenuSkinBehaviour.SelectSpecific();
 

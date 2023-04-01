@@ -101,6 +101,7 @@ namespace CDOverhaul.Gameplay
             AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
             MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
             CustomGarbageBots = OverhaulController.AddController<OverhaulCustomGarbageBotsController>();
+            OverhaulController.AddController<Outfits.OutfitsController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
