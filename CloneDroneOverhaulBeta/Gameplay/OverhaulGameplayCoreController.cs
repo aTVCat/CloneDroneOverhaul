@@ -59,11 +59,6 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public PlayerOutfitController Outfits
-        {
-            get;
-            private set;
-        }
         public WeaponSkinsController WeaponSkins
         {
             get;
@@ -100,7 +95,6 @@ namespace CDOverhaul.Gameplay
 
             GamemodeSubstates = OverhaulController.AddController<GamemodeSubstatesController>();
             WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
-            Outfits = OverhaulController.AddController<PlayerOutfitController>();
             AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
             CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();
             NewWeapons = OverhaulController.AddController<NewWeaponsController>();
@@ -116,7 +110,6 @@ namespace CDOverhaul.Gameplay
             Core = null;
             m_MainCamera = null;
             m_CurrentCamera = null;
-            Outfits = null;
         }
 
         private void Update()

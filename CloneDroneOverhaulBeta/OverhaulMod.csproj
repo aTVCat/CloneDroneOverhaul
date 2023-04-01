@@ -427,17 +427,6 @@
     <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryItemDefinition.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerAccessoryModel.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryModel.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryItemDefinition.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotOutfitWearerExpansion.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerOutfitController.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerAccessoryOffsetData.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\PlayerOutfitData.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotAccessoryDestroyVFX.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\RobotAccessoryBehaviour.cs" />
-    <Compile Include="Gameplay\Personalization\AccessoriesV2\Base\IPlayerOutfitController.cs" />
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivePlayerInfo.cs" />
     <Compile Include="Gameplay\Personalization\GarbageBots\OverhaulCustomGarbageBotsController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\IWeaponSkinsControllerV2.cs" />

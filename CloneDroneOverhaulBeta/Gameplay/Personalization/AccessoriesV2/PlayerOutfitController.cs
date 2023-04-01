@@ -6,19 +6,19 @@ namespace CDOverhaul.Gameplay
 {
     public class PlayerOutfitController : OverhaulGameplayController, IPlayerOutfitController
     {
+        [OverhaulSettingAttribute("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
+        public static string EquippedOutfit;
+
         public const string AccessoryDestroyVFX_ID = "AccessoryDestroyedVFX";
         public static readonly AudioClipDefinition AccessoryDestroyedSound = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("BallonExplosion", OverhaulAssetsPart.Sounds));
 
         public IPlayerOutfitController Interface;
-
-        private PlayerOutfitData m_PlayerData;
         private static List<IPlayerAccessoryItemDefinition> m_Items;
 
         public override void Initialize()
         {
             base.Initialize();
             Interface = this;
-            m_PlayerData = PlayerOutfitData.GetData<PlayerOutfitData>(PlayerOutfitData.Filename);
 
             if (OverhaulSessionController.GetKey<bool>("HasLoadedAccessories"))
             {
@@ -28,16 +28,21 @@ namespace CDOverhaul.Gameplay
             m_Items = new List<IPlayerAccessoryItemDefinition>();
             PooledPrefabController.TurnObjectIntoPooledPrefab<RobotAccessoryDestroyVFX>(AssetsController.GetAsset("VFX_AccessoryDestroy", OverhaulAssetsPart.Accessories).transform, 5, AccessoryDestroyVFX_ID);
 
-            // Igrok's Hat
-            IPlayerAccessoryItemDefinition item1 = Interface.NewAccessoryItem(MechBodyPartType.Head, "Igrok's Hat", ItemFilter.None);
-            IPlayerAccessoryModel model1 = new PlayerAccessoryModel();
-            model1.SetModel(AssetsController.GetAsset("P_Acc_Head_Igrok's hat", OverhaulAssetsPart.Accessories));
-            item1.SetModel(model1);
+            AddAccessoryItem("Igrok's hat", MechBodyPartType.Head, "P_Acc_Head_Igrok's hat");
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
+        }
+
+        public void AddAccessoryItem(string name, MechBodyPartType bodyPart, string assetName)
+        {
+            GameObject gObject = AssetsController.GetAsset(assetName, OverhaulAssetsPart.Accessories);
+            IPlayerAccessoryModel model1 = new PlayerAccessoryModel();
+            model1.SetModel(gObject);
+            IPlayerAccessoryItemDefinition item1 = Interface.NewAccessoryItem(bodyPart, name, ItemFilter.None);
+            item1.SetModel(model1);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -46,7 +51,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            _ = firstPersonMover.gameObject.AddComponent<RobotOutfitWearerExpansion>();
+            _ = firstPersonMover.gameObject.AddComponent<RobotOutfitWearer>();
         }
 
         IPlayerAccessoryItemDefinition IPlayerOutfitController.NewAccessoryItem(MechBodyPartType partType, string itemName, ItemFilter filter)
@@ -72,7 +77,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach(IPlayerAccessoryItemDefinition def in m_Items)
                 {
-                    if (m_PlayerData.EquipedAccessories.Contains(def.GetItemName()))
+                    if (EquippedOutfit.Contains(def.GetItemName()))
                     {
                         list.Add(def);
                     }
