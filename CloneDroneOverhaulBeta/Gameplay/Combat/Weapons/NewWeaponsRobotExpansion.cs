@@ -8,7 +8,7 @@ namespace CDOverhaul.Gameplay.Combat
     public class NewWeaponsRobotExpansion : OverhaulCharacterExpansion
     {
         private OverhaulWeaponModel m_CurrentWeaponModel;
-        public OverhaulWeaponModel EquipedOverhaulWeapon => FirstPersonMover.GetEquippedWeaponModel() as OverhaulWeaponModel;
+        public OverhaulWeaponModel EquipedOverhaulWeapon => Owner.GetEquippedWeaponModel() as OverhaulWeaponModel;
 
         internal List<AddedWeaponModel> AllCustomWeapons;
 

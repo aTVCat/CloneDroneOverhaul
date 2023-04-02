@@ -323,7 +323,12 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
-            m_Controller.ApplySkinsOnCharacter(CharacterTracker.Instance.GetPlayer());
+            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+            if(mover != null)
+            {
+                WeaponSkinsController.RobotToPlayAnimationOn = mover;
+                m_Controller.ApplySkinsOnCharacter(mover);
+            }
             ShowSkinInfo(weaponType, skinName);
 
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();

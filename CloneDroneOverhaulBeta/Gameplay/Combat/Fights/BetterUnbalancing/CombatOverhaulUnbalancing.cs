@@ -28,9 +28,9 @@ namespace CDOverhaul.Gameplay.Combat.Fights
             //command.Input.HorizontalMovement += pong * UnbalancedValue;
             SprintAndStance.MaxSpeedOffset = pong * UnbalancedValue;
 
-            if (!FirstPersonMover.HasFallenDown() && UnbalancedValue >= 4f)
+            if (!Owner.HasFallenDown() && UnbalancedValue >= 4f)
             {
-                FirstPersonMover.SendFalling(-base.transform.up, 1f);
+                Owner.SendFalling(-base.transform.up, 1f);
             }
         }
 
@@ -42,7 +42,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
         public void Unbalance(float value)
         {
             UnbalancedValue += value;
-            if(FirstPersonMover.IsOnGroundServer()) FirstPersonMover.AddVelocity(base.transform.up + (base.transform.forward * 6));
+            if(Owner.IsOnGroundServer()) Owner.AddVelocity(base.transform.up + (base.transform.forward * 6));
         }
 
         public override void Start()

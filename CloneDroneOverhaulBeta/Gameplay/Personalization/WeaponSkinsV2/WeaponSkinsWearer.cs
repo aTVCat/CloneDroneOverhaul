@@ -1,15 +1,18 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.HUD;
 using ModLibrary;
+using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CDOverhaul.HUD;
 
 namespace CDOverhaul.Gameplay
 {
     public class WeaponSkinsWearer : OverhaulCharacterExpansion
     {
+        public const bool AllowSwitchSkinVFX = false;
+
         public readonly Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo> WeaponSkins = new Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo>();
         private bool m_WaitingToSpawnSkins;
 
@@ -27,9 +30,9 @@ namespace CDOverhaul.Gameplay
             m_Controller = OverhaulController.GetController<WeaponSkinsController>();
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if(FirstPersonMover != null && MultiplayerPlayerInfoManager.Instance != null)
+                if(Owner != null && MultiplayerPlayerInfoManager.Instance != null)
                 {
-                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(FirstPersonMover.GetPlayFabID());
+                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(Owner.GetPlayFabID());
                     if (pInfo != null)
                     {
                         m_Info = pInfo.GetComponent<OverhaulModdedPlayerInfo>();
@@ -80,12 +83,12 @@ namespace CDOverhaul.Gameplay
 
         public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinSpecialBehaviour
         {
-            if(FirstPersonMover == null)
+            if(Owner == null)
             {
                 return null;
             }
 
-            WeaponModel m = FirstPersonMover.GetEquippedWeaponModel();
+            WeaponModel m = Owner.GetEquippedWeaponModel();
             if (m == null)
             {
                 return null;
@@ -122,7 +125,7 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
-            if (!WeaponSkinsController.IsFirstPersonMoverSupported(FirstPersonMover))
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
             {
                 return;
             }
@@ -149,7 +152,7 @@ namespace CDOverhaul.Gameplay
             }
             else
             {
-                skins = controller.Interface.GetSkinItems(FirstPersonMover);
+                skins = controller.Interface.GetSkinItems(Owner);
             }
             if (skins == null)
             {
@@ -182,15 +185,27 @@ namespace CDOverhaul.Gameplay
             {
                 SpawnSkin(skin);
             }
+
+            if(AllowSwitchSkinVFX && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
+            {
+                WeaponSkinsController.RobotToPlayAnimationOn = null;
+                WeaponModel model = Owner.GetEquippedWeaponModel();
+                if(model == null)
+                {
+                    return;
+                }
+
+                PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
+            }
         }
 
         public void SetDefaultModelsActive(Transform transformToRemove = null)
         {
-            if (!FirstPersonMover.HasCharacterModel())
+            if (!Owner.HasCharacterModel())
             {
                 return;
             }
-            CharacterModel model = FirstPersonMover.GetCharacterModel();
+            CharacterModel model = Owner.GetCharacterModel();
 
             WeaponModel weaponModel1 = model.GetWeaponModel(WeaponType.Sword);
             if (weaponModel1 != null)
@@ -264,11 +279,11 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)
         {
-            if (item == null || FirstPersonMover == null || !FirstPersonMover.HasCharacterModel())
+            if (item == null || Owner == null || !Owner.HasCharacterModel())
             {
                 return;
             }
-            WeaponModel weaponModel = FirstPersonMover.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
+            WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
             if(weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
             {
                 return;
@@ -382,7 +397,7 @@ namespace CDOverhaul.Gameplay
             Color? color;
             if (forceColor == null)
             {
-                color = FirstPersonMover.GetCharacterModel().GetFavouriteColor();
+                color = Owner.GetCharacterModel().GetFavouriteColor();
             }
             else
             {
@@ -406,21 +421,21 @@ namespace CDOverhaul.Gameplay
         {
             if(model.WeaponType == WeaponType.Sword)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireSword))
+                if (Owner.HasUpgrade(UpgradeType.FireSword))
                 {
                     return true;
                 }
             }
             else if (model.WeaponType == WeaponType.Hammer)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireHammer))
+                if (Owner.HasUpgrade(UpgradeType.FireHammer))
                 {
                     return true;
                 }
             }
             else if (model.WeaponType == WeaponType.Spear)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireSpear))
+                if (Owner.HasUpgrade(UpgradeType.FireSpear))
                 {
                     return true;
                 }
@@ -477,12 +492,12 @@ namespace CDOverhaul.Gameplay
 
         private Transform getTransform()
         {
-            if(FirstPersonMover == null || WeaponSkins.IsNullOrEmpty())
+            if(Owner == null || WeaponSkins.IsNullOrEmpty())
             {
                 return null;
             }
 
-            WeaponType weaponType = FirstPersonMover.GetEquippedWeaponType();
+            WeaponType weaponType = Owner.GetEquippedWeaponType();
             if (!WeaponSkinsMenu.SupportedWeapons.Contains(weaponType))
             {
                 return null;

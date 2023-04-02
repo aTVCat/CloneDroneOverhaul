@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using CDOverhaul.Gameplay.Outfits;
 using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine;
@@ -110,7 +111,8 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin,
                 ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
-                ["State.Version"] = OverhaulVersion.ModVersion.ToString()
+                ["State.Version"] = OverhaulVersion.ModVersion.ToString(),
+                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories
             };
 
             string serializedData = JsonConvert.SerializeObject(newHashTable);

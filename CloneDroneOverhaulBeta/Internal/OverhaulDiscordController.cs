@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    internal class OverhaulDiscordRPCController : OverhaulBehaviour
+    internal class OverhaulDiscordController : OverhaulBehaviour
     {
-        public static OverhaulDiscordRPCController Instance;
+        public const long OverhaulClientID = 1091373211163308073;
+        public const CreateFlags CreateFlag = CreateFlags.NoRequireDiscord;
 
+        public static OverhaulDiscordController Instance;
         private static Discord.Discord m_Client;
         private static Discord.Activity m_ClientActivity;
         private static Discord.ActivityManager.UpdateActivityHandler m_ActUpdHandler;
@@ -15,7 +17,15 @@ namespace CDOverhaul
         private static bool m_HasInitialized;
         private static bool m_HasError;
 
+        public static bool SuccessfulInitialization => !m_HasError &&
+            m_HasInitialized &&
+            m_Client != null &&
+            Instance != null;
+
         private string m_CurrentGamemode;
+        /// <summary>
+        /// The gamemode you're playing right now
+        /// </summary>
         public string CurrentGamemode
         {
             get
@@ -29,6 +39,9 @@ namespace CDOverhaul
         }
 
         private string m_GamemodeDetails;
+        /// <summary>
+        /// The details of gamemode (progress or smth)
+        /// </summary>
         public string CurrentGamemodeDetails
         {
             get
@@ -45,52 +58,25 @@ namespace CDOverhaul
 
         private void Start()
         {
-            if (!m_HasInitialized && !m_HasError)
-            {
-                ActivityAssets actAssets = new ActivityAssets
-                {
-                    LargeImage = "defaultimage"
-                };
-
-                m_ClientActivity = new Activity
-                {
-                    Assets = actAssets,
-                    ApplicationId = 1091373211163308073,
-                    Name = "Overhaul mod",
-                    Details = "v" + OverhaulVersion.ModVersion.ToString(),
-                    Type = ActivityType.Playing
-                };
-
-                m_ActUpdHandler = new ActivityManager.UpdateActivityHandler(handleActUpdate);
-
-                try
-                {
-                    m_Client = new Discord.Discord(1091373211163308073, (ulong)global::Discord.CreateFlags.NoRequireDiscord);
-                }
-                catch
-                {
-                    m_HasError = true;
-                    m_Client = null;
-                    m_HasInitialized = false;
-                    base.enabled = false;
-                    return;
-                }
-                m_HasInitialized = true;
-            }
             Instance = this;
+            TryInitializeDiscord();
         }
 
         private void Update()
         {
-            if (!m_HasInitialized)
+            if (!SuccessfulInitialization)
             {
                 return;
             }
 
-            // This one is required to make it work
-            if(m_Client != null)
+            try
             {
                 m_Client.RunCallbacks();
+            }
+            catch
+            {
+                InterruptDiscord();
+                return;
             }
 
             m_TimeLeftToRefresh -= Time.deltaTime;
@@ -99,7 +85,7 @@ namespace CDOverhaul
                 m_TimeLeftToRefresh = 5f;
                 updateGamemodeString();
                 updateDetailsString();
-                UpdateRPC();
+                UpdateActivity();
             }
         }
 
@@ -108,13 +94,70 @@ namespace CDOverhaul
             DestroyDiscord();
         }
 
-        private void handleActUpdate(Result res)
+        public void TryInitializeDiscord()
         {
+            if (m_HasError || m_HasInitialized)
+            {
+                return;
+            }
+
+            Discord.Discord client = null;
+            Activity clientActivity;
+            ActivityAssets clientActivityAssets;
+
+            try
+            {
+                client = new Discord.Discord(OverhaulClientID, (ulong)CreateFlag);
+            }
+            catch
+            {
+                InterruptDiscord();
+                return;
+            }
+
+            m_Client = client;
+            clientActivityAssets = new ActivityAssets
+            {
+                LargeImage = "defaultimage"
+            };
+            clientActivity = new Activity
+            {
+                Assets = clientActivityAssets,
+                ApplicationId = 1091373211163308073,
+                Name = "Overhaul mod",
+                Details = "v" + OverhaulVersion.ModVersion.ToString(),
+                Type = ActivityType.Playing
+            };
+            m_ClientActivity = clientActivity;
+            m_ActUpdHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);
+
+            m_HasInitialized = true;
         }
 
-        public void UpdateRPC()
+        public void InterruptDiscord(bool setHasError = true)
         {
-            if (!m_HasInitialized)
+            m_Client = null;
+            m_HasInitialized = false;
+            m_HasError = setHasError;
+            base.enabled = false;
+        }
+
+        /// <summary>
+        /// Destroying discord will result app quit
+        /// </summary>
+        public void DestroyDiscord()
+        {
+            if (m_Client == null)
+            {
+                return;
+            }
+
+            m_Client.Dispose();
+        }
+
+        public void UpdateActivity()
+        {
+            if (!SuccessfulInitialization)
             {
                 return;
             }
@@ -127,18 +170,37 @@ namespace CDOverhaul
             {
                 m_ClientActivity.State = CurrentGamemode;
             }
-            m_Client.GetActivityManager().UpdateActivity(m_ClientActivity, m_ActUpdHandler);
+
+            ActivityManager manager = m_Client.GetActivityManager();
+            if(manager == null)
+            {
+                InterruptDiscord();
+                return;
+            }
+
+            manager.UpdateActivity(m_ClientActivity, m_ActUpdHandler);
         }
 
-        private void updateGamemodeString()
+        private void handleActivityUpdate(Result res)
         {
-            if (!m_HasInitialized)
+            if (!SuccessfulInitialization)
             {
                 return;
             }
 
+            if (res != Result.Ok)
+            {
+                InterruptDiscord();
+            }
+        }
+
+        /// <summary>
+        /// Update <see cref="CurrentGamemode"/> value
+        /// </summary>
+        private void updateGamemodeString()
+        {
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
-            string gamemodeString = "In Menu";
+            string gamemodeString = "Unknown game mode";
             switch (gm)
             {
                 case GameMode.Adventure:
@@ -174,18 +236,19 @@ namespace CDOverhaul
                 case GameMode.Twitch:
                     gamemodeString = "Twitch mode";
                     break;
+                case GameMode.None:
+                    gamemodeString = "In main menu";
+                    break;
             }
 
             CurrentGamemode = gamemodeString;
         }
 
+        /// <summary>
+        /// Update <see cref="CurrentGamemodeDetails"/> value
+        /// </summary>
         private void updateDetailsString()
         {
-            if (!m_HasInitialized)
-            {
-                return;
-            }
-
             CurrentGamemodeDetails = string.Empty;
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
             switch (gm)
@@ -263,20 +326,6 @@ namespace CDOverhaul
                         CurrentGamemodeDetails = privateString + ", " + regionString;
                     }
                     break;
-            }
-        }
-
-        public void DestroyDiscord()
-        {
-            if (!m_HasInitialized)
-            {
-                return;
-            }
-
-            m_HasInitialized = false;
-            if (m_Client != null)
-            {
-                m_Client.Dispose();
             }
         }
     }

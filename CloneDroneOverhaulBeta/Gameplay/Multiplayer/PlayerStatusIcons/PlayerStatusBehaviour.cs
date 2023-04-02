@@ -24,7 +24,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(FirstPersonMover);
+            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
             if (m_Info != null && m_Info.Equals(OverhaulModdedPlayerInfo.GetLocalPlayerInfo()))
             {
                 m_LocalBehaviour = this;
@@ -62,7 +62,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 return;
             }
-            if(m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(FirstPersonMover);
+            if(m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
 
             int intValue = (int)type;
             if(m_Info != null && m_Info.HasReceivedData)
@@ -111,12 +111,12 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            if(table == null || FirstPersonMover == null)
+            if(table == null || Owner == null)
             {
                 return;
             }
 
-            string playFabID = FirstPersonMover.GetPlayFabID();
+            string playFabID = Owner.GetPlayFabID();
             if (string.IsNullOrEmpty(playFabID) || !playFabID.Equals(table["ID"]))
             {
                 return;

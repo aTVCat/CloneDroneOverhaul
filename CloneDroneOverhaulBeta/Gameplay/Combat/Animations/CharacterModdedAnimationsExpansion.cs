@@ -36,7 +36,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnEvent(SendFallingEvent sendFallingEvent)
         {
-            if(FirstPersonMover.entity.IsOwner && FirstPersonMover.HasLocalControl())
+            if(Owner.entity.IsOwner && Owner.HasLocalControl())
             {
                 StopPlayingCustomAnimations();
             }
@@ -49,8 +49,8 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            FirstPersonMover.SetActiveEmoteIndex(-1);
-            if (dontPlayIfFell && FirstPersonMover.GetState().IsFalling)
+            Owner.SetActiveEmoteIndex(-1);
+            if (dontPlayIfFell && Owner.GetState().IsFalling)
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace CDOverhaul.Gameplay.Combat
                     m_UpperAnimation.clip = clip;
                     DelegateScheduler.Instance.Schedule(delegate
                     {
-                        if(!FirstPersonMover.GetState().IsFalling) CharacterModel.RenderUpperAnimationFrame("Idle_Sword", 1000f);
+                        if(!Owner.GetState().IsFalling) CharacterModel.RenderUpperAnimationFrame("Idle_Sword", 1000f);
                     }, Time.deltaTime);
                 }
             }
@@ -117,7 +117,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void LateUpdate()
         {
-            if(IsDisposedOrDestroyed() || CharacterModel == null || !FirstPersonMover.IsAlive())
+            if(IsDisposedOrDestroyed() || CharacterModel == null || !Owner.IsAlive())
             {
                 return;
             }

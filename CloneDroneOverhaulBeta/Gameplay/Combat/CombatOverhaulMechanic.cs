@@ -119,7 +119,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void getRequiredVariables()
         {
-            m_CachedCharacterModel = FirstPersonMover.GetCharacterModel();
+            m_CachedCharacterModel = Owner.GetCharacterModel();
             if(m_CachedCharacterModel == null)
             {
                 base.enabled = false;
@@ -128,7 +128,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public void SetRobotSpeed(float speed, bool updateAnimators, bool reset = false)
         {
-            FirstPersonMover.MaxSpeed = speed;            
+            Owner.MaxSpeed = speed;            
             if(updateAnimators) SetAnimatorSpeed(CombatOverhaulAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
         }
     }

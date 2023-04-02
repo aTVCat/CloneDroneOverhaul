@@ -1,9 +1,6 @@
 ﻿using OverhaulAPI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Outfits
@@ -56,7 +53,7 @@ namespace CDOverhaul.Gameplay.Outfits
             bool isUnlocked = AllowedPlayers.Contains(localID);
             if (!isUnlocked)
             {
-                isUnlocked = localID.Equals("883CC7F4CA3155A3");
+                //isUnlocked = localID.Equals("883CC7F4CA3155A3");
             }
 
             return isUnlocked;
@@ -70,9 +67,7 @@ namespace CDOverhaul.Gameplay.Outfits
             {
                 return null;
             }
-
-            GameObject spawnedObject = null;
-            spawnedObject = UnityEngine.Object.Instantiate(Prefab);
+            GameObject spawnedObject = UnityEngine.Object.Instantiate(Prefab);
             spawnedObject.name = spawnedObject.name.Replace("(Clone)", string.Empty);
             spawnedObject.SetActive(true);
             return spawnedObject;

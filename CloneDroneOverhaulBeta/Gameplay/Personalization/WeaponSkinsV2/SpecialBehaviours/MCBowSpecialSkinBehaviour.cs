@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
@@ -37,18 +36,19 @@ namespace CDOverhaul.Gameplay
             SetFrame(1);
         }
 
+        public override void OnPreLoad()
+        {
+            m_HasFrames = true;
+            m_Frame1 = AssetsController.GetAsset<Mesh>("MCBowMesh1", OverhaulAssetsPart.WeaponSkins);
+            m_Frame2 = AssetsController.GetAsset<Mesh>("MCBowMesh2", OverhaulAssetsPart.WeaponSkins);
+            m_Frame3 = AssetsController.GetAsset<Mesh>("MCBowMesh3", OverhaulAssetsPart.WeaponSkins);
+            m_Frame4 = AssetsController.GetAsset<Mesh>("MCBowMesh4", OverhaulAssetsPart.WeaponSkins);
+        }
+
         public override void Start()
         {
             m_TimeBeganDrawing = -1f;
             m_Filter = base.GetComponent<MeshFilter>();
-;           if (!m_HasFrames)
-            {
-                m_HasFrames = true;
-                m_Frame1 = AssetsController.GetAsset<Mesh>("MCBowMesh1", OverhaulAssetsPart.WeaponSkins);
-                m_Frame2 = AssetsController.GetAsset<Mesh>("MCBowMesh2", OverhaulAssetsPart.WeaponSkins);
-                m_Frame3 = AssetsController.GetAsset<Mesh>("MCBowMesh3", OverhaulAssetsPart.WeaponSkins);
-                m_Frame4 = AssetsController.GetAsset<Mesh>("MCBowMesh4", OverhaulAssetsPart.WeaponSkins);
-            }
         }
 
         public override void OnDisable()
@@ -92,7 +92,7 @@ namespace CDOverhaul.Gameplay
 
         public void SetFrame(byte frame)
         {
-            if (IsDisposedOrDestroyed())
+            if (IsDisposedOrDestroyed() || !m_HasFrames)
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace CDOverhaul.Gameplay
             {
                 frame = 1;
             }
-            if (m_CurrentFrame == frame)
+            if (m_CurrentFrame == frame || m_Filter == null)
             {
                 return;
             }

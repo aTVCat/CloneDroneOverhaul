@@ -29,6 +29,9 @@ namespace CDOverhaul.Gameplay
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
 
+        public const string VFX_ChangeSkinID = "WeaponSkinChangedVFX";
+        public static FirstPersonMover RobotToPlayAnimationOn;
+
         [OverhaulSettingAttribute("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedSwordSkin;
         [OverhaulSettingAttribute("Player.WeaponSkins.SwordVar", 0, !OverhaulVersion.IsDebugBuild)]
@@ -195,10 +198,10 @@ namespace CDOverhaul.Gameplay
         public void AddSpecialBehaviourToAllSkinModels<T>() where T : WeaponSkinSpecialBehaviour
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-            if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>();
-            if ((item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>();
-            if ((item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<T>();
-            if ((item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>();
+            if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
+            if ((item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>().OnPreLoad();
+            if ((item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<T>().OnPreLoad();
+            if ((item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>().OnPreLoad();
         }
 
         private void addSkins()
@@ -206,6 +209,8 @@ namespace CDOverhaul.Gameplay
             if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
+
+                PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(AssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetsPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
 
                 // Detailed sword
                 ModelOffset swordDetailedSkinOffset = new ModelOffset(new Vector3(0, 0, -0.7f),
@@ -383,8 +388,8 @@ namespace CDOverhaul.Gameplay
                 (hellFireSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
 
                 // Voilet violence sword
-                ModelOffset violetViolenceSkinOffset = new ModelOffset(new Vector3(-0.75f, 0.65f, -0.85f), new Vector3(0, 90, 90), Vector3.one * 0.525f);
-                ModelOffset violetViolenceSkinOffset2 = new ModelOffset(new Vector3(0.72f, -0.65f, -0.85f), new Vector3(0, -90, -90), Vector3.one * 0.525f);
+                ModelOffset violetViolenceSkinOffset = new ModelOffset(new Vector3(-0.75f, 0.625f, -0.85f), new Vector3(0, 90, 90), Vector3.one * 0.525f);
+                ModelOffset violetViolenceSkinOffset2 = new ModelOffset(new Vector3(0.72f, -0.625f, -0.85f), new Vector3(0, -90, -90), Vector3.one * 0.525f);
                 IWeaponSkinItemDefinition violetViolenceSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Violet Violence", ItemFilter.Exclusive);
                 violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolence", OverhaulAssetsPart.WeaponSkins),
                     violetViolenceSkinOffset,
