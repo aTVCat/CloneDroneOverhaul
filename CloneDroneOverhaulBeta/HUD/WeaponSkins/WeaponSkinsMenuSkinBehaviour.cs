@@ -1,4 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Outfits;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +17,7 @@ namespace CDOverhaul.HUD
 
         private static readonly List<WeaponSkinsMenuSkinBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuSkinBehaviour>();
 
-        public static void SelectSpecific()
+        public static void SelectSpecific(bool isOutfitSelection = false)
         {
             if (m_InstantiatedButtons.IsNullOrEmpty())
             {
@@ -24,7 +26,14 @@ namespace CDOverhaul.HUD
 
             foreach (WeaponSkinsMenuSkinBehaviour b in m_InstantiatedButtons)
             {
-                b.TrySelect();
+                if (isOutfitSelection && b.IsOutfitSelection)
+                {
+                    b.TrySelect();
+                }
+                else if (!isOutfitSelection && !b.IsOutfitSelection)
+                {
+                    b.TrySelect();
+                }
             }
         }
 
@@ -44,7 +53,9 @@ namespace CDOverhaul.HUD
 
         public bool IsSelected => m_IsSelected;
 
-        public override void Awake()
+        public bool IsOutfitSelection;
+
+        public void Initialize()
         {
             if (IsDisposedOrDestroyed())
             {
@@ -147,6 +158,30 @@ namespace CDOverhaul.HUD
         public void TrySelect()
         {
             m_IsSelected = false;
+            if (IsOutfitSelection)
+            {
+                SetSelected(OutfitsController.EquippedAccessories.Contains(m_Skin), true);
+                WeaponSkinsMenu.StartCooldown();
+
+                FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+                if(mover != null)
+                {
+                    OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
+                    if(outfits != null)
+                    {
+                        outfits.SpawnAccessories();
+                    }
+                }
+
+                OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
+                if (info != null && info.HasReceivedData)
+                {
+                    info.RefreshData();
+                }
+
+                return;
+            }
+
             switch (m_WeaponType)
             {
                 case WeaponType.Sword:
@@ -166,9 +201,41 @@ namespace CDOverhaul.HUD
 
         public void SelectThis()
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
+            if (IsDisposedOrDestroyed() || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
             {
                 return;
+            }
+
+            if (IsOutfitSelection)
+            {
+                OutfitsController.SetAccessoryEquipped(m_Skin, !m_IsSelected);
+                SelectSpecific(true);
+                if (OverhaulVersion.IsDebugBuild && m_IsSelected)
+                {
+                    FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+                    if (mover == null || !mover.HasCharacterModel())
+                    {
+                        return;
+                    }
+
+                    AccessoryItem item = OutfitsController.GetAccessoryItem(m_Skin, false);
+                    if (!item.Offsets.ContainsKey(mover.GetCharacterModel().gameObject.name))
+                    {
+                        return;
+                    }
+
+                    OutfitsController.EditingItem = item;
+                    OutfitsController.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
+                    WeaponSkinsMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
+                }
+                return;
+            }
+            else
+            {
+                if (m_IsSelected)
+                {
+                    return;
+                }
             }
 
             m_SkinsMenu.SelectSkin(m_WeaponType, m_Skin);

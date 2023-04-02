@@ -1,12 +1,18 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Outfits;
+using OverhaulAPI;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
+    /// <summary>
+    /// Used for outfits and skins menus
+    /// </summary>
     public class WeaponSkinsMenu : OverhaulUI
     {
         public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
@@ -21,8 +27,17 @@ namespace CDOverhaul.HUD
         private static float m_TimeChangedSkins = 0f;
         public static float GetSkinChangeCooldown() => 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
         public static bool AllowChangingSkins() => Time.unscaledTime >= m_TimeToAllowChangingSkins;
+        public static void StartCooldown()
+        {
+            if (GameModeManager.IsMultiplayer())
+            {
+                m_TimeChangedSkins = Time.unscaledTime;
+                m_TimeToAllowChangingSkins = m_TimeChangedSkins + 2f;
+            }
+        }
 
         private IWeaponSkinItemDefinition[] m_Items;
+        private List<AccessoryItem> m_AccessoryItems;
         private WeaponSkinsController m_Controller;
 
         private Hashtable m_HashtableTest;
@@ -32,6 +47,15 @@ namespace CDOverhaul.HUD
         private WeaponType m_SelectedWeapon;
         private Button m_DefaultSkinButton;
         private ScrollRect m_ScrollRect;
+
+        private Button m_DebugApplyButton;
+        private Button m_DebugSaveButton;
+        private Dropdown m_DebugCharacterModelsDropdown;
+
+        public bool IsOutfitSelection;
+
+        public static WeaponSkinsMenu SkinsSelection;
+        public static WeaponSkinsMenu OutfitSelection;
 
         public override void Initialize()
         {
@@ -55,6 +79,115 @@ namespace CDOverhaul.HUD
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
             MyModdedObject.GetObject<Text>(8).text = string.Empty;
+
+            if (base.gameObject.name.Equals("SkinsSelection"))
+            {
+                SkinsSelection = this;
+            }
+            else
+            {
+                m_AccessoryItems = new List<AccessoryItem>();
+                OutfitSelection = this;
+
+                m_DebugSaveButton = m.GetObject<Button>(28);
+                m_DebugSaveButton.onClick.AddListener(delegate
+                {
+                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                    {
+                        return;
+                    }
+                    OutfitsController.EditingItem.SaveOffsets();
+                });
+                m_DebugApplyButton = m.GetObject<Button>(29);
+                m_DebugApplyButton.onClick.AddListener(delegate
+                {
+                    if(OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                    {
+                        return;
+                    }
+
+                    ModelOffset off = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                    try
+                    {
+                        off.OffsetPosition = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(19).text), float.Parse(MyModdedObject.GetObject<InputField>(20).text), float.Parse(MyModdedObject.GetObject<InputField>(21).text));
+                        off.OffsetEulerAngles = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(22).text), float.Parse(MyModdedObject.GetObject<InputField>(23).text), float.Parse(MyModdedObject.GetObject<InputField>(24).text));
+                        off.OffsetLocalScale = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(25).text), float.Parse(MyModdedObject.GetObject<InputField>(26).text), float.Parse(MyModdedObject.GetObject<InputField>(27).text));
+                    }
+                    catch
+                    {
+
+                    }
+                    FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                    if (player != null)
+                    {
+                        OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
+                        if (ow != null)
+                        {
+                            ow.SpawnAccessories();
+                        }
+                    }
+                });
+
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    m_DebugCharacterModelsDropdown = m.GetObject<Dropdown>(30);
+                    m_DebugCharacterModelsDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(true);
+                    m_DebugCharacterModelsDropdown.onValueChanged.AddListener(delegate (int index)
+                    {
+                        if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                        {
+                            return;
+                        }
+
+                        SettingsManager.Instance.SetMultiplayerCharacterModelIndex(index);
+                        SettingsManager.Instance.SetUseSkinInSingleplayer(true);
+
+                        Vector3 pos = CharacterTracker.Instance.GetPlayerRobot().transform.position;
+                        CharacterTracker.Instance.DestroyExistingPlayer();
+
+                        GameObject gm = new GameObject("DebugSpawnpoint");
+                        gm.transform.position = pos;
+                        FirstPersonMover newPlayer = GameFlowManager.Instance.SpawnPlayer(gm.transform, true, true, null);
+                        OutfitsController.EditingCharacterModel = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[index].CharacterModelPrefab.gameObject.name + "(Clone)";
+                        DebugSetInputFieldsValues(OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel]);
+                        Destroy(gm);
+                    });
+                }, 0.5f);
+
+                m.GetObject<Button>(31).onClick.AddListener(delegate
+                {
+                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                    {
+                        return;
+                    }
+
+                    OutfitsController.CopiedModelOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                });
+
+                m.GetObject<Button>(32).onClick.AddListener(delegate
+                {
+                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel) || OutfitsController.CopiedModelOffset == null)
+                    {
+                        return;
+                    }
+
+                    ModelOffset edititngOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                    edititngOffset.OffsetPosition = OutfitsController.CopiedModelOffset.OffsetPosition;
+                    edititngOffset.OffsetEulerAngles = OutfitsController.CopiedModelOffset.OffsetEulerAngles;
+                    edititngOffset.OffsetLocalScale = OutfitsController.CopiedModelOffset.OffsetLocalScale;
+                    DebugSetInputFieldsValues(edititngOffset);
+
+                    FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                    if (player != null)
+                    {
+                        OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
+                        if (ow != null)
+                        {
+                            ow.SpawnAccessories();
+                        }
+                    }
+                });
+            }
 
             SetMenuActive(false);
         }
@@ -115,19 +248,36 @@ namespace CDOverhaul.HUD
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if(mover != null && mover.HasCharacterModel())
             {
-                mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 90, 0) : Vector3.zero;
+                if (IsOutfitSelection)
+                {
+                    mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 180, 0) : Vector3.zero;
+                }
+                else
+                {
+                    mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 90, 0) : Vector3.zero;
+                }
             }
 
-            PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.SwitchingSkins : PlayerStatusType.Idle);
+            if (IsOutfitSelection)
+            {
+                PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.EquippingAccessories : PlayerStatusType.Idle);
+                if (value)
+                {
+                   PopulateSkins(WeaponType.None);
+                }
+            }
+            else
+            {
+                PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.SwitchingSkins : PlayerStatusType.Idle);
+            }
 
             base.gameObject.SetActive(value);
             ShowCursor = value;
 
-            if (!value)
+            if (!value || IsOutfitSelection)
             {
                 return;
             }
-
             MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
         }
@@ -212,18 +362,49 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if (mover != null && mover.HasCharacterModel() && mover.HasWeapon(weaponType))
+            if (!IsOutfitSelection)
             {
-                mover.SetEquippedWeaponType(weaponType);
+                FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+                if (mover != null && mover.HasCharacterModel() && mover.HasWeapon(weaponType))
+                {
+                    mover.SetEquippedWeaponType(weaponType);
+                }
             }
 
-            m_ScrollRect.verticalNormalizedPosition = 1f;
-            WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
+            if (!IsOutfitSelection) WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
             TransformUtils.DestroyAllChildren(GetContainer(true));
+            m_ScrollRect.verticalNormalizedPosition = 1f;
+
+            if (IsOutfitSelection)
+            {
+                m_AccessoryItems = OutfitsController.AllAccessories;
+                if (m_AccessoryItems.IsNullOrEmpty())
+                {
+                    return;
+                }
+                m_AccessoryItems = m_AccessoryItems.OrderBy(f => f.Name).ToList();
+
+                foreach (AccessoryItem aitem in m_AccessoryItems)
+                {
+                    string itemName = aitem.Name;
+
+                    ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(true), GetContainer(true));
+                    newPrefab.gameObject.SetActive(true);
+                    newPrefab.GetObject<Text>(1).text = itemName;
+                    newPrefab.GetComponent<Button>().interactable = aitem.IsUnlocked();
+                    newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.AllowedPlayers);
+                    WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
+                    b.IsOutfitSelection = true;
+                    b.Initialize();
+                    b.SetMenu(this);
+                    b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.AllowedPlayers));
+                    b.TrySelect();
+                }
+
+                return;
+            }
 
             m_SelectedWeapon = weaponType;
-
             if (m_SelectedWeapon.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins())
             {
                 Text newPrefab = Instantiate<Text>(m_TextPrefab, GetContainer(true));
@@ -239,6 +420,7 @@ namespace CDOverhaul.HUD
             }
             m_Items = m_Items.OrderBy(f => f.GetItemName()).ToArray();
 
+
             foreach(IWeaponSkinItemDefinition skin in m_Items)
             {
                 if(skin.GetWeaponType() != weaponType)
@@ -252,13 +434,13 @@ namespace CDOverhaul.HUD
                 newPrefab.gameObject.SetActive(true);
                 newPrefab.GetObject<Text>(1).text = skinName;
                 WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
+                b.Initialize();
                 b.SetMenu(this);
                 b.SetWeaponType(weaponType);
                 b.SetSkin(skinName, (skin as WeaponSkinItemDefinitionV2).AuthorDiscord, !string.IsNullOrEmpty(skin.GetExclusivePlayerID()));
                 b.TrySelect();
                 b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
                 b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
-                m_ScrollRect.verticalNormalizedPosition = 1f;
             }
 
             switch (weaponType)
@@ -337,11 +519,7 @@ namespace CDOverhaul.HUD
                 info.RefreshData();
             }
 
-            if (GameModeManager.IsMultiplayer())
-            {
-                m_TimeChangedSkins = Time.unscaledTime;
-                m_TimeToAllowChangingSkins = m_TimeChangedSkins + 2f;
-            }
+            StartCooldown();
         }
 
         public void ShowDescriptionTooltip(WeaponType type, string skinName)
@@ -402,6 +580,26 @@ namespace CDOverhaul.HUD
         public void SetAllowEnemiesUseSkins(bool value)
         {
             SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
+        }
+
+        public void DebugSetInputFieldsValues(ModelOffset transform)
+        {
+            if (!IsOutfitSelection)
+            {
+                return;
+            }
+
+            MyModdedObject.GetObject<InputField>(19).text = transform.OffsetPosition[0].ToString();
+            MyModdedObject.GetObject<InputField>(20).text = transform.OffsetPosition[1].ToString();
+            MyModdedObject.GetObject<InputField>(21).text = transform.OffsetPosition[2].ToString();
+
+            MyModdedObject.GetObject<InputField>(22).text = transform.OffsetEulerAngles[0].ToString();
+            MyModdedObject.GetObject<InputField>(23).text = transform.OffsetEulerAngles[1].ToString();
+            MyModdedObject.GetObject<InputField>(24).text = transform.OffsetEulerAngles[2].ToString();
+
+            MyModdedObject.GetObject<InputField>(25).text = transform.OffsetLocalScale[0].ToString();
+            MyModdedObject.GetObject<InputField>(26).text = transform.OffsetLocalScale[1].ToString();
+            MyModdedObject.GetObject<InputField>(27).text = transform.OffsetLocalScale[2].ToString();
         }
 
         private void Update()

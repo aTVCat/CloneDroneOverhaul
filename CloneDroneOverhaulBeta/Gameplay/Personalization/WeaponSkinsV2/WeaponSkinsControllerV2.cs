@@ -13,19 +13,19 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        private const string ATVCatDiscord = "A TVCat#9940";
-        private const string TabiDiscord = "[₮₳฿ł]#4233";
-        private const string CaptainMeowDiscord = "капитан кошачьих#7399";
-        private const string Igrok_X_XPDiscord = "Igrok_x_xp#2966";
-        private const string SonicGlebDiscord = "SonicGleb#4862";
-        private const string WaterDiscord = "Water#2977";
-        private const string LostCatDiscord = "TheLostCat#8845";
-        private const string ZoloRDiscord = "ZoloR#3380";
-        private const string SharpDiscord = "Luceferus#2219";
-        private const string HumanDiscord = "Human#8570";
-        private const string HizDiscord = "TheHiz#6138";
-        private const string KegaDiscord = "Mr. КеГ#3924";
-        private const string And = " and ";
+        public const string ATVCatDiscord = "A TVCat#9940";
+        public const string TabiDiscord = "[₮₳฿ł]#4233";
+        public const string CaptainMeowDiscord = "капитан кошачьих#7399";
+        public const string Igrok_X_XPDiscord = "Igrok_x_xp#2966";
+        public const string SonicGlebDiscord = "SonicGleb#4862";
+        public const string WaterDiscord = "Water#2977";
+        public const string LostCatDiscord = "TheLostCat#8845";
+        public const string ZoloRDiscord = "ZoloR#3380";
+        public const string SharpDiscord = "Luceferus#2219";
+        public const string HumanDiscord = "Human#8570";
+        public const string HizDiscord = "TheHiz#6138";
+        public const string KegaDiscord = "Mr. КеГ#3924";
+        public const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
 

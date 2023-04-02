@@ -1,4 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using OverhaulAPI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +32,10 @@ namespace CDOverhaul.Gameplay.Outfits
             }
             _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
 
-            SpawnAccessories();
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                SpawnAccessories();
+            }, 0.2f);
         }
 
         protected override void OnDisposed()
@@ -67,7 +72,7 @@ namespace CDOverhaul.Gameplay.Outfits
                 return;
             }
 
-            string equippedItems = null;
+            string equippedItems = string.Empty;
             if (HasPlayerInfo)
             {
                 Hashtable hashtable = m_Info.GetHashtable();
@@ -78,7 +83,10 @@ namespace CDOverhaul.Gameplay.Outfits
             }
             else
             {
-                equippedItems = OutfitsController.EquippedAccessories;
+                if (!GameModeManager.IsMultiplayer())
+                {
+                    equippedItems = OutfitsController.EquippedAccessories;
+                }
             }
 
             List<AccessoryItem> items = OutfitsController.GetAccessories(equippedItems);
@@ -109,13 +117,36 @@ namespace CDOverhaul.Gameplay.Outfits
                     }
 
                     GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
-                    instantiatedPrefab.transform.localPosition = Vector3.zero;
-                    instantiatedPrefab.transform.localEulerAngles = Vector3.zero;
-                    instantiatedPrefab.transform.localScale = Vector3.one;
-                    instantiatedPrefab.SetActive(true);
+                    SetPosition(instantiatedPrefab, accessoryItem);
+                    accessoryItem.SetUpPrefab(instantiatedPrefab);
                     m_SpawnedAccessories.Add(accessoryItem.Name, instantiatedPrefab);
                 }
+                else
+                {
+                    throw new NotImplementedException("Detached accessories");
+                }
             }
+        }
+
+        public void SetPosition(GameObject accessory, AccessoryItem item)
+        {
+            if(accessory == null || item == null || Owner == null || !Owner.HasCharacterModel())
+            {
+                return;
+            }
+
+            string characterModelName = Owner.GetCharacterModel().gameObject.name;
+            if (string.IsNullOrEmpty(characterModelName) || item.Offsets.IsNullOrEmpty() || !item.Offsets.ContainsKey(characterModelName))
+            {
+                accessory.SetActive(false);
+                return;
+            }
+
+            ModelOffset offset = item.Offsets[characterModelName];
+            accessory.transform.localPosition = offset.OffsetPosition;
+            accessory.transform.localEulerAngles = offset.OffsetEulerAngles;
+            accessory.transform.localScale = offset.OffsetLocalScale;
+            accessory.SetActive(true);
         }
     }
 }

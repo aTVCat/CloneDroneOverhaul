@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulAPI;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -24,6 +25,11 @@ namespace CDOverhaul.Gameplay.Outfits
         #endregion
 
         private static readonly List<AccessoryItem> m_Accessories = new List<AccessoryItem>();
+        public static List<AccessoryItem> AllAccessories => m_Accessories;
+
+        public static AccessoryItem EditingItem;
+        public static string EditingCharacterModel;
+        public static ModelOffset CopiedModelOffset;
 
         public override void Initialize()
         {
@@ -49,6 +55,7 @@ namespace CDOverhaul.Gameplay.Outfits
         private void addAccessories()
         {
             AddAccessory<DefaultAccessoryItem>("Igrok's hat", "P_Acc_Head_Igrok's hat", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.ATVCatDiscord);
         }
 
         /// <summary>
@@ -85,7 +92,22 @@ namespace CDOverhaul.Gameplay.Outfits
 
             AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryType, accessoryBodyPart);
             if(!string.IsNullOrEmpty(assetName)) item.Prefab = AssetsController.GetAsset(assetName, OverhaulAssetsPart.Accessories);
+            item.SetUpOffsets();
             m_Accessories.Add(item);
+        }
+
+        public void SetAuthor(string author)
+        {
+            if (m_Accessories.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            AccessoryItem item = m_Accessories[m_Accessories.Count - 1];
+            if(item != null)
+            {
+                item.Author = author;
+            }
         }
 
         /// <summary>

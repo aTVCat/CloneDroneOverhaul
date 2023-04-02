@@ -8,6 +8,8 @@ using CDOverhaul.Localization;
 using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
+using System.IO;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -133,6 +135,22 @@ namespace CDOverhaul
             GameplayController = null;
             VoxelsController = null;
             OverhaulMod.Core = null;
+        }
+
+        public static string ReadTextFile(string filePath)
+        {
+            string path = OverhaulMod.Core.ModDirectory + filePath;
+            bool fileExists = File.Exists(path);
+            if (!fileExists)
+            {
+                return string.Empty;
+            }
+
+            StreamReader r = File.OpenText(path);
+            string result = r.ReadToEnd();
+            r.Close();
+
+            return result;
         }
     }
 }

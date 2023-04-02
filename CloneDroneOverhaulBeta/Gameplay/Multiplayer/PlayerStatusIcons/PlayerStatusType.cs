@@ -3,6 +3,7 @@
     public enum PlayerStatusType
     {
         Idle,
-        SwitchingSkins
+        SwitchingSkins,
+        EquippingAccessories
     }
 }

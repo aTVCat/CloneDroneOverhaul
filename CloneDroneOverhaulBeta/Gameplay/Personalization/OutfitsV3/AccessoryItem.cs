@@ -1,6 +1,9 @@
-﻿using OverhaulAPI;
+﻿using Newtonsoft.Json;
+using OverhaulAPI;
+using Pathfinding;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Outfits
@@ -8,6 +11,7 @@ namespace CDOverhaul.Gameplay.Outfits
     public abstract class AccessoryItem
     {
         public const string NoDescProvidedString = "No description provided.";
+        public const string NoAuthorString = "TBA";
 
         private string m_Name;
         public string Name => m_Name;
@@ -22,6 +26,26 @@ namespace CDOverhaul.Gameplay.Outfits
                     return NoDescProvidedString;
                 }
                 return m_Description;
+            }
+        }
+
+        private string m_Author;
+        public string Author
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_Author))
+                {
+                    return NoAuthorString;
+                }
+                return m_Author;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(m_Author))
+                {
+                    m_Author = value;
+                }
             }
         }
 
@@ -53,13 +77,49 @@ namespace CDOverhaul.Gameplay.Outfits
             bool isUnlocked = AllowedPlayers.Contains(localID);
             if (!isUnlocked)
             {
-                //isUnlocked = localID.Equals("883CC7F4CA3155A3");
+                isUnlocked = localID.Equals("883CC7F4CA3155A3");
             }
-
             return isUnlocked;
         }
 
         public abstract void SetUpPrefab(GameObject prefab);
+
+        public void SetUpOffsets()
+        {
+            string path = "Assets/AccessoriesOffsets/" + Name + "_Offsets.json";
+            bool hasOffsetsFile = File.Exists(OverhaulMod.Core.ModDirectory + path);
+            if (!hasOffsetsFile)
+            {
+                MultiplayerCharacterCustomizationManager multiplayerCharacterCustomization = MultiplayerCharacterCustomizationManager.Instance;
+                if (multiplayerCharacterCustomization == null || multiplayerCharacterCustomization.CharacterModels.IsNullOrEmpty())
+                {
+                    return;
+                }
+
+                Offsets = new Dictionary<string, ModelOffset>();
+                foreach (CharacterModelCustomizationEntry entry in multiplayerCharacterCustomization.CharacterModels)
+                {
+                    if (entry == null || entry.CharacterModelPrefab == null)
+                    {
+                        continue;
+                    }
+
+                    string characterModelName = entry.CharacterModelPrefab.gameObject.name + "(Clone)";
+                    Offsets.Add(characterModelName, new ModelOffset(Vector3.zero, Vector3.zero, Vector3.one));
+                }
+                SaveOffsets();
+            }
+            else
+            {
+                string text = OverhaulCore.ReadTextFile(path);
+                Offsets = JsonConvert.DeserializeObject<Dictionary<string, ModelOffset>>(text);
+            }
+        }
+
+        public void SaveOffsets()
+        {
+            File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/AccessoriesOffsets/" + Name + "_Offsets.json", JsonConvert.SerializeObject(Offsets));
+        }
 
         public GameObject InstantiateAccessory()
         {

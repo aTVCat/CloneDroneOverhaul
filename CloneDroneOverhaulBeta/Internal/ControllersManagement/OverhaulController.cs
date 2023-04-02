@@ -61,7 +61,7 @@ namespace CDOverhaul
         #region Static
 
         private static GameObject m_ControllersGameObject;
-        private static readonly Dictionary<Type, OverhaulController> m_ControllersDictionary = new Dictionary<Type, OverhaulController>();
+        private static readonly List<OverhaulController> m_ControllersList = new List<OverhaulController>();
 
         /// <summary>
         /// Initialize static fields
@@ -70,7 +70,7 @@ namespace CDOverhaul
         internal static void InitializeStatic(in GameObject controllersGO)
         {
             m_ControllersGameObject = controllersGO;
-            m_ControllersDictionary.Clear();
+            m_ControllersList.Clear();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace CDOverhaul
             Transform transform = transformOverride != null ? transformOverride : m_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
             component.InitializeInternal();
-            m_ControllersDictionary.Add(typeof(T), component);
+            m_ControllersList.Add(component);
             return component;
         }
 
@@ -95,16 +95,18 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T GetController<T>() where T : OverhaulController
         {
-            if (!m_ControllersDictionary.ContainsKey(typeof(T)))
+            foreach(OverhaulController controllerr in m_ControllersList)
             {
-                throw new NullReferenceException("Controller with type " + typeof(T) + " does not exist");
+                if(controllerr.GetType() == typeof(T))
+                {
+                    if (controllerr.HadBadStart)
+                    {
+                        throw new Exception("Using incorrectly started controller is not allowed");
+                    }
+                    return (T)controllerr;
+                }
             }
-            OverhaulController controller = m_ControllersDictionary[typeof(T)];
-            if (controller.HadBadStart)
-            {
-                throw new Exception("Using incorrectly started controller is not allowed");
-            }
-            return (T)controller;
+            return null;
         }
 
         /// <summary>
@@ -118,7 +120,7 @@ namespace CDOverhaul
             {
                 throw new ArgumentNullException("Cannot remove controller instance because it is null.");
             }
-            _ = m_ControllersDictionary.Remove(controllerInstance.GetType());
+            _ = m_ControllersList.Remove(controllerInstance);
         }
 
         #endregion;

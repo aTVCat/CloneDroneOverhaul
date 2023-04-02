@@ -49,6 +49,7 @@ namespace CDOverhaul.HUD
         private Button m_PersonalizationButton;
         private Transform m_PersonalizationPanel;
         private Button m_PersonalizationSkinsButton;
+        private Button m_PersonalizationOutfitsButton;
 
         private Button m_ExitButton;
         private Transform m_ExitSelectPanel;
@@ -75,6 +76,8 @@ namespace CDOverhaul.HUD
             m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
             m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
+            m_PersonalizationOutfitsButton = MyModdedObject.GetObject<Button>(3);
+            m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
@@ -142,15 +145,25 @@ namespace CDOverhaul.HUD
 
         public void OnSkinsButtonClicked()
         {
-            WeaponSkinsMenu menu = GetController<WeaponSkinsMenu>();
+            WeaponSkinsMenu menu = WeaponSkinsMenu.SkinsSelection;
             if (menu == null)
             {
                 return;
             }
 
-            // Todo: Notify player about unpausing the game OR make it possible to change skins while under arena
             Hide();
+            menu.SetMenuActive(true);
+        }
 
+        public void OnOutfitsButtonClicked()
+        {
+            WeaponSkinsMenu menu = WeaponSkinsMenu.OutfitSelection;
+            if (menu == null)
+            {
+                return;
+            }
+
+            Hide();
             menu.SetMenuActive(true);
         }
 
