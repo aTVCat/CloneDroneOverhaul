@@ -258,6 +258,7 @@ namespace CDOverhaul.HUD
                 b.TrySelect();
                 b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
                 b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
+                m_ScrollRect.verticalNormalizedPosition = 1f;
             }
 
             switch (weaponType)

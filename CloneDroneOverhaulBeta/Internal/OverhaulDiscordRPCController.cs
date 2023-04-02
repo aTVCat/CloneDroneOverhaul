@@ -13,6 +13,7 @@ namespace CDOverhaul
         private static Discord.ActivityManager.UpdateActivityHandler m_ActUpdHandler;
 
         private static bool m_HasInitialized;
+        private static bool m_HasError;
 
         private string m_CurrentGamemode;
         public string CurrentGamemode
@@ -44,7 +45,7 @@ namespace CDOverhaul
 
         private void Start()
         {
-            if (!m_HasInitialized)
+            if (!m_HasInitialized && !m_HasError)
             {
                 ActivityAssets actAssets = new ActivityAssets
                 {
@@ -62,7 +63,18 @@ namespace CDOverhaul
 
                 m_ActUpdHandler = new ActivityManager.UpdateActivityHandler(handleActUpdate);
 
-                m_Client = new Discord.Discord(1091373211163308073, (ulong)global::Discord.CreateFlags.Default);
+                try
+                {
+                    m_Client = new Discord.Discord(1091373211163308073, (ulong)global::Discord.CreateFlags.NoRequireDiscord);
+                }
+                catch
+                {
+                    m_HasError = true;
+                    m_Client = null;
+                    m_HasInitialized = false;
+                    base.enabled = false;
+                    return;
+                }
                 m_HasInitialized = true;
             }
             Instance = this;
@@ -70,6 +82,11 @@ namespace CDOverhaul
 
         private void Update()
         {
+            if (!m_HasInitialized)
+            {
+                return;
+            }
+
             // This one is required to make it work
             if(m_Client != null)
             {
@@ -97,6 +114,11 @@ namespace CDOverhaul
 
         public void UpdateRPC()
         {
+            if (!m_HasInitialized)
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(CurrentGamemodeDetails))
             {
                 m_ClientActivity.State = CurrentGamemode + " [" + CurrentGamemodeDetails + "]";
@@ -110,6 +132,11 @@ namespace CDOverhaul
 
         private void updateGamemodeString()
         {
+            if (!m_HasInitialized)
+            {
+                return;
+            }
+
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
             string gamemodeString = "In Menu";
             switch (gm)
@@ -154,6 +181,11 @@ namespace CDOverhaul
 
         private void updateDetailsString()
         {
+            if (!m_HasInitialized)
+            {
+                return;
+            }
+
             CurrentGamemodeDetails = string.Empty;
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
             switch (gm)
@@ -236,6 +268,11 @@ namespace CDOverhaul
 
         public void DestroyDiscord()
         {
+            if (!m_HasInitialized)
+            {
+                return;
+            }
+
             m_HasInitialized = false;
             if (m_Client != null)
             {

@@ -63,6 +63,10 @@ namespace CDOverhaul.HUD
             m_VersionLabel = null;
             m_TitleScreenUIVersionLabel = null;
             m_ExclusiveLabel = null;
+
+            OverhaulEventManager.RemoveEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            OverhaulEventManager.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            OverhaulEventManager.RemoveEventListener(GlobalEvents.UILanguageChanged, refreshVisibility);
         }
 
         public void RefreshVersionLabel(bool forceRefreshVisibilityNextTime = false)

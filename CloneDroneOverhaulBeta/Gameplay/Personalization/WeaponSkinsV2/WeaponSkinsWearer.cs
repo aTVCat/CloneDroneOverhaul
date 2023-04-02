@@ -61,6 +61,17 @@ namespace CDOverhaul.Gameplay
             SpawnSkins();
         }
 
+        protected override void OnDeath()
+        {
+            WeaponSkinSpecialBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            if(b == null)
+            {
+                return;
+            }
+
+            b.OnDeath();
+        }
+
         private void onGetData(Hashtable hash)
         {
             IsMultiplayerControlled = true;

@@ -7,5 +7,6 @@ namespace CDOverhaul.Gameplay
     {
         public abstract void OnBeginDraw();
         public abstract void OnEndDraw();
+        public abstract void OnDeath();
     }
 }

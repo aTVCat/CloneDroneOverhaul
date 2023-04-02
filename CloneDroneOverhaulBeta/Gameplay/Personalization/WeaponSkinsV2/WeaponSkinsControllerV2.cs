@@ -1045,22 +1045,22 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.4f, 0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1f)), true, false);
 
                 AddSkinQuick(WeaponType.Sword, "Minecraft", HumanDiscord, "MCSword", "MCSwordFire", "MCSwordLBS", "MCSwordFireLBS");
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, false);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, false);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, true);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, true);
 
                 AddSkinQuick(WeaponType.Sword, "Minecraft-Golden", HumanDiscord, "MCGoldenSword", "MCGoldenSwordFire", "MCGoldenSwordLBS", "MCGoldenSwordLBSFire");
                 SetSkinExclusiveQuick("47A1CD84FD538A2E");
                 SetSkinColorParameters(false, -1, false, -1);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, false);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, false);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), false, true);
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.045f, 0.1f), new Vector3(90f, 45f, 0f), new Vector3(1.25f, 1.25f, 1f)), true, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, true);
 
                 AddSkinQuick(WeaponType.Bow, "Minecraft", HumanDiscord, "MCBow_1");
                 AddSpecialBehaviourToAllSkinModels<MCBowSpecialSkinBehaviour>();
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.375f, 0.05f, 0.05f), new Vector3(0f, 0f, 135f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.45f, 0.05f, 0.075f), new Vector3(0f, 0f, 135f), new Vector3(1.15f, 1.15f, 1f)), false, false);
 
                 AddSkinQuick(WeaponType.Sword, "Machette", HizDiscord + And + ATVCatDiscord, "MachetteSword", "MachetteSwordFire", "MachetteSword", "MachetteSwordFire");
                 SetSkinColorParameters(true, -1, false, -1);

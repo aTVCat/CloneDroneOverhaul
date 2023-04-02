@@ -15,6 +15,7 @@ namespace CDOverhaul.Gameplay
         private float m_TimeBeganDrawing;
 
         private int m_CurrentFrame;
+        private bool m_OwnerDied;
 
         public override void OnBeginDraw()
         {
@@ -28,6 +29,12 @@ namespace CDOverhaul.Gameplay
         public override void OnEndDraw()
         {
             m_TimeBeganDrawing = -1f;
+        }
+
+        public override void OnDeath()
+        {
+            m_OwnerDied = true;
+            SetFrame(1);
         }
 
         public override void Start()
@@ -56,7 +63,7 @@ namespace CDOverhaul.Gameplay
 
         private void Update()
         {
-            if (IsDisposedOrDestroyed())
+            if (IsDisposedOrDestroyed() || m_OwnerDied)
             {
                 return;
             }
@@ -88,6 +95,11 @@ namespace CDOverhaul.Gameplay
             if (IsDisposedOrDestroyed())
             {
                 return;
+            }
+
+            if (m_OwnerDied)
+            {
+                frame = 1;
             }
             if (m_CurrentFrame == frame)
             {
