@@ -514,6 +514,7 @@ namespace CDOverhaul.Gameplay
                     false);
                 (nezerHillSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = ZoloRDiscord;
                 (nezerHillSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
+                (nezerHillSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
 
                 ModelOffset jetsamOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));
                 ModelOffset jetsamOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.15f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));

@@ -89,104 +89,111 @@ namespace CDOverhaul.HUD
                 m_AccessoryItems = new List<AccessoryItem>();
                 OutfitSelection = this;
 
-                m_DebugSaveButton = m.GetObject<Button>(28);
-                m_DebugSaveButton.onClick.AddListener(delegate
+                if (OverhaulVersion.IsDebugBuild)
                 {
-                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                    m_DebugSaveButton = m.GetObject<Button>(28);
+                    m_DebugSaveButton.onClick.AddListener(delegate
                     {
-                        return;
-                    }
-                    OutfitsController.EditingItem.SaveOffsets();
-                });
-                m_DebugApplyButton = m.GetObject<Button>(29);
-                m_DebugApplyButton.onClick.AddListener(delegate
-                {
-                    if(OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
-                    {
-                        return;
-                    }
-
-                    ModelOffset off = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
-                    try
-                    {
-                        off.OffsetPosition = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(19).text), float.Parse(MyModdedObject.GetObject<InputField>(20).text), float.Parse(MyModdedObject.GetObject<InputField>(21).text));
-                        off.OffsetEulerAngles = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(22).text), float.Parse(MyModdedObject.GetObject<InputField>(23).text), float.Parse(MyModdedObject.GetObject<InputField>(24).text));
-                        off.OffsetLocalScale = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(25).text), float.Parse(MyModdedObject.GetObject<InputField>(26).text), float.Parse(MyModdedObject.GetObject<InputField>(27).text));
-                    }
-                    catch
-                    {
-
-                    }
-                    FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-                    if (player != null)
-                    {
-                        OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
-                        if (ow != null)
+                        if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
                         {
-                            ow.SpawnAccessories();
+                            return;
                         }
-                    }
-                });
-
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    m_DebugCharacterModelsDropdown = m.GetObject<Dropdown>(30);
-                    m_DebugCharacterModelsDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(true);
-                    m_DebugCharacterModelsDropdown.onValueChanged.AddListener(delegate (int index)
+                        OutfitsController.EditingItem.SaveOffsets();
+                    });
+                    m_DebugApplyButton = m.GetObject<Button>(29);
+                    m_DebugApplyButton.onClick.AddListener(delegate
                     {
                         if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
                         {
                             return;
                         }
 
-                        SettingsManager.Instance.SetMultiplayerCharacterModelIndex(index);
-                        SettingsManager.Instance.SetUseSkinInSingleplayer(true);
-
-                        Vector3 pos = CharacterTracker.Instance.GetPlayerRobot().transform.position;
-                        CharacterTracker.Instance.DestroyExistingPlayer();
-
-                        GameObject gm = new GameObject("DebugSpawnpoint");
-                        gm.transform.position = pos;
-                        FirstPersonMover newPlayer = GameFlowManager.Instance.SpawnPlayer(gm.transform, true, true, null);
-                        OutfitsController.EditingCharacterModel = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[index].CharacterModelPrefab.gameObject.name + "(Clone)";
-                        DebugSetInputFieldsValues(OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel]);
-                        Destroy(gm);
-                    });
-                }, 0.5f);
-
-                m.GetObject<Button>(31).onClick.AddListener(delegate
-                {
-                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
-                    {
-                        return;
-                    }
-
-                    OutfitsController.CopiedModelOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
-                });
-
-                m.GetObject<Button>(32).onClick.AddListener(delegate
-                {
-                    if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel) || OutfitsController.CopiedModelOffset == null)
-                    {
-                        return;
-                    }
-
-                    ModelOffset edititngOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
-                    edititngOffset.OffsetPosition = OutfitsController.CopiedModelOffset.OffsetPosition;
-                    edititngOffset.OffsetEulerAngles = OutfitsController.CopiedModelOffset.OffsetEulerAngles;
-                    edititngOffset.OffsetLocalScale = OutfitsController.CopiedModelOffset.OffsetLocalScale;
-                    DebugSetInputFieldsValues(edititngOffset);
-
-                    FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-                    if (player != null)
-                    {
-                        OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
-                        if (ow != null)
+                        ModelOffset off = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                        try
                         {
-                            ow.SpawnAccessories();
+                            off.OffsetPosition = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(19).text), float.Parse(MyModdedObject.GetObject<InputField>(20).text), float.Parse(MyModdedObject.GetObject<InputField>(21).text));
+                            off.OffsetEulerAngles = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(22).text), float.Parse(MyModdedObject.GetObject<InputField>(23).text), float.Parse(MyModdedObject.GetObject<InputField>(24).text));
+                            off.OffsetLocalScale = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(25).text), float.Parse(MyModdedObject.GetObject<InputField>(26).text), float.Parse(MyModdedObject.GetObject<InputField>(27).text));
                         }
-                    }
-                });
+                        catch
+                        {
+
+                        }
+                        FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                        if (player != null)
+                        {
+                            OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
+                            if (ow != null)
+                            {
+                                ow.SpawnAccessories();
+                            }
+                        }
+                    });
+
+                    DelegateScheduler.Instance.Schedule(delegate
+                    {
+                        m_DebugCharacterModelsDropdown = m.GetObject<Dropdown>(30);
+                        m_DebugCharacterModelsDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(true);
+                        m_DebugCharacterModelsDropdown.onValueChanged.AddListener(delegate (int index)
+                        {
+                            if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                            {
+                                return;
+                            }
+
+                            SettingsManager.Instance.SetMultiplayerCharacterModelIndex(index);
+                            SettingsManager.Instance.SetUseSkinInSingleplayer(true);
+
+                            Vector3 pos = CharacterTracker.Instance.GetPlayerRobot().transform.position;
+                            CharacterTracker.Instance.DestroyExistingPlayer();
+
+                            GameObject gm = new GameObject("DebugSpawnpoint");
+                            gm.transform.position = pos;
+                            FirstPersonMover newPlayer = GameFlowManager.Instance.SpawnPlayer(gm.transform, true, true, null);
+                            OutfitsController.EditingCharacterModel = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[index].CharacterModelPrefab.gameObject.name + "(Clone)";
+                            DebugSetInputFieldsValues(OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel]);
+                            Destroy(gm);
+                        });
+                    }, 0.5f);
+
+                    m.GetObject<Button>(31).onClick.AddListener(delegate
+                    {
+                        if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel))
+                        {
+                            return;
+                        }
+
+                        OutfitsController.CopiedModelOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                    });
+
+                    m.GetObject<Button>(32).onClick.AddListener(delegate
+                    {
+                        if (OutfitsController.EditingItem == null || string.IsNullOrEmpty(OutfitsController.EditingCharacterModel) || OutfitsController.CopiedModelOffset == null)
+                        {
+                            return;
+                        }
+
+                        ModelOffset edititngOffset = OutfitsController.EditingItem.Offsets[OutfitsController.EditingCharacterModel];
+                        edititngOffset.OffsetPosition = OutfitsController.CopiedModelOffset.OffsetPosition;
+                        edititngOffset.OffsetEulerAngles = OutfitsController.CopiedModelOffset.OffsetEulerAngles;
+                        edititngOffset.OffsetLocalScale = OutfitsController.CopiedModelOffset.OffsetLocalScale;
+                        DebugSetInputFieldsValues(edititngOffset);
+
+                        FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                        if (player != null)
+                        {
+                            OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
+                            if (ow != null)
+                            {
+                                ow.SpawnAccessories();
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    m.GetObject<Transform>(18).gameObject.SetActive(false);
+                }
             }
 
             SetMenuActive(false);

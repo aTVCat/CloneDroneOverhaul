@@ -38,6 +38,11 @@ namespace CDOverhaul.Gameplay.Outfits
             }, 0.2f);
         }
 
+        protected override void OnDeath()
+        {
+            DestroyAccessories();
+        }
+
         protected override void OnDisposed()
         {
             base.OnDisposed();
@@ -54,18 +59,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public void SpawnAccessories()
         {
-            if (!m_SpawnedAccessories.IsNullOrEmpty())
-            {
-                foreach(string key in m_SpawnedAccessories.Keys)
-                {
-                    GameObject toDestroy = m_SpawnedAccessories[key];
-                    if(toDestroy != null)
-                    {
-                        Destroy(toDestroy);
-                    }
-                }
-                m_SpawnedAccessories.Clear();
-            }
+            DestroyAccessories();
 
             if (Owner == null || !IsOwnerPlayer())
             {
@@ -125,6 +119,22 @@ namespace CDOverhaul.Gameplay.Outfits
                 {
                     throw new NotImplementedException("Detached accessories");
                 }
+            }
+        }
+
+        public void DestroyAccessories()
+        {
+            if (!m_SpawnedAccessories.IsNullOrEmpty())
+            {
+                foreach (string key in m_SpawnedAccessories.Keys)
+                {
+                    GameObject toDestroy = m_SpawnedAccessories[key];
+                    if (toDestroy != null)
+                    {
+                        Destroy(toDestroy);
+                    }
+                }
+                m_SpawnedAccessories.Clear();
             }
         }
 
