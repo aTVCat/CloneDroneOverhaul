@@ -90,7 +90,7 @@ namespace CDOverhaul
         /// <returns></returns>
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
-            if (!IsCoreCreated)
+            if (OverhaulVersion.Upd2Hotfix || !IsCoreCreated)
             {
                 return null;
             }
@@ -117,7 +117,7 @@ namespace CDOverhaul
 
             // An event that is usually called before FPM full initialization
             OverhaulEventManager.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
-            _ = StaticCoroutineRunner.StartStaticCoroutine(waitFPMToInitialize(firstPersonMover));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitialziationAndDispatchEvent(firstPersonMover));
         }
 
         /// <summary>
@@ -139,7 +139,6 @@ namespace CDOverhaul
                 OverhaulExceptions.OnModEarlyCrash(errors);
                 return;
             }
-            ChangeWindowTitle();
         }
 
         /// <summary>
@@ -157,28 +156,12 @@ namespace CDOverhaul
             Core = null;
         }
 
-        internal void ChangeWindowTitle()
-        {
-            if (!OverhaulVersion.AllowRPC)
-            {
-                return;
-            }
-
-            System.IntPtr windowPtr = FindWindow(null, Application.productName);
-            if (windowPtr.Equals(System.IntPtr.Zero))
-            {
-                return;
-            }
-
-            _ = SetWindowText(windowPtr, "Clone Drone Overhaul");
-        }
-
         /// <summary>
         /// Wait until all things are initialized in <see cref="FirstPersonMover"/> and dispatch event if robot isn't null
         /// </summary>
         /// <param name="firstPersonMover"></param>
         /// <returns></returns>
-        private IEnumerator waitFPMToInitialize(FirstPersonMover firstPersonMover)
+        private IEnumerator waitForRobotInitialziationAndDispatchEvent(FirstPersonMover firstPersonMover)
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.15f);
@@ -205,10 +188,5 @@ namespace CDOverhaul
             }
             return false;
         }
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowText")]
-        public static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
-        [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        public static extern System.IntPtr FindWindow(string className, string windowName);
     }
 }

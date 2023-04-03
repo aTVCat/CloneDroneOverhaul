@@ -19,6 +19,11 @@ namespace CDOverhaul.LevelEditor
 
         public override void Initialize()
         {
+            if (!OverhaulVersion.Upd3JunePreview)
+            {
+                return;
+            }
+
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted, true);
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }

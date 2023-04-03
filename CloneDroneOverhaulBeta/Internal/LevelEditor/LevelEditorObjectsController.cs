@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
+    [Obsolete("The modded objects system is gonna be reworked...")]
     public static class LevelEditorObjectsController
     {
         public const string ObjectPathPrefix = "Prefabs/LevelObjects/OverhaulMod";
@@ -15,6 +17,11 @@ namespace CDOverhaul.LevelEditor
 
         internal static void Initialize()
         {
+            if (OverhaulVersion.Upd2Hotfix)
+            {
+                return;
+            }
+
             if (!_hasAddedAssets)
             {
                 GameObject obj1 = AssetsController.GetAsset("TextBlock", OverhaulAssetsPart.Objects);

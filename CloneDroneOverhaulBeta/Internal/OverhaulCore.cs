@@ -52,12 +52,6 @@ namespace CDOverhaul
             private set;
         }
 
-        public LevelEditorLuaController EditorLua
-        {
-            get;
-            private set;
-        }
-
         public PhotoModeRevampController PhotoModeRevamp
         {
             get;
@@ -109,7 +103,6 @@ namespace CDOverhaul
             VoxelsController = OverhaulController.AddController<VoxelsController>();
             HUDController = OverhaulController.AddController<OverhaulCanvasController>();
             GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            EditorLua = OverhaulController.AddController<LevelEditorLuaController>();
             PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
             _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();

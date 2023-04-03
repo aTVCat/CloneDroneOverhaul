@@ -57,6 +57,7 @@ namespace CDOverhaul.Patches
             base.Cancel();
 
             OverhaulEventManager.RemoveEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
+            OverhaulEventManager.RemoveEventListener(SettingsController.SettingChangedEventString, RefreshGC);
         }
     }
 }

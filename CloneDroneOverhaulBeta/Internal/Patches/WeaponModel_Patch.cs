@@ -12,11 +12,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
         {            
-            if (!OverhaulMod.IsCoreCreated)
+            if (OverhaulVersion.Upd2Hotfix || !OverhaulMod.IsCoreCreated)
             {
                 return true;
             }
 
+            // Todo: apply this for every 
             if(isMultiplayer && __instance.WeaponType.Equals(WeaponType.Spear) && __instance.MeleeImpactArea != null)
             {
                 FirstPersonMover owner = __instance.MeleeImpactArea.Owner;

@@ -65,12 +65,6 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public GamemodeSubstatesController GamemodeSubstates
-        {
-            get;
-            private set;
-        }
-
         public AdvancedGarbageController AdvancedGarbageController
         {
             get;
@@ -93,7 +87,6 @@ namespace CDOverhaul.Gameplay
         {
             Core = this;
 
-            GamemodeSubstates = OverhaulController.AddController<GamemodeSubstatesController>();
             WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
             AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
             CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();

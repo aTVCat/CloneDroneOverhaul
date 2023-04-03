@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
+    /// <summary>
+    /// This patch should fix damage areas offsets i guess
+    /// </summary>
     [HarmonyPatch(typeof(MeleeImpactArea))]
     internal static class MeleeImpactArea_Patch
     {

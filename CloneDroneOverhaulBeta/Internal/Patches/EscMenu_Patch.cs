@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
                 return true;
             }
 
-            if (OverhaulVersion.Upd3TechDemo2 && OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)
+            if (OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)
             {
                 OverhaulPauseMenu.ToggleMenu();
                 return false;

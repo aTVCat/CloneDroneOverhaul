@@ -5,7 +5,7 @@ namespace CDOverhaul.Patches
 {
     public class EnergyUIReplacementBehaviour : MonoBehaviour
     {
-        [OverhaulSettingAttribute("Game interface.Gameplay.Hide energy bar when full", true, false, "Energy bar will become transparent when you're fully charged")]
+        [OverhaulSettingAttribute("Game interface.Gameplay.Hide energy bar when full", true, false, "Energy bar will become transparent when you're fully charged", null, null, "Game interface.Gameplay.New energy bar design")]
         public static bool HideEnergyUIWhenFull;
 
         private EnergyUI _energyUI;
@@ -29,7 +29,7 @@ namespace CDOverhaul.Patches
                 float maxAmount = _energyUI.GetPrivateField<int>("_lastRenderedMaxEnergy");
                 //_canvasGroup.alpha = amount >= maxAmount ? 0.2f : 1f; 
 
-                if (HideEnergyUIWhenFull)
+                if (HideEnergyUIWhenFull && EnergyUIReplacement.PatchHUD)
                 {
                     if (amount >= maxAmount)
                     {

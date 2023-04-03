@@ -5,7 +5,7 @@ namespace CDOverhaul.Patches
 {
     public class EnergyUIReplacement : ReplacementBase
     {
-        [OverhaulSetting("Game interface.Gameplay.New Energy UI", true)]
+        [OverhaulSetting("Game interface.Gameplay.New energy bar design", true, false, "Make energy bar more stylish")]
         public static bool PatchHUD;
 
         private bool m_AddedListeners;

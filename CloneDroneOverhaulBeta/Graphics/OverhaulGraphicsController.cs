@@ -153,11 +153,6 @@ namespace CDOverhaul.Graphics
                 return;
             }
 
-            if (!OverhaulVersion.Upd3TechDemo2)
-            {
-                return;
-            }
-
             AmplifyOcclusionEffect effect = camera.GetComponent<AmplifyOcclusionEffect>();
             if (!effect)
             {

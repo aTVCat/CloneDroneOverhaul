@@ -131,6 +131,10 @@ namespace CDOverhaul.Gameplay
             }
 
             SetDefaultModelsActive();
+            if (!OverhaulGamemodeManager.SupportsPersonalization())
+            {
+                return;
+            }
             if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
             {
                 return;

@@ -6,10 +6,10 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPauseMenu : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, false, "The full redesign with new features implemented")]
+        [OverhaulSetting("Game interface.Gameplay.New pause menu design", true, false, "The full redesign with new features implemented")]
         public static bool UseThisMenu;
 
-        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu")]
+        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu design")]
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
@@ -140,6 +140,8 @@ namespace CDOverhaul.HUD
 
         public void OnPersonalizationButtonClicked()
         {
+            m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
+            m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
             SetPanelActive(m_PersonalizationPanel, m_PersonalizationButton.transform, !m_PersonalizationPanel.gameObject.activeSelf);
         }
 
@@ -291,7 +293,7 @@ namespace CDOverhaul.HUD
 
             RefreshAdvancements();
 
-            m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
+            m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor() && OverhaulGamemodeManager.SupportsPersonalization();
 
             ShowCursor = true;
         }

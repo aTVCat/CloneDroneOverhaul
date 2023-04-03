@@ -15,8 +15,6 @@ namespace CDOverhaul.Patches
                 return true;
             }
             return true;
-            if(type == LogType.Error || type == LogType.Exception) OverhaulDebugger.PrintError(logString + "\n" + stackTrace);
-            return false;
         }
     }
 }

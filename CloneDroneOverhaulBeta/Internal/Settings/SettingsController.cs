@@ -27,6 +27,7 @@ namespace CDOverhaul
                 return;
             }
 
+            List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
             foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -49,12 +50,19 @@ namespace CDOverhaul
                         }
                         if (!string.IsNullOrEmpty(neededAttribute.ParentSettingRawPath))
                         {
-                            ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                            toParent.Add(neededAttribute);
                         }
                     }
                 }
             }
 
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                foreach (OverhaulSettingAttribute neededAttribute in toParent)
+                {
+                    ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                }
+            }, 0.1f);
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
 
             MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
@@ -66,6 +74,9 @@ namespace CDOverhaul
             MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
             MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);
             MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Sample Count", true);
+
+            MakeSettingDependingOn("Game interface.Gameplay.New pause menu design", "Game interface.Gameplay.Zoom camera", true);
+            MakeSettingDependingOn("Game interface.Gameplay.New energy bar design", "Game interface.Gameplay.Hide energy bar when full", true);
 
             _hasAddedSettings = true;
         }

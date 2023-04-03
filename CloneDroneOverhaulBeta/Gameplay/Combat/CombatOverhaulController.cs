@@ -1,19 +1,16 @@
-﻿using CDOverhaul.Gameplay.Combat.Fights;
-using ModLibrary;
+﻿using ModLibrary;
 
 namespace CDOverhaul.Gameplay.Combat
 {
+    /// <summary>
+    /// This one will be reworked later
+    /// I've made many changes to my plans and scrapped many things...
+    /// </summary>
     public class CombatOverhaulController : OverhaulGameplayController
     {
-        private CombatOverhaulTutorialController m_TutorialController;
-        private CombatOverhaulCombosController m_CombosController;
-
         public override void Initialize()
         {
             base.Initialize();
-
-            m_TutorialController = AddController<CombatOverhaulTutorialController>();
-            m_CombosController = AddController<CombatOverhaulCombosController>();
         }
 
         public void StartTutorial()
@@ -22,18 +19,6 @@ namespace CDOverhaul.Gameplay.Combat
             GameDataManager.Instance.GetPrivateField<GameData>("_storyModeData").CurentLevelID = "CombatTutorial";
             GameDataManager.Instance.GetPrivateField<GameData>("_storyModeData").SetDirty(true);
             DelegateScheduler.Instance.Schedule(GameFlowManager.Instance.LoadGameplaySceneAndStartStoryMode, 0.2f);
-        }
-
-        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
-        {
-            if (!hasInitializedModel || !OverhaulGamemodeManager.SupportsCombatOverhaul())
-            {
-                return;
-            }
-
-            CombatSprintAndStance stance = firstPersonMover.gameObject.AddComponent<CombatSprintAndStance>();
-            CombatOverhaulUnbalancing unbalancing = firstPersonMover.gameObject.AddComponent<CombatOverhaulUnbalancing>();
-            unbalancing.SprintAndStance = stance;
         }
     }
 }
