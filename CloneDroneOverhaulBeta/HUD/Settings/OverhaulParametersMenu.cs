@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Jint.Native.Map;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace CDOverhaul.HUD
         private Transform m_CategoryContainer;
 
         private Transform m_MainContainer;
+        private ModdedObject m_PageDescPrefab;
         private ModdedObject m_SectionPrefab;
         private ModdedObject m_SettingPrefab;
 
@@ -33,6 +35,8 @@ namespace CDOverhaul.HUD
             m_SectionPrefab.gameObject.SetActive(false);
             m_SettingPrefab = MyModdedObject.GetObject<ModdedObject>(6);
             m_SettingPrefab.gameObject.SetActive(false);
+            m_PageDescPrefab = MyModdedObject.GetObject<ModdedObject>(14);
+            m_PageDescPrefab.gameObject.SetActive(false);
             m_DescriptionTransform = MyModdedObject.GetObject<Transform>(7);
             m_ScrollRect = MyModdedObject.GetObject<ScrollRect>(13);
             m_ScrollRect.movementType = ScrollRect.MovementType.Clamped;
@@ -78,6 +82,8 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(true);
             populateCategories();
             PopulateDescription(null, null);
+
+            ParametersMenuCategoryButton.SetSelectedSpecific("Graphics");
         }
 
         public void Hide()
@@ -142,6 +148,15 @@ namespace CDOverhaul.HUD
             m_ScrollRect.normalizedPosition = new Vector2(0f, 1f);
             yield return null;
             TransformUtils.DestroyAllChildren(m_MainContainer);
+
+            string desc = SettingsController.GetCategoryDescription(categoryName);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                ModdedObject categoryDesc = Instantiate(m_PageDescPrefab, m_MainContainer);
+                categoryDesc.gameObject.SetActive(true);
+                categoryDesc.GetObject<Text>(0).text = desc;
+            }
+
             List<string> sections = SettingsController.GetAllSections(categoryName);
             foreach (string sectionName in sections)
             {

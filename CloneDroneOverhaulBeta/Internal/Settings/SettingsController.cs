@@ -22,63 +22,61 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            if (_hasAddedSettings)
+            if (!_hasAddedSettings)
             {
-                return;
-            }
-
-            List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
-            foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
-            {
-                foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
+                List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
+                foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
                 {
-                    OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
-                    if (neededAttribute != null)
+                    foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
                     {
-                        SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
-                        SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
-                        SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
-                        SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
-                        info.ForceInputField = inputField != null;
-                        if (neededAttribute.IsHidden)
+                        OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
+                        if (neededAttribute != null)
                         {
-                            m_HiddenEntries.Add(info.RawPath);
-                        }
-                        if (!string.IsNullOrEmpty(neededAttribute.Description))
-                        {
-                            AddDescription(neededAttribute.SettingRawPath, neededAttribute.Description, neededAttribute.Img4_3Path, neededAttribute.Img16_9Path);
-                        }
-                        if (!string.IsNullOrEmpty(neededAttribute.ParentSettingRawPath))
-                        {
-                            toParent.Add(neededAttribute);
+                            SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
+                            SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
+                            SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
+                            SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
+                            info.ForceInputField = inputField != null;
+                            if (neededAttribute.IsHidden)
+                            {
+                                m_HiddenEntries.Add(info.RawPath);
+                            }
+                            if (!string.IsNullOrEmpty(neededAttribute.Description))
+                            {
+                                AddDescription(neededAttribute.SettingRawPath, neededAttribute.Description, neededAttribute.Img4_3Path, neededAttribute.Img16_9Path);
+                            }
+                            if (!string.IsNullOrEmpty(neededAttribute.ParentSettingRawPath))
+                            {
+                                toParent.Add(neededAttribute);
+                            }
                         }
                     }
                 }
-            }
 
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                foreach (OverhaulSettingAttribute neededAttribute in toParent)
+                DelegateScheduler.Instance.Schedule(delegate
                 {
-                    ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
-                }
-            }, 0.1f);
+                    foreach (OverhaulSettingAttribute neededAttribute in toParent)
+                    {
+                        ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                    }
+                }, 0.1f);
+
+                MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
+
+                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom iterations", true);
+                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom intensity", true);
+                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom Threshold", true);
+                MakeSettingDependingOn("Graphics.Shaders.Vignette", "Graphics.Shaders.Vignette Intensity", true);
+                MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
+                MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);
+                MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Sample Count", true);
+
+                MakeSettingDependingOn("Game interface.Gameplay.New pause menu design", "Game interface.Gameplay.Zoom camera", true);
+                MakeSettingDependingOn("Game interface.Gameplay.New energy bar design", "Game interface.Gameplay.Hide energy bar when full", true);
+
+                _hasAddedSettings = true;
+            }
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
-
-            MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
-
-            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom iterations", true);
-            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom intensity", true);
-            MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom Threshold", true);
-            MakeSettingDependingOn("Graphics.Shaders.Vignette", "Graphics.Shaders.Vignette Intensity", true);
-            MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
-            MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);
-            MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Sample Count", true);
-
-            MakeSettingDependingOn("Game interface.Gameplay.New pause menu design", "Game interface.Gameplay.Zoom camera", true);
-            MakeSettingDependingOn("Game interface.Gameplay.New energy bar design", "Game interface.Gameplay.Hide energy bar when full", true);
-
-            _hasAddedSettings = true;
         }
 
         internal static void PostInitialize()
@@ -241,11 +239,26 @@ namespace CDOverhaul
             return null;
         }
 
-
         public static SettingDescription GetSettingDescription(in string path)
         {
             _ = m_SettingDescriptions.TryGetValue(path, out SettingDescription result);
             return result;
+        }
+
+        public static string GetCategoryDescription(string category)
+        {
+            switch (category)
+            {
+                case "Graphics":
+                    return "Change the visuals of the game or the way meshes are rendered by\nSome of the settings can reduce your FPS!";
+                case "Optimization":
+                    return "Reduce memory usage";
+                case "Game interface":
+                    return "Bring some new things to the game's HUD";
+                case "Gameplay":
+                    return "Customize the gameplay experience for yourself";
+            }
+            return string.Empty;
         }
 
         /// <summary>

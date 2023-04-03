@@ -47,6 +47,7 @@ namespace CDOverhaul.HUD
             {
                 m_IDButton = m_ModdedObject.GetObject<Button>(6);
                 m_IDButton.onClick.AddListener(copyID);
+                m_IDButton.gameObject.SetActive(OverhaulVersion.IsDebugBuild);
                 m_DefValueButton = m_ModdedObject.GetObject<Button>(12);
                 m_DefValueButton.onClick.AddListener(setDefValue);
                 m_LockedBG = m_ModdedObject.GetObject<Transform>(14);

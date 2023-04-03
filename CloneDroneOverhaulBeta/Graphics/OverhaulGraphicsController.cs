@@ -13,17 +13,17 @@ namespace CDOverhaul.Graphics
         #region Settings
 
         [SettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
-        [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, null)]
+        [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
         public static int TargetFPS;
 
-        [OverhaulSettingAttribute("Graphics.Rendering.Deffered rendering", false, false, "Improve lights renderer\nMedium performance impact!")]
+        [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
         public static bool DefferedRenderer;
 
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make everything glow", "Bloom.png")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make every light shine better", "Bloom.png")]
         public static bool BloomEnabled;
 
         [SettingSliderParameters(true, 1, 10)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, null, null, null, "Graphics.Post effects.Bloom")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", null, null, "Graphics.Post effects.Bloom")]
         public static int BloomIterations;
 
         [SettingSliderParameters(false, 0.1f, 2f)]
@@ -37,21 +37,21 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for some fun, I guess")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
         public static bool BlurEdgesEnabled;
 
         [SettingSliderParameters(false, -0.2f, 0.3f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "All things on the screen will get colored edges", "Chromatic Aberration.png")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges? Just turn this setting on", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
 
         [SettingSliderParameters(false, 0f, 0.001f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add more shadows to everything", "AmbientOcc.png")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;
 
         [SettingSliderParameters(false, 0.7f, 1.3f)]
@@ -167,9 +167,10 @@ namespace CDOverhaul.Graphics
             effect.Bias = 0f;
             effect.BlurSharpness = 4f;
             effect.FilterResponse = 0.7f;
-            effect.Bias = 0.8f;
+            effect.Bias = 0.2f;
             effect.SampleCount = (AmplifyOcclusion.SampleCountLevel)AOSampleCount;
             effect.Intensity = AOIntensity;
+            effect.ApplyMethod = DefferedRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
             effect.enabled = AOEnabled;
 
             // Remove destroyed instances

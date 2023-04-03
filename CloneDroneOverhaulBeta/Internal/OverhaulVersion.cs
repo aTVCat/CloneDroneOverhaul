@@ -41,7 +41,7 @@ namespace CDOverhaul
         /// </summary>
         public const bool Upd3JunePreview = false;
 
-        public const bool Upd2Hotfix = true;
+        public const bool Upd2Hotfix = false;
 
 #if DEBUG
         public const bool IsDebugBuild = true;
