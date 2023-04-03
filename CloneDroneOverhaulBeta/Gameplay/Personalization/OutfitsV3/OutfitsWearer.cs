@@ -143,6 +143,12 @@ namespace CDOverhaul.Gameplay.Outfits
             }
 
             ModelOffset offset = item.Offsets[characterModelName];
+            if(offset.OffsetLocalScale == Vector3.zero)
+            {
+                accessory.SetActive(false);
+                return;
+            }
+
             accessory.transform.localPosition = offset.OffsetPosition;
             accessory.transform.localEulerAngles = offset.OffsetEulerAngles;
             accessory.transform.localScale = offset.OffsetLocalScale;

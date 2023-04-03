@@ -573,15 +573,57 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Cone_Offsets.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Halo_Offsets.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Igrok%27s hat_Offsets.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Puss Hat_Offsets.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Levels\EditorRooms\WeaponSkinEditorMap.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Levels\FUSRoom.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Localization.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\effect_amplifyocclusion" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\ModInfo.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_accessories" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_arenaupdate" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_combatupdatestuff" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_main" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_objects" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_p1" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_p2" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_skins" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_sounds" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\overhauldemostuff" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\AmbientOcc.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Bloom.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Chromatic Aberration.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Game interface-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Gameplay-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Graphics-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Optimization-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\TestSet.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\JusticePearl.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\PlaceholderDesc.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\SoulEater.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\VioletVio.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\DiscordRPC.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\discord_game_sdk.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\KopiLua.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\LuaInterface.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\ModPreview.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\netstandard.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulAPI.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulMod.dll" />
     <Content Include="ExternalDLLs\DiscordRPC.dll" />
     <Content Include="ExternalDLLs\discord_game_sdk.dll" />
     <Content Include="ExternalDLLs\KopiLua.dll" />
     <Content Include="ExternalDLLs\LuaInterface.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Animations\" />
+    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Lua\" />
+    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
     <Folder Include="Internal\CustomAdvancements\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

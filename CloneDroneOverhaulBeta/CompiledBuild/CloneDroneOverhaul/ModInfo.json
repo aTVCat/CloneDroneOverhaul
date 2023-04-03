@@ -1,0 +1,11 @@
+{
+	"DisplayName": "Clone Drone Overhaul",
+	"UniqueID": "rAnDomPaTcHeS1",
+	"MainDLLFileName": "OverhaulMod.dll",
+	"Author": "A Human on TV",
+	"Version": 7,
+	"ImageFileName": "ModPreview.png",
+	"Description": "What if Clone drone had stuff that you may want?",
+	"ModDependencies": [],
+	"Tags": [ "Level editor", "New abilites", "New features", "Graphics" ]
+}

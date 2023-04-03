@@ -56,6 +56,15 @@ namespace CDOverhaul.Gameplay.Outfits
         {
             AddAccessory<DefaultAccessoryItem>("Igrok's hat", "P_Acc_Head_Igrok's hat", AccessoryType.Attached, MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
+
+            AddAccessory<DefaultAccessoryItem>("Halo", "P_Acc_Head_ImpostorHalo", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.ATVCatDiscord);
+
+            AddAccessory<DefaultAccessoryItem>("Puss Hat", "P_Acc_Head_PussHat", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.ATVCatDiscord);
+
+            AddAccessory<DefaultAccessoryItem>("Cone", "P_Acc_Head_ImpostorCone", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.ATVCatDiscord);
         }
 
         /// <summary>
