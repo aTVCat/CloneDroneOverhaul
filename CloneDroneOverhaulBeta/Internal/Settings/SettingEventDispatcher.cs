@@ -13,10 +13,16 @@ namespace CDOverhaul
         public string EventString;
         public Func<bool> CanBeShown;
 
+        public Action EventAction;
+
         public void DispatchEvent()
         {
             if (string.IsNullOrEmpty(EventString))
             {
+                if(EventAction != null)
+                {
+                    EventAction();
+                }
                 return;
             }
             OverhaulEventManager.DispatchEvent(EventString);

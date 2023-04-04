@@ -69,9 +69,9 @@ namespace CDOverhaul
 
                 MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
 
-                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom iterations", true);
-                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom intensity", true);
-                MakeSettingDependingOn("Graphics.Post effects.Bloom", "Graphics.Post effects.Bloom Threshold", true);
+                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom iterations", true);
+                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom intensity", true);
+                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom Threshold", true);
                 MakeSettingDependingOn("Graphics.Shaders.Vignette", "Graphics.Shaders.Vignette Intensity", true);
                 MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
                 MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);

@@ -43,7 +43,7 @@ namespace CDOverhaul.Patches
             OpenSkinsMenuFromSettings.EventString = OpenSkinsFromSettingsEventString;
         }
 
-        private static Func<bool> shouldShowPersonalization => () => CharacterTracker.Instance.GetPlayerTransform() != null && !OverhaulPauseMenu.UseThisMenu;
+        private static Func<bool> shouldShowPersonalization => () => OverhaulGamemodeManager.SupportsPersonalization() && CharacterTracker.Instance.GetPlayerTransform() != null;
 
         public override void Replace()
         {

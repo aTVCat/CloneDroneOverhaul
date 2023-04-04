@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.HUD;
 using OverhaulAPI.SharedMonoBehaviours;
 using System;
 using System.Collections.Generic;
@@ -19,45 +20,39 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
         public static bool DefferedRenderer;
 
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom", true, false, "Make every light shine better", "Bloom.png")]
+        [OverhaulSetting("Graphics.Post effects.Set vanilla settings", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
+        public static SettingEventDispatcher SetBloomVanilla = new SettingEventDispatcher();
+        [OverhaulSettingAttribute("Graphics.Post effects.Enable bloom", true, false, "Make every light shine better", "Bloom.png")]
         public static bool BloomEnabled;
-
         [SettingSliderParameters(true, 1, 10)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", null, null, "Graphics.Post effects.Bloom")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", null, null, "Graphics.Post effects.Enable bloom")]
         public static int BloomIterations;
-
         [SettingSliderParameters(false, 0.1f, 2f)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, null, null, "Graphics.Post effects.Bloom")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, null, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomIntensity;
-
         [SettingSliderParameters(false, 0.85f, 2f)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, null, null, "Graphics.Post effects.Bloom")]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, null, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomThreshold;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
-
-        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
-        public static bool BlurEdgesEnabled;
-
         [SettingSliderParameters(false, -0.2f, 0.3f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
+        [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
+        public static bool BlurEdgesEnabled;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..? Just turn this setting on", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
-
         [SettingSliderParameters(false, 0f, 0.001f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;
-
         [SettingSliderParameters(false, 0.7f, 1.3f)]
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.95f, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
         public static float AOIntensity;
-
         [SettingDropdownParameters("Low@Medium@High@Very high")]
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
         public static int AOSampleCount;
@@ -76,6 +71,8 @@ namespace CDOverhaul.Graphics
         private static readonly Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
         private static readonly Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
         private static readonly Func<bool> m_EnableBEFunc = new System.Func<bool>(() => BlurEdgesEnabled);
+
+        private static bool m_ConfiguredEventButtons;
 
         public static OverhaulCameraController CameraController { get; private set; }
 
@@ -101,6 +98,29 @@ namespace CDOverhaul.Graphics
             m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
             m_EdgeBlur = AssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetsPart.Part2);
             patchAllCameras();
+
+            if (!m_ConfiguredEventButtons)
+            {
+                m_ConfiguredEventButtons = true;
+                SetBloomVanilla.EventAction = delegate
+                {
+                    BloomEnabled = true;
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Enable bloom", true), true);
+                    BloomIterations = 2;
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom iterations", true), 2);
+                    BloomIntensity = 0.5f;
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
+                    BloomThreshold = 0.9f;
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
+                    OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
+
+                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    if(menu != null && menu.gameObject.activeSelf)
+                    {
+                        menu.PopulateCategory(menu.SelectedCategory, true);
+                    }
+                };
+            }
         }
 
         public static void PatchCamera(Camera camera)
@@ -244,6 +264,11 @@ namespace CDOverhaul.Graphics
 
         private static void refreshApplicationTargetFramerate()
         {
+            try
+            {
+                SettingsManager.Instance.SetVsyncOn(false);
+            }
+            catch { }
             switch (TargetFPS)
             {
                 case 1:
@@ -251,6 +276,11 @@ namespace CDOverhaul.Graphics
                     break;
                 case 2:
                     Application.targetFrameRate = 60;
+                    try
+                    {
+                        SettingsManager.Instance.SetVsyncOn(true);
+                    }
+                    catch { }
                     break;
                 case 3:
                     Application.targetFrameRate = 75;

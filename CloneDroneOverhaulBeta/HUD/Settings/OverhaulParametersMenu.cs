@@ -29,6 +29,7 @@ namespace CDOverhaul.HUD
         public static bool ShouldSelectShortcuts;
 
         public bool AllowSwitchingCategories => !m_IsPopulatingSettings;
+        public string SelectedCategory { get; set; }
 
         public override void Initialize()
         {
@@ -155,19 +156,21 @@ namespace CDOverhaul.HUD
             }
         }
 
-        public void PopulateCategory(in string categoryName)
+        public void PopulateCategory(in string categoryName, bool restorePosition = false)
         {
             if (IsDisposedOrDestroyed() || !base.gameObject.activeSelf || m_IsPopulatingSettings)
             {
                 return;
             }
 
-            _ = StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName, restorePosition));
         }
 
-        private IEnumerator populateCategoryCoroutine(string categoryName)
+        private IEnumerator populateCategoryCoroutine(string categoryName, bool restorePosition)
         {
             m_IsPopulatingSettings = true;
+            SelectedCategory = categoryName;
+            float prevPos = m_ScrollRect.verticalScrollbar.value;
 
             m_MainCanvasGroup.alpha = 1f;
             for (int i = 0; i < 4; i++)
@@ -178,7 +181,6 @@ namespace CDOverhaul.HUD
             m_MainCanvasGroup.alpha = 0f;
 
             m_ScrollRect.verticalScrollbar.value = 1f;
-            m_ScrollRect.normalizedPosition = new Vector2(0f, 1f);
             yield return null;
             m_ButtonContainers.Clear();
             TransformUtils.DestroyAllChildren(m_MainContainer);
@@ -229,6 +231,12 @@ namespace CDOverhaul.HUD
                 }
             }
             yield return null;
+            yield return null;
+
+            if (restorePosition)
+            {
+                m_ScrollRect.verticalScrollbar.value = prevPos;
+            }
 
             for (int i = 0; i < 4; i++)
             {
