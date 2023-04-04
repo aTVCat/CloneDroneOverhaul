@@ -1082,6 +1082,7 @@ namespace CDOverhaul.Gameplay
                 AddSkinQuick(WeaponType.Bow, "Extreme Acidity", CaptainMeowDiscord, "HighAcidityBow");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.25f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f)), false, false);
                 SetSkinColorParameters(false, -1);
+                SetSkinExclusiveQuick(""); // Scrapped
 
                 AddSkinQuick(WeaponType.Sword, "Machette", HizDiscord + And + ATVCatDiscord, "MachetteSword", "MachetteSwordFire", "MachetteSword", "MachetteSwordFire");
                 SetSkinColorParameters(true, -1, false, -1);
