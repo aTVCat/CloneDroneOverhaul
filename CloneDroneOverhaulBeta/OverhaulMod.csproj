@@ -474,7 +474,7 @@
     <Compile Include="Misc\PhotoModeRevampController.cs" />
     <Compile Include="Unsorted\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
-    <Compile Include="Graphics\OverhaulGraphicsController.cs" />
+    <Compile Include="HUD\OverhaulGraphicsController.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuSetting.cs" />
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuCategoryButton.cs" />

@@ -503,7 +503,7 @@ namespace CDOverhaul.Gameplay
                 (LightSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset nezerHillOffset = new ModelOffset(new Vector3(0f, -0.055f, -0.2f), new Vector3(270, 180, 0), Vector3.one);
-                IWeaponSkinItemDefinition nezerHillSkin = Interface.NewSkinItem(WeaponType.Sword, "Nezerhill", ItemFilter.None);
+                IWeaponSkinItemDefinition nezerHillSkin = Interface.NewSkinItem(WeaponType.Sword, "Nether Hill", ItemFilter.None);
                 nezerHillSkin.SetModel(AssetsController.GetAsset("NezerHillSword", OverhaulAssetsPart.WeaponSkins),
                    nezerHillOffset,
                     false,
@@ -1050,6 +1050,13 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.4f, 0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.4f, 0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(1f, 1f, 1f)), true, false);
 
+                AddSkinQuick(WeaponType.Spear, "Plant", SharpDiscord, "PlantSpear", "PlantSpearFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.8f, 0f, 0f), new Vector3(0f, 270f, 0f), new Vector3(0.5f, 0.5f, 0.55f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.8f, 0f, 0f), new Vector3(0f, 270f, 0f), new Vector3(0.5f, 0.5f, 0.6f)), true, false);
+                SetSkinColorParameters(false, -1, false, 5);
+                IWeaponSkinItemDefinition plantSpearItem = m_WeaponSkins[m_WeaponSkins.Count - 1];
+                plantSpearItem.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+
                 AddSkinQuick(WeaponType.Sword, "Minecraft", HumanDiscord, "MCSword", "MCSwordFire", "MCSwordLBS", "MCSwordFireLBS");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, false);
@@ -1068,13 +1075,20 @@ namespace CDOverhaul.Gameplay
                 AddSpecialBehaviourToAllSkinModels<MCBowSpecialSkinBehaviour>();
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.45f, 0.05f, 0.075f), new Vector3(0f, 0f, 135f), new Vector3(1.15f, 1.15f, 1f)), false, false);
 
+                AddSkinQuick(WeaponType.Bow, "Nether Eye", ZoloRDiscord, "NetherEyeBow");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.25f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f)), false, false);
+                SetSkinColorParameters(false, -1);
+
+                AddSkinQuick(WeaponType.Bow, "Extreme Acidity", CaptainMeowDiscord, "HighAcidityBow");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.25f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f)), false, false);
+                SetSkinColorParameters(false, -1);
+
                 AddSkinQuick(WeaponType.Sword, "Machette", HizDiscord + And + ATVCatDiscord, "MachetteSword", "MachetteSwordFire", "MachetteSword", "MachetteSwordFire");
                 SetSkinColorParameters(true, -1, false, -1);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), true, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), false, true);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), true, true);
-
             }
         }
 

@@ -398,7 +398,10 @@ namespace CDOverhaul.HUD
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
                 if (mover != null && mover.HasCharacterModel() && mover.HasWeapon(weaponType))
                 {
-                    mover.SetEquippedWeaponType(weaponType);
+                    if (!GameModeManager.IsMultiplayer())
+                    {
+                        mover.SetEquippedWeaponType(weaponType);
+                    }
                 }
             }
 
