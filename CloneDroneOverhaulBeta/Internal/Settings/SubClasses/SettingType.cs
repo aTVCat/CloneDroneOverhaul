@@ -6,6 +6,7 @@
         Bool,
         Int,
         Float,
-        String
+        String,
+        Other
     }
 }

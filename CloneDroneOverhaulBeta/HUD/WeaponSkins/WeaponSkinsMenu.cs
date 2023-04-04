@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
+using CDOverhaul.Patches;
 using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;
@@ -83,11 +84,13 @@ namespace CDOverhaul.HUD
             if (base.gameObject.name.Equals("SkinsSelection"))
             {
                 SkinsSelection = this;
+                OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
             else
             {
                 m_AccessoryItems = new List<AccessoryItem>();
                 OutfitSelection = this;
+                OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
 
                 if (OverhaulVersion.IsDebugBuild)
                 {
@@ -197,6 +200,27 @@ namespace CDOverhaul.HUD
             }
 
             SetMenuActive(false);
+        }
+
+        public void OpenMenuFromSettings()
+        {
+            if(GameUIRoot.Instance == null)
+            {
+                return;
+            }
+
+            OverhaulPauseMenu menu = GetController<OverhaulPauseMenu>();
+            OverhaulParametersMenu paramsMenu = GetController<OverhaulParametersMenu>();
+            EscMenu escMenu = GameUIRoot.Instance.EscMenu;
+            if(menu == null || paramsMenu == null || escMenu == null)
+            {
+                return;
+            }
+
+            escMenu.Hide();
+            paramsMenu.Hide();
+            menu.Hide();
+            this.SetMenuActive(true);
         }
 
         protected override void OnDisposed()

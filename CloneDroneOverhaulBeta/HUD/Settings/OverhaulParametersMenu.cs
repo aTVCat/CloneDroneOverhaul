@@ -15,6 +15,8 @@ namespace CDOverhaul.HUD
         private ModdedObject m_PageDescPrefab;
         private ModdedObject m_SectionPrefab;
         private ModdedObject m_SettingPrefab;
+        private ModdedObject m_ButtonsContainerPrefab;
+        private ModdedObject m_ButtonForContainersPrefab;
 
         private Transform m_DescriptionTransform;
 
@@ -22,10 +24,15 @@ namespace CDOverhaul.HUD
         private CanvasGroup m_MainCanvasGroup;
         private bool m_IsPopulatingSettings;
 
+        private Dictionary<string, Transform> m_ButtonContainers = new Dictionary<string, Transform>();
+
+        public static bool ShouldSelectShortcuts;
+
         public bool AllowSwitchingCategories => !m_IsPopulatingSettings;
 
         public override void Initialize()
         {
+            OverhaulParametersMenu.ShouldSelectShortcuts = false;
             m_CategoryEntryPrefab = MyModdedObject.GetObject<ModdedObject>(1);
             m_CategoryEntryPrefab.gameObject.SetActive(false);
             m_CategoryContainer = MyModdedObject.GetObject<Transform>(2);
@@ -37,6 +44,10 @@ namespace CDOverhaul.HUD
             m_SettingPrefab.gameObject.SetActive(false);
             m_PageDescPrefab = MyModdedObject.GetObject<ModdedObject>(14);
             m_PageDescPrefab.gameObject.SetActive(false);
+            m_ButtonsContainerPrefab = MyModdedObject.GetObject<ModdedObject>(15);
+            m_ButtonsContainerPrefab.gameObject.SetActive(false);
+            m_ButtonForContainersPrefab = MyModdedObject.GetObject<ModdedObject>(16);
+            m_ButtonForContainersPrefab.gameObject.SetActive(false);
             m_DescriptionTransform = MyModdedObject.GetObject<Transform>(7);
             m_ScrollRect = MyModdedObject.GetObject<ScrollRect>(13);
             m_ScrollRect.movementType = ScrollRect.MovementType.Clamped;
@@ -73,15 +84,32 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
-            if (tUI.gameObject.activeSelf)
+            if(GameUIRoot.Instance != null)
             {
-                tUI.SetLogoAndRootButtonsVisible(false);
+                TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
+                if (tUI != null && tUI.gameObject.activeSelf)
+                {
+                    tUI.SetLogoAndRootButtonsVisible(false);
+                }
+
+                SettingsMenu mUI = GameUIRoot.Instance.SettingsMenu;
+                if (mUI != null && mUI.gameObject.activeSelf)
+                {
+                    mUI.Hide();
+                }
             }
 
             base.gameObject.SetActive(true);
             populateCategories();
             PopulateDescription(null, null);
+            OverhaulCanvasController.SetCanvasPixelPerfect(false);
+
+            if (ShouldSelectShortcuts)
+            {
+                ShouldSelectShortcuts = false;
+                ParametersMenuCategoryButton.SetSelectedSpecific("Shortcuts");
+                return;
+            }
 
             ParametersMenuCategoryButton.SetSelectedSpecific("Graphics");
         }
@@ -95,11 +123,16 @@ namespace CDOverhaul.HUD
 
             TransformUtils.DestroyAllChildren(m_MainContainer);
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
-            TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
-            if (tUI.gameObject.activeSelf)
+            if (GameUIRoot.Instance != null)
             {
-                tUI.SetLogoAndRootButtonsVisible(true);
+                TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
+                if (tUI != null && tUI.gameObject.activeSelf)
+                {
+                    tUI.SetLogoAndRootButtonsVisible(true);
+                }
             }
+
+            OverhaulCanvasController.SetCanvasPixelPerfect(true);
             base.gameObject.SetActive(false);
         }
 
@@ -147,6 +180,7 @@ namespace CDOverhaul.HUD
             m_ScrollRect.verticalScrollbar.value = 1f;
             m_ScrollRect.normalizedPosition = new Vector2(0f, 1f);
             yield return null;
+            m_ButtonContainers.Clear();
             TransformUtils.DestroyAllChildren(m_MainContainer);
 
             string desc = SettingsController.GetCategoryDescription(categoryName);
@@ -214,9 +248,33 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            ModdedObject setting = Instantiate(m_SettingPrefab, m_MainContainer);
-            setting.gameObject.SetActive(true);
-            setting.gameObject.AddComponent<ParametersMenuSetting>().Initialize(this, setting, path, position);
+            SettingInfo info = SettingsController.GetSetting(path, false);
+            if(info != null)
+            {
+                if(info.EventDispatcher != null)
+                {
+                    string bpath = info.Category + '.' + info.Section;
+                    bool hasContainer = m_ButtonContainers.ContainsKey(bpath);
+                    if (!hasContainer)
+                    {
+                        ModdedObject con = Instantiate(m_ButtonsContainerPrefab, m_MainContainer);
+                        con.gameObject.SetActive(true);
+                        m_ButtonContainers.Add(bpath, con.GetObject<Transform>(0));
+                    }
+
+                    ModdedObject bcButton = Instantiate(m_ButtonForContainersPrefab, m_ButtonContainers[bpath]);
+                    bcButton.gameObject.SetActive(true);
+                    bcButton.GetComponent<Button>().onClick.AddListener(info.EventDispatcher.DispatchEvent);
+                    bcButton.GetComponent<Button>().interactable = info.EventDispatcher.CanBeShown == null || info.EventDispatcher.CanBeShown();
+                    bcButton.GetObject<Text>(0).text = info.Name;
+
+                    return;
+                }
+
+                ModdedObject setting = Instantiate(m_SettingPrefab, m_MainContainer);
+                setting.gameObject.SetActive(true);
+                setting.gameObject.AddComponent<ParametersMenuSetting>().Initialize(this, setting, path, position);
+            }
         }
 
         public void PopulateDescription(in SettingInfo info, in SettingDescription description)

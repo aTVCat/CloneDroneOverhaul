@@ -61,10 +61,13 @@ namespace CDOverhaul.Gameplay.Outfits
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
 
             AddAccessory<DefaultAccessoryItem>("Puss Hat", "P_Acc_Head_PussHat", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.ATVCatDiscord);
+            SetAuthor(WeaponSkinsController.TabiDiscord);
 
             AddAccessory<DefaultAccessoryItem>("Cone", "P_Acc_Head_ImpostorCone", AccessoryType.Attached, MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
+
+            AddAccessory<DefaultAccessoryItem>("Deal with It", "P_Acc_DealWithIt", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.CaptainMeowDiscord);
         }
 
         /// <summary>

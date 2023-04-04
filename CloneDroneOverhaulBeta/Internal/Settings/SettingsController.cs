@@ -16,6 +16,8 @@ namespace CDOverhaul
 
         private static readonly Dictionary<string, Sprite> m_CachedIcons = new Dictionary<string, Sprite>();
 
+        public const long SettingEventDispatcherFlag = 10000000000000L;
+
         public static OverhaulParametersMenu HUD;
 
         private static bool _hasAddedSettings;
@@ -37,6 +39,10 @@ namespace CDOverhaul
                             SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
                             SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
                             info.ForceInputField = inputField != null;
+                            if(info.DefaultValue is long && (long)info.DefaultValue == SettingEventDispatcherFlag)
+                            {
+                                info.EventDispatcher = (SettingEventDispatcher)field.GetValue(null);
+                            }
                             if (neededAttribute.IsHidden)
                             {
                                 m_HiddenEntries.Add(info.RawPath);
@@ -257,6 +263,8 @@ namespace CDOverhaul
                     return "Bring some new things to the game's HUD";
                 case "Gameplay":
                     return "Customize the gameplay experience for yourself";
+                case "Shortcuts":
+                    return "Open menus during the game, being in the settings";
             }
             return string.Empty;
         }

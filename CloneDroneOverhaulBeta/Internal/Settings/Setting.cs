@@ -32,7 +32,9 @@ namespace CDOverhaul
 
         public bool ForceInputField { get; set; }
 
-        public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
+        public SettingEventDispatcher EventDispatcher { get; set; }
+
+        public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath);
 
         internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
         {
@@ -64,6 +66,12 @@ namespace CDOverhaul
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
+
+            if(Type == SettingType.Other)
+            {
+                return;
+            }
+
             object obj = GetPref<object>(this);
             try
             {
@@ -99,6 +107,10 @@ namespace CDOverhaul
             {
                 return SettingType.String;
             }
+            if (typeof(T) == typeof(long))
+            {
+                return SettingType.Other;
+            }
             return SettingType.None;
         }
 
@@ -119,6 +131,10 @@ namespace CDOverhaul
             if (@object is string)
             {
                 return SettingType.String;
+            }
+            if (@object is long)
+            {
+                return SettingType.Other;
             }
             return SettingType.None;
         }
@@ -151,6 +167,11 @@ namespace CDOverhaul
             if (setting == null || setting.Error)
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+            }
+
+            if(setting.Type == SettingType.Other)
+            {
+                return;
             }
 
             switch (setting.Type)
@@ -190,6 +211,11 @@ namespace CDOverhaul
             if (setting == null || setting.Error)
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+            }
+
+            if (setting.Type == SettingType.Other)
+            {
+                return default;
             }
 
             object result = null;

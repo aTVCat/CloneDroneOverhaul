@@ -131,7 +131,7 @@ namespace CDOverhaul.HUD
         /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
         /// </summary>
         /// <param name="value"></param>
-        public void SetCanvasPixelPerfect(in bool value)
+        public static void SetCanvasPixelPerfect(in bool value)
         {
             GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
         }

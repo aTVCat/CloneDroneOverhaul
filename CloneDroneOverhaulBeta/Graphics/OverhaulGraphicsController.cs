@@ -44,7 +44,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges? Just turn this setting on", "Chromatic Aberration.png")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..? Just turn this setting on", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
 
         [SettingSliderParameters(false, 0f, 0.001f)]
@@ -55,11 +55,11 @@ namespace CDOverhaul.Graphics
         public static bool AOEnabled;
 
         [SettingSliderParameters(false, 0.7f, 1.3f)]
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 1.1f, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.95f, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
         public static float AOIntensity;
 
         [SettingDropdownParameters("Low@Medium@High@Very high")]
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 2, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
         public static int AOSampleCount;
 
         #endregion
