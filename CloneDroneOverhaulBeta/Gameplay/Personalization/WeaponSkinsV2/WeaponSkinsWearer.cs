@@ -315,7 +315,15 @@ namespace CDOverhaul.Gameplay
                     Color? forcedColor = null;
                     if(fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
                     {
-                        forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor).ColorValue;
+                        int indexOfFireColor = (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor;
+                        if(indexOfFireColor == 5)
+                        {
+                            forcedColor = new Color(2.65f, 1.45f, 0.4f, 1f);
+                        }
+                        else
+                        {
+                            forcedColor = HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
+                        }
                     }
                     else if(!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
                     {

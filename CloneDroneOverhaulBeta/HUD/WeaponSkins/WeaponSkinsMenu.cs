@@ -452,7 +452,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
-            m_Items = m_Items.OrderBy(f => f.GetItemName()).ToArray();
+            m_Items = m_Items.OrderBy(f => (f as WeaponSkinItemDefinitionV2).HasNameOverride ? (f as WeaponSkinItemDefinitionV2).OverrideName : f.GetItemName()).ToArray();
 
 
             foreach(IWeaponSkinItemDefinition skin in m_Items)
@@ -466,7 +466,7 @@ namespace CDOverhaul.HUD
 
                 ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(true), GetContainer(true));
                 newPrefab.gameObject.SetActive(true);
-                newPrefab.GetObject<Text>(1).text = skinName;
+                newPrefab.GetObject<Text>(1).text = (skin as WeaponSkinItemDefinitionV2).HasNameOverride ? (skin as WeaponSkinItemDefinitionV2).OverrideName : skinName;
                 WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
                 b.Initialize();
                 b.SetMenu(this);
@@ -586,7 +586,7 @@ namespace CDOverhaul.HUD
         public void ShowSkinInfo(WeaponType type, string skinName)
         {
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
-            MyModdedObject.GetObject<Text>(8).text = skinName;
+            MyModdedObject.GetObject<Text>(8).text = string.Empty;
             m_Description.text = "No description provided.";
             if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
             {
@@ -597,6 +597,15 @@ namespace CDOverhaul.HUD
             if(item == null)
             {
                 return;
+            }
+
+            if((item as WeaponSkinItemDefinitionV2).HasNameOverride)
+            {
+                MyModdedObject.GetObject<Text>(8).text = (item as WeaponSkinItemDefinitionV2).OverrideName;
+            }
+            else
+            {
+                MyModdedObject.GetObject<Text>(8).text = skinName;
             }
 
             MyModdedObject.GetObject<Transform>(9).gameObject.SetActive(item.GetModel(false, false) != null);

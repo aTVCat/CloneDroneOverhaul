@@ -226,22 +226,29 @@ namespace CDOverhaul.Gameplay
                     true,
                     false); // Fire singleplayer model
                 (swordDetailedSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = WaterDiscord;
-                (swordDetailedSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (swordDetailedSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 // Dark past sword
                 ModelOffset darkPastSwordSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.25f, -1f), new Vector3(0, 90, 90), Vector3.one);
+                ModelOffset darkPastSwordSkinOffset2 = new ModelOffset(new Vector3(-0.05f, 0.05f, -0.15f), new Vector3(90f, 0f, 0f), Vector3.one);
                 IWeaponSkinItemDefinition darkPastSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Dark Past", ItemFilter.None);
                 darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
                     darkPastSwordSkinOffset,
                     false,
                     false);
-                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastFire", OverhaulAssetsPart.WeaponSkins),
                     darkPastSwordSkinOffset,
                     true,
                     false);
+                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastLBS", OverhaulAssetsPart.WeaponSkins),
+                    darkPastSwordSkinOffset2,
+                    false,
+                    true);
+                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastLBSFire", OverhaulAssetsPart.WeaponSkins),
+                    darkPastSwordSkinOffset2,
+                    true,
+                    true);
                 (darkPastSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
-                (darkPastSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (darkPastSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
                 ModelOffset redMetalSwordSkinOffset = new ModelOffset(new Vector3(0.45f, 0.05f, -2.55f), new Vector3(0, 90, 90), Vector3.one);
@@ -274,7 +281,7 @@ namespace CDOverhaul.Gameplay
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (terraBladeSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = Igrok_X_XPDiscord;
 
-                ModelOffset impSwordSkinOffset = new ModelOffset(new Vector3(-2.88f, 0f, -0.425f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
+                ModelOffset impSwordSkinOffset = new ModelOffset(new Vector3(-2.8f, -0.005f, -0.425f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition impSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Imperial", ItemFilter.None);
                 impSwordSkin.SetModel(AssetsController.GetAsset("ImperialSword", OverhaulAssetsPart.WeaponSkins),
                     impSwordSkinOffset,
@@ -364,11 +371,10 @@ namespace CDOverhaul.Gameplay
                     ancientSwordSkinOffset,
                     false,
                     false);
-                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
+                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSwordFire", OverhaulAssetsPart.WeaponSkins),
                     ancientSwordSkinOffset,
                     true,
                     false);
-                (ancientSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
                 (ancientSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (ancientSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
 
@@ -407,7 +413,7 @@ namespace CDOverhaul.Gameplay
                     violetViolenceSkinOffset2,
                     true,
                     true);
-                violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 78E35D43F7CA4E5");
+                violetViolenceSwordSkin.SetExclusivePlayerID("193564D7A14F9C33 78E35D43F7CA4E5 CEC4D8826697A677");
                 _ = violetViolenceSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 _ = violetViolenceSwordSkin.GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
                 (violetViolenceSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord + And + Igrok_X_XPDiscord;
@@ -464,8 +470,8 @@ namespace CDOverhaul.Gameplay
                 (tgbSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (tgbSkin as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor = 3;
 
-                ModelOffset seSkinOffset = new ModelOffset(new Vector3(0f, -0.0165f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.17f, 0.17f, 0.25f));
-                ModelOffset seSkinOffsetM = new ModelOffset(new Vector3(0f, -0.0165f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.2f, 0.2f, 0.27f));
+                ModelOffset seSkinOffset = new ModelOffset(new Vector3(0f, -0.0275f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.17f, 0.17f, 0.25f));
+                ModelOffset seSkinOffsetM = new ModelOffset(new Vector3(0f, -0.0325f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.2f, 0.2f, 0.3f));
                 IWeaponSkinItemDefinition seSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Soul Eater", ItemFilter.Exclusive);
                 seSwordSkin.SetModel(AssetsController.GetAsset("SoulEaterSword", OverhaulAssetsPart.WeaponSkins),
                     seSkinOffset,
@@ -489,7 +495,7 @@ namespace CDOverhaul.Gameplay
                 (seSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 SetSkinDescription("SoulEater");
 
-                ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(270, 180, 0), Vector3.one * 0.5f);
+                ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(90f, 0f, 0f), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition LightSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Light", ItemFilter.None);
                 LightSwordSkin.SetModel(AssetsController.GetAsset("LightSword", OverhaulAssetsPart.WeaponSkins),
                     LightSkinOffset,
@@ -535,6 +541,7 @@ namespace CDOverhaul.Gameplay
                     jetsamOffsetM,
                     true,
                     true);
+                (jetsamSkin as WeaponSkinItemDefinitionV2).OverrideName = "Jetstream";
                 (jetsamSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (jetsamSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (jetsamSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SharpDiscord;
@@ -594,7 +601,7 @@ namespace CDOverhaul.Gameplay
                     steelSwordSkinOffset,
                     true,
                     false);
-                (steelSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
+                (steelSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (steelSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = TabiDiscord;
 
                 ModelOffset ghSwordSkinOffset = new ModelOffset(new Vector3(0f, -0.85f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.65f, 0.7f, 0.65f));
@@ -616,10 +623,12 @@ namespace CDOverhaul.Gameplay
                     doomSwordSkinOffset,
                     false,
                     false);
-                doomSwordSkin.SetModel(AssetsController.GetAsset("P_DoomSword", OverhaulAssetsPart.WeaponSkins),
+                doomSwordSkin.SetModel(AssetsController.GetAsset("P_DoomSwordFire", OverhaulAssetsPart.WeaponSkins),
                     doomSwordSkinOffset,
                     true,
                     false);
+                darkPastSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                (doomSwordSkin as WeaponSkinItemDefinitionV2).OverrideName = "Slayer";
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer = true;
@@ -878,10 +887,11 @@ namespace CDOverhaul.Gameplay
                     spearDarkPastSkinOffset,
                     false,
                     false);
-                spearDarkPastSkin.SetModel(AssetsController.GetAsset("DarkPastSpear", OverhaulAssetsPart.WeaponSkins),
+                spearDarkPastSkin.SetModel(AssetsController.GetAsset("DarkPastSpearFire", OverhaulAssetsPart.WeaponSkins),
                     spearDarkPastSkinOffset,
                     true,
                     false);
+                spearDarkPastSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
@@ -891,7 +901,7 @@ namespace CDOverhaul.Gameplay
                     ancientSpearSkinOffset,
                     false,
                     false);
-                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpear", OverhaulAssetsPart.WeaponSkins),
+                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpearFire", OverhaulAssetsPart.WeaponSkins),
                     ancientSpearSkinOffset,
                     true,
                     false);
@@ -916,7 +926,7 @@ namespace CDOverhaul.Gameplay
                     spearGoldSkinOffset,
                     false,
                     false);
-                spearGoldSkin.SetModel(AssetsController.GetAsset("GoldSpear", OverhaulAssetsPart.WeaponSkins),
+                spearGoldSkin.SetModel(AssetsController.GetAsset("GoldSpearFire", OverhaulAssetsPart.WeaponSkins),
                     spearGoldSkinOffset,
                     true,
                     false);
@@ -929,7 +939,7 @@ namespace CDOverhaul.Gameplay
                     glSpearSkinOffset,
                     false,
                     false);
-                glSpearSkin.SetModel(AssetsController.GetAsset("GladiatorSpear", OverhaulAssetsPart.WeaponSkins),
+                glSpearSkin.SetModel(AssetsController.GetAsset("GladiatorSpearFire", OverhaulAssetsPart.WeaponSkins),
                     glSpearSkinOffset,
                     true,
                     false);
@@ -946,6 +956,7 @@ namespace CDOverhaul.Gameplay
                     bionicSpearSkinOffset,
                     true,
                     false);
+                bionicSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (bionicSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (bionicSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
@@ -955,10 +966,11 @@ namespace CDOverhaul.Gameplay
                     hazardSpearSkinOffset,
                     false,
                     false);
-                hazardSpearSkin.SetModel(AssetsController.GetAsset("HazardSpear", OverhaulAssetsPart.WeaponSkins),
+                hazardSpearSkin.SetModel(AssetsController.GetAsset("HazardSpearFire", OverhaulAssetsPart.WeaponSkins),
                     hazardSpearSkinOffset,
                     true,
                     false);
+                hazardSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (hazardSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (hazardSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
@@ -972,6 +984,7 @@ namespace CDOverhaul.Gameplay
                     byonetSpearSkinOffset,
                     true,
                     false);
+                byonetSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (byonetSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (byonetSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord + And + ATVCatDiscord;
 
@@ -981,7 +994,7 @@ namespace CDOverhaul.Gameplay
                     bsSpearSkinOffset,
                     false,
                     false);
-                bsSpearSkin.SetModel(AssetsController.GetAsset("BlueShroomSpear", OverhaulAssetsPart.WeaponSkins),
+                bsSpearSkin.SetModel(AssetsController.GetAsset("BlueShroomSpearFire", OverhaulAssetsPart.WeaponSkins),
                     bsSpearSkinOffset,
                     true,
                     false);
@@ -1007,7 +1020,7 @@ namespace CDOverhaul.Gameplay
                     shSpearSkinOffset,
                     false,
                     false);
-                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpear", OverhaulAssetsPart.WeaponSkins),
+                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpearFire", OverhaulAssetsPart.WeaponSkins),
                     shSpearSkinOffset,
                     true,
                     false);
@@ -1064,7 +1077,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, true);
 
                 AddSkinQuick(WeaponType.Sword, "Minecraft-Golden", HumanDiscord, "MCGoldenSword", "MCGoldenSwordFire", "MCGoldenSwordLBS", "MCGoldenSwordLBSFire");
-                SetSkinExclusiveQuick("47A1CD84FD538A2E");
+                SetSkinExclusiveQuick("47A1CD84FD538A2E 7729A4C45405BF0E");
                 SetSkinColorParameters(false, -1, false, -1);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, false);

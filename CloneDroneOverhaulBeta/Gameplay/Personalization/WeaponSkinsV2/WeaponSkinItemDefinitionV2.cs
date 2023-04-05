@@ -37,6 +37,9 @@ namespace CDOverhaul.Gameplay
         void IOverhaulItemDefinition.SetExclusivePlayerID(string id) => m_ExclusivePlayerID = id;
         string IOverhaulItemDefinition.GetExclusivePlayerID() => m_ExclusivePlayerID;
 
+        public string OverrideName;
+        public bool HasNameOverride => !string.IsNullOrEmpty(OverrideName);
+
         /// <summary>
         /// Models
         /// </summary>
