@@ -5,6 +5,10 @@ namespace CDOverhaul.Patches
     [RequireComponent(typeof(Camera))]
     public class ArenaCameraBehaviour : MonoBehaviour
     {
+        private SpeechAudioManager m_SpeechAudioManager;
+        private CutSceneManager m_CutSceneManager;
+        public bool AreManagersNull => m_SpeechAudioManager == null || m_CutSceneManager == null;
+
         public Camera TheCamera;
 
         private float _timeToStopRendering;
@@ -17,6 +21,8 @@ namespace CDOverhaul.Patches
         public void Initialze(in Camera camera)
         {
             TheCamera = camera;
+            m_SpeechAudioManager = SpeechAudioManager.Instance;
+            m_CutSceneManager = CutSceneManager.Instance;
         }
 
         public void StartRendering()
@@ -26,6 +32,13 @@ namespace CDOverhaul.Patches
 
         private void Update()
         {
+            if (AreManagersNull)
+            {
+                TheCamera.enabled = true;
+                base.enabled = false;
+                return;
+            }
+
             Vector3 newPos = base.transform.position;
             if (_vectorPrevFrame != newPos)
             {

@@ -44,10 +44,11 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         private void Update()
         {
-            if(m_TimeToReceiveData != -1 && Time.time > m_TimeToReceiveData)
+            float time = Time.time;
+            if (m_TimeToReceiveData != -1 && time > m_TimeToReceiveData)
             {
                 m_TimeToReceiveData = -1;
-                m_TimeToStopWaiting = Time.time + 5f;
+                m_TimeToStopWaiting = time + 5f;
                 _ = StartCoroutine(getDataCoroutine());
             }
         }

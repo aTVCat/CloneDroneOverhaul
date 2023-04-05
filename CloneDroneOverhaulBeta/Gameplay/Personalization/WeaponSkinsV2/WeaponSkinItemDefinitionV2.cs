@@ -98,6 +98,7 @@ namespace CDOverhaul.Gameplay
         public bool DontUseCustomColorsWhenFire;
         public bool DontUseCustomColorsWhenNormal;
         public float Saturation = 0.75f;
+        public float Multiplier = 1f;
 
         public string AuthorDiscord;
         public string Description;

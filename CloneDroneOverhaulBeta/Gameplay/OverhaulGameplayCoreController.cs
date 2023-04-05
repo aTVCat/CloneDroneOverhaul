@@ -114,21 +114,21 @@ namespace CDOverhaul.Gameplay
             }
 
             GameMode currentGamemode = GameFlowManager.Instance.GetCurrentGameMode();
-            if (currentGamemode != m_GameModeLastTimeCheck)
+            if (!currentGamemode.Equals(m_GameModeLastTimeCheck))
             {
                 sendGamemodeWasUpdateEvent();
             }
             m_GameModeLastTimeCheck = currentGamemode;
 
             Camera mainCamera = Camera.main;
-            if (mainCamera != m_MainCamera)
+            if (!Equals(mainCamera, m_MainCamera))
             {
                 OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
             }
             m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
-            if (currentCamera != m_CurrentCamera)
+            if (!Equals(currentCamera, m_CurrentCamera))
             {
                 OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             }

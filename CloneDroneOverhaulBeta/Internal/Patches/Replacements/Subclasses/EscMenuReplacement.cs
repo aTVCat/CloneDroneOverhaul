@@ -37,13 +37,14 @@ namespace CDOverhaul.Patches
             }
             m_SetUpButtons = true;
 
-            OpenOutfitsMenuFromSettings.CanBeShown = shouldShowPersonalization;
+            OpenOutfitsMenuFromSettings.CanBeShown = shouldShowPersonalizationOutfits;
             OpenOutfitsMenuFromSettings.EventString = OpenOutfitsFromSettingsEventString;
             OpenSkinsMenuFromSettings.CanBeShown = shouldShowPersonalization;
             OpenSkinsMenuFromSettings.EventString = OpenSkinsFromSettingsEventString;
         }
 
         private static Func<bool> shouldShowPersonalization => () => OverhaulGamemodeManager.SupportsPersonalization() && CharacterTracker.Instance.GetPlayerTransform() != null;
+        private static Func<bool> shouldShowPersonalizationOutfits => () => OverhaulGamemodeManager.SupportsOutfits() && CharacterTracker.Instance.GetPlayerTransform() != null;
 
         public override void Replace()
         {

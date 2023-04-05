@@ -61,7 +61,7 @@ namespace CDOverhaul.Gameplay.Outfits
         {
             DestroyAccessories();
 
-            if (!OverhaulGamemodeManager.SupportsPersonalization())
+            if (!OverhaulGamemodeManager.SupportsOutfits())
             {
                 return;
             }

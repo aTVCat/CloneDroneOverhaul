@@ -10,7 +10,12 @@
         /// <returns></returns>
         public static bool SupportsPersonalization()
         {
-            return !OverhaulVersion.Upd2Hotfix && !GameModeManager.Is(GameMode.Story) && !GameModeManager.ConsciousnessTransferToAlliesEnabled() && !GameModeManager.ConsciousnessTransferToKillerEnabled();
+            return true;
+        }
+
+        public static bool SupportsOutfits()
+        {
+            return !OverhaulVersion.Upd2Hotfix && SupportsPersonalization();
         }
 
         public static bool SupportsCombatOverhaul()

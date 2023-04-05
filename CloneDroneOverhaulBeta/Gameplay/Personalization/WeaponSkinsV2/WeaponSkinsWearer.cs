@@ -330,7 +330,7 @@ namespace CDOverhaul.Gameplay
                         forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor).ColorValue;
                     }
 
-                    SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor);
+                    SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor, (item as WeaponSkinItemDefinitionV2).Multiplier);
                 }
                 WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo
                 {
@@ -397,7 +397,7 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        public void SetModelColor(GameObject model, bool fire, float saturation, Color? forceColor = null)
+        public void SetModelColor(GameObject model, bool fire, float saturation, Color? forceColor = null, float multiplier = 1f)
         {
             Renderer renderer = model.GetComponent<Renderer>();
             if (renderer == null || renderer.material == null)
@@ -421,7 +421,7 @@ namespace CDOverhaul.Gameplay
                 b = 1f,
                 s = saturation
             };
-            material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
+            material.SetColor("_EmissionColor", hsbcolor2.ToColor() * (2.5f * multiplier));
 
             if (model.GetComponent<WeaponSkinFireAnimator>())
             {

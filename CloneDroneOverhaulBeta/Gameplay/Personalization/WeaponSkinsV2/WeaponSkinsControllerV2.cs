@@ -25,6 +25,7 @@ namespace CDOverhaul.Gameplay
         public const string HumanDiscord = "Human#8570";
         public const string HizDiscord = "TheHiz#6138";
         public const string KegaDiscord = "Mr. КеГ#3924";
+        public const string DGKDiscord = "dukogpom#0969";
         public const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
@@ -151,14 +152,17 @@ namespace CDOverhaul.Gameplay
         /// <param name="applyFavColorFire"></param>
         /// <param name="forcedColorIndexFire"></param>
         /// <param name="saturation"></param>
-        public void SetSkinColorParameters(bool applyFavColorNormal = true, int forcedColorIndexNormal = -1, bool applyFavColorFire = false, int forcedColorIndexFire = 5, float saturation = 0.75f)
+        public void SetSkinColorParameters(bool applyFavColorNormal = true, int forcedColorIndexNormal = -1, bool applyFavColorFire = false, int forcedColorIndexFire = 5, float saturation = 0.75f, float multipler = 1f, bool applyAnimToFireModel = false)
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
             item.Saturation = saturation;
+            item.Multiplier = multipler;
             item.IndexOfForcedFireVanillaColor = forcedColorIndexFire;
             item.IndexOfForcedNormalVanillaColor = forcedColorIndexNormal;
             item.DontUseCustomColorsWhenFire = !applyFavColorFire;
             item.DontUseCustomColorsWhenNormal = !applyFavColorNormal;
+            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
         }
 
         /// <summary>
@@ -1103,6 +1107,12 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), true, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), false, true);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.85f, 0.4f)), true, true);
+
+                AddSkinQuick(WeaponType.Sword, "BBR_S", DGKDiscord, "BBR_S", "BBR_SFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0.05f, 0.225f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinDescription("BBR");
+                SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
             }
         }
 

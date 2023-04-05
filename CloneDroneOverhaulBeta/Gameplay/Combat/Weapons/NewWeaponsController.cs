@@ -16,6 +16,11 @@ namespace CDOverhaul.Gameplay.Combat
         {
             base.Initialize();
 
+            if (OverhaulVersion.Upd2Hotfix)
+            {
+                return;
+            }
+
             m_AddedWeaponModels.Clear();
             m_AlwaysEquippedWeaponModels.Clear();
 

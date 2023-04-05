@@ -103,8 +103,8 @@ namespace CDOverhaul
             VoxelsController = OverhaulController.AddController<VoxelsController>();
             HUDController = OverhaulController.AddController<OverhaulCanvasController>();
             GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
-            _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
+            if (!OverhaulVersion.Upd2Hotfix) PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
+            if(!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
