@@ -51,6 +51,11 @@ namespace CDOverhaul.Localization
                 return langID + "_" + translationID;
             }
 
+            if (!Translations[langID].ContainsKey(translationID))
+            {
+                return translationID;
+            }
+
             if (string.IsNullOrEmpty(Translations[langID][translationID]))
             {
                 return Translations["en"][translationID];

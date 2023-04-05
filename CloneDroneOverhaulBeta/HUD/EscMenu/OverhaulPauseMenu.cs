@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Bolt;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,6 +66,13 @@ namespace CDOverhaul.HUD
         private Button m_GameSettingsButton;
         private Button m_ModSettingsButton;
 
+        private Transform m_RoomCodePanel;
+        private InputField m_RoomCodeField;
+        private Button m_RoomCodeCopyButton;
+        private Button m_RoomCodeRevealButton;
+        private Button m_StartMatchButton;
+        private Text m_StartMatchButtonText;
+
         private OverhaulParametersMenu m_Parameters;
 
         public override void Initialize()
@@ -99,6 +107,17 @@ namespace CDOverhaul.HUD
             m_GameSettingsButton.onClick.AddListener(OnGameSettingsClicked);
             m_ModSettingsButton = MyModdedObject.GetObject<Button>(14);
             m_ModSettingsButton.onClick.AddListener(OnModSettingsClicked);
+
+            m_RoomCodePanel = MyModdedObject.GetObject<Transform>(17);
+            m_RoomCodeField = MyModdedObject.GetObject<InputField>(20);
+            m_RoomCodeCopyButton = MyModdedObject.GetObject<Button>(19);
+            m_RoomCodeCopyButton.onClick.AddListener(OverhaulGamemodeManager.CopyPrivateRoomCode);
+            m_RoomCodeRevealButton = MyModdedObject.GetObject<Button>(18);
+            m_RoomCodeRevealButton.onClick.AddListener(OnRoomCodeRevealButtonClicked);
+
+            m_StartMatchButton = MyModdedObject.GetObject<Button>(21);
+            m_StartMatchButton.onClick.AddListener(OnStartMatchClicked);
+            m_StartMatchButtonText = MyModdedObject.GetObject<Text>(22);
 
             MyModdedObject.GetObject<Button>(16).onClick.AddListener(OnContinueClicked);
             MyModdedObject.GetObject<Button>(15).onClick.AddListener(delegate
@@ -273,6 +292,73 @@ namespace CDOverhaul.HUD
 
         #endregion
 
+        #region Room code
+
+        public void RefreshRoomCodePanelActive() => m_RoomCodePanel.gameObject.SetActive(OverhaulGamemodeManager.ShouldShowRoomCodePanel());
+        public void RefreshRoomCodeField()
+        {
+            m_RoomCodeField.text = OverhaulGamemodeManager.GetPrivateRoomCode();
+            m_RoomCodeRevealButton.gameObject.SetActive(true);
+        }
+
+        public void RefreshStartMatchButton()
+        {
+            m_StartMatchButton.gameObject.SetActive(false);
+            bool shouldShow = OverhaulGamemodeManager.ShouldShowRoomCodePanel();
+            if (!shouldShow)
+            {
+                return;
+            }
+
+            if (BattleRoyaleManager.Instance != null)
+            {
+                if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea))
+                {
+                    m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
+                    m_StartMatchButton.gameObject.SetActive(true);
+                }
+                else if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.FightingStarted))
+                {
+                    m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!", -1);
+                    m_StartMatchButton.gameObject.SetActive(true);
+                }
+            }
+            else if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
+            {
+                m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
+                m_StartMatchButton.gameObject.SetActive(true);
+            }
+
+        }
+
+        public void OnRoomCodeRevealButtonClicked()
+        {
+            m_RoomCodeRevealButton.gameObject.SetActive(false);
+        }
+
+        public void OnStartMatchClicked()
+        {
+            Hide();
+
+            if (BattleRoyaleManager.Instance != null)
+            {
+                if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea))
+                {
+                    ClientRequestsStartingLevelNowEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+                }
+                else if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.FightingStarted))
+                {
+                    ClientRequestsFinalZoneActivation.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+                }
+            }
+            else if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
+            {
+                ClientRequestsStartingLevelNowEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+            }
+        }
+
+        #endregion
+
         public void OnContinueClicked()
         {
             if (!AllowToggleMenu)
@@ -292,6 +378,9 @@ namespace CDOverhaul.HUD
             TimeManager.Instance.OnGamePaused();
 
             RefreshAdvancements();
+            RefreshRoomCodeField();
+            RefreshRoomCodePanelActive();
+            RefreshStartMatchButton();
 
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 

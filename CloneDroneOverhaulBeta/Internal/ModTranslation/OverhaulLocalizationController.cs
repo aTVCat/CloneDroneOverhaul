@@ -27,17 +27,39 @@ namespace CDOverhaul.Localization
             }
         }
 
+        public static bool HasTranslation(string translationID)
+        {
+            if (Error)
+            {
+                return false;
+            }
+            return Localization.Translations["en"].ContainsKey(translationID);
+        }
+
+        public static string GetTranslation(string translationID)
+        {
+            if (Error)
+            {
+                return translationID;
+            }
+            return Localization.GetTranslation(translationID);
+        }
+
         private static readonly List<Text> m_ListOfTexts = new List<Text>();
         private static bool m_TryingToLocalizeHUD;
 
+        private static bool m_EventIsScheduled;
+
         public static void Initialize()
         {
+            m_EventIsScheduled = false;
             OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
             m_ListOfTexts.Clear();
             m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
             {
+                ScheduleEvent();
                 return;
             }
             OverhaulSessionController.SetKey("LoadedTranslations", true);
@@ -76,6 +98,7 @@ namespace CDOverhaul.Localization
             }
 
             TryLocalizeHUD();
+            ScheduleEvent();
         }
 
         public static void SaveData()
@@ -86,6 +109,24 @@ namespace CDOverhaul.Localization
                 File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + OverhaulLocalizationController.LocalizationFileName + ".json",
                  Newtonsoft.Json.JsonConvert.SerializeObject(m_Data, Newtonsoft.Json.Formatting.None, DataRepository.CreateSettings()));
             }
+        }
+
+        public static void ScheduleEvent()
+        {
+            if (m_EventIsScheduled)
+            {
+                return;
+            }
+
+            m_EventIsScheduled = true;
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                m_EventIsScheduled = false;
+                if (GlobalEventManager.Instance != null)
+                {
+                    GlobalEventManager.Instance.Dispatch(GlobalEvents.UILanguageChanged);
+                }
+            }, 0.5f);
         }
 
         public static void TryLocalizeHUD()

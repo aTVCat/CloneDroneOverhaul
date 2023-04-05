@@ -105,6 +105,7 @@ namespace CDOverhaul.Patches
                 m_ModSettingsButton = UnityEngine.Object.Instantiate(m_SettingsButton, m_BG);
                 m_ModSettingsButton.localScale = Vector3.one;
                 m_ModSettingsButton.localPosition = new Vector3(39f, m_SettingsButton.localPosition.y, 0f);
+                m_ModSettingsButton.gameObject.name = "OverhaulSettingsButton";
 
                 LocalizedTextField l = m_ModSettingsButton.GetComponentInChildren<LocalizedTextField>();
                 if (l == null)

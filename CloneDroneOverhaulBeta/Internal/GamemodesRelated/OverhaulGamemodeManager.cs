@@ -1,4 +1,6 @@
-﻿namespace CDOverhaul
+﻿using UnityEngine;
+
+namespace CDOverhaul
 {
     public static class OverhaulGamemodeManager
     {
@@ -27,6 +29,34 @@
         {
             bool isEnabled = OverhaulMod.IsModEnabled(GunModID);
             return !isEnabled || (isEnabled && GameModeManager.IsMultiplayer());
+        }
+
+        public static bool ShouldShowRoomCodePanel()
+        {
+            return MultiplayerMatchmakingManager.Instance != null && MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch();
+        }
+
+        public static string GetPrivateRoomCode()
+        {
+            if(!ShouldShowRoomCodePanel())
+            {
+                return string.Empty;
+            }
+
+            return MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+        }
+
+        public static void CopyPrivateRoomCode()
+        {
+            if (!ShouldShowRoomCodePanel())
+            {
+                return;
+            }
+
+            TextEditor edit = new TextEditor();
+            edit.text = GetPrivateRoomCode();
+            edit.SelectAll();
+            edit.Copy();
         }
     }
 }

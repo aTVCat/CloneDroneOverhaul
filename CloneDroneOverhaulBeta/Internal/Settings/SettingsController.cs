@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.HUD;
+using CDOverhaul.Localization;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -66,6 +67,52 @@ namespace CDOverhaul
                         ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
                     }
                 }, 0.1f);
+
+#if DEBUG
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    foreach (SettingInfo neededAttribute in m_Settings)
+                    {
+                        if (OverhaulLocalizationController.Error)
+                        {
+                            return;
+                        }
+
+                        if(!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                        }
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                        }
+
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SectionTranslationPrefix + neededAttribute.Section);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SectionTranslationPrefix + neededAttribute.Section] = neededAttribute.Section;
+                        }
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                        }
+
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.CategoryTranslationPrefix + neededAttribute.Category))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.CategoryTranslationPrefix + neededAttribute.Category);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.CategoryTranslationPrefix + neededAttribute.Category] = neededAttribute.Category;
+                        }
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category))
+                        {
+                            OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category);
+                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category] = GetCategoryDescription(neededAttribute.Category);
+                        }
+                    }
+                }, 1f);
+#endif
 
                 MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
 

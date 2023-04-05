@@ -1,13 +1,22 @@
-﻿using Jint.Native.Map;
+﻿using CDOverhaul.Localization;
+using Jint.Native.Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
     public class OverhaulParametersMenu : OverhaulUI
     {
+        public const string CategoryTranslationPrefix = "PrefC_";
+        public const string CategoryDescTranslationPrefix = "PrefCD_";
+        public const string SectionTranslationPrefix = "PrefS_";
+        public const string SettingTranslationPrefix = "PrefE_";
+        public const string SettingDescTranslationPrefix = "PrefED_";
+        public const string SettingButtonTranslationPrefix = "PrefEB_";
+
         private ModdedObject m_CategoryEntryPrefab;
         private Transform m_CategoryContainer;
 
@@ -150,7 +159,7 @@ namespace CDOverhaul.HUD
             {
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);
                 categoryEntry.gameObject.SetActive(true);
-                categoryEntry.GetObject<Text>(0).text = category;
+                categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + category);
                 categoryEntry.GetObject<UnityEngine.UI.Image>(1).sprite = SettingsController.GetSpriteForCategory(category);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
             }
@@ -190,7 +199,7 @@ namespace CDOverhaul.HUD
             {
                 ModdedObject categoryDesc = Instantiate(m_PageDescPrefab, m_MainContainer);
                 categoryDesc.gameObject.SetActive(true);
-                categoryDesc.GetObject<Text>(0).text = desc;
+                categoryDesc.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryDescTranslationPrefix + categoryName);
             }
 
             List<string> sections = SettingsController.GetAllSections(categoryName);
@@ -207,7 +216,7 @@ namespace CDOverhaul.HUD
                 string[] array = sectionName.Split('.');
                 ModdedObject categoryEntry = Instantiate(m_SectionPrefab, m_MainContainer);
                 categoryEntry.gameObject.SetActive(true);
-                categoryEntry.GetObject<Text>(0).text = array[1];
+                categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(SectionTranslationPrefix + array[1]);
 
                 List<string> settings = SettingsController.GetAllSettings(categoryName, array[1]);
                 foreach (string settingName in settings)
@@ -274,7 +283,7 @@ namespace CDOverhaul.HUD
                     bcButton.gameObject.SetActive(true);
                     bcButton.GetComponent<Button>().onClick.AddListener(info.EventDispatcher.DispatchEvent);
                     bcButton.GetComponent<Button>().interactable = info.EventDispatcher.CanBeShown == null || info.EventDispatcher.CanBeShown();
-                    bcButton.GetObject<Text>(0).text = info.Name;
+                    bcButton.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(SettingButtonTranslationPrefix + info.Name);
 
                     return;
                 }

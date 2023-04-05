@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Localization;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -66,11 +67,11 @@ namespace CDOverhaul.HUD
             {
                 string[] array = settingPath.Split('.');
 
-                m_ModdedObject.GetObject<Text>(0).text = array[2];
+                m_ModdedObject.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(OverhaulParametersMenu.SettingTranslationPrefix + array[2]);
                 m_ModdedObject.GetObject<Text>(1).text = string.Empty;
                 if (Description != null)
                 {
-                    m_ModdedObject.GetObject<Text>(1).text = Description.Description;
+                    m_ModdedObject.GetObject<Text>(1).text = OverhaulLocalizationController.GetTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + array[2]);
                 }
 
                 base.GetComponent<Image>().enabled = position == ParametersMenuSettingPosition.Normal;
