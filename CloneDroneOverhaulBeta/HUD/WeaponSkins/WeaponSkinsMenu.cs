@@ -217,9 +217,10 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            menu.ScheduleHide = true;
+            menu.Hide();
             escMenu.Hide();
             paramsMenu.Hide();
-            menu.Hide();
             this.SetMenuActive(true);
         }
 

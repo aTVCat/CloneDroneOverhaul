@@ -644,7 +644,7 @@ namespace CDOverhaul.Gameplay
                     darkPastHammerSkinOffset,
                     false,
                     false);
-                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPastFire", OverhaulAssetsPart.WeaponSkins),
                     darkPastHammerSkinOffset,
                     true,
                     false);
@@ -670,7 +670,7 @@ namespace CDOverhaul.Gameplay
                     bsHammerSkinOffset,
                     false,
                     false);
-                bsHammerSkin.SetModel(AssetsController.GetAsset("BlueShroomHammer", OverhaulAssetsPart.WeaponSkins),
+                bsHammerSkin.SetModel(AssetsController.GetAsset("BlueShroomHammerFire", OverhaulAssetsPart.WeaponSkins),
                     bsHammerSkinOffset,
                     true,
                     false);
@@ -757,7 +757,7 @@ namespace CDOverhaul.Gameplay
                     iHammerSkinOffset,
                     true,
                     false);
-                iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C 78E35D43F7CA4E5");
+                iHammerSkin.SetExclusivePlayerID("193564D7A14F9C33 6488A250901CD65C 78E35D43F7CA4E5 FEA5A0978276D0FB");
                 (iHammerSkin as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal = true;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (iHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
@@ -1101,6 +1101,11 @@ namespace CDOverhaul.Gameplay
                 SetSkinColorParameters(false, -1);
                 SetSkinExclusiveQuick("-"); // Scrapped
 
+                AddSkinQuick(WeaponType.Bow, "Cryprin", ZoloRDiscord, "CryprinBow");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.07f, -0.03f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.625f, 0.555f)), false, false);
+                SetSkinExclusiveQuick("193564D7A14F9C33");
+                SetSkinMiscParameters(false, true);
+
                 AddSkinQuick(WeaponType.Sword, "Machette", HizDiscord + And + ATVCatDiscord, "MachetteSword", "MachetteSwordFire", "MachetteSword", "MachetteSwordFire");
                 SetSkinColorParameters(true, -1, false, -1);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.1f, 0.015f, -0.2f), new Vector3(90f, 0f, 0f), new Vector3(0.75f, 0.75f, 0.4f)), false, false);
@@ -1113,6 +1118,11 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
                 SetSkinDescription("BBR");
                 SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
+
+                AddSkinQuick(WeaponType.Hammer, "Time Corruption", ZoloRDiscord + And + ATVCatDiscord, "TimeCorruptionHammer", "TimeCorruptionHammerFire");
+                SetSkinColorParameters(false, -1, false, -1);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.175f, 0.05f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.75f, 0.92f, 0.92f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.175f, 0.05f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.75f, 0.92f, 0.92f)), true, false);
             }
         }
 

@@ -36,7 +36,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnEvent(SendFallingEvent sendFallingEvent)
         {
-            if(Owner.entity.IsOwner && Owner.HasLocalControl())
+            if(!Owner.IsDetached() && Owner.entity.IsOwner && Owner.HasLocalControl())
             {
                 StopPlayingCustomAnimations();
             }

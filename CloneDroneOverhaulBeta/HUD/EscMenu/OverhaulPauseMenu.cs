@@ -73,6 +73,8 @@ namespace CDOverhaul.HUD
         private Button m_StartMatchButton;
         private Text m_StartMatchButtonText;
 
+        public bool ScheduleHide;
+
         private OverhaulParametersMenu m_Parameters;
 
         public override void Initialize()
@@ -251,6 +253,11 @@ namespace CDOverhaul.HUD
         private IEnumerator modSettingsCoroutine()
         {
             yield return new WaitUntil(() => !m_Parameters.gameObject.activeSelf);
+            if (ScheduleHide)
+            {
+                ScheduleHide = false;
+                yield break;
+            }
             Show();
             yield break;
         }
