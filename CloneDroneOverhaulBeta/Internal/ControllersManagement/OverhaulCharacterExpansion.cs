@@ -72,7 +72,7 @@ namespace CDOverhaul
             EnergySource = null;
 
             OverhaulEventManager.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onUpgradesRefresh, true);
+            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         public override void Start()
@@ -82,7 +82,7 @@ namespace CDOverhaul
             EnergySource = base.GetComponent<EnergySource>();
 
             _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onUpgradesRefresh, true);
+            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace CDOverhaul
 
         }
 
-        private void onUpgradesRefresh(FirstPersonMover mover)
+        public void OnUpgradesRefresh(FirstPersonMover mover)
         {
             if (IsDisposedOrDestroyed())
             {
