@@ -62,10 +62,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 return;
             }
-            if(m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
+            if (m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
 
             int intValue = (int)type;
-            if(m_Info != null && m_Info.HasReceivedData)
+            if (m_Info != null && m_Info.HasReceivedData)
             {
                 TargetStatus = intValue;
                 m_Info.RefreshData();
@@ -83,7 +83,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 m_WorldCanvas.DestroyGameObject();
             }
-            if(m_WorldCanvasHolder != null)
+            if (m_WorldCanvasHolder != null)
             {
                 Destroy(m_WorldCanvasHolder);
             }
@@ -111,7 +111,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            if(table == null || Owner == null)
+            if (table == null || Owner == null)
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             int status = 0;
             if (!IsOwnerMainPlayer() && table.Contains("State.Status"))
-            {                
+            {
                 try
                 {
                     status = (int)(long)table["State.Status"];
@@ -159,7 +159,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static void SetOwnStatus(PlayerStatusType type)
         {
-            if(m_LocalBehaviour == null)
+            if (m_LocalBehaviour == null)
             {
                 return;
             }
@@ -168,11 +168,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static int GetOwnStatus()
         {
-            if (m_LocalBehaviour == null)
-            {
-                return -1;
-            }
-            return m_LocalBehaviour.TargetStatus;
+            return m_LocalBehaviour == null ? -1 : m_LocalBehaviour.TargetStatus;
         }
     }
 }

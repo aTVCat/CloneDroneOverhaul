@@ -44,7 +44,7 @@ namespace CDOverhaul
         public static string GetLocalPlayfabID()
         {
             string result = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
-            if(result == null)
+            if (result == null)
             {
                 result = string.Empty;
             }

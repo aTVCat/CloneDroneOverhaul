@@ -17,7 +17,7 @@ namespace CDOverhaul
         {
             get
             {
-                if(IsDestroyed || IsDisposed)
+                if (IsDestroyed || IsDisposed)
                 {
                     return null;
                 }

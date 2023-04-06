@@ -19,7 +19,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if(firstPersonMover != null)
+                if (firstPersonMover != null)
                 {
                     _ = firstPersonMover.gameObject.AddComponent<PlayerStatusBehaviour>();
                 }
@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if(state != null)
+                if (state != null)
                 {
                     MultiplayerPlayerInfoState mstate = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(state.PlayFabID);
                     if (mstate != null)

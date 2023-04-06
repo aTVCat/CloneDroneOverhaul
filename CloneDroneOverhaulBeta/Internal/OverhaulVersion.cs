@@ -8,22 +8,12 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulVersion
     {
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.4");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.5");
         /// <summary>
         /// The version of the mod
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        public static Version ModVersion
-        {
-            get
-            {
-                if (Upd2Hotfix)
-                {
-                    return m_ModVersionUpd2;
-                }
-                return m_ModVersion;
-            }
-        }
+        public static Version ModVersion => Upd2Hotfix ? m_ModVersionUpd2 : m_ModVersion;
 
         public const string GameTargetVersion = "1.4.0.17";
 
@@ -51,6 +41,9 @@ namespace CDOverhaul
         public const string DebugString = "";
 #endif
 
-        private static char getVersionPrefixChar() => 'v';
+        private static char getVersionPrefixChar()
+        {
+            return 'v';
+        }
     }
 }

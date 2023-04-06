@@ -18,7 +18,7 @@ namespace CDOverhaul
 
         private void onFirstPersonMoverSpawned(FirstPersonMover mover)
         {
-            if(mover == null)
+            if (mover == null)
             {
                 return;
             }

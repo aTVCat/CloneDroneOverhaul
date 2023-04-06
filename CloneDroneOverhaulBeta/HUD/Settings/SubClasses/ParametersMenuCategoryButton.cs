@@ -22,9 +22,9 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            foreach(ParametersMenuCategoryButton b in m_SpawnedBehaviours)
+            foreach (ParametersMenuCategoryButton b in m_SpawnedBehaviours)
             {
-                if(b != null && !b.IsDisposedOrDestroyed() && !string.IsNullOrEmpty(b.Category) && b.Category.Equals(category))
+                if (b != null && !b.IsDisposedOrDestroyed() && !string.IsNullOrEmpty(b.Category) && b.Category.Equals(category))
                 {
                     b.SetSelected(true, true);
                 }

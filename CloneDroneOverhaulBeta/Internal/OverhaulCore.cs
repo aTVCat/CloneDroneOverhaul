@@ -9,7 +9,6 @@ using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
 using System.IO;
-using System.Security.Cryptography;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -38,7 +37,7 @@ namespace CDOverhaul
         /// The UI controller instance
         /// </summary>
         public OverhaulCanvasController HUDController
-        { 
+        {
             get;
             private set;
         }
@@ -83,7 +82,7 @@ namespace CDOverhaul
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
-            if(ExperimentalBranchManager.Instance != null)
+            if (ExperimentalBranchManager.Instance != null)
             {
                 ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
             }
@@ -104,7 +103,7 @@ namespace CDOverhaul
             HUDController = OverhaulController.AddController<OverhaulCanvasController>();
             GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
             if (!OverhaulVersion.Upd2Hotfix) PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
-            if(!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
+            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
@@ -114,7 +113,7 @@ namespace CDOverhaul
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
 
-            if(OverhaulDiscordController.Instance == null)
+            if (OverhaulDiscordController.Instance == null)
             {
                 _ = new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordController>();
             }

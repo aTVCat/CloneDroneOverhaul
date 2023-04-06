@@ -37,7 +37,7 @@ namespace CDOverhaul
         internal void CreateDialogueInstance(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
             Vector2? theSize = size;
-            if(theSize == null)
+            if (theSize == null)
             {
                 theSize = DefaultSize;
             }
@@ -56,7 +56,7 @@ namespace CDOverhaul
 
         public static void CreateDialogue(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
-            if(m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
+            if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
             {
                 return;
             }

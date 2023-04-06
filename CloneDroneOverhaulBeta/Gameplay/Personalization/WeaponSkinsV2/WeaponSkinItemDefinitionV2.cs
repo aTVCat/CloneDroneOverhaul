@@ -13,29 +13,57 @@ namespace CDOverhaul.Gameplay
         /// Weapon type
         /// </summary>
         private WeaponType m_WeaponType;
-        void IWeaponSkinItemDefinition.SetWeaponType(WeaponType weaponType) => m_WeaponType = weaponType;
-        WeaponType IWeaponSkinItemDefinition.GetWeaponType() => m_WeaponType;
+        void IWeaponSkinItemDefinition.SetWeaponType(WeaponType weaponType)
+        {
+            m_WeaponType = weaponType;
+        }
+
+        WeaponType IWeaponSkinItemDefinition.GetWeaponType()
+        {
+            return m_WeaponType;
+        }
 
         /// <summary>
         /// Filter
         /// </summary>
         private ItemFilter m_SkinFilter;
-        void IWeaponSkinItemDefinition.SetFilter(ItemFilter filter) => m_SkinFilter = filter;
-        ItemFilter IWeaponSkinItemDefinition.GetFilter() => m_SkinFilter;
+        void IWeaponSkinItemDefinition.SetFilter(ItemFilter filter)
+        {
+            m_SkinFilter = filter;
+        }
+
+        ItemFilter IWeaponSkinItemDefinition.GetFilter()
+        {
+            return m_SkinFilter;
+        }
 
         /// <summary>
         /// Skin name
         /// </summary>
         private string m_SkinName;
-        void IOverhaulItemDefinition.SetItemName(string newName) => m_SkinName = newName;
-        string IOverhaulItemDefinition.GetItemName() => m_SkinName;
+        void IOverhaulItemDefinition.SetItemName(string newName)
+        {
+            m_SkinName = newName;
+        }
+
+        string IOverhaulItemDefinition.GetItemName()
+        {
+            return m_SkinName;
+        }
 
         /// <summary>
         /// Exclusivity
         /// </summary>
         private string m_ExclusivePlayerID;
-        void IOverhaulItemDefinition.SetExclusivePlayerID(string id) => m_ExclusivePlayerID = id;
-        string IOverhaulItemDefinition.GetExclusivePlayerID() => m_ExclusivePlayerID;
+        void IOverhaulItemDefinition.SetExclusivePlayerID(string id)
+        {
+            m_ExclusivePlayerID = id;
+        }
+
+        string IOverhaulItemDefinition.GetExclusivePlayerID()
+        {
+            return m_ExclusivePlayerID;
+        }
 
         public string OverrideName;
         public bool HasNameOverride => !string.IsNullOrEmpty(OverrideName);
@@ -110,7 +138,7 @@ namespace CDOverhaul.Gameplay
                 return true;
             }
 
-            if(OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
+            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
             {
                 return true;
             }
@@ -126,13 +154,8 @@ namespace CDOverhaul.Gameplay
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            IWeaponSkinItemDefinition defX = x as IWeaponSkinItemDefinition;
-            IWeaponSkinItemDefinition defY = y as IWeaponSkinItemDefinition;
-            if(defX != null && defY != null)
-            {
-                return (defX.GetWeaponType(), defX.GetItemName()) == (defY.GetWeaponType(), defY.GetItemName());
-            }
-            return false;
+            return x is IWeaponSkinItemDefinition defX && y is IWeaponSkinItemDefinition defY
+&& (defX.GetWeaponType(), defX.GetItemName()) == (defY.GetWeaponType(), defY.GetItemName());
         }
 
         int IEqualityComparer.GetHashCode(object obj)

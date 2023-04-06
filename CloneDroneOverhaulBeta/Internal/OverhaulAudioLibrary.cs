@@ -5,8 +5,7 @@ namespace CDOverhaul
 {
     public static class OverhaulAudioLibrary
     {
-        private static AudioClipDefinition[] m_HeavyRobotFootsteps;
-        public static AudioClipDefinition[] HeavyRobotFootsteps => m_HeavyRobotFootsteps;
+        public static AudioClipDefinition[] HeavyRobotFootsteps { get; private set; }
 
         internal static void Initialize()
         {
@@ -16,9 +15,9 @@ namespace CDOverhaul
             }
             OverhaulSessionController.SetKey("HasInitialized", true);
 
-            m_HeavyRobotFootsteps = new AudioClipDefinition[2];
-            m_HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetsPart.Sounds));
-            m_HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetsPart.Sounds));
+            HeavyRobotFootsteps = new AudioClipDefinition[2];
+            HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetsPart.Sounds));
+            HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetsPart.Sounds));
         }
     }
 }

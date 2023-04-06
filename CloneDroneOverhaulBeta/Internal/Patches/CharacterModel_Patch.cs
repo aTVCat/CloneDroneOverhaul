@@ -28,7 +28,7 @@ namespace CDOverhaul.Patches
                 return true;
             }
 
-            if(!AudioManager.Instance.ShouldPlayLowPrioritySound() || !AudioManager.Instance.ShouldPlaySound(__instance.transform.position, false))
+            if (!AudioManager.Instance.ShouldPlayLowPrioritySound() || !AudioManager.Instance.ShouldPlaySound(__instance.transform.position, false))
             {
                 return false;
             }

@@ -21,14 +21,7 @@ namespace CDOverhaul.Gameplay
 
         public void ReplaceVanillaDropPoints(bool modded)
         {
-            if (modded)
-            {
-                GarbageManager.Instance.GarbageDropPoints = m_ModdedGarbageDropPoints.ToArray();
-            }
-            else
-            {
-                GarbageManager.Instance.GarbageDropPoints = m_OgGarbageDropPoints;
-            }
+            GarbageManager.Instance.GarbageDropPoints = modded ? m_ModdedGarbageDropPoints.ToArray() : m_OgGarbageDropPoints;
         }
 
         public void AddGarbageDropPoint(Transform point)
@@ -45,7 +38,7 @@ namespace CDOverhaul.Gameplay
         public void RemoveGarbageDropPoint(Transform point)
         {
             _ = m_ModdedGarbageDropPoints.Remove(point);
-            if(m_ModdedGarbageDropPoints.Count == 0)
+            if (m_ModdedGarbageDropPoints.Count == 0)
             {
                 ReplaceVanillaDropPoints(false);
             }
@@ -53,14 +46,7 @@ namespace CDOverhaul.Gameplay
 
         public void ReplaceGarbageBotSpawnPoints(bool modded)
         {
-            if (modded)
-            {
-                GarbageManager.Instance.GarbageRobotSpawnLocations = m_ModdedGarbageBotSpawns.ToArray();
-            }
-            else
-            {
-                GarbageManager.Instance.GarbageRobotSpawnLocations = m_OgGarbageBotSpawns;
-            }
+            GarbageManager.Instance.GarbageRobotSpawnLocations = modded ? m_ModdedGarbageBotSpawns.ToArray() : m_OgGarbageBotSpawns;
         }
 
         public void AddGarbageBotSpawnPoint(Transform point)
@@ -85,7 +71,7 @@ namespace CDOverhaul.Gameplay
 
         public bool HasToEndGarbageCollection()
         {
-            foreach(Transform t in m_ModdedGarbageBotSpawns)
+            foreach (Transform t in m_ModdedGarbageBotSpawns)
             {
                 if (t.GetComponent<LevelEditorGarbageBotSpawnpoint>().HasAliveBot)
                 {

@@ -40,7 +40,7 @@ namespace CDOverhaul
                             SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
                             SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
                             info.ForceInputField = inputField != null;
-                            if(info.DefaultValue is long && (long)info.DefaultValue == SettingEventDispatcherFlag)
+                            if (info.DefaultValue is long && (long)info.DefaultValue == SettingEventDispatcherFlag)
                             {
                                 info.EventDispatcher = (SettingEventDispatcher)field.GetValue(null);
                             }
@@ -78,7 +78,7 @@ namespace CDOverhaul
                             return;
                         }
 
-                        if(!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
+                        if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
                         {
                             OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
                             OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
@@ -171,7 +171,7 @@ namespace CDOverhaul
         {
             SettingInfo info = GetSetting(targetSetting);
             SettingInfo info2 = GetSetting(toDepend);
-            if(info == null || info2 == null)
+            if (info == null || info2 == null)
             {
                 return;
             }

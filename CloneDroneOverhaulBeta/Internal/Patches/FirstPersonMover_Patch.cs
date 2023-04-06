@@ -17,7 +17,7 @@ namespace CDOverhaul.Patches
             }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach(OverhaulCharacterExpansion b in expansionBases)
+            foreach (OverhaulCharacterExpansion b in expansionBases)
             {
                 b.OnPreCommandExecute((FPMoveCommand)command);
             }
@@ -53,13 +53,13 @@ namespace CDOverhaul.Patches
             }
 
             WeaponSkinsWearer w = __instance.GetComponent<WeaponSkinsWearer>();
-            if(w == null)
+            if (w == null)
             {
                 return;
             }
 
             WeaponSkinSpecialBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
-            if(s == null)
+            if (s == null)
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace CDOverhaul.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(FirstPersonMover),"OnEvent", new System.Type[] { typeof(SendFallingEvent) })]
+        [HarmonyPatch(typeof(FirstPersonMover), "OnEvent", new System.Type[] { typeof(SendFallingEvent) })]
         private static void OnEvent_Postfix(FirstPersonMover __instance, SendFallingEvent fallingEvent)
         {
             if (!OverhaulMod.IsCoreCreated)

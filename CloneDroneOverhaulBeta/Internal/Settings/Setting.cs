@@ -67,7 +67,7 @@ namespace CDOverhaul
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
-            if(Type == SettingType.Other)
+            if (Type == SettingType.Other)
             {
                 return;
             }
@@ -95,23 +95,11 @@ namespace CDOverhaul
             {
                 return SettingType.Bool;
             }
-            if (typeof(T) == typeof(int))
-            {
-                return SettingType.Int;
-            }
-            if (typeof(T) == typeof(float))
-            {
-                return SettingType.Float;
-            }
-            if (typeof(T) == typeof(string))
-            {
-                return SettingType.String;
-            }
-            if (typeof(T) == typeof(long))
-            {
-                return SettingType.Other;
-            }
-            return SettingType.None;
+            return typeof(T) == typeof(int)
+                ? SettingType.Int
+                : typeof(T) == typeof(float)
+                ? SettingType.Float
+                : typeof(T) == typeof(string) ? SettingType.String : typeof(T) == typeof(long) ? SettingType.Other : SettingType.None;
         }
 
         public static SettingType GetSettingType(in object @object)
@@ -120,23 +108,11 @@ namespace CDOverhaul
             {
                 return SettingType.Bool;
             }
-            if (@object is int)
-            {
-                return SettingType.Int;
-            }
-            if (@object is float)
-            {
-                return SettingType.Float;
-            }
-            if (@object is string)
-            {
-                return SettingType.String;
-            }
-            if (@object is long)
-            {
-                return SettingType.Other;
-            }
-            return SettingType.None;
+            return @object is int
+                ? SettingType.Int
+                : @object is float
+                ? SettingType.Float
+                : @object is string ? SettingType.String : @object is long ? SettingType.Other : SettingType.None;
         }
 
         public static void TryAddPref(in SettingInfo setting)
@@ -169,7 +145,7 @@ namespace CDOverhaul
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
-            if(setting.Type == SettingType.Other)
+            if (setting.Type == SettingType.Other)
             {
                 return;
             }

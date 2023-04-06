@@ -1128,13 +1128,13 @@ namespace CDOverhaul.Gameplay
 
         public void ApplySkinsOnCharacter(Character character)
         {
-            if(character == null || !(character is FirstPersonMover))
+            if (character == null || !(character is FirstPersonMover))
             {
                 return;
             }
             FirstPersonMover firstPersonMover = character as FirstPersonMover;
             WeaponSkinsWearer wearer = firstPersonMover.GetComponent<WeaponSkinsWearer>();
-            if(wearer == null)
+            if (wearer == null)
             {
                 _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
                 return;
@@ -1174,7 +1174,7 @@ namespace CDOverhaul.Gameplay
             IWeaponSkinItemDefinition result = null;
             error = ItemNullResult.Null;
 
-            foreach(IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
+            foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
             {
                 if (filter == ItemFilter.Everything || weaponSkinItem.IsUnlocked(false))
                 {
@@ -1196,7 +1196,7 @@ namespace CDOverhaul.Gameplay
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(ItemFilter filter)
         {
             List<IWeaponSkinItemDefinition> result = new List<IWeaponSkinItemDefinition>();
-            if(filter == ItemFilter.Equipped)
+            if (filter == ItemFilter.Equipped)
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
@@ -1206,7 +1206,7 @@ namespace CDOverhaul.Gameplay
                         switch (weaponSkinItem.GetWeaponType())
                         {
                             case WeaponType.Sword:
-                                if(itemName == EquippedSwordSkin)
+                                if (itemName == EquippedSwordSkin)
                                 {
                                     result.Add(weaponSkinItem);
                                 }

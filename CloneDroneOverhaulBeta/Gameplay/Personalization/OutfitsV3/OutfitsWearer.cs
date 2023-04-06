@@ -22,14 +22,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
             m_SpawnedAccessories = new Dictionary<string, GameObject>();
 
-            if (IsOwnerMainPlayer())
-            {
-                m_Info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
-            }
-            else
-            {
-                m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
-            }
+            m_Info = IsOwnerMainPlayer() ? OverhaulModdedPlayerInfo.GetLocalPlayerInfo() : OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
             _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
 
             DelegateScheduler.Instance.Schedule(delegate
@@ -75,7 +68,7 @@ namespace CDOverhaul.Gameplay.Outfits
             if (HasPlayerInfo)
             {
                 Hashtable hashtable = m_Info.GetHashtable();
-                if(hashtable != null && hashtable.ContainsKey(IDInHashtable))
+                if (hashtable != null && hashtable.ContainsKey(IDInHashtable))
                 {
                     equippedItems = hashtable[IDInHashtable].ToString();
                 }
@@ -94,9 +87,9 @@ namespace CDOverhaul.Gameplay.Outfits
                 return;
             }
 
-            foreach(AccessoryItem accessoryItem in items)
+            foreach (AccessoryItem accessoryItem in items)
             {
-                if(accessoryItem.Prefab == null)
+                if (accessoryItem.Prefab == null)
                 {
                     continue;
                 }
@@ -104,13 +97,13 @@ namespace CDOverhaul.Gameplay.Outfits
                 if (accessoryItem.Type.Equals(AccessoryType.Attached))
                 {
                     MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
-                    if(bodyPart == null)
+                    if (bodyPart == null)
                     {
                         continue;
                     }
 
                     Transform bodyPartTransform = bodyPart.transform.parent;
-                    if(bodyPartTransform == null)
+                    if (bodyPartTransform == null)
                     {
                         continue;
                     }
@@ -145,7 +138,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public void SetPosition(GameObject accessory, AccessoryItem item)
         {
-            if(accessory == null || item == null || Owner == null || !Owner.HasCharacterModel())
+            if (accessory == null || item == null || Owner == null || !Owner.HasCharacterModel())
             {
                 return;
             }
@@ -158,7 +151,7 @@ namespace CDOverhaul.Gameplay.Outfits
             }
 
             ModelOffset offset = item.Offsets[characterModelName];
-            if(offset.OffsetLocalScale == Vector3.zero)
+            if (offset.OffsetLocalScale == Vector3.zero)
             {
                 accessory.SetActive(false);
                 return;

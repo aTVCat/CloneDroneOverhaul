@@ -26,8 +26,16 @@ namespace CDOverhaul.HUD
 
         private static float m_TimeToAllowChangingSkins = 0f;
         private static float m_TimeChangedSkins = 0f;
-        public static float GetSkinChangeCooldown() => 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
-        public static bool AllowChangingSkins() => Time.unscaledTime >= m_TimeToAllowChangingSkins;
+        public static float GetSkinChangeCooldown()
+        {
+            return 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
+        }
+
+        public static bool AllowChangingSkins()
+        {
+            return Time.unscaledTime >= m_TimeToAllowChangingSkins;
+        }
+
         public static void StartCooldown()
         {
             if (GameModeManager.IsMultiplayer())
@@ -204,7 +212,7 @@ namespace CDOverhaul.HUD
 
         public void OpenMenuFromSettings()
         {
-            if(GameUIRoot.Instance == null)
+            if (GameUIRoot.Instance == null)
             {
                 return;
             }
@@ -212,7 +220,7 @@ namespace CDOverhaul.HUD
             OverhaulPauseMenu menu = GetController<OverhaulPauseMenu>();
             OverhaulParametersMenu paramsMenu = GetController<OverhaulParametersMenu>();
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
-            if(menu == null || paramsMenu == null || escMenu == null)
+            if (menu == null || paramsMenu == null || escMenu == null)
             {
                 return;
             }
@@ -221,7 +229,7 @@ namespace CDOverhaul.HUD
             menu.Hide();
             escMenu.Hide();
             paramsMenu.Hide();
-            this.SetMenuActive(true);
+            SetMenuActive(true);
         }
 
         protected override void OnDisposed()
@@ -244,30 +252,16 @@ namespace CDOverhaul.HUD
 
         public ModdedObject GetPrefab(bool weaponSkin)
         {
-            if (IsDisposedOrDestroyed())
-            {
-                return null;
-            }
-
-            if (weaponSkin)
-            {
-                return m_HashtableTest["weaponSkin"] as ModdedObject;
-            }
-            return m_HashtableTest["weapon"] as ModdedObject;
+            return IsDisposedOrDestroyed()
+                ? null
+                : weaponSkin ? m_HashtableTest["weaponSkin"] as ModdedObject : m_HashtableTest["weapon"] as ModdedObject;
         }
 
         public Transform GetContainer(bool weaponSkins)
         {
-            if (IsDisposedOrDestroyed())
-            {
-                return null;
-            }
-
-            if (weaponSkins)
-            {
-                return m_HashtableTest["weaponsSkinsContainer"] as Transform;
-            }
-            return m_HashtableTest["weaponsContainer"] as Transform;
+            return IsDisposedOrDestroyed()
+                ? null
+                : weaponSkins ? m_HashtableTest["weaponsSkinsContainer"] as Transform : m_HashtableTest["weaponsContainer"] as Transform;
         }
 
         public void SetMenuActive(bool value)
@@ -278,16 +272,9 @@ namespace CDOverhaul.HUD
             }
 
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if(mover != null && mover.HasCharacterModel())
+            if (mover != null && mover.HasCharacterModel())
             {
-                if (IsOutfitSelection)
-                {
-                    mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 180, 0) : Vector3.zero;
-                }
-                else
-                {
-                    mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = value ? new Vector3(0, 90, 0) : Vector3.zero;
-                }
+                mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = IsOutfitSelection ? value ? new Vector3(0, 180, 0) : Vector3.zero : value ? new Vector3(0, 90, 0) : Vector3.zero;
             }
 
             if (IsOutfitSelection)
@@ -295,7 +282,7 @@ namespace CDOverhaul.HUD
                 PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.EquippingAccessories : PlayerStatusType.Idle);
                 if (value)
                 {
-                   PopulateSkins(WeaponType.None);
+                    PopulateSkins(WeaponType.None);
                 }
             }
             else
@@ -353,7 +340,7 @@ namespace CDOverhaul.HUD
             PopulateWeapon(WeaponType.Spear);
 
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if(player != null)
+            if (player != null)
             {
                 WeaponType wType = player.GetEquippedWeaponType();
                 if (SupportedWeapons.Contains(wType))
@@ -456,9 +443,9 @@ namespace CDOverhaul.HUD
             m_Items = m_Items.OrderBy(f => (f as WeaponSkinItemDefinitionV2).HasNameOverride ? (f as WeaponSkinItemDefinitionV2).OverrideName : f.GetItemName()).ToArray();
 
 
-            foreach(IWeaponSkinItemDefinition skin in m_Items)
+            foreach (IWeaponSkinItemDefinition skin in m_Items)
             {
-                if(skin.GetWeaponType() != weaponType)
+                if (skin.GetWeaponType() != weaponType)
                 {
                     continue;
                 }
@@ -541,7 +528,7 @@ namespace CDOverhaul.HUD
                 return;
             }
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if(mover != null)
+            if (mover != null)
             {
                 WeaponSkinsController.RobotToPlayAnimationOn = mover;
                 m_Controller.ApplySkinsOnCharacter(mover);
@@ -549,7 +536,7 @@ namespace CDOverhaul.HUD
             ShowSkinInfo(weaponType, skinName);
 
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
-            if(info != null && info.HasReceivedData)
+            if (info != null && info.HasReceivedData)
             {
                 info.RefreshData();
             }
@@ -595,19 +582,12 @@ namespace CDOverhaul.HUD
             }
 
             IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.Everything, out _);
-            if(item == null)
+            if (item == null)
             {
                 return;
             }
 
-            if((item as WeaponSkinItemDefinitionV2).HasNameOverride)
-            {
-                MyModdedObject.GetObject<Text>(8).text = (item as WeaponSkinItemDefinitionV2).OverrideName;
-            }
-            else
-            {
-                MyModdedObject.GetObject<Text>(8).text = skinName;
-            }
+            MyModdedObject.GetObject<Text>(8).text = (item as WeaponSkinItemDefinitionV2).HasNameOverride ? (item as WeaponSkinItemDefinitionV2).OverrideName : skinName;
 
             MyModdedObject.GetObject<Transform>(9).gameObject.SetActive(item.GetModel(false, false) != null);
             MyModdedObject.GetObject<Transform>(10).gameObject.SetActive(item.GetModel(false, true) != null || item.GetWeaponType() != WeaponType.Sword || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
@@ -615,7 +595,7 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Transform>(12).gameObject.SetActive(item.GetModel(true, true) != null || item.GetWeaponType() != WeaponType.Sword || item.GetWeaponType() == WeaponType.Bow || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(true);
 
-            if(!string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
+            if (!string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
             {
                 m_Description.text = (item as WeaponSkinItemDefinitionV2).Description;
             }

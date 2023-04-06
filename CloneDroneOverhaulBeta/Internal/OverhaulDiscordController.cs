@@ -22,37 +22,15 @@ namespace CDOverhaul
             m_Client != null &&
             Instance != null;
 
-        private string m_CurrentGamemode;
         /// <summary>
         /// The gamemode you're playing right now
         /// </summary>
-        public string CurrentGamemode
-        {
-            get
-            {
-                return m_CurrentGamemode;
-            }
-            set
-            {
-                m_CurrentGamemode = value;
-            }
-        }
+        public string CurrentGamemode { get; set; }
 
-        private string m_GamemodeDetails;
         /// <summary>
         /// The details of gamemode (progress or smth)
         /// </summary>
-        public string CurrentGamemodeDetails
-        {
-            get
-            {
-                return m_GamemodeDetails;
-            }
-            set
-            {
-                m_GamemodeDetails = value;
-            }
-        }
+        public string CurrentGamemodeDetails { get; set; }
 
         private float m_TimeLeftToRefresh;
 
@@ -80,7 +58,7 @@ namespace CDOverhaul
             }
 
             m_TimeLeftToRefresh -= Time.deltaTime;
-            if(m_TimeLeftToRefresh <= 0f && m_Client != null)
+            if (m_TimeLeftToRefresh <= 0f && m_Client != null)
             {
                 m_TimeLeftToRefresh = 5f;
                 updateGamemodeString();
@@ -162,17 +140,10 @@ namespace CDOverhaul
                 return;
             }
 
-            if (!string.IsNullOrEmpty(CurrentGamemodeDetails))
-            {
-                m_ClientActivity.State = CurrentGamemode + " [" + CurrentGamemodeDetails + "]";
-            }
-            else
-            {
-                m_ClientActivity.State = CurrentGamemode;
-            }
+            m_ClientActivity.State = !string.IsNullOrEmpty(CurrentGamemodeDetails) ? CurrentGamemode + " [" + CurrentGamemodeDetails + "]" : CurrentGamemode;
 
             ActivityManager manager = m_Client.GetActivityManager();
-            if(manager == null)
+            if (manager == null)
             {
                 InterruptDiscord();
                 return;
@@ -282,19 +253,12 @@ namespace CDOverhaul
                         levelsBeatenSm = datam.GetNumberOfStoryLevelsWon() + 1;
                     }
 
-                    if(levelsBeatenSm == 0)
-                    {
-                        CurrentGamemodeDetails = "Chapter " + chapterNumber;
-                    }
-                    else
-                    {
-                        CurrentGamemodeDetails = "Chapter " + chapterNumber + ", Level " + levelsBeatenSm;
-                    }
+                    CurrentGamemodeDetails = levelsBeatenSm == 0 ? "Chapter " + chapterNumber : "Chapter " + chapterNumber + ", Level " + levelsBeatenSm;
                     break;
 
                 case GameMode.Endless:
                     int levelsBeaten = LevelManager.Instance.GetNumberOfLevelsWon() + 1;
-                    string tier = EndlessModeManager.Instance.GetNextLevelDifficultyTier(levelsBeaten-1).ToString();
+                    string tier = EndlessModeManager.Instance.GetNextLevelDifficultyTier(levelsBeaten - 1).ToString();
                     CurrentGamemodeDetails = "Level " + levelsBeaten + ", " + tier;
                     break;
 
@@ -307,10 +271,10 @@ namespace CDOverhaul
                 case GameMode.BattleRoyale:
                     CurrentGamemodeDetails = "Connecting to lobby...";
                     GameRequest request = MultiplayerMatchmakingManager.Instance.GetPrivateField<GameRequest>("_currentGameRequest");
-                    if(request != null)
+                    if (request != null)
                     {
                         BattleRoyaleManager brManager = BattleRoyaleManager.Instance;
-                        if(brManager == null)
+                        if (brManager == null)
                         {
                             return;
                         }

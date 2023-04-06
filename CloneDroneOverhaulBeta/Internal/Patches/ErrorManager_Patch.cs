@@ -10,11 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
-            if (!OverhaulMod.IsCoreCreated)
-            {
-                return true;
-            }
-            return true;
+            return !OverhaulMod.IsCoreCreated || true;
         }
     }
 }

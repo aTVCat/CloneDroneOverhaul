@@ -9,11 +9,10 @@ namespace CDOverhaul
     /// </summary>
     public abstract class OverhaulController : OverhaulBehaviour, IConsoleCommandReceiver
     {
-        private bool m_HadBadStart;
         /// <summary>
         /// Check if an exception occured while initializng the controller.
         /// </summary>
-        public bool HadBadStart => m_HadBadStart;
+        public bool HadBadStart { get; private set; }
 
         /// <summary>
         /// Called at the same time when controller is created.
@@ -50,10 +49,10 @@ namespace CDOverhaul
             {
                 Initialize();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Debug.LogError("Caught error while initializing Overhaul ModController [" + GetType() + "]: " + exc);
-                m_HadBadStart = true;
+                HadBadStart = true;
                 base.enabled = false;
             }
         }
@@ -81,7 +80,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
         {
-            Transform transform = transformOverride != null ? transformOverride : m_ControllersGameObject.transform;
+            Transform transform = transformOverride ?? m_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
             component.InitializeInternal();
             m_ControllersList.Add(component);
@@ -95,15 +94,11 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T GetController<T>() where T : OverhaulController
         {
-            foreach(OverhaulController controllerr in m_ControllersList)
+            foreach (OverhaulController controllerr in m_ControllersList)
             {
-                if(controllerr.GetType() == typeof(T))
+                if (controllerr.GetType() == typeof(T))
                 {
-                    if (controllerr.HadBadStart)
-                    {
-                        throw new Exception("Using incorrectly started controller is not allowed");
-                    }
-                    return (T)controllerr;
+                    return controllerr.HadBadStart ? throw new Exception("Using incorrectly started controller is not allowed") : (T)controllerr;
                 }
             }
             return null;
@@ -116,7 +111,7 @@ namespace CDOverhaul
         /// <exception cref="ArgumentNullException"></exception>
         internal static void RemoveController(OverhaulController controllerInstance)
         {
-            if(controllerInstance == null)
+            if (controllerInstance == null)
             {
                 throw new ArgumentNullException("Cannot remove controller instance because it is null.");
             }

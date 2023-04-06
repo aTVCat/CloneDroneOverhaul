@@ -92,13 +92,13 @@ namespace CDOverhaul
             shouldNotPlaySound = false;
             shouldUseMSSounds = false;
             shouldUseLowerPitchValues = false;
-            if(model == null)
+            if (model == null)
             {
                 return false;
             }
 
             FirstPersonMover mover = model.GetOwner();
-            if(mover == null)
+            if (mover == null)
             {
                 return false;
             }

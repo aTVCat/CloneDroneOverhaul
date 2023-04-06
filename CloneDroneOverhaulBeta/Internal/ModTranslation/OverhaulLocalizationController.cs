@@ -15,34 +15,16 @@ namespace CDOverhaul.Localization
 
         public const string LocalizationFileName = "Localization";
         private static OverhaulLocalizationData m_Data;
-        public static OverhaulLocalizationData Localization
-        {
-            get
-            {
-                if (!m_Error.HasValue || m_Error.Value)
-                {
-                    return null;
-                }
-                return m_Data;
-            }
-        }
+        public static OverhaulLocalizationData Localization => !m_Error.HasValue || m_Error.Value ? null : m_Data;
 
         public static bool HasTranslation(string translationID)
         {
-            if (Error)
-            {
-                return false;
-            }
-            return Localization.Translations["en"].ContainsKey(translationID);
+            return !Error && Localization.Translations["en"].ContainsKey(translationID);
         }
 
         public static string GetTranslation(string translationID)
         {
-            if (Error)
-            {
-                return translationID;
-            }
-            return Localization.GetTranslation(translationID);
+            return Error ? translationID : Localization.GetTranslation(translationID);
         }
 
         private static readonly List<Text> m_ListOfTexts = new List<Text>();
@@ -66,7 +48,7 @@ namespace CDOverhaul.Localization
             _ = OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
             loadData();
         }
-        
+
         private static async void loadData()
         {
             string path = OverhaulMod.Core.ModDirectory + "Assets/" + LocalizationFileName + ".json";
@@ -84,7 +66,7 @@ namespace CDOverhaul.Localization
 
             Task<string> task = reader.ReadToEndAsync();
             _ = await task;
-            if(task.IsCanceled || task.IsFaulted)
+            if (task.IsCanceled || task.IsFaulted)
             {
                 m_Error = true;
                 return;
@@ -92,7 +74,7 @@ namespace CDOverhaul.Localization
 
             m_Error = false;
             m_Data = JsonConvert.DeserializeObject<OverhaulLocalizationData>(task.Result);
-            if(m_Data != null)
+            if (m_Data != null)
             {
                 m_Data.RepairFields();
             }
@@ -103,7 +85,7 @@ namespace CDOverhaul.Localization
 
         public static void SaveData()
         {
-            if(m_Data != null && m_Error.HasValue && !m_Error.Value)
+            if (m_Data != null && m_Error.HasValue && !m_Error.Value)
             {
                 m_Data.SavedInVersion = OverhaulVersion.ModVersion;
                 File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + OverhaulLocalizationController.LocalizationFileName + ".json",
@@ -145,11 +127,11 @@ namespace CDOverhaul.Localization
             yield return null;
 
             int iteration = 0;
-            foreach(Text text in m_ListOfTexts)
+            foreach (Text text in m_ListOfTexts)
             {
-                if(text != null)
+                if (text != null)
                 {
-                    if(iteration % 10 == 0)
+                    if (iteration % 10 == 0)
                     {
                         yield return null;
                     }

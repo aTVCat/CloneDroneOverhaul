@@ -18,7 +18,7 @@ namespace CDOverhaul
         public SettingDropdownParameters(string values, char separator = UsualSeparator)
         {
             Options = new List<Dropdown.OptionData>();
-            foreach(string str in values.Split(separator))
+            foreach (string str in values.Split(separator))
             {
                 Options.Add(new Dropdown.OptionData(str));
             }

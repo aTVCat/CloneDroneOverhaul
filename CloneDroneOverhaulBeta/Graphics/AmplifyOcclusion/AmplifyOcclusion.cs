@@ -179,24 +179,14 @@ namespace AmplifyOcclusion
                                                                       -1.0f * invFocalLen.x,
                                                                       -1.0f * invFocalLen.y));
 
-            float projScale;
-
-            if (aCamera.orthographic)
-            {
-                projScale = aTarget.fullHeight / aCamera.orthographicSize;
-            }
-            else
-            {
-                projScale = aTarget.fullHeight / (Mathf.Tan(fovRad * 0.5f) * 2.0f);
-            }
-
+            float projScale = aCamera.orthographic ? aTarget.fullHeight / aCamera.orthographicSize : aTarget.fullHeight / (Mathf.Tan(fovRad * 0.5f) * 2.0f);
             if ((isDownsample == true) || (isFilterDownsample == true))
             {
                 projScale = projScale * 0.5f * 0.5f;
             }
             else
             {
-                projScale = projScale * 0.5f;
+                projScale *= 0.5f;
             }
 
             cb.SetGlobalFloat(PropertyID._AO_HalfProjScale, projScale);

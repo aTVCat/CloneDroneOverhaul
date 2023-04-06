@@ -5,7 +5,6 @@ using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -96,7 +95,7 @@ namespace CDOverhaul
             }
 
             UnityEngine.Object @object = LevelEditorObjectsController.GetObject(path);
-            if(@object == null && OverhaulLevelAdder.HasLevel(path))
+            if (@object == null && OverhaulLevelAdder.HasLevel(path))
             {
                 @object = new TextAsset(OverhaulLevelAdder.GetLevel(ref path));
             }
@@ -179,7 +178,7 @@ namespace CDOverhaul
                 return false;
             }
 
-            foreach(ModInfo info in infos)
+            foreach (ModInfo info in infos)
             {
                 if (info.UniqueID.Equals(modID))
                 {

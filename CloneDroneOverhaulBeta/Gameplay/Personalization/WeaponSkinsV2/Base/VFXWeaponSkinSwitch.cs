@@ -1,6 +1,4 @@
 ﻿using OverhaulAPI;
-using System.Collections;
-using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {

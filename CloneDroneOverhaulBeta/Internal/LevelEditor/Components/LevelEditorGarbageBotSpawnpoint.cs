@@ -9,12 +9,10 @@ namespace CDOverhaul.LevelEditor
         private AdvancedGarbageController m_Controller;
 
         private Transform m_Bot;
-        private bool m_SpawnedABot;
-
         [IncludeInLevelEditor(false, false)]
         public string PlayOnceEnded;
 
-        public bool HasAliveBot => m_SpawnedABot;
+        public bool HasAliveBot { get; private set; }
 
         private void Start()
         {
@@ -30,11 +28,11 @@ namespace CDOverhaul.LevelEditor
         [CallFromAnimation]
         public void SpawnBot()
         {
-            if(m_Bot != null)
+            if (m_Bot != null)
             {
                 return;
             }
-            m_SpawnedABot = true;
+            HasAliveBot = true;
             m_Bot = EnemyFactory.Instance.SpawnEnemy(EnemyType.HappyGarbageRobot, base.transform.position, base.transform.eulerAngles);
         }
 
@@ -55,7 +53,7 @@ namespace CDOverhaul.LevelEditor
                 if (!string.IsNullOrEmpty(PlayOnceEnded))
                 {
                     List<LevelEditorAnimation> anims = LevelEditorAnimationManager.Instance.GetAnimationsInLevel();
-                    foreach(LevelEditorAnimation anim in anims)
+                    foreach (LevelEditorAnimation anim in anims)
                     {
                         if (!anim.IsPlaying() && anim.AnimationName.Equals(PlayOnceEnded))
                         {
@@ -69,9 +67,9 @@ namespace CDOverhaul.LevelEditor
 
         private void Update()
         {
-            if(m_SpawnedABot && (m_Bot == null || !m_Bot.GetComponent<GarbageRobot>().IsAlive()))
+            if (HasAliveBot && (m_Bot == null || !m_Bot.GetComponent<GarbageRobot>().IsAlive()))
             {
-                m_SpawnedABot = false;
+                HasAliveBot = false;
                 check();
             }
         }

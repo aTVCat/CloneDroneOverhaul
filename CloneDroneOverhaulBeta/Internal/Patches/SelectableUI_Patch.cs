@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Start")]
         private static void Start_Postfix(SelectableUI __instance)
         {
-            if(__instance.GameThemeData != null)
+            if (__instance.GameThemeData != null)
             {
                 __instance.GameThemeData.ButtonBackground[0].Color = new Color(0.19f, 0.37f, 0.88f, 1);
                 __instance.GameThemeData.ButtonBackground[1].Color = new Color(0.3f, 0.5f, 1, 1f);

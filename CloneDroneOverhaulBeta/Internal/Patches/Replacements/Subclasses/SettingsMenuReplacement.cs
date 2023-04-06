@@ -12,7 +12,7 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
             SettingsMenu target = GameUIRoot.Instance.SettingsMenu;
-            if(target == null)
+            if (target == null)
             {
                 SuccessfullyPatched = false;
                 return;

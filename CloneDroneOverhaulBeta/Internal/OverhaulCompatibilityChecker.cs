@@ -7,7 +7,7 @@ namespace CDOverhaul
         private static bool m_HasNotifiedPlayerAboutUnsupportedVersion;
 
         public static void CheckGameVersion()
-        {            
+        {
             if (m_HasNotifiedPlayerAboutUnsupportedVersion)
             {
                 return;
@@ -15,7 +15,7 @@ namespace CDOverhaul
 
             m_HasNotifiedPlayerAboutUnsupportedVersion = true;
             string currentVersion = VersionNumberManager.Instance.GetVersionString();
-            if(currentVersion != OverhaulVersion.GameTargetVersion)
+            if (currentVersion != OverhaulVersion.GameTargetVersion)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {

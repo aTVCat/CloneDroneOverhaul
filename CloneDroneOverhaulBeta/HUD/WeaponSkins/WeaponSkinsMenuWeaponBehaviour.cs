@@ -17,7 +17,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            foreach(WeaponSkinsMenuWeaponBehaviour b in m_InstantiatedButtons)
+            foreach (WeaponSkinsMenuWeaponBehaviour b in m_InstantiatedButtons)
             {
                 if (b.m_WeaponType == weaponType)
                 {
@@ -52,7 +52,7 @@ namespace CDOverhaul.HUD
             m_TextTransform = m.GetObject<RectTransform>(1);
             m_InstantiatedButtons.Add(this);
 
-            if(m_NormalPosition == null)
+            if (m_NormalPosition == null)
             {
                 m_NormalPosition = m_TextTransform.anchoredPosition;
                 m_SelectedPosition = m_TextTransform.anchoredPosition + new Vector2(0, 2);
@@ -92,7 +92,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if(m_WeaponType != default)
+            if (m_WeaponType != default)
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace CDOverhaul.HUD
 
         public void SetSelected(bool value, bool initializing = false)
         {
-            if(IsDisposedOrDestroyed() || (value == m_IsSelected && !initializing) || m_SelectedImage == null)
+            if (IsDisposedOrDestroyed() || (value == m_IsSelected && !initializing) || m_SelectedImage == null)
             {
                 return;
             }

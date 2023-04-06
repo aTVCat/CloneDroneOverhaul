@@ -1,10 +1,8 @@
 ﻿using CDOverhaul.Localization;
-using Jint.Native.Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
@@ -94,7 +92,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if(GameUIRoot.Instance != null)
+            if (GameUIRoot.Instance != null)
             {
                 TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
                 if (tUI != null && tUI.gameObject.activeSelf)
@@ -266,9 +264,9 @@ namespace CDOverhaul.HUD
             }
 
             SettingInfo info = SettingsController.GetSetting(path, false);
-            if(info != null)
+            if (info != null)
             {
-                if(info.EventDispatcher != null)
+                if (info.EventDispatcher != null)
                 {
                     string bpath = info.Category + '.' + info.Section;
                     bool hasContainer = m_ButtonContainers.ContainsKey(bpath);

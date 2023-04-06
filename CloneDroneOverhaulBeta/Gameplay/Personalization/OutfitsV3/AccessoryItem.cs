@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using OverhaulAPI;
-using Pathfinding;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,33 +12,15 @@ namespace CDOverhaul.Gameplay.Outfits
         public const string NoDescProvidedString = "No description provided.";
         public const string NoAuthorString = "TBA";
 
-        private string m_Name;
-        public string Name => m_Name;
+        public string Name { get; private set; }
 
         private string m_Description;
-        public string Description
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(m_Description))
-                {
-                    return NoDescProvidedString;
-                }
-                return m_Description;
-            }
-        }
+        public string Description => string.IsNullOrEmpty(m_Description) ? NoDescProvidedString : m_Description;
 
         private string m_Author;
         public string Author
         {
-            get
-            {
-                if (string.IsNullOrEmpty(m_Author))
-                {
-                    return NoAuthorString;
-                }
-                return m_Author;
-            }
+            get => string.IsNullOrEmpty(m_Author) ? NoAuthorString : m_Author;
             set
             {
                 if (string.IsNullOrEmpty(m_Author))
@@ -49,11 +30,9 @@ namespace CDOverhaul.Gameplay.Outfits
             }
         }
 
-        private AccessoryType m_Type;
-        public AccessoryType Type => m_Type;
+        public AccessoryType Type { get; private set; }
 
-        private MechBodyPartType m_BodyPartType;
-        public MechBodyPartType BodyPart => m_BodyPartType;
+        public MechBodyPartType BodyPart { get; private set; }
 
         /// <summary>
         /// Character model names - Offset
@@ -123,7 +102,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public GameObject InstantiateAccessory()
         {
-            if(Prefab == null)
+            if (Prefab == null)
             {
                 return null;
             }
@@ -144,10 +123,10 @@ namespace CDOverhaul.Gameplay.Outfits
         public static T NewAccessory<T>(string name, string description, AccessoryType type, MechBodyPartType partType) where T : AccessoryItem
         {
             T item = Activator.CreateInstance<T>();
-            item.m_Name = name;
+            item.Name = name;
             item.m_Description = description;
-            item.m_Type = type;
-            item.m_BodyPartType = partType;
+            item.Type = type;
+            item.BodyPart = partType;
             return item;
         }
 

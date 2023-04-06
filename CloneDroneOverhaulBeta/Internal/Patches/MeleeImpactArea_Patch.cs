@@ -19,7 +19,7 @@ namespace CDOverhaul.Patches
             }
 
             Rigidbody b = __instance.GetComponent<Rigidbody>();
-            if(b != null)
+            if (b != null)
             {
                 b.collisionDetectionMode = CollisionDetectionMode.Discrete;
             }

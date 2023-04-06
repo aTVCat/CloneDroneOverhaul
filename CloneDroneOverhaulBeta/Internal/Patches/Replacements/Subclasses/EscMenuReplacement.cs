@@ -56,7 +56,7 @@ namespace CDOverhaul.Patches
 
             base.Replace();
             EscMenu target = GameUIRoot.Instance.EscMenu;
-            if(target == null)
+            if (target == null)
             {
                 SuccessfullyPatched = false;
                 return;
@@ -115,7 +115,7 @@ namespace CDOverhaul.Patches
                 }
 
                 Text text = l.GetComponent<Text>();
-                if(text == null)
+                if (text == null)
                 {
                     SuccessfullyPatched = false;
                     return;

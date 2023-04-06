@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace OverhaulAPI
 {
-    public static class WeaponsAdder 
+    public static class WeaponsAdder
     {
         internal const int Start_WeaponType_Index = 20;
         private static int m_NextID = Start_WeaponType_Index;
 
         private static Transform m_WeaponsStorage;
-        private static readonly List<AddedWeaponModel> m_AddedWeapons = new List<AddedWeaponModel>(); 
+        private static readonly List<AddedWeaponModel> m_AddedWeapons = new List<AddedWeaponModel>();
 
         internal static void Init()
         {
@@ -41,7 +41,7 @@ namespace OverhaulAPI
         /// <param name="mover"></param>
         public static void AddWeaponModelsToFirstPersonMover(FirstPersonMover mover, List<AddedWeaponModel> weapons, bool equip, out List<AddedWeaponModel> spawnedWeapons)
         {
-            if(mover == null)
+            if (mover == null)
             {
                 spawnedWeapons = null;
                 return;
@@ -50,7 +50,7 @@ namespace OverhaulAPI
             {
                 API.ThrowException("NullReferenceExcepton: Make sure that FirstPersonMover's CharacterModel is already initialized at the moment you add weapons. Call this method after robot's model is initialized.\n");
             }
-            if(weapons == null || weapons.Count == 0)
+            if (weapons == null || weapons.Count == 0)
             {
                 API.ThrowException("NullReferenceExcepton: You're trying to add 0 new weapons to robots.");
             }
@@ -60,16 +60,16 @@ namespace OverhaulAPI
             List<WeaponModel> weaponModels = model.WeaponModels.ToList();
             List<WeaponType> weaponTypes = mover.GetPrivateField<List<WeaponType>>("_equippedWeapons");
 
-            foreach(AddedWeaponModel addedModel in weapons)
+            foreach (AddedWeaponModel addedModel in weapons)
             {
                 MechBodyPartType bodyPartToUse = addedModel.BodyPartType;
                 MechBodyPart bodyPart = mover.GetBodyPart(bodyPartToUse);
-                if(bodyPart == null)
+                if (bodyPart == null)
                 {
                     continue;
                 }
                 Transform parent = bodyPart.transform.parent;
-                if(parent == null)
+                if (parent == null)
                 {
                     continue;
                 }
@@ -93,7 +93,7 @@ namespace OverhaulAPI
                 spawnedWeapons.Add(spawnedModel);
 
                 weaponModels.Add(spawnedModel);
-                if(equip) weaponTypes.Add(spawnedModel.WeaponType);
+                if (equip) weaponTypes.Add(spawnedModel.WeaponType);
             }
 
             model.WeaponModels = weaponModels.ToArray();

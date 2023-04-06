@@ -115,7 +115,7 @@ namespace CDOverhaul.Graphics
                     OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
-                    if(menu != null && menu.gameObject.activeSelf)
+                    if (menu != null && menu.gameObject.activeSelf)
                     {
                         menu.PopulateCategory(menu.SelectedCategory, true);
                     }
@@ -129,7 +129,7 @@ namespace CDOverhaul.Graphics
             {
                 return;
             }
-            if(!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+            if (!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
             refreshAmplifyOcclusionOnCamera(camera);
@@ -141,7 +141,7 @@ namespace CDOverhaul.Graphics
 
         public static void PatchBloom(Bloom bloom)
         {
-            if(bloom == null)
+            if (bloom == null)
             {
                 return;
             }
@@ -150,8 +150,8 @@ namespace CDOverhaul.Graphics
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
             //bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
-            if(!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
-            if(!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
+            if (!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
+            if (!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
         }
 
         private static void addShaderPassesToCamera(Camera camera)
@@ -251,7 +251,7 @@ namespace CDOverhaul.Graphics
                     PatchBloom(b);
                 }
             }
-            if(m_VignetteMaterial != null)
+            if (m_VignetteMaterial != null)
             {
                 m_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
             }

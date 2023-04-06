@@ -54,7 +54,7 @@ namespace CDOverhaul.LevelEditor
             if (GameModeManager.IsInLevelEditor())
             {
                 int newIndex = WeaponIndex;
-                if(newIndex != m_WeaponIndexLastCheck)
+                if (newIndex != m_WeaponIndexLastCheck)
                 {
                     RefreshWeapon();
                 }

@@ -11,7 +11,7 @@ namespace CDOverhaul.Misc
             m_Manager = PhotoManager.Instance;
 
             OverhaulCanvasController c = GetController<OverhaulCanvasController>();
-            if(c != null)
+            if (c != null)
             {
                 _ = c.AddHUD<OverhaulPhotoModeControls>(c.HUDModdedObject.GetObject<ModdedObject>(1));
             }

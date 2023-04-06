@@ -20,7 +20,10 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsDisposedOrDestroyed() => IsDestroyed || IsDestroyed || !OverhaulMod.IsCoreCreated;
+        public bool IsDisposedOrDestroyed()
+        {
+            return IsDestroyed || IsDestroyed || !OverhaulMod.IsCoreCreated;
+        }
 
         public virtual void Awake()
         {
@@ -81,12 +84,7 @@ namespace CDOverhaul
 
         public static OverhaulBehaviour AddBehaviour<T>(GameObject gameObject) where T : OverhaulBehaviour
         {
-            if(gameObject == null)
-            {
-                return null;
-            }
-
-            return (T)gameObject.AddComponent(typeof(T));
+            return gameObject == null ? null : (OverhaulBehaviour)(T)gameObject.AddComponent(typeof(T));
         }
 
         #endregion

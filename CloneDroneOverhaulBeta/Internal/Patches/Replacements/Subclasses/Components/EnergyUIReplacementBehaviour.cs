@@ -31,14 +31,9 @@ namespace CDOverhaul.Patches
 
                 if (HideEnergyUIWhenFull && EnergyUIReplacement.PatchHUD)
                 {
-                    if (amount >= maxAmount)
-                    {
-                        _targetAlpha = Mathf.Clamp(_targetAlpha - (2f * Time.deltaTime), 0.1f, 1f);
-                    }
-                    else
-                    {
-                        _targetAlpha = Mathf.Clamp(_targetAlpha + (3f * Time.deltaTime), 0.1f, 1f);
-                    }
+                    _targetAlpha = amount >= maxAmount
+                        ? Mathf.Clamp(_targetAlpha - (2f * Time.deltaTime), 0.1f, 1f)
+                        : Mathf.Clamp(_targetAlpha + (3f * Time.deltaTime), 0.1f, 1f);
                     _canvasGroup.alpha = _targetAlpha;
                 }
                 else

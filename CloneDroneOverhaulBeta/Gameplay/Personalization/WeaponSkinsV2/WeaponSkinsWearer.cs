@@ -1,11 +1,11 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.HUD;
 using ModLibrary;
 using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using CDOverhaul.HUD;
 
 namespace CDOverhaul.Gameplay
 {
@@ -30,13 +30,13 @@ namespace CDOverhaul.Gameplay
             m_Controller = OverhaulController.GetController<WeaponSkinsController>();
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if(Owner != null && MultiplayerPlayerInfoManager.Instance != null)
+                if (Owner != null && MultiplayerPlayerInfoManager.Instance != null)
                 {
                     MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(Owner.GetPlayFabID());
                     if (pInfo != null)
                     {
                         m_Info = pInfo.GetComponent<OverhaulModdedPlayerInfo>();
-                        if(m_Info != null)
+                        if (m_Info != null)
                         {
                             onGetData(m_Info.GetHashtable());
 
@@ -67,7 +67,7 @@ namespace CDOverhaul.Gameplay
         protected override void OnDeath()
         {
             WeaponSkinSpecialBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
-            if(b == null)
+            if (b == null)
             {
                 return;
             }
@@ -83,18 +83,13 @@ namespace CDOverhaul.Gameplay
 
         public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinSpecialBehaviour
         {
-            if(Owner == null)
+            if (Owner == null)
             {
                 return null;
             }
 
             WeaponModel m = Owner.GetEquippedWeaponModel();
-            if (m == null)
-            {
-                return null;
-            }
-
-            return (T)m.GetComponentInChildren<WeaponSkinSpecialBehaviour>();
+            return m == null ? null : (T)m.GetComponentInChildren<WeaponSkinSpecialBehaviour>();
         }
 
         public void SpawnSkins()
@@ -139,7 +134,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            if(GameModeManager.IsMultiplayer() && (m_Info == null || !m_Info.HasReceivedData || m_Info.GetData("ID").Equals(string.Empty)))
+            if (GameModeManager.IsMultiplayer() && (m_Info == null || !m_Info.HasReceivedData || m_Info.GetData("ID").Equals(string.Empty)))
             {
                 return;
             }
@@ -165,9 +160,9 @@ namespace CDOverhaul.Gameplay
 
             if (!WeaponSkins.Values.IsNullOrEmpty())
             {
-                foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
+                foreach (WeaponSkinSpawnInfo info in WeaponSkins.Values)
                 {
-                    if(info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
+                    if (info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
                     {
                         continue;
                     }
@@ -190,11 +185,11 @@ namespace CDOverhaul.Gameplay
                 SpawnSkin(skin);
             }
 
-            if(AllowSwitchSkinVFX && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
+            if (AllowSwitchSkinVFX && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
             {
                 WeaponSkinsController.RobotToPlayAnimationOn = null;
                 WeaponModel model = Owner.GetEquippedWeaponModel();
-                if(model == null)
+                if (model == null)
                 {
                     return;
                 }
@@ -214,9 +209,9 @@ namespace CDOverhaul.Gameplay
             WeaponModel weaponModel1 = model.GetWeaponModel(WeaponType.Sword);
             if (weaponModel1 != null)
             {
-                if(transformToRemove != null)
+                if (transformToRemove != null)
                 {
-                    if(weaponModel1.PartsToDrop != null)
+                    if (weaponModel1.PartsToDrop != null)
                     {
                         List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
                         _ = t1.Remove(transformToRemove);
@@ -302,7 +297,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
             WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
-            if(weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
+            if (weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
             {
                 return;
             }
@@ -315,8 +310,8 @@ namespace CDOverhaul.Gameplay
             bool fire = IsFireVariant(weaponModel) && item.GetWeaponType() != WeaponType.Bow;
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
-            
-            WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);            
+
+            WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
             if (newModel != null)
             {
                 Transform spawnedModel = Instantiate(newModel.Model, weaponModel.transform).transform;
@@ -324,22 +319,17 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
-                if((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
+                if ((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
                 {
                     Color? forcedColor = null;
-                    if(fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
+                    if (fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
                     {
                         int indexOfFireColor = (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor;
-                        if(indexOfFireColor == 5)
-                        {
-                            forcedColor = new Color(2.65f, 1.45f, 0.4f, 1f);
-                        }
-                        else
-                        {
-                            forcedColor = HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
-                        }
+                        forcedColor = indexOfFireColor == 5
+                            ? new Color(2.65f, 1.45f, 0.4f, 1f)
+                            : HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
                     }
-                    else if(!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
+                    else if (!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
                     {
                         forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor).ColorValue;
                     }
@@ -361,12 +351,12 @@ namespace CDOverhaul.Gameplay
                 t1.Add(spawnedModel);
                 weaponModel.PartsToDrop = t1.ToArray();
 
-                if(weaponModel.WeaponType == WeaponType.Bow)
+                if (weaponModel.WeaponType == WeaponType.Bow)
                 {
                     ModdedObject m = spawnedModel.GetComponent<ModdedObject>();
                     Transform bowStringUpper = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringUpper");
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
-                    if(bowStringLower != null && bowStringUpper != null)
+                    if (bowStringLower != null && bowStringUpper != null)
                     {
                         bowStringLower.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
@@ -395,7 +385,7 @@ namespace CDOverhaul.Gameplay
 
         public void SetDefaultModelsVisible(bool value, WeaponModel model)
         {
-            if(model == null)
+            if (model == null)
             {
                 return;
             }
@@ -405,8 +395,8 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (Transform part in partsToDropArray)
                 {
-                    if(part != null)
-                    part.gameObject.SetActive(value);
+                    if (part != null)
+                        part.gameObject.SetActive(value);
                 }
             }
         }
@@ -420,16 +410,7 @@ namespace CDOverhaul.Gameplay
             }
             Material material = renderer.material;
 
-            Color? color;
-            if (forceColor == null)
-            {
-                color = Owner.GetCharacterModel().GetFavouriteColor();
-            }
-            else
-            {
-                color = forceColor;
-            }
-
+            Color? color = forceColor == null ? Owner.GetCharacterModel().GetFavouriteColor() : forceColor;
             HSBColor hsbcolor2 = new HSBColor(color.Value)
             {
                 b = 1f,
@@ -445,7 +426,7 @@ namespace CDOverhaul.Gameplay
 
         public bool IsFireVariant(WeaponModel model)
         {
-            if(model.WeaponType == WeaponType.Sword)
+            if (model.WeaponType == WeaponType.Sword)
             {
                 if (Owner.HasUpgrade(UpgradeType.FireSword))
                 {
@@ -481,7 +462,7 @@ namespace CDOverhaul.Gameplay
             if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftAlt))
             {
                 Transform model = getTransform();
-                if(model == null)
+                if (model == null)
                 {
                     return;
                 }
@@ -510,15 +491,17 @@ namespace CDOverhaul.Gameplay
         private void copyVector(Vector3 vector)
         {
             string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";
-            TextEditor editor = new TextEditor();
-            editor.text = toCopy;
+            TextEditor editor = new TextEditor
+            {
+                text = toCopy
+            };
             editor.SelectAll();
             editor.Copy();
         }
 
         private Transform getTransform()
         {
-            if(Owner == null || WeaponSkins.IsNullOrEmpty())
+            if (Owner == null || WeaponSkins.IsNullOrEmpty())
             {
                 return null;
             }
@@ -563,12 +546,7 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponSkins.TryGetValue(item, out WeaponSkinSpawnInfo model);
-            if (model == null)
-            {
-                return null;
-            }
-
-            return model.Model.transform;
+            return model == null ? null : model.Model.transform;
         }
 #endif
     }

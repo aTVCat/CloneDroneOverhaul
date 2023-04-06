@@ -1,7 +1,6 @@
 ﻿using OverhaulAPI;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
@@ -15,7 +14,7 @@ namespace CDOverhaul.Gameplay.Outfits
         public static void SavePreferences()
         {
             SettingInfo info = SettingsController.GetSetting("Player.Outfits.Equipped", true);
-            if(info == null)
+            if (info == null)
             {
                 return;
             }
@@ -24,8 +23,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         #endregion
 
-        private static readonly List<AccessoryItem> m_Accessories = new List<AccessoryItem>();
-        public static List<AccessoryItem> AllAccessories => m_Accessories;
+        public static List<AccessoryItem> AllAccessories { get; } = new List<AccessoryItem>();
 
         public static AccessoryItem EditingItem;
         public static string EditingCharacterModel;
@@ -103,20 +101,20 @@ namespace CDOverhaul.Gameplay.Outfits
 
 
             AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryType, accessoryBodyPart);
-            if(!string.IsNullOrEmpty(assetName)) item.Prefab = AssetsController.GetAsset(assetName, OverhaulAssetsPart.Accessories);
+            if (!string.IsNullOrEmpty(assetName)) item.Prefab = AssetsController.GetAsset(assetName, OverhaulAssetsPart.Accessories);
             item.SetUpOffsets();
-            m_Accessories.Add(item);
+            AllAccessories.Add(item);
         }
 
         public void SetAuthor(string author)
         {
-            if (m_Accessories.IsNullOrEmpty())
+            if (AllAccessories.IsNullOrEmpty())
             {
                 return;
             }
 
-            AccessoryItem item = m_Accessories[m_Accessories.Count - 1];
-            if(item != null)
+            AccessoryItem item = AllAccessories[AllAccessories.Count - 1];
+            if (item != null)
             {
                 item.Author = author;
             }
@@ -130,7 +128,7 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <returns></returns>
         public static AccessoryItem GetAccessoryItem(string name, bool returnNullIfLocked = true)
         {
-            bool canSearchThrough = !m_Accessories.IsNullOrEmpty() && !string.IsNullOrEmpty(name);
+            bool canSearchThrough = !AllAccessories.IsNullOrEmpty() && !string.IsNullOrEmpty(name);
             if (!canSearchThrough)
             {
                 return null;
@@ -140,19 +138,19 @@ namespace CDOverhaul.Gameplay.Outfits
             int i = 0;
             do
             {
-                AccessoryItem item = m_Accessories[i];
+                AccessoryItem item = AllAccessories[i];
                 if (name.Equals(item.Name))
                 {
                     if (!item.IsUnlocked())
                     {
-                        if(returnNullIfLocked) return null;
+                        if (returnNullIfLocked) return null;
                     }
 
                     result = item;
                     break;
                 }
                 i++;
-            } while (i < m_Accessories.Count);
+            } while (i < AllAccessories.Count);
 
             return result;
         }
@@ -160,13 +158,13 @@ namespace CDOverhaul.Gameplay.Outfits
         public static List<AccessoryItem> GetAccessories(string itemsString)
         {
             List<AccessoryItem> result = new List<AccessoryItem>();
-            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(Separator.ToString()) && !m_Accessories.IsNullOrEmpty();
+            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(Separator.ToString()) && !AllAccessories.IsNullOrEmpty();
             if (!shouldSearchEquipped)
             {
                 return result;
             }
 
-            foreach(AccessoryItem item in m_Accessories)
+            foreach (AccessoryItem item in AllAccessories)
             {
                 if (itemsString.Contains(item.Name))
                 {

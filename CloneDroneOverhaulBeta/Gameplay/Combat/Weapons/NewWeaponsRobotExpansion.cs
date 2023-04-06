@@ -32,7 +32,7 @@ namespace CDOverhaul.Gameplay.Combat
             OverhaulWeaponModel newModel = EquipedOverhaulWeapon;
             if (m_CurrentWeaponModel != newModel)
             {
-                if(m_CurrentWeaponModel != null) m_CurrentWeaponModel.OnUnequipped();
+                if (m_CurrentWeaponModel != null) m_CurrentWeaponModel.OnUnequipped();
                 if (newModel != null) newModel.OnEquipped();
             }
             m_CurrentWeaponModel = newModel;
@@ -61,7 +61,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void Update()
         {
-            if(m_TimeToRefreshWeapons != -1f && Time.unscaledTime >= m_TimeToRefreshWeapons)
+            if (m_TimeToRefreshWeapons != -1f && Time.unscaledTime >= m_TimeToRefreshWeapons)
             {
                 refreshWeapons();
                 m_TimeToRefreshWeapons = -1f;
@@ -71,7 +71,7 @@ namespace CDOverhaul.Gameplay.Combat
         private void refreshWeapons()
         {
             UpgradeCollection collection = UpgradeCollection;
-            if(collection == null)
+            if (collection == null)
             {
                 return;
             }

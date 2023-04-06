@@ -47,7 +47,7 @@ namespace CDOverhaul
             float time = Time.unscaledTime;
 
             m_ProgressSlider.value = time - m_TimeAppeared;
-            if(time >= m_TimeToDisappear)
+            if (time >= m_TimeToDisappear)
             {
                 DestroyGameObject();
             }

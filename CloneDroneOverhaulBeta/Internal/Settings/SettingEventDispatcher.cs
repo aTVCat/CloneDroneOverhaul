@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul
 {
@@ -19,10 +15,7 @@ namespace CDOverhaul
         {
             if (string.IsNullOrEmpty(EventString))
             {
-                if(EventAction != null)
-                {
-                    EventAction();
-                }
+                EventAction?.Invoke();
                 return;
             }
             OverhaulEventManager.DispatchEvent(EventString);

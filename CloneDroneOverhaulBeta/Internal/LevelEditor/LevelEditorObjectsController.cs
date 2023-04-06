@@ -57,7 +57,7 @@ namespace CDOverhaul.LevelEditor
                 GameObject obj8 = AssetsController.GetAsset("GarbageDropPoint", OverhaulAssetsPart.Objects);
                 _ = obj8.AddComponent<LevelEditorGarbageDropPoint>();
                 AddObject(obj8.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageDropPoint");
-                
+
                 GameObject obj9 = AssetsController.GetAsset("GarbageCustomForcefield", OverhaulAssetsPart.Objects);
                 _ = obj9.AddComponent<LevelEditorGarbageCustomForcefield>();
                 AddObject(obj9.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageCustomForcefield");
@@ -125,11 +125,7 @@ namespace CDOverhaul.LevelEditor
         /// <returns></returns>
         public static UnityEngine.Object GetObject(in string path)
         {
-            if (_objects.ContainsKey(path))
-            {
-                return _objects[path];
-            }
-            return null;
+            return _objects.ContainsKey(path) ? _objects[path] : null;
         }
     }
 }

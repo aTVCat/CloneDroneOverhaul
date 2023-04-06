@@ -38,12 +38,7 @@ namespace CDOverhaul
 
         public static string GetPrivateRoomCode()
         {
-            if(!ShouldShowRoomCodePanel())
-            {
-                return string.Empty;
-            }
-
-            return MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+            return !ShouldShowRoomCodePanel() ? string.Empty : MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
         }
 
         public static void CopyPrivateRoomCode()
@@ -53,8 +48,10 @@ namespace CDOverhaul
                 return;
             }
 
-            TextEditor edit = new TextEditor();
-            edit.text = GetPrivateRoomCode();
+            TextEditor edit = new TextEditor
+            {
+                text = GetPrivateRoomCode()
+            };
             edit.SelectAll();
             edit.Copy();
         }

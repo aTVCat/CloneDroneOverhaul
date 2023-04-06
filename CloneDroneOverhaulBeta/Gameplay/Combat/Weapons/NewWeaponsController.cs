@@ -54,13 +54,13 @@ namespace CDOverhaul.Gameplay.Combat
                 "TBA",
                 null, (UpgradeType)6700);
             fire.SkillPointCostDefault = 2;
-           /* UpgradeDescription autoTargeting = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
-                (UpgradeType)6702,
-                1,
-                "Auto-Targeting",
-                "This one will be probably scrapped",
-                null, (UpgradeType)6700);
-            autoTargeting.SkillPointCostDefault = 4;*/
+            /* UpgradeDescription autoTargeting = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
+                 (UpgradeType)6702,
+                 1,
+                 "Auto-Targeting",
+                 "This one will be probably scrapped",
+                 null, (UpgradeType)6700);
+             autoTargeting.SkillPointCostDefault = 4;*/
             UpgradeDescription throwRange1 = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
                 (UpgradeType)6703,
                 1,

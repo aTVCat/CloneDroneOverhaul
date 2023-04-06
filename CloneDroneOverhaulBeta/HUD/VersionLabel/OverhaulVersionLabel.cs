@@ -111,7 +111,7 @@ namespace CDOverhaul.HUD
 
             if (ExclusiveRolesController.GetExclusivePlayerInfo(ExclusivityController.GetLocalPlayfabID(), out ExclusivePlayerInfo? info))
             {
-                if(info == null)
+                if (info == null)
                 {
                     return;
                 }
@@ -137,7 +137,7 @@ namespace CDOverhaul.HUD
             if (Time.frameCount % 30 == 0)
             {
                 bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
-                if(isOnTitleScreen != m_wasOnTitleScreenBefore)
+                if (isOnTitleScreen != m_wasOnTitleScreenBefore)
                 {
                     RefreshVersionLabel();
                 }

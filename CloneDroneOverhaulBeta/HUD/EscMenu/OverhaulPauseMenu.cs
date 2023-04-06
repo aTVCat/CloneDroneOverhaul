@@ -235,10 +235,10 @@ namespace CDOverhaul.HUD
 
         public void OnModSettingsClicked()
         {
-            if(m_Parameters == null)
+            if (m_Parameters == null)
             {
                 m_Parameters = GetController<OverhaulParametersMenu>();
-                if(m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
+                if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
                 {
                     return;
                 }
@@ -301,7 +301,11 @@ namespace CDOverhaul.HUD
 
         #region Room code
 
-        public void RefreshRoomCodePanelActive() => m_RoomCodePanel.gameObject.SetActive(OverhaulGamemodeManager.ShouldShowRoomCodePanel());
+        public void RefreshRoomCodePanelActive()
+        {
+            m_RoomCodePanel.gameObject.SetActive(OverhaulGamemodeManager.ShouldShowRoomCodePanel());
+        }
+
         public void RefreshRoomCodeField()
         {
             m_RoomCodeField.text = OverhaulGamemodeManager.GetPrivateRoomCode();
@@ -396,7 +400,7 @@ namespace CDOverhaul.HUD
 
         public void HideMenu(bool dontUnpause = false)
         {
-            if(!dontUnpause) TimeManager.Instance.OnGameUnPaused();
+            if (!dontUnpause) TimeManager.Instance.OnGameUnPaused();
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 
@@ -439,13 +443,13 @@ namespace CDOverhaul.HUD
             }
 
             Character player = CharacterTracker.Instance.GetPlayer();
-            if(player == null)
+            if (player == null)
             {
                 return;
             }
 
             m_Camera = player.GetPlayerCamera();
-            if(m_Camera == null)
+            if (m_Camera == null)
             {
                 return;
             }
@@ -499,7 +503,7 @@ namespace CDOverhaul.HUD
                     if (camera != null) camera.fieldOfView += (m_TargetFoV - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
                     yield return null;
                 }
-                if(animator != null) animator.enabled = true;
+                if (animator != null) animator.enabled = true;
             }
             m_IsAnimatingCamera = false;
             yield break;

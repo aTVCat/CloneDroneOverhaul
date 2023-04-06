@@ -18,7 +18,7 @@ namespace CDOverhaul.Gameplay
 
         public override void OnBeginDraw()
         {
-            if(m_TimeBeganDrawing != -1f)
+            if (m_TimeBeganDrawing != -1f)
             {
                 return;
             }
@@ -69,7 +69,7 @@ namespace CDOverhaul.Gameplay
             }
 
             float time = Time.time;
-            if(m_TimeBeganDrawing != -1f && time >= m_TimeBeganDrawing)
+            if (m_TimeBeganDrawing != -1f && time >= m_TimeBeganDrawing)
             {
                 if (time >= m_TimeBeganDrawing + 0.45f)
                 {

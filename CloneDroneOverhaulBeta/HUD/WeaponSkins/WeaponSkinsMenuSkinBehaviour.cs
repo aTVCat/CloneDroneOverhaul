@@ -47,11 +47,9 @@ namespace CDOverhaul.HUD
         private GameObject m_ExclusiveIcon;
         private InputField m_Author;
         private Image m_Cooldown;
-
-        private bool m_IsSelected;
         private bool m_IsMouseOverElement;
 
-        public bool IsSelected => m_IsSelected;
+        public bool IsSelected { get; private set; }
 
         public bool IsOutfitSelection;
 
@@ -87,7 +85,7 @@ namespace CDOverhaul.HUD
 
         private void Update()
         {
-            if(Time.frameCount % 2 == 0)
+            if (Time.frameCount % 2 == 0)
             {
                 m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
             }
@@ -119,14 +117,7 @@ namespace CDOverhaul.HUD
                 return;
             }
             m_Skin = skin;
-            if (string.IsNullOrEmpty(author))
-            {
-                m_Author.text = "Original game";
-            }
-            else
-            {
-                m_Author.text = "By " + author;
-            }
+            m_Author.text = string.IsNullOrEmpty(author) ? "Original game" : "By " + author;
             m_ExclusiveIcon.SetActive(exclusive);
         }
 
@@ -146,28 +137,28 @@ namespace CDOverhaul.HUD
 
         public void SetSelected(bool value, bool initializing = false)
         {
-            if (IsDisposedOrDestroyed() || (value == m_IsSelected && !initializing) || m_SelectedImage == null)
+            if (IsDisposedOrDestroyed() || (value == IsSelected && !initializing) || m_SelectedImage == null)
             {
                 return;
             }
 
             m_SelectedImage.SetActive(value);
-            m_IsSelected = value;
+            IsSelected = value;
         }
 
         public void TrySelect()
         {
-            m_IsSelected = false;
+            IsSelected = false;
             if (IsOutfitSelection)
             {
                 SetSelected(OutfitsController.EquippedAccessories.Contains(m_Skin), true);
                 WeaponSkinsMenu.StartCooldown();
 
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-                if(mover != null)
+                if (mover != null)
                 {
                     OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
-                    if(outfits != null)
+                    if (outfits != null)
                     {
                         outfits.SpawnAccessories();
                     }
@@ -208,9 +199,9 @@ namespace CDOverhaul.HUD
 
             if (IsOutfitSelection)
             {
-                OutfitsController.SetAccessoryEquipped(m_Skin, !m_IsSelected);
+                OutfitsController.SetAccessoryEquipped(m_Skin, !IsSelected);
                 SelectSpecific(true);
-                if (OverhaulVersion.IsDebugBuild && m_IsSelected)
+                if (OverhaulVersion.IsDebugBuild && IsSelected)
                 {
                     FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
                     if (mover == null || !mover.HasCharacterModel())
@@ -232,7 +223,7 @@ namespace CDOverhaul.HUD
             }
             else
             {
-                if (m_IsSelected)
+                if (IsSelected)
                 {
                     return;
                 }
@@ -243,7 +234,7 @@ namespace CDOverhaul.HUD
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
             {
                 return;
             }
@@ -254,7 +245,7 @@ namespace CDOverhaul.HUD
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
             {
                 return;
             }

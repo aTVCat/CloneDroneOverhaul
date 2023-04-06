@@ -11,7 +11,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public void Initialize()
         {
             ModdedObject m = base.GetComponent<ModdedObject>();
-            if(m == null)
+            if (m == null)
             {
                 base.gameObject.SetActive(false);
                 return;
@@ -23,7 +23,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public void SetText(string text)
         {
-            if(m_Text != null)
+            if (m_Text != null)
             {
                 m_Text.text = text;
             }
@@ -37,7 +37,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         private void LateUpdate()
         {
             Camera cam = OverhaulGraphicsController.CameraController.GetMainCamera();
-            if(cam != null)
+            if (cam != null)
             {
                 base.transform.rotation = Quaternion.LookRotation(-(cam.transform.position - base.transform.position));
             }

@@ -12,11 +12,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("bloomValueChangeCoroutine")]
         private static void bloomValueChangeCoroutine_Prefix(Bloom bloom, float duration, ref float bloomEndIntensity, ref float bloomEndThreshold)
         {
-            if(bloom.GetComponent<Animator>() != null)
+            if (bloom.GetComponent<Animator>() != null)
             {
                 Object.Destroy(bloom.GetComponent<Animator>());
             }
-            if(duration == 1.5f)
+            if (duration == 1.5f)
             {
                 bloomEndIntensity = OverhaulGraphicsController.BloomIntensity;
                 bloomEndThreshold = OverhaulGraphicsController.BloomThreshold;

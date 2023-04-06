@@ -26,7 +26,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
 
             CharacterModel model = firstPersonMover.GetCharacterModel();
-            if(model == null)
+            if (model == null)
             {
                 return;
             }

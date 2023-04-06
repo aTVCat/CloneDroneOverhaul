@@ -97,12 +97,12 @@ namespace CDOverhaul.HUD
         public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
         {
             List<T> list = new List<T>();
-            if(targetTransform == null || targetTransform.childCount == 0)
+            if (targetTransform == null || targetTransform.childCount == 0)
             {
                 return list;
             }
 
-            for(int i = 0; i < targetTransform.childCount; i++)
+            for (int i = 0; i < targetTransform.childCount; i++)
             {
                 Transform t = targetTransform.GetChild(i);
                 T component = t.GetComponent<T>();

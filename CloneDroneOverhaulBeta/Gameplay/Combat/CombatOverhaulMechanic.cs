@@ -14,18 +14,19 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         public const float Default_Enemy_Speed = 7f;
 
-        public float GetDefaultSpeed() => IsOwnerPlayer() ? Default_Player_Speed : Default_Enemy_Speed;
+        public float GetDefaultSpeed()
+        {
+            return IsOwnerPlayer() ? Default_Player_Speed : Default_Enemy_Speed;
+        }
 
-
-        private CharacterModel m_CachedCharacterModel;
         /// <summary>
         /// Get cached character model instance
         /// </summary>
-        public CharacterModel CharacterModel => m_CachedCharacterModel;
+        public CharacterModel CharacterModel { get; private set; }
         /// <summary>
         /// Check if we have cached character model
         /// </summary>
-        public bool HasCharacterModel => m_CachedCharacterModel != null;
+        public bool HasCharacterModel => CharacterModel != null;
 
         /// <summary>
         /// Get animator script instance if we have one
@@ -34,14 +35,14 @@ namespace CDOverhaul.Gameplay.Combat
         /// <returns></returns>
         public Animator GetAnimator(CombatOverhaulAnimatorType animatorType)
         {
-            if(!IsDisposedOrDestroyed() && HasCharacterModel)
+            if (!IsDisposedOrDestroyed() && HasCharacterModel)
             {
                 switch (animatorType)
                 {
                     case CombatOverhaulAnimatorType.Legs:
-                        return m_CachedCharacterModel.LegsAnimator;
+                        return CharacterModel.LegsAnimator;
                     case CombatOverhaulAnimatorType.Upper:
-                        return m_CachedCharacterModel.UpperAnimator;
+                        return CharacterModel.UpperAnimator;
                 }
             }
             return null;
@@ -58,9 +59,9 @@ namespace CDOverhaul.Gameplay.Combat
                 switch (animatorType)
                 {
                     case CombatOverhaulAnimatorType.Legs:
-                        return m_CachedCharacterModel.LegsAnimator != null;
+                        return CharacterModel.LegsAnimator != null;
                     case CombatOverhaulAnimatorType.Upper:
-                        return m_CachedCharacterModel.UpperAnimator != null;
+                        return CharacterModel.UpperAnimator != null;
                 }
             }
             return false;
@@ -77,9 +78,9 @@ namespace CDOverhaul.Gameplay.Combat
                 switch (animatorType)
                 {
                     case CombatOverhaulAnimatorType.Legs:
-                        return m_CachedCharacterModel.LegsAnimator.speed;
+                        return CharacterModel.LegsAnimator.speed;
                     case CombatOverhaulAnimatorType.Upper:
-                        return m_CachedCharacterModel.UpperAnimator.speed;
+                        return CharacterModel.UpperAnimator.speed;
                 }
             }
             return -1f;
@@ -114,13 +115,13 @@ namespace CDOverhaul.Gameplay.Combat
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            m_CachedCharacterModel = null;
+            CharacterModel = null;
         }
 
         private void getRequiredVariables()
         {
-            m_CachedCharacterModel = Owner.GetCharacterModel();
-            if(m_CachedCharacterModel == null)
+            CharacterModel = Owner.GetCharacterModel();
+            if (CharacterModel == null)
             {
                 base.enabled = false;
             }
@@ -128,8 +129,8 @@ namespace CDOverhaul.Gameplay.Combat
 
         public void SetRobotSpeed(float speed, bool updateAnimators, bool reset = false)
         {
-            Owner.MaxSpeed = speed;            
-            if(updateAnimators) SetAnimatorSpeed(CombatOverhaulAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
+            Owner.MaxSpeed = speed;
+            if (updateAnimators) SetAnimatorSpeed(CombatOverhaulAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
         }
     }
 }

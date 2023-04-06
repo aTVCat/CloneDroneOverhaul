@@ -54,7 +54,7 @@ namespace CDOverhaul.HUD
                 m_LockedBG = m_ModdedObject.GetObject<Transform>(14);
             }
 
-            if(Setting == null) Setting = SettingsController.GetSetting(settingPath);
+            if (Setting == null) Setting = SettingsController.GetSetting(settingPath);
             if (Description == null) Description = SettingsController.GetSettingDescription(settingPath);
             if (Setting == null || Setting.Error)
             {
@@ -142,7 +142,7 @@ namespace CDOverhaul.HUD
         {
             m_Dropdown = m.GetObject<Dropdown>(11);
             m_Dropdown.gameObject.SetActive(parameters != null && !Setting.ForceInputField);
-            if(!m_Dropdown.gameObject.activeSelf)
+            if (!m_Dropdown.gameObject.activeSelf)
             {
                 return;
             }
@@ -164,14 +164,7 @@ namespace CDOverhaul.HUD
             m_Slider.wholeNumbers = parameters.IsInt;
             m_Slider.minValue = parameters.Min;
             m_Slider.maxValue = parameters.Max;
-            if (parameters.IsInt)
-            {
-                m_Slider.value = SettingInfo.GetPref<int>(Setting);
-            }
-            else
-            {
-                m_Slider.value = SettingInfo.GetPref<float>(Setting);
-            }
+            m_Slider.value = parameters.IsInt ? SettingInfo.GetPref<int>(Setting) : SettingInfo.GetPref<float>(Setting);
             m_Slider.onValueChanged.AddListener(setSliderValue);
         }
 
