@@ -274,20 +274,6 @@ namespace CDOverhaul.Gameplay
                     SetDefaultModelsVisible(true, weaponModel4);
                 }
             }
-            /*
-            if (WeaponSkins.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
-            {
-                if(info != null && info.Model != null)
-                {
-                    Destroy(info.Model);
-                }
-            }
-            WeaponSkins.Clear();*/
         }
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)

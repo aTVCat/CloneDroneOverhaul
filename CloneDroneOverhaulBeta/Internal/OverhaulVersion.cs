@@ -8,7 +8,7 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulVersion
     {
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.5");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.9");
         /// <summary>
         /// The version of the mod
         /// </summary>
@@ -31,7 +31,7 @@ namespace CDOverhaul
         /// </summary>
         public const bool Upd3JunePreview = false;
 
-        public const bool Upd2Hotfix = false;
+        public const bool Upd2Hotfix = true;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

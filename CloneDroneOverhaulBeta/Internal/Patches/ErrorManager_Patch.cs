@@ -10,7 +10,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
-            return !OverhaulMod.IsCoreCreated || true;
+            if (logString.Contains("WeaponModel.ReplaceModel"))
+            {
+                return false;
+            }
+            return !OverhaulMod.IsCoreCreated;
         }
     }
 }
