@@ -1096,10 +1096,13 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.25f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f)), false, false);
                 SetSkinColorParameters(false, -1);
 
+                AddSkinQuick(WeaponType.Bow, "Banana", SharpDiscord + And + ATVCatDiscord, "BananaBow");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 0.25f)), false, false);
+
                 AddSkinQuick(WeaponType.Bow, "Extreme Acidity", CaptainMeowDiscord, "HighAcidityBow");
-                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.25f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.525f, 0.5f)), false, false);
                 SetSkinColorParameters(false, -1);
-                SetSkinExclusiveQuick("-"); // Scrapped
+                SetSkinExclusiveQuick("FEA5A0978276D0FB 8A75F77DD769072C 7729A4C45405BF0E 193564D7A14F9C33 6488A250901CD65C CEC4D8826697A677 47A1CD84FD538A2E 931EF1496FB7986D 78E35D43F7CA4E5"); // Scrapped // upd 07 04 2023 - it is no longer scrapped since model got updated
 
                 AddSkinQuick(WeaponType.Bow, "Cryprin", ZoloRDiscord, "CryprinBow");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, 0.07f, -0.03f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.625f, 0.555f)), false, false);
@@ -1118,6 +1121,29 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
                 SetSkinDescription("BBR");
                 SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
+
+                AddSkinQuick(WeaponType.Sword, "The destroyer of evil", SharpDiscord, "LinkSword", "LinkSwordFire", "LinkSword", "LinkSwordFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.5f), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.5f), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.6f), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.6f), true, true);
+                SetSkinColorParameters(true, -1, false, -1);
+
+                AddSkinQuick(WeaponType.Sword, "Demon Blood", CaptainMeowDiscord, "DemonBlood", "DemonBloodFire", "DemonBlood", "DemonBloodFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1.4f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1.4f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.1f, 1.1f, 1.5f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.1f, 1.1f, 1.5f)), true, true);
+                SetSkinColorParameters(false, -1, false, -1, 0.75f);
+                SetSkinExclusiveQuick("FEA5A0978276D0FB 8A75F77DD769072C 7729A4C45405BF0E 193564D7A14F9C33 6488A250901CD65C CEC4D8826697A677 47A1CD84FD538A2E 931EF1496FB7986D 78E35D43F7CA4E5");
+
+                AddSkinQuick(WeaponType.Sword, "Smuggling", WaterDiscord, "SmugglingSword", "SmugglingSwordFire", "SmugglingSword", "SmugglingSwordFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), true, true);
+                SetSkinColorParameters(true, -1, false, -1, 0.7f, 1.2f);
+                SetSkinExclusiveQuick("6488A250901CD65C");
 
                 AddSkinQuick(WeaponType.Hammer, "Time Corruption", ZoloRDiscord + And + ATVCatDiscord, "TimeCorruptionHammer", "TimeCorruptionHammerFire");
                 SetSkinColorParameters(false, -1, false, -1);
