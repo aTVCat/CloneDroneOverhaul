@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using CDOverhaul.Gameplay;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -73,6 +74,8 @@ namespace CDOverhaul.HUD
         private Button m_StartMatchButton;
         private Text m_StartMatchButtonText;
 
+        private Transform m_PersonalizationNotification;
+
         public bool ScheduleHide;
 
         private OverhaulParametersMenu m_Parameters;
@@ -121,6 +124,8 @@ namespace CDOverhaul.HUD
             m_StartMatchButton.onClick.AddListener(OnStartMatchClicked);
             m_StartMatchButtonText = MyModdedObject.GetObject<Text>(22);
 
+            m_PersonalizationNotification = MyModdedObject.GetObject<Transform>(23);
+
             MyModdedObject.GetObject<Button>(16).onClick.AddListener(OnContinueClicked);
             MyModdedObject.GetObject<Button>(15).onClick.AddListener(delegate
             {
@@ -161,6 +166,13 @@ namespace CDOverhaul.HUD
 
         public void OnPersonalizationButtonClicked()
         {
+            if (!WeaponSkinsController.HasNoticedSkinsButton)
+            {
+                WeaponSkinsController.HasNoticedSkinsButton = true;
+                SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
+                m_PersonalizationNotification.gameObject.SetActive(false);
+            }
+
             m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
             m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsOutfits();
             SetPanelActive(m_PersonalizationPanel, m_PersonalizationButton.transform, !m_PersonalizationPanel.gameObject.activeSelf);
@@ -393,6 +405,7 @@ namespace CDOverhaul.HUD
             RefreshRoomCodePanelActive();
             RefreshStartMatchButton();
 
+            m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
             ShowCursor = true;

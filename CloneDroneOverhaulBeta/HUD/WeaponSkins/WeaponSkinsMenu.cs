@@ -56,20 +56,27 @@ namespace CDOverhaul.HUD
         private WeaponType m_SelectedWeapon;
         private Button m_DefaultSkinButton;
         private ScrollRect m_ScrollRect;
+        private CanvasGroup m_ScrollRectCanvasGroup;
+
+        private Transform m_LoadIndicatorTransform;
+        private Image m_LoadIndicatorFill;
 
         private Button m_DebugApplyButton;
         private Button m_DebugSaveButton;
         private Dropdown m_DebugCharacterModelsDropdown;
 
         public bool IsOutfitSelection;
-
         public static WeaponSkinsMenu SkinsSelection;
         public static WeaponSkinsMenu OutfitSelection;
+
+        private bool m_PopulatingSkins;
+        public bool IsPopulatingSkins => m_PopulatingSkins;
 
         public override void Initialize()
         {
             ModdedObject m = MyModdedObject;
             m_ScrollRect = m.GetObject<ScrollRect>(17);
+            m_ScrollRectCanvasGroup = m.GetObject<CanvasGroup>(17);
             m_HashtableTest = new Hashtable
             {
                 ["weapon"] = m.GetObject<ModdedObject>(2)
@@ -85,6 +92,8 @@ namespace CDOverhaul.HUD
             m_Description.text = string.Empty;
             m_DefaultSkinButton = m.GetObject<Button>(6);
             m_DefaultSkinButton.onClick.AddListener(SetDefaultSkin);
+            m_LoadIndicatorTransform = m.GetObject<Transform>(18);
+            m_LoadIndicatorFill = m.GetObject<Image>(19);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
             MyModdedObject.GetObject<Text>(8).text = string.Empty;
@@ -92,13 +101,13 @@ namespace CDOverhaul.HUD
             if (base.gameObject.name.Equals("SkinsSelection"))
             {
                 SkinsSelection = this;
-                OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
+                _ = OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
             else
             {
                 m_AccessoryItems = new List<AccessoryItem>();
                 OutfitSelection = this;
-                OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
+                _ = OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
 
                 if (OverhaulVersion.IsDebugBuild)
                 {
@@ -271,9 +280,11 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            TransformUtils.DestroyAllChildren(GetContainer(true));
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null && mover.HasCharacterModel())
             {
+                if(!GameModeManager.IsMultiplayer()) mover.InstantlySetTorsoTiltX(0);
                 mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = IsOutfitSelection ? value ? new Vector3(0, 180, 0) : Vector3.zero : value ? new Vector3(0, 90, 0) : Vector3.zero;
             }
 
@@ -394,20 +405,60 @@ namespace CDOverhaul.HUD
             }
 
             if (!IsOutfitSelection) WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
+            _ = StaticCoroutineRunner.StartStaticCoroutine(populateSkinsCoroutine(weaponType));
+        }
+
+        private IEnumerator endPopulatingSkinsCoroutine()
+        {
+            m_ScrollRectCanvasGroup.alpha = 0f;
+            m_ScrollRectCanvasGroup.blocksRaycasts = true;
+            for (int i = 0; i < 4; i++)
+            {
+                m_ScrollRectCanvasGroup.alpha += 0.25f;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            m_ScrollRectCanvasGroup.alpha = 1f;
+            m_PopulatingSkins = false;
+        }
+
+        private IEnumerator populateSkinsCoroutine(WeaponType weaponType)
+        {
+            SetFillProgress(0f);
+            m_PopulatingSkins = true;
+            m_DefaultSkinButton.interactable = false;
+            yield return null;
+
+            m_ScrollRectCanvasGroup.alpha = 1f;
+            m_ScrollRectCanvasGroup.blocksRaycasts = false;
+            for (int i = 0; i < 4; i++)
+            {
+                m_ScrollRectCanvasGroup.alpha -= 0.25f;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            m_ScrollRectCanvasGroup.alpha = 0f;
+            yield return null;
+
             TransformUtils.DestroyAllChildren(GetContainer(true));
             m_ScrollRect.verticalNormalizedPosition = 1f;
+            int itemsSpawned = 0;
 
             if (IsOutfitSelection)
             {
                 m_AccessoryItems = OutfitsController.AllAccessories;
                 if (m_AccessoryItems.IsNullOrEmpty())
                 {
-                    return;
+                    yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+                    yield break;
                 }
                 m_AccessoryItems = m_AccessoryItems.OrderBy(f => f.Name).ToList();
 
                 foreach (AccessoryItem aitem in m_AccessoryItems)
                 {
+                    if (!base.gameObject.activeSelf)
+                    {
+                        m_PopulatingSkins = false;
+                        yield break;
+                    }
                     string itemName = aitem.Name;
 
                     ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(true), GetContainer(true));
@@ -421,9 +472,14 @@ namespace CDOverhaul.HUD
                     b.SetMenu(this);
                     b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.AllowedPlayers));
                     b.TrySelect();
+
+                    itemsSpawned++;
+                    SetFillProgress(itemsSpawned / (float)m_AccessoryItems.Count);
+                    yield return null;
                 }
 
-                return;
+                yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+                yield break;
             }
 
             m_SelectedWeapon = weaponType;
@@ -432,22 +488,24 @@ namespace CDOverhaul.HUD
                 Text newPrefab = Instantiate<Text>(m_TextPrefab, GetContainer(true));
                 newPrefab.text = "Bow skins are not supported in singleplayer when Gun mod is enabled";
                 newPrefab.gameObject.SetActive(true);
-                return;
+                yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+                yield break;
             }
 
-            m_Items = m_Controller.Interface.GetSkinItems(ItemFilter.Everything);
+            m_Items = m_Controller.Interface.GetSkinItems(ItemFilter.Everything, weaponType);
             if (m_Items.IsNullOrEmpty())
             {
-                return;
+                yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+                yield break;
             }
             m_Items = m_Items.OrderBy(f => (f as WeaponSkinItemDefinitionV2).HasNameOverride ? (f as WeaponSkinItemDefinitionV2).OverrideName : f.GetItemName()).ToArray();
 
-
             foreach (IWeaponSkinItemDefinition skin in m_Items)
             {
-                if (skin.GetWeaponType() != weaponType)
+                if (!base.gameObject.activeSelf)
                 {
-                    continue;
+                    m_PopulatingSkins = false;
+                    yield break;
                 }
 
                 string skinName = skin.GetItemName();
@@ -463,6 +521,11 @@ namespace CDOverhaul.HUD
                 b.TrySelect();
                 b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
                 b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
+
+                itemsSpawned++;
+                SetFillProgress(itemsSpawned / (float)m_Items.Length);
+
+                yield return null;
             }
 
             switch (weaponType)
@@ -481,6 +544,8 @@ namespace CDOverhaul.HUD
                     break;
             }
             RefreshDefaultSkinButton();
+            yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+            yield break;
         }
 
         public void SelectSkin(WeaponType weaponType, string skinName)
@@ -626,12 +691,18 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<InputField>(27).text = transform.OffsetLocalScale[2].ToString();
         }
 
+        public void SetFillProgress(float progress)
+        {
+            m_LoadIndicatorFill.fillAmount = progress;
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 SetMenuActive(false);
             }
+            m_LoadIndicatorTransform.gameObject.SetActive(IsPopulatingSkins);
         }
     }
 }

@@ -465,6 +465,7 @@
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
+    <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />

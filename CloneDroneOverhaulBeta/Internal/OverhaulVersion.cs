@@ -8,7 +8,7 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulVersion
     {
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.12");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.14");
         /// <summary>
         /// The version of the mod
         /// </summary>
@@ -20,7 +20,7 @@ namespace CDOverhaul
         /// <summary>
         /// The full name of the mod
         /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul Update 2-HF " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
+        public static readonly string ModFullName = "Clone Drone Overhaul " + getVersionPrefixChar() + ModVersion.ToString() + DebugString;
         /// <summary>
         /// The shortened name of the mod
         /// </summary>

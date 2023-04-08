@@ -128,7 +128,7 @@ namespace CDOverhaul.HUD
 
         public void SelectThis()
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null)
+            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null || m_SkinsMenu.IsPopulatingSkins)
             {
                 return;
             }
