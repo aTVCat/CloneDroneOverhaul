@@ -8,14 +8,14 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulVersion
     {
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.10");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.12");
         /// <summary>
         /// The version of the mod
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
         public static Version ModVersion => Upd2Hotfix ? m_ModVersionUpd2 : m_ModVersion;
 
-        public const string GameTargetVersion = "1.4.0.17";
+        public const string GameTargetVersion = "1.4.0.23";
 
         /// <summary>
         /// The full name of the mod

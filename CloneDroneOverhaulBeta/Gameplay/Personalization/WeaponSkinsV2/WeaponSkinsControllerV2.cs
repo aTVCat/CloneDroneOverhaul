@@ -26,6 +26,7 @@ namespace CDOverhaul.Gameplay
         public const string HizDiscord = "TheHiz#6138";
         public const string KegaDiscord = "Mr. КеГ#3924";
         public const string DGKDiscord = "dukogpom#0969";
+        public const string PsinaDiscord = "Psina#8702";
         public const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
@@ -674,6 +675,7 @@ namespace CDOverhaul.Gameplay
                     bsHammerSkinOffset,
                     true,
                     false);
+                (bsHammerSkin as WeaponSkinItemDefinitionV2).OverrideName = "Hammush";
                 (bsHammerSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (bsHammerSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = LostCatDiscord;
 
@@ -1099,6 +1101,9 @@ namespace CDOverhaul.Gameplay
                 AddSkinQuick(WeaponType.Bow, "Banana", SharpDiscord + And + ATVCatDiscord, "BananaBow");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 0.25f)), false, false);
 
+                AddSkinQuick(WeaponType.Bow, "Vasilek's", PsinaDiscord, "Vasilek'sBow");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.025f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.24f, 0.24f, 0.24f)), false, false);
+
                 AddSkinQuick(WeaponType.Bow, "Extreme Acidity", CaptainMeowDiscord, "HighAcidityBow");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.05f, -0.025f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.525f, 0.5f)), false, false);
                 SetSkinColorParameters(false, -1);
@@ -1137,6 +1142,14 @@ namespace CDOverhaul.Gameplay
                 SetSkinColorParameters(false, -1, false, -1, 0.75f);
                 SetSkinExclusiveQuick("FEA5A0978276D0FB 8A75F77DD769072C 7729A4C45405BF0E 193564D7A14F9C33 6488A250901CD65C CEC4D8826697A677 47A1CD84FD538A2E 931EF1496FB7986D 78E35D43F7CA4E5");
 
+                AddSkinQuick(WeaponType.Sword, "Justice & Splendor", CaptainMeowDiscord, "JusticeAndSplendor", "JusticeAndSplendorFire", "JusticeAndSplendor", "JusticeAndSplendorFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0.0125f, -0.1f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 0.95f, 1.05f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0.0125f, -0.1f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 0.95f, 1.05f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 1.05f, 1.05f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 1.05f, 1.05f)), true, true);
+                SetSkinColorParameters(false, -1, false, -1, 0.75f);
+                SetSkinExclusiveQuick("FEA5A0978276D0FB 883CC7F4CA3155A3");
+
                 AddSkinQuick(WeaponType.Sword, "Smuggling", WaterDiscord, "SmugglingSword", "SmugglingSwordFire", "SmugglingSword", "SmugglingSwordFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
@@ -1145,10 +1158,29 @@ namespace CDOverhaul.Gameplay
                 SetSkinColorParameters(true, -1, false, -1, 0.7f, 1.2f);
                 SetSkinExclusiveQuick("6488A250901CD65C");
 
+                AddSkinQuick(WeaponType.Sword, "Cutie", PsinaDiscord, "CutieSword", "CutieSwordFire", "CutieSword", "CutieSwordFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0.025f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0.025f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0.025f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0.025f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), true, true);
+                SetSkinColorParameters(false, -1, false, -1);
+
+                AddSkinQuick(WeaponType.Sword, "Meatley", PsinaDiscord, "MeatleySword", "MeatleySwordFire", "MeatleySword", "MeatleySwordFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 1.15f), true, true);
+                SetSkinColorParameters(false, -1, false, -1);
+
                 AddSkinQuick(WeaponType.Hammer, "Time Corruption", ZoloRDiscord + And + ATVCatDiscord, "TimeCorruptionHammer", "TimeCorruptionHammerFire");
                 SetSkinColorParameters(false, -1, false, -1);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.175f, 0.05f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.75f, 0.92f, 0.92f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.175f, 0.05f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.75f, 0.92f, 0.92f)), true, false);
+
+                AddSkinQuick(WeaponType.Hammer, "Hammush 2", PsinaDiscord, "Hammush2Hammer", "Hammush2HammerFire");
+                SetSkinColorParameters(false, -1, false, -1);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.5f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.5f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), true, false);
             }
         }
 
