@@ -43,10 +43,6 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("CreateArrowAndDrawBow")]
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
         {
-            if (OverhaulVersion.Upd2Hotfix)
-            {
-                return;
-            }
             if (!OverhaulMod.IsCoreCreated)
             {
                 return;
@@ -70,11 +66,6 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReleaseNockedArrow")]
         private static void ReleaseNockedArrow_Postfix(FirstPersonMover __instance)
         {
-            if (OverhaulVersion.Upd2Hotfix)
-            {
-                return;
-            }
-
             if (!OverhaulMod.IsCoreCreated)
             {
                 return;

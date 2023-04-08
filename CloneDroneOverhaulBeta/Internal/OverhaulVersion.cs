@@ -8,7 +8,7 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulVersion
     {
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.14");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.15");
         /// <summary>
         /// The version of the mod
         /// </summary>

@@ -410,6 +410,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator endPopulatingSkinsCoroutine()
         {
+            m_PopulatingSkins = false;
             m_ScrollRectCanvasGroup.alpha = 0f;
             m_ScrollRectCanvasGroup.blocksRaycasts = true;
             for (int i = 0; i < 4; i++)
@@ -418,11 +419,11 @@ namespace CDOverhaul.HUD
                 yield return new WaitForSecondsRealtime(0.016f);
             }
             m_ScrollRectCanvasGroup.alpha = 1f;
-            m_PopulatingSkins = false;
         }
 
         private IEnumerator populateSkinsCoroutine(WeaponType weaponType)
         {
+            StaticCoroutineRunner.StopStaticCoroutine(endPopulatingSkinsCoroutine());
             SetFillProgress(0f);
             m_PopulatingSkins = true;
             m_DefaultSkinButton.interactable = false;
