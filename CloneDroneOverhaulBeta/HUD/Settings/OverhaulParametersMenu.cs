@@ -306,8 +306,8 @@ namespace CDOverhaul.HUD
             }
             m_DescriptionTransform.gameObject.SetActive(true);
 
-            MyModdedObject.GetObject<Text>(8).text = info.Name;
-            MyModdedObject.GetObject<Text>(9).text = description.Description;
+            MyModdedObject.GetObject<Text>(8).text = OverhaulLocalizationController.GetTranslation(OverhaulParametersMenu.SettingTranslationPrefix + info.Name);
+            MyModdedObject.GetObject<Text>(9).text = OverhaulLocalizationController.GetTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + info.Name);
             MyModdedObject.GetObject<UnityEngine.UI.Image>(10).gameObject.SetActive(description.Has43Image);
             MyModdedObject.GetObject<UnityEngine.UI.Image>(11).gameObject.SetActive(description.Has169Image);
             MyModdedObject.GetObject<UnityEngine.UI.Image>(10).sprite = description.Image_4_3;

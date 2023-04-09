@@ -5,7 +5,7 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulVersionLabel : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Information.Watermark", true, false, "Hide mod version label during gameplay")]
+        [OverhaulSetting("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
         public static bool WatermarkEnabled;
 
         private bool m_HasInitialized;

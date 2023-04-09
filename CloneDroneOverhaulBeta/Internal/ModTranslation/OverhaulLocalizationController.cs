@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using CDOverhaul.Localization;
 
-namespace CDOverhaul.Localization
+namespace CDOverhaul
 {
     public static class OverhaulLocalizationController
     {
@@ -38,6 +39,7 @@ namespace CDOverhaul.Localization
             OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
             m_ListOfTexts.Clear();
             m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
+            _ = OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
             {
@@ -45,7 +47,6 @@ namespace CDOverhaul.Localization
                 return;
             }
             OverhaulSessionController.SetKey("LoadedTranslations", true);
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
             loadData();
         }
 

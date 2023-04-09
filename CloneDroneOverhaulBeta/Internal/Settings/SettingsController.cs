@@ -85,8 +85,9 @@ namespace CDOverhaul
                         if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
                         {
                             OverhaulLocalizationController.Localization.AddTranslation(OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
-                            OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
                         }
+                        SettingDescription desc = SettingsController.GetSettingDescription(neededAttribute.RawPath);
+                        if(desc != null) OverhaulLocalizationController.Localization.Translations["en"][OverhaulParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
 
                         if (!OverhaulLocalizationController.HasTranslation(OverhaulParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
                         {

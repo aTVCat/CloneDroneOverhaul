@@ -90,6 +90,11 @@ namespace CDOverhaul.Localization
             }
 
             Text text = mObj.GetComponent<Text>();
+            if (mObj.ID.Contains("_DV_"))
+            {
+                text.text = LocalizationManager.Instance.GetTranslatedString(mObj.ID.Substring(7));
+                return;
+            }
             GetTranslation(text, mObj.ID.Substring(4));
         }
 

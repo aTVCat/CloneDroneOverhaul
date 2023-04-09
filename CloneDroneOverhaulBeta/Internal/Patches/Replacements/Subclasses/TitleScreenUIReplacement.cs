@@ -11,7 +11,7 @@ namespace CDOverhaul.Patches
         private Transform _spawnedPanel;
 
         private Text m_SettingsText;
-        private Text m_PatchNotesText;
+        private Text m_BugReportText;
 
         public override void Replace()
         {
@@ -38,8 +38,12 @@ namespace CDOverhaul.Patches
             ModdedObject moddedObject = _spawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<OverhaulParametersMenu>().Show);
             moddedObject.GetObject<Button>(3).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
+            moddedObject.GetObject<Button>(6).onClick.AddListener(delegate
+            {
+                Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
+            });
             moddedObject.GetObject<Transform>(3).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            m_PatchNotesText = moddedObject.GetObject<Text>(5);
+            m_BugReportText = moddedObject.GetObject<Text>(7);
             m_SettingsText = moddedObject.GetObject<Text>(4);
 
             _buttonsTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
@@ -53,12 +57,12 @@ namespace CDOverhaul.Patches
 
         private void localizeTexts()
         {
-            if (!SuccessfullyPatched || m_PatchNotesText == null || m_SettingsText == null || OverhaulLocalizationController.Error)
+            if (!SuccessfullyPatched || m_BugReportText == null || m_SettingsText == null || OverhaulLocalizationController.Error)
             {
                 return;
             }
 
-            m_PatchNotesText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_PatchNotes");
+            m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
             m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
         }
 

@@ -42,7 +42,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
         public static bool BlurEdgesEnabled;
 
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..? Just turn this setting on", "Chromatic Aberration.png")]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
         [SettingSliderParameters(false, 0f, 0.001f)]
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
