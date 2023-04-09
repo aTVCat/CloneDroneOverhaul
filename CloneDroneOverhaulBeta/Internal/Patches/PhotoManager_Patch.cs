@@ -8,11 +8,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("TriggerPhotoModeOnOff")]
         private static bool TriggerPhotoModeOnOff_Prefix()
         {
-            if (!OverhaulMod.IsCoreCreated)
-            {
-                return true;
-            }
-            return !EnableCursorController.HasToEnableCursor();
+            return !OverhaulMod.IsCoreCreated || !EnableCursorController.HasToEnableCursor();
         }
     }
 }

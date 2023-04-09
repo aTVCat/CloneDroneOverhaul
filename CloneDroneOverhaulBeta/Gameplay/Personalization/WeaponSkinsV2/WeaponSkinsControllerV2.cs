@@ -1335,7 +1335,7 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
                 {
-                    if (weaponSkinItem.IsUnlocked(OverhaulVersion.IsDebugBuild) && type == WeaponType.None ? true : weaponSkinItem.GetWeaponType() == type && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter))
+                    if ((weaponSkinItem.IsUnlocked(OverhaulVersion.IsDebugBuild) && type == WeaponType.None) || (weaponSkinItem.GetWeaponType() == type && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter)))
                     {
                         result.Add(weaponSkinItem);
                     }

@@ -91,11 +91,9 @@ namespace CDOverhaul
 
         public static SettingType GetSettingType<T>()
         {
-            if (typeof(T) == typeof(bool))
-            {
-                return SettingType.Bool;
-            }
-            return typeof(T) == typeof(int)
+            return typeof(T) == typeof(bool)
+                ? SettingType.Bool
+                : typeof(T) == typeof(int)
                 ? SettingType.Int
                 : typeof(T) == typeof(float)
                 ? SettingType.Float
@@ -104,11 +102,9 @@ namespace CDOverhaul
 
         public static SettingType GetSettingType(in object @object)
         {
-            if (@object is bool)
-            {
-                return SettingType.Bool;
-            }
-            return @object is int
+            return @object is bool
+                ? SettingType.Bool
+                : @object is int
                 ? SettingType.Int
                 : @object is float
                 ? SettingType.Float

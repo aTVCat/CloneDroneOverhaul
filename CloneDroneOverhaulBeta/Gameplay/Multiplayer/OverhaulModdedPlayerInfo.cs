@@ -103,7 +103,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static string SerializeData()
         {
-            Hashtable newHashTable = new Hashtable
+            Hashtable newHashTable = GenerateNewHashtable();
+            string serializedData = JsonConvert.SerializeObject(newHashTable);
+            return serializedData;
+        }
+
+        public static Hashtable GenerateNewHashtable()
+        {
+            return new Hashtable
             {
                 ["ID"] = ExclusivityController.GetLocalPlayfabID(),
                 ["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin,
@@ -112,11 +119,9 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
                 ["State.Version"] = OverhaulVersion.ModVersion.ToString(),
-                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories
+                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories,
+                ["Custom.Data"] = string.Empty
             };
-
-            string serializedData = JsonConvert.SerializeObject(newHashTable);
-            return serializedData;
         }
 
         public static OverhaulModdedPlayerInfo GetLocalPlayerInfo()

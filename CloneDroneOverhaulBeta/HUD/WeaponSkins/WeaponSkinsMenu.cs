@@ -69,8 +69,7 @@ namespace CDOverhaul.HUD
         public static WeaponSkinsMenu SkinsSelection;
         public static WeaponSkinsMenu OutfitSelection;
 
-        private bool m_PopulatingSkins;
-        public bool IsPopulatingSkins => m_PopulatingSkins;
+        public bool IsPopulatingSkins { get; private set; }
 
         public override void Initialize()
         {
@@ -284,7 +283,7 @@ namespace CDOverhaul.HUD
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null && mover.HasCharacterModel())
             {
-                if(!GameModeManager.IsMultiplayer()) mover.InstantlySetTorsoTiltX(0);
+                if (!GameModeManager.IsMultiplayer()) mover.InstantlySetTorsoTiltX(0);
                 mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = IsOutfitSelection ? value ? new Vector3(0, 180, 0) : Vector3.zero : value ? new Vector3(0, 90, 0) : Vector3.zero;
             }
 
@@ -301,6 +300,13 @@ namespace CDOverhaul.HUD
                 PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.SwitchingSkins : PlayerStatusType.Idle);
             }
 
+            if (CharacterTracker.Instance != null && CharacterTracker.Instance.GetPlayer() != null)
+            {
+                if (value && GameUIRoot.Instance != null && GameUIRoot.Instance.CloneUI != null) GameUIRoot.Instance.CloneUI.Hide();
+                if (!value && GameUIRoot.Instance != null && GameUIRoot.Instance.CloneUI != null && !SettingsManager.Instance.ShouldHideGameUI()) GameUIRoot.Instance.CloneUI.Show();
+            }
+
+            base.enabled = true;
             base.gameObject.SetActive(value);
             ShowCursor = value;
 
@@ -373,7 +379,7 @@ namespace CDOverhaul.HUD
 
             ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(false), GetContainer(false));
             newPrefab.gameObject.SetActive(true);
-            newPrefab.GetObject<Text>(1).text = weaponType.ToString();
+            newPrefab.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
             WeaponSkinsMenuWeaponBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuWeaponBehaviour>();
             b.SetMenu(this);
             b.SetWeaponType(weaponType);
@@ -410,7 +416,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator endPopulatingSkinsCoroutine()
         {
-            m_PopulatingSkins = false;
+            IsPopulatingSkins = false;
             m_ScrollRectCanvasGroup.alpha = 0f;
             m_ScrollRectCanvasGroup.blocksRaycasts = true;
             for (int i = 0; i < 4; i++)
@@ -425,7 +431,7 @@ namespace CDOverhaul.HUD
         {
             StaticCoroutineRunner.StopStaticCoroutine(endPopulatingSkinsCoroutine());
             SetFillProgress(0f);
-            m_PopulatingSkins = true;
+            IsPopulatingSkins = true;
             m_DefaultSkinButton.interactable = false;
             yield return null;
 
@@ -457,7 +463,7 @@ namespace CDOverhaul.HUD
                 {
                     if (!base.gameObject.activeSelf)
                     {
-                        m_PopulatingSkins = false;
+                        IsPopulatingSkins = false;
                         yield break;
                     }
                     string itemName = aitem.Name;
@@ -505,7 +511,7 @@ namespace CDOverhaul.HUD
             {
                 if (!base.gameObject.activeSelf)
                 {
-                    m_PopulatingSkins = false;
+                    IsPopulatingSkins = false;
                     yield break;
                 }
 

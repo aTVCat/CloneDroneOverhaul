@@ -12,21 +12,21 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
         {
-            
-            if (OverhaulVersion.Upd2Hotfix || !OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsCoreCreated)
             {
                 return true;
             }
 
-            if (isMultiplayer && __instance.MeleeImpactArea != null)
+            if (__instance.MeleeImpactArea != null)
             {
                 FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
                 if (owner != null)
                 {
+                    bool isSP = GameModeManager.IsSinglePlayer();
                     OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
-                    if (info != null)
+                    if (info != null || isSP)
                     {
-                        Hashtable t = info.GetHashtable();
+                        Hashtable t = isSP ? OverhaulModdedPlayerInfo.GenerateNewHashtable() : info.GetHashtable();
                         if (t != null && t.Contains("Skin." + __instance.WeaponType) && !Equals(t["Skin." + __instance.WeaponType], "Default"))
                         {
                             return false;

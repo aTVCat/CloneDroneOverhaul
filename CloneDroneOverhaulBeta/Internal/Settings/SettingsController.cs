@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using CDOverhaul.Localization;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
