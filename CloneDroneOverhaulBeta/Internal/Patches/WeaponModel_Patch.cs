@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Gameplay.Multiplayer;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace CDOverhaul.Patches
                 FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
                 if (owner != null)
                 {
-                    bool isSP = GameModeManager.IsSinglePlayer();
+                    bool isSP = GameModeManager.IsSinglePlayer() && (owner.IsMainPlayer() || WeaponSkinsController.AllowEnemiesWearSkins);
                     OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
                     if (info != null || isSP)
                     {
