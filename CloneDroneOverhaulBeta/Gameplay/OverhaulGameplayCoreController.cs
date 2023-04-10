@@ -1,11 +1,10 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.Gameplay.Mindspace;
-using System;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class OverhaulGameplayCoreController : OverhaulController
+    public class OverhaulGameplayCoreController : OverhaulGameplayController
     {
         #region Events
         public const string GamemodeChangedEventString = "GamemodeChanged";
@@ -19,7 +18,7 @@ namespace CDOverhaul.Gameplay
         public const string PlayerSetAsFirstPersonMover = "PlayerSet_FirstPersonMover";
         #endregion
 
-        #region Some variables
+        #region Variables
 
         private GameMode m_GameModeLastTimeCheck;
 
@@ -27,7 +26,6 @@ namespace CDOverhaul.Gameplay
         /// The start index of mod gamemodes
         /// </summary>
         public const int GamemodeStartIndex = 2000;
-
 
         private Camera m_MainCamera;
 
@@ -41,47 +39,17 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public AdditionalAnimationsController AdditionalAnimations
-        {
-            get;
-            private set;
-        }
-
-        public NewWeaponsController NewWeapons
-        {
-            get;
-            private set;
-        }
-
-        public WeaponSkinsController WeaponSkins
-        {
-            get;
-            private set;
-        }
-
-        public AdvancedGarbageController AdvancedGarbageController
-        {
-            get;
-            private set;
-        }
-
-        public MindspaceOverhaulController MindspaceOverhaul
-        {
-            get;
-            private set;
-        }
-
         public override void Initialize()
         {
+            base.Initialize();
             Core = this;
 
-            WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
-            AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
-            NewWeapons = OverhaulController.AddController<NewWeaponsController>();
-            AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
-            MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
+            _ = OverhaulController.AddController<WeaponSkinsController>();
+            _ = OverhaulController.AddController<AdditionalAnimationsController>();
+            _ = OverhaulController.AddController<NewWeaponsController>();
+            _ = OverhaulController.AddController<AdvancedGarbageController>();
+            _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
-
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 
@@ -132,16 +100,6 @@ namespace CDOverhaul.Gameplay
             }
 
             OverhaulEventsController.DispatchEvent(GamemodeChangedEventString);
-        }
-
-        public override string[] Commands()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new NotImplementedException();
         }
     }
 }

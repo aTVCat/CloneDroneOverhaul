@@ -102,7 +102,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void Start()
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 DestroyBehaviour();
                 return;

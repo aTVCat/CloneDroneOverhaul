@@ -9,7 +9,7 @@ namespace CDOverhaul
     public static class OverhaulEventsController
     {
         /// <summary>
-        /// This prefix is automaticaly added to any of mod events
+        /// This prefix is automatically added to any of mod events
         /// </summary>
         public const string EventPrefix = "Overhaul_";
 

@@ -28,7 +28,7 @@ namespace CDOverhaul
         /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
-        public static bool IsCoreCreated => !IsCoreLoadedIncorrectly && Core != null;
+        public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Base != null && Core != null && Base.IsModEnabled();
 
         /// <summary>
         /// The instance of the core
@@ -45,7 +45,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModLoaded()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -59,7 +59,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModEnabled()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModDeactivated()
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace CDOverhaul
         /// <returns></returns>
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
-            if (OverhaulVersion.Upd2Hotfix || !IsCoreCreated)
+            if (OverhaulVersion.Upd2Hotfix || !IsModInitialized)
             {
                 return null;
             }
@@ -109,7 +109,7 @@ namespace CDOverhaul
         /// <param name="firstPersonMover"></param>
         protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace CDOverhaul
         /// </summary>
         internal void TryCreateCore()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -145,7 +145,7 @@ namespace CDOverhaul
         /// </summary>
         internal void DeconstructCore()
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }

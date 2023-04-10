@@ -134,7 +134,7 @@ namespace CDOverhaul
 
         internal static void PostInitialize()
         {
-            OverhaulCanvasController h = OverhaulMod.Core.HUDController;
+            OverhaulCanvasController h = OverhaulMod.Core.CanvasController;
             HUD = h.AddHUD<OverhaulParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
         }
 

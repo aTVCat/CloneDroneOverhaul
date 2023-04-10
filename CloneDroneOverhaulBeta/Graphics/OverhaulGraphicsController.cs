@@ -74,6 +74,8 @@ namespace CDOverhaul.Graphics
 
         private static bool m_ConfiguredEventButtons;
 
+        public static bool DisallowChangeFPSLimit;
+
         public static OverhaulCameraController CameraController { get; private set; }
 
         private static readonly string[] m_IgnoredCameras = new string[]
@@ -266,7 +268,9 @@ namespace CDOverhaul.Graphics
         {
             try
             {
+                DisallowChangeFPSLimit = true;
                 SettingsManager.Instance.SetVsyncOn(false);
+                DisallowChangeFPSLimit = false;
             }
             catch { }
             switch (TargetFPS)
@@ -278,7 +282,9 @@ namespace CDOverhaul.Graphics
                     Application.targetFrameRate = 60;
                     try
                     {
+                        DisallowChangeFPSLimit = true;
                         SettingsManager.Instance.SetVsyncOn(true);
+                        DisallowChangeFPSLimit = false;
                     }
                     catch { }
                     break;

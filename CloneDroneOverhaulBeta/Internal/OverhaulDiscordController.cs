@@ -26,12 +26,12 @@ namespace CDOverhaul
             Instance != null;
 
         /// <summary>
-        /// The gamemode you're playing right now
+        /// The gamemode player is playing right now
         /// </summary>
         public string CurrentGamemode { get; set; }
 
         /// <summary>
-        /// The details of gamemode (progress or smth)
+        /// The details of gamemode (Progress)
         /// </summary>
         public string CurrentGamemodeDetails { get; set; }
 
@@ -47,7 +47,7 @@ namespace CDOverhaul
 
         private void Update()
         {
-            if(m_UnscaledTimeToInitializeDiscord != -1f && Time.unscaledTime >= m_UnscaledTimeToInitializeDiscord)
+            if (m_UnscaledTimeToInitializeDiscord != -1f && Time.unscaledTime >= m_UnscaledTimeToInitializeDiscord)
             {
                 TryInitializeDiscord();
                 m_UnscaledTimeToInitializeDiscord = -1f;

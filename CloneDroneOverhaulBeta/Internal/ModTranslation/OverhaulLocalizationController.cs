@@ -1,11 +1,11 @@
 ﻿using CDOverhaul.HUD;
+using CDOverhaul.Localization;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine.UI;
-using CDOverhaul.Localization;
 
 namespace CDOverhaul
 {

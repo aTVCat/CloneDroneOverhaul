@@ -1149,6 +1149,15 @@ namespace CDOverhaul.Gameplay
                 SetSkinDescription("BBR_M");
                 SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
 
+                AddSkinQuick(WeaponType.Sword, "BBR_M-1_SE", DGKDiscord, "BBR_M-1_SESP", "BBR_M-1_SEFireSP", "BBR_M-1_SELBS", "BBR_M-1_SEFireLBS");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, true);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), true, true);
+                SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.2f, false);
+                SetSkinExclusiveQuick("862796793F71FD07");
+                SetSkinDescription("BBR_M_SE");
+
                 AddSkinQuick(WeaponType.Hammer, "BBR_HM-1", DGKDiscord, "BBR_HM-1Hammer", "BBR_HM-1HammerFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.9f, 0.9f, 0.85f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.9f, 0.9f, 0.85f)), true, false);

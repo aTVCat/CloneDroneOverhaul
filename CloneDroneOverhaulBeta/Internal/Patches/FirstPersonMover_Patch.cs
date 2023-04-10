@@ -11,7 +11,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ExecuteCommand")]
         private static void ExecuteCommand_Prefix(FirstPersonMover __instance, Command command, bool resetState)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
@@ -27,7 +27,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ExecuteCommand")]
         private static void ExecuteCommand_Postfix(FirstPersonMover __instance, Command command, bool resetState)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
@@ -43,7 +43,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("CreateArrowAndDrawBow")]
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
@@ -66,7 +66,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReleaseNockedArrow")]
         private static void ReleaseNockedArrow_Postfix(FirstPersonMover __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch(typeof(FirstPersonMover), "OnEvent", new System.Type[] { typeof(SendFallingEvent) })]
         private static void OnEvent_Postfix(FirstPersonMover __instance, SendFallingEvent fallingEvent)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Start")]
         private static void Start_Postfix(MeleeImpactArea __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

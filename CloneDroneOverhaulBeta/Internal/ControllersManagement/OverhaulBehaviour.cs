@@ -22,7 +22,7 @@ namespace CDOverhaul
 
         public bool IsDisposedOrDestroyed()
         {
-            return IsDestroyed || IsDestroyed || !OverhaulMod.IsCoreCreated;
+            return IsDestroyed || IsDestroyed || !OverhaulMod.IsModInitialized;
         }
 
         public virtual void Awake()

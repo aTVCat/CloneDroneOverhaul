@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("SetPlayer")]
         private static void SetPlayer_Postfix(Character player)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

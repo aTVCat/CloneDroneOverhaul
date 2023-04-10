@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OverridePatternColor")]
         private static void OverridePatternColor_Prefix(CharacterModel __instance, ref Color newColor, bool forceMultiplayerHSBReplacement = false)
         {
-            if (!OverhaulMod.IsCoreCreated || !GameModeManager.IsMultiplayer())
+            if (!OverhaulMod.IsModInitialized || !GameModeManager.IsMultiplayer())
             {
                 return;
             }
@@ -23,7 +23,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnFootDown")]
         private static bool OnFootDown_Prefix(CharacterModel __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return true;
             }

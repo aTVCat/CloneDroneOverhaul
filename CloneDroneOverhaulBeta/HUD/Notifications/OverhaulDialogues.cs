@@ -76,6 +76,19 @@ namespace CDOverhaul
             m_Instance.CreateDialogueInstance(title, description, additionalTime, size, buttons);
         }
 
+        public static void CreateDialogueFromPreset(OverhaulDialoguePresetType presetType)
+        {
+            switch (presetType)
+            {
+                case OverhaulDialoguePresetType.UnsupportedGameVersion:
+                    OverhaulDialogues.Create2BDialogue("Unsupported Clone Drone version!", "Current Overhaul mod version is made for version " + OverhaulVersion.GameTargetVersion + " of the game.\nThis may result bugs and crashes.\nYou may continue using the mod or delete one. It is better to update the mod", 24f, "Ok", null, "Visit site", delegate
+                    {
+                        UnityEngine.Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
+                    }, new Vector2(330, 145));
+                    break;
+            }
+        }
+
         public class Button
         {
             public string Title;

@@ -3,9 +3,6 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
-using CDOverhaul.LevelEditor;
-using CDOverhaul.Localization;
-using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
 using System.IO;
@@ -25,33 +22,9 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
 
         /// <summary>
-        /// The gameplay features controler instance
-        /// </summary>
-        public OverhaulGameplayCoreController GameplayController
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// The UI controller instance
         /// </summary>
-        public OverhaulCanvasController HUDController
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Voxels management controller
-        /// </summary>
-        public VoxelsController VoxelsController
-        {
-            get;
-            private set;
-        }
-
-        public PhotoModeRevampController PhotoModeRevamp
+        public OverhaulCanvasController CanvasController
         {
             get;
             private set;
@@ -97,13 +70,10 @@ namespace CDOverhaul
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulController.InitializeStatic(controllers);
-            LevelEditorObjectsController.Initialize();
 
-            VoxelsController = OverhaulController.AddController<VoxelsController>();
-            HUDController = OverhaulController.AddController<OverhaulCanvasController>();
-            GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            if (!OverhaulVersion.Upd2Hotfix) PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
-            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
+            CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
+            _ = OverhaulController.AddController<VoxelsController>();
+            _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
@@ -123,9 +93,7 @@ namespace CDOverhaul
 
         private void OnDestroy()
         {
-            HUDController = null;
-            GameplayController = null;
-            VoxelsController = null;
+            CanvasController = null;
             OverhaulMod.Core = null;
         }
 
