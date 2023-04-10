@@ -16,6 +16,11 @@ namespace CDOverhaul.Gameplay.Combat
         {
             base.Initialize();
 
+            if (OverhaulVersion.Upd2Hotfix)
+            {
+                return;
+            }
+
             m_AddedWeaponModels.Clear();
             m_AlwaysEquippedWeaponModels.Clear();
 
@@ -24,7 +29,7 @@ namespace CDOverhaul.Gameplay.Combat
             BoomerangWeaponModel boomerang = WeaponsAdder.AddWeaponModel<BoomerangWeaponModel>(AssetsController.GetAsset("P_WM_Boomerang_2", OverhaulAssetsPart.Part2).transform, m_BoomerangModelOffset);
             m_AddedWeaponModels.Add(boomerang);
 
-            if (!OverhaulVersion.JuneDemoEnabled)
+            if (!OverhaulVersion.Upd3JunePreview)
             {
                 return;
             }
@@ -49,13 +54,13 @@ namespace CDOverhaul.Gameplay.Combat
                 "TBA",
                 null, (UpgradeType)6700);
             fire.SkillPointCostDefault = 2;
-           /* UpgradeDescription autoTargeting = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
-                (UpgradeType)6702,
-                1,
-                "Auto-Targeting",
-                "This one will be probably scrapped",
-                null, (UpgradeType)6700);
-            autoTargeting.SkillPointCostDefault = 4;*/
+            /* UpgradeDescription autoTargeting = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
+                 (UpgradeType)6702,
+                 1,
+                 "Auto-Targeting",
+                 "This one will be probably scrapped",
+                 null, (UpgradeType)6700);
+             autoTargeting.SkillPointCostDefault = 4;*/
             UpgradeDescription throwRange1 = UpgradesAdder.AddUpgrade<UpgradeDescription>(OverhaulMod.Base,
                 (UpgradeType)6703,
                 1,
@@ -82,7 +87,7 @@ namespace CDOverhaul.Gameplay.Combat
             WeaponsAdder.AddWeaponModelsToFirstPersonMover(firstPersonMover, m_AddedWeaponModels, false, out List<AddedWeaponModel> models);
             NewWeaponsRobotExpansion exp = firstPersonMover.gameObject.AddComponent<NewWeaponsRobotExpansion>();
             exp.AllCustomWeapons = models;
-            if (OverhaulVersion.JuneDemoEnabled)
+            if (OverhaulVersion.Upd3JunePreview)
             {
                 WeaponsAdder.AddWeaponModelsToFirstPersonMover(firstPersonMover, m_AlwaysEquippedWeaponModels, true, out List<AddedWeaponModel> models1);
                 exp.AllCustomWeapons.AddRange(models1);

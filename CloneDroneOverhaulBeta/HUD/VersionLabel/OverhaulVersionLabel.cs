@@ -5,7 +5,7 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulVersionLabel : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Information.Watermark", true, false, "Hide mod version label during gameplay")]
+        [OverhaulSetting("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
         public static bool WatermarkEnabled;
 
         private bool m_HasInitialized;
@@ -50,8 +50,8 @@ namespace CDOverhaul.HUD
 
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
             m_ExclusiveLabel.gameObject.SetActive(false);
-            _ = OverhaulEventManager.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
-            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            _ = OverhaulEventsController.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
             RefreshVersionLabel(true);
 
             m_HasInitialized = true;
@@ -63,6 +63,10 @@ namespace CDOverhaul.HUD
             m_VersionLabel = null;
             m_TitleScreenUIVersionLabel = null;
             m_ExclusiveLabel = null;
+
+            OverhaulEventsController.RemoveEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, refreshVisibility);
         }
 
         public void RefreshVersionLabel(bool forceRefreshVisibilityNextTime = false)
@@ -107,7 +111,7 @@ namespace CDOverhaul.HUD
 
             if (ExclusiveRolesController.GetExclusivePlayerInfo(ExclusivityController.GetLocalPlayfabID(), out ExclusivePlayerInfo? info))
             {
-                if(info == null)
+                if (info == null)
                 {
                     return;
                 }
@@ -133,7 +137,7 @@ namespace CDOverhaul.HUD
             if (Time.frameCount % 30 == 0)
             {
                 bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
-                if(isOnTitleScreen != m_wasOnTitleScreenBefore)
+                if (isOnTitleScreen != m_wasOnTitleScreenBefore)
                 {
                     RefreshVersionLabel();
                 }

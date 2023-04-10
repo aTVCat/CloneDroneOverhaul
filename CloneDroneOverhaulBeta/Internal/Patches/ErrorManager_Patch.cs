@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -10,12 +10,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (logString.Contains("ReplaceModelWithVariantMatching") || stackTrace.Contains("ReplaceModelWithVariantMatching"))
             {
-                return true;
+                return false;
             }
-            if(type == LogType.Error || type == LogType.Exception) OverhaulDebugController.PrintError(logString + "\n" + stackTrace);
-            return false;
+            return true;
         }
     }
-}
+}*/

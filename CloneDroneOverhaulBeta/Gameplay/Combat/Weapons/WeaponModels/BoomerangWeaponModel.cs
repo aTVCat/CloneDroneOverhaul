@@ -129,7 +129,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void TryAttack()
         {
-            if(m_IsThrown || GetOwner().IsUsingMagBoots())
+            if (m_IsThrown || GetOwner().IsUsingMagBoots())
             {
                 return;
             }
@@ -173,7 +173,7 @@ namespace CDOverhaul.Gameplay.Combat
         public void Throw()
         {
             FirstPersonMover owner = GetOwner();
-            if(owner == null)
+            if (owner == null)
             {
                 return;
             }
@@ -207,7 +207,7 @@ namespace CDOverhaul.Gameplay.Combat
             base.transform.localEulerAngles = ModelOffset.OffsetEulerAngles;
             base.transform.localScale = ModelOffset.OffsetLocalScale;
 
-            if(GetOwner().GetEquippedWeaponType() == base.WeaponType) AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
+            if (GetOwner().GetEquippedWeaponType() == base.WeaponType) AnimationController.PlayCustomAnimaton("WeaponUse_PickUpBoomerang");
 
             m_IsThrown = false;
         }
@@ -230,7 +230,7 @@ namespace CDOverhaul.Gameplay.Combat
 
             if (m_AllowAutoTargeting)
             {
-                if(time >= m_TimeToRefreshTarget)
+                if (time >= m_TimeToRefreshTarget)
                 {
                     m_TimeToRefreshTarget = time + 1f;
                     m_TargetCharacter = CharacterTracker.Instance.GetClosestLivingEnemyCharacter(base.transform.position);
@@ -283,7 +283,7 @@ namespace CDOverhaul.Gameplay.Combat
                 m_HasAlreadyDisabledCollidersThisThrow = true;
 
                 BaseBodyPart part = CacheManager.Instance.GetBaseBodyPart(collision.transform);
-                if(part != null)
+                if (part != null)
                 {
                     _ = part.TryCutVolume(m_BladeCutArena.GetPrivateField<Vector3>("_lastEdgePosition1"), m_BladeCutArena.GetPrivateField<Vector3>("_lastEdgePosition2"),
                         m_BladeCutArena.EdgePoint1.transform.position, m_BladeCutArena.EdgePoint2.transform.position, -1, false, GetOwner(), DamageSourceType.Sword, null, true);
@@ -300,7 +300,7 @@ namespace CDOverhaul.Gameplay.Combat
 
             if (collision.collider.CompareTag("Environment"))
             {
-                if(Time.time >= m_TimeToAllowVFX)
+                if (Time.time >= m_TimeToAllowVFX)
                 {
                     AttackManager.Instance.CreateSwordBlockVFX(base.transform.position);
                     _ = AudioManager.Instance.PlayClipAtTransform(AudioLibrary.Instance.SwordBlocks, base.transform, 0f, false, 1f, GetOwner().WeaponEnvironmentImpactPitch, 0f);

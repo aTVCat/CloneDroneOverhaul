@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        IWeaponSkinItemDefinition[] GetSkinItems(ItemFilter filter);
+        IWeaponSkinItemDefinition[] GetSkinItems(ItemFilter filter, WeaponType type = WeaponType.None);
         /// <summary>
         /// Get all weapon skins that <paramref name="firstPersonMover"/> is allowed to use
         /// </summary>

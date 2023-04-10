@@ -1,11 +1,11 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.Gameplay.Mindspace;
-using System;
+using CDOverhaul.Graphics;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class OverhaulGameplayCoreController : OverhaulController
+    public class OverhaulGameplayCoreController : OverhaulGameplayController
     {
         #region Events
         public const string GamemodeChangedEventString = "GamemodeChanged";
@@ -19,7 +19,7 @@ namespace CDOverhaul.Gameplay
         public const string PlayerSetAsFirstPersonMover = "PlayerSet_FirstPersonMover";
         #endregion
 
-        #region Some variables
+        #region Variables
 
         private GameMode m_GameModeLastTimeCheck;
 
@@ -27,7 +27,6 @@ namespace CDOverhaul.Gameplay
         /// The start index of mod gamemodes
         /// </summary>
         public const int GamemodeStartIndex = 2000;
-
 
         private Camera m_MainCamera;
 
@@ -41,82 +40,43 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public AdditionalAnimationsController AdditionalAnimations
-        {
-            get;
-            private set;
-        }
-
-        public CombatOverhaulController CombatOverhaul
-        {
-            get;
-            private set;
-        }
-
-        public NewWeaponsController NewWeapons
-        {
-            get;
-            private set;
-        }
-
-        public PlayerOutfitController Outfits
-        {
-            get;
-            private set;
-        }
-        public WeaponSkinsController WeaponSkins
-        {
-            get;
-            private set;
-        }
-
-        public GamemodeSubstatesController GamemodeSubstates
-        {
-            get;
-            private set;
-        }
-
-        public AdvancedGarbageController AdvancedGarbageController
-        {
-            get;
-            private set;
-        }
-
-        public MindspaceOverhaulController MindspaceOverhaul
-        {
-            get;
-            private set;
-        }
-
-        public OverhaulCustomGarbageBotsController CustomGarbageBots
-        {
-            get;
-            private set;
-        }
-
         public override void Initialize()
         {
+            base.Initialize();
             Core = this;
 
-            GamemodeSubstates = OverhaulController.AddController<GamemodeSubstatesController>();
-            WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
-            Outfits = OverhaulController.AddController<PlayerOutfitController>();
-            AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
-            CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();
-            NewWeapons = OverhaulController.AddController<NewWeaponsController>();
-            AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
-            MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
-            CustomGarbageBots = OverhaulController.AddController<OverhaulCustomGarbageBotsController>();
-
+            _ = OverhaulController.AddController<WeaponSkinsController>();
+            _ = OverhaulController.AddController<AdditionalAnimationsController>();
+            _ = OverhaulController.AddController<NewWeaponsController>();
+            _ = OverhaulController.AddController<AdvancedGarbageController>();
+            _ = OverhaulController.AddController<MindspaceOverhaulController>();
+            _ = OverhaulController.AddController<Outfits.OutfitsController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             Core = null;
+
             m_MainCamera = null;
             m_CurrentCamera = null;
-            Outfits = null;
+        }
+
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if(!hasInitializedModel || firstPersonMover == null)
+            {
+                return;
+            }
+
+            Camera camera = firstPersonMover.GetPlayerCamera();
+            if(camera == null)
+            {
+                return;
+            }
+
+            camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover, camera);
         }
 
         private void Update()
@@ -127,23 +87,23 @@ namespace CDOverhaul.Gameplay
             }
 
             GameMode currentGamemode = GameFlowManager.Instance.GetCurrentGameMode();
-            if (currentGamemode != m_GameModeLastTimeCheck)
+            if (!currentGamemode.Equals(m_GameModeLastTimeCheck))
             {
                 sendGamemodeWasUpdateEvent();
             }
             m_GameModeLastTimeCheck = currentGamemode;
 
             Camera mainCamera = Camera.main;
-            if (mainCamera != m_MainCamera)
+            if (!Equals(mainCamera, m_MainCamera))
             {
-                OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
+                OverhaulEventsController.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
             }
             m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
-            if (currentCamera != m_CurrentCamera)
+            if (!Equals(currentCamera, m_CurrentCamera))
             {
-                OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
+                OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             }
             m_CurrentCamera = currentCamera;
         }
@@ -158,17 +118,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            OverhaulEventManager.DispatchEvent(GamemodeChangedEventString);
-        }
-
-        public override string[] Commands()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new NotImplementedException();
+            OverhaulEventsController.DispatchEvent(GamemodeChangedEventString);
         }
     }
 }

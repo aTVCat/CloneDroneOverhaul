@@ -20,14 +20,14 @@ namespace CDOverhaul
                 return;
             }
 
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             _hasInitialized = true;
         }
         private static void onLogin()
         {
             _playfabId = GetLocalPlayfabID();
-            OverhaulEventManager.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
-            OverhaulEventManager.DispatchEvent(OnLoginSuccessEventString);
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
+            OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
             ExclusiveRolesController.OnGotPlayfabID(_playfabId);
         }
         private static void scheduledOnLogin()
@@ -38,13 +38,13 @@ namespace CDOverhaul
             }
 
             ExclusiveRolesController.OnGotPlayfabID(_playfabId);
-            OverhaulEventManager.DispatchEvent(OnLoginSuccessEventString);
+            OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
         }
 
         public static string GetLocalPlayfabID()
         {
             string result = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
-            if(result == null)
+            if (result == null)
             {
                 result = string.Empty;
             }

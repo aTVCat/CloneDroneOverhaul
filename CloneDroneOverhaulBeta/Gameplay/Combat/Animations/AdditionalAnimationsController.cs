@@ -20,24 +20,28 @@ namespace CDOverhaul.Gameplay.Combat
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (!hasInitializedModel || firstPersonMover == null)
+            if (OverhaulVersion.Upd2Hotfix || !hasInitializedModel || firstPersonMover == null)
             {
                 return;
             }
 
             CharacterModel model = firstPersonMover.GetCharacterModel();
-            if(model == null)
+            if (model == null)
             {
                 return;
             }
 
+            Animator upperAnimator = model.UpperAnimator;
             Animation animationComponent = null;
             Animation animationComponent2 = null;
-            Animator upperAnimator = model.UpperAnimator;
             bool hasUpperAnimator = upperAnimator != null;
             if (hasUpperAnimator)
             {
-                animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
+                animationComponent = upperAnimator.gameObject.GetComponent<Animation>();
+                if (!animationComponent)
+                {
+                    animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
+                }
                 AnimationClip clip = AssetsController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetsPart.Combat_Update);
                 animationComponent.AddClip(clip, clip.name);
                 AnimationClip clip2 = AssetsController.GetAsset<AnimationClip>("WeaponUse_PrepareBoomerang", OverhaulAssetsPart.Combat_Update);
@@ -54,7 +58,11 @@ namespace CDOverhaul.Gameplay.Combat
             bool hasLegsAnimator = legsAnimator != null;
             if (hasLegsAnimator)
             {
-                animationComponent2 = upperAnimator.gameObject.AddComponent<Animation>();
+                animationComponent2 = upperAnimator.gameObject.GetComponent<Animation>();
+                if (!animationComponent2)
+                {
+                    animationComponent2 = upperAnimator.gameObject.AddComponent<Animation>();
+                }
             }
 
             firstPersonMover.gameObject.AddComponent<CharacterModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);

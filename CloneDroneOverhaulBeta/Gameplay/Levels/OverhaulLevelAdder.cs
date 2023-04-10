@@ -23,7 +23,7 @@ namespace CDOverhaul.Gameplay
             }
 
             guid = Guid.NewGuid().ToString();
-            if(gamemode == GameMode.Story)
+            if (gamemode == GameMode.Story)
             {
                 List<LevelDescription> levels = LevelManager.Instance.GetPrivateField<List<LevelDescription>>("_storyModeLevels");
                 LevelDescription newLevelDescription = new LevelDescription()

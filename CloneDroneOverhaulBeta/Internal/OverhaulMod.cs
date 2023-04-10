@@ -5,7 +5,6 @@ using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -13,7 +12,6 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of the mod. Starts up the mod
     /// </summary>
-    /// Todo: Custom advancements system (or patch vanilla one)
     [MainModClass]
     public class OverhaulMod : Mod
     {
@@ -30,7 +28,7 @@ namespace CDOverhaul
         /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
-        public static bool IsCoreCreated => !IsCoreLoadedIncorrectly && Core != null;
+        public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Core != null;
 
         /// <summary>
         /// The instance of the core
@@ -47,7 +45,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModLoaded()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -61,7 +59,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModEnabled()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -75,7 +73,7 @@ namespace CDOverhaul
         /// </summary>
         protected override void OnModDeactivated()
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }
@@ -91,13 +89,13 @@ namespace CDOverhaul
         /// <returns></returns>
         protected override UnityEngine.Object OnResourcesLoad(string path)
         {
-            if (!IsCoreCreated)
+            if (OverhaulVersion.Upd2Hotfix || !IsModInitialized)
             {
                 return null;
             }
 
             UnityEngine.Object @object = LevelEditorObjectsController.GetObject(path);
-            if(@object == null && OverhaulLevelAdder.HasLevel(path))
+            if (@object == null && OverhaulLevelAdder.HasLevel(path))
             {
                 @object = new TextAsset(OverhaulLevelAdder.GetLevel(ref path));
             }
@@ -111,14 +109,14 @@ namespace CDOverhaul
         /// <param name="firstPersonMover"></param>
         protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }
 
             // An event that is usually called before FPM full initialization
-            OverhaulEventManager.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
-            _ = StaticCoroutineRunner.StartStaticCoroutine(waitFPMToInitialize(firstPersonMover));
+            OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
+            _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitialziationAndDispatchEvent(firstPersonMover));
         }
 
         /// <summary>
@@ -126,7 +124,7 @@ namespace CDOverhaul
         /// </summary>
         internal void TryCreateCore()
         {
-            if (IsCoreCreated)
+            if (IsModInitialized)
             {
                 return;
             }
@@ -140,7 +138,6 @@ namespace CDOverhaul
                 OverhaulExceptions.OnModEarlyCrash(errors);
                 return;
             }
-            ChangeWindowTitle();
         }
 
         /// <summary>
@@ -148,30 +145,14 @@ namespace CDOverhaul
         /// </summary>
         internal void DeconstructCore()
         {
-            if (!IsCoreCreated)
+            if (!IsModInitialized)
             {
                 return;
             }
 
-            OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
+            OverhaulEventsController.DispatchEvent(ModDeactivatedEventString);
             GameObject.Destroy(Core.gameObject);
             Core = null;
-        }
-
-        internal void ChangeWindowTitle()
-        {
-            if (!OverhaulVersion.AllowWindowNameChanging)
-            {
-                return;
-            }
-
-            System.IntPtr windowPtr = FindWindow(null, Application.productName);
-            if (windowPtr.Equals(System.IntPtr.Zero))
-            {
-                return;
-            }
-
-            _ = SetWindowText(windowPtr, "Clone Drone Overhaul");
         }
 
         /// <summary>
@@ -179,13 +160,13 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="firstPersonMover"></param>
         /// <returns></returns>
-        private IEnumerator waitFPMToInitialize(FirstPersonMover firstPersonMover)
+        private IEnumerator waitForRobotInitialziationAndDispatchEvent(FirstPersonMover firstPersonMover)
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.15f);
-            if (firstPersonMover != null)
+            if (firstPersonMover != null && firstPersonMover.HasCharacterModel())
             {
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+                OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
             }
         }
 
@@ -197,7 +178,7 @@ namespace CDOverhaul
                 return false;
             }
 
-            foreach(ModInfo info in infos)
+            foreach (ModInfo info in infos)
             {
                 if (info.UniqueID.Equals(modID))
                 {
@@ -206,10 +187,5 @@ namespace CDOverhaul
             }
             return false;
         }
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowText")]
-        public static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
-        [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        public static extern System.IntPtr FindWindow(string className, string windowName);
     }
 }

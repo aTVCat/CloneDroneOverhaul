@@ -473,14 +473,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
 
         if (m_temporalAccumRT == null && FilterEnabled)
         {
-            if (AmplifyOcclusionCommon.IsStereoMultiPassEnabled(m_targetCamera) == true)
-            {
-                m_temporalAccumRT = new RenderTexture[4];
-            }
-            else
-            {
-                m_temporalAccumRT = new RenderTexture[2];
-            }
+            m_temporalAccumRT = AmplifyOcclusionCommon.IsStereoMultiPassEnabled(m_targetCamera) == true ? (new RenderTexture[4]) : (new RenderTexture[2]);
 
             for (int i = 0; i < m_temporalAccumRT.Length; i++)
             {

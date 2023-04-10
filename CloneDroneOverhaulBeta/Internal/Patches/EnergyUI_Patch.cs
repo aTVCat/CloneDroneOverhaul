@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Show")]
         private static void Show_Postfix()
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

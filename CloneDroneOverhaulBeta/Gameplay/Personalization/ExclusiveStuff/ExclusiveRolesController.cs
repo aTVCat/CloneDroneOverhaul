@@ -15,7 +15,7 @@ namespace CDOverhaul
 
         public static void TryApplyExclusivityOnRobot(FirstPersonMover mover, Color curColor, out Color color)
         {
-            if(mover == null)
+            if (mover == null)
             {
                 color = curColor;
                 return;
@@ -30,9 +30,9 @@ namespace CDOverhaul
                 return;
             }
 
-            foreach(HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
+            foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
             {
-                if(favColor.ColorValue == curColor)
+                if (favColor.ColorValue.Equals(curColor))
                 {
                     ExclusivePlayerInfo info = _players[playfabID];
                     color = info.FavColor;
@@ -44,14 +44,14 @@ namespace CDOverhaul
 
         public static void OnGotPlayfabID(string playfabID)
         {
-            HasExclusiveAccess = false; 
+            HasExclusiveAccess = false;
             if (string.IsNullOrWhiteSpace(playfabID))
             {
                 return;
             }
-            if(GetExclusivePlayerInfo(playfabID, out ExclusivePlayerInfo? info))
+            if (GetExclusivePlayerInfo(playfabID, out ExclusivePlayerInfo? info))
             {
-                if(info == null)
+                if (info == null)
                 {
                     return;
                 }

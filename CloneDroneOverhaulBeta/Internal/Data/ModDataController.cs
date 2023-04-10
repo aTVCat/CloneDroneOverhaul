@@ -28,7 +28,9 @@ namespace CDOverhaul
             if (useModFolder)
             {
                 string str = JsonConvert.SerializeObject(dataContainer, DataRepository.Instance.GetSettings());
-                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json", str);
+                StreamWriter wr = File.CreateText(OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json");
+                wr.Write(str);
+                wr.Close();
                 return;
             }
 
@@ -51,29 +53,22 @@ namespace CDOverhaul
             {
                 string path = OverhaulMod.Core.ModDirectory + "Assets/" + modFolder + "/" + fileName + ".json";
 
-                T result;
-                if (File.Exists(path))
-                {
-                    result = JsonConvert.DeserializeObject<T>(File.ReadAllText(path), DataRepository.Instance.GetSettings());
-                }
-                else
-                {
-                    result = Activator.CreateInstance<T>();
-                }
-
+                T result = File.Exists(path)
+                    ? JsonConvert.DeserializeObject<T>(File.ReadAllText(path), DataRepository.Instance.GetSettings())
+                    : Activator.CreateInstance<T>();
                 SetUpContainer(result, fileName, path);
                 return result;
             }
 
             _ = DataRepository.Instance.TryLoad(OverhaulDataDirectoryName + fileName + ".json", out T data, false);
-            if(data == null) data = Activator.CreateInstance<T>();
+            if (data == null) data = Activator.CreateInstance<T>();
             SetUpContainer(data, fileName, DataRepository.Instance.GetFullPath(fileName, false));
             return data;
         }
 
         internal static void SetUpContainer(in OverhaulDataBase container, in string fileName, in string savePath)
         {
-            if(container == null)
+            if (container == null)
             {
                 return;
             }

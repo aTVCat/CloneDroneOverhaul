@@ -35,7 +35,7 @@ namespace CDOverhaul.HUD.Overlays
 
         private void Update()
         {
-            if(Time.frameCount % 10 == 0)
+            if (Time.frameCount % 10 == 0)
             {
                 m_IsInCutscene = ShouldActivateOverlay();
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Localization;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,8 +52,10 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
             _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
+            _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(5)).IsOutfitSelection = true;
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
             _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -94,17 +97,17 @@ namespace CDOverhaul.HUD
         public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
         {
             List<T> list = new List<T>();
-            if(targetTransform == null || targetTransform.childCount == 0)
+            if (targetTransform == null || targetTransform.childCount == 0)
             {
                 return list;
             }
 
-            for(int i = 0; i < targetTransform.childCount; i++)
+            for (int i = 0; i < targetTransform.childCount; i++)
             {
                 Transform t = targetTransform.GetChild(i);
                 T component = t.GetComponent<T>();
                 ModdedObject m = t.GetComponent<ModdedObject>();
-                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Equals(targetModdedObjectId))
+                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Contains(targetModdedObjectId))
                 {
                     list.Add(component);
                 }
@@ -128,7 +131,7 @@ namespace CDOverhaul.HUD
         /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
         /// </summary>
         /// <param name="value"></param>
-        public void SetCanvasPixelPerfect(in bool value)
+        public static void SetCanvasPixelPerfect(in bool value)
         {
             GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
         }

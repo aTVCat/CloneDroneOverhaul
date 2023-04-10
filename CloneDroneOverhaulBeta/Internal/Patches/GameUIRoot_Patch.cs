@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("RefreshCursorEnabled")]
         private static void RefreshCursorEnabled_Postfix()
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

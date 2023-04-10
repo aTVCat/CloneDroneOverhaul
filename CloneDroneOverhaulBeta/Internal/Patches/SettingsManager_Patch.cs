@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Graphics;
+using HarmonyLib;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -20,6 +21,26 @@ namespace CDOverhaul.Patches
             int orig = index;
             index = Mathf.Clamp(index, 0, HumanFactsManager.Instance.FavouriteColors.Length - 1);
             SettingInfo.SavePref(SettingsController.GetSetting("Player.VanillaAdditions.FavColorOffset", true), orig - index);
+        }
+
+
+        [HarmonyPrefix]
+        [HarmonyPatch("SetVsyncOn")]
+        private static void SetVsyncOn_Prefix(bool value)
+        {
+            if (OverhaulGraphicsController.DisallowChangeFPSLimit)
+            {
+                return;
+            }
+
+            if (value)
+            {
+                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 2, false);
+            }
+            else
+            {
+                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 0, false);
+            }
         }
     }
 }

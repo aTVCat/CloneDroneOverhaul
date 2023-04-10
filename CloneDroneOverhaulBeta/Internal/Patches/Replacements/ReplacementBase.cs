@@ -27,12 +27,6 @@ namespace CDOverhaul.Patches
         /// </summary>
         public virtual void Replace()
         {
-            if (!_hasAddedListeners)
-            {
-                _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
-                _hasAddedListeners = true;
-            }
-
             HasReplaced = true;
         }
 
@@ -41,8 +35,6 @@ namespace CDOverhaul.Patches
         /// </summary>
         public virtual void Cancel()
         {
-            OverhaulEventManager.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
-            _ = Replacements.Remove(this);
             HasReplaced = false;
         }
 
@@ -79,6 +71,27 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<ArenaRevampActivator>();
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
+        }
+
+        internal static void CancelEverything()
+        {
+            if (Replacements.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (ReplacementBase b in Replacements)
+                {
+                    b.Cancel();
+                }
+                Replacements.Clear();
+            }
+            catch
+            {
+
+            }
         }
     }
 }

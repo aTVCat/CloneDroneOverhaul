@@ -6,11 +6,6 @@ namespace CDOverhaul.HUD.Overlays
     {
         public override void Initialize()
         {
-            if (!OverhaulVersion.TechDemo2Enabled)
-            {
-                return;
-            }
-
             _ = MyModdedObject.GetObject<Transform>(0).gameObject.AddComponent<WideScreenOverlay>();
             MyModdedObject.GetObject<Transform>(0).gameObject.SetActive(true);
 

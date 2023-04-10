@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
+    [Obsolete("The modded objects system is going to be reworked")]
     public static class LevelEditorObjectsController
     {
         public const string ObjectPathPrefix = "Prefabs/LevelObjects/OverhaulMod";
@@ -15,6 +17,11 @@ namespace CDOverhaul.LevelEditor
 
         internal static void Initialize()
         {
+            if (OverhaulVersion.Upd2Hotfix)
+            {
+                return;
+            }
+
             if (!_hasAddedAssets)
             {
                 GameObject obj1 = AssetsController.GetAsset("TextBlock", OverhaulAssetsPart.Objects);
@@ -50,7 +57,7 @@ namespace CDOverhaul.LevelEditor
                 GameObject obj8 = AssetsController.GetAsset("GarbageDropPoint", OverhaulAssetsPart.Objects);
                 _ = obj8.AddComponent<LevelEditorGarbageDropPoint>();
                 AddObject(obj8.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageDropPoint");
-                
+
                 GameObject obj9 = AssetsController.GetAsset("GarbageCustomForcefield", OverhaulAssetsPart.Objects);
                 _ = obj9.AddComponent<LevelEditorGarbageCustomForcefield>();
                 AddObject(obj9.transform, AssetsController.GetAsset<Texture2D>("HologrammIco16x16", OverhaulAssetsPart.Objects), "GarbageCustomForcefield");
@@ -63,7 +70,7 @@ namespace CDOverhaul.LevelEditor
                 _hasAddedAssets = true;
             }
 
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
         }
 
         internal static void UpdateLevelEditor()
@@ -118,11 +125,7 @@ namespace CDOverhaul.LevelEditor
         /// <returns></returns>
         public static UnityEngine.Object GetObject(in string path)
         {
-            if (_objects.ContainsKey(path))
-            {
-                return _objects[path];
-            }
-            return null;
+            return _objects.ContainsKey(path) ? _objects[path] : null;
         }
     }
 }

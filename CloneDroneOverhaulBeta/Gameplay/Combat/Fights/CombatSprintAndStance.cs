@@ -55,11 +55,11 @@ namespace CDOverhaul.Gameplay.Combat
             }
             if(m_MovementState == false)
             {
-                if (OverhaulVersion.JuneDemoEnabled)
+                if (OverhaulVersion.Upd3JunePreview)
                 {
-                    if (FirstPersonMover.IsOnGroundServer() && command.Input.SecondAttackDown)
+                    if (Owner.IsOnGroundServer() && command.Input.SecondAttackDown)
                     {
-                        FirstPersonMover.AddVelocity(FirstPersonMover.transform.right * (30 * command.Input.HorizontalMovement));
+                        Owner.AddVelocity(Owner.transform.right * (30 * command.Input.HorizontalMovement));
                     }
                 }
                 command.Input.SecondAttackDown = false;
@@ -118,7 +118,7 @@ namespace CDOverhaul.Gameplay.Combat
                 SetCanSprint(true);
             }
 
-            SetRobotSpeed(GetSpeed(true), true, FirstPersonMover.IsKicking() || FirstPersonMover.HasFallenDown() || FirstPersonMover.IsGettingUpFromKick());
+            SetRobotSpeed(GetSpeed(true), true, Owner.IsKicking() || Owner.HasFallenDown() || Owner.IsGettingUpFromKick());
 
             m_PressedCtrlThisFrame = false;
             m_PressedShiftThisFrame = false;

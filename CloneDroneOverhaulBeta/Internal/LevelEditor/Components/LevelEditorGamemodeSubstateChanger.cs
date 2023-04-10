@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
@@ -20,12 +19,13 @@ namespace CDOverhaul.LevelEditor
         [CallFromAnimation]
         public void SetGamemodeSubstate()
         {
+            /*
             OverhaulGameplayCoreController.Core.GamemodeSubstates.GamemodeSubstate = (GamemodeSubstate)Index;
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null)
             {
                 mover.transform.localRotation = base.transform.localRotation;
-            }
+            }*/
         }
     }
 }

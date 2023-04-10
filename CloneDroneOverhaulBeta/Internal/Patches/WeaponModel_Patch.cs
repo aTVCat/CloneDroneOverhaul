@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Gameplay.Multiplayer;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
@@ -11,28 +12,38 @@ namespace CDOverhaul.Patches
         [HarmonyPrefix]
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
-        {            
-            if (!OverhaulMod.IsCoreCreated)
+        {
+            if (!OverhaulMod.IsModInitialized)
             {
                 return true;
             }
 
-            if(isMultiplayer && __instance.WeaponType.Equals(WeaponType.Spear) && __instance.MeleeImpactArea != null)
+            if (__instance.MeleeImpactArea == null)
             {
-                FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
-                if(owner != null)
+                return true;
+            }
+
+            FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
+            if (owner == null)
+            {
+                return true;
+            }
+
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner))
+            {
+                return true;
+            }
+
+            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
+            if (info != null || !GameModeManager.IsMultiplayer())
+            {
+                Hashtable t = GameModeManager.IsMultiplayer() ? info.GetHashtable() : OverhaulModdedPlayerInfo.GenerateNewHashtable();
+                if (t != null && t.Contains("Skin." + __instance.WeaponType) && !Equals(t["Skin." + __instance.WeaponType], "Default") && ((!owner.IsPlayer() && WeaponSkinsController.AllowEnemiesWearSkins) || owner.IsPlayer()))
                 {
-                    OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
-                    if(info != null)
-                    {
-                        Hashtable t = info.GetHashtable();
-                        if(t != null && t.Contains("Skin.Spear") && !t["Skin.Spear"].Equals("Default"))
-                        {
-                            return false;
-                        }
-                    }
+                    return false;
                 }
             }
+
             return true;
         }
     }

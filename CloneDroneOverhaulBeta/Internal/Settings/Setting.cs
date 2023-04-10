@@ -23,7 +23,18 @@ namespace CDOverhaul
 
         public SettingType Type { get; set; }
 
-        public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath) || string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(Section) || string.IsNullOrEmpty(Name);
+        public SettingInfo CanBeLockedBy { get; set; }
+        public object ValueToUnlock { get; set; }
+        public bool IsUnlocked()
+        {
+            return CanBeLockedBy == null || object.Equals(CanBeLockedBy.Field.GetValue(null), ValueToUnlock);
+        }
+
+        public bool ForceInputField { get; set; }
+
+        public SettingEventDispatcher EventDispatcher { get; set; }
+
+        public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath);
 
         internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
         {
@@ -55,6 +66,12 @@ namespace CDOverhaul
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
+
+            if (Type == SettingType.Other)
+            {
+                return;
+            }
+
             object obj = GetPref<object>(this);
             try
             {
@@ -74,44 +91,24 @@ namespace CDOverhaul
 
         public static SettingType GetSettingType<T>()
         {
-            if (typeof(T) == typeof(bool))
-            {
-                return SettingType.Bool;
-            }
-            if (typeof(T) == typeof(int))
-            {
-                return SettingType.Int;
-            }
-            if (typeof(T) == typeof(float))
-            {
-                return SettingType.Float;
-            }
-            if (typeof(T) == typeof(string))
-            {
-                return SettingType.String;
-            }
-            return SettingType.None;
+            return typeof(T) == typeof(bool)
+                ? SettingType.Bool
+                : typeof(T) == typeof(int)
+                ? SettingType.Int
+                : typeof(T) == typeof(float)
+                ? SettingType.Float
+                : typeof(T) == typeof(string) ? SettingType.String : typeof(T) == typeof(long) ? SettingType.Other : SettingType.None;
         }
 
         public static SettingType GetSettingType(in object @object)
         {
-            if (@object is bool)
-            {
-                return SettingType.Bool;
-            }
-            if (@object is int)
-            {
-                return SettingType.Int;
-            }
-            if (@object is float)
-            {
-                return SettingType.Float;
-            }
-            if (@object is string)
-            {
-                return SettingType.String;
-            }
-            return SettingType.None;
+            return @object is bool
+                ? SettingType.Bool
+                : @object is int
+                ? SettingType.Int
+                : @object is float
+                ? SettingType.Float
+                : @object is string ? SettingType.String : @object is long ? SettingType.Other : SettingType.None;
         }
 
         public static void TryAddPref(in SettingInfo setting)
@@ -137,11 +134,16 @@ namespace CDOverhaul
             return PlayerPrefs.HasKey(setting.RawPath);
         }
 
-        public static void SavePref(in SettingInfo setting, in object value)
+        public static void SavePref(in SettingInfo setting, in object value, in bool dispatchEvent = true)
         {
             if (setting == null || setting.Error)
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+            }
+
+            if (setting.Type == SettingType.Other)
+            {
+                return;
             }
 
             switch (setting.Type)
@@ -171,7 +173,7 @@ namespace CDOverhaul
                     break;
             }
 
-            DispatchSettingsRefreshedEvent();
+            if(dispatchEvent) DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();
         }
@@ -181,6 +183,11 @@ namespace CDOverhaul
             if (setting == null || setting.Error)
             {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+            }
+
+            if (setting.Type == SettingType.Other)
+            {
+                return default;
             }
 
             object result = null;
@@ -207,7 +214,7 @@ namespace CDOverhaul
 
         public static void DispatchSettingsRefreshedEvent()
         {
-            OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
+            OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
         }
     }
 }

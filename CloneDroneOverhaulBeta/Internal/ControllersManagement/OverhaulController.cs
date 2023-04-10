@@ -9,11 +9,10 @@ namespace CDOverhaul
     /// </summary>
     public abstract class OverhaulController : OverhaulBehaviour, IConsoleCommandReceiver
     {
-        private bool m_HadBadStart;
         /// <summary>
         /// Check if an exception occured while initializng the controller.
         /// </summary>
-        public bool HadBadStart => m_HadBadStart;
+        public bool HadBadStart { get; private set; }
 
         /// <summary>
         /// Called at the same time when controller is created.
@@ -45,15 +44,15 @@ namespace CDOverhaul
 
         internal void InitializeInternal()
         {
-            _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+            _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
             try
             {
                 Initialize();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Debug.LogError("Caught error while initializing Overhaul ModController [" + GetType() + "]: " + exc);
-                m_HadBadStart = true;
+                HadBadStart = true;
                 base.enabled = false;
             }
         }
@@ -61,7 +60,7 @@ namespace CDOverhaul
         #region Static
 
         private static GameObject m_ControllersGameObject;
-        private static readonly Dictionary<Type, OverhaulController> m_ControllersDictionary = new Dictionary<Type, OverhaulController>();
+        private static readonly List<OverhaulController> m_ControllersList = new List<OverhaulController>();
 
         /// <summary>
         /// Initialize static fields
@@ -70,7 +69,7 @@ namespace CDOverhaul
         internal static void InitializeStatic(in GameObject controllersGO)
         {
             m_ControllersGameObject = controllersGO;
-            m_ControllersDictionary.Clear();
+            m_ControllersList.Clear();
         }
 
         /// <summary>
@@ -81,10 +80,10 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
         {
-            Transform transform = transformOverride != null ? transformOverride : m_ControllersGameObject.transform;
+            Transform transform = transformOverride ?? m_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
             component.InitializeInternal();
-            m_ControllersDictionary.Add(typeof(T), component);
+            m_ControllersList.Add(component);
             return component;
         }
 
@@ -95,16 +94,14 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T GetController<T>() where T : OverhaulController
         {
-            if (!m_ControllersDictionary.ContainsKey(typeof(T)))
+            foreach (OverhaulController controllerr in m_ControllersList)
             {
-                throw new NullReferenceException("Controller with type " + typeof(T) + " does not exist");
+                if (controllerr.GetType() == typeof(T))
+                {
+                    return controllerr.HadBadStart ? throw new Exception("Using incorrectly started controller is not allowed") : (T)controllerr;
+                }
             }
-            OverhaulController controller = m_ControllersDictionary[typeof(T)];
-            if (controller.HadBadStart)
-            {
-                throw new Exception("Using incorrectly started controller is not allowed");
-            }
-            return (T)controller;
+            return null;
         }
 
         /// <summary>
@@ -114,11 +111,11 @@ namespace CDOverhaul
         /// <exception cref="ArgumentNullException"></exception>
         internal static void RemoveController(OverhaulController controllerInstance)
         {
-            if(controllerInstance == null)
+            if (controllerInstance == null)
             {
                 throw new ArgumentNullException("Cannot remove controller instance because it is null.");
             }
-            _ = m_ControllersDictionary.Remove(controllerInstance.GetType());
+            _ = m_ControllersList.Remove(controllerInstance);
         }
 
         #endregion;

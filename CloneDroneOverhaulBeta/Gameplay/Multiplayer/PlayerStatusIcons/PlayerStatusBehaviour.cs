@@ -24,20 +24,20 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(FirstPersonMover);
+            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
             if (m_Info != null && m_Info.Equals(OverhaulModdedPlayerInfo.GetLocalPlayerInfo()))
             {
                 m_LocalBehaviour = this;
             }
 
-            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             CreateCanvas();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             m_Info = null;
             m_WorldCanvas = null;
             m_WorldCanvasHolder = null;
@@ -62,10 +62,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 return;
             }
-            if(m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(FirstPersonMover);
+            if (m_Info == null) m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
 
             int intValue = (int)type;
-            if(m_Info != null && m_Info.HasReceivedData)
+            if (m_Info != null && m_Info.HasReceivedData)
             {
                 TargetStatus = intValue;
                 m_Info.RefreshData();
@@ -83,7 +83,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 m_WorldCanvas.DestroyGameObject();
             }
-            if(m_WorldCanvasHolder != null)
+            if (m_WorldCanvasHolder != null)
             {
                 Destroy(m_WorldCanvasHolder);
             }
@@ -111,12 +111,12 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            if(table == null || FirstPersonMover == null)
+            if (table == null || Owner == null)
             {
                 return;
             }
 
-            string playFabID = FirstPersonMover.GetPlayFabID();
+            string playFabID = Owner.GetPlayFabID();
             if (string.IsNullOrEmpty(playFabID) || !playFabID.Equals(table["ID"]))
             {
                 return;
@@ -124,7 +124,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             int status = 0;
             if (!IsOwnerMainPlayer() && table.Contains("State.Status"))
-            {                
+            {
                 try
                 {
                     status = (int)(long)table["State.Status"];
@@ -159,7 +159,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static void SetOwnStatus(PlayerStatusType type)
         {
-            if(m_LocalBehaviour == null)
+            if (m_LocalBehaviour == null)
             {
                 return;
             }
@@ -168,11 +168,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static int GetOwnStatus()
         {
-            if (m_LocalBehaviour == null)
-            {
-                return -1;
-            }
-            return m_LocalBehaviour.TargetStatus;
+            return m_LocalBehaviour == null ? -1 : m_LocalBehaviour.TargetStatus;
         }
     }
 }

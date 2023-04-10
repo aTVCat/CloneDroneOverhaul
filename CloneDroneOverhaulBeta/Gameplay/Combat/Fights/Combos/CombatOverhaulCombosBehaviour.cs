@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay.Combat.Fights
                     i++;
                     continue;
                 }
-                if (combo.TryTrigger(base.FirstPersonMover, command)) break;
+                if (combo.TryTrigger(base.Owner, command)) break;
                 i++;
 
             } while (i < m_Combos.Count);

@@ -28,11 +28,7 @@ namespace CDOverhaul
         {
             StackFrame frame = new StackFrame(1);
             string str = frame.GetMethod().DeclaringType.ToString() + "." + key;
-            if (!m_Dictionary.ContainsKey(str))
-            {
-                return default;
-            }
-            return (T)m_Dictionary[str];
+            return !m_Dictionary.ContainsKey(str) ? default : (T)m_Dictionary[str];
         }
     }
 }

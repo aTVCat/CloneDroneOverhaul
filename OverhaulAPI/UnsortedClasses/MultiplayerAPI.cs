@@ -103,10 +103,7 @@ namespace OverhaulAPI
 
         internal static void ThrowError(Action<string> action, string str)
         {
-            if (action != null)
-            {
-                action(str);
-            }
+            action?.Invoke(str);
         }
     }
 }

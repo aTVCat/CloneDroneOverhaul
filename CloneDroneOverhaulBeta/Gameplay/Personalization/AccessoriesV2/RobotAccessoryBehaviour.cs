@@ -65,7 +65,7 @@ namespace CDOverhaul.Gameplay
 
                 if(m_Owner != null)
                 {
-                    RobotOutfitWearerExpansion exp = m_Owner.GetComponent<RobotOutfitWearerExpansion>();
+                    RobotOutfitWearer exp = m_Owner.GetComponent<RobotOutfitWearer>();
                     if(exp != null)
                     {
                         exp.RemoveAccessory(m_Item);

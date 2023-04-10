@@ -1,5 +1,7 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.HUD;
 using ModLibrary;
+using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace CDOverhaul.Gameplay
 {
     public class WeaponSkinsWearer : OverhaulCharacterExpansion
     {
+        public const bool AllowSwitchSkinVFX = false;
+
         public readonly Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo> WeaponSkins = new Dictionary<IWeaponSkinItemDefinition, WeaponSkinSpawnInfo>();
         private bool m_WaitingToSpawnSkins;
 
@@ -17,25 +21,27 @@ namespace CDOverhaul.Gameplay
         public bool IsMultiplayerControlled { get; private set; }
         private bool m_HasAddedListeners;
 
+        private WeaponSkinsController m_Controller;
+
         public override void Start()
         {
             base.Start();
             SpawnSkins();
-
+            m_Controller = OverhaulController.GetController<WeaponSkinsController>();
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if(FirstPersonMover != null && MultiplayerPlayerInfoManager.Instance != null)
+                if (Owner != null && MultiplayerPlayerInfoManager.Instance != null)
                 {
-                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(FirstPersonMover.GetPlayFabID());
+                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(Owner.GetPlayFabID());
                     if (pInfo != null)
                     {
                         m_Info = pInfo.GetComponent<OverhaulModdedPlayerInfo>();
-                        if(m_Info != null)
+                        if (m_Info != null)
                         {
                             onGetData(m_Info.GetHashtable());
 
                             m_HasAddedListeners = true;
-                            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+                            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
                         }
                     }
                 }
@@ -50,7 +56,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         protected override void OnRefresh()
@@ -58,10 +64,32 @@ namespace CDOverhaul.Gameplay
             SpawnSkins();
         }
 
+        protected override void OnDeath()
+        {
+            WeaponSkinBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
+            if (b == null)
+            {
+                return;
+            }
+
+            b.OnDeath();
+        }
+
         private void onGetData(Hashtable hash)
         {
             IsMultiplayerControlled = true;
             OnRefresh();
+        }
+
+        public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinBehaviour
+        {
+            if (Owner == null)
+            {
+                return null;
+            }
+
+            WeaponModel m = Owner.GetEquippedWeaponModel();
+            return m == null ? null : (T)m.GetComponentInChildren<WeaponSkinBehaviour>();
         }
 
         public void SpawnSkins()
@@ -92,17 +120,21 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
-            if (!WeaponSkinsController.IsFirstPersonMoverSupported(FirstPersonMover))
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
             {
                 return;
             }
 
             SetDefaultModelsActive();
+            if (!OverhaulGamemodeManager.SupportsPersonalization())
+            {
+                return;
+            }
             if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
             {
                 return;
             }
-            if(GameModeManager.IsMultiplayer() && (m_Info == null || !m_Info.HasReceivedData || m_Info.GetData("ID").Equals(string.Empty)))
+            if (GameModeManager.IsMultiplayer() && (m_Info == null || !m_Info.HasReceivedData || m_Info.GetData("ID").Equals(string.Empty)))
             {
                 return;
             }
@@ -119,7 +151,7 @@ namespace CDOverhaul.Gameplay
             }
             else
             {
-                skins = controller.Interface.GetSkinItems(FirstPersonMover);
+                skins = controller.Interface.GetSkinItems(Owner);
             }
             if (skins == null)
             {
@@ -128,9 +160,9 @@ namespace CDOverhaul.Gameplay
 
             if (!WeaponSkins.Values.IsNullOrEmpty())
             {
-                foreach(WeaponSkinSpawnInfo info in WeaponSkins.Values)
+                foreach (WeaponSkinSpawnInfo info in WeaponSkins.Values)
                 {
-                    if(info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
+                    if (info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
                     {
                         continue;
                     }
@@ -152,22 +184,34 @@ namespace CDOverhaul.Gameplay
             {
                 SpawnSkin(skin);
             }
+
+            if (AllowSwitchSkinVFX && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
+            {
+                WeaponSkinsController.RobotToPlayAnimationOn = null;
+                WeaponModel model = Owner.GetEquippedWeaponModel();
+                if (model == null)
+                {
+                    return;
+                }
+
+                PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
+            }
         }
 
         public void SetDefaultModelsActive(Transform transformToRemove = null)
         {
-            if (!FirstPersonMover.HasCharacterModel())
+            if (!Owner.HasCharacterModel())
             {
                 return;
             }
-            CharacterModel model = FirstPersonMover.GetCharacterModel();
+            CharacterModel model = Owner.GetCharacterModel();
 
             WeaponModel weaponModel1 = model.GetWeaponModel(WeaponType.Sword);
             if (weaponModel1 != null)
             {
-                if(transformToRemove != null)
+                if (transformToRemove != null)
                 {
-                    if(weaponModel1.PartsToDrop != null)
+                    if (weaponModel1.PartsToDrop != null)
                     {
                         List<Transform> t1 = weaponModel1.PartsToDrop.ToList();
                         _ = t1.Remove(transformToRemove);
@@ -234,12 +278,12 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)
         {
-            if (item == null || FirstPersonMover == null || !FirstPersonMover.HasCharacterModel())
+            if (item == null || Owner == null || !Owner.HasCharacterModel())
             {
                 return;
             }
-            WeaponModel weaponModel = FirstPersonMover.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
-            if(weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
+            WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
+            if (weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
             {
                 return;
             }
@@ -252,8 +296,8 @@ namespace CDOverhaul.Gameplay
             bool fire = IsFireVariant(weaponModel) && item.GetWeaponType() != WeaponType.Bow;
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
-            
-            WeaponSkinModel newModel = item.GetModel(fire, multiplayer);            
+
+            WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
             if (newModel != null)
             {
                 Transform spawnedModel = Instantiate(newModel.Model, weaponModel.transform).transform;
@@ -261,19 +305,22 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
-                if((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
+                if ((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
                 {
                     Color? forcedColor = null;
-                    if(fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
+                    if (fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
                     {
-                        forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor).ColorValue;
+                        int indexOfFireColor = (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor;
+                        forcedColor = indexOfFireColor == 5
+                            ? new Color(2.65f, 1.45f, 0.4f, 1f)
+                            : HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
                     }
-                    else if(!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
+                    else if (!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
                     {
                         forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor).ColorValue;
                     }
 
-                    SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor);
+                    SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor, (item as WeaponSkinItemDefinitionV2).Multiplier);
                 }
                 WeaponSkinSpawnInfo newInfo = new WeaponSkinSpawnInfo
                 {
@@ -290,12 +337,12 @@ namespace CDOverhaul.Gameplay
                 t1.Add(spawnedModel);
                 weaponModel.PartsToDrop = t1.ToArray();
 
-                if(weaponModel.WeaponType == WeaponType.Bow)
+                if (weaponModel.WeaponType == WeaponType.Bow)
                 {
                     ModdedObject m = spawnedModel.GetComponent<ModdedObject>();
                     Transform bowStringUpper = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringUpper");
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
-                    if(bowStringLower != null && bowStringUpper != null)
+                    if (bowStringLower != null && bowStringUpper != null)
                     {
                         bowStringLower.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
@@ -324,7 +371,7 @@ namespace CDOverhaul.Gameplay
 
         public void SetDefaultModelsVisible(bool value, WeaponModel model)
         {
-            if(model == null)
+            if (model == null)
             {
                 return;
             }
@@ -334,13 +381,25 @@ namespace CDOverhaul.Gameplay
             {
                 foreach (Transform part in partsToDropArray)
                 {
-                    if(part != null)
-                    part.gameObject.SetActive(value);
+                    if (part != null)
+                    {
+                        part.gameObject.SetActive(value);
+
+                        ReplaceVoxelColor[] cols = part.GetComponents<ReplaceVoxelColor>();
+                        if (!cols.IsNullOrEmpty())
+                        {
+                            foreach(ReplaceVoxelColor col in cols)
+                            {
+                                col.ReplaceColorOnStart = true;
+                                col.CallPrivateMethod("Start");
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        public void SetModelColor(GameObject model, bool fire, float saturation, Color? forceColor = null)
+        public void SetModelColor(GameObject model, bool fire, float saturation, Color? forceColor = null, float multiplier = 1f)
         {
             Renderer renderer = model.GetComponent<Renderer>();
             if (renderer == null || renderer.material == null)
@@ -349,22 +408,13 @@ namespace CDOverhaul.Gameplay
             }
             Material material = renderer.material;
 
-            Color? color;
-            if (forceColor == null)
-            {
-                color = FirstPersonMover.GetCharacterModel().GetFavouriteColor();
-            }
-            else
-            {
-                color = forceColor;
-            }
-
+            Color? color = forceColor == null ? Owner.GetCharacterModel().GetFavouriteColor() : forceColor;
             HSBColor hsbcolor2 = new HSBColor(color.Value)
             {
                 b = 1f,
                 s = saturation
             };
-            material.SetColor("_EmissionColor", hsbcolor2.ToColor() * 2.5f);
+            material.SetColor("_EmissionColor", hsbcolor2.ToColor() * (2.5f * multiplier));
 
             if (model.GetComponent<WeaponSkinFireAnimator>())
             {
@@ -374,23 +424,23 @@ namespace CDOverhaul.Gameplay
 
         public bool IsFireVariant(WeaponModel model)
         {
-            if(model.WeaponType == WeaponType.Sword)
+            if (model.WeaponType == WeaponType.Sword)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireSword))
+                if (Owner.HasUpgrade(UpgradeType.FireSword))
                 {
                     return true;
                 }
             }
             else if (model.WeaponType == WeaponType.Hammer)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireHammer))
+                if (Owner.HasUpgrade(UpgradeType.FireHammer))
                 {
                     return true;
                 }
             }
             else if (model.WeaponType == WeaponType.Spear)
             {
-                if (FirstPersonMover.HasUpgrade(UpgradeType.FireSpear))
+                if (Owner.HasUpgrade(UpgradeType.FireSpear))
                 {
                     return true;
                 }
@@ -398,5 +448,104 @@ namespace CDOverhaul.Gameplay
             return false;
         }
 
+#if DEBUG
+
+        private void Update()
+        {
+            if (!IsOwnerMainPlayer())
+            {
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftAlt))
+            {
+                Transform model = getTransform();
+                if (model == null)
+                {
+                    return;
+                }
+                copyVector(model.localPosition);
+            }
+            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.LeftAlt))
+            {
+                Transform model = getTransform();
+                if (model == null)
+                {
+                    return;
+                }
+                copyVector(model.localEulerAngles);
+            }
+            if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftAlt))
+            {
+                Transform model = getTransform();
+                if (model == null)
+                {
+                    return;
+                }
+                copyVector(model.localScale);
+            }
+        }
+
+        private void copyVector(Vector3 vector)
+        {
+            string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";
+            TextEditor editor = new TextEditor
+            {
+                text = toCopy
+            };
+            editor.SelectAll();
+            editor.Copy();
+        }
+
+        private Transform getTransform()
+        {
+            if (Owner == null || WeaponSkins.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            WeaponType weaponType = Owner.GetEquippedWeaponType();
+            if (!WeaponSkinsMenu.SupportedWeapons.Contains(weaponType))
+            {
+                return null;
+            }
+
+            WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
+            if (controller == null || controller.Interface == null)
+            {
+                return null;
+            }
+
+            string w = null;
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    w = WeaponSkinsController.EquippedSwordSkin;
+                    break;
+                case WeaponType.Hammer:
+                    w = WeaponSkinsController.EquippedHammerSkin;
+                    break;
+                case WeaponType.Bow:
+                    w = WeaponSkinsController.EquippedBowSkin;
+                    break;
+                case WeaponType.Spear:
+                    w = WeaponSkinsController.EquippedSpearSkin;
+                    break;
+            }
+            if (string.IsNullOrEmpty(w))
+            {
+                return null;
+            }
+
+            IWeaponSkinItemDefinition item = controller.Interface.GetSkinItem(weaponType, w, ItemFilter.Everything, out _);
+            if (item == null)
+            {
+                return null;
+            }
+
+            WeaponSkins.TryGetValue(item, out WeaponSkinSpawnInfo model);
+            return model == null ? null : model.Model.transform;
+        }
+#endif
     }
 }

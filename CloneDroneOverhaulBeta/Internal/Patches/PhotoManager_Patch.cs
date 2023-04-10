@@ -1,6 +1,4 @@
-﻿/*using CDOverhaul.Misc;
-using HarmonyLib;
-
+﻿using HarmonyLib;
 namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(PhotoManager))]
@@ -10,11 +8,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("TriggerPhotoModeOnOff")]
         private static bool TriggerPhotoModeOnOff_Prefix()
         {
-            if (!OverhaulMod.IsCoreCreated)
-            {
-                return true;
-            }
-            return !PhotoModeRevampController.Revamp;
+            return !OverhaulMod.IsModInitialized || !EnableCursorController.HasToEnableCursor();
         }
     }
-}*/
+}

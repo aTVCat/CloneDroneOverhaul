@@ -3,10 +3,9 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
-using CDOverhaul.LevelEditor;
-using CDOverhaul.Misc;
 using CDOverhaul.Patches;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -23,39 +22,9 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
 
         /// <summary>
-        /// The gameplay features controler instance
-        /// </summary>
-        public OverhaulGameplayCoreController GameplayController
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// The UI controller instance
         /// </summary>
-        public OverhaulCanvasController HUDController
-        { 
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Voxels management controller
-        /// </summary>
-        public VoxelsController VoxelsController
-        {
-            get;
-            private set;
-        }
-
-        public LevelEditorLuaController EditorLua
-        {
-            get;
-            private set;
-        }
-
-        public PhotoModeRevampController PhotoModeRevamp
+        public OverhaulCanvasController CanvasController
         {
             get;
             private set;
@@ -78,11 +47,15 @@ namespace CDOverhaul
 
         private void initialize()
         {
+            if (OverhaulMod.Core != null)
+            {
+                return;
+            }
             OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
-            if(ExperimentalBranchManager.Instance != null)
+            if (ExperimentalBranchManager.Instance != null)
             {
                 ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
             }
@@ -92,36 +65,53 @@ namespace CDOverhaul
 
             OverhaulAudioLibrary.Initialize();
             OverhaulLevelAdder.Initialize();
-            OverhaulEventManager.Initialize();
+            OverhaulEventsController.Initialize();
             SettingsController.Initialize();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulController.InitializeStatic(controllers);
-            LevelEditorObjectsController.Initialize();
 
-            VoxelsController = OverhaulController.AddController<VoxelsController>();
-            HUDController = OverhaulController.AddController<OverhaulCanvasController>();
-            GameplayController = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            EditorLua = OverhaulController.AddController<LevelEditorLuaController>();
-            PhotoModeRevamp = OverhaulController.AddController<PhotoModeRevampController>();
-            _ = OverhaulController.AddController<LevelEditorMultipleObjectsController>();
+            CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
+            _ = OverhaulController.AddController<VoxelsController>();
+            _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
 
             SettingsController.PostInitialize();
-            OverhaulDebugController.Initialize();
+            OverhaulDebugger.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();
+            OverhaulLocalizationController.Initialize();
+
+            if (OverhaulDiscordController.Instance == null)
+            {
+                _ = new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordController>();
+            }
 
             ReplacementBase.CreateReplacements();
         }
 
         private void OnDestroy()
         {
-            HUDController = null;
-            GameplayController = null;
-            VoxelsController = null;
+            CanvasController = null;
             OverhaulMod.Core = null;
+            ReplacementBase.CancelEverything();
+        }
+
+        public static string ReadTextFile(string filePath)
+        {
+            string path = OverhaulMod.Core.ModDirectory + filePath;
+            bool fileExists = File.Exists(path);
+            if (!fileExists)
+            {
+                return string.Empty;
+            }
+
+            StreamReader r = File.OpenText(path);
+            string result = r.ReadToEnd();
+            r.Close();
+
+            return result;
         }
     }
 }

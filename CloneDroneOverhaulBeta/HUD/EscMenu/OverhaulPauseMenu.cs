@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Bolt;
+using CDOverhaul.Gameplay;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,10 +8,10 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPauseMenu : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Gameplay.New pause menu", true, false, "The full redesign with new features implemented")]
+        [OverhaulSetting("Game interface.Gameplay.New pause menu design", true, false, "The full redesign with new features implemented")]
         public static bool UseThisMenu;
 
-        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu")]
+        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu design")]
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
@@ -30,11 +32,11 @@ namespace CDOverhaul.HUD
 
             if (m_Instance.gameObject.activeSelf)
             {
-                AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+                _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
                 m_Instance.Hide();
                 return;
             }
-            AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
             m_Instance.Show();
         }
 
@@ -49,6 +51,7 @@ namespace CDOverhaul.HUD
         private Button m_PersonalizationButton;
         private Transform m_PersonalizationPanel;
         private Button m_PersonalizationSkinsButton;
+        private Button m_PersonalizationOutfitsButton;
 
         private Button m_ExitButton;
         private Transform m_ExitSelectPanel;
@@ -64,6 +67,20 @@ namespace CDOverhaul.HUD
         private Button m_GameSettingsButton;
         private Button m_ModSettingsButton;
 
+        private Transform m_RoomCodePanel;
+        private InputField m_RoomCodeField;
+        private Button m_RoomCodeCopyButton;
+        private Button m_RoomCodeRevealButton;
+        private Button m_StartMatchButton;
+        private Text m_StartMatchButtonText;
+
+        private Button m_BackToLVLEditorButton;
+        private Button m_SkipLevelButton;
+
+        private Transform m_PersonalizationNotification;
+
+        public bool ScheduleHide;
+
         private OverhaulParametersMenu m_Parameters;
 
         public override void Initialize()
@@ -75,6 +92,8 @@ namespace CDOverhaul.HUD
             m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
             m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
+            m_PersonalizationOutfitsButton = MyModdedObject.GetObject<Button>(3);
+            m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
@@ -96,6 +115,28 @@ namespace CDOverhaul.HUD
             m_GameSettingsButton.onClick.AddListener(OnGameSettingsClicked);
             m_ModSettingsButton = MyModdedObject.GetObject<Button>(14);
             m_ModSettingsButton.onClick.AddListener(OnModSettingsClicked);
+
+            m_RoomCodePanel = MyModdedObject.GetObject<Transform>(17);
+            m_RoomCodeField = MyModdedObject.GetObject<InputField>(20);
+            m_RoomCodeCopyButton = MyModdedObject.GetObject<Button>(19);
+            m_RoomCodeCopyButton.onClick.AddListener(OverhaulGamemodeManager.CopyPrivateRoomCode);
+            m_RoomCodeRevealButton = MyModdedObject.GetObject<Button>(18);
+            m_RoomCodeRevealButton.onClick.AddListener(OnRoomCodeRevealButtonClicked);
+
+            m_StartMatchButton = MyModdedObject.GetObject<Button>(21);
+            m_StartMatchButton.onClick.AddListener(OnStartMatchClicked);
+            m_StartMatchButtonText = MyModdedObject.GetObject<Text>(22);
+
+            m_BackToLVLEditorButton = MyModdedObject.GetObject<Button>(24);
+            m_BackToLVLEditorButton.onClick.AddListener(GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked);
+            m_SkipLevelButton = MyModdedObject.GetObject<Button>(25);
+            m_SkipLevelButton.onClick.AddListener(delegate
+            {
+                GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
+                Hide();
+            });
+
+            m_PersonalizationNotification = MyModdedObject.GetObject<Transform>(23);
 
             MyModdedObject.GetObject<Button>(16).onClick.AddListener(OnContinueClicked);
             MyModdedObject.GetObject<Button>(15).onClick.AddListener(delegate
@@ -137,20 +178,39 @@ namespace CDOverhaul.HUD
 
         public void OnPersonalizationButtonClicked()
         {
+            if (!WeaponSkinsController.HasNoticedSkinsButton)
+            {
+                WeaponSkinsController.HasNoticedSkinsButton = true;
+                SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
+                m_PersonalizationNotification.gameObject.SetActive(false);
+            }
+
+            m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
+            m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsOutfits();
             SetPanelActive(m_PersonalizationPanel, m_PersonalizationButton.transform, !m_PersonalizationPanel.gameObject.activeSelf);
         }
 
         public void OnSkinsButtonClicked()
         {
-            WeaponSkinsMenu menu = GetController<WeaponSkinsMenu>();
+            WeaponSkinsMenu menu = WeaponSkinsMenu.SkinsSelection;
             if (menu == null)
             {
                 return;
             }
 
-            // Todo: Notify player about unpausing the game OR make it possible to change skins while under arena
             Hide();
+            menu.SetMenuActive(true);
+        }
 
+        public void OnOutfitsButtonClicked()
+        {
+            WeaponSkinsMenu menu = WeaponSkinsMenu.OutfitSelection;
+            if (menu == null)
+            {
+                return;
+            }
+
+            Hide();
             menu.SetMenuActive(true);
         }
 
@@ -199,10 +259,10 @@ namespace CDOverhaul.HUD
 
         public void OnModSettingsClicked()
         {
-            if(m_Parameters == null)
+            if (m_Parameters == null)
             {
                 m_Parameters = GetController<OverhaulParametersMenu>();
-                if(m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
+                if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
                 {
                     return;
                 }
@@ -217,6 +277,11 @@ namespace CDOverhaul.HUD
         private IEnumerator modSettingsCoroutine()
         {
             yield return new WaitUntil(() => !m_Parameters.gameObject.activeSelf);
+            if (ScheduleHide)
+            {
+                ScheduleHide = false;
+                yield break;
+            }
             Show();
             yield break;
         }
@@ -239,7 +304,7 @@ namespace CDOverhaul.HUD
             } while (i < all);
 
             m_AdvFillImage.fillAmount = completed / all;
-            m_AdvCompletedText.text = "Completed:  " + completed + " of " + all;
+            m_AdvCompletedText.text = OverhaulLocalizationController.GetTranslation("Completed") + " " + completed + " " + OverhaulLocalizationController.GetTranslation("Of") + " " + all;
         }
 
         public void OnAdvClicked()
@@ -254,6 +319,77 @@ namespace CDOverhaul.HUD
             yield return new WaitUntil(() => !GameUIRoot.Instance.AchievementProgressUI.gameObject.activeSelf);
             Show();
             yield break;
+        }
+
+        #endregion
+
+        #region Room code
+
+        public void RefreshRoomCodePanelActive()
+        {
+            m_RoomCodePanel.gameObject.SetActive(OverhaulGamemodeManager.ShouldShowRoomCodePanel());
+        }
+
+        public void RefreshRoomCodeField()
+        {
+            m_RoomCodeField.text = OverhaulGamemodeManager.GetPrivateRoomCode();
+            m_RoomCodeRevealButton.gameObject.SetActive(true);
+        }
+
+        public void RefreshStartMatchButton()
+        {
+            m_StartMatchButton.gameObject.SetActive(false);
+            bool shouldShow = OverhaulGamemodeManager.ShouldShowRoomCodePanel();
+            if (!shouldShow)
+            {
+                return;
+            }
+
+            if (BattleRoyaleManager.Instance != null)
+            {
+                if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea))
+                {
+                    m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
+                    m_StartMatchButton.gameObject.SetActive(true);
+                }
+                else if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.FightingStarted))
+                {
+                    m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!", -1);
+                    m_StartMatchButton.gameObject.SetActive(true);
+                }
+            }
+            else if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
+            {
+                m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
+                m_StartMatchButton.gameObject.SetActive(true);
+            }
+
+        }
+
+        public void OnRoomCodeRevealButtonClicked()
+        {
+            m_RoomCodeRevealButton.gameObject.SetActive(false);
+        }
+
+        public void OnStartMatchClicked()
+        {
+            Hide();
+
+            if (BattleRoyaleManager.Instance != null)
+            {
+                if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea))
+                {
+                    ClientRequestsStartingLevelNowEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+                }
+                else if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.FightingStarted))
+                {
+                    ClientRequestsFinalZoneActivation.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+                }
+            }
+            else if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
+            {
+                ClientRequestsStartingLevelNowEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered).Send();
+            }
         }
 
         #endregion
@@ -277,7 +413,13 @@ namespace CDOverhaul.HUD
             TimeManager.Instance.OnGamePaused();
 
             RefreshAdvancements();
+            RefreshRoomCodeField();
+            RefreshRoomCodePanelActive();
+            RefreshStartMatchButton();
 
+            m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
+            m_BackToLVLEditorButton.gameObject.SetActive((WorkshopLevelManager.Instance != null && WorkshopLevelManager.Instance.IsPlaytestActive()) || GameModeManager.IsLevelPlaytest());
+            m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
             ShowCursor = true;
@@ -285,7 +427,7 @@ namespace CDOverhaul.HUD
 
         public void HideMenu(bool dontUnpause = false)
         {
-            if(!dontUnpause) TimeManager.Instance.OnGameUnPaused();
+            if (!dontUnpause) TimeManager.Instance.OnGameUnPaused();
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 
@@ -328,13 +470,13 @@ namespace CDOverhaul.HUD
             }
 
             Character player = CharacterTracker.Instance.GetPlayer();
-            if(player == null)
+            if (player == null)
             {
                 return;
             }
 
             m_Camera = player.GetPlayerCamera();
-            if(m_Camera == null)
+            if (m_Camera == null)
             {
                 return;
             }
@@ -388,7 +530,7 @@ namespace CDOverhaul.HUD
                     if (camera != null) camera.fieldOfView += (m_TargetFoV - camera.fieldOfView) * 0.5f * (Time.unscaledDeltaTime * 22);
                     yield return null;
                 }
-                if(animator != null) animator.enabled = true;
+                if (animator != null) animator.enabled = true;
             }
             m_IsAnimatingCamera = false;
             yield break;

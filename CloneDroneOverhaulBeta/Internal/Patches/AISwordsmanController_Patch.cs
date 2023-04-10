@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("FixedUpdate")]
         private static bool FixedUpdate_Prefix(AISwordsmanController __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return true;
             }
@@ -32,7 +32,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("FixedUpdate")]
         private static void FixedUpdate_Postfix(AISwordsmanController __instance)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }

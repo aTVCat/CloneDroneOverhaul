@@ -8,7 +8,7 @@ namespace CDOverhaul
         /// <summary>
         /// Owner of the expansion script
         /// </summary>
-        public FirstPersonMover FirstPersonMover
+        public FirstPersonMover Owner
         {
             get;
             private set;
@@ -32,12 +32,35 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && FirstPersonMover.IsMainPlayer();
-        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && FirstPersonMover.IsPlayer();
-        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && FirstPersonMover != null && string.IsNullOrEmpty(FirstPersonMover.GetPlayFabID());
-        public bool IsOwnerMultiplayerNotMainPlayer() => !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
-        public bool IsEnemy() => !IsOwnerPlayer() && FirstPersonMover != null && !FirstPersonMover.IsPlayerTeam;
-        public bool IsAlly() => !IsOwnerPlayer() && FirstPersonMover != null && FirstPersonMover.IsPlayerTeam;
+        public bool IsOwnerMainPlayer()
+        {
+            return !IsDisposedOrDestroyed() && Owner != null && Owner.IsMainPlayer();
+        }
+
+        public bool IsOwnerPlayer()
+        {
+            return !IsDisposedOrDestroyed() && Owner != null && Owner.IsPlayer();
+        }
+
+        public bool IsOwnerMultiplayerPlayer()
+        {
+            return !IsDisposedOrDestroyed() && Owner != null && string.IsNullOrEmpty(Owner.GetPlayFabID());
+        }
+
+        public bool IsOwnerMultiplayerNotMainPlayer()
+        {
+            return !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
+        }
+
+        public bool IsEnemy()
+        {
+            return !IsOwnerPlayer() && Owner != null && !Owner.IsPlayerTeam;
+        }
+
+        public bool IsAlly()
+        {
+            return !IsOwnerPlayer() && Owner != null && Owner.IsPlayerTeam;
+        }
 
         /// <summary>
         /// Check if user, if <paramref name="type"/> is 0 - pressed key this frame, 1 - holding the key, 2 - ended pressing key this frame
@@ -67,22 +90,22 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
-            FirstPersonMover = null;
+            Owner = null;
             UpgradeCollection = null;
             EnergySource = null;
 
-            OverhaulEventManager.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onUpgradesRefresh, true);
+            OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         public override void Start()
         {
-            FirstPersonMover = base.GetComponent<FirstPersonMover>();
+            Owner = base.GetComponent<FirstPersonMover>();
             UpgradeCollection = base.GetComponent<UpgradeCollection>();
             EnergySource = base.GetComponent<EnergySource>();
 
-            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onUpgradesRefresh, true);
+            _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         /// <summary>
@@ -120,7 +143,7 @@ namespace CDOverhaul
             {
                 return;
             }
-            if(c.GetInstanceID() != FirstPersonMover.GetInstanceID())
+            if (c.GetInstanceID() != Owner.GetInstanceID())
             {
                 return;
             }
@@ -131,13 +154,13 @@ namespace CDOverhaul
 
         }
 
-        private void onUpgradesRefresh(FirstPersonMover mover)
+        public void OnUpgradesRefresh(FirstPersonMover mover)
         {
             if (IsDisposedOrDestroyed())
             {
                 return;
             }
-            if(mover.GetInstanceID() != FirstPersonMover.GetInstanceID())
+            if (mover.GetInstanceID() != Owner.GetInstanceID())
             {
                 return;
             }

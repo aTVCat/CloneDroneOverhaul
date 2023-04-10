@@ -10,18 +10,18 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("SetPlayer")]
         private static void SetPlayer_Postfix(Character player)
         {
-            if (!OverhaulMod.IsCoreCreated)
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
 
             if (player is FirstPersonMover)
             {
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
+                OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
             }
             else
             {
-                OverhaulEventManager.DispatchEvent<Character>(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
+                OverhaulEventsController.DispatchEvent<Character>(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
             }
         }
     }

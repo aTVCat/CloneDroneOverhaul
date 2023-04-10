@@ -12,12 +12,12 @@ namespace CDOverhaul.Gameplay.Combat
             get
             {
                 FirstPersonMover mover = GetOwner();
-                if(mover == null)
+                if (mover == null)
                 {
                     return null;
                 }
 
-                if(m_CharacterModdedAnimationsExpansion == null)
+                if (m_CharacterModdedAnimationsExpansion == null)
                 {
                     m_CharacterModdedAnimationsExpansion = mover.GetComponent<CharacterModdedAnimationsExpansion>();
                 }
@@ -64,7 +64,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
 
             List<WeaponType> list2 = GetOwner().GetPrivateField<List<WeaponType>>("_droppedWeapons");
-            if(!list2.Contains(base.WeaponType))
+            if (!list2.Contains(base.WeaponType))
             {
                 list2.Add(base.WeaponType);
             }

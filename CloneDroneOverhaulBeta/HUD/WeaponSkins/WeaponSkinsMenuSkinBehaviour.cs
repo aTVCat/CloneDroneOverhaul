@@ -1,11 +1,14 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Outfits;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour
+    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         public const string Normal = "#1C6BFF";
         public const string Exclusive = "#1C6BFF";
@@ -14,7 +17,7 @@ namespace CDOverhaul.HUD
 
         private static readonly List<WeaponSkinsMenuSkinBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuSkinBehaviour>();
 
-        public static void SelectSpecific()
+        public static void SelectSpecific(bool isOutfitSelection = false)
         {
             if (m_InstantiatedButtons.IsNullOrEmpty())
             {
@@ -23,7 +26,14 @@ namespace CDOverhaul.HUD
 
             foreach (WeaponSkinsMenuSkinBehaviour b in m_InstantiatedButtons)
             {
-                b.TrySelect();
+                if (isOutfitSelection && b.IsOutfitSelection)
+                {
+                    b.TrySelect();
+                }
+                else if (!isOutfitSelection && !b.IsOutfitSelection)
+                {
+                    b.TrySelect();
+                }
             }
         }
 
@@ -37,10 +47,13 @@ namespace CDOverhaul.HUD
         private GameObject m_ExclusiveIcon;
         private InputField m_Author;
         private Image m_Cooldown;
+        private bool m_IsMouseOverElement;
 
-        private bool m_IsSelected;
+        public bool IsSelected { get; private set; }
 
-        public override void Awake()
+        public bool IsOutfitSelection;
+
+        public void Initialize()
         {
             if (IsDisposedOrDestroyed())
             {
@@ -72,7 +85,7 @@ namespace CDOverhaul.HUD
 
         private void Update()
         {
-            if(Time.frameCount % 2 == 0)
+            if (Time.frameCount % 2 == 0)
             {
                 m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
             }
@@ -104,14 +117,7 @@ namespace CDOverhaul.HUD
                 return;
             }
             m_Skin = skin;
-            if (string.IsNullOrEmpty(author))
-            {
-                m_Author.text = "Original game";
-            }
-            else
-            {
-                m_Author.text = "By " + author;
-            }
+            m_Author.text = string.IsNullOrEmpty(author) ? "Original game" : "By " + author;
             m_ExclusiveIcon.SetActive(exclusive);
         }
 
@@ -131,42 +137,126 @@ namespace CDOverhaul.HUD
 
         public void SetSelected(bool value, bool initializing = false)
         {
-            if (IsDisposedOrDestroyed() || (value == m_IsSelected && !initializing) || m_SelectedImage == null)
+            if (IsDisposedOrDestroyed() || (value == IsSelected && !initializing) || m_SelectedImage == null)
             {
                 return;
             }
 
             m_SelectedImage.SetActive(value);
-            m_IsSelected = value;
+            IsSelected = value;
         }
 
         public void TrySelect()
         {
+            IsSelected = false;
+            if (IsOutfitSelection)
+            {
+                SetSelected(OutfitsController.EquippedAccessories.Contains(m_Skin), true);
+                WeaponSkinsMenu.StartCooldown();
+
+                FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+                if (mover != null)
+                {
+                    OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
+                    if (outfits != null)
+                    {
+                        outfits.SpawnAccessories();
+                    }
+                }
+
+                OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
+                if (info != null && info.HasReceivedData)
+                {
+                    info.RefreshData();
+                }
+
+                return;
+            }
+
             switch (m_WeaponType)
             {
                 case WeaponType.Sword:
-                    SetSelected(WeaponSkinsController.EquippedSwordSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSwordSkin == m_Skin, true);
                     break;
                 case WeaponType.Bow:
-                    SetSelected(WeaponSkinsController.EquippedBowSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedBowSkin == m_Skin, true);
                     break;
                 case WeaponType.Hammer:
-                    SetSelected(WeaponSkinsController.EquippedHammerSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedHammerSkin == m_Skin, true);
                     break;
                 case WeaponType.Spear:
-                    SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin);
+                    SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin, true);
                     break;
             }
         }
 
         public void SelectThis()
         {
-            if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
+            if (IsDisposedOrDestroyed() || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
             {
                 return;
             }
 
+            if (IsOutfitSelection)
+            {
+                OutfitsController.SetAccessoryEquipped(m_Skin, !IsSelected);
+                SelectSpecific(true);
+                if (OverhaulVersion.IsDebugBuild && IsSelected)
+                {
+                    FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
+                    if (mover == null || !mover.HasCharacterModel())
+                    {
+                        return;
+                    }
+
+                    AccessoryItem item = OutfitsController.GetAccessoryItem(m_Skin, false);
+                    if (!item.Offsets.ContainsKey(mover.GetCharacterModel().gameObject.name))
+                    {
+                        return;
+                    }
+
+                    OutfitsController.EditingItem = item;
+                    OutfitsController.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
+                    WeaponSkinsMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
+                }
+                return;
+            }
+            else
+            {
+                if (IsSelected)
+                {
+                    return;
+                }
+            }
+
             m_SkinsMenu.SelectSkin(m_WeaponType, m_Skin);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
+            {
+                return;
+            }
+
+            m_SkinsMenu.ShowDescriptionTooltip(m_WeaponType, m_Skin);
+            m_IsMouseOverElement = true;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
+            {
+                return;
+            }
+
+            m_SkinsMenu.ShowDescriptionTooltip(WeaponType.None, null);
+            m_IsMouseOverElement = false;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            OnPointerExit(null);
         }
     }
 }
