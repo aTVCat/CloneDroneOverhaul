@@ -28,7 +28,7 @@ namespace CDOverhaul
         /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
-        public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Base != null && Core != null && Base.IsModEnabled();
+        public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Core != null;
 
         /// <summary>
         /// The instance of the core
@@ -164,7 +164,7 @@ namespace CDOverhaul
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.15f);
-            if (firstPersonMover != null)
+            if (firstPersonMover != null && firstPersonMover.HasCharacterModel())
             {
                 OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
             }

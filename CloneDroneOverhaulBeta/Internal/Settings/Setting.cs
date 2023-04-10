@@ -134,7 +134,7 @@ namespace CDOverhaul
             return PlayerPrefs.HasKey(setting.RawPath);
         }
 
-        public static void SavePref(in SettingInfo setting, in object value)
+        public static void SavePref(in SettingInfo setting, in object value, in bool dispatchEvent = true)
         {
             if (setting == null || setting.Error)
             {
@@ -173,7 +173,7 @@ namespace CDOverhaul
                     break;
             }
 
-            DispatchSettingsRefreshedEvent();
+            if(dispatchEvent) DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();
         }

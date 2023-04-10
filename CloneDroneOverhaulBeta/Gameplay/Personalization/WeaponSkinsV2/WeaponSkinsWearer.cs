@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.HUD;
 using ModLibrary;
 using OverhaulAPI;
 using System.Collections;
@@ -381,7 +382,19 @@ namespace CDOverhaul.Gameplay
                 foreach (Transform part in partsToDropArray)
                 {
                     if (part != null)
+                    {
                         part.gameObject.SetActive(value);
+
+                        ReplaceVoxelColor[] cols = part.GetComponents<ReplaceVoxelColor>();
+                        if (!cols.IsNullOrEmpty())
+                        {
+                            foreach(ReplaceVoxelColor col in cols)
+                            {
+                                col.ReplaceColorOnStart = true;
+                                col.CallPrivateMethod("Start");
+                            }
+                        }
+                    }
                 }
             }
         }

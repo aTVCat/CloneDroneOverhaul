@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.Gameplay.Mindspace;
+using CDOverhaul.Graphics;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -55,9 +56,27 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             Core = null;
+
             m_MainCamera = null;
             m_CurrentCamera = null;
+        }
+
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if(!hasInitializedModel || firstPersonMover == null)
+            {
+                return;
+            }
+
+            Camera camera = firstPersonMover.GetPlayerCamera();
+            if(camera == null)
+            {
+                return;
+            }
+
+            camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover, camera);
         }
 
         private void Update()

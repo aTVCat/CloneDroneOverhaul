@@ -95,6 +95,7 @@ namespace CDOverhaul
         {
             CanvasController = null;
             OverhaulMod.Core = null;
+            ReplacementBase.CancelEverything();
         }
 
         public static string ReadTextFile(string filePath)

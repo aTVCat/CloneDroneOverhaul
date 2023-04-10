@@ -417,7 +417,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinFireAnimator.cs" />
-    <Compile Include="Graphics\CameraRolling\CameraRollingOwner.cs" />
+    <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />

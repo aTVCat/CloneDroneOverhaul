@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
 {
     public class ParametersMenuSetting : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public const string BGColor_Normal = "#242528";
+        public const string BGColor_Normal = "#242527";
         public const string BGColor_Error = "#A63C43";
 
         private Transform m_ToggleTickBox;

@@ -13,10 +13,6 @@ namespace CDOverhaul.Graphics
     {
         #region Settings
 
-        [SettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
-        [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
-        public static int TargetFPS;
-
         [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
         public static bool DefferedRenderer;
 
@@ -273,7 +269,7 @@ namespace CDOverhaul.Graphics
                 DisallowChangeFPSLimit = false;
             }
             catch { }
-            switch (TargetFPS)
+            switch (CameraRollingBehaviour.TargetFPS)
             {
                 case 1:
                     Application.targetFrameRate = 30;

@@ -74,6 +74,9 @@ namespace CDOverhaul.HUD
         private Button m_StartMatchButton;
         private Text m_StartMatchButtonText;
 
+        private Button m_BackToLVLEditorButton;
+        private Button m_SkipLevelButton;
+
         private Transform m_PersonalizationNotification;
 
         public bool ScheduleHide;
@@ -123,6 +126,15 @@ namespace CDOverhaul.HUD
             m_StartMatchButton = MyModdedObject.GetObject<Button>(21);
             m_StartMatchButton.onClick.AddListener(OnStartMatchClicked);
             m_StartMatchButtonText = MyModdedObject.GetObject<Text>(22);
+
+            m_BackToLVLEditorButton = MyModdedObject.GetObject<Button>(24);
+            m_BackToLVLEditorButton.onClick.AddListener(GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked);
+            m_SkipLevelButton = MyModdedObject.GetObject<Button>(25);
+            m_SkipLevelButton.onClick.AddListener(delegate
+            {
+                GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
+                Hide();
+            });
 
             m_PersonalizationNotification = MyModdedObject.GetObject<Transform>(23);
 
@@ -405,6 +417,8 @@ namespace CDOverhaul.HUD
             RefreshRoomCodePanelActive();
             RefreshStartMatchButton();
 
+            m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
+            m_BackToLVLEditorButton.gameObject.SetActive((WorkshopLevelManager.Instance != null && WorkshopLevelManager.Instance.IsPlaytestActive()) || GameModeManager.IsLevelPlaytest());
             m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 

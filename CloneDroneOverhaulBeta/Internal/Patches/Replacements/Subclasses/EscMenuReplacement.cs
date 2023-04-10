@@ -20,11 +20,13 @@ namespace CDOverhaul.Patches
         private RectTransform m_BackToLvlEditorButton;
         private RectTransform m_SettingsButton;
         private RectTransform m_ModSettingsButton;
+        private RectTransform m_SkipLevelButton;
 
         private Vector2 m_OgSizeDelta;
         private Vector2 m_SettingsButtonOgSizeDelta;
         private Vector2 m_OgPosition;
         private Vector2 m_LvlEditorButtonOgPosition;
+        private Vector2 m_SkipLevelButtonOgPosition;
 
         private bool m_IsWaitingToPatchButtons;
         private bool m_SetUpButtons;
@@ -49,12 +51,8 @@ namespace CDOverhaul.Patches
         public override void Replace()
         {
             setUpButtons();
-            if (SuccessfullyPatched)
-            {
-                return;
-            }
-
             base.Replace();
+
             EscMenu target = GameUIRoot.Instance.EscMenu;
             if (target == null)
             {
@@ -81,6 +79,15 @@ namespace CDOverhaul.Patches
             }
             m_LvlEditorButtonOgPosition = m_BackToLvlEditorButton.localPosition;
             m_BackToLvlEditorButton.localPosition = new Vector3(0, -130, 0);
+
+            m_SkipLevelButton = TransformUtils.FindChildRecursive(m_BG, "SkipWorkshopLevelButton") as RectTransform;
+            if(m_SkipLevelButton == null)
+            {
+                SuccessfullyPatched = false;
+                return;
+            }
+            m_SkipLevelButtonOgPosition = m_SkipLevelButton.localPosition;
+            m_SkipLevelButton.localPosition = new Vector3(0, -138, 0);
 
             m_SettingsButton = TransformUtils.FindChildRecursive(m_BG, "SettingsButton") as RectTransform;
             if (m_SettingsButton == null)
@@ -146,11 +153,13 @@ namespace CDOverhaul.Patches
             }
             if (SuccessfullyPatched)
             {
+                SuccessfullyPatched = false;
                 m_BG.localPosition = m_OgPosition;
                 m_BG.sizeDelta = m_OgSizeDelta;
                 m_SettingsButton.sizeDelta = m_SettingsButtonOgSizeDelta;
                 m_SettingsButton.localPosition = new Vector3(0, m_SettingsButton.localPosition.y, 0f);
                 m_BackToLvlEditorButton.localPosition = m_LvlEditorButtonOgPosition;
+                m_SkipLevelButton.localPosition = m_SkipLevelButtonOgPosition;
                 UnityEngine.Object.Destroy(m_ModSettingsButton.gameObject);
             }
         }

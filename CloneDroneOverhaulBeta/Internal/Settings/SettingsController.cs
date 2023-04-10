@@ -127,6 +127,12 @@ namespace CDOverhaul
                 MakeSettingDependingOn("Game interface.Gameplay.New pause menu design", "Game interface.Gameplay.Zoom camera", true);
                 MakeSettingDependingOn("Game interface.Gameplay.New energy bar design", "Game interface.Gameplay.Hide energy bar when full", true);
 
+                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt when one legged", true);
+                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt when jumping", true);
+                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Lock rotation by X", true);
+                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Lock rotation by Z", true);
+                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt multiplier", true);
+
                 _hasAddedSettings = true;
             }
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
