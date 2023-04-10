@@ -90,8 +90,8 @@ namespace CDOverhaul.Graphics
         public static void Initialize()
         {
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
-            _ = OverhaulEventManager.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
+            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
+            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 
             m_ChromaMaterial = AssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
             m_VignetteMaterial = AssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetsPart.Part2);
@@ -112,7 +112,7 @@ namespace CDOverhaul.Graphics
                     SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
                     BloomThreshold = 0.9f;
                     SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
-                    OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
+                    OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)

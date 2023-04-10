@@ -91,14 +91,14 @@ namespace CDOverhaul.HUD
 
             if (!notFirstInit)
             {
-                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
+                _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
             }
             onSettingRefreshed();
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventManager.RemoveEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
+            OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
             _ = _spawnedBehaviours.Remove(this);
             m_ToggleBGOff = null;
             m_ToggleBGOn = null;

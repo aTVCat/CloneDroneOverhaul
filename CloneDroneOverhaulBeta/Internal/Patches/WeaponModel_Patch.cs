@@ -23,7 +23,7 @@ namespace CDOverhaul.Patches
                 FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
                 if (owner != null)
                 {
-                    bool isSP = GameModeManager.IsSinglePlayer() && (owner.IsMainPlayer() || WeaponSkinsController.AllowEnemiesWearSkins);
+                    bool isSP = GameModeManager.IsSinglePlayer() && (owner.IsPlayer() || WeaponSkinsController.AllowEnemiesWearSkins);
                     OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
                     if (info != null || isSP)
                     {

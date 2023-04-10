@@ -18,7 +18,7 @@ namespace CDOverhaul
                 EventAction?.Invoke();
                 return;
             }
-            OverhaulEventManager.DispatchEvent(EventString);
+            OverhaulEventsController.DispatchEvent(EventString);
         }
     }
 }

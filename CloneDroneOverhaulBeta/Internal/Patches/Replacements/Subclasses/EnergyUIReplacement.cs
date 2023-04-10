@@ -36,7 +36,7 @@ namespace CDOverhaul.Patches
 
             if (!m_AddedListeners)
             {
-                _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshPatch);
+                _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, RefreshPatch);
             }
             m_AddedListeners = true;
 

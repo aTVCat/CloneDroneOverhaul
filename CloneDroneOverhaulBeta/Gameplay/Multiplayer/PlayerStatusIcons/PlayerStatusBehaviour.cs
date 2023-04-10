@@ -30,14 +30,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 m_LocalBehaviour = this;
             }
 
-            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             CreateCanvas();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             m_Info = null;
             m_WorldCanvas = null;
             m_WorldCanvasHolder = null;

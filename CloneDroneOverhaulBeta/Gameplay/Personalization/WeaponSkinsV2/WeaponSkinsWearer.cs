@@ -41,7 +41,7 @@ namespace CDOverhaul.Gameplay
                             onGetData(m_Info.GetHashtable());
 
                             m_HasAddedListeners = true;
-                            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+                            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
                         }
                     }
                 }
@@ -56,7 +56,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         protected override void OnRefresh()
@@ -66,7 +66,7 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnDeath()
         {
-            WeaponSkinSpecialBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            WeaponSkinBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
             if (b == null)
             {
                 return;
@@ -81,7 +81,7 @@ namespace CDOverhaul.Gameplay
             OnRefresh();
         }
 
-        public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinSpecialBehaviour
+        public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinBehaviour
         {
             if (Owner == null)
             {
@@ -89,7 +89,7 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponModel m = Owner.GetEquippedWeaponModel();
-            return m == null ? null : (T)m.GetComponentInChildren<WeaponSkinSpecialBehaviour>();
+            return m == null ? null : (T)m.GetComponentInChildren<WeaponSkinBehaviour>();
         }
 
         public void SpawnSkins()

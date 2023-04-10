@@ -100,13 +100,13 @@ namespace CDOverhaul.HUD
             if (base.gameObject.name.Equals("SkinsSelection"))
             {
                 SkinsSelection = this;
-                _ = OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
+                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
             else
             {
                 m_AccessoryItems = new List<AccessoryItem>();
                 OutfitSelection = this;
-                _ = OverhaulEventManager.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
+                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
 
                 if (OverhaulVersion.IsDebugBuild)
                 {
@@ -647,7 +647,7 @@ namespace CDOverhaul.HUD
         {
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
             MyModdedObject.GetObject<Text>(8).text = string.Empty;
-            m_Description.text = "No description provided.";
+            m_Description.text = OverhaulLocalizationController.GetTranslation("NoDesc");
             if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
             {
                 return;

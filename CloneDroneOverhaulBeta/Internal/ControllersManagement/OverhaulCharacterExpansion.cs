@@ -94,8 +94,8 @@ namespace CDOverhaul
             UpgradeCollection = null;
             EnergySource = null;
 
-            OverhaulEventManager.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
+            OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         public override void Start()
@@ -104,8 +104,8 @@ namespace CDOverhaul
             UpgradeCollection = base.GetComponent<UpgradeCollection>();
             EnergySource = base.GetComponent<EnergySource>();
 
-            _ = OverhaulEventManager.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
+            _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         /// <summary>

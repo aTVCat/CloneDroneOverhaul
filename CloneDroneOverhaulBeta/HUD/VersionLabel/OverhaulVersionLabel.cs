@@ -50,8 +50,8 @@ namespace CDOverhaul.HUD
 
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
             m_ExclusiveLabel.gameObject.SetActive(false);
-            _ = OverhaulEventManager.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
-            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            _ = OverhaulEventsController.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
             RefreshVersionLabel(true);
 
             m_HasInitialized = true;
@@ -64,9 +64,9 @@ namespace CDOverhaul.HUD
             m_TitleScreenUIVersionLabel = null;
             m_ExclusiveLabel = null;
 
-            OverhaulEventManager.RemoveEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
-            OverhaulEventManager.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
-            OverhaulEventManager.RemoveEventListener(GlobalEvents.UILanguageChanged, refreshVisibility);
+            OverhaulEventsController.RemoveEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
+            OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, refreshVisibility);
         }
 
         public void RefreshVersionLabel(bool forceRefreshVisibilityNextTime = false)

@@ -292,7 +292,7 @@ namespace CDOverhaul.HUD
             } while (i < all);
 
             m_AdvFillImage.fillAmount = completed / all;
-            m_AdvCompletedText.text = "Completed:  " + completed + " of " + all;
+            m_AdvCompletedText.text = OverhaulLocalizationController.GetTranslation("Completed") + " " + completed + " " + OverhaulLocalizationController.GetTranslation("Of") + " " + all;
         }
 
         public void OnAdvClicked()

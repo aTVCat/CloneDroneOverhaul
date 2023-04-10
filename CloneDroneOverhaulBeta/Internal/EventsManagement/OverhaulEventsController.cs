@@ -6,7 +6,7 @@ namespace CDOverhaul
     /// <summary>
     /// A simplified interaction with <see cref="GlobalEventManager"/> (not really)
     /// </summary>
-    public static class OverhaulEventManager
+    public static class OverhaulEventsController
     {
         /// <summary>
         /// This prefix is automaticaly added to any of mod events

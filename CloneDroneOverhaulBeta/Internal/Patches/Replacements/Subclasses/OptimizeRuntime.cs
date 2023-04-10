@@ -19,8 +19,8 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
-            _ = OverhaulEventManager.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
+            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
 
             _ = GameUIRoot.Instance.gameObject.AddComponent<GameUIRootBehaviour>();
 
@@ -56,8 +56,8 @@ namespace CDOverhaul.Patches
         {
             base.Cancel();
 
-            OverhaulEventManager.RemoveEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
-            OverhaulEventManager.RemoveEventListener(SettingsController.SettingChangedEventString, RefreshGC);
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
+            OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, RefreshGC);
         }
     }
 }

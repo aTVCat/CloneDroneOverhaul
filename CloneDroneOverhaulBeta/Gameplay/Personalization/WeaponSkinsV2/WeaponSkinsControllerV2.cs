@@ -69,7 +69,7 @@ namespace CDOverhaul.Gameplay
         {
             base.Initialize();
 
-            _ = OverhaulEventManager.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
+            _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
 
             Interface = this;
             addSkins();
@@ -77,7 +77,7 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnDisposed()
         {
-            OverhaulEventManager.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
+            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -203,7 +203,7 @@ namespace CDOverhaul.Gameplay
             item.Description = desc;
         }
 
-        public void AddSpecialBehaviourToAllSkinModels<T>() where T : WeaponSkinSpecialBehaviour
+        public void AddSpecialBehaviourToAllSkinModels<T>() where T : WeaponSkinBehaviour
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
             if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
@@ -1105,7 +1105,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, true);
 
                 AddSkinQuick(WeaponType.Bow, "Minecraft", HumanDiscord, "MCBow_1");
-                AddSpecialBehaviourToAllSkinModels<MCBowSpecialSkinBehaviour>();
+                AddSpecialBehaviourToAllSkinModels<MCBowSkinBehaviour>();
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.45f, 0.05f, 0.075f), new Vector3(0f, 0f, 135f), new Vector3(1.15f, 1.15f, 1f)), false, false);
 
                 AddSkinQuick(WeaponType.Bow, "Nether Eye", ZoloRDiscord, "NetherEyeBow");
@@ -1153,6 +1153,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.9f, 0.9f, 0.85f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.9f, 0.9f, 0.85f)), true, false);
                 SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
+                SetSkinDescription("BBR_HM");
 
                 AddSkinQuick(WeaponType.Sword, "The destroyer of evil", SharpDiscord, "LinkSword", "LinkSwordFire", "LinkSword", "LinkSwordFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.5f), false, false);

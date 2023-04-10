@@ -39,7 +39,7 @@ namespace CDOverhaul
             OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
             m_ListOfTexts.Clear();
             m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
             {

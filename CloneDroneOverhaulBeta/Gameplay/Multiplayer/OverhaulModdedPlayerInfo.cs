@@ -96,7 +96,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 {
                     m_ReceivedHashtable = JsonConvert.DeserializeObject<Hashtable>(split[2]);
                     m_HasReceivedRequestAnswer = true;
-                    OverhaulEventManager.DispatchEvent(InfoReceivedEventString, m_ReceivedHashtable);
+                    OverhaulEventsController.DispatchEvent(InfoReceivedEventString, m_ReceivedHashtable);
                 }
             }
         }

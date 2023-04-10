@@ -54,7 +54,7 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            WeaponSkinSpecialBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            WeaponSkinBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
             if (s == null)
             {
                 return;
@@ -77,7 +77,7 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            WeaponSkinSpecialBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinSpecialBehaviour>();
+            WeaponSkinBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
             if (s == null)
             {
                 return;

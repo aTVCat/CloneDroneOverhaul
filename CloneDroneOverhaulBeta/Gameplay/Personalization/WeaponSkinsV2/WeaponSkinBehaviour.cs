@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay
 {
-    public abstract class WeaponSkinSpecialBehaviour : OverhaulBehaviour
+    public abstract class WeaponSkinBehaviour : OverhaulBehaviour
     {
         public abstract void OnBeginDraw();
         public abstract void OnEndDraw();

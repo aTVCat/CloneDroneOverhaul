@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay
 {
-    public class MCBowSpecialSkinBehaviour : WeaponSkinSpecialBehaviour
+    public class MCBowSkinBehaviour : WeaponSkinBehaviour
     {
         private static bool m_HasFrames;
         private static Mesh m_Frame1;

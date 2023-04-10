@@ -397,7 +397,6 @@
     <Compile Include="Gameplay\Combat\Arena\ArenaRevampController.cs" />
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CombatOverhaulAnimatorType.cs" />
-    <Compile Include="Gameplay\Combat\CombatOverhaulController.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulMechanic.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsRobotExpansion.cs" />
@@ -415,16 +414,14 @@
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsController.cs" />
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\VFXWeaponSkinSwitch.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\ICustomWeaponSkins.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\SpecialBehaviours\MCBowSpecialSkinBehaviour.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinSpecialBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinFireAnimator.cs" />
     <Compile Include="Graphics\CameraRollingBehaviour.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PhotoMode\OverhaulPhotoModeControls.cs" />
-    <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeController.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Gameplay\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivePlayerInfo.cs" />
@@ -449,7 +446,6 @@
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuSkinBehaviour.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
-    <Compile Include="Internal\Demo\FirstInstallationEnvironmentController.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageCustomForcefield.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorPickableWeapon.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageDropPoint.cs" />
@@ -482,7 +478,7 @@
     <Compile Include="HUD\Settings\SubClasses\ParametersMenuCategoryButton.cs" />
     <Compile Include="HUD\Settings\OverhaulParametersMenu.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulGameplayController.cs" />
-    <Compile Include="Internal\ControllersManagement\OverhaulMonoBehaviour.cs" />
+    <Compile Include="Internal\ControllersManagement\OverhaulBehaviour.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingDropdownParameters.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingSliderParameters.cs" />
     <Compile Include="Internal\Code\OverhaulExtentions.cs" />
@@ -493,7 +489,7 @@
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulCharacterExpansion.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorArenaEnemiesCounterPoser.cs" />
-    <Compile Include="Internal\LevelEditor\LevelEditorMultiplayerObjectsController.cs" />
+    <Compile Include="Internal\LevelEditor\LevelEditorMultipleObjectsController.cs" />
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugCommands.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugger.cs" />
@@ -503,7 +499,7 @@
     <Compile Include="Gameplay\Personalization\ExclusiveStuff\ExclusivityController.cs" />
     <Compile Include="Internal\Debug\Console\IConsoleCommandReceiver.cs" />
     <Compile Include="Internal\Code\OverhaulExceptions.cs" />
-    <Compile Include="Internal\GamemodesRelated\OverhaulGamemodeManager.cs" />
+    <Compile Include="Gameplay\OverhaulGamemodeManager.cs" />
     <Compile Include="Internal\Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Internal\Patches\GameUIRoot_Patch.cs" />
     <Compile Include="Internal\Patches\TitleScreenUI_Patch.cs" />
@@ -538,7 +534,7 @@
     <Compile Include="Internal\ControllersManagement\OverhaulUI.cs" />
     <Compile Include="HUD\VersionLabel\OverhaulVersionLabel.cs" />
     <Compile Include="Internal\Patches\Input\EnableCursorController.cs" />
-    <Compile Include="Internal\EventsManagement\OverhaulEventManager.cs" />
+    <Compile Include="Internal\EventsManagement\OverhaulEventsController.cs" />
     <Compile Include="Internal\OverhaulVersion.cs" />
     <Compile Include="Internal\OverhaulMod.cs" />
     <Compile Include="Internal\OverhaulCore.cs" />

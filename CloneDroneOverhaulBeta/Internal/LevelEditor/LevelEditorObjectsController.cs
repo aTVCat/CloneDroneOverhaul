@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
-    [Obsolete("The modded objects system is gonna be reworked...")]
+    [Obsolete("The modded objects system is going to be reworked")]
     public static class LevelEditorObjectsController
     {
         public const string ObjectPathPrefix = "Prefabs/LevelObjects/OverhaulMod";
@@ -70,7 +70,7 @@ namespace CDOverhaul.LevelEditor
                 _hasAddedAssets = true;
             }
 
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorStarted, UpdateLevelEditor, true);
         }
 
         internal static void UpdateLevelEditor()

@@ -47,12 +47,6 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public CombatOverhaulController CombatOverhaul
-        {
-            get;
-            private set;
-        }
-
         public NewWeaponsController NewWeapons
         {
             get;
@@ -77,23 +71,15 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        public OverhaulCustomGarbageBotsController CustomGarbageBots
-        {
-            get;
-            private set;
-        }
-
         public override void Initialize()
         {
             Core = this;
 
             WeaponSkins = OverhaulController.AddController<WeaponSkinsController>();
             AdditionalAnimations = OverhaulController.AddController<AdditionalAnimationsController>();
-            CombatOverhaul = OverhaulController.AddController<CombatOverhaulController>();
             NewWeapons = OverhaulController.AddController<NewWeaponsController>();
             AdvancedGarbageController = OverhaulController.AddController<AdvancedGarbageController>();
             MindspaceOverhaul = OverhaulController.AddController<MindspaceOverhaulController>();
-            CustomGarbageBots = OverhaulController.AddController<OverhaulCustomGarbageBotsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
@@ -123,14 +109,14 @@ namespace CDOverhaul.Gameplay
             Camera mainCamera = Camera.main;
             if (!Equals(mainCamera, m_MainCamera))
             {
-                OverhaulEventManager.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
+                OverhaulEventsController.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
             }
             m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
             if (!Equals(currentCamera, m_CurrentCamera))
             {
-                OverhaulEventManager.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
+                OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             }
             m_CurrentCamera = currentCamera;
         }
@@ -145,7 +131,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            OverhaulEventManager.DispatchEvent(GamemodeChangedEventString);
+            OverhaulEventsController.DispatchEvent(GamemodeChangedEventString);
         }
 
         public override string[] Commands()

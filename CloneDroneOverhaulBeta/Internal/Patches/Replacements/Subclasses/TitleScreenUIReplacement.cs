@@ -49,7 +49,7 @@ namespace CDOverhaul.Patches
             _buttonsTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             _buttonsTransform.localPosition = new Vector3(0, -170f, 0);
 
-            OverhaulEventManager.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
 
             SuccessfullyPatched = true;
@@ -71,7 +71,7 @@ namespace CDOverhaul.Patches
             base.Cancel();
             if (SuccessfullyPatched)
             {
-                OverhaulEventManager.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+                OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
                 _buttonsTransform.localScale = Vector3.one;
                 _buttonsTransform.localPosition = new Vector3(0, -195.5f, 0);
 

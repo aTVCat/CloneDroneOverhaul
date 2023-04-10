@@ -115,7 +115,7 @@ namespace CDOverhaul
             }
 
             // An event that is usually called before FPM full initialization
-            OverhaulEventManager.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
+            OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitialziationAndDispatchEvent(firstPersonMover));
         }
 
@@ -150,7 +150,7 @@ namespace CDOverhaul
                 return;
             }
 
-            OverhaulEventManager.DispatchEvent(ModDeactivatedEventString);
+            OverhaulEventsController.DispatchEvent(ModDeactivatedEventString);
             GameObject.Destroy(Core.gameObject);
             Core = null;
         }
@@ -166,7 +166,7 @@ namespace CDOverhaul
             yield return new WaitForSecondsRealtime(0.15f);
             if (firstPersonMover != null)
             {
-                OverhaulEventManager.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+                OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
             }
         }
 

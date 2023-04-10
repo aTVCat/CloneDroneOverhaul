@@ -92,7 +92,7 @@ namespace CDOverhaul
 
             OverhaulAudioLibrary.Initialize();
             OverhaulLevelAdder.Initialize();
-            OverhaulEventManager.Initialize();
+            OverhaulEventsController.Initialize();
             SettingsController.Initialize();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();

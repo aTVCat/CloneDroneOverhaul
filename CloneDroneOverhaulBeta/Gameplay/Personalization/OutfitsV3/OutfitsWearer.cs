@@ -23,7 +23,7 @@ namespace CDOverhaul.Gameplay.Outfits
             m_SpawnedAccessories = new Dictionary<string, GameObject>();
 
             m_Info = IsOwnerMainPlayer() ? OverhaulModdedPlayerInfo.GetLocalPlayerInfo() : OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
-            _ = OverhaulEventManager.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -39,7 +39,7 @@ namespace CDOverhaul.Gameplay.Outfits
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventManager.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             m_Info = null;
             m_SpawnedAccessories.Clear();
             m_SpawnedAccessories = null;

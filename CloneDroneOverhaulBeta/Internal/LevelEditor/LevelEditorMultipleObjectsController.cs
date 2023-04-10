@@ -24,8 +24,8 @@ namespace CDOverhaul.LevelEditor
                 return;
             }
 
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted, true);
-            _ = OverhaulEventManager.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }
 
         private void onLevelEditorStarted()

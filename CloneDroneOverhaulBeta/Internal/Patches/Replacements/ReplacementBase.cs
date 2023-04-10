@@ -29,7 +29,7 @@ namespace CDOverhaul.Patches
         {
             if (!_hasAddedListeners)
             {
-                _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
+                _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
                 _hasAddedListeners = true;
             }
 
@@ -41,7 +41,7 @@ namespace CDOverhaul.Patches
         /// </summary>
         public virtual void Cancel()
         {
-            OverhaulEventManager.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
+            OverhaulEventsController.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, Cancel);
             _ = Replacements.Remove(this);
             HasReplaced = false;
         }

@@ -214,7 +214,7 @@ namespace CDOverhaul
 
         public static void DispatchSettingsRefreshedEvent()
         {
-            OverhaulEventManager.DispatchEvent(SettingsController.SettingChangedEventString);
+            OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
         }
     }
 }

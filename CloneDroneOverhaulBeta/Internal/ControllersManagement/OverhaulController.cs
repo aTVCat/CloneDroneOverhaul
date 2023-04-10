@@ -44,7 +44,7 @@ namespace CDOverhaul
 
         internal void InitializeInternal()
         {
-            _ = OverhaulEventManager.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+            _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
             try
             {
                 Initialize();

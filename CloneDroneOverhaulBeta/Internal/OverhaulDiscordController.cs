@@ -6,6 +6,9 @@ namespace CDOverhaul
 {
     internal class OverhaulDiscordController : OverhaulBehaviour
     {
+        [OverhaulSetting("Gameplay.Discord.Enable Overhaul Activity", true, false, "Restart the game if you've toggled this setting")]
+        public static bool EnableDiscordActivity;
+
         public const long OverhaulClientID = 1091373211163308073;
         public const CreateFlags CreateFlag = CreateFlags.NoRequireDiscord;
 
@@ -34,14 +37,22 @@ namespace CDOverhaul
 
         private float m_TimeLeftToRefresh;
 
+        private float m_UnscaledTimeToInitializeDiscord;
+
         private void Start()
         {
             Instance = this;
-            TryInitializeDiscord();
+            m_UnscaledTimeToInitializeDiscord = EnableDiscordActivity ? Time.unscaledTime + 1.5f : -1f;
         }
 
         private void Update()
         {
+            if(m_UnscaledTimeToInitializeDiscord != -1f && Time.unscaledTime >= m_UnscaledTimeToInitializeDiscord)
+            {
+                TryInitializeDiscord();
+                m_UnscaledTimeToInitializeDiscord = -1f;
+            }
+
             if (!SuccessfulInitialization)
             {
                 return;
