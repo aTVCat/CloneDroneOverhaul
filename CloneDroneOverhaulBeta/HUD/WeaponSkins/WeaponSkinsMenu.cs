@@ -55,6 +55,7 @@ namespace CDOverhaul.HUD
         private Text m_Description;
         private WeaponType m_SelectedWeapon;
         private Button m_DefaultSkinButton;
+        private Button m_RefreshDatabaseButton;
         private ScrollRect m_ScrollRect;
         private CanvasGroup m_ScrollRectCanvasGroup;
 
@@ -64,6 +65,8 @@ namespace CDOverhaul.HUD
         private Button m_DebugApplyButton;
         private Button m_DebugSaveButton;
         private Dropdown m_DebugCharacterModelsDropdown;
+
+        private Text m_FileVersionText;
 
         public bool IsOutfitSelection;
         public static WeaponSkinsMenu SkinsSelection;
@@ -93,6 +96,9 @@ namespace CDOverhaul.HUD
             m_DefaultSkinButton.onClick.AddListener(SetDefaultSkin);
             m_LoadIndicatorTransform = m.GetObject<Transform>(18);
             m_LoadIndicatorFill = m.GetObject<Image>(19);
+            m_FileVersionText = m.GetObject<Text>(20);
+            m_RefreshDatabaseButton = m.GetObject<Button>(21);
+            if(m_RefreshDatabaseButton != null) m_RefreshDatabaseButton.onClick.AddListener(WeaponSkinsController.ReloadAllModels);
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
             MyModdedObject.GetObject<Text>(8).text = string.Empty;
@@ -314,6 +320,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
+            m_FileVersionText.text = WeaponSkinsController.GetSkinsFileVersion();
             MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
         }
@@ -521,6 +528,7 @@ namespace CDOverhaul.HUD
                 newPrefab.gameObject.SetActive(true);
                 newPrefab.GetObject<Text>(1).text = (skin as WeaponSkinItemDefinitionV2).HasNameOverride ? (skin as WeaponSkinItemDefinitionV2).OverrideName : skinName;
                 WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
+                b.SkinItem = skin as WeaponSkinItemDefinitionV2;
                 b.Initialize();
                 b.SetMenu(this);
                 b.SetWeaponType(weaponType);
@@ -528,6 +536,10 @@ namespace CDOverhaul.HUD
                 b.TrySelect();
                 b.GetComponent<Button>().interactable = skin.IsUnlocked(false);
                 b.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(skin.GetExclusivePlayerID());
+                if((skin as WeaponSkinItemDefinitionV2).IsDeveloperItem && !(skin as WeaponSkinItemDefinitionV2).IsDevItemUnlocked)
+                {
+                    b.gameObject.SetActive(false);
+                }
 
                 itemsSpawned++;
                 SetFillProgress(itemsSpawned / (float)m_Items.Length);

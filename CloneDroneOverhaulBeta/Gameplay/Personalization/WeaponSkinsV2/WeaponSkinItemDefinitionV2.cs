@@ -118,6 +118,9 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        public bool IsDeveloperItem;
+        public bool IsDevItemUnlocked => Equals(ExclusivityController.GetLocalPlayfabID(), "883CC7F4CA3155A3");
+
         public bool UseSingleplayerVariantInMultiplayer;
         public bool UseVanillaBowStrings;
 

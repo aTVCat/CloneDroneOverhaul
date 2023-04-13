@@ -1,4 +1,7 @@
-﻿using OverhaulAPI;
+﻿using CDOverhaul.HUD;
+using ModLibrary;
+using OverhaulAPI;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -174,19 +177,32 @@ namespace CDOverhaul.Gameplay
         /// </summary>
         /// <param name="singleplayerVariantInMultiplayer"></param>
         /// <param name="vanillaBowStrings"></param>
-        public void SetSkinMiscParameters(bool singleplayerVariantInMultiplayer = false, bool vanillaBowStrings = true)
+        public void SetSkinMiscParameters(bool singleplayerVariantInMultiplayer = false, bool vanillaBowStrings = true, bool isDevItem = false)
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
             item.UseSingleplayerVariantInMultiplayer = singleplayerVariantInMultiplayer;
             item.UseVanillaBowStrings = vanillaBowStrings;
+            item.IsDeveloperItem = isDevItem;
+            if (isDevItem)
+            {
+                SetSkinExclusiveQuick("883CC7F4CA3155A3");
+                SetSkinDescription("DevItem");
+            }
         }
 
         /// <summary>
         /// Set recently added skin description
         /// </summary>
         /// <param name="descriptionFilename"></param>
-        public void SetSkinDescription(string descriptionFilename = "")
+        public void SetSkinDescription(string descriptionFilename = "", string descString = null)
         {
+            if (!string.IsNullOrEmpty(descString))
+            {
+                WeaponSkinItemDefinitionV2 item1 = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+                item1.Description = descString;
+                return;
+            }
+
             string path = OverhaulMod.Core.ModDirectory + "Assets/WeaponSkinsDescriptions/" + descriptionFilename + ".txt";
             bool fileExists = File.Exists(path);
             if (!fileExists)
@@ -203,7 +219,7 @@ namespace CDOverhaul.Gameplay
             item.Description = desc;
         }
 
-        public void AddSpecialBehaviourToAllSkinModels<T>() where T : WeaponSkinBehaviour
+        public void AddBehaviourToAllSkinModels<T>() where T : WeaponSkinBehaviour
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
             if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
@@ -212,6 +228,7 @@ namespace CDOverhaul.Gameplay
             if ((item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>().OnPreLoad();
         }
 
+        #region Skins
         private void addSkins()
         {
             if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
@@ -1105,7 +1122,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.1f, 0.045f, 0.125f), new Vector3(90f, 45f, 0f), new Vector3(1.325f, 1.325f, 1f)), true, true);
 
                 AddSkinQuick(WeaponType.Bow, "Minecraft", HumanDiscord, "MCBow_1");
-                AddSpecialBehaviourToAllSkinModels<MCBowSkinBehaviour>();
+                AddBehaviourToAllSkinModels<MCBowSkinBehaviour>();
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.45f, 0.05f, 0.075f), new Vector3(0f, 0f, 135f), new Vector3(1.15f, 1.15f, 1f)), false, false);
 
                 AddSkinQuick(WeaponType.Bow, "Nether Eye", ZoloRDiscord, "NetherEyeBow");
@@ -1163,6 +1180,18 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, -0.05f), new Vector3(0f, 0f, 270f), new Vector3(0.9f, 0.9f, 0.85f)), true, false);
                 SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.25f, false);
                 SetSkinDescription("BBR_HM");
+
+                AddSkinQuick(WeaponType.Hammer, "Delta Axe", SonicGlebDiscord, "DeltaAxe", "DeltaAxeFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinColorParameters(true, -1, false, -1, 0.75f, 1.2f, false);
+                SetSkinExclusiveQuick("8A75F77DD769072C");
+
+                AddSkinQuick(WeaponType.Hammer, "Delta Axe -Dev", SonicGlebDiscord, "DeltaAxe-Dev", "DeltaAxe-DevFire");
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), false, false);
+                SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.3f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(1f, 1f, 1f)), true, false);
+                SetSkinColorParameters(false, -1, false, -1, 0.75f, 1.2f, false);
+                SetSkinMiscParameters(true, false, true);
 
                 AddSkinQuick(WeaponType.Sword, "The destroyer of evil", SharpDiscord, "LinkSword", "LinkSwordFire", "LinkSword", "LinkSwordFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f) * 0.5f), false, false);
@@ -1234,6 +1263,8 @@ namespace CDOverhaul.Gameplay
             }
         }
 
+        #endregion
+
         public void ApplySkinsOnCharacter(Character character)
         {
             if (character == null || !(character is FirstPersonMover))
@@ -1265,6 +1296,100 @@ namespace CDOverhaul.Gameplay
                 return WeaponVariant.Fire;
             }
             return WeaponVariant.FireMultiplayer;
+        }
+
+        public static void ReloadAllModels()
+        {
+            AssetLoader.ClearCache();
+            StaticCoroutineRunner.StartStaticCoroutine(reloadAllModelsCoroutine());
+        }
+
+        private static IEnumerator reloadAllModelsCoroutine()
+        {
+            int total = m_WeaponSkins.Count;
+            int progress = 0;
+
+            OverhaulLoadingScreen.Instance.SetScreenText("Reloading models...");
+            OverhaulLoadingScreen.Instance.SetScreenFill(0f);
+            OverhaulLoadingScreen.Instance.SetScreenActive(true);
+
+            yield return new WaitForSecondsRealtime(1f);
+
+            foreach(IWeaponSkinItemDefinition def in m_WeaponSkins)
+            {
+                OverhaulLoadingScreen.Instance.SetScreenText("Reloading: " + def.GetItemName());
+
+                yield return null;
+                WeaponSkinModel m1 = def.GetModel(false, false);
+                if (m1 != null && m1.Model != null)
+                {
+                    string nameOfModel = m1.Model.name;
+                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    m1.SetModelVariant(gm, 0);
+                }
+
+                yield return null;
+                WeaponSkinModel m2 = def.GetModel(true, false);
+                if (m2 != null && m2.Model != null)
+                {
+                    string nameOfModel = m2.Model.name;
+                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    m2.SetModelVariant(gm, 0);
+                }
+
+                yield return null;
+                WeaponSkinModel m3 = def.GetModel(false, true);
+                if (m3 != null && m3.Model != null)
+                {
+                    string nameOfModel = m3.Model.name;
+                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    m3.SetModelVariant(gm, 0);
+                }
+
+                yield return null;
+                WeaponSkinModel m4 = def.GetModel(true, true);
+                if (m4 != null && m4.Model != null)
+                {
+                    string nameOfModel = m4.Model.name;
+                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    m4.SetModelVariant(gm, 0);
+                }
+
+                progress++;
+                OverhaulLoadingScreen.Instance.SetScreenFill((float)progress / (float)total);
+                yield return null;
+            }
+
+            OverhaulLoadingScreen.Instance.SetScreenText("Finishing...");
+            OverhaulLoadingScreen.Instance.SetScreenFill(0f);
+
+            WeaponSkinsController c = GetController<WeaponSkinsController>();
+            if(c == null)
+            {
+                OverhaulLoadingScreen.Instance.SetScreenActive(false);
+                yield break;
+            }
+
+            int charactersReloaded = 0;
+            List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();
+            foreach (Character character in characters)
+            {
+                if (character != null && character is FirstPersonMover && IsFirstPersonMoverSupported(character as FirstPersonMover))
+                {
+                    c.ApplySkinsOnCharacter(character);
+                    OverhaulLoadingScreen.Instance.SetScreenFill((float)charactersReloaded / (float)characters.Count);
+                }
+                charactersReloaded++;
+                yield return null;
+            }
+
+            OverhaulLoadingScreen.Instance.SetScreenActive(false);
+            yield break;
+        }
+
+        public static string GetSkinsFileVersion()
+        {
+            return AssetsController.GetAsset<TextAsset>("WeaponSkinsAssetBundleVersion", OverhaulAssetsPart.WeaponSkins).text;
         }
 
         IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, ItemFilter filter)

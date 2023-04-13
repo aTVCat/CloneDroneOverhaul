@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
     {
         public const string Normal = "#1C6BFF";
         public const string Exclusive = "#1C6BFF";
@@ -43,11 +43,14 @@ namespace CDOverhaul.HUD
         private WeaponSkinsMenu m_SkinsMenu;
         private string m_Skin;
         private WeaponType m_WeaponType;
+        public WeaponSkinItemDefinitionV2 SkinItem;
 
         private GameObject m_ExclusiveIcon;
         private InputField m_Author;
         private Image m_Cooldown;
         private bool m_IsMouseOverElement;
+
+        private Button m_Button;
 
         public bool IsSelected { get; private set; }
 
@@ -68,8 +71,7 @@ namespace CDOverhaul.HUD
             m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
             m_InstantiatedButtons.Add(this);
 
-            Button b = GetComponent<Button>();
-            b.onClick.AddListener(SelectThis);
+            m_Button = GetComponent<Button>();
         }
 
         protected override void OnDisposed()
@@ -81,6 +83,8 @@ namespace CDOverhaul.HUD
             m_Author = null;
             m_ExclusiveIcon = null;
             m_Cooldown = null;
+            m_Button = null;
+            SkinItem = null;
         }
 
         private void Update()
@@ -188,6 +192,11 @@ namespace CDOverhaul.HUD
                     SetSelected(WeaponSkinsController.EquippedSpearSkin == m_Skin, true);
                     break;
             }
+
+            if(WeaponSkinsEditor.EditorEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
+            {
+                SetSelected(true, true);
+            }
         }
 
         public void SelectThis()
@@ -257,6 +266,21 @@ namespace CDOverhaul.HUD
         public void OnPointerUp(PointerEventData eventData)
         {
             OnPointerExit(null);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            bool shiftPress = Input.GetKey(KeyCode.LeftShift);
+            if(m_Button != null && m_Button.interactable)
+            {
+                if (WeaponSkinsEditor.EditorEnabled && shiftPress)
+                {
+                    SetSelected(!IsSelected);
+                    WeaponSkinsEditor.SetSkinItemSelectedState(SkinItem, IsSelected);
+                    return;
+                }
+                SelectThis();
+            }
         }
     }
 }
