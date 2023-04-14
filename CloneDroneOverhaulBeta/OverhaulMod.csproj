@@ -415,10 +415,12 @@
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\VFXWeaponSkinSwitch.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\CustomWeaponSkinsData.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Update\WeaponSkinsUpdater.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\WeaponSkinFireAnimator.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsEditor.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsItemDefinitionImporter.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />

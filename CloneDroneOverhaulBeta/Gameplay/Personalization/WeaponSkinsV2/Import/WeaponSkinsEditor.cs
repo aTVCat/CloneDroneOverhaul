@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulAPI;
+using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay
 {
     public static class WeaponSkinsEditor
     {
         private static readonly List<IWeaponSkinItemDefinition> m_SelectedItems = new List<IWeaponSkinItemDefinition>();
+        public static ModelOffset CopiedOffset;
 
         public static bool EditorEnabled => OverhaulVersion.IsDebugBuild;
 

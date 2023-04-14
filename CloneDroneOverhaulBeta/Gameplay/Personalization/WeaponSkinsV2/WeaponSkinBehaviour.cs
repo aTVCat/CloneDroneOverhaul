@@ -6,5 +6,6 @@
         public abstract void OnEndDraw();
         public abstract void OnDeath();
         public virtual void OnPreLoad() { }
+        public virtual void OnSetColor(UnityEngine.Color color) { }
     }
 }

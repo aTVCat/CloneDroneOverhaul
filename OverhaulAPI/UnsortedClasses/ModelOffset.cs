@@ -5,6 +5,10 @@ namespace OverhaulAPI
     public class ModelOffset
     {
         public static readonly ModelOffset Default = new ModelOffset(Vector3.zero, Vector3.zero, Vector3.one);
+        public static ModelOffset GetDefaultOffset()
+        {
+            return (ModelOffset)Default.MemberwiseClone();
+        }
 
         public Vector3 OffsetPosition
         {

@@ -172,8 +172,11 @@ namespace CDOverhaul.Gameplay
                     if (info.Type == WeaponType.Bow)
                     {
                         ModdedObject m = info.Model.GetComponent<ModdedObject>();
-                        Destroy(m.GetObject<Transform>(0).gameObject);
-                        Destroy(m.GetObject<Transform>(1).gameObject);
+                        if(m != null)
+                        {
+                            Destroy(m.GetObject<Transform>(0).gameObject);
+                            Destroy(m.GetObject<Transform>(1).gameObject);
+                        }
                     }
                     info.DestroyModel();
                 }
@@ -296,6 +299,7 @@ namespace CDOverhaul.Gameplay
             bool fire = IsFireVariant(weaponModel) && item.GetWeaponType() != WeaponType.Bow;
             bool multiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && item.GetWeaponType() == WeaponType.Sword;
             WeaponVariant variant = WeaponSkinsController.GetVariant(fire, multiplayer);
+            WeaponSkinItemDefinitionV2 itemDefinition = item as WeaponSkinItemDefinitionV2;
 
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
             if (newModel != null)
@@ -305,14 +309,17 @@ namespace CDOverhaul.Gameplay
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
-                if ((fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenFire) || (!fire && !(item as WeaponSkinItemDefinitionV2).DontUseCustomColorsWhenNormal))
+
+                bool shouldApplyFavouriteColor = (fire && !itemDefinition.DontUseCustomColorsWhenFire) || (!fire && !itemDefinition.DontUseCustomColorsWhenNormal);
+                if (shouldApplyFavouriteColor)
                 {
                     Color? forcedColor = null;
+                    forcedColor = Owner.GetCharacterModel().GetFavouriteColor();
                     if (fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
                     {
                         int indexOfFireColor = (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor;
                         forcedColor = indexOfFireColor == 5
-                            ? new Color(2.65f, 1.45f, 0.4f, 1f)
+                            ? new Color(3.552548f, 1.296873f, 0.5021926f, 1f)
                             : HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
                     }
                     else if (!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
@@ -408,17 +415,17 @@ namespace CDOverhaul.Gameplay
             }
             Material material = renderer.material;
 
-            Color? color = forceColor == null ? Owner.GetCharacterModel().GetFavouriteColor() : forceColor;
-            HSBColor hsbcolor2 = new HSBColor(color.Value)
+            HSBColor hsbcolor2 = new HSBColor(forceColor.Value)
             {
                 b = 1f,
                 s = saturation
             };
             material.SetColor("_EmissionColor", hsbcolor2.ToColor() * (2.5f * multiplier));
 
-            if (model.GetComponent<WeaponSkinFireAnimator>())
+            WeaponSkinBehaviour behaviour = model.GetComponent<WeaponSkinBehaviour>();
+            if (behaviour != null)
             {
-                model.GetComponent<WeaponSkinFireAnimator>().TargetColor = hsbcolor2.ToColor();
+                behaviour.OnSetColor(hsbcolor2.ToColor());
             }
         }
 
@@ -459,34 +466,34 @@ namespace CDOverhaul.Gameplay
 
             if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftAlt))
             {
-                Transform model = getTransform();
+                Transform model = GetTransform();
                 if (model == null)
                 {
                     return;
                 }
-                copyVector(model.localPosition);
+                CopyVector(model.localPosition);
             }
             if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.LeftAlt))
             {
-                Transform model = getTransform();
+                Transform model = GetTransform();
                 if (model == null)
                 {
                     return;
                 }
-                copyVector(model.localEulerAngles);
+                CopyVector(model.localEulerAngles);
             }
             if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftAlt))
             {
-                Transform model = getTransform();
+                Transform model = GetTransform();
                 if (model == null)
                 {
                     return;
                 }
-                copyVector(model.localScale);
+                CopyVector(model.localScale);
             }
         }
-
-        private void copyVector(Vector3 vector)
+#endif
+        public void CopyVector(Vector3 vector)
         {
             string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";
             TextEditor editor = new TextEditor
@@ -497,7 +504,7 @@ namespace CDOverhaul.Gameplay
             editor.Copy();
         }
 
-        private Transform getTransform()
+        public Transform GetTransform()
         {
             if (Owner == null || WeaponSkins.IsNullOrEmpty())
             {
@@ -546,6 +553,5 @@ namespace CDOverhaul.Gameplay
             WeaponSkins.TryGetValue(item, out WeaponSkinSpawnInfo model);
             return model == null ? null : model.Model.transform;
         }
-#endif
     }
 }

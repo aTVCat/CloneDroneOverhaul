@@ -16,6 +16,12 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public static CustomWeaponSkinsData CustomSkinsData
+        {
+            get;
+            private set;
+        }
+
         public const string ATVCatDiscord = "A TVCat#9940";
         public const string TabiDiscord = "[₮₳฿ł]#4233";
         public const string CaptainMeowDiscord = "капитан кошачьих#7399";
@@ -93,6 +99,43 @@ namespace CDOverhaul.Gameplay
             ApplySkinsOnCharacter(firstPersonMover);
         }
 
+        public void ReImportCustomSkins()
+        {
+            if(CustomSkinsData == null || CustomSkinsData.AllCustomSkins.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
+            {
+                if (m_WeaponSkins[i] == null)
+                {
+                    continue;
+                }
+
+                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[i] as WeaponSkinItemDefinitionV2;
+                if (item.IsImportedSkin)
+                {
+                    m_WeaponSkins.RemoveAt(i);
+                }
+            }
+
+            foreach(WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
+            {
+                AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName);
+                SetSkinDescription(null, customSkin.Description);
+                SetSkinColorParameters(customSkin.ApplyFavColorOnLaser, customSkin.ForcedFavColorLaserIndex, customSkin.ApplyFavColorOnFire, customSkin.ForcedFavColorFireIndex, customSkin.Saturation, customSkin.Multiplier, customSkin.AnimateFire);
+                SetSkinExclusiveQuick(customSkin.OnlyAvailableFor);
+                SetSkinMiscParameters(customSkin.ApplySingleplayerModelInMultiplayer, customSkin.UseVanillaBowstrings, customSkin.IsDeveloperItem);
+                SetSkinModelOffsetQuick(customSkin.SingleplayerLaserModelOffset, false, false);
+                SetSkinModelOffsetQuick(customSkin.SingleplayerFireModelOffset, true, false);
+                SetSkinModelOffsetQuick(customSkin.MultiplayerLaserModelOffset, false, true);
+                SetSkinModelOffsetQuick(customSkin.MultiplayerFireModelOffset, true, true);
+                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+                item.IsImportedSkin = true;
+            }
+        }
+
         /// <summary>
         /// Add a skin definition
         /// </summary>
@@ -168,8 +211,8 @@ namespace CDOverhaul.Gameplay
             item.IndexOfForcedNormalVanillaColor = forcedColorIndexNormal;
             item.DontUseCustomColorsWhenFire = !applyFavColorFire;
             item.DontUseCustomColorsWhenNormal = !applyFavColorNormal;
-            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
-            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
+            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, false) != null) _ = (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+            if (applyAnimToFireModel && (item as IWeaponSkinItemDefinition).GetModel(true, true) != null) _ = (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<WeaponSkinFireAnimator>();
         }
 
         /// <summary>
@@ -235,6 +278,7 @@ namespace CDOverhaul.Gameplay
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
 
+                CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent");
                 PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(AssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetsPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
 
                 // Detailed sword
@@ -652,7 +696,7 @@ namespace CDOverhaul.Gameplay
                     doomSwordSkinOffset,
                     true,
                     false);
-                darkPastSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = darkPastSwordSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).OverrideName = "Slayer";
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (doomSwordSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
@@ -917,7 +961,7 @@ namespace CDOverhaul.Gameplay
                     spearDarkPastSkinOffset,
                     true,
                     false);
-                spearDarkPastSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = spearDarkPastSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = SonicGlebDiscord;
                 (spearDarkPastSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
 
@@ -982,7 +1026,7 @@ namespace CDOverhaul.Gameplay
                     bionicSpearSkinOffset,
                     true,
                     false);
-                bionicSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = bionicSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (bionicSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (bionicSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
@@ -996,7 +1040,7 @@ namespace CDOverhaul.Gameplay
                     hazardSpearSkinOffset,
                     true,
                     false);
-                hazardSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = hazardSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (hazardSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 2;
                 (hazardSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord;
 
@@ -1010,7 +1054,7 @@ namespace CDOverhaul.Gameplay
                     byonetSpearSkinOffset,
                     true,
                     false);
-                byonetSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = byonetSpearSkin.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
                 (byonetSpearSkin as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor = 5;
                 (byonetSpearSkin as WeaponSkinItemDefinitionV2).AuthorDiscord = CaptainMeowDiscord + And + ATVCatDiscord;
 
@@ -1094,7 +1138,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.8f, 0f, 0f), new Vector3(0f, 270f, 0f), new Vector3(0.5f, 0.5f, 0.6f)), true, false);
                 SetSkinColorParameters(false, -1, false, 5);
                 IWeaponSkinItemDefinition plantSpearItem = m_WeaponSkins[m_WeaponSkins.Count - 1];
-                plantSpearItem.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
+                _ = plantSpearItem.GetModel(true, false).Model.AddComponent<WeaponSkinFireAnimator>();
 
                 AddSkinQuick(WeaponType.Spear, "Angernight", ZoloRDiscord, "AngerNightSpear", "AngerNightSpearFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.25f, -0.05f, -0.05f), new Vector3(0f, 270f, 0f), new Vector3(0.65f, 0.65f, 0.9f)), false, false);
@@ -1260,6 +1304,8 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.75f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(0.7f, 0.7f, 0.7f)), false, false);
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0.75f, 0f, 0f), new Vector3(0f, 0f, 270f), new Vector3(0.7f, 0.7f, 0.7f)), true, false);
                 SetSkinExclusiveQuick("193564D7A14F9C33");
+
+                ReImportCustomSkins();
             }
         }
 
@@ -1301,7 +1347,7 @@ namespace CDOverhaul.Gameplay
         public static void ReloadAllModels()
         {
             AssetLoader.ClearCache();
-            StaticCoroutineRunner.StartStaticCoroutine(reloadAllModelsCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(reloadAllModelsCoroutine());
         }
 
         private static IEnumerator reloadAllModelsCoroutine()
@@ -1315,7 +1361,7 @@ namespace CDOverhaul.Gameplay
 
             yield return new WaitForSecondsRealtime(1f);
 
-            foreach(IWeaponSkinItemDefinition def in m_WeaponSkins)
+            foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
                 OverhaulLoadingScreen.Instance.SetScreenText("Reloading: " + def.GetItemName());
 
@@ -1356,7 +1402,7 @@ namespace CDOverhaul.Gameplay
                 }
 
                 progress++;
-                OverhaulLoadingScreen.Instance.SetScreenFill((float)progress / (float)total);
+                OverhaulLoadingScreen.Instance.SetScreenFill(progress / (float)total);
                 yield return null;
             }
 
@@ -1364,11 +1410,13 @@ namespace CDOverhaul.Gameplay
             OverhaulLoadingScreen.Instance.SetScreenFill(0f);
 
             WeaponSkinsController c = GetController<WeaponSkinsController>();
-            if(c == null)
+            if (c == null)
             {
                 OverhaulLoadingScreen.Instance.SetScreenActive(false);
                 yield break;
             }
+
+            c.ReImportCustomSkins();
 
             int charactersReloaded = 0;
             List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();
@@ -1377,13 +1425,14 @@ namespace CDOverhaul.Gameplay
                 if (character != null && character is FirstPersonMover && IsFirstPersonMoverSupported(character as FirstPersonMover))
                 {
                     c.ApplySkinsOnCharacter(character);
-                    OverhaulLoadingScreen.Instance.SetScreenFill((float)charactersReloaded / (float)characters.Count);
+                    OverhaulLoadingScreen.Instance.SetScreenFill(charactersReloaded / (float)characters.Count);
                 }
                 charactersReloaded++;
                 yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenActive(false);
+            WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
             yield break;
         }
 

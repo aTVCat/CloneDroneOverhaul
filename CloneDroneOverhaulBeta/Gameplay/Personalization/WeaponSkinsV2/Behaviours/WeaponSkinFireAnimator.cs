@@ -2,13 +2,12 @@
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinFireAnimator : OverhaulBehaviour
+    public class WeaponSkinFireAnimator : WeaponSkinBehaviour
     {
         private Renderer m_Renderer;
         private Material m_Material;
 
-        public Color TargetColor = "#BFBFBF".ConvertHexToColor();
-
+        public Color TargetColor;
         private const string Emission = "_EmissionColor";
 
         public override void Awake()
@@ -65,6 +64,23 @@ namespace CDOverhaul.Gameplay
             }
 
             updateColor();
+        }
+
+        public override void OnBeginDraw()
+        {
+        }
+
+        public override void OnEndDraw()
+        {
+        }
+
+        public override void OnDeath()
+        {
+        }
+
+        public override void OnSetColor(Color color)
+        {
+            TargetColor = color;
         }
     }
 }

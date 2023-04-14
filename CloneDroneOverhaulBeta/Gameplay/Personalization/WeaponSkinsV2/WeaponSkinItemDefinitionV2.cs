@@ -134,6 +134,8 @@ namespace CDOverhaul.Gameplay
         public string AuthorDiscord;
         public string Description;
 
+        public bool IsImportedSkin;
+
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
             if (forceTrue)
