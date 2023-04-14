@@ -5,6 +5,13 @@ namespace CDOverhaul.Patches
 {
     public class BaseFixes : ReplacementBase
     {
+        [SettingInforms(1)]
+        [OverhaulSetting("Mod.Vanilla additions.\"Piksieli Prst\" font", false, false, "This font makes Overhaul's UI less differ from game UI")]
+        public static bool PixelsSimpleFont;
+        private static Font m_OgUIFont;
+        private static Font m_OgSubtitlesFont;
+        private static float m_OgFontScale = -1f;
+
         public override void Replace()
         {
             base.Replace();
@@ -18,9 +25,10 @@ namespace CDOverhaul.Patches
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
 
-            LocalizationManager.Instance.SupportedLanguages[0].UIFont = LocalizationManager.Instance.SupportedLanguages[7].UIFont;
-            LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
-            LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;
+            if(m_OgUIFont == null) m_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
+            if (m_OgSubtitlesFont == null) m_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
+            if (m_OgFontScale == -1f) m_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
+            SetEnglishFont(PixelsSimpleFont);
 
             if (!OverhaulVersion.Upd2Hotfix) HumanFactsManager.Instance.AddColor("Prototype", Color.white);
 
@@ -50,6 +58,30 @@ namespace CDOverhaul.Patches
         public override void Cancel()
         {
             base.Cancel();
+        }
+
+        public static void SetEnglishFont(bool piksielyPrst)
+        {
+            if(LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            bool shouldRefresh = false;
+            if (!piksielyPrst)
+            {
+                shouldRefresh = LocalizationManager.Instance.SupportedLanguages[0].UIFont != m_OgUIFont;
+                LocalizationManager.Instance.SupportedLanguages[0].UIFont = m_OgUIFont;
+                LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = m_OgSubtitlesFont;
+                LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = m_OgFontScale;
+            }
+            else
+            {
+                shouldRefresh = LocalizationManager.Instance.SupportedLanguages[0].UIFont != LocalizationManager.Instance.SupportedLanguages[7].UIFont;
+                LocalizationManager.Instance.SupportedLanguages[0].UIFont = LocalizationManager.Instance.SupportedLanguages[7].UIFont;
+                LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
+                LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;
+            }
         }
     }
 }

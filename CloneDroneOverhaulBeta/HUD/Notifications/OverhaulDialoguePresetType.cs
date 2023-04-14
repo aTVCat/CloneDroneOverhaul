@@ -5,7 +5,9 @@
 
         None,
 
-        UnsupportedGameVersion
+        UnsupportedGameVersion,
+
+        RestartTheGame
 
     }
 }

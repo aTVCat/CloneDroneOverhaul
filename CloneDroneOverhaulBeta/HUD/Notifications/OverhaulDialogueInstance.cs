@@ -10,9 +10,18 @@ namespace CDOverhaul
 
         private float m_TimeAppeared;
         private float m_TimeToDisappear;
+        private string m_Title;
 
-        public void Initialize(float additonalTime = 0f, OverhaulDialogues.Button[] buttons = null)
+        protected override void OnDisposed()
         {
+            OverhaulDialogues.ActiveTitles.Remove(m_Title);
+            m_CloseButton = null;
+            m_ProgressSlider = null;
+        }
+
+        public void Initialize(float additonalTime, OverhaulDialogues.Button[] buttons, string title)
+        {
+            m_Title = title;
             m_TimeAppeared = Time.unscaledTime;
             m_TimeToDisappear = m_TimeAppeared + 6f + additonalTime;
 

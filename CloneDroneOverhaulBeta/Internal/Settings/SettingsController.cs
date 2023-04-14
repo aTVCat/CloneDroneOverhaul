@@ -34,11 +34,14 @@ namespace CDOverhaul
                         OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                         if (neededAttribute != null)
                         {
+                            SettingInforms informs = field.GetCustomAttribute<SettingInforms>();
+                            SettingFormelyKnownAs formelyKnown = field.GetCustomAttribute<SettingFormelyKnownAs>();
                             SettingSliderParameters sliderParams = field.GetCustomAttribute<SettingSliderParameters>();
                             SettingDropdownParameters dropdownParams = field.GetCustomAttribute<SettingDropdownParameters>();
                             SettingForceInputField inputField = field.GetCustomAttribute<SettingForceInputField>();
-                            SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams);
+                            SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams, formelyKnown);
                             info.ForceInputField = inputField != null;
+                            info.SendMessageOfType = informs != null ? informs.Type : (byte)0;
                             if (info.DefaultValue is long && (long)info.DefaultValue == SettingEventDispatcherFlag)
                             {
                                 info.EventDispatcher = (SettingEventDispatcher)field.GetValue(null);
@@ -152,10 +155,10 @@ namespace CDOverhaul
         /// <param name="defaultValue"></param>
         /// <param name="field"></param>
         /// <returns></returns>
-        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
+        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null, in SettingFormelyKnownAs formelyKnown = null)
         {
             SettingInfo newSetting = new SettingInfo();
-            newSetting.SetUp<T>(path, defaultValue, field, sliderParams, dropdownParams);
+            newSetting.SetUp<T>(path, defaultValue, field, sliderParams, dropdownParams, formelyKnown);
             m_Settings.Add(newSetting);
             return newSetting;
         }

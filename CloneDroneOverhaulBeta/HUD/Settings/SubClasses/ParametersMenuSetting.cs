@@ -33,6 +33,8 @@ namespace CDOverhaul.HUD
         public SettingDescription Description;
         private ParametersMenuSettingPosition m_MyPos;
 
+        private bool m_HasChangedSettingValueBefore;
+
         public void Initialize(in OverhaulParametersMenu menu, in ModdedObject moddedObject, in string settingPath, in ParametersMenuSettingPosition position, bool notFirstInit = false)
         {
             if (IsDisposedOrDestroyed())
@@ -229,6 +231,8 @@ namespace CDOverhaul.HUD
                     break;
             }
             SettingInfo.SavePref(Setting, toSet);
+            if (m_HasChangedSettingValueBefore) tryInformPlayer();
+            m_HasChangedSettingValueBefore = true;
         }
 
         private void setToggleValue(bool value)
@@ -241,6 +245,8 @@ namespace CDOverhaul.HUD
             m_ToggleBGOn.gameObject.SetActive(value);
             m_ToggleTick.gameObject.SetActive(value);
             SettingInfo.SavePref(Setting, value);
+            if (m_HasChangedSettingValueBefore) tryInformPlayer();
+            m_HasChangedSettingValueBefore = true;
         }
 
         private void setDropdownValue(int value)
@@ -250,6 +256,8 @@ namespace CDOverhaul.HUD
                 return;
             }
             SettingInfo.SavePref(Setting, value);
+            if (m_HasChangedSettingValueBefore) tryInformPlayer();
+            m_HasChangedSettingValueBefore = true;
         }
 
         private void setSliderValue(float value)
@@ -291,9 +299,22 @@ namespace CDOverhaul.HUD
             SettingInfo.SavePref(Setting, Setting.DefaultValue);
 
             Initialize(m_UI, m_ModdedObject, Setting.RawPath, m_MyPos, true);
+            if (m_HasChangedSettingValueBefore) tryInformPlayer();
+            m_HasChangedSettingValueBefore = true;
 
             /*
             m_UI.PopulateCategory(Setting.Category);*/
+        }
+
+        private void tryInformPlayer()
+        {
+            if (Setting != null && Setting.SendMessageOfType != 0)
+            {
+                if (Setting.SendMessageOfType == 1)
+                {
+                    OverhaulDialogues.CreateDialogueFromPreset(OverhaulDialoguePresetType.RestartTheGame);
+                }
+            }
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)

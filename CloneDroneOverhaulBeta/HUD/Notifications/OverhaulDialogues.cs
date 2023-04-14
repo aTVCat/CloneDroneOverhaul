@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -10,11 +11,14 @@ namespace CDOverhaul
         private static OverhaulDialogues m_Instance;
         public static bool IsInitialized { get; private set; }
 
+        public static readonly List<string> ActiveTitles = new List<string>();
+
         private GameObject m_DialoguePrefab;
         private Transform m_DialoguesContainer;
 
         public override void Initialize()
         {
+            ActiveTitles.Clear();
             m_DialoguePrefab = MyModdedObject.GetObject<Transform>(0).gameObject;
             m_DialoguePrefab.SetActive(false);
             m_DialoguesContainer = MyModdedObject.GetObject<Transform>(1);
@@ -36,6 +40,12 @@ namespace CDOverhaul
 
         internal void CreateDialogueInstance(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
+            if (ActiveTitles.Contains(title))
+            {
+                return;
+            }
+
+            ActiveTitles.Add(title);
             Vector2? theSize = size;
             if (theSize == null)
             {
@@ -50,7 +60,7 @@ namespace CDOverhaul
             (moddedObject.transform as RectTransform).sizeDelta = theSize.Value;
 
             moddedObject.gameObject.SetActive(true);
-            moddedObject.gameObject.AddComponent<OverhaulDialogueInstance>().Initialize(additionalTime, buttons);
+            moddedObject.gameObject.AddComponent<OverhaulDialogueInstance>().Initialize(additionalTime, buttons, title);
         }
 
 
@@ -85,6 +95,9 @@ namespace CDOverhaul
                     {
                         UnityEngine.Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
                     }, new Vector2(330, 145));
+                    break;
+                case OverhaulDialoguePresetType.RestartTheGame:
+                    OverhaulDialogues.CreateDialogue("Restart the game", "The setting you just toggled requires game to restart to apply changes", 6f, new Vector2(330, 145), new Button[] { new Button() { Title = "OK" } });
                     break;
             }
         }

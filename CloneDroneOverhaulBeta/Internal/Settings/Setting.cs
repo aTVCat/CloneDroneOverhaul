@@ -34,9 +34,11 @@ namespace CDOverhaul
 
         public SettingEventDispatcher EventDispatcher { get; set; }
 
+        public byte SendMessageOfType { get; set; }
+
         public bool Error => Type == SettingType.None || Field == null || string.IsNullOrEmpty(RawPath);
 
-        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null)
+        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in SettingSliderParameters sliderParams = null, in SettingDropdownParameters dropdownParams = null, in SettingFormelyKnownAs formelyKnown = null)
         {
             RawPath = path;
             Type = GetSettingType(defValue);
@@ -56,7 +58,7 @@ namespace CDOverhaul
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
             }
 
-            TryAddPref(this);
+            TryAddPref(this, formelyKnown);
             TuneUpValues();
         }
 
@@ -111,7 +113,7 @@ namespace CDOverhaul
                 : @object is string ? SettingType.String : @object is long ? SettingType.Other : SettingType.None;
         }
 
-        public static void TryAddPref(in SettingInfo setting)
+        public static void TryAddPref(in SettingInfo setting, in SettingFormelyKnownAs formelyKnown)
         {
             if (setting == null || setting.Error)
             {
@@ -120,6 +122,25 @@ namespace CDOverhaul
 
             if (!PlayerPrefs.HasKey(setting.RawPath))
             {
+                if (formelyKnown != null && !string.IsNullOrEmpty(formelyKnown.RawPath) && PlayerPrefs.HasKey(formelyKnown.RawPath))
+                {
+                    switch (setting.Type)
+                    {
+                        case SettingType.Bool:
+                            SavePref(setting, PlayerPrefs.GetInt(formelyKnown.RawPath) == 1);
+                            break;
+                        case SettingType.Int:
+                            SavePref(setting, PlayerPrefs.GetInt(formelyKnown.RawPath));
+                            break;
+                        case SettingType.Float:
+                            SavePref(setting, PlayerPrefs.GetFloat(formelyKnown.RawPath));
+                            break;
+                        case SettingType.String:
+                            SavePref(setting, PlayerPrefs.GetString(formelyKnown.RawPath));
+                            break;
+                    }
+                    return;
+                }
                 SavePref(setting, setting.DefaultValue);
             }
         }
@@ -173,7 +194,7 @@ namespace CDOverhaul
                     break;
             }
 
-            if(dispatchEvent) DispatchSettingsRefreshedEvent();
+            if (dispatchEvent) DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();
         }

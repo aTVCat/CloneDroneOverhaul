@@ -474,6 +474,8 @@
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\SettingEventDispatcher.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingForceInputField.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingInforms.cs" />
+    <Compile Include="Internal\Settings\SubClasses\SettingFormelyKnownAs.cs" />
     <Compile Include="Internal\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Gameplay\VoxelsController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
