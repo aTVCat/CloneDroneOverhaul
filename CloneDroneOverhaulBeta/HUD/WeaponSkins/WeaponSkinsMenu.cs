@@ -72,6 +72,9 @@ namespace CDOverhaul.HUD
         private Transform m_SkinEditorTranform;
         private Button m_SkinEditorExitButton;
 
+        private Button m_UpdateSkinsButton;
+        private Text m_UpdateSkinsText;
+
         public bool IsOutfitSelection;
         public static WeaponSkinsMenu SkinsSelection;
         public static WeaponSkinsMenu OutfitSelection;
@@ -119,6 +122,9 @@ namespace CDOverhaul.HUD
                 m_SkinEditorTranform = m.GetObject<Transform>(23);
                 m_SkinEditorExitButton = m.GetObject<Button>(24);
                 m_SkinEditorExitButton.onClick.AddListener(HideSkinEditor);
+                m_UpdateSkinsButton = m.GetObject<Button>(67);
+                m_UpdateSkinsButton.onClick.AddListener(RefreshSkinUpdates);
+                m_UpdateSkinsText = m.GetObject<Text>(68);
             }
 
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
@@ -844,9 +850,28 @@ namespace CDOverhaul.HUD
                 return;
             }
             SetSkinEditingMenuActive(false);
-            m_FileVersionText.text = WeaponSkinsController.GetSkinsFileVersion();
+            RefreshSkinUpdatesText();
             MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
+        }
+
+        public void RefreshSkinUpdatesText()
+        {
+            m_UpdateSkinsText.text = WeaponSkinsUpdater.GetUpdateButtonText();
+            m_FileVersionText.text = WeaponSkinsUpdater.GetFullStateString();
+        }
+
+        public void RefreshSkinUpdates()
+        {
+            WeaponSkinsUpdater.RefreshUpdates(onRefreshSkinUpdates);
+            m_UpdateSkinsButton.interactable = false;
+            RefreshSkinUpdatesText();
+        }
+
+        private void onRefreshSkinUpdates()
+        {
+            m_UpdateSkinsButton.interactable = true;
+            RefreshSkinUpdatesText();
         }
 
         public void RefreshDefaultSkinButton()

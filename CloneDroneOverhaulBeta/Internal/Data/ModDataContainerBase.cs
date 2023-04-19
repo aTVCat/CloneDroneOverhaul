@@ -45,10 +45,10 @@ namespace CDOverhaul
             OnPostSave();
         }
 
-        public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null) where T : OverhaulDataBase
+        public static T GetData<T>(string fileName, bool useModFolder = false, string modFolderName = null, bool ignoreLoaded = false) where T : OverhaulDataBase
         {
             bool containsKey = m_CachedDatas.ContainsKey(fileName);
-            if (containsKey)
+            if (containsKey && !ignoreLoaded)
             {
                 return (T)m_CachedDatas[fileName];
             }
@@ -58,6 +58,10 @@ namespace CDOverhaul
             if (!containsKey)
             {
                 m_CachedDatas.Add(fileName, data);
+            }
+            else
+            {
+                m_CachedDatas[fileName] = data;
             }
 
             return data;

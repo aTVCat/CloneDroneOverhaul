@@ -422,6 +422,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsEditor.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
+    <Compile Include="Graphics\Environment\Skyboxes\SkyboxOverhaulController.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />

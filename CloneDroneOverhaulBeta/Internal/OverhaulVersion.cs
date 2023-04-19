@@ -32,7 +32,7 @@ namespace CDOverhaul
         /// Enable 0.3 June demo Update things
         /// </summary>
         public const bool Upd3JunePreview = false;
-        public const bool Upd2Hotfix = false;
+        public const bool Upd2Hotfix = true;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

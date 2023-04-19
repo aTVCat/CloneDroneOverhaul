@@ -1,4 +1,5 @@
 ﻿using ModLibrary;
+using System.IO;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -26,6 +27,8 @@ namespace CDOverhaul
 
         public const string ModAssetBundle_CombatUpdate = "overhaulassets_combatupdatestuff";
 
+        public const string ModAssetBundle_Skyboxes = "overhaulassets_skyboxes";
+
         /// <summary>
         /// Get an asset from bundle
         /// </summary>
@@ -36,6 +39,22 @@ namespace CDOverhaul
         {
             GameObject result = GetAsset<GameObject>(assetName, assetBundlePart);
             return result;
+        }
+
+        public static bool TryGetAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart, out T asset) where T : UnityEngine.Object
+        {
+            try
+            {
+                asset = GetAsset<T>(assetName, assetBundlePart);
+                return true;
+            }
+            catch
+            {
+                asset = null;
+                return false;
+            }
+
+            return false;
         }
 
         public static T GetAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
@@ -70,6 +89,9 @@ namespace CDOverhaul
                 case OverhaulAssetsPart.Combat_Update:
                     assetBundle = ModAssetBundle_CombatUpdate;
                     break;
+                case OverhaulAssetsPart.Skyboxes:
+                    assetBundle = ModAssetBundle_Skyboxes;
+                    break;
             }
             T result = AssetLoader.GetObjectFromFile<T>(assetBundle, assetName);
             return result;
@@ -84,6 +106,17 @@ namespace CDOverhaul
         public static void PreloadAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             _ = GetAsset<T>(assetName, assetBundlePart);
+        }
+
+        /// <summary>
+        /// Check if user has specific asset bundle (or even file) on disk
+        /// </summary>
+        /// <param name="assetBundleFileName"></param>
+        /// <returns></returns>
+        public static bool HasAssetBundle(in string assetBundleFileName)
+        {
+            string path = OverhaulMod.Core.ModDirectory + assetBundleFileName;
+            return File.Exists(path);
         }
     }
 }

@@ -11,6 +11,7 @@
         Sounds,
         Main,
         Arena_Update,
-        Combat_Update
+        Combat_Update,
+        Skyboxes,
     }
 }

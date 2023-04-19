@@ -18,7 +18,7 @@ namespace CDOverhaul
         /// <summary>
         /// Check if <see cref="GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
         /// </summary>
-        public static bool MayAddListeners => _globalEventManager != null && _events != null;
+        public static bool MayAddListeners => _globalEventManager != null;
         private static readonly List<EventEntry> _events = new List<EventEntry>();
 
         internal static void Initialize()

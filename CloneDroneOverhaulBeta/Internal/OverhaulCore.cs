@@ -75,6 +75,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<VoxelsController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
+            _ = OverhaulController.AddController<SkyboxOverhaulController>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();

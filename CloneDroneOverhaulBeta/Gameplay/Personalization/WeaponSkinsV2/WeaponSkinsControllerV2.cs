@@ -106,6 +106,8 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
+            CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", true);
+
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (m_WeaponSkins[i] == null)
@@ -1438,7 +1440,7 @@ namespace CDOverhaul.Gameplay
 
         public static string GetSkinsFileVersion()
         {
-            return AssetsController.GetAsset<TextAsset>("WeaponSkinsAssetBundleVersion", OverhaulAssetsPart.WeaponSkins).text;
+            return File.ReadAllText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt");
         }
 
         IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, ItemFilter filter)
