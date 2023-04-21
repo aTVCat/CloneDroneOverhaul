@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -37,7 +36,7 @@ namespace CDOverhaul.HUD
             }
 
             GameObject gm = base.gameObject;
-            if(gm.activeSelf == value)
+            if (gm.activeSelf == value)
             {
                 return;
             }

@@ -81,7 +81,7 @@ namespace CDOverhaul.Patches
             m_BackToLvlEditorButton.localPosition = new Vector3(0, -130, 0);
 
             m_SkipLevelButton = TransformUtils.FindChildRecursive(m_BG, "SkipWorkshopLevelButton") as RectTransform;
-            if(m_SkipLevelButton == null)
+            if (m_SkipLevelButton == null)
             {
                 SuccessfullyPatched = false;
                 return;

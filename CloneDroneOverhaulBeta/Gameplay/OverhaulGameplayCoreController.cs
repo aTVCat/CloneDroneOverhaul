@@ -65,13 +65,13 @@ namespace CDOverhaul.Gameplay
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if(!hasInitializedModel || firstPersonMover == null)
+            if (!hasInitializedModel || firstPersonMover == null)
             {
                 return;
             }
 
             Camera camera = firstPersonMover.GetPlayerCamera();
-            if(camera == null)
+            if (camera == null)
             {
                 return;
             }

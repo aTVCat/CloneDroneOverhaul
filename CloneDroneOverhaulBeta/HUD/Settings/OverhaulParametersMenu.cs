@@ -27,6 +27,7 @@ namespace CDOverhaul.HUD
         private Transform m_DescriptionTransform;
 
         private ScrollRect m_ScrollRect;
+        private ScrollRect m_CategoriesScrollRect;
         private CanvasGroup m_MainCanvasGroup;
         private bool m_IsPopulatingSettings;
 
@@ -58,6 +59,7 @@ namespace CDOverhaul.HUD
             m_DescriptionTransform = MyModdedObject.GetObject<Transform>(7);
             m_ScrollRect = MyModdedObject.GetObject<ScrollRect>(13);
             m_ScrollRect.movementType = ScrollRect.MovementType.Clamped;
+            m_CategoriesScrollRect = MyModdedObject.GetObject<ScrollRect>(17);
             MyModdedObject.GetObject<UnityEngine.UI.Button>(5).onClick.AddListener(Hide);
 
             m_MainCanvasGroup.alpha = 1f;
@@ -115,10 +117,12 @@ namespace CDOverhaul.HUD
             {
                 ShouldSelectShortcuts = false;
                 ParametersMenuCategoryButton.SetSelectedSpecific("Shortcuts");
+                m_CategoriesScrollRect.horizontalNormalizedPosition = 0f;
                 return;
             }
 
             ParametersMenuCategoryButton.SetSelectedSpecific("Graphics");
+            m_CategoriesScrollRect.horizontalNormalizedPosition = 1f;
         }
 
         public void Hide()

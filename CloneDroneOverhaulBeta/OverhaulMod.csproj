@@ -416,7 +416,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\VFXWeaponSkinSwitch.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\CustomWeaponSkinsData.cs" />
-    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Update\WeaponSkinsUpdater.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Updater\WeaponSkinsUpdater.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\WeaponSkinFireAnimator.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsEditor.cs" />
@@ -455,6 +455,7 @@
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
     <Compile Include="Internal\AssetsManagement\Network\OverhaulNetworkDownloadHandler.cs" />
     <Compile Include="Internal\AssetsManagement\Network\OverhaulNetworkController.cs" />
+    <Compile Include="Internal\ControllersManagement\OverhaulStaticEditor.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageCustomForcefield.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorPickableWeapon.cs" />
     <Compile Include="Internal\LevelEditor\Components\LevelEditorGarbageDropPoint.cs" />

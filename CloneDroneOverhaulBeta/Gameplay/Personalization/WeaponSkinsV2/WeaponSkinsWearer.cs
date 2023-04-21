@@ -172,7 +172,7 @@ namespace CDOverhaul.Gameplay
                     if (info.Type == WeaponType.Bow)
                     {
                         ModdedObject m = info.Model.GetComponent<ModdedObject>();
-                        if(m != null)
+                        if (m != null)
                         {
                             Destroy(m.GetObject<Transform>(0).gameObject);
                             Destroy(m.GetObject<Transform>(1).gameObject);
@@ -395,7 +395,7 @@ namespace CDOverhaul.Gameplay
                         ReplaceVoxelColor[] cols = part.GetComponents<ReplaceVoxelColor>();
                         if (!cols.IsNullOrEmpty())
                         {
-                            foreach(ReplaceVoxelColor col in cols)
+                            foreach (ReplaceVoxelColor col in cols)
                             {
                                 col.ReplaceColorOnStart = true;
                                 col.CallPrivateMethod("Start");

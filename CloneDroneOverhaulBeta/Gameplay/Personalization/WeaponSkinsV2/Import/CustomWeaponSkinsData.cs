@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay
@@ -13,7 +10,7 @@ namespace CDOverhaul.Gameplay
         public List<Dropdown.OptionData> GetOptions()
         {
             List<Dropdown.OptionData> result = new List<Dropdown.OptionData>();
-            foreach(WeaponSkinsImportedItemDefinition importedItem in AllCustomSkins)
+            foreach (WeaponSkinsImportedItemDefinition importedItem in AllCustomSkins)
             {
                 result.Add(new Dropdown.OptionData(importedItem.Name));
             }
@@ -22,7 +19,7 @@ namespace CDOverhaul.Gameplay
 
         public override void RepairFields()
         {
-            if(AllCustomSkins == null)
+            if (AllCustomSkins == null)
             {
                 AllCustomSkins = new List<WeaponSkinsImportedItemDefinition>();
                 SaveSkins();

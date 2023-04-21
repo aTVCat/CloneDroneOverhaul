@@ -1,11 +1,8 @@
 ﻿using CDOverhaul.NetworkAssets;
+using ModLibrary;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -30,6 +27,37 @@ namespace CDOverhaul.Gameplay
             get;
             private set;
         }
+
+        public static bool IsDownloadingUpdateFiles
+        {
+            get;
+            private set;
+        }
+
+        public static bool IsDownloadingSkinsVersionFile
+        {
+            get;
+            private set;
+        }
+
+        public static float GetUpdateFilesDownloadProgress()
+        {
+            if (IsDownloadingSkinsVersionFile && m_SkinsVersionFileDH != null)
+            {
+                return m_SkinsVersionFileDH.DonePercentage;
+            }
+
+            return !IsDownloadingUpdateFiles
+                ? 0f
+                : m_SkinsImportFileDH == null || m_SkinsAssetBundleFileDH == null
+                ? 1f
+                : (m_SkinsAssetBundleFileDH.DonePercentage + m_SkinsImportFileDH.DonePercentage) / 2;
+        }
+
+        public static float TimeUpdatesGotRefreshed = 0f;
+        public static float TimeToAllowUpdateRefreshing = 1f;
+        public static bool IsAbleToRefreshUpdates => WaitsToBeUpdated || Time.unscaledTime >= TimeToAllowUpdateRefreshing;
+        public static float CooldownFillAmount => !WaitsToBeUpdated ? 1f - Mathf.Clamp01((Time.unscaledTime - TimeUpdatesGotRefreshed) / (TimeToAllowUpdateRefreshing - TimeUpdatesGotRefreshed)) : 0f;
 
         private static OverhaulNetworkDownloadHandler m_SkinsVersionFileDH;
         private static OverhaulNetworkDownloadHandler m_SkinsImportFileDH;
@@ -67,6 +95,15 @@ namespace CDOverhaul.Gameplay
 
         public static void RefreshUpdates(Action onRefreshed)
         {
+            if (!IsAbleToRefreshUpdates)
+            {
+                onRefreshed?.Invoke();
+                return;
+            }
+            TimeUpdatesGotRefreshed = Time.unscaledTime;
+            TimeToAllowUpdateRefreshing = Time.unscaledTime + 10f;
+
+            IsDownloadingUpdateFiles = true;
             if (WaitsToBeUpdated && !UnableToCheck)
             {
                 m_OnEndedUpdatingSkins = onRefreshed;
@@ -75,6 +112,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
+            IsDownloadingSkinsVersionFile = true;
             UnityWebRequest.ClearCookieCache();
             Action action = new Action(onDownloadedSkinsVersionFile).Combine(onRefreshed);
             m_SkinsVersionFileDH = OverhaulNetworkController.DownloadFile(SkinsVersionFileAddress, action);
@@ -85,6 +123,7 @@ namespace CDOverhaul.Gameplay
             if (m_SkinsImportFileDH == null || m_SkinsImportFileDH.Error)
             {
                 UnableToCheck = true;
+                endUpdating(false);
                 return;
             }
 
@@ -94,11 +133,7 @@ namespace CDOverhaul.Gameplay
             if (!m_DownloadProgress.Contains(false) && m_OnEndedUpdatingSkins != null)
             {
                 File.WriteAllText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt", m_DownloadedVersionString);
-                m_OnEndedUpdatingSkins.Invoke();
-
-                WeaponSkinsController.ReloadAllModels();
-                HasUpdates = false;
-                WaitsToBeUpdated = false;
+                endUpdating();
             }
         }
 
@@ -107,20 +142,18 @@ namespace CDOverhaul.Gameplay
             if (m_SkinsAssetBundleFileDH == null || m_SkinsAssetBundleFileDH.Error)
             {
                 UnableToCheck = true;
+                endUpdating(false);
                 return;
             }
 
             m_DownloadProgress[0] = true;
+            AssetLoader.ClearCache();
             File.WriteAllBytes(OverhaulMod.Core.ModDirectory + "overhaulassets_skins", m_SkinsAssetBundleFileDH.DownloadedData);
 
             if (!m_DownloadProgress.Contains(false) && m_OnEndedUpdatingSkins != null)
             {
                 File.WriteAllText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt", m_DownloadedVersionString);
-                m_OnEndedUpdatingSkins.Invoke();
-
-                WeaponSkinsController.ReloadAllModels();
-                HasUpdates = false;
-                WaitsToBeUpdated = false;
+                endUpdating();
             }
         }
 
@@ -128,10 +161,13 @@ namespace CDOverhaul.Gameplay
         {
             HasUpdates = false;
             UnableToCheck = false;
+            IsDownloadingUpdateFiles = false;
+            IsDownloadingSkinsVersionFile = false;
 
             if (m_SkinsVersionFileDH == null || m_SkinsVersionFileDH.Error)
             {
                 UnableToCheck = true;
+                endUpdating(false);
                 return;
             }
             m_DownloadedVersionString = m_SkinsVersionFileDH.DownloadedText;
@@ -143,6 +179,24 @@ namespace CDOverhaul.Gameplay
             {
                 WaitsToBeUpdated = true;
             }
+        }
+
+        private static void endUpdating(bool success = true)
+        {
+            m_OnEndedUpdatingSkins?.Invoke();
+
+            IsDownloadingUpdateFiles = false;
+            if (!success)
+            {
+                return;
+            }
+
+            WeaponSkinsController.ReloadAllModels();
+            HasUpdates = false;
+            WaitsToBeUpdated = false;
+
+            m_DownloadProgress[0] = false;
+            m_DownloadProgress[1] = false;
         }
     }
 }

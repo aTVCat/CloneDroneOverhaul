@@ -22,6 +22,8 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
+        public static bool HasUpdatedSkins;
+
         public const string ATVCatDiscord = "A TVCat#9940";
         public const string TabiDiscord = "[₮₳฿ł]#4233";
         public const string CaptainMeowDiscord = "капитан кошачьих#7399";
@@ -101,12 +103,7 @@ namespace CDOverhaul.Gameplay
 
         public void ReImportCustomSkins()
         {
-            if(CustomSkinsData == null || CustomSkinsData.AllCustomSkins.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", true);
+            CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
 
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
@@ -122,7 +119,7 @@ namespace CDOverhaul.Gameplay
                 }
             }
 
-            foreach(WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
+            foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
                 AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName);
                 SetSkinDescription(null, customSkin.Description);
@@ -1418,7 +1415,9 @@ namespace CDOverhaul.Gameplay
                 yield break;
             }
 
+            WeaponSkinsController.HasUpdatedSkins = true;
             c.ReImportCustomSkins();
+            if (WeaponSkinsMenu.SkinsSelection != null) WeaponSkinsMenu.SkinsSelection.SetUpdateButtonInteractableState(false);
 
             int charactersReloaded = 0;
             List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();

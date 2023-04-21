@@ -1,9 +1,4 @@
 ﻿using OverhaulAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.Gameplay
 {
@@ -50,7 +45,7 @@ namespace CDOverhaul.Gameplay
         {
             WeaponSkinsImportedItemDefinition result = GetNew();
             WeaponSkinsController.CustomSkinsData.AllCustomSkins.Add(result);
-            if(save) WeaponSkinsController.CustomSkinsData.SaveSkins();
+            if (save) WeaponSkinsController.CustomSkinsData.SaveSkins();
             return result;
         }
 

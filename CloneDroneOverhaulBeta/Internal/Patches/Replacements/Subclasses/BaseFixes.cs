@@ -25,7 +25,7 @@ namespace CDOverhaul.Patches
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
 
-            if(m_OgUIFont == null) m_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
+            if (m_OgUIFont == null) m_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
             if (m_OgSubtitlesFont == null) m_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
             if (m_OgFontScale == -1f) m_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
@@ -62,7 +62,7 @@ namespace CDOverhaul.Patches
 
         public static void SetEnglishFont(bool piksielyPrst)
         {
-            if(LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
+            if (LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
             {
                 return;
             }

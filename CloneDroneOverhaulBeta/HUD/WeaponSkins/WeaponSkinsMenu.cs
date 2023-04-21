@@ -24,8 +24,11 @@ namespace CDOverhaul.HUD
             WeaponType.Spear
         };
 
+        private static bool m_HasRefreshedUpdates;
+
         private static float m_TimeToAllowChangingSkins = 0f;
         private static float m_TimeChangedSkins = 0f;
+
         public static float GetSkinChangeCooldown()
         {
             return 1f - Mathf.Clamp01((Time.unscaledTime - m_TimeChangedSkins) / (m_TimeToAllowChangingSkins - m_TimeChangedSkins));
@@ -74,6 +77,11 @@ namespace CDOverhaul.HUD
 
         private Button m_UpdateSkinsButton;
         private Text m_UpdateSkinsText;
+        private Image m_SkinsUpdateRefreshButtonCooldownFill;
+        public void SetUpdateButtonInteractableState(bool value)
+        {
+            m_UpdateSkinsButton.interactable = value;
+        }
 
         public bool IsOutfitSelection;
         public static WeaponSkinsMenu SkinsSelection;
@@ -125,6 +133,7 @@ namespace CDOverhaul.HUD
                 m_UpdateSkinsButton = m.GetObject<Button>(67);
                 m_UpdateSkinsButton.onClick.AddListener(RefreshSkinUpdates);
                 m_UpdateSkinsText = m.GetObject<Text>(68);
+                m_SkinsUpdateRefreshButtonCooldownFill = m.GetObject<Image>(69);
             }
 
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
@@ -635,7 +644,7 @@ namespace CDOverhaul.HUD
         public void SetOffsetValues()
         {
             ModelOffset offset = CurrentlyEditingOffset;
-            if(offset == null)
+            if (offset == null)
             {
                 return;
             }
@@ -667,12 +676,12 @@ namespace CDOverhaul.HUD
 
         public void EditOffset(bool fire, bool multiplayer)
         {
-            if(CurrentlyEditingItem == null)
+            if (CurrentlyEditingItem == null)
             {
                 return;
             }
 
-            if(!fire && !multiplayer)
+            if (!fire && !multiplayer)
             {
                 CurrentlyEditingOffset = CurrentlyEditingItem.SingleplayerLaserModelOffset;
             }
@@ -695,14 +704,14 @@ namespace CDOverhaul.HUD
         public void CopyVectorFromSkinModel(byte index)
         {
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if(player == null || player.GetComponent<WeaponSkinsWearer>() == null)
+            if (player == null || player.GetComponent<WeaponSkinsWearer>() == null)
             {
                 return;
             }
 
             WeaponSkinsWearer w = player.GetComponent<WeaponSkinsWearer>();
             Transform t = w.GetTransform();
-            if(t == null)
+            if (t == null)
             {
                 return;
             }
@@ -853,6 +862,14 @@ namespace CDOverhaul.HUD
             RefreshSkinUpdatesText();
             MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
+            m_RefreshDatabaseButton.interactable = OverhaulVersion.IsDebugBuild;
+            m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+
+            if (!m_HasRefreshedUpdates)
+            {
+                m_HasRefreshedUpdates = true;
+                RefreshSkinUpdates();
+            }
         }
 
         public void RefreshSkinUpdatesText()
@@ -863,6 +880,11 @@ namespace CDOverhaul.HUD
 
         public void RefreshSkinUpdates()
         {
+            if (!WeaponSkinsUpdater.IsAbleToRefreshUpdates)
+            {
+                return;
+            }
+
             WeaponSkinsUpdater.RefreshUpdates(onRefreshSkinUpdates);
             m_UpdateSkinsButton.interactable = false;
             RefreshSkinUpdatesText();
@@ -870,7 +892,7 @@ namespace CDOverhaul.HUD
 
         private void onRefreshSkinUpdates()
         {
-            m_UpdateSkinsButton.interactable = true;
+            m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
             RefreshSkinUpdatesText();
         }
 
@@ -1275,6 +1297,7 @@ namespace CDOverhaul.HUD
                 SetMenuActive(false);
             }
             if (m_LoadIndicatorTransform != null) m_LoadIndicatorTransform.gameObject.SetActive(IsPopulatingSkins);
+            if (m_SkinsUpdateRefreshButtonCooldownFill != null) m_SkinsUpdateRefreshButtonCooldownFill.fillAmount = WeaponSkinsUpdater.IsDownloadingUpdateFiles ? WeaponSkinsUpdater.GetUpdateFilesDownloadProgress() : (m_UpdateSkinsButton.interactable ? WeaponSkinsUpdater.CooldownFillAmount : 0f);
         }
     }
 }

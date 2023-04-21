@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -24,6 +23,11 @@ namespace CDOverhaul.Graphics
 
         public void RefreshSkyboxes()
         {
+            if (OverhaulVersion.Upd2Hotfix)
+            {
+                return;
+            }
+
             int listLengthBefore = SkyBoxManager.Instance.LevelConfigurableSkyboxes.Length;
             if (!m_HasEverAddedSkyboxes)
             {
@@ -31,7 +35,7 @@ namespace CDOverhaul.Graphics
                 m_InitialSkyboxesCount = listLengthBefore;
             }
 
-            if(!Equals(m_InitialSkyboxesCount, listLengthBefore))
+            if (!Equals(m_InitialSkyboxesCount, listLengthBefore))
             {
                 return;
             }
@@ -39,7 +43,7 @@ namespace CDOverhaul.Graphics
             if (!AssetsController.HasAssetBundle("overhaulassets_skyboxes"))
             {
                 List<Material> listDef = SkyBoxManager.Instance.LevelConfigurableSkyboxes.ToList();
-                for(int i = 0; i < m_Materials.Length; i++)
+                for (int i = 0; i < m_Materials.Length; i++)
                 {
                     listDef.Add(new Material(SkyBoxManager.Instance.LevelConfigurableSkyboxes[0]) { name = "MISSING: " + m_Materials[i] });
                 }
@@ -50,7 +54,7 @@ namespace CDOverhaul.Graphics
             List<Material> list = SkyBoxManager.Instance.LevelConfigurableSkyboxes.ToList();
             for (int i = 0; i < m_Materials.Length; i++)
             {
-                if(!AssetsController.TryGetAsset<Material>(m_Materials[i], OverhaulAssetsPart.Skyboxes, out Material skybox))
+                if (!AssetsController.TryGetAsset<Material>(m_Materials[i], OverhaulAssetsPart.Skyboxes, out Material skybox))
                 {
                     list.Add(new Material(SkyBoxManager.Instance.LevelConfigurableSkyboxes[0]) { name = "MISSING: " + m_Materials[i] });
                     continue;

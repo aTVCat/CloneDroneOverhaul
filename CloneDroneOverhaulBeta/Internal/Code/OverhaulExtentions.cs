@@ -103,8 +103,8 @@ namespace CDOverhaul
                 return false;
             }
 
-            _ = GameModeManager.IsMultiplayer();
-            shouldNotPlaySound = false;//!m || (m && !mover.IsOnGroundServer());
+            bool m = GameModeManager.IsMultiplayer();
+            shouldNotPlaySound = mover.GetPrivateField<Vector3>("_velocity").y < -1.5f;
 
             EnemyType type = mover.CharacterType;
             shouldUseLowerPitchValues = type == EnemyType.EmperorCombat || type == EnemyType.EmperorNonCombat;

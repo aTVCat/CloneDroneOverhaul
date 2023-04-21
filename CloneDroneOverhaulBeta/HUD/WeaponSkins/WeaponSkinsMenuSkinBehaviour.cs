@@ -193,7 +193,7 @@ namespace CDOverhaul.HUD
                     break;
             }
 
-            if(WeaponSkinsEditor.EditorEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
+            if (WeaponSkinsEditor.EditorEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
             {
                 SetSelected(true, true);
             }
@@ -271,7 +271,7 @@ namespace CDOverhaul.HUD
         public void OnPointerClick(PointerEventData eventData)
         {
             bool shiftPress = Input.GetKey(KeyCode.LeftShift);
-            if(m_Button != null && m_Button.interactable)
+            if (m_Button != null && m_Button.interactable)
             {
                 if (WeaponSkinsEditor.EditorEnabled && shiftPress)
                 {
