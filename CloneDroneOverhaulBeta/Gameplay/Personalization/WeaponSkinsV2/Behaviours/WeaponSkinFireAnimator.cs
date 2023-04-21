@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay
         private Renderer m_Renderer;
         private Material m_Material;
 
-        public Color TargetColor;
+        public Color TargetColor = Color.white;
         private const string Emission = "_EmissionColor";
 
         public override void Awake()
@@ -80,6 +80,11 @@ namespace CDOverhaul.Gameplay
 
         public override void OnSetColor(Color color)
         {
+            if(color == Color.clear)
+            {
+                TargetColor = Color.white;
+                return;
+            }
             TargetColor = color;
         }
     }
