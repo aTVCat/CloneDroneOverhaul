@@ -53,6 +53,21 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
         public static int AOSampleCount;
 
+        [OverhaulSetting("Graphics.Amplify color.Apply \"Film bright\" preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
+        public static SettingEventDispatcher ApplyAmplifyColorPreset1 = new SettingEventDispatcher();
+        [OverhaulSetting("Graphics.Amplify color.Apply \"Film dark\" preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
+        public static SettingEventDispatcher ApplyAmplifyColorPreset2 = new SettingEventDispatcher();
+        [OverhaulSetting("Graphics.Amplify color.Apply default preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
+        public static SettingEventDispatcher ApplyAmplifyColorPresetDefault = new SettingEventDispatcher();
+        [SettingDropdownParameters("Default@More Blend@More Exposure@More B+E@Less Blend@Less Exposure@Less B+E@+B -E@-B +E")]
+        [OverhaulSettingAttribute("Graphics.Amplify color.Amplify color preset", 0, false)]
+        public static int AmplifyColorMode;
+        [SettingDropdownParameters("Disabled@Photographic@FilmicACES")]
+        [OverhaulSettingAttribute("Graphics.Amplify color.Tonemapper", 0, false)]
+        public static int AmplifyColorTonemapper;
+        [OverhaulSettingAttribute("Graphics.Amplify color.Enable depth mask usage", false, false)]
+        public static bool AmplifyColorUseDepthMask;
+
         #endregion
 
         #region Some stuff
@@ -110,7 +125,45 @@ namespace CDOverhaul.Graphics
                     SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
                     BloomThreshold = 0.9f;
                     SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
-                    OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
+
+                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    if (menu != null && menu.gameObject.activeSelf)
+                    {
+                        menu.PopulateCategory(menu.SelectedCategory, true);
+                    }
+                };
+
+                ApplyAmplifyColorPreset1.EventAction = delegate
+                {
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 5);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 2);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
+
+                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    if (menu != null && menu.gameObject.activeSelf)
+                    {
+                        menu.PopulateCategory(menu.SelectedCategory, true);
+                    }
+                };
+
+                ApplyAmplifyColorPreset2.EventAction = delegate
+                {
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 2);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 1);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), true);
+
+                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    if (menu != null && menu.gameObject.activeSelf)
+                    {
+                        menu.PopulateCategory(menu.SelectedCategory, true);
+                    }
+                };
+
+                ApplyAmplifyColorPresetDefault.EventAction = delegate
+                {
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 0);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 0);
+                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
@@ -130,6 +183,7 @@ namespace CDOverhaul.Graphics
             if (!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
+            PatchAmplifyColor(camera.GetComponent<AmplifyColorBase>());
             refreshAmplifyOcclusionOnCamera(camera);
             addShaderPassesToCamera(camera);
             refreshShaderMaterials();
@@ -150,6 +204,98 @@ namespace CDOverhaul.Graphics
             //bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
             if (!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
             if (!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
+        }
+
+        public static void PatchAmplifyColor(AmplifyColorBase effect)
+        {
+            if(effect == null)
+            {
+                return;
+            }
+
+            effect.UseDepthMask = AmplifyColorUseDepthMask;
+            switch (AmplifyColorTonemapper)
+            {
+                case 0:
+                    effect.Tonemapper = AmplifyColor.Tonemapping.Disabled;
+                    break;
+                case 1:
+                    effect.Tonemapper = AmplifyColor.Tonemapping.Photographic;
+                    break;
+                case 2:
+                    effect.Tonemapper = AmplifyColor.Tonemapping.FilmicACES;
+                    break;
+            }
+            PatchAmplifyColorMode(effect);
+        }
+
+        public static void PatchAmplifyColorMode(AmplifyColorBase effect)
+        {
+            if (effect == null)
+            {
+                return;
+            }
+            LevelLightSettings activeLightSettings = null;
+            if (LevelEditorLightManager.Instance != null)
+            {
+                activeLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
+                if (activeLightSettings != null)
+                {
+                    effect.Exposure = activeLightSettings.CameraExposure;
+                    effect.BlendAmount = 1f - activeLightSettings.CameraColorBlend;
+                }
+            }
+
+            switch (AmplifyColorMode)
+            {
+                case 1:
+                    effect.BlendAmount = 1f;
+                    break;
+                case 2:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = activeLightSettings.CameraExposure + 0.2f;
+                    }
+                    break;
+                case 3:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = activeLightSettings.CameraExposure + 0.2f;
+                    }
+                    effect.BlendAmount = 1f;
+                    break;
+
+                case 4:
+                    effect.BlendAmount = 0f;
+                    break;
+                case 5:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = Math.Max(activeLightSettings.CameraExposure - 0.2f, 0f);
+                    }
+                    break;
+                case 6:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = Math.Max(activeLightSettings.CameraExposure - 0.2f, 0f);
+                    }
+                    effect.BlendAmount = 0f;
+                    break;
+                case 7:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = Math.Max(activeLightSettings.CameraExposure - 0.2f, 0f);
+                    }
+                    effect.BlendAmount = 1f;
+                    break;
+                case 8:
+                    if (activeLightSettings != null)
+                    {
+                        effect.Exposure = activeLightSettings.CameraExposure + 0.2f;
+                    }
+                    effect.BlendAmount = 0f;
+                    break;
+            }
         }
 
         private static void addShaderPassesToCamera(Camera camera)

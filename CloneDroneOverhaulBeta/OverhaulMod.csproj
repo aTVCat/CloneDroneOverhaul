@@ -475,6 +475,7 @@
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
+    <Compile Include="Internal\Patches\AmplifyColorSwapper_Patch.cs" />
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\SettingEventDispatcher.cs" />
     <Compile Include="Internal\Settings\SubClasses\SettingForceInputField.cs" />
