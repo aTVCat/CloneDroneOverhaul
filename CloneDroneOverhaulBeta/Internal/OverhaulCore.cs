@@ -3,6 +3,7 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
+using CDOverhaul.NetworkAssets.AdditionalContent;
 using CDOverhaul.Patches;
 using System;
 using System.IO;
@@ -76,6 +77,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
             _ = OverhaulController.AddController<SkyboxOverhaulController>();
+            _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();
@@ -101,7 +103,7 @@ namespace CDOverhaul
 
         public static string ReadTextFile(string filePath)
         {
-            string path = OverhaulMod.Core.ModDirectory + filePath;
+            string path = filePath.Contains(OverhaulMod.Core.ModDirectory) ? filePath : OverhaulMod.Core.ModDirectory + filePath;
             bool fileExists = File.Exists(path);
             if (!fileExists)
             {

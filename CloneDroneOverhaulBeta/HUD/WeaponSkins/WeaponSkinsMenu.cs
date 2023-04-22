@@ -823,7 +823,6 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            TransformUtils.DestroyAllChildren(GetContainer(true));
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null && mover.HasCharacterModel())
             {
@@ -864,6 +863,9 @@ namespace CDOverhaul.HUD
             PopulateWeapons();
             m_RefreshDatabaseButton.interactable = OverhaulVersion.IsDebugBuild;
             m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+
+            Transform container = GetContainer(true);
+            if (container != null) TransformUtils.DestroyAllChildren(container);
 
             if (!m_HasRefreshedUpdates)
             {

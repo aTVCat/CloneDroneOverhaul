@@ -427,6 +427,7 @@
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
+    <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUI.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PhotoMode\OverhaulPhotoModeControls.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
@@ -453,6 +454,9 @@
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuSkinBehaviour.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
+    <Compile Include="Internal\AssetsManagement\AdditionalContent\OverhaulAdditionalContentUserData.cs" />
+    <Compile Include="Internal\AssetsManagement\AdditionalContent\OverhaulAdditionalContentController.cs" />
+    <Compile Include="Internal\AssetsManagement\AdditionalContent\OverhaulAdditionalContentPackInfo.cs" />
     <Compile Include="Internal\AssetsManagement\Network\OverhaulNetworkDownloadHandler.cs" />
     <Compile Include="Internal\AssetsManagement\Network\OverhaulNetworkController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulStaticEditor.cs" />

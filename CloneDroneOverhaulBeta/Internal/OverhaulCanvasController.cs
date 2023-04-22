@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Localization;
+using CDOverhaul.NetworkAssets.AdditionalContent;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,6 +58,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
+            _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

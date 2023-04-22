@@ -1,4 +1,7 @@
 ﻿using ModLibrary;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -28,6 +31,129 @@ namespace CDOverhaul
         public const string ModAssetBundle_CombatUpdate = "overhaulassets_combatupdatestuff";
 
         public const string ModAssetBundle_Skyboxes = "overhaulassets_skyboxes";
+
+        #region Manually controller asset bundles
+
+        public static bool LoadingAssetBundle => m_CurrentCreateRequest != null;
+        public static float LoadingProgress
+        {
+            get
+            {
+                if(m_CurrentCreateRequest == null)
+                {
+                    return 0f;
+                }
+                return m_CurrentCreateRequest.progress;
+            }
+        }
+        private static AssetBundleCreateRequest m_CurrentCreateRequest;
+
+        private static readonly Dictionary<string, AssetBundle> m_LoadedAssetBundles = new Dictionary<string, AssetBundle>();
+
+        public static void TryLoadAssetBundle(in string pathUnderModFolder)
+        {
+            try
+            {
+                if (!checkPath(pathUnderModFolder, out string assetBundleFilename, out string assetBundlePath))
+                {
+                    return;
+                }
+
+                var loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+                m_LoadedAssetBundles.Add(assetBundleFilename, loadedAssetBundle);
+            }
+            catch
+            {
+                // todo: catch
+            }
+        }
+
+        public static void LoadAssetBundleAsync(in string pathUnderModFolder, Action<AssetBundle> onComplete)
+        {
+            if (LoadingAssetBundle || !checkPath(pathUnderModFolder, out string assetBundleFilename, out string assetBundlePath))
+            {
+                return;
+            }
+
+            StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleCoroutine(assetBundlePath, assetBundleFilename, onComplete));
+        }
+
+        private static IEnumerator loadAssetBundleCoroutine(string path, string fileName, Action<AssetBundle> onComplete)
+        {
+            m_CurrentCreateRequest = AssetBundle.LoadFromFileAsync(path);
+
+            yield return m_CurrentCreateRequest;
+            while (!m_CurrentCreateRequest.isDone)
+            {
+                yield return null;
+            }
+
+            var loadedAssetBundle = m_CurrentCreateRequest.assetBundle;
+            m_LoadedAssetBundles.Add(fileName, loadedAssetBundle);
+            if(onComplete != null) onComplete(loadedAssetBundle);
+            m_CurrentCreateRequest = null;
+            yield break;
+        }
+
+        public static void TryUnloadAssetBundle(in string pathUnderModFolder, in bool unloadObjects = false)
+        {
+            try
+            {
+                string filename = getAssetBundleFilename(pathUnderModFolder);
+                if (!HasLoadedAssetBundle(filename))
+                {
+                    return;
+                }
+
+                AssetBundle bundleToUnload = m_LoadedAssetBundles[filename];
+                bundleToUnload.Unload(unloadObjects);
+                m_LoadedAssetBundles.Remove(filename);
+            }
+            catch
+            {
+                // todo: catch
+            }
+        }
+
+        public static bool HasLoadedAssetBundle(in string assetBundleName)
+        {
+            return m_LoadedAssetBundles.ContainsKey(assetBundleName);
+        }
+
+        private static bool checkPath(in string pathUnderModFolder, out string assetBundleFilename, out string assetBundlePath)
+        {
+            if (string.IsNullOrEmpty(pathUnderModFolder))
+            {
+                assetBundleFilename = string.Empty;
+                assetBundlePath = string.Empty;
+                return false;
+            }
+
+            assetBundlePath = OverhaulMod.Core.ModDirectory + pathUnderModFolder;
+            assetBundleFilename = getAssetBundleFilename(assetBundlePath);
+            if (HasLoadedAssetBundle(assetBundleFilename))
+            {
+                return false;
+            }
+
+            if (!File.Exists(assetBundlePath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static string getAssetBundleFilename(in string path)
+        {
+            if (!string.IsNullOrEmpty(path) && !path.Contains("/") && !path.Contains("\\"))
+            {
+                return path;
+            }
+            return path.Substring(path.LastIndexOf('/') + 1);
+        }
+
+        #endregion
 
         /// <summary>
         /// Get an asset from bundle
@@ -117,6 +243,16 @@ namespace CDOverhaul
         {
             string path = OverhaulMod.Core.ModDirectory + assetBundleFileName;
             return File.Exists(path);
+        }
+
+        public static bool IsManuallyControlledAssetBundle(in OverhaulAssetsPart assetBundlePart)
+        {
+            switch (assetBundlePart)
+            {
+                case OverhaulAssetsPart.Skyboxes:
+                    return true;
+            }
+            return false;
         }
     }
 }
