@@ -1,0 +1,23 @@
+{
+  "PackName": "Realistic skyboxes",
+  "PackDescription": "This pack is under construction.",
+  "PackID": "c8667866-8688-4f45-93ac-90c708070e8d",
+  "PackType": 0,
+  "PackVersion": {
+    "Major": 0,
+    "Minor": 2,
+    "Build": 10,
+    "Revision": 30,
+    "MajorRevision": 0,
+    "MinorRevision": 30
+  },
+  "MinModVersionRequired": {
+    "Major": 0,
+    "Minor": 2,
+    "Build": 10,
+    "Revision": 30,
+    "MajorRevision": 0,
+    "MinorRevision": 30
+  },
+  "AssetBundles": null
+}

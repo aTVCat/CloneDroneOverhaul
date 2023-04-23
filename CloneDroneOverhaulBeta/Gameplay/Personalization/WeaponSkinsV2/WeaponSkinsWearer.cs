@@ -75,6 +75,7 @@ namespace CDOverhaul.Gameplay
             b.OnDeath();
         }
 
+
         private void onGetData(Hashtable hash)
         {
             IsMultiplayerControlled = true;
@@ -304,11 +305,25 @@ namespace CDOverhaul.Gameplay
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
             if (newModel != null)
             {
-                Transform spawnedModel = Instantiate(newModel.Model, weaponModel.transform).transform;
+                bool reparented = false;
+                Transform toParent = weaponModel.transform;
+                if (!string.IsNullOrEmpty(itemDefinition.ReparentToBodypart))
+                {
+                    toParent = TransformUtils.FindChildRecursive(Owner.GetCharacterModel().transform, itemDefinition.ReparentToBodypart);
+                    if(toParent == null)
+                    {
+                        SetDefaultModelsVisible(true, weaponModel);
+                        return;
+                    }
+                    reparented = true;
+                }
+
+                Transform spawnedModel = Instantiate(newModel.Model, toParent).transform;
                 spawnedModel.localPosition = newModel.Offset.OffsetPosition;
                 spawnedModel.localEulerAngles = newModel.Offset.OffsetEulerAngles;
                 spawnedModel.localScale = newModel.Offset.OffsetLocalScale;
                 spawnedModel.gameObject.layer = Layers.BodyPart;
+                spawnedModel.gameObject.SetActive(!reparented);
 
                 bool shouldApplyFavouriteColor = (fire && !itemDefinition.DontUseCustomColorsWhenFire) || (!fire && !itemDefinition.DontUseCustomColorsWhenNormal);
                 if (shouldApplyFavouriteColor)
@@ -333,7 +348,8 @@ namespace CDOverhaul.Gameplay
                 {
                     Model = spawnedModel.gameObject,
                     Type = item.GetWeaponType(),
-                    Variant = variant
+                    Variant = variant,
+                    IsReparented = reparented
                 };
                 WeaponSkins.Add(item, newInfo);
 
@@ -455,10 +471,23 @@ namespace CDOverhaul.Gameplay
             return false;
         }
 
-#if DEBUG
-
         private void Update()
         {
+            if (Owner != null && !WeaponSkins.IsNullOrEmpty())
+            {
+                if (Time.frameCount % 3 == 0)
+                {
+                    foreach (WeaponSkinSpawnInfo info in WeaponSkins.Values)
+                    {
+                        if (info != null && info.IsReparented && info.Model != null)
+                        {
+                            info.Model.SetActive(Owner.GetEquippedWeaponType() == info.Type);
+                        }
+                    }
+                }
+            }
+
+#if DEBUG
             if (!IsOwnerMainPlayer())
             {
                 return;
@@ -491,8 +520,9 @@ namespace CDOverhaul.Gameplay
                 }
                 CopyVector(model.localScale);
             }
-        }
 #endif
+        }
+
         public void CopyVector(Vector3 vector)
         {
             string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";

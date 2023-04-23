@@ -19,12 +19,29 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             "Archives"
         };
 
+        public static readonly List<OverhaulAdditionalContentPackInfo> AllContent = new List<OverhaulAdditionalContentPackInfo>();
+        public static OverhaulAdditionalContentUserData UserData;
+
         public override void Initialize()
         {
+            if(UserData == null)
+            {
+                UserData = OverhaulDataBase.GetData<OverhaulAdditionalContentUserData>("OverhaulUserAdditContentData");
+            }
+
             if (string.IsNullOrEmpty(m_CachedAdditionalContentPath))
             {
                 m_CachedAdditionalContentPath = OverhaulMod.Core.ModDirectory + AdditionalContentDirectoryName + "/";
             }
+            ReloadContent();
+        }
+
+        // todo: expand functionality, add coroutines
+        public void ReloadContent()
+        {
+            // todo: unload content 
+            AllContent.Clear();
+            AllContent.AddRange(GetAllInstalledContent());
         }
 
         #region Content detection

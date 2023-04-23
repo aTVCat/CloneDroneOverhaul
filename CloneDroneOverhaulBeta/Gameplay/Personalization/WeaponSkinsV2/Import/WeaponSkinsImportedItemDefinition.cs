@@ -1,4 +1,5 @@
 ﻿using OverhaulAPI;
+using System;
 
 namespace CDOverhaul.Gameplay
 {
@@ -49,6 +50,11 @@ namespace CDOverhaul.Gameplay
             return result;
         }
 
+        public bool CanBeAdded()
+        {
+            return MinVersion == null || OverhaulVersion.ModVersion >= MinVersion;
+        }
+
         public string Name;
         public string Description;
 
@@ -70,6 +76,9 @@ namespace CDOverhaul.Gameplay
 
         public float Multiplier;
         public float Saturation;
+
+        public string ParentTo;
+        public Version MinVersion;
 
         public string SingleplayerLaserModelName;
         public ModelOffset SingleplayerLaserModelOffset;

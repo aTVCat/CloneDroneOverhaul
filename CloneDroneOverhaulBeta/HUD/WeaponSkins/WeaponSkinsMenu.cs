@@ -3,6 +3,7 @@ using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Patches;
 using OverhaulAPI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -296,6 +297,9 @@ namespace CDOverhaul.HUD
         private InputField m_MPFireModelField;
         private Button m_MPFireModelOffsetButton;
 
+        private InputField m_ParentToField;
+        private InputField m_MinVersionField;
+
         private InputField[] m_PositionFields;
         private Button m_CopyPositionFromSpawnedSkinButton;
         private InputField[] m_RotationFields;
@@ -351,6 +355,9 @@ namespace CDOverhaul.HUD
                 m_SPFireModelField = MyModdedObject.GetObject<InputField>(44);
                 m_MPLaserModelField = MyModdedObject.GetObject<InputField>(46);
                 m_MPFireModelField = MyModdedObject.GetObject<InputField>(48);
+
+                m_ParentToField = MyModdedObject.GetObject<InputField>(70);
+                m_MinVersionField = MyModdedObject.GetObject<InputField>(71);
 
                 m_SPLaserModelOffsetButton = MyModdedObject.GetObject<Button>(43);
                 m_SPLaserModelOffsetButton.onClick.AddListener(delegate
@@ -476,6 +483,9 @@ namespace CDOverhaul.HUD
             m_ColorMultiplierField.text = CurrentlyEditingItem.Multiplier.ToString();
             m_ColorSaturationField.text = CurrentlyEditingItem.Saturation.ToString();
 
+            m_ParentToField.text = CurrentlyEditingItem.ParentTo;
+            m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.ModVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
+
             m_SPLaserModelField.text = CurrentlyEditingItem.SingleplayerLaserModelName;
             m_SPFireModelField.text = CurrentlyEditingItem.SingleplayerFireModelName;
             m_MPLaserModelField.text = CurrentlyEditingItem.MultiplayerLaserModelName;
@@ -541,7 +551,7 @@ namespace CDOverhaul.HUD
 
             bool skinUseFavColorWhenLaser = m_UseFavColorWhenLaserToggle.isOn;
             bool skinUseFavColorWhenFire = m_UseFavColorWhenFireToggle.isOn;
-            bool colorMultiplierConvertSuccessful = float.TryParse(m_ColorSaturationField.text, out float newColorMultiplier);
+            bool colorMultiplierConvertSuccessful = float.TryParse(m_ColorMultiplierField.text, out float newColorMultiplier);
             bool colorSaturationConvertSuccessful = float.TryParse(m_ColorSaturationField.text, out float newColorSaturation);
 
             bool useSpModelsInMp = m_UseSkinsInMultiplayerToggle.isOn;
@@ -567,6 +577,14 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.ApplySingleplayerModelInMultiplayer = useSpModelsInMp;
             CurrentlyEditingItem.IsDeveloperItem = isDevItem;
             CurrentlyEditingItem.AnimateFire = animateFire;
+
+            CurrentlyEditingItem.ParentTo = m_ParentToField.text;
+            bool successMinVersionParsing = Version.TryParse(m_MinVersionField.text, out Version minVersion);
+            if (!successMinVersionParsing)
+            {
+                minVersion = (Version)OverhaulVersion.ModVersion.Clone();
+            }
+            CurrentlyEditingItem.MinVersion = minVersion;
 
             bool hasSPLaserModel = true;
             try

@@ -9,9 +9,14 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         private Button m_BrowseContentButton;
         private Transform m_ContentBrowserPage;
-
         private Button m_ViewInstalledContentButton;
         private Transform m_InstalledContentPage;
+
+        private ModdedObject m_ContentPackEntryPrefab;
+        private Transform m_ContentPackContainer;
+
+        private OverhaulAdditionalContentController m_Controller;
+        private byte m_CurrentPage;
 
         public override void Initialize()
         {
@@ -26,6 +31,10 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             m_BrowseContentButton = MyModdedObject.GetObject<Button>(3);
             m_BrowseContentButton.onClick.AddListener(OnBrowseContentClicked);
             m_ContentBrowserPage = MyModdedObject.GetObject<Transform>(4);
+
+            m_ContentPackEntryPrefab = MyModdedObject.GetObject<ModdedObject>(5);
+            m_ContentPackEntryPrefab.gameObject.SetActive(false);
+            m_ContentPackContainer = MyModdedObject.GetObject<Transform>(6);
         }
 
         protected override void OnDisposed()
@@ -35,6 +44,8 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public void Show()
         {
+            m_Controller = GetController<OverhaulAdditionalContentController>();
+
             base.gameObject.SetActive(true);
             SetActivePageIndex(0);
         }
@@ -46,6 +57,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public void SetActivePageIndex(byte index)
         {
+            m_CurrentPage = index;
             m_InstalledContentPage.gameObject.SetActive(false);
             m_ContentBrowserPage.gameObject.SetActive(false);
 
@@ -57,6 +69,29 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
                 case 1:
                     m_ContentBrowserPage.gameObject.SetActive(true);
                     break;
+            }
+
+            PopulatePage();
+        }
+
+        public void PopulatePage()
+        {
+            if (m_Controller == null)
+            {
+                return;
+            }
+
+            TransformUtils.DestroyAllChildren(m_ContentPackContainer);
+            if(m_CurrentPage == 0)
+            {
+                foreach(OverhaulAdditionalContentPackInfo info in OverhaulAdditionalContentController.AllContent)
+                {
+                    ModdedObject obj = Instantiate(m_ContentPackEntryPrefab, m_ContentPackContainer);
+                    obj.gameObject.AddComponent<OverhaulAdditionalContentUIEntry>().Initialize(info);
+                    obj.gameObject.SetActive(true);
+                    obj.GetObject<Text>(0).text = info.PackName;
+                    obj.GetObject<Text>(1).text = info.PackDescription;
+                }
             }
         }
 

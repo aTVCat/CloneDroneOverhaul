@@ -121,6 +121,11 @@ namespace CDOverhaul.Gameplay
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
+                if (!customSkin.CanBeAdded())
+                {
+                    continue;
+                }
+
                 AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName);
                 SetSkinDescription(null, customSkin.Description);
                 SetSkinColorParameters(customSkin.ApplyFavColorOnLaser, customSkin.ForcedFavColorLaserIndex, customSkin.ApplyFavColorOnFire, customSkin.ForcedFavColorFireIndex, customSkin.Saturation, customSkin.Multiplier, customSkin.AnimateFire);
@@ -132,6 +137,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(customSkin.MultiplayerFireModelOffset, true, true);
                 WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
                 item.IsImportedSkin = true;
+                item.ReparentToBodypart = customSkin.ParentTo;
             }
         }
 
@@ -1258,6 +1264,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 1.05f, 1.05f)), true, true);
                 SetSkinColorParameters(false, -1, false, -1, 0.75f);
                 SetSkinExclusiveQuick("FEA5A0978276D0FB 883CC7F4CA3155A3");
+                (m_WeaponSkins[m_WeaponSkins.Count-1] as WeaponSkinItemDefinitionV2).OverrideName = "Justice";
 
                 AddSkinQuick(WeaponType.Sword, "Smuggling", WaterDiscord, "SmugglingSword", "SmugglingSwordFire", "SmugglingSword", "SmugglingSwordFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
