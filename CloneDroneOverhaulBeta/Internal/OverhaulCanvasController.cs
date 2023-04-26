@@ -96,7 +96,6 @@ namespace CDOverhaul.HUD
             return null;
         }
 
-        /// Todo: test it
         public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
         {
             List<T> list = new List<T>();

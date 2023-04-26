@@ -42,12 +42,9 @@ namespace CDOverhaul.Gameplay
 
         public static float GetUpdateFilesDownloadProgress()
         {
-            if (IsDownloadingSkinsVersionFile && m_SkinsVersionFileDH != null)
-            {
-                return m_SkinsVersionFileDH.DonePercentage;
-            }
-
-            return !IsDownloadingUpdateFiles
+            return IsDownloadingSkinsVersionFile && m_SkinsVersionFileDH != null
+                ? m_SkinsVersionFileDH.DonePercentage
+                : !IsDownloadingUpdateFiles
                 ? 0f
                 : m_SkinsImportFileDH == null || m_SkinsAssetBundleFileDH == null
                 ? 1f

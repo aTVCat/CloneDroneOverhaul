@@ -54,7 +54,7 @@ namespace CDOverhaul.Patches
                 Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
             });
             moddedObject.GetObject<Button>(8).onClick.AddListener(OverhaulController.GetController<OverhaulAdditionalContentUI>().Show);
-            moddedObject.GetObject<Button>(8).interactable = !OverhaulVersion.IsDebugBuild;
+            moddedObject.GetObject<Button>(8).interactable = !OverhaulVersion.Upd2Hotfix;
             moddedObject.GetObject<Transform>(9).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             m_BugReportText = moddedObject.GetObject<Text>(7);
             m_SettingsText = moddedObject.GetObject<Text>(4);

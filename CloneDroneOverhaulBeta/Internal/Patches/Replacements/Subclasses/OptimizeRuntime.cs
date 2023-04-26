@@ -8,12 +8,14 @@ namespace CDOverhaul.Patches
     {
         [OverhaulSetting("Optimization.Unloading.Enable automatic garbage collector", true, false, "Unity engine usually cleans up memory automatically")]
         public static bool GarbageCollectorEnabled;
-
         [OverhaulSetting("Optimization.Unloading.Clear cache on level spawn", false, false, "Free some memory when new level is loaded")]
         public static bool DoCleanupOnLevelSpawn;
-
         [OverhaulSetting("Optimization.Unloading.Clear cache fully", false, false, "Free as much memory as possible when new level is loaded", null, null, "Optimization.Unloading.Clear cache on level spawn")]
         public static bool FullClean;
+
+        [SettingInforms(1)]
+        [OverhaulSetting("Optimization.Unloading.Reduce light sources count on scene", false, false)]
+        public static bool ReduceLightCount;
 
         public override void Replace()
         {

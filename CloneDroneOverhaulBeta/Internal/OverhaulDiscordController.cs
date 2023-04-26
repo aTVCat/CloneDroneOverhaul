@@ -35,6 +35,26 @@ namespace CDOverhaul
         /// </summary>
         public string CurrentGamemodeDetails { get; set; }
 
+        public long UserID
+        {
+            get
+            {
+                if (!SuccessfulInitialization)
+                {
+                    return 0;
+                }
+
+                UserManager m = m_Client.GetUserManager();
+                if(m == null)
+                {
+                    return 0;
+                }
+
+                User u = m.GetCurrentUser();
+                return u.Id;
+            }
+        }
+
         private float m_TimeLeftToRefresh;
 
         private float m_UnscaledTimeToInitializeDiscord;

@@ -85,6 +85,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
+            base.Initialize();
             m_Instance = this;
 
             m_PersonalizationButton = MyModdedObject.GetObject<Button>(0);
@@ -158,6 +159,25 @@ namespace CDOverhaul.HUD
         protected override void OnDisposed()
         {
             base.OnDisposed();
+        }
+
+        public override void OnModDeactivated()
+        {
+            try
+            {
+                if (GameUIRoot.Instance != null && GameUIRoot.Instance.EscMenu != null && base.gameObject.activeSelf && UseThisMenu)
+                {
+                    Hide();
+                    GameUIRoot.Instance.EscMenu.Show();
+                    GameUIRoot.Instance.EscMenu.gameObject.SetActive(true);
+                    GameUIRoot.Instance.RefreshCursorEnabled();
+                    TimeManager.Instance.OnGamePaused();
+                }
+            }
+            catch
+            {
+                return; // not really a cool way to resolve nullreferenceexc
+            }
         }
 
         public void AlignTransformY(Transform targetTransform, Transform transformToUse)

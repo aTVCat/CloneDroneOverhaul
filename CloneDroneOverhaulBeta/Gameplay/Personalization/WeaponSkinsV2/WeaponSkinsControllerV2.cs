@@ -23,6 +23,7 @@ namespace CDOverhaul.Gameplay
         }
 
         public static bool HasUpdatedSkins;
+        public static bool SkinsDataIsDirty;
 
         public const string ATVCatDiscord = "A TVCat#9940";
         public const string TabiDiscord = "[₮₳฿ł]#4233";
@@ -101,10 +102,9 @@ namespace CDOverhaul.Gameplay
             ApplySkinsOnCharacter(firstPersonMover);
         }
 
-        public void ReImportCustomSkins()
+        public void ReImportCustomSkins(bool reloadData = true)
         {
-            CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
-
+            if(reloadData) CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (m_WeaponSkins[i] == null)
@@ -126,7 +126,13 @@ namespace CDOverhaul.Gameplay
                     continue;
                 }
 
-                AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName);
+                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
+
+                AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName, assetBundle);
+                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+                item.IsImportedSkin = true;
+                item.ReparentToBodypart = customSkin.ParentTo;
+                item.OverrideAssetBundle = assetBundle;
                 SetSkinDescription(null, customSkin.Description);
                 SetSkinColorParameters(customSkin.ApplyFavColorOnLaser, customSkin.ForcedFavColorLaserIndex, customSkin.ApplyFavColorOnFire, customSkin.ForcedFavColorFireIndex, customSkin.Saturation, customSkin.Multiplier, customSkin.AnimateFire);
                 SetSkinExclusiveQuick(customSkin.OnlyAvailableFor);
@@ -135,9 +141,6 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(customSkin.SingleplayerFireModelOffset, true, false);
                 SetSkinModelOffsetQuick(customSkin.MultiplayerLaserModelOffset, false, true);
                 SetSkinModelOffsetQuick(customSkin.MultiplayerFireModelOffset, true, true);
-                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-                item.IsImportedSkin = true;
-                item.ReparentToBodypart = customSkin.ParentTo;
             }
         }
 
@@ -157,13 +160,14 @@ namespace CDOverhaul.Gameplay
             string singleplayerNormalModel = null,
             string singleplayerFireModel = null,
             string multiplayerNormalModel = null,
-            string multiplayerFireModel = null)
+            string multiplayerFireModel = null,
+            string assetBundle = AssetsController.ModAssetBundle_Skins)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
-            if (!string.IsNullOrEmpty(singleplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(singleplayerNormalModel, OverhaulAssetsPart.WeaponSkins), null, false, false);
-            if (!string.IsNullOrEmpty(singleplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(singleplayerFireModel, OverhaulAssetsPart.WeaponSkins), null, true, false);
-            if (!string.IsNullOrEmpty(multiplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(multiplayerNormalModel, OverhaulAssetsPart.WeaponSkins), null, false, true);
-            if (!string.IsNullOrEmpty(multiplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset(multiplayerFireModel, OverhaulAssetsPart.WeaponSkins), null, true, true);
+            if (!string.IsNullOrEmpty(singleplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
             skin.AuthorDiscord = author;
         }
 
@@ -1264,7 +1268,7 @@ namespace CDOverhaul.Gameplay
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(-0.015f, 0.01f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1.05f, 1.05f, 1.05f)), true, true);
                 SetSkinColorParameters(false, -1, false, -1, 0.75f);
                 SetSkinExclusiveQuick("FEA5A0978276D0FB 883CC7F4CA3155A3");
-                (m_WeaponSkins[m_WeaponSkins.Count-1] as WeaponSkinItemDefinitionV2).OverrideName = "Justice";
+                (m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2).OverrideName = "Justice";
 
                 AddSkinQuick(WeaponType.Sword, "Smuggling", WaterDiscord, "SmugglingSword", "SmugglingSwordFire", "SmugglingSword", "SmugglingSwordFire");
                 SetSkinModelOffsetQuick(new ModelOffset(new Vector3(0f, 0f, 0f), new Vector3(90f, 0f, 0f), new Vector3(1f, 1f, 1f)), false, false);
@@ -1352,7 +1356,7 @@ namespace CDOverhaul.Gameplay
 
         public static void ReloadAllModels()
         {
-            AssetLoader.ClearCache();
+            //AssetLoader.ClearCache();
             _ = StaticCoroutineRunner.StartStaticCoroutine(reloadAllModelsCoroutine());
         }
 
@@ -1366,6 +1370,38 @@ namespace CDOverhaul.Gameplay
             OverhaulLoadingScreen.Instance.SetScreenActive(true);
 
             yield return new WaitForSecondsRealtime(1f);
+
+            OverhaulLoadingScreen.Instance.SetScreenText("Getting skin files...");
+            List<string> allAssetBundles = new List<string>();
+            int skinsChecked = 0;
+            foreach(IWeaponSkinItemDefinition def in m_WeaponSkins)
+            {
+                string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
+                if (!allAssetBundles.Contains(assetBundle))
+                {
+                    allAssetBundles.Add(assetBundle);
+                }
+
+                skinsChecked++;
+                OverhaulLoadingScreen.Instance.SetScreenFill((float)skinsChecked / (float)m_WeaponSkins.Count);
+                yield return null;
+            }
+
+            OverhaulLoadingScreen.Instance.SetScreenText("Unloading skin files...");
+            OverhaulLoadingScreen.Instance.SetScreenFill(0f);
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            skinsChecked = 0;
+            foreach (string assetBundle in allAssetBundles)
+            {
+                AssetsController.TryUnloadAssetBundle(assetBundle, false);
+                skinsChecked++;
+                OverhaulLoadingScreen.Instance.SetScreenFill((float)skinsChecked / (float)allAssetBundles.Count);
+                yield return null;
+            }
+
+            OverhaulLoadingScreen.Instance.SetScreenText("Reloading models...");
+            yield return new WaitForSecondsRealtime(0.5f);
 
             foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
@@ -1424,7 +1460,7 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinsController.HasUpdatedSkins = true;
             c.ReImportCustomSkins();
-            if (WeaponSkinsMenu.SkinsSelection != null) WeaponSkinsMenu.SkinsSelection.SetUpdateButtonInteractableState(false);
+            //if (WeaponSkinsMenu.SkinsSelection != null) WeaponSkinsMenu.SkinsSelection.SetUpdateButtonInteractableState(false);
 
             int charactersReloaded = 0;
             List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();

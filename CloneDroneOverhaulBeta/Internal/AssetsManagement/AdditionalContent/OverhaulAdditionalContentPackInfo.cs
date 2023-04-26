@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.NetworkAssets.AdditionalContent
 {
@@ -11,9 +8,20 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
     public class OverhaulAdditionalContentPackInfo
     {
         public OverhaulAdditionalContentPackInfo() { }
-        public string GetPackFolderName() => PackName.Replace(" ", "_");
-        public string GetThumbnailFileName() => "Thumbnail.png";
-        public string GetPackFolder() => OverhaulAdditionalContentController.AdditionalContentDirectory + PreviousFolderName + "/";
+        public string GetPackFolderName()
+        {
+            return PackName.Replace(" ", "_");
+        }
+
+        public string GetThumbnailFileName()
+        {
+            return "Thumbnail.png";
+        }
+
+        public string GetPackFolder()
+        {
+            return OverhaulAdditionalContentController.AdditionalContentDirectory + PreviousFolderName + "/";
+        }
 
         // The name and description won't be translated
         public string PackName;
@@ -60,7 +68,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         public static OverhaulAdditionalContentPackInfo CreateNew()
         {
             Version version = (Version)OverhaulVersion.ModVersion.Clone();
-            var packInfo = new OverhaulAdditionalContentPackInfo()
+            OverhaulAdditionalContentPackInfo packInfo = new OverhaulAdditionalContentPackInfo()
             {
                 PackName = "Sample content pack",
                 PackDescription = "This pack is under construction.",

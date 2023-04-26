@@ -49,7 +49,7 @@ namespace CDOverhaul.HUD.Overlays
             m_LowerBar.anchoredPosition = newVector2;
         }
 
-        public static bool ShouldActivateOverlay() // Todo: Optimize this
+        public static bool ShouldActivateOverlay()
         {
             return ForceSetIsInCutscene || (CutSceneManager.Instance.IsInCutscene() && !GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf);
             /*

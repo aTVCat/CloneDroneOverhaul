@@ -31,6 +31,8 @@ namespace CDOverhaul.Gameplay
                 Multiplier = 1f,
                 Saturation = 0.75f,
 
+                AssetBundleFileName = AssetsController.ModAssetBundle_Skins,
+
                 SingleplayerLaserModelName = "SwordSkinDarkPast",
                 SingleplayerLaserModelOffset = ModelOffset.GetDefaultOffset(),
                 SingleplayerFireModelName = "SwordSkinDarkPastFire",
@@ -79,6 +81,8 @@ namespace CDOverhaul.Gameplay
 
         public string ParentTo;
         public Version MinVersion;
+
+        public string AssetBundleFileName;
 
         public string SingleplayerLaserModelName;
         public ModelOffset SingleplayerLaserModelOffset;

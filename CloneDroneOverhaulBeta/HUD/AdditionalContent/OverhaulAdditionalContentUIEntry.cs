@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace CDOverhaul.NetworkAssets.AdditionalContent
 {
@@ -12,7 +10,10 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         public OverhaulAdditionalContentPackInfo MyPack;
         public bool PackIsntNull => MyPack != null;
 
-        public bool ShouldShowProgressBar() => PackIsntNull ? MyPack.PackType == OverhaulAdditionalContentPackInfo.ContentPackType.Network : false;
+        public bool ShouldShowProgressBar()
+        {
+            return PackIsntNull && MyPack.PackType == OverhaulAdditionalContentPackInfo.ContentPackType.Network;
+        }
 
         public void Initialize(OverhaulAdditionalContentPackInfo pack)
         {

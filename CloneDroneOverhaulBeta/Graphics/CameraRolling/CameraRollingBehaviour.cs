@@ -15,6 +15,8 @@ namespace CDOverhaul.Graphics
 
         [OverhaulSetting("Graphics.Camera.Rolling", true, false, "The camera will tilt in the direction of the movement")]
         public static bool EnableCameraRolling;
+        [OverhaulSetting("Graphics.Camera.Invert axis", false, false, null, null, null, "Graphics.Camera.Rolling")]
+        public static bool InvertAxis;
 
         [OverhaulSetting("Graphics.Camera.Tilt when one legged", true, false, null, null, null, "Graphics.Camera.Rolling")]
         public static bool TiltWhenOneLegged;
@@ -93,8 +95,8 @@ namespace CDOverhaul.Graphics
             float curZ = m_TargetRotation[2];
             float multiply = Multiplier * Time.deltaTime * 15f * TiltMultiplier;
 
-            float cursorX = ForceZero ? 0f : Input.GetAxis("Mouse X") * multiply;
-            float cursorY = ForceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? -1f : 1f) * multiply;
+            float cursorX = ForceZero ? 0f : Input.GetAxis("Mouse X") * multiply * (InvertAxis ? -1 : 1f);
+            float cursorY = ForceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? 1f : -1f) * multiply * (InvertAxis ? -1 : 1f);
             m_CursorMovementVelocityX = Mathf.Clamp(m_CursorMovementVelocityX + ((cursorX - m_CursorMovementVelocityX) * 0.5f), -15f, 15f);
             m_CursorMovementVelocityY = Mathf.Clamp(m_CursorMovementVelocityY + ((cursorY - m_CursorMovementVelocityY) * 0.5f), -15f, 15f);
 

@@ -82,9 +82,9 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             }
 
             TransformUtils.DestroyAllChildren(m_ContentPackContainer);
-            if(m_CurrentPage == 0)
+            if (m_CurrentPage == 0)
             {
-                foreach(OverhaulAdditionalContentPackInfo info in OverhaulAdditionalContentController.AllContent)
+                foreach (OverhaulAdditionalContentPackInfo info in OverhaulAdditionalContentController.AllContent)
                 {
                     ModdedObject obj = Instantiate(m_ContentPackEntryPrefab, m_ContentPackContainer);
                     obj.gameObject.AddComponent<OverhaulAdditionalContentUIEntry>().Initialize(info);

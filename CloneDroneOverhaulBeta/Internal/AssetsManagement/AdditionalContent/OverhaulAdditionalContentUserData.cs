@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CDOverhaul.NetworkAssets.AdditionalContent
+﻿namespace CDOverhaul.NetworkAssets.AdditionalContent
 {
     public class OverhaulAdditionalContentUserData : OverhaulDataBase
     {
@@ -9,7 +6,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public override void RepairFields()
         {
-            if(EnabledContent == null)
+            if (EnabledContent == null)
             {
                 EnabledContent = string.Empty;
             }
@@ -45,12 +42,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public bool IsContentPackEnabled(OverhaulAdditionalContentPackInfo info)
         {
-            if(!checkValues(info))
-            {
-                return false;
-            }
-
-            return EnabledContent.Contains(info.PackID);
+            return checkValues(info) && EnabledContent.Contains(info.PackID);
         }
 
         private bool checkValues(OverhaulAdditionalContentPackInfo info)

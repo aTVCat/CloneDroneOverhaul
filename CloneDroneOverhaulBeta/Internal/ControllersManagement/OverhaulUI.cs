@@ -72,6 +72,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             m_ModdedObject = null;
             ShowCursor = false;
         }

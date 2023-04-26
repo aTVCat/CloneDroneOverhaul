@@ -35,17 +35,7 @@ namespace CDOverhaul
         #region Manually controller asset bundles
 
         public static bool LoadingAssetBundle => m_CurrentCreateRequest != null;
-        public static float LoadingProgress
-        {
-            get
-            {
-                if(m_CurrentCreateRequest == null)
-                {
-                    return 0f;
-                }
-                return m_CurrentCreateRequest.progress;
-            }
-        }
+        public static float LoadingProgress => m_CurrentCreateRequest == null ? 0f : m_CurrentCreateRequest.progress;
         private static AssetBundleCreateRequest m_CurrentCreateRequest;
 
         private static readonly Dictionary<string, AssetBundle> m_LoadedAssetBundles = new Dictionary<string, AssetBundle>();
@@ -59,7 +49,7 @@ namespace CDOverhaul
                     return;
                 }
 
-                var loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+                AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
                 m_LoadedAssetBundles.Add(assetBundleFilename, loadedAssetBundle);
             }
             catch
@@ -88,9 +78,9 @@ namespace CDOverhaul
                 yield return null;
             }
 
-            var loadedAssetBundle = m_CurrentCreateRequest.assetBundle;
+            AssetBundle loadedAssetBundle = m_CurrentCreateRequest.assetBundle;
             m_LoadedAssetBundles.Add(fileName, loadedAssetBundle);
-            if(onComplete != null) onComplete(loadedAssetBundle);
+            onComplete?.Invoke(loadedAssetBundle);
             m_CurrentCreateRequest = null;
             yield break;
         }
@@ -131,26 +121,12 @@ namespace CDOverhaul
 
             assetBundlePath = OverhaulMod.Core.ModDirectory + pathUnderModFolder;
             assetBundleFilename = getAssetBundleFilename(assetBundlePath);
-            if (HasLoadedAssetBundle(assetBundleFilename))
-            {
-                return false;
-            }
-
-            if (!File.Exists(assetBundlePath))
-            {
-                return false;
-            }
-
-            return true;
+            return !HasLoadedAssetBundle(assetBundleFilename) && File.Exists(assetBundlePath);
         }
 
         private static string getAssetBundleFilename(in string path)
         {
-            if (!string.IsNullOrEmpty(path) && !path.Contains("/") && !path.Contains("\\"))
-            {
-                return path;
-            }
-            return path.Substring(path.LastIndexOf('/') + 1);
+            return !string.IsNullOrEmpty(path) && !path.Contains("/") && !path.Contains("\\") ? path : path.Substring(path.LastIndexOf('/') + 1);
         }
 
         #endregion
@@ -186,6 +162,13 @@ namespace CDOverhaul
         public static T GetAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             string assetBundle = null;
+            string m = GetManuallyControlledAssetBundleFileName(assetBundlePart);
+            bool isManuallyControlled = IsManuallyControlledAssetBundle(assetBundlePart);
+            if (isManuallyControlled && !HasLoadedAssetBundle(m))
+            {
+                TryLoadAssetBundle(m);
+            }
+
             switch (assetBundlePart)
             {
                 case OverhaulAssetsPart.Part1:
@@ -219,7 +202,35 @@ namespace CDOverhaul
                     assetBundle = ModAssetBundle_Skyboxes;
                     break;
             }
-            T result = AssetLoader.GetObjectFromFile<T>(assetBundle, assetName);
+            T result = null;
+            if (!isManuallyControlled)
+            {
+                result = AssetLoader.GetObjectFromFile<T>(assetBundle, assetName);
+            }
+            else
+            {
+                result = m_LoadedAssetBundles[m].LoadAsset<T>(assetName);
+            }
+            return result;
+        }
+
+        public static T GetAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object
+        {
+            bool isManuallyControlled = IsManuallyControlledAssetBundle(assetBundleFileName);
+            if (isManuallyControlled && !HasLoadedAssetBundle(assetBundleFileName))
+            {
+                TryLoadAssetBundle(assetBundleFileName);
+            }
+
+            T result = null;
+            if (!isManuallyControlled)
+            {
+                result = AssetLoader.GetObjectFromFile<T>(assetBundleFileName, assetName);
+            }
+            else
+            {
+                result = m_LoadedAssetBundles[assetBundleFileName].LoadAsset<T>(assetName);
+            }
             return result;
         }
 
@@ -232,6 +243,11 @@ namespace CDOverhaul
         public static void PreloadAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             _ = GetAsset<T>(assetName, assetBundlePart);
+        }
+
+        public static void PreloadAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object
+        {
+            _ = GetAsset<T>(assetName, assetBundleFileName);
         }
 
         /// <summary>
@@ -251,8 +267,34 @@ namespace CDOverhaul
             {
                 case OverhaulAssetsPart.Skyboxes:
                     return true;
+                case OverhaulAssetsPart.WeaponSkins:
+                    return true;
             }
             return false;
+        }
+
+        public static bool IsManuallyControlledAssetBundle(in string assetBundlePart)
+        {
+            switch (assetBundlePart)
+            {
+                case ModAssetBundle_Skyboxes:
+                    return true;
+                case ModAssetBundle_Skins:
+                    return true;
+            }
+            return false;
+        }
+
+        public static string GetManuallyControlledAssetBundleFileName(in OverhaulAssetsPart assetBundlePart)
+        {
+            switch (assetBundlePart)
+            {
+                case OverhaulAssetsPart.Skyboxes:
+                    return ModAssetBundle_Skyboxes;
+                case OverhaulAssetsPart.WeaponSkins:
+                    return ModAssetBundle_Skins;
+            }
+            return string.Empty;
         }
     }
 }
