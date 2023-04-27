@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.NetworkAssets;
 using ModLibrary;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -39,6 +40,8 @@ namespace CDOverhaul.Gameplay
             get;
             private set;
         }
+
+        private static Dictionary<string, List<WeaponSkinsImportedItemDefinition>> m_SkinsWaitingABToDownload = new Dictionary<string, List<WeaponSkinsImportedItemDefinition>>();
 
         public static float GetUpdateFilesDownloadProgress()
         {
@@ -188,12 +191,39 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
+            WeaponSkinsController.DeleteCustomAssetBundleFiles();
             WeaponSkinsController.ReloadAllModels();
             HasUpdates = false;
             WaitsToBeUpdated = false;
 
             m_DownloadProgress[0] = false;
             m_DownloadProgress[1] = false;
+        }
+
+        public static void DownloadAssetBundleThenAddSkin(WeaponSkinsImportedItemDefinition importedSkin, string assetBundle)
+        {
+            if (!m_SkinsWaitingABToDownload.ContainsKey(assetBundle))
+            {
+                m_SkinsWaitingABToDownload.Add(assetBundle, new List<WeaponSkinsImportedItemDefinition>() { importedSkin });
+                OverhaulNetworkDownloadHandler h = null;
+                h = OverhaulNetworkController.DownloadAndSaveFile("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/Ver1And2Features/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
+                {
+                    WeaponSkinsController c = OverhaulController.GetController<WeaponSkinsController>();
+                    if (h != null && !h.Error && c != null && m_SkinsWaitingABToDownload.ContainsKey(assetBundle) && !m_SkinsWaitingABToDownload[assetBundle].IsNullOrEmpty())
+                    {
+                        foreach (WeaponSkinsImportedItemDefinition def in m_SkinsWaitingABToDownload[assetBundle])
+                        {
+                            c.ImportSkin(def, assetBundle);
+                        }
+                    }
+                    m_SkinsWaitingABToDownload.Remove(assetBundle);
+                });
+            }
+            else
+            {
+                List<WeaponSkinsImportedItemDefinition> list = m_SkinsWaitingABToDownload[assetBundle];
+                list.Add(importedSkin);
+            }
         }
     }
 }

@@ -42,6 +42,39 @@ namespace CDOverhaul.Gameplay
         public const string And = " and ";
 
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
+        private static readonly List<string> m_CustomAssetNundlesWithSkins = new List<string>();
+        public static void DeleteCustomAssetBundleFiles()
+        {
+            if (m_CustomAssetNundlesWithSkins.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            foreach(string path in m_CustomAssetNundlesWithSkins)
+            {
+                string fullPath = OverhaulMod.Core.ModDirectory + path;
+                if (File.Exists(fullPath))
+                {
+                    try
+                    {
+                        string backupPath = OverhaulMod.Core.ModDirectory + "Assets/Download/Backup/" + path;
+                        if (File.Exists(backupPath))
+                        {
+                            File.Delete(backupPath);
+                        }
+                        File.Move(fullPath, backupPath);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
 
         public const string VFX_ChangeSkinID = "WeaponSkinChangedVFX";
         public static FirstPersonMover RobotToPlayAnimationOn;
@@ -121,27 +154,40 @@ namespace CDOverhaul.Gameplay
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
-                if (!customSkin.CanBeAdded())
-                {
-                    continue;
-                }
-
                 string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
-
-                AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName, assetBundle);
-                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-                item.IsImportedSkin = true;
-                item.ReparentToBodypart = customSkin.ParentTo;
-                item.OverrideAssetBundle = assetBundle;
-                SetSkinDescription(null, customSkin.Description);
-                SetSkinColorParameters(customSkin.ApplyFavColorOnLaser, customSkin.ForcedFavColorLaserIndex, customSkin.ApplyFavColorOnFire, customSkin.ForcedFavColorFireIndex, customSkin.Saturation, customSkin.Multiplier, customSkin.AnimateFire);
-                SetSkinExclusiveQuick(customSkin.OnlyAvailableFor);
-                SetSkinMiscParameters(customSkin.ApplySingleplayerModelInMultiplayer, customSkin.UseVanillaBowstrings, customSkin.IsDeveloperItem);
-                SetSkinModelOffsetQuick(customSkin.SingleplayerLaserModelOffset, false, false);
-                SetSkinModelOffsetQuick(customSkin.SingleplayerFireModelOffset, true, false);
-                SetSkinModelOffsetQuick(customSkin.MultiplayerLaserModelOffset, false, true);
-                SetSkinModelOffsetQuick(customSkin.MultiplayerFireModelOffset, true, true);
+                if(assetBundle != AssetsController.ModAssetBundle_Skins && !m_CustomAssetNundlesWithSkins.Contains(assetBundle))
+                {
+                    m_CustomAssetNundlesWithSkins.Add(assetBundle);
+                }
+                if (!AssetsController.HasAssetBundle(assetBundle))
+                {
+                    WeaponSkinsUpdater.DownloadAssetBundleThenAddSkin(customSkin, assetBundle);
+                    return;
+                }
+                ImportSkin(customSkin, assetBundle);
             }
+        }
+
+        public void ImportSkin(WeaponSkinsImportedItemDefinition customSkin, string assetBundle)
+        {
+            if (!customSkin.CanBeAdded())
+            {
+                return;
+            }
+
+            AddSkinQuick(customSkin.OfWeaponType, customSkin.Name, customSkin.Author, customSkin.SingleplayerLaserModelName, customSkin.SingleplayerFireModelName, customSkin.MultiplayerLaserModelName, customSkin.MultiplayerFireModelName, assetBundle);
+            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
+            item.IsImportedSkin = true;
+            item.ReparentToBodypart = customSkin.ParentTo;
+            item.OverrideAssetBundle = assetBundle;
+            SetSkinDescription(null, customSkin.Description);
+            SetSkinColorParameters(customSkin.ApplyFavColorOnLaser, customSkin.ForcedFavColorLaserIndex, customSkin.ApplyFavColorOnFire, customSkin.ForcedFavColorFireIndex, customSkin.Saturation, customSkin.Multiplier, customSkin.AnimateFire);
+            SetSkinExclusiveQuick(customSkin.OnlyAvailableFor);
+            SetSkinMiscParameters(customSkin.ApplySingleplayerModelInMultiplayer, customSkin.UseVanillaBowstrings, customSkin.IsDeveloperItem);
+            SetSkinModelOffsetQuick(customSkin.SingleplayerLaserModelOffset, false, false);
+            SetSkinModelOffsetQuick(customSkin.SingleplayerFireModelOffset, true, false);
+            SetSkinModelOffsetQuick(customSkin.MultiplayerLaserModelOffset, false, true);
+            SetSkinModelOffsetQuick(customSkin.MultiplayerFireModelOffset, true, true);
         }
 
         /// <summary>

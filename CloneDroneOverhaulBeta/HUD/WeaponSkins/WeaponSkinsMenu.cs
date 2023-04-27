@@ -315,6 +315,9 @@ namespace CDOverhaul.HUD
         private Button m_ReimportAllButton;
         private Button m_SaveButton;
 
+        private Button m_ModFolderButton;
+        private Button m_SkinsFileFolderButton;
+
         public void SetSkinEditingMenuActive(bool value)
         {
             if (IsOutfitSelection)
@@ -441,6 +444,11 @@ namespace CDOverhaul.HUD
                         WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
                     }
                 });
+
+                m_ModFolderButton = MyModdedObject.GetObject<Button>(74);
+                m_ModFolderButton.onClick.AddListener(OpenModDirectory);
+                m_SkinsFileFolderButton = MyModdedObject.GetObject<Button>(75);
+                m_SkinsFileFolderButton.onClick.AddListener(OpenSkinsFileDirectory);
 
                 m_HasInitializedEditor = true;
             }
@@ -820,6 +828,26 @@ namespace CDOverhaul.HUD
             CurrentlyEditingOffset.OffsetEulerAngles = WeaponSkinsEditor.CopiedOffset.OffsetEulerAngles;
             CurrentlyEditingOffset.OffsetLocalScale = WeaponSkinsEditor.CopiedOffset.OffsetLocalScale;
             RefreshOffsetFields();
+        }
+
+        public void OpenModDirectory()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = OverhaulMod.Core.ModDirectory,
+                UseShellExecute = true,
+                Verb = "open"
+            });
+        }
+
+        public void OpenSkinsFileDirectory()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent",
+                UseShellExecute = true,
+                Verb = "open"
+            });
         }
 
         #endregion

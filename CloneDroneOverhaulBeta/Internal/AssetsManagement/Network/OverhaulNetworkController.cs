@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using UnityEngine.Networking;
 
 namespace CDOverhaul.NetworkAssets
@@ -11,6 +12,33 @@ namespace CDOverhaul.NetworkAssets
     {
         public static string DownloadFolder => OverhaulMod.Core.ModDirectory + "Assets/Download/";
         public static string PermanentDownloadFolder => OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent/";
+
+        public static OverhaulNetworkDownloadHandler DownloadAndSaveFile(string address, string directoryPath, string fileName, Action onDoneDownloadingAction)
+        {
+            OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
+            Action onDone = delegate
+            {
+                if (!handler.Error)
+                {
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        return;
+                    }
+
+                    if (!handler.DownloadedData.IsNullOrEmpty())
+                    {
+                        File.WriteAllBytes(directoryPath + fileName, handler.DownloadedData);
+                    }
+                    else
+                    {
+                        File.WriteAllText(directoryPath + fileName, handler.DownloadedText);
+                    }
+                }
+            };
+            Action act2 = onDone.Combine(onDoneDownloadingAction);
+            DownloadFile(address, handler);
+            return handler;
+        }
 
         public static OverhaulNetworkDownloadHandler DownloadFile(string address)
         {

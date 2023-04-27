@@ -171,6 +171,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
+            WeaponSkinsController.SkinsDataIsDirty = false;
             m_HasEverSpawnedSkins = true;
             m_WaitingToSpawnSkins = true;
             DelegateScheduler.Instance.Schedule(delegate

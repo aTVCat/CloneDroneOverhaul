@@ -12,19 +12,18 @@ namespace CDOverhaul.Localization
 
         public void Initialize(string lang, string id, InputField field, InputField idField)
         {
-            MyID = id;
-            MyLang = lang;
-            MyInputField = field;
-            MyIDInputField = idField;
-
-            bool success = OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text);
-            if (!success)
+            if (!OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
             {
                 return;
             }
 
+            MyID = id;
+            MyLang = lang;
+
+            MyInputField = field;
             MyInputField.text = text;
             MyInputField.onEndEdit.AddListener(UpdateText);
+            MyIDInputField = idField;
             MyIDInputField.text = id;
             MyIDInputField.onEndEdit.AddListener(UpdateID);
         }
