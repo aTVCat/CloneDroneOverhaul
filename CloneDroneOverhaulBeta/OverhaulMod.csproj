@@ -398,6 +398,7 @@
     <Compile Include="Gameplay\Combat\Arena\Garbage\AdvancedGarbageController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CombatOverhaulAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulMechanic.cs" />
+    <Compile Include="Gameplay\Combat\State\OverhaulCombatState.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsController.cs" />
     <Compile Include="Gameplay\Combat\Weapons\NewWeaponsRobotExpansion.cs" />
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
@@ -415,6 +416,8 @@
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\VFXWeaponSkinSwitch.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\CustomVFX\WeaponSkinCustomVFXInstance.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\CustomVFX\WeaponSkinsCustomVFXController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\CustomWeaponSkinsData.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Updater\WeaponSkinsUpdater.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\WeaponSkinBehaviour.cs" />
@@ -472,11 +475,13 @@
     <Compile Include="Internal\ModTranslation\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulDiscordController.cs" />
+    <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
     <Compile Include="Internal\Patches\MeleeImpactArea_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
+    <Compile Include="Internal\Patches\SwordBlockArea_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />

@@ -44,6 +44,50 @@ namespace CDOverhaul.Gameplay
             };
         }
 
+        public static WeaponSkinsImportedItemDefinition PortOld(WeaponSkinItemDefinitionV2 item)
+        {
+            return new WeaponSkinsImportedItemDefinition()
+            {
+                Name = (item as IWeaponSkinItemDefinition).GetItemName(),
+                Description = item.Description,
+
+                Author = item.AuthorDiscord,
+                OnlyAvailableFor = (item as IWeaponSkinItemDefinition).GetExclusivePlayerID(),
+                IsDeveloperItem = item.IsDeveloperItem,
+
+                OfWeaponType = (item as IWeaponSkinItemDefinition).GetWeaponType(),
+                BehaviourIndex = 0,
+
+                ApplySingleplayerModelInMultiplayer = item.UseSingleplayerVariantInMultiplayer,
+                UseVanillaBowstrings = item.UseVanillaBowStrings,
+
+                ApplyFavColorOnLaser = !item.DontUseCustomColorsWhenNormal,
+                ForcedFavColorLaserIndex = item.IndexOfForcedNormalVanillaColor,
+                ApplyFavColorOnFire = !item.DontUseCustomColorsWhenFire,
+                ForcedFavColorFireIndex = item.IndexOfForcedFireVanillaColor,
+                AnimateFire = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.GetComponent<WeaponSkinFireAnimator>() != null ? true : false,
+
+                Multiplier = item.Multiplier,
+                Saturation = item.Saturation,
+
+                AssetBundleFileName = string.IsNullOrEmpty(item.OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : item.OverrideAssetBundle,
+
+                SingleplayerLaserModelName = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.name : "ImperialSword",
+                SingleplayerLaserModelOffset = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Offset : ModelOffset.GetDefaultOffset(),
+
+                SingleplayerFireModelName = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.name : "ImperialSword",
+                SingleplayerFireModelOffset = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, false).Offset : ModelOffset.GetDefaultOffset(),
+
+                MultiplayerFireModelName = (item as IWeaponSkinItemDefinition).GetModel(true, true) != null && (item as IWeaponSkinItemDefinition).GetModel(true, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.name : "ImperialSword",
+                MultiplayerFireModelOffset = (item as IWeaponSkinItemDefinition).GetModel(true, true) != null && (item as IWeaponSkinItemDefinition).GetModel(true, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, true).Offset : ModelOffset.GetDefaultOffset(),
+
+                MultiplayerLaserModelName = (item as IWeaponSkinItemDefinition).GetModel(false, true) != null && (item as IWeaponSkinItemDefinition).GetModel(false, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.name : "ImperialSword",
+                MultiplayerLaserModelOffset = (item as IWeaponSkinItemDefinition).GetModel(false, true) != null && (item as IWeaponSkinItemDefinition).GetModel(false, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, true).Offset : ModelOffset.GetDefaultOffset(),
+
+                MinVersion = Version.Parse("0.2.10.36")
+            };
+        }
+
         public static WeaponSkinsImportedItemDefinition GetNew(bool save)
         {
             WeaponSkinsImportedItemDefinition result = GetNew();
@@ -95,5 +139,8 @@ namespace CDOverhaul.Gameplay
 
         public string MultiplayerFireModelName;
         public ModelOffset MultiplayerFireModelOffset;
+
+        public string CollideWithEnvironmentVFXAssetName;
+        public int CountOfPreparedPooledPrefabObjects;
     }
 }

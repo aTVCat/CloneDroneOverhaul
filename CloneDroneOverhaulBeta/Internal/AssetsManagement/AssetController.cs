@@ -155,7 +155,21 @@ namespace CDOverhaul
                 asset = null;
                 return false;
             }
+            return false;
+        }
 
+        public static bool TryGetAsset<T>(in string assetName, in string assetBundle, out T asset) where T : UnityEngine.Object
+        {
+            try
+            {
+                asset = GetAsset<T>(assetName, assetBundle);
+                return true;
+            }
+            catch
+            {
+                asset = null;
+                return false;
+            }
             return false;
         }
 

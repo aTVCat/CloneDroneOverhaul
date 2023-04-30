@@ -8,7 +8,7 @@ namespace CDOverhaul.Gameplay
         private static readonly List<IWeaponSkinItemDefinition> m_SelectedItems = new List<IWeaponSkinItemDefinition>();
         public static ModelOffset CopiedOffset;
 
-        public static bool EditorEnabled => OverhaulVersion.IsDebugBuild;
+        public static bool EditorEnabled => OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToManageSkins);
 
         public static void SetSkinItemSelectedState(IWeaponSkinItemDefinition itemDefinition, bool newState)
         {

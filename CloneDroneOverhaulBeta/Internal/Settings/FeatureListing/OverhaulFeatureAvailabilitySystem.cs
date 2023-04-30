@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -60,6 +61,23 @@ namespace CDOverhaul
                 i++;
             } while (i < m_Features.Count);
             return null;
+        }
+
+        public static string GetStringOfFeature(in OverhaulFeatureID featureID)
+        {
+            switch (featureID)
+            {
+                case OverhaulFeatureID.PermissionToManageSkins:
+                    return "Permission to manage skins"; // Todo: translate all
+                case OverhaulFeatureID.PermissionToEditLocalization:
+                    return "Permission to translate the mod";
+            }
+            return "Unknown feature (" + featureID.ToString() + ")";
+        }
+
+        public static string GetColoredStringOfFeature(in OverhaulFeatureID featureID)
+        {
+            return GetStringOfFeature(featureID).AddColor(IsFeatureUnlocked(featureID) ? Color.white : Color.gray);
         }
     }
 }

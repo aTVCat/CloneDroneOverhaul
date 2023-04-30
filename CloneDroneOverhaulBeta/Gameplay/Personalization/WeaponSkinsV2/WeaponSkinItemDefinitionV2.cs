@@ -136,6 +136,9 @@ namespace CDOverhaul.Gameplay
         public bool IsImportedSkin;
         public string OverrideAssetBundle;
 
+        public string CollideWithEnvironmentVFXAssetName;
+        public int CountOfPreparedPooledPrefabObjects;
+
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
             if (forceTrue)

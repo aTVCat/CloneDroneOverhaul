@@ -17,14 +17,6 @@ namespace CDOverhaul.HUD
     /// </summary>
     public class WeaponSkinsMenu : OverhaulUI
     {
-        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
-        {
-            WeaponType.Sword,
-            WeaponType.Bow,
-            WeaponType.Hammer,
-            WeaponType.Spear
-        };
-
         private static bool m_HasRefreshedUpdates;
 
         private static float m_TimeToAllowChangingSkins = 0f;
@@ -301,6 +293,8 @@ namespace CDOverhaul.HUD
 
         private InputField m_AssetBundleField;
 
+        private InputField m_CustomVFXEnvCollisionField;
+
         private InputField[] m_PositionFields;
         private Button m_CopyPositionFromSpawnedSkinButton;
         private InputField[] m_RotationFields;
@@ -445,6 +439,8 @@ namespace CDOverhaul.HUD
                     }
                 });
 
+                m_CustomVFXEnvCollisionField = MyModdedObject.GetObject<InputField>(77);
+
                 m_ModFolderButton = MyModdedObject.GetObject<Button>(74);
                 m_ModFolderButton.onClick.AddListener(OpenModDirectory);
                 m_SkinsFileFolderButton = MyModdedObject.GetObject<Button>(75);
@@ -456,7 +452,7 @@ namespace CDOverhaul.HUD
             m_SkinEditorTranform.gameObject.SetActive(value);
             RefreshOptions(false);
 
-            if (value)
+            if (value && CurrentlyEditingItem == null)
             {
                 EditSkin(0);
             }
@@ -510,6 +506,7 @@ namespace CDOverhaul.HUD
             m_UseFavColorWhenFireToggle.isOn = CurrentlyEditingItem.ApplyFavColorOnFire;
             m_ColorMultiplierField.text = CurrentlyEditingItem.Multiplier.ToString();
             m_ColorSaturationField.text = CurrentlyEditingItem.Saturation.ToString();
+            m_SkinBehavioursDropdown.value = CurrentlyEditingItem.BehaviourIndex;
 
             m_ParentToField.text = CurrentlyEditingItem.ParentTo;
             m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.ModVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
@@ -520,6 +517,8 @@ namespace CDOverhaul.HUD
             m_SPFireModelField.text = CurrentlyEditingItem.SingleplayerFireModelName;
             m_MPLaserModelField.text = CurrentlyEditingItem.MultiplayerLaserModelName;
             m_MPFireModelField.text = CurrentlyEditingItem.MultiplayerFireModelName;
+
+            m_CustomVFXEnvCollisionField.text = CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName;
 
             m_UseSkinsInMultiplayerToggle.isOn = CurrentlyEditingItem.ApplySingleplayerModelInMultiplayer;
             m_VanillaBowstringsToggle.isOn = CurrentlyEditingItem.UseVanillaBowstrings;
@@ -598,6 +597,7 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.Description = newSkinDesc;
             CurrentlyEditingItem.Author = newSkinAuthor;
             CurrentlyEditingItem.OnlyAvailableFor = newSkinExclusiveIds;
+            CurrentlyEditingItem.BehaviourIndex = m_SkinBehavioursDropdown.value;
 
             CurrentlyEditingItem.ApplyFavColorOnLaser = skinUseFavColorWhenLaser;
             CurrentlyEditingItem.ForcedFavColorLaserIndex = m_ForceColorLaserDropdown.value - 1;
@@ -611,7 +611,9 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.IsDeveloperItem = isDevItem;
             CurrentlyEditingItem.AnimateFire = animateFire;
 
-            if(!AssetsController.HasAssetBundle(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
+            CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName = m_CustomVFXEnvCollisionField.text;
+
+            if (!AssetsController.HasAssetBundle(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
             CurrentlyEditingItem.AssetBundleFileName = AssetsController.HasAssetBundle(m_AssetBundleField.text) ? m_AssetBundleField.text : AssetsController.ModAssetBundle_Skins;
 
             CurrentlyEditingItem.ParentTo = m_ParentToField.text;
@@ -1023,17 +1025,16 @@ namespace CDOverhaul.HUD
             }
 
             TransformUtils.DestroyAllChildren(GetContainer(false));
-
-            PopulateWeapon(WeaponType.Sword);
-            PopulateWeapon(WeaponType.Bow);
-            PopulateWeapon(WeaponType.Hammer);
-            PopulateWeapon(WeaponType.Spear);
+            foreach(WeaponType type in WeaponSkinsController.GetSupportedWeapons())
+            {
+                PopulateWeapon(type);
+            }
 
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
             if (player != null)
             {
                 WeaponType wType = player.GetEquippedWeaponType();
-                if (SupportedWeapons.Contains(wType))
+                if (WeaponSkinsController.IsWeaponSupported(wType))
                 {
                     PopulateSkins(wType);
                     return;
