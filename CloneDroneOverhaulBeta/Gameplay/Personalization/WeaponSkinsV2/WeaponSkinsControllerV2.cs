@@ -1476,7 +1476,7 @@ namespace CDOverhaul.Gameplay
             skinsChecked = 0;
             foreach (string assetBundle in allAssetBundles)
             {
-                AssetsController.TryUnloadAssetBundle(assetBundle, false);
+                AssetsController.TryUnloadAssetBundle(assetBundle, true);
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)allAssetBundles.Count);
                 yield return null;
@@ -1542,7 +1542,6 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponSkinsController.HasUpdatedSkins = true;
-            WeaponSkinsController.SkinsDataIsDirty = true;
             c.ReImportCustomSkins();
             //if (WeaponSkinsMenu.SkinsSelection != null) WeaponSkinsMenu.SkinsSelection.SetUpdateButtonInteractableState(false);
 
@@ -1552,6 +1551,7 @@ namespace CDOverhaul.Gameplay
             {
                 if (character != null && character is FirstPersonMover && IsFirstPersonMoverSupported(character as FirstPersonMover))
                 {
+                    WeaponSkinsController.SkinsDataIsDirty = true;
                     c.ApplySkinsOnCharacter(character);
                     OverhaulLoadingScreen.Instance.SetScreenFill(charactersReloaded / (float)characters.Count);
                 }

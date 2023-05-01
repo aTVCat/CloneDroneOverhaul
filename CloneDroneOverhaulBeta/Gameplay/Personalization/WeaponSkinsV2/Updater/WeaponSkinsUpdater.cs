@@ -68,10 +68,10 @@ namespace CDOverhaul.Gameplay
         private static readonly bool[] m_DownloadProgress = new bool[2] { false, false };
         private static Action m_OnEndedUpdatingSkins;
 
-        public const string SkinsAssetBundleFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/Ver1And2Features/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/overhaulassets_skins";
+        public const string SkinsAssetBundleFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/overhaulassets_skins";
 
-        public const string SkinsImportFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/Ver1And2Features/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/Assets/Download/Permanent/ImportedSkins.json";
-        public const string SkinsVersionFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/Ver1And2Features/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/SkinsVersion.txt";
+        public const string SkinsImportFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/Assets/Download/Permanent/ImportedSkins.json";
+        public const string SkinsVersionFileAddress = "https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/SkinsVersion.txt";
 
         public static string GetFullStateString()
         {
@@ -206,7 +206,7 @@ namespace CDOverhaul.Gameplay
             {
                 m_SkinsWaitingABToDownload.Add(assetBundle, new List<WeaponSkinsImportedItemDefinition>() { importedSkin });
                 OverhaulNetworkDownloadHandler h = null;
-                h = OverhaulNetworkController.DownloadAndSaveFile("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/Ver1And2Features/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
+                h = OverhaulNetworkController.DownloadAndSaveFile("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
                 {
                     WeaponSkinsController c = OverhaulController.GetController<WeaponSkinsController>();
                     if (h != null && !h.Error && c != null && m_SkinsWaitingABToDownload.ContainsKey(assetBundle) && !m_SkinsWaitingABToDownload[assetBundle].IsNullOrEmpty())

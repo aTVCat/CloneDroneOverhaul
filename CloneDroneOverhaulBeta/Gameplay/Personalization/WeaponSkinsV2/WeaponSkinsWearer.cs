@@ -524,11 +524,13 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
+
             WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
             if (weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
             {
                 return;
             }
+
             SetDefaultModelsVisible(false, weaponModel);
             if (item.GetItemName() == "Default" || weaponModel.WeaponType != item.GetWeaponType())
             {
@@ -541,7 +543,7 @@ namespace CDOverhaul.Gameplay
             WeaponSkinItemDefinitionV2 itemDefinition = item as WeaponSkinItemDefinitionV2;
 
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
-            if (newModel != null)
+            if (newModel != null && newModel.Model != null)
             {
                 bool reparented = false;
                 Transform toParent = weaponModel.transform;
