@@ -77,7 +77,6 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
             _ = OverhaulController.AddController<SkyboxOverhaulController>();
-            _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();
@@ -92,6 +91,8 @@ namespace CDOverhaul
             }
 
             ReplacementBase.CreateReplacements();
+
+            _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
         }
 
         private void OnDestroy()

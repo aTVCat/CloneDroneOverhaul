@@ -28,11 +28,7 @@ namespace CDOverhaul
         public static readonly string ModShortName = "Overhaul " + buildString;
         private static string buildString => getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
-        /// <summary>
-        /// Enable 0.3 June demo Update things
-        /// </summary>
-        public const bool Upd3JunePreview = false;
-        public const bool Upd2Hotfix = true;
+        public const bool Upd2Hotfix = false;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,20 +9,50 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
     public class OverhaulAdditionalContentPackInfo
     {
         public OverhaulAdditionalContentPackInfo() { }
-        public string GetPackFolderName()
+
+        public void SetEnabled(bool value, bool refresh)
         {
-            return PackName.Replace(" ", "_");
+            if (!IsCompatibleWithMod() || OverhaulAdditionalContentController.UserData == null)
+            {
+                return;
+            }
+
+            if (value)
+            {
+                OverhaulAdditionalContentController.UserData.EnableContentPack(this);
+            }
+            else
+            {
+                OverhaulAdditionalContentController.UserData.DisableContentPack(this);
+            }
+
+            if (refresh)
+            {
+                Refresh();
+            }
         }
 
-        public string GetThumbnailFileName()
+        public void Refresh()
         {
-            return "Thumbnail.png";
+            if(!IsCompatibleWithMod() || !IsInstalled())
+            {
+                return;
+            }
+
+            if (!IsLoaded() && IsEnabled())
+            {
+                Load();
+            }
+            else if (IsLoaded() && !IsEnabled())
+            {
+                Unload();
+            }
         }
 
-        public string GetPackFolder()
-        {
-            return OverhaulAdditionalContentController.AdditionalContentDirectory + PreviousFolderName + "/";
-        }
+        #region Information
+
+        [NonSerialized]
+        public string PreviousFolderName;
 
         // The name and description won't be translated
         public string PackName;
@@ -33,14 +64,100 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         public Version MinModVersionRequired;
 
         public List<string> AssetBundles;
+        public void AddAssetBundle(string assetBundle)
+        {
+            if (AssetBundles == null)
+            {
+                AssetBundles = new List<string>();
+            }
+            if (!AssetBundles.IsNullOrEmpty() && AssetBundles.Contains(assetBundle))
+            {
+                return;
+            }
+            AssetBundles.Add(assetBundle);
+        }
 
-        [NonSerialized]
-        public string PreviousFolderName;
+        #endregion
 
+        #region State info
+
+        public bool IsInstalled()
+        {
+            return OverhaulAdditionalContentController.IsInstalled(this);
+        }
+        public bool IsEnabled()
+        {
+            return IsCompatibleWithMod() && OverhaulAdditionalContentController.UserData != null && OverhaulAdditionalContentController.UserData.IsContentPackEnabled(this);
+        }
+        public bool IsLoaded()
+        {
+            return !OverhaulAdditionalContentController.LoadedContent.IsNullOrEmpty() && OverhaulAdditionalContentController.LoadedContent.Contains(PackID);
+        }
+        public bool IsInstalledAndEnabled()
+        {
+            return IsInstalled() && IsEnabled();
+        }
         public bool IsCompatibleWithMod()
         {
             return OverhaulVersion.ModVersion >= MinModVersionRequired;
         }
+        public bool CanBeEdited()
+        {
+            return !IsLoaded() && !IsEnabled();
+        }
+
+        #endregion
+
+        #region Loading & Unloading
+
+        [NonSerialized]
+        public float LoadingProgress;
+        [NonSerialized]
+        public string LoadingAssetBundle;
+        public void Load()
+        {
+            if (IsLoaded() || LoadingProgress != 0f)
+            {
+                return;
+            }
+            StaticCoroutineRunner.StartStaticCoroutine(loadCoroutine());
+        }
+        private IEnumerator loadCoroutine()
+        {
+            int assetBundlesLoaded = 0;
+            float multiplier = 1f / AssetBundles.Count;
+            LoadingProgress = 0f;
+
+            foreach (string assetBundleFile in AssetBundles)
+            {
+                LoadingAssetBundle = assetBundleFile;
+                AssetsController.LoadAssetBundleAsync(GetAssetBundlePath(assetBundleFile), null);
+                while (AssetsController.LoadingAssetBundle)
+                {
+                    LoadingProgress = (assetBundlesLoaded * multiplier) + (AssetsController.LoadingProgress * multiplier);
+                    yield return null;
+                }
+                assetBundlesLoaded++;
+            }
+            LoadingProgress = 1f;
+            if (OverhaulAdditionalContentController.LoadedContent != null) OverhaulAdditionalContentController.LoadedContent.Add(PackID);
+            yield break;
+        }
+
+        public void Unload()
+        {
+            LoadingProgress = 0f;
+            LoadingAssetBundle = string.Empty;
+            foreach(string assetBundleFile in AssetBundles)
+            {
+                AssetsController.TryUnloadAssetBundle(GetAssetBundlePath(assetBundleFile), true);
+            }
+            OverhaulAdditionalContentController.LoadedContent.Remove(PackID);
+        }
+
+        #endregion
+
+        #region Creating & saving
 
         public void SaveThis()
         {
@@ -94,6 +211,32 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
             return packInfo;
         }
+
+        #endregion
+
+        #region IO
+
+        public string GetPackFolderName()
+        {
+            return PackName.Replace(" ", "_");
+        }
+
+        public string GetThumbnailFileName()
+        {
+            return "Thumbnail.png";
+        }
+
+        public string GetPackFolder()
+        {
+            return OverhaulAdditionalContentController.AdditionalContentDirectory + PreviousFolderName + "/";
+        }
+
+        public string GetAssetBundlePath(string assetBundle)
+        {
+            return OverhaulMod.Core.ModDirectory + OverhaulAdditionalContentController.AdditionalContentDirectoryName + "/" + GetPackFolderName() + "/" + assetBundle;
+        }
+
+        #endregion
 
         public enum ContentPackType
         {

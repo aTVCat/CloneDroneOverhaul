@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.HUD;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.NetworkAssets.AdditionalContent
@@ -42,9 +43,20 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             base.OnDisposed();
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Hide();
+            }
+        }
+
         public void Show()
         {
             m_Controller = GetController<OverhaulAdditionalContentController>();
+
+            TrySetTitleScreenStuffActive(false);
+            OverhaulUIDescriptionTooltip.SetActive(true, "Additional content", "Manage the content cut from initial mod compile");
 
             base.gameObject.SetActive(true);
             SetActivePageIndex(0);
@@ -52,7 +64,21 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public void Hide()
         {
+            OverhaulUIDescriptionTooltip.SetActive(false);
+            TrySetTitleScreenStuffActive(true);
             base.gameObject.SetActive(false);
+        }
+
+        public void TrySetTitleScreenStuffActive(bool value)
+        {
+            if (GameUIRoot.Instance != null)
+            {
+                TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
+                if (tUI != null && tUI.gameObject.activeSelf)
+                {
+                    tUI.SetLogoAndRootButtonsVisible(value);
+                }
+            }
         }
 
         public void SetActivePageIndex(byte index)
@@ -84,7 +110,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             TransformUtils.DestroyAllChildren(m_ContentPackContainer);
             if (m_CurrentPage == 0)
             {
-                foreach (OverhaulAdditionalContentPackInfo info in OverhaulAdditionalContentController.AllContent)
+                foreach (OverhaulAdditionalContentPackInfo info in OverhaulAdditionalContentController.LocalContent)
                 {
                     ModdedObject obj = Instantiate(m_ContentPackEntryPrefab, m_ContentPackContainer);
                     obj.gameObject.AddComponent<OverhaulAdditionalContentUIEntry>().Initialize(info);

@@ -453,6 +453,7 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
+    <Compile Include="HUD\UIDescription\OverhaulUIDescriptionTooltip.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />

@@ -59,6 +59,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
             _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
+            _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

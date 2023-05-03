@@ -34,7 +34,13 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public void RefreshDisplays()
         {
-            m_ProgressBar.gameObject.SetActive(ShouldShowProgressBar());
+            //m_ProgressBar.gameObject.SetActive(ShouldShowProgressBar());
         }
+
+        private void Update()
+        {
+            m_ProgressBar.fillAmount = PackIsntNull ? MyPack.LoadingProgress : 0f;
+        }
+
     }
 }

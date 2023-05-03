@@ -19,7 +19,7 @@ namespace CDOverhaul.LevelEditor
 
         public override void Initialize()
         {
-            if (!OverhaulVersion.Upd3JunePreview)
+            if (OverhaulVersion.Upd2Hotfix)
             {
                 return;
             }
