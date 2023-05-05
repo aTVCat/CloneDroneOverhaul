@@ -426,6 +426,9 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
+    <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
+    <Compile Include="Gameplay\Workshop\OverhaulRequestProgressInfo.cs" />
+    <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Environment\Skyboxes\SkyboxOverhaulController.cs" />
     <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUIEntry.cs" />

@@ -102,11 +102,14 @@ namespace CDOverhaul
             ReplacementBase.CancelEverything();
         }
 
-        /*
+        
         private void OnApplicationQuit()
         {
-            // we cannot prevent asset bundles from load..
-        }*/
+            if (AssetsController.LoadingAssetBundle)
+            {
+                AssetsController.AbortAssetBundleLoading();
+            }
+        }
 
         public static string ReadTextFile(string filePath)
         {

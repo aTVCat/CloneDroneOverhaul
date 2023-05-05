@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.Workshop;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -66,7 +67,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (GameModeManager.IsOnTitleScreen())
+            if (GameModeManager.IsOnTitleScreen() && OverhaulWorkshopBrowserUI.BrowserIsNull || (!OverhaulWorkshopBrowserUI.BrowserIsNull && !OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf))
             {
                 m_VersionLabel.text = string.Concat(m_TitleScreenUIVersionLabel.text,
                "\n",
@@ -106,7 +107,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (Time.frameCount % 30 == 0)
+            if (Time.frameCount % 20 == 0)
             {
                 bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
                 if (isOnTitleScreen || isOnTitleScreen != m_wasOnTitleScreenBefore)

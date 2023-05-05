@@ -73,6 +73,24 @@ namespace CDOverhaul.NetworkAssets
             _ = StaticCoroutineRunner.StartStaticCoroutine(downloadFileCoroutine(address, downloadHandler));
         }
 
+        public static void DownloadTexture(string address, OverhaulNetworkDownloadHandler downloadHandler)
+        {
+            if (downloadHandler == null || downloadHandler.DoneAction == null)
+            {
+                return;
+            }
+
+            if (!checkAddress(address))
+            {
+                downloadHandler.Error = true;
+                downloadHandler.ErrorString = address + " is incorrect address";
+                downloadHandler.DoneAction.Invoke();
+                return;
+            }
+
+            _ = StaticCoroutineRunner.StartStaticCoroutine(downloadTextureCoroutine(address, downloadHandler));
+        }
+
         private static IEnumerator downloadFileCoroutine(string address, OverhaulNetworkDownloadHandler downloadHandler)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(address))
@@ -92,9 +110,36 @@ namespace CDOverhaul.NetworkAssets
                     downloadHandler.DownloadedData = request.downloadHandler.data;
                     downloadHandler.DownloadedText = request.downloadHandler.text;
                 }
-                downloadHandler.WebRequest = null;
             }
             downloadHandler.DoneAction.Invoke();
+            downloadHandler.WebRequest = null;
+
+            yield break;
+        }
+
+        private static IEnumerator downloadTextureCoroutine(string address, OverhaulNetworkDownloadHandler downloadHandler)
+        {
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(address))
+            {
+                downloadHandler.WebRequest = request;
+
+                yield return request.SendWebRequest();
+
+                bool error = request.isHttpError || request.isNetworkError;
+                if (error)
+                {
+                    downloadHandler.Error = true;
+                    downloadHandler.ErrorString = request.error;
+                }
+                else
+                {
+                    downloadHandler.DownloadedData = request.downloadHandler.data;
+                    downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                }
+            }
+            downloadHandler.DoneAction.Invoke();
+            downloadHandler.WebRequest = null;
+            downloadHandler.DownloadedTexture = null;
 
             yield break;
         }

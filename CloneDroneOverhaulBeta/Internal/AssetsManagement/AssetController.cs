@@ -39,6 +39,14 @@ namespace CDOverhaul
         public static bool LoadingAssetBundle => m_CurrentCreateRequest != null;
         public static float LoadingProgress => LoadingAssetBundle ? m_CurrentCreateRequest.progress : 0f;
         private static AssetBundleCreateRequest m_CurrentCreateRequest;
+        public static void AbortAssetBundleLoading()
+        {
+            if (!LoadingAssetBundle)
+            {
+                return;
+            }
+            m_CurrentCreateRequest.assetBundle.Unload(true);
+        }
 
         private static readonly Dictionary<string, AssetBundle> m_LoadedAssetBundles = new Dictionary<string, AssetBundle>();
 
