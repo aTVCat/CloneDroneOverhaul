@@ -102,6 +102,12 @@ namespace CDOverhaul
             ReplacementBase.CancelEverything();
         }
 
+        /*
+        private void OnApplicationQuit()
+        {
+            // we cannot prevent asset bundles from load..
+        }*/
+
         public static string ReadTextFile(string filePath)
         {
             string path = filePath.Contains(OverhaulMod.Core.ModDirectory) ? filePath : OverhaulMod.Core.ModDirectory + filePath;

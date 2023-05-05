@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Localization;
 using CDOverhaul.NetworkAssets.AdditionalContent;
+using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,6 +60,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
             _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
+            _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
             _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
@@ -73,6 +75,10 @@ namespace CDOverhaul.HUD
         /// <returns></returns>
         public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
         {
+            if(moddedObject == null)
+            {
+                return null;
+            }
             return OverhaulController.AddController<T>(moddedObject.transform);
         }
 

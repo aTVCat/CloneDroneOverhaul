@@ -360,7 +360,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            if (!IsOwnerPlayer() && !WeaponSkinsController.AllowEnemiesWearSkins)
+            if (!IsOwnerPlayer() && !Owner.IsClone() && !WeaponSkinsController.AllowEnemiesWearSkins)
             {
                 return;
             }

@@ -59,7 +59,14 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
             if (HasToReloadContent)
             {
-                ReloadContent();
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    if(ErrorManager.Instance != null && ErrorManager.Instance.HasCrashed())
+                    {
+                        return;
+                    }
+                    ReloadContent();
+                }, 0.2f);
             }
             else
             {
