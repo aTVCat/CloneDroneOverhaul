@@ -1,0 +1,1025 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OverhaulMod</name>
+    </assembly>
+    <members>
+        <member name="M:Discord.NetworkManager.GetPeerId">
+            <summary>
+            Get the local peer ID for this process.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.Flush">
+            <summary>
+            Send pending network messages.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.OpenPeer(System.UInt64,System.String)">
+            <summary>
+            Open a connection to a remote peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.UpdatePeer(System.UInt64,System.String)">
+            <summary>
+            Update the route data for a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.ClosePeer(System.UInt64)">
+            <summary>
+            Close the connection to a remote peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.OpenChannel(System.UInt64,System.Byte,System.Boolean)">
+            <summary>
+            Open a message channel to a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.CloseChannel(System.UInt64,System.Byte)">
+            <summary>
+            Close a message channel to a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.SendMessage(System.UInt64,System.Byte,System.Byte[])">
+            <summary>
+            Send a message to a connected peer over an opened message channel.
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Gameplay.Combat.AdditionalAnimationsController">
+            <summary>
+            Allows managing animations, that are not in game
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.Default_Player_Speed">
+            <summary>
+            The speed of every player in the game
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.Default_Enemy_Speed">
+            <summary>
+            The speed of any robot in the game
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.CharacterModel">
+            <summary>
+            Get cached character model instance
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.HasCharacterModel">
+            <summary>
+            Check if we have cached character model
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.GetAnimator(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+            <summary>
+            Get animator script instance if we have one
+            </summary>
+            <param name="animatorType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.HasAnimator(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+            <summary>
+            Check if we have animator of specified type
+            </summary>
+            <param name="animatorType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.GetAnimatorSpeed(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+            <summary>
+            Get speed of specific character model animator
+            </summary>
+            <param name="animatorType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.SetAnimatorSpeed(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType,System.Single)">
+            <summary>
+            Set speed of specific character model animator
+            </summary>
+            <param name="animatorType"></param>
+            <param name="value"></param>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryItem.Offsets">
+            <summary>
+            Character model names - Offset
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryItem.Prefab">
+            <summary>
+            A model of accessory
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Outfits.AccessoryItem.NewAccessory``1(System.String,System.String,CDOverhaul.Gameplay.Outfits.AccessoryType,MechBodyPartType)">
+            <summary>
+            Create instance of accessory item including its name, description and type
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="description"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.Gameplay.Outfits.AccessoryType">
+            <summary>
+            The accessories transform parameter
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryType.Attached">
+            <summary>
+            Attached to body part
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryType.Detached">
+            <summary>
+            Attached to robot, but not to specific body part
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Outfits.OutfitsController.AddAccessory``1(System.String,System.String,CDOverhaul.Gameplay.Outfits.AccessoryType,MechBodyPartType,System.String)">
+            <summary>
+            Register an accessory
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="accessoryName"></param>
+            <param name="assetName"></param>
+            <param name="accessoryType"></param>
+            <param name="accessoryBodyPart"></param>
+            <param name="descriptionFile"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.Outfits.OutfitsController.GetAccessoryItem(System.String,System.Boolean)">
+            <summary>
+            Get accessory by name
+            </summary>
+            <param name="name"></param>
+            <param name="returnNullIfLocked"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.Gameplay.IWeaponSkinsControllerV2">
+            <summary>
+            Gonna test new way of controller impementation
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinsControllerV2.NewSkinItem(WeaponType,System.String,CDOverhaul.Gameplay.ItemFilter)">
+            <summary>
+            Create instance of weapon skin item. To set skin models, call <see cref="!:IWeaponSkinItemDefinition.SetModel(GameObject, bool, bool)"/>.
+            </summary>
+            <param name="weapon"></param>
+            <param name="skinName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinsControllerV2.GetSkinItem(WeaponType,System.String,CDOverhaul.Gameplay.ItemFilter,CDOverhaul.Gameplay.ItemNullResult@)">
+            <summary>
+            Get specific weapon skin item using <paramref name="weaponType"/> and <paramref name="filter"/>.
+            If result is <b>NULL</b>, checking <paramref name="error"/> would be nice idea
+            </summary>
+            <param name="weaponType"></param>
+            <param name="skinName"></param>
+            <param name="filter"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinsControllerV2.GetSkinItems(CDOverhaul.Gameplay.ItemFilter,WeaponType)">
+            <summary>
+            Get all weapon skins that match <paramref name="filter"/> parameter.
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover)">
+            <summary>
+            Get all weapon skins that <paramref name="firstPersonMover"/> is allowed to use
+            </summary>
+            <param name=""></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.SetModel(UnityEngine.GameObject,OverhaulAPI.ModelOffset,System.Boolean,System.Boolean,System.Byte)">
+            <summary>
+            Set model for specific variant of weapon skin
+            </summary>
+            <param name="prefab"></param>
+            <param name="fire"></param>
+            <param name="multiplayer"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.GetModel(System.Boolean,System.Boolean,System.Byte)">
+            <summary>
+            Get model
+            </summary>
+            <param name="fire"></param>
+            <param name="multiplayer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.SetFilter(CDOverhaul.Gameplay.ItemFilter)">
+            <summary>
+            TBA
+            </summary>
+            <param name="filter"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.GetFilter">
+            <summary>
+            TBA
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.SetWeaponType(WeaponType)">
+            <summary>
+            TBA
+            </summary>
+            <param name="weaponType"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.IWeaponSkinItemDefinition.GetWeaponType">
+            <summary>
+            TBA
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinItemDefinitionV2.m_WeaponType">
+            <summary>
+            Weapon type
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinItemDefinitionV2.m_SkinFilter">
+            <summary>
+            Filter
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinItemDefinitionV2.m_SkinName">
+            <summary>
+            Skin name
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinItemDefinitionV2.m_ExclusivePlayerID">
+            <summary>
+            Exclusivity
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinItemDefinitionV2.m_Models">
+            <summary>
+            Models
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.AddSkinQuick(WeaponType,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Add a skin definition
+            </summary>
+            <param name="weaponType"></param>
+            <param name="name"></param>
+            <param name="author"></param>
+            <param name="singleplayerNormalModel"></param>
+            <param name="singleplayerFireModel"></param>
+            <param name="multiplayerNormalModel"></param>
+            <param name="multiplayerFireModel"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.SetSkinModelOffsetQuick(OverhaulAPI.ModelOffset,System.Boolean,System.Boolean)">
+            <summary>
+            Set recently skin model offset
+            </summary>
+            <param name="offset"></param>
+            <param name="fire"></param>
+            <param name="multiplayer"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.SetSkinExclusiveQuick(System.String)">
+            <summary>
+            Mark recently added skin as exclusive
+            </summary>
+            <param name="playerIds"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.SetSkinColorParametersQuick(System.Boolean,System.Int32,System.Boolean,System.Int32,System.Single,System.Single,System.Boolean)">
+            <summary>
+            Set color parameters of recently added skin
+            </summary>
+            <param name="applyFavColorNormal"></param>
+            <param name="forcedColorIndexNormal"></param>
+            <param name="applyFavColorFire"></param>
+            <param name="forcedColorIndexFire"></param>
+            <param name="saturation"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.SetSkinMiscParametersQuick(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Set misc parameters of recently added skin
+            </summary>
+            <param name="singleplayerVariantInMultiplayer"></param>
+            <param name="vanillaBowStrings"></param>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsController.SetSkinDescriptionQuick(System.String,System.String)">
+            <summary>
+            Set recently added skin description
+            </summary>
+            <param name="descriptionFilename"></param>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinsWearer.AllowSwitchSkinVFX">
+            <summary>
+            This VFX appears when user change skins
+            Todo: Make better VFX
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.WeaponSkinsWearer.SpawnedSkins">
+            <summary>
+            The collection of all instantiated skins
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetWeaponSkinSpawnInfo(WeaponType)">
+            <summary>
+            Get spawn info knowing only the <see cref="T:WeaponType"/>
+            </summary>
+            <param name="weaponType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetWeaponSkinSpawnInfo(WeaponModel)">
+            <summary>
+            Get spawn info knowing only the <see cref="T:WeaponModel"/>
+            </summary>
+            <param name="weaponModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetWeaponSkinSpawnInfo(CDOverhaul.Gameplay.IWeaponSkinItemDefinition)">
+            <summary>
+            Get spawn info knowing only the <see cref="T:CDOverhaul.Gameplay.IWeaponSkinItemDefinition"/>
+            </summary>
+            <param name="weaponSkinItemDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetEquippedWeaponSkinSpawnInfo">
+            <summary>
+            Get skin spawn info of currently equipped weapon
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetEquippedWeaponSkinSpawnInfoDirectly(FirstPersonMover)">
+            <summary>
+            Static variant of <see cref="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetEquippedWeaponSkinSpawnInfo"/>, Get skin spawn info of currently equipped weapon
+            </summary>
+            <param name="mover"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.WeaponSkinsWearer.GetEquippedWeaponSkinItemDirectly(FirstPersonMover)">
+            <summary>
+            Get skin item definition of currently equipped weapon
+            </summary>
+            <param name="mover"></param>
+            <returns></returns>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.OverhaulGameplayCoreController.GamemodeStartIndex">
+            <summary>
+            The start index of mod gamemodes
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Gameplay.OverhaulGameplayCoreController.sendGamemodeWasUpdateEvent">
+            <summary>
+            Send <see cref="F:CDOverhaul.Gameplay.OverhaulGameplayCoreController.GamemodeChangedEventString"/> event
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Graphics.ArenaRevamp.ArenaRevampController">
+            <summary>
+            The main controller of arena revamp
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Workshop.OverhaulWorkshopBrowserUI.OnReceivedWorkshopResult(CDOverhaul.Workshop.OverhaulWorkshopRequestResult)">
+            <summary>
+            Called when our steam workshop request is done
+            </summary>
+            <param name="requestResult"></param>
+        </member>
+        <member name="T:CDOverhaul.NetworkAssets.OverhaulNetworkController">
+            <summary>
+            Controller that can download stuff from GitHub
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.HUD.WeaponSkinsMenu">
+            <summary>
+            Used for outfits and skins menus
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.HUD.OverhaulCanvasController.OverhaulHUDName">
+            <summary>
+            The prefab name of HUD
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.HUD.OverhaulCanvasController.HUDModdedObject">
+            <summary>
+            The modded object with all UI references
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.HUD.OverhaulCanvasController.AddHUD``1(ModdedObject@)">
+            <summary>
+            Add new HUD controller to <paramref name="moddedObject"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="moddedObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.HUD.OverhaulCanvasController.GetHUDPrefab(System.String@)">
+            <summary>
+            TBA
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.HUD.OverhaulCanvasController.ParentTransformToGameUIRoot(UnityEngine.Transform@)">
+            <summary>
+            Parent transform to <see cref="T:GameUIRoot"/>.Instance.transform and instantly fix position and scale
+            </summary>
+            <param name="transform"></param>
+        </member>
+        <member name="M:CDOverhaul.HUD.OverhaulCanvasController.SetCanvasPixelPerfect(System.Boolean@)">
+            <summary>
+            Set <see cref="P:UnityEngine.Canvas.pixelPerfect"/> value in <see cref="T:GameUIRoot"/>
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:CDOverhaul.LevelEditor.LevelEditorObjectsController.AddObject(UnityEngine.Transform@,UnityEngine.Texture2D@,System.String@)">
+            <summary>
+            Add object to level editor
+            </summary>
+            <param name="theObject"></param>
+            <param name="thePreview"></param>
+            <param name="path"></param>
+            <param name="displayName"></param>
+        </member>
+        <member name="M:CDOverhaul.LevelEditor.LevelEditorObjectsController.GetObject(System.String@)">
+            <summary>
+            Returns <see cref="T:UnityEngine.Transform"/> or <see cref="T:UnityEngine.Texture2D"/>
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CDOverhaul.OverhaulDiscordController.CurrentGamemode">
+            <summary>
+            The gamemode player is playing right now
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulDiscordController.CurrentGamemodeDetails">
+            <summary>
+            The details of gamemode (Progress)
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDiscordController.DestroyDiscord">
+            <summary>
+            Destroying discord will result app quit
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDiscordController.updateGamemodeString">
+            <summary>
+            Update <see cref="P:CDOverhaul.OverhaulDiscordController.CurrentGamemode"/> value
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDiscordController.updateDetailsString">
+            <summary>
+            Update <see cref="P:CDOverhaul.OverhaulDiscordController.CurrentGamemodeDetails"/> value
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Patches.MeleeImpactArea_Patch">
+            <summary>
+            This patch should fix damage areas offsets i guess
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.OptimizeRuntime.CollectGarbage">
+            <summary>
+            Reduce memory usage as much as possible
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Patches.ReplacementBase">
+            <summary>
+            This was made to patch the game without using HarmonyPatch
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.HasReplaced">
+            <summary>
+            Check if replacement is working
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.SuccessfullyPatched">
+            <summary>
+            This value doesn't affect anything, use it for marking fine working patches
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Replace">
+            <summary>
+            Do patch
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Cancel">
+            <summary>
+            Revert patch changes, called when mod is disabled
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.OverhaulTransitionController">
+            <summary>
+            Todo: Add better transitions without bugs and with cool loading animation
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.OverhaulBehaviour">
+            <summary>
+            MonoBehaviour class that will be used in mod
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtentions.GetObject``1(ModdedObject,System.Int32@)">
+            <summary>
+            Get a component of object with given index
+            </summary>
+            <typeparam name="Type"></typeparam>
+            <param name="moddedObject"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtentions.ConvertHexToColor(System.String)">
+            <summary>
+            Get color using hex
+            </summary>
+            <param name="theString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtentions.HasReplacedWithFireVariant(WeaponModel)">
+            <summary>
+            Check if weapon model is on fire
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.OverhaulSessionController">
+            <summary>
+            Used to store static values
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulCharacterExpansion.Owner">
+            <summary>
+            Owner of the expansion script
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulCharacterExpansion.UpgradeCollection">
+            <summary>
+            Owner's upgrade collection
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulCharacterExpansion.EnergySource">
+            <summary>
+            Owner's energy source
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulCharacterExpansion.IsPressed(UnityEngine.KeyCode,System.Byte)">
+            <summary>
+            Check if user, if <paramref name="type"/> is 0 - pressed key this frame, 1 - holding the key, 2 - ended pressing key this frame
+            </summary>
+            <param name="code"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulCharacterExpansion.OnPreCommandExecute(FPMoveCommand)">
+            <summary>
+            May be the best way to control character movement
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDebugger.StartTimer">
+            <summary>
+            Create instance of <see cref="T:System.Diagnostics.Stopwatch"/> and call <see cref="M:System.Diagnostics.Stopwatch.Start"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDebugger.StopTimer(System.Diagnostics.Stopwatch@)">
+            <summary>
+            Stop specific timer and print elapsed time to console
+            </summary>
+            <param name="timer"></param>
+        </member>
+        <member name="T:CDOverhaul.OverhaulExceptions">
+            <summary>
+            The exceptions that should occur only while testing!
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExceptions.ThrowException(System.String@,System.String@)">
+            <summary>
+            Just throw an exception
+            </summary>
+            <param name="exc"></param>
+            <param name="message"></param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExceptions.OnModEarlyCrash(System.String@)">
+            <summary>
+            Called when game crashed too early
+            </summary>
+            <param name="exc"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulGamemodeManager.SupportsPersonalization">
+            <summary>
+            Check if we can see accessories on robots
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.AddSetting``1(System.String@,``0@,System.Reflection.FieldInfo@,CDOverhaul.SettingSliderParameters@,CDOverhaul.SettingDropdownParameters@,CDOverhaul.SettingFormelyKnownAs@)">
+            <summary>
+            Add a setting and get full info about one
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="path"></param>
+            <param name="defaultValue"></param>
+            <param name="field"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.GetAllCategories(System.Boolean@)">
+            <summary>
+            Get all available categories including hidden if <paramref name="includeHidden"/> is true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.GetAllSections(System.String@,System.Boolean@)">
+            <summary>
+            Get all available sections under category including hidden if <paramref name="includeHidden"/> is true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.GetAllSettings(System.String@,System.String@,System.Boolean@)">
+            <summary>
+            Get all available settings including hidden if <paramref name="includeHidden"/> is true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.GetSetting(System.String@,System.Boolean@)">
+            <summary>
+            Get setting info by typing path
+            </summary>
+            <param name="path"></param>
+            <param name="includeHidden"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.SettingsController.IsEntryHidden(System.String@)">
+            <summary>
+            Check if the setting is hidden
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="F:CDOverhaul.AssetsController.ModAssetBundle_Part1">
+            <summary>
+            The asset bundle is split in several parts. This is the file name of first part
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.AssetsController.GetAsset(System.String@,CDOverhaul.OverhaulAssetsPart@)">
+            <summary>
+            Get an asset from bundle
+            </summary>
+            <param name="assetName"></param>
+            <param name="assetBundlePart"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.AssetsController.HasAssetBundle(System.String@)">
+            <summary>
+            Check if user has specific asset bundle (or even file) on disk
+            </summary>
+            <param name="assetBundleFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="F:CDOverhaul.OverhaulDataBase.IsLoadedFromFile">
+            <summary>
+            Define if this container base was loaded from file
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.OverhaulDataController">
+            <summary>
+            A simplified interaction with <see cref="T:DataRepository"/>
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDataController.SaveData(System.Object,System.String@,System.Boolean@,System.String@)">
+            <summary>
+            Save data as .json file
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dataContainer"></param>
+            <param name="fileName"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulDataController.GetData``1(System.String@,System.Boolean@,System.String@)">
+            <summary>
+            Load data from disk
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.OverhaulController">
+            <summary>
+            The base class of any controller in this mod.
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulController.HadBadStart">
+            <summary>
+            Check if an exception occured while initializng the controller.
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.Initialize">
+            <summary>
+            Called at the same time when controller is created.
+            It is better to set up thing here.
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.OnModDeactivated">
+            <summary>
+            Called when mod was deactivated.
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.Commands">
+            <summary>
+            The array of available commands you may type in debug console.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.OnCommandRan(System.String[])">
+            <summary>
+            Called when any command ran.
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.InitializeStatic(UnityEngine.GameObject@)">
+            <summary>
+            Initialize static fields
+            </summary>
+            <param name="controllersGO"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.AddController``1(UnityEngine.Transform@)">
+            <summary>
+            Create and initialize new controller
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="transformOverride"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.GetController``1">
+            <summary>
+            Get controller instance by its type
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulController.RemoveController(CDOverhaul.OverhaulController)">
+            <summary>
+            Remove controller from existing controllers dictionary
+            </summary>
+            <param name="controllerInstance"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:CDOverhaul.OverhaulUI">
+            <summary>
+            The base class of any HUD in the mod
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulUI.MyModdedObject">
+            <summary>
+            The instance of <see cref="T:ModdedObject"/>
+            <b>Note: gameobject with this script must have <see cref="T:ModdedObject"/></b>
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulUI.ShowCursor">
+            <summary>
+            Make the game to force show system cursor
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.EnableCursorController.AddCondition">
+            <summary>
+            Make the game understand that cursor should be enabled until you remove condition (<see cref="!:EnableCursorController.RemoveCondition(in int)"/>) the ID which we got from this method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.EnableCursorController.RemoveCondition(System.Byte@)">
+            <summary>
+            Remove condition with ID
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:CDOverhaul.OverhaulEventsController">
+            <summary>
+            A simplified interaction with <see cref="T:GlobalEventManager"/> (not really)
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulEventsController.EventPrefix">
+            <summary>
+            This prefix is automatically added to any of mod events
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulEventsController.MayAddListeners">
+            <summary>
+            Check if <see cref="T:GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulVersion.m_ModVersion">
+            <summary>
+            The version of the mod
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulVersion.GameTargetVersion">
+            <summary>
+            The version of game mod will definitely work 
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulVersion.ModFullName">
+            <summary>
+            The full name of the mod
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulVersion.ModShortName">
+            <summary>
+            The shortened name of the mod
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.OverhaulMod">
+            <summary>
+            The base class of the mod. Starts up the mod
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulMod.ModDeactivatedEventString">
+            <summary>
+            An event that is called when mod was deactivated by user
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulMod.IsCoreLoadedIncorrectly">
+            <summary>
+            Define if we got errors while starting up the mod
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulMod.IsModInitialized">
+            <summary>
+            Returns <b>True</b> if <b><see cref="P:CDOverhaul.OverhaulMod.Core"/></b> is not <b>Null</b>
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulMod.Core">
+            <summary>
+            The instance of the core
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulMod.Base">
+            <summary>
+            The instance of main mod class
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.OnModLoaded">
+            <summary>
+            Create core when mod was loaded
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.OnModEnabled">
+            <summary>
+            Create core when mod was loaded or enabled
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.OnModDeactivated">
+            <summary>
+            Destroy the when mod was deactivated
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.OnResourcesLoad(System.String)">
+            <summary>
+            Currently used to make modded level editor objects real
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.OnFirstPersonMoverSpawned(FirstPersonMover)">
+            <summary>
+            Used for events
+            </summary>
+            <param name="firstPersonMover"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.TryCreateCore">
+            <summary>
+            Create the instance of mod core monobehaviour
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.DeconstructCore">
+            <summary>
+            Destroy the instance of the core
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulMod.waitForRobotInitialziationAndDispatchEvent(FirstPersonMover)">
+            <summary>
+            Wait until all things are initialized in <see cref="T:FirstPersonMover"/> and dispatch event if robot isn't null
+            </summary>
+            <param name="firstPersonMover"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.OverhaulCore">
+            <summary>
+            The core of the mod. Contains important variables
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulCore.ModDirectory">
+            <summary>
+            The mod directory path.
+            Ends with '/'
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.OverhaulCore.CanvasController">
+            <summary>
+            The UI controller instance
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.EventEntry">
+            <summary>
+            A definition of event that has listeners
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.EventEntry.EventName">
+            <summary>
+            Event name
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.EventEntry.WithPrefix">
+            <summary>
+            Is it not a vanilla event?
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.EventEntry.EventAction">
+            <summary>
+            What function should be called
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.EventEntry.EventActionWithArgument">
+            <summary>
+            What function with arguments should be called
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.EventEntry.SetArgument``1(System.Action{``0})">
+            <summary>
+            Mark event as one that requires arguments
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="delegate"></param>
+        </member>
+        <member name="M:CDOverhaul.EventEntry.Equals(CDOverhaul.EventEntry@,CDOverhaul.EventEntry@)">
+            <summary>
+            Compare 2 events
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(UnityEngine.Texture2D@)">
+            <summary>
+            Create sprite from texture
+            </summary>
+            <param name="texture2D"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(System.String@)">
+            <summary>
+            Load a texture from file
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.TextureAndMaterialUtils.TextureToByteArray(UnityEngine.Texture2D@)">
+            <summary>
+            Turn texture into byte array
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.TextureAndMaterialUtils.LoadTextureAsync(System.String,System.Action{UnityEngine.Texture2D})">
+            <summary>
+            Async load texture from file
+            </summary>
+            <param name="path"></param>
+            <param name="onLoaded"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.LoadBytes(System.String@,System.String@)">
+            <summary>
+            Get bytes in file
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.SaveBytes(System.Byte[]@,System.String@,System.String@)">
+            <summary>
+            Save
+            </summary>
+            <param name="bytes"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.LoadBytesAsync(System.String,System.Action{System.Byte[]},System.String)">
+            <summary>
+            Async get bytes in file
+            </summary>
+            <param name="path"></param>
+            <param name="onReadEnd"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.LoadString(System.String@,System.String@)">
+            <summary>
+            Load all text
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.LoadStringAsync(System.String,System.Action{System.String},System.String)">
+            <summary>
+            Async read string in file
+            </summary>
+            <param name="path"></param>
+            <param name="onReadEnd"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.TryCreateFolder(System.String@)">
+            <summary>
+            Creates a folder if one doesn't exist
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:CDOverhaul.OverhaulUtilities.FileUtils.TryCreateFolders(System.String[]@)">
+            <summary>
+            Same as method above, but for multiple folders
+            </summary>
+            <param name="paths"></param>
+        </member>
+    </members>
+</doc>

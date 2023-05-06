@@ -25,15 +25,20 @@ namespace CDOverhaul.Workshop
         {
             Name = details.m_rgchTitle;
             Description = details.m_rgchDescription;
+            AuthorID = (CSteamID)details.m_ulSteamIDOwner;
+            Author = SteamFriends.GetFriendPersonaName(AuthorID);
             ID = details.m_nPublishedFileId;
             UpVotesCount = (int)details.m_unVotesUp;
             DownVotesCount = (int)details.m_unVotesDown;
             Stars = Mathf.Min((details.m_flScore * 5f) + 1f, 5f);
+            OverhaulSteamBrowser.RequestInfoAboutUser(AuthorID);
         }
 
         public PublishedFileId_t ID;
         public string Name;
         public string Description;
+        public CSteamID AuthorID;
+        public string Author;
 
         public int UpVotesCount;
         public int DownVotesCount;

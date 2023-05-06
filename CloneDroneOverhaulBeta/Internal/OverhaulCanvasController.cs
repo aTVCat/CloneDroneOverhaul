@@ -56,12 +56,13 @@ namespace CDOverhaul.HUD
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(5)).IsOutfitSelection = true;
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
-            _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
             _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
             _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
             _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
+            _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

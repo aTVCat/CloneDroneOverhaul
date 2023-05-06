@@ -84,6 +84,7 @@ namespace CDOverhaul
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
+            OverhaulPatchNotes.Initialize();
 
             if (OverhaulDiscordController.Instance == null)
             {

@@ -18,6 +18,11 @@ namespace CDOverhaul.HUD
         private Text m_DiscordUserLabel;
         private Button m_DiscordDisableMessageButton;
 
+        private Transform m_UpperButtonsContainer;
+        private Button m_PatchNotesButton;
+
+        private GameObject m_TitleScreenRootButtons;
+
         private bool m_wasOnTitleScreenBefore;
 
         public override void Initialize()
@@ -39,6 +44,11 @@ namespace CDOverhaul.HUD
             m_VersionLabel = MyModdedObject.GetObject<Text>(0);
             m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
+            m_TitleScreenRootButtons = GameUIRoot.Instance.TitleScreenUI.RootButtonsContainerBG;
+
+            m_UpperButtonsContainer = MyModdedObject.GetObject<Transform>(5);
+            m_PatchNotesButton = MyModdedObject.GetObject<Button>(6);
+            m_PatchNotesButton.onClick.AddListener(onPatchNotesButtonClicked);
 
             _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
 
@@ -67,8 +77,14 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (GameModeManager.IsOnTitleScreen() && OverhaulWorkshopBrowserUI.BrowserIsNull || (!OverhaulWorkshopBrowserUI.BrowserIsNull && !OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf))
+            if (GameModeManager.IsOnTitleScreen())
             {
+                if (m_TitleScreenRootButtons != null) m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons.activeInHierarchy);
+                if (!OverhaulWorkshopBrowserUI.BrowserIsNull && OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf)
+                {
+                    m_VersionLabel.text = string.Empty;
+                    return;
+                }
                 m_VersionLabel.text = string.Concat(m_TitleScreenUIVersionLabel.text,
                "\n",
                 OverhaulVersion.ModFullName);
@@ -78,6 +94,7 @@ namespace CDOverhaul.HUD
                 m_VersionLabel.text = OverhaulVersion.ModShortName;
                 m_VersionLabel.gameObject.SetActive(WatermarkEnabled);
                 m_DiscordHolderTransform.gameObject.SetActive(false);
+                m_UpperButtonsContainer.gameObject.SetActive(false);
             }
         }
 
@@ -100,6 +117,18 @@ namespace CDOverhaul.HUD
             m_wasOnTitleScreenBefore = !m_wasOnTitleScreenBefore;
         }
 
+        private void onPatchNotesButtonClicked()
+        {
+            OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
+            if(overhaulPatchNotesUI == null)
+            {
+                m_PatchNotesButton.interactable = false;
+                return;
+            }
+
+            overhaulPatchNotesUI.Show();
+        }
+
         private void Update()
         {
             if (IsDisposedOrDestroyed())
@@ -107,7 +136,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (Time.frameCount % 20 == 0)
+            if (Time.frameCount % 5 == 0)
             {
                 bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
                 if (isOnTitleScreen || isOnTitleScreen != m_wasOnTitleScreenBefore)

@@ -1,57 +1,53 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CDOverhaul.HUD
+namespace CDOverhaul
 {
-    public class OverhaulPatchNotes : OverhaulUI
+    public static class OverhaulPatchNotes
     {
-        private Button m_OkButton;
-        private Button m_ModBotButton;
-        private Button m_GitHubButton;
+        public static readonly List<PatchInfo> AllChangelogs = new List<PatchInfo>();
 
-        public override void Initialize()
+        public static void Initialize()
         {
-            m_OkButton = MyModdedObject.GetObject<Button>(0);
-            m_OkButton.onClick.AddListener(OnOKClicked);
-            m_GitHubButton = MyModdedObject.GetObject<Button>(1);
-            m_GitHubButton.onClick.AddListener(OnGitHubClicked);
-            m_ModBotButton = MyModdedObject.GetObject<Button>(2);
-            m_ModBotButton.onClick.AddListener(OnModBotClicked);
-            Hide();
+            if (!OverhaulSessionController.GetKey<bool>("HasReadChangelogs"))
+            {
+                OverhaulSessionController.SetKey("HasReadChangelogs", true);
+
+                AllChangelogs.Add(new PatchInfo(new Version(0, 3, 0, 188), "TestChangelog", new string[] { "20230506203329_1.jpg" }));
+                AllChangelogs.Add(new PatchInfo(new Version(0, 3, 0, 404), "TestChangelog2", new string[] { "20230503213016_1.jpg", "20230505200409_1.jpg", "20230505205829_1.jpg", "freemoney.jpg" }));
+            }
         }
 
-        protected override void OnDisposed()
+        public class PatchInfo
         {
-            base.OnDisposed();
+            public Version TargetModVersion;
 
-            m_OkButton = null;
-            m_ModBotButton = null;
-            m_GitHubButton = null;
-        }
+            public string Folder;
+            public string DirectoryPath
+            {
+                get;
+                private set;
+            }
+            public string InformationString
+            {
+                get;
+                private set;
+            }
 
-        public void Show()
-        {
-            base.gameObject.SetActive(true);
-        }
+            public string[] Art;
 
-        public void Hide()
-        {
-            base.gameObject.SetActive(false);
-        }
-
-        public void OnOKClicked()
-        {
-            Hide();
-        }
-
-        public void OnGitHubClicked()
-        {
-            Application.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases");
-        }
-
-        public void OnModBotClicked()
-        {
-            Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
+            public PatchInfo(Version targetVersion, string folderName, string[] art)
+            {
+                TargetModVersion = targetVersion;
+                Folder = folderName;
+                Art = art;
+ 
+                DirectoryPath = OverhaulMod.Core.ModDirectory + "Assets/Changelogs/" + Folder + "/";
+                InformationString = OverhaulCore.ReadTextFile(DirectoryPath + "Info.txt");
+            }
         }
     }
 }

@@ -424,7 +424,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\WeaponSkinFireAnimator.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsEditor.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
-    <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowser.cs" />
+    <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulRequestProgressInfo.cs" />
@@ -438,6 +438,7 @@
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUI.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
+    <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
     <Compile Include="HUD\PhotoMode\OverhaulPhotoModeControls.cs" />
     <Compile Include="Gameplay\Levels\OverhaulLevelAdder.cs" />
     <Compile Include="Graphics\Environment\Mindspace\MindspaceOverhaulController.cs" />
@@ -458,7 +459,8 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
-    <Compile Include="HUD\UIDescription\OverhaulUIDescriptionTooltip.cs" />
+    <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
+    <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
@@ -636,6 +638,7 @@
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Animations\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Lua\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
+    <Folder Include="HUD\IntroSetup\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
