@@ -80,7 +80,7 @@ namespace CDOverhaul.Gameplay
 
         public override void OnSetColor(Color color)
         {
-            if(color == Color.clear)
+            if (color == Color.clear)
             {
                 TargetColor = Color.white;
                 return;

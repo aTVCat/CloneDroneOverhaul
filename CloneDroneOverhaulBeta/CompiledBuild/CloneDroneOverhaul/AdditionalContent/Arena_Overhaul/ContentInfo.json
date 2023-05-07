@@ -1,0 +1,23 @@
+{
+  "PackName": "Arena Overhaul",
+  "PackDescription": "This pack is under construction.",
+  "PackID": "1839bcf8-bbeb-4007-a1a2-115ae84a3249",
+  "PackType": 1,
+  "PackVersion": {
+    "Major": 0,
+    "Minor": 3,
+    "Build": 0,
+    "Revision": 186,
+    "MajorRevision": 0,
+    "MinorRevision": 186
+  },
+  "MinModVersionRequired": {
+    "Major": 0,
+    "Minor": 3,
+    "Build": 0,
+    "Revision": 186,
+    "MajorRevision": 0,
+    "MinorRevision": 186
+  },
+  "AssetBundles": []
+}

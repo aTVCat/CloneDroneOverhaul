@@ -37,7 +37,7 @@ namespace CDOverhaul.Localization
                     m.GetObject<Text>(0).text = langCode;
                     m.GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        EditLang(langCode);
+                        EditLang(m.GetObject<Text>(0).text);
                     });
                 }
 

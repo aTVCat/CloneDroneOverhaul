@@ -1,7 +1,6 @@
 ﻿using ModLibrary;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CDOverhaul.Gameplay
 {
@@ -47,8 +46,7 @@ namespace CDOverhaul.Gameplay
             }
 
             path = path.Replace("Data/LevelEditorLevels/", string.Empty);
-
-            return File.ReadAllText(OverhaulMod.Core.ModDirectory + "Assets/Levels/" + path + ".json"); // Todo: This should be improved later
+            return OverhaulCore.ReadTextFile("Assets/Levels/" + path + ".json");
         }
 
         public static bool HasLevel(in string path)

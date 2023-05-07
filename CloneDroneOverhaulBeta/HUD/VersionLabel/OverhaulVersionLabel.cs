@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.Workshop;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -8,22 +9,19 @@ namespace CDOverhaul.HUD
         [OverhaulSetting("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
         public static bool WatermarkEnabled;
 
-        private bool m_HasInitialized;
-        public bool HasInitialized
-        {
-            get
-            {
-                if (!m_HasInitialized)
-                {
-                    Initialize();
-                }
-                return m_HasInitialized;
-            }
-        }
+        private OverhaulParametersMenu m_ParametersMenu;
 
         private Text m_VersionLabel;
-        private Text m_ExclusiveLabel;
         private Text m_TitleScreenUIVersionLabel;
+
+        private Transform m_DiscordHolderTransform;
+        private Text m_DiscordUserLabel;
+        private Button m_DiscordDisableMessageButton;
+
+        private Transform m_UpperButtonsContainer;
+        private Button m_PatchNotesButton;
+
+        private GameObject m_TitleScreenRootButtons;
 
         private bool m_wasOnTitleScreenBefore;
 
@@ -34,27 +32,30 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (m_HasInitialized)
+            if (GameUIRoot.Instance == null || GameUIRoot.Instance.TitleScreenUI == null || GameUIRoot.Instance.TitleScreenUI.VersionLabel == null)
             {
+                base.enabled = false;
                 return;
             }
 
-            m_VersionLabel = MyModdedObject.GetObject<Text>(2);
+            m_DiscordHolderTransform = MyModdedObject.GetObject<Transform>(1);
+            m_DiscordUserLabel = MyModdedObject.GetObject<Text>(2);
+
+            m_VersionLabel = MyModdedObject.GetObject<Text>(0);
             m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
-            m_ExclusiveLabel = MyModdedObject.GetObject<Text>(3);
-
-            if (m_VersionLabel == null || m_TitleScreenUIVersionLabel == null || m_ExclusiveLabel == null)
-            {
-                throw new System.NullReferenceException("Overhaul version label: m_VersionLabel, m_TitleScreenUIVersionLabel or m_ExclusiveLabel is null");
-            }
-
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
-            m_ExclusiveLabel.gameObject.SetActive(false);
-            _ = OverhaulEventsController.AddEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
-            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
-            RefreshVersionLabel(true);
+            m_TitleScreenRootButtons = GameUIRoot.Instance.TitleScreenUI.RootButtonsContainerBG;
 
-            m_HasInitialized = true;
+            m_UpperButtonsContainer = MyModdedObject.GetObject<Transform>(5);
+            m_PatchNotesButton = MyModdedObject.GetObject<Button>(6);
+            m_PatchNotesButton.onClick.AddListener(onPatchNotesButtonClicked);
+
+            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
+
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                m_ParametersMenu = GetController<OverhaulParametersMenu>();
+            }, 0.1f);
         }
 
         protected override void OnDisposed()
@@ -62,14 +63,14 @@ namespace CDOverhaul.HUD
             base.OnDisposed();
             m_VersionLabel = null;
             m_TitleScreenUIVersionLabel = null;
-            m_ExclusiveLabel = null;
+            m_DiscordHolderTransform = null;
+            m_DiscordUserLabel = null;
+            m_DiscordDisableMessageButton = null;
 
-            OverhaulEventsController.RemoveEventListener(ExclusivityController.OnLoginSuccessEventString, onLoginSuccess);
             OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
-            OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, refreshVisibility);
         }
 
-        public void RefreshVersionLabel(bool forceRefreshVisibilityNextTime = false)
+        public void RefreshVersionLabel()
         {
             if (IsDisposedOrDestroyed())
             {
@@ -78,6 +79,12 @@ namespace CDOverhaul.HUD
 
             if (GameModeManager.IsOnTitleScreen())
             {
+                if (m_TitleScreenRootButtons != null) m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons.activeInHierarchy);
+                if (!OverhaulWorkshopBrowserUI.BrowserIsNull && OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf)
+                {
+                    m_VersionLabel.text = string.Empty;
+                    return;
+                }
                 m_VersionLabel.text = string.Concat(m_TitleScreenUIVersionLabel.text,
                "\n",
                 OverhaulVersion.ModFullName);
@@ -85,46 +92,41 @@ namespace CDOverhaul.HUD
             else
             {
                 m_VersionLabel.text = OverhaulVersion.ModShortName;
-                m_ExclusiveLabel.gameObject.SetActive(false);
                 m_VersionLabel.gameObject.SetActive(WatermarkEnabled);
-            }
-            if (forceRefreshVisibilityNextTime)
-            {
-                m_wasOnTitleScreenBefore = GameModeManager.IsOnTitleScreen();
-                refreshVisibility();
+                m_DiscordHolderTransform.gameObject.SetActive(false);
+                m_UpperButtonsContainer.gameObject.SetActive(false);
             }
         }
 
-        private void onLoginSuccess()
+        public void RefreshDiscordUserInfo()
         {
-            if (IsDisposedOrDestroyed())
+            m_DiscordHolderTransform.gameObject.SetActive(false);
+
+            bool discordInitialized = !OverhaulVersion.Upd2Hotfix && (m_ParametersMenu == null || !m_ParametersMenu.gameObject.activeSelf) && GameModeManager.IsOnTitleScreen() && OverhaulDiscordController.SuccessfulInitialization && OverhaulDiscordController.Instance.UserID != -1;
+            if (!discordInitialized)
             {
                 return;
             }
 
-            if (!HasInitialized)
-            {
-                return;
-            }
-
-            RefreshVersionLabel();
-
-            if (ExclusiveRolesController.GetExclusivePlayerInfo(ExclusivityController.GetLocalPlayfabID(), out ExclusivePlayerInfo? info))
-            {
-                if (info == null)
-                {
-                    return;
-                }
-
-                m_ExclusiveLabel.gameObject.SetActive(GameModeManager.IsOnTitleScreen());
-                m_ExclusiveLabel.text = "You have exclusive access to some stuff, " + info.Value.Name + " Yay!";
-                m_ExclusiveLabel.color = info.Value.FavColor;
-            }
+            m_DiscordHolderTransform.gameObject.SetActive(true);
+            m_DiscordUserLabel.text = OverhaulDiscordController.Instance.UserName;
         }
 
         private void refreshVisibility()
         {
             m_wasOnTitleScreenBefore = !m_wasOnTitleScreenBefore;
+        }
+
+        private void onPatchNotesButtonClicked()
+        {
+            OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
+            if (overhaulPatchNotesUI == null)
+            {
+                m_PatchNotesButton.interactable = false;
+                return;
+            }
+
+            overhaulPatchNotesUI.Show();
         }
 
         private void Update()
@@ -134,32 +136,16 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (Time.frameCount % 30 == 0)
+            if (Time.frameCount % 5 == 0)
             {
                 bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
-                if (isOnTitleScreen != m_wasOnTitleScreenBefore)
+                if (isOnTitleScreen || isOnTitleScreen != m_wasOnTitleScreenBefore)
                 {
                     RefreshVersionLabel();
                 }
                 m_wasOnTitleScreenBefore = isOnTitleScreen;
 
-                if (isOnTitleScreen)
-                {
-                    RefreshVersionLabel();
-                }
-            }
-        }
-
-        public override void OnModDeactivated()
-        {
-            if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
-
-            if (m_TitleScreenUIVersionLabel != null)
-            {
-                m_TitleScreenUIVersionLabel.gameObject.SetActive(true);
+                RefreshDiscordUserInfo();
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using CDOverhaul.Localization;
+using CDOverhaul.NetworkAssets.AdditionalContent;
+using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,9 +56,13 @@ namespace CDOverhaul.HUD
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
             _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(5)).IsOutfitSelection = true;
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
-            _ = AddHUD<OverhaulPatchNotes>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
+            _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
+            _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
+            _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
+            _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -70,7 +76,7 @@ namespace CDOverhaul.HUD
         /// <returns></returns>
         public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
         {
-            return OverhaulController.AddController<T>(moddedObject.transform);
+            return moddedObject == null ? null : OverhaulController.AddController<T>(moddedObject.transform);
         }
 
         /// <summary>
@@ -94,7 +100,6 @@ namespace CDOverhaul.HUD
             return null;
         }
 
-        /// Todo: test it
         public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
         {
             List<T> list = new List<T>();

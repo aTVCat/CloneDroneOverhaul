@@ -1,8 +1,10 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
+using CDOverhaul.NetworkAssets.AdditionalContent;
 using CDOverhaul.Patches;
 using System;
 using System.IO;
@@ -55,10 +57,11 @@ namespace CDOverhaul
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
+            /*
             if (ExperimentalBranchManager.Instance != null)
             {
                 ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
-            }
+            }*/
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
@@ -75,7 +78,8 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<VoxelsController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
-            _ = OverhaulController.AddController<SkyboxOverhaulController>();
+            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<SkyboxOverhaulController>();
+            _ = OverhaulController.AddController<AutoBuild>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();
@@ -83,6 +87,7 @@ namespace CDOverhaul
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
+            OverhaulPatchNotes.Initialize();
 
             if (OverhaulDiscordController.Instance == null)
             {
@@ -90,6 +95,8 @@ namespace CDOverhaul
             }
 
             ReplacementBase.CreateReplacements();
+
+            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
         }
 
         private void OnDestroy()
@@ -101,7 +108,7 @@ namespace CDOverhaul
 
         public static string ReadTextFile(string filePath)
         {
-            string path = OverhaulMod.Core.ModDirectory + filePath;
+            string path = filePath.Contains(OverhaulMod.Core.ModDirectory) ? filePath : OverhaulMod.Core.ModDirectory + filePath;
             bool fileExists = File.Exists(path);
             if (!fileExists)
             {

@@ -35,6 +35,113 @@ namespace CDOverhaul
         /// </summary>
         public string CurrentGamemodeDetails { get; set; }
 
+        private static bool m_HasUser;
+        private static User m_User;
+        public long UserID
+        {
+            get
+            {
+                if (m_HasUser)
+                {
+                    return m_User.Id;
+                }
+
+                if (!SuccessfulInitialization)
+                {
+                    return -1;
+                }
+
+                UserManager m = m_Client.GetUserManager();
+                if (m == null)
+                {
+                    return -1;
+                }
+
+                User u;
+                try
+                {
+                    u = m.GetCurrentUser();
+                    m_HasUser = true;
+                    m_User = u;
+                }
+                catch
+                {
+                    return -1;
+                }
+                return u.Id;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                if (m_HasUser)
+                {
+                    return m_User.Username;
+                }
+
+                if (!SuccessfulInitialization)
+                {
+                    return string.Empty;
+                }
+
+                UserManager m = m_Client.GetUserManager();
+                if (m == null)
+                {
+                    return string.Empty;
+                }
+
+                User u;
+                try
+                {
+                    u = m.GetCurrentUser();
+                    m_HasUser = true;
+                    m_User = u;
+                }
+                catch
+                {
+                    return string.Empty;
+                }
+                return u.Username;
+            }
+        }
+
+        public string UserDiscriminator
+        {
+            get
+            {
+                if (m_HasUser)
+                {
+                    return m_User.Discriminator;
+                }
+
+                if (!SuccessfulInitialization)
+                {
+                    return string.Empty;
+                }
+
+                UserManager m = m_Client.GetUserManager();
+                if (m == null)
+                {
+                    return string.Empty;
+                }
+
+                User u;
+                try
+                {
+                    u = m.GetCurrentUser();
+                    m_HasUser = true;
+                    m_User = u;
+                }
+                catch
+                {
+                    return string.Empty;
+                }
+                return u.Discriminator;
+            }
+        }
+
         private float m_TimeLeftToRefresh;
 
         private float m_UnscaledTimeToInitializeDiscord;

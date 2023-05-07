@@ -22,6 +22,18 @@ namespace CDOverhaul.Gameplay
             set;
         }
 
+        public bool IsReparented
+        {
+            get;
+            set;
+        }
+
+        public IWeaponSkinItemDefinition Item
+        {
+            get;
+            set;
+        }
+
         public void DestroyModel()
         {
             if (Model != null)

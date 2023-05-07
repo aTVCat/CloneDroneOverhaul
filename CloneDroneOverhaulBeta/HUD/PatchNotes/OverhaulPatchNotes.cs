@@ -1,57 +1,43 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+using System.Collections.Generic;
 
-namespace CDOverhaul.HUD
+namespace CDOverhaul
 {
-    public class OverhaulPatchNotes : OverhaulUI
+    public static class OverhaulPatchNotes
     {
-        private Button m_OkButton;
-        private Button m_ModBotButton;
-        private Button m_GitHubButton;
+        public static readonly List<PatchInfo> AllChangelogs = new List<PatchInfo>();
 
-        public override void Initialize()
+        public static void Initialize()
         {
-            m_OkButton = MyModdedObject.GetObject<Button>(0);
-            m_OkButton.onClick.AddListener(OnOKClicked);
-            m_GitHubButton = MyModdedObject.GetObject<Button>(1);
-            m_GitHubButton.onClick.AddListener(OnGitHubClicked);
-            m_ModBotButton = MyModdedObject.GetObject<Button>(2);
-            m_ModBotButton.onClick.AddListener(OnModBotClicked);
-            Hide();
+            if (!OverhaulSessionController.GetKey<bool>("HasReadChangelogs"))
+            {
+                OverhaulSessionController.SetKey("HasReadChangelogs", true);
+
+                AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 44), "0.2.10.44", new string[] { "20230507133358_1.jpg", "20230507133331_1.jpg" }));
+            }
         }
 
-        protected override void OnDisposed()
+        public class PatchInfo
         {
-            base.OnDisposed();
+            public Version TargetModVersion;
 
-            m_OkButton = null;
-            m_ModBotButton = null;
-            m_GitHubButton = null;
-        }
+            public string Folder;
+            public string DirectoryPath
+            {
+                get;
+                private set;
+            }
 
-        public void Show()
-        {
-            base.gameObject.SetActive(true);
-        }
+            public string[] Art;
 
-        public void Hide()
-        {
-            base.gameObject.SetActive(false);
-        }
+            public PatchInfo(Version targetVersion, string folderName, string[] art)
+            {
+                TargetModVersion = targetVersion;
+                Folder = folderName;
+                Art = art;
 
-        public void OnOKClicked()
-        {
-            Hide();
-        }
-
-        public void OnGitHubClicked()
-        {
-            Application.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases");
-        }
-
-        public void OnModBotClicked()
-        {
-            Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
+                DirectoryPath = OverhaulMod.Core.ModDirectory + "Assets/Changelogs/" + Folder + "/";
+            }
         }
     }
 }

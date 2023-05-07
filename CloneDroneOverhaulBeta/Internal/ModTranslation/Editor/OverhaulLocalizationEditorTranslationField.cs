@@ -14,17 +14,16 @@ namespace CDOverhaul.Localization
         {
             MyID = id;
             MyLang = lang;
-            MyInputField = field;
-            MyIDInputField = idField;
 
-            bool success = OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text);
-            if (!success)
+            if (!OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
             {
                 return;
             }
 
+            MyInputField = field;
             MyInputField.text = text;
             MyInputField.onEndEdit.AddListener(UpdateText);
+            MyIDInputField = idField;
             MyIDInputField.text = id;
             MyIDInputField.onEndEdit.AddListener(UpdateID);
         }

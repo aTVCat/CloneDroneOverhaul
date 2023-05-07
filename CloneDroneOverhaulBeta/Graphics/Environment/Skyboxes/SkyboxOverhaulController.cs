@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.NetworkAssets.AdditionalContent;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -18,16 +19,17 @@ namespace CDOverhaul.Graphics
 
         public override void Initialize()
         {
-            RefreshSkyboxes();
+            OverhaulEventsController.AddEventListener(OverhaulAdditionalContentController.ContentReloadedEventString, RefreshSkyboxes);
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            OverhaulEventsController.RemoveEventListener(OverhaulAdditionalContentController.ContentReloadedEventString, RefreshSkyboxes);
         }
 
         public void RefreshSkyboxes()
         {
-            if (OverhaulVersion.Upd2Hotfix)
-            {
-                return;
-            }
-
             int listLengthBefore = SkyBoxManager.Instance.LevelConfigurableSkyboxes.Length;
             if (!m_HasEverAddedSkyboxes)
             {
@@ -40,7 +42,7 @@ namespace CDOverhaul.Graphics
                 return;
             }
 
-            if (!AssetsController.HasAssetBundle("overhaulassets_skyboxes"))
+            if (!AssetsController.HasLoadedAssetBundle(OverhaulMod.Core.ModDirectory + "AdditionalContent/Realistic_skyboxes/overhaulassets_skyboxes"))
             {
                 List<Material> listDef = SkyBoxManager.Instance.LevelConfigurableSkyboxes.ToList();
                 for (int i = 0; i < m_Materials.Length; i++)
@@ -54,7 +56,7 @@ namespace CDOverhaul.Graphics
             List<Material> list = SkyBoxManager.Instance.LevelConfigurableSkyboxes.ToList();
             for (int i = 0; i < m_Materials.Length; i++)
             {
-                if (!AssetsController.TryGetAsset<Material>(m_Materials[i], OverhaulAssetsPart.Skyboxes, out Material skybox))
+                if (!AssetsController.TryGetAsset<Material>(m_Materials[i], OverhaulMod.Core.ModDirectory + "AdditionalContent/Realistic_skyboxes/overhaulassets_skyboxes", out Material skybox))
                 {
                     list.Add(new Material(SkyBoxManager.Instance.LevelConfigurableSkyboxes[0]) { name = "MISSING: " + m_Materials[i] });
                     continue;

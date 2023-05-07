@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    /// <summary>
-    /// Todo: exclusivity support
-    /// </summary>
     public class WeaponSkinItemDefinitionV2 : IWeaponSkinItemDefinition
     {
         /// <summary>
@@ -131,10 +128,16 @@ namespace CDOverhaul.Gameplay
         public float Saturation = 0.75f;
         public float Multiplier = 1f;
 
+        public string ReparentToBodypart;
+
         public string AuthorDiscord;
         public string Description;
 
         public bool IsImportedSkin;
+        public string OverrideAssetBundle;
+
+        public string CollideWithEnvironmentVFXAssetName;
+        public int CountOfPreparedPooledPrefabObjects;
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {

@@ -54,6 +54,12 @@ namespace CDOverhaul
             return @gameObject.GetComponent<Type>();
         }
 
+        public static UnityEngine.Object GetObject(this ModdedObject moddedObject, in int index)
+        {
+            UnityEngine.Object @object = moddedObject.objects[index];
+            return @object;
+        }
+
         /// <summary>
         /// Get color using hex
         /// </summary>

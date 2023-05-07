@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.Localization;
+using CDOverhaul.NetworkAssets.AdditionalContent;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,23 +8,34 @@ namespace CDOverhaul.Patches
 {
     public class TitleScreenUIReplacement : ReplacementBase
     {
-        private Transform _buttonsTransform;
-        private Transform _spawnedPanel;
+        private Transform m_ButtonsTransform;
+        private Transform m_SpawnedPanel;
+
+        private RectTransform m_MultiplayerNEWButtonTransform;
 
         private Text m_SettingsText;
         private Text m_BugReportText;
+        private Text m_AdditContentText;
 
         public override void Replace()
         {
             base.Replace();
             TitleScreenUI target = GameUIRoot.Instance.TitleScreenUI;
 
-            _buttonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
-            if (_buttonsTransform == null)
+            m_ButtonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
+            if (m_ButtonsTransform == null)
             {
                 SuccessfullyPatched = false;
                 return;
             }
+
+            m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
+            if (m_MultiplayerNEWButtonTransform == null)
+            {
+                SuccessfullyPatched = false;
+                return;
+            }
+            m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -85f, 0);
 
             GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
@@ -31,23 +43,26 @@ namespace CDOverhaul.Patches
                 SuccessfullyPatched = false;
                 return;
             }
-            _spawnedPanel = GameObject.Instantiate(panel, _buttonsTransform).transform;
-            _spawnedPanel.SetAsFirstSibling();
-            _spawnedPanel.gameObject.SetActive(true);
+            m_SpawnedPanel = GameObject.Instantiate(panel, m_ButtonsTransform).transform;
+            m_SpawnedPanel.SetAsFirstSibling();
+            m_SpawnedPanel.gameObject.SetActive(true);
 
-            ModdedObject moddedObject = _spawnedPanel.GetComponent<ModdedObject>();
+            ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<OverhaulParametersMenu>().Show);
             moddedObject.GetObject<Button>(3).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
             moddedObject.GetObject<Button>(6).onClick.AddListener(delegate
             {
                 Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
             });
-            moddedObject.GetObject<Transform>(3).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
+            moddedObject.GetObject<Button>(8).onClick.AddListener(OverhaulController.GetController<OverhaulAdditionalContentUI>().Show);
+            moddedObject.GetObject<Button>(8).interactable = !OverhaulVersion.Upd2Hotfix;
+            moddedObject.GetObject<Transform>(9).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             m_BugReportText = moddedObject.GetObject<Text>(7);
             m_SettingsText = moddedObject.GetObject<Text>(4);
+            m_AdditContentText = moddedObject.GetObject<Text>(10);
 
-            _buttonsTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            _buttonsTransform.localPosition = new Vector3(0, -170f, 0);
+            m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            m_ButtonsTransform.localPosition = new Vector3(0, -158f, 0);
 
             OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
@@ -64,6 +79,7 @@ namespace CDOverhaul.Patches
 
             m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
             m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
+            m_AdditContentText.text = OverhaulLocalizationController.Localization.GetTranslation("Additional content");
         }
 
         public override void Cancel()
@@ -72,12 +88,13 @@ namespace CDOverhaul.Patches
             if (SuccessfullyPatched)
             {
                 OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
-                _buttonsTransform.localScale = Vector3.one;
-                _buttonsTransform.localPosition = new Vector3(0, -195.5f, 0);
+                m_ButtonsTransform.localScale = Vector3.one;
+                m_ButtonsTransform.localPosition = new Vector3(0, -195.5f, 0);
+                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -87.8241f, 0);
 
-                if (_spawnedPanel != null)
+                if (m_SpawnedPanel != null)
                 {
-                    GameObject.Destroy(_spawnedPanel.gameObject);
+                    GameObject.Destroy(m_SpawnedPanel.gameObject);
                 }
             }
         }

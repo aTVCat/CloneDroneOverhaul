@@ -3,6 +3,7 @@ using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Patches;
 using OverhaulAPI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,6 @@ namespace CDOverhaul.HUD
     /// </summary>
     public class WeaponSkinsMenu : OverhaulUI
     {
-        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
-        {
-            WeaponType.Sword,
-            WeaponType.Bow,
-            WeaponType.Hammer,
-            WeaponType.Spear
-        };
-
         private static bool m_HasRefreshedUpdates;
 
         private static float m_TimeToAllowChangingSkins = 0f;
@@ -126,7 +119,6 @@ namespace CDOverhaul.HUD
                 m_RefreshDatabaseButton.onClick.AddListener(WeaponSkinsController.ReloadAllModels);
                 m_EditSkinButton = m.GetObject<Button>(22);
                 m_EditSkinButton.onClick.AddListener(ShowSkinEditor);
-                m_EditSkinButton.interactable = OverhaulVersion.IsDebugBuild;
                 m_SkinEditorTranform = m.GetObject<Transform>(23);
                 m_SkinEditorExitButton = m.GetObject<Button>(24);
                 m_SkinEditorExitButton.onClick.AddListener(HideSkinEditor);
@@ -296,6 +288,13 @@ namespace CDOverhaul.HUD
         private InputField m_MPFireModelField;
         private Button m_MPFireModelOffsetButton;
 
+        private InputField m_ParentToField;
+        private InputField m_MinVersionField;
+
+        private InputField m_AssetBundleField;
+
+        private InputField m_CustomVFXEnvCollisionField;
+
         private InputField[] m_PositionFields;
         private Button m_CopyPositionFromSpawnedSkinButton;
         private InputField[] m_RotationFields;
@@ -307,7 +306,11 @@ namespace CDOverhaul.HUD
         private Button m_CopyOffsetButton;
         private Button m_PasteOffsetButton;
 
+        private Button m_ReimportAllButton;
         private Button m_SaveButton;
+
+        private Button m_ModFolderButton;
+        private Button m_SkinsFileFolderButton;
 
         public void SetSkinEditingMenuActive(bool value)
         {
@@ -351,6 +354,11 @@ namespace CDOverhaul.HUD
                 m_SPFireModelField = MyModdedObject.GetObject<InputField>(44);
                 m_MPLaserModelField = MyModdedObject.GetObject<InputField>(46);
                 m_MPFireModelField = MyModdedObject.GetObject<InputField>(48);
+
+                m_ParentToField = MyModdedObject.GetObject<InputField>(70);
+                m_MinVersionField = MyModdedObject.GetObject<InputField>(71);
+
+                m_AssetBundleField = MyModdedObject.GetObject<InputField>(72);
 
                 m_SPLaserModelOffsetButton = MyModdedObject.GetObject<Button>(43);
                 m_SPLaserModelOffsetButton.onClick.AddListener(delegate
@@ -410,6 +418,7 @@ namespace CDOverhaul.HUD
                 });
                 m_ApplyOffsetsButton = MyModdedObject.GetObject<Button>(64);
                 m_ApplyOffsetsButton.onClick.AddListener(SetOffsetValues);
+                m_ApplyOffsetsButton.interactable = false;
 
                 m_CopyOffsetButton = MyModdedObject.GetObject<Button>(65);
                 m_CopyOffsetButton.onClick.AddListener(CopyOffset);
@@ -419,12 +428,34 @@ namespace CDOverhaul.HUD
 
                 m_SaveButton = MyModdedObject.GetObject<Button>(50);
                 m_SaveButton.onClick.AddListener(SaveEditingSkin);
+                m_ReimportAllButton = MyModdedObject.GetObject<Button>(73);
+                m_ReimportAllButton.onClick.AddListener(delegate
+                {
+                    WeaponSkinsController c = GetController<WeaponSkinsController>();
+                    if (c != null && WeaponSkinsMenu.SkinsSelection != null)
+                    {
+                        c.ReImportCustomSkins();
+                        WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
+                    }
+                });
+
+                m_CustomVFXEnvCollisionField = MyModdedObject.GetObject<InputField>(77);
+
+                m_ModFolderButton = MyModdedObject.GetObject<Button>(74);
+                m_ModFolderButton.onClick.AddListener(OpenModDirectory);
+                m_SkinsFileFolderButton = MyModdedObject.GetObject<Button>(75);
+                m_SkinsFileFolderButton.onClick.AddListener(OpenSkinsFileDirectory);
 
                 m_HasInitializedEditor = true;
             }
 
             m_SkinEditorTranform.gameObject.SetActive(value);
             RefreshOptions(false);
+
+            if (value && CurrentlyEditingItem == null)
+            {
+                EditSkin(0);
+            }
         }
 
         public void ShowSkinEditor()
@@ -475,11 +506,19 @@ namespace CDOverhaul.HUD
             m_UseFavColorWhenFireToggle.isOn = CurrentlyEditingItem.ApplyFavColorOnFire;
             m_ColorMultiplierField.text = CurrentlyEditingItem.Multiplier.ToString();
             m_ColorSaturationField.text = CurrentlyEditingItem.Saturation.ToString();
+            m_SkinBehavioursDropdown.value = CurrentlyEditingItem.BehaviourIndex;
+
+            m_ParentToField.text = CurrentlyEditingItem.ParentTo;
+            m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.ModVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
+
+            m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
 
             m_SPLaserModelField.text = CurrentlyEditingItem.SingleplayerLaserModelName;
             m_SPFireModelField.text = CurrentlyEditingItem.SingleplayerFireModelName;
             m_MPLaserModelField.text = CurrentlyEditingItem.MultiplayerLaserModelName;
             m_MPFireModelField.text = CurrentlyEditingItem.MultiplayerFireModelName;
+
+            m_CustomVFXEnvCollisionField.text = CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName;
 
             m_UseSkinsInMultiplayerToggle.isOn = CurrentlyEditingItem.ApplySingleplayerModelInMultiplayer;
             m_VanillaBowstringsToggle.isOn = CurrentlyEditingItem.UseVanillaBowstrings;
@@ -497,6 +536,8 @@ namespace CDOverhaul.HUD
 
         public void EditSkin(int index)
         {
+            m_ApplyOffsetsButton.interactable = false;
+
             bool createdNew = false;
             WeaponSkinsImportedItemDefinition toEdit = null;
             if (!WeaponSkinsController.CustomSkinsData.AllCustomSkins.IsNullOrEmpty() && index < WeaponSkinsController.CustomSkinsData.AllCustomSkins.Count)
@@ -509,6 +550,7 @@ namespace CDOverhaul.HUD
                 toEdit = WeaponSkinsImportedItemDefinition.GetNew(true);
             }
             CurrentlyEditingItem = toEdit;
+            CurrentlyEditingOffset = null;
             RefreshOptions(createdNew);
             RefreshFields();
         }
@@ -541,7 +583,7 @@ namespace CDOverhaul.HUD
 
             bool skinUseFavColorWhenLaser = m_UseFavColorWhenLaserToggle.isOn;
             bool skinUseFavColorWhenFire = m_UseFavColorWhenFireToggle.isOn;
-            bool colorMultiplierConvertSuccessful = float.TryParse(m_ColorSaturationField.text, out float newColorMultiplier);
+            bool colorMultiplierConvertSuccessful = float.TryParse(m_ColorMultiplierField.text, out float newColorMultiplier);
             bool colorSaturationConvertSuccessful = float.TryParse(m_ColorSaturationField.text, out float newColorSaturation);
 
             bool useSpModelsInMp = m_UseSkinsInMultiplayerToggle.isOn;
@@ -555,6 +597,7 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.Description = newSkinDesc;
             CurrentlyEditingItem.Author = newSkinAuthor;
             CurrentlyEditingItem.OnlyAvailableFor = newSkinExclusiveIds;
+            CurrentlyEditingItem.BehaviourIndex = m_SkinBehavioursDropdown.value;
 
             CurrentlyEditingItem.ApplyFavColorOnLaser = skinUseFavColorWhenLaser;
             CurrentlyEditingItem.ForcedFavColorLaserIndex = m_ForceColorLaserDropdown.value - 1;
@@ -568,56 +611,81 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.IsDeveloperItem = isDevItem;
             CurrentlyEditingItem.AnimateFire = animateFire;
 
+            CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName = m_CustomVFXEnvCollisionField.text;
+
+            if (!AssetsController.HasAssetBundle(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
+            CurrentlyEditingItem.AssetBundleFileName = AssetsController.HasAssetBundle(m_AssetBundleField.text) ? m_AssetBundleField.text : AssetsController.ModAssetBundle_Skins;
+
+            CurrentlyEditingItem.ParentTo = m_ParentToField.text;
+            bool successMinVersionParsing = Version.TryParse(m_MinVersionField.text, out Version minVersion);
+            if (!successMinVersionParsing)
+            {
+                minVersion = (Version)OverhaulVersion.ModVersion.Clone();
+            }
+            CurrentlyEditingItem.MinVersion = minVersion;
+
             bool hasSPLaserModel = true;
             try
             {
-                AssetsController.PreloadAsset<GameObject>(m_SPLaserModelField.text, OverhaulAssetsPart.WeaponSkins);
+                AssetsController.PreloadAsset<GameObject>(m_SPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
                 hasSPLaserModel = false;
             }
-            CurrentlyEditingItem.SingleplayerLaserModelName = hasSPLaserModel ? m_SPLaserModelField.text : "SwordSkinDarkPast";
+            CurrentlyEditingItem.SingleplayerLaserModelName = hasSPLaserModel ? m_SPLaserModelField.text : "-";
 
             bool hasSPFireModel = true;
             try
             {
-                AssetsController.PreloadAsset<GameObject>(m_SPFireModelField.text, OverhaulAssetsPart.WeaponSkins);
+                AssetsController.PreloadAsset<GameObject>(m_SPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
                 hasSPFireModel = false;
             }
-            CurrentlyEditingItem.SingleplayerFireModelName = hasSPFireModel ? m_SPFireModelField.text : "SwordSkinDarkPastFire";
+            CurrentlyEditingItem.SingleplayerFireModelName = hasSPFireModel ? m_SPFireModelField.text : "-";
 
             if (newWeaponType == WeaponType.Sword && !useSpModelsInMp)
             {
                 bool hasMPLaserModel = true;
                 try
                 {
-                    AssetsController.PreloadAsset<GameObject>(m_MPLaserModelField.text, OverhaulAssetsPart.WeaponSkins);
+                    AssetsController.PreloadAsset<GameObject>(m_MPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {
                     hasMPLaserModel = false;
                 }
-                CurrentlyEditingItem.MultiplayerLaserModelName = hasMPLaserModel ? m_MPLaserModelField.text : "SwordSkinDarkPastLBS";
+                CurrentlyEditingItem.MultiplayerLaserModelName = hasMPLaserModel ? m_MPLaserModelField.text : "-";
 
                 bool hasMPFireModel = true;
                 try
                 {
-                    AssetsController.PreloadAsset<GameObject>(m_MPFireModelField.text, OverhaulAssetsPart.WeaponSkins);
+                    AssetsController.PreloadAsset<GameObject>(m_MPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {
                     hasMPFireModel = false;
                 }
-                CurrentlyEditingItem.MultiplayerFireModelName = hasMPFireModel ? m_MPFireModelField.text : "SwordSkinDarkPastLBSFire";
+                CurrentlyEditingItem.MultiplayerFireModelName = hasMPFireModel ? m_MPFireModelField.text : "-";
             }
 
             WeaponSkinsController.CustomSkinsData.SaveSkins();
             RefreshOptions(false);
             RefreshFields();
+
+            OverhaulDialogues.CreateDialogue("Saved skin", CurrentlyEditingItem.Name + "\nLogs:\nParsed color multiplier: " + colorMultiplierConvertSuccessful + "\nParsed color saturation: " + colorSaturationConvertSuccessful + "\nParsed min version: " + successMinVersionParsing, 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
+
+            WeaponSkinsController.SkinsDataIsDirty = true;
+            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+            if (player == null || player.GetComponent<WeaponSkinsWearer>() == null)
+            {
+                return;
+            }
+
+            WeaponSkinsWearer w = player.GetComponent<WeaponSkinsWearer>();
+            w.SpawnSkins();
         }
 
         public void RefreshOffsetFields()
@@ -643,8 +711,7 @@ namespace CDOverhaul.HUD
 
         public void SetOffsetValues()
         {
-            ModelOffset offset = CurrentlyEditingOffset;
-            if (offset == null)
+            if (CurrentlyEditingOffset == null)
             {
                 return;
             }
@@ -655,9 +722,9 @@ namespace CDOverhaul.HUD
                 Vector3 rotation = new Vector3(float.Parse(m_RotationFields[0].text), float.Parse(m_RotationFields[1].text), float.Parse(m_RotationFields[2].text));
                 Vector3 scale = new Vector3(float.Parse(m_ScaleFields[0].text), float.Parse(m_ScaleFields[1].text), float.Parse(m_ScaleFields[2].text));
 
-                offset.OffsetPosition = position;
-                offset.OffsetEulerAngles = rotation;
-                offset.OffsetLocalScale = scale;
+                CurrentlyEditingOffset.OffsetPosition = position;
+                CurrentlyEditingOffset.OffsetEulerAngles = rotation;
+                CurrentlyEditingOffset.OffsetLocalScale = scale;
 
                 FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
                 if (player == null || player.GetComponent<WeaponSkinsWearer>() == null)
@@ -665,13 +732,17 @@ namespace CDOverhaul.HUD
                     return;
                 }
 
+                WeaponSkinsController.SkinsDataIsDirty = true;
                 WeaponSkinsWearer w = player.GetComponent<WeaponSkinsWearer>();
                 w.SpawnSkins();
             }
             catch
             {
+                OverhaulDialogues.CreateDialogue("Error occurred while applying new offsets", "Skin (spawned model): " + CurrentlyEditingItem.Name + " wasn't updated", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
                 return;
             }
+
+            OverhaulDialogues.CreateDialogue("Successfully applied new offsets", "Refreshed offsets for skin: " + CurrentlyEditingItem.Name, 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
         }
 
         public void EditOffset(bool fire, bool multiplayer)
@@ -698,13 +769,14 @@ namespace CDOverhaul.HUD
                 CurrentlyEditingOffset = CurrentlyEditingItem.MultiplayerFireModelOffset;
             }
 
+            m_ApplyOffsetsButton.interactable = true;
             RefreshOffsetFields();
         }
 
         public void CopyVectorFromSkinModel(byte index)
         {
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if (player == null || player.GetComponent<WeaponSkinsWearer>() == null)
+            if (CurrentlyEditingItem == null || CurrentlyEditingOffset == null || player == null || player.GetComponent<WeaponSkinsWearer>() == null)
             {
                 return;
             }
@@ -758,6 +830,26 @@ namespace CDOverhaul.HUD
             CurrentlyEditingOffset.OffsetEulerAngles = WeaponSkinsEditor.CopiedOffset.OffsetEulerAngles;
             CurrentlyEditingOffset.OffsetLocalScale = WeaponSkinsEditor.CopiedOffset.OffsetLocalScale;
             RefreshOffsetFields();
+        }
+
+        public void OpenModDirectory()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = OverhaulMod.Core.ModDirectory,
+                UseShellExecute = true,
+                Verb = "open"
+            });
+        }
+
+        public void OpenSkinsFileDirectory()
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent",
+                UseShellExecute = true,
+                Verb = "open"
+            });
         }
 
         #endregion
@@ -823,7 +915,6 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            TransformUtils.DestroyAllChildren(GetContainer(true));
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
             if (mover != null && mover.HasCharacterModel())
             {
@@ -858,12 +949,17 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
-            SetSkinEditingMenuActive(false);
-            RefreshSkinUpdatesText();
-            MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
             PopulateWeapons();
-            m_RefreshDatabaseButton.interactable = OverhaulVersion.IsDebugBuild;
-            m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+            RefreshSkinUpdatesText();
+            SetSkinEditingMenuActive(false);
+            MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
+
+            m_EditSkinButton.interactable = OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToManageSkins);
+            m_RefreshDatabaseButton.interactable = m_EditSkinButton.interactable;
+            //m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+
+            Transform container = GetContainer(true);
+            if (container != null) TransformUtils.DestroyAllChildren(container);
 
             if (!m_HasRefreshedUpdates)
             {
@@ -892,7 +988,8 @@ namespace CDOverhaul.HUD
 
         private void onRefreshSkinUpdates()
         {
-            m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+            //m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
+            m_UpdateSkinsButton.interactable = true;
             RefreshSkinUpdatesText();
         }
 
@@ -928,17 +1025,16 @@ namespace CDOverhaul.HUD
             }
 
             TransformUtils.DestroyAllChildren(GetContainer(false));
-
-            PopulateWeapon(WeaponType.Sword);
-            PopulateWeapon(WeaponType.Bow);
-            PopulateWeapon(WeaponType.Hammer);
-            PopulateWeapon(WeaponType.Spear);
+            foreach (WeaponType type in WeaponSkinsController.GetSupportedWeapons())
+            {
+                PopulateWeapon(type);
+            }
 
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
             if (player != null)
             {
                 WeaponType wType = player.GetEquippedWeaponType();
-                if (SupportedWeapons.Contains(wType))
+                if (WeaponSkinsController.IsWeaponSupported(wType))
                 {
                     PopulateSkins(wType);
                     return;
@@ -1144,6 +1240,7 @@ namespace CDOverhaul.HUD
             {
                 return;
             }
+            WeaponSkinsController.SkinsDataIsDirty = true;
 
             if (!skinName.Equals("Default"))
             {

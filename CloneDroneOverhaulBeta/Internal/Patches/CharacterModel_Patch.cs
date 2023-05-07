@@ -10,12 +10,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OverridePatternColor")]
         private static void OverridePatternColor_Prefix(CharacterModel __instance, ref Color newColor, bool forceMultiplayerHSBReplacement = false)
         {
-            if (!OverhaulMod.IsModInitialized || !GameModeManager.IsMultiplayer())
+            if (!OverhaulMod.IsModInitialized)
             {
                 return;
             }
 
-            ExclusiveRolesController.TryApplyExclusivityOnRobot(__instance.GetOwner(), newColor, out Color toReplace);
+            ExclusiveRolesController.TryApplyExlusiveColorOnRobot(__instance.GetOwner(), newColor, out Color toReplace);
             newColor = toReplace;
         }
 

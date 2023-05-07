@@ -38,6 +38,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
+            OverhaulEventsController.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
             OverhaulConsoleController.RemoveListener(this);
             RemoveController(this);
         }

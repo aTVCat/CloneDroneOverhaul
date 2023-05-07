@@ -208,7 +208,7 @@ namespace CDOverhaul.Graphics
 
         public static void PatchAmplifyColor(AmplifyColorBase effect)
         {
-            if(effect == null)
+            if (effect == null)
             {
                 return;
             }
@@ -365,7 +365,7 @@ namespace CDOverhaul.Graphics
             }
         }
 
-        private static void refreshShaderMaterials() // Todo: Make PatchBloom method
+        private static void refreshShaderMaterials()
         {
             if (!m_AOEffects.IsNullOrEmpty())
             {

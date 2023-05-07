@@ -51,9 +51,21 @@ namespace CDOverhaul
             return result;
         }
 
+        public static long GetDiscordID()
+        {
+            return OverhaulDiscordController.Instance == null || OverhaulDiscordController.Instance.IsDisposedOrDestroyed() || !OverhaulDiscordController.SuccessfulInitialization
+                ? 0
+                : OverhaulDiscordController.Instance.UserID;
+        }
+
         public static bool HasPlayfabID()
         {
             return !string.IsNullOrEmpty(GetLocalPlayfabID());
+        }
+
+        public static bool IsDeveloper()
+        {
+            return HasPlayfabID() && GetLocalPlayfabID() == "883CC7F4CA3155A3";
         }
     }
 }

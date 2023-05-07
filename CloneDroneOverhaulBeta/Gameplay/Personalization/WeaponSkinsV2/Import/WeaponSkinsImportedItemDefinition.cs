@@ -1,4 +1,5 @@
 ﻿using OverhaulAPI;
+using System;
 
 namespace CDOverhaul.Gameplay
 {
@@ -30,6 +31,8 @@ namespace CDOverhaul.Gameplay
                 Multiplier = 1f,
                 Saturation = 0.75f,
 
+                AssetBundleFileName = AssetsController.ModAssetBundle_Skins,
+
                 SingleplayerLaserModelName = "SwordSkinDarkPast",
                 SingleplayerLaserModelOffset = ModelOffset.GetDefaultOffset(),
                 SingleplayerFireModelName = "SwordSkinDarkPastFire",
@@ -41,12 +44,61 @@ namespace CDOverhaul.Gameplay
             };
         }
 
+        public static WeaponSkinsImportedItemDefinition PortOld(WeaponSkinItemDefinitionV2 item)
+        {
+            return new WeaponSkinsImportedItemDefinition()
+            {
+                Name = (item as IWeaponSkinItemDefinition).GetItemName(),
+                Description = item.Description,
+
+                Author = item.AuthorDiscord,
+                OnlyAvailableFor = (item as IWeaponSkinItemDefinition).GetExclusivePlayerID(),
+                IsDeveloperItem = item.IsDeveloperItem,
+
+                OfWeaponType = (item as IWeaponSkinItemDefinition).GetWeaponType(),
+                BehaviourIndex = 0,
+
+                ApplySingleplayerModelInMultiplayer = item.UseSingleplayerVariantInMultiplayer,
+                UseVanillaBowstrings = item.UseVanillaBowStrings,
+
+                ApplyFavColorOnLaser = !item.DontUseCustomColorsWhenNormal,
+                ForcedFavColorLaserIndex = item.IndexOfForcedNormalVanillaColor,
+                ApplyFavColorOnFire = !item.DontUseCustomColorsWhenFire,
+                ForcedFavColorFireIndex = item.IndexOfForcedFireVanillaColor,
+                AnimateFire = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.GetComponent<WeaponSkinFireAnimator>() != null,
+
+                Multiplier = item.Multiplier,
+                Saturation = item.Saturation,
+
+                AssetBundleFileName = string.IsNullOrEmpty(item.OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : item.OverrideAssetBundle,
+
+                SingleplayerLaserModelName = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.name : "ImperialSword",
+                SingleplayerLaserModelOffset = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Offset : ModelOffset.GetDefaultOffset(),
+
+                SingleplayerFireModelName = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.name : "ImperialSword",
+                SingleplayerFireModelOffset = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, false).Offset : ModelOffset.GetDefaultOffset(),
+
+                MultiplayerFireModelName = (item as IWeaponSkinItemDefinition).GetModel(true, true) != null && (item as IWeaponSkinItemDefinition).GetModel(true, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.name : "ImperialSword",
+                MultiplayerFireModelOffset = (item as IWeaponSkinItemDefinition).GetModel(true, true) != null && (item as IWeaponSkinItemDefinition).GetModel(true, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(true, true).Offset : ModelOffset.GetDefaultOffset(),
+
+                MultiplayerLaserModelName = (item as IWeaponSkinItemDefinition).GetModel(false, true) != null && (item as IWeaponSkinItemDefinition).GetModel(false, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.name : "ImperialSword",
+                MultiplayerLaserModelOffset = (item as IWeaponSkinItemDefinition).GetModel(false, true) != null && (item as IWeaponSkinItemDefinition).GetModel(false, true).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, true).Offset : ModelOffset.GetDefaultOffset(),
+
+                MinVersion = Version.Parse("0.2.10.36")
+            };
+        }
+
         public static WeaponSkinsImportedItemDefinition GetNew(bool save)
         {
             WeaponSkinsImportedItemDefinition result = GetNew();
             WeaponSkinsController.CustomSkinsData.AllCustomSkins.Add(result);
             if (save) WeaponSkinsController.CustomSkinsData.SaveSkins();
             return result;
+        }
+
+        public bool CanBeAdded()
+        {
+            return MinVersion == null || OverhaulVersion.ModVersion >= MinVersion;
         }
 
         public string Name;
@@ -71,6 +123,11 @@ namespace CDOverhaul.Gameplay
         public float Multiplier;
         public float Saturation;
 
+        public string ParentTo;
+        public Version MinVersion;
+
+        public string AssetBundleFileName;
+
         public string SingleplayerLaserModelName;
         public ModelOffset SingleplayerLaserModelOffset;
 
@@ -82,5 +139,8 @@ namespace CDOverhaul.Gameplay
 
         public string MultiplayerFireModelName;
         public ModelOffset MultiplayerFireModelOffset;
+
+        public string CollideWithEnvironmentVFXAssetName;
+        public int CountOfPreparedPooledPrefabObjects;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace CDOverhaul.NetworkAssets
@@ -15,5 +16,6 @@ namespace CDOverhaul.NetworkAssets
 
         public byte[] DownloadedData;
         public string DownloadedText;
+        public Texture DownloadedTexture;
     }
 }
