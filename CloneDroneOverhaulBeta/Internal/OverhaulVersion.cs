@@ -9,7 +9,7 @@ namespace CDOverhaul
         /// The version of the mod
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.40");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.42");
 
         public static Version ModVersion => Upd2Hotfix ? m_ModVersionUpd2 : m_ModVersion;
 
@@ -28,7 +28,7 @@ namespace CDOverhaul
         public static readonly string ModShortName = "Overhaul " + buildString;
         private static string buildString => getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
-        public const bool Upd2Hotfix = false;
+        public const bool Upd2Hotfix = true;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

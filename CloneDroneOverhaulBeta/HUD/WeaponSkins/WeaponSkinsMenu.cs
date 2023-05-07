@@ -633,7 +633,7 @@ namespace CDOverhaul.HUD
             {
                 hasSPLaserModel = false;
             }
-            CurrentlyEditingItem.SingleplayerLaserModelName = hasSPLaserModel ? m_SPLaserModelField.text : "SwordSkinDarkPast";
+            CurrentlyEditingItem.SingleplayerLaserModelName = hasSPLaserModel ? m_SPLaserModelField.text : "-";
 
             bool hasSPFireModel = true;
             try
@@ -644,7 +644,7 @@ namespace CDOverhaul.HUD
             {
                 hasSPFireModel = false;
             }
-            CurrentlyEditingItem.SingleplayerFireModelName = hasSPFireModel ? m_SPFireModelField.text : "SwordSkinDarkPastFire";
+            CurrentlyEditingItem.SingleplayerFireModelName = hasSPFireModel ? m_SPFireModelField.text : "-";
 
             if (newWeaponType == WeaponType.Sword && !useSpModelsInMp)
             {
@@ -657,7 +657,7 @@ namespace CDOverhaul.HUD
                 {
                     hasMPLaserModel = false;
                 }
-                CurrentlyEditingItem.MultiplayerLaserModelName = hasMPLaserModel ? m_MPLaserModelField.text : "SwordSkinDarkPastLBS";
+                CurrentlyEditingItem.MultiplayerLaserModelName = hasMPLaserModel ? m_MPLaserModelField.text : "-";
 
                 bool hasMPFireModel = true;
                 try
@@ -668,7 +668,7 @@ namespace CDOverhaul.HUD
                 {
                     hasMPFireModel = false;
                 }
-                CurrentlyEditingItem.MultiplayerFireModelName = hasMPFireModel ? m_MPFireModelField.text : "SwordSkinDarkPastLBSFire";
+                CurrentlyEditingItem.MultiplayerFireModelName = hasMPFireModel ? m_MPFireModelField.text : "-";
             }
 
             WeaponSkinsController.CustomSkinsData.SaveSkins();
@@ -711,8 +711,7 @@ namespace CDOverhaul.HUD
 
         public void SetOffsetValues()
         {
-            ModelOffset offset = CurrentlyEditingOffset;
-            if (offset == null)
+            if (CurrentlyEditingOffset == null)
             {
                 return;
             }
@@ -723,9 +722,9 @@ namespace CDOverhaul.HUD
                 Vector3 rotation = new Vector3(float.Parse(m_RotationFields[0].text), float.Parse(m_RotationFields[1].text), float.Parse(m_RotationFields[2].text));
                 Vector3 scale = new Vector3(float.Parse(m_ScaleFields[0].text), float.Parse(m_ScaleFields[1].text), float.Parse(m_ScaleFields[2].text));
 
-                offset.OffsetPosition = position;
-                offset.OffsetEulerAngles = rotation;
-                offset.OffsetLocalScale = scale;
+                CurrentlyEditingOffset.OffsetPosition = position;
+                CurrentlyEditingOffset.OffsetEulerAngles = rotation;
+                CurrentlyEditingOffset.OffsetLocalScale = scale;
 
                 FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
                 if (player == null || player.GetComponent<WeaponSkinsWearer>() == null)
@@ -733,6 +732,7 @@ namespace CDOverhaul.HUD
                     return;
                 }
 
+                WeaponSkinsController.SkinsDataIsDirty = true;
                 WeaponSkinsWearer w = player.GetComponent<WeaponSkinsWearer>();
                 w.SpawnSkins();
             }

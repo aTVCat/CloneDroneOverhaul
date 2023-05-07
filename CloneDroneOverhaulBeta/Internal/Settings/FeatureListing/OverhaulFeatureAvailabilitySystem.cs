@@ -34,6 +34,11 @@ namespace CDOverhaul
 
         public static bool IsFeatureUnlocked(in OverhaulFeatureID featureID)
         {
+            if (OverhaulVersion.IsDebugBuild)
+            {
+                return true;
+            }
+
             OverhaulFeatureDefinition def = GetFeatureDefinition(featureID);
             if(def == null)
             {

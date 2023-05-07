@@ -132,9 +132,9 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             {
                 LoadingAssetBundle = assetBundleFile;
                 AssetsController.LoadAssetBundleAsync(GetAssetBundlePath(assetBundleFile), null);
-                while (AssetsController.LoadingAssetBundle)
+                while (AssetsController.IsLoadingAssetBundle)
                 {
-                    LoadingProgress = (assetBundlesLoaded * multiplier) + (AssetsController.LoadingProgress * multiplier);
+                    LoadingProgress = (assetBundlesLoaded * multiplier) + (AssetsController.AssetBundleLoadingProgress * multiplier);
                     yield return null;
                 }
                 assetBundlesLoaded++;

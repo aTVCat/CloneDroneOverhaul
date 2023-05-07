@@ -36,30 +36,29 @@ namespace CDOverhaul
 
         #region Manually controlled asset bundles
 
-        public static bool LoadingAssetBundle => m_CurrentCreateRequest != null;
-        public static float LoadingProgress => LoadingAssetBundle ? m_CurrentCreateRequest.progress : 0f;
-        private static AssetBundleCreateRequest m_CurrentCreateRequest;
-        public static void AbortAssetBundleLoading()
-        {
-            if (!LoadingAssetBundle)
-            {
-                return;
-            }
-            m_CurrentCreateRequest.assetBundle.Unload(true);
-        }
+        public static AssetBundleCreateRequest CurrentAssetBundleCreateRequest;
+        public static bool IsLoadingAssetBundle => CurrentAssetBundleCreateRequest != null;
+        public static float AssetBundleLoadingProgress => IsLoadingAssetBundle ? CurrentAssetBundleCreateRequest.progress : 0f;
+
 
         private static readonly Dictionary<string, AssetBundle> m_LoadedAssetBundles = new Dictionary<string, AssetBundle>();
 
         public static void TryLoadAssetBundle(in string pathUnderModFolder)
         {
+            if (HasLoadedAssetBundle(pathUnderModFolder))
+            {
+                return;
+            }
+
+            string path = OverhaulMod.Core.ModDirectory + pathUnderModFolder;
             try
             {
-                if (!checkPath(OverhaulMod.Core.ModDirectory + pathUnderModFolder))
+                if (!checkPath(path))
                 {
                     return;
                 }
 
-                AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(OverhaulMod.Core.ModDirectory + pathUnderModFolder);
+                AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(path);
                 m_LoadedAssetBundles.Add(pathUnderModFolder, loadedAssetBundle);
             }
             catch
@@ -70,7 +69,7 @@ namespace CDOverhaul
 
         public static void LoadAssetBundleAsync(in string path, Action<AssetBundle> onComplete)
         {
-            if (LoadingAssetBundle || !checkPath(path))
+            if (IsLoadingAssetBundle || !checkPath(path))
             {
                 return;
             }
@@ -79,39 +78,19 @@ namespace CDOverhaul
         }
         private static IEnumerator loadAssetBundleCoroutine(string path, Action<AssetBundle> onComplete)
         {
-            m_CurrentCreateRequest = AssetBundle.LoadFromFileAsync(path);
+            CurrentAssetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
 
-            yield return m_CurrentCreateRequest;
-            while (!m_CurrentCreateRequest.isDone)
+            yield return CurrentAssetBundleCreateRequest;
+            while (!CurrentAssetBundleCreateRequest.isDone)
             {
                 yield return null;
             }
 
-            AssetBundle loadedAssetBundle = m_CurrentCreateRequest.assetBundle;
+            AssetBundle loadedAssetBundle = CurrentAssetBundleCreateRequest.assetBundle;
             m_LoadedAssetBundles.Add(path, loadedAssetBundle);
             onComplete?.Invoke(loadedAssetBundle);
-            m_CurrentCreateRequest = null;
+            CurrentAssetBundleCreateRequest = null;
             yield break;
-        }
-
-        public static void TryUnloadAssetBundle(in string pathUnderModFolder, in bool unloadObjects = false)
-        {
-            try
-            {
-                string filename = getAssetBundleFilename(pathUnderModFolder);
-                if (!HasLoadedAssetBundle(filename))
-                {
-                    return;
-                }
-
-                AssetBundle bundleToUnload = m_LoadedAssetBundles[filename];
-                bundleToUnload.Unload(unloadObjects);
-                m_LoadedAssetBundles.Remove(filename);
-            }
-            catch
-            {
-                // todo: catch
-            }
         }
 
         public static bool HasLoadedAssetBundle(in string assetBundleName)
@@ -125,12 +104,7 @@ namespace CDOverhaul
             {
                 return false;
             }
-            return !HasLoadedAssetBundle(pathUnderModFolder) && File.Exists(pathUnderModFolder);
-        }
-
-        private static string getAssetBundleFilename(in string path)
-        {
-            return !string.IsNullOrEmpty(path) && !path.Contains("/") ? path : path.Substring(path.LastIndexOf('/') + 1);
+            return File.Exists(pathUnderModFolder);
         }
 
         #endregion
@@ -157,7 +131,6 @@ namespace CDOverhaul
             catch
             {
                 asset = null;
-                return false;
             }
             return false;
         }
@@ -165,12 +138,6 @@ namespace CDOverhaul
         public static T GetAsset<T>(in string assetName, in OverhaulAssetsPart assetBundlePart) where T : UnityEngine.Object
         {
             string assetBundle = null;
-            string m = GetManuallyControlledAssetBundleFileName(assetBundlePart);
-            bool isManuallyControlled = IsManuallyControlledAssetBundle(assetBundlePart);
-            if (isManuallyControlled && !HasLoadedAssetBundle(m))
-            {
-                TryLoadAssetBundle(m);
-            }
 
             switch (assetBundlePart)
             {
@@ -205,35 +172,24 @@ namespace CDOverhaul
                     assetBundle = ModAssetBundle_Skyboxes;
                     break;
             }
-            T result = null;
-            if (!isManuallyControlled)
+
+            if (!HasLoadedAssetBundle(assetBundle))
             {
-                result = AssetLoader.GetObjectFromFile<T>(assetBundle, assetName);
+                TryLoadAssetBundle(assetBundle);
             }
-            else
-            {
-                result = m_LoadedAssetBundles[m].LoadAsset<T>(assetName);
-            }
+
+            T result = m_LoadedAssetBundles[assetBundle].LoadAsset<T>(assetName);
             return result;
         }
 
         public static T GetAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object
         {
-            bool isManuallyControlled = IsManuallyControlledAssetBundle(assetBundleFileName);
-            if (isManuallyControlled && !HasLoadedAssetBundle(assetBundleFileName))
+            if (!HasLoadedAssetBundle(assetBundleFileName))
             {
                 TryLoadAssetBundle(assetBundleFileName);
             }
 
-            T result = null;
-            if (!isManuallyControlled)
-            {
-                result = AssetLoader.GetObjectFromFile<T>(assetBundleFileName, assetName);
-            }
-            else
-            {
-                result = m_LoadedAssetBundles[assetBundleFileName].LoadAsset<T>(assetName);
-            }
+            T result = m_LoadedAssetBundles[assetBundleFileName].LoadAsset<T>(assetName);
             return result;
         }
 
@@ -242,64 +198,34 @@ namespace CDOverhaul
             _ = GetAsset<T>(assetName, assetBundleFileName);
         }
 
+        public static void TryUnloadAssetBundle(in string pathUnderModFolder, in bool unloadObjects = false)
+        {
+            try
+            {
+                if (!HasLoadedAssetBundle(pathUnderModFolder))
+                {
+                    return;
+                }
+
+                AssetBundle bundleToUnload = m_LoadedAssetBundles[pathUnderModFolder];
+                bundleToUnload.Unload(unloadObjects);
+                m_LoadedAssetBundles.Remove(pathUnderModFolder);
+            }
+            catch
+            {
+                // todo: catch
+            }
+        }
+
         /// <summary>
         /// Check if user has specific asset bundle (or even file) on disk
         /// </summary>
-        /// <param name="assetBundleFileName"></param>
+        /// <param name="assetBundlePath"></param>
         /// <returns></returns>
-        public static bool HasAssetBundle(in string assetBundleFileName)
+        public static bool HasAssetBundle(in string assetBundlePath)
         {
-            string path = OverhaulMod.Core.ModDirectory + assetBundleFileName;
+            string path = OverhaulMod.Core.ModDirectory + assetBundlePath;
             return File.Exists(path);
-        }
-
-        public static bool IsManuallyControlledAssetBundle(in OverhaulAssetsPart assetBundlePart)
-        {
-            switch (assetBundlePart)
-            {
-                case OverhaulAssetsPart.Skyboxes:
-                    return true;
-                case OverhaulAssetsPart.WeaponSkins:
-                    return true;
-            }
-            return false;
-        }
-        public static bool IsManuallyControlledAssetBundle(in string assetBundlePart)
-        {
-            List<OverhaulAdditionalContentPackInfo> packs = OverhaulAdditionalContentController.GetLoadedContent();
-            if (!packs.IsNullOrEmpty())
-            {
-                foreach(OverhaulAdditionalContentPackInfo info in packs)
-                {
-                    if (!info.AssetBundles.IsNullOrEmpty())
-                    {
-                        foreach(string assetBundle in info.AssetBundles)
-                        {
-                            if (info.GetAssetBundlePath(assetBundle).EndsWith(assetBundlePart))
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            switch (assetBundlePart)
-            {
-                case ModAssetBundle_Skins:
-                    return true;
-            }
-            return false;
-        }
-
-        public static string GetManuallyControlledAssetBundleFileName(in OverhaulAssetsPart assetBundlePart)
-        {
-            switch (assetBundlePart)
-            {
-                case OverhaulAssetsPart.WeaponSkins:
-                    return ModAssetBundle_Skins;
-            }
-            return string.Empty;
         }
     }
 }

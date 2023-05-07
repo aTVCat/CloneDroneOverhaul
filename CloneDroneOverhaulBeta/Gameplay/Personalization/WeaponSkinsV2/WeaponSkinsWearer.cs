@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.HUD;
+using CDOverhaul.NetworkAssets;
 using ModLibrary;
 using OverhaulAPI;
 using System.Collections;
@@ -235,10 +236,11 @@ namespace CDOverhaul.Gameplay
 
                             m_HasAddedListeners = true;
                             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+                            PlayerInformation.RefreshData();
                         }
                     }
                 }
-            }, 0.5f);
+            }, 0.5f + OverhaulNetworkController.MultiplayerLocalPing);
             SpawnSkins();
         }
 
@@ -612,8 +614,8 @@ namespace CDOverhaul.Gameplay
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         if ((item as WeaponSkinItemDefinitionV2).UseVanillaBowStrings)
                         {
-                            m.GetObject<Transform>(0).gameObject.SetActive(false);
-                            m.GetObject<Transform>(1).gameObject.SetActive(false);
+                            if(m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).gameObject.SetActive(false);
+                            if (m != null && m.GetObject<Transform>(1) != null) m.GetObject<Transform>(1).gameObject.SetActive(false);
                             bowStringLower.GetChild(0).gameObject.SetActive(true);
                             bowStringLower.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
                             bowStringUpper.GetChild(0).gameObject.SetActive(true);
@@ -621,8 +623,8 @@ namespace CDOverhaul.Gameplay
                         }
                         else
                         {
-                            m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
-                            m.GetObject<Transform>(1).SetParent(bowStringLower, true);
+                            if (m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
+                            if (m != null && m.GetObject<Transform>(1) != null) m.GetObject<Transform>(1).SetParent(bowStringLower, true);
                         }
                     }
                 }

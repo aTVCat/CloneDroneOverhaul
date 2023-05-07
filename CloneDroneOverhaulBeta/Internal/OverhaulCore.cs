@@ -1,6 +1,7 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.NetworkAssets.AdditionalContent;
@@ -56,10 +57,11 @@ namespace CDOverhaul
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
+            /*
             if (ExperimentalBranchManager.Instance != null)
             {
                 ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
-            }
+            }*/
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
@@ -77,6 +79,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
             _ = OverhaulController.AddController<SkyboxOverhaulController>();
+            _ = OverhaulController.AddController<AutoBuild>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();
@@ -101,15 +104,6 @@ namespace CDOverhaul
             CanvasController = null;
             OverhaulMod.Core = null;
             ReplacementBase.CancelEverything();
-        }
-
-        
-        private void OnApplicationQuit()
-        {
-            if (AssetsController.LoadingAssetBundle)
-            {
-                AssetsController.AbortAssetBundleLoading();
-            }
         }
 
         public static string ReadTextFile(string filePath)

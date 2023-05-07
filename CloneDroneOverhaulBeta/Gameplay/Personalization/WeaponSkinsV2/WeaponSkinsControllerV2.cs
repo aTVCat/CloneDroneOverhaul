@@ -209,6 +209,9 @@ namespace CDOverhaul.Gameplay
                     case 1:
                         AddBehaviourToAllSkinModelsQuick<MCBowSkinBehaviour>();
                         break;
+                    case 2:
+                        AddBehaviourToAllSkinModelsQuick<MultipartWeaponBehaviour>();
+                        break;
                 }
 
             }
@@ -238,10 +241,10 @@ namespace CDOverhaul.Gameplay
             string assetBundle = AssetsController.ModAssetBundle_Skins)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
-            if (!string.IsNullOrEmpty(singleplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
-            if (!string.IsNullOrEmpty(singleplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
-            if (!string.IsNullOrEmpty(multiplayerNormalModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
-            if (!string.IsNullOrEmpty(multiplayerFireModel)) (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
+            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
             skin.AuthorDiscord = author;
         }
 
@@ -256,7 +259,7 @@ namespace CDOverhaul.Gameplay
             bool multiplayer)
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-            (item as IWeaponSkinItemDefinition).GetModel(fire, multiplayer).Offset = offset;
+            if ((item as IWeaponSkinItemDefinition).GetModel(fire, multiplayer) != null) (item as IWeaponSkinItemDefinition).GetModel(fire, multiplayer).Offset = offset;
         }
 
         public void SetSkinModelVariant(GameObject model, byte variant, bool fire, bool multiplayer)
@@ -354,10 +357,13 @@ namespace CDOverhaul.Gameplay
         public void AddBehaviourToAllSkinModelsQuick<T>() where T : WeaponSkinBehaviour
         {
             WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-            if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
-            if ((item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>().OnPreLoad();
-            if ((item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<T>().OnPreLoad();
-            if ((item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>().OnPreLoad();
+            if(item != null)
+            {
+                if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
+                if ((item as IWeaponSkinItemDefinition).GetWeaponType() != WeaponType.Bow && (item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>().OnPreLoad();
+                if ((item as IWeaponSkinItemDefinition).GetWeaponType() == WeaponType.Sword && (item as IWeaponSkinItemDefinition).GetModel(true, false) != null) (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.AddComponent<T>().OnPreLoad();
+                if ((item as IWeaponSkinItemDefinition).GetWeaponType() == WeaponType.Sword && (item as IWeaponSkinItemDefinition).GetModel(true, true) != null) (item as IWeaponSkinItemDefinition).GetModel(true, true).Model.AddComponent<T>().OnPreLoad();
+            }
         }
 
         #region Skins
@@ -1490,7 +1496,6 @@ namespace CDOverhaul.Gameplay
             {
                 OverhaulLoadingScreen.Instance.SetScreenText("Reloading: " + def.GetItemName());
 
-                yield return null;
                 WeaponSkinModel m1 = def.GetModel(false, false);
                 if (m1 != null && m1.Model != null)
                 {
@@ -1499,7 +1504,6 @@ namespace CDOverhaul.Gameplay
                     m1.SetModelVariant(gm, 0);
                 }
 
-                yield return null;
                 WeaponSkinModel m2 = def.GetModel(true, false);
                 if (m2 != null && m2.Model != null)
                 {
@@ -1508,7 +1512,6 @@ namespace CDOverhaul.Gameplay
                     m2.SetModelVariant(gm, 0);
                 }
 
-                yield return null;
                 WeaponSkinModel m3 = def.GetModel(false, true);
                 if (m3 != null && m3.Model != null)
                 {
@@ -1517,7 +1520,6 @@ namespace CDOverhaul.Gameplay
                     m3.SetModelVariant(gm, 0);
                 }
 
-                yield return null;
                 WeaponSkinModel m4 = def.GetModel(true, true);
                 if (m4 != null && m4.Model != null)
                 {
@@ -1528,7 +1530,7 @@ namespace CDOverhaul.Gameplay
 
                 progress++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(progress / (float)total);
-                yield return null;
+                if(progress % 2 == 0) yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenText("Finishing...");

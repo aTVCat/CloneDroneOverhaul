@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Graphics;
+using CDOverhaul.Graphics.Robots;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -69,6 +70,8 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
+
+            firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
 
             Camera camera = firstPersonMover.GetPlayerCamera();
             if (camera == null)

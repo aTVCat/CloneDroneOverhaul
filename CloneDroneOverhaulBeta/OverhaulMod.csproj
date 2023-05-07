@@ -415,6 +415,7 @@
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsController.cs" />
     <Compile Include="Gameplay\Personalization\OutfitsV3\OutfitsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Base\VFXWeaponSkinSwitch.cs" />
+    <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MultipartWeaponBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\MCBowSkinBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\CustomVFX\WeaponSkinCustomVFXInstance.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\CustomVFX\WeaponSkinsCustomVFXController.cs" />
@@ -424,6 +425,8 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Behaviours\WeaponSkinFireAnimator.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsEditor.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
+    <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuild.cs" />
+    <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuildVariant.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
@@ -431,6 +434,7 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Environment\Skyboxes\SkyboxOverhaulController.cs" />
+    <Compile Include="Graphics\Robots\RobotEffectsBehaviour.cs" />
     <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUIEntry.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />

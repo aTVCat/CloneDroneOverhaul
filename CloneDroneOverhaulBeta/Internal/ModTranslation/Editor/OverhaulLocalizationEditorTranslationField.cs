@@ -12,7 +12,7 @@ namespace CDOverhaul.Localization
 
         public void Initialize(string lang, string id, InputField field, InputField idField)
         {
-            if (!OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
+            if (string.IsNullOrEmpty(MyLang) || string.IsNullOrEmpty(id) || !OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
             {
                 return;
             }

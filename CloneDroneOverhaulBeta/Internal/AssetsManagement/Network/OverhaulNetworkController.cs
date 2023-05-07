@@ -13,6 +13,8 @@ namespace CDOverhaul.NetworkAssets
         public static string DownloadFolder => OverhaulMod.Core.ModDirectory + "Assets/Download/";
         public static string PermanentDownloadFolder => OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent/";
 
+        public static float MultiplayerLocalPing => MultiplayerPlayerInfoManager.Instance == null ? 0f : (float)MultiplayerPlayerInfoManager.Instance.GetLocalPing() / 1000f;
+
         public static OverhaulNetworkDownloadHandler DownloadAndSaveFile(string address, string directoryPath, string fileName, Action onDoneDownloadingAction)
         {
             OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
