@@ -7,16 +7,15 @@
             return new OverhaulRequestProgressInfo();
         }
 
-        private float m_Progress;
-        public float Progress => m_Progress;
+        public float Progress { get; private set; }
 
         public static void SetProgress(OverhaulRequestProgressInfo progress, float value)
         {
-            if(progress == null)
+            if (progress == null)
             {
                 return;
             }
-            progress.m_Progress = value;
+            progress.Progress = value;
         }
     }
 }

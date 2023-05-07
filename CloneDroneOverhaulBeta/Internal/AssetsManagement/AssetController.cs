@@ -1,7 +1,4 @@
-﻿using CDOverhaul.NetworkAssets.AdditionalContent;
-using ModLibrary;
-using Pathfinding;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -100,11 +97,7 @@ namespace CDOverhaul
 
         private static bool checkPath(in string pathUnderModFolder)
         {
-            if (string.IsNullOrEmpty(pathUnderModFolder))
-            {
-                return false;
-            }
-            return File.Exists(pathUnderModFolder);
+            return !string.IsNullOrEmpty(pathUnderModFolder) && File.Exists(pathUnderModFolder);
         }
 
         #endregion

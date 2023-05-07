@@ -1,6 +1,4 @@
-﻿using Bolt;
-using System.ComponentModel;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul
@@ -86,7 +84,10 @@ namespace CDOverhaul
             public Transform Indicator;
             public Image FillImage;
 
-            public bool UseCanvas() => CanvasGr != null;
+            public bool UseCanvas()
+            {
+                return CanvasGr != null;
+            }
 
             private float m_Alpha;
             private float m_Progress;
@@ -119,7 +120,7 @@ namespace CDOverhaul
 
             public void UpdateIndicator(OverhaulRequestProgressInfo progress)
             {
-                if(progress == null)
+                if (progress == null)
                 {
                     if (UseCanvas())
                     {
@@ -148,7 +149,7 @@ namespace CDOverhaul
 
             public static void UpdateIndicator(LoadingIndicator indicator, OverhaulRequestProgressInfo progress)
             {
-                if(indicator == null)
+                if (indicator == null)
                 {
                     return;
                 }
@@ -212,7 +213,7 @@ namespace CDOverhaul
 
             public ModdedObject CreateNew(bool startActive = true)
             {
-                if(Prefab == null || Container == null)
+                if (Prefab == null || Container == null)
                 {
                     return null;
                 }

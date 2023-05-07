@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.HUD;
 using CDOverhaul.NetworkAssets;
 using ModLibrary;
 using OverhaulAPI;
@@ -7,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 namespace CDOverhaul.Gameplay
 {
@@ -47,9 +45,9 @@ namespace CDOverhaul.Gameplay
                 return null;
             }
 
-            foreach(WeaponSkinSpawnInfo info in SpawnedSkins)
+            foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
             {
-                if(info.Type == weaponType)
+                if (info.Type == weaponType)
                 {
                     return info;
                 }
@@ -64,11 +62,7 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinSpawnInfo GetWeaponSkinSpawnInfo(WeaponModel weaponModel)
         {
-            if (weaponModel == null)
-            {
-                return null;
-            }
-            return GetWeaponSkinSpawnInfo(weaponModel.WeaponType);
+            return weaponModel == null ? null : GetWeaponSkinSpawnInfo(weaponModel.WeaponType);
         }
 
         /// <summary>
@@ -99,11 +93,7 @@ namespace CDOverhaul.Gameplay
         /// <returns></returns>
         public WeaponSkinSpawnInfo GetEquippedWeaponSkinSpawnInfo()
         {
-            if(Owner == null)
-            {
-                return null;
-            }
-            return GetWeaponSkinSpawnInfo(Owner.GetEquippedWeaponType());
+            return Owner == null ? null : GetWeaponSkinSpawnInfo(Owner.GetEquippedWeaponType());
         }
 
         /// <summary>
@@ -119,12 +109,7 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponSkinsWearer wearer = mover.GetComponent<WeaponSkinsWearer>();
-            if (wearer == null)
-            {
-                return null;
-            }
-
-            return wearer.GetEquippedWeaponSkinSpawnInfo();
+            return wearer == null ? null : wearer.GetEquippedWeaponSkinSpawnInfo();
         }
 
         /// <summary>
@@ -135,11 +120,7 @@ namespace CDOverhaul.Gameplay
         public static WeaponSkinItemDefinitionV2 GetEquippedWeaponSkinItemDirectly(FirstPersonMover mover)
         {
             WeaponSkinSpawnInfo info = GetEquippedWeaponSkinSpawnInfoDirectly(mover);
-            if(info == null)
-            {
-                return null;
-            }
-            return info.Item as WeaponSkinItemDefinitionV2;
+            return info == null ? null : info.Item as WeaponSkinItemDefinitionV2;
         }
 
         public bool HasSpawnedSkin(WeaponType weaponType)
@@ -614,7 +595,7 @@ namespace CDOverhaul.Gameplay
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         if ((item as WeaponSkinItemDefinitionV2).UseVanillaBowStrings)
                         {
-                            if(m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).gameObject.SetActive(false);
+                            if (m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).gameObject.SetActive(false);
                             if (m != null && m.GetObject<Transform>(1) != null) m.GetObject<Transform>(1).gameObject.SetActive(false);
                             bowStringLower.GetChild(0).gameObject.SetActive(true);
                             bowStringLower.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
@@ -685,7 +666,7 @@ namespace CDOverhaul.Gameplay
             {
                 return;
             }
-            foreach(WeaponSkinBehaviour behaviour in behaviours)
+            foreach (WeaponSkinBehaviour behaviour in behaviours)
             {
                 if (behaviour != null)
                 {

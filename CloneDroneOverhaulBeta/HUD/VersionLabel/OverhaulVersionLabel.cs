@@ -32,7 +32,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if(GameUIRoot.Instance == null || GameUIRoot.Instance.TitleScreenUI == null || GameUIRoot.Instance.TitleScreenUI.VersionLabel == null)
+            if (GameUIRoot.Instance == null || GameUIRoot.Instance.TitleScreenUI == null || GameUIRoot.Instance.TitleScreenUI.VersionLabel == null)
             {
                 base.enabled = false;
                 return;
@@ -120,7 +120,7 @@ namespace CDOverhaul.HUD
         private void onPatchNotesButtonClicked()
         {
             OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
-            if(overhaulPatchNotesUI == null)
+            if (overhaulPatchNotesUI == null)
             {
                 m_PatchNotesButton.interactable = false;
                 return;

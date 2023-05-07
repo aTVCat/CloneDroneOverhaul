@@ -76,11 +76,7 @@ namespace CDOverhaul.HUD
         /// <returns></returns>
         public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
         {
-            if(moddedObject == null)
-            {
-                return null;
-            }
-            return OverhaulController.AddController<T>(moddedObject.transform);
+            return moddedObject == null ? null : OverhaulController.AddController<T>(moddedObject.transform);
         }
 
         /// <summary>

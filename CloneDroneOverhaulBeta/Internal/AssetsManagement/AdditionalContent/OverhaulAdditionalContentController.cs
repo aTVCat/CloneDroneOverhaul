@@ -23,7 +23,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             private set;
         }
 
-        public static bool HasToReloadContent = true; 
+        public static bool HasToReloadContent = true;
         public static OverhaulAdditionalContentUserData UserData;
         public static readonly List<OverhaulAdditionalContentPackInfo> LocalContent = new List<OverhaulAdditionalContentPackInfo>();
         public static readonly List<string> LoadedContent = new List<string>();
@@ -35,7 +35,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
                 return result;
             }
 
-            foreach(OverhaulAdditionalContentPackInfo pack in LocalContent)
+            foreach (OverhaulAdditionalContentPackInfo pack in LocalContent)
             {
                 if (LoadedContent.Contains(pack.PackID))
                 {
@@ -61,7 +61,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
-                    if(ErrorManager.Instance != null && ErrorManager.Instance.HasCrashed())
+                    if (ErrorManager.Instance != null && ErrorManager.Instance.HasCrashed())
                     {
                         return;
                     }
@@ -87,7 +87,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             yield return null;
             if (!LoadedContent.IsNullOrEmpty())
             {
-                foreach(OverhaulAdditionalContentPackInfo pack in GetLoadedContent())
+                foreach (OverhaulAdditionalContentPackInfo pack in GetLoadedContent())
                 {
                     pack.Unload();
                     yield return null;
@@ -105,12 +105,12 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
                 yield break;
             }
 
-            foreach(OverhaulAdditionalContentPackInfo packToLoad in LocalContent)
+            foreach (OverhaulAdditionalContentPackInfo packToLoad in LocalContent)
             {
-                if(packToLoad != null && packToLoad.IsEnabled())
+                if (packToLoad != null && packToLoad.IsEnabled())
                 {
                     packToLoad.Load();
-                    while(packToLoad.LoadingProgress != 1f)
+                    while (packToLoad.LoadingProgress != 1f)
                     {
                         yield return null;
                     }
@@ -193,7 +193,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         public static bool IsInstalled(OverhaulAdditionalContentPackInfo info)
         {
             return info != null && IsInstalled(info.PackID);
-        } 
+        }
 
         public static bool IsInstalled(string guid)
         {
@@ -215,7 +215,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         public static bool IsLoaded(string guid)
         {
             return LoadedContent.Contains(guid);
-        } 
+        }
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 m_TimeToRefreshVariables = time + 0.5f;
                 m_LBSManager = BattleRoyaleManager.Instance;
 
-                if(ShouldSelectUpgrades)
+                if (ShouldSelectUpgrades)
                 {
                     StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
                     m_HasSelectedUpgrades = true;
@@ -68,13 +68,13 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         private IEnumerator selectUpgradesCorouitine()
         {
-            if(GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
+            if (GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
             {
                 yield break;
             }
 
             UpgradeUI ui = GameUIRoot.Instance.UpgradeUI;
-            if((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random)
+            if ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random)
             {
                 ui.StartCoroutine(ui.CallPrivateMethod<IEnumerator>("selectRandomUpgrade"));
                 yield break;
@@ -87,7 +87,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             }
 
             MultiplayerPlayerInfoState s = MultiplayerPlayerInfoManager.Instance.GetLocalPlayerInfoState();
-            if(s == null || s.IsDetached())
+            if (s == null || s.IsDetached())
             {
                 yield break;
             }
@@ -99,7 +99,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             }
 
             int i = 0;
-            foreach(UpgradeUIIcon icon in icons)
+            foreach (UpgradeUIIcon icon in icons)
             {
                 if (i % 10 == 0)
                 {
@@ -113,7 +113,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 }
 
                 UpgradeDescription desc = icon.GetPrivateField<UpgradeDescription>("_upgradeDescription");
-                if(desc == null)
+                if (desc == null)
                 {
                     i++;
                     continue;
@@ -307,7 +307,14 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             yield break;
         }
 
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
+        public override string[] Commands()
+        {
+            return null;
+        }
+
+        public override string OnCommandRan(string[] command)
+        {
+            return null;
+        }
     }
 }

@@ -53,6 +53,14 @@ namespace CDOverhaul.HUD
             m_GitHubButton = null;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                OnOKClicked();
+            }
+        }
+
         public void Show()
         {
             base.gameObject.SetActive(true);
@@ -174,7 +182,7 @@ namespace CDOverhaul.HUD
                 }
             }
 
-            OverhaulUIDescriptionTooltip.SetActive(true, "Patch notes: Version " + info.TargetModVersion, "All about latest builds!");
+            OverhaulUIDescriptionTooltip.SetActive(true, OverhaulLocalizationController.GetTranslation("PatchNotesTitle") + info.TargetModVersion, OverhaulLocalizationController.GetTranslation("PatchNotesDesc"));
         }
 
         private IEnumerator loadPicture(RawImage attachTo, string path)

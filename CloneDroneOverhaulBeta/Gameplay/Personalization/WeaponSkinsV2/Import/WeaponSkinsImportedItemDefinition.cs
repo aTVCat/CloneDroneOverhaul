@@ -65,7 +65,7 @@ namespace CDOverhaul.Gameplay
                 ForcedFavColorLaserIndex = item.IndexOfForcedNormalVanillaColor,
                 ApplyFavColorOnFire = !item.DontUseCustomColorsWhenFire,
                 ForcedFavColorFireIndex = item.IndexOfForcedFireVanillaColor,
-                AnimateFire = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.GetComponent<WeaponSkinFireAnimator>() != null ? true : false,
+                AnimateFire = (item as IWeaponSkinItemDefinition).GetModel(true, false) != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model != null && (item as IWeaponSkinItemDefinition).GetModel(true, false).Model.GetComponent<WeaponSkinFireAnimator>() != null,
 
                 Multiplier = item.Multiplier,
                 Saturation = item.Saturation,

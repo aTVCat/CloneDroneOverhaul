@@ -1,9 +1,7 @@
 ﻿using Steamworks;
 using System;
-using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace CDOverhaul.Workshop
 {
@@ -42,7 +40,7 @@ namespace CDOverhaul.Workshop
 
         public static void SendUGCRequest(UGCQueryHandle_t request, OverhaulWorkshopRequestResult requestResult, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo)
         {
-            if(completedCallback == null)
+            if (completedCallback == null)
             {
                 return;
             }
@@ -86,8 +84,10 @@ namespace CDOverhaul.Workshop
                     if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, (uint)num, out SteamUGCDetails_t steamUGCDetails_t) && steamUGCDetails_t.m_eResult == EResult.k_EResultOK && !steamUGCDetails_t.m_bBanned)
                     {
                         SteamUGC.GetQueryUGCPreviewURL(queryResult.m_handle, (uint)num, out string url, 4096U);
-                        items[num] = new OverhaulWorkshopItem(steamUGCDetails_t);
-                        items[num].ThumbnailURL = url;
+                        items[num] = new OverhaulWorkshopItem(steamUGCDetails_t)
+                        {
+                            ThumbnailURL = url
+                        };
                     }
                     num++;
                 }
@@ -95,7 +95,7 @@ namespace CDOverhaul.Workshop
                 requestResult.ItemsReceived = items;
                 OverhaulRequestProgressInfo.SetProgress(progressInfo, 1f);
                 completedCallback.Invoke(requestResult);
-            }); 
+            });
             apiCallResult.Set(apiCall);
         }
 
@@ -134,7 +134,7 @@ namespace CDOverhaul.Workshop
             }
 
             int d = SteamFriends.GetMediumFriendAvatar(userID);
-            if(d == 0)
+            if (d == 0)
             {
                 return null;
             }
@@ -149,12 +149,7 @@ namespace CDOverhaul.Workshop
             byte[] pixels = new byte[size];
 
             bool success2 = SteamUtils.GetImageRGBA(d, pixels, size);
-            if (!success2)
-            {
-                return null;
-            }
-
-            return null;
+            return !success2 ? null : (Texture)null;
         }
     }
 }

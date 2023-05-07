@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulUIDescriptionTooltip : OverhaulUI  
+    public class OverhaulUIDescriptionTooltip : OverhaulUI
     {
         private static OverhaulUIDescriptionTooltip m_Tooltip;
         public static bool IsNull => m_Tooltip == null || m_Tooltip.IsDisposedOrDestroyed();

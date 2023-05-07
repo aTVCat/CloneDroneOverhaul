@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using Steamworks;
+﻿using Steamworks;
+using System;
 
 namespace CDOverhaul.Workshop
 {
     public class OverhaulWorkshopRequestResult : IDisposable
     {
         private bool m_IsDisposed;
-        public bool IsDisposed() => m_IsDisposed;
+        public bool IsDisposed()
+        {
+            return m_IsDisposed;
+        }
 
         void IDisposable.Dispose()
         {

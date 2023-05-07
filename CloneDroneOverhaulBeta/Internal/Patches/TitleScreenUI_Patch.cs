@@ -22,12 +22,8 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnWorkshopBrowserButtonClicked")]
         private static bool OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
         {
-            if (!OverhaulMod.IsModInitialized)
-            {
-                return true;
-            }
-
-            return OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.BrowserUIInstance.TryShow();
+            return !OverhaulMod.IsModInitialized
+|| OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.BrowserUIInstance.TryShow();
         }
     }
 }

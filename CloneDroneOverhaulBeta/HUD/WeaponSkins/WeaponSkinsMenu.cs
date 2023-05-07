@@ -432,7 +432,7 @@ namespace CDOverhaul.HUD
                 m_ReimportAllButton.onClick.AddListener(delegate
                 {
                     WeaponSkinsController c = GetController<WeaponSkinsController>();
-                    if(c != null && WeaponSkinsMenu.SkinsSelection != null)
+                    if (c != null && WeaponSkinsMenu.SkinsSelection != null)
                     {
                         c.ReImportCustomSkins();
                         WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
@@ -1025,7 +1025,7 @@ namespace CDOverhaul.HUD
             }
 
             TransformUtils.DestroyAllChildren(GetContainer(false));
-            foreach(WeaponType type in WeaponSkinsController.GetSupportedWeapons())
+            foreach (WeaponType type in WeaponSkinsController.GetSupportedWeapons())
             {
                 PopulateWeapon(type);
             }

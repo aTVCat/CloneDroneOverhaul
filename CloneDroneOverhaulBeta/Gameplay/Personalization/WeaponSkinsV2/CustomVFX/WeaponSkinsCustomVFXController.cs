@@ -1,10 +1,6 @@
-﻿using System;
+﻿using OverhaulAPI;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using OverhaulAPI;
 
 namespace CDOverhaul.Gameplay
 {
@@ -19,9 +15,9 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if(AssetsController.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
+            if (AssetsController.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
             {
-                if(vfx == null)
+                if (vfx == null)
                 {
                     return;
                 }

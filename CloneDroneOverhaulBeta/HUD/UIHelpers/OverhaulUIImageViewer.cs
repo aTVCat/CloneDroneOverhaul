@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulUIImageViewer : OverhaulUI  
+    public class OverhaulUIImageViewer : OverhaulUI
     {
         private static OverhaulUIImageViewer m_Viewer;
         public static bool IsNull => m_Viewer == null || m_Viewer.IsDisposedOrDestroyed();

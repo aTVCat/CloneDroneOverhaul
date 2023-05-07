@@ -30,8 +30,15 @@ namespace CDOverhaul.Gameplay
             WeaponType.Hammer,
             WeaponType.Spear
         };
-        public static bool IsWeaponSupported(WeaponType weaponType) => SupportedWeapons.Contains(weaponType);
-        public static WeaponType[] GetSupportedWeapons() => SupportedWeapons;
+        public static bool IsWeaponSupported(WeaponType weaponType)
+        {
+            return SupportedWeapons.Contains(weaponType);
+        }
+
+        public static WeaponType[] GetSupportedWeapons()
+        {
+            return SupportedWeapons;
+        }
 
         public static bool HasUpdatedSkins;
         public static bool SkinsDataIsDirty;
@@ -61,7 +68,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            foreach(string path in m_CustomAssetBundlesWithSkins)
+            foreach (string path in m_CustomAssetBundlesWithSkins)
             {
                 string fullPath = OverhaulMod.Core.ModDirectory + path;
                 if (File.Exists(fullPath))
@@ -148,7 +155,7 @@ namespace CDOverhaul.Gameplay
 
         public void ReImportCustomSkins(bool reloadData = true)
         {
-            if(reloadData) CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
+            if (reloadData) CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (m_WeaponSkins[i] == null)
@@ -166,7 +173,7 @@ namespace CDOverhaul.Gameplay
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
                 string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
-                if(assetBundle != AssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
+                if (assetBundle != AssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
                 {
                     m_CustomAssetBundlesWithSkins.Add(assetBundle);
                 }
@@ -215,7 +222,7 @@ namespace CDOverhaul.Gameplay
                 }
 
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 OverhaulDialogues.CreateDialogue("Cannot import skin", customSkin.Name + " cannot be imported.\nDetails: " + exc, 15, new Vector2(400, 500), null);
             }
@@ -356,8 +363,7 @@ namespace CDOverhaul.Gameplay
 
         public void AddBehaviourToAllSkinModelsQuick<T>() where T : WeaponSkinBehaviour
         {
-            WeaponSkinItemDefinitionV2 item = m_WeaponSkins[m_WeaponSkins.Count - 1] as WeaponSkinItemDefinitionV2;
-            if(item != null)
+            if (m_WeaponSkins[m_WeaponSkins.Count - 1] is WeaponSkinItemDefinitionV2 item)
             {
                 if ((item as IWeaponSkinItemDefinition).GetModel(false, false) != null) (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.AddComponent<T>().OnPreLoad();
                 if ((item as IWeaponSkinItemDefinition).GetWeaponType() != WeaponType.Bow && (item as IWeaponSkinItemDefinition).GetModel(false, true) != null) (item as IWeaponSkinItemDefinition).GetModel(false, true).Model.AddComponent<T>().OnPreLoad();
@@ -1462,7 +1468,7 @@ namespace CDOverhaul.Gameplay
             OverhaulLoadingScreen.Instance.SetScreenText("Getting skin files...");
             List<string> allAssetBundles = new List<string>();
             int skinsChecked = 0;
-            foreach(IWeaponSkinItemDefinition def in m_WeaponSkins)
+            foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
                 string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
                 if (!allAssetBundles.Contains(assetBundle))
@@ -1530,7 +1536,7 @@ namespace CDOverhaul.Gameplay
 
                 progress++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(progress / (float)total);
-                if(progress % 2 == 0) yield return null;
+                if (progress % 2 == 0) yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenText("Finishing...");
@@ -1569,16 +1575,16 @@ namespace CDOverhaul.Gameplay
         public static void PortOldSkins()
         {
             List<WeaponSkinsImportedItemDefinition> importedSkins = new List<WeaponSkinsImportedItemDefinition>();
-            foreach(IWeaponSkinItemDefinition item in m_WeaponSkins)
+            foreach (IWeaponSkinItemDefinition item in m_WeaponSkins)
             {
-                if(!(item as WeaponSkinItemDefinitionV2).IsImportedSkin)
+                if (!(item as WeaponSkinItemDefinitionV2).IsImportedSkin)
                 {
-                    importedSkins.Add(WeaponSkinsImportedItemDefinition.PortOld((item as WeaponSkinItemDefinitionV2)));
+                    importedSkins.Add(WeaponSkinsImportedItemDefinition.PortOld(item as WeaponSkinItemDefinitionV2));
                 }
             }
             CustomSkinsData.AllCustomSkins.AddRange(importedSkins);
 
-            for(int i = m_WeaponSkins.Count-1; i >-1; i--)
+            for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (!(m_WeaponSkins[i] as WeaponSkinItemDefinitionV2).IsImportedSkin)
                 {

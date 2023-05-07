@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
@@ -13,41 +9,21 @@ namespace CDOverhaul.Gameplay.Combat
         private static SwordBlockArea m_SwordBlockAreaCollidedWithEnvironment;
         public static SwordBlockArea SwordBlockAreaCollidedWithEnvironment
         {
-            get
-            {
-                return m_SwordBlockAreaCollidedWithEnvironment;
-            }
+            get => m_SwordBlockAreaCollidedWithEnvironment;
             set
             {
                 m_SwordBlockAreaCollidedWithEnvironment = value;
-                if(OnSwordBlockAreaCollidedWithEnvironment != null) OnSwordBlockAreaCollidedWithEnvironment();
+                OnSwordBlockAreaCollidedWithEnvironment?.Invoke();
             }
         }
 
-        private static WeaponSkinItemDefinitionV2 m_SwordBlockAreaEnvCollisionSkinItem;
-        public static WeaponSkinItemDefinitionV2 SwordBlockAreaEnvCollisionSkinItem
-        {
-            get
-            {
-                return m_SwordBlockAreaEnvCollisionSkinItem;
-            }
-            set
-            {
-                m_SwordBlockAreaEnvCollisionSkinItem = value;
-            }
-        }
+        public static WeaponSkinItemDefinitionV2 SwordBlockAreaEnvCollisionSkinItem { get; set; }
 
         private static Vector3 m_SwordBlockAreaEnvCollisionPosition;
         public static Vector3 SwordBlockAreaEnvCollisionPosition
         {
-            get
-            {
-                return m_SwordBlockAreaEnvCollisionPosition;
-            }
-            set
-            {
-                m_SwordBlockAreaEnvCollisionPosition = value;
-            }
+            get => m_SwordBlockAreaEnvCollisionPosition;
+            set => m_SwordBlockAreaEnvCollisionPosition = value;
         }
     }
 }

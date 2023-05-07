@@ -27,7 +27,10 @@ namespace CDOverhaul.Workshop
         }
 
         private float m_UnscaledTimeClickedOnOption;
-        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
+        public bool ShouldResetRequest()
+        {
+            return IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
+        }
 
         public OverhaulRequestProgressInfo CurrentRequestProgress;
         public OverhaulWorkshopRequestResult CurrentRequestResult;
@@ -202,7 +205,7 @@ namespace CDOverhaul.Workshop
         private void Update()
         {
             LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
-            if(ShouldResetRequest())
+            if (ShouldResetRequest())
             {
                 SetErrorWindowActive(true);
                 ResetRequest();
@@ -305,7 +308,7 @@ namespace CDOverhaul.Workshop
         {
             if (workshopItem == null)
             {
-                if(m_QuickInfoUserAvatar.texture != null)
+                if (m_QuickInfoUserAvatar.texture != null)
                 {
                     Destroy(m_QuickInfoUserAvatar.texture);
                 }
@@ -341,7 +344,7 @@ namespace CDOverhaul.Workshop
             private void Start()
             {
                 m_Button = GetComponent<Button>();
-                if(m_Button != null)
+                if (m_Button != null)
                 {
                     m_Button.onClick.AddListener(onClicked);
                 }
@@ -359,16 +362,9 @@ namespace CDOverhaul.Workshop
 
             private void Update()
             {
-                if(!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
+                if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
                 {
-                    if(m_Tag == OverhaulWorkshopBrowserUI.BrowserUIInstance.LevelTypeRequiredTag)
-                    {
-                        m_Text.color = SelectedColor;
-                    }
-                    else
-                    {
-                        m_Text.color = DeselectedColor;
-                    }
+                    m_Text.color = m_Tag == OverhaulWorkshopBrowserUI.BrowserUIInstance.LevelTypeRequiredTag ? SelectedColor : DeselectedColor;
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace CDOverhaul
                 }
 
                 UserManager m = m_Client.GetUserManager();
-                if(m == null)
+                if (m == null)
                 {
                     return -1;
                 }

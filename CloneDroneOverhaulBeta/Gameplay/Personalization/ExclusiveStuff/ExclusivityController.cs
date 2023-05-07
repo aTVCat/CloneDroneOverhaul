@@ -53,12 +53,9 @@ namespace CDOverhaul
 
         public static long GetDiscordID()
         {
-            if(OverhaulDiscordController.Instance == null || OverhaulDiscordController.Instance.IsDisposedOrDestroyed() || !OverhaulDiscordController.SuccessfulInitialization)
-            {
-                return 0;
-            }
-
-            return OverhaulDiscordController.Instance.UserID;
+            return OverhaulDiscordController.Instance == null || OverhaulDiscordController.Instance.IsDisposedOrDestroyed() || !OverhaulDiscordController.SuccessfulInitialization
+                ? 0
+                : OverhaulDiscordController.Instance.UserID;
         }
 
         public static bool HasPlayfabID()
@@ -68,12 +65,7 @@ namespace CDOverhaul
 
         public static bool IsDeveloper()
         {
-            if (!HasPlayfabID())
-            {
-                return false;
-            }
-
-            return GetLocalPlayfabID() == "883CC7F4CA3155A3";
+            return HasPlayfabID() && GetLocalPlayfabID() == "883CC7F4CA3155A3";
         }
     }
 }

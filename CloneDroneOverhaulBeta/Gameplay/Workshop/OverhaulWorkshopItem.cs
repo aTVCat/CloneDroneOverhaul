@@ -1,6 +1,5 @@
 ﻿using Steamworks;
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Workshop
@@ -8,7 +7,10 @@ namespace CDOverhaul.Workshop
     public class OverhaulWorkshopItem : IDisposable
     {
         private bool m_IsDisposed;
-        public bool IsDisposed() => m_IsDisposed;
+        public bool IsDisposed()
+        {
+            return m_IsDisposed;
+        }
 
         void IDisposable.Dispose()
         {

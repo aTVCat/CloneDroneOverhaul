@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -40,12 +36,7 @@ namespace CDOverhaul
             }
 
             OverhaulFeatureDefinition def = GetFeatureDefinition(featureID);
-            if(def == null)
-            {
-                return false;
-            }
-
-            return def.IsAvailable();
+            return def != null && def.IsAvailable();
         }
 
         public static OverhaulFeatureDefinition GetFeatureDefinition(in OverhaulFeatureID featureID)
@@ -59,7 +50,7 @@ namespace CDOverhaul
             do
             {
                 OverhaulFeatureDefinition def = m_Features[i];
-                if(def != null && def.FeatureID == featureID)
+                if (def != null && def.FeatureID == featureID)
                 {
                     return def;
                 }

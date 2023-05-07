@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul
 {
@@ -38,7 +35,7 @@ namespace CDOverhaul
                 TargetModVersion = targetVersion;
                 Folder = folderName;
                 Art = art;
- 
+
                 DirectoryPath = OverhaulMod.Core.ModDirectory + "Assets/Changelogs/" + Folder + "/";
             }
         }

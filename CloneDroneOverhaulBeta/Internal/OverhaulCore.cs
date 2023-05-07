@@ -78,7 +78,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<VoxelsController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
-            if(!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<SkyboxOverhaulController>();
+            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<SkyboxOverhaulController>();
             _ = OverhaulController.AddController<AutoBuild>();
 
             SettingsController.PostInitialize();

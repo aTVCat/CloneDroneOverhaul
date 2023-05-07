@@ -1,7 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Combat;
 using OverhaulAPI;
-using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Graphics.Robots
@@ -35,7 +33,7 @@ namespace CDOverhaul.Graphics.Robots
         {
             FindHeadTransform();
 
-            if(m_HeadTransform != null)
+            if (m_HeadTransform != null)
             {
                 PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(RobotDeathSparksVFXID, m_HeadTransform.position, Vector3.zero);
             }
@@ -43,7 +41,7 @@ namespace CDOverhaul.Graphics.Robots
 
         public void FindHeadTransform()
         {
-            if(m_HeadTransform != null || Owner == null || !Owner.HasCharacterModel())
+            if (m_HeadTransform != null || Owner == null || !Owner.HasCharacterModel())
             {
                 return;
             }

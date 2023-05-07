@@ -34,7 +34,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
 
         public void Refresh()
         {
-            if(!IsCompatibleWithMod() || !IsInstalled())
+            if (!IsCompatibleWithMod() || !IsInstalled())
             {
                 return;
             }
@@ -148,7 +148,7 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
         {
             LoadingProgress = 0f;
             LoadingAssetBundle = string.Empty;
-            foreach(string assetBundleFile in AssetBundles)
+            foreach (string assetBundleFile in AssetBundles)
             {
                 AssetsController.TryUnloadAssetBundle(GetAssetBundlePath(assetBundleFile), true);
             }

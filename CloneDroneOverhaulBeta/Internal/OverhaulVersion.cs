@@ -9,7 +9,7 @@ namespace CDOverhaul
         /// The version of the mod
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.43");
+        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.44");
 
         public static Version ModVersion => Upd2Hotfix ? m_ModVersionUpd2 : m_ModVersion;
 
