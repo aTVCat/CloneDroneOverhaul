@@ -38,6 +38,7 @@ namespace CDOverhaul.NetworkAssets
                 }
             };
             Action act2 = onDone.Combine(onDoneDownloadingAction);
+            handler.DoneAction = act2;
             DownloadFile(address, handler);
             return handler;
         }

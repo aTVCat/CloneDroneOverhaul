@@ -85,7 +85,7 @@ namespace CDOverhaul.Workshop
 
         public bool TryShow()
         {
-            if (!UseThisUI)
+            if (OverhaulVersion.Upd2Hotfix || !UseThisUI)
             {
                 return false;
             }

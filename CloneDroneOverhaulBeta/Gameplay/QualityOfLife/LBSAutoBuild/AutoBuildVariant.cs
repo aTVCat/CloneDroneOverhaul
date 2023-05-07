@@ -11,26 +11,6 @@
         /// Random build
         /// </summary>
         Random,
-        /// <summary>
-        /// Random sword build
-        /// </summary>
-        RandomSword,
-        /// <summary>
-        /// Random hammer build
-        /// </summary>
-        RandomHammer,
-        /// <summary>
-        /// Random bow build
-        /// </summary>
-        RandomBow,
-        /// <summary>
-        /// Random spear build
-        /// </summary>
-        RandomSpear,
-        /// <summary>
-        /// Random kicker build
-        /// </summary>
-        RandomKick,
 
         /// <summary>
         /// Sword unlock + Fire sword 1 +  Fire sword 2

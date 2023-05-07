@@ -16,8 +16,7 @@ namespace CDOverhaul
             {
                 OverhaulSessionController.SetKey("HasReadChangelogs", true);
 
-                AllChangelogs.Add(new PatchInfo(new Version(0, 3, 0, 188), "TestChangelog", new string[] { "20230506203329_1.jpg" }));
-                AllChangelogs.Add(new PatchInfo(new Version(0, 3, 0, 404), "TestChangelog2", new string[] { "20230503213016_1.jpg", "20230505200409_1.jpg", "20230505205829_1.jpg", "freemoney.jpg" }));
+                AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 44), "0.2.10.44", new string[] { "20230507133358_1.jpg", "20230507133331_1.jpg" }));
             }
         }
 
@@ -27,11 +26,6 @@ namespace CDOverhaul
 
             public string Folder;
             public string DirectoryPath
-            {
-                get;
-                private set;
-            }
-            public string InformationString
             {
                 get;
                 private set;
@@ -46,7 +40,6 @@ namespace CDOverhaul
                 Art = art;
  
                 DirectoryPath = OverhaulMod.Core.ModDirectory + "Assets/Changelogs/" + Folder + "/";
-                InformationString = OverhaulCore.ReadTextFile(DirectoryPath + "Info.txt");
             }
         }
     }

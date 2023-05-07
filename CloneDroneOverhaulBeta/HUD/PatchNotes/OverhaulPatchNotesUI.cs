@@ -146,7 +146,13 @@ namespace CDOverhaul.HUD
             ViewingChangelogIndex = index;
 
             OverhaulPatchNotes.PatchInfo info = OverhaulPatchNotes.AllChangelogs[index];
-            m_Changelog.text = info.InformationString;
+            string langID = LocalizationManager.Instance.GetCurrentLanguageCode();
+            if (!File.Exists(info.DirectoryPath + "Info" + langID + ".txt"))
+            {
+                langID = "en";
+            }
+
+            m_Changelog.text = OverhaulCore.ReadTextFile(info.DirectoryPath + "Info" + langID + ".txt");
 
             if (!info.Art.IsNullOrEmpty())
             {

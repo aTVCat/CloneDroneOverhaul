@@ -15,6 +15,7 @@ namespace CDOverhaul.Patches
 
         private Text m_SettingsText;
         private Text m_BugReportText;
+        private Text m_AdditContentText;
 
         public override void Replace()
         {
@@ -58,6 +59,7 @@ namespace CDOverhaul.Patches
             moddedObject.GetObject<Transform>(9).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             m_BugReportText = moddedObject.GetObject<Text>(7);
             m_SettingsText = moddedObject.GetObject<Text>(4);
+            m_AdditContentText = moddedObject.GetObject<Text>(10);
 
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -158f, 0);
@@ -77,6 +79,7 @@ namespace CDOverhaul.Patches
 
             m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
             m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
+            m_AdditContentText.text = OverhaulLocalizationController.Localization.GetTranslation("Additional content");
         }
 
         public override void Cancel()
