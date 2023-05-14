@@ -7,6 +7,7 @@ namespace CDOverhaul.HUD
     {
         private static OverhaulUIImageViewer m_Viewer;
         public static bool IsNull => m_Viewer == null || m_Viewer.IsDisposedOrDestroyed();
+        public static bool IsActive => !IsNull && m_Viewer.gameObject.activeInHierarchy;
 
         public RawImage Image;
 
@@ -26,7 +27,8 @@ namespace CDOverhaul.HUD
 
         public static void SetActive(bool value, Texture texture)
         {
-            if (IsNull)
+            m_Viewer.gameObject.SetActive(false);
+            if (IsNull || texture == null)
             {
                 return;
             }
@@ -35,9 +37,9 @@ namespace CDOverhaul.HUD
             m_Viewer.Image.texture = texture;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+            if (Input.anyKeyDown)
             {
                 SetActive(false, null);
             }

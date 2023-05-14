@@ -5,15 +5,17 @@ using UnityEngine;
 
 namespace CDOverhaul.Workshop
 {
+    // Todo: organize all things
     public static class OverhaulSteamBrowser
     {
         public static readonly AppId_t AppID = new AppId_t(597170U);
 
         private static readonly List<ulong> m_KnownUserIDs = new List<ulong>();
+        private static readonly List<PublishedFileId_t> m_DownloadingItems = new List<PublishedFileId_t>();
 
         #region Workshop Items
 
-        public static void RequestItems(EUGCQuery query, EUGCMatchingUGCType typeOfContent, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo, string tag, int page, bool cache = false)
+        public static void RequestItems(EUGCQuery query, EUGCMatchingUGCType typeOfContent, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo, string tag, int page, bool cache = false, bool returnLongDescription = false)
         {
             if (completedCallback == null)
             {
@@ -33,6 +35,8 @@ namespace CDOverhaul.Workshop
             }
 
             if (cache) SteamUGC.SetAllowCachedResponse(request, 6);
+            if (returnLongDescription) SteamUGC.SetReturnLongDescription(request, true);
+            SteamUGC.SetReturnAdditionalPreviews(request, true);
             SteamUGC.AddRequiredTag(request, tag);
 
             SendUGCRequest(request, requestResult, completedCallback, progressInfo);
@@ -84,10 +88,23 @@ namespace CDOverhaul.Workshop
                     if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, (uint)num, out SteamUGCDetails_t steamUGCDetails_t) && steamUGCDetails_t.m_eResult == EResult.k_EResultOK && !steamUGCDetails_t.m_bBanned)
                     {
                         SteamUGC.GetQueryUGCPreviewURL(queryResult.m_handle, (uint)num, out string url, 4096U);
-                        items[num] = new OverhaulWorkshopItem(steamUGCDetails_t)
+                        items[num] = new OverhaulWorkshopItem(steamUGCDetails_t, url);
+
+                        int previewCount = (int)SteamUGC.GetQueryUGCNumAdditionalPreviews(queryResult.m_handle, (uint)num);
+                        if (previewCount == 0)
                         {
-                            ThumbnailURL = url
-                        };
+                            num++;
+                            continue;
+                        }
+
+                        for (int i = 0; i < previewCount; i++)
+                        {
+                            bool apSuccess = SteamUGC.GetQueryUGCAdditionalPreview(queryResult.m_handle, (uint)num, (uint)i, out string itemURL, 512, out string name, 512, out EItemPreviewType type);
+                            if (apSuccess && type == EItemPreviewType.k_EItemPreviewType_Image)
+                            {
+                                items[num].ItemAdditionalImages.Add(itemURL);
+                            }
+                        }
                     }
                     num++;
                 }
@@ -126,30 +143,177 @@ namespace CDOverhaul.Workshop
             return result;
         }
 
-        public static Texture GetUserAvatar(CSteamID userID)
+        public static EItemState GetItemState(PublishedFileId_t id)
         {
-            if (!m_KnownUserIDs.Contains(userID.m_SteamID))
+            return (EItemState)SteamUGC.GetItemState(id);
+        }
+
+        public static bool IsSubscribedToItem(PublishedFileId_t id)
+        {
+            return GetItemState(id).HasFlag(EItemState.k_EItemStateSubscribed);
+        }
+
+        public static bool IsGoingToDownloadingItem(PublishedFileId_t id)
+        {
+            return GetItemState(id).HasFlag(EItemState.k_EItemStateDownloadPending);
+        }
+
+        public static bool IsDownloadingItem(PublishedFileId_t id)
+        {
+            return GetItemState(id).HasFlag(EItemState.k_EItemStateDownloading);
+        }
+
+        public static bool IsDownloadingItemInAnyWay(PublishedFileId_t id)
+        {
+            return IsGoingToDownloadingItem(id) || IsDownloadingItem(id);
+        }
+
+        public static bool IsItemInstalled(PublishedFileId_t id)
+        {
+            return GetItemState(id).HasFlag(EItemState.k_EItemStateInstalled);
+        }
+
+        public static float GetItemDownloadProgress(PublishedFileId_t id)
+        {
+            if (!IsDownloadingItem(id))
             {
-                return null;
+                return IsItemInstalled(id) ? 1f : 0f;
             }
 
-            int d = SteamFriends.GetMediumFriendAvatar(userID);
-            if (d == 0)
+            GetItemDownloadInfo(id, out ulong done, out ulong total, out float progress);
+            return progress;
+        }
+
+        public static void SetItemVote(PublishedFileId_t id, bool up, Action<SetUserItemVoteResult_t, bool> callback = null)
+        {
+            SteamAPICall_t apiCall = SteamUGC.SetUserItemVote(id, up);
+            CallResult<SetUserItemVoteResult_t> result = CallResult<SetUserItemVoteResult_t>.Create(delegate (SetUserItemVoteResult_t t, bool failure)
             {
-                return null;
+                callback?.Invoke(t, failure);
+                if (failure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (SetUserItemVoteResult_t) had IO error!");
+                    return;
+                }
+            });
+            result.Set(apiCall, null);
+        }
+
+        public static void GetItemVoteInfo(PublishedFileId_t id, Action<bool, bool, bool, bool> callback = null)
+        {
+            SteamAPICall_t apiCall = SteamUGC.GetUserItemVote(id);
+            CallResult<GetUserItemVoteResult_t> result = CallResult<GetUserItemVoteResult_t>.Create(delegate (GetUserItemVoteResult_t t, bool failure)
+            {
+                callback?.Invoke(t.m_bVoteSkipped, t.m_bVotedUp, t.m_bVotedDown, failure);
+                if (failure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (GetUserItemVoteResult_t) had IO error!");
+                    return;
+                }
+            });
+            result.Set(apiCall, null);
+        }
+
+        public static bool GetItemInstallInfo(PublishedFileId_t id, out ulong itemSizeOnDisk, out string folder, out uint lastUpdateTime)
+        {
+            return SteamUGC.GetItemInstallInfo(id, out itemSizeOnDisk, out folder, 512, out lastUpdateTime);
+        }
+
+        public static bool GetItemDownloadInfo(PublishedFileId_t id, out ulong downloaded, out ulong total, out float progress)
+        {
+            if (GetItemInstallInfo(id, out downloaded, out string f, out uint ut))
+            {
+                total = downloaded;
+                progress = 1f;
+                return false;
             }
 
-            bool success = SteamUtils.GetImageSize(d, out uint width, out uint height);
+            bool success = SteamUGC.GetItemDownloadInfo(id, out downloaded, out total);
             if (!success)
             {
-                return null;
+                progress = 0f;
+                return false;
             }
 
-            int size = (int)width * (int)height * 4;
-            byte[] pixels = new byte[size];
+            progress = downloaded / (float)total;
+            return true;
+        }
 
-            bool success2 = SteamUtils.GetImageRGBA(d, pixels, size);
-            return !success2 ? null : (Texture)null;
+        public static void UpdateItemDownloadInfo(PublishedFileId_t id, OverhaulRequestProgressInfo progress)
+        {
+            OverhaulRequestProgressInfo.SetProgress(progress, GetItemDownloadProgress(id));
+        }
+
+        // todo: handle steamapi call
+        public static void SubscribeToItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
+        {
+            if (!m_DownloadingItems.Contains(id))
+            {
+                m_DownloadingItems.Add(id);
+            }
+
+            CallResult<RemoteStorageSubscribePublishedFileResult_t> result = CallResult<RemoteStorageSubscribePublishedFileResult_t>.Create(delegate (RemoteStorageSubscribePublishedFileResult_t t, bool bIOFailure)
+            {
+                resultCallback?.Invoke(t.m_nPublishedFileId, t.m_eResult);
+                m_DownloadingItems.Remove(id);
+                if (bIOFailure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (RemoteStorageSubscribePublishedFileResult_t) had IO error!");
+                    return;
+                }
+            });
+            SteamAPICall_t apiCall = SteamUGC.SubscribeItem(id);
+            result.Set(apiCall, null);
+        }
+
+        public static void UnsubscribeFromItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
+        {
+            if (!IsSubscribedToItem(id))
+            {
+                return;
+            }
+
+            CallResult<RemoteStorageUnsubscribePublishedFileResult_t> result = CallResult<RemoteStorageUnsubscribePublishedFileResult_t>.Create(delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool bIOFailure)
+            {
+                resultCallback?.Invoke(t.m_nPublishedFileId, t.m_eResult);
+                if (bIOFailure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (RemoteStorageUnsubscribePublishedFileResult_t) had IO error!");
+                    return;
+                }
+            });
+            SteamAPICall_t apiCall = SteamUGC.UnsubscribeItem(id);
+            result.Set(apiCall, null);
+        }
+
+        public static void MarkItemAsFavourite(PublishedFileId_t id, Action<PublishedFileId_t, EResult, bool> resultCallback = null)
+        {
+            CallResult<UserFavoriteItemsListChanged_t> result = CallResult<UserFavoriteItemsListChanged_t>.Create(delegate (UserFavoriteItemsListChanged_t t, bool bIOFailure)
+            {
+                resultCallback?.Invoke(t.m_nPublishedFileId, t.m_eResult, t.m_bWasAddRequest);
+                if (bIOFailure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (UserFavoriteItemsListChanged_t) had IO error!");
+                    return;
+                }
+            });
+            SteamAPICall_t apiCall = SteamUGC.AddItemToFavorites(AppID, id);
+            result.Set(apiCall, null);
+        }
+
+        public static void UnmarkItemAsFavourite(PublishedFileId_t id, Action<PublishedFileId_t, EResult, bool> resultCallback = null)
+        {
+            CallResult<UserFavoriteItemsListChanged_t> result = CallResult<UserFavoriteItemsListChanged_t>.Create(delegate (UserFavoriteItemsListChanged_t t, bool bIOFailure)
+            {
+                resultCallback?.Invoke(t.m_nPublishedFileId, t.m_eResult, t.m_bWasAddRequest);
+                if (bIOFailure)
+                {
+                    Debug.LogWarning("[OverhaulMod] APICallResult (UserFavoriteItemsListChanged_t) had IO error!");
+                    return;
+                }
+            });
+            SteamAPICall_t apiCall = SteamUGC.RemoveItemFromFavorites(AppID, id);
+            result.Set(apiCall, null);
         }
     }
 }

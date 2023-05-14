@@ -64,15 +64,20 @@ namespace CDOverhaul.HUD
         public void Show()
         {
             base.gameObject.SetActive(true);
-            ViewChangelog(0);
+
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            m_OldChangelogsPanel.gameObject.SetActive(false);
+
+            ViewChangelog(0);
         }
 
         public void Hide()
         {
             OverhaulUIDescriptionTooltip.SetActive(false);
+
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
             base.gameObject.SetActive(false);
+
             DestroyLoadedPictures();
         }
 

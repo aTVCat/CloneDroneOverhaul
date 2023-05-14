@@ -51,7 +51,8 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="bolt">
@@ -63,6 +64,9 @@
     <Reference Include="DiscordRPC, Version=1.1.3.18, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ExternalDLLs\DiscordRPC.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscordWebhook, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiscordWebhooks.1.0.4\lib\DiscordWebhook.dll</HintPath>
     </Reference>
     <Reference Include="Esprima">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Esprima.dll</HintPath>
@@ -114,8 +118,9 @@
     <Reference Include="MoonSharp.Interpreter">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExternalDLLs\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Octokit, Version=4.0.4.0, Culture=neutral, PublicKeyToken=0be8860aee462442, processorArchitecture=MSIL">
       <HintPath>..\packages\Octokit.4.0.4\lib\netstandard2.0\Octokit.dll</HintPath>
@@ -385,13 +390,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiscordGameSDK\ActivityManager.cs" />
-    <Compile Include="DiscordGameSDK\Constants.cs" />
-    <Compile Include="DiscordGameSDK\Core.cs" />
-    <Compile Include="DiscordGameSDK\ImageManager.cs" />
-    <Compile Include="DiscordGameSDK\LobbyManager.cs" />
-    <Compile Include="DiscordGameSDK\StorageManager.cs" />
-    <Compile Include="DiscordGameSDK\StoreManager.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\Constants.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\Core.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\ImageManager.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\LobbyManager.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\StorageManager.cs" />
+    <Compile Include="ExternalDLLs\DiscordGameSDK\StoreManager.cs" />
     <Compile Include="Gameplay\Combat\Animations\AdditionalAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\CharacterModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Arena\ArenaRevampController.cs" />
@@ -404,6 +409,8 @@
     <Compile Include="Gameplay\Combat\Weapons\OverhaulWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\BoomerangWeaponModel.cs" />
     <Compile Include="Gameplay\Combat\Weapons\WeaponModels\GarbagePickerWeaponModel.cs" />
+    <Compile Include="Gameplay\Multiplayer\CustomMultiplayerPrototype\OLD\CustomMultiplayerSteamCore.cs" />
+    <Compile Include="Gameplay\Multiplayer\CustomMultiplayerPrototype\OverhaulModsOverLBSCore.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfo.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfoController.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -487,6 +494,7 @@
     <Compile Include="Internal\ModTranslation\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulDiscordController.cs" />
+    <Compile Include="Internal\OverhaulWebhooksController.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
     <Compile Include="Internal\Patches\MeleeImpactArea_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
@@ -591,6 +599,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Cone_Offsets.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Halo_Offsets.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Igrok%27s hat_Offsets.json" />
@@ -633,10 +642,12 @@
     <Content Include="CompiledBuild\CloneDroneOverhaul\netstandard.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulAPI.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulMod.dll" />
+    <Content Include="ExternalDLLs\CSharpDiscordWebhook.NET.dll" />
     <Content Include="ExternalDLLs\DiscordRPC.dll" />
     <Content Include="ExternalDLLs\discord_game_sdk.dll" />
     <Content Include="ExternalDLLs\KopiLua.dll" />
     <Content Include="ExternalDLLs\LuaInterface.dll" />
+    <Content Include="ExternalDLLs\steam_api.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Animations\" />

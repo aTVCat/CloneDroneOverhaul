@@ -118,9 +118,9 @@ namespace CDOverhaul
                 m_Alpha = 0f;
             }
 
-            public void UpdateIndicator(OverhaulRequestProgressInfo progress)
+            public void UpdateIndicator(OverhaulRequestProgressInfo progress, bool hideIf0or1)
             {
-                if (progress == null)
+                if (progress == null || ((progress.Progress == 1f || progress.Progress == 0f) && hideIf0or1))
                 {
                     if (UseCanvas())
                     {
@@ -147,14 +147,14 @@ namespace CDOverhaul
                 FillImage.fillAmount = m_Progress;
             }
 
-            public static void UpdateIndicator(LoadingIndicator indicator, OverhaulRequestProgressInfo progress)
+            public static void UpdateIndicator(LoadingIndicator indicator, OverhaulRequestProgressInfo progress, bool hideIf0or1 = false)
             {
                 if (indicator == null)
                 {
                     return;
                 }
 
-                indicator.UpdateIndicator(progress);
+                indicator.UpdateIndicator(progress, hideIf0or1);
             }
 
             public static void ResetIndicator(LoadingIndicator indicator)
