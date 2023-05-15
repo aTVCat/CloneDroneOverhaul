@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay.Combat
     /// <summary>
     /// Allows managing animations, that are not in game
     /// </summary>
-    public class AdditionalAnimationsController : OverhaulGameplayController
+    public class FirstPersonMoverModdedAnimationsController : OverhaulGameplayController
     {
         public override void Initialize()
         {
@@ -65,7 +65,7 @@ namespace CDOverhaul.Gameplay.Combat
                 }
             }
 
-            firstPersonMover.gameObject.AddComponent<CharacterModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);
+            firstPersonMover.gameObject.AddComponent<FirstPersonMoverModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);
         }
 
         public override string[] Commands()

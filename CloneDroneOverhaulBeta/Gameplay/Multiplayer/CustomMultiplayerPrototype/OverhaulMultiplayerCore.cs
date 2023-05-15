@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CDOverhaul.Gameplay.Multiplayer.Mods
 {
-    public static class OverhaulModsOverLBSCore
+    public static class OverhaulMultiplayerCore
     {
     }
 }

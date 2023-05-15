@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay.Combat
 {
-    public enum CombatOverhaulAnimatorType
+    public enum FirstPersonMoverAnimatorType
     {
         Legs,
         Upper

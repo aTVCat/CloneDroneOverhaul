@@ -16,7 +16,7 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            VoxelsController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
+            OverhaulVolumeController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
         }
     }
 }

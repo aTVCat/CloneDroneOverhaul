@@ -19,7 +19,7 @@ namespace CDOverhaul
         /// Check if <see cref="GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
         /// </summary>
         public static bool MayAddListeners => _globalEventManager != null;
-        private static readonly List<EventEntry> _events = new List<EventEntry>();
+        private static readonly List<OverhaulEvent> _events = new List<OverhaulEvent>();
 
         internal static void Initialize()
         {
@@ -45,7 +45,7 @@ namespace CDOverhaul
             return !prefix ? EventPrefix + eventName : eventName;
         }
 
-        public static EventEntry AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
+        public static OverhaulEvent AddEventListener(in string name, in Action callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
@@ -55,13 +55,13 @@ namespace CDOverhaul
             string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.AddEventListener(finalString, callback);
 
-            EventEntry newEvent = new EventEntry(finalString, callback, !dontAddPrefix);
+            OverhaulEvent newEvent = new OverhaulEvent(finalString, callback, !dontAddPrefix);
             _events.Add(newEvent);
 
             return newEvent;
         }
 
-        public static EventEntry AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
+        public static OverhaulEvent AddEventListener<T>(in string name, in Action<T> callback, in bool dontAddPrefix = false)
         {
             if (!MayAddListeners)
             {
@@ -71,7 +71,7 @@ namespace CDOverhaul
             string finalString = GetString(name, dontAddPrefix);
             _globalEventManager.AddEventListener<T>(finalString, callback);
 
-            EventEntry newEvent = new EventEntry(finalString, null, !dontAddPrefix);
+            OverhaulEvent newEvent = new OverhaulEvent(finalString, null, !dontAddPrefix);
             newEvent.SetArgument<T>(callback);
             _events.Add(newEvent);
 
@@ -89,8 +89,8 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener(finalString, callback);
 
             int removeIndex = -1;
-            EventEntry eventToRemove = new EventEntry(finalString, callback, !dontAddPrefix);
-            foreach (EventEntry entry in _events)
+            OverhaulEvent eventToRemove = new OverhaulEvent(finalString, callback, !dontAddPrefix);
+            foreach (OverhaulEvent entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))
@@ -115,9 +115,9 @@ namespace CDOverhaul
             _globalEventManager.RemoveEventListener<T>(finalString, callback);
 
             int removeIndex = -1;
-            EventEntry eventToRemove = new EventEntry(finalString, null, !dontAddPrefix);
+            OverhaulEvent eventToRemove = new OverhaulEvent(finalString, null, !dontAddPrefix);
             eventToRemove.SetArgument<T>(callback);
-            foreach (EventEntry entry in _events)
+            foreach (OverhaulEvent entry in _events)
             {
                 removeIndex++;
                 if (entry.Equals(entry, eventToRemove))

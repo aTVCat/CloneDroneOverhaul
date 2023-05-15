@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public class VoxelsController : OverhaulController
+    public class OverhaulVolumeController : OverhaulController
     {
         private static float m_OgFireBurnColorMultiplier;
 

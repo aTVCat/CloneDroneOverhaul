@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Gameplay;
+﻿/*using CDOverhaul.Gameplay;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches
@@ -18,4 +18,4 @@ namespace CDOverhaul.Patches
             OverhaulLevelAdder.AddLevel("FUSRoom", "CombatTutorial", GameMode.Story, out _);
         }
     }
-}
+}*/

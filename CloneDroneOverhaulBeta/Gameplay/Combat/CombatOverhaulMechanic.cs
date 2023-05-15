@@ -33,15 +33,15 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         /// <param name="animatorType"></param>
         /// <returns></returns>
-        public Animator GetAnimator(CombatOverhaulAnimatorType animatorType)
+        public Animator GetAnimator(FirstPersonMoverAnimatorType animatorType)
         {
             if (!IsDisposedOrDestroyed() && HasCharacterModel)
             {
                 switch (animatorType)
                 {
-                    case CombatOverhaulAnimatorType.Legs:
+                    case FirstPersonMoverAnimatorType.Legs:
                         return CharacterModel.LegsAnimator;
-                    case CombatOverhaulAnimatorType.Upper:
+                    case FirstPersonMoverAnimatorType.Upper:
                         return CharacterModel.UpperAnimator;
                 }
             }
@@ -52,15 +52,15 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         /// <param name="animatorType"></param>
         /// <returns></returns>
-        public bool HasAnimator(CombatOverhaulAnimatorType animatorType)
+        public bool HasAnimator(FirstPersonMoverAnimatorType animatorType)
         {
             if (!IsDisposedOrDestroyed() && HasCharacterModel)
             {
                 switch (animatorType)
                 {
-                    case CombatOverhaulAnimatorType.Legs:
+                    case FirstPersonMoverAnimatorType.Legs:
                         return CharacterModel.LegsAnimator != null;
-                    case CombatOverhaulAnimatorType.Upper:
+                    case FirstPersonMoverAnimatorType.Upper:
                         return CharacterModel.UpperAnimator != null;
                 }
             }
@@ -71,15 +71,15 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         /// <param name="animatorType"></param>
         /// <returns></returns>
-        public float GetAnimatorSpeed(CombatOverhaulAnimatorType animatorType)
+        public float GetAnimatorSpeed(FirstPersonMoverAnimatorType animatorType)
         {
             if (!IsDisposedOrDestroyed() && HasAnimator(animatorType))
             {
                 switch (animatorType)
                 {
-                    case CombatOverhaulAnimatorType.Legs:
+                    case FirstPersonMoverAnimatorType.Legs:
                         return CharacterModel.LegsAnimator.speed;
-                    case CombatOverhaulAnimatorType.Upper:
+                    case FirstPersonMoverAnimatorType.Upper:
                         return CharacterModel.UpperAnimator.speed;
                 }
             }
@@ -90,7 +90,7 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         /// <param name="animatorType"></param>
         /// <param name="value"></param>
-        public void SetAnimatorSpeed(CombatOverhaulAnimatorType animatorType, float value)
+        public void SetAnimatorSpeed(FirstPersonMoverAnimatorType animatorType, float value)
         {
             if (IsDisposedOrDestroyed() || !HasAnimator(animatorType))
             {
@@ -130,7 +130,7 @@ namespace CDOverhaul.Gameplay.Combat
         public void SetRobotSpeed(float speed, bool updateAnimators, bool reset = false)
         {
             Owner.MaxSpeed = speed;
-            if (updateAnimators) SetAnimatorSpeed(CombatOverhaulAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
+            if (updateAnimators) SetAnimatorSpeed(FirstPersonMoverAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
         }
     }
 }

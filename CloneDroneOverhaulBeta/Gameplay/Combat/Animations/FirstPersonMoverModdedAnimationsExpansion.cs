@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay.Combat
 {
-    public class CharacterModdedAnimationsExpansion : CombatOverhaulMechanic
+    public class FirstPersonMoverModdedAnimationsExpansion : CombatOverhaulMechanic
     {
         private Animation m_UpperAnimation;
         private bool m_HasUpperAnimator;
@@ -24,8 +24,8 @@ namespace CDOverhaul.Gameplay.Combat
         public override void Start()
         {
             base.Start();
-            m_HasUpperAnimator = HasAnimator(CombatOverhaulAnimatorType.Upper);
-            m_HasLowerAnimator = HasAnimator(CombatOverhaulAnimatorType.Legs);
+            m_HasUpperAnimator = HasAnimator(FirstPersonMoverAnimatorType.Upper);
+            m_HasLowerAnimator = HasAnimator(FirstPersonMoverAnimatorType.Legs);
         }
 
         protected override void OnDisposed()
@@ -96,7 +96,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
         }
 
-        public string GetPlayingCustomAnimationName(CombatOverhaulAnimatorType animationType)
+        public string GetPlayingCustomAnimationName(FirstPersonMoverAnimatorType animationType)
         {
             if (!HasAnimator(animationType))
             {
@@ -105,10 +105,10 @@ namespace CDOverhaul.Gameplay.Combat
 
             switch (animationType)
             {
-                case CombatOverhaulAnimatorType.Upper:
+                case FirstPersonMoverAnimatorType.Upper:
                     return m_UpperAnimation != null ? m_UpperAnimation.clip.name : string.Empty;
                     break;
-                case CombatOverhaulAnimatorType.Legs:
+                case FirstPersonMoverAnimatorType.Legs:
                     return m_LowerAnimation != null ? m_LowerAnimation.clip.name : string.Empty;
                     break;
             }

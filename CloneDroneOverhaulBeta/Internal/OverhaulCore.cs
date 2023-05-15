@@ -57,17 +57,10 @@ namespace CDOverhaul
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
-            /*
-            if (ExperimentalBranchManager.Instance != null)
-            {
-                ExperimentalBranchManager.Instance.IsExperimentalBranch = false;
-            }*/
-
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
             OverhaulAudioLibrary.Initialize();
-            OverhaulLevelAdder.Initialize();
             OverhaulEventsController.Initialize();
             SettingsController.Initialize();
             OverhaulConsoleController.Initialize();
@@ -75,10 +68,9 @@ namespace CDOverhaul
             OverhaulController.InitializeStatic(controllers);
 
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
-            _ = OverhaulController.AddController<VoxelsController>();
+            _ = OverhaulController.AddController<OverhaulVolumeController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
-            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<SkyboxOverhaulController>();
             _ = OverhaulController.AddController<AutoBuild>();
 
             SettingsController.PostInitialize();

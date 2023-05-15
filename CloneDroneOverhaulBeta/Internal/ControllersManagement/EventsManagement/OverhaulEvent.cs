@@ -5,7 +5,7 @@ namespace CDOverhaul
     /// <summary>
     /// A definition of event that has listeners
     /// </summary>
-    public class EventEntry
+    public class OverhaulEvent
     {
         /// <summary>
         /// Event name
@@ -27,7 +27,7 @@ namespace CDOverhaul
         /// </summary>
         public object EventActionWithArgument;
 
-        public EventEntry(in string eventName, in Action @delegate, in bool withPrefix)
+        public OverhaulEvent(in string eventName, in Action @delegate, in bool withPrefix)
         {
             EventName = eventName;
             EventAction = @delegate;
@@ -52,7 +52,7 @@ namespace CDOverhaul
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public bool Equals(in EventEntry a, in EventEntry b)
+        public bool Equals(in OverhaulEvent a, in OverhaulEvent b)
         {
             return (a.EventName, a.EventAction, a.EventActionWithArgument) == (b.EventName, b.EventAction, b.EventActionWithArgument);
         }

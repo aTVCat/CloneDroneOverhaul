@@ -47,9 +47,7 @@ namespace CDOverhaul.Gameplay
             Core = this;
 
             _ = OverhaulController.AddController<WeaponSkinsController>();
-            _ = OverhaulController.AddController<AdditionalAnimationsController>();
-            _ = OverhaulController.AddController<NewWeaponsController>();
-            _ = OverhaulController.AddController<AdvancedGarbageController>();
+            _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);

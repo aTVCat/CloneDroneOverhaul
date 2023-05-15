@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.LevelEditor;
 using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
@@ -82,6 +81,7 @@ namespace CDOverhaul
             DeconstructCore();
         }
 
+        /*
         /// <summary>
         /// Currently used to make modded level editor objects real
         /// </summary>
@@ -101,7 +101,7 @@ namespace CDOverhaul
             }
 
             return @object;
-        }
+        }*/
 
         /// <summary>
         /// Used for events
