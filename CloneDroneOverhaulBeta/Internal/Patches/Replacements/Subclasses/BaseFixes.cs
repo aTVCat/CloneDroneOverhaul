@@ -30,7 +30,7 @@ namespace CDOverhaul.Patches
             if (m_OgFontScale == -1f) m_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
 
-            if (!OverhaulVersion.Upd2Hotfix) HumanFactsManager.Instance.AddColor("Prototype", Color.white);
+            if (!OverhaulVersion.IsUpdate2Hotfix) HumanFactsManager.Instance.AddColor("Prototype", Color.white);
 
             foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {

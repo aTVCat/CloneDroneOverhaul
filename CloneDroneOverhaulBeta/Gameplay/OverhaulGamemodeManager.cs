@@ -17,12 +17,12 @@ namespace CDOverhaul
 
         public static bool SupportsOutfits()
         {
-            return !OverhaulVersion.Upd2Hotfix && SupportsPersonalization();
+            return !OverhaulVersion.IsUpdate2Hotfix && SupportsPersonalization();
         }
 
         public static bool SupportsCombatOverhaul()
         {
-            return !OverhaulVersion.Upd2Hotfix && !GameModeManager.IsMultiplayer();
+            return !OverhaulVersion.IsUpdate2Hotfix && !GameModeManager.IsMultiplayer();
         }
 
         public static bool SupportsBowSkins()

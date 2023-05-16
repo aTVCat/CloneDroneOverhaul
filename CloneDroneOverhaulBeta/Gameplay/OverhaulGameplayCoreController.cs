@@ -69,7 +69,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if (!OverhaulVersion.Upd2Hotfix) firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
+            if (!OverhaulVersion.IsUpdate2Hotfix) firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
 
             Camera camera = firstPersonMover.GetPlayerCamera();
             if (camera == null)

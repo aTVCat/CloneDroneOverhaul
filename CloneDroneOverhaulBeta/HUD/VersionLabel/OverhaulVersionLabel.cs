@@ -102,7 +102,7 @@ namespace CDOverhaul.HUD
         {
             m_DiscordHolderTransform.gameObject.SetActive(false);
 
-            bool discordInitialized = !OverhaulVersion.Upd2Hotfix && (m_ParametersMenu == null || !m_ParametersMenu.gameObject.activeSelf) && GameModeManager.IsOnTitleScreen() && OverhaulDiscordController.SuccessfulInitialization && OverhaulDiscordController.Instance.UserID != -1;
+            bool discordInitialized = !OverhaulVersion.IsUpdate2Hotfix && (m_ParametersMenu == null || !m_ParametersMenu.gameObject.activeSelf) && GameModeManager.IsOnTitleScreen() && OverhaulDiscordController.SuccessfulInitialization && OverhaulDiscordController.Instance.UserID != -1;
             if (!discordInitialized)
             {
                 return;

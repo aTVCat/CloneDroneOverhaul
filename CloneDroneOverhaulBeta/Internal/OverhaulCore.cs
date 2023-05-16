@@ -88,7 +88,7 @@ namespace CDOverhaul
 
             ReplacementBase.CreateReplacements();
 
-            if (!OverhaulVersion.Upd2Hotfix) _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
+            if (!OverhaulVersion.IsUpdate2Hotfix) _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
         }
 
         private void OnDestroy()

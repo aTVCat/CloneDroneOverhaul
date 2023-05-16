@@ -122,9 +122,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ExternalDLLs\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Octokit, Version=4.0.4.0, Culture=neutral, PublicKeyToken=0be8860aee462442, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.4.0.4\lib\netstandard2.0\Octokit.dll</HintPath>
-    </Reference>
     <Reference Include="Pathfinding.ClipperLib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.ClipperLib.dll</HintPath>
     </Reference>
@@ -390,6 +387,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomMultiplayer\OverhaulMultiplayerEnvironment.cs" />
+    <Compile Include="CustomMultiplayer\OverhaulMultiplayerEntity.cs" />
+    <Compile Include="CustomMultiplayer\OverhaulMultiplayerObject.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Constants.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Core.cs" />
@@ -402,7 +402,7 @@
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\CombatOverhaulMechanic.cs" />
     <Compile Include="Gameplay\Combat\OverhaulCombatState.cs" />
-    <Compile Include="Gameplay\Multiplayer\CustomMultiplayerPrototype\OverhaulMultiplayerCore.cs" />
+    <Compile Include="CustomMultiplayer\OverhaulMultiplayerCore.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfo.cs" />
     <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfoController.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -573,13 +573,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Arena_Overhaul\ContentInfo.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Combat_overhaul\ContentInfo.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Custom_Multiplayer\ContentInfo.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Cone_Offsets.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Deal with It_Offsets.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Halo_Offsets.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Igrok%27s hat_Offsets.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\AccessoriesOffsets\Puss Hat_Offsets.json" />
-    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Levels\EditorRooms\WeaponSkinEditorMap.json" />
-    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Levels\FUSRoom.json" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Backup\pathbundle" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Backup\ultrakilloverhaul" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Permanent\ImportedSkins.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\Assets\Localization.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\effect_amplifyocclusion" />
     <None Include="CompiledBuild\CloneDroneOverhaul\ModInfo.json" />
@@ -593,46 +597,58 @@
     <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_skins" />
     <None Include="CompiledBuild\CloneDroneOverhaul\overhaulassets_sounds" />
     <None Include="CompiledBuild\CloneDroneOverhaul\overhauldemostuff" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\pathbundle" />
+    <None Include="CompiledBuild\CloneDroneOverhaul\ultrakilloverhaul" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Changelogs\0.2.10.44\20230507133331_1.jpg" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Changelogs\0.2.10.44\20230507133358_1.jpg" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Changelogs\0.2.10.44\Infoen.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Changelogs\0.2.10.44\Inforu.txt" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\AmbientOcc.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Bloom.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Chromatic Aberration.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\DiscordActivity.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\DiscordActivity2.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Game interface-S-16x16.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Gameplay-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\GameplayOLD-S-16x16.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Graphics-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Mod-S-16x16.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Optimization-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\QoL-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\Shortcuts-S-16x16.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\Ico\ShortcutsOLD-S-16x16.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\Settings\TestSet.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\BBR.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\BBR_HM.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\BBR_M.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\BBR_M_SE.txt" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\DevItem.txt" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\JusticePearl.txt" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\PlaceholderDesc.txt" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\SoulEater.txt" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\Assets\WeaponSkinsDescriptions\VioletVio.txt" />
-    <Content Include="CompiledBuild\CloneDroneOverhaul\DiscordRPC.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\CloneDroneOverhaulImage.png" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\DiscordWebhook.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\discord_game_sdk.dll" />
-    <Content Include="CompiledBuild\CloneDroneOverhaul\KopiLua.dll" />
-    <Content Include="CompiledBuild\CloneDroneOverhaul\LuaInterface.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\ModPreview.png" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\netstandard.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulAPI.dll" />
     <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulMod.dll" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\OverhaulMod.xml" />
+    <Content Include="CompiledBuild\CloneDroneOverhaul\SkinsVersion.txt" />
     <Content Include="ExternalDLLs\DiscordRPC.dll" />
     <Content Include="ExternalDLLs\discord_game_sdk.dll" />
     <Content Include="ExternalDLLs\KopiLua.dll" />
     <Content Include="ExternalDLLs\LuaInterface.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Animations\" />
-    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Lua\" />
+    <Folder Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Archives\" />
+    <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Steam\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
     <Folder Include="HUD\IntroSetup\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
-  </Target>
 </Project>
