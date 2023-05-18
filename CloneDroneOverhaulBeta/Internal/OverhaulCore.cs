@@ -71,7 +71,9 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulVolumeController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
+
             _ = OverhaulController.AddController<AutoBuild>();
+            _ = OverhaulController.AddController<LevelEditorFixes>();
 
             SettingsController.PostInitialize();
             OverhaulDebugger.Initialize();

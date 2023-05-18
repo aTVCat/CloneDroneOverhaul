@@ -427,6 +427,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
     <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuild.cs" />
     <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuildVariant.cs" />
+    <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\LevelEditorUIFixes.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />

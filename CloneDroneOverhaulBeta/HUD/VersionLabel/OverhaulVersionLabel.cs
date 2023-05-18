@@ -42,6 +42,7 @@ namespace CDOverhaul.HUD
             m_DiscordUserLabel = MyModdedObject.GetObject<Text>(2);
 
             m_VersionLabel = MyModdedObject.GetObject<Text>(0);
+            m_VersionLabel.gameObject.SetActive(true);
             m_TitleScreenUIVersionLabel = GameUIRoot.Instance.TitleScreenUI.VersionLabel;
             m_TitleScreenUIVersionLabel.gameObject.SetActive(false);
             m_TitleScreenRootButtons = GameUIRoot.Instance.TitleScreenUI.RootButtonsContainerBG;
