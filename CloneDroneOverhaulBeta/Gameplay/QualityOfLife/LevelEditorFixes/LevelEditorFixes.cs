@@ -72,7 +72,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             }
 
             LevelEditorInspector inspector = levelEditorUI.InspectorTransform.GetComponent<LevelEditorInspector>();
-            if (inspector == null)
+            LevelEditorLibraryUI libraryUI = levelEditorUI.LibraryUI;
+            if (inspector == null && libraryUI != null)
             {
                 return;
             }
@@ -191,6 +192,43 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 LayoutElement lE = ciInputField.GetComponent<LayoutElement>();
                 lE.minHeight = 75f;
             }
+
+            // Library
+            Mask mask2 = libraryUI.ScrollViewViewPort.GetComponent<Mask>();
+            if(mask2 != null)
+            {
+                Destroy(mask2);
+            }
+            RectMask2D rectMask2D = libraryUI.ScrollViewViewPort.GetComponent<RectMask2D>();
+            if (rectMask2D == null)
+            {
+                rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
+            }
+
+            RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
+            searchFieldRectT.pivot = new Vector2(0f, 0.5f);
+            searchFieldRectT.anchorMax = new Vector2(1f, 1f);
+            searchFieldRectT.anchorMin = new Vector2(0f, 0f);
+            searchFieldRectT.offsetMax = new Vector2(-27f, -2f);
+            searchFieldRectT.offsetMin = new Vector2(2f, 2f);
+            searchFieldRectT.anchoredPosition = new Vector2(2f, 0f);
+            searchFieldRectT.sizeDelta = new Vector2(-29f, -4f);
+
+            RectTransform overhaulLVLEditorSettingsButtonTransform = new GameObject("OverhaulLevelEditorSettingsButton").AddComponent<RectTransform>();
+            overhaulLVLEditorSettingsButtonTransform.SetParent(searchFieldRectT.parent, false);
+            overhaulLVLEditorSettingsButtonTransform.localPosition = Vector3.zero;
+            overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
+            overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
+            overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
+            overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 1f);
+            overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(0f, 0f);
+            overhaulLVLEditorSettingsButtonTransform.offsetMax = new Vector2(-2f, -2f);
+            overhaulLVLEditorSettingsButtonTransform.offsetMin = new Vector2(114f, 2f);
+            overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-2f, 0f);
+            Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
+            settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
+            settingsButtonImage.type = Image.Type.Sliced;
+            Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
         }
 
         public override string[] Commands()

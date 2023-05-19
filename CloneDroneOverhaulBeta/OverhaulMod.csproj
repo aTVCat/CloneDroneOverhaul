@@ -387,6 +387,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="CustomMultiplayer\OverhaulMultiplayerEnvironment.cs" />
     <Compile Include="CustomMultiplayer\OverhaulMultiplayerEntity.cs" />
     <Compile Include="CustomMultiplayer\OverhaulMultiplayerObject.cs" />
@@ -427,7 +428,7 @@
     <Compile Include="Gameplay\Personalization\WeaponSkinsV2\Import\WeaponSkinsImportedItemDefinition.cs" />
     <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuild.cs" />
     <Compile Include="Gameplay\QualityOfLife\LBSAutoBuild\AutoBuildVariant.cs" />
-    <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\LevelEditorUIFixes.cs" />
+    <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\LevelEditorFixes.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
@@ -482,6 +483,7 @@
     <Compile Include="Internal\OverhaulDiscordController.cs" />
     <Compile Include="Internal\OverhaulWebhooksController.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
+    <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
     <Compile Include="Internal\Patches\MeleeImpactArea_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
@@ -492,7 +494,9 @@
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AmplifyColorSwapper_Patch.cs" />
+    <Compile Include="Internal\Patches\ObjectPlacedInLevel_Patch.cs" />
     <Compile Include="Internal\Patches\TrophyShelf_Patch.cs" />
+    <Compile Include="Internal\Patches\LevelEnemySpawner_Patch.cs" />
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\FeatureAvailability\OverhaulFeatureDefinition.cs" />
     <Compile Include="Internal\Settings\FeatureAvailability\OverhaulFeatureAvailabilitySystem.cs" />

@@ -1,35 +1,61 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Credits;
+using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
-    [HarmonyPatch(typeof(TrophyShelf))]
-    internal static class TrophyShelf_Patch
+    [HarmonyPatch(typeof(ObjectPlacedInLevel))]
+    internal static class ObjectPlacedInLevel_Patch
     {
-        [HarmonyPostfix]
-        [HarmonyPatch("refreshTrophies")]
-        private static void refreshTrophies_Postfix(TrophyShelf __instance)
+        private static Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>> m_Objects = new Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>>();
+
+        [HarmonyPrefix]
+        [HarmonyPatch("replaceMaterialWithSelected")]
+        private static bool replaceMaterialWithSelected_Prefix(ObjectPlacedInLevel __instance, Renderer targetRenderer)
         {
             if (!OverhaulMod.IsModInitialized)
             {
-                return;
+                return true;
             }
 
-            if (__instance.TrophyHolder == null || __instance.TrophyHolder.childCount == 0)
+            ThreeDOutline o = targetRenderer.GetComponent<ThreeDOutline>();
+            if (o == null)
             {
-                return;
-            }
+                o = targetRenderer.gameObject.AddComponent<ThreeDOutline>();
 
-            Light[] l = __instance.TrophyHolder.GetComponentsInChildren<Light>();
-            if (!l.IsNullOrEmpty())
-            {
-                foreach (Light l2 in l)
+                if (m_Objects.ContainsKey(__instance))
                 {
-                    l2.gameObject.SetActive(false);
+                    m_Objects[__instance].Add(o);
+                    return false;
                 }
+                m_Objects.Add(__instance, new List<ThreeDOutline>() { o });
+            }
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("ChangeToNotSelectedVisuals")]
+        private static bool ChangeToNotSelectedVisuals_Prefix(ObjectPlacedInLevel __instance)
+        {
+            if (!OverhaulMod.IsModInitialized)
+            {
+                return true;
             }
 
-            return;
+            if (m_Objects.ContainsKey(__instance))
+            {
+                List<ThreeDOutline> list = m_Objects[__instance];
+                for (int i = list.Count - 1; i > -1; i--)
+                {
+                    if (list[i] != null)
+                    {
+                        Object.Destroy(list[i]);
+                    }
+                }
+                return false;
+            }
+            return false;
         }
     }
 }
