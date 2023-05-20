@@ -64,7 +64,7 @@ namespace CDOverhaul
             switch (featureID)
             {
                 case OverhaulFeatureID.PermissionToManageSkins:
-                    return "Permission to manage skins"; // Todo: translate all
+                    return "Permission to manage skins"; // Todo: Translate all
                 case OverhaulFeatureID.PermissionToEditLocalization:
                     return "Permission to translate the mod";
             }
@@ -74,6 +74,24 @@ namespace CDOverhaul
         public static string GetColoredStringOfFeature(in OverhaulFeatureID featureID)
         {
             return GetStringOfFeature(featureID).AddColor(IsFeatureUnlocked(featureID) ? Color.white : Color.gray);
+        }
+
+        /// <summary>
+        /// Features that doesn't require player IDs to work. This class defines what things should be included in the build
+        /// </summary>
+        public static class BuildImplements
+        {
+            /// <summary>
+            /// Level editor selection outline
+            /// </summary>
+            private static bool IS_SELECTION_OUTLINE_ENABLED = true;
+            public static bool IsSelectionOutLineEnabled => OverhaulVersion.IsUpdate4 && IS_SELECTION_OUTLINE_ENABLED;
+
+            /// <summary>
+            /// VFX that plays when switching skins
+            /// </summary>
+            private static bool IS_SKIN_SWITCHING_VFX_ENABLED = true;
+            public static bool IsSkinSwitchingVFXEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_SKIN_SWITCHING_VFX_ENABLED;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.HUD;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,10 +7,15 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public class LevelEditorFixes : OverhaulController
     {
+        public static LevelEditorSelectionSettingsPanel SelectionSettingsPanel { get; private set; }
+
         public override void Initialize()
         {
+            addUIs();
             fixValues();
             fixUI();
+
+            DelegateScheduler.Instance.Schedule(LevelEditorSelectionSettingsPanel.RefreshSliders, 1f);
         }
 
         private void assignAnimationClip(AnimationClip clip, List<string> toAssignTo)
@@ -195,7 +201,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
             // Library
             Mask mask2 = libraryUI.ScrollViewViewPort.GetComponent<Mask>();
-            if(mask2 != null)
+            if (mask2 != null)
             {
                 Destroy(mask2);
             }
@@ -205,6 +211,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
             }
 
+            if (!OverhaulVersion.IsUpdate4)
+            {
+                return;
+            }
             RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
             searchFieldRectT.pivot = new Vector2(0f, 0.5f);
             searchFieldRectT.anchorMax = new Vector2(1f, 1f);
@@ -228,7 +238,39 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
             settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
             settingsButtonImage.type = Image.Type.Sliced;
+
+            if (SelectionSettingsPanel == null)
+            {
+                overhaulLVLEditorSettingsButtonTransform.gameObject.SetActive(false);
+                return;
+            }
             Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
+            settingsButton.onClick.AddListener(SelectionSettingsPanel.ToggleVisibility);
+        }
+
+        private void addUIs()
+        {
+            if (!OverhaulVersion.IsUpdate4 || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
+            {
+                return;
+            }
+
+            OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
+            GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_Settings");
+            if (prefabToInstantiate == null)
+            {
+                return;
+            }
+
+            RectTransform panel = Instantiate(prefabToInstantiate, GameUIRoot.Instance.LevelEditorUI.transform).transform as RectTransform;
+            panel.localPosition = Vector3.zero;
+            panel.eulerAngles = Vector3.zero;
+            panel.localScale = Vector3.one;
+            panel.pivot = new Vector2(0f, 0.5f);
+            panel.anchorMax = new Vector2(0f, 0.5f);
+            panel.anchorMin = new Vector2(0f, 0.5f);
+            panel.anchoredPosition = new Vector2(150f, -50f);
+            SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
         }
 
         public override string[] Commands()

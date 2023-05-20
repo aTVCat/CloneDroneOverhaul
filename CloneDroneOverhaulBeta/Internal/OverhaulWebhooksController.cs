@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Net;
-using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -16,7 +15,8 @@ namespace CDOverhaul
 
         public static readonly string[] IgnoredStrings = new string[]
         {
-            "DebugMenu.OnThrowErrorClicked"
+            "DebugMenu.OnThrowErrorClicked",
+            "UnityExplorer"
         };
 
         private static bool m_HasExecutedCrashReportsWebhook = false;
@@ -31,7 +31,7 @@ namespace CDOverhaul
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = "<@779372500521320469>", // this pings me
+                content = OverhaulVersion.IsDebugBuild ? "<@779372500521320469>" /* this pings me */: string.Empty,
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -59,7 +59,7 @@ namespace CDOverhaul
 
         public static bool CheckStringForExcludedErrors(in string theString)
         {
-            foreach(string str in IgnoredStrings)
+            foreach (string str in IgnoredStrings)
             {
                 if (theString.Contains(str))
                 {

@@ -15,6 +15,10 @@ namespace CDOverhaul.Patches
             {
                 return false;
             }*/
+            if (logString.Contains("UnityExplorer") || logString.Contains("Can't find asset") || logString.Contains("Unsupported color:"))
+            {
+                return false;
+            }
 
             if (type == LogType.Error || type == LogType.Exception)
             {

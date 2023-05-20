@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay.Combat
 {
-    public class FirstPersonMoverModdedAnimationsExpansion : CombatOverhaulMechanic
+    public class FirstPersonMoverModdedAnimationsExpansion : OverhaulAdvancedCharacterExpansion
     {
         private Animation m_UpperAnimation;
         private bool m_HasUpperAnimator;

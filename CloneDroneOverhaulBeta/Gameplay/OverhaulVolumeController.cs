@@ -5,10 +5,10 @@ namespace CDOverhaul
 {
     public class OverhaulVolumeController : OverhaulController
     {
-        private static float m_OgFireBurnColorMultiplier;
-
         [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
         public static bool MakeLaserBurnVoxels;
+
+        private static float m_OgFireBurnColorMultiplier;
 
         public override void Initialize()
         {

@@ -1,8 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Multiplayer;
-using HarmonyLib;
-using System.Collections;
-using UnityEngine;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -19,10 +15,10 @@ namespace CDOverhaul.Patches
             }
 
             string name = __instance.gameObject.name;
-            if(name != "BusinessSword(Clone)")
+            if (name != "BusinessSword(Clone)")
             {
                 return;
-            }            
+            }
             __instance.SupportsColorOverride = true;
         }
     }

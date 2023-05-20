@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Workshop
 {
-    // todo: organize code
+    // Todo: Complete all OnDisposed methods
     public class OverhaulWorkshopBrowserUI : OverhaulUI
     {
         #region Settings
@@ -643,7 +643,6 @@ namespace CDOverhaul.Workshop
                 }
                 catch
                 {
-                    // todo: handle
                 }
             }
         }
@@ -895,7 +894,6 @@ namespace CDOverhaul.Workshop
             IsPopulatingItems = false;
             CurrentRequestResult = requestResult;
 
-            // todo: add timeout
             if (requestResult == null || requestResult.Error)
             {
                 Debug.LogWarning("[OverhaulMod] RequestResult error");
@@ -1093,8 +1091,6 @@ namespace CDOverhaul.Workshop
 
         public class ItemUIEntry : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         {
-            // todo: add unloading
-
             public static ItemUIEntry CreateNew(ModdedObject moddedObject, OverhaulWorkshopItem workshopItem)
             {
                 if (workshopItem == null)

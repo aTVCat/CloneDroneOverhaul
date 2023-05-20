@@ -1,35 +1,64 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Credits;
+using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
-    [HarmonyPatch(typeof(TrophyShelf))]
-    internal static class TrophyShelf_Patch
+    [HarmonyPatch(typeof(ObjectPlacedInLevel))]
+    internal static class ObjectPlacedInLevel_Patch
     {
-        [HarmonyPostfix]
-        [HarmonyPatch("refreshTrophies")]
-        private static void refreshTrophies_Postfix(TrophyShelf __instance)
+        private static Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>> m_Objects = new Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>>();
+
+        [HarmonyPrefix]
+        [HarmonyPatch("replaceMaterialWithSelected")]
+        private static bool replaceMaterialWithSelected_Prefix(ObjectPlacedInLevel __instance, Renderer targetRenderer)
+        {
+            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
+            {
+                return true;
+            }
+
+            ThreeDOutline o = targetRenderer.GetComponent<ThreeDOutline>();
+            if (o == null)
+            {
+                o = targetRenderer.gameObject.AddComponent<ThreeDOutline>();
+
+                if (m_Objects.ContainsKey(__instance))
+                {
+                    m_Objects[__instance].Add(o);
+                    return true;
+                }
+                m_Objects.Add(__instance, new List<ThreeDOutline>() { o });
+            }
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("ChangeToNotSelectedVisuals")]
+        private static bool ChangeToNotSelectedVisuals_Prefix(ObjectPlacedInLevel __instance)
         {
             if (!OverhaulMod.IsModInitialized)
             {
-                return;
+                return true;
             }
 
-            if (__instance.TrophyHolder == null || __instance.TrophyHolder.childCount == 0)
+            if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled && !m_Objects.IsNullOrEmpty() && m_Objects.ContainsKey(__instance))
             {
-                return;
-            }
-
-            Light[] l = __instance.TrophyHolder.GetComponentsInChildren<Light>();
-            if (!l.IsNullOrEmpty())
-            {
-                foreach (Light l2 in l)
+                List<ThreeDOutline> list = m_Objects[__instance];
+                if (!list.IsNullOrEmpty())
                 {
-                    l2.gameObject.SetActive(false);
+                    for (int i = list.Count - 1; i > -1; i--)
+                    {
+                        ThreeDOutline outl = list[i];
+                        if (outl != null)
+                        {
+                            Object.Destroy(outl);
+                        }
+                    }
                 }
             }
-
-            return;
+            return true;
         }
     }
 }

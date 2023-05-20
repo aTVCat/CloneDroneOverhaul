@@ -8,7 +8,7 @@
 //  Copyright © 2018 Chris Nolet. All rights reserved.
 //
 
-using CDOverhaul;
+using CDOverhaul.Gameplay.QualityOfLife;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,66 +19,43 @@ namespace CDOverhaul.Credits
     {
         private static readonly HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
 
-        public Color OutlineColor
-        {
-            get => outlineColor;
-            set
-            {
-                outlineColor = value;
-                UpdateMaterialProperties();
-            }
-        }
-
-        public float OutlineWidth
-        {
-            get => outlineWidth;
-            set
-            {
-                outlineWidth = value;
-                UpdateMaterialProperties();
-            }
-        }
-
-        private Color outlineColor = Color.white;
-
-        private float outlineWidth = 10f;
-
         private readonly List<Mesh> bakeKeys = new List<Mesh>();
 
         private readonly List<List<Vector3>> bakeValues = new List<List<Vector3>>();
 
         private Renderer[] renderers;
-        private Material outlineMaskMaterial;
-        private Material outlineFillMaterial;
+        private static Material outlineMaskMaterial;
+        private static Material outlineFillMaterial;
 
         private void Awake()
         {
             // Cache renderers
             renderers = GetComponentsInChildren<Renderer>();
 
-            // Instantiate outline materials
-            outlineMaskMaterial = Instantiate(AssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetsPart.Part2));
-            outlineFillMaterial = Instantiate(AssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetsPart.Part2));
-
-            outlineMaskMaterial.name = "OutlineMask (Instance)";
-            outlineFillMaterial.name = "OutlineFill (Instance)";
+            if (outlineFillMaterial == null || outlineMaskMaterial == null)
+            {
+                outlineMaskMaterial = AssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetsPart.Part2);
+                outlineFillMaterial = AssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetsPart.Part2);
+                outlineMaskMaterial.name = "OutlineMask (Instance)";
+                outlineFillMaterial.name = "OutlineFill (Instance)";
+            }
 
             // Retrieve or generate smooth normals
             LoadSmoothNormals();
         }
 
-        private void OnDestroy()
+        /*private void OnDestroy()
         {
             Destroy(outlineFillMaterial);
             Destroy(outlineMaskMaterial);
-        }
-        
+        }*/
+
         private void OnEnable()
         {
             foreach (Renderer renderer in renderers)
             {
                 List<Material> materials = renderer.sharedMaterials.ToList();
-                if(!materials.Contains(outlineFillMaterial) && !materials.Contains(outlineFillMaterial))
+                if (!materials.Contains(outlineFillMaterial) && !materials.Contains(outlineFillMaterial))
                 {
                     materials.Add(outlineMaskMaterial);
                     materials.Add(outlineFillMaterial);
@@ -105,7 +82,7 @@ namespace CDOverhaul.Credits
             foreach (MeshFilter meshFilter in GetComponentsInChildren<MeshFilter>())
             {
                 // Skip if smooth normals have already been adopted
-                if (!registeredMeshes.Add(meshFilter.sharedMesh))
+                if (meshFilter == null || meshFilter.sharedMesh == null || !registeredMeshes.Add(meshFilter.sharedMesh))
                 {
                     continue;
                 }
@@ -145,36 +122,47 @@ namespace CDOverhaul.Credits
 
         private List<Vector3> SmoothNormals(Mesh mesh)
         {
-            // Group vertices by location
-            IEnumerable<IGrouping<Vector3, KeyValuePair<Vector3, int>>> groups = mesh.vertices.Select((vertex, index) => new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
+            if (mesh == null)
+            {
+                return new List<Vector3>();
+            }
 
             // Copy normals to a new list
             List<Vector3> smoothNormals = new List<Vector3>(mesh.normals);
 
-            // Average normals for grouped vertices
-            foreach (IGrouping<Vector3, KeyValuePair<Vector3, int>> group in groups)
+            try
             {
-                // Skip single vertices
-                if (group.Count() == 1)
+                // Group vertices by location
+                IEnumerable<IGrouping<Vector3, KeyValuePair<Vector3, int>>> groups = mesh.vertices.Select((vertex, index) => new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
+
+                // Average normals for grouped vertices
+                foreach (IGrouping<Vector3, KeyValuePair<Vector3, int>> group in groups)
                 {
-                    continue;
+                    // Skip single vertices
+                    if (group == null || group.Count() == 1)
+                    {
+                        continue;
+                    }
+
+                    // Calculate the average normal
+                    Vector3 smoothNormal = Vector3.zero;
+
+                    foreach (KeyValuePair<Vector3, int> pair in group)
+                    {
+                        smoothNormal += smoothNormals[pair.Value];
+                    }
+                    smoothNormal.Normalize();
+
+                    // Assign smooth normal to each vertex
+                    foreach (KeyValuePair<Vector3, int> pair in group)
+                    {
+                        smoothNormals[pair.Value] = smoothNormal;
+                    }
                 }
+            }
+            catch
+            {
 
-                // Calculate the average normal
-                Vector3 smoothNormal = Vector3.zero;
-
-                foreach (KeyValuePair<Vector3, int> pair in group)
-                {
-                    smoothNormal += smoothNormals[pair.Value];
-                }
-
-                smoothNormal.Normalize();
-
-                // Assign smooth normal to each vertex
-                foreach (KeyValuePair<Vector3, int> pair in group)
-                {
-                    smoothNormals[pair.Value] = smoothNormal;
-                }
             }
 
             return smoothNormals;
@@ -200,13 +188,18 @@ namespace CDOverhaul.Credits
             mesh.SetTriangles(mesh.triangles, mesh.subMeshCount - 1);
         }
 
-        private void UpdateMaterialProperties()
+        public static void UpdateMaterialProperties()
         {
-            // Apply properties according to mode
-            outlineFillMaterial.SetColor("_OutlineColor", outlineColor);
-            outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-            outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-            outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
+            if (outlineMaskMaterial != null)
+            {
+                outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+            }
+            if (outlineFillMaterial != null)
+            {
+                outlineFillMaterial.SetColor("_OutlineColor", LevelEditorSelectionSettingsPanel.OutlineColor);
+                outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+                outlineFillMaterial.SetFloat("_OutlineWidth", LevelEditorSelectionSettingsPanel.OutlineWidth);
+            }
         }
     }
 }

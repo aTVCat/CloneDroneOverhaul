@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Workshop
 {
-    // Todo: organize all things
+    // Todo: Organize all things
     public static class OverhaulSteamBrowser
     {
         public static readonly AppId_t AppID = new AppId_t(597170U);
@@ -244,7 +244,6 @@ namespace CDOverhaul.Workshop
             OverhaulRequestProgressInfo.SetProgress(progress, GetItemDownloadProgress(id));
         }
 
-        // todo: handle steamapi call
         public static void SubscribeToItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
         {
             if (!m_DownloadingItems.Contains(id))

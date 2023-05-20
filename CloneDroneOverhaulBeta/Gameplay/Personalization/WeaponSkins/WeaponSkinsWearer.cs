@@ -11,12 +11,6 @@ namespace CDOverhaul.Gameplay
 {
     public class WeaponSkinsWearer : OverhaulCharacterExpansion
     {
-        /// <summary>
-        /// This VFX appears when user change skins
-        /// Todo: Make better VFX
-        /// </summary>
-        public const bool AllowSwitchSkinVFX = false;
-
         private WeaponSkinsController m_Controller;
 
         public OverhaulModdedPlayerInfo PlayerInformation
@@ -366,7 +360,7 @@ namespace CDOverhaul.Gameplay
             {
                 skins = controller.Interface.GetSkinItems(Owner);
             }
-            if (skins == null)
+            if (skins.IsNullOrEmpty())
             {
                 return;
             }
@@ -376,7 +370,7 @@ namespace CDOverhaul.Gameplay
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
                 {
-                    if (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
+                    if (info == null || info.Model == null || (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
                     {
                         continue;
                     }
@@ -410,7 +404,8 @@ namespace CDOverhaul.Gameplay
                 }
             }
 
-            if (AllowSwitchSkinVFX && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
+            // Todo: Make better VFX
+            if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
             {
                 WeaponSkinsController.RobotToPlayAnimationOn = null;
                 WeaponModel model = Owner.GetEquippedWeaponModel();

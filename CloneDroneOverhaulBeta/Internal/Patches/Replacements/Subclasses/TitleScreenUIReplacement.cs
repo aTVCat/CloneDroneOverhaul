@@ -17,6 +17,9 @@ namespace CDOverhaul.Patches
         private Text m_BugReportText;
         private Text m_AdditContentText;
 
+        private Vector3 m_OriginalAchievementsNewHintPosition;
+        private Transform m_AchievementsNewHint;
+
         public override void Replace()
         {
             base.Replace();
@@ -36,6 +39,16 @@ namespace CDOverhaul.Patches
                 return;
             }
             m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -85f, 0);
+
+            m_AchievementsNewHint = TransformUtils.FindChildRecursive(target.transform, "AchievementsNewHint");
+            if (m_AchievementsNewHint == null)
+            {
+                SuccessfullyPatched = false;
+                return;
+            }
+
+            m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
+            m_AchievementsNewHint.localPosition = new Vector3(70f, -185f, 0f);
 
             GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
@@ -91,6 +104,7 @@ namespace CDOverhaul.Patches
                 m_ButtonsTransform.localScale = Vector3.one;
                 m_ButtonsTransform.localPosition = new Vector3(0, -195.5f, 0);
                 m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -87.8241f, 0);
+                m_AchievementsNewHint.localPosition = m_OriginalAchievementsNewHintPosition;
 
                 if (m_SpawnedPanel != null)
                 {

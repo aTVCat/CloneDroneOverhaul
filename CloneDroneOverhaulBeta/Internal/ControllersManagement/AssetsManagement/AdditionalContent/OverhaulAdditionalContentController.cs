@@ -5,6 +5,12 @@ using System.IO;
 
 namespace CDOverhaul.NetworkAssets.AdditionalContent
 {
+    /// <summary>
+    /// Todo: This system is going to have completely reworked.
+    /// <bt/>- Add support for loading all the stuff simultaneously.
+    /// <bt/>- Support for loading stuff from any folder and even steam workshop.
+    /// <br/>- Support for handling custom .dll files.
+    /// </summary>
     public class OverhaulAdditionalContentController : OverhaulController
     {
         public const string ContentReloadedEventString = "OverhaulContentReloaded";
@@ -74,7 +80,6 @@ namespace CDOverhaul.NetworkAssets.AdditionalContent
             }
         }
 
-        // todo: expand functionality, add coroutines
         public void ReloadContent()
         {
             StaticCoroutineRunner.StartStaticCoroutine(reloadContentCoroutine());

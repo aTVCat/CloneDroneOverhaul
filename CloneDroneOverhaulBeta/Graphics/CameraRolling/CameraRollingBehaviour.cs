@@ -41,8 +41,8 @@ namespace CDOverhaul.Graphics
         private float m_CursorMovementVelocityX;
         private float m_CursorMovementVelocityY;
 
-        public bool CanBeControlled => !IsDisposedOrDestroyed() && m_Owner != null && m_PlayerCamera != null && m_SettingsManager != null;
-        public bool ForceZero => !EnableCameraRolling || !CanBeControlled || Cursor.visible || !m_Owner.IsMainPlayer() || m_Owner.IsAimingBow();
+        public bool CanBeControlled => !IsDisposedOrDestroyed() /*&& PhotoManager.Instance != null ? PhotoManager.Instance.IsInPhotoMode() : true */&& m_Owner != null && m_PlayerCamera != null && m_SettingsManager != null;
+        public bool ForceZero => !EnableCameraRolling || !CanBeControlled || Cursor.visible || !m_Owner.IsMainPlayer() || m_Owner.IsAimingBow() || !m_Owner.IsPlayerInputEnabled();
 
         protected override void OnDisposed()
         {

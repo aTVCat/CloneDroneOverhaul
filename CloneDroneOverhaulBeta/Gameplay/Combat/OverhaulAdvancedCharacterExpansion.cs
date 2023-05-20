@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay.Combat
 {
-    public class CombatOverhaulMechanic : OverhaulCharacterExpansion
+    public class OverhaulAdvancedCharacterExpansion : OverhaulCharacterExpansion
     {
         /// <summary>
         /// The speed of every player in the game

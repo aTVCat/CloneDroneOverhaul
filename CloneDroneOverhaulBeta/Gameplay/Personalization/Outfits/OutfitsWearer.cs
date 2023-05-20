@@ -12,9 +12,11 @@ namespace CDOverhaul.Gameplay.Outfits
         public const string IDInHashtable = "Outfits.Equipped";
 
         private OverhaulModdedPlayerInfo m_Info;
-        public bool HasPlayerInfo => m_Info != null;
 
         private Dictionary<string, GameObject> m_SpawnedAccessories;
+
+        private bool m_HasAddedEventListeners;
+        public bool HasPlayerInfo => m_Info != null;
 
         public override void Start()
         {
@@ -24,6 +26,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
             m_Info = IsOwnerMainPlayer() ? OverhaulModdedPlayerInfo.GetLocalPlayerInfo() : OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            m_HasAddedEventListeners = true;
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -39,10 +42,15 @@ namespace CDOverhaul.Gameplay.Outfits
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            DestroyAccessories();
+
             m_Info = null;
-            m_SpawnedAccessories.Clear();
             m_SpawnedAccessories = null;
+            if (m_HasAddedEventListeners)
+            {
+                m_HasAddedEventListeners = false;
+                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            }
         }
 
         private void onGetData(Hashtable table)

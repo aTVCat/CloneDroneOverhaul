@@ -46,10 +46,11 @@ namespace CDOverhaul.Gameplay
             base.Initialize();
             Core = this;
 
-            _ = OverhaulController.AddController<WeaponSkinsController>();
-            _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
+            _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
+            _ = OverhaulController.AddController<WeaponSkinsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
+
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
 
