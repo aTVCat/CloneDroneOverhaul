@@ -585,14 +585,17 @@ namespace CDOverhaul.Gameplay
                     ModdedObject m = spawnedModel.GetComponent<ModdedObject>();
                     Transform bowStringUpper = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringUpper");
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
-                    if (bowStringLower != null && bowStringUpper != null)
+                    if (bowStringLower != null && bowStringLower.childCount != 0 && bowStringUpper != null && bowStringUpper.childCount != 0)
                     {
+                        Transform moddedBowString0 = m != null ? m.GetObject<Transform>(0) : null;
+                        Transform moddedBowString1 = m != null ? m.GetObject<Transform>(1) : null;
+
                         bowStringLower.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         if ((item as WeaponSkinItemDefinitionV2).UseVanillaBowStrings)
                         {
-                            if (m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).gameObject.SetActive(false);
-                            if (m != null && m.GetObject<Transform>(1) != null) m.GetObject<Transform>(1).gameObject.SetActive(false);
+                            if (moddedBowString0 != null) moddedBowString0.gameObject.SetActive(false);
+                            if (moddedBowString1 != null) moddedBowString1.gameObject.SetActive(false);
                             bowStringLower.GetChild(0).gameObject.SetActive(true);
                             bowStringLower.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
                             bowStringUpper.GetChild(0).gameObject.SetActive(true);
@@ -600,8 +603,8 @@ namespace CDOverhaul.Gameplay
                         }
                         else
                         {
-                            if (m != null && m.GetObject<Transform>(0) != null) m.GetObject<Transform>(0).SetParent(bowStringUpper, true);
-                            if (m != null && m.GetObject<Transform>(1) != null) m.GetObject<Transform>(1).SetParent(bowStringLower, true);
+                            if (moddedBowString0 != null) moddedBowString0.SetParent(bowStringUpper, true);
+                            if (moddedBowString1 != null) moddedBowString1.SetParent(bowStringLower, true);
                         }
                     }
                 }
