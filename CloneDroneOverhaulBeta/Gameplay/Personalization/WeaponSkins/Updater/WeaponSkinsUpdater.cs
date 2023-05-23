@@ -205,6 +205,7 @@ namespace CDOverhaul.Gameplay
             if (!m_SkinsWaitingABToDownload.ContainsKey(assetBundle))
             {
                 m_SkinsWaitingABToDownload.Add(assetBundle, new List<WeaponSkinsImportedItemDefinition>() { importedSkin });
+
                 OverhaulNetworkDownloadHandler h = null;
                 h = OverhaulNetworkController.DownloadAndSaveFile("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
                 {
@@ -213,10 +214,11 @@ namespace CDOverhaul.Gameplay
                     {
                         foreach (WeaponSkinsImportedItemDefinition def in m_SkinsWaitingABToDownload[assetBundle])
                         {
+                            if(AssetsController.HasAssetBundle(assetBundle))
                             c.ImportSkin(def, assetBundle);
                         }
                     }
-                    m_SkinsWaitingABToDownload.Remove(assetBundle);
+                    // m_SkinsWaitingABToDownload.Remove(assetBundle);
                 });
             }
             else

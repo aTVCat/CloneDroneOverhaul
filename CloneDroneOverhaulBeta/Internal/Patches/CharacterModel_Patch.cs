@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            ExclusiveRolesController.TryApplyExlusiveColorOnRobot(__instance.GetOwner(), newColor, out Color toReplace);
+            ExclusiveColorsController.TryApplyExclusiveColorOnRobot(__instance.GetOwner(), newColor, out Color toReplace);
             newColor = toReplace;
         }
 

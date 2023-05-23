@@ -9,10 +9,11 @@ namespace CDOverhaul
 
         public static void Initialize()
         {
-            if (!OverhaulSessionController.GetKey<bool>("HasReadChangelogs"))
+            if (!OverhaulSessionController.GetKey<bool>("HasAddedChangelogs"))
             {
-                OverhaulSessionController.SetKey("HasReadChangelogs", true);
+                OverhaulSessionController.SetKey("HasAddedChangelogs", true);
 
+                AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 54), "0.2.10.54", new string[] { }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 44), "0.2.10.44", new string[] { "20230507133358_1.jpg", "20230507133331_1.jpg" }));
             }
         }

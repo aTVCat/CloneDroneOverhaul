@@ -20,11 +20,6 @@ namespace CDOverhaul
             return !OverhaulVersion.IsUpdate2Hotfix && SupportsPersonalization();
         }
 
-        public static bool SupportsCombatOverhaul()
-        {
-            return !OverhaulVersion.IsUpdate2Hotfix && !GameModeManager.IsMultiplayer();
-        }
-
         public static bool SupportsBowSkins()
         {
             bool isEnabled = OverhaulMod.IsModEnabled(GunModID);

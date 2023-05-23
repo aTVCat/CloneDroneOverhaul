@@ -325,22 +325,21 @@ namespace CDOverhaul.Gameplay
         private void spawnSkins()
         {
             m_WaitingToSpawnSkins = false;
-            if (!WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
-            {
-                return;
-            }
-
             bool isMultiplayer = GameModeManager.IsMultiplayer();
 
+            if (Owner == null || !WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
+            {
+                return;
+            }
             SetDefaultModelsActive();
-            if (!OverhaulGamemodeManager.SupportsPersonalization())
+
+            // Don't spawn skins if it is an enemy
+            if (!OverhaulGamemodeManager.SupportsPersonalization() || (!IsOwnerPlayer() && !Owner.IsClone() && !WeaponSkinsController.AllowEnemiesWearSkins))
             {
                 return;
             }
-            if (!IsOwnerPlayer() && !Owner.IsClone() && !WeaponSkinsController.AllowEnemiesWearSkins)
-            {
-                return;
-            }
+
+            // Don't spawn skins if multiplayer data isn't here
             if (isMultiplayer && (PlayerInformation == null || !PlayerInformation.HasReceivedData || string.IsNullOrEmpty(PlayerInformation.GetData("ID"))))
             {
                 return;
@@ -365,7 +364,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if (!SpawnedSkins.IsNullOrEmpty())
+            if (!SpawnedSkins.IsNullOrEmpty()) // Todo: Rewrite skin instances removal and spawning code. It is a little bit garbage
             {
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
@@ -382,8 +381,10 @@ namespace CDOverhaul.Gameplay
                         ModdedObject m = info.Model.GetComponent<ModdedObject>();
                         if (m != null)
                         {
-                            Destroy(m.GetObject<Transform>(0).gameObject);
-                            Destroy(m.GetObject<Transform>(1).gameObject);
+                            Transform t0 = m.GetObject<Transform>(0);
+                            Transform t1 = m.GetObject<Transform>(1);
+                            if (t0 != null) Destroy(t0.gameObject);
+                            if (t1 != null) Destroy(t1.gameObject);
                         }
                     }
                     info.DestroyModel();
@@ -398,7 +399,7 @@ namespace CDOverhaul.Gameplay
 
             foreach (IWeaponSkinItemDefinition skin in skins)
             {
-                if (!HasSpawnedSkin(skin))
+                if (skin != null && !HasSpawnedSkin(skin))
                 {
                     SpawnSkin(skin);
                 }

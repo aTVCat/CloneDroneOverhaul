@@ -446,7 +446,7 @@
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
     <Compile Include="Graphics\Environment\Mindspace\MindspaceOverhaulController.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusivePlayerInfo.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\WeaponSkinItemDefinitionV2.cs" />
@@ -526,7 +526,7 @@
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugCommands.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugger.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveRolesController.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusivityController.cs" />
     <Compile Include="Internal\Debug\Console\IConsoleCommandReceiver.cs" />
     <Compile Include="Internal\Code\OverhaulExceptions.cs" />

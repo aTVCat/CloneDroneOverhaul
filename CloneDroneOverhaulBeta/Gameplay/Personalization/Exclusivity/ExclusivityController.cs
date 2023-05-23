@@ -28,7 +28,7 @@ namespace CDOverhaul
             _playfabId = GetLocalPlayfabID();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
-            ExclusiveRolesController.OnGotPlayfabID(_playfabId);
+            ExclusiveColorsController.OnGotPlayfabID(_playfabId);
         }
         private static void scheduledOnLogin()
         {
@@ -37,7 +37,7 @@ namespace CDOverhaul
                 _playfabId = GetLocalPlayfabID();
             }
 
-            ExclusiveRolesController.OnGotPlayfabID(_playfabId);
+            ExclusiveColorsController.OnGotPlayfabID(_playfabId);
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
         }
 
