@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CDOverhaul.Gameplay.Combat;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ namespace CDOverhaul.HUD
         public const string SettingTranslationPrefix = "PrefE_";
         public const string SettingDescTranslationPrefix = "PrefED_";
         public const string SettingButtonTranslationPrefix = "PrefEB_";
+
+        public static readonly Color DefaultBarColor = new Color(0.25f, 0.4375f, 1f, 0.5f);
 
         private ModdedObject m_CategoryEntryPrefab;
         private Transform m_CategoryContainer;
@@ -123,6 +126,9 @@ namespace CDOverhaul.HUD
 
             ParametersMenuCategoryButton.SetSelectedSpecific("Graphics");
             m_CategoriesScrollRect.horizontalNormalizedPosition = 1f;
+
+            MyModdedObject.GetObject<Outline>(20).effectColor = OverhaulCombatState.GetThemeUIColor(DefaultBarColor);
+            MyModdedObject.GetObject<Outline>(21).effectColor = OverhaulCombatState.GetThemeUIColor(DefaultBarColor);
         }
 
         public void Hide()
@@ -162,6 +168,7 @@ namespace CDOverhaul.HUD
                 categoryEntry.gameObject.SetActive(true);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + category);
                 categoryEntry.GetObject<UnityEngine.UI.Image>(1).sprite = SettingsController.GetSpriteForCategory(category);
+                categoryEntry.GetObject<Outline>(2).effectColor = OverhaulCombatState.GetThemeUIColor(OverhaulParametersMenu.DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
             }
         }

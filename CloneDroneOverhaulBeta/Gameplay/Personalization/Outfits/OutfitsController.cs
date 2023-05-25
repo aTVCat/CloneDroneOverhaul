@@ -101,7 +101,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
 
             AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryType, accessoryBodyPart);
-            if (!string.IsNullOrEmpty(assetName)) item.Prefab = AssetsController.GetAsset(assetName, OverhaulAssetsPart.Accessories);
+            if (!string.IsNullOrEmpty(assetName)) item.Prefab = OverhaulAssetsController.GetAsset(assetName, OverhaulAssetPart.Accessories);
             item.SetUpOffsets();
             AllAccessories.Add(item);
         }

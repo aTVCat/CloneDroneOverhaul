@@ -8,24 +8,44 @@ namespace CDOverhaul
 {
     public static class SettingsController
     {
+        /// <summary>
+        /// This event is sent if any setting value has changed
+        /// </summary>
         public const string SettingChangedEventString = "OnSettingChanged";
 
-        private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
-        private static readonly Dictionary<string, SettingDescription> m_SettingDescriptions = new Dictionary<string, SettingDescription>();
-        private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins" };
-
-        private static readonly Dictionary<string, Sprite> m_CachedIcons = new Dictionary<string, Sprite>();
-
+        /// <summary>
+        /// If the default value of a setting equals this one, the setting will be shown as button in UI
+        /// </summary>
         public const long SettingEventDispatcherFlag = 10000000000000L;
 
-        public static OverhaulParametersMenu HUD;
+        /// <summary>
+        /// All existing settings
+        /// </summary>
+        private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
+        private static readonly Dictionary<string, SettingDescription> m_SettingDescriptions = new Dictionary<string, SettingDescription>();
 
-        private static bool _hasAddedSettings;
+        /// <summary>
+        /// Categories, sections and settings to be hidden in settings menu
+        /// </summary>
+        private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins" };
+
+        /// <summary>
+        /// Loaded images from Assets/Settings/Ico directory
+        /// </summary>
+        private static readonly Dictionary<string, Sprite> m_CachedCategoryIcons = new Dictionary<string, Sprite>();
+        private static Sprite m_UnknownCategoryIcon;
+
+        /// <summary>
+        /// UI instance
+        /// </summary>
+        public static OverhaulParametersMenu HUD;
 
         internal static void Initialize()
         {
-            if (!_hasAddedSettings)
+            if (!OverhaulSessionController.GetKey<bool>("HasAddedOverhaulSettings"))
             {
+                OverhaulSessionController.SetKey("HasAddedOverhaulSettings", true);
+
                 List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
                 foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
                 {
@@ -66,7 +86,7 @@ namespace CDOverhaul
                 {
                     foreach (OverhaulSettingAttribute neededAttribute in toParent)
                     {
-                        ParentSetting(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                        SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
                     }
                 }, 0.1f);
 
@@ -116,32 +136,11 @@ namespace CDOverhaul
                     }
                 }, 1f);
 #endif
-
-                MakeSettingDependingOn("Optimization.Unloading.Clear cache on level spawn", "Optimization.Unloading.Clear cache fully", true);
-
-                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom iterations", true);
-                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom intensity", true);
-                MakeSettingDependingOn("Graphics.Post effects.Enable bloom", "Graphics.Post effects.Bloom Threshold", true);
-                MakeSettingDependingOn("Graphics.Shaders.Vignette", "Graphics.Shaders.Vignette Intensity", true);
-                MakeSettingDependingOn("Graphics.Shaders.Chromatic Aberration", "Graphics.Shaders.Chromatic Aberration intensity", true);
-                MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Intensity", true);
-                MakeSettingDependingOn("Graphics.Amplify Occlusion.Enable", "Graphics.Amplify Occlusion.Sample Count", true);
-
-                MakeSettingDependingOn("Game interface.Gameplay.New pause menu design", "Game interface.Gameplay.Zoom camera", true);
-                MakeSettingDependingOn("Game interface.Gameplay.New energy bar design", "Game interface.Gameplay.Hide energy bar when full", true);
-
-                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt when one legged", true);
-                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt when jumping", true);
-                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Lock rotation by X", true);
-                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Lock rotation by Z", true);
-                MakeSettingDependingOn("Graphics.Camera.Rolling", "Graphics.Camera.Tilt multiplier", true);
-
-                _hasAddedSettings = true;
             }
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
         }
 
-        internal static void PostInitialize()
+        internal static void CreateHUD()
         {
             OverhaulCanvasController h = OverhaulMod.Core.CanvasController;
             HUD = h.AddHUD<OverhaulParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
@@ -176,7 +175,7 @@ namespace CDOverhaul
             }
         }
 
-        public static void MakeSettingDependingOn(in string toDepend, in string targetSetting, in object targetValue)
+        public static void SetSettingDependency(in string toDepend, in string targetSetting, in object targetValue)
         {
             SettingInfo info = GetSetting(targetSetting);
             SettingInfo info2 = GetSetting(toDepend);
@@ -189,11 +188,12 @@ namespace CDOverhaul
             info.ValueToUnlock = targetValue;
         }
 
-        public static void ParentSetting(in string settingPath, in string targetSettingPath)
+        public static void SetSettingParent(in string settingPath, in string targetSettingPath)
         {
             SettingInfo s1 = GetSetting(settingPath, true);
             SettingInfo s2 = GetSetting(targetSettingPath, true);
             s2.ParentSettingToThis(s1);
+            SetSettingDependency(targetSettingPath, settingPath, true);
         }
 
         public static Sprite GetSpriteForCategory(in string categoryName)
@@ -202,20 +202,51 @@ namespace CDOverhaul
             bool exists = File.Exists(path);
             if (!exists)
             {
-                return null;
+                path = OverhaulMod.Core.ModDirectory + "Assets/Settings/Ico/UnknownCategory.png";
+                if (!File.Exists(path))
+                {
+                    return null;
+                }
+                else
+                {
+                    if (m_UnknownCategoryIcon != null)
+                    {
+                        return m_UnknownCategoryIcon;
+                    }
+
+                    Texture2D texture1 = new Texture2D(1, 1)
+                    {
+                        filterMode = FilterMode.Point
+                    };
+                    texture1.LoadImage(File.ReadAllBytes(path), false);
+                    texture1.Apply();
+
+                    m_UnknownCategoryIcon = texture1.FastSpriteCreate();
+                    return m_UnknownCategoryIcon;
+                }
             }
 
-            if (m_CachedIcons.ContainsKey(categoryName))
+            if (m_CachedCategoryIcons.ContainsKey(categoryName))
             {
-                return m_CachedIcons[categoryName];
+                return m_CachedCategoryIcons[categoryName];
             }
 
-            Texture2D texture = OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(path);
-            texture.filterMode = FilterMode.Point;
-            texture.Apply();
-            Sprite sprite = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(texture);
-            m_CachedIcons.Add(categoryName, sprite);
-            return sprite;
+            Texture2D texture = new Texture2D(1, 1);
+            if (File.Exists(path))
+            {
+                byte[] content = File.ReadAllBytes(path);
+                if (!content.IsNullOrEmpty())
+                {
+                    texture.filterMode = FilterMode.Point;
+                    texture.LoadImage(content, false);
+                    texture.Apply();
+
+                    Sprite sprite = texture.FastSpriteCreate();
+                    m_CachedCategoryIcons.Add(categoryName, sprite);
+                    return sprite;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -332,10 +363,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static bool IsEntryHidden(in string path)
         {
-            if (OverhaulVersion.IsDebugBuild)
-            {
-                return false;
-            }
+            if (OverhaulVersion.IsDebugBuild) return false;
 
             bool isCategory = !path.Contains(".");
             string path1 = null;

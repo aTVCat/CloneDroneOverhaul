@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CDOverhaul
 {
     /// <summary>
-    /// A simplified interaction with <see cref="DataRepository"/>
+    /// A simplified interaction with <see cref="DataRepository"/><br>Todo: Cleanup code</br>
     /// </summary>
     internal static class OverhaulDataController
     {

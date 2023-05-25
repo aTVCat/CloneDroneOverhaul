@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Localization;
-using CDOverhaul.NetworkAssets.AdditionalContent;
 using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +33,8 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            m_CanvasFromPrefab = Instantiate(AssetsController.GetAsset(OverhaulHUDName, OverhaulAssetsPart.Part1));
+            m_CanvasFromPrefab = Instantiate(OverhaulAssetsController.GetAsset(OverhaulHUDName, OverhaulAssetPart.Part1));
+
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
@@ -59,7 +59,6 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
-            _ = AddHUD<OverhaulAdditionalContentUI>(HUDModdedObject.GetObject<ModdedObject>(14));
             _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
             _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
             _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));

@@ -16,8 +16,8 @@ namespace CDOverhaul
             OverhaulSessionController.SetKey("HasInitialized", true);
 
             HeavyRobotFootsteps = new AudioClipDefinition[2];
-            HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetsPart.Sounds));
-            HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(AssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetsPart.Sounds));
+            HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetPart.Sounds));
+            HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetPart.Sounds));
         }
     }
 }

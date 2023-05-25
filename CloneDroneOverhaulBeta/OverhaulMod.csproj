@@ -118,9 +118,8 @@
     <Reference Include="MoonSharp.Interpreter">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ExternalDLLs\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Pathfinding.ClipperLib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.ClipperLib.dll</HintPath>
@@ -437,12 +436,10 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Robots\RobotEffectsBehaviour.cs" />
-    <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUIEntry.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
-    <Compile Include="HUD\AdditionalContent\OverhaulAdditionalContentUI.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
     <Compile Include="Graphics\Environment\Mindspace\MindspaceOverhaulController.cs" />
@@ -469,11 +466,9 @@
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuSkinBehaviour.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
-    <Compile Include="Internal\ControllersManagement\AssetsManagement\AdditionalContent\OverhaulAdditionalContentUserData.cs" />
-    <Compile Include="Internal\ControllersManagement\AssetsManagement\AdditionalContent\OverhaulAdditionalContentController.cs" />
-    <Compile Include="Internal\ControllersManagement\AssetsManagement\AdditionalContent\OverhaulAdditionalContentPackInfo.cs" />
     <Compile Include="Internal\ControllersManagement\AssetsManagement\Network\OverhaulNetworkDownloadHandler.cs" />
     <Compile Include="Internal\ControllersManagement\AssetsManagement\Network\OverhaulNetworkController.cs" />
+    <Compile Include="Internal\ControllersManagement\OverhaulDisposable.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulStaticEditor.cs" />
     <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditorTranslationField.cs" />
@@ -516,7 +511,7 @@
     <Compile Include="Internal\ControllersManagement\OverhaulBehaviour.cs" />
     <Compile Include="Internal\Settings\Subclasses\SettingDropdownParameters.cs" />
     <Compile Include="Internal\Settings\Subclasses\SettingSliderParameters.cs" />
-    <Compile Include="Internal\Code\OverhaulExtentions.cs" />
+    <Compile Include="Internal\Code\OverhaulExtensions.cs" />
     <Compile Include="Internal\OverhaulCompatibilityChecker.cs" />
     <Compile Include="Internal\OverhaulSessionController.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\SettingsMenuReplacement.cs" />
@@ -524,7 +519,6 @@
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulCharacterExpansion.cs" />
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
-    <Compile Include="Internal\Debug\OverhaulDebugCommands.cs" />
     <Compile Include="Internal\Debug\OverhaulDebugger.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusivityController.cs" />
@@ -550,8 +544,8 @@
     <Compile Include="Internal\Settings\Setting.cs" />
     <Compile Include="Internal\Settings\Subclasses\SettingAttribute.cs" />
     <Compile Include="Internal\Settings\SettingsController.cs" />
-    <Compile Include="Internal\ControllersManagement\AssetsManagement\AssetController.cs" />
-    <Compile Include="Internal\ControllersManagement\AssetsManagement\OverhaulAssetsPart.cs" />
+    <Compile Include="Internal\ControllersManagement\AssetsManagement\Local\OverhaulAssetsController.cs" />
+    <Compile Include="Internal\ControllersManagement\AssetsManagement\Local\OverhaulAssetPart.cs" />
     <Compile Include="Internal\OverhaulCanvasController.cs" />
     <Compile Include="Internal\ControllersManagement\DataManagement\ModDataContainerBase.cs" />
     <Compile Include="Internal\ControllersManagement\DataManagement\ModDataController.cs" />
@@ -568,7 +562,6 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="Internal\ControllersManagement\EventsManagement\OverhaulEvent.cs" />
-    <Compile Include="Internal\Code\OverhaulUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

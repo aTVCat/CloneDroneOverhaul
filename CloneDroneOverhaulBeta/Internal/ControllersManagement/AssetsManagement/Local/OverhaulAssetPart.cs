@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul
 {
-    public enum OverhaulAssetsPart
+    public enum OverhaulAssetPart
     {
         None,
         Part1,
@@ -10,8 +10,6 @@
         Objects,
         Sounds,
         Main,
-        Arena_Update,
-        Combat_Update,
-        Skyboxes,
+        Combat_Update
     }
 }

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 
@@ -11,10 +12,11 @@ namespace CDOverhaul
 {
     public static class OverhaulLocalizationController
     {
+        public const string LocalizationFileName = "Localization";
+
         private static bool? m_Error;
         public static bool Error => !m_Error.HasValue || m_Error.Value || m_Data == null;
 
-        public const string LocalizationFileName = "Localization";
         private static OverhaulLocalizationData m_Data;
         public static OverhaulLocalizationData Localization => !m_Error.HasValue || m_Error.Value ? null : m_Data;
 
@@ -32,13 +34,21 @@ namespace CDOverhaul
         private static bool m_TryingToLocalizeHUD;
 
         private static bool m_EventIsScheduled;
+        private static bool m_IsSavingFile;
+
+        private static FileStream m_FileStream;
+        private static long m_FileStreamEndPosition;
 
         public static void Initialize()
         {
             m_EventIsScheduled = false;
-            OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
             m_ListOfTexts.Clear();
-            m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
+
+            OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
+            if (controller != null)
+            {
+                m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
+            }
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
@@ -75,28 +85,50 @@ namespace CDOverhaul
 
             m_Error = false;
             m_Data = JsonConvert.DeserializeObject<OverhaulLocalizationData>(task.Result);
-            if (m_Data != null)
-            {
-                m_Data.RepairFields();
-            }
+            if (m_Data != null) m_Data.RepairFields();
+            task.Dispose();
 
             TryLocalizeHUD();
             ScheduleEvent();
         }
 
-        public static void SaveData()
+        public static async void SaveData()
         {
-            if (m_Data != null && m_Error.HasValue && !m_Error.Value)
+            if (m_Data != null && m_Error.HasValue && !m_Error.Value && !m_IsSavingFile)
             {
                 m_Data.SavedInVersion = OverhaulVersion.ModVersion;
-                File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/" + OverhaulLocalizationController.LocalizationFileName + ".json",
-                 Newtonsoft.Json.JsonConvert.SerializeObject(m_Data, Newtonsoft.Json.Formatting.None, DataRepository.CreateSettings()));
+                m_IsSavingFile = true;
+
+                if (OverhaulLoadingScreen.Instance != null)
+                {
+                    OverhaulLoadingScreen.Instance.SetScreenActive(true);
+                    OverhaulLoadingScreen.Instance.SetScreenFill(0f);
+                    OverhaulLoadingScreen.Instance.SetScreenText("Saving localization file...");
+                }
+
+                string content = Newtonsoft.Json.JsonConvert.SerializeObject(m_Data, Newtonsoft.Json.Formatting.None, DataRepository.CreateSettings());
+                byte[] byteArray = Encoding.UTF8.GetBytes(content);
+
+                m_FileStreamEndPosition = byteArray.LongLength;
+                m_FileStream = File.OpenWrite(OverhaulMod.Core.ModDirectory + "Assets/" + OverhaulLocalizationController.LocalizationFileName + ".json");
+                await m_FileStream.WriteAsync(byteArray, 0, byteArray.Length);
+                m_FileStream.Close();
+                m_FileStream = null;
+                m_FileStreamEndPosition = 0L;
+
+                if (OverhaulLoadingScreen.Instance != null)
+                {
+                    OverhaulLoadingScreen.Instance.SetScreenActive(false);
+                }
+
+                OverhaulLocalizationController.TryLocalizeHUD();
+                m_IsSavingFile = false;
             }
         }
 
         public static void ScheduleEvent()
         {
-            if (m_EventIsScheduled)
+            if (m_EventIsScheduled || DelegateScheduler.Instance == null)
             {
                 return;
             }
@@ -144,6 +176,14 @@ namespace CDOverhaul
 
             m_TryingToLocalizeHUD = false;
             yield break;
+        }
+
+        public static void UpdateLoadingScreen()
+        {
+            if (OverhaulLoadingScreen.Instance != null && OverhaulLoadingScreen.Instance.gameObject.activeSelf && m_FileStream != null && m_FileStreamEndPosition != 0L)
+            {
+                OverhaulLoadingScreen.Instance.SetScreenFill(m_FileStream.Position / (float)m_FileStreamEndPosition);
+            }
         }
     }
 }

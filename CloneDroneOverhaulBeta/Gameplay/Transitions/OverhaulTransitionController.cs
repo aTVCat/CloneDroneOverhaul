@@ -11,7 +11,7 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            RectTransform rectT = AssetsController.GetAsset("LoadingScreen", OverhaulAssetsPart.Main).GetComponent<RectTransform>();
+            RectTransform rectT = OverhaulAssetsController.GetAsset("LoadingScreen", OverhaulAssetPart.Main).GetComponent<RectTransform>();
             SceneTransitionManager.Instance.SceneTransitionCoverScreen = rectT;
         }
 

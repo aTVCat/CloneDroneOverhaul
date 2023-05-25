@@ -4,7 +4,6 @@ using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
-using CDOverhaul.NetworkAssets.AdditionalContent;
 using CDOverhaul.Patches;
 using System;
 using System.IO;
@@ -75,7 +74,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<AutoBuild>();
             _ = OverhaulController.AddController<LevelEditorFixes>();
 
-            SettingsController.PostInitialize();
+            SettingsController.CreateHUD();
             OverhaulDebugger.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
@@ -89,8 +88,6 @@ namespace CDOverhaul
             }
 
             ReplacementBase.CreateReplacements();
-
-            if (!OverhaulVersion.IsUpdate2Hotfix) _ = OverhaulController.AddController<OverhaulAdditionalContentController>();
         }
 
         private void OnDestroy()
@@ -98,6 +95,12 @@ namespace CDOverhaul
             CanvasController = null;
             OverhaulMod.Core = null;
             ReplacementBase.CancelEverything();
+        }
+
+        private void Update()
+        {
+            OverhaulLocalizationController.UpdateLoadingScreen();
+            CameraRollingBehaviour.UpdateViewBobbing();
         }
 
         public static string ReadTextFile(string filePath)

@@ -172,12 +172,12 @@ namespace CDOverhaul.Gameplay
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
-                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
-                if (assetBundle != AssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
+                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
+                if (assetBundle != OverhaulAssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
                 {
                     m_CustomAssetBundlesWithSkins.Add(assetBundle);
                 }
-                if (!AssetsController.HasAssetBundle(assetBundle))
+                if (!OverhaulAssetsController.DoesAssetBundleExist(assetBundle))
                 {
                     WeaponSkinsUpdater.DownloadAssetBundleThenAddSkin(customSkin, assetBundle);
                     return;
@@ -245,13 +245,13 @@ namespace CDOverhaul.Gameplay
             string singleplayerFireModel = null,
             string multiplayerNormalModel = null,
             string multiplayerFireModel = null,
-            string assetBundle = AssetsController.ModAssetBundle_Skins)
+            string assetBundle = OverhaulAssetsController.ModAssetBundle_Skins)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
-            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
-            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
-            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
-            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(AssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
+            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
             skin.AuthorDiscord = author;
         }
 
@@ -380,7 +380,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
 
                 CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent");
-                PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(AssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetsPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
+                PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(OverhaulAssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
                 ReImportCustomSkins();
 
                 return;
@@ -389,11 +389,11 @@ namespace CDOverhaul.Gameplay
                     new Vector3(0, 270, 270),
                     new Vector3(0.55f, 0.55f, 0.55f));
                 IWeaponSkinItemDefinition swordDetailedSkin = Interface.NewSkinItem(WeaponType.Sword, "Detailed", ItemFilter.None);
-                swordDetailedSkin.SetModel(AssetsController.GetAsset("SwordSkinDetailedOne", OverhaulAssetsPart.WeaponSkins),
+                swordDetailedSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDetailedOne", OverhaulAssetPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     false,
                     false); // Normal singleplayer model
-                swordDetailedSkin.SetModel(AssetsController.GetAsset("SwordSkinDetailedOne_Fire", OverhaulAssetsPart.WeaponSkins),
+                swordDetailedSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDetailedOne_Fire", OverhaulAssetPart.WeaponSkins),
                     swordDetailedSkinOffset,
                     true,
                     false); // Fire singleplayer model
@@ -404,19 +404,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset darkPastSwordSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.25f, -1f), new Vector3(0, 90, 90), Vector3.one);
                 ModelOffset darkPastSwordSkinOffset2 = new ModelOffset(new Vector3(-0.05f, 0.05f, -0.15f), new Vector3(90f, 0f, 0f), Vector3.one);
                 IWeaponSkinItemDefinition darkPastSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Dark Past", ItemFilter.None);
-                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDarkPast", OverhaulAssetPart.WeaponSkins),
                     darkPastSwordSkinOffset,
                     false,
                     false);
-                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastFire", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDarkPastFire", OverhaulAssetPart.WeaponSkins),
                     darkPastSwordSkinOffset,
                     true,
                     false);
-                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastLBS", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDarkPastLBS", OverhaulAssetPart.WeaponSkins),
                     darkPastSwordSkinOffset2,
                     false,
                     true);
-                darkPastSwordSkin.SetModel(AssetsController.GetAsset("SwordSkinDarkPastLBSFire", OverhaulAssetsPart.WeaponSkins),
+                darkPastSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SwordSkinDarkPastLBSFire", OverhaulAssetPart.WeaponSkins),
                     darkPastSwordSkinOffset2,
                     true,
                     true);
@@ -425,11 +425,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset redMetalSwordSkinOffset = new ModelOffset(new Vector3(0.45f, 0.05f, -2.55f), new Vector3(0, 90, 90), Vector3.one);
                 IWeaponSkinItemDefinition redMetalSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Red Metal", ItemFilter.None);
-                redMetalSwordSkin.SetModel(AssetsController.GetAsset("RedMetalSword", OverhaulAssetsPart.WeaponSkins),
+                redMetalSwordSkin.SetModel(OverhaulAssetsController.GetAsset("RedMetalSword", OverhaulAssetPart.WeaponSkins),
                     redMetalSwordSkinOffset,
                     false,
                     false);
-                redMetalSwordSkin.SetModel(AssetsController.GetAsset("RedMetalSwordFire", OverhaulAssetsPart.WeaponSkins),
+                redMetalSwordSkin.SetModel(OverhaulAssetsController.GetAsset("RedMetalSwordFire", OverhaulAssetPart.WeaponSkins),
                     redMetalSwordSkinOffset,
                     true,
                     false);
@@ -439,11 +439,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset terraBladeSkinOffset = new ModelOffset(new Vector3(0.48f, -1.1f, -0.55f), new Vector3(90, 2, 0), Vector3.one * 0.7f);
                 IWeaponSkinItemDefinition terraBladeSkin = Interface.NewSkinItem(WeaponType.Sword, "TerraBlade", ItemFilter.None);
-                terraBladeSkin.SetModel(AssetsController.GetAsset("P_TerraBlade", OverhaulAssetsPart.WeaponSkins),
+                terraBladeSkin.SetModel(OverhaulAssetsController.GetAsset("P_TerraBlade", OverhaulAssetPart.WeaponSkins),
                     terraBladeSkinOffset,
                     false,
                     false);
-                terraBladeSkin.SetModel(AssetsController.GetAsset("P_TerraBladeFire", OverhaulAssetsPart.WeaponSkins),
+                terraBladeSkin.SetModel(OverhaulAssetsController.GetAsset("P_TerraBladeFire", OverhaulAssetPart.WeaponSkins),
                     terraBladeSkinOffset,
                     true,
                     false);
@@ -455,11 +455,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset impSwordSkinOffset = new ModelOffset(new Vector3(-2.8f, -0.005f, -0.425f), new Vector3(90, 0, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition impSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Imperial", ItemFilter.None);
-                impSwordSkin.SetModel(AssetsController.GetAsset("ImperialSword", OverhaulAssetsPart.WeaponSkins),
+                impSwordSkin.SetModel(OverhaulAssetsController.GetAsset("ImperialSword", OverhaulAssetPart.WeaponSkins),
                     impSwordSkinOffset,
                     false,
                     false);
-                impSwordSkin.SetModel(AssetsController.GetAsset("ImperialSwordFire", OverhaulAssetsPart.WeaponSkins),
+                impSwordSkin.SetModel(OverhaulAssetsController.GetAsset("ImperialSwordFire", OverhaulAssetPart.WeaponSkins),
                     impSwordSkinOffset,
                     true,
                     false);
@@ -471,19 +471,19 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset pojSkinOffset = new ModelOffset(new Vector3(-0.15f, 0.36f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.32f, 0.32f, 0.48f));
                 IWeaponSkinItemDefinition pojSkin = Interface.NewSkinItem(WeaponType.Sword, "Pearl Of Justice", ItemFilter.Exclusive);
-                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetsPart.WeaponSkins),
+                pojSkin.SetModel(OverhaulAssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetPart.WeaponSkins),
                     pojSkinOffset,
                     false,
                     true);
-                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetsPart.WeaponSkins),
+                pojSkin.SetModel(OverhaulAssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetPart.WeaponSkins),
                     pojSkinOffset,
                     false,
                     false);
-                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetsPart.WeaponSkins),
+                pojSkin.SetModel(OverhaulAssetsController.GetAsset("PearlOfJusticeSword", OverhaulAssetPart.WeaponSkins),
                     pojSkinOffset,
                     true,
                     true);
-                pojSkin.SetModel(AssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetsPart.WeaponSkins),
+                pojSkin.SetModel(OverhaulAssetsController.GetAsset("PearlOfJusticeMiniSword", OverhaulAssetPart.WeaponSkins),
                     pojSkinOffset,
                     true,
                     false);
@@ -498,19 +498,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset yamatoSkinOffset = new ModelOffset(new Vector3(0.25f, 0.15f, -0.05f), new Vector3(0, 90, 90), Vector3.one * 0.4f);
                 ModelOffset yamatoSkinOffsetM = new ModelOffset(new Vector3(0.3f, 0.225f, 0f), new Vector3(0, 90, 90), new Vector3(0.65f, 0.5f, 0.5f));
                 IWeaponSkinItemDefinition yamatoSkin = Interface.NewSkinItem(WeaponType.Sword, "Yamato", ItemFilter.None);
-                yamatoSkin.SetModel(AssetsController.GetAsset("YamatoSword", OverhaulAssetsPart.WeaponSkins),
+                yamatoSkin.SetModel(OverhaulAssetsController.GetAsset("YamatoSword", OverhaulAssetPart.WeaponSkins),
                     yamatoSkinOffset,
                     false,
                     false);
-                yamatoSkin.SetModel(AssetsController.GetAsset("YamatoSwordFire", OverhaulAssetsPart.WeaponSkins),
+                yamatoSkin.SetModel(OverhaulAssetsController.GetAsset("YamatoSwordFire", OverhaulAssetPart.WeaponSkins),
                     yamatoSkinOffset,
                     true,
                     false);
-                yamatoSkin.SetModel(AssetsController.GetAsset("YamatoSword", OverhaulAssetsPart.WeaponSkins),
+                yamatoSkin.SetModel(OverhaulAssetsController.GetAsset("YamatoSword", OverhaulAssetPart.WeaponSkins),
                     yamatoSkinOffsetM,
                     false,
                     true);
-                yamatoSkin.SetModel(AssetsController.GetAsset("YamatoSwordFire", OverhaulAssetsPart.WeaponSkins),
+                yamatoSkin.SetModel(OverhaulAssetsController.GetAsset("YamatoSwordFire", OverhaulAssetPart.WeaponSkins),
                     yamatoSkinOffsetM,
                     true,
                     true);
@@ -519,19 +519,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset AmenohabakiriOffset = new ModelOffset(new Vector3(0f, 0.02f, -0.4f), new Vector3(90, 0, 0), new Vector3(0.4f, 0.35f, 0.5f));
                 ModelOffset AmenohabakiriOffsetM = new ModelOffset(new Vector3(0f, 0.02f, -0.4f), new Vector3(90, 0, 0), new Vector3(0.42f, 0.42f, 0.52f));
                 IWeaponSkinItemDefinition AmenohabakiriSkin = Interface.NewSkinItem(WeaponType.Sword, "Amenohabakiri", ItemFilter.None);
-                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetsPart.WeaponSkins),
+                AmenohabakiriSkin.SetModel(OverhaulAssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetPart.WeaponSkins),
                     AmenohabakiriOffset,
                     false,
                     false);
-                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("EnmaSword", OverhaulAssetsPart.WeaponSkins),
+                AmenohabakiriSkin.SetModel(OverhaulAssetsController.GetAsset("EnmaSword", OverhaulAssetPart.WeaponSkins),
                     AmenohabakiriOffset,
                     true,
                     false);
-                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetsPart.WeaponSkins),
+                AmenohabakiriSkin.SetModel(OverhaulAssetsController.GetAsset("AmenohabakiriSword", OverhaulAssetPart.WeaponSkins),
                     AmenohabakiriOffsetM,
                     false,
                     true);
-                AmenohabakiriSkin.SetModel(AssetsController.GetAsset("EnmaSword", OverhaulAssetsPart.WeaponSkins),
+                AmenohabakiriSkin.SetModel(OverhaulAssetsController.GetAsset("EnmaSword", OverhaulAssetPart.WeaponSkins),
                     AmenohabakiriOffsetM,
                     true,
                     true);
@@ -539,11 +539,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset ancientSwordSkinOffset = new ModelOffset(new Vector3(-0.35f, -0.55f, -1f), new Vector3(90, 2, 0), Vector3.one * 0.45f);
                 IWeaponSkinItemDefinition ancientSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Ancient", ItemFilter.Exclusive);
-                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSword", OverhaulAssetsPart.WeaponSkins),
+                ancientSwordSkin.SetModel(OverhaulAssetsController.GetAsset("AncientSword", OverhaulAssetPart.WeaponSkins),
                     ancientSwordSkinOffset,
                     false,
                     false);
-                ancientSwordSkin.SetModel(AssetsController.GetAsset("AncientSwordFire", OverhaulAssetsPart.WeaponSkins),
+                ancientSwordSkin.SetModel(OverhaulAssetsController.GetAsset("AncientSwordFire", OverhaulAssetPart.WeaponSkins),
                     ancientSwordSkinOffset,
                     true,
                     false);
@@ -552,11 +552,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset hellFireSwordSkinOffset = new ModelOffset(new Vector3(0.06f, 0.01f, -1.1f), new Vector3(0, 92, 90), Vector3.one * 0.55f);
                 IWeaponSkinItemDefinition hellFireSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Infernal", ItemFilter.None);
-                hellFireSwordSkin.SetModel(AssetsController.GetAsset("P_HellFireSwordNormal", OverhaulAssetsPart.WeaponSkins),
+                hellFireSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_HellFireSwordNormal", OverhaulAssetPart.WeaponSkins),
                     hellFireSwordSkinOffset,
                     false,
                     false);
-                hellFireSwordSkin.SetModel(AssetsController.GetAsset("P_HellFireSword", OverhaulAssetsPart.WeaponSkins),
+                hellFireSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_HellFireSword", OverhaulAssetPart.WeaponSkins),
                     hellFireSwordSkinOffset,
                     true,
                     false);
@@ -569,19 +569,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset violetViolenceSkinOffset = new ModelOffset(new Vector3(-0.75f, 0.625f, -0.85f), new Vector3(0, 90, 90), Vector3.one * 0.525f);
                 ModelOffset violetViolenceSkinOffset2 = new ModelOffset(new Vector3(0.72f, -0.625f, -0.85f), new Vector3(0, -90, -90), Vector3.one * 0.525f);
                 IWeaponSkinItemDefinition violetViolenceSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Violet Violence", ItemFilter.Exclusive);
-                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolence", OverhaulAssetsPart.WeaponSkins),
+                violetViolenceSwordSkin.SetModel(OverhaulAssetsController.GetAsset("VioletViolence", OverhaulAssetPart.WeaponSkins),
                     violetViolenceSkinOffset,
                     false,
                     false);
-                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceF", OverhaulAssetsPart.WeaponSkins),
+                violetViolenceSwordSkin.SetModel(OverhaulAssetsController.GetAsset("VioletViolenceF", OverhaulAssetPart.WeaponSkins),
                     violetViolenceSkinOffset,
                     true,
                     false);
-                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGS", OverhaulAssetsPart.WeaponSkins),
+                violetViolenceSwordSkin.SetModel(OverhaulAssetsController.GetAsset("VioletViolenceGS", OverhaulAssetPart.WeaponSkins),
                     violetViolenceSkinOffset2,
                     false,
                     true);
-                violetViolenceSwordSkin.SetModel(AssetsController.GetAsset("VioletViolenceGSF", OverhaulAssetsPart.WeaponSkins),
+                violetViolenceSwordSkin.SetModel(OverhaulAssetsController.GetAsset("VioletViolenceGSF", OverhaulAssetPart.WeaponSkins),
                     violetViolenceSkinOffset2,
                     true,
                     true);
@@ -595,19 +595,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset frostmourneSkinOffset = new ModelOffset(new Vector3(0f, -0.03f, 1.3f), new Vector3(270, 180, 0), Vector3.one * 0.3f);
                 ModelOffset frostmourneSkinOffsetM = new ModelOffset(new Vector3(0f, -0.03f, 1.5f), new Vector3(270, 180, 0), Vector3.one * 0.35f);
                 IWeaponSkinItemDefinition frostmourneSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Frostmourne", ItemFilter.Exclusive);
-                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSword", OverhaulAssetsPart.WeaponSkins),
+                frostmourneSwordSkin.SetModel(OverhaulAssetsController.GetAsset("FrostmourneSword", OverhaulAssetPart.WeaponSkins),
                     frostmourneSkinOffset,
                     false,
                     false);
-                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetsPart.WeaponSkins),
+                frostmourneSwordSkin.SetModel(OverhaulAssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetPart.WeaponSkins),
                     frostmourneSkinOffset,
                     true,
                     false);
-                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSword", OverhaulAssetsPart.WeaponSkins),
+                frostmourneSwordSkin.SetModel(OverhaulAssetsController.GetAsset("FrostmourneSword", OverhaulAssetPart.WeaponSkins),
                     frostmourneSkinOffsetM,
                     false,
                     true);
-                frostmourneSwordSkin.SetModel(AssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetsPart.WeaponSkins),
+                frostmourneSwordSkin.SetModel(OverhaulAssetsController.GetAsset("FrostmourneSwordFire", OverhaulAssetPart.WeaponSkins),
                     frostmourneSkinOffsetM,
                     true,
                     true);
@@ -621,19 +621,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset tgbSkinOffset = new ModelOffset(new Vector3(0f, 0f, -0.15f), new Vector3(90, 0, 0), Vector3.one * 0.2f);
                 ModelOffset tgbSkinOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.15f), new Vector3(90, 0, 0), Vector3.one * 0.23f);
                 IWeaponSkinItemDefinition tgbSkin = Interface.NewSkinItem(WeaponType.Sword, "The Guardians Blade", ItemFilter.Exclusive);
-                tgbSkin.SetModel(AssetsController.GetAsset("TheGuardiansBladeSword", OverhaulAssetsPart.WeaponSkins),
+                tgbSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansBladeSword", OverhaulAssetPart.WeaponSkins),
                     tgbSkinOffset,
                     false,
                     false);
-                tgbSkin.SetModel(AssetsController.GetAsset("TheGuardiansBladeSwordFire", OverhaulAssetsPart.WeaponSkins),
+                tgbSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansBladeSwordFire", OverhaulAssetPart.WeaponSkins),
                     tgbSkinOffset,
                     true,
                     false);
-                tgbSkin.SetModel(AssetsController.GetAsset("TheGuardiansBladeSword", OverhaulAssetsPart.WeaponSkins),
+                tgbSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansBladeSword", OverhaulAssetPart.WeaponSkins),
                     tgbSkinOffsetM,
                     false,
                     true);
-                tgbSkin.SetModel(AssetsController.GetAsset("TheGuardiansBladeSwordFire", OverhaulAssetsPart.WeaponSkins),
+                tgbSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansBladeSwordFire", OverhaulAssetPart.WeaponSkins),
                     tgbSkinOffsetM,
                     true,
                     true);
@@ -645,19 +645,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset seSkinOffset = new ModelOffset(new Vector3(0f, -0.0275f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.17f, 0.17f, 0.25f));
                 ModelOffset seSkinOffsetM = new ModelOffset(new Vector3(0f, -0.0325f, -0.35f), new Vector3(270, 180, 0), new Vector3(0.2f, 0.2f, 0.3f));
                 IWeaponSkinItemDefinition seSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Soul Eater", ItemFilter.Exclusive);
-                seSwordSkin.SetModel(AssetsController.GetAsset("SoulEaterSword", OverhaulAssetsPart.WeaponSkins),
+                seSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SoulEaterSword", OverhaulAssetPart.WeaponSkins),
                     seSkinOffset,
                     false,
                     false);
-                seSwordSkin.SetModel(AssetsController.GetAsset("SoulEaterSwordFire", OverhaulAssetsPart.WeaponSkins),
+                seSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SoulEaterSwordFire", OverhaulAssetPart.WeaponSkins),
                     seSkinOffset,
                     true,
                     false);
-                seSwordSkin.SetModel(AssetsController.GetAsset("SoulEaterSword", OverhaulAssetsPart.WeaponSkins),
+                seSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SoulEaterSword", OverhaulAssetPart.WeaponSkins),
                     seSkinOffsetM,
                     false,
                     true);
-                seSwordSkin.SetModel(AssetsController.GetAsset("SoulEaterSwordFire", OverhaulAssetsPart.WeaponSkins),
+                seSwordSkin.SetModel(OverhaulAssetsController.GetAsset("SoulEaterSwordFire", OverhaulAssetPart.WeaponSkins),
                     seSkinOffsetM,
                     true,
                     true);
@@ -669,11 +669,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset LightSkinOffset = new ModelOffset(new Vector3(0f, 0f, 0.8f), new Vector3(90f, 0f, 0f), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition LightSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Light", ItemFilter.None);
-                LightSwordSkin.SetModel(AssetsController.GetAsset("LightSword", OverhaulAssetsPart.WeaponSkins),
+                LightSwordSkin.SetModel(OverhaulAssetsController.GetAsset("LightSword", OverhaulAssetPart.WeaponSkins),
                     LightSkinOffset,
                     false,
                     false);
-                LightSwordSkin.SetModel(AssetsController.GetAsset("LightSwordFire", OverhaulAssetsPart.WeaponSkins),
+                LightSwordSkin.SetModel(OverhaulAssetsController.GetAsset("LightSwordFire", OverhaulAssetPart.WeaponSkins),
                     LightSkinOffset,
                     true,
                     false);
@@ -682,11 +682,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset nezerHillOffset = new ModelOffset(new Vector3(0f, -0.055f, -0.2f), new Vector3(270, 180, 0), Vector3.one);
                 IWeaponSkinItemDefinition nezerHillSkin = Interface.NewSkinItem(WeaponType.Sword, "Nether Hill", ItemFilter.None);
-                nezerHillSkin.SetModel(AssetsController.GetAsset("NezerHillSword", OverhaulAssetsPart.WeaponSkins),
+                nezerHillSkin.SetModel(OverhaulAssetsController.GetAsset("NezerHillSword", OverhaulAssetPart.WeaponSkins),
                    nezerHillOffset,
                     false,
                     false);
-                nezerHillSkin.SetModel(AssetsController.GetAsset("NezerHillSwordFire", OverhaulAssetsPart.WeaponSkins),
+                nezerHillSkin.SetModel(OverhaulAssetsController.GetAsset("NezerHillSwordFire", OverhaulAssetPart.WeaponSkins),
                    nezerHillOffset,
                     true,
                     false);
@@ -697,19 +697,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset jetsamOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));
                 ModelOffset jetsamOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.15f), new Vector3(90, 0, 0), new Vector3(0.3f, 0.3f, 0.34f));
                 IWeaponSkinItemDefinition jetsamSkin = Interface.NewSkinItem(WeaponType.Sword, "Jet Sam", ItemFilter.None);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(OverhaulAssetsController.GetAsset("JetSamSwordV2", OverhaulAssetPart.WeaponSkins),
                     jetsamOffset,
                     false,
                     false);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(OverhaulAssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetPart.WeaponSkins),
                     jetsamOffset,
                     true,
                     false);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(OverhaulAssetsController.GetAsset("JetSamSwordV2", OverhaulAssetPart.WeaponSkins),
                     jetsamOffsetM,
                     false,
                     true);
-                jetsamSkin.SetModel(AssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetsPart.WeaponSkins),
+                jetsamSkin.SetModel(OverhaulAssetsController.GetAsset("JetSamSwordV2Fire", OverhaulAssetPart.WeaponSkins),
                     jetsamOffsetM,
                     true,
                     true);
@@ -721,19 +721,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset gvostOffset = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.4f);
                 ModelOffset gvostOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.25f), new Vector3(90, 0, 0), Vector3.one * 0.45f);
                 IWeaponSkinItemDefinition gvostSkin = Interface.NewSkinItem(WeaponType.Sword, "Spike", ItemFilter.None);
-                gvostSkin.SetModel(AssetsController.GetAsset("GvostSword", OverhaulAssetsPart.WeaponSkins),
+                gvostSkin.SetModel(OverhaulAssetsController.GetAsset("GvostSword", OverhaulAssetPart.WeaponSkins),
                     gvostOffset,
                     false,
                     false);
-                gvostSkin.SetModel(AssetsController.GetAsset("GvostSwordFire", OverhaulAssetsPart.WeaponSkins),
+                gvostSkin.SetModel(OverhaulAssetsController.GetAsset("GvostSwordFire", OverhaulAssetPart.WeaponSkins),
                     gvostOffset,
                     true,
                     false);
-                gvostSkin.SetModel(AssetsController.GetAsset("GvostSword", OverhaulAssetsPart.WeaponSkins),
+                gvostSkin.SetModel(OverhaulAssetsController.GetAsset("GvostSword", OverhaulAssetPart.WeaponSkins),
                     gvostOffsetM,
                     false,
                     true);
-                gvostSkin.SetModel(AssetsController.GetAsset("GvostSwordFire", OverhaulAssetsPart.WeaponSkins),
+                gvostSkin.SetModel(OverhaulAssetsController.GetAsset("GvostSwordFire", OverhaulAssetPart.WeaponSkins),
                     gvostOffsetM,
                     true,
                     true);
@@ -744,19 +744,19 @@ namespace CDOverhaul.Gameplay
                 ModelOffset fishOffset = new ModelOffset(new Vector3(0f, 0f, -0.35f), new Vector3(90, 0, 0), new Vector3(0.45f, 0.5f, 0.4f));
                 ModelOffset fishOffsetM = new ModelOffset(new Vector3(0f, 0f, -0.2f), new Vector3(90, 0, 0), new Vector3(0.5f, 0.55f, 0.45f));
                 IWeaponSkinItemDefinition fishSkin = Interface.NewSkinItem(WeaponType.Sword, "Fish", ItemFilter.None);
-                fishSkin.SetModel(AssetsController.GetAsset("FishSword", OverhaulAssetsPart.WeaponSkins),
+                fishSkin.SetModel(OverhaulAssetsController.GetAsset("FishSword", OverhaulAssetPart.WeaponSkins),
                     fishOffset,
                     false,
                     false);
-                fishSkin.SetModel(AssetsController.GetAsset("FishSwordFire", OverhaulAssetsPart.WeaponSkins),
+                fishSkin.SetModel(OverhaulAssetsController.GetAsset("FishSwordFire", OverhaulAssetPart.WeaponSkins),
                     fishOffset,
                     true,
                     false);
-                fishSkin.SetModel(AssetsController.GetAsset("FishSword", OverhaulAssetsPart.WeaponSkins),
+                fishSkin.SetModel(OverhaulAssetsController.GetAsset("FishSword", OverhaulAssetPart.WeaponSkins),
                     fishOffsetM,
                     false,
                     true);
-                fishSkin.SetModel(AssetsController.GetAsset("FishSwordFire", OverhaulAssetsPart.WeaponSkins),
+                fishSkin.SetModel(OverhaulAssetsController.GetAsset("FishSwordFire", OverhaulAssetPart.WeaponSkins),
                     fishOffsetM,
                     true,
                     true);
@@ -765,11 +765,11 @@ namespace CDOverhaul.Gameplay
                 // Steel
                 ModelOffset steelSwordSkinOffset = new ModelOffset(new Vector3(-1.14f, -1.14f, 0.7f), Vector3.zero, Vector3.one);
                 IWeaponSkinItemDefinition steelSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "The Steel", ItemFilter.None);
-                steelSwordSkin.SetModel(AssetsController.GetAsset("P_Steel", OverhaulAssetsPart.WeaponSkins),
+                steelSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_Steel", OverhaulAssetPart.WeaponSkins),
                     steelSwordSkinOffset,
                     false,
                     false);
-                steelSwordSkin.SetModel(AssetsController.GetAsset("P_Steel", OverhaulAssetsPart.WeaponSkins),
+                steelSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_Steel", OverhaulAssetPart.WeaponSkins),
                     steelSwordSkinOffset,
                     true,
                     false);
@@ -778,11 +778,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset ghSwordSkinOffset = new ModelOffset(new Vector3(0f, -0.85f, -1.2f), new Vector3(90, 2, 0), new Vector3(0.65f, 0.7f, 0.65f));
                 IWeaponSkinItemDefinition ghSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Ghost Runner", ItemFilter.None);
-                ghSwordSkin.SetModel(AssetsController.GetAsset("GhostRunnerNormalSword", OverhaulAssetsPart.WeaponSkins),
+                ghSwordSkin.SetModel(OverhaulAssetsController.GetAsset("GhostRunnerNormalSword", OverhaulAssetPart.WeaponSkins),
                     ghSwordSkinOffset,
                     false,
                     false);
-                ghSwordSkin.SetModel(AssetsController.GetAsset("GhostRunnerSword", OverhaulAssetsPart.WeaponSkins),
+                ghSwordSkin.SetModel(OverhaulAssetsController.GetAsset("GhostRunnerSword", OverhaulAssetPart.WeaponSkins),
                     ghSwordSkinOffset,
                     true,
                     false);
@@ -791,11 +791,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset doomSwordSkinOffset = new ModelOffset(new Vector3(-0.05f, -0.025f, -0.933f), new Vector3(90, 2, 0), Vector3.one * 0.42f);
                 IWeaponSkinItemDefinition doomSwordSkin = Interface.NewSkinItem(WeaponType.Sword, "Doom", ItemFilter.None);
-                doomSwordSkin.SetModel(AssetsController.GetAsset("P_DoomSword", OverhaulAssetsPart.WeaponSkins),
+                doomSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_DoomSword", OverhaulAssetPart.WeaponSkins),
                     doomSwordSkinOffset,
                     false,
                     false);
-                doomSwordSkin.SetModel(AssetsController.GetAsset("P_DoomSwordFire", OverhaulAssetsPart.WeaponSkins),
+                doomSwordSkin.SetModel(OverhaulAssetsController.GetAsset("P_DoomSwordFire", OverhaulAssetPart.WeaponSkins),
                     doomSwordSkinOffset,
                     true,
                     false);
@@ -808,11 +808,11 @@ namespace CDOverhaul.Gameplay
                 // Dark past hammer
                 ModelOffset darkPastHammerSkinOffset = new ModelOffset(new Vector3(-2, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition darkPastHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Dark Past", ItemFilter.None);
-                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPast", OverhaulAssetsPart.WeaponSkins),
+                darkPastHammerSkin.SetModel(OverhaulAssetsController.GetAsset("HammerSkinDarkPast", OverhaulAssetPart.WeaponSkins),
                     darkPastHammerSkinOffset,
                     false,
                     false);
-                darkPastHammerSkin.SetModel(AssetsController.GetAsset("HammerSkinDarkPastFire", OverhaulAssetsPart.WeaponSkins),
+                darkPastHammerSkin.SetModel(OverhaulAssetsController.GetAsset("HammerSkinDarkPastFire", OverhaulAssetPart.WeaponSkins),
                     darkPastHammerSkinOffset,
                     true,
                     false);
@@ -821,11 +821,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset garbageBotHammerSkinOffset = new ModelOffset(new Vector3(-1, -0.05f, 0.06f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition garbageBotHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Garbage Bot", ItemFilter.None);
-                garbageBotHammerSkin.SetModel(AssetsController.GetAsset("GarbageBotHammer", OverhaulAssetsPart.WeaponSkins),
+                garbageBotHammerSkin.SetModel(OverhaulAssetsController.GetAsset("GarbageBotHammer", OverhaulAssetPart.WeaponSkins),
                     garbageBotHammerSkinOffset,
                     false,
                     false);
-                garbageBotHammerSkin.SetModel(AssetsController.GetAsset("GarbageBotHammerFire", OverhaulAssetsPart.WeaponSkins),
+                garbageBotHammerSkin.SetModel(OverhaulAssetsController.GetAsset("GarbageBotHammerFire", OverhaulAssetPart.WeaponSkins),
                     garbageBotHammerSkinOffset,
                     true,
                     false);
@@ -834,11 +834,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset bsHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.04f, 0.15f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition bsHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Blue Shroom", ItemFilter.None);
-                bsHammerSkin.SetModel(AssetsController.GetAsset("BlueShroomHammer", OverhaulAssetsPart.WeaponSkins),
+                bsHammerSkin.SetModel(OverhaulAssetsController.GetAsset("BlueShroomHammer", OverhaulAssetPart.WeaponSkins),
                     bsHammerSkinOffset,
                     false,
                     false);
-                bsHammerSkin.SetModel(AssetsController.GetAsset("BlueShroomHammerFire", OverhaulAssetsPart.WeaponSkins),
+                bsHammerSkin.SetModel(OverhaulAssetsController.GetAsset("BlueShroomHammerFire", OverhaulAssetPart.WeaponSkins),
                     bsHammerSkinOffset,
                     true,
                     false);
@@ -848,11 +848,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset toyHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.12f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition toyHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Toy", ItemFilter.Exclusive);
-                toyHammerSkin.SetModel(AssetsController.GetAsset("ToyHammer", OverhaulAssetsPart.WeaponSkins),
+                toyHammerSkin.SetModel(OverhaulAssetsController.GetAsset("ToyHammer", OverhaulAssetPart.WeaponSkins),
                     toyHammerSkinOffset,
                     false,
                     false);
-                toyHammerSkin.SetModel(AssetsController.GetAsset("ToyHammer", OverhaulAssetsPart.WeaponSkins),
+                toyHammerSkin.SetModel(OverhaulAssetsController.GetAsset("ToyHammer", OverhaulAssetPart.WeaponSkins),
                     toyHammerSkinOffset,
                     true,
                     false);
@@ -862,11 +862,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset voidCoreSkinOffset = new ModelOffset(new Vector3(-2.7f, 0.05f, -0.15f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition voidCoreSkin = Interface.NewSkinItem(WeaponType.Hammer, "Void Core", ItemFilter.None);
-                voidCoreSkin.SetModel(AssetsController.GetAsset("VoidCoreHammer", OverhaulAssetsPart.WeaponSkins),
+                voidCoreSkin.SetModel(OverhaulAssetsController.GetAsset("VoidCoreHammer", OverhaulAssetPart.WeaponSkins),
                     voidCoreSkinOffset,
                     false,
                     false);
-                voidCoreSkin.SetModel(AssetsController.GetAsset("VoidCoreHammerFire", OverhaulAssetsPart.WeaponSkins),
+                voidCoreSkin.SetModel(OverhaulAssetsController.GetAsset("VoidCoreHammerFire", OverhaulAssetPart.WeaponSkins),
                     voidCoreSkinOffset,
                     true,
                     false);
@@ -876,11 +876,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset relicHammerSkinOffset = new ModelOffset(new Vector3(-0.7f, 0f, -0.025f), new Vector3(0, 0, 270), Vector3.one * 0.3f);
                 IWeaponSkinItemDefinition relicHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Relic", ItemFilter.None);
-                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammer", OverhaulAssetsPart.WeaponSkins),
+                relicHammerSkin.SetModel(OverhaulAssetsController.GetAsset("P_RelicHammer", OverhaulAssetPart.WeaponSkins),
                     relicHammerSkinOffset,
                     false,
                     false);
-                relicHammerSkin.SetModel(AssetsController.GetAsset("P_RelicHammerFire", OverhaulAssetsPart.WeaponSkins),
+                relicHammerSkin.SetModel(OverhaulAssetsController.GetAsset("P_RelicHammerFire", OverhaulAssetPart.WeaponSkins),
                     relicHammerSkinOffset,
                     true,
                     false);
@@ -890,11 +890,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset wbdHammerSkinOffset = new ModelOffset(new Vector3(-1f, 0.03f, 0.22f), new Vector3(0, 0, 265), Vector3.one * 0.9f);
                 IWeaponSkinItemDefinition wbdHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Water Based Drink", ItemFilter.None);
-                wbdHammerSkin.SetModel(AssetsController.GetAsset("WBD", OverhaulAssetsPart.WeaponSkins),
+                wbdHammerSkin.SetModel(OverhaulAssetsController.GetAsset("WBD", OverhaulAssetPart.WeaponSkins),
                     wbdHammerSkinOffset,
                     false,
                     false);
-                wbdHammerSkin.SetModel(AssetsController.GetAsset("WBDFire", OverhaulAssetsPart.WeaponSkins),
+                wbdHammerSkin.SetModel(OverhaulAssetsController.GetAsset("WBDFire", OverhaulAssetPart.WeaponSkins),
                     wbdHammerSkinOffset,
                     true,
                     false);
@@ -904,11 +904,11 @@ namespace CDOverhaul.Gameplay
                 ModelOffset impHammerSkinOffset = new ModelOffset(new Vector3(-1.59f, -1.845f, -0.36f), new Vector3(0, 0, 270), Vector3.one * 0.5f);
                 ModelOffset impHammerSkin2Offset = new ModelOffset(new Vector3(-1.59f, 0.825f, -0.455f), new Vector3(0, 0, 270), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition impHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Imperial", ItemFilter.None);
-                impHammerSkin.SetModel(AssetsController.GetAsset("ImperialHammer", OverhaulAssetsPart.WeaponSkins),
+                impHammerSkin.SetModel(OverhaulAssetsController.GetAsset("ImperialHammer", OverhaulAssetPart.WeaponSkins),
                      impHammerSkinOffset,
                     false,
                     false);
-                impHammerSkin.SetModel(AssetsController.GetAsset("ImperialHammerFire", OverhaulAssetsPart.WeaponSkins),
+                impHammerSkin.SetModel(OverhaulAssetsController.GetAsset("ImperialHammerFire", OverhaulAssetPart.WeaponSkins),
                      impHammerSkin2Offset,
                     true,
                     false);
@@ -918,11 +918,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset iHammerSkinOffset = new ModelOffset(new Vector3(-1.2f, -0.05f, 0.245f), new Vector3(0, 0, 270), Vector3.one);
                 IWeaponSkinItemDefinition iHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Igrok_x_xp", ItemFilter.Exclusive);
-                iHammerSkin.SetModel(AssetsController.GetAsset("IgroksHammer", OverhaulAssetsPart.WeaponSkins),
+                iHammerSkin.SetModel(OverhaulAssetsController.GetAsset("IgroksHammer", OverhaulAssetPart.WeaponSkins),
                     iHammerSkinOffset,
                     false,
                     false);
-                iHammerSkin.SetModel(AssetsController.GetAsset("IgroksHammerFire", OverhaulAssetsPart.WeaponSkins),
+                iHammerSkin.SetModel(OverhaulAssetsController.GetAsset("IgroksHammerFire", OverhaulAssetPart.WeaponSkins),
                     iHammerSkinOffset,
                     true,
                     false);
@@ -933,11 +933,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset kgHammerSkinOffset = new ModelOffset(new Vector3(0.5f, 0.01f, -0.005f), new Vector3(0, 0, 270), new Vector3(0.5f, 0.575f, 0.5f));
                 IWeaponSkinItemDefinition kgHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "Kings Grin", ItemFilter.None);
-                kgHammerSkin.SetModel(AssetsController.GetAsset("KingsGrinHammer", OverhaulAssetsPart.WeaponSkins),
+                kgHammerSkin.SetModel(OverhaulAssetsController.GetAsset("KingsGrinHammer", OverhaulAssetPart.WeaponSkins),
                     kgHammerSkinOffset,
                     false,
                     false);
-                kgHammerSkin.SetModel(AssetsController.GetAsset("KingsGrinHammerFire", OverhaulAssetsPart.WeaponSkins),
+                kgHammerSkin.SetModel(OverhaulAssetsController.GetAsset("KingsGrinHammerFire", OverhaulAssetPart.WeaponSkins),
                     kgHammerSkinOffset,
                     true,
                     false);
@@ -946,11 +946,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset tgHammerSkinOffset = new ModelOffset(new Vector3(-1.22f, 0f, -0.025f), new Vector3(0, 0, 270), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition tgHammerSkin = Interface.NewSkinItem(WeaponType.Hammer, "The Guardians Hammer", ItemFilter.Exclusive);
-                tgHammerSkin.SetModel(AssetsController.GetAsset("TheGuardiansHammer", OverhaulAssetsPart.WeaponSkins),
+                tgHammerSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansHammer", OverhaulAssetPart.WeaponSkins),
                     tgHammerSkinOffset,
                     false,
                     false);
-                tgHammerSkin.SetModel(AssetsController.GetAsset("TheGuardiansHammerFire", OverhaulAssetsPart.WeaponSkins),
+                tgHammerSkin.SetModel(OverhaulAssetsController.GetAsset("TheGuardiansHammerFire", OverhaulAssetPart.WeaponSkins),
                    tgHammerSkinOffset,
                     true,
                     false);
@@ -961,11 +961,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset hammesusSkinOffset = new ModelOffset(new Vector3(0.3f, -0.05f, 0.135f), new Vector3(0, 0, 270), Vector3.one * 0.45f);
                 IWeaponSkinItemDefinition hammesusSkin = Interface.NewSkinItem(WeaponType.Hammer, "Hammesus", ItemFilter.None);
-                hammesusSkin.SetModel(AssetsController.GetAsset("Hammesus", OverhaulAssetsPart.WeaponSkins),
+                hammesusSkin.SetModel(OverhaulAssetsController.GetAsset("Hammesus", OverhaulAssetPart.WeaponSkins),
                     hammesusSkinOffset,
                     false,
                     false);
-                hammesusSkin.SetModel(AssetsController.GetAsset("HammesusFire", OverhaulAssetsPart.WeaponSkins),
+                hammesusSkin.SetModel(OverhaulAssetsController.GetAsset("HammesusFire", OverhaulAssetPart.WeaponSkins),
                     hammesusSkinOffset,
                     true,
                     false);
@@ -974,11 +974,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset SkalkaSkinOffset = new ModelOffset(new Vector3(-0.2f, -0.05f, 0.05f), new Vector3(0, 0, 270), Vector3.one * 0.9f);
                 IWeaponSkinItemDefinition SkalkaSkin = Interface.NewSkinItem(WeaponType.Hammer, "Battledore", ItemFilter.None);
-                SkalkaSkin.SetModel(AssetsController.GetAsset("SkalkaHammer", OverhaulAssetsPart.WeaponSkins),
+                SkalkaSkin.SetModel(OverhaulAssetsController.GetAsset("SkalkaHammer", OverhaulAssetPart.WeaponSkins),
                     SkalkaSkinOffset,
                     false,
                     false);
-                SkalkaSkin.SetModel(AssetsController.GetAsset("SkalkaHammerFire", OverhaulAssetsPart.WeaponSkins),
+                SkalkaSkin.SetModel(OverhaulAssetsController.GetAsset("SkalkaHammerFire", OverhaulAssetPart.WeaponSkins),
                     SkalkaSkinOffset,
                     true,
                     false);
@@ -988,7 +988,7 @@ namespace CDOverhaul.Gameplay
                 // Duxa Bow 
                 ModelOffset testBowSkinOffset = new ModelOffset(new Vector3(0.65f, -1.66f, 0.65f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBowSkin = Interface.NewSkinItem(WeaponType.Bow, "Plasma", ItemFilter.None);
-                testBowSkin.SetModel(AssetsController.GetAsset("PlamaticBow", OverhaulAssetsPart.WeaponSkins),
+                testBowSkin.SetModel(OverhaulAssetsController.GetAsset("PlamaticBow", OverhaulAssetPart.WeaponSkins),
                     testBowSkinOffset,
                     false,
                     false);
@@ -996,7 +996,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow2SkinOffset = new ModelOffset(new Vector3(0.35f, -1.5f, 0.45f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow2Skin = Interface.NewSkinItem(WeaponType.Bow, "Neon", ItemFilter.None);
-                testBow2Skin.SetModel(AssetsController.GetAsset("GlassBow", OverhaulAssetsPart.WeaponSkins),
+                testBow2Skin.SetModel(OverhaulAssetsController.GetAsset("GlassBow", OverhaulAssetPart.WeaponSkins),
                     testBow2SkinOffset,
                     false,
                     false);
@@ -1004,7 +1004,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow3SkinOffset = new ModelOffset(new Vector3(0.05f, -0.7f, 0f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow3Skin = Interface.NewSkinItem(WeaponType.Bow, "Futuristic Iron", ItemFilter.None);
-                testBow3Skin.SetModel(AssetsController.GetAsset("IronBow", OverhaulAssetsPart.WeaponSkins),
+                testBow3Skin.SetModel(OverhaulAssetsController.GetAsset("IronBow", OverhaulAssetPart.WeaponSkins),
                     testBow3SkinOffset,
                     false,
                     false);
@@ -1013,7 +1013,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow4SkinOffset = new ModelOffset(new Vector3(0.25f, 0f, -0.3f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow4Skin = Interface.NewSkinItem(WeaponType.Bow, "Dark Past", ItemFilter.None);
-                testBow4Skin.SetModel(AssetsController.GetAsset("DarkPastBow", OverhaulAssetsPart.WeaponSkins),
+                testBow4Skin.SetModel(OverhaulAssetsController.GetAsset("DarkPastBow", OverhaulAssetPart.WeaponSkins),
                     testBow4SkinOffset,
                     false,
                     false);
@@ -1021,7 +1021,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow5SkinOffset = new ModelOffset(new Vector3(0f, -0.9f, 0.1f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow5Skin = Interface.NewSkinItem(WeaponType.Bow, "Magika Bow", ItemFilter.None);
-                testBow5Skin.SetModel(AssetsController.GetAsset("MagicBow", OverhaulAssetsPart.WeaponSkins),
+                testBow5Skin.SetModel(OverhaulAssetsController.GetAsset("MagicBow", OverhaulAssetPart.WeaponSkins),
                     testBow5SkinOffset,
                     false,
                     false);
@@ -1029,7 +1029,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow6SkinOffset = new ModelOffset(new Vector3(-0.85f, -0.95f, 0.05f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow6Skin = Interface.NewSkinItem(WeaponType.Bow, "Hunter", ItemFilter.None);
-                testBow6Skin.SetModel(AssetsController.GetAsset("TacticalBow", OverhaulAssetsPart.WeaponSkins),
+                testBow6Skin.SetModel(OverhaulAssetsController.GetAsset("TacticalBow", OverhaulAssetPart.WeaponSkins),
                     testBow6SkinOffset,
                     false,
                     false);
@@ -1037,7 +1037,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow7SkinOffset = new ModelOffset(new Vector3(0.15f, 0f, 0f), new Vector3(0, 270, 0), Vector3.one * 0.52f);
                 IWeaponSkinItemDefinition testBow7Skin = Interface.NewSkinItem(WeaponType.Bow, "Devil's Horn", ItemFilter.None);
-                testBow7Skin.SetModel(AssetsController.GetAsset("DevilHornBow", OverhaulAssetsPart.WeaponSkins),
+                testBow7Skin.SetModel(OverhaulAssetsController.GetAsset("DevilHornBow", OverhaulAssetPart.WeaponSkins),
                     testBow7SkinOffset,
                     false,
                     false);
@@ -1046,7 +1046,7 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset testBow8SkinOffset = new ModelOffset(new Vector3(0.09f, 0f, -0.1f), new Vector3(0, 90, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition testBow8Skin = Interface.NewSkinItem(WeaponType.Bow, "Skull", ItemFilter.None);
-                testBow8Skin.SetModel(AssetsController.GetAsset("SkullBow", OverhaulAssetsPart.WeaponSkins),
+                testBow8Skin.SetModel(OverhaulAssetsController.GetAsset("SkullBow", OverhaulAssetPart.WeaponSkins),
                     testBow8SkinOffset,
                     false,
                     false);
@@ -1056,11 +1056,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset spearDarkPastSkinOffset = new ModelOffset(new Vector3(1.375f, -4.35f, 0.15f), new Vector3(0, 270, 0), Vector3.one);
                 IWeaponSkinItemDefinition spearDarkPastSkin = Interface.NewSkinItem(WeaponType.Spear, "Dark Past", ItemFilter.None);
-                spearDarkPastSkin.SetModel(AssetsController.GetAsset("DarkPastSpear", OverhaulAssetsPart.WeaponSkins),
+                spearDarkPastSkin.SetModel(OverhaulAssetsController.GetAsset("DarkPastSpear", OverhaulAssetPart.WeaponSkins),
                     spearDarkPastSkinOffset,
                     false,
                     false);
-                spearDarkPastSkin.SetModel(AssetsController.GetAsset("DarkPastSpearFire", OverhaulAssetsPart.WeaponSkins),
+                spearDarkPastSkin.SetModel(OverhaulAssetsController.GetAsset("DarkPastSpearFire", OverhaulAssetPart.WeaponSkins),
                     spearDarkPastSkinOffset,
                     true,
                     false);
@@ -1070,11 +1070,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset ancientSpearSkinOffset = new ModelOffset(new Vector3(-0.8f, -1.1f, -0.5f), new Vector3(0, 270, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition ancientSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Ancient", ItemFilter.None);
-                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpear", OverhaulAssetsPart.WeaponSkins),
+                ancientSpearSkin.SetModel(OverhaulAssetsController.GetAsset("AncientSpear", OverhaulAssetPart.WeaponSkins),
                     ancientSpearSkinOffset,
                     false,
                     false);
-                ancientSpearSkin.SetModel(AssetsController.GetAsset("AncientSpearFire", OverhaulAssetsPart.WeaponSkins),
+                ancientSpearSkin.SetModel(OverhaulAssetsController.GetAsset("AncientSpearFire", OverhaulAssetPart.WeaponSkins),
                     ancientSpearSkinOffset,
                     true,
                     false);
@@ -1083,11 +1083,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset breadSkinOffset = new ModelOffset(new Vector3(0.95f, -1.1f, -0.08f), new Vector3(0, 270, 0), new Vector3(0.5f, 0.5f, 0.9f));
                 IWeaponSkinItemDefinition breadPastSkin = Interface.NewSkinItem(WeaponType.Spear, "Le baguet", ItemFilter.None);
-                breadPastSkin.SetModel(AssetsController.GetAsset("P_Baget", OverhaulAssetsPart.WeaponSkins),
+                breadPastSkin.SetModel(OverhaulAssetsController.GetAsset("P_Baget", OverhaulAssetPart.WeaponSkins),
                     breadSkinOffset,
                     false,
                     false);
-                breadPastSkin.SetModel(AssetsController.GetAsset("P_BagetFire", OverhaulAssetsPart.WeaponSkins),
+                breadPastSkin.SetModel(OverhaulAssetsController.GetAsset("P_BagetFire", OverhaulAssetPart.WeaponSkins),
                     breadSkinOffset,
                     true,
                     false);
@@ -1095,11 +1095,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset spearGoldSkinOffset = new ModelOffset(new Vector3(1.4f, -2.425f, 0.935f), new Vector3(0, 90, 0), Vector3.one * 0.6f);
                 IWeaponSkinItemDefinition spearGoldSkin = Interface.NewSkinItem(WeaponType.Spear, "Gold", ItemFilter.None);
-                spearGoldSkin.SetModel(AssetsController.GetAsset("GoldSpear", OverhaulAssetsPart.WeaponSkins),
+                spearGoldSkin.SetModel(OverhaulAssetsController.GetAsset("GoldSpear", OverhaulAssetPart.WeaponSkins),
                     spearGoldSkinOffset,
                     false,
                     false);
-                spearGoldSkin.SetModel(AssetsController.GetAsset("GoldSpearFire", OverhaulAssetsPart.WeaponSkins),
+                spearGoldSkin.SetModel(OverhaulAssetsController.GetAsset("GoldSpearFire", OverhaulAssetPart.WeaponSkins),
                     spearGoldSkinOffset,
                     true,
                     false);
@@ -1108,11 +1108,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset glSpearSkinOffset = new ModelOffset(new Vector3(0.5f, -2.35f, 0.035f), new Vector3(0, -90, 0), new Vector3(0.75f, 0.75f, 1f));
                 IWeaponSkinItemDefinition glSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Gladiator", ItemFilter.None);
-                glSpearSkin.SetModel(AssetsController.GetAsset("GladiatorSpear", OverhaulAssetsPart.WeaponSkins),
+                glSpearSkin.SetModel(OverhaulAssetsController.GetAsset("GladiatorSpear", OverhaulAssetPart.WeaponSkins),
                     glSpearSkinOffset,
                     false,
                     false);
-                glSpearSkin.SetModel(AssetsController.GetAsset("GladiatorSpearFire", OverhaulAssetsPart.WeaponSkins),
+                glSpearSkin.SetModel(OverhaulAssetsController.GetAsset("GladiatorSpearFire", OverhaulAssetPart.WeaponSkins),
                     glSpearSkinOffset,
                     true,
                     false);
@@ -1121,11 +1121,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset bionicSpearSkinOffset = new ModelOffset(new Vector3(-0.45f, -7.1075f, -0.03f), new Vector3(0, -90, 0), Vector3.one * 0.6f);
                 IWeaponSkinItemDefinition bionicSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Bionic", ItemFilter.None);
-                bionicSpearSkin.SetModel(AssetsController.GetAsset("BionicSpear", OverhaulAssetsPart.WeaponSkins),
+                bionicSpearSkin.SetModel(OverhaulAssetsController.GetAsset("BionicSpear", OverhaulAssetPart.WeaponSkins),
                     bionicSpearSkinOffset,
                     false,
                     false);
-                bionicSpearSkin.SetModel(AssetsController.GetAsset("BionicSpear", OverhaulAssetsPart.WeaponSkins),
+                bionicSpearSkin.SetModel(OverhaulAssetsController.GetAsset("BionicSpear", OverhaulAssetPart.WeaponSkins),
                     bionicSpearSkinOffset,
                     true,
                     false);
@@ -1135,11 +1135,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset hazardSpearSkinOffset = new ModelOffset(new Vector3(0.8f, -2.66f, -0.03f), new Vector3(0, 90, 0), new Vector3(0.75f, 0.75f, 1f));
                 IWeaponSkinItemDefinition hazardSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Hazard", ItemFilter.None);
-                hazardSpearSkin.SetModel(AssetsController.GetAsset("HazardSpear", OverhaulAssetsPart.WeaponSkins),
+                hazardSpearSkin.SetModel(OverhaulAssetsController.GetAsset("HazardSpear", OverhaulAssetPart.WeaponSkins),
                     hazardSpearSkinOffset,
                     false,
                     false);
-                hazardSpearSkin.SetModel(AssetsController.GetAsset("HazardSpearFire", OverhaulAssetsPart.WeaponSkins),
+                hazardSpearSkin.SetModel(OverhaulAssetsController.GetAsset("HazardSpearFire", OverhaulAssetPart.WeaponSkins),
                     hazardSpearSkinOffset,
                     true,
                     false);
@@ -1149,11 +1149,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset byonetSpearSkinOffset = new ModelOffset(new Vector3(-0.5f, -0.1f, -0.03f), new Vector3(3, 269, 0), Vector3.one * 0.4f);
                 IWeaponSkinItemDefinition byonetSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Byonet", ItemFilter.None);
-                byonetSpearSkin.SetModel(AssetsController.GetAsset("ByonetSpear", OverhaulAssetsPart.WeaponSkins),
+                byonetSpearSkin.SetModel(OverhaulAssetsController.GetAsset("ByonetSpear", OverhaulAssetPart.WeaponSkins),
                     byonetSpearSkinOffset,
                     false,
                     false);
-                byonetSpearSkin.SetModel(AssetsController.GetAsset("ByonetSpearFire", OverhaulAssetsPart.WeaponSkins),
+                byonetSpearSkin.SetModel(OverhaulAssetsController.GetAsset("ByonetSpearFire", OverhaulAssetPart.WeaponSkins),
                     byonetSpearSkinOffset,
                     true,
                     false);
@@ -1163,11 +1163,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset bsSpearSkinOffset = new ModelOffset(new Vector3(0.9f, -2.065f, -0.185f), new Vector3(0, -90, 0), new Vector3(0.75f, 0.75f, 1f));
                 IWeaponSkinItemDefinition bsSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Blue Shroom", ItemFilter.None);
-                bsSpearSkin.SetModel(AssetsController.GetAsset("BlueShroomSpear", OverhaulAssetsPart.WeaponSkins),
+                bsSpearSkin.SetModel(OverhaulAssetsController.GetAsset("BlueShroomSpear", OverhaulAssetPart.WeaponSkins),
                     bsSpearSkinOffset,
                     false,
                     false);
-                bsSpearSkin.SetModel(AssetsController.GetAsset("BlueShroomSpearFire", OverhaulAssetsPart.WeaponSkins),
+                bsSpearSkin.SetModel(OverhaulAssetsController.GetAsset("BlueShroomSpearFire", OverhaulAssetPart.WeaponSkins),
                     bsSpearSkinOffset,
                     true,
                     false);
@@ -1176,11 +1176,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset ksSpearSkinOffset = new ModelOffset(new Vector3(0.45f, 0f, 0f), new Vector3(0, -90, 0), new Vector3(0.75f, 0.75f, 1f));
                 IWeaponSkinItemDefinition ksSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Kings Skull", ItemFilter.None);
-                ksSpearSkin.SetModel(AssetsController.GetAsset("KingsSkullSpear", OverhaulAssetsPart.WeaponSkins),
+                ksSpearSkin.SetModel(OverhaulAssetsController.GetAsset("KingsSkullSpear", OverhaulAssetPart.WeaponSkins),
                     ksSpearSkinOffset,
                     false,
                     false);
-                ksSpearSkin.SetModel(AssetsController.GetAsset("KingsSkullSpearFire", OverhaulAssetsPart.WeaponSkins),
+                ksSpearSkin.SetModel(OverhaulAssetsController.GetAsset("KingsSkullSpearFire", OverhaulAssetPart.WeaponSkins),
                     ksSpearSkinOffset,
                     true,
                     false);
@@ -1189,11 +1189,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset shSpearSkinOffset = new ModelOffset(new Vector3(0.7f, 0f, 0f), new Vector3(0, -90, 0), Vector3.one * 0.5f);
                 IWeaponSkinItemDefinition shSpearSkin = Interface.NewSkinItem(WeaponType.Spear, "Shrilling", ItemFilter.None);
-                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpear", OverhaulAssetsPart.WeaponSkins),
+                shSpearSkin.SetModel(OverhaulAssetsController.GetAsset("ShrillingSpear", OverhaulAssetPart.WeaponSkins),
                     shSpearSkinOffset,
                     false,
                     false);
-                shSpearSkin.SetModel(AssetsController.GetAsset("ShrillingSpearFire", OverhaulAssetsPart.WeaponSkins),
+                shSpearSkin.SetModel(OverhaulAssetsController.GetAsset("ShrillingSpearFire", OverhaulAssetPart.WeaponSkins),
                     shSpearSkinOffset,
                     true,
                     false);
@@ -1202,11 +1202,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset opspearSkinOffset = new ModelOffset(new Vector3(-0.35f, 0.05f, 0.05f), new Vector3(0, -90, 0), Vector3.one);
                 IWeaponSkinItemDefinition opspearSkin = Interface.NewSkinItem(WeaponType.Spear, "Overhaul Prototype", ItemFilter.None);
-                opspearSkin.SetModel(AssetsController.GetAsset("OLSpear", OverhaulAssetsPart.WeaponSkins),
+                opspearSkin.SetModel(OverhaulAssetsController.GetAsset("OLSpear", OverhaulAssetPart.WeaponSkins),
                     opspearSkinOffset,
                     false,
                     false);
-                opspearSkin.SetModel(AssetsController.GetAsset("OLSpearFire", OverhaulAssetsPart.WeaponSkins),
+                opspearSkin.SetModel(OverhaulAssetsController.GetAsset("OLSpearFire", OverhaulAssetPart.WeaponSkins),
                    opspearSkinOffset,
                     true,
                     false);
@@ -1215,11 +1215,11 @@ namespace CDOverhaul.Gameplay
 
                 ModelOffset ftspearSkinOffset = new ModelOffset(new Vector3(-0.55f, 0.025f, 0.025f), new Vector3(0, -90, 0), new Vector3(0.5f, 0.5f, 0.4f));
                 IWeaponSkinItemDefinition ftspearSkin = Interface.NewSkinItem(WeaponType.Spear, "Forgotten Technology", ItemFilter.None);
-                ftspearSkin.SetModel(AssetsController.GetAsset("ForgottenTechnologySpear", OverhaulAssetsPart.WeaponSkins),
+                ftspearSkin.SetModel(OverhaulAssetsController.GetAsset("ForgottenTechnologySpear", OverhaulAssetPart.WeaponSkins),
                     ftspearSkinOffset,
                     false,
                     false);
-                ftspearSkin.SetModel(AssetsController.GetAsset("ForgottenTechnologySpearFire", OverhaulAssetsPart.WeaponSkins),
+                ftspearSkin.SetModel(OverhaulAssetsController.GetAsset("ForgottenTechnologySpearFire", OverhaulAssetPart.WeaponSkins),
                    ftspearSkinOffset,
                     true,
                     false);
@@ -1470,7 +1470,7 @@ namespace CDOverhaul.Gameplay
             int skinsChecked = 0;
             foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
-                string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
+                string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? OverhaulAssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
                 if (!allAssetBundles.Contains(assetBundle))
                 {
                     allAssetBundles.Add(assetBundle);
@@ -1488,7 +1488,7 @@ namespace CDOverhaul.Gameplay
             skinsChecked = 0;
             foreach (string assetBundle in allAssetBundles)
             {
-                AssetsController.TryUnloadAssetBundle(assetBundle, true);
+                OverhaulAssetsController.TryUnloadAssetBundle(assetBundle, true);
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)allAssetBundles.Count);
                 yield return null;
@@ -1506,7 +1506,7 @@ namespace CDOverhaul.Gameplay
                 if (m1 != null && m1.Model != null)
                 {
                     string nameOfModel = m1.Model.name;
-                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
                     m1.SetModelVariant(gm, 0);
                 }
 
@@ -1514,7 +1514,7 @@ namespace CDOverhaul.Gameplay
                 if (m2 != null && m2.Model != null)
                 {
                     string nameOfModel = m2.Model.name;
-                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
                     m2.SetModelVariant(gm, 0);
                 }
 
@@ -1522,7 +1522,7 @@ namespace CDOverhaul.Gameplay
                 if (m3 != null && m3.Model != null)
                 {
                     string nameOfModel = m3.Model.name;
-                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
                     m3.SetModelVariant(gm, 0);
                 }
 
@@ -1530,7 +1530,7 @@ namespace CDOverhaul.Gameplay
                 if (m4 != null && m4.Model != null)
                 {
                     string nameOfModel = m4.Model.name;
-                    GameObject gm = AssetsController.GetAsset(nameOfModel, OverhaulAssetsPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
                     m4.SetModelVariant(gm, 0);
                 }
 

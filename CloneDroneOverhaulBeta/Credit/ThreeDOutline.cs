@@ -29,26 +29,18 @@ namespace CDOverhaul.Credits
 
         private void Awake()
         {
-            // Cache renderers
             renderers = GetComponentsInChildren<Renderer>();
 
             if (outlineFillMaterial == null || outlineMaskMaterial == null)
             {
-                outlineMaskMaterial = AssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetsPart.Part2);
-                outlineFillMaterial = AssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetsPart.Part2);
+                outlineMaskMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetPart.Part2);
+                outlineFillMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetPart.Part2);
                 outlineMaskMaterial.name = "OutlineMask (Instance)";
                 outlineFillMaterial.name = "OutlineFill (Instance)";
             }
 
-            // Retrieve or generate smooth normals
             LoadSmoothNormals();
         }
-
-        /*private void OnDestroy()
-        {
-            Destroy(outlineFillMaterial);
-            Destroy(outlineMaskMaterial);
-        }*/
 
         private void OnEnable()
         {

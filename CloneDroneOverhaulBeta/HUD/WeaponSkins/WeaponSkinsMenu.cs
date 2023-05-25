@@ -511,7 +511,7 @@ namespace CDOverhaul.HUD
             m_ParentToField.text = CurrentlyEditingItem.ParentTo;
             m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.ModVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
 
-            m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? AssetsController.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
+            m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
 
             m_SPLaserModelField.text = CurrentlyEditingItem.SingleplayerLaserModelName;
             m_SPFireModelField.text = CurrentlyEditingItem.SingleplayerFireModelName;
@@ -613,8 +613,8 @@ namespace CDOverhaul.HUD
 
             CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName = m_CustomVFXEnvCollisionField.text;
 
-            if (!AssetsController.HasAssetBundle(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
-            CurrentlyEditingItem.AssetBundleFileName = AssetsController.HasAssetBundle(m_AssetBundleField.text) ? m_AssetBundleField.text : AssetsController.ModAssetBundle_Skins;
+            if (!OverhaulAssetsController.DoesAssetBundleExist(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
+            CurrentlyEditingItem.AssetBundleFileName = OverhaulAssetsController.DoesAssetBundleExist(m_AssetBundleField.text) ? m_AssetBundleField.text : OverhaulAssetsController.ModAssetBundle_Skins;
 
             CurrentlyEditingItem.ParentTo = m_ParentToField.text;
             bool successMinVersionParsing = Version.TryParse(m_MinVersionField.text, out Version minVersion);
@@ -627,7 +627,7 @@ namespace CDOverhaul.HUD
             bool hasSPLaserModel = true;
             try
             {
-                AssetsController.PreloadAsset<GameObject>(m_SPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                OverhaulAssetsController.PreloadAsset<GameObject>(m_SPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
@@ -638,7 +638,7 @@ namespace CDOverhaul.HUD
             bool hasSPFireModel = true;
             try
             {
-                AssetsController.PreloadAsset<GameObject>(m_SPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                OverhaulAssetsController.PreloadAsset<GameObject>(m_SPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
@@ -651,7 +651,7 @@ namespace CDOverhaul.HUD
                 bool hasMPLaserModel = true;
                 try
                 {
-                    AssetsController.PreloadAsset<GameObject>(m_MPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                    OverhaulAssetsController.PreloadAsset<GameObject>(m_MPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {
@@ -662,7 +662,7 @@ namespace CDOverhaul.HUD
                 bool hasMPFireModel = true;
                 try
                 {
-                    AssetsController.PreloadAsset<GameObject>(m_MPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                    OverhaulAssetsController.PreloadAsset<GameObject>(m_MPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {

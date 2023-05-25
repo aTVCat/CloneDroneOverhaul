@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay
                 Multiplier = 1f,
                 Saturation = 0.75f,
 
-                AssetBundleFileName = AssetsController.ModAssetBundle_Skins,
+                AssetBundleFileName = OverhaulAssetsController.ModAssetBundle_Skins,
 
                 SingleplayerLaserModelName = "SwordSkinDarkPast",
                 SingleplayerLaserModelOffset = ModelOffset.GetDefaultOffset(),
@@ -70,7 +70,7 @@ namespace CDOverhaul.Gameplay
                 Multiplier = item.Multiplier,
                 Saturation = item.Saturation,
 
-                AssetBundleFileName = string.IsNullOrEmpty(item.OverrideAssetBundle) ? AssetsController.ModAssetBundle_Skins : item.OverrideAssetBundle,
+                AssetBundleFileName = string.IsNullOrEmpty(item.OverrideAssetBundle) ? OverhaulAssetsController.ModAssetBundle_Skins : item.OverrideAssetBundle,
 
                 SingleplayerLaserModelName = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Model.name : "ImperialSword",
                 SingleplayerLaserModelOffset = (item as IWeaponSkinItemDefinition).GetModel(false, false) != null && (item as IWeaponSkinItemDefinition).GetModel(false, false).Model != null ? (item as IWeaponSkinItemDefinition).GetModel(false, false).Offset : ModelOffset.GetDefaultOffset(),

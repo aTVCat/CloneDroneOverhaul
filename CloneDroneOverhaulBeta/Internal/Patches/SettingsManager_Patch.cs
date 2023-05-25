@@ -8,6 +8,13 @@ namespace CDOverhaul.Patches
     internal static class SettingsManager_Patch
     {
         [HarmonyPostfix]
+        [HarmonyPatch("SetQuality")]
+        private static void SetQuality_Postfix()
+        {
+            OverhaulGraphicsController.RefreshLightsCount();
+        }
+
+        [HarmonyPostfix]
         [HarmonyPatch("GetMultiplayerFavColorIndex")]
         private static void GetMultiplayerFavColorIndex_Postfix(ref int __result)
         {

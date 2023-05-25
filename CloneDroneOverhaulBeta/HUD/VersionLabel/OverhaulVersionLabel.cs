@@ -1,4 +1,6 @@
-﻿using CDOverhaul.Workshop;
+﻿using CDOverhaul.NetworkAssets;
+using CDOverhaul.Workshop;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +11,18 @@ namespace CDOverhaul.HUD
         [OverhaulSetting("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
         public static bool WatermarkEnabled;
 
+        public static bool ShowDiscordLabel = true;
+
         private OverhaulParametersMenu m_ParametersMenu;
 
         private Text m_VersionLabel;
         private Text m_TitleScreenUIVersionLabel;
 
         private Transform m_DiscordHolderTransform;
-        private Text m_DiscordUserLabel;
-        private Button m_DiscordDisableMessageButton;
+        private Transform m_ServersList;
+        private PrefabAndContainer m_ServersContainer;
+        private Button m_ServersButton;
+        private Button m_CloseButton;
 
         private Transform m_UpperButtonsContainer;
         private Button m_PatchNotesButton;
@@ -24,6 +30,8 @@ namespace CDOverhaul.HUD
         private GameObject m_TitleScreenRootButtons;
 
         private bool m_wasOnTitleScreenBefore;
+
+        private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
 
         public override void Initialize()
         {
@@ -39,7 +47,18 @@ namespace CDOverhaul.HUD
             }
 
             m_DiscordHolderTransform = MyModdedObject.GetObject<Transform>(1);
-            m_DiscordUserLabel = MyModdedObject.GetObject<Text>(2);
+            m_DiscordHolderTransform.gameObject.SetActive(ShowDiscordLabel);
+            m_ServersList = MyModdedObject.GetObject<Transform>(9);
+            m_ServersList.gameObject.SetActive(false);
+            m_ServersContainer = new PrefabAndContainer(MyModdedObject, 10, 11);
+            m_ServersButton = MyModdedObject.GetObject<Button>(7);
+            m_ServersButton.onClick.AddListener(onServersButtonClicked);
+            m_CloseButton = MyModdedObject.GetObject<Button>(8);
+            m_CloseButton.onClick.AddListener(delegate
+            {
+                ShowDiscordLabel = false;
+                m_DiscordHolderTransform.gameObject.SetActive(false);
+            });
 
             m_VersionLabel = MyModdedObject.GetObject<Text>(0);
             m_VersionLabel.gameObject.SetActive(true);
@@ -65,8 +84,6 @@ namespace CDOverhaul.HUD
             m_VersionLabel = null;
             m_TitleScreenUIVersionLabel = null;
             m_DiscordHolderTransform = null;
-            m_DiscordUserLabel = null;
-            m_DiscordDisableMessageButton = null;
 
             OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
         }
@@ -99,20 +116,6 @@ namespace CDOverhaul.HUD
             }
         }
 
-        public void RefreshDiscordUserInfo()
-        {
-            m_DiscordHolderTransform.gameObject.SetActive(false);
-
-            bool discordInitialized = !OverhaulVersion.IsUpdate2Hotfix && (m_ParametersMenu == null || !m_ParametersMenu.gameObject.activeSelf) && GameModeManager.IsOnTitleScreen() && OverhaulDiscordController.SuccessfulInitialization && OverhaulDiscordController.Instance.UserID != -1;
-            if (!discordInitialized)
-            {
-                return;
-            }
-
-            m_DiscordHolderTransform.gameObject.SetActive(true);
-            m_DiscordUserLabel.text = OverhaulDiscordController.Instance.UserName;
-        }
-
         private void refreshVisibility()
         {
             m_wasOnTitleScreenBefore = !m_wasOnTitleScreenBefore;
@@ -130,6 +133,98 @@ namespace CDOverhaul.HUD
             overhaulPatchNotesUI.Show();
         }
 
+        private void onServersButtonClicked()
+        {
+            m_ServersList.gameObject.SetActive(!m_ServersList.gameObject.activeSelf);
+            if (m_ServersList.gameObject.activeSelf)
+            {
+                if (!m_LoadedTextures.IsNullOrEmpty())
+                {
+                    foreach (Texture t in m_LoadedTextures)
+                    {
+                        if (t != null && t)
+                        {
+                            Destroy(t);
+                        }
+                    }
+                    m_LoadedTextures.Clear();
+                }
+                m_ServersContainer.ClearContainer();
+
+                ModdedObject overhaulServer = m_ServersContainer.CreateNew();
+                overhaulServer.GetObject<Text>(0).text = "Clone Drone Overhaul Mod Discord";
+                overhaulServer.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    Application.OpenURL("https://discord.gg/qUkRhaqZZZ");
+                });
+                OverhaulNetworkDownloadHandler h1 = new OverhaulNetworkDownloadHandler();
+                h1.DoneAction = delegate
+                {
+                    if (h1 != null && !h1.Error && overhaulServer != null)
+                    {
+                        m_LoadedTextures.Add(h1.DownloadedTexture);
+                        overhaulServer.GetObject<RawImage>(1).texture = h1.DownloadedTexture;
+                    }
+                    else
+                    {
+                        if (h1.DownloadedTexture)
+                        {
+                            Destroy(h1.DownloadedTexture);
+                        }
+                    }
+                };
+                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Overhaul Mod Discord.png", h1);
+
+                ModdedObject modBotServer = m_ServersContainer.CreateNew();
+                modBotServer.GetObject<Text>(0).text = "Clone Drone Mod-Bot discord";
+                modBotServer.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    Application.OpenURL("https://discord.gg/Em4n6gB");
+                });
+                OverhaulNetworkDownloadHandler h2 = new OverhaulNetworkDownloadHandler();
+                h2.DoneAction = delegate
+                {
+                    if (h2 != null && !h2.Error && overhaulServer != null)
+                    {
+                        m_LoadedTextures.Add(h2.DownloadedTexture);
+                        modBotServer.GetObject<RawImage>(1).texture = h2.DownloadedTexture;
+                    }
+                    else
+                    {
+                        if (h2.DownloadedTexture)
+                        {
+                            Destroy(h2.DownloadedTexture);
+                        }
+                    }
+                };
+                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Mod-Bot discord.png", h2);
+
+                ModdedObject doborogServer = m_ServersContainer.CreateNew();
+                doborogServer.GetObject<Text>(0).text = "Doborog";
+                doborogServer.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    Application.OpenURL("https://discord.com/invite/VY7zEw2chm");
+                });
+                OverhaulNetworkDownloadHandler h3 = new OverhaulNetworkDownloadHandler();
+                h3.DoneAction = delegate
+                {
+                    if (h3 != null && !h3.Error && overhaulServer != null)
+                    {
+                        m_LoadedTextures.Add(h3.DownloadedTexture);
+                        doborogServer.GetObject<RawImage>(1).texture = h3.DownloadedTexture;
+                    }
+                    else
+                    {
+                        if (h3.DownloadedTexture)
+                        {
+                            Destroy(h3.DownloadedTexture);
+                        }
+                    }
+                };
+                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Doborog.png", h3);
+            }
+        }
+
         private void Update()
         {
             if (IsDisposedOrDestroyed())
@@ -145,8 +240,6 @@ namespace CDOverhaul.HUD
                     RefreshVersionLabel();
                 }
                 m_wasOnTitleScreenBefore = isOnTitleScreen;
-
-                RefreshDiscordUserInfo();
             }
         }
     }

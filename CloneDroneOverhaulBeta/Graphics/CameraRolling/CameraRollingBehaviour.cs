@@ -9,6 +9,10 @@ namespace CDOverhaul.Graphics
         public static readonly float TiltMoveHorizontal = 1.8f;
         public static readonly float TiltToAddWhenOneLegged = 2.6f;
 
+        public static float AdditionalXOffset;
+        public static float AdditionalOffsetMultiplier = 0.6f;
+        public static float AdditionalZOffset;
+
         [SettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
         [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
         public static int TargetFPS;
@@ -139,12 +143,18 @@ namespace CDOverhaul.Graphics
                 x += 1f;
             }
 
-            UpdateRotation(x, 0f, z);
+            UpdateRotation(x + AdditionalXOffset, 0f, z + AdditionalZOffset);
         }
 
         private static bool XOR(bool a, bool b)
         {
             return (a || b) && !(a && b);
+        }
+
+        public static void UpdateViewBobbing()
+        {
+            AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
+            AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
         }
     }
 }

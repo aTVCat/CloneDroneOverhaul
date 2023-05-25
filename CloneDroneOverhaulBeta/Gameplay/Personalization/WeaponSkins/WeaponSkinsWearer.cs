@@ -364,7 +364,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if (!SpawnedSkins.IsNullOrEmpty()) // Todo: Rewrite skin instances removal and spawning code. It is a little bit garbage
+            if (!SpawnedSkins.IsNullOrEmpty())
             {
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -18,13 +19,32 @@ namespace CDOverhaul
 
             if (!string.IsNullOrEmpty(img43fileName))
             {
-                Image_4_3 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModDirectory + "Assets/Settings/" + img43fileName));
+                Image_4_3 = getSprite(img43fileName);
                 return;
             }
             if (!string.IsNullOrEmpty(img169fileName))
             {
-                Image_16_9 = OverhaulUtilities.TextureAndMaterialUtils.FastSpriteCreate(OverhaulUtilities.TextureAndMaterialUtils.LoadTexture(OverhaulMod.Core.ModDirectory + "Assets/Settings/" + img169fileName));
+                Image_16_9 = getSprite(img169fileName);
             }
+        }
+
+        private static Sprite getSprite(string fileName)
+        {
+            string path = OverhaulMod.Core.ModDirectory + "Assets/Settings/" + fileName;
+            Texture2D texture = new Texture2D(1, 1);
+            if (File.Exists(path))
+            {
+                byte[] content = File.ReadAllBytes(path);
+                if (!content.IsNullOrEmpty())
+                {
+                    texture.filterMode = FilterMode.Bilinear;
+                    texture.LoadImage(content, false);
+                    texture.Apply();
+
+                    return texture.FastSpriteCreate();
+                }
+            }
+            return null;
         }
     }
 }

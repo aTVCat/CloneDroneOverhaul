@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace CDOverhaul.Workshop
 {
-    // Todo: Organize all things
     public static class OverhaulSteamBrowser
     {
-        public static readonly AppId_t AppID = new AppId_t(597170U);
+        public static readonly AppId_t CloneDroneSteamAppID = new AppId_t(597170U);
 
         private static readonly List<ulong> m_KnownUserIDs = new List<ulong>();
         private static readonly List<PublishedFileId_t> m_DownloadingItems = new List<PublishedFileId_t>();
@@ -25,7 +24,7 @@ namespace CDOverhaul.Workshop
             OverhaulWorkshopRequestResult requestResult = new OverhaulWorkshopRequestResult();
             OverhaulRequestProgressInfo.SetProgress(progressInfo, 0f);
 
-            UGCQueryHandle_t request = SteamUGC.CreateQueryAllUGCRequest(query, typeOfContent, AppID, AppID, (uint)page);
+            UGCQueryHandle_t request = SteamUGC.CreateQueryAllUGCRequest(query, typeOfContent, CloneDroneSteamAppID, CloneDroneSteamAppID, (uint)page);
             if (!CheckRequest(request))
             {
                 requestResult.Error = true;
@@ -296,7 +295,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
             });
-            SteamAPICall_t apiCall = SteamUGC.AddItemToFavorites(AppID, id);
+            SteamAPICall_t apiCall = SteamUGC.AddItemToFavorites(CloneDroneSteamAppID, id);
             result.Set(apiCall, null);
         }
 
@@ -311,7 +310,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
             });
-            SteamAPICall_t apiCall = SteamUGC.RemoveItemFromFavorites(AppID, id);
+            SteamAPICall_t apiCall = SteamUGC.RemoveItemFromFavorites(CloneDroneSteamAppID, id);
             result.Set(apiCall, null);
         }
     }

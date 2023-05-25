@@ -26,7 +26,7 @@ namespace CDOverhaul
 
             string playFabID = GameModeManager.IsMultiplayer() ? mover.GetPlayFabID() : ExclusivityController.GetLocalPlayfabID();
             m_PlayerInfos.TryGetValue(playFabID, out ExclusiveColorInfo info);
-            if(info.ColorToReplace == 0)
+            if (info.ColorToReplace == 0)
             {
                 return;
             }

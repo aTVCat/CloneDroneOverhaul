@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.Localization;
-using CDOverhaul.NetworkAssets.AdditionalContent;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,7 +66,7 @@ namespace CDOverhaul.Patches
             {
                 Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
             });
-            moddedObject.GetObject<Button>(8).onClick.AddListener(OverhaulController.GetController<OverhaulAdditionalContentUI>().Show);
+            //moddedObject.GetObject<Button>(8).onClick.AddListener(OverhaulController.GetController<OverhaulAdditionalContentUI>().Show);
             moddedObject.GetObject<Button>(8).interactable = !OverhaulVersion.IsUpdate2Hotfix;
             moddedObject.GetObject<Transform>(9).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             m_BugReportText = moddedObject.GetObject<Text>(7);

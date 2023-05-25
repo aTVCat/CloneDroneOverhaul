@@ -81,28 +81,6 @@ namespace CDOverhaul
             DeconstructCore();
         }
 
-        /*
-        /// <summary>
-        /// Currently used to make modded level editor objects real
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        protected override UnityEngine.Object OnResourcesLoad(string path)
-        {
-            if (OverhaulVersion.Upd2Hotfix || !IsModInitialized)
-            {
-                return null;
-            }
-
-            UnityEngine.Object @object = LevelEditorObjectsController.GetObject(path);
-            if (@object == null && OverhaulLevelAdder.HasLevel(path))
-            {
-                @object = new TextAsset(OverhaulLevelAdder.GetLevel(ref path));
-            }
-
-            return @object;
-        }*/
-
         /// <summary>
         /// Used for events
         /// </summary>
@@ -116,11 +94,11 @@ namespace CDOverhaul
 
             // An event that is usually called before FPM full initialization
             OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
-            _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitialziationAndDispatchEvent(firstPersonMover));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitializationAndDispatchEvent(firstPersonMover));
         }
 
         /// <summary>
-        /// Create the instance of mod core monobehaviour
+        /// Create the instance of mod core
         /// </summary>
         internal void TryCreateCore()
         {
@@ -160,7 +138,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="firstPersonMover"></param>
         /// <returns></returns>
-        private IEnumerator waitForRobotInitialziationAndDispatchEvent(FirstPersonMover firstPersonMover)
+        private IEnumerator waitForRobotInitializationAndDispatchEvent(FirstPersonMover firstPersonMover)
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.15f);

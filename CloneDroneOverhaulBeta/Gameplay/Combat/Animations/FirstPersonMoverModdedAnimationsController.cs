@@ -42,15 +42,15 @@ namespace CDOverhaul.Gameplay.Combat
                 {
                     animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
                 }
-                AnimationClip clip = AssetsController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetsPart.Combat_Update);
+                AnimationClip clip = OverhaulAssetsController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip, clip.name);
-                AnimationClip clip2 = AssetsController.GetAsset<AnimationClip>("WeaponUse_PrepareBoomerang", OverhaulAssetsPart.Combat_Update);
+                AnimationClip clip2 = OverhaulAssetsController.GetAsset<AnimationClip>("WeaponUse_PrepareBoomerang", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip2, clip2.name);
-                AnimationClip clip3 = AssetsController.GetAsset<AnimationClip>("WeaponUse_ThrowBoomerang", OverhaulAssetsPart.Combat_Update);
+                AnimationClip clip3 = OverhaulAssetsController.GetAsset<AnimationClip>("WeaponUse_ThrowBoomerang", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip3, clip3.name);
-                AnimationClip clip4 = AssetsController.GetAsset<AnimationClip>("WeaponUse_PickUpBoomerang", OverhaulAssetsPart.Combat_Update);
+                AnimationClip clip4 = OverhaulAssetsController.GetAsset<AnimationClip>("WeaponUse_PickUpBoomerang", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip4, clip4.name);
-                AnimationClip clip5 = AssetsController.GetAsset<AnimationClip>("Combo_DoubleStrike", OverhaulAssetsPart.Combat_Update);
+                AnimationClip clip5 = OverhaulAssetsController.GetAsset<AnimationClip>("Combo_DoubleStrike", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip5, clip5.name);
             }
 

@@ -106,11 +106,12 @@ namespace CDOverhaul.Graphics
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
 
-            m_ChromaMaterial = AssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetsPart.Part2);
-            m_VignetteMaterial = AssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetsPart.Part2);
+            m_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
+            m_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
             m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
-            m_EdgeBlur = AssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetsPart.Part2);
+            m_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
             patchAllCameras();
+            RefreshLightsCount();
 
             if (!m_ConfiguredEventButtons)
             {
@@ -447,6 +448,31 @@ namespace CDOverhaul.Graphics
                     break;
                 default:
                     Application.targetFrameRate = -1;
+                    break;
+            }
+        }
+
+        public static void RefreshLightsCount()
+        {
+            if (DelegateScheduler.Instance == null)
+            {
+                return;
+            }
+            DelegateScheduler.Instance.Schedule(refreshLightsCount, 0.2f);
+        }
+
+        private static void refreshLightsCount()
+        {
+            switch (QualitySettings.GetQualityLevel())
+            {
+                case 2:
+                    QualitySettings.pixelLightCount = 18;
+                    break;
+                case 1:
+                    QualitySettings.pixelLightCount = 6;
+                    break;
+                default:
+                    QualitySettings.pixelLightCount = 2;
                     break;
             }
         }

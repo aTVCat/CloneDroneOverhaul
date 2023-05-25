@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.HUD;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Localization
@@ -13,6 +14,7 @@ namespace CDOverhaul.Localization
             MyModdedObject.GetObject<Button>(0).onClick.AddListener(Hide);
             MyModdedObject.GetObject<Button>(6).onClick.AddListener(EndEditingLang);
             MyModdedObject.GetObject<Button>(8).onClick.AddListener(NewTranslation);
+            MyModdedObject.GetObject<Button>(9).onClick.AddListener(OverhaulLocalizationController.SaveData);
 
             Hide();
         }
@@ -21,6 +23,8 @@ namespace CDOverhaul.Localization
         {
             base.gameObject.SetActive(true);
             bool error = OverhaulLocalizationController.Error;
+
+            OverhaulUIDescriptionTooltip.SetActive(true, "Localization Editor", "Translate the mod!");
 
             MyModdedObject.GetObject<Transform>(3).gameObject.SetActive(error);
             if (error)
@@ -54,6 +58,7 @@ namespace CDOverhaul.Localization
         public void Hide()
         {
             base.gameObject.SetActive(false);
+            OverhaulUIDescriptionTooltip.SetActive(false);
 
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)
@@ -94,19 +99,8 @@ namespace CDOverhaul.Localization
                 return;
             }
 
-            OverhaulLocalizationController.Localization.AddTranslation("SampleTranslation");
+            OverhaulLocalizationController.Localization.AddTranslation("CoolThingTranslation");
             EditLang(m_EditingLang);
         }
-
-#if DEBUG
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                OverhaulLocalizationController.SaveData();
-                OverhaulLocalizationController.TryLocalizeHUD();
-            }
-        }
-#endif
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 namespace CDOverhaul.NetworkAssets
 {
     /// <summary>
-    /// Controller that can download stuff from GitHub
+    /// Controller that can download stuff from GitHub<br>Todo: Cleanup code</br>
     /// </summary>
     public static class OverhaulNetworkController
     {

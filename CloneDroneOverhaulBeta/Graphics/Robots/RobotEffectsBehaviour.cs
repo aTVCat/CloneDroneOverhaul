@@ -14,7 +14,7 @@ namespace CDOverhaul.Graphics.Robots
 
         private static void initializeVFX()
         {
-            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(AssetsController.GetAsset("VFX_Sparks", OverhaulAssetsPart.Part2).transform, 10, RobotDeathSparksVFXID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, RobotDeathSparksVFXID);
             m_HasInitializedVFX = true;
         }
 

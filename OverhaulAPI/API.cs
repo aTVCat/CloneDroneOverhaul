@@ -42,11 +42,7 @@ namespace OverhaulAPI
 
             APIInstance = new GameObject("OverhaulAPI v" + APIVersion.ToString()).AddComponent<API>();
 
-            GamemodeAPI.Reset();
             OverhaulPostProcessBehaviour.Reset();
-            MultiplayerAPI.Init();
-            WeaponsAdder.Init();
-            UpgradesAdder.Init();
 
             return APIInstance;
         }

@@ -15,7 +15,7 @@ namespace CDOverhaul.Gameplay
                 return;
             }
 
-            if (AssetsController.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
+            if (OverhaulAssetsController.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
             {
                 if (vfx == null)
                 {

@@ -9,7 +9,7 @@ namespace CDOverhaul
         [OverhaulSetting("Gameplay.Discord.Enable Overhaul Activity", true, false, "Restart the game if you've toggled this setting")]
         public static bool EnableDiscordActivity;
 
-        public const long OverhaulClientID = 1091373211163308073;
+        public const long OverhaulModApplicationID = 1091373211163308073;
         public const CreateFlags CreateFlag = CreateFlags.NoRequireDiscord;
 
         public static OverhaulDiscordController Instance;
@@ -41,12 +41,7 @@ namespace CDOverhaul
         {
             get
             {
-                if (m_HasUser)
-                {
-                    return m_User.Id;
-                }
-
-                if (!SuccessfulInitialization)
+                if (!SuccessfulInitialization || !m_HasUser)
                 {
                     return -1;
                 }
@@ -203,7 +198,7 @@ namespace CDOverhaul
 
             try
             {
-                client = new Discord.Discord(OverhaulClientID, (ulong)CreateFlag);
+                client = new Discord.Discord(OverhaulModApplicationID, (ulong)CreateFlag);
             }
             catch
             {

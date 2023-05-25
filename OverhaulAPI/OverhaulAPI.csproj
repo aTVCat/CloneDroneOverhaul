@@ -49,9 +49,8 @@
     <Reference Include="ModLibrary">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\OverhaulCompiled\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -269,24 +268,14 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Audio\AudioAPI.cs" />
-    <Compile Include="Gamemodes\GamemodeAPI.cs" />
-    <Compile Include="Gamemodes\IOverhaulGamemode.cs" />
-    <Compile Include="Multiplayer\IMultiplayerDataContainer.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabContainer.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabController.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabInstanceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
     <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
-    <Compile Include="UnsortedClasses\CustomUpgrades\UpgradesAdder.cs" />
-    <Compile Include="UnsortedClasses\CustomWeapons\AddedWeaponModel.cs" />
-    <Compile Include="UnsortedClasses\FastSerialization.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
     <Compile Include="UnsortedClasses\ModelOffset.cs" />
-    <Compile Include="UnsortedClasses\MultiplayerAPI.cs" />
-    <Compile Include="UnsortedClasses\MultiplayerEventListener.cs" />
-    <Compile Include="UnsortedClasses\SerializeTransform.cs" />
-    <Compile Include="UnsortedClasses\CustomWeapons\WeaponsAdder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

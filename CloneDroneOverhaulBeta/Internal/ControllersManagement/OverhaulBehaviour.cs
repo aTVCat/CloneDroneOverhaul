@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CDOverhaul
 {
     /// <summary>
-    /// MonoBehaviour class that will be used in mod
+    /// MonoBehaviour class that replaces usual <see cref="MonoBehaviour"/>
     /// </summary>
     public class OverhaulBehaviour : MonoBehaviour, IDisposable
     {

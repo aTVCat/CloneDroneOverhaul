@@ -6,6 +6,9 @@ namespace CDOverhaul
 {
     public class SettingInfo
     {
+        /// <summary>
+        /// <b>Example: </b>Category.Section.Setting
+        /// </summary>
         public string RawPath { get; set; }
         public object DefaultValue { get; set; }
         public FieldInfo Field { get; set; }

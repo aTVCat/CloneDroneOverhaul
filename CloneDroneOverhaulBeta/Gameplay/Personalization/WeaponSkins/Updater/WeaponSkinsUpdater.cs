@@ -214,8 +214,8 @@ namespace CDOverhaul.Gameplay
                     {
                         foreach (WeaponSkinsImportedItemDefinition def in m_SkinsWaitingABToDownload[assetBundle])
                         {
-                            if(AssetsController.HasAssetBundle(assetBundle))
-                            c.ImportSkin(def, assetBundle);
+                            if (OverhaulAssetsController.DoesAssetBundleExist(assetBundle))
+                                c.ImportSkin(def, assetBundle);
                         }
                     }
                     // m_SkinsWaitingABToDownload.Remove(assetBundle);
