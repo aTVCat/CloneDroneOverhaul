@@ -47,12 +47,13 @@ namespace CDOverhaul.Workshop
             },
         };
 
+        public static string IconDirectory => OverhaulMod.Core.ModDirectory + "Assets/Workshop/Ico/";
+
         public static readonly EUGCQuery[] GenericRanks = new EUGCQuery[]
         {
             EUGCQuery.k_EUGCQuery_RankedByVote,
             EUGCQuery.k_EUGCQuery_RankedByTrend,
             EUGCQuery.k_EUGCQuery_RankedByPublicationDate,
-            EUGCQuery.k_EUGCQuery_RankedByTotalVotesAsc,
             EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions
         };
 
@@ -114,6 +115,8 @@ namespace CDOverhaul.Workshop
             private set;
         }
 
+        public int PageCount;
+
         public bool? CurrentItemVote;
 
         public OverhaulRequestProgressInfo CurrentRequestProgress;
@@ -125,6 +128,7 @@ namespace CDOverhaul.Workshop
         }
 
         private float m_UnscaledTimeClickedOnOption;
+        private float m_TimeToAllowPressingReloadButton;
 
         #endregion
 
@@ -192,6 +196,12 @@ namespace CDOverhaul.Workshop
         private Button m_ItemCreatorPageButton;
         private Button m_CopyItemLinkButton;
 
+        private Button m_PageSelectionButton;
+        private Text m_CurrentPageText;
+        private Transform m_PageSelectionTransform;
+        private PrefabAndContainer m_PageContainer;
+        private Button m_ReloadPageButton;
+
         private PrefabAndContainer m_AdditionalPreviewsContainer;
         private LoadingIndicator m_ItemDownloadLI;
 
@@ -246,6 +256,17 @@ namespace CDOverhaul.Workshop
             m_ItemPageViewTransform.gameObject.SetActive(false);
             m_PageTransform = MyModdedObject.GetObject<Transform>(21);
             _ = m_PageTransform.gameObject.AddComponent<ItemViewPageBehaviour>();
+            m_ReloadPageButton = MyModdedObject.GetObject<Button>(51);
+            m_ReloadPageButton.onClick.AddListener(RefreshLevelsList);
+
+            m_PageSelectionButton = MyModdedObject.GetObject<Button>(49);
+            m_PageSelectionButton.onClick.AddListener(TogglePageSelectionPanel);
+            m_CurrentPageText = MyModdedObject.GetObject<Text>(50);
+            m_CurrentPageText.text = "Page [1]";
+            m_PageSelectionTransform = MyModdedObject.GetObject<Transform>(46);
+            m_PageSelectionTransform.gameObject.SetActive(false);
+            m_PageContainer = new PrefabAndContainer(MyModdedObject, 47, 48);
+            Page = 1;
 
             m_ManagementButtonsContainer = MyModdedObject.GetObject<Transform>(41);
             m_ItemLoadingIndicatorTransform = MyModdedObject.GetObject<Transform>(34);
@@ -298,15 +319,30 @@ namespace CDOverhaul.Workshop
             int i = 0;
             do
             {
-                if (i == 3)
+                if (i == 3 && array.Length > 4)
                 {
                     ModdedObject moreButton = m_RanksContainer.CreateNew();
                     moreButton.GetObject<Text>(0).text = string.Format("More [{0}]", array.Length - i);
+                    moreButton.GetObject<Transform>(2).gameObject.SetActive(false);
                     moreButton.GetComponent<Button>().onClick.AddListener(delegate
                     {
                         ShowRanksDropdown(array, 3, moreButton.transform.position.y);
                     });
-                    moreButton.GetObject<Transform>(2).gameObject.SetActive(false);
+
+                    OverhaulNetworkDownloadHandler iconDownloadHandler = new OverhaulNetworkDownloadHandler();
+                    iconDownloadHandler.DoneAction = delegate
+                    {
+                        if (moreButton != null && iconDownloadHandler != null && !iconDownloadHandler.Error)
+                        {
+                            RawImage ri = moreButton.GetObject<RawImage>(1);
+                            ri.texture = iconDownloadHandler.DownloadedTexture;
+                            ri.texture.filterMode = FilterMode.Point;
+                            (ri.texture as Texture2D).Apply();
+                            return;
+                        }
+                        if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
+                    };
+                    OverhaulNetworkController.DownloadTexture(IconDirectory + "More.png", iconDownloadHandler);
                     return;
                 }
                 ModdedObject m = m_RanksContainer.CreateNew();
@@ -785,6 +821,35 @@ namespace CDOverhaul.Workshop
 
         #endregion
 
+        #region Page Selection
+
+        public void TogglePageSelectionPanel()
+        {
+            bool active = m_PageSelectionTransform.gameObject.activeSelf;
+            m_PageSelectionTransform.gameObject.SetActive(!active);
+
+            if (!active)
+            {
+                m_PageContainer.ClearContainer();
+
+                int i = 1;
+                do
+                {
+                    int pageIndex = i;
+                    ModdedObject page = m_PageContainer.CreateNew();
+                    page.GetObject<Text>(0).text = i.ToString();
+                    page.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        Page = pageIndex;
+                        RefreshLevelsList();
+                    });
+                    i++;
+                } while (i < PageCount);
+            }
+        }
+
+        #endregion
+
         #region Errors
 
         public void SetErrorWindowActive(bool value)
@@ -837,6 +902,8 @@ namespace CDOverhaul.Workshop
 
         private void Update()
         {
+            m_ReloadPageButton.interactable = Time.unscaledTime >= m_TimeToAllowPressingReloadButton;
+
             LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
             if (ShouldResetRequest())
             {
@@ -875,14 +942,19 @@ namespace CDOverhaul.Workshop
             }
 
             IsPopulatingItems = true;
+            m_CurrentPageText.text = string.Format("Page [{0}]", Page);
             m_WorkshopItemsContainer.ClearContainer();
+            m_PageSelectionTransform.gameObject.SetActive(false);
+            m_PageSelectionButton.interactable = false;
             m_UnscaledTimeClickedOnOption = Time.unscaledTime;
+            m_TimeToAllowPressingReloadButton = m_UnscaledTimeClickedOnOption + 1f;
             CurrentRequestResult = null;
             CurrentRequestProgress = new OverhaulRequestProgressInfo();
 
+            SetErrorWindowActive(false);
             LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
-            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, LevelTypeRequiredTag, 1, true, true);
+            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, LevelTypeRequiredTag, Page, true, true);
         }
 
         /// <summary>
@@ -893,13 +965,15 @@ namespace CDOverhaul.Workshop
         {
             IsPopulatingItems = false;
             CurrentRequestResult = requestResult;
+            PageCount = Mathf.Clamp(requestResult.PageCount, 1, int.MaxValue);
 
             if (requestResult == null || requestResult.Error)
             {
-                Debug.LogWarning("[OverhaulMod] RequestResult error");
+                SetErrorWindowActive(true);
                 return;
             }
 
+            m_PageSelectionButton.interactable = true;
             _ = StaticCoroutineRunner.StartStaticCoroutine(populateItemsCoroutine());
         }
         private IEnumerator populateItemsCoroutine()
@@ -1009,10 +1083,13 @@ namespace CDOverhaul.Workshop
                 entry.m_Rank = rank;
                 entry.m_SelectedFrame = moddedObject.GetObject<Transform>(2).gameObject;
                 entry.m_SelectedFrame.SetActive(false);
+                entry.m_RankIcon = moddedObject.GetObject<RawImage>(1);
+                entry.getIcon();
                 return entry;
             }
 
             private Button m_Button;
+            private RawImage m_RankIcon;
             private GameObject m_SelectedFrame;
             private EUGCQuery m_Rank;
 
@@ -1032,7 +1109,25 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
+                OverhaulWorkshopBrowserUI.BrowserUIInstance.Page = 1;
                 OverhaulWorkshopBrowserUI.BrowserUIInstance.SetRank(m_Rank, true);
+            }
+
+            private void getIcon()
+            {
+                OverhaulNetworkDownloadHandler iconDownloadHandler = new OverhaulNetworkDownloadHandler();
+                iconDownloadHandler.DoneAction = delegate
+                {
+                    if (iconDownloadHandler != null && !iconDownloadHandler.Error && m_RankIcon != null)
+                    {
+                        m_RankIcon.texture = iconDownloadHandler.DownloadedTexture;
+                        m_RankIcon.texture.filterMode = FilterMode.Point;
+                        (m_RankIcon.texture as Texture2D).Apply();
+                        return;
+                    }
+                    if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
+                };
+                OverhaulNetworkController.DownloadTexture(IconDirectory + m_Rank.ToString() + ".png", iconDownloadHandler);
             }
 
             private void Update()
@@ -1040,6 +1135,14 @@ namespace CDOverhaul.Workshop
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
                 {
                     m_SelectedFrame.SetActive(m_Rank == OverhaulWorkshopBrowserUI.BrowserUIInstance.RequiredRank);
+                }
+            }
+
+            private void OnDestroy()
+            {
+                if(m_RankIcon && m_RankIcon.texture != null && m_RankIcon.texture.name != "Placeholder-16x16")
+                {
+                    Destroy(m_RankIcon.texture);
                 }
             }
         }

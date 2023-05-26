@@ -79,6 +79,8 @@ namespace CDOverhaul.Workshop
                     return;
                 }
 
+                requestResult.PageCount = (int)(queryResult.m_unTotalMatchingResults / 50U + 1U);
+
                 OverhaulRequestProgressInfo.SetProgress(progressInfo, 0.7f);
                 OverhaulWorkshopItem[] items = new OverhaulWorkshopItem[queryResult.m_unNumResultsReturned];
                 int num = 0;

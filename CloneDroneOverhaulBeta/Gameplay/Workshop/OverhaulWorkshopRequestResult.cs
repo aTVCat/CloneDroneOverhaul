@@ -15,10 +15,16 @@ namespace CDOverhaul.Workshop
         {
             GC.SuppressFinalize(this);
             m_IsDisposed = true;
+            ItemsReceived = null;
         }
         ~OverhaulWorkshopRequestResult()
         {
             ((IDisposable)this).Dispose();
+        }
+
+        public OverhaulWorkshopRequestResult()
+        {
+            PageCount = 1;
         }
 
         public bool Error;
@@ -27,5 +33,6 @@ namespace CDOverhaul.Workshop
 
         public SteamUGCQueryCompleted_t QueryCompleted;
         public OverhaulWorkshopItem[] ItemsReceived;
+        public int PageCount;
     }
 }

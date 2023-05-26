@@ -4,93 +4,68 @@
         <name>OverhaulMod</name>
     </assembly>
     <members>
-        <member name="M:Discord.NetworkManager.GetPeerId">
+        <member name="T:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerEnvironment">
             <summary>
-            Get the local peer ID for this process.
+            A class where information about all modded objects and entities is stored
             </summary>
         </member>
-        <member name="M:Discord.NetworkManager.Flush">
+        <member name="P:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerCore.CoreInstance">
             <summary>
-            Send pending network messages.
+            The instance of the modded multiplayer core
             </summary>
         </member>
-        <member name="M:Discord.NetworkManager.OpenPeer(System.UInt64,System.String)">
+        <member name="F:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerCore.Prefabs">
             <summary>
-            Open a connection to a remote peer.
+            All prefabs that can work with this kind of multiplayer
             </summary>
         </member>
-        <member name="M:Discord.NetworkManager.UpdatePeer(System.UInt64,System.String)">
-            <summary>
-            Update the route data for a connected peer.
-            </summary>
-        </member>
-        <member name="M:Discord.NetworkManager.ClosePeer(System.UInt64)">
-            <summary>
-            Close the connection to a remote peer.
-            </summary>
-        </member>
-        <member name="M:Discord.NetworkManager.OpenChannel(System.UInt64,System.Byte,System.Boolean)">
-            <summary>
-            Open a message channel to a connected peer.
-            </summary>
-        </member>
-        <member name="M:Discord.NetworkManager.CloseChannel(System.UInt64,System.Byte)">
-            <summary>
-            Close a message channel to a connected peer.
-            </summary>
-        </member>
-        <member name="M:Discord.NetworkManager.SendMessage(System.UInt64,System.Byte,System.Byte[])">
-            <summary>
-            Send a message to a connected peer over an opened message channel.
-            </summary>
-        </member>
-        <member name="T:CDOverhaul.Gameplay.Combat.AdditionalAnimationsController">
+        <member name="T:CDOverhaul.Gameplay.Combat.FirstPersonMoverModdedAnimationsController">
             <summary>
             Allows managing animations, that are not in game
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.Default_Player_Speed">
+        <member name="F:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.Default_Player_Speed">
             <summary>
             The speed of every player in the game
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.Default_Enemy_Speed">
+        <member name="F:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.Default_Enemy_Speed">
             <summary>
             The speed of any robot in the game
             </summary>
         </member>
-        <member name="P:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.CharacterModel">
+        <member name="P:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.CharacterModel">
             <summary>
             Get cached character model instance
             </summary>
         </member>
-        <member name="P:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.HasCharacterModel">
+        <member name="P:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.HasCharacterModel">
             <summary>
             Check if we have cached character model
             </summary>
         </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.GetAnimator(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.GetAnimator(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
             <summary>
             Get animator script instance if we have one
             </summary>
             <param name="animatorType"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.HasAnimator(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.HasAnimator(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
             <summary>
             Check if we have animator of specified type
             </summary>
             <param name="animatorType"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.GetAnimatorSpeed(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType)">
+        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.GetAnimatorSpeed(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
             <summary>
             Get speed of specific character model animator
             </summary>
             <param name="animatorType"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.CombatOverhaulMechanic.SetAnimatorSpeed(CDOverhaul.Gameplay.Combat.CombatOverhaulAnimatorType,System.Single)">
+        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.SetAnimatorSpeed(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType,System.Single)">
             <summary>
             Set speed of specific character model animator
             </summary>
@@ -150,6 +125,116 @@
             <param name="name"></param>
             <param name="returnNullIfLocked"></param>
             <returns></returns>
+        </member>
+        <member name="T:CDOverhaul.Gameplay.MultipartWeaponBehaviour">
+            <summary>
+            By Zerkie#5342
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.None">
+            <summary>
+            Auto-Build disabled
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.Random">
+            <summary>
+            Random build
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.FullSword">
+            <summary>
+            Sword unlock + Fire sword 1 +  Fire sword 2
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.FullBow">
+            <summary>
+            Bow unlock + Fire arrows 1 + Arrow width 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.FullHammer">
+            <summary>
+            Hammer unlock + Hammer size 1 + Hammer size 2
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.FullSpear">
+            <summary>
+            Spear unlock + Shield + Fire spear
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.Kicker">
+            <summary>
+            Kick + Power kick + Energy capacity 1 + Energy capacity 2
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.LightKicker">
+            <summary>
+            Kick + Get up  + Energy capacity 1 + Energy capacity 2
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.ArmoredKicker">
+            <summary>
+            Kick + Armor
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.KickNDash">
+            <summary>
+            Kick + Energy capacity 1 + Energy capacity 2 +  Energy capacity 3
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.KickNRun">
+            <summary>
+            Kick + Jetpack + Energy capacity 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalSword">
+            <summary>
+            Sword unlock + Energy capacity 1 + Kick 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalFireSword">
+            <summary>
+            Sword unlock + Fire sword 1 + Energy capacity 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.JetPackSword">
+            <summary>
+            Sword unlock + Jetpack
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalBow">
+            <summary>
+            Bow unlock + Arrow width 1 + Energy capacity 1 + Kick
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalFireBow">
+            <summary>
+            Bow unlock + Fire arrows 1 + Energy capacity 1 + Kick
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalFireSpear">
+            <summary>
+            Spear unlock + Fire spear + Energy capacity 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalFireSpearKicker">
+            <summary>
+            Spear unlock + Fire spear + Kick
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalHammer">
+            <summary>
+            Hammer unlock + Hammer size 1 + Energy capacity 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.TacticalHammerKicker">
+            <summary>
+            Hammer unlock + Hammer size 1 + Kick
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.Spectator">
+            <summary>
+            Energy capacity 1 + Energy capacity 2 +  Energy capacity 3 + Energy recharge 1
+            </summary>
         </member>
         <member name="T:CDOverhaul.Gameplay.IWeaponSkinsControllerV2">
             <summary>
@@ -303,12 +388,6 @@
             </summary>
             <param name="descriptionFilename"></param>
         </member>
-        <member name="F:CDOverhaul.Gameplay.WeaponSkinsWearer.AllowSwitchSkinVFX">
-            <summary>
-            This VFX appears when user change skins
-            Todo: Make better VFX
-            </summary>
-        </member>
         <member name="F:CDOverhaul.Gameplay.WeaponSkinsWearer.SpawnedSkins">
             <summary>
             The collection of all instantiated skins
@@ -365,16 +444,19 @@
             Send <see cref="F:CDOverhaul.Gameplay.OverhaulGameplayCoreController.GamemodeChangedEventString"/> event
             </summary>
         </member>
-        <member name="T:CDOverhaul.Graphics.ArenaRevamp.ArenaRevampController">
-            <summary>
-            The main controller of arena revamp
-            </summary>
-        </member>
         <member name="M:CDOverhaul.Workshop.OverhaulWorkshopBrowserUI.OnReceivedWorkshopResult(CDOverhaul.Workshop.OverhaulWorkshopRequestResult)">
             <summary>
             Called when our steam workshop request is done
             </summary>
             <param name="requestResult"></param>
+        </member>
+        <member name="T:CDOverhaul.NetworkAssets.AdditionalContent.OverhaulAdditionalContentController">
+            <summary>
+            Todo: This system is going to have completely reworked.
+            <bt/>- Add support for loading all the stuff simultaneously.
+            <bt/>- Support for loading stuff from any folder and even steam workshop.
+            <br/>- Support for handling custom .dll files.
+            </summary>
         </member>
         <member name="T:CDOverhaul.NetworkAssets.OverhaulNetworkController">
             <summary>
@@ -422,22 +504,6 @@
             Set <see cref="P:UnityEngine.Canvas.pixelPerfect"/> value in <see cref="T:GameUIRoot"/>
             </summary>
             <param name="value"></param>
-        </member>
-        <member name="M:CDOverhaul.LevelEditor.LevelEditorObjectsController.AddObject(UnityEngine.Transform@,UnityEngine.Texture2D@,System.String@)">
-            <summary>
-            Add object to level editor
-            </summary>
-            <param name="theObject"></param>
-            <param name="thePreview"></param>
-            <param name="path"></param>
-            <param name="displayName"></param>
-        </member>
-        <member name="M:CDOverhaul.LevelEditor.LevelEditorObjectsController.GetObject(System.String@)">
-            <summary>
-            Returns <see cref="T:UnityEngine.Transform"/> or <see cref="T:UnityEngine.Texture2D"/>
-            </summary>
-            <param name="path"></param>
-            <returns></returns>
         </member>
         <member name="P:CDOverhaul.OverhaulDiscordController.CurrentGamemode">
             <summary>
@@ -499,9 +565,24 @@
             Revert patch changes, called when mod is disabled
             </summary>
         </member>
+        <member name="T:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements">
+            <summary>
+            Features that doesn't require player IDs to work. This class defines what things should be included in the build
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_SELECTION_OUTLINE_ENABLED">
+            <summary>
+            Level editor selection outline
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_SKIN_SWITCHING_VFX_ENABLED">
+            <summary>
+            VFX that plays when switching skins
+            </summary>
+        </member>
         <member name="T:CDOverhaul.OverhaulTransitionController">
             <summary>
-            Todo: Add better transitions without bugs and with cool loading animation
+            Todo: Add better transitions with cool loading animation
             </summary>
         </member>
         <member name="T:CDOverhaul.OverhaulBehaviour">
@@ -577,6 +658,11 @@
             Stop specific timer and print elapsed time to console
             </summary>
             <param name="timer"></param>
+        </member>
+        <member name="P:CDOverhaul.ExclusiveColorsController.HasExclusiveAccess">
+            <summary>
+            Does local player have unlocked exclusive colors?
+            </summary>
         </member>
         <member name="T:CDOverhaul.OverhaulExceptions">
             <summary>
@@ -663,7 +749,7 @@
             <summary>
             Check if user has specific asset bundle (or even file) on disk
             </summary>
-            <param name="assetBundleFileName"></param>
+            <param name="assetBundlePath"></param>
             <returns></returns>
         </member>
         <member name="F:CDOverhaul.OverhaulDataBase.IsLoadedFromFile">
@@ -862,13 +948,6 @@
             Destroy the when mod was deactivated
             </summary>
         </member>
-        <member name="M:CDOverhaul.OverhaulMod.OnResourcesLoad(System.String)">
-            <summary>
-            Currently used to make modded level editor objects real
-            </summary>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
         <member name="M:CDOverhaul.OverhaulMod.OnFirstPersonMoverSpawned(FirstPersonMover)">
             <summary>
             Used for events
@@ -908,39 +987,39 @@
             The UI controller instance
             </summary>
         </member>
-        <member name="T:CDOverhaul.EventEntry">
+        <member name="T:CDOverhaul.OverhaulEvent">
             <summary>
             A definition of event that has listeners
             </summary>
         </member>
-        <member name="F:CDOverhaul.EventEntry.EventName">
+        <member name="F:CDOverhaul.OverhaulEvent.EventName">
             <summary>
             Event name
             </summary>
         </member>
-        <member name="F:CDOverhaul.EventEntry.WithPrefix">
+        <member name="F:CDOverhaul.OverhaulEvent.WithPrefix">
             <summary>
             Is it not a vanilla event?
             </summary>
         </member>
-        <member name="F:CDOverhaul.EventEntry.EventAction">
+        <member name="F:CDOverhaul.OverhaulEvent.EventAction">
             <summary>
             What function should be called
             </summary>
         </member>
-        <member name="F:CDOverhaul.EventEntry.EventActionWithArgument">
+        <member name="F:CDOverhaul.OverhaulEvent.EventActionWithArgument">
             <summary>
             What function with arguments should be called
             </summary>
         </member>
-        <member name="M:CDOverhaul.EventEntry.SetArgument``1(System.Action{``0})">
+        <member name="M:CDOverhaul.OverhaulEvent.SetArgument``1(System.Action{``0})">
             <summary>
             Mark event as one that requires arguments
             </summary>
             <typeparam name="T"></typeparam>
             <param name="delegate"></param>
         </member>
-        <member name="M:CDOverhaul.EventEntry.Equals(CDOverhaul.EventEntry@,CDOverhaul.EventEntry@)">
+        <member name="M:CDOverhaul.OverhaulEvent.Equals(CDOverhaul.OverhaulEvent@,CDOverhaul.OverhaulEvent@)">
             <summary>
             Compare 2 events
             </summary>
@@ -1020,6 +1099,46 @@
             Same as method above, but for multiple folders
             </summary>
             <param name="paths"></param>
+        </member>
+        <member name="M:Discord.NetworkManager.GetPeerId">
+            <summary>
+            Get the local peer ID for this process.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.Flush">
+            <summary>
+            Send pending network messages.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.OpenPeer(System.UInt64,System.String)">
+            <summary>
+            Open a connection to a remote peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.UpdatePeer(System.UInt64,System.String)">
+            <summary>
+            Update the route data for a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.ClosePeer(System.UInt64)">
+            <summary>
+            Close the connection to a remote peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.OpenChannel(System.UInt64,System.Byte,System.Boolean)">
+            <summary>
+            Open a message channel to a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.CloseChannel(System.UInt64,System.Byte)">
+            <summary>
+            Close a message channel to a connected peer.
+            </summary>
+        </member>
+        <member name="M:Discord.NetworkManager.SendMessage(System.UInt64,System.Byte,System.Byte[])">
+            <summary>
+            Send a message to a connected peer over an opened message channel.
+            </summary>
         </member>
     </members>
 </doc>
