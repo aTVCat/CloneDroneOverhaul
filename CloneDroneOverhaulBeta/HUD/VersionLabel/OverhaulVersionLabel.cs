@@ -14,6 +14,7 @@ namespace CDOverhaul.HUD
         public static bool ShowDiscordLabel = true;
 
         private OverhaulParametersMenu m_ParametersMenu;
+        public static OverhaulVersionLabel Instance { get; private set; }
 
         private Text m_VersionLabel;
         private Text m_TitleScreenUIVersionLabel;
@@ -40,6 +41,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            Instance = this;
             if (GameUIRoot.Instance == null || GameUIRoot.Instance.TitleScreenUI == null || GameUIRoot.Instance.TitleScreenUI.VersionLabel == null)
             {
                 base.enabled = false;
@@ -84,6 +86,7 @@ namespace CDOverhaul.HUD
             m_VersionLabel = null;
             m_TitleScreenUIVersionLabel = null;
             m_DiscordHolderTransform = null;
+            Instance = null;
 
             OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
         }
@@ -95,7 +98,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (GameModeManager.IsOnTitleScreen())
+            if (GameModeManager.IsOnTitleScreen() && !OverhaulBootUI.IsShowing)
             {
                 if (m_TitleScreenRootButtons != null) m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons.activeInHierarchy);
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf)
@@ -114,6 +117,11 @@ namespace CDOverhaul.HUD
                 m_DiscordHolderTransform.gameObject.SetActive(false);
                 m_UpperButtonsContainer.gameObject.SetActive(false);
             }
+        }
+
+        public void ShowDiscordPanel()
+        {
+            m_DiscordHolderTransform.gameObject.SetActive(true);
         }
 
         private void refreshVisibility()
@@ -222,6 +230,30 @@ namespace CDOverhaul.HUD
                     }
                 };
                 OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Doborog.png", h3);
+
+                ModdedObject clansServer = m_ServersContainer.CreateNew();
+                clansServer.GetObject<Text>(0).text = "Clan Headquarters RU/EN";
+                clansServer.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    Application.OpenURL("https://discord.gg/MM2PNdRV5P");
+                });
+                OverhaulNetworkDownloadHandler h4 = new OverhaulNetworkDownloadHandler();
+                h4.DoneAction = delegate
+                {
+                    if (h4 != null && !h4.Error && overhaulServer != null)
+                    {
+                        m_LoadedTextures.Add(h4.DownloadedTexture);
+                        clansServer.GetObject<RawImage>(1).texture = h4.DownloadedTexture;
+                    }
+                    else
+                    {
+                        if (h4.DownloadedTexture)
+                        {
+                            Destroy(h4.DownloadedTexture);
+                        }
+                    }
+                };
+                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clan Headquarters RU-EN.png", h4);
             }
         }
 

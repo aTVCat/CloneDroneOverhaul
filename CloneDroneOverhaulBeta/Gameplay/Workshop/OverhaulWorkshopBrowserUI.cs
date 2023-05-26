@@ -91,6 +91,7 @@ namespace CDOverhaul.Workshop
         public static OverhaulWorkshopBrowserUI BrowserUIInstance;
 
         private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
+        private static ItemUIEntry[] m_SpawnedEntries;
 
         #region State
 
@@ -116,6 +117,7 @@ namespace CDOverhaul.Workshop
         }
 
         public int PageCount;
+        public int ItemSelectionIndex;
 
         public bool? CurrentItemVote;
 
@@ -129,6 +131,7 @@ namespace CDOverhaul.Workshop
 
         private float m_UnscaledTimeClickedOnOption;
         private float m_TimeToAllowPressingReloadButton;
+        private float m_TimeToAllowUsingArrowKeys;
 
         #endregion
 
@@ -921,6 +924,56 @@ namespace CDOverhaul.Workshop
             {
                 MyModdedObject.GetObject<Text>(40).text = string.Format("Item name: {0}\nState: {1}\nD_Progress: {2}", new object[] { ViewingWorkshopItem.ItemTitle, OverhaulSteamBrowser.GetItemState(ViewingWorkshopItem.ItemID).ToString(), OverhaulSteamBrowser.GetItemDownloadProgress(ViewingWorkshopItem.ItemID) });
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if(ViewingWorkshopItem != null)
+                {
+                    ViewItem(null);
+                    return;
+                }
+                Hide();
+            }
+
+            if (m_SpawnedEntries.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            float time = Time.unscaledTime;
+            if(time < m_TimeToAllowUsingArrowKeys) return;
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                m_TimeToAllowUsingArrowKeys = time + 0.1f;
+                if(ItemSelectionIndex < m_SpawnedEntries.Length - 1)
+                {
+                    ItemSelectionIndex++;
+                }
+                refreshScrollRectPosition(ItemSelectionIndex, m_SpawnedEntries.Length);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                m_TimeToAllowUsingArrowKeys = time + 0.1f;
+                if (ItemSelectionIndex > 0)
+                {
+                    ItemSelectionIndex--;
+                }
+                refreshScrollRectPosition(ItemSelectionIndex, m_SpawnedEntries.Length);
+            }
+            else if ((ItemSelectionIndex != -1 && ItemSelectionIndex < m_SpawnedEntries.Length) && (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
+            {
+                ItemUIEntry entry = m_SpawnedEntries[ItemSelectionIndex];
+                if(entry != null && entry.HasWorkshopItem())
+                {
+                    ViewItem(entry.GetWorkshopItem());
+                    ItemSelectionIndex = -1;
+                }
+            }
+        }
+
+        private void refreshScrollRectPosition(int a, int total)
+        {
+            //MyModdedObject.GetObject<ScrollRect>(52).verticalNormalizedPosition = 1f - ((float)a / (float)total);
         }
 
         public void ResetRequest()
@@ -987,11 +1040,18 @@ namespace CDOverhaul.Workshop
             }
 
             ItemUIEntry[] uiItems = new ItemUIEntry[CurrentRequestResult.ItemsReceived.Length];
+            m_SpawnedEntries = uiItems;
             int itemIndex = 0;
             do
             {
-                ItemUIEntry entry = ItemUIEntry.CreateNew(m_WorkshopItemsContainer.CreateNew(), CurrentRequestResult.ItemsReceived[itemIndex]);
-                if (entry != null) uiItems[itemIndex] = entry;
+                if(CurrentRequestResult.ItemsReceived[itemIndex] == null)
+                {
+                    itemIndex++;
+                    continue;
+                }
+
+                ItemUIEntry entry = ItemUIEntry.CreateNew(m_WorkshopItemsContainer.CreateNew(), CurrentRequestResult.ItemsReceived[itemIndex], itemIndex);
+                uiItems[itemIndex] = entry;
                 itemIndex++;
                 if (itemIndex % 10 == 0) yield return null;
 
@@ -1194,7 +1254,7 @@ namespace CDOverhaul.Workshop
 
         public class ItemUIEntry : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         {
-            public static ItemUIEntry CreateNew(ModdedObject moddedObject, OverhaulWorkshopItem workshopItem)
+            public static ItemUIEntry CreateNew(ModdedObject moddedObject, OverhaulWorkshopItem workshopItem, int index)
             {
                 if (workshopItem == null)
                 {
@@ -1215,6 +1275,7 @@ namespace CDOverhaul.Workshop
                 entry.m_ThumbnailProgressBar = moddedObject.GetObject<Image>(3);
                 entry.m_HoverOutline = moddedObject.GetObject<Transform>(5).gameObject;
                 entry.m_HoverOutline.SetActive(false);
+                entry.m_Index = index;
                 entry.SetTitleText(workshopItem.ItemTitle);
                 entry.LoadPreview();
                 return entry;
@@ -1224,6 +1285,9 @@ namespace CDOverhaul.Workshop
             {
                 return this != null && base.gameObject != null && base.gameObject.activeInHierarchy && !IsDisposedOrDestroyed() && m_ThumbnailImage != null && m_ThumbnailProgressBar != null;
             }
+
+            public OverhaulWorkshopItem GetWorkshopItem() => m_WorkshopItem;
+            public bool HasWorkshopItem() => m_WorkshopItem != null;
 
             private CanvasRenderer m_CanvasRenderer;
             private CanvasGroup m_CanvasGroup;
@@ -1237,6 +1301,7 @@ namespace CDOverhaul.Workshop
             private GameObject m_HoverOutline;
 
             public bool Show;
+            private int m_Index;
 
             public void SetTitleText(string titleText)
             {
@@ -1321,6 +1386,7 @@ namespace CDOverhaul.Workshop
             private void Update()
             {
                 m_CanvasGroup.alpha += (Show && !m_CanvasRenderer.cull ? 1f : 0f - m_CanvasGroup.alpha) * Time.unscaledDeltaTime * 5f;
+                m_HoverOutline.SetActive(OverhaulWorkshopBrowserUI.BrowserUIInstance != null ? OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex == m_Index : false);
             }
 
             private void OnDisable()
@@ -1347,8 +1413,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
+                OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = m_Index;
                 OverhaulWorkshopBrowserUI.BrowserUIInstance.ShowQuickInfo(m_WorkshopItem);
-                m_HoverOutline.SetActive(true);
             }
 
             public void OnPointerExit(PointerEventData eventData)
@@ -1357,8 +1423,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
+                if(OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex == m_Index) OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = -1;
                 OverhaulWorkshopBrowserUI.BrowserUIInstance.ShowQuickInfo(null);
-                m_HoverOutline.SetActive(false);
             }
 
             public void OnPointerClick(PointerEventData eventData)
@@ -1367,8 +1433,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
+                OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = -1;
                 OverhaulWorkshopBrowserUI.BrowserUIInstance.ViewItem(m_WorkshopItem);
-                m_HoverOutline.SetActive(false);
             }
         }
     }

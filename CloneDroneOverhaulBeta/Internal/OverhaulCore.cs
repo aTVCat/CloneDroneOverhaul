@@ -81,6 +81,7 @@ namespace CDOverhaul
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
             OverhaulPatchNotes.Initialize();
+            OverhaulBootUI.Show();
 
             if (OverhaulDiscordController.Instance == null)
             {

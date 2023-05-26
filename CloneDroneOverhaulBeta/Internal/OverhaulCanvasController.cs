@@ -125,8 +125,9 @@ namespace CDOverhaul.HUD
         /// Parent transform to <see cref="GameUIRoot"/>.Instance.transform and instantly fix position and scale
         /// </summary>
         /// <param name="transform"></param>
-        public void ParentTransformToGameUIRoot(in Transform transform)
+        public static void ParentTransformToGameUIRoot(in Transform transform)
         {
+            if(GameUIRoot.Instance == null) return;
             transform.SetParent(GameUIRoot.Instance.transform);
             transform.localPosition = Vector3.zero;
             transform.localScale = Vector3.one;
