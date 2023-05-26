@@ -437,6 +437,7 @@
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Robots\RobotEffectsBehaviour.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
+    <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
@@ -647,7 +648,6 @@
     <Folder Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Archives\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Steam\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
-    <Folder Include="HUD\IntroSetup\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

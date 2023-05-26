@@ -89,7 +89,7 @@ namespace CDOverhaul
 
         private IEnumerator waitThenPlayAnimation()
         {
-            yield return new WaitForSecondsRealtime(3f);
+            yield return new WaitForSecondsRealtime(3.5f);
 
             playAnimation();
 
