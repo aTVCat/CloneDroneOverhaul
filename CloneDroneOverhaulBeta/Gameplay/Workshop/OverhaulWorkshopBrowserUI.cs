@@ -87,8 +87,9 @@ namespace CDOverhaul.Workshop
 
         #endregion
 
-        public static bool BrowserIsNull => BrowserUIInstance == null;
-        public static OverhaulWorkshopBrowserUI BrowserUIInstance;
+        public static bool BrowserIsNull => Instance == null;
+        public static OverhaulWorkshopBrowserUI Instance;
+        public static bool IsActive => !BrowserIsNull && Instance.gameObject.activeSelf;
 
         private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
         private static ItemUIEntry[] m_SpawnedEntries;
@@ -214,7 +215,7 @@ namespace CDOverhaul.Workshop
 
         public override void Initialize()
         {
-            BrowserUIInstance = this;
+            Instance = this;
 
             m_UpVoteButton = MyModdedObject.GetObject<Button>(27);
             m_UpVoteButton.onClick.AddListener(VoteUp);
@@ -415,7 +416,7 @@ namespace CDOverhaul.Workshop
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            BrowserUIInstance = null;
+            Instance = null;
         }
 
         #endregion
@@ -1130,7 +1131,7 @@ namespace CDOverhaul.Workshop
                         return;
                     }
 
-                    BrowserUIInstance.ViewItem(null);
+                    Instance.ViewItem(null);
                 }
             }
         }
@@ -1169,8 +1170,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.Page = 1;
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.SetRank(m_Rank, true);
+                OverhaulWorkshopBrowserUI.Instance.Page = 1;
+                OverhaulWorkshopBrowserUI.Instance.SetRank(m_Rank, true);
             }
 
             private void getIcon()
@@ -1194,7 +1195,7 @@ namespace CDOverhaul.Workshop
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
                 {
-                    m_SelectedFrame.SetActive(m_Rank == OverhaulWorkshopBrowserUI.BrowserUIInstance.RequiredRank);
+                    m_SelectedFrame.SetActive(m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
                 }
             }
 
@@ -1239,7 +1240,7 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.SetTag(m_Tag, true);
+                OverhaulWorkshopBrowserUI.Instance.SetTag(m_Tag, true);
                 m_Button.OnDeselect(null);
             }
 
@@ -1247,7 +1248,7 @@ namespace CDOverhaul.Workshop
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
                 {
-                    m_Text.color = m_Tag == OverhaulWorkshopBrowserUI.BrowserUIInstance.LevelTypeRequiredTag ? SelectedColor : DeselectedColor;
+                    m_Text.color = m_Tag == OverhaulWorkshopBrowserUI.Instance.LevelTypeRequiredTag ? SelectedColor : DeselectedColor;
                 }
             }
         }
@@ -1386,7 +1387,7 @@ namespace CDOverhaul.Workshop
             private void Update()
             {
                 m_CanvasGroup.alpha += (Show && !m_CanvasRenderer.cull ? 1f : 0f - m_CanvasGroup.alpha) * Time.unscaledDeltaTime * 5f;
-                m_HoverOutline.SetActive(OverhaulWorkshopBrowserUI.BrowserUIInstance != null ? OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex == m_Index : false);
+                m_HoverOutline.SetActive(OverhaulWorkshopBrowserUI.Instance != null ? OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex == m_Index : false);
             }
 
             private void OnDisable()
@@ -1413,8 +1414,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = m_Index;
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.ShowQuickInfo(m_WorkshopItem);
+                OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = m_Index;
+                OverhaulWorkshopBrowserUI.Instance.ShowQuickInfo(m_WorkshopItem);
             }
 
             public void OnPointerExit(PointerEventData eventData)
@@ -1423,8 +1424,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
-                if(OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex == m_Index) OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = -1;
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.ShowQuickInfo(null);
+                if(OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex == m_Index) OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = -1;
+                OverhaulWorkshopBrowserUI.Instance.ShowQuickInfo(null);
             }
 
             public void OnPointerClick(PointerEventData eventData)
@@ -1433,8 +1434,8 @@ namespace CDOverhaul.Workshop
                 {
                     return;
                 }
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.ItemSelectionIndex = -1;
-                OverhaulWorkshopBrowserUI.BrowserUIInstance.ViewItem(m_WorkshopItem);
+                OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = -1;
+                OverhaulWorkshopBrowserUI.Instance.ViewItem(m_WorkshopItem);
             }
         }
     }

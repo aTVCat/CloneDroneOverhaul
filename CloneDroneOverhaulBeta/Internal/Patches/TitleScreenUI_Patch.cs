@@ -23,7 +23,7 @@ namespace CDOverhaul.Patches
         private static bool OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
         {
             return !OverhaulMod.IsModInitialized
-|| OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.BrowserUIInstance.TryShow();
+|| OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.Instance.TryShow();
         }
     }
 }

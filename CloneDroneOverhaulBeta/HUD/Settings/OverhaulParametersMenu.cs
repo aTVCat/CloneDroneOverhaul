@@ -17,6 +17,9 @@ namespace CDOverhaul.HUD
 
         public static readonly Color DefaultBarColor = new Color(0.25f, 0.4375f, 1f, 0.5f);
 
+        public static OverhaulParametersMenu Instance;
+        public static bool IsActive => Instance != null && Instance.gameObject.activeSelf;
+
         private ModdedObject m_CategoryEntryPrefab;
         private Transform m_CategoryContainer;
 
@@ -43,6 +46,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
+            Instance = this;
             OverhaulParametersMenu.ShouldSelectShortcuts = false;
             m_CategoryEntryPrefab = MyModdedObject.GetObject<ModdedObject>(1);
             m_CategoryEntryPrefab.gameObject.SetActive(false);
@@ -73,6 +77,7 @@ namespace CDOverhaul.HUD
 
         protected override void OnDisposed()
         {
+            Instance = null;
             m_CategoryContainer = null;
             m_CategoryEntryPrefab = null;
             m_MainContainer = null;

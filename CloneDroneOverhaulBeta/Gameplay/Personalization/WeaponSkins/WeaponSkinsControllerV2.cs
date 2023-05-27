@@ -1450,7 +1450,6 @@ namespace CDOverhaul.Gameplay
 
         public static void ReloadAllModels()
         {
-            //AssetLoader.ClearCache();
             _ = StaticCoroutineRunner.StartStaticCoroutine(reloadAllModelsCoroutine());
         }
 
@@ -1478,7 +1477,7 @@ namespace CDOverhaul.Gameplay
 
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)m_WeaponSkins.Count);
-                yield return null;
+                if(skinsChecked % 20 == 0) yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenText("Unloading skin files...");

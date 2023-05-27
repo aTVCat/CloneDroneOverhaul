@@ -98,10 +98,15 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (GameModeManager.IsOnTitleScreen() && !OverhaulBootUI.IsShowing)
+            if (GameModeManager.IsOnTitleScreen())
             {
-                if (m_TitleScreenRootButtons != null) m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons.activeInHierarchy);
-                if (!OverhaulWorkshopBrowserUI.BrowserIsNull && OverhaulWorkshopBrowserUI.BrowserUIInstance.gameObject.activeSelf)
+                bool workshopBrowserIsActive = OverhaulWorkshopBrowserUI.IsActive;
+                bool parametersMenuIsActive = OverhaulParametersMenu.IsActive;
+                bool bootuiIsActive = OverhaulBootUI.IsActive;
+
+                m_DiscordHolderTransform.gameObject.SetActive(ShowDiscordLabel && !bootuiIsActive && !parametersMenuIsActive && !workshopBrowserIsActive);
+                m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons != null && m_TitleScreenRootButtons.activeInHierarchy);
+                if (workshopBrowserIsActive || bootuiIsActive)
                 {
                     m_VersionLabel.text = string.Empty;
                     return;
@@ -114,8 +119,8 @@ namespace CDOverhaul.HUD
             {
                 m_VersionLabel.text = OverhaulVersion.ModShortName;
                 m_VersionLabel.gameObject.SetActive(WatermarkEnabled);
-                m_DiscordHolderTransform.gameObject.SetActive(false);
                 m_UpperButtonsContainer.gameObject.SetActive(false);
+                m_DiscordHolderTransform.gameObject.SetActive(false);
             }
         }
 
@@ -266,12 +271,7 @@ namespace CDOverhaul.HUD
 
             if (Time.frameCount % 5 == 0)
             {
-                bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
-                if (isOnTitleScreen || isOnTitleScreen != m_wasOnTitleScreenBefore)
-                {
-                    RefreshVersionLabel();
-                }
-                m_wasOnTitleScreenBefore = isOnTitleScreen;
+                RefreshVersionLabel();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Bolt;
+﻿using BestHTTP.Extensions;
+using Bolt;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
@@ -6,7 +7,10 @@ using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.Patches;
 using System;
+using System.Collections;
 using System.IO;
+using System.Security;
+using System.Text;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -104,6 +108,7 @@ namespace CDOverhaul
             CameraRollingBehaviour.UpdateViewBobbing();
         }
 
+        [Obsolete]
         public static string ReadTextFile(string filePath)
         {
             string path = filePath.Contains(OverhaulMod.Core.ModDirectory) ? filePath : OverhaulMod.Core.ModDirectory + filePath;
@@ -118,6 +123,98 @@ namespace CDOverhaul
             r.Close();
 
             return result;
+        }
+
+        public static string ReadText(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return string.Empty;
+            }
+
+            string result = string.Empty;
+            using (StreamReader r = File.OpenText(filePath))
+            {
+                result = r.ReadToEnd();
+            }
+            return result;
+        }
+
+        public static bool TryReadText(string filePath, out string content, out Exception exception)
+        {
+            exception = null;
+            content = string.Empty;
+            try
+            {
+                content = ReadText(filePath);
+            }
+            catch (Exception exc)
+            {
+                exception = exc;
+                return false;
+            }
+            return true;
+        }
+
+        public static async void WriteTextAsync(string filePath, string content, IOStateInfo iOStateInfo = null)
+        {
+            if (string.IsNullOrEmpty(filePath)) return;
+            if (content == null) content = string.Empty;
+
+            if (iOStateInfo != null) iOStateInfo.IsInProgress = true;
+            byte[] toWrite = Encoding.UTF8.GetBytes(content);
+            using (FileStream stream = File.OpenWrite(filePath))
+            {
+                await stream.WriteAsync(toWrite, 0, toWrite.Length);
+                if (iOStateInfo != null) iOStateInfo.IsInProgress = false;
+            }
+        }
+
+        public static IEnumerator WriteTextCoroutine(string filePath, string content, IOStateInfo iOStateInfo = null)
+        {
+            if (string.IsNullOrEmpty(filePath)) yield break;
+            if (content == null) content = string.Empty;
+
+            if (iOStateInfo != null) iOStateInfo.IsInProgress = true;
+            byte[] toWrite = Encoding.UTF8.GetBytes(content);
+            using (FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096, true))
+            {
+                yield return stream.WriteAsync(toWrite, 0, toWrite.Length);
+                if (iOStateInfo != null) iOStateInfo.IsInProgress = false;
+            }
+            yield break;
+        }
+
+        public static void WriteText(string filePath, string content)
+        {
+            if (string.IsNullOrEmpty(filePath)) return;
+            if (content == null) content = string.Empty;
+
+            byte[] toWrite = Encoding.UTF8.GetBytes(content);
+            using (FileStream stream = File.OpenWrite(filePath))
+            {
+                stream.Write(toWrite, 0, toWrite.Length);
+            }
+        }
+
+        public static bool TryWriteText(string filePath, string content, out Exception exception)
+        {
+            exception = null;
+            try
+            {
+                WriteText(filePath, content);
+            }
+            catch (Exception exc)
+            {
+                exception = exc;
+                return false;
+            }
+            return true;
+        }
+
+        public class IOStateInfo
+        {
+            public bool IsInProgress;
         }
     }
 }

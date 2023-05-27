@@ -79,6 +79,21 @@ namespace CDOverhaul.Patches
             OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
 
+            Transform joinPublicMatchButtonTransform = target.BattleRoyaleMenu.JoinRandomButton.transform;
+            joinPublicMatchButtonTransform.localPosition = new Vector3(-57f, -150f, 0);
+
+            Transform createPrivateModdedLobbyButtonTransform = Object.Instantiate(joinPublicMatchButtonTransform, joinPublicMatchButtonTransform.parent);
+            createPrivateModdedLobbyButtonTransform.localPosition = new Vector3(57f, -150f, 0);
+            Button createPrivateModdedLobbyButton = createPrivateModdedLobbyButtonTransform.GetComponent<Button>();
+            createPrivateModdedLobbyButton.interactable = OverhaulFeatureAvailabilitySystem.BuildImplements.IsCustomMultiplayerTestEnabled;
+            LocalizedTextField localizedTextFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<LocalizedTextField>();
+            if (localizedTextFieldCreatePrivateModdedLobby)
+            {
+                Object.Destroy(localizedTextFieldCreatePrivateModdedLobby);
+                Text textFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<Text>();
+                textFieldCreatePrivateModdedLobby.text = "Modded game" + (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsCustomMultiplayerTestEnabled ? " (Coming soon)" : string.Empty);
+            }
+
             SuccessfullyPatched = true;
         }
 

@@ -2,11 +2,14 @@
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Patches;
+using Newtonsoft.Json;
 using OverhaulAPI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -312,6 +315,9 @@ namespace CDOverhaul.HUD
         private Button m_ModFolderButton;
         private Button m_SkinsFileFolderButton;
 
+        private Button m_SaveSkinSeparately;
+        private Button m_LoadSeparatelySavedSkin;
+
         public void SetSkinEditingMenuActive(bool value)
         {
             if (IsOutfitSelection)
@@ -321,6 +327,11 @@ namespace CDOverhaul.HUD
 
             if (!m_HasInitializedEditor)
             {
+                m_SaveSkinSeparately = MyModdedObject.GetObject<Button>(79);
+                m_SaveSkinSeparately.onClick.AddListener(SaveSkinSeparately);
+                m_LoadSeparatelySavedSkin = MyModdedObject.GetObject<Button>(80);
+                m_LoadSeparatelySavedSkin.onClick.AddListener(LoadSeparatedSkinFile);
+
                 m_CustomSkinsDropdown = MyModdedObject.GetObject<Dropdown>(51);
                 m_CustomSkinsDropdown.onValueChanged.AddListener(EditSkin);
                 m_NewSkinItemButton = MyModdedObject.GetObject<Button>(25);
@@ -614,7 +625,7 @@ namespace CDOverhaul.HUD
             CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName = m_CustomVFXEnvCollisionField.text;
 
             if (!OverhaulAssetsController.DoesAssetBundleExist(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
-            CurrentlyEditingItem.AssetBundleFileName = OverhaulAssetsController.DoesAssetBundleExist(m_AssetBundleField.text) ? m_AssetBundleField.text : OverhaulAssetsController.ModAssetBundle_Skins;
+            CurrentlyEditingItem.AssetBundleFileName = m_AssetBundleField.text;
 
             CurrentlyEditingItem.ParentTo = m_ParentToField.text;
             bool successMinVersionParsing = Version.TryParse(m_MinVersionField.text, out Version minVersion);
@@ -852,6 +863,62 @@ namespace CDOverhaul.HUD
             });
         }
 
+        public void SaveSkinSeparately()
+        {
+            if(CurrentlyEditingItem == null)
+            {
+                return;
+            }
+
+            string path = OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent";
+            string content = JsonConvert.SerializeObject(CurrentlyEditingItem);
+            bool success = OverhaulCore.TryWriteText(path + "/" + CurrentlyEditingItem.Name.Replace(' ', '_') + ".json", content, out Exception exc);
+            if (!success)
+            {
+                OverhaulDialogues.CreateDialogue("Error occurred while saving skin", exc.ToString(), 4f, new Vector2(300, 400), new OverhaulDialogues.Button[] { });
+                return;
+            }
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = path,
+                UseShellExecute = true,
+                Verb = "open"
+            });
+        }
+
+        public void LoadSeparatedSkinFile()
+        {
+            var dlg = new System.Windows.Forms.OpenFileDialog()
+            {
+                InitialDirectory = (OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent").Replace("/", "\\"),
+                Filter = "Json Files (*.json) | *.json",
+                RestoreDirectory = true
+            };
+
+            //User didn't select a file so return a default value  
+            if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            UnityEngine.Debug.Log(dlg.FileName);
+
+            bool success = OverhaulCore.TryReadText(dlg.FileName, out string content, out Exception exc);
+            if (!success)
+            {
+                OverhaulDialogues.CreateDialogue("Error occurred while loading skin", "Output file path: " + dlg.FileName + "\n" + exc.ToString(), 4f, new Vector2(300, 400), new OverhaulDialogues.Button[] { });
+                return;
+            }
+
+            WeaponSkinsImportedItemDefinition loadedSkin = JsonConvert.DeserializeObject<WeaponSkinsImportedItemDefinition>(content);
+            if (string.IsNullOrEmpty(loadedSkin.Name))
+            {
+                OverhaulDialogues.CreateDialogue("Error occurred while loading skin", "Some fields are null or loaded incorrectly", 4f, new Vector2(300, 400), new OverhaulDialogues.Button[] { });
+                return;
+            }
+
+            WeaponSkinsController.CustomSkinsData.AllCustomSkins.Add(loadedSkin);
+            EditSkin(WeaponSkinsController.CustomSkinsData.AllCustomSkins.Count - 1);
+            OverhaulDialogues.CreateDialogue("Successfully loaded skin", "Now you have to click on \"Save all\" button, then reload all skins", 4f, new Vector2(300, 300), new OverhaulDialogues.Button[] { });
+        }
+
         #endregion
 
         public void OpenMenuFromSettings()
@@ -866,6 +933,7 @@ namespace CDOverhaul.HUD
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
             if (menu == null || paramsMenu == null || escMenu == null)
             {
+                OverhaulDialogues.CreateDialogue("Error occurred while applying new offsets", "Skin (spawned model): " + CurrentlyEditingItem.Name + " wasn't updated", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
                 return;
             }
 
@@ -882,6 +950,17 @@ namespace CDOverhaul.HUD
 
             m_HashtableTest.Clear();
             m_HashtableTest = null;
+
+            BindingFlags bindingFlags = BindingFlags.Public |
+                            BindingFlags.NonPublic |
+                            BindingFlags.Instance;
+            foreach (FieldInfo field in typeof(WeaponSkinsMenu).GetFields(bindingFlags))
+            {
+                if(field.FieldType != typeof(bool) && field.FieldType != typeof(int) && field.FieldType != typeof(float))
+                {
+                    field.SetValue(this, null);
+                }
+            }
         }
 
         private bool getController()

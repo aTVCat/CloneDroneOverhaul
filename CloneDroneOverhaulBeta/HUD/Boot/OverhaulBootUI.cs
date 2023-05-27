@@ -11,7 +11,7 @@ namespace CDOverhaul
     public class OverhaulBootUI : OverhaulBehaviour
     {
         public static OverhaulBootUI Instance;
-        public static bool IsShowing => Instance != null;
+        public static bool IsActive => Instance != null;
 
         private static bool m_HasEverShownUI;
 

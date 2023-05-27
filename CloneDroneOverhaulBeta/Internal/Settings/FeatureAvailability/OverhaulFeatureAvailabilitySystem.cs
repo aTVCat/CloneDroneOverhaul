@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#define AllowLevelDataPatches
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
@@ -90,8 +92,24 @@ namespace CDOverhaul
             /// <summary>
             /// VFX that plays when switching skins
             /// </summary>
-            private static bool IS_SKIN_SWITCHING_VFX_ENABLED = true;
+            private static bool IS_SKIN_SWITCHING_VFX_ENABLED = false;
             public static bool IsSkinSwitchingVFXEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_SKIN_SWITCHING_VFX_ENABLED;
+
+            /// <summary>
+            /// Allow creating private matches with additional things allowed
+            /// </summary>
+            private static bool IS_CUSTOM_MULTIPLAYER_TEST_ENABLED = false;
+            public static bool IsCustomMultiplayerTestEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_CUSTOM_MULTIPLAYER_TEST_ENABLED;
+
+            /// <summary>
+            /// Better way of saving/loading levels
+            /// </summary>
+#if AllowLevelDataPatches
+            private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = true;
+#else
+            private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
+#endif
+            public static bool IsNewSaveAndLoadSystemEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED;
         }
     }
 }

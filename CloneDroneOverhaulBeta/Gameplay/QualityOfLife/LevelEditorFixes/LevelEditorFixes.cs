@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using System.Collections.Generic;
+using System.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             fixValues();
             fixUI();
 
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             DelegateScheduler.Instance.Schedule(LevelEditorSelectionSettingsPanel.RefreshSliders, 1f);
         }
 
