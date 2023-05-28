@@ -110,6 +110,12 @@ namespace CDOverhaul
             private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
 #endif
             public static bool IsNewSaveAndLoadSystemEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED;
+
+            /// <summary>
+            /// Make tickboxes use player favourite color
+            /// </summary>
+            private static bool APPLY_THEME_COLOR_ON_SETTINGS = false;
+            public static bool ApplyThemeColorOnSettings => !OverhaulVersion.IsUpdate2Hotfix && APPLY_THEME_COLOR_ON_SETTINGS;
         }
     }
 }

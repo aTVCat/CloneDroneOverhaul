@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
@@ -15,7 +16,7 @@ namespace CDOverhaul.HUD
         public const string SettingDescTranslationPrefix = "PrefED_";
         public const string SettingButtonTranslationPrefix = "PrefEB_";
 
-        public static readonly Color DefaultBarColor = new Color(0.25f, 0.4375f, 1f, 0.5f);
+        public static readonly Color DefaultBarColor = new Color(0.25f, 0.4375f, 1f, 1f);
 
         public static OverhaulParametersMenu Instance;
         public static bool IsActive => Instance != null && Instance.gameObject.activeSelf;
@@ -116,6 +117,10 @@ namespace CDOverhaul.HUD
                 }
             }
 
+            MyModdedObject.GetObject<Image>(20).color = OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
+            MyModdedObject.GetObject<Image>(21).color = OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
+            MyModdedObject.GetObject<Image>(22).color = OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
+
             base.gameObject.SetActive(true);
             populateCategories();
             PopulateDescription(null, null);
@@ -131,9 +136,6 @@ namespace CDOverhaul.HUD
 
             ParametersMenuCategoryButton.SetSelectedSpecific("Graphics");
             m_CategoriesScrollRect.horizontalNormalizedPosition = 1f;
-
-            MyModdedObject.GetObject<Outline>(20).effectColor = OverhaulCombatState.GetThemeUIColor(DefaultBarColor);
-            MyModdedObject.GetObject<Outline>(21).effectColor = OverhaulCombatState.GetThemeUIColor(DefaultBarColor);
         }
 
         public void Hide()
@@ -173,7 +175,7 @@ namespace CDOverhaul.HUD
                 categoryEntry.gameObject.SetActive(true);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + category);
                 categoryEntry.GetObject<UnityEngine.UI.Image>(1).sprite = SettingsController.GetSpriteForCategory(category);
-                categoryEntry.GetObject<Outline>(2).effectColor = OverhaulCombatState.GetThemeUIColor(OverhaulParametersMenu.DefaultBarColor);
+                categoryEntry.GetObject<Image>(2).color = OverhaulCombatState.GetUIThemeColor(OverhaulParametersMenu.DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
             }
         }
@@ -185,6 +187,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            MyModdedObject.GetObject<Text>(23).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + categoryName);
             _ = StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName, restorePosition));
         }
 

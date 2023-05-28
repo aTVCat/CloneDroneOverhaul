@@ -26,16 +26,16 @@ namespace CDOverhaul.Gameplay.Combat
             set => m_SwordBlockAreaEnvCollisionPosition = value;
         }
 
-        public static Color GetThemeUIColor(Color defaultColor)
+        public static Color GetUIThemeColor(Color defaultColor)
         {
             if (CharacterTracker.Instance == null) return defaultColor;
             FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
             return m == null || !m || !m.HasCharacterModel() ? defaultColor : m.GetCharacterModel().GetFavouriteColor();
         }
 
-        public static Color GetThemeUIColor(string defaultColorHEX)
+        public static Color GetUIThemeColor(string defaultColorHEX)
         {
-            return GetThemeUIColor(defaultColorHEX.ConvertHexToColor());
+            return GetUIThemeColor(defaultColorHEX.ConvertHexToColor());
         }
     }
 }

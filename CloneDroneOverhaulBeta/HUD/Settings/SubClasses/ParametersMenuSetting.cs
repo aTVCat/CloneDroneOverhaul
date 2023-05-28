@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Gameplay.Combat;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -174,6 +175,7 @@ namespace CDOverhaul.HUD
             m_ToggleTickBox = m.GetObject<Transform>(2);
             m_ToggleBGOff = m.GetObject<Transform>(3);
             m_ToggleBGOn = m.GetObject<Transform>(4);
+            if(OverhaulFeatureAvailabilitySystem.BuildImplements.ApplyThemeColorOnSettings) m_ToggleBGOn.GetComponent<Image>().color = OverhaulCombatState.GetUIThemeColor(OverhaulParametersMenu.DefaultBarColor);
             m_ToggleTick = m.GetObject<Transform>(5);
             m_ToggleTickBox.gameObject.SetActive(isBool && !Setting.ForceInputField);
 
