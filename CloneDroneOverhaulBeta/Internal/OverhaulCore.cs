@@ -78,6 +78,8 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<AutoBuild>();
             _ = OverhaulController.AddController<LevelEditorFixes>();
 
+            _ = OverhaulController.AddController<ViewModesController>();
+
             SettingsController.CreateHUD();
             OverhaulDebugger.Initialize();
             OverhaulGraphicsController.Initialize();

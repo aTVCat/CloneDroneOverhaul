@@ -7,7 +7,6 @@ using OverhaulAPI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -865,7 +864,7 @@ namespace CDOverhaul.HUD
 
         public void SaveSkinSeparately()
         {
-            if(CurrentlyEditingItem == null)
+            if (CurrentlyEditingItem == null)
             {
                 return;
             }
@@ -889,7 +888,7 @@ namespace CDOverhaul.HUD
 
         public void LoadSeparatedSkinFile()
         {
-            var dlg = new System.Windows.Forms.OpenFileDialog()
+            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog()
             {
                 InitialDirectory = (OverhaulMod.Core.ModDirectory + "Assets/Download/Permanent").Replace("/", "\\"),
                 Filter = "Json Files (*.json) | *.json",
@@ -956,7 +955,7 @@ namespace CDOverhaul.HUD
                             BindingFlags.Instance;
             foreach (FieldInfo field in typeof(WeaponSkinsMenu).GetFields(bindingFlags))
             {
-                if(field.FieldType != typeof(bool) && field.FieldType != typeof(int) && field.FieldType != typeof(float))
+                if (field.FieldType != typeof(bool) && field.FieldType != typeof(int) && field.FieldType != typeof(float))
                 {
                     field.SetValue(this, null);
                 }
@@ -989,16 +988,32 @@ namespace CDOverhaul.HUD
 
         public void SetMenuActive(bool value)
         {
-            if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
+            if (IsDisposedOrDestroyed() || MyModdedObject == null) return;
+
+            base.gameObject.SetActive(value);
+            ShowCursor = value;
 
             FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-            if (mover != null && mover.HasCharacterModel())
+            if (mover != null)
             {
-                if (!GameModeManager.IsMultiplayer()) mover.InstantlySetTorsoTiltX(0);
-                mover.GetCharacterModel().transform.GetChild(0).localEulerAngles = IsOutfitSelection ? value ? new Vector3(0, 180, 0) : Vector3.zero : value ? new Vector3(0, 90, 0) : Vector3.zero;
+                if (GameUIRoot.Instance != null && GameUIRoot.Instance.CloneUI != null)
+                {
+                    if (value)
+                    {
+                        GameUIRoot.Instance.CloneUI.Hide();
+                    }
+                    else if (!SettingsManager.Instance.ShouldHideGameUI())
+                    {
+                        GameUIRoot.Instance.CloneUI.Show();
+                    }
+                }
+
+                CharacterModel characterModel = mover.GetCharacterModel();
+                if (characterModel != null)
+                {
+                    if (!GameModeManager.IsMultiplayer()) mover.InstantlySetTorsoTiltX(0);
+                    if (characterModel.transform.childCount != 0) characterModel.transform.GetChild(0).localEulerAngles = IsOutfitSelection ? value ? new Vector3(0, 180, 0) : Vector3.zero : value ? new Vector3(0, 90, 0) : Vector3.zero;
+                }
             }
 
             if (IsOutfitSelection)
@@ -1014,16 +1029,6 @@ namespace CDOverhaul.HUD
                 PlayerStatusBehaviour.SetOwnStatus(value ? PlayerStatusType.SwitchingSkins : PlayerStatusType.Idle);
             }
 
-            if (CharacterTracker.Instance != null && CharacterTracker.Instance.GetPlayer() != null)
-            {
-                if (value && GameUIRoot.Instance != null && GameUIRoot.Instance.CloneUI != null) GameUIRoot.Instance.CloneUI.Hide();
-                if (!value && GameUIRoot.Instance != null && GameUIRoot.Instance.CloneUI != null && !SettingsManager.Instance.ShouldHideGameUI()) GameUIRoot.Instance.CloneUI.Show();
-            }
-
-            base.enabled = true;
-            base.gameObject.SetActive(value);
-            ShowCursor = value;
-
             if (!value || IsOutfitSelection)
             {
                 return;
@@ -1035,11 +1040,9 @@ namespace CDOverhaul.HUD
 
             m_EditSkinButton.interactable = OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToManageSkins);
             m_RefreshDatabaseButton.interactable = m_EditSkinButton.interactable;
-            //m_UpdateSkinsButton.interactable = !WeaponSkinsController.HasUpdatedSkins;
 
             Transform container = GetContainer(true);
             if (container != null) TransformUtils.DestroyAllChildren(container);
-
             if (!m_HasRefreshedUpdates)
             {
                 m_HasRefreshedUpdates = true;

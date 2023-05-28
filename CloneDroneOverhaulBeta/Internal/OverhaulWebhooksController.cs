@@ -16,14 +16,19 @@ namespace CDOverhaul
         public static readonly string[] IgnoredStrings = new string[]
         {
             "DebugMenu.OnThrowErrorClicked",
-            "UnityExplorer"
+            "UnityExplorer",
+            "Can't find asset",
+            "Unsupported color:",
+            "Failed to read input report",
+            "You are not a client",
+            "DecompressOnLoad",
+            "Failed to get input data"
         };
-
         private static bool m_HasExecutedCrashReportsWebhook = false;
 
         public static async void ExecuteCrashReportsWebhook(string content)
         {
-            if (!AllowSendingInformation || CheckStringForExcludedErrors(content) || m_HasExecutedCrashReportsWebhook)
+            if (!AllowSendingInformation || m_HasExecutedCrashReportsWebhook)
             {
                 return;
             }
@@ -57,7 +62,7 @@ namespace CDOverhaul
             }
         }
 
-        public static bool CheckStringForExcludedErrors(in string theString)
+        public static bool HasExcludedError(in string theString)
         {
             foreach (string str in IgnoredStrings)
             {

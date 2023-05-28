@@ -10,18 +10,14 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
-            /*
-            if (logString.Contains("ReplaceModelWithVariantMatching") || stackTrace.Contains("ReplaceModelWithVariantMatching"))
-            {
-                return false;
-            }*/
-            if (logString.Contains("UnityExplorer") || logString.Contains("Can't find asset") || logString.Contains("Unsupported color:"))
-            {
-                return false;
-            }
-
             if (type == LogType.Error || type == LogType.Exception)
             {
+                string report = "**" + logString + "**\n" + stackTrace;
+                if (OverhaulWebhooksController.HasExcludedError(report))
+                {
+                    return false;
+                }
+
                 string gamemode = string.Empty;
                 string gameVer = string.Empty;
                 string levelID = string.Empty;
@@ -37,10 +33,9 @@ namespace CDOverhaul.Patches
                 {
                 }
 
-                string report = "**" + logString + "**\n" + stackTrace;
-                if (report.Length > 990)
+                if (report.Length > 1400)
                 {
-                    report = report.Remove(990);
+                    report = report.Remove(1400);
                 }
                 report += string.Format("\n**GM: {0}, LevelID: {1}, GameVer: {2}, LangID: {3}, GameTime: {4}**", new object[] { gamemode, levelID, gameVer, langID, Time.timeSinceLevelLoad });
 

@@ -437,6 +437,8 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Robots\RobotEffectsBehaviour.cs" />
+    <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
+    <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
@@ -481,6 +483,7 @@
     <Compile Include="Internal\OverhaulDiscordController.cs" />
     <Compile Include="Internal\OverhaulWebhooksController.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
+    <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />
@@ -488,6 +491,7 @@
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
+    <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />
     <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="Internal\Patches\SwordBlockArea_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
