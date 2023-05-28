@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using ModLibrary;
 using System.Linq;
 using UnityEngine;
 
@@ -16,10 +15,8 @@ namespace CDOverhaul.Graphics
 
         public static bool IsFirstPersonMoverSupported(in FirstPersonMover firstPersonMover)
         {
-            if (firstPersonMover == null || !firstPersonMover.HasCharacterModel())
-                return false;
-
-            return !UnsupportedCharacters.Contains(firstPersonMover.CharacterType);
+            return firstPersonMover != null && firstPersonMover.HasCharacterModel()
+&& !UnsupportedCharacters.Contains(firstPersonMover.CharacterType);
         }
         public static Renderer[] GetRenderersOfBodyPart(in FirstPersonMover firstPersonMover, in MechBodyPartType bodyPartType)
         {
@@ -48,9 +45,8 @@ namespace CDOverhaul.Graphics
 
         private Renderer[] m_HeadRenderers;
         private Renderer[] m_JawRenderers;
+        private Renderer[] m_ShieldRenderers;
 
-        private Transform m_DefaultCameraParent;
-        private Transform m_DefaultCameraHolder;
         private Transform m_FPModeCameraParent;
         private Camera m_Camera;
 
@@ -58,12 +54,11 @@ namespace CDOverhaul.Graphics
         {
             base.Start();
 
+            m_ShieldRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Shield);
             m_HeadRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Head);
             m_JawRenderers = GetRenderersOfBodyPart(Owner, "Jaw");
             m_Camera = Owner.GetPlayerCamera();
             m_FPModeCameraParent = Owner.GetBodyPartParent("Head");
-            m_DefaultCameraHolder = Owner.GetPrivateField<Transform>("_cameraHolderTransform");
-            m_DefaultCameraParent = m_Camera.transform.parent;
 
             RefreshView();
 
@@ -85,15 +80,15 @@ namespace CDOverhaul.Graphics
 
         private void LateUpdate()
         {
-            if (ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
+            if (m_FPModeCameraParent != null && ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
             {
-                m_Camera.transform.localPosition = ViewModesController.DefaultCameraOffset;
-                m_Camera.transform.localEulerAngles = Vector3.zero;
+                m_Camera.transform.position = m_FPModeCameraParent.transform.position + (m_FPModeCameraParent.transform.up * 0.45f);
+                m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
-            if(Time.frameCount % 5 == 0)
+            if (Time.frameCount % 5 == 0)
             {
-                RefreshView();
+                RefreshHeadVisibility();
             }
         }
 
@@ -102,29 +97,11 @@ namespace CDOverhaul.Graphics
             m_Camera = Owner.GetPlayerCamera();
 
             RefreshHeadVisibility();
-            RefreshCameraParent();
-        }
-
-        public void RefreshCameraParent()
-        {
-            if (!m_Camera || !m_DefaultCameraParent || !m_FPModeCameraParent)
-                return;
-
-            bool isFPModeEnabled = ViewModesController.IsFirstPersonModeEnabled;
-            Transform toSet = isFPModeEnabled ? m_FPModeCameraParent : m_DefaultCameraParent;
-
-            if (PhotoManager.Instance.IsInPhotoMode())
-                return;
-
-            m_Camera.transform.SetParent(toSet, false);
-
-            Owner.SetPrivateField("_playerCameraParent", toSet);
-            Owner.SetPrivateField("_cameraHolderTransform", isFPModeEnabled ? toSet : m_DefaultCameraHolder);
         }
 
         public void RefreshHeadVisibility()
         {
-            SetHeadRenderersActive(!ViewModesController.IsFirstPersonModeEnabled || !Owner.IsMainPlayer() || !Owner.IsAlive());
+            SetHeadRenderersActive(!ViewModesController.IsFirstPersonModeEnabled || !Owner.IsMainPlayer() || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         public void SetHeadRenderersActive(bool value)
@@ -138,6 +115,13 @@ namespace CDOverhaul.Graphics
 
             if (!m_JawRenderers.IsNullOrEmpty())
                 foreach (Renderer renderer in m_JawRenderers)
+                {
+                    if (renderer)
+                        renderer.enabled = value;
+                }
+
+            if (!m_ShieldRenderers.IsNullOrEmpty())
+                foreach (Renderer renderer in m_ShieldRenderers)
                 {
                     if (renderer)
                         renderer.enabled = value;
