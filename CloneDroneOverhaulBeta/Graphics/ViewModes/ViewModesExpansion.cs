@@ -83,7 +83,8 @@ namespace CDOverhaul.Graphics
             if (m_FPModeCameraParent != null && ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
             {
                 m_Camera.transform.position = m_FPModeCameraParent.transform.position + (m_FPModeCameraParent.transform.up * 0.45f);
-                m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
+                if(ViewModesController.SyncCameraWithHeadRotation)
+                    m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
             if (Time.frameCount % 5 == 0)

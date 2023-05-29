@@ -82,6 +82,8 @@ namespace CDOverhaul
                     }
                 }
 
+                SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
+
                 DelegateScheduler.Instance.Schedule(delegate
                 {
                     foreach (OverhaulSettingAttribute neededAttribute in toParent)
