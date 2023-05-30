@@ -87,7 +87,7 @@ namespace CDOverhaul
             /// Level editor selection outline
             /// </summary>
             private static bool IS_SELECTION_OUTLINE_ENABLED = true;
-            public static bool IsSelectionOutLineEnabled => OverhaulVersion.IsUpdate4 && IS_SELECTION_OUTLINE_ENABLED;
+            public static bool IsSelectionOutLineEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_SELECTION_OUTLINE_ENABLED;
 
             /// <summary>
             /// VFX that plays when switching skins

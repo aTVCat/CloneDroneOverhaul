@@ -213,7 +213,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
             }
 
-            if (!OverhaulVersion.IsUpdate4)
+            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
             {
                 return;
             }
@@ -252,7 +252,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         private void addUIs()
         {
-            if (!OverhaulVersion.IsUpdate4 || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
+            if (OverhaulVersion.IsUpdate2Hotfix || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
             {
                 return;
             }

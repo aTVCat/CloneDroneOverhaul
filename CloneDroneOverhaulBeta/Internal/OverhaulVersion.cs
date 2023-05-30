@@ -9,9 +9,9 @@ namespace CDOverhaul
         /// The version of the mod
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version m_ModVersionUpd2 = new Version("0.2.10.65");
+        private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0"); //0.2.10.66
 
-        public static Version ModVersion => IsUpdate2Hotfix ? m_ModVersionUpd2 : m_ModVersion;
+        public static Version ModVersion => IsUpdate4 ? m_ModVersionUpdateFour : m_ModVersion; //IsUpdate2Hotfix ? m_ModVersionUpdateFour : m_ModVersion;
 
         /// <summary>
         /// The version of game mod will definitely work 
