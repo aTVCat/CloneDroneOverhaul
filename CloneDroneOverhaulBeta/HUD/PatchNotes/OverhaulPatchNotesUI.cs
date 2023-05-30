@@ -47,15 +47,6 @@ namespace CDOverhaul.HUD
             Hide();
         }
 
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-
-            m_OkButton = null;
-            m_ModBotButton = null;
-            m_GitHubButton = null;
-        }
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))

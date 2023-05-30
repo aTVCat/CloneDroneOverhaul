@@ -23,6 +23,19 @@ namespace CDOverhaul.Patches
             }
         }
 
+        // A fix of the crash
+        [HarmonyPrefix]
+        [HarmonyPatch("RollbackAsIfKicked")]
+        private static bool RollbackAsIfKicked_Prefix(FirstPersonMover __instance)
+        {
+            if (!OverhaulMod.IsModInitialized)
+            {
+                return true;
+            }
+
+            return __instance.HasCharacterModel();
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch("ExecuteCommand")]
         private static void ExecuteCommand_Postfix(FirstPersonMover __instance, Command command, bool resetState)

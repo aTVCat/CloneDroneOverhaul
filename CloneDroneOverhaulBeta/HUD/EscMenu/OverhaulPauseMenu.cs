@@ -156,11 +156,6 @@ namespace CDOverhaul.HUD
             Hide();
         }
 
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-        }
-
         public override void OnModDeactivated()
         {
             try

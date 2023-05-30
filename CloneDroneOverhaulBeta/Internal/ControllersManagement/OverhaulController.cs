@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CDOverhaul.HUD;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -10,7 +12,7 @@ namespace CDOverhaul
     public abstract class OverhaulController : OverhaulBehaviour, IConsoleCommandReceiver
     {
         /// <summary>
-        /// Check if an exception occured while initializng the controller.
+        /// Check if an exception occurred while initializing the controller.
         /// </summary>
         public bool HadBadStart { get; private set; }
 
@@ -41,6 +43,15 @@ namespace CDOverhaul
             OverhaulEventsController.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
             OverhaulConsoleController.RemoveListener(this);
             RemoveController(this);
+
+            foreach (FieldInfo field in this.GetType().GetFields(s_BindingFlags))
+            {
+                Type fieldType = field.FieldType;
+                if (fieldType != typeof(bool) && fieldType != typeof(int) && fieldType != typeof(float))
+                {
+                    field.SetValue(this, null);
+                }
+            }
         }
 
         internal void InitializeInternal()
@@ -60,8 +71,9 @@ namespace CDOverhaul
 
         #region Static
 
-        private static GameObject m_ControllersGameObject;
-        private static readonly List<OverhaulController> m_ControllersList = new List<OverhaulController>();
+        private static BindingFlags s_BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+        private static GameObject s_ControllersGameObject;
+        private static readonly List<OverhaulController> s_ControllersList = new List<OverhaulController>();
 
         /// <summary>
         /// Initialize static fields
@@ -69,8 +81,8 @@ namespace CDOverhaul
         /// <param name="controllersGO"></param>
         internal static void InitializeStatic(in GameObject controllersGO)
         {
-            m_ControllersGameObject = controllersGO;
-            m_ControllersList.Clear();
+            s_ControllersGameObject = controllersGO;
+            s_ControllersList.Clear();
         }
 
         /// <summary>
@@ -81,10 +93,10 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
         {
-            Transform transform = transformOverride ?? m_ControllersGameObject.transform;
+            Transform transform = transformOverride ?? s_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
             component.InitializeInternal();
-            m_ControllersList.Add(component);
+            s_ControllersList.Add(component);
             return component;
         }
 
@@ -95,7 +107,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T GetController<T>() where T : OverhaulController
         {
-            foreach (OverhaulController controllerr in m_ControllersList)
+            foreach (OverhaulController controllerr in s_ControllersList)
             {
                 if (controllerr.GetType() == typeof(T))
                 {
@@ -116,7 +128,7 @@ namespace CDOverhaul
             {
                 throw new ArgumentNullException("Cannot remove controller instance because it is null.");
             }
-            _ = m_ControllersList.Remove(controllerInstance);
+            _ = s_ControllersList.Remove(controllerInstance);
         }
 
         #endregion;

@@ -78,13 +78,8 @@ namespace CDOverhaul.HUD
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             Instance = null;
-            m_CategoryContainer = null;
-            m_CategoryEntryPrefab = null;
-            m_MainContainer = null;
-            m_SectionPrefab = null;
-            m_SettingPrefab = null;
-            m_DescriptionTransform = null;
         }
 
         private void Update()

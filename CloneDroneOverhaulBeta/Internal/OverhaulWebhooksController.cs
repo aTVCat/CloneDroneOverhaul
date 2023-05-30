@@ -22,7 +22,9 @@ namespace CDOverhaul
             "Failed to read input report",
             "You are not a client",
             "DecompressOnLoad",
-            "Failed to get input data"
+            "Failed to get input data",
+            "Global_Server",
+            "entity which is detached",
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 

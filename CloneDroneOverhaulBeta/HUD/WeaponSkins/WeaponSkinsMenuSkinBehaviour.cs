@@ -16,6 +16,7 @@ namespace CDOverhaul.HUD
         #region Static
 
         private static readonly List<WeaponSkinsMenuSkinBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuSkinBehaviour>();
+        public static List<WeaponSkinsMenuSkinBehaviour> GetSpawnedButtons() => m_InstantiatedButtons;
 
         public static void SelectSpecific(bool isOutfitSelection = false)
         {
@@ -39,22 +40,29 @@ namespace CDOverhaul.HUD
 
         #endregion
 
-        private GameObject m_SelectedImage;
         private WeaponSkinsMenu m_SkinsMenu;
-        private string m_Skin;
-        private WeaponType m_WeaponType;
-        public WeaponSkinItemDefinitionV2 SkinItem;
 
-        private GameObject m_ExclusiveIcon;
-        private InputField m_Author;
-        private Image m_Cooldown;
-        private bool m_IsMouseOverElement;
+        private GameObject m_SelectedImage;
+
+        public WeaponSkinItemDefinitionV2 SkinItem;
+        private WeaponType m_WeaponType;
+        private string m_Skin;
 
         private Button m_Button;
+        private Text m_SkinName;
+        private InputField m_Author;
+        private GameObject m_ExclusiveIcon;
 
+        private Image m_Cooldown;
+
+        private bool m_IsMouseOverElement;
         public bool IsSelected { get; private set; }
 
         public bool IsOutfitSelection;
+
+        public bool GetSkinIsExclusive() => SkinItem != null && !string.IsNullOrEmpty((SkinItem as IWeaponSkinItemDefinition).GetExclusivePlayerID());
+        public string GetSkinName() => m_SkinName.text.ToLower();
+        public string GetSkinAuthor() => m_Author.text.ToLower();
 
         public void Initialize()
         {
@@ -67,6 +75,7 @@ namespace CDOverhaul.HUD
             m_SelectedImage = m.GetObject<Transform>(0).gameObject;
             m_ExclusiveIcon = m.GetObject<Transform>(3).gameObject;
             m_Author = m.GetObject<InputField>(2);
+            m_SkinName = m.GetObject<Text>(1);
             m_Cooldown = m.GetObject<Image>(4);
             m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
             m_InstantiatedButtons.Add(this);
@@ -248,7 +257,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            m_SkinsMenu.ShowDescriptionTooltip(m_WeaponType, m_Skin);
+            m_SkinsMenu.ShowDescriptionTooltip(m_WeaponType, m_Skin, base.transform.position.y);
             m_IsMouseOverElement = true;
         }
 
@@ -259,7 +268,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            m_SkinsMenu.ShowDescriptionTooltip(WeaponType.None, null);
+            m_SkinsMenu.ShowDescriptionTooltip(WeaponType.None, null, base.transform.position.y);
             m_IsMouseOverElement = false;
         }
 

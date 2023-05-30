@@ -116,6 +116,24 @@ namespace CDOverhaul
             /// </summary>
             private static bool APPLY_THEME_COLOR_ON_SETTINGS = false;
             public static bool ApplyThemeColorOnSettings => !OverhaulVersion.IsUpdate2Hotfix && APPLY_THEME_COLOR_ON_SETTINGS;
+
+            /// <summary>
+            /// First person mode
+            /// </summary>
+            private static bool IS_VIEW_MODES_SETTING_ENABLED = true;
+            public static bool IsViewModesSettingsEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_VIEW_MODES_SETTING_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static bool IS_BOOT_SCREEN_ENABLED = true;
+            public static bool IsBootScreenEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_BOOT_SCREEN_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static bool IS_DISCORD_PANEL_ENABLED = true;
+            public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_DISCORD_PANEL_ENABLED;
         }
     }
 }

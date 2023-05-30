@@ -78,6 +78,11 @@ namespace CDOverhaul.HUD
             m_UpdateSkinsButton.interactable = value;
         }
 
+        private bool m_SearchOnlyExclusive;
+        private InputField m_SearchBox;
+        private Dropdown m_SearchByDropdown;
+        private Button m_SearchOnlyExclusiveButton;
+
         public bool IsOutfitSelection;
         public static WeaponSkinsMenu SkinsSelection;
         public static WeaponSkinsMenu OutfitSelection;
@@ -128,6 +133,15 @@ namespace CDOverhaul.HUD
                 m_UpdateSkinsButton.onClick.AddListener(RefreshSkinUpdates);
                 m_UpdateSkinsText = m.GetObject<Text>(68);
                 m_SkinsUpdateRefreshButtonCooldownFill = m.GetObject<Image>(69);
+
+                m_SearchBox = m.GetObject<InputField>(83);
+                m_SearchBox.text = string.Empty;
+                m_SearchBox.onValueChanged.AddListener(SearchSkins);
+                m_SearchByDropdown = m.GetObject<Dropdown>(84);
+                m_SearchByDropdown.onValueChanged.AddListener(ResetSearchBox);
+                m_SearchOnlyExclusiveButton = m.GetObject<Button>(85);
+                m_SearchOnlyExclusiveButton.onClick.AddListener(ToggleSearchOnlyExclusive);
+                RefreshSearchExclusiveSkinsButton();
             }
 
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
@@ -136,6 +150,7 @@ namespace CDOverhaul.HUD
 
             if (base.gameObject.name.Equals("SkinsSelection"))
             {
+                ShowDescriptionTooltip(WeaponType.None, null, 0f);
                 SkinsSelection = this;
                 _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
@@ -945,21 +960,8 @@ namespace CDOverhaul.HUD
 
         protected override void OnDisposed()
         {
-            base.OnDisposed();
-
             m_HashtableTest.Clear();
-            m_HashtableTest = null;
-
-            BindingFlags bindingFlags = BindingFlags.Public |
-                            BindingFlags.NonPublic |
-                            BindingFlags.Instance;
-            foreach (FieldInfo field in typeof(WeaponSkinsMenu).GetFields(bindingFlags))
-            {
-                if (field.FieldType != typeof(bool) && field.FieldType != typeof(int) && field.FieldType != typeof(float))
-                {
-                    field.SetValue(this, null);
-                }
-            }
+            base.OnDisposed();
         }
 
         private bool getController()
@@ -1156,6 +1158,7 @@ namespace CDOverhaul.HUD
 
             if (!IsOutfitSelection)
             {
+                if(m_SearchByDropdown.value == 0) m_SearchBox.text = string.Empty;
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
                 if (mover != null && mover.HasCharacterModel() && mover.HasWeapon(weaponType))
                 {
@@ -1172,6 +1175,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator endPopulatingSkinsCoroutine()
         {
+            if(!IsOutfitSelection) SearchSkins(m_SearchBox.text);
             IsPopulatingSkins = false;
             m_ScrollRectCanvasGroup.alpha = 0f;
             m_ScrollRectCanvasGroup.blocksRaycasts = true;
@@ -1316,6 +1320,54 @@ namespace CDOverhaul.HUD
             yield break;
         }
 
+        public void ToggleSearchOnlyExclusive()
+        {
+            m_SearchOnlyExclusive = !m_SearchOnlyExclusive;
+            SearchSkins(m_SearchBox.text);
+            RefreshSearchExclusiveSkinsButton();
+        }
+
+        public void RefreshSearchExclusiveSkinsButton()
+        {
+            m_SearchOnlyExclusiveButton.GetComponent<Image>().color = m_SearchOnlyExclusive ? Color.white : Color.gray;
+            m_SearchOnlyExclusiveButton.OnDeselect(null);
+        }
+
+        public void ResetSearchBox(int i) => ResetSearchBox();
+        public void ResetSearchBox()
+        {
+            m_SearchBox.text = string.Empty;
+        }
+
+        public void SearchSkins(string input)
+        {
+            List<WeaponSkinsMenuSkinBehaviour> spawned = WeaponSkinsMenuSkinBehaviour.GetSpawnedButtons();
+            if (spawned.IsNullOrEmpty())
+                return;
+
+            int i = 0;
+            do
+            {
+                WeaponSkinsMenuSkinBehaviour b = spawned[i];
+                if (b)
+                {
+                    bool condition1 = m_SearchOnlyExclusive ? b.GetSkinIsExclusive() : true;
+                    b.gameObject.SetActive(false);
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        b.gameObject.SetActive(condition1);
+                        i++;
+                        continue;
+                    }
+                    else
+                    {
+                        b.gameObject.SetActive((m_SearchByDropdown.value == 0 ? b.GetSkinName() : b.GetSkinAuthor()).Contains(input.ToLower()) && condition1);
+                    }
+                }
+                i++;
+            } while (i < spawned.Count);
+        }
+
         public void SelectSkin(WeaponType weaponType, string skinName)
         {
             if (m_Controller == null || m_Controller.Interface == null || string.IsNullOrEmpty(skinName))
@@ -1378,21 +1430,23 @@ namespace CDOverhaul.HUD
             StartCooldown();
         }
 
-        public void ShowDescriptionTooltip(WeaponType type, string skinName)
+        public void ShowDescriptionTooltip(WeaponType type, string skinName, float yPos = 0f)
         {
-            MyModdedObject.GetObject<Transform>(16).parent.gameObject.SetActive(false);
+            Transform t = MyModdedObject.GetObject<Transform>(16).parent;
+            t.gameObject.SetActive(false);
+
             if (m_Controller == null || m_Controller.Interface == null || type == WeaponType.None)
-            {
                 return;
-            }
+
             IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.None, out _);
             if (item == null || string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
-            {
                 return;
-            }
 
+            MyModdedObject.GetObject<Transform>(81).gameObject.SetActive(!string.IsNullOrEmpty(item.GetExclusivePlayerID()) && !item.IsUnlocked(OverhaulVersion.IsDebugBuild));
+            MyModdedObject.GetObject<Transform>(82).gameObject.SetActive(string.IsNullOrEmpty(item.GetExclusivePlayerID()));
             MyModdedObject.GetObject<Text>(16).text = (item as WeaponSkinItemDefinitionV2).Description;
-            MyModdedObject.GetObject<Transform>(16).parent.gameObject.SetActive(true);
+            t.gameObject.SetActive(true);
+            t.position = new Vector3(t.position.x, yPos, t.position.z);
         }
 
         public void SetDefaultSkin()

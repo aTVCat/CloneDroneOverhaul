@@ -18,5 +18,18 @@ namespace CDOverhaul.Patches
 
             OverhaulVolumeController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("CanApplyArmorPiece")]
+        private static bool CanApplyArmorPiece_Prefix(MechBodyPart __instance, ArmorPiece armorPiecePrefab, ref bool __result)
+        {
+            if (!OverhaulMod.IsModInitialized)
+            {
+                return true;
+            }
+
+            __result = __instance.transform.parent != null && armorPiecePrefab != null;
+            return __result;
+        }
     }
 }

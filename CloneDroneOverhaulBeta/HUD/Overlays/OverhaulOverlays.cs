@@ -14,10 +14,5 @@ namespace CDOverhaul.HUD.Overlays
             base.transform.localScale = Vector3.one;
             base.transform.localPosition = Vector3.zero;
         }
-
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-        }
     }
 }

@@ -20,14 +20,6 @@ namespace CDOverhaul.HUD
             SetScreenActive(false);
         }
 
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-            m_Header = null;
-            m_Fill = null;
-            Instance = null;
-        }
-
         public void SetScreenActive(bool value)
         {
             if (IsDisposedOrDestroyed())

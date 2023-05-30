@@ -22,7 +22,6 @@ namespace CDOverhaul.HUD
         {
             base.OnDisposed();
             m_Viewer = null;
-            Image = null;
         }
 
         public static void SetActive(bool value, Texture texture)

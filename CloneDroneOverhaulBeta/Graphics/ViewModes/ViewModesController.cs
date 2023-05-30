@@ -15,7 +15,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false)]
         public static bool SyncCameraWithHeadRotation;
 
-        public static readonly Vector3 DefaultCameraOffset = new Vector3(0, 0.425f, -0.1f); //new Vector3(0, 0.425f, -0.05f);
+        public static readonly Vector3 DefaultCameraOffset = new Vector3(0, 0.425f, -0.1f);
 
         public static bool IsFirstPersonModeEnabled => ViewModeType == 1;
 
@@ -31,7 +31,7 @@ namespace CDOverhaul.Graphics
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (!hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
+            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsViewModesSettingsEnabled || !hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
             {
                 return;
             }

@@ -129,7 +129,7 @@ namespace CDOverhaul.Graphics
             }
             if (!LockZ && TiltWhenOneLegged && XOR(onlyLeftLeg, onlyRightLeg))
             {
-                z += onlyLeftLeg ? -TiltToAddWhenOneLegged : TiltToAddWhenOneLegged;
+                z += onlyLeftLeg ? TiltToAddWhenOneLegged : -TiltToAddWhenOneLegged;
             }
 
             float x = 0f;

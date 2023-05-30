@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("LateUpdate")]
         private static bool LateUpdate_Prefix()
         {
-            return !OverhaulMod.IsModInitialized || !ViewModesController.IsFirstPersonModeEnabled;
+            return !OverhaulFeatureAvailabilitySystem.BuildImplements.IsViewModesSettingsEnabled || !OverhaulMod.IsModInitialized || !ViewModesController.IsFirstPersonModeEnabled;
         }
     }
 }

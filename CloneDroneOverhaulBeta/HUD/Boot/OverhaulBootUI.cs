@@ -20,7 +20,7 @@ namespace CDOverhaul
 
         public static void Show()
         {
-            if (m_HasEverShownUI || !GameModeManager.IsOnTitleScreen()) return;
+            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen()) return;
             m_HasEverShownUI = true;
             GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Part1);
             GameObject spawnedPrefab = UnityEngine.Object.Instantiate(prefab);

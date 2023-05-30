@@ -32,8 +32,6 @@ namespace CDOverhaul
         {
             base.OnDisposed();
 
-            m_DialoguePrefab = null;
-            m_DialoguesContainer = null;
             m_Instance = null;
             IsInitialized = false;
         }

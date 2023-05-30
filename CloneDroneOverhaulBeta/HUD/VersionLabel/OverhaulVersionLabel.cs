@@ -49,7 +49,7 @@ namespace CDOverhaul.HUD
             }
 
             m_DiscordHolderTransform = MyModdedObject.GetObject<Transform>(1);
-            m_DiscordHolderTransform.gameObject.SetActive(ShowDiscordLabel);
+            m_DiscordHolderTransform.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.BuildImplements.IsDiscordPanelEnabled && ShowDiscordLabel);
             m_ServersList = MyModdedObject.GetObject<Transform>(9);
             m_ServersList.gameObject.SetActive(false);
             m_ServersContainer = new PrefabAndContainer(MyModdedObject, 10, 11);
@@ -83,9 +83,6 @@ namespace CDOverhaul.HUD
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            m_VersionLabel = null;
-            m_TitleScreenUIVersionLabel = null;
-            m_DiscordHolderTransform = null;
             Instance = null;
 
             OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, refreshVisibility);
@@ -104,7 +101,7 @@ namespace CDOverhaul.HUD
                 bool parametersMenuIsActive = OverhaulParametersMenu.IsActive;
                 bool bootuiIsActive = OverhaulBootUI.IsActive;
 
-                m_DiscordHolderTransform.gameObject.SetActive(ShowDiscordLabel && !bootuiIsActive && !parametersMenuIsActive && !workshopBrowserIsActive);
+                m_DiscordHolderTransform.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.BuildImplements.IsDiscordPanelEnabled && ShowDiscordLabel && !bootuiIsActive && !parametersMenuIsActive && !workshopBrowserIsActive);
                 m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons != null && m_TitleScreenRootButtons.activeInHierarchy);
                 if (workshopBrowserIsActive || bootuiIsActive)
                 {
@@ -126,7 +123,7 @@ namespace CDOverhaul.HUD
 
         public void ShowDiscordPanel()
         {
-            m_DiscordHolderTransform.gameObject.SetActive(true);
+            m_DiscordHolderTransform.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.BuildImplements.IsDiscordPanelEnabled);
         }
 
         private void refreshVisibility()

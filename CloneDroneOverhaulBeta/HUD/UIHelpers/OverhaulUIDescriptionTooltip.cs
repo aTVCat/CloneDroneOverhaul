@@ -18,14 +18,6 @@ namespace CDOverhaul.HUD
             SetActive(false);
         }
 
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-            m_Tooltip = null;
-            TitleText = null;
-            DescriptionText = null;
-        }
-
         public static void SetActive(bool value)
         {
             if (IsNull)
