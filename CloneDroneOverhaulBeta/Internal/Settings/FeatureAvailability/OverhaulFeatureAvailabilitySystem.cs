@@ -33,9 +33,7 @@ namespace CDOverhaul
         public static bool IsFeatureUnlocked(in OverhaulFeatureID featureID)
         {
             if (OverhaulVersion.IsDebugBuild)
-            {
                 return true;
-            }
 
             OverhaulFeatureDefinition def = GetFeatureDefinition(featureID);
             return def != null && def.IsAvailable();
@@ -44,18 +42,14 @@ namespace CDOverhaul
         public static OverhaulFeatureDefinition GetFeatureDefinition(in OverhaulFeatureID featureID)
         {
             if (m_Features.IsNullOrEmpty())
-            {
                 return null;
-            }
 
             int i = 0;
             do
             {
                 OverhaulFeatureDefinition def = m_Features[i];
                 if (def != null && def.FeatureID == featureID)
-                {
                     return def;
-                }
                 i++;
             } while (i < m_Features.Count);
             return null;
@@ -134,6 +128,12 @@ namespace CDOverhaul
             /// </summary>
             private static bool IS_DISCORD_PANEL_ENABLED = true;
             public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_DISCORD_PANEL_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static bool ALLOW_DEVELOPER_USE_ALL_SKINS = false;
+            public static bool AllowDeveloperUseAllSkins => ALLOW_DEVELOPER_USE_ALL_SKINS;
         }
     }
 }

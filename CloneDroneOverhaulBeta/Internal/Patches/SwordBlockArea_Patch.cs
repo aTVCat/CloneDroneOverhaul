@@ -12,7 +12,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnTriggerEnter")]
         private static void OnTriggerEnter_Prefix(SwordBlockArea __instance, Collider otherCollider)
         {
-            if (__instance.SwordHitArea != null && __instance.SwordHitArea.IsDamageActive() && __instance.BounceWeaponOnEnvironmentImpact && !otherCollider.isTrigger && Tags.IsEnvironment(otherCollider.tag))
+            if (OverhaulMod.IsModInitialized && __instance.SwordHitArea != null && __instance.SwordHitArea.IsDamageActive() && __instance.BounceWeaponOnEnvironmentImpact && !otherCollider.isTrigger && Tags.IsEnvironment(otherCollider.tag))
             {
                 OverhaulCombatState.SwordBlockAreaEnvCollisionSkinItem = WeaponSkinsWearer.GetEquippedWeaponSkinItemDirectly(__instance.GetOwner());
                 OverhaulCombatState.SwordBlockAreaEnvCollisionPosition = __instance.SwordHitArea.GetEdgePointCenter();

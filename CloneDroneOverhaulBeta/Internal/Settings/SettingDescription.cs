@@ -18,14 +18,10 @@ namespace CDOverhaul
             Description = desc;
 
             if (!string.IsNullOrEmpty(img43fileName))
-            {
                 Image_4_3 = getSprite(img43fileName);
-                return;
-            }
-            if (!string.IsNullOrEmpty(img169fileName))
-            {
+
+            else if (!string.IsNullOrEmpty(img169fileName))
                 Image_16_9 = getSprite(img169fileName);
-            }
         }
 
         private static Sprite getSprite(string fileName)

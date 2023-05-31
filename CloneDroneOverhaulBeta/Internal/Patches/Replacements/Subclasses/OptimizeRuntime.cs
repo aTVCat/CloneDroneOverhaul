@@ -35,9 +35,7 @@ namespace CDOverhaul.Patches
         public static void CollectGarbage()
         {
             if (!DoCleanupOnLevelSpawn)
-            {
                 return;
-            }
 
             GC.Collect();
             _ = Resources.UnloadUnusedAssets();

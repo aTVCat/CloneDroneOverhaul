@@ -20,22 +20,14 @@ namespace CDOverhaul.HUD
 
         public static void SelectSpecific(bool isOutfitSelection = false)
         {
-            if (m_InstantiatedButtons.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            foreach (WeaponSkinsMenuSkinBehaviour b in m_InstantiatedButtons)
-            {
-                if (isOutfitSelection && b.IsOutfitSelection)
+            if (!m_InstantiatedButtons.IsNullOrEmpty())
+                foreach (WeaponSkinsMenuSkinBehaviour b in m_InstantiatedButtons)
                 {
-                    b.TrySelect();
+                    if (isOutfitSelection && b.IsOutfitSelection)
+                        b.TrySelect();
+                    else if (!isOutfitSelection && !b.IsOutfitSelection)
+                        b.TrySelect();
                 }
-                else if (!isOutfitSelection && !b.IsOutfitSelection)
-                {
-                    b.TrySelect();
-                }
-            }
         }
 
         #endregion
@@ -67,9 +59,7 @@ namespace CDOverhaul.HUD
         public void Initialize()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             ModdedObject m = GetComponent<ModdedObject>();
             m_SelectedImage = m.GetObject<Transform>(0).gameObject;
@@ -86,49 +76,28 @@ namespace CDOverhaul.HUD
         protected override void OnDisposed()
         {
             _ = m_InstantiatedButtons.Remove(this);
-            m_SelectedImage = null;
-            m_SkinsMenu = null;
-            m_Skin = null;
-            m_Author = null;
-            m_ExclusiveIcon = null;
-            m_Cooldown = null;
-            m_Button = null;
-            SkinItem = null;
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
         private void Update()
         {
             if (Time.frameCount % 2 == 0)
-            {
                 m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
-            }
         }
 
         public void SetMenu(WeaponSkinsMenu menu)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_SkinsMenu != null)
                 return;
-            }
 
-            if (m_SkinsMenu != null)
-            {
-                return;
-            }
             m_SkinsMenu = menu;
         }
 
         public void SetSkin(string skin, string author, bool exclusive)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_Skin != null)
                 return;
-            }
 
-            if (m_Skin != null)
-            {
-                return;
-            }
             m_Skin = skin;
             m_Author.text = string.IsNullOrEmpty(author) ? "Original game" : "By " + author;
             m_ExclusiveIcon.SetActive(exclusive);
@@ -136,24 +105,16 @@ namespace CDOverhaul.HUD
 
         public void SetWeaponType(WeaponType weaponType)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_WeaponType != default)
                 return;
-            }
 
-            if (m_WeaponType != default)
-            {
-                return;
-            }
             m_WeaponType = weaponType;
         }
 
         public void SetSelected(bool value, bool initializing = false)
         {
             if (IsDisposedOrDestroyed() || (value == IsSelected && !initializing) || m_SelectedImage == null)
-            {
                 return;
-            }
 
             m_SelectedImage.SetActive(value);
             IsSelected = value;
@@ -168,20 +129,16 @@ namespace CDOverhaul.HUD
                 WeaponSkinsMenu.StartCooldown();
 
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
-                if (mover != null)
+                if (mover)
                 {
                     OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
-                    if (outfits != null)
-                    {
+                    if (outfits)
                         outfits.SpawnAccessories();
-                    }
                 }
 
                 OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
                 if (info != null && info.HasReceivedData)
-                {
                     info.RefreshData();
-                }
 
                 return;
             }
@@ -203,17 +160,13 @@ namespace CDOverhaul.HUD
             }
 
             if (WeaponSkinsEditor.EditorEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
-            {
                 SetSelected(true, true);
-            }
         }
 
         public void SelectThis()
         {
             if (IsDisposedOrDestroyed() || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
-            {
                 return;
-            }
 
             if (IsOutfitSelection)
             {
@@ -223,15 +176,11 @@ namespace CDOverhaul.HUD
                 {
                     FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
                     if (mover == null || !mover.HasCharacterModel())
-                    {
                         return;
-                    }
 
                     AccessoryItem item = OutfitsController.GetAccessoryItem(m_Skin, false);
                     if (!item.Offsets.ContainsKey(mover.GetCharacterModel().gameObject.name))
-                    {
                         return;
-                    }
 
                     OutfitsController.EditingItem = item;
                     OutfitsController.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
@@ -239,13 +188,8 @@ namespace CDOverhaul.HUD
                 }
                 return;
             }
-            else
-            {
-                if (IsSelected)
-                {
-                    return;
-                }
-            }
+            else if (IsSelected)
+                return;
 
             m_SkinsMenu.SelectSkin(m_WeaponType, m_Skin);
         }
@@ -253,9 +197,7 @@ namespace CDOverhaul.HUD
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
-            {
                 return;
-            }
 
             m_SkinsMenu.ShowDescriptionTooltip(m_WeaponType, m_Skin, base.transform.position.y);
             m_IsMouseOverElement = true;
@@ -264,18 +206,13 @@ namespace CDOverhaul.HUD
         public void OnPointerExit(PointerEventData eventData)
         {
             if (IsDisposedOrDestroyed() || IsSelected || m_SkinsMenu == null)
-            {
                 return;
-            }
 
             m_SkinsMenu.ShowDescriptionTooltip(WeaponType.None, null, base.transform.position.y);
             m_IsMouseOverElement = false;
         }
 
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            OnPointerExit(null);
-        }
+        public void OnPointerUp(PointerEventData eventData) => OnPointerExit(null);
 
         public void OnPointerClick(PointerEventData eventData)
         {

@@ -20,10 +20,6 @@ namespace CDOverhaul.Patches
                         case "CharacterModel_Business1_NoJetpack":
                             character.CharacterModelPrefab = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[24].CharacterModelPrefab;
                             break;
-                            /*
-                        case "CharacterModel_Zombie1":
-                            character.CharacterModelPrefab = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[26].CharacterModelPrefab;
-                            break;*/
                     }
                 }
             }

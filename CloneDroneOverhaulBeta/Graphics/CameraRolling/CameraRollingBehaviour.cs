@@ -58,8 +58,9 @@ namespace CDOverhaul.Graphics
             OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
         }
 
-        public void Initialize(FirstPersonMover firstPersonMover, Camera playerCamera)
+        public void Initialize(FirstPersonMover firstPersonMover)
         {
+            Camera playerCamera = base.GetComponent<Camera>();
             m_Owner = firstPersonMover;
             m_PlayerCamera = playerCamera;
             m_PlayerCameraTransform = playerCamera.transform;
@@ -71,22 +72,16 @@ namespace CDOverhaul.Graphics
         private void onDied(Character character)
         {
             if (character == null)
-            {
                 return;
-            }
 
             if (m_Owner == null || Equals(m_Owner.GetInstanceID(), character.GetInstanceID()))
-            {
                 DestroyBehaviour();
-            }
         }
 
         public void UpdateRotation(float targetX, float targetY, float targetZ)
         {
             if (!CanBeControlled)
-            {
                 return;
-            }
 
             if (ForceZero)
             {
@@ -114,9 +109,7 @@ namespace CDOverhaul.Graphics
         private void LateUpdate()
         {
             if (!CanBeControlled)
-            {
                 return;
-            }
 
             float z = 0f;
             bool moveLeft = Input.GetKey(KeyCode.A);
@@ -124,46 +117,34 @@ namespace CDOverhaul.Graphics
             bool moveRight = Input.GetKey(KeyCode.D);
             bool onlyLeftLeg = m_Owner.IsDamaged(MechBodyPartType.LeftLeg);
             if (!LockZ && XOR(moveLeft, moveRight))
-            {
                 z = moveLeft ? TiltMoveHorizontal : -TiltMoveHorizontal;
-            }
             if (!LockZ && TiltWhenOneLegged && XOR(onlyLeftLeg, onlyRightLeg))
-            {
                 z += onlyLeftLeg ? TiltToAddWhenOneLegged : -TiltToAddWhenOneLegged;
-            }
 
             float x = 0f;
             bool moveForward = Input.GetKey(KeyCode.W);
             bool moveBackward = Input.GetKey(KeyCode.S);
             if (!LockX && XOR(moveForward, moveBackward))
-            {
                 x = moveForward ? TiltMoveHorizontal : -TiltMoveHorizontal;
-            }
             if (!LockX && TiltWhenJumping && (m_Owner.IsJumping() || m_Owner.IsFreeFallingWithNoGroundInSight()))
-            {
                 x += 1f;
-            }
 
             UpdateRotation(x + AdditionalXOffset, 0f, z + AdditionalZOffset);
         }
 
-        private static bool XOR(bool a, bool b)
-        {
-            return (a || b) && !(a && b);
-        }
+        private static bool XOR(bool a, bool b) => (a || b) && !(a && b);
 
         public static void UpdateViewBobbing()
         {
-            if (CharacterTracker.Instance == null) return;
+            if (CharacterTracker.Instance == null)
+                return;
+
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
             if (player != null && player.GetPrivateField<bool>("_isMovingForward"))
-            {
                 AdditionalOffsetMultiplier = 2.1f;
-            }
             else
-            {
                 AdditionalOffsetMultiplier = 0.6f;
-            }
+
             AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
             AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
         }

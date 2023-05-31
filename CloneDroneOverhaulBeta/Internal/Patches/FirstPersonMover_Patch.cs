@@ -12,14 +12,13 @@ namespace CDOverhaul.Patches
         private static void ExecuteCommand_Prefix(FirstPersonMover __instance, Command command, bool resetState)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
             foreach (OverhaulCharacterExpansion b in expansionBases)
             {
-                b.OnPreCommandExecute((FPMoveCommand)command);
+                if (b)
+                    b.OnPreCommandExecute((FPMoveCommand)command);
             }
         }
 
@@ -29,9 +28,7 @@ namespace CDOverhaul.Patches
         private static bool RollbackAsIfKicked_Prefix(FirstPersonMover __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             return __instance.HasCharacterModel();
         }
@@ -41,14 +38,13 @@ namespace CDOverhaul.Patches
         private static void ExecuteCommand_Postfix(FirstPersonMover __instance, Command command, bool resetState)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
             foreach (OverhaulCharacterExpansion b in expansionBases)
             {
-                b.OnPostCommandExecute((FPMoveCommand)command);
+                if (b)
+                    b.OnPostCommandExecute((FPMoveCommand)command);
             }
         }
 
@@ -57,21 +53,16 @@ namespace CDOverhaul.Patches
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             WeaponSkinsWearer w = __instance.GetComponent<WeaponSkinsWearer>();
             if (w == null)
-            {
                 return;
-            }
 
             WeaponSkinBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
             if (s == null)
-            {
                 return;
-            }
+
             s.OnBeginDraw();
         }
 
@@ -80,21 +71,16 @@ namespace CDOverhaul.Patches
         private static void ReleaseNockedArrow_Postfix(FirstPersonMover __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             WeaponSkinsWearer w = __instance.GetComponent<WeaponSkinsWearer>();
             if (w == null)
-            {
                 return;
-            }
 
             WeaponSkinBehaviour s = w.GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
             if (s == null)
-            {
                 return;
-            }
+
             s.OnEndDraw();
         }
 
@@ -103,14 +89,13 @@ namespace CDOverhaul.Patches
         private static void OnEvent_Postfix(FirstPersonMover __instance, SendFallingEvent fallingEvent)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
             foreach (OverhaulCharacterExpansion b in expansionBases)
             {
-                b.OnEvent(fallingEvent);
+                if (b)
+                    b.OnEvent(fallingEvent);
             }
         }
     }

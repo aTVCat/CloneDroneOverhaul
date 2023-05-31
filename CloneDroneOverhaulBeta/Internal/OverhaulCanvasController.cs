@@ -74,10 +74,7 @@ namespace CDOverhaul.HUD
         /// <typeparam name="T"></typeparam>
         /// <param name="moddedObject"></param>
         /// <returns></returns>
-        public T AddHUD<T>(in ModdedObject moddedObject) where T : OverhaulUI
-        {
-            return moddedObject == null ? null : OverhaulController.AddController<T>(moddedObject.transform);
-        }
+        public T AddHUD<T>(ModdedObject moddedObject) where T : OverhaulUI => moddedObject == null ? null : OverhaulController.AddController<T>(moddedObject.transform);
 
         /// <summary>
         /// TBA
@@ -89,13 +86,10 @@ namespace CDOverhaul.HUD
             foreach (GameObject @object in HUDPrefabsArray)
             {
                 if (@object == null)
-                {
                     break;
-                }
+
                 else if (@object.name == name)
-                {
                     return @object;
-                }
             }
             return null;
         }
@@ -104,9 +98,7 @@ namespace CDOverhaul.HUD
         {
             List<T> list = new List<T>();
             if (targetTransform == null || targetTransform.childCount == 0)
-            {
                 return list;
-            }
 
             for (int i = 0; i < targetTransform.childCount; i++)
             {
@@ -128,7 +120,9 @@ namespace CDOverhaul.HUD
         /// <param name="transform"></param>
         public static void ParentTransformToGameUIRoot(in Transform transform)
         {
-            if(GameUIRoot.Instance == null) return;
+            if(GameUIRoot.Instance == null)
+                return;
+
             transform.SetParent(GameUIRoot.Instance.transform);
             transform.localPosition = Vector3.zero;
             transform.localScale = Vector3.one;
@@ -138,35 +132,19 @@ namespace CDOverhaul.HUD
         /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
         /// </summary>
         /// <param name="value"></param>
-        public static void SetCanvasPixelPerfect(in bool value)
-        {
-            GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
-        }
+        public static void SetCanvasPixelPerfect(in bool value) => GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
 
-        public override void OnModDeactivated()
-        {
-            destroyHUD();
-        }
-
+        public override void OnModDeactivated() => destroyHUD();
         private void destroyHUD()
         {
             if (!HasSpawnedHUD)
-            {
                 return;
-            }
 
             Destroy(HUDModdedObject.gameObject);
             Destroy(m_CanvasFromPrefab);
         }
 
-        public override string[] Commands()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new System.NotImplementedException();
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

@@ -34,25 +34,13 @@ namespace CDOverhaul.Graphics
         public Camera[] GetAllCameras()
         {
             if (m_AllCameras.IsNullOrEmpty())
-            {
                 m_AllCameras = Camera.allCameras;
-            }
+
             return m_AllCameras;
         }
-        public Camera GetMainCamera()
-        {
-            return m_MainCamera;
-        }
+        public Camera GetMainCamera() => m_MainCamera;
 
-
-        public override string[] Commands()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new NotImplementedException();
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

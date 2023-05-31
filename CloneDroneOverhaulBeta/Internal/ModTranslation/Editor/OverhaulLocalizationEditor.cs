@@ -28,9 +28,7 @@ namespace CDOverhaul.Localization
 
             MyModdedObject.GetObject<Transform>(3).gameObject.SetActive(error);
             if (error)
-            {
                 return;
-            }
 
             if (!m_HasPopulated)
             {
@@ -44,15 +42,12 @@ namespace CDOverhaul.Localization
                         EditLang(m.GetObject<Text>(0).text);
                     });
                 }
-
                 m_HasPopulated = true;
             }
 
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)
-            {
                 tUI.SetLogoAndRootButtonsVisible(false);
-            }
         }
 
         public void Hide()
@@ -62,9 +57,7 @@ namespace CDOverhaul.Localization
 
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)
-            {
                 tUI.SetLogoAndRootButtonsVisible(true);
-            }
         }
 
         public void EditLang(string lang)
@@ -95,9 +88,7 @@ namespace CDOverhaul.Localization
         public void NewTranslation()
         {
             if (string.IsNullOrEmpty(m_EditingLang))
-            {
                 return;
-            }
 
             OverhaulLocalizationController.Localization.AddTranslation("CoolThingTranslation");
             EditLang(m_EditingLang);

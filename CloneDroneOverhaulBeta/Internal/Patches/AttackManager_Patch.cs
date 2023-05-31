@@ -13,9 +13,7 @@ namespace CDOverhaul.Patches
         private static bool CreateSwordBlockVFX_Prefix(AmplifyColorSwapper __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             WeaponSkinItemDefinitionV2 def = OverhaulCombatState.SwordBlockAreaEnvCollisionSkinItem;
             if (WeaponSkinsCustomVFXController.SkinHasCustomVFX(def))

@@ -41,17 +41,13 @@ namespace CDOverhaul.Patches
 
             Vector3 newPos = base.transform.position;
             if (_vectorPrevFrame != newPos)
-            {
                 StartRendering();
-            }
             _vectorPrevFrame = newPos;
 
             if (Time.frameCount % 10 == 0)
             {
                 if (SpeechAudioManager.Instance.IsAnyoneSpeaking() || CutSceneManager.Instance.IsInCutscene())
-                {
                     StartRendering();
-                }
             }
 
             _renderActively = Time.time < _timeToStopRendering;
@@ -60,11 +56,10 @@ namespace CDOverhaul.Patches
                 TheCamera.enabled = DoRender;
                 return;
             }
+
             TheCamera.enabled = false;
             if (DoRender && Time.frameCount % 2 == 0)
-            {
                 TheCamera.Render();
-            }
         }
     }
 }

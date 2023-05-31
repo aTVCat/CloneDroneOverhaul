@@ -16,14 +16,13 @@ namespace CDOverhaul.Patches
     {
         public static readonly OverhaulCore.IOStateInfo IOStateInfo = new OverhaulCore.IOStateInfo();
 
+        // Reduces memory usage
         [HarmonyPrefix]
         [HarmonyPatch("CheckHasChangedFromFile")]
         private static bool CheckHasChangedFromFile_Prefix(ref bool __result)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             __result = true;
             return false;

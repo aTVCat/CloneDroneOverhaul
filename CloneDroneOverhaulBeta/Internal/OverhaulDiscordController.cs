@@ -20,6 +20,9 @@ namespace CDOverhaul
         private static bool m_HasInitialized;
         private static bool m_HasError;
 
+        private float m_TimeLeftToRefresh;
+        private float m_UnscaledTimeToInitializeDiscord;
+
         public static bool SuccessfulInitialization => !m_HasError &&
             m_HasInitialized &&
             m_Client != null &&
@@ -42,15 +45,11 @@ namespace CDOverhaul
             get
             {
                 if (!SuccessfulInitialization || !m_HasUser)
-                {
                     return -1;
-                }
 
                 UserManager m = m_Client.GetUserManager();
                 if (m == null)
-                {
                     return -1;
-                }
 
                 User u;
                 try
@@ -72,20 +71,14 @@ namespace CDOverhaul
             get
             {
                 if (m_HasUser)
-                {
                     return m_User.Username;
-                }
 
                 if (!SuccessfulInitialization)
-                {
                     return string.Empty;
-                }
 
                 UserManager m = m_Client.GetUserManager();
                 if (m == null)
-                {
                     return string.Empty;
-                }
 
                 User u;
                 try
@@ -107,20 +100,14 @@ namespace CDOverhaul
             get
             {
                 if (m_HasUser)
-                {
                     return m_User.Discriminator;
-                }
 
                 if (!SuccessfulInitialization)
-                {
                     return string.Empty;
-                }
 
                 UserManager m = m_Client.GetUserManager();
                 if (m == null)
-                {
                     return string.Empty;
-                }
 
                 User u;
                 try
@@ -137,14 +124,16 @@ namespace CDOverhaul
             }
         }
 
-        private float m_TimeLeftToRefresh;
-
-        private float m_UnscaledTimeToInitializeDiscord;
-
-        private void Start()
+        public override void Start()
         {
             Instance = this;
             m_UnscaledTimeToInitializeDiscord = EnableDiscordActivity ? Time.unscaledTime + 1.5f : -1f;
+        }
+
+        protected override void OnDisposed()
+        {
+            Instance = null;
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
         private void Update()
@@ -156,9 +145,7 @@ namespace CDOverhaul
             }
 
             if (!SuccessfulInitialization)
-            {
                 return;
-            }
 
             try
             {
@@ -239,19 +226,16 @@ namespace CDOverhaul
         public void DestroyDiscord()
         {
             if (m_Client == null)
-            {
                 return;
-            }
 
             m_Client.Dispose();
+            DestroyBehaviour();
         }
 
         public void UpdateActivity()
         {
             if (!SuccessfulInitialization)
-            {
                 return;
-            }
 
             m_ClientActivity.State = !string.IsNullOrEmpty(CurrentGamemodeDetails) ? CurrentGamemode + " [" + CurrentGamemodeDetails + "]" : CurrentGamemode;
 
@@ -267,15 +251,8 @@ namespace CDOverhaul
 
         private void handleActivityUpdate(Result res)
         {
-            if (!SuccessfulInitialization)
-            {
-                return;
-            }
-
             if (res != Result.Ok)
-            {
                 InterruptDiscord();
-            }
         }
 
         /// <summary>

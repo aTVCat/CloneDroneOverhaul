@@ -85,31 +85,23 @@ namespace CDOverhaul.HUD
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-            {
                 Hide();
-            }
         }
 
         public void Show()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (GameUIRoot.Instance != null)
             {
                 TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
                 if (tUI != null && tUI.gameObject.activeSelf)
-                {
                     tUI.SetLogoAndRootButtonsVisible(false);
-                }
 
                 SettingsMenu mUI = GameUIRoot.Instance.SettingsMenu;
                 if (mUI != null && mUI.gameObject.activeSelf)
-                {
                     mUI.Hide();
-                }
             }
 
             MyModdedObject.GetObject<Image>(20).color = OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
@@ -136,9 +128,7 @@ namespace CDOverhaul.HUD
         public void Hide()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             TransformUtils.DestroyAllChildren(m_MainContainer);
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
@@ -146,9 +136,7 @@ namespace CDOverhaul.HUD
             {
                 TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
                 if (tUI != null && tUI.gameObject.activeSelf)
-                {
                     tUI.SetLogoAndRootButtonsVisible(true);
-                }
             }
 
             OverhaulCanvasController.SetCanvasPixelPerfect(true);
@@ -158,9 +146,7 @@ namespace CDOverhaul.HUD
         private void populateCategories()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
             List<string> categories = SettingsController.GetAllCategories();
@@ -178,9 +164,7 @@ namespace CDOverhaul.HUD
         public void PopulateCategory(in string categoryName, bool restorePosition = false)
         {
             if (IsDisposedOrDestroyed() || !base.gameObject.activeSelf || m_IsPopulatingSettings)
-            {
                 return;
-            }
 
             MyModdedObject.GetObject<Text>(23).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + categoryName);
             _ = StaticCoroutineRunner.StartStaticCoroutine(populateCategoryCoroutine(categoryName, restorePosition));
@@ -241,22 +225,19 @@ namespace CDOverhaul.HUD
                         {
                             ParametersMenuSettingPosition pos = ParametersMenuSettingPosition.Center;
                             if (childrenSettings.Count - 1 == index)
-                            {
                                 pos = ParametersMenuSettingPosition.Bottom;
-                            }
+
                             PopulateSetting(cSettingName, pos);
                             index++;
                         }
                     }
                 }
             }
-            yield return null;
+
             yield return null;
 
             if (restorePosition)
-            {
                 m_ScrollRect.verticalScrollbar.value = prevPos;
-            }
 
             for (int i = 0; i < 4; i++)
             {
@@ -272,9 +253,7 @@ namespace CDOverhaul.HUD
         public void PopulateSetting(in string path, in ParametersMenuSettingPosition position)
         {
             if (IsDisposedOrDestroyed() || !base.gameObject.activeSelf)
-            {
                 return;
-            }
 
             SettingInfo info = SettingsController.GetSetting(path, false);
             if (info != null)
@@ -308,9 +287,7 @@ namespace CDOverhaul.HUD
         public void PopulateDescription(in SettingInfo info, in SettingDescription description)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (info == null || description == null)
             {

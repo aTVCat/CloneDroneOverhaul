@@ -263,9 +263,7 @@ namespace CDOverhaul
                 if (!result.Contains(s.Category))
                 {
                     if (!IsEntryHidden(s.Category) || includeHidden)
-                    {
                         result.Add(s.Category);
-                    }
                 }
             }
             return result;
@@ -283,9 +281,7 @@ namespace CDOverhaul
                 if (s.Category == categoryToSearchIn && !result.Contains(s.Category + "." + s.Section))
                 {
                     if (!IsEntryHidden(s.Category + "." + s.Section) || includeHidden)
-                    {
                         result.Add(s.Category + "." + s.Section);
-                    }
                 }
             }
             return result;
@@ -303,9 +299,7 @@ namespace CDOverhaul
                 if (s.Category == categoryToSearchIn && s.Section == sectionToSearchIn && !result.Contains(s.RawPath))
                 {
                     if ((!IsEntryHidden(s.RawPath) || includeHidden) && !s.IsChildSetting)
-                    {
                         result.Add(s.RawPath);
-                    }
                 }
             }
             return result;
@@ -327,9 +321,7 @@ namespace CDOverhaul
             foreach (SettingInfo s in m_Settings)
             {
                 if (s.RawPath == path && (!IsEntryHidden(s.RawPath) || includeHidden))
-                {
                     return s;
-                }
             }
             return null;
         }
@@ -365,7 +357,8 @@ namespace CDOverhaul
         /// <returns></returns>
         public static bool IsEntryHidden(in string path)
         {
-            if (OverhaulVersion.IsDebugBuild) return false;
+            if (OverhaulVersion.IsDebugBuild)
+                return false;
 
             bool isCategory = !path.Contains(".");
             string path1 = null;
@@ -380,15 +373,12 @@ namespace CDOverhaul
 
             bool isSection = array.Length == 2;
             if (isSection)
-            {
                 path1 = array[0] + "." + array[1];
-            }
 
             bool isSetting = array.Length == 3;
             if (isSetting)
-            {
                 path1 = array[0] + "." + array[1] + "." + array[2];
-            }
+
             return m_HiddenEntries.Contains(path1);
         }
     }

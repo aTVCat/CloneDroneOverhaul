@@ -23,30 +23,22 @@ namespace CDOverhaul.NetworkAssets
                 if (!handler.Error)
                 {
                     if (!Directory.Exists(directoryPath))
-                    {
                         return;
-                    }
 
                     if (!handler.DownloadedData.IsNullOrEmpty())
-                    {
                         File.WriteAllBytes(directoryPath + fileName, handler.DownloadedData);
-                    }
                     else
-                    {
                         File.WriteAllText(directoryPath + fileName, handler.DownloadedText);
-                    }
                 }
             };
+
             Action act2 = onDone.Combine(onDoneDownloadingAction);
             handler.DoneAction = act2;
             DownloadFile(address, handler);
             return handler;
         }
 
-        public static OverhaulNetworkDownloadHandler DownloadFile(string address)
-        {
-            return DownloadFile(address, emptyVoid);
-        }
+        public static OverhaulNetworkDownloadHandler DownloadFile(string address) => DownloadFile(address, emptyVoid);
 
         public static OverhaulNetworkDownloadHandler DownloadFile(string address, Action onDoneDownloadingAction)
         {
@@ -61,9 +53,7 @@ namespace CDOverhaul.NetworkAssets
         public static void DownloadFile(string address, OverhaulNetworkDownloadHandler downloadHandler)
         {
             if (downloadHandler == null || downloadHandler.DoneAction == null)
-            {
                 return;
-            }
 
             if (!checkAddress(address))
             {
@@ -79,9 +69,7 @@ namespace CDOverhaul.NetworkAssets
         public static void DownloadTexture(string address, OverhaulNetworkDownloadHandler downloadHandler)
         {
             if (downloadHandler == null || downloadHandler.DoneAction == null)
-            {
                 return;
-            }
 
             if (!checkAddress(address))
             {
@@ -147,10 +135,7 @@ namespace CDOverhaul.NetworkAssets
             yield break;
         }
 
-        private static bool checkAddress(string address)
-        {
-            return !string.IsNullOrEmpty(address);
-        }
+        private static bool checkAddress(string address) => !string.IsNullOrEmpty(address);
 
         private static void emptyVoid() { }
     }

@@ -21,9 +21,7 @@ namespace CDOverhaul.HUD
         public static void SetActive(bool value)
         {
             if (IsNull)
-            {
                 return;
-            }
 
             m_Tooltip.gameObject.SetActive(value);
         }
@@ -37,9 +35,7 @@ namespace CDOverhaul.HUD
         public static void SetTitleAndDescription(string title, string description)
         {
             if (IsNull)
-            {
                 return;
-            }
 
             m_Tooltip.TitleText.text = title;
             m_Tooltip.DescriptionText.text = description;

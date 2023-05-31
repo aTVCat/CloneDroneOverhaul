@@ -11,9 +11,7 @@ namespace CDOverhaul.Patches
         private static bool Show_Prefix()
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             if (OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)
             {

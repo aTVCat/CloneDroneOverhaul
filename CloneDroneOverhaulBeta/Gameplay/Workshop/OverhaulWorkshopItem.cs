@@ -1,36 +1,23 @@
 ﻿using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CDOverhaul.Workshop
 {
-    public class OverhaulWorkshopItem : IDisposable
+    public class OverhaulWorkshopItem : OverhaulDisposable
     {
-        private bool m_IsDisposed;
-        public bool IsDisposed()
+        protected override void OnDisposed()
         {
-            return m_IsDisposed;
-        }
-
-        void IDisposable.Dispose()
-        {
-            GC.SuppressFinalize(this);
-            m_IsDisposed = true;
-            ItemTitle = null;
-        }
-        ~OverhaulWorkshopItem()
-        {
-            ((IDisposable)this).Dispose();
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
         public OverhaulWorkshopItem(SteamUGCDetails_t details, string thumbnailURL)
         {
             string fileSizeString = (details.m_nFileSize / (float)1024 / 1024).ToString();
             if (fileSizeString.Length > 6)
-            {
                 fileSizeString = fileSizeString.Remove(6);
-            }
 
             TimeCreated = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(details.m_rtimeCreated).ToLocalTime();
             TimeUpdated = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(details.m_rtimeUpdated).ToLocalTime();
@@ -98,7 +85,7 @@ namespace CDOverhaul.Workshop
             SteamFriends.RequestUserInformation(CreatorID, false);
             if (DelegateScheduler.Instance != null) DelegateScheduler.Instance.Schedule(delegate
             {
-                if (!IsDisposed())
+                if (!IsDisposed)
                 {
                     CreatorNickname = SteamFriends.GetFriendPersonaName(CreatorID);
                 }

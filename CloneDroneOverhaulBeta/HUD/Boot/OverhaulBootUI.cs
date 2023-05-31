@@ -20,9 +20,11 @@ namespace CDOverhaul
 
         public static void Show()
         {
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen()) return;
+            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
+                return;
+
             m_HasEverShownUI = true;
-            GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Part1);
+            GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload);
             GameObject spawnedPrefab = UnityEngine.Object.Instantiate(prefab);
             ModdedObject moddedObject = spawnedPrefab.GetComponent<ModdedObject>();
             Transform mainViewTransform = moddedObject.GetObject<Transform>(0);
@@ -34,7 +36,7 @@ namespace CDOverhaul
         private void Start()
         {
             Animator animator = GetComponent<Animator>();
-            animator.speed = 0.01f;
+            animator.speed = 0f;
 
             ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
@@ -54,7 +56,6 @@ namespace CDOverhaul
 
             AudioListener.volume = 0f;
             Time.timeScale = 0f;
-            if (m_IsPlayingAnimation && Time.unscaledTime >= m_UnscaledTimeToHide) destroyUI();
         }
 
         private void OnDestroy()
@@ -89,9 +90,11 @@ namespace CDOverhaul
 
         private IEnumerator waitThenPlayAnimation()
         {
-            yield return new WaitForSecondsRealtime(3.5f);
+            yield return new WaitForSecondsRealtime(4f);
 
             playAnimation();
+            yield return new WaitForSecondsRealtime(5f);
+            destroyUI();
 
             yield break;
         }

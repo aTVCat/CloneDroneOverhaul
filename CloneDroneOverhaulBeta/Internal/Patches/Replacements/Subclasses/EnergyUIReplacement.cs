@@ -35,9 +35,7 @@ namespace CDOverhaul.Patches
             base.Replace();
 
             if (!m_AddedListeners)
-            {
                 _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, RefreshPatch);
-            }
             m_AddedListeners = true;
 
             _energyUI = GameUIRoot.Instance.EnergyUI;
@@ -79,9 +77,7 @@ namespace CDOverhaul.Patches
         public void PatchEnergyUI(in bool recover)
         {
             if (!SuccessfullyPatched)
-            {
                 return;
-            }
 
             (_energyUI.transform as RectTransform).anchoredPosition = recover ? _positions.Item1 : _positions.Item2;
             _bg.gameObject.SetActive(recover);
@@ -93,9 +89,6 @@ namespace CDOverhaul.Patches
             _cantJumpBG.localScale = recover ? _cantJumpBGScale.Item1 : _cantJumpBGScale.Item2;
         }
 
-        public static void DirectRefreshPatch()
-        {
-            ReplacementBase.GetReplacement<EnergyUIReplacement>().RefreshPatch();
-        }
+        public static void RefreshPatchStatic() => ReplacementBase.GetReplacement<EnergyUIReplacement>()?.RefreshPatch();
     }
 }

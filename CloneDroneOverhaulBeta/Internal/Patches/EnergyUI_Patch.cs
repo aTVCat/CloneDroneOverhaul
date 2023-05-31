@@ -10,11 +10,9 @@ namespace CDOverhaul.Patches
         private static void Show_Postfix()
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
-            EnergyUIReplacement.DirectRefreshPatch();
+            EnergyUIReplacement.RefreshPatchStatic();
         }
     }
 }

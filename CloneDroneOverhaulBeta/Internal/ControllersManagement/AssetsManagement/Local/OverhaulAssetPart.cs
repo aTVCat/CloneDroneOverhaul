@@ -3,6 +3,7 @@
     public enum OverhaulAssetPart
     {
         None,
+
         Part1,
         Part2,
         WeaponSkins,
@@ -10,6 +11,7 @@
         Objects,
         Sounds,
         Main,
-        Combat_Update
+        Combat_Update,
+        Preload
     }
 }

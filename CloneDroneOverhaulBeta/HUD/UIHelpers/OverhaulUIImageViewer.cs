@@ -28,9 +28,7 @@ namespace CDOverhaul.HUD
         {
             m_Viewer.gameObject.SetActive(false);
             if (IsNull || texture == null)
-            {
                 return;
-            }
 
             m_Viewer.gameObject.SetActive(value);
             m_Viewer.Image.texture = texture;
@@ -39,9 +37,7 @@ namespace CDOverhaul.HUD
         private void LateUpdate()
         {
             if (Input.anyKeyDown)
-            {
                 SetActive(false, null);
-            }
         }
     }
 }

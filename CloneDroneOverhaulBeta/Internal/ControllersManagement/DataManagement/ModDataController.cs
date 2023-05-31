@@ -21,9 +21,7 @@ namespace CDOverhaul
         public static void SaveData(object dataContainer, in string fileName, in bool useModFolder, in string modFolder)
         {
             if (!(dataContainer is OverhaulDataBase))
-            {
                 return;
-            }
 
             if (useModFolder)
             {
@@ -35,9 +33,8 @@ namespace CDOverhaul
             }
 
             if (!Directory.Exists(Application.persistentDataPath + OverhaulDataDirectoryName))
-            {
                 _ = Directory.CreateDirectory(Application.persistentDataPath + OverhaulDataDirectoryName);
-            }
+
             DataRepository.Instance.Save(dataContainer, OverhaulDataDirectoryName + fileName + ".json", false, false);
         }
 
@@ -61,7 +58,9 @@ namespace CDOverhaul
             }
 
             _ = DataRepository.Instance.TryLoad(OverhaulDataDirectoryName + fileName + ".json", out T data, false);
-            if (data == null) data = Activator.CreateInstance<T>();
+            if (data == null)
+                data = Activator.CreateInstance<T>();
+
             SetUpContainer(data, fileName, DataRepository.Instance.GetFullPath(fileName, false));
             return data;
         }
@@ -69,9 +68,7 @@ namespace CDOverhaul
         internal static void SetUpContainer(in OverhaulDataBase container, in string fileName, in string savePath)
         {
             if (container == null)
-            {
                 return;
-            }
 
             container.IsLoadedFromFile = true;
             container.FileName = fileName;

@@ -9,15 +9,14 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            if (OverhaulSessionController.GetKey<bool>("HasInitialized"))
+            if (!OverhaulSessionController.GetKey<bool>("HasInitialized"))
             {
-                return;
-            }
-            OverhaulSessionController.SetKey("HasInitialized", true);
+                OverhaulSessionController.SetKey("HasInitialized", true);
 
-            HeavyRobotFootsteps = new AudioClipDefinition[2];
-            HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetPart.Sounds));
-            HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetPart.Sounds));
+                HeavyRobotFootsteps = new AudioClipDefinition[2];
+                HeavyRobotFootsteps[0] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetPart.Sounds));
+                HeavyRobotFootsteps[1] = AudioAPI.CreateDefinitionUsingClip(OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetPart.Sounds));
+            }
         }
     }
 }

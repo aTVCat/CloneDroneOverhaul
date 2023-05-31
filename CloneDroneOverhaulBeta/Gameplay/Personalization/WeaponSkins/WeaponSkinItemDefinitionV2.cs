@@ -85,34 +85,18 @@ namespace CDOverhaul.Gameplay
         private byte getIndexOfModelsArray(bool fire, bool multiplayer)
         {
             byte result = 0;
-            if (!fire && multiplayer)
-            {
+            if (!fire && multiplayer && !UseSingleplayerVariantInMultiplayer)
                 result = 1;
-                if (UseSingleplayerVariantInMultiplayer)
-                {
-                    result = 0;
-                }
-            }
-            else if (fire && !multiplayer)
-            {
+            else if (fire && !multiplayer) 
                 result = 2;
-            }
-            else if (fire && multiplayer)
-            {
-                result = 3;
-                if (UseSingleplayerVariantInMultiplayer)
-                {
-                    result = 2;
-                }
-            }
+            else if (fire && multiplayer) 
+                result = UseSingleplayerVariantInMultiplayer ? (byte)2 : (byte)3;
             return result;
         }
         private void createArrayIfNesseccerary()
         {
             if (m_Models.IsNullOrEmpty())
-            {
                 m_Models = new WeaponSkinModel[4];
-            }
         }
 
         public bool IsDeveloperItem;
@@ -153,7 +137,7 @@ namespace CDOverhaul.Gameplay
 
             string localID = ExclusivityController.GetLocalPlayfabID();
             bool isUnlocked = m_ExclusivePlayerID.Contains(localID);
-            if (!isUnlocked)
+            if (!isUnlocked && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
             {
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
             }

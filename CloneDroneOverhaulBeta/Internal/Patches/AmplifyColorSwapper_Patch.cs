@@ -12,12 +12,9 @@ namespace CDOverhaul.Patches
         private static void refreshLutValues_Postfix(AmplifyColorSwapper __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
-            AmplifyColorBase amplifyColor = __instance.GetPrivateField<AmplifyColorBase>("_amplifyColorBase");
-            OverhaulGraphicsController.PatchAmplifyColorMode(amplifyColor);
+            OverhaulGraphicsController.PatchAmplifyColorMode(__instance.GetPrivateField<AmplifyColorBase>("_amplifyColorBase"));
         }
     }
 }

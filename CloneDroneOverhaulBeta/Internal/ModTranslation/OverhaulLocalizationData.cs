@@ -12,36 +12,20 @@ namespace CDOverhaul.Localization
 
         public override void RepairFields()
         {
-            if (Translations.IsNullOrEmpty())
-            {
-                Translations = new Dictionary<string, Dictionary<string, string>>();
+            if (!Translations.IsNullOrEmpty())
+                return;
 
-                foreach (LanguageDefinition def in LocalizationManager.Instance.SupportedLanguages)
-                {
-                    AddLanguage(def.LanguageCode);
-                }
-            }
+            Translations = new Dictionary<string, Dictionary<string, string>>();
+            foreach (LanguageDefinition def in LocalizationManager.Instance.SupportedLanguages)
+                AddLanguage(def.LanguageCode);
         }
 
-        public void SaveLocalization()
-        {
-            OverhaulLocalizationController.SaveData();
-        }
-
-        public void AddLanguage(string langID)
-        {
-            Translations.Add(langID, new Dictionary<string, string>());
-        }
-
+        public void AddLanguage(string langID) => Translations.Add(langID, new Dictionary<string, string>());
         public void AddTranslation(string translationID)
         {
             foreach (string key in Translations.Keys)
-            {
                 if (!Translations[key].ContainsKey(translationID))
-                {
                     Translations[key].Add(translationID, string.Empty);
-                }
-            }
         }
 
         public string GetTranslation(string langID, string translationID)
@@ -54,40 +38,29 @@ namespace CDOverhaul.Localization
                 ? Translations["en"][translationID]
                 : Translations[langID][translationID];
         }
-
         public string GetTranslation(string translationID)
         {
             SettingsManager m = SettingsManager.Instance;
             if (m == null || m.GetPrivateField<SettingsData>("_data") == null)
-            {
                 return "nl: " + translationID;
-            }
 
             string langCode = m.GetCurrentLanguageID();
             return string.IsNullOrEmpty(langCode) ? "nl: " + translationID : GetTranslation(langCode, translationID);
         }
-
         public void GetTranslation(Text textElement, string translationID)
         {
             if (textElement == null)
-            {
                 return;
-            }
 
             textElement.text = GetTranslation(translationID);
         }
-
         public void GetTranslation(ModdedObject mObj, bool checkComponent = true)
         {
             if (mObj == null)
-            {
                 return;
-            }
 
             if (checkComponent && (string.IsNullOrEmpty(mObj.ID) || mObj.ID.Length < 5 || !mObj.ID.Contains("LID_")))
-            {
                 return;
-            }
 
             Text text = mObj.GetComponent<Text>();
             if (mObj.ID.Contains("_DV_"))
@@ -114,9 +87,7 @@ namespace CDOverhaul.Localization
         public void RemoveTranslation(string id)
         {
             foreach (string key in Translations.Keys)
-            {
                 _ = Translations[key].Remove(id);
-            }
         }
     }
 }

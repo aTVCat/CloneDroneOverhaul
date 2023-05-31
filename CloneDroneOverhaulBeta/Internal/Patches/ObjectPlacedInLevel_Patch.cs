@@ -15,21 +15,19 @@ namespace CDOverhaul.Patches
         private static bool replaceMaterialWithSelected_Prefix(ObjectPlacedInLevel __instance, Renderer targetRenderer)
         {
             if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
-            {
                 return true;
-            }
 
-            ThreeDOutline o = targetRenderer.GetComponent<ThreeDOutline>();
-            if (o == null)
+            ThreeDOutline threeDOutline = targetRenderer.GetComponent<ThreeDOutline>();
+            if (threeDOutline == null)
             {
-                o = targetRenderer.gameObject.AddComponent<ThreeDOutline>();
+                threeDOutline = targetRenderer.gameObject.AddComponent<ThreeDOutline>();
 
                 if (m_Objects.ContainsKey(__instance))
                 {
-                    m_Objects[__instance].Add(o);
+                    m_Objects[__instance].Add(threeDOutline);
                     return true;
                 }
-                m_Objects.Add(__instance, new List<ThreeDOutline>() { o });
+                m_Objects.Add(__instance, new List<ThreeDOutline>() { threeDOutline });
             }
             return true;
         }
@@ -39,9 +37,7 @@ namespace CDOverhaul.Patches
         private static bool ChangeToNotSelectedVisuals_Prefix(ObjectPlacedInLevel __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled && !m_Objects.IsNullOrEmpty() && m_Objects.ContainsKey(__instance))
             {

@@ -77,9 +77,7 @@ namespace CDOverhaul.Workshop
         public bool TryShow()
         {
             if (OverhaulVersion.IsUpdate2Hotfix || !UseThisUI)
-            {
                 return false;
-            }
 
             Show();
             return true;
@@ -136,31 +134,19 @@ namespace CDOverhaul.Workshop
 
         #endregion
 
-        public bool ShouldShowManagementPanel()
-        {
-            return ViewingWorkshopItem != null;
-        }
-
-        public bool ShouldMakePlayButtonInteractable()
-        {
-            return LevelTypeRequiredTag == "Challenge" || LevelTypeRequiredTag == "Adventure";
-        }
+        public bool ShouldShowManagementPanel() => ViewingWorkshopItem != null;
+        public bool ShouldMakePlayButtonInteractable() => LevelTypeRequiredTag == "Challenge" || LevelTypeRequiredTag == "Adventure";
 
         public bool ShouldMakeEraseDataButtonInteractable()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return false;
-            }
 
             string path = Application.persistentDataPath + "/ChallengeData" + ViewingWorkshopItem.ItemID + ".json";
             return ShouldMakePlayButtonInteractable() && File.Exists(path);
         }
 
-        public bool ShouldResetRequest()
-        {
-            return IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
-        }
+        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
 
         #region UI elements
 
@@ -315,9 +301,7 @@ namespace CDOverhaul.Workshop
         private void populateRankArray(EUGCQuery[] array)
         {
             if (array.IsNullOrEmpty())
-            {
                 return;
-            }
 
             _ = m_RankSeparatorsContainer.CreateNew();
             int i = 0;
@@ -391,9 +375,7 @@ namespace CDOverhaul.Workshop
 
             m_DropdownRanksContainer.ClearContainer();
             if (array.IsNullOrEmpty())
-            {
                 return;
-            }
 
             int i = startIndex;
             do
@@ -471,9 +453,7 @@ namespace CDOverhaul.Workshop
             m_ItemPageViewTransform.gameObject.SetActive(false);
             RawImage ri = MyModdedObject.GetObject<RawImage>(39);
             if (ri.texture != null)
-            {
                 Destroy(ri.texture);
-            }
 
             OverhaulRequestProgressInfo.SetProgress(m_ProgressInfo, 0f);
             LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
@@ -482,9 +462,7 @@ namespace CDOverhaul.Workshop
 
             bool itemIsNUll = workshopItem == null;
             if (itemIsNUll)
-            {
                 return;
-            }
 
             RefreshManagementPanel();
 
@@ -502,18 +480,14 @@ namespace CDOverhaul.Workshop
             hm.DoneAction = delegate
             {
                 if (hm != null && !hm.Error && ri != null)
-                {
                     ri.texture = hm.DownloadedTexture;
-                }
             };
             OverhaulNetworkController.DownloadTexture(workshopItem.PreviewURL, hm);
 
             int imagesCount = Mathf.Min(2, workshopItem.ItemAdditionalImages.Count);
             m_AdditionalPreviewsContainer.ClearContainer();
             if (imagesCount == 0)
-            {
                 return;
-            }
 
             for (int i = 0; i < imagesCount; i++)
             {
@@ -546,9 +520,7 @@ namespace CDOverhaul.Workshop
         public void SubscribeToItem()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             m_ItemLoadingIndicatorTransform.gameObject.SetActive(true);
             m_SubscribeButton.interactable = false;
@@ -568,9 +540,7 @@ namespace CDOverhaul.Workshop
             while (true)
             {
                 if (ViewingWorkshopItem == null)
-                {
                     yield break;
-                }
 
                 EItemState itemState = OverhaulSteamBrowser.GetItemState(ViewingWorkshopItem.ItemID);
                 if (itemState.HasFlag(EItemState.k_EItemStateInstalled) && itemState.HasFlag(EItemState.k_EItemStateSubscribed))
@@ -589,9 +559,7 @@ namespace CDOverhaul.Workshop
         public void UnsubscribeFromItem()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             m_PlayButton.interactable = false;
             m_UnsubscribeButton.interactable = false;
@@ -607,9 +575,7 @@ namespace CDOverhaul.Workshop
         public void MarkItemAsFavourite()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             m_FavouriteButton.image.color = "#2E2E2E".ConvertHexToColor();
             m_FavouriteButton.interactable = false;
@@ -622,9 +588,7 @@ namespace CDOverhaul.Workshop
         public void OpenItemSteamPage()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             string url = ViewingWorkshopItem.ItemURL;
             if (SteamManager.Instance != null && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
@@ -638,9 +602,7 @@ namespace CDOverhaul.Workshop
         public void OpenItemAuthorPage()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             if (SteamManager.Instance != null && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
             {
@@ -654,9 +616,7 @@ namespace CDOverhaul.Workshop
         public void CopyItemLink()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             TextEditor editor = new TextEditor
             {
@@ -669,9 +629,7 @@ namespace CDOverhaul.Workshop
         public void EraseLevelProgress()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             m_EraseDataButton.interactable = false;
             string path = Application.persistentDataPath + "/ChallengeData" + ViewingWorkshopItem.ItemID + ".json";
@@ -690,9 +648,7 @@ namespace CDOverhaul.Workshop
         public void VoteUp()
         {
             if (ViewingWorkshopItem == null || CurrentItemVote == true)
-            {
                 return;
-            }
 
             m_UpVoteButton.interactable = false;
             m_DownVoteButton.interactable = false;
@@ -706,9 +662,7 @@ namespace CDOverhaul.Workshop
         public void VoteDown()
         {
             if (ViewingWorkshopItem == null || CurrentItemVote == false)
-            {
                 return;
-            }
 
             m_UpVoteButton.interactable = false;
             m_DownVoteButton.interactable = false;
@@ -722,9 +676,7 @@ namespace CDOverhaul.Workshop
         public void OnPlayButtonClicked()
         {
             if (ViewingWorkshopItem == null || WorkshopChallengeManager.Instance == null)
-            {
                 return;
-            }
 
             SteamWorkshopItem item = ViewingWorkshopItem.ToSteamWorkshopItem();
             if (!File.Exists(item.Folder + "\\ExportedChallengeData.json"))
@@ -742,9 +694,7 @@ namespace CDOverhaul.Workshop
             bool shouldshow = ShouldShowManagementPanel();
             m_ManagementButtonsContainer.gameObject.SetActive(shouldshow);
             if (!shouldshow)
-            {
                 return;
-            }
 
             PublishedFileId_t itemID = ViewingWorkshopItem.ItemID;
             bool isSubscribed = OverhaulSteamBrowser.IsSubscribedToItem(itemID);
@@ -775,9 +725,7 @@ namespace CDOverhaul.Workshop
         {
             m_PlayButton.interactable = false;
             if (item == null)
-            {
                 return;
-            }
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -791,9 +739,7 @@ namespace CDOverhaul.Workshop
         public void RefreshVoteButtons()
         {
             if (ViewingWorkshopItem == null)
-            {
                 return;
-            }
 
             CurrentItemVote = null;
             m_UpVoteButton.interactable = false;
@@ -804,9 +750,7 @@ namespace CDOverhaul.Workshop
             OverhaulSteamBrowser.GetItemVoteInfo(ViewingWorkshopItem.ItemID, delegate (bool skip, bool up, bool down, bool fail)
             {
                 if (fail)
-                {
                     return;
-                }
 
                 m_UpVoteButton.interactable = true;
                 if (up)
@@ -886,9 +830,7 @@ namespace CDOverhaul.Workshop
             {
                 m_Animator = GetComponent<Animation>();
                 if (m_Animator != null)
-                {
                     m_Animator.Stop();
-                }
             }
         }
 
@@ -937,9 +879,7 @@ namespace CDOverhaul.Workshop
             }
 
             if (m_SpawnedEntries.IsNullOrEmpty())
-            {
                 return;
-            }
 
             float time = Time.unscaledTime;
             if(time < m_TimeToAllowUsingArrowKeys) return;
@@ -991,9 +931,7 @@ namespace CDOverhaul.Workshop
         public void RefreshLevelsList()
         {
             if (IsPopulatingItems)
-            {
                 return;
-            }
 
             IsPopulatingItems = true;
             m_CurrentPageText.text = string.Format("Page [{0}]", Page);
@@ -1036,9 +974,7 @@ namespace CDOverhaul.Workshop
             CurrentRequestProgress = null;
 
             if (!canPopulateItems(CurrentRequestResult))
-            {
                 yield break;
-            }
 
             ItemUIEntry[] uiItems = new ItemUIEntry[CurrentRequestResult.ItemsReceived.Length];
             m_SpawnedEntries = uiItems;
@@ -1059,9 +995,7 @@ namespace CDOverhaul.Workshop
             } while (canPopulateItems(CurrentRequestResult) && itemIndex < CurrentRequestResult.ItemsReceived.Length);
 
             if (uiItems.IsNullOrEmpty())
-            {
                 yield break;
-            }
 
             itemIndex = 0;
             do
@@ -1109,27 +1043,19 @@ namespace CDOverhaul.Workshop
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (GameUIRoot.Instance == null || BrowserIsNull || OverhaulUIImageViewer.IsActive)
-                    {
                         return;
-                    }
 
                     Graphic g = base.GetComponent<Graphic>();
                     if (g == null)
-                    {
                         return;
-                    }
 
                     GraphicRaycaster c = GameUIRoot.Instance.GetComponent<GraphicRaycaster>();
                     if (c == null)
-                    {
                         return;
-                    }
 
                     List<Graphic> list = c.GetPrivateField<List<Graphic>>("m_RaycastResults");
                     if (list.IsNullOrEmpty() || list.Contains(g))
-                    {
                         return;
-                    }
 
                     Instance.ViewItem(null);
                 }
@@ -1158,18 +1084,15 @@ namespace CDOverhaul.Workshop
             {
                 m_Button = GetComponent<Button>();
                 if (m_Button != null)
-                {
                     m_Button.onClick.AddListener(onClicked);
-                }
             }
 
             private void onClicked()
             {
                 m_Button.OnDeselect(null);
                 if (OverhaulWorkshopBrowserUI.BrowserIsNull)
-                {
                     return;
-                }
+
                 OverhaulWorkshopBrowserUI.Instance.Page = 1;
                 OverhaulWorkshopBrowserUI.Instance.SetRank(m_Rank, true);
             }
@@ -1194,17 +1117,13 @@ namespace CDOverhaul.Workshop
             private void Update()
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
-                {
                     m_SelectedFrame.SetActive(m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
-                }
             }
 
             private void OnDestroy()
             {
                 if(m_RankIcon && m_RankIcon.texture != null && m_RankIcon.texture.name != "Placeholder-16x16")
-                {
                     Destroy(m_RankIcon.texture);
-                }
             }
         }
 
@@ -1229,17 +1148,14 @@ namespace CDOverhaul.Workshop
             {
                 m_Button = GetComponent<Button>();
                 if (m_Button != null)
-                {
                     m_Button.onClick.AddListener(onClicked);
-                }
             }
 
             private void onClicked()
             {
                 if (OverhaulWorkshopBrowserUI.BrowserIsNull || string.IsNullOrEmpty(m_Tag))
-                {
                     return;
-                }
+
                 OverhaulWorkshopBrowserUI.Instance.SetTag(m_Tag, true);
                 m_Button.OnDeselect(null);
             }
@@ -1247,9 +1163,7 @@ namespace CDOverhaul.Workshop
             private void Update()
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
-                {
                     m_Text.color = m_Tag == OverhaulWorkshopBrowserUI.Instance.LevelTypeRequiredTag ? SelectedColor : DeselectedColor;
-                }
             }
         }
 
@@ -1260,9 +1174,8 @@ namespace CDOverhaul.Workshop
                 if (workshopItem == null)
                 {
                     if (moddedObject != null)
-                    {
                         moddedObject.gameObject.SetActive(false);
-                    }
+
                     return null;
                 }
 
@@ -1282,10 +1195,7 @@ namespace CDOverhaul.Workshop
                 return entry;
             }
 
-            public bool CanWorkWithImage()
-            {
-                return this != null && base.gameObject != null && base.gameObject.activeInHierarchy && !IsDisposedOrDestroyed() && m_ThumbnailImage != null && m_ThumbnailProgressBar != null;
-            }
+            public bool CanWorkWithImage() => !IsDisposedOrDestroyed() && base.gameObject.activeInHierarchy && m_ThumbnailImage != null && m_ThumbnailProgressBar != null;
 
             public OverhaulWorkshopItem GetWorkshopItem() => m_WorkshopItem;
             public bool HasWorkshopItem() => m_WorkshopItem != null;
@@ -1312,18 +1222,15 @@ namespace CDOverhaul.Workshop
             public void LoadPreview()
             {
                 if (!base.enabled || !base.gameObject.activeInHierarchy || string.IsNullOrEmpty(m_WorkshopItem.PreviewURL))
-                {
                     return;
-                }
+
                 _ = StaticCoroutineRunner.StartStaticCoroutine(loadImageCoroutine());
             }
 
             private IEnumerator loadImageCoroutine()
             {
                 if (!CanWorkWithImage())
-                {
                     yield break;
-                }
 
                 m_ThumbnailProgressBar.fillAmount = 0f;
                 m_ThumbnailProgressBar.gameObject.SetActive(true);
@@ -1331,24 +1238,18 @@ namespace CDOverhaul.Workshop
                 string texturePath = m_WorkshopItem.PreviewURL;
 
                 if (CacheImages && File.Exists(OverhaulNetworkController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png"))
-                {
                     texturePath = "file://" + OverhaulNetworkController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png";
-                }
 
                 OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
                 handler.DoneAction = delegate
                 {
                     if (handler == null || !CanWorkWithImage())
-                    {
                         return;
-                    }
 
                     m_ThumbnailProgressBar.gameObject.SetActive(false);
                     m_ThumbnailImage.enabled = !handler.Error;
                     if (handler.Error)
-                    {
                         return;
-                    }
 
                     m_ThumbnailImage.texture = handler.DownloadedTexture;
                     if (CacheImages) _ = StaticCoroutineRunner.StartStaticCoroutine(saveImageCoroutine(handler.DownloadedData, m_WorkshopItem.ItemID.m_PublishedFileId.ToString()));
@@ -1368,14 +1269,10 @@ namespace CDOverhaul.Workshop
             {
                 string path = NetworkAssets.OverhaulNetworkController.DownloadFolder + "Steam/";
                 if (!Directory.Exists(path) || File.Exists(path + itemID + ".png"))
-                {
                     yield break;
-                }
 
                 using (FileStream s = File.OpenWrite(path + itemID + ".png"))
-                {
                     yield return s.WriteAsync(image, 0, image.Length);
-                }
                 yield break;
             }
 
@@ -1394,26 +1291,21 @@ namespace CDOverhaul.Workshop
             {
                 StaticCoroutineRunner.StopStaticCoroutine(loadImageCoroutine());
                 if (m_ThumbnailImage.texture != null)
-                {
                     Destroy(m_ThumbnailImage.texture);
-                }
             }
 
             private void OnDestroy()
             {
                 StaticCoroutineRunner.StopStaticCoroutine(loadImageCoroutine());
                 if (m_ThumbnailImage.texture != null)
-                {
                     Destroy(m_ThumbnailImage.texture);
-                }
             }
 
             public void OnPointerEnter(PointerEventData eventData)
             {
                 if (OverhaulWorkshopBrowserUI.BrowserIsNull)
-                {
                     return;
-                }
+
                 OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = m_Index;
                 OverhaulWorkshopBrowserUI.Instance.ShowQuickInfo(m_WorkshopItem);
             }
@@ -1421,19 +1313,17 @@ namespace CDOverhaul.Workshop
             public void OnPointerExit(PointerEventData eventData)
             {
                 if (OverhaulWorkshopBrowserUI.BrowserIsNull)
-                {
                     return;
-                }
-                if(OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex == m_Index) OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = -1;
+
+                if (OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex == m_Index) OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = -1;
                 OverhaulWorkshopBrowserUI.Instance.ShowQuickInfo(null);
             }
 
             public void OnPointerClick(PointerEventData eventData)
             {
                 if (OverhaulWorkshopBrowserUI.BrowserIsNull)
-                {
                     return;
-                }
+
                 OverhaulWorkshopBrowserUI.Instance.ItemSelectionIndex = -1;
                 OverhaulWorkshopBrowserUI.Instance.ViewItem(m_WorkshopItem);
             }

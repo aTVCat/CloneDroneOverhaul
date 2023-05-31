@@ -24,9 +24,7 @@ namespace CDOverhaul.Graphics.Robots
             FindHeadTransform();
 
             if (!m_HasInitializedVFX)
-            {
                 initializeVFX();
-            }
         }
 
         protected override void OnDeath()
@@ -34,17 +32,13 @@ namespace CDOverhaul.Graphics.Robots
             FindHeadTransform();
 
             if (m_HeadTransform != null)
-            {
                 PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(RobotDeathSparksVFXID, m_HeadTransform.position, Vector3.zero);
-            }
         }
 
         public void FindHeadTransform()
         {
             if (m_HeadTransform != null || Owner == null || !Owner.HasCharacterModel())
-            {
                 return;
-            }
 
             m_HeadTransform = Owner.GetBodyPartParent("Head");
         }

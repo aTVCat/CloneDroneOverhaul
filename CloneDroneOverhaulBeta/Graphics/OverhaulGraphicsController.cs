@@ -129,9 +129,7 @@ namespace CDOverhaul.Graphics
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
-                    {
                         menu.PopulateCategory(menu.SelectedCategory, true);
-                    }
                 };
 
                 ApplyAmplifyColorPreset1.EventAction = delegate
@@ -142,9 +140,7 @@ namespace CDOverhaul.Graphics
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
-                    {
                         menu.PopulateCategory(menu.SelectedCategory, true);
-                    }
                 };
 
                 ApplyAmplifyColorPreset2.EventAction = delegate
@@ -155,9 +151,7 @@ namespace CDOverhaul.Graphics
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
-                    {
                         menu.PopulateCategory(menu.SelectedCategory, true);
-                    }
                 };
 
                 ApplyAmplifyColorPresetDefault.EventAction = delegate
@@ -168,9 +162,7 @@ namespace CDOverhaul.Graphics
 
                     OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
-                    {
                         menu.PopulateCategory(menu.SelectedCategory, true);
-                    }
                 };
             }
         }
@@ -178,31 +170,27 @@ namespace CDOverhaul.Graphics
         public static void PatchCamera(Camera camera)
         {
             if (camera == null || camera.orthographic)
-            {
                 return;
-            }
-            if (!camera.name.Equals("TitleScreenLogoCamera")) camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+
+            if (!camera.name.Equals("TitleScreenLogoCamera"))
+                camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
             PatchAmplifyColor(camera.GetComponent<AmplifyColorBase>());
             refreshAmplifyOcclusionOnCamera(camera);
             addShaderPassesToCamera(camera);
             refreshShaderMaterials();
-
-            //camera.gameObject.AddComponent<MotionBlur>().shader = AssetsController.GetAsset<Shader>("MotionBlur", OverhaulAssetsPart.Part2);
         }
 
         public static void PatchBloom(Bloom bloom)
         {
             if (bloom == null)
-            {
                 return;
-            }
 
             bloom.bloomBlurIterations = BloomIterations;
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
-            //bloom.bloomThresholdColor = new Color(1, 1, 0.75f, 1);
+
             if (!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
             if (!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
         }
@@ -210,9 +198,7 @@ namespace CDOverhaul.Graphics
         public static void PatchAmplifyColor(AmplifyColorBase effect)
         {
             if (effect == null)
-            {
                 return;
-            }
 
             effect.UseDepthMask = AmplifyColorUseDepthMask;
             switch (AmplifyColorTonemapper)
@@ -233,9 +219,8 @@ namespace CDOverhaul.Graphics
         public static void PatchAmplifyColorMode(AmplifyColorBase effect)
         {
             if (effect == null)
-            {
                 return;
-            }
+
             LevelLightSettings activeLightSettings = null;
             if (LevelEditorLightManager.Instance != null)
             {
@@ -302,9 +287,7 @@ namespace CDOverhaul.Graphics
         private static void addShaderPassesToCamera(Camera camera)
         {
             if (IgnoreCamera(camera) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
-            {
                 return;
-            }
 
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableBEFunc);
             OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
@@ -314,9 +297,7 @@ namespace CDOverhaul.Graphics
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
         {
             if (IgnoreCamera(camera) || camera != Camera.main)
-            {
                 return;
-            }
 
             AmplifyOcclusionEffect effect = camera.GetComponent<AmplifyOcclusionEffect>();
             if (!effect)
@@ -416,6 +397,7 @@ namespace CDOverhaul.Graphics
                 DisallowChangeFPSLimit = false;
             }
             catch { }
+
             switch (CameraRollingBehaviour.TargetFPS)
             {
                 case 1:
@@ -455,9 +437,8 @@ namespace CDOverhaul.Graphics
         public static void RefreshLightsCount()
         {
             if (DelegateScheduler.Instance == null)
-            {
                 return;
-            }
+
             DelegateScheduler.Instance.Schedule(refreshLightsCount, 0.2f);
         }
 

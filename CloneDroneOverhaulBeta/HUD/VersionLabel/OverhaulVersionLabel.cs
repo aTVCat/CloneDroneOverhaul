@@ -37,9 +37,7 @@ namespace CDOverhaul.HUD
         public override void Initialize()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             Instance = this;
             if (GameUIRoot.Instance == null || GameUIRoot.Instance.TitleScreenUI == null || GameUIRoot.Instance.TitleScreenUI.VersionLabel == null)
@@ -91,9 +89,7 @@ namespace CDOverhaul.HUD
         public void RefreshVersionLabel()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (GameModeManager.IsOnTitleScreen())
             {
@@ -121,15 +117,9 @@ namespace CDOverhaul.HUD
             }
         }
 
-        public void ShowDiscordPanel()
-        {
-            m_DiscordHolderTransform.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.BuildImplements.IsDiscordPanelEnabled);
-        }
+        public void ShowDiscordPanel() => m_DiscordHolderTransform.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.BuildImplements.IsDiscordPanelEnabled);
 
-        private void refreshVisibility()
-        {
-            m_wasOnTitleScreenBefore = !m_wasOnTitleScreenBefore;
-        }
+        private void refreshVisibility() => m_wasOnTitleScreenBefore = !m_wasOnTitleScreenBefore;
 
         private void onPatchNotesButtonClicked()
         {
@@ -151,12 +141,8 @@ namespace CDOverhaul.HUD
                 if (!m_LoadedTextures.IsNullOrEmpty())
                 {
                     foreach (Texture t in m_LoadedTextures)
-                    {
                         if (t != null && t)
-                        {
                             Destroy(t);
-                        }
-                    }
                     m_LoadedTextures.Clear();
                 }
                 m_ServersContainer.ClearContainer();
@@ -175,13 +161,8 @@ namespace CDOverhaul.HUD
                         m_LoadedTextures.Add(h1.DownloadedTexture);
                         overhaulServer.GetObject<RawImage>(1).texture = h1.DownloadedTexture;
                     }
-                    else
-                    {
-                        if (h1.DownloadedTexture)
-                        {
-                            Destroy(h1.DownloadedTexture);
-                        }
-                    }
+                    else if (h1.DownloadedTexture)
+                        Destroy(h1.DownloadedTexture);
                 };
                 OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Overhaul Mod Discord.png", h1);
 
@@ -199,13 +180,8 @@ namespace CDOverhaul.HUD
                         m_LoadedTextures.Add(h2.DownloadedTexture);
                         modBotServer.GetObject<RawImage>(1).texture = h2.DownloadedTexture;
                     }
-                    else
-                    {
-                        if (h2.DownloadedTexture)
-                        {
-                            Destroy(h2.DownloadedTexture);
-                        }
-                    }
+                    else if (h2.DownloadedTexture)
+                        Destroy(h2.DownloadedTexture);
                 };
                 OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Mod-Bot discord.png", h2);
 
@@ -223,13 +199,8 @@ namespace CDOverhaul.HUD
                         m_LoadedTextures.Add(h3.DownloadedTexture);
                         doborogServer.GetObject<RawImage>(1).texture = h3.DownloadedTexture;
                     }
-                    else
-                    {
-                        if (h3.DownloadedTexture)
-                        {
-                            Destroy(h3.DownloadedTexture);
-                        }
-                    }
+                    else if (h3.DownloadedTexture)
+                        Destroy(h3.DownloadedTexture);
                 };
                 OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Doborog.png", h3);
 
@@ -247,13 +218,8 @@ namespace CDOverhaul.HUD
                         m_LoadedTextures.Add(h4.DownloadedTexture);
                         clansServer.GetObject<RawImage>(1).texture = h4.DownloadedTexture;
                     }
-                    else
-                    {
-                        if (h4.DownloadedTexture)
-                        {
-                            Destroy(h4.DownloadedTexture);
-                        }
-                    }
+                    else if (h4.DownloadedTexture)
+                        Destroy(h4.DownloadedTexture);
                 };
                 OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clan Headquarters RU-EN.png", h4);
             }
@@ -261,15 +227,8 @@ namespace CDOverhaul.HUD
 
         private void Update()
         {
-            if (IsDisposedOrDestroyed())
-            {
-                return;
-            }
-
-            if (Time.frameCount % 5 == 0)
-            {
+            if (!IsDisposedOrDestroyed() && Time.frameCount % 5 == 0)
                 RefreshVersionLabel();
-            }
         }
     }
 }

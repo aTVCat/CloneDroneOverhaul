@@ -1109,7 +1109,7 @@ namespace CDOverhaul.HUD
             }
 
             TransformUtils.DestroyAllChildren(GetContainer(false));
-            foreach (WeaponType type in WeaponSkinsController.GetSupportedWeapons())
+            foreach (WeaponType type in WeaponSkinsController.SupportedWeapons)
             {
                 PopulateWeapon(type);
             }
@@ -1390,19 +1390,15 @@ namespace CDOverhaul.HUD
             {
                 case WeaponType.Sword:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.SwordVar", true), 0);
                     break;
                 case WeaponType.Bow:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.BowVar", true), 0);
                     break;
                 case WeaponType.Hammer:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.HammerVar", true), 0);
                     break;
                 case WeaponType.Spear:
                     SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.SpearVar", true), 0);
                     break;
             }
             RefreshDefaultSkinButton();
@@ -1438,13 +1434,14 @@ namespace CDOverhaul.HUD
             if (m_Controller == null || m_Controller.Interface == null || type == WeaponType.None)
                 return;
 
-            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.None, out _);
-            if (item == null || string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
+            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.Everything, out _);
+            if (item == null)
                 return;
 
             MyModdedObject.GetObject<Transform>(81).gameObject.SetActive(!string.IsNullOrEmpty(item.GetExclusivePlayerID()) && !item.IsUnlocked(OverhaulVersion.IsDebugBuild));
             MyModdedObject.GetObject<Transform>(82).gameObject.SetActive(string.IsNullOrEmpty(item.GetExclusivePlayerID()));
-            MyModdedObject.GetObject<Text>(16).text = (item as WeaponSkinItemDefinitionV2).Description;
+            MyModdedObject.GetObject<Transform>(86).gameObject.SetActive(!MyModdedObject.GetObject<Transform>(81).gameObject.activeSelf && !MyModdedObject.GetObject<Transform>(82).gameObject.activeSelf);
+            MyModdedObject.GetObject<Text>(16).text = string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description) ? "No description provided." : (item as WeaponSkinItemDefinitionV2).Description;
             t.gameObject.SetActive(true);
             t.position = new Vector3(t.position.x, yPos, t.position.z);
         }

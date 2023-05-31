@@ -39,16 +39,12 @@ namespace CDOverhaul
         internal void CreateDialogueInstance(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
             if (ActiveTitles.Contains(title))
-            {
                 return;
-            }
 
             ActiveTitles.Add(title);
             Vector2? theSize = size;
             if (theSize == null)
-            {
                 theSize = DefaultSize;
-            }
 
             ModdedObject moddedObject = Instantiate(m_DialoguePrefab, m_DialoguesContainer).GetComponent<ModdedObject>();
             moddedObject.GetObject<Text>(0).text = title;
@@ -65,18 +61,15 @@ namespace CDOverhaul
         public static void CreateDialogue(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
             if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
-            {
                 return;
-            }
+
             m_Instance.CreateDialogueInstance(title, description, additionalTime, size, buttons);
         }
 
         public static void Create2BDialogue(string title, string description, float additionalTime, string b1Text, UnityAction b1Act, string b2Text, UnityAction b2Act, Vector2? size)
         {
             if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
-            {
                 return;
-            }
 
             Button[] buttons = new Button[2];
             buttons[0] = new Button() { Title = b1Text, Action = b1Act };

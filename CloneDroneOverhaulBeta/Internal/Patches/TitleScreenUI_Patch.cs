@@ -11,9 +11,7 @@ namespace CDOverhaul.Patches
         private static void setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             __instance.transform.GetChild(1).gameObject.SetActive(visible);
         }
@@ -22,8 +20,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnWorkshopBrowserButtonClicked")]
         private static bool OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
         {
-            return !OverhaulMod.IsModInitialized
-|| OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.Instance.TryShow();
+            return !OverhaulMod.IsModInitialized || OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.Instance.TryShow();
         }
     }
 }

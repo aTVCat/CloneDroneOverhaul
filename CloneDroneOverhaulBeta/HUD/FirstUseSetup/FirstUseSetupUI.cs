@@ -32,9 +32,7 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(false);
 
             if (!HasSetTheModUp && GameModeManager.IsOnTitleScreen())
-            {
                 DelegateScheduler.Instance.Schedule(Show, 1f);
-            }
         }
 
         public void Show()

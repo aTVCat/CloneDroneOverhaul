@@ -17,9 +17,7 @@ namespace CDOverhaul.Workshop
         public static void RequestItems(EUGCQuery query, EUGCMatchingUGCType typeOfContent, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo, string tag, int page, bool cache = false, bool returnLongDescription = false)
         {
             if (completedCallback == null)
-            {
                 return;
-            }
 
             OverhaulWorkshopRequestResult requestResult = new OverhaulWorkshopRequestResult();
             OverhaulRequestProgressInfo.SetProgress(progressInfo, 0f);
@@ -44,13 +42,10 @@ namespace CDOverhaul.Workshop
         public static void SendUGCRequest(UGCQueryHandle_t request, OverhaulWorkshopRequestResult requestResult, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo)
         {
             if (completedCallback == null)
-            {
                 return;
-            }
+
             if (requestResult == null)
-            {
                 requestResult = new OverhaulWorkshopRequestResult();
-            }
 
             if (!CheckRequest(request))
             {
@@ -102,9 +97,7 @@ namespace CDOverhaul.Workshop
                         {
                             bool apSuccess = SteamUGC.GetQueryUGCAdditionalPreview(queryResult.m_handle, (uint)num, (uint)i, out string itemURL, 512, out string name, 512, out EItemPreviewType type);
                             if (apSuccess && type == EItemPreviewType.k_EItemPreviewType_Image)
-                            {
                                 items[num].ItemAdditionalImages.Add(itemURL);
-                            }
                         }
                     }
                     num++;
@@ -132,54 +125,26 @@ namespace CDOverhaul.Workshop
         public static bool RequestInfoAboutUser(CSteamID userID)
         {
             if (m_KnownUserIDs.Contains(userID.m_SteamID))
-            {
                 return false;
-            }
 
             bool result = SteamFriends.RequestUserInformation(userID, false);
             if (!m_KnownUserIDs.Contains(userID.m_SteamID))
-            {
                 m_KnownUserIDs.Add(userID.m_SteamID);
-            }
+
             return result;
         }
 
-        public static EItemState GetItemState(PublishedFileId_t id)
-        {
-            return (EItemState)SteamUGC.GetItemState(id);
-        }
-
-        public static bool IsSubscribedToItem(PublishedFileId_t id)
-        {
-            return GetItemState(id).HasFlag(EItemState.k_EItemStateSubscribed);
-        }
-
-        public static bool IsGoingToDownloadingItem(PublishedFileId_t id)
-        {
-            return GetItemState(id).HasFlag(EItemState.k_EItemStateDownloadPending);
-        }
-
-        public static bool IsDownloadingItem(PublishedFileId_t id)
-        {
-            return GetItemState(id).HasFlag(EItemState.k_EItemStateDownloading);
-        }
-
-        public static bool IsDownloadingItemInAnyWay(PublishedFileId_t id)
-        {
-            return IsGoingToDownloadingItem(id) || IsDownloadingItem(id);
-        }
-
-        public static bool IsItemInstalled(PublishedFileId_t id)
-        {
-            return GetItemState(id).HasFlag(EItemState.k_EItemStateInstalled);
-        }
+        public static EItemState GetItemState(PublishedFileId_t id) => (EItemState)SteamUGC.GetItemState(id);
+        public static bool IsSubscribedToItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateSubscribed);
+        public static bool IsGoingToDownloadingItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateDownloadPending);
+        public static bool IsDownloadingItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateDownloading);
+        public static bool IsDownloadingItemInAnyWay(PublishedFileId_t id) => IsGoingToDownloadingItem(id) || IsDownloadingItem(id);
+        public static bool IsItemInstalled(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateInstalled);
 
         public static float GetItemDownloadProgress(PublishedFileId_t id)
         {
             if (!IsDownloadingItem(id))
-            {
                 return IsItemInstalled(id) ? 1f : 0f;
-            }
 
             GetItemDownloadInfo(id, out ulong done, out ulong total, out float progress);
             return progress;
@@ -215,10 +180,7 @@ namespace CDOverhaul.Workshop
             result.Set(apiCall, null);
         }
 
-        public static bool GetItemInstallInfo(PublishedFileId_t id, out ulong itemSizeOnDisk, out string folder, out uint lastUpdateTime)
-        {
-            return SteamUGC.GetItemInstallInfo(id, out itemSizeOnDisk, out folder, 512, out lastUpdateTime);
-        }
+        public static bool GetItemInstallInfo(PublishedFileId_t id, out ulong itemSizeOnDisk, out string folder, out uint lastUpdateTime) => SteamUGC.GetItemInstallInfo(id, out itemSizeOnDisk, out folder, 512, out lastUpdateTime);
 
         public static bool GetItemDownloadInfo(PublishedFileId_t id, out ulong downloaded, out ulong total, out float progress)
         {
@@ -240,17 +202,12 @@ namespace CDOverhaul.Workshop
             return true;
         }
 
-        public static void UpdateItemDownloadInfo(PublishedFileId_t id, OverhaulRequestProgressInfo progress)
-        {
-            OverhaulRequestProgressInfo.SetProgress(progress, GetItemDownloadProgress(id));
-        }
+        public static void UpdateItemDownloadInfo(PublishedFileId_t id, OverhaulRequestProgressInfo progress) => OverhaulRequestProgressInfo.SetProgress(progress, GetItemDownloadProgress(id));
 
         public static void SubscribeToItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
         {
             if (!m_DownloadingItems.Contains(id))
-            {
                 m_DownloadingItems.Add(id);
-            }
 
             CallResult<RemoteStorageSubscribePublishedFileResult_t> result = CallResult<RemoteStorageSubscribePublishedFileResult_t>.Create(delegate (RemoteStorageSubscribePublishedFileResult_t t, bool bIOFailure)
             {
@@ -269,9 +226,7 @@ namespace CDOverhaul.Workshop
         public static void UnsubscribeFromItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
         {
             if (!IsSubscribedToItem(id))
-            {
                 return;
-            }
 
             CallResult<RemoteStorageUnsubscribePublishedFileResult_t> result = CallResult<RemoteStorageUnsubscribePublishedFileResult_t>.Create(delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool bIOFailure)
             {

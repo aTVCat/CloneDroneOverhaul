@@ -18,35 +18,21 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private bool m_HasSelectedUpgrades;
         public bool ShouldSelectUpgrades => !m_HasSelectedUpgrades && m_LBSManager != null && m_LBSManager.state.TimeToGameStart < ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random ? 15 : 9) && m_LBSManager.state.TimeToGameStart > 6;
 
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (firstPersonMover != null && hasInitializedModel)
-            {
-                if (firstPersonMover.IsMainPlayer())
-                {
-                    m_HasSelectedUpgrades = false;
-                }
-            }
+            if (firstPersonMover != null && firstPersonMover.IsMainPlayer() && hasInitializedModel)
+                m_HasSelectedUpgrades = false;
         }
 
         private void Update()
         {
             if (!GameModeManager.IsBattleRoyale())
-            {
                 return;
-            }
 
             if (Input.GetKeyDown(KeyCode.U))
             {
                 if (m_HasSelectedUpgrades || GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
-                {
                     return;
-                }
 
                 StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
                 m_HasSelectedUpgrades = true;
@@ -69,9 +55,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private IEnumerator selectUpgradesCorouitine()
         {
             if (GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
-            {
                 yield break;
-            }
 
             UpgradeUI ui = GameUIRoot.Instance.UpgradeUI;
             if ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random)
@@ -82,29 +66,21 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
             List<UpgradeUIIcon> icons = ui.GetPrivateField<List<UpgradeUIIcon>>("_icons");
             if (icons.IsNullOrEmpty())
-            {
                 yield break;
-            }
 
             MultiplayerPlayerInfoState s = MultiplayerPlayerInfoManager.Instance.GetLocalPlayerInfoState();
             if (s == null || s.IsDetached())
-            {
                 yield break;
-            }
 
             string playerPlayfabID = s.state.PlayFabID;
             if (string.IsNullOrEmpty(playerPlayfabID))
-            {
                 yield break;
-            }
 
             int i = 0;
             foreach (UpgradeUIIcon icon in icons)
             {
                 if (i % 10 == 0)
-                {
                     yield return null;
-                }
 
                 if (icon == null)
                 {
@@ -120,9 +96,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 }
 
                 if (icon.GetCanUpgradeRightNow(playerPlayfabID))
-                {
                     yield return ApplyBuildCoroutine(desc, icon, playerPlayfabID);
-                }
 
                 i++;
             }

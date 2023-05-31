@@ -8,6 +8,7 @@ namespace CDOverhaul.Patches
         [SettingInforms(1)]
         [OverhaulSetting("Mod.Vanilla additions.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
         public static bool PixelsSimpleFont;
+
         private static Font m_OgUIFont;
         private static Font m_OgSubtitlesFont;
         private static float m_OgFontScale = -1f;
@@ -29,8 +30,6 @@ namespace CDOverhaul.Patches
             if (m_OgSubtitlesFont == null) m_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
             if (m_OgFontScale == -1f) m_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
-
-            //if (!OverhaulVersion.IsUpdate2Hotfix) HumanFactsManager.Instance.AddColor("Prototype", Color.white);
 
             foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
             {
@@ -55,17 +54,10 @@ namespace CDOverhaul.Patches
             SuccessfullyPatched = true;
         }
 
-        public override void Cancel()
-        {
-            base.Cancel();
-        }
-
         public static void SetEnglishFont(bool piksielyPrst)
         {
             if (LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
-            {
                 return;
-            }
 
             bool shouldRefresh = false;
             if (!piksielyPrst)

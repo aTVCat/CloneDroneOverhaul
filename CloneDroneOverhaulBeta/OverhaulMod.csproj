@@ -118,7 +118,8 @@
     <Reference Include="MoonSharp.Interpreter">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Pathfinding.ClipperLib">
@@ -474,7 +475,6 @@
     <Compile Include="Internal\ControllersManagement\AssetsManagement\Network\OverhaulNetworkDownloadHandler.cs" />
     <Compile Include="Internal\ControllersManagement\AssetsManagement\Network\OverhaulNetworkController.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulDisposable.cs" />
-    <Compile Include="Internal\ControllersManagement\OverhaulStaticEditor.cs" />
     <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\ModTranslation\Editor\OverhaulLocalizationEditorTranslationField.cs" />
     <Compile Include="Internal\ModTranslation\OverhaulLocalizationController.cs" />
@@ -529,7 +529,6 @@
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\ControllersManagement\OverhaulCharacterExpansion.cs" />
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
-    <Compile Include="Internal\Debug\OverhaulDebugger.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusivityController.cs" />
     <Compile Include="Internal\Debug\Console\IConsoleCommandReceiver.cs" />
@@ -546,7 +545,6 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameUIRootBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\EnergyUIReplacement.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
-    <Compile Include="Internal\Patches\Replacements\Subclasses\NewArenaActivator.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeRuntime.cs" />
     <Compile Include="Internal\Settings\SettingDescription.cs" />
@@ -581,6 +579,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Arena_Overhaul\ContentInfo.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Combat_overhaul\ContentInfo.json" />
     <None Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Custom_Multiplayer\ContentInfo.json" />

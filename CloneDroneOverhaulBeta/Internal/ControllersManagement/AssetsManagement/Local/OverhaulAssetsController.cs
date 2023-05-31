@@ -24,6 +24,8 @@ namespace CDOverhaul
         public const string ModAssetBundle_Main = "overhaulassets_main";
 
         public const string ModAssetBundle_CombatUpdate = "overhaulassets_combatupdatestuff";
+
+        public const string ModAssetBundle_Preload = "overhaulassets_preload";
         #endregion
 
         /// <summary>
@@ -43,12 +45,13 @@ namespace CDOverhaul
         /// <returns><b>True</b> if asset bundle has been successfully loaded</returns>
         public static bool TryLoadAssetBundle(in string pathUnderModFolder)
         {
-            if (HasLoadedAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder)) return false;
+            if (HasLoadedAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder))
+                return false;
 
             AssetBundle loadedAssetBundle = null;
             try
             {
-                loadedAssetBundle = AssetBundle.LoadFromFile(OverhaulMod.Core.ModDirectory + pathUnderModFolder);
+                loadedAssetBundle = AssetBundle.LoadFromFile(OverhaulCore.ModDirectoryStatic + pathUnderModFolder);
             }
             catch
             {
@@ -66,9 +69,13 @@ namespace CDOverhaul
         /// <returns><see cref="AssetLoadHandler"/> containing progress variable</returns>
         public static AssetBundleLoadHandler LoadAssetBundleAsync(in string pathUnderModFolder, Action<AssetBundleLoadHandler> doneCallback)
         {
-            if (doneCallback == null || IsLoadingAssetBundle(pathUnderModFolder) || HasLoadedAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder)) return null;
+            if (doneCallback == null || IsLoadingAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder))
+                return null;
 
             AssetBundleLoadHandler handler = new AssetBundleLoadHandler(doneCallback, pathUnderModFolder);
+            if (HasLoadedAssetBundle(pathUnderModFolder))
+                return handler;
+
             StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler));
             return handler;
         }
@@ -76,8 +83,13 @@ namespace CDOverhaul
         private static IEnumerator loadAssetBundleAsyncCoroutine(string pathUnderModFolder, AssetBundleLoadHandler handler)
         {
             m_LoadingAssetBundles.Add(pathUnderModFolder);
-            AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(OverhaulMod.Core.ModDirectory + pathUnderModFolder);
+            AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(OverhaulCore.ModDirectoryStatic + pathUnderModFolder);
             handler.AsignRequest(assetBundleCreateRequest);
+
+            while (!assetBundleCreateRequest.isDone)
+                yield return null;
+
+            handler.OnDoneLoading();
             yield break;
         }
 
@@ -89,7 +101,8 @@ namespace CDOverhaul
         /// <returns><b>True</b> if asset bundle has been successfully unloaded</returns>
         public static bool TryUnloadAssetBundle(in string pathUnderModFolder, in bool unloadObjects = false)
         {
-            if (!HasLoadedAssetBundle(pathUnderModFolder)) return false;
+            if (!HasLoadedAssetBundle(pathUnderModFolder))
+                return false;
 
             try
             {
@@ -109,11 +122,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="pathUnderModFolder"></param>
         /// <returns><b>True</b> if asset bundle has been loaded</returns>
-        public static bool LoadAssetBundleIfNotLoaded(in string pathUnderModFolder)
-        {
-            return DoesAssetBundleExist(pathUnderModFolder)
-&& (HasLoadedAssetBundle(pathUnderModFolder) || TryLoadAssetBundle(pathUnderModFolder));
-        }
+        public static bool LoadAssetBundleIfNotLoaded(in string pathUnderModFolder) => DoesAssetBundleExist(pathUnderModFolder) && (HasLoadedAssetBundle(pathUnderModFolder) || TryLoadAssetBundle(pathUnderModFolder));
 
         /// <summary>
         /// Check if there's specific asset bundle on disk under mod directory
@@ -122,7 +131,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static bool DoesAssetBundleExist(in string assetBundleUnderModDirectory)
         {
-            string path = OverhaulMod.Core.ModDirectory + assetBundleUnderModDirectory;
+            string path = OverhaulCore.ModDirectoryStatic + assetBundleUnderModDirectory;
             return File.Exists(path);
         }
 
@@ -131,20 +140,14 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="assetBundleName"></param>
         /// <returns></returns>
-        public static bool HasLoadedAssetBundle(in string assetBundleName)
-        {
-            return m_LoadedAssetBundles.ContainsKey(assetBundleName);
-        }
+        public static bool HasLoadedAssetBundle(in string assetBundleName) => m_LoadedAssetBundles.ContainsKey(assetBundleName);
 
         /// <summary>
         /// Check if specified asset bundle is being loaded async-ly
         /// </summary>
         /// <param name="assetBundleName"></param>
         /// <returns></returns>
-        public static bool IsLoadingAssetBundle(in string assetBundleName)
-        {
-            return m_LoadingAssetBundles.Contains(assetBundleName);
-        }
+        public static bool IsLoadingAssetBundle(in string assetBundleName) => m_LoadingAssetBundles.Contains(assetBundleName);
 
         public static T GetAsset<T>(in string assetName, in OverhaulAssetPart assetBundlePart) where T : UnityEngine.Object
         {
@@ -175,6 +178,9 @@ namespace CDOverhaul
                 case OverhaulAssetPart.Combat_Update:
                     assetBundle = ModAssetBundle_CombatUpdate;
                     break;
+                case OverhaulAssetPart.Preload:
+                    assetBundle = ModAssetBundle_Preload;
+                    break;
             }
 
             if (!LoadAssetBundleIfNotLoaded(assetBundle)) return null;
@@ -190,11 +196,7 @@ namespace CDOverhaul
             return result;
         }
 
-        public static GameObject GetAsset(in string assetName, in OverhaulAssetPart assetBundlePart)
-        {
-            GameObject result = GetAsset<GameObject>(assetName, assetBundlePart);
-            return result;
-        }
+        public static GameObject GetAsset(in string assetName, in OverhaulAssetPart assetBundlePart) => GetAsset<GameObject>(assetName, assetBundlePart);
 
         public static bool TryGetAsset<T>(in string assetName, in string assetBundle, out T asset) where T : UnityEngine.Object
         {
@@ -212,7 +214,8 @@ namespace CDOverhaul
 
         public static AssetLoadHandler GetAssetAsync(in string assetBundle, in string assetName, Action<AssetLoadHandler> doneCallback)
         {
-            if (doneCallback == null || IsLoadingAssetBundle(assetBundle) || !HasLoadedAssetBundle(assetBundle)) return null;
+            if (doneCallback == null || IsLoadingAssetBundle(assetBundle) || !HasLoadedAssetBundle(assetBundle))
+                return null;
 
             AssetBundle bundle = m_LoadedAssetBundles[assetBundle];
             foreach (string str in bundle.GetAllAssetNames())
@@ -232,21 +235,20 @@ namespace CDOverhaul
         {
             AssetBundleRequest assetBundleCreateRequest = assetBundle.LoadAssetAsync(assetName);
             handler.AsignRequest(assetBundleCreateRequest);
+
+            while (!assetBundleCreateRequest.isDone)
+                yield return null;
+
+            handler.OnDoneLoading();
             yield break;
         }
 
-        public static void PreloadAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object
-        {
-            _ = GetAsset<T>(assetName, assetBundleFileName);
-        }
+        public static void PreloadAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object => _ = GetAsset<T>(assetName, assetBundleFileName);
 
         public class AssetLoadHandler : OverhaulDisposable
         {
             public AsyncOperation Request;
             public Action<AssetLoadHandler> DoneAction;
-
-            public float Progress => Request != null ? Request.progress : 0f;
-            public UnityEngine.Object LoadedAssetBundle => Progress == 1f ? (Request as AssetBundleRequest).asset : null;
 
             public AssetBundle AssetBundle;
 
@@ -266,20 +268,14 @@ namespace CDOverhaul
             public void AsignRequest(AssetBundleRequest request)
             {
                 if (IsDisposed)
-                {
                     return;
-                }
 
                 Request = request;
-                if (Request != null && DoneAction != null)
-                {
-                    Request.completed += delegate (AsyncOperation a) { DoneAction?.Invoke(this); };
-                    Request.completed += onDoneLoading;
-                }
             }
 
-            private void onDoneLoading(AsyncOperation a)
+            public void OnDoneLoading()
             {
+                DoneAction(this);
                 Dispose();
             }
         }
@@ -288,9 +284,6 @@ namespace CDOverhaul
         {
             public AsyncOperation Request;
             public Action<AssetBundleLoadHandler> DoneAction;
-
-            public float Progress => Request != null ? Request.progress : 0f;
-            public AssetBundle LoadedAssetBundle => Progress == 1f ? (Request as AssetBundleCreateRequest).assetBundle : null;
 
             public string AssetBundlePath;
 
@@ -310,22 +303,16 @@ namespace CDOverhaul
             public void AsignRequest(AssetBundleCreateRequest request)
             {
                 if (IsDisposed)
-                {
                     return;
-                }
 
                 Request = request;
-                if (Request != null && DoneAction != null)
-                {
-                    Request.completed += delegate (AsyncOperation a) { DoneAction?.Invoke(this); };
-                    Request.completed += onDoneLoading;
-                }
             }
 
-            private void onDoneLoading(AsyncOperation a)
+            public void OnDoneLoading()
             {
                 m_LoadingAssetBundles.Remove(AssetBundlePath);
-                m_LoadedAssetBundles.Add(AssetBundlePath, LoadedAssetBundle);
+                m_LoadedAssetBundles.Add(AssetBundlePath, (Request as AssetBundleCreateRequest).assetBundle);
+                DoneAction(this);
                 Dispose();
             }
         }

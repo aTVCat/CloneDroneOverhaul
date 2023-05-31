@@ -191,7 +191,6 @@ namespace CDOverhaul.Gameplay
 
         private bool m_HasAddedListeners;
 
-
         public override void Start()
         {
             base.Start();
@@ -216,6 +215,7 @@ namespace CDOverhaul.Gameplay
                     }
                 }
             }, 0.5f + OverhaulNetworkController.MultiplayerLocalPing);
+
             SpawnSkins();
         }
 
@@ -223,28 +223,12 @@ namespace CDOverhaul.Gameplay
         {
             base.OnDisposed();
 
-            if (!m_HasAddedListeners)
-            {
-                return;
-            }
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+            if (m_HasAddedListeners)
+                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
-        protected override void OnRefresh()
-        {
-            SpawnSkins();
-        }
-
-        protected override void OnDeath()
-        {
-            WeaponSkinBehaviour b = GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>();
-            if (b == null)
-            {
-                return;
-            }
-
-            b.OnDeath();
-        }
+        protected override void OnRefresh() => SpawnSkins();
+        protected override void OnDeath() => GetSpecialBehaviourInEquippedWeapon<WeaponSkinBehaviour>()?.OnDeath();
 
         private void onGetPlayerInfo(Hashtable hash)
         {
@@ -316,10 +300,7 @@ namespace CDOverhaul.Gameplay
             WeaponSkinsController.SkinsDataIsDirty = false;
             m_HasEverSpawnedSkins = true;
             m_WaitingToSpawnSkins = true;
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                spawnSkins();
-            }, 0.2f);
+            DelegateScheduler.Instance.Schedule(spawnSkins, 0.2f);
         }
 
         private void spawnSkins()

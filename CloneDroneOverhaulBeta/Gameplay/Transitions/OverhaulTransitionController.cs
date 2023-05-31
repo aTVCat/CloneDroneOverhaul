@@ -18,24 +18,19 @@ namespace CDOverhaul
         public static void CreateTransition()
         {
             if (TransitionHUDSpawned())
-            {
                 return;
-            }
+
             m_CurrentTransition = SceneTransitionManager.Instance.InstantiateSceneTransitionOverlay();
         }
 
         public static void EndTransition()
         {
             if (!TransitionHUDSpawned())
-            {
                 return;
-            }
+
             Object.Destroy(m_CurrentTransition.gameObject);
         }
 
-        public static bool TransitionHUDSpawned()
-        {
-            return m_CurrentTransition != null;
-        }
+        public static bool TransitionHUDSpawned() => m_CurrentTransition != null;
     }
 }

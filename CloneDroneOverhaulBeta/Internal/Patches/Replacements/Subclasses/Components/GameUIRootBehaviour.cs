@@ -20,9 +20,7 @@ namespace CDOverhaul.Patches
         private void Update()
         {
             if (_hasInitialized && Time.frameCount % 3 == 0)
-            {
                 _raycaster.enabled = Cursor.visible;
-            }
         }
     }
 }

@@ -20,59 +20,32 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsDisposedOrDestroyed()
-        {
-            return IsDestroyed || IsDestroyed || !OverhaulMod.IsModInitialized;
-        }
+        public bool IsDisposedOrDestroyed() => IsDestroyed || IsDestroyed || !OverhaulMod.IsModInitialized;
 
-        public virtual void Awake()
-        {
-        }
-        public virtual void Start()
-        {
-        }
-        public virtual void OnEnable()
-        {
-        }
-        public virtual void OnDisable()
-        {
-        }
-        protected virtual void OnDisposed()
-        {
-        }
+        public virtual void Awake() { }
+        public virtual void Start() { }
+        public virtual void OnEnable() { }
+        public virtual void OnDisable() { }
+        protected virtual void OnDisposed() { }
 
-        public void DestroyGameObject()
-        {
-            Destroy(gameObject);
-        }
-
-        public void DestroyBehaviour()
-        {
-            Destroy(this);
-        }
+        public void DestroyGameObject() => Destroy(gameObject);
+        public void DestroyBehaviour() => Destroy(this);
 
         public void Dispose()
         {
             if (IsDisposed)
-            {
                 return;
-            }
+
             OnDisposed();
             IsDisposed = true;
             GC.SuppressFinalize(this);
-            if (!IsDestroyed)
-            {
-                IsDestroyed = true;
-                UnityEngine.Object.Destroy(gameObject);
-            }
         }
 
         private void OnDestroy()
         {
             if (IsDestroyed)
-            {
                 return;
-            }
+
             IsDestroyed = true;
             Dispose();
         }

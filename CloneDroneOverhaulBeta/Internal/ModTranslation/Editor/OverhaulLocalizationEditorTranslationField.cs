@@ -16,9 +16,7 @@ namespace CDOverhaul.Localization
             MyLang = lang;
 
             if (!OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
-            {
                 return;
-            }
 
             MyInputField = field;
             MyInputField.text = text;
@@ -38,9 +36,8 @@ namespace CDOverhaul.Localization
         public void UpdateText(string str)
         {
             if (!OverhaulLocalizationController.Localization.Translations[MyLang].ContainsKey(MyID))
-            {
                 return;
-            }
+
             OverhaulLocalizationController.Localization.Translations[MyLang][MyID] = str;
         }
 

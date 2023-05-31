@@ -26,6 +26,8 @@ namespace CDOverhaul
         /// </summary>
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
 
+        public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
+
         /// <summary>
         /// The UI controller instance
         /// </summary>
@@ -53,9 +55,8 @@ namespace CDOverhaul
         private void initialize()
         {
             if (OverhaulMod.Core != null)
-            {
                 return;
-            }
+
             OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
@@ -81,7 +82,6 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<ViewModesController>();
 
             SettingsController.CreateHUD();
-            OverhaulDebugger.Initialize();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();
@@ -90,9 +90,7 @@ namespace CDOverhaul
             OverhaulBootUI.Show();
 
             if (OverhaulDiscordController.Instance == null)
-            {
                 _ = new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordController>();
-            }
 
             ReplacementBase.CreateReplacements();
         }
@@ -110,35 +108,16 @@ namespace CDOverhaul
             CameraRollingBehaviour.UpdateViewBobbing();
         }
 
-        [Obsolete]
-        public static string ReadTextFile(string filePath)
-        {
-            string path = filePath.Contains(OverhaulMod.Core.ModDirectory) ? filePath : OverhaulMod.Core.ModDirectory + filePath;
-            bool fileExists = File.Exists(path);
-            if (!fileExists)
-            {
-                return string.Empty;
-            }
-
-            StreamReader r = File.OpenText(path);
-            string result = r.ReadToEnd();
-            r.Close();
-
-            return result;
-        }
 
         public static string ReadText(string filePath)
         {
             if (!File.Exists(filePath))
-            {
                 return string.Empty;
-            }
 
             string result = string.Empty;
             using (StreamReader r = File.OpenText(filePath))
-            {
                 result = r.ReadToEnd();
-            }
+
             return result;
         }
 
@@ -194,9 +173,7 @@ namespace CDOverhaul
 
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
             using (FileStream stream = File.OpenWrite(filePath))
-            {
                 stream.Write(toWrite, 0, toWrite.Length);
-            }
         }
 
         public static bool TryWriteText(string filePath, string content, out Exception exception)

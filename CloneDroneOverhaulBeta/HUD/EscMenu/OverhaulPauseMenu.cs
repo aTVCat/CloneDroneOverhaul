@@ -147,9 +147,7 @@ namespace CDOverhaul.HUD
                 {
                     Button b = t.GetComponent<Button>();
                     if (b != null)
-                    {
                         b.onClick.Invoke();
-                    }
                 }
             });
 
@@ -183,9 +181,8 @@ namespace CDOverhaul.HUD
         public void SetPanelActive(Transform t, Transform caller, bool value)
         {
             if (value)
-            {
                 AlignTransformY(t, caller.transform);
-            }
+
             t.gameObject.SetActive(value);
         }
 
@@ -412,9 +409,7 @@ namespace CDOverhaul.HUD
         public void OnContinueClicked()
         {
             if (!AllowToggleMenu)
-            {
                 return;
-            }
 
             Hide();
         }
@@ -442,7 +437,9 @@ namespace CDOverhaul.HUD
 
         public void HideMenu(bool dontUnpause = false)
         {
-            if (!dontUnpause) TimeManager.Instance.OnGameUnPaused();
+            if (!dontUnpause) 
+                TimeManager.Instance.OnGameUnPaused();
+
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(false);
 
@@ -451,9 +448,7 @@ namespace CDOverhaul.HUD
             SetPanelActive(m_SettingsSelectPanel, null, false);
 
             if (!m_IsAnimatingCamera && m_CameraAnimator != null)
-            {
                 _ = StaticCoroutineRunner.StartStaticCoroutine(animateCameraCoroutine(m_Camera, m_CameraAnimator, true));
-            }
 
             if (!dontUnpause) ShowCursor = false;
         }

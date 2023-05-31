@@ -43,9 +43,7 @@ namespace CDOverhaul.HUD
         public override void Awake()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             ModdedObject m = GetComponent<ModdedObject>();
             m_SelectedImage = m.GetObject<Transform>(0).gameObject;
@@ -73,38 +71,24 @@ namespace CDOverhaul.HUD
 
         public void SetMenu(WeaponSkinsMenu menu)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_SkinsMenu != null)
                 return;
-            }
 
-            if (m_SkinsMenu != null)
-            {
-                return;
-            }
             m_SkinsMenu = menu;
         }
 
         public void SetWeaponType(WeaponType weaponType)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_WeaponType != default)
                 return;
-            }
 
-            if (m_WeaponType != default)
-            {
-                return;
-            }
             m_WeaponType = weaponType;
         }
 
         public void SetSelected(bool value, bool initializing = false)
         {
             if (IsDisposedOrDestroyed() || (value == m_IsSelected && !initializing) || m_SelectedImage == null)
-            {
                 return;
-            }
 
             m_SelectedImage.SetActive(value);
             m_IsSelected = value;
@@ -114,9 +98,7 @@ namespace CDOverhaul.HUD
         public void SetTextTransformForState(bool value)
         {
             if (IsDisposedOrDestroyed() || m_TextTransform == null || m_SelectedPosition == null || m_NormalPosition == null)
-            {
                 return;
-            }
 
             if (value)
             {
@@ -129,9 +111,7 @@ namespace CDOverhaul.HUD
         public void SelectThis()
         {
             if (IsDisposedOrDestroyed() || m_IsSelected || m_SkinsMenu == null || m_SkinsMenu.IsPopulatingSkins)
-            {
                 return;
-            }
 
             m_SkinsMenu.PopulateSkins(m_WeaponType);
         }

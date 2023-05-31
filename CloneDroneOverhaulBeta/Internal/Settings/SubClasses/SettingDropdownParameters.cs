@@ -9,11 +9,7 @@ namespace CDOverhaul
     {
         public const char UsualSeparator = '@';
 
-        public List<Dropdown.OptionData> Options
-        {
-            get;
-            set;
-        }
+        public List<Dropdown.OptionData> Options;
 
         public SettingDropdownParameters(string values, char separator = UsualSeparator)
         {

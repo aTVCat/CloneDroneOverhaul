@@ -17,9 +17,7 @@ namespace CDOverhaul.Patches
 
             Camera camera = __instance.GetPlayerCamera();
             if (camera != null && moveTime <= 0f)
-            {
                 camera.transform.localPosition = ViewModesController.DefaultCameraOffset;
-            }
         }
     }
 }

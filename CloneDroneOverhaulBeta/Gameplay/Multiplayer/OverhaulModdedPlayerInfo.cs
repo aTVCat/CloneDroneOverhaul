@@ -101,25 +101,25 @@ namespace CDOverhaul.Gameplay.Multiplayer
             }
         }
 
-        public static string SerializeData()
+        public static string SerializeData(bool generateDefaultData = false, string replacedPlayfabID = "")
         {
-            Hashtable newHashTable = GenerateNewHashtable();
+            Hashtable newHashTable = GenerateNewHashtable(generateDefaultData, replacedPlayfabID);
             string serializedData = JsonConvert.SerializeObject(newHashTable);
             return serializedData;
         }
 
-        public static Hashtable GenerateNewHashtable()
+        public static Hashtable GenerateNewHashtable(bool generateDefaultData = false, string replacedPlayfabID = "")
         {
             return new Hashtable
             {
-                ["ID"] = ExclusivityController.GetLocalPlayfabID(),
-                ["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin,
-                ["Skin.Bow"] = WeaponSkinsController.EquippedBowSkin,
-                ["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin,
-                ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin,
+                ["ID"] = generateDefaultData ? replacedPlayfabID : ExclusivityController.GetLocalPlayfabID(),
+                ["Skin.Sword"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSwordSkin,
+                ["Skin.Bow"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedBowSkin,
+                ["Skin.Hammer"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedHammerSkin,
+                ["Skin.Spear"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSpearSkin,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
                 ["State.Version"] = OverhaulVersion.ModVersion.ToString(),
-                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories,
+                [OutfitsWearer.IDInHashtable] = /*generateDefaultData ? "" : */OutfitsController.EquippedAccessories,
                 ["Custom.Data"] = string.Empty
             };
         }

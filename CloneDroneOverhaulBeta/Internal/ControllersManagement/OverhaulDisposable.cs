@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace CDOverhaul
 {
@@ -10,24 +11,29 @@ namespace CDOverhaul
             private set;
         }
 
-        protected virtual void OnDisposed()
-        {
-        }
+        ~OverhaulDisposable() => Dispose();
+        protected virtual void OnDisposed() { }
 
         public void Dispose()
         {
             if (IsDisposed)
-            {
                 return;
-            }
+
             OnDisposed();
             IsDisposed = true;
             GC.SuppressFinalize(this);
         }
 
-        ~OverhaulDisposable()
+        public static void AssignNullToAllVars(object @object)
         {
-            Dispose();
+            foreach (FieldInfo field in @object.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                Type fieldType = field.FieldType;
+                if (fieldType != typeof(bool) && fieldType != typeof(int) && fieldType != typeof(float))
+                {
+                    field.SetValue(@object, null);
+                }
+            }
         }
     }
 }

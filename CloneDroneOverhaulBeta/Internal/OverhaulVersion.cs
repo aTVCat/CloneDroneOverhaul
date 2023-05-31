@@ -28,9 +28,15 @@ namespace CDOverhaul
         public static readonly string ModShortName = "Overhaul " + buildString;
         private static string buildString => getVersionPrefixChar() + ModVersion.ToString() + DebugString;
 
+        /// <summary>
+        /// Are we still on 0.2?
+        /// </summary>
         public const bool IsUpdate2Hotfix = false;
 
-        public const bool IsUpdate4 = true;
+        /// <summary>
+        /// WIP
+        /// </summary>
+        public const bool IsUpdate4 = false;
 
 #if DEBUG
         public const bool IsDebugBuild = true;

@@ -13,9 +13,8 @@ namespace CDOverhaul.Patches
         private static void bloomValueChangeCoroutine_Prefix(Bloom bloom, float duration, ref float bloomEndIntensity, ref float bloomEndThreshold)
         {
             if (bloom.GetComponent<Animator>() != null)
-            {
                 Object.Destroy(bloom.GetComponent<Animator>());
-            }
+
             if (duration == 1.5f)
             {
                 bloomEndIntensity = OverhaulGraphicsController.BloomIntensity;
@@ -33,10 +32,11 @@ namespace CDOverhaul.Patches
                 bl.bloomIntensity = OverhaulGraphicsController.BloomIntensity;
                 bl.bloomThreshold = OverhaulGraphicsController.BloomThreshold;
             }
+
             Animator an = ArenaCameraManager.Instance.TitleScreenLevelCamera.GetComponent<Animator>();
             if (an)
             {
-                Object.DestroyImmediate(an);
+                Object.Destroy(an);
             }
         }
     }

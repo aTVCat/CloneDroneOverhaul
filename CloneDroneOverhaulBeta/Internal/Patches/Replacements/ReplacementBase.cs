@@ -51,9 +51,7 @@ namespace CDOverhaul.Patches
             foreach (ReplacementBase b in Replacements)
             {
                 if (b.GetType() == typeof(T))
-                {
                     return (T)b;
-                }
             }
             return null;
         }
@@ -68,7 +66,6 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<BaseFixes>();
             _ = NewReplacement<EnergyUIReplacement>();
             _ = NewReplacement<OptimizeRuntime>();
-            _ = NewReplacement<ArenaRevampActivator>();
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
         }
@@ -76,16 +73,13 @@ namespace CDOverhaul.Patches
         internal static void CancelEverything()
         {
             if (Replacements.IsNullOrEmpty())
-            {
                 return;
-            }
 
             try
             {
                 foreach (ReplacementBase b in Replacements)
-                {
                     b.Cancel();
-                }
+
                 Replacements.Clear();
             }
             catch

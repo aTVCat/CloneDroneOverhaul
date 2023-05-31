@@ -39,13 +39,9 @@ namespace CDOverhaul
                     ModdedObject mb = Instantiate(moddedObject.GetObject<Transform>(3).gameObject, moddedObject.GetObject<Transform>(4)).GetComponent<ModdedObject>();
                     mb.GetObject<Text>(0).text = b.Title;
                     if (b.Action != null)
-                    {
                         mb.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(b.Action);
-                    }
                     else
-                    {
                         mb.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(DestroyGameObject);
-                    }
                     mb.gameObject.SetActive(true);
                 }
             }
@@ -57,9 +53,7 @@ namespace CDOverhaul
 
             m_ProgressSlider.value = time - m_TimeAppeared;
             if (time >= m_TimeToDisappear)
-            {
                 DestroyGameObject();
-            }
         }
     }
 }

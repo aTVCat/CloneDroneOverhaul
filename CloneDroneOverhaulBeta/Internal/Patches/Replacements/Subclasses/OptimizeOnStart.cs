@@ -21,10 +21,5 @@ namespace CDOverhaul.Patches
 
             SuccessfullyPatched = true;
         }
-
-        public override void Cancel()
-        {
-            base.Cancel();
-        }
     }
 }

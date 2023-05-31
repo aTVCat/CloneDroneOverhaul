@@ -11,14 +11,11 @@ namespace CDOverhaul.Patches
         private static void SetPlayer_Postfix(Character player)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             if (player is FirstPersonMover)
-            {
                 OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
-            }
+
             OverhaulEventsController.DispatchEvent<Character>(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
         }
     }

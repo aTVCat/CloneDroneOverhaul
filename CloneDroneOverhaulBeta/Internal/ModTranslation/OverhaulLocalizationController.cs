@@ -20,15 +20,8 @@ namespace CDOverhaul
         private static OverhaulLocalizationData m_Data;
         public static OverhaulLocalizationData Localization => !m_Error.HasValue || m_Error.Value ? null : m_Data;
 
-        public static bool HasTranslation(string translationID)
-        {
-            return !Error && Localization.Translations["en"].ContainsKey(translationID);
-        }
-
-        public static string GetTranslation(string translationID)
-        {
-            return Error ? translationID : Localization.GetTranslation(translationID);
-        }
+        public static bool HasTranslation(string translationID) => !Error && Localization.Translations["en"].ContainsKey(translationID);
+        public static string GetTranslation(string translationID) => Error ? translationID : Localization.GetTranslation(translationID);
 
         private static readonly List<Text> m_ListOfTexts = new List<Text>();
         private static bool m_TryingToLocalizeHUD;
@@ -46,9 +39,8 @@ namespace CDOverhaul
 
             OverhaulCanvasController controller = OverhaulController.GetController<OverhaulCanvasController>();
             if (controller != null)
-            {
                 m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
-            }
+
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
@@ -117,9 +109,7 @@ namespace CDOverhaul
                 m_FileStreamEndPosition = 0L;
 
                 if (OverhaulLoadingScreen.Instance != null)
-                {
                     OverhaulLoadingScreen.Instance.SetScreenActive(false);
-                }
 
                 OverhaulLocalizationController.TryLocalizeHUD();
                 m_IsSavingFile = false;
@@ -129,27 +119,22 @@ namespace CDOverhaul
         public static void ScheduleEvent()
         {
             if (m_EventIsScheduled || DelegateScheduler.Instance == null)
-            {
                 return;
-            }
 
             m_EventIsScheduled = true;
             DelegateScheduler.Instance.Schedule(delegate
             {
                 m_EventIsScheduled = false;
                 if (GlobalEventManager.Instance != null)
-                {
                     GlobalEventManager.Instance.Dispatch(GlobalEvents.UILanguageChanged);
-                }
             }, 0.5f);
         }
 
         public static void TryLocalizeHUD()
         {
             if (m_TryingToLocalizeHUD)
-            {
                 return;
-            }
+
             _ = StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());
         }
 

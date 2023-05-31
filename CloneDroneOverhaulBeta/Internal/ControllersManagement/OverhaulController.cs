@@ -41,17 +41,9 @@ namespace CDOverhaul
         protected override void OnDisposed()
         {
             OverhaulEventsController.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
-            OverhaulConsoleController.RemoveListener(this);
             RemoveController(this);
 
-            foreach (FieldInfo field in this.GetType().GetFields(s_BindingFlags))
-            {
-                Type fieldType = field.FieldType;
-                if (fieldType != typeof(bool) && fieldType != typeof(int) && fieldType != typeof(float))
-                {
-                    field.SetValue(this, null);
-                }
-            }
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
         internal void InitializeInternal()

@@ -10,14 +10,10 @@ namespace CDOverhaul.Patches
         private static void RefreshCursorEnabled_Postfix()
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             if (EnableCursorController.HasToEnableCursor())
-            {
                 InputManager.Instance.SetCursorEnabled(true);
-            }
         }
     }
 }

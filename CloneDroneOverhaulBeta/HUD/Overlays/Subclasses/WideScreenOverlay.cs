@@ -36,9 +36,7 @@ namespace CDOverhaul.HUD.Overlays
         private void Update()
         {
             if (Time.frameCount % 10 == 0)
-            {
                 m_IsInCutscene = ShouldActivateOverlay();
-            }
 
             Vector3 newVector = m_UpperBar.anchoredPosition;
             newVector.y += ((m_IsInCutscene ? TargetY : 80f) - newVector.y) * Time.unscaledDeltaTime * 2f;

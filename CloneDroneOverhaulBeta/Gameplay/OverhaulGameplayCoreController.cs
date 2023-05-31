@@ -22,29 +22,16 @@ namespace CDOverhaul.Gameplay
 
         #region Variables
 
-        private GameMode m_GameModeLastTimeCheck;
-
-        /// <summary>
-        /// The start index of mod gamemodes
-        /// </summary>
-        public const int GamemodeStartIndex = 2000;
+        private GameMode m_GamemodePrevFrame;
 
         private Camera m_MainCamera;
-
         private Camera m_CurrentCamera;
 
         #endregion
 
-        public static OverhaulGameplayCoreController Core
-        {
-            get;
-            private set;
-        }
-
         public override void Initialize()
         {
             base.Initialize();
-            Core = this;
 
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
@@ -57,7 +44,6 @@ namespace CDOverhaul.Gameplay
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            Core = null;
 
             m_MainCamera = null;
             m_CurrentCamera = null;
@@ -65,48 +51,33 @@ namespace CDOverhaul.Gameplay
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (!hasInitializedModel || firstPersonMover == null)
-            {
+            if (IsDisposedOrDestroyed() || !hasInitializedModel || firstPersonMover == null)
                 return;
-            }
 
-            if (!OverhaulVersion.IsUpdate2Hotfix) firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
+            if (!OverhaulVersion.IsUpdate2Hotfix) 
+                firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
 
-            Camera camera = firstPersonMover.GetPlayerCamera();
-            if (camera == null)
-            {
-                return;
-            }
-
-            camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover, camera);
+            firstPersonMover.GetPlayerCamera()?.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
         }
 
         private void Update()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             GameMode currentGamemode = GameFlowManager.Instance.GetCurrentGameMode();
-            if (!currentGamemode.Equals(m_GameModeLastTimeCheck))
-            {
+            if (!currentGamemode.Equals(m_GamemodePrevFrame))
                 sendGamemodeWasUpdateEvent();
-            }
-            m_GameModeLastTimeCheck = currentGamemode;
+            m_GamemodePrevFrame = currentGamemode;
 
             Camera mainCamera = Camera.main;
             if (!Equals(mainCamera, m_MainCamera))
-            {
                 OverhaulEventsController.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
-            }
             m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
             if (!Equals(currentCamera, m_CurrentCamera))
-            {
                 OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
-            }
             m_CurrentCamera = currentCamera;
         }
 
@@ -116,9 +87,7 @@ namespace CDOverhaul.Gameplay
         private void sendGamemodeWasUpdateEvent()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             OverhaulEventsController.DispatchEvent(GamemodeChangedEventString);
         }

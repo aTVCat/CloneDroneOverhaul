@@ -10,15 +10,12 @@ namespace CDOverhaul.Patches
         private static void Start_Prefix(LevelEnemySpawner __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             string name = __instance.gameObject.name;
             if (name != "BusinessSword(Clone)")
-            {
                 return;
-            }
+
             __instance.SupportsColorOverride = true;
         }
     }

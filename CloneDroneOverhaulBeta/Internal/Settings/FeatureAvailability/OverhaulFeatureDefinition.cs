@@ -2,23 +2,12 @@
 {
     public class OverhaulFeatureDefinition
     {
-        public OverhaulFeatureID FeatureID
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsAvailable()
-        {
-            return false;
-        }
+        public OverhaulFeatureID FeatureID;
+        public virtual bool IsAvailable() => false;
 
         public class AbilityToManageSkins : OverhaulFeatureDefinition
         {
-            public override bool IsAvailable()
-            {
-                return OverhaulVersion.IsDebugBuild || ExclusivityController.IsDeveloper() || ExclusivityController.GetDiscordID() == 606767773473046529;
-            }
+            public override bool IsAvailable() => OverhaulVersion.IsDebugBuild || ExclusivityController.IsDeveloper() || ExclusivityController.GetDiscordID() == 606767773473046529;
         }
     }
 }

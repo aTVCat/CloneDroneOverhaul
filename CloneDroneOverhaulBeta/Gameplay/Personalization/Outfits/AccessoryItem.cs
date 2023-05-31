@@ -54,7 +54,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
             string localID = ExclusivityController.GetLocalPlayfabID();
             bool isUnlocked = AllowedPlayers.Contains(localID);
-            if (!isUnlocked)
+            if (!isUnlocked && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
             {
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
             }
@@ -90,7 +90,7 @@ namespace CDOverhaul.Gameplay.Outfits
             }
             else
             {
-                string text = OverhaulCore.ReadTextFile(path);
+                string text = OverhaulCore.ReadText(OverhaulMod.Core.ModDirectory + path);
                 Offsets = JsonConvert.DeserializeObject<Dictionary<string, ModelOffset>>(text);
             }
         }

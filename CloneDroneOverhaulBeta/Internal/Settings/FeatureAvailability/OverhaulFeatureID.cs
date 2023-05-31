@@ -5,7 +5,6 @@
         None,
 
         PermissionToManageSkins,
-
-        PermissionToEditLocalization
+        PermissionToEditLocalization,
     }
 }

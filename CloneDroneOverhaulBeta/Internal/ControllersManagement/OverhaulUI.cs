@@ -31,9 +31,6 @@ namespace CDOverhaul
         }
 
         private byte _enableCursorConditionID = 0;
-        /// <summary>
-        /// Make the game to force show system cursor
-        /// </summary>
         protected bool ShowCursor
         {
             set
@@ -57,19 +54,8 @@ namespace CDOverhaul
             }
         }
 
-        public override string[] Commands()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Initialize()
-        {
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
 
         protected override void OnDisposed()
         {
@@ -78,16 +64,15 @@ namespace CDOverhaul
             ShowCursor = false;
         }
 
+        public override void Initialize() { }
+
         public class LoadingIndicator
         {
             public CanvasGroup CanvasGr;
             public Transform Indicator;
             public Image FillImage;
 
-            public bool UseCanvas()
-            {
-                return CanvasGr != null;
-            }
+            public bool UseCanvas() => CanvasGr != null;
 
             private float m_Alpha;
             private float m_Progress;
@@ -95,9 +80,7 @@ namespace CDOverhaul
             public LoadingIndicator(ModdedObject moddedObject, int indexOfIndicator, int indexOfFillImage)
             {
                 if (moddedObject == null)
-                {
                     throw new System.ArgumentNullException();
-                }
 
                 setUp(moddedObject.GetObject<Transform>(indexOfIndicator), moddedObject.GetObject<Image>(indexOfFillImage));
             }
@@ -105,9 +88,7 @@ namespace CDOverhaul
             private void setUp(Transform indicator, Image fillImage)
             {
                 if (indicator == null || fillImage == null)
-                {
                     throw new System.ArgumentNullException();
-                }
 
                 CanvasGr = indicator.GetComponent<CanvasGroup>();
                 Indicator = indicator;
@@ -150,9 +131,7 @@ namespace CDOverhaul
             public static void UpdateIndicator(LoadingIndicator indicator, OverhaulRequestProgressInfo progress, bool hideIf0or1 = false)
             {
                 if (indicator == null)
-                {
                     return;
-                }
 
                 indicator.UpdateIndicator(progress, hideIf0or1);
             }
@@ -160,9 +139,7 @@ namespace CDOverhaul
             public static void ResetIndicator(LoadingIndicator indicator)
             {
                 if (indicator == null)
-                {
                     return;
-                }
 
                 indicator.m_Progress = 0f;
                 indicator.FillImage.fillAmount = 0f;
@@ -177,9 +154,7 @@ namespace CDOverhaul
             public PrefabAndContainer(ModdedObject moddedObject, int indexOfPrefab, int indexOfContainer)
             {
                 if (moddedObject == null)
-                {
                     throw new System.ArgumentNullException();
-                }
 
                 setUp(moddedObject.GetObject(indexOfPrefab), moddedObject.GetObject<Transform>(indexOfContainer));
             }
@@ -192,19 +167,13 @@ namespace CDOverhaul
             private void setUp(Object prefab, Transform container)
             {
                 if (prefab == null || container == null)
-                {
                     throw new System.ArgumentNullException();
-                }
 
                 if (!(prefab is GameObject))
-                {
                     throw new System.ArgumentException("UnityEngine.Object must be GameObject");
-                }
 
                 if (!(prefab as GameObject).GetComponent<ModdedObject>())
-                {
                     throw new System.NullReferenceException("ModdedObject component not found");
-                }
 
                 Prefab = (prefab as GameObject).GetComponent<ModdedObject>();
                 Prefab.gameObject.SetActive(false);
@@ -214,9 +183,7 @@ namespace CDOverhaul
             public ModdedObject CreateNew(bool startActive = true)
             {
                 if (Prefab == null || Container == null)
-                {
                     return null;
-                }
 
                 ModdedObject result = UnityEngine.Object.Instantiate(Prefab, Container);
                 result.gameObject.SetActive(startActive);
@@ -226,9 +193,7 @@ namespace CDOverhaul
             public void ClearContainer()
             {
                 if (Container == null)
-                {
                     return;
-                }
 
                 TransformUtils.DestroyAllChildren(Container);
             }

@@ -52,9 +52,6 @@ namespace CDOverhaul
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public bool Equals(in OverhaulEvent a, in OverhaulEvent b)
-        {
-            return (a.EventName, a.EventAction, a.EventActionWithArgument) == (b.EventName, b.EventAction, b.EventActionWithArgument);
-        }
+        public bool Equals(in OverhaulEvent a, in OverhaulEvent b) => (a.EventName, a.EventAction, a.EventActionWithArgument) == (b.EventName, b.EventAction, b.EventActionWithArgument);
     }
 }

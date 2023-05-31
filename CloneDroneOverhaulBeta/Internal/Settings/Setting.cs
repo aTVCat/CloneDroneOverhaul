@@ -28,10 +28,7 @@ namespace CDOverhaul
 
         public SettingInfo CanBeLockedBy { get; set; }
         public object ValueToUnlock { get; set; }
-        public bool IsUnlocked()
-        {
-            return CanBeLockedBy == null || object.Equals(CanBeLockedBy.Field.GetValue(null), ValueToUnlock);
-        }
+        public bool IsUnlocked() => CanBeLockedBy == null || object.Equals(CanBeLockedBy.Field.GetValue(null), ValueToUnlock);
 
         public bool ForceInputField { get; set; }
 
@@ -57,9 +54,7 @@ namespace CDOverhaul
             DropdownParameters = dropdownParams;
 
             if (Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             TryAddPref(this, formelyKnown);
             TuneUpValues();
@@ -68,14 +63,10 @@ namespace CDOverhaul
         internal void TuneUpValues()
         {
             if (Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             if (Type == SettingType.Other)
-            {
                 return;
-            }
 
             object obj = GetPref<object>(this);
             try
@@ -119,9 +110,7 @@ namespace CDOverhaul
         public static void TryAddPref(in SettingInfo setting, in SettingFormelyKnownAs formelyKnown)
         {
             if (setting == null || setting.Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             if (!PlayerPrefs.HasKey(setting.RawPath))
             {
@@ -151,9 +140,7 @@ namespace CDOverhaul
         public static bool HasPref(in SettingInfo setting)
         {
             if (setting == null || setting.Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             return PlayerPrefs.HasKey(setting.RawPath);
         }
@@ -161,14 +148,10 @@ namespace CDOverhaul
         public static void SavePref(in SettingInfo setting, in object value, in bool dispatchEvent = true)
         {
             if (setting == null || setting.Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             if (setting.Type == SettingType.Other)
-            {
                 return;
-            }
 
             switch (setting.Type)
             {
@@ -205,14 +188,10 @@ namespace CDOverhaul
         public static T GetPref<T>(in SettingInfo setting)
         {
             if (setting == null || setting.Error)
-            {
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-            }
 
             if (setting.Type == SettingType.Other)
-            {
                 return default;
-            }
 
             object result = null;
             switch (setting.Type)
@@ -236,9 +215,6 @@ namespace CDOverhaul
             return (T)result;
         }
 
-        public static void DispatchSettingsRefreshedEvent()
-        {
-            OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
-        }
+        public static void DispatchSettingsRefreshedEvent() => OverhaulEventsController.DispatchEvent(SettingsController.SettingChangedEventString);
     }
 }

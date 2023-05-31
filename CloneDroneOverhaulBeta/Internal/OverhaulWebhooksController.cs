@@ -25,20 +25,19 @@ namespace CDOverhaul
             "Failed to get input data",
             "Global_Server",
             "entity which is detached",
+            "Only the server may spawn enemies!",
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 
-        public static async void ExecuteCrashReportsWebhook(string content)
+        public static void ExecuteCrashReportsWebhook(string content)
         {
             if (!AllowSendingInformation || m_HasExecutedCrashReportsWebhook)
-            {
                 return;
-            }
             m_HasExecutedCrashReportsWebhook = true;
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = OverhaulVersion.IsDebugBuild ? "<@779372500521320469>" /* this pings me */: string.Empty,
+                content = OverhaulVersion.IsDebugBuild ? "<@779372500521320469>" : string.Empty,
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -49,19 +48,20 @@ namespace CDOverhaul
                     },
                 },
             };
+            ExecuteWebhook(obj1);
+        }
 
+        public static async void ExecuteWebhook(WebhookObject webhookObject)
+        {
             try
             {
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    await webClient.UploadStringTaskAsync(CrashReportsWebhookUri, "POST", JsonConvert.SerializeObject(obj1));
+                    await webClient.UploadStringTaskAsync(CrashReportsWebhookUri, "POST", JsonConvert.SerializeObject(webhookObject));
                 }
             }
-            catch
-            {
-                return;
-            }
+            catch { }
         }
 
         public static bool HasExcludedError(in string theString)

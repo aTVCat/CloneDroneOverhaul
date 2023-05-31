@@ -66,6 +66,9 @@ namespace CDOverhaul.Gameplay.Outfits
 
             AddAccessory<DefaultAccessoryItem>("Deal with It", "P_Acc_DealWithIt", AccessoryType.Attached, MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.CaptainMeowDiscord);
+
+            AddAccessory<DefaultAccessoryItem>("Horns", "P_Horns", AccessoryType.Attached, MechBodyPartType.Head);
+            SetAuthor(WeaponSkinsController.ZoloRDiscord);
         }
 
         /// <summary>

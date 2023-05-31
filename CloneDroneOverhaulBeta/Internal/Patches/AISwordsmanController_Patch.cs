@@ -10,18 +10,19 @@ namespace CDOverhaul.Patches
         private static bool FixedUpdate_Prefix(AISwordsmanController __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return true;
-            }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
             foreach (OverhaulCharacterExpansion b in expansionBases)
             {
-                b.OnPreAIUpdate(__instance, out bool continueEx);
-                if (!continueEx)
+                if (b)
                 {
-                    expansionBases = null;
-                    return false;
+                    b.OnPreAIUpdate(__instance, out bool continueEx);
+                    if (!continueEx)
+                    {
+                        expansionBases = null;
+                        return false;
+                    }
                 }
             }
 
@@ -33,14 +34,13 @@ namespace CDOverhaul.Patches
         private static void FixedUpdate_Postfix(AISwordsmanController __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
             foreach (OverhaulCharacterExpansion b in expansionBases)
             {
-                b.OnPostAIUpdate(__instance);
+                if (b)
+                    b.OnPostAIUpdate(__instance);
             }
         }
     }

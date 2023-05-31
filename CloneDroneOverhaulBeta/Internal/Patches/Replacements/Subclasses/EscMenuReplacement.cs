@@ -34,9 +34,8 @@ namespace CDOverhaul.Patches
         private void setUpButtons()
         {
             if (m_SetUpButtons)
-            {
                 return;
-            }
+
             m_SetUpButtons = true;
 
             OpenOutfitsMenuFromSettings.CanBeShown = shouldShowPersonalizationOutfits;
@@ -97,9 +96,7 @@ namespace CDOverhaul.Patches
             }
 
             if (m_IsWaitingToPatchButtons)
-            {
                 return;
-            }
 
             m_IsWaitingToPatchButtons = true;
             DelegateScheduler.Instance.Schedule(delegate
@@ -148,9 +145,8 @@ namespace CDOverhaul.Patches
         {
             base.Cancel();
             if (m_IsWaitingToPatchButtons)
-            {
                 return;
-            }
+
             if (SuccessfullyPatched)
             {
                 SuccessfullyPatched = false;

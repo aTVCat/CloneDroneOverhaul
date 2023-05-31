@@ -32,35 +32,14 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsOwnerMainPlayer()
-        {
-            return !IsDisposedOrDestroyed() && Owner != null && Owner.IsMainPlayer();
-        }
+        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && Owner != null && Owner.IsMainPlayer();
+        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && Owner != null && Owner.IsPlayer();
 
-        public bool IsOwnerPlayer()
-        {
-            return !IsDisposedOrDestroyed() && Owner != null && Owner.IsPlayer();
-        }
+        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && Owner != null && string.IsNullOrEmpty(Owner.GetPlayFabID());
+        public bool IsOwnerMultiplayerNotMainPlayer() => !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
 
-        public bool IsOwnerMultiplayerPlayer()
-        {
-            return !IsDisposedOrDestroyed() && Owner != null && string.IsNullOrEmpty(Owner.GetPlayFabID());
-        }
-
-        public bool IsOwnerMultiplayerNotMainPlayer()
-        {
-            return !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
-        }
-
-        public bool IsEnemy()
-        {
-            return !IsOwnerPlayer() && Owner != null && !Owner.IsPlayerTeam;
-        }
-
-        public bool IsAlly()
-        {
-            return !IsOwnerPlayer() && Owner != null && Owner.IsPlayerTeam;
-        }
+        public bool IsEnemy() => !IsOwnerPlayer() && !Owner.IsPlayerTeam;
+        public bool IsAlly() => !IsEnemy();
 
         /// <summary>
         /// Check if user, if <paramref name="type"/> is 0 - pressed key this frame, 1 - holding the key, 2 - ended pressing key this frame
@@ -112,63 +91,30 @@ namespace CDOverhaul
         /// May be the best way to control character movement
         /// </summary>
         /// <param name="command"></param>
-        public virtual void OnPreCommandExecute(FPMoveCommand command)
-        {
+        public virtual void OnPreCommandExecute(FPMoveCommand command) { }
+        public virtual void OnPostCommandExecute(FPMoveCommand command) { }
 
-        }
+        public virtual void OnPreAIUpdate(AISwordsmanController aiController, out bool continueExecution) { continueExecution = true; }
+        public virtual void OnPostAIUpdate(AISwordsmanController aiController) { }
 
-        public virtual void OnPostCommandExecute(FPMoveCommand command)
-        {
-
-        }
-
-        public virtual void OnPreAIUpdate(AISwordsmanController aiController, out bool continueExecution)
-        {
-            continueExecution = true;
-        }
-
-        public virtual void OnPostAIUpdate(AISwordsmanController aiController)
-        {
-
-        }
-
-        public virtual void OnEvent(SendFallingEvent sendFallingEvent)
-        {
-
-        }
+        public virtual void OnEvent(SendFallingEvent sendFallingEvent) { }
 
         private void onDeath(Character c)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || c.GetInstanceID() != Owner.GetInstanceID())
                 return;
-            }
-            if (c.GetInstanceID() != Owner.GetInstanceID())
-            {
-                return;
-            }
+
             OnDeath();
         }
-        protected virtual void OnDeath()
-        {
-
-        }
+        protected virtual void OnDeath() { }
 
         public void OnUpgradesRefresh(FirstPersonMover mover)
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || mover.GetInstanceID() != Owner.GetInstanceID())
                 return;
-            }
-            if (mover.GetInstanceID() != Owner.GetInstanceID())
-            {
-                return;
-            }
+
             OnRefresh();
         }
-        protected virtual void OnRefresh()
-        {
-
-        }
+        protected virtual void OnRefresh() { }
     }
 }

@@ -9,35 +9,9 @@ namespace CDOverhaul
 {
     public static class OverhaulExtensions
     {
-        public static bool IsNullOrEmpty(this ICollection list)
-        {
-            return list == null || list.Count == 0;
-        }
-
-        public static bool TryRemove<T>(this ICollection<T> list, T item)
-        {
-            if (list.Contains(item))
-            {
-                _ = list.Remove(item);
-                return true;
-            }
-            return false;
-        }
-
-        public static bool TryAdd<T>(this ICollection<T> list, T item)
-        {
-            if (!list.Contains(item))
-            {
-                list.Add(item);
-                return true;
-            }
-            return false;
-        }
-
-        public static bool IsNullOrEmpty(this Array array)
-        {
-            return array == null || array.Length == 0;
-        }
+        public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
+        public static bool IsNullOrEmpty(this Array array) => array == null || array.Length == 0;
+        public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
 
         /// <summary>
         /// Get a component of object with given index
@@ -71,16 +45,6 @@ namespace CDOverhaul
             return col;
         }
 
-        /// <summary>
-        /// Check if weapon model is on fire
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static bool HasReplacedWithFireVariant(this WeaponModel model)
-        {
-            return model.GetPrivateField<bool>("_hasReplacedWithFireVariant");
-        }
-
         public static void SetLogoAndRootButtonsVisible(this TitleScreenUI titleScreenUI, in bool value)
         {
             titleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { value });
@@ -98,16 +62,13 @@ namespace CDOverhaul
             shouldNotPlaySound = false;
             shouldUseMSSounds = false;
             shouldUseLowerPitchValues = false;
+
             if (model == null)
-            {
                 return false;
-            }
 
             FirstPersonMover mover = model.GetOwner();
             if (mover == null)
-            {
                 return false;
-            }
 
             bool m = GameModeManager.IsMultiplayer();
             shouldNotPlaySound = mover.GetPrivateField<Vector3>("_velocity").y < -1.5f;
@@ -128,11 +89,6 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="texture2D"></param>
         /// <returns></returns>
-        public static Sprite FastSpriteCreate(this Texture2D texture2D)
-        {
-            return texture2D == null
-                ? null
-                : Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
-        }
+        public static Sprite FastSpriteCreate(this Texture2D texture2D) => texture2D == null ? null : Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
     }
 }

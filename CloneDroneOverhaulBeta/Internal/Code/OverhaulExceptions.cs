@@ -26,9 +26,8 @@ namespace CDOverhaul
         public static void ThrowException(in string exc, in string message = null)
         {
             if (message == null)
-            {
                 throw new System.Exception(exc);
-            }
+
             throw new System.Exception(exc + " [" + message + "]");
         }
 

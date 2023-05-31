@@ -13,11 +13,8 @@ namespace CDOverhaul.Graphics
             EnemyType.EmperorCombat
         };
 
-        public static bool IsFirstPersonMoverSupported(in FirstPersonMover firstPersonMover)
-        {
-            return firstPersonMover != null && firstPersonMover.HasCharacterModel()
-&& !UnsupportedCharacters.Contains(firstPersonMover.CharacterType);
-        }
+        public static bool IsFirstPersonMoverSupported(in FirstPersonMover firstPersonMover) => firstPersonMover != null && firstPersonMover.HasCharacterModel() && !UnsupportedCharacters.Contains(firstPersonMover.CharacterType);
+
         public static Renderer[] GetRenderersOfBodyPart(in FirstPersonMover firstPersonMover, in MechBodyPartType bodyPartType)
         {
             if (!IsFirstPersonMoverSupported(firstPersonMover) || bodyPartType == MechBodyPartType.None)
@@ -88,9 +85,7 @@ namespace CDOverhaul.Graphics
             }
 
             if (Time.frameCount % 5 == 0)
-            {
                 RefreshHeadVisibility();
-            }
         }
 
         public void RefreshView()

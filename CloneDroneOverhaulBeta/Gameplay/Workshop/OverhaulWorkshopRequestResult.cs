@@ -3,29 +3,14 @@ using System;
 
 namespace CDOverhaul.Workshop
 {
-    public class OverhaulWorkshopRequestResult : IDisposable
+    public class OverhaulWorkshopRequestResult : OverhaulDisposable
     {
-        private bool m_IsDisposed;
-        public bool IsDisposed()
+        protected override void OnDisposed()
         {
-            return m_IsDisposed;
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
-        void IDisposable.Dispose()
-        {
-            GC.SuppressFinalize(this);
-            m_IsDisposed = true;
-            ItemsReceived = null;
-        }
-        ~OverhaulWorkshopRequestResult()
-        {
-            ((IDisposable)this).Dispose();
-        }
-
-        public OverhaulWorkshopRequestResult()
-        {
-            PageCount = 1;
-        }
+        public OverhaulWorkshopRequestResult() => PageCount = 1;
 
         public bool Error;
 

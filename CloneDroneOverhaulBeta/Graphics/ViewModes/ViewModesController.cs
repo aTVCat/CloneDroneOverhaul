@@ -32,9 +32,7 @@ namespace CDOverhaul.Graphics
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsViewModesSettingsEnabled || !hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
-            {
                 return;
-            }
 
             ViewModesExpansion viewModesExpansion = firstPersonMover.gameObject.AddComponent<ViewModesExpansion>();
         }

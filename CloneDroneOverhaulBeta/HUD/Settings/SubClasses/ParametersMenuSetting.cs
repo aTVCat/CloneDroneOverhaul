@@ -39,9 +39,7 @@ namespace CDOverhaul.HUD
         public void Initialize(in OverhaulParametersMenu menu, in ModdedObject moddedObject, in string settingPath, in ParametersMenuSettingPosition position, bool notFirstInit = false)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (m_ModdedObject == null) m_ModdedObject = moddedObject;
             if (m_UI == null) m_UI = menu;
@@ -92,9 +90,8 @@ namespace CDOverhaul.HUD
             configInputField(moddedObject);
 
             if (!notFirstInit)
-            {
                 _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
-            }
+
             onSettingRefreshed();
         }
 
@@ -102,28 +99,15 @@ namespace CDOverhaul.HUD
         {
             OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, onSettingRefreshed);
             _ = _spawnedBehaviours.Remove(this);
-            m_ToggleBGOff = null;
-            m_ToggleBGOn = null;
-            m_ToggleTickBox = null;
-            m_ToggleTick = null;
-            m_Slider = null;
-            m_Dropdown = null;
-            m_InputField = null;
-            m_DefValueButton = null;
-            m_IDButton = null;
-            m_ModdedObject = null;
-            m_LockedBG = null;
-            m_UI = null;
-            Setting = null;
-            Description = null;
+
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
         private void onSettingRefreshed()
         {
             if (IsDisposedOrDestroyed() || m_LockedBG == null)
-            {
                 return;
-            }
+
             m_LockedBG.gameObject.SetActive(Setting == null || !Setting.IsUnlocked());
         }
 
@@ -132,9 +116,7 @@ namespace CDOverhaul.HUD
             m_InputField = m.GetObject<InputField>(13);
             m_InputField.gameObject.SetActive(Setting.Type == SettingType.String || Setting.ForceInputField);
             if (!m_InputField.gameObject.activeSelf)
-            {
                 return;
-            }
 
             m_InputField.text = SettingInfo.GetPref<object>(Setting).ToString();
             m_InputField.onEndEdit.AddListener(setInputFieldValue);
@@ -145,9 +127,7 @@ namespace CDOverhaul.HUD
             m_Dropdown = m.GetObject<Dropdown>(11);
             m_Dropdown.gameObject.SetActive(parameters != null && !Setting.ForceInputField);
             if (!m_Dropdown.gameObject.activeSelf)
-            {
                 return;
-            }
 
             m_Dropdown.options = parameters.Options;
             m_Dropdown.value = SettingInfo.GetPref<int>(Setting);
@@ -159,14 +139,12 @@ namespace CDOverhaul.HUD
             m_Slider = m.GetObject<Slider>(10);
             m_Slider.gameObject.SetActive(parameters != null && !Setting.ForceInputField);
             if (!m_Slider.gameObject.activeSelf)
-            {
                 return;
-            }
 
-            m_Slider.wholeNumbers = parameters.IsInt;
+            m_Slider.wholeNumbers = parameters.UseWholeNumbers;
             m_Slider.minValue = parameters.Min;
             m_Slider.maxValue = parameters.Max;
-            m_Slider.value = parameters.IsInt ? SettingInfo.GetPref<int>(Setting) : SettingInfo.GetPref<float>(Setting);
+            m_Slider.value = parameters.UseWholeNumbers ? SettingInfo.GetPref<int>(Setting) : SettingInfo.GetPref<float>(Setting);
             m_Slider.onValueChanged.AddListener(setSliderValue);
         }
 
@@ -182,9 +160,7 @@ namespace CDOverhaul.HUD
             Toggle t = base.GetComponent<Toggle>();
             t.enabled = isBool && !Setting.ForceInputField;
             if (!isBool)
-            {
                 return;
-            }
 
             switch (position)
             {
@@ -210,9 +186,8 @@ namespace CDOverhaul.HUD
         private void setInputFieldValue(string value)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             object toSet;
             switch (Setting.Type)
             {
@@ -232,6 +207,7 @@ namespace CDOverhaul.HUD
                     toSet = value;
                     break;
             }
+
             SettingInfo.SavePref(Setting, toSet);
             if (m_HasChangedSettingValueBefore) tryInformPlayer();
             m_HasChangedSettingValueBefore = true;
@@ -240,9 +216,8 @@ namespace CDOverhaul.HUD
         private void setToggleValue(bool value)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             m_ToggleBGOff.gameObject.SetActive(!value);
             m_ToggleBGOn.gameObject.SetActive(value);
             m_ToggleTick.gameObject.SetActive(value);
@@ -254,9 +229,8 @@ namespace CDOverhaul.HUD
         private void setDropdownValue(int value)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             SettingInfo.SavePref(Setting, value);
             if (m_HasChangedSettingValueBefore) tryInformPlayer();
             m_HasChangedSettingValueBefore = true;
@@ -265,25 +239,19 @@ namespace CDOverhaul.HUD
         private void setSliderValue(float value)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
-            if (Setting.SliderParameters.IsInt)
-            {
+
+            if (Setting.SliderParameters.UseWholeNumbers)
                 SettingInfo.SavePref(Setting, Mathf.RoundToInt(value));
-            }
             else
-            {
                 SettingInfo.SavePref(Setting, value);
-            }
         }
 
         private void copyID()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             TextEditor editor = new TextEditor
             {
                 text = Setting.RawPath
@@ -295,45 +263,34 @@ namespace CDOverhaul.HUD
         private void setDefValue()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             SettingInfo.SavePref(Setting, Setting.DefaultValue);
 
             Initialize(m_UI, m_ModdedObject, Setting.RawPath, m_MyPos, true);
             if (m_HasChangedSettingValueBefore) tryInformPlayer();
             m_HasChangedSettingValueBefore = true;
-
-            /*
-            m_UI.PopulateCategory(Setting.Category);*/
         }
 
         private void tryInformPlayer()
         {
-            if (Setting != null && Setting.SendMessageOfType != 0)
-            {
-                if (Setting.SendMessageOfType == 1)
-                {
-                    OverhaulDialogues.CreateDialogueFromPreset(OverhaulDialoguePresetType.RestartTheGame);
-                }
-            }
+            if (Setting != null && Setting.SendMessageOfType == 1)
+                OverhaulDialogues.CreateDialogueFromPreset(OverhaulDialoguePresetType.RestartTheGame);
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             m_UI.PopulateDescription(Setting, Description);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             m_UI.PopulateDescription(null, null);
         }
     }

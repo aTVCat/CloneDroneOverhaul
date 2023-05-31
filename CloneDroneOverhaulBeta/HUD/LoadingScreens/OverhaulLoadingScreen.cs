@@ -23,15 +23,12 @@ namespace CDOverhaul.HUD
         public void SetScreenActive(bool value)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             GameObject gm = base.gameObject;
             if (gm.activeSelf == value)
-            {
                 return;
-            }
+
             ShowCursor = value;
             gm.SetActive(value);
         }
@@ -39,9 +36,7 @@ namespace CDOverhaul.HUD
         public void SetScreenText(string text)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             m_Header.text = text;
         }
@@ -49,9 +44,7 @@ namespace CDOverhaul.HUD
         public void SetScreenFill(float amount)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             m_Fill.fillAmount = amount;
         }

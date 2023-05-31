@@ -50,9 +50,7 @@ namespace CDOverhaul.HUD
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-            {
                 OnOKClicked();
-            }
         }
 
         public void Show()
@@ -83,9 +81,8 @@ namespace CDOverhaul.HUD
                 do
                 {
                     if (m_LoadedArt[i] != null)
-                    {
                         Destroy(m_LoadedArt[i]);
-                    }
+
                     i++;
                 } while (i < m_LoadedArt.Count);
                 m_LoadedArt.Clear();
@@ -113,9 +110,7 @@ namespace CDOverhaul.HUD
 
             m_ChangelogEntriesContainer.ClearContainer();
             if (OverhaulPatchNotes.AllChangelogs.IsNullOrEmpty())
-            {
                 return;
-            }
 
             int index = 0;
             foreach (OverhaulPatchNotes.PatchInfo info in OverhaulPatchNotes.AllChangelogs)
@@ -159,7 +154,7 @@ namespace CDOverhaul.HUD
                 langID = "en";
             }
 
-            m_Changelog.text = OverhaulCore.ReadTextFile(info.DirectoryPath + "Info" + langID + ".txt");
+            m_Changelog.text = OverhaulCore.ReadText(OverhaulMod.Core.ModDirectory + info.DirectoryPath + "Info" + langID + ".txt");
 
             if (!info.Art.IsNullOrEmpty())
             {
@@ -171,10 +166,7 @@ namespace CDOverhaul.HUD
                         if (m != null)
                         {
                             RawImage i = m.GetComponent<RawImage>();
-                            if (i != null && i.texture != null)
-                            {
-                                OverhaulUIImageViewer.SetActive(true, i.texture);
-                            }
+                            OverhaulUIImageViewer.SetActive(true, i.texture);
                         }
                     });
                     StaticCoroutineRunner.StartStaticCoroutine(loadPicture(m.GetComponent<RawImage>(), info.DirectoryPath + art));
@@ -189,9 +181,7 @@ namespace CDOverhaul.HUD
         {
             yield return null;
             if (attachTo == null)
-            {
                 yield break;
-            }
 
             if (!File.Exists(path))
             {

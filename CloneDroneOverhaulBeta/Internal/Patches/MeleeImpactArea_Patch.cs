@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -14,9 +14,7 @@ namespace CDOverhaul.Patches
         private static void Start_Postfix(MeleeImpactArea __instance)
         {
             if (!OverhaulMod.IsModInitialized)
-            {
                 return;
-            }
 
             Rigidbody b = __instance.GetComponent<Rigidbody>();
             if (b != null)
@@ -25,4 +23,4 @@ namespace CDOverhaul.Patches
             }
         }
     }
-}
+}*/

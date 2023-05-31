@@ -2,12 +2,9 @@
 {
     public enum OverhaulDialoguePresetType
     {
-
         None,
 
         UnsupportedGameVersion,
-
-        RestartTheGame
-
+        RestartTheGame,
     }
 }

@@ -14,14 +14,11 @@ namespace CDOverhaul
         {
             StackFrame frame = new StackFrame(1);
             string str = frame.GetMethod().DeclaringType.ToString() + "." + key;
+
             if (m_Dictionary.ContainsKey(str))
-            {
                 m_Dictionary[str] = value;
-            }
             else
-            {
                 m_Dictionary.Add(str, value);
-            }
         }
 
         public static T GetKey<T>(string key)
