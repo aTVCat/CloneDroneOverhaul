@@ -14,10 +14,7 @@ namespace CDOverhaul.Gameplay.Combat
         /// </summary>
         public const float Default_Enemy_Speed = 7f;
 
-        public float GetDefaultSpeed()
-        {
-            return IsOwnerPlayer() ? Default_Player_Speed : Default_Enemy_Speed;
-        }
+        public float GetDefaultSpeed() => IsOwnerPlayer() ? Default_Player_Speed : Default_Enemy_Speed;
 
         /// <summary>
         /// Get cached character model instance
@@ -93,9 +90,7 @@ namespace CDOverhaul.Gameplay.Combat
         public void SetAnimatorSpeed(FirstPersonMoverAnimatorType animatorType, float value)
         {
             if (IsDisposedOrDestroyed() || !HasAnimator(animatorType))
-            {
                 return;
-            }
 
             GetAnimator(animatorType).speed = value;
         }
@@ -122,15 +117,14 @@ namespace CDOverhaul.Gameplay.Combat
         {
             CharacterModel = Owner.GetCharacterModel();
             if (CharacterModel == null)
-            {
                 base.enabled = false;
-            }
         }
 
         public void SetRobotSpeed(float speed, bool updateAnimators, bool reset = false)
         {
             Owner.MaxSpeed = speed;
-            if (updateAnimators) SetAnimatorSpeed(FirstPersonMoverAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
+            if (updateAnimators)
+                SetAnimatorSpeed(FirstPersonMoverAnimatorType.Legs, reset ? 1f : speed / GetDefaultSpeed());
         }
     }
 }

@@ -36,9 +36,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private void Update()
         {
             if (Input.GetMouseButtonUp(0) && !m_IsMouseIn)
-            {
                 Hide();
-            }
         }
 
         public void Show()
@@ -59,9 +57,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         public static void RefreshSliders()
         {
             if (LevelEditorFixes.SelectionSettingsPanel == null)
-            {
                 return;
-            }
 
             m_CannotExecuteSliderEvents = true;
             LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(0).value = OutlineWidth;
@@ -73,9 +69,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         public static void ApplySettings()
         {
             if (LevelEditorFixes.SelectionSettingsPanel == null)
-            {
                 return;
-            }
 
             SettingInfo.SavePref(SettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColor", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(1).value);
             SettingInfo.SavePref(SettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(3).value);
@@ -88,35 +82,21 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private void applySettings(float a)
         {
             if (m_CannotExecuteSliderEvents)
-            {
                 return;
-            }
+
             ApplySettings();
         }
 
         public void ToggleVisibility()
         {
             if (IsShown)
-            {
                 Hide();
-                return;
-            }
-            Show();
+            else
+                Show();
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            m_IsMouseIn = true;
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            m_IsMouseIn = false;
-        }
-
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            m_IsMouseIn = false;
-        }
+        public void OnPointerEnter(PointerEventData eventData) => m_IsMouseIn = true;
+        public void OnPointerExit(PointerEventData eventData) => m_IsMouseIn = false;
+        public void OnPointerUp(PointerEventData eventData) => OnPointerExit(null);
     }
 }

@@ -19,14 +19,9 @@ namespace CDOverhaul.Gameplay.Multiplayer
         private float m_TimeToStopWaiting;
 
         private Hashtable m_ReceivedHashtable;
-        public string GetData(string id)
-        {
-            return m_ReceivedHashtable == null ? string.Empty : m_ReceivedHashtable[id].ToString();
-        }
-        public Hashtable GetHashtable()
-        {
-            return m_ReceivedHashtable;
-        }
+
+        public Hashtable GetHashtable() => m_ReceivedHashtable;
+        public string GetData(string id) => m_ReceivedHashtable == null ? string.Empty : m_ReceivedHashtable[id].ToString();
 
         private void Start()
         {
@@ -73,16 +68,12 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public override void OnEvent(GenericStringForModdingEvent moddedEvent)
         {
             if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData))
-            {
                 return;
-            }
 
             if (moddedEvent.EventData.StartsWith("[OverhaulPlayerInfoRequest]@"))
             {
                 if (!moddedEvent.EventData.Contains(ExclusivityController.GetLocalPlayfabID()))
-                {
                     return;
-                }
 
                 GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
                 newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + ExclusivityController.GetLocalPlayfabID() + "@" + SerializeData();
@@ -124,23 +115,16 @@ namespace CDOverhaul.Gameplay.Multiplayer
             };
         }
 
-        public static OverhaulModdedPlayerInfo GetLocalPlayerInfo()
-        {
-            return m_LocalPlayerInfo;
-        }
+        public static OverhaulModdedPlayerInfo GetLocalPlayerInfo() => m_LocalPlayerInfo;
 
         public static OverhaulModdedPlayerInfo GetPlayerInfo(FirstPersonMover mover)
         {
             if (!GameModeManager.IsMultiplayer() || MultiplayerPlayerInfoManager.Instance == null || mover == null)
-            {
                 return null;
-            }
 
             string playfabID = mover.GetPlayFabID();
             if (string.IsNullOrEmpty(playfabID))
-            {
                 return null;
-            }
 
             MultiplayerPlayerInfoState state = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(playfabID);
             return state == null ? null : state.GetComponent<OverhaulModdedPlayerInfo>();

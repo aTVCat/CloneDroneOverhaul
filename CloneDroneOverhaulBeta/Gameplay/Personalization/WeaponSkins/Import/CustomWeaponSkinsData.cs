@@ -11,9 +11,8 @@ namespace CDOverhaul.Gameplay
         {
             List<Dropdown.OptionData> result = new List<Dropdown.OptionData>();
             foreach (WeaponSkinsImportedItemDefinition importedItem in AllCustomSkins)
-            {
                 result.Add(new Dropdown.OptionData(importedItem.Name));
-            }
+
             return result;
         }
 

@@ -5,9 +5,7 @@
         None,
 
         Null,
-
         Locked,
-
         LockedExclusive,
     }
 }

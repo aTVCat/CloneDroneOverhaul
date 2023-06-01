@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -11,6 +12,8 @@ namespace CDOverhaul
              { "193564D7A14F9C33", new ExclusiveColorInfo(new Color(0.45f, 0.04f, 0.65f, 1f), 10) }
         };
 
+        private static readonly ReadOnlyDictionary<string, ExclusiveColorInfo> m_PlayerColorReadOnly = new ReadOnlyDictionary<string, ExclusiveColorInfo>(m_PlayerInfos);
+
         /// <summary>
         /// Does local player have unlocked exclusive colors?
         /// </summary>
@@ -20,16 +23,12 @@ namespace CDOverhaul
         {
             color = curColor;
             if (mover == null)
-            {
                 return;
-            }
 
             string playFabID = GameModeManager.IsMultiplayer() ? mover.GetPlayFabID() : ExclusivityController.GetLocalPlayfabID();
-            m_PlayerInfos.TryGetValue(playFabID, out ExclusiveColorInfo info);
+            m_PlayerColorReadOnly.TryGetValue(playFabID, out ExclusiveColorInfo info);
             if (info.ColorToReplace == 0)
-            {
                 return;
-            }
 
             int index = 0;
             foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
@@ -47,18 +46,16 @@ namespace CDOverhaul
         {
             HasExclusiveAccess = false;
             if (string.IsNullOrWhiteSpace(playfabID)) return;
-            if (GetExclusivePlayerInfo(playfabID, out ExclusiveColorInfo? info))
-            {
-                if (info != null) HasExclusiveAccess = true;
-            }
+            if (GetExclusivePlayerInfo(playfabID, out ExclusiveColorInfo? info) && info != null)
+                HasExclusiveAccess = true;
         }
 
         public static bool GetExclusivePlayerInfo(string localID, out ExclusiveColorInfo? info)
         {
             info = null;
-            if (!string.IsNullOrWhiteSpace(localID) && m_PlayerInfos.ContainsKey(localID))
+            if (!string.IsNullOrWhiteSpace(localID) && m_PlayerColorReadOnly.ContainsKey(localID))
             {
-                info = m_PlayerInfos[localID];
+                info = m_PlayerColorReadOnly[localID];
                 return true;
             }
             return false;

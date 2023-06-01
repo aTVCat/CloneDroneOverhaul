@@ -37,9 +37,7 @@ namespace CDOverhaul.Gameplay
         public void DestroyModel()
         {
             if (Model != null)
-            {
                 GameObject.Destroy(Model);
-            }
         }
     }
 }

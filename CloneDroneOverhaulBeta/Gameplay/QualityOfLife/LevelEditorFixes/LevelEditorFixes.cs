@@ -27,23 +27,18 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             text = text.Replace("AnalysisBot_", "");
             text = text.Replace("AnalysisBot_", "");
             text = text.Replace("FleetOverseerUpper_", "FO_");
+
             if (text.EndsWith("_Multiplayer"))
-            {
                 text = text.Replace("_Multiplayer", "");
-            }
+
             if (text.EndsWith("_Hammer"))
-            {
                 text = text.Replace("_Hammer", "");
-            }
+
             if (text.EndsWith("_Spear"))
-            {
                 text = text.Replace("_Spear", "");
-            }
 
             if (!toAssignTo.Contains(text))
-            {
                 toAssignTo.Add(text);
-            }
         }
 
         private void fixValues()
@@ -52,15 +47,13 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             {
                 // More animations
                 for (int i = 0; i < WeaponManager.Instance.DefaultUpperBodyAnimator.animationClips.Length; i++)
-                {
                     assignAnimationClip(WeaponManager.Instance.DefaultUpperBodyAnimator.animationClips[i], CharacterAnimationManager.Instance.UpperAnimationNames);
-                }
+
                 CharacterAnimationManager.Instance.UpperAnimationNames.Sort();
 
                 for (int i = 0; i < WeaponManager.Instance.DefaultLegsAnimator.animationClips.Length; i++)
-                {
                     assignAnimationClip(WeaponManager.Instance.DefaultLegsAnimator.animationClips[i], CharacterAnimationManager.Instance.LegsAnimationNames);
-                }
+
                 CharacterAnimationManager.Instance.LegsAnimationNames.Sort();
             }
         }
@@ -69,28 +62,20 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         {
             GameUIRoot uiRoot = GameUIRoot.Instance;
             if (uiRoot == null)
-            {
                 return;
-            }
 
             LevelEditorUI levelEditorUI = uiRoot.LevelEditorUI;
             if (levelEditorUI == null || levelEditorUI.InspectorTransform == null)
-            {
                 return;
-            }
 
             LevelEditorInspector inspector = levelEditorUI.InspectorTransform.GetComponent<LevelEditorInspector>();
             LevelEditorLibraryUI libraryUI = levelEditorUI.LibraryUI;
             if (inspector == null && libraryUI != null)
-            {
                 return;
-            }
 
             CustomInspectorPropertyGroup group = inspector.CustomInspectorPropertyGroupPrefab;
             if (group == null)
-            {
                 return;
-            }
 
             CustomInspectorMethodCalledFromAnimationDropdown calledFromAnimatonDropdown = group.CustomInspectorMethodCalledFromAnimationDropdownPrefab;
             if (calledFromAnimatonDropdown != null && calledFromAnimatonDropdown.DropdownField != null && calledFromAnimatonDropdown.Label != null)
@@ -163,9 +148,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 {
                     Image image = background.GetComponent<Image>();
                     if (image != null)
-                    {
                         image.color = Color.clear;
-                    }
                 }
             }
 
@@ -204,19 +187,15 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             // Library
             Mask mask2 = libraryUI.ScrollViewViewPort.GetComponent<Mask>();
             if (mask2 != null)
-            {
                 Destroy(mask2);
-            }
+
             RectMask2D rectMask2D = libraryUI.ScrollViewViewPort.GetComponent<RectMask2D>();
             if (rectMask2D == null)
-            {
                 rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
-            }
 
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
-            {
                 return;
-            }
+
             RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
             searchFieldRectT.pivot = new Vector2(0f, 0.5f);
             searchFieldRectT.anchorMax = new Vector2(1f, 1f);
@@ -253,16 +232,12 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private void addUIs()
         {
             if (OverhaulVersion.IsUpdate2Hotfix || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
-            {
                 return;
-            }
 
             OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
             GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_Settings");
             if (prefabToInstantiate == null)
-            {
                 return;
-            }
 
             RectTransform panel = Instantiate(prefabToInstantiate, GameUIRoot.Instance.LevelEditorUI.transform).transform as RectTransform;
             panel.localPosition = Vector3.zero;
@@ -275,14 +250,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
         }
 
-        public override string[] Commands()
-        {
-            return null;
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            return null;
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

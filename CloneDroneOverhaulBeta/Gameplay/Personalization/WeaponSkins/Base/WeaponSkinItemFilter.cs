@@ -5,11 +5,8 @@
         None,
 
         Exclusive,
-
         Locked,
-
         Everything,
-
         Equipped
     }
 }

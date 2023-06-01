@@ -13,40 +13,18 @@ namespace CDOverhaul.Gameplay
         public static void SetSkinItemSelectedState(IWeaponSkinItemDefinition itemDefinition, bool newState)
         {
             if (itemDefinition == null)
-            {
                 return;
-            }
+
             bool isSelected = ItemIsSelected(itemDefinition);
 
-            if (newState)
-            {
-                if (!isSelected)
-                {
-                    m_SelectedItems.Add(itemDefinition);
-                }
-            }
-            else
-            {
-                if (isSelected)
-                {
-                    m_SelectedItems.Remove(itemDefinition);
-                }
-            }
+            if (newState && !isSelected)
+                m_SelectedItems.Add(itemDefinition);
+
+            else if (!newState && isSelected)
+                m_SelectedItems.Remove(itemDefinition);
         }
 
-        public static bool ItemIsSelected(IWeaponSkinItemDefinition itemDefinition)
-        {
-            return itemDefinition != null && m_SelectedItems.Contains(itemDefinition);
-        }
-
-        public static void DeselectAll()
-        {
-            m_SelectedItems.Clear();
-        }
-
-        public static string GetSelectedSkinsJsonString()
-        {
-            throw new System.NotImplementedException();
-        }
+        public static bool ItemIsSelected(IWeaponSkinItemDefinition itemDefinition) => itemDefinition != null && m_SelectedItems.Contains(itemDefinition);
+        public static void DeselectAll() => m_SelectedItems.Clear();
     }
 }

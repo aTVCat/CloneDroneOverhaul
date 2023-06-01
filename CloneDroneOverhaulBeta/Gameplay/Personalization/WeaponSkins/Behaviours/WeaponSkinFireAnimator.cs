@@ -29,14 +29,11 @@ namespace CDOverhaul.Gameplay
         private void refresh()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             m_Renderer = base.GetComponent<Renderer>();
             if (m_Renderer == null)
-            {
                 return;
-            }
 
             m_Material = m_Renderer.material;
             updateColor();
@@ -45,23 +42,18 @@ namespace CDOverhaul.Gameplay
         private void updateColor()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
+
             m_Material.SetColor(Emission, TargetColor * (Mathf.PingPong(Time.time, 2f) + 3f));
         }
 
         private void Update()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (m_Material == null)
-            {
                 return;
-            }
 
             updateColor();
         }

@@ -28,14 +28,16 @@ namespace CDOverhaul.Gameplay.Combat
 
         public static Color GetUIThemeColor(Color defaultColor)
         {
-            if (CharacterTracker.Instance == null) return defaultColor;
+            if (CharacterTracker.Instance == null)
+                return defaultColor;
+
             FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
-            return m == null || !m || !m.HasCharacterModel() ? defaultColor : m.GetCharacterModel().GetFavouriteColor();
+            if(!m || !m.HasCharacterModel())
+                return defaultColor;
+
+            return m.GetCharacterModel().GetFavouriteColor();
         }
 
-        public static Color GetUIThemeColor(string defaultColorHEX)
-        {
-            return GetUIThemeColor(defaultColorHEX.ConvertHexToColor());
-        }
+        public static Color GetUIThemeColor(string defaultColorHEX) => GetUIThemeColor(defaultColorHEX.ConvertHexToColor());
     }
 }

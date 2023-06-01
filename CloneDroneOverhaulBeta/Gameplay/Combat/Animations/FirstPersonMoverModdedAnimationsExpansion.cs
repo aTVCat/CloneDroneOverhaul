@@ -37,23 +37,17 @@ namespace CDOverhaul.Gameplay.Combat
         public override void OnEvent(SendFallingEvent sendFallingEvent)
         {
             if (!Owner.IsDetached() && Owner.entity.IsOwner && Owner.HasLocalControl())
-            {
                 StopPlayingCustomAnimations();
-            }
         }
 
         public void PlayCustomAnimaton(string animationName, bool dontPlayIfFell = true)
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             Owner.SetActiveEmoteIndex(-1);
             if (dontPlayIfFell && Owner.GetState().IsFalling)
-            {
                 return;
-            }
 
             if (m_HasUpperAnimator && m_UpperAnimation != null)
             {
@@ -82,35 +76,26 @@ namespace CDOverhaul.Gameplay.Combat
         public void StopPlayingCustomAnimations()
         {
             if (IsDisposedOrDestroyed())
-            {
                 return;
-            }
 
             if (m_HasUpperAnimator && m_UpperAnimation != null)
-            {
                 m_UpperAnimation.Stop();
-            }
+
             if (m_HasLowerAnimator && m_LowerAnimation != null)
-            {
                 m_LowerAnimation.Stop();
-            }
         }
 
         public string GetPlayingCustomAnimationName(FirstPersonMoverAnimatorType animationType)
         {
             if (!HasAnimator(animationType))
-            {
                 return string.Empty;
-            }
 
             switch (animationType)
             {
                 case FirstPersonMoverAnimatorType.Upper:
                     return m_UpperAnimation != null ? m_UpperAnimation.clip.name : string.Empty;
-                    break;
                 case FirstPersonMoverAnimatorType.Legs:
                     return m_LowerAnimation != null ? m_LowerAnimation.clip.name : string.Empty;
-                    break;
             }
             return string.Empty;
         }
@@ -118,12 +103,13 @@ namespace CDOverhaul.Gameplay.Combat
         private void LateUpdate()
         {
             if (IsDisposedOrDestroyed() || CharacterModel == null || !Owner.IsAlive())
-            {
                 return;
-            }
 
-            if (m_HasUpperAnimator) CharacterModel.UpperAnimator.enabled = !IsPlayingCustomUpperAnimation && !CharacterModel.IsManualUpperAnimationEnabled();
-            if (m_HasLowerAnimator) CharacterModel.LegsAnimator.enabled = !IsPlayingCustomLowerAnimation && !CharacterModel.IsManualLegsAnimationEnabled();
+            if (m_HasUpperAnimator)
+                CharacterModel.UpperAnimator.enabled = !IsPlayingCustomUpperAnimation && !CharacterModel.IsManualUpperAnimationEnabled();
+
+            if (m_HasLowerAnimator)
+                CharacterModel.LegsAnimator.enabled = !IsPlayingCustomLowerAnimation && !CharacterModel.IsManualLegsAnimationEnabled();
         }
     }
 }

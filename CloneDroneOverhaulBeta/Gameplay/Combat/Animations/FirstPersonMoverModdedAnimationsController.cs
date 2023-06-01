@@ -8,28 +8,14 @@ namespace CDOverhaul.Gameplay.Combat
     /// </summary>
     public class FirstPersonMoverModdedAnimationsController : OverhaulGameplayController
     {
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
-        }
-
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
             if (OverhaulVersion.IsUpdate2Hotfix || !hasInitializedModel || firstPersonMover == null)
-            {
                 return;
-            }
 
             CharacterModel model = firstPersonMover.GetCharacterModel();
             if (model == null)
-            {
                 return;
-            }
 
             Animator upperAnimator = model.UpperAnimator;
             Animation animationComponent = null;
@@ -39,9 +25,8 @@ namespace CDOverhaul.Gameplay.Combat
             {
                 animationComponent = upperAnimator.gameObject.GetComponent<Animation>();
                 if (!animationComponent)
-                {
                     animationComponent = upperAnimator.gameObject.AddComponent<Animation>();
-                }
+
                 AnimationClip clip = OverhaulAssetsController.GetAsset<AnimationClip>("TestAnim", OverhaulAssetPart.Combat_Update);
                 animationComponent.AddClip(clip, clip.name);
                 AnimationClip clip2 = OverhaulAssetsController.GetAsset<AnimationClip>("WeaponUse_PrepareBoomerang", OverhaulAssetPart.Combat_Update);
@@ -60,21 +45,13 @@ namespace CDOverhaul.Gameplay.Combat
             {
                 animationComponent2 = upperAnimator.gameObject.GetComponent<Animation>();
                 if (!animationComponent2)
-                {
                     animationComponent2 = upperAnimator.gameObject.AddComponent<Animation>();
-                }
             }
 
             firstPersonMover.gameObject.AddComponent<FirstPersonMoverModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);
         }
 
-        public override string[] Commands()
-        {
-            throw new NotImplementedException();
-        }
-        public override string OnCommandRan(string[] command)
-        {
-            throw new NotImplementedException();
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

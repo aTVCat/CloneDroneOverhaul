@@ -6,7 +6,6 @@
 
         Default,
         DefaultMultiplayer,
-
         Fire,
         FireMultiplayer,
     }

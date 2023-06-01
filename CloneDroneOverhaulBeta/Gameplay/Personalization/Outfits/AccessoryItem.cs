@@ -21,13 +21,7 @@ namespace CDOverhaul.Gameplay.Outfits
         public string Author
         {
             get => string.IsNullOrEmpty(m_Author) ? NoAuthorString : m_Author;
-            set
-            {
-                if (string.IsNullOrEmpty(m_Author))
-                {
-                    m_Author = value;
-                }
-            }
+            set => m_Author = value;
         }
 
         public AccessoryType Type { get; private set; }
@@ -48,16 +42,13 @@ namespace CDOverhaul.Gameplay.Outfits
         public bool IsUnlocked()
         {
             if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(AllowedPlayers))
-            {
                 return true;
-            }
 
             string localID = ExclusivityController.GetLocalPlayfabID();
             bool isUnlocked = AllowedPlayers.Contains(localID);
             if (!isUnlocked && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
-            {
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
-            }
+
             return isUnlocked;
         }
 
@@ -71,17 +62,13 @@ namespace CDOverhaul.Gameplay.Outfits
             {
                 MultiplayerCharacterCustomizationManager multiplayerCharacterCustomization = MultiplayerCharacterCustomizationManager.Instance;
                 if (multiplayerCharacterCustomization == null || multiplayerCharacterCustomization.CharacterModels.IsNullOrEmpty())
-                {
                     return;
-                }
 
                 Offsets = new Dictionary<string, ModelOffset>();
                 foreach (CharacterModelCustomizationEntry entry in multiplayerCharacterCustomization.CharacterModels)
                 {
                     if (entry == null || entry.CharacterModelPrefab == null)
-                    {
                         continue;
-                    }
 
                     string characterModelName = entry.CharacterModelPrefab.gameObject.name + "(Clone)";
                     Offsets.Add(characterModelName, new ModelOffset(Vector3.zero, Vector3.zero, Vector3.one));
@@ -97,15 +84,14 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public void SaveOffsets()
         {
-            File.WriteAllText(OverhaulMod.Core.ModDirectory + "Assets/AccessoriesOffsets/" + Name + "_Offsets.json", JsonConvert.SerializeObject(Offsets));
+            OverhaulCore.WriteText(OverhaulMod.Core.ModDirectory + "Assets/AccessoriesOffsets/" + Name + "_Offsets.json", JsonConvert.SerializeObject(Offsets));
         }
 
         public GameObject InstantiateAccessory()
         {
             if (Prefab == null)
-            {
                 return null;
-            }
+
             GameObject spawnedObject = UnityEngine.Object.Instantiate(Prefab);
             spawnedObject.name = spawnedObject.name.Replace("(Clone)", string.Empty);
             spawnedObject.SetActive(true);

@@ -75,9 +75,7 @@ namespace CDOverhaul.Credits
             {
                 // Skip if smooth normals have already been adopted
                 if (meshFilter == null || meshFilter.sharedMesh == null || !registeredMeshes.Add(meshFilter.sharedMesh))
-                {
                     continue;
-                }
 
                 // Retrieve or generate smooth normals
                 int index = bakeKeys.IndexOf(meshFilter.sharedMesh);
@@ -90,9 +88,7 @@ namespace CDOverhaul.Credits
                 Renderer renderer = meshFilter.GetComponent<Renderer>();
 
                 if (renderer != null)
-                {
                     CombineSubmeshes(meshFilter.sharedMesh, renderer.sharedMaterials);
-                }
             }
 
             // Clear UV3 on skinned mesh renderers
@@ -100,9 +96,7 @@ namespace CDOverhaul.Credits
             {
                 // Skip if UV3 has already been reset
                 if (!registeredMeshes.Add(skinnedMeshRenderer.sharedMesh))
-                {
                     continue;
-                }
 
                 // Clear UV3
                 skinnedMeshRenderer.sharedMesh.uv4 = new Vector2[skinnedMeshRenderer.sharedMesh.vertexCount];
@@ -115,9 +109,7 @@ namespace CDOverhaul.Credits
         private List<Vector3> SmoothNormals(Mesh mesh)
         {
             if (mesh == null)
-            {
                 return new List<Vector3>();
-            }
 
             // Copy normals to a new list
             List<Vector3> smoothNormals = new List<Vector3>(mesh.normals);
@@ -132,24 +124,19 @@ namespace CDOverhaul.Credits
                 {
                     // Skip single vertices
                     if (group == null || group.Count() == 1)
-                    {
                         continue;
-                    }
 
                     // Calculate the average normal
                     Vector3 smoothNormal = Vector3.zero;
 
                     foreach (KeyValuePair<Vector3, int> pair in group)
-                    {
                         smoothNormal += smoothNormals[pair.Value];
-                    }
+
                     smoothNormal.Normalize();
 
                     // Assign smooth normal to each vertex
                     foreach (KeyValuePair<Vector3, int> pair in group)
-                    {
                         smoothNormals[pair.Value] = smoothNormal;
-                    }
                 }
             }
             catch
@@ -162,18 +149,13 @@ namespace CDOverhaul.Credits
 
         private void CombineSubmeshes(Mesh mesh, Material[] materials)
         {
-
             // Skip meshes with a single submesh
             if (mesh.subMeshCount == 1)
-            {
                 return;
-            }
 
             // Skip if submesh count exceeds material count
             if (mesh.subMeshCount > materials.Length)
-            {
                 return;
-            }
 
             // Append combined submesh
             mesh.subMeshCount++;
@@ -183,9 +165,8 @@ namespace CDOverhaul.Credits
         public static void UpdateMaterialProperties()
         {
             if (outlineMaskMaterial != null)
-            {
                 outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-            }
+
             if (outlineFillMaterial != null)
             {
                 outlineFillMaterial.SetColor("_OutlineColor", LevelEditorSelectionSettingsPanel.OutlineColor);

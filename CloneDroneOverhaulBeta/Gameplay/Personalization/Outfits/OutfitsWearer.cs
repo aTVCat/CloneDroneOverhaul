@@ -28,10 +28,7 @@ namespace CDOverhaul.Gameplay.Outfits
             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             m_HasAddedEventListeners = true;
 
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                SpawnAccessories();
-            }, 0.2f);
+            DelegateScheduler.Instance.Schedule(SpawnAccessories, 0.2f);
         }
 
         protected override void OnDeath()
@@ -63,58 +60,42 @@ namespace CDOverhaul.Gameplay.Outfits
             DestroyAccessories();
 
             if (!OverhaulGamemodeManager.SupportsOutfits())
-            {
                 return;
-            }
 
             if (Owner == null || !IsOwnerPlayer())
-            {
                 return;
-            }
 
             string equippedItems = string.Empty;
             if (HasPlayerInfo)
             {
                 Hashtable hashtable = m_Info.GetHashtable();
                 if (hashtable != null && hashtable.ContainsKey(IDInHashtable))
-                {
                     equippedItems = hashtable[IDInHashtable].ToString();
-                }
             }
             else
             {
                 if (!GameModeManager.IsMultiplayer())
-                {
                     equippedItems = OutfitsController.EquippedAccessories;
-                }
             }
 
             List<AccessoryItem> items = OutfitsController.GetAccessories(equippedItems);
             if (items.IsNullOrEmpty())
-            {
                 return;
-            }
 
             foreach (AccessoryItem accessoryItem in items)
             {
                 if (accessoryItem.Prefab == null)
-                {
                     continue;
-                }
 
                 if (accessoryItem.Type.Equals(AccessoryType.Attached))
                 {
                     MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
                     if (bodyPart == null)
-                    {
                         continue;
-                    }
 
                     Transform bodyPartTransform = bodyPart.transform.parent;
                     if (bodyPartTransform == null)
-                    {
                         continue;
-                    }
 
                     GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
                     SetPosition(instantiatedPrefab, accessoryItem);
@@ -122,34 +103,28 @@ namespace CDOverhaul.Gameplay.Outfits
                     m_SpawnedAccessories.Add(accessoryItem.Name, instantiatedPrefab);
                 }
                 else
-                {
-                    throw new NotImplementedException("Detached accessories");
-                }
+                    throw new NotImplementedException("WIP: Detached accessories");
             }
         }
 
         public void DestroyAccessories()
         {
-            if (!m_SpawnedAccessories.IsNullOrEmpty())
+            if (m_SpawnedAccessories.IsNullOrEmpty())
+                return;
+
+            foreach (string key in m_SpawnedAccessories.Keys)
             {
-                foreach (string key in m_SpawnedAccessories.Keys)
-                {
-                    GameObject toDestroy = m_SpawnedAccessories[key];
-                    if (toDestroy != null)
-                    {
-                        Destroy(toDestroy);
-                    }
-                }
-                m_SpawnedAccessories.Clear();
+                GameObject toDestroy = m_SpawnedAccessories[key];
+                if (toDestroy)
+                    Destroy(toDestroy);
             }
+            m_SpawnedAccessories.Clear();
         }
 
         public void SetPosition(GameObject accessory, AccessoryItem item)
         {
             if (accessory == null || item == null || Owner == null || !Owner.HasCharacterModel())
-            {
                 return;
-            }
 
             string characterModelName = Owner.GetCharacterModel().gameObject.name;
             if (string.IsNullOrEmpty(characterModelName) || item.Offsets.IsNullOrEmpty() || !item.Offsets.ContainsKey(characterModelName))

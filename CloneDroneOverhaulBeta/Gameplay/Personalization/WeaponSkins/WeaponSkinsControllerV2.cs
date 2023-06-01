@@ -18,10 +18,7 @@ namespace CDOverhaul.Gameplay
             WeaponType.Hammer,
             WeaponType.Spear
         };
-        public static bool IsWeaponSupported(WeaponType weaponType)
-        {
-            return SupportedWeapons.Contains(weaponType);
-        }
+        public static bool IsWeaponSupported(WeaponType weaponType) => SupportedWeapons.Contains(weaponType);
 
         public IWeaponSkinsControllerV2 Interface
         {
@@ -59,9 +56,7 @@ namespace CDOverhaul.Gameplay
         public static void DeleteCustomAssetBundleFiles()
         {
             if (m_CustomAssetBundlesWithSkins.IsNullOrEmpty())
-            {
                 return;
-            }
 
             foreach (string path in m_CustomAssetBundlesWithSkins)
             {
@@ -83,9 +78,7 @@ namespace CDOverhaul.Gameplay
                     }
                 }
                 else
-                {
                     continue;
-                }
             }
         }
 
@@ -106,10 +99,12 @@ namespace CDOverhaul.Gameplay
         [OverhaulSettingAttribute("Player.WeaponSkins.NoticedSkinsButton", false, !OverhaulVersion.IsDebugBuild)]
         public static bool HasNoticedSkinsButton;
 
-        public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover)
-        {
-            return !GameModeManager.IsInLevelEditor() && firstPersonMover != null && !firstPersonMover.IsMindSpaceCharacter && firstPersonMover.CharacterCategory != EnemyCategory.FleetAnalysisBots && firstPersonMover.CharacterCategory != EnemyCategory.FleetCommanders;
-        }
+        public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover) => 
+            !GameModeManager.IsInLevelEditor() && 
+            firstPersonMover != null &&
+            !firstPersonMover.IsMindSpaceCharacter &&
+            firstPersonMover.CharacterCategory != EnemyCategory.FleetAnalysisBots &&
+            firstPersonMover.CharacterCategory != EnemyCategory.FleetCommanders;
 
         public override void Initialize()
         {
@@ -129,9 +124,7 @@ namespace CDOverhaul.Gameplay
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
             if (!hasInitializedModel)
-            {
                 return;
-            }
 
             ApplySkinsOnCharacter(firstPersonMover);
         }
@@ -149,15 +142,11 @@ namespace CDOverhaul.Gameplay
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (m_WeaponSkins[i] == null)
-                {
                     continue;
-                }
 
                 WeaponSkinItemDefinitionV2 item = m_WeaponSkins[i] as WeaponSkinItemDefinitionV2;
                 if (item.IsImportedSkin)
-                {
                     m_WeaponSkins.RemoveAt(i);
-                }
             }
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
@@ -367,6 +356,7 @@ namespace CDOverhaul.Gameplay
         {
             if (character == null || !(character is FirstPersonMover))
                 return;
+
             WeaponSkinsWearer wearer = character.GetComponent<WeaponSkinsWearer>();
             if (wearer == null)
             {
@@ -379,17 +369,14 @@ namespace CDOverhaul.Gameplay
         public static WeaponVariant GetVariant(bool fire, bool multiplayer)
         {
             if (!fire && !multiplayer)
-            {
                 return WeaponVariant.Default;
-            }
+
             else if (!fire && multiplayer)
-            {
                 return WeaponVariant.DefaultMultiplayer;
-            }
+
             else if (fire && !multiplayer)
-            {
                 return WeaponVariant.Fire;
-            }
+
             return WeaponVariant.FireMultiplayer;
         }
 
@@ -416,9 +403,7 @@ namespace CDOverhaul.Gameplay
             {
                 string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? OverhaulAssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
                 if (!allAssetBundles.Contains(assetBundle))
-                {
                     allAssetBundles.Add(assetBundle);
-                }
 
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)m_WeaponSkins.Count);
@@ -495,7 +480,6 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinsController.HasUpdatedSkins = true;
             c.ReImportCustomSkins();
-            //if (WeaponSkinsMenu.SkinsSelection != null) WeaponSkinsMenu.SkinsSelection.SetUpdateButtonInteractableState(false);
 
             int charactersReloaded = 0;
             List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();
@@ -522,27 +506,20 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition item in m_WeaponSkins)
             {
                 if (!(item as WeaponSkinItemDefinitionV2).IsImportedSkin)
-                {
                     importedSkins.Add(WeaponSkinsImportedItemDefinition.PortOld(item as WeaponSkinItemDefinitionV2));
-                }
             }
             CustomSkinsData.AllCustomSkins.AddRange(importedSkins);
 
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (!(m_WeaponSkins[i] as WeaponSkinItemDefinitionV2).IsImportedSkin)
-                {
                     m_WeaponSkins.RemoveAt(i);
-                }
             }
 
             GetController<WeaponSkinsController>().ReImportCustomSkins();
         }
 
-        public static string GetSkinsFileVersion()
-        {
-            return File.ReadAllText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt");
-        }
+        public static string GetSkinsFileVersion() => OverhaulCore.ReadText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt");
 
         IWeaponSkinItemDefinition IWeaponSkinsControllerV2.NewSkinItem(WeaponType weapon, string skinName, ItemFilter filter)
         {
@@ -562,17 +539,10 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
             {
                 if (filter == ItemFilter.Everything || weaponSkinItem.IsUnlocked(false))
-                {
                     if (weaponSkinItem.GetWeaponType() == weaponType && weaponSkinItem.GetItemName() == skinName)
-                    {
                         result = weaponSkinItem;
-                    }
-                }
-                else
-                {
-                    // Implement is locked by not exclusivity
-                    error = ItemNullResult.LockedExclusive;
-                }
+                    else
+                        error = ItemNullResult.LockedExclusive;
             }
 
             return result;
@@ -592,58 +562,35 @@ namespace CDOverhaul.Gameplay
                         {
                             case WeaponType.Sword:
                                 if (itemName == EquippedSwordSkin)
-                                {
                                     result.Add(weaponSkinItem);
-                                }
                                 break;
                             case WeaponType.Bow:
                                 if (itemName == EquippedBowSkin)
-                                {
                                     result.Add(weaponSkinItem);
-                                }
                                 break;
                             case WeaponType.Hammer:
                                 if (itemName == EquippedHammerSkin)
-                                {
                                     result.Add(weaponSkinItem);
-                                }
                                 break;
                             case WeaponType.Spear:
                                 if (itemName == EquippedSpearSkin)
-                                {
                                     result.Add(weaponSkinItem);
-                                }
                                 break;
                         }
                     }
                 }
             }
             else
-            {
                 foreach (IWeaponSkinItemDefinition weaponSkinItem in m_WeaponSkins)
-                {
                     if ((weaponSkinItem.IsUnlocked(OverhaulVersion.IsDebugBuild) && type == WeaponType.None) || (weaponSkinItem.GetWeaponType() == type && (filter == ItemFilter.Everything || weaponSkinItem.GetFilter() == filter)))
-                    {
                         result.Add(weaponSkinItem);
-                    }
-                }
-            }
+
             return result.ToArray();
         }
 
-        IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover)
-        {
-            return Interface.GetSkinItems(ItemFilter.Equipped);
-        }
+        IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover) => Interface.GetSkinItems(ItemFilter.Equipped);
 
-        public override string[] Commands()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            throw new System.NotImplementedException();
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

@@ -100,7 +100,6 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
                 i++;
             }
-
             yield break;
         }
 
@@ -281,14 +280,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             yield break;
         }
 
-        public override string[] Commands()
-        {
-            return null;
-        }
-
-        public override string OnCommandRan(string[] command)
-        {
-            return null;
-        }
+        public override string[] Commands() => null;
+        public override string OnCommandRan(string[] command) => null;
     }
 }

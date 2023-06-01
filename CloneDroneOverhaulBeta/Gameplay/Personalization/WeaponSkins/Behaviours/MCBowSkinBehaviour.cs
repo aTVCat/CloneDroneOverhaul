@@ -19,9 +19,8 @@ namespace CDOverhaul.Gameplay
         public override void OnBeginDraw()
         {
             if (m_TimeBeganDrawing != -1f)
-            {
                 return;
-            }
+
             m_TimeBeganDrawing = Time.time;
         }
 
@@ -64,47 +63,34 @@ namespace CDOverhaul.Gameplay
         private void Update()
         {
             if (IsDisposedOrDestroyed() || m_OwnerDied)
-            {
                 return;
-            }
 
             float time = Time.time;
             if (m_TimeBeganDrawing != -1f && time >= m_TimeBeganDrawing)
             {
                 if (time >= m_TimeBeganDrawing + 0.45f)
-                {
                     SetFrame(4);
-                }
+
                 else if (time >= m_TimeBeganDrawing + 0.3f)
-                {
                     SetFrame(3);
-                }
+
                 else if (time >= m_TimeBeganDrawing + 0.15f)
-                {
                     SetFrame(2);
-                }
             }
             else
-            {
                 SetFrame(1);
-            }
         }
 
         public void SetFrame(byte frame)
         {
             if (IsDisposedOrDestroyed() || !m_HasFrames)
-            {
                 return;
-            }
 
             if (m_OwnerDied)
-            {
                 frame = 1;
-            }
+
             if (m_CurrentFrame == frame || m_Filter == null)
-            {
                 return;
-            }
 
             m_CurrentFrame = frame;
             switch (frame)

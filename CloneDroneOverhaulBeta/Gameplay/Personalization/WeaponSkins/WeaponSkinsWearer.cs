@@ -288,18 +288,12 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkins()
         {
-            if (IsDisposedOrDestroyed())
-            {
+            if (IsDisposedOrDestroyed() || m_WaitingToSpawnSkins || !HasToRespawnSkins())
                 return;
-            }
-            if (m_WaitingToSpawnSkins || !HasToRespawnSkins())
-            {
-                return;
-            }
 
-            WeaponSkinsController.SkinsDataIsDirty = false;
             m_HasEverSpawnedSkins = true;
             m_WaitingToSpawnSkins = true;
+            WeaponSkinsController.SkinsDataIsDirty = false;
             DelegateScheduler.Instance.Schedule(spawnSkins, 0.2f);
         }
 
@@ -308,23 +302,17 @@ namespace CDOverhaul.Gameplay
             m_WaitingToSpawnSkins = false;
             bool isMultiplayer = GameModeManager.IsMultiplayer();
 
-            if (Owner == null || !WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
-            {
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(Owner))
                 return;
-            }
             SetDefaultModelsActive();
 
             // Don't spawn skins if it is an enemy
             if (!OverhaulGamemodeManager.SupportsPersonalization() || (!IsOwnerPlayer() && !Owner.IsClone() && !WeaponSkinsController.AllowEnemiesWearSkins))
-            {
                 return;
-            }
 
             // Don't spawn skins if multiplayer data isn't here
             if (isMultiplayer && (PlayerInformation == null || !PlayerInformation.HasReceivedData || string.IsNullOrEmpty(PlayerInformation.GetData("ID"))))
-            {
                 return;
-            }
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
             IWeaponSkinItemDefinition[] skins;
@@ -337,13 +325,10 @@ namespace CDOverhaul.Gameplay
                 skins[3] = controller.Interface.GetSkinItem(WeaponType.Spear, PlayerInformation.GetData("Skin.Spear"), ItemFilter.Everything, out _);
             }
             else
-            {
                 skins = controller.Interface.GetSkinItems(Owner);
-            }
+
             if (skins.IsNullOrEmpty())
-            {
                 return;
-            }
 
             if (!SpawnedSkins.IsNullOrEmpty())
             {
@@ -351,9 +336,7 @@ namespace CDOverhaul.Gameplay
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
                 {
                     if (info == null || info.Model == null || (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
-                    {
                         continue;
-                    }
 
                     SetDefaultModelsActive(info.Model.transform);
 
@@ -373,18 +356,12 @@ namespace CDOverhaul.Gameplay
                 }
 
                 foreach (IWeaponSkinItemDefinition itemDef in toDelete)
-                {
                     RemoveSpawnedSkin(itemDef);
-                }
             }
 
             foreach (IWeaponSkinItemDefinition skin in skins)
-            {
                 if (skin != null && !HasSpawnedSkin(skin))
-                {
                     SpawnSkin(skin);
-                }
-            }
 
             // Todo: Make better VFX
             if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
@@ -392,9 +369,7 @@ namespace CDOverhaul.Gameplay
                 WeaponSkinsController.RobotToPlayAnimationOn = null;
                 WeaponModel model = Owner.GetEquippedWeaponModel();
                 if (model == null)
-                {
                     return;
-                }
 
                 PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
             }
@@ -403,9 +378,8 @@ namespace CDOverhaul.Gameplay
         public void SetDefaultModelsActive(Transform transformToRemove = null)
         {
             if (!Owner.HasCharacterModel())
-            {
                 return;
-            }
+
             CharacterModel model = Owner.GetCharacterModel();
 
             WeaponModel weaponModel1 = model.GetWeaponModel(WeaponType.Sword);
@@ -421,9 +395,7 @@ namespace CDOverhaul.Gameplay
                     }
                 }
                 else
-                {
                     SetDefaultModelsVisible(true, weaponModel1);
-                }
             }
             WeaponModel weaponModel2 = model.GetWeaponModel(WeaponType.Bow);
             if (weaponModel2 != null && OverhaulGamemodeManager.SupportsBowSkins())
@@ -438,9 +410,7 @@ namespace CDOverhaul.Gameplay
                     }
                 }
                 else
-                {
                     SetDefaultModelsVisible(true, weaponModel2);
-                }
             }
             WeaponModel weaponModel3 = model.GetWeaponModel(WeaponType.Hammer);
             if (weaponModel3 != null)
@@ -455,9 +425,7 @@ namespace CDOverhaul.Gameplay
                     }
                 }
                 else
-                {
                     SetDefaultModelsVisible(true, weaponModel3);
-                }
             }
             WeaponModel weaponModel4 = model.GetWeaponModel(WeaponType.Spear);
             if (weaponModel4 != null)
@@ -472,24 +440,18 @@ namespace CDOverhaul.Gameplay
                     }
                 }
                 else
-                {
                     SetDefaultModelsVisible(true, weaponModel4);
-                }
             }
         }
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)
         {
             if (item == null || Owner == null || !Owner.HasCharacterModel())
-            {
                 return;
-            }
 
             WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
             if (weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
-            {
                 return;
-            }
 
             SetDefaultModelsVisible(false, weaponModel);
             if (item.GetItemName() == "Default" || weaponModel.WeaponType != item.GetWeaponType())
@@ -538,9 +500,7 @@ namespace CDOverhaul.Gameplay
                             : HumanFactsManager.Instance.GetFavColor(indexOfFireColor).ColorValue;
                     }
                     else if (!fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor != -1)
-                    {
                         forcedColor = HumanFactsManager.Instance.GetFavColor((item as WeaponSkinItemDefinitionV2).IndexOfForcedNormalVanillaColor).ColorValue;
-                    }
 
                     SetModelColor(spawnedModel.gameObject, fire, (item as WeaponSkinItemDefinitionV2).Saturation, forcedColor, (item as WeaponSkinItemDefinitionV2).Multiplier);
                 }
@@ -599,9 +559,7 @@ namespace CDOverhaul.Gameplay
         public void SetDefaultModelsVisible(bool value, WeaponModel model)
         {
             if (model == null)
-            {
                 return;
-            }
 
             Transform[] partsToDropArray = model.PartsToDrop;
             if (!partsToDropArray.IsNullOrEmpty())
@@ -630,9 +588,7 @@ namespace CDOverhaul.Gameplay
         {
             Renderer renderer = model.GetComponent<Renderer>();
             if (renderer == null || renderer.material == null)
-            {
                 return;
-            }
 
             HSBColor hsbcolor2 = new HSBColor(forceColor.Value)
             {
@@ -643,16 +599,11 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinBehaviour[] behaviours = model.GetComponents<WeaponSkinBehaviour>();
             if (behaviours.IsNullOrEmpty())
-            {
                 return;
-            }
+
             foreach (WeaponSkinBehaviour behaviour in behaviours)
-            {
                 if (behaviour != null)
-                {
                     behaviour.OnSetColor(hsbcolor2.ToColor());
-                }
-            }
         }
 
         private void Update()
@@ -666,79 +617,26 @@ namespace CDOverhaul.Gameplay
                     {
                         WeaponSkinSpawnInfo info = SpawnedSkins[i];
                         if (info != null && info.IsReparented && info.Model != null)
-                        {
                             info.Model.SetActive(Owner.GetEquippedWeaponType() == info.Type);
-                        }
+
                         i++;
                     } while (i < SpawnedSkins.Count);
                 }
             }
-
-#if DEBUG
-            if (!IsOwnerMainPlayer())
-            {
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftAlt))
-            {
-                Transform model = GetTransform();
-                if (model == null)
-                {
-                    return;
-                }
-                CopyVector(model.localPosition);
-            }
-            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.LeftAlt))
-            {
-                Transform model = GetTransform();
-                if (model == null)
-                {
-                    return;
-                }
-                CopyVector(model.localEulerAngles);
-            }
-            if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftAlt))
-            {
-                Transform model = GetTransform();
-                if (model == null)
-                {
-                    return;
-                }
-                CopyVector(model.localScale);
-            }
-#endif
-        }
-
-        public void CopyVector(Vector3 vector)
-        {
-            string toCopy = vector[0].ToString().Replace(',', '.') + "f, " + vector[1].ToString().Replace(',', '.') + "f, " + vector[2].ToString().Replace(',', '.') + "f";
-            TextEditor editor = new TextEditor
-            {
-                text = toCopy
-            };
-            editor.SelectAll();
-            editor.Copy();
         }
 
         public Transform GetTransform()
         {
             if (Owner == null || SpawnedSkins.IsNullOrEmpty())
-            {
                 return null;
-            }
 
             WeaponType weaponType = Owner.GetEquippedWeaponType();
             if (!WeaponSkinsController.IsWeaponSupported(weaponType))
-            {
                 return null;
-            }
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
             if (controller == null || controller.Interface == null)
-            {
                 return null;
-            }
 
             string w = null;
             switch (weaponType)
@@ -757,9 +655,7 @@ namespace CDOverhaul.Gameplay
                     break;
             }
             if (string.IsNullOrEmpty(w))
-            {
                 return null;
-            }
 
             WeaponSkinSpawnInfo model = GetWeaponSkinSpawnInfo(weaponType);
             return model == null ? null : model.Model.transform;
