@@ -437,7 +437,7 @@ namespace CDOverhaul.HUD
 
         public void HideMenu(bool dontUnpause = false)
         {
-            if (!dontUnpause) 
+            if (!dontUnpause)
                 TimeManager.Instance.OnGameUnPaused();
 
             m_TimeMenuChangedItsState = Time.unscaledTime;

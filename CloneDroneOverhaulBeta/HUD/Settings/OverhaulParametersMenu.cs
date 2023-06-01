@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
@@ -38,7 +37,7 @@ namespace CDOverhaul.HUD
         private CanvasGroup m_MainCanvasGroup;
         private bool m_IsPopulatingSettings;
 
-        private Dictionary<string, Transform> m_ButtonContainers = new Dictionary<string, Transform>();
+        private readonly Dictionary<string, Transform> m_ButtonContainers = new Dictionary<string, Transform>();
 
         public static bool ShouldSelectShortcuts;
 

@@ -84,16 +84,16 @@ namespace CDOverhaul
 
         protected override void CreateSettingsWindow(ModOptionsWindowBuilder builder)
         {
-            var page1 = builder.AddPage("Dev Cheats");
+            ModOptionsWindowBuilder.Page page1 = builder.AddPage("Dev Cheats");
             page1.AddButton("Reset other players data", delegate
             {
                 if (MultiplayerPlayerInfoManager.Instance == null)
                     return;
 
                 List<MultiplayerPlayerInfoState> list = MultiplayerPlayerInfoManager.Instance.GetAllPlayerInfoStates();
-                foreach(MultiplayerPlayerInfoState statee in list)
+                foreach (MultiplayerPlayerInfoState statee in list)
                 {
-                    if(!statee.IsDetached() && statee.state.PlayFabID != ExclusivityController.GetLocalPlayfabID())
+                    if (!statee.IsDetached() && statee.state.PlayFabID != ExclusivityController.GetLocalPlayfabID())
                     {
                         GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
                         newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + statee.state.PlayFabID + "@" + OverhaulModdedPlayerInfo.SerializeData(true, statee.state.PlayFabID);

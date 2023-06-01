@@ -140,10 +140,7 @@ namespace CDOverhaul.Graphics
                 return;
 
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if (player != null && player.GetPrivateField<bool>("_isMovingForward"))
-                AdditionalOffsetMultiplier = 2.1f;
-            else
-                AdditionalOffsetMultiplier = 0.6f;
+            AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? 2.1f : 0.6f;
 
             AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
             AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;

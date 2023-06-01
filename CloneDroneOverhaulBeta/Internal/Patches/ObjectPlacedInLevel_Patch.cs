@@ -8,7 +8,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(ObjectPlacedInLevel))]
     internal static class ObjectPlacedInLevel_Patch
     {
-        private static Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>> m_Objects = new Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>>();
+        private static readonly Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>> m_Objects = new Dictionary<ObjectPlacedInLevel, List<ThreeDOutline>>();
 
         [HarmonyPrefix]
         [HarmonyPatch("replaceMaterialWithSelected")]

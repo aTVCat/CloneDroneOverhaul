@@ -124,7 +124,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     RectTransform viewPort = TransformUtils.FindChildRecursive(rectT, "Viewport") as RectTransform;
                     Mask mask = viewPort.GetComponent<Mask>();
                     Destroy(mask);
-                    viewPort.gameObject.AddComponent<RectMask2D>(); // reduces lag
+                    _ = viewPort.gameObject.AddComponent<RectMask2D>(); // reduces lag
                 }
 
                 Transform checkMark = TransformUtils.FindChildRecursive(dropdownTransform, "Item Checkmark");

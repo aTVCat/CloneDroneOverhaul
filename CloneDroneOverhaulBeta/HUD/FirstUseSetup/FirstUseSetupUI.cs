@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
@@ -22,7 +18,7 @@ namespace CDOverhaul.HUD
         {
             m_DoneButton = MyModdedObject.GetObject<Button>(2);
             m_DoneButton.onClick.AddListener(EndSetup);
-            
+
             m_UseVanillaGraphicsSettings = MyModdedObject.GetObject<Button>(0);
             m_UseVanillaGraphicsSettings.onClick.AddListener(OnUseVanillaGraphicsSettingsClicked);
             m_UseVanillaGraphicsSettingsOutline = MyModdedObject.GetObject<Outline>(0);

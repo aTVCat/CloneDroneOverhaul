@@ -18,7 +18,7 @@
 
         public class PlayersInfo
         {
-            private string OwnerOfTheEnvironment;
+            private readonly string OwnerOfTheEnvironment;
         }
     }
 }

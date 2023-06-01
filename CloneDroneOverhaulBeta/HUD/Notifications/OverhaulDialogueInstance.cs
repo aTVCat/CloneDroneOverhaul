@@ -14,7 +14,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
-            OverhaulDialogues.ActiveTitles.Remove(m_Title);
+            _ = OverhaulDialogues.ActiveTitles.Remove(m_Title);
             m_CloseButton = null;
             m_ProgressSlider = null;
         }

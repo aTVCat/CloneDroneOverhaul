@@ -1,4 +1,5 @@
-﻿using ModLibrary;
+﻿using CDOverhaul.Gameplay.Multiplayer;
+using ModLibrary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace CDOverhaul
         public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
         public static bool IsNullOrEmpty(this Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
+
+        public static bool IsAnOverhaulModUser(this FirstPersonMover firstPersonMover)
+        {
+            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
+            return info != null && info.HasReceivedData;
+        }
 
         /// <summary>
         /// Get a component of object with given index
@@ -69,8 +76,7 @@ namespace CDOverhaul
             FirstPersonMover mover = model.GetOwner();
             if (mover == null)
                 return false;
-
-            bool m = GameModeManager.IsMultiplayer();
+            _ = GameModeManager.IsMultiplayer();
             shouldNotPlaySound = mover.GetPrivateField<Vector3>("_velocity").y < -1.5f;
 
             EnemyType type = mover.CharacterType;

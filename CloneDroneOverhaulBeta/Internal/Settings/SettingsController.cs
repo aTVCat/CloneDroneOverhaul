@@ -220,7 +220,7 @@ namespace CDOverhaul
                     {
                         filterMode = FilterMode.Point
                     };
-                    texture1.LoadImage(File.ReadAllBytes(path), false);
+                    _ = texture1.LoadImage(File.ReadAllBytes(path), false);
                     texture1.Apply();
 
                     m_UnknownCategoryIcon = texture1.FastSpriteCreate();
@@ -240,7 +240,7 @@ namespace CDOverhaul
                 if (!content.IsNullOrEmpty())
                 {
                     texture.filterMode = FilterMode.Point;
-                    texture.LoadImage(content, false);
+                    _ = texture.LoadImage(content, false);
                     texture.Apply();
 
                     Sprite sprite = texture.FastSpriteCreate();

@@ -27,10 +27,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("RollbackAsIfKicked")]
         private static bool RollbackAsIfKicked_Prefix(FirstPersonMover __instance)
         {
-            if (!OverhaulMod.IsModInitialized)
-                return true;
-
-            return __instance.HasCharacterModel();
+            return !OverhaulMod.IsModInitialized || __instance.HasCharacterModel();
         }
 
         [HarmonyPostfix]

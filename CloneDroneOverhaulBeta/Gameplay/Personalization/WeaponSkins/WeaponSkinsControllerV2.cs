@@ -99,8 +99,8 @@ namespace CDOverhaul.Gameplay
         [OverhaulSettingAttribute("Player.WeaponSkins.NoticedSkinsButton", false, !OverhaulVersion.IsDebugBuild)]
         public static bool HasNoticedSkinsButton;
 
-        public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover) => 
-            !GameModeManager.IsInLevelEditor() && 
+        public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover) =>
+            !GameModeManager.IsInLevelEditor() &&
             firstPersonMover != null &&
             !firstPersonMover.IsMindSpaceCharacter &&
             firstPersonMover.CharacterCategory != EnemyCategory.FleetAnalysisBots &&
@@ -346,7 +346,7 @@ namespace CDOverhaul.Gameplay
             if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
-;
+                ;
                 PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(OverhaulAssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
                 ReImportCustomSkins(true);
             }
@@ -407,7 +407,7 @@ namespace CDOverhaul.Gameplay
 
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)m_WeaponSkins.Count);
-                if(skinsChecked % 20 == 0) yield return null;
+                if (skinsChecked % 20 == 0) yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenText("Unloading skin files...");
@@ -417,7 +417,7 @@ namespace CDOverhaul.Gameplay
             skinsChecked = 0;
             foreach (string assetBundle in allAssetBundles)
             {
-                OverhaulAssetsController.TryUnloadAssetBundle(assetBundle, true);
+                _ = OverhaulAssetsController.TryUnloadAssetBundle(assetBundle, true);
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)allAssetBundles.Count);
                 yield return null;

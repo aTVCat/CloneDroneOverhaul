@@ -76,7 +76,7 @@ namespace CDOverhaul.Patches
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -158f, 0);
 
-            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
 
             Transform joinPublicMatchButtonTransform = target.BattleRoyaleMenu.JoinRandomButton.transform;

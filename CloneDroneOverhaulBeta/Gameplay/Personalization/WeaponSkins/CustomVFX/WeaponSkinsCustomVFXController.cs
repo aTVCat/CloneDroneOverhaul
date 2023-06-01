@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay
 {
     public static class WeaponSkinsCustomVFXController
     {
-        private static Dictionary<WeaponSkinItemDefinitionV2, string> m_AllVFX = new Dictionary<WeaponSkinItemDefinitionV2, string>();
+        private static readonly Dictionary<WeaponSkinItemDefinitionV2, string> m_AllVFX = new Dictionary<WeaponSkinItemDefinitionV2, string>();
 
         public static void PrepareCustomVFXForSkin(WeaponSkinItemDefinitionV2 itemDefinition)
         {
@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay
                 return;
 
             Debug.Log((itemDefinition as IWeaponSkinItemDefinition).GetItemName() + " custom VFX!!");
-            PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(itemDefinition.CollideWithEnvironmentVFXAssetName, position, eulerAngles);
+            _ = PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(itemDefinition.CollideWithEnvironmentVFXAssetName, position, eulerAngles);
         }
 
         public static void RemoveAllVFX() => m_AllVFX.Clear();

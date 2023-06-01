@@ -41,7 +41,7 @@ namespace CDOverhaul.Gameplay
             private set;
         }
 
-        private static Dictionary<string, List<WeaponSkinsImportedItemDefinition>> m_SkinsWaitingABToDownload = new Dictionary<string, List<WeaponSkinsImportedItemDefinition>>();
+        private static readonly Dictionary<string, List<WeaponSkinsImportedItemDefinition>> m_SkinsWaitingABToDownload = new Dictionary<string, List<WeaponSkinsImportedItemDefinition>>();
 
         public static float GetUpdateFilesDownloadProgress()
         {

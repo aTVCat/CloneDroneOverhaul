@@ -8,14 +8,14 @@ namespace CDOverhaul
 {
     public static class OverhaulFeatureAvailabilitySystem
     {
-        private static ReadOnlyCollection<OverhaulFeatureDefinition> m_Features = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
+        private static readonly ReadOnlyCollection<OverhaulFeatureDefinition> m_Features = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
         {
             CreateNew(OverhaulFeatureID.PermissionToManageSkins)
         });
 
         private static OverhaulFeatureDefinition CreateNew(OverhaulFeatureID id)
         {
-            OverhaulFeatureDefinition def = null;
+            OverhaulFeatureDefinition def;
             switch (id)
             {
                 case OverhaulFeatureID.PermissionToManageSkins:
@@ -80,26 +80,26 @@ namespace CDOverhaul
             /// <summary>
             /// Level editor selection outline
             /// </summary>
-            private static bool IS_SELECTION_OUTLINE_ENABLED = true;
+            private static readonly bool IS_SELECTION_OUTLINE_ENABLED = true;
             public static bool IsSelectionOutLineEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_SELECTION_OUTLINE_ENABLED;
 
             /// <summary>
             /// VFX that plays when switching skins
             /// </summary>
-            private static bool IS_SKIN_SWITCHING_VFX_ENABLED = false;
+            private static readonly bool IS_SKIN_SWITCHING_VFX_ENABLED = false;
             public static bool IsSkinSwitchingVFXEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_SKIN_SWITCHING_VFX_ENABLED;
 
             /// <summary>
             /// Allow creating private matches with additional things allowed
             /// </summary>
-            private static bool IS_CUSTOM_MULTIPLAYER_TEST_ENABLED = false;
+            private static readonly bool IS_CUSTOM_MULTIPLAYER_TEST_ENABLED = false;
             public static bool IsCustomMultiplayerTestEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_CUSTOM_MULTIPLAYER_TEST_ENABLED;
 
             /// <summary>
             /// Better way of saving/loading levels
             /// </summary>
 #if AllowLevelDataPatches
-            private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = true;
+            private static readonly bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = true;
 #else
             private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
 #endif
@@ -108,32 +108,28 @@ namespace CDOverhaul
             /// <summary>
             /// Make tickboxes use player favourite color
             /// </summary>
-            private static bool APPLY_THEME_COLOR_ON_SETTINGS = false;
+            private static readonly bool APPLY_THEME_COLOR_ON_SETTINGS = false;
             public static bool ApplyThemeColorOnSettings => !OverhaulVersion.IsUpdate2Hotfix && APPLY_THEME_COLOR_ON_SETTINGS;
 
             /// <summary>
             /// First person mode
             /// </summary>
-            private static bool IS_VIEW_MODES_SETTING_ENABLED = true;
+            private static readonly bool IS_VIEW_MODES_SETTING_ENABLED = true;
             public static bool IsViewModesSettingsEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_VIEW_MODES_SETTING_ENABLED;
 
             /// <summary>
             /// Startup screen
             /// </summary>
-            private static bool IS_BOOT_SCREEN_ENABLED = true;
+            private static readonly bool IS_BOOT_SCREEN_ENABLED = true;
             public static bool IsBootScreenEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_BOOT_SCREEN_ENABLED;
 
             /// <summary>
             /// Startup screen
             /// </summary>
-            private static bool IS_DISCORD_PANEL_ENABLED = true;
+            private static readonly bool IS_DISCORD_PANEL_ENABLED = true;
             public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_DISCORD_PANEL_ENABLED;
 
-            /// <summary>
-            /// Startup screen
-            /// </summary>
-            private static bool ALLOW_DEVELOPER_USE_ALL_SKINS = false;
-            public static bool AllowDeveloperUseAllSkins => ALLOW_DEVELOPER_USE_ALL_SKINS;
+            public static bool AllowDeveloperUseAllSkins { get; } = false;
         }
     }
 }

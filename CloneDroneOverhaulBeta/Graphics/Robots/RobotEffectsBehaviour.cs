@@ -32,7 +32,7 @@ namespace CDOverhaul.Graphics.Robots
             FindHeadTransform();
 
             if (m_HeadTransform != null)
-                PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(RobotDeathSparksVFXID, m_HeadTransform.position, Vector3.zero);
+                _ = PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(RobotDeathSparksVFXID, m_HeadTransform.position, Vector3.zero);
         }
 
         public void FindHeadTransform()

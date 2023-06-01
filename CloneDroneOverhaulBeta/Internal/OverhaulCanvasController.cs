@@ -120,7 +120,7 @@ namespace CDOverhaul.HUD
         /// <param name="transform"></param>
         public static void ParentTransformToGameUIRoot(in Transform transform)
         {
-            if(GameUIRoot.Instance == null)
+            if (GameUIRoot.Instance == null)
                 return;
 
             transform.SetParent(GameUIRoot.Instance.transform);

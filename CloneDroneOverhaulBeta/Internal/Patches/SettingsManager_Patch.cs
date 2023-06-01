@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.Graphics;
 using HarmonyLib;
-using UnityEngine;
 
 namespace CDOverhaul.Patches
 {

@@ -58,18 +58,16 @@ namespace CDOverhaul.Patches
         {
             if (LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
                 return;
-
-            bool shouldRefresh = false;
             if (!piksielyPrst)
             {
-                shouldRefresh = LocalizationManager.Instance.SupportedLanguages[0].UIFont != m_OgUIFont;
+                _ = LocalizationManager.Instance.SupportedLanguages[0].UIFont != m_OgUIFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFont = m_OgUIFont;
                 LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = m_OgSubtitlesFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = m_OgFontScale;
             }
             else
             {
-                shouldRefresh = LocalizationManager.Instance.SupportedLanguages[0].UIFont != LocalizationManager.Instance.SupportedLanguages[7].UIFont;
+                _ = LocalizationManager.Instance.SupportedLanguages[0].UIFont != LocalizationManager.Instance.SupportedLanguages[7].UIFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFont = LocalizationManager.Instance.SupportedLanguages[7].UIFont;
                 LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;

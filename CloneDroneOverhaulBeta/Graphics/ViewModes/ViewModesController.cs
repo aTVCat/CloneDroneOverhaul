@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Graphics
 {
@@ -33,8 +28,7 @@ namespace CDOverhaul.Graphics
         {
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsViewModesSettingsEnabled || !hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
                 return;
-
-            ViewModesExpansion viewModesExpansion = firstPersonMover.gameObject.AddComponent<ViewModesExpansion>();
+            _ = firstPersonMover.gameObject.AddComponent<ViewModesExpansion>();
         }
     }
 }

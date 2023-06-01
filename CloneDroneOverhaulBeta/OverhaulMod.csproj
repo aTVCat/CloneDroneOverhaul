@@ -465,6 +465,11 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
+    <Compile Include="HUD\Tooltips\OverhaulTooltip.cs" />
+    <Compile Include="HUD\Tooltips\OverhaulTooltipsController.cs" />
+    <Compile Include="HUD\Tooltips\OverhaulTooltipsUI.cs" />
+    <Compile Include="HUD\Tooltips\Subclasses\OverhaulCurrentWeaponTooltip.cs" />
+    <Compile Include="HUD\Tooltips\Subclasses\OverhaulTooltipWithPlayerData.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />

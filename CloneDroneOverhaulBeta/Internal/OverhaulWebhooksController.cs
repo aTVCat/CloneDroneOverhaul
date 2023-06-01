@@ -58,7 +58,7 @@ namespace CDOverhaul
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    await webClient.UploadStringTaskAsync(CrashReportsWebhookUri, "POST", JsonConvert.SerializeObject(webhookObject));
+                    _ = await webClient.UploadStringTaskAsync(CrashReportsWebhookUri, "POST", JsonConvert.SerializeObject(webhookObject));
                 }
             }
             catch { }

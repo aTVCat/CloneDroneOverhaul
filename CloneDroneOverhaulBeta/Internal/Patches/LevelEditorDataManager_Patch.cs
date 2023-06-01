@@ -1,13 +1,4 @@
 ﻿using HarmonyLib;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ModLibrary;
-using System.IO;
-using System.Net.Http;
-using System.Net;
 
 namespace CDOverhaul.Patches
 {

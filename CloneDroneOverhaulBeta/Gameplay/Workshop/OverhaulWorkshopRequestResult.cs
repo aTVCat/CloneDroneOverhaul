@@ -1,5 +1,4 @@
 ﻿using Steamworks;
-using System;
 
 namespace CDOverhaul.Workshop
 {

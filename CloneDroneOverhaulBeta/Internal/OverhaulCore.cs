@@ -1,5 +1,4 @@
-﻿using BestHTTP.Extensions;
-using Bolt;
+﻿using Bolt;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
@@ -9,7 +8,6 @@ using CDOverhaul.Patches;
 using System;
 using System.Collections;
 using System.IO;
-using System.Security;
 using System.Text;
 using UnityEngine;
 

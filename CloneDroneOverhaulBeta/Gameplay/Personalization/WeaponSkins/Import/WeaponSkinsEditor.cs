@@ -21,7 +21,7 @@ namespace CDOverhaul.Gameplay
                 m_SelectedItems.Add(itemDefinition);
 
             else if (!newState && isSelected)
-                m_SelectedItems.Remove(itemDefinition);
+                _ = m_SelectedItems.Remove(itemDefinition);
         }
 
         public static bool ItemIsSelected(IWeaponSkinItemDefinition itemDefinition) => itemDefinition != null && m_SelectedItems.Contains(itemDefinition);

@@ -60,9 +60,9 @@ namespace CDOverhaul.Gameplay
             byte result = 0;
             if (!fire && multiplayer && !UseSingleplayerVariantInMultiplayer)
                 result = 1;
-            else if (fire && !multiplayer) 
+            else if (fire && !multiplayer)
                 result = 2;
-            else if (fire && multiplayer) 
+            else if (fire && multiplayer)
                 result = UseSingleplayerVariantInMultiplayer ? (byte)2 : (byte)3;
             return result;
         }

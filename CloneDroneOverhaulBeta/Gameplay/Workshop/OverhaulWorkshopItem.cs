@@ -1,7 +1,6 @@
 ﻿using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace CDOverhaul.Workshop
@@ -22,7 +21,7 @@ namespace CDOverhaul.Workshop
             TimeCreated = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(details.m_rtimeCreated).ToLocalTime();
             TimeUpdated = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(details.m_rtimeUpdated).ToLocalTime();
 
-            OverhaulSteamBrowser.RequestInfoAboutUser(CreatorID);
+            _ = OverhaulSteamBrowser.RequestInfoAboutUser(CreatorID);
 
             ItemDetails = details;
             ItemID = details.m_nPublishedFileId;
@@ -76,13 +75,13 @@ namespace CDOverhaul.Workshop
 
         public void RefreshInstallInfo()
         {
-            SteamUGC.GetItemInstallInfo(ItemDetails.m_nPublishedFileId, out ulong num, out string folder, 4096, out uint num2);
+            _ = SteamUGC.GetItemInstallInfo(ItemDetails.m_nPublishedFileId, out _, out string folder, 4096, out _);
             FolderPath = folder;
         }
 
         public void RefreshCreatorInfo()
         {
-            SteamFriends.RequestUserInformation(CreatorID, false);
+            _ = SteamFriends.RequestUserInformation(CreatorID, false);
             if (DelegateScheduler.Instance != null) DelegateScheduler.Instance.Schedule(delegate
             {
                 if (!IsDisposed)

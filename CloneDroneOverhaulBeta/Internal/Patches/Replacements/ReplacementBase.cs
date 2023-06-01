@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
     {
         internal static readonly List<ReplacementBase> Replacements = new List<ReplacementBase>();
 
-        private bool _hasAddedListeners;
+        private readonly bool _hasAddedListeners;
 
         /// <summary>
         /// Check if replacement is working

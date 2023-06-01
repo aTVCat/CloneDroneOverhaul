@@ -1,5 +1,4 @@
-﻿using CDOverhaul.HUD;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -63,7 +62,7 @@ namespace CDOverhaul
 
         #region Static
 
-        private static BindingFlags s_BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+        private static readonly BindingFlags s_BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
         private static GameObject s_ControllersGameObject;
         private static readonly List<OverhaulController> s_ControllersList = new List<OverhaulController>();
 

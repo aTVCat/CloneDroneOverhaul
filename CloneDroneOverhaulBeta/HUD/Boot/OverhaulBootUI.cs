@@ -1,10 +1,6 @@
 ﻿using CDOverhaul.HUD;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul
 {
@@ -42,7 +38,7 @@ namespace CDOverhaul
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             GameUIRoot.Instance.TitleScreenUI.Hide();
 
-            StartCoroutine(waitThenPlayAnimation());
+            _ = StartCoroutine(waitThenPlayAnimation());
         }
 
         private void Update()
@@ -65,7 +61,7 @@ namespace CDOverhaul
 
         private void destroyUI()
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             Instance = null;
             AudioListener.volume = SettingsManager.Instance.GetSoundVolume();
             Time.timeScale = 1f;
@@ -73,7 +69,7 @@ namespace CDOverhaul
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play(string.Empty);
-            if(OverhaulVersionLabel.Instance != null)
+            if (OverhaulVersionLabel.Instance != null)
             {
                 OverhaulVersionLabel.Instance.RefreshVersionLabel();
                 OverhaulVersionLabel.Instance.ShowDiscordPanel();

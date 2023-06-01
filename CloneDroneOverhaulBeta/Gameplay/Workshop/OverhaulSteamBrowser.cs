@@ -31,10 +31,10 @@ namespace CDOverhaul.Workshop
                 return;
             }
 
-            if (cache) SteamUGC.SetAllowCachedResponse(request, 6);
-            if (returnLongDescription) SteamUGC.SetReturnLongDescription(request, true);
-            SteamUGC.SetReturnAdditionalPreviews(request, true);
-            SteamUGC.AddRequiredTag(request, tag);
+            if (cache) _ = SteamUGC.SetAllowCachedResponse(request, 6);
+            if (returnLongDescription) _ = SteamUGC.SetReturnLongDescription(request, true);
+            _ = SteamUGC.SetReturnAdditionalPreviews(request, true);
+            _ = SteamUGC.AddRequiredTag(request, tag);
 
             SendUGCRequest(request, requestResult, completedCallback, progressInfo);
         }
@@ -74,7 +74,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
 
-                requestResult.PageCount = (int)(queryResult.m_unTotalMatchingResults / 50U + 1U);
+                requestResult.PageCount = (int)((queryResult.m_unTotalMatchingResults / 50U) + 1U);
 
                 OverhaulRequestProgressInfo.SetProgress(progressInfo, 0.7f);
                 OverhaulWorkshopItem[] items = new OverhaulWorkshopItem[queryResult.m_unNumResultsReturned];
@@ -83,7 +83,7 @@ namespace CDOverhaul.Workshop
                 {
                     if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, (uint)num, out SteamUGCDetails_t steamUGCDetails_t) && steamUGCDetails_t.m_eResult == EResult.k_EResultOK && !steamUGCDetails_t.m_bBanned)
                     {
-                        SteamUGC.GetQueryUGCPreviewURL(queryResult.m_handle, (uint)num, out string url, 4096U);
+                        _ = SteamUGC.GetQueryUGCPreviewURL(queryResult.m_handle, (uint)num, out string url, 4096U);
                         items[num] = new OverhaulWorkshopItem(steamUGCDetails_t, url);
 
                         int previewCount = (int)SteamUGC.GetQueryUGCNumAdditionalPreviews(queryResult.m_handle, (uint)num);
@@ -145,8 +145,7 @@ namespace CDOverhaul.Workshop
         {
             if (!IsDownloadingItem(id))
                 return IsItemInstalled(id) ? 1f : 0f;
-
-            GetItemDownloadInfo(id, out ulong done, out ulong total, out float progress);
+            _ = GetItemDownloadInfo(id, out _, out _, out float progress);
             return progress;
         }
 
@@ -184,7 +183,7 @@ namespace CDOverhaul.Workshop
 
         public static bool GetItemDownloadInfo(PublishedFileId_t id, out ulong downloaded, out ulong total, out float progress)
         {
-            if (GetItemInstallInfo(id, out downloaded, out string f, out uint ut))
+            if (GetItemInstallInfo(id, out downloaded, out _, out _))
             {
                 total = downloaded;
                 progress = 1f;
@@ -212,7 +211,7 @@ namespace CDOverhaul.Workshop
             CallResult<RemoteStorageSubscribePublishedFileResult_t> result = CallResult<RemoteStorageSubscribePublishedFileResult_t>.Create(delegate (RemoteStorageSubscribePublishedFileResult_t t, bool bIOFailure)
             {
                 resultCallback?.Invoke(t.m_nPublishedFileId, t.m_eResult);
-                m_DownloadingItems.Remove(id);
+                _ = m_DownloadingItems.Remove(id);
                 if (bIOFailure)
                 {
                     Debug.LogWarning("[OverhaulMod] APICallResult (RemoteStorageSubscribePublishedFileResult_t) had IO error!");

@@ -32,10 +32,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return defaultColor;
 
             FirstPersonMover m = CharacterTracker.Instance.GetPlayerRobot();
-            if(!m || !m.HasCharacterModel())
-                return defaultColor;
-
-            return m.GetCharacterModel().GetFavouriteColor();
+            return !m || !m.HasCharacterModel() ? defaultColor : m.GetCharacterModel().GetFavouriteColor();
         }
 
         public static Color GetUIThemeColor(string defaultColorHEX) => GetUIThemeColor(defaultColorHEX.ConvertHexToColor());

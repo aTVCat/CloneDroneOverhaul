@@ -1,6 +1,5 @@
 ﻿using OverhaulAPI;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CDOverhaul.Gameplay.Outfits
 {

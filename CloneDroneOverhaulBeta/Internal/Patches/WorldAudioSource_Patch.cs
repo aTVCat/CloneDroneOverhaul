@@ -1,7 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Multiplayer;
-using HarmonyLib;
-using System.Collections;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -24,21 +21,16 @@ namespace CDOverhaul.Patches
                 return;
 
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();
-            if(filter == null)
+            if (filter == null)
             {
                 filter = __instance.gameObject.AddComponent<AudioReverbFilter>();
             }
 
             filter.diffusion = Diffusion;
             filter.density = Density;
-            if (EnableReverbFilter && Physics.Raycast(__instance.transform.position, Vector3.up, 50f, PhysicsManager.GetEnvironmentLayerMask()))
-            {
-                filter.decayTime = DecayTime;
-            }
-            else
-            {
-                filter.decayTime = 0f;
-            }
+            filter.decayTime = EnableReverbFilter && Physics.Raycast(__instance.transform.position, Vector3.up, 50f, PhysicsManager.GetEnvironmentLayerMask())
+                ? DecayTime
+                : 0f;
         }
     }
 }

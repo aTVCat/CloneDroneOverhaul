@@ -34,7 +34,7 @@ namespace CDOverhaul
                 if (!content.IsNullOrEmpty())
                 {
                     texture.filterMode = FilterMode.Bilinear;
-                    texture.LoadImage(content, false);
+                    _ = texture.LoadImage(content, false);
                     texture.Apply();
 
                     return texture.FastSpriteCreate();

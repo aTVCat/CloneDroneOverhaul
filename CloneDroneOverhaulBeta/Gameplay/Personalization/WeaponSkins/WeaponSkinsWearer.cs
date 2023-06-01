@@ -371,7 +371,7 @@ namespace CDOverhaul.Gameplay
                 if (model == null)
                     return;
 
-                PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
+                _ = PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
             }
         }
 
@@ -490,8 +490,7 @@ namespace CDOverhaul.Gameplay
                 bool shouldApplyFavouriteColor = (fire && !itemDefinition.DontUseCustomColorsWhenFire) || (!fire && !itemDefinition.DontUseCustomColorsWhenNormal);
                 if (shouldApplyFavouriteColor)
                 {
-                    Color? forcedColor = null;
-                    forcedColor = Owner.GetCharacterModel().GetFavouriteColor();
+                    Color? forcedColor = Owner.GetCharacterModel().GetFavouriteColor();
                     if (fire && (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor != -1)
                     {
                         int indexOfFireColor = (item as WeaponSkinItemDefinitionV2).IndexOfForcedFireVanillaColor;

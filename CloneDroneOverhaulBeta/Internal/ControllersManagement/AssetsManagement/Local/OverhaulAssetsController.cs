@@ -48,7 +48,7 @@ namespace CDOverhaul
             if (HasLoadedAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder))
                 return false;
 
-            AssetBundle loadedAssetBundle = null;
+            AssetBundle loadedAssetBundle;
             try
             {
                 loadedAssetBundle = AssetBundle.LoadFromFile(OverhaulCore.ModDirectoryStatic + pathUnderModFolder);
@@ -76,7 +76,7 @@ namespace CDOverhaul
             if (HasLoadedAssetBundle(pathUnderModFolder))
                 return handler;
 
-            StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler));
             return handler;
         }
 
@@ -113,7 +113,7 @@ namespace CDOverhaul
             {
                 return false;
             }
-            m_LoadedAssetBundles.Remove(pathUnderModFolder);
+            _ = m_LoadedAssetBundles.Remove(pathUnderModFolder);
             return true;
         }
 
@@ -224,7 +224,7 @@ namespace CDOverhaul
                 if (string.Equals(assetName1, assetName, StringComparison.OrdinalIgnoreCase))
                 {
                     AssetLoadHandler handler = new AssetLoadHandler(doneCallback, bundle);
-                    StaticCoroutineRunner.StartStaticCoroutine(getAssetAsyncCoroutine(bundle, assetBundle, handler));
+                    _ = StaticCoroutineRunner.StartStaticCoroutine(getAssetAsyncCoroutine(bundle, assetBundle, handler));
                     return handler;
                 }
             }
@@ -310,7 +310,7 @@ namespace CDOverhaul
 
             public void OnDoneLoading()
             {
-                m_LoadingAssetBundles.Remove(AssetBundlePath);
+                _ = m_LoadingAssetBundles.Remove(AssetBundlePath);
                 m_LoadedAssetBundles.Add(AssetBundlePath, (Request as AssetBundleCreateRequest).assetBundle);
                 DoneAction(this);
                 Dispose();

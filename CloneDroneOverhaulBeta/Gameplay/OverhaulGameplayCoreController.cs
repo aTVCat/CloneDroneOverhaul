@@ -37,6 +37,7 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
             _ = OverhaulController.AddController<WeaponSkinsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
+            _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }
@@ -54,8 +55,8 @@ namespace CDOverhaul.Gameplay
             if (IsDisposedOrDestroyed() || !hasInitializedModel || firstPersonMover == null)
                 return;
 
-            if (!OverhaulVersion.IsUpdate2Hotfix) 
-                firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
+            if (!OverhaulVersion.IsUpdate2Hotfix)
+                _ = firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
 
             firstPersonMover.GetPlayerCamera()?.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
         }

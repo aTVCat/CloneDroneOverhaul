@@ -20,7 +20,7 @@ namespace CDOverhaul.HUD
 
         private OverhaulUI.PrefabAndContainer m_ArtContainer;
         private Text m_Changelog;
-        private List<Texture> m_LoadedArt = new List<Texture>();
+        private readonly List<Texture> m_LoadedArt = new List<Texture>();
 
         private Transform m_ClickOnImageLabel;
 
@@ -169,7 +169,7 @@ namespace CDOverhaul.HUD
                             OverhaulUIImageViewer.SetActive(true, i.texture);
                         }
                     });
-                    StaticCoroutineRunner.StartStaticCoroutine(loadPicture(m.GetComponent<RawImage>(), info.DirectoryPath + art));
+                    _ = StaticCoroutineRunner.StartStaticCoroutine(loadPicture(m.GetComponent<RawImage>(), info.DirectoryPath + art));
                 }
             }
 

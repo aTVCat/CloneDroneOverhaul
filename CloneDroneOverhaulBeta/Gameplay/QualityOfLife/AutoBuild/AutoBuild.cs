@@ -34,7 +34,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 if (m_HasSelectedUpgrades || GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
                     return;
 
-                StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
+                _ = StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
                 m_HasSelectedUpgrades = true;
             }
 
@@ -46,7 +46,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
                 if (ShouldSelectUpgrades)
                 {
-                    StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
+                    _ = StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
                     m_HasSelectedUpgrades = true;
                 }
             }
@@ -60,7 +60,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             UpgradeUI ui = GameUIRoot.Instance.UpgradeUI;
             if ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random)
             {
-                ui.StartCoroutine(ui.CallPrivateMethod<IEnumerator>("selectRandomUpgrade"));
+                _ = ui.StartCoroutine(ui.CallPrivateMethod<IEnumerator>("selectRandomUpgrade"));
                 yield break;
             }
 
