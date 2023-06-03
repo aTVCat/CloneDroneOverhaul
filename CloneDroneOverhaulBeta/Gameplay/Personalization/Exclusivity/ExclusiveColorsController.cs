@@ -6,10 +6,18 @@ namespace CDOverhaul
 {
     internal static class ExclusiveColorsController
     {
+        private static Color GetCyberkickColor()
+        {
+            Color col = "#630330".ConvertHexToColor();
+            Color resultColor = new Color(col.r, col.g, col.b, 0.87f);
+            return resultColor;
+        }
+
         private static readonly Dictionary<string, ExclusiveColorInfo> m_PlayerInfos = new Dictionary<string, ExclusiveColorInfo>()
         {
             { "883CC7F4CA3155A3", new ExclusiveColorInfo(new Color(0.76f, 0.85f, 1, 0.87f), 4) },
-             { "193564D7A14F9C33", new ExclusiveColorInfo(new Color(0.45f, 0.04f, 0.65f, 1f), 10) }
+             { "193564D7A14F9C33", new ExclusiveColorInfo(new Color(0.45f, 0.04f, 0.65f, 1f), 10) },
+              { "F08DA308234126FB", new ExclusiveColorInfo(GetCyberkickColor(), 10) }
         };
 
         private static readonly ReadOnlyDictionary<string, ExclusiveColorInfo> m_PlayerColorReadOnly = new ReadOnlyDictionary<string, ExclusiveColorInfo>(m_PlayerInfos);

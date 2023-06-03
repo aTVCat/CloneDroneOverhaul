@@ -441,7 +441,10 @@
     <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
+    <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
+    <Compile Include="HUD\Gamemodes\ChapterSelectionUI.cs" />
+    <Compile Include="HUD\Gamemodes\OverhaulGamemodesUI.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
@@ -487,6 +490,7 @@
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulDiscordController.cs" />
     <Compile Include="Internal\OverhaulWebhooksController.cs" />
+    <Compile Include="Internal\Patches\ArrowProjectile_Patch.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
@@ -576,6 +580,8 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="Internal\ControllersManagement\EventsManagement\OverhaulEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
+    <Compile Include="Test\UI\ButtonAnimation\OverhaulUIButtonScaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverhaulAPI\OverhaulAPI.csproj">

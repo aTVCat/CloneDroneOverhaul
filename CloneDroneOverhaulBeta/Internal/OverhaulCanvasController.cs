@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Localization;
+﻿using CDOverhaul.HUD.Gamemodes;
+using CDOverhaul.Localization;
 using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +64,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
             _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));
             _ = AddHUD<FirstUseSetupUI>(HUDModdedObject.GetObject<ModdedObject>(16));
+            _ = AddHUD<OverhaulGamemodesUI>(HUDModdedObject.GetObject<ModdedObject>(19));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

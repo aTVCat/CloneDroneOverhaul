@@ -1,6 +1,7 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,6 +80,9 @@ namespace CDOverhaul.HUD
 
         private Transform m_PersonalizationNotification;
 
+        private Transform m_PlayersInMatchPanel;
+        private PrefabAndContainer m_PlayersInMatch;
+
         public bool ScheduleHide;
 
         private OverhaulParametersMenu m_Parameters;
@@ -88,8 +92,12 @@ namespace CDOverhaul.HUD
             base.Initialize();
             m_Instance = this;
 
+            m_PlayersInMatchPanel = MyModdedObject.GetObject<Transform>(26);
+            m_PlayersInMatch = new PrefabAndContainer(MyModdedObject, 27, 28);
+
             m_PersonalizationButton = MyModdedObject.GetObject<Button>(0);
             m_PersonalizationButton.onClick.AddListener(OnPersonalizationButtonClicked);
+            m_PersonalizationButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
             m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
@@ -98,6 +106,7 @@ namespace CDOverhaul.HUD
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
+            m_ExitButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_ExitSelectPanel = MyModdedObject.GetObject<Transform>(5);
             m_ExitSelectToMainMenuButton = MyModdedObject.GetObject<Button>(6);
             m_ExitSelectToMainMenuButton.onClick.AddListener(OnMainMenuClicked);
@@ -106,11 +115,13 @@ namespace CDOverhaul.HUD
 
             m_AdvancementsButton = MyModdedObject.GetObject<Button>(8);
             m_AdvancementsButton.onClick.AddListener(OnAdvClicked);
+            m_AdvancementsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_AdvFillImage = MyModdedObject.GetObject<Image>(9);
             m_AdvCompletedText = MyModdedObject.GetObject<Text>(10);
 
             m_SettingsButton = MyModdedObject.GetObject<Button>(11);
             m_SettingsButton.onClick.AddListener(OnSettingsClicked);
+            m_SettingsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_SettingsSelectPanel = MyModdedObject.GetObject<Transform>(12);
             m_GameSettingsButton = MyModdedObject.GetObject<Button>(13);
             m_GameSettingsButton.onClick.AddListener(OnGameSettingsClicked);
@@ -130,16 +141,19 @@ namespace CDOverhaul.HUD
 
             m_BackToLVLEditorButton = MyModdedObject.GetObject<Button>(24);
             m_BackToLVLEditorButton.onClick.AddListener(GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked);
+            m_BackToLVLEditorButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_SkipLevelButton = MyModdedObject.GetObject<Button>(25);
             m_SkipLevelButton.onClick.AddListener(delegate
             {
                 GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
                 Hide();
             });
+            m_SkipLevelButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
 
             m_PersonalizationNotification = MyModdedObject.GetObject<Transform>(23);
 
             MyModdedObject.GetObject<Button>(16).onClick.AddListener(OnContinueClicked);
+            MyModdedObject.GetObject<Transform>(16).gameObject.AddComponent<OverhaulUIButtonScaler>();
             MyModdedObject.GetObject<Button>(15).onClick.AddListener(delegate
             {
                 Transform t = TransformUtils.FindChildRecursive(GameUIRoot.Instance.EscMenu.transform, "SettingsButton(Clone)");
@@ -150,6 +164,7 @@ namespace CDOverhaul.HUD
                         b.onClick.Invoke();
                 }
             });
+            MyModdedObject.GetObject<Transform>(15).gameObject.AddComponent<OverhaulUIButtonScaler>();
 
             Hide();
         }
@@ -350,7 +365,7 @@ namespace CDOverhaul.HUD
 
         public void RefreshStartMatchButton()
         {
-            m_StartMatchButton.gameObject.SetActive(false);
+            m_StartMatchButton.interactable = false;
             bool shouldShow = OverhaulGamemodeManager.ShouldShowRoomCodePanel();
             if (!shouldShow)
             {
@@ -362,18 +377,18 @@ namespace CDOverhaul.HUD
                 if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.InWaitingArea))
                 {
                     m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
-                    m_StartMatchButton.gameObject.SetActive(true);
+                    m_StartMatchButton.interactable = true;
                 }
                 else if (BattleRoyaleManager.Instance.IsProgress(BattleRoyaleMatchProgress.FightingStarted))
                 {
                     m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!", -1);
-                    m_StartMatchButton.gameObject.SetActive(true);
+                    m_StartMatchButton.interactable = true;
                 }
             }
             else if (ArenaCoopManager.Instance != null && !ArenaCoopManager.Instance.IsMatchStarted())
             {
                 m_StartMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!", -1);
-                m_StartMatchButton.gameObject.SetActive(true);
+                m_StartMatchButton.interactable = true;
             }
 
         }
@@ -406,6 +421,42 @@ namespace CDOverhaul.HUD
 
         #endregion
 
+        #region Players in match
+
+        public void RefreshPlayersInMatch()
+        {
+            m_PlayersInMatchPanel.gameObject.SetActive(false);
+            m_PlayersInMatch.ClearContainer();
+
+            MultiplayerPlayerInfoManager manager = MultiplayerPlayerInfoManager.Instance;
+            if (!GameModeManager.IsMultiplayer() || GameModeManager.IsMultiplayerDuel() || !manager)
+                return;
+
+            List<MultiplayerPlayerInfoState> allMultiplayerPlayerInfos = manager.GetAllPlayerInfoStates();
+            if (allMultiplayerPlayerInfos.IsNullOrEmpty())
+                return;
+
+            m_PlayersInMatchPanel.gameObject.SetActive(true);
+            int index = 0;
+            do
+            {
+                MultiplayerPlayerInfoState multiplayerPlayerInfo = allMultiplayerPlayerInfos[index];
+                if (!multiplayerPlayerInfo || multiplayerPlayerInfo.IsDetached())
+                {
+                    index++;
+                    continue;
+                }
+
+                ModdedObject entry = m_PlayersInMatch.CreateNew();
+                MultiplayerPlayerInfoStateDisplay display = entry.gameObject.AddComponent<MultiplayerPlayerInfoStateDisplay>();
+                display.Initialize(multiplayerPlayerInfo, entry);
+
+                index++;
+            } while (index < allMultiplayerPlayerInfos.Count);
+        }
+
+        #endregion
+
         public void OnContinueClicked()
         {
             if (!AllowToggleMenu)
@@ -426,12 +477,14 @@ namespace CDOverhaul.HUD
             RefreshRoomCodeField();
             RefreshRoomCodePanelActive();
             RefreshStartMatchButton();
+            RefreshPlayersInMatch();
 
             m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             m_BackToLVLEditorButton.gameObject.SetActive((WorkshopLevelManager.Instance != null && WorkshopLevelManager.Instance.IsPlaytestActive()) || GameModeManager.IsLevelPlaytest());
             m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
+            OverhaulCanvasController.SetCanvasPixelPerfect(false);
             ShowCursor = true;
         }
 
@@ -450,7 +503,11 @@ namespace CDOverhaul.HUD
             if (!m_IsAnimatingCamera && m_CameraAnimator != null)
                 _ = StaticCoroutineRunner.StartStaticCoroutine(animateCameraCoroutine(m_Camera, m_CameraAnimator, true));
 
-            if (!dontUnpause) ShowCursor = false;
+            if (!dontUnpause)
+            {
+                ShowCursor = false;
+                OverhaulCanvasController.SetCanvasPixelPerfect(true);
+            }
         }
 
         public void Hide()

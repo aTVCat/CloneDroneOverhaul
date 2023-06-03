@@ -12,6 +12,7 @@
         Sounds,
         Main,
         Combat_Update,
-        Preload
+        Preload,
+        Experiments,
     }
 }
