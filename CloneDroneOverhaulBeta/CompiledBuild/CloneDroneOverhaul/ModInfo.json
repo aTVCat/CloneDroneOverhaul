@@ -3,9 +3,9 @@
 	"UniqueID": "rAnDomPaTcHeS1",
 	"MainDLLFileName": "OverhaulMod.dll",
 	"Author": "A Human on TV",
-	"Version": 11,
+	"Version": 12,
 	"ImageFileName": "CloneDroneOverhaulImage.png",
-	"Description": "What if Clone drone had stuff that you may want?\nVersion 0.2.10.55 changelog:\n- The main addition is weapon skins! There are 70+ skins\nNote: Everyone with this mod can see your skins in multiplayer.\n- Reworked mod framework. The mod is being prepared for upcoming major updates\n- Removed all unused assets. Now the mod weights 7 megabytes, instead of 40...\n- Removed useless features like LoDs and dithering\n- Graphics optimization. The mod should work better on low-end PCs\n- Many redesigned menus have been temporary removed. They'll return in new updates",
+	"Description": "What if Clone drone had stuff that you may want?\nVersion 0.2.11.0 changelog:\n- The main addition is weapon skins! There are 100+ skins\nNote: Everyone with this mod can see your skins in multiplayer.\n- Reworked mod framework. The mod is being prepared for upcoming major updates\n- Removed all unused assets. Now the mod weights 10 megabytes, instead of 40...\n- Removed useless features like LoDs and dithering\n- Graphics optimization. The mod should work better on low-end PCs\n- Many redesigned menus have been temporary removed. They'll return in new updates",
 	"ModDependencies": [],
 	"Tags": [ "Level editor", "New abilites", "New features", "Graphics" ]
 }

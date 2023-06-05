@@ -27,7 +27,7 @@ namespace CDOverhaul.HUD
             m_UseOverhaulGraphicsSettingsOutline = MyModdedObject.GetObject<Outline>(1);
             base.gameObject.SetActive(false);
 
-            if (!HasSetTheModUp && GameModeManager.IsOnTitleScreen())
+            if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsFirstUseSetupUIEnabled && !HasSetTheModUp && GameModeManager.IsOnTitleScreen())
                 DelegateScheduler.Instance.Schedule(Show, 1f);
         }
 

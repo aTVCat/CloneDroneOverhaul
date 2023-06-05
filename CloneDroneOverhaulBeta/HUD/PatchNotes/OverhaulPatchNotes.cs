@@ -13,6 +13,7 @@ namespace CDOverhaul
             {
                 OverhaulSessionController.SetKey("HasAddedChangelogs", true);
 
+                AllChangelogs.Add(new PatchInfo(new Version(0, 2, 11, 0), "0.2.11.0", new string[] { "20230605123925_1.jpg", "20230605123950_1.jpg", "20230605124054_1.jpg", "20230605142801_1.jpg", "20230605150625_1.jpg", "20230605150644_1.jpg", "20230605150717_1.jpg", "20230605150741_1.jpg" }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 55), "0.2.10.54", new string[] { }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 10, 44), "0.2.10.44", new string[] { "20230507133358_1.jpg", "20230507133331_1.jpg" }));
             }

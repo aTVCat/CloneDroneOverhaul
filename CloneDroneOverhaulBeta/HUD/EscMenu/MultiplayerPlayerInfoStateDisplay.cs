@@ -56,7 +56,7 @@ namespace CDOverhaul.HUD
             }
 
             LoadRobotHead(m_PlayerInfoState.state.CharacterModelIndex, m_PlayerInfoState.state.FavouriteColor);
-            m_DetachedOrDisconnectedShading.gameObject.SetActive(false);
+            m_DetachedOrDisconnectedShading.gameObject.SetActive(m_PlayerInfoState.state.IsDisconnected);
             m_CDOUserTick.gameObject.SetActive(m_PlayerInfoState.IsAnOverhaulModUser());
             m_PlayerNameText.text = (m_PlayerInfoState.IsAnOverhaulModUser() ? "<color=#FF3B26>[Overhaul]</color> " : string.Empty) + 
                 (ModBotUserIdentifier.Instance.IsUsingModBot(m_PlayerInfoState.state.PlayFabID) ? "<color=#ffac00>[Mod-Bot]</color> " : string.Empty) +
@@ -121,9 +121,9 @@ namespace CDOverhaul.HUD
                     return "<color=#cacaca>Custom Server</color>";
 
                 case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
-                    return "<color=#B9D8FF>Switch</color>";
+                    return "<color=#FF3B26>Switch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
-                    return "<color=#B9D8FF>Switch</color>";
+                    return "<color=#FF3B26>Switch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
                     return "<color=#ffffff>PlayFab</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.PSN:

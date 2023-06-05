@@ -158,7 +158,7 @@ namespace CDOverhaul.Gameplay
                 if (!OverhaulAssetsController.DoesAssetBundleExist(assetBundle))
                 {
                     WeaponSkinsUpdater.DownloadAssetBundleThenAddSkin(customSkin, assetBundle);
-                    return;
+                    continue;
                 }
                 ImportSkin(customSkin, assetBundle);
             }

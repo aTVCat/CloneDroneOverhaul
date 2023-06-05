@@ -10,8 +10,9 @@ namespace CDOverhaul
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0"); //0.2.10.66
+        private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.0");
 
-        public static Version ModVersion => IsUpdate4 ? m_ModVersionUpdateFour : m_ModVersion; //IsUpdate2Hotfix ? m_ModVersionUpdateFour : m_ModVersion;
+        public static Version ModVersion => (IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion));
 
         /// <summary>
         /// The version of game mod will definitely work 
@@ -31,7 +32,7 @@ namespace CDOverhaul
         /// <summary>
         /// Are we still on 0.2?
         /// </summary>
-        public const bool IsUpdate2Hotfix = false;
+        public const bool IsUpdate2Hotfix = true;
 
         /// <summary>
         /// WIP

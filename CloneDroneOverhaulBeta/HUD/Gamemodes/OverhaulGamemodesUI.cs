@@ -22,11 +22,15 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public override void Initialize()
         {
+            base.gameObject.SetActive(false);
             AllowSwitching = true;
 
             m_Background = MyModdedObject.GetObject<RawImage>(0);
             OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<ChapterSelectionUI>();
             OverhaulChapterSelectionUI.Initialize(this);
+
+            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsOverhaulGamemodesUIEnabled)
+                return;
 
             GameModeCardData[] datas = GameUIRoot.Instance.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;
             datas[0].ClickedCallback = new UnityEngine.Events.UnityEvent();
@@ -35,7 +39,6 @@ namespace CDOverhaul.HUD.Gamemodes
                 ShowWithUI(0);
             });
 
-            base.gameObject.SetActive(false);
             ShowWithUI(-1);
         }
 

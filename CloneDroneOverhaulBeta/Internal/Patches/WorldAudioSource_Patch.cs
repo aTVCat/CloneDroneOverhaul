@@ -6,7 +6,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(WorldAudioSource))]
     internal static class WorldAudioSource_Patch
     {
-        [OverhaulSetting("Audio.Filters.Reverb", true)]
+        [OverhaulSetting("Audio.Filters.Reverb", true, OverhaulVersion.IsUpdate2Hotfix)]
         public static bool EnableReverbFilter;
 
         public static float DecayTime = 0.375f;
@@ -17,7 +17,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Initialize")]
         private static void Initialize_Postfix(WorldAudioSource __instance)
         {
-            if (!OverhaulMod.IsModInitialized || __instance.gameObject.name.Contains("Global"))
+            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.BuildImplements.IsAudioReverbFilterEnabled || __instance.gameObject.name.Contains("Global"))
                 return;
 
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();

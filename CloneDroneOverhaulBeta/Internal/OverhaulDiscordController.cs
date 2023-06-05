@@ -44,7 +44,10 @@ namespace CDOverhaul
         {
             get
             {
-                if (!SuccessfulInitialization || !m_HasUser)
+                if (m_HasUser)
+                    return m_User.Id;
+
+                if (!SuccessfulInitialization)
                     return -1;
 
                 UserManager m = m_Client.GetUserManager();

@@ -1,5 +1,6 @@
 ﻿using OverhaulAPI;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -106,6 +107,12 @@ namespace CDOverhaul.Gameplay
 
             string localID = ExclusivityController.GetLocalPlayfabID();
             bool isUnlocked = m_ExclusivePlayerID.Contains(localID);
+            if (!isUnlocked && OverhaulDiscordController.Instance != null && OverhaulDiscordController.SuccessfulInitialization)
+            {
+                long id = OverhaulDiscordController.Instance.UserID;
+                if(id != -1)
+                    isUnlocked = m_ExclusivePlayerID.Contains(id.ToString());
+            }
             if (!isUnlocked && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
 

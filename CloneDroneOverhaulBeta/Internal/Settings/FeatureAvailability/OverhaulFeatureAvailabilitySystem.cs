@@ -129,6 +129,30 @@ namespace CDOverhaul
             private static readonly bool IS_DISCORD_PANEL_ENABLED = true;
             public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_DISCORD_PANEL_ENABLED;
 
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static readonly bool ARE_TOOLTIPS_ENABLED = true;
+            public static bool AreTooltipsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_TOOLTIPS_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = true;
+            public static bool IsOverhaulGamemodesUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_OVERHAULED_GAMEMODES_UI_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static readonly bool IS_AUDIO_REVERB_FILTER_ENABLED = true;
+            public static bool IsAudioReverbFilterEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_AUDIO_REVERB_FILTER_ENABLED;
+
+            /// <summary>
+            /// Startup screen
+            /// </summary>
+            private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = true;
+            public static bool IsFirstUseSetupUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_FIRST_USE_SETUP_UI_ENABLED;
+
             public static bool AllowDeveloperUseAllSkins { get; } = false;
         }
     }
