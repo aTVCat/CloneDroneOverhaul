@@ -1,5 +1,7 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Workshop;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -83,6 +85,17 @@ namespace CDOverhaul.HUD
         private Transform m_PlayersInMatchPanel;
         private PrefabAndContainer m_PlayersInMatch;
 
+        private Transform m_CurrentWorkshopLevel;
+        private Text m_WorkshopLevelTitleText;
+        private Text m_WorkshopLevelCreatorText;
+        private Text m_WorkshopLevelDescriptionText;
+        private Button m_WorkshopLevelUpVote;
+        private Button m_WorkshopLevelDownVote;
+        private Button m_WorkshopLevelDetails;
+
+        private bool m_HasVotedUp;
+        private bool m_HasVotedDown;
+
         public bool ScheduleHide;
 
         private OverhaulParametersMenu m_Parameters;
@@ -91,6 +104,16 @@ namespace CDOverhaul.HUD
         {
             base.Initialize();
             m_Instance = this;
+
+            m_CurrentWorkshopLevel = MyModdedObject.GetObject<Transform>(29);
+            m_WorkshopLevelTitleText = MyModdedObject.GetObject<Text>(30);
+            m_WorkshopLevelCreatorText = MyModdedObject.GetObject<Text>(31);
+            m_WorkshopLevelDescriptionText = MyModdedObject.GetObject<Text>(32);
+            m_WorkshopLevelUpVote = MyModdedObject.GetObject<Button>(33);
+            m_WorkshopLevelUpVote.onClick.AddListener(ToggleVoteUp);
+            m_WorkshopLevelDownVote = MyModdedObject.GetObject<Button>(34);
+            m_WorkshopLevelDownVote.onClick.AddListener(ToggleVoteDown);
+            m_WorkshopLevelDetails  = MyModdedObject.GetObject<Button>(35);
 
             m_PlayersInMatchPanel = MyModdedObject.GetObject<Transform>(26);
             m_PlayersInMatch = new PrefabAndContainer(MyModdedObject, 27, 28);
@@ -457,6 +480,83 @@ namespace CDOverhaul.HUD
 
         #endregion
 
+        #region Workshop level
+
+        public void RefreshCurrentWorkshopLevel()
+        {
+            m_CurrentWorkshopLevel.gameObject.SetActive(false);
+
+            SteamWorkshopItem item = NowPlayingWorkshopManager.Instance.GetCurrentItem();
+            if (item == null)
+                return;
+
+            m_CurrentWorkshopLevel.gameObject.SetActive(true);
+            m_WorkshopLevelTitleText.text = item.Title;
+            m_WorkshopLevelCreatorText.text = item.CreatorName;
+            m_WorkshopLevelDescriptionText.text = item.Description;
+            RefreshVote();
+        }
+
+        public void RefreshVote()
+        {
+            SteamWorkshopItem item = NowPlayingWorkshopManager.Instance.GetCurrentItem();
+            if (item == null)
+                return;
+
+            m_WorkshopLevelUpVote.interactable = true;
+            m_WorkshopLevelDownVote.interactable = true;
+            m_HasVotedUp = true;
+            m_HasVotedDown = true;
+
+            OverhaulSteamBrowser.GetItemVoteInfo(item.WorkshopItemID, delegate (bool skip, bool up, bool down, bool fail)
+            {
+                if (fail)
+                {
+                    m_WorkshopLevelUpVote.interactable = false;
+                    m_WorkshopLevelDownVote.interactable = false;
+                    return;
+                }
+
+                m_WorkshopLevelUpVote.interactable = !up;
+                m_WorkshopLevelDownVote.interactable = !down;
+
+                m_HasVotedUp = up;
+                m_HasVotedDown = down;
+            });
+        }
+
+        public void ToggleVoteUp()
+        {
+            SteamWorkshopItem item = NowPlayingWorkshopManager.Instance.GetCurrentItem();
+            if (item == null || m_HasVotedUp)
+                return;
+
+            OverhaulSteamBrowser.SetItemVote(item.WorkshopItemID, true, delegate (SetUserItemVoteResult_t res, bool up)
+            {
+                m_WorkshopLevelUpVote.interactable = false;
+                m_WorkshopLevelDownVote.interactable = true;
+                m_HasVotedUp = true;
+                m_HasVotedDown = false;
+            });
+        }
+
+        public void ToggleVoteDown()
+        {
+            SteamWorkshopItem item = NowPlayingWorkshopManager.Instance.GetCurrentItem();
+            if (item == null || m_HasVotedDown)
+                return;
+
+            OverhaulSteamBrowser.SetItemVote(item.WorkshopItemID, false, delegate (SetUserItemVoteResult_t res, bool up)
+            {
+                m_WorkshopLevelUpVote.interactable = true;
+                m_WorkshopLevelDownVote.interactable = false;
+                m_HasVotedUp = false;
+                m_HasVotedDown = true;
+            });
+        }
+
+        #endregion
+
         public void OnContinueClicked()
         {
             if (!AllowToggleMenu)
@@ -478,6 +578,7 @@ namespace CDOverhaul.HUD
             RefreshRoomCodePanelActive();
             RefreshStartMatchButton();
             RefreshPlayersInMatch();
+            RefreshCurrentWorkshopLevel();
 
             m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             m_BackToLVLEditorButton.gameObject.SetActive((WorkshopLevelManager.Instance != null && WorkshopLevelManager.Instance.IsPlaytestActive()) || GameModeManager.IsLevelPlaytest());

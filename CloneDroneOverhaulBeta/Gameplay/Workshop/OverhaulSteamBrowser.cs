@@ -136,7 +136,7 @@ namespace CDOverhaul.Workshop
 
         public static EItemState GetItemState(PublishedFileId_t id) => (EItemState)SteamUGC.GetItemState(id);
         public static bool IsSubscribedToItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateSubscribed);
-        public static bool IsGoingToDownloadingItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateDownloadPending);
+        public static bool IsGoingToDownloadingItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateDownloadPending) || GetItemState(id).HasFlag(EItemState.k_EItemStateNeedsUpdate);
         public static bool IsDownloadingItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateDownloading);
         public static bool IsDownloadingItemInAnyWay(PublishedFileId_t id) => IsGoingToDownloadingItem(id) || IsDownloadingItem(id);
         public static bool IsItemInstalled(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateInstalled);
@@ -164,6 +164,11 @@ namespace CDOverhaul.Workshop
             result.Set(apiCall, null);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="callback">1 - Skipped, 2 - Up, 3 - Down, 4 - Fail</param>
         public static void GetItemVoteInfo(PublishedFileId_t id, Action<bool, bool, bool, bool> callback = null)
         {
             SteamAPICall_t apiCall = SteamUGC.GetUserItemVote(id);

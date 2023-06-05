@@ -439,7 +439,7 @@ namespace CDOverhaul.Workshop
 
         #region Viewing the item
 
-        private Animation m_Animator;
+        private Animator m_Animator;
         private Transform m_ItemPageViewTransform;
         private Transform m_PageTransform;
 
@@ -469,7 +469,7 @@ namespace CDOverhaul.Workshop
             m_FavouriteButton.image.color = "#2E2E2E".ConvertHexToColor();
             m_FavouriteButton.interactable = true;
             m_ItemPageViewTransform.gameObject.SetActive(true);
-            _ = m_Animator.Play("WorkshopUIViewItem");
+            m_Animator.Play("Base Layer.WorkshopUIViewItem");
 
             MyModdedObject.GetObject<Text>(23).text = workshopItem.ItemTitle;
             MyModdedObject.GetObject<Text>(24).text = workshopItem.CreatorNickname;
@@ -826,12 +826,8 @@ namespace CDOverhaul.Workshop
 
             MyModdedObject.GetObject<Transform>(40).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
 
-            if (m_Animator == null)
-            {
-                m_Animator = GetComponent<Animation>();
-                if (m_Animator != null)
-                    m_Animator.Stop();
-            }
+            if (!m_Animator)
+                m_Animator = GetComponent<Animator>();
         }
 
         public void Hide(bool hiddenBecauseLoading = false)
@@ -1195,7 +1191,15 @@ namespace CDOverhaul.Workshop
                 return entry;
             }
 
-            public bool CanWorkWithImage() => !IsDisposedOrDestroyed() && base.gameObject.activeInHierarchy && m_ThumbnailImage != null && m_ThumbnailProgressBar != null;
+            public void CanWorkWithImage(out bool can)
+            {
+                can = false;
+                try
+                {
+                    can = !IsDisposedOrDestroyed() && base.gameObject.activeInHierarchy && m_ThumbnailImage && m_ThumbnailProgressBar;
+                }
+                catch { }
+            }
 
             public OverhaulWorkshopItem GetWorkshopItem() => m_WorkshopItem;
             public bool HasWorkshopItem() => m_WorkshopItem != null;
@@ -1229,10 +1233,15 @@ namespace CDOverhaul.Workshop
 
             private IEnumerator loadImageCoroutine()
             {
-                if (!CanWorkWithImage())
+                CanWorkWithImage(out bool can);
+                if (!can)
                     yield break;
 
-                m_ThumbnailProgressBar.fillAmount = 0f;
+                try
+                {
+                    m_ThumbnailProgressBar.fillAmount = 0f;
+                }
+                catch { }
                 m_ThumbnailProgressBar.gameObject.SetActive(true);
                 m_ThumbnailImage.enabled = false;
                 string texturePath = m_WorkshopItem.PreviewURL;
@@ -1243,7 +1252,11 @@ namespace CDOverhaul.Workshop
                 OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
                 handler.DoneAction = delegate
                 {
-                    if (handler == null || !CanWorkWithImage())
+                    CanWorkWithImage(out bool can2);
+                    if (!can2)
+                        return;
+
+                    if (!this || IsDisposedOrDestroyed() || handler == null)
                         return;
 
                     m_ThumbnailProgressBar.gameObject.SetActive(false);
@@ -1256,11 +1269,18 @@ namespace CDOverhaul.Workshop
                 };
                 OverhaulNetworkController.DownloadTexture(texturePath, handler);
                 yield return null;
-                while (handler.DonePercentage != 1f && CanWorkWithImage())
-                {
-                    m_ThumbnailProgressBar.fillAmount = handler.DonePercentage;
-                    yield return null;
-                }
+
+                CanWorkWithImage(out bool can3);
+                if (can3)
+                    while (handler.DonePercentage != 1f)
+                    {
+                        try
+                        {
+                            m_ThumbnailProgressBar.fillAmount = handler.DonePercentage;
+                        }
+                        catch { }
+                        yield return null;
+                    }
 
                 yield break;
             }

@@ -410,6 +410,7 @@
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
+    <Compile Include="Gameplay\ObjectModdedState\OverhaulObjectStateModder.cs" />
     <Compile Include="Gameplay\OverhaulVolumeController.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\AccessoryItem.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\AccessoryType.cs" />
@@ -495,6 +496,7 @@
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
+    <Compile Include="Internal\Patches\HammerImpactMeleeArea_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\MeleeImpactArea_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
@@ -581,7 +583,7 @@
     <Compile Include="Internal\ControllersManagement\EventsManagement\OverhaulEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
-    <Compile Include="Test\UI\ButtonAnimation\OverhaulUIButtonScaler.cs" />
+    <Compile Include="HUD\OverhaulUIButtonScaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverhaulAPI\OverhaulAPI.csproj">

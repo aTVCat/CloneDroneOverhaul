@@ -25,7 +25,7 @@ namespace CDOverhaul
             "Failed to get input data",
             "Global_Server",
             "entity which is detached",
-            "Only the server may spawn enemies!",
+            "InterruptDiscord"
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 

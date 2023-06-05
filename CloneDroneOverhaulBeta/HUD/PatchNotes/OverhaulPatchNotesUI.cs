@@ -154,7 +154,7 @@ namespace CDOverhaul.HUD
                 langID = "en";
             }
 
-            m_Changelog.text = OverhaulCore.ReadText(OverhaulMod.Core.ModDirectory + info.DirectoryPath + "Info" + langID + ".txt");
+            m_Changelog.text = OverhaulCore.ReadText(info.DirectoryPath + "Info" + langID + ".txt");
 
             if (!info.Art.IsNullOrEmpty())
             {

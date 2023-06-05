@@ -20,7 +20,7 @@ namespace CDOverhaul
               { "F08DA308234126FB", new ExclusiveColorInfo(GetCyberkickColor(), 10) }
         };
 
-        private static readonly ReadOnlyDictionary<string, ExclusiveColorInfo> m_PlayerColorReadOnly = new ReadOnlyDictionary<string, ExclusiveColorInfo>(m_PlayerInfos);
+        private static readonly ReadOnlyDictionary<string, ExclusiveColorInfo> m_PlayerColorsReadOnly = new ReadOnlyDictionary<string, ExclusiveColorInfo>(m_PlayerInfos);
 
         /// <summary>
         /// Does local player have unlocked exclusive colors?
@@ -34,7 +34,7 @@ namespace CDOverhaul
                 return;
 
             string playFabID = GameModeManager.IsMultiplayer() ? mover.GetPlayFabID() : ExclusivityController.GetLocalPlayfabID();
-            _ = m_PlayerColorReadOnly.TryGetValue(playFabID, out ExclusiveColorInfo info);
+            _ = m_PlayerColorsReadOnly.TryGetValue(playFabID, out ExclusiveColorInfo info);
             if (info.ColorToReplace == 0)
                 return;
 
@@ -61,9 +61,9 @@ namespace CDOverhaul
         public static bool GetExclusivePlayerInfo(string localID, out ExclusiveColorInfo? info)
         {
             info = null;
-            if (!string.IsNullOrWhiteSpace(localID) && m_PlayerColorReadOnly.ContainsKey(localID))
+            if (!string.IsNullOrWhiteSpace(localID) && m_PlayerColorsReadOnly.ContainsKey(localID))
             {
-                info = m_PlayerColorReadOnly[localID];
+                info = m_PlayerColorsReadOnly[localID];
                 return true;
             }
             return false;

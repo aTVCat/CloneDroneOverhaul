@@ -13,9 +13,6 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    /// <summary>
-    /// The core of the mod. Contains important variables
-    /// </summary>
     public class OverhaulCore : GlobalEventListener
     {
         /// <summary>
@@ -62,6 +59,7 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            OverhaulObjectStateModder.ClearDestroyedObjects();
             OverhaulAudioLibrary.Initialize();
             OverhaulEventsController.Initialize();
             SettingsController.Initialize();

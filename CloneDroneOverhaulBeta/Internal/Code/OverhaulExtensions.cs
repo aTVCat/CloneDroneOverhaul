@@ -17,7 +17,19 @@ namespace CDOverhaul
         public static bool IsAnOverhaulModUser(this FirstPersonMover firstPersonMover)
         {
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
-            return info != null && info.HasReceivedData;
+            return info != null && info.GetHashtable() != null;
+        }
+
+        public static bool IsAnOverhaulModUser(this MultiplayerPlayerInfoState infoState)
+        {
+            if (!infoState || infoState.IsDetached() || string.IsNullOrEmpty(infoState.state.PlayFabID))
+                return false;
+
+            Character character = CharacterTracker.Instance.TryGetLivingCharacterWithPlayFabID(infoState.state.PlayFabID);
+            if (!character || character.IsDetached() || !(character is FirstPersonMover))
+                return false;
+
+            return IsAnOverhaulModUser(character as FirstPersonMover);
         }
 
         /// <summary>
