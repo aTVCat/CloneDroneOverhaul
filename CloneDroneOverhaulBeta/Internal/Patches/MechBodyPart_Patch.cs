@@ -25,7 +25,14 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            __result = __instance.transform.parent != null && armorPiecePrefab != null;
+            try
+            {
+                __result = __instance.transform.parent && armorPiecePrefab;
+            }
+            catch
+            {
+                __result = false;
+            }
             return __result;
         }
     }

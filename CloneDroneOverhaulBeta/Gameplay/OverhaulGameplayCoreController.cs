@@ -56,7 +56,10 @@ namespace CDOverhaul.Gameplay
                 return;
 
             if (!OverhaulVersion.IsUpdate2Hotfix)
+            {
                 _ = firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
+                _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
+            }
 
             firstPersonMover.GetPlayerCamera()?.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
         }

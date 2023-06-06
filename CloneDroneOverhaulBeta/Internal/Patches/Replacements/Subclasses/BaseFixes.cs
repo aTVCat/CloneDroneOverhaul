@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Pathfinding.Util;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
@@ -25,6 +26,7 @@ namespace CDOverhaul.Patches
             UnityEngine.Physics.reuseCollisionCallbacks = true;
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
+            ProjectileManager.Instance.ArrowPool.Prefab.GetComponent<Projectile>().VelocityMagnitude = 75f;
 
             if (m_OgUIFont == null) m_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
             if (m_OgSubtitlesFont == null) m_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;

@@ -10,7 +10,7 @@ namespace CDOverhaul
         /// </summary>
         private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0"); //0.2.10.66
-        private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.0");
+        private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.1");
 
         public static Version ModVersion => (IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion));
 
@@ -32,7 +32,7 @@ namespace CDOverhaul
         /// <summary>
         /// Are we still on 0.2?
         /// </summary>
-        public const bool IsUpdate2Hotfix = true;
+        public const bool IsUpdate2Hotfix = false;
 
         /// <summary>
         /// WIP

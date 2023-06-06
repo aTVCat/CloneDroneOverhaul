@@ -399,6 +399,7 @@
     <Compile Include="ExternalDLLs\DiscordGameSDK\LobbyManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\StorageManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\StoreManager.cs" />
+    <Compile Include="Gameplay\Combat\AI\OverhaulAITunner.cs" />
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverModdedAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverModdedAnimationsExpansion.cs" />
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverAnimatorType.cs" />
@@ -444,8 +445,10 @@
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
-    <Compile Include="HUD\Gamemodes\ChapterSelectionUI.cs" />
+    <Compile Include="HUD\Gamemodes\OverhaulGamemodesUIFullscreenWindow.cs" />
+    <Compile Include="HUD\Gamemodes\Subclasses\ChapterSelectionUI.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodesUI.cs" />
+    <Compile Include="HUD\Gamemodes\OverhaulGamemodeUIBase.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
@@ -502,6 +505,7 @@
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
+    <Compile Include="Internal\Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />
     <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
     <Compile Include="Internal\Patches\SwordBlockArea_Patch.cs" />

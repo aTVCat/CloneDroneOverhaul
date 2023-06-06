@@ -13,12 +13,13 @@ namespace CDOverhaul.HUD.Gamemodes
     public class OverhaulGamemodesUI : OverhaulUI
     {
         public ChapterSelectionUI OverhaulChapterSelectionUI;
+        public OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
 
         private RawImage m_Background;
 
         private OverhaulNetworkDownloadHandler m_CurrentDownloadHandler;
 
-        public static bool AllowSwitching;
+        public bool AllowSwitching;
 
         public override void Initialize()
         {
@@ -26,8 +27,9 @@ namespace CDOverhaul.HUD.Gamemodes
             AllowSwitching = true;
 
             m_Background = MyModdedObject.GetObject<RawImage>(0);
-            OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<ChapterSelectionUI>();
-            OverhaulChapterSelectionUI.Initialize(this);
+            FullscreenWindow = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<OverhaulGamemodesUIFullscreenWindow>();
+            FullscreenWindow.Initialize();
+            OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(2).gameObject.AddComponent<ChapterSelectionUI>().Initialize<ChapterSelectionUI>(this);
 
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsOverhaulGamemodesUIEnabled)
                 return;
@@ -64,15 +66,14 @@ namespace CDOverhaul.HUD.Gamemodes
                 case 0:
                     OverhaulChapterSelectionUI.Show();
                     break;
-
-                default:
-                    break;
             }
         }
 
         public void Hide()
         {
             base.gameObject.SetActive(false);
+            FullscreenWindow.Hide();
+            ShowWithUI(-1);
         }
 
         public void ChangeBackgroundTexture(string filePath)
