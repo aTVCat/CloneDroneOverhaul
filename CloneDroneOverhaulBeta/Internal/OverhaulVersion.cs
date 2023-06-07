@@ -17,7 +17,7 @@ namespace CDOverhaul
         /// <summary>
         /// The version of game mod will definitely work 
         /// </summary>
-        public const string GameTargetVersion = "1.5.0.16";
+        public const string GameTargetVersion = "1.5.0.18";
 
         /// <summary>
         /// The full name of the mod
@@ -32,7 +32,7 @@ namespace CDOverhaul
         /// <summary>
         /// Are we still on 0.2?
         /// </summary>
-        public const bool IsUpdate2Hotfix = false;
+        public const bool IsUpdate2Hotfix = true;
 
         /// <summary>
         /// WIP

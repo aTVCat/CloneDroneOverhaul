@@ -25,7 +25,9 @@ namespace CDOverhaul
             "Failed to get input data",
             "Global_Server",
             "entity which is detached",
-            "InterruptDiscord"
+            "InterruptDiscord",
+            "SummonAllyAbility.spawnConstructionCube",
+            "CanApplyArmorPiece"
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 
