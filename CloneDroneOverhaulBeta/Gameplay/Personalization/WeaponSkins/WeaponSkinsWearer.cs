@@ -155,7 +155,7 @@ namespace CDOverhaul.Gameplay
 
         public bool IsFireVariant(WeaponModel model)
         {
-            return model != null && IsFireVariant(model.WeaponType);
+            return model && IsFireVariant(model.WeaponType);
         }
 
         public bool IsFireVariant(WeaponType type)
@@ -446,11 +446,11 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkin(IWeaponSkinItemDefinition item)
         {
-            if (item == null || Owner == null || !Owner.HasCharacterModel())
+            if (item == null || !Owner || !Owner.HasCharacterModel() || !(item as WeaponSkinItemDefinitionV2).IsUnlockedForPlayer(Owner))
                 return;
 
             WeaponModel weaponModel = Owner.GetCharacterModel().GetWeaponModel(item.GetWeaponType());
-            if (weaponModel == null || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
+            if (!weaponModel || (weaponModel.WeaponType.Equals(WeaponType.Bow) && !OverhaulGamemodeManager.SupportsBowSkins()))
                 return;
 
             SetDefaultModelsVisible(false, weaponModel);
@@ -465,14 +465,14 @@ namespace CDOverhaul.Gameplay
             WeaponSkinItemDefinitionV2 itemDefinition = item as WeaponSkinItemDefinitionV2;
 
             WeaponSkinModel newModel = item.GetModel(fire, multiplayer, 0);
-            if (newModel != null && newModel.Model != null)
+            if (newModel != null && newModel.Model)
             {
                 bool reparented = false;
                 Transform toParent = weaponModel.transform;
                 if (!string.IsNullOrEmpty(itemDefinition.ReparentToBodypart))
                 {
                     toParent = TransformUtils.FindChildRecursive(Owner.GetCharacterModel().transform, itemDefinition.ReparentToBodypart);
-                    if (toParent == null)
+                    if (!toParent)
                     {
                         SetDefaultModelsVisible(true, weaponModel);
                         return;
@@ -525,17 +525,17 @@ namespace CDOverhaul.Gameplay
                     ModdedObject m = spawnedModel.GetComponent<ModdedObject>();
                     Transform bowStringUpper = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringUpper");
                     Transform bowStringLower = TransformUtils.FindChildRecursive(weaponModel.transform, "BowStringLower");
-                    if (bowStringLower != null && bowStringLower.childCount != 0 && bowStringUpper != null && bowStringUpper.childCount != 0)
+                    if (bowStringLower && bowStringLower.childCount != 0 && bowStringUpper && bowStringUpper.childCount != 0)
                     {
-                        Transform moddedBowString0 = m != null ? m.GetObject<Transform>(0) : null;
-                        Transform moddedBowString1 = m != null ? m.GetObject<Transform>(1) : null;
+                        Transform moddedBowString0 = m ? m.GetObject<Transform>(0) : null;
+                        Transform moddedBowString1 = m ? m.GetObject<Transform>(1) : null;
 
                         bowStringLower.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         bowStringUpper.GetChild(0).localScale = new Vector3(0.1f, 1.3f, 0.1f);
                         if ((item as WeaponSkinItemDefinitionV2).UseVanillaBowStrings)
                         {
-                            if (moddedBowString0 != null) moddedBowString0.gameObject.SetActive(false);
-                            if (moddedBowString1 != null) moddedBowString1.gameObject.SetActive(false);
+                            if (moddedBowString0) moddedBowString0.gameObject.SetActive(false);
+                            if (moddedBowString1) moddedBowString1.gameObject.SetActive(false);
                             bowStringLower.GetChild(0).gameObject.SetActive(true);
                             bowStringLower.GetChild(0).localScale = new Vector3(0.05f, 1.3f, 0.05f);
                             bowStringUpper.GetChild(0).gameObject.SetActive(true);
@@ -543,8 +543,8 @@ namespace CDOverhaul.Gameplay
                         }
                         else
                         {
-                            if (moddedBowString0 != null) moddedBowString0.SetParent(bowStringUpper, true);
-                            if (moddedBowString1 != null) moddedBowString1.SetParent(bowStringLower, true);
+                            if (moddedBowString0) moddedBowString0.SetParent(bowStringUpper, true);
+                            if (moddedBowString1) moddedBowString1.SetParent(bowStringLower, true);
                         }
                     }
                 }

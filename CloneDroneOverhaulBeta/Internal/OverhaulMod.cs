@@ -93,7 +93,7 @@ namespace CDOverhaul
                 List<MultiplayerPlayerInfoState> list = MultiplayerPlayerInfoManager.Instance.GetAllPlayerInfoStates();
                 foreach (MultiplayerPlayerInfoState statee in list)
                 {
-                    if (!statee.IsDetached() && statee.state.PlayFabID != ExclusivityController.GetLocalPlayfabID())
+                    if (!statee.IsDetached() && statee.state.PlayFabID != ExclusivityController.GetLocalPlayFabID())
                     {
                         GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
                         newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + statee.state.PlayFabID + "@" + OverhaulModdedPlayerInfo.SerializeData(true, statee.state.PlayFabID);

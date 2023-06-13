@@ -1,0 +1,14 @@
+Win64
+PlayerPath?
+D:/Clone drone stuff/Clone drone overhaul rewrite/OverhaulUnityProjectNormal/Assets/StreamingAssets/overhauldemostuff
+SceneListBegin?
+Assets/ModStuff/BetaOverhaul/Scenes/OverhaulFSEnvScene.unity
+Assets/ModStuff/BetaOverhaul/Scenes/TestScene.unity
+SceneListEnd?
+cf9f5cf2c3145a37ac07f00e50e460f9 UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
+4bc4346a71a8df53a6b106f68ef3a190 UnityEngine.UI.dll:UnityEngine.UI.CanvasScaler
+cc4274b586df3c02688bac01b88bd16c UnityEngine.UI.dll:UnityEngine.EventSystems.EventSystem
+ae83e830e7a90c0aff918c4c2e520825 UnityEngine.UI.dll:UnityEngine.UI.GraphicRaycaster
+e6baf3ef68d60bd0901dfb91c02bc1c3 UnityEngine.UI.dll:UnityEngine.UI.Image
+748dd2a2a28da4e618912da5ac45684b UnityEngine.UI.dll:UnityEngine.EventSystems.StandaloneInputModule
+72712369a7c681ad84fc255a5ec0b333 UnityEngine.UI.dll:UnityEngine.UI.Text

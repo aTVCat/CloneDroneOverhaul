@@ -25,7 +25,7 @@ namespace CDOverhaul
         }
         private static void onLogin()
         {
-            _playfabId = GetLocalPlayfabID();
+            _playfabId = GetLocalPlayFabID();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
             ExclusiveColorsController.OnGotPlayfabID(_playfabId);
@@ -33,13 +33,13 @@ namespace CDOverhaul
         private static void scheduledOnLogin()
         {
             if (string.IsNullOrEmpty(_playfabId))
-                _playfabId = GetLocalPlayfabID();
+                _playfabId = GetLocalPlayFabID();
 
             ExclusiveColorsController.OnGotPlayfabID(_playfabId);
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
         }
 
-        public static string GetLocalPlayfabID()
+        public static string GetLocalPlayFabID()
         {
             string result = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
             if (result == null)
@@ -55,7 +55,7 @@ namespace CDOverhaul
                 : OverhaulDiscordController.Instance.UserID;
         }
 
-        public static bool HasPlayfabID() => !string.IsNullOrEmpty(GetLocalPlayfabID());
-        public static bool IsDeveloper() => HasPlayfabID() && GetLocalPlayfabID() == "883CC7F4CA3155A3";
+        public static bool HasPlayfabID() => !string.IsNullOrEmpty(GetLocalPlayFabID());
+        public static bool IsDeveloper() => HasPlayfabID() && GetLocalPlayFabID() == "883CC7F4CA3155A3";
     }
 }

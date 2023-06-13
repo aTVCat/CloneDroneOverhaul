@@ -13,6 +13,7 @@ namespace CDOverhaul.HUD.Gamemodes
     public class OverhaulGamemodesUI : OverhaulUI
     {
         public ChapterSelectionUI OverhaulChapterSelectionUI;
+        public LastBotStandingPlayUI OverhaulLastBotStandingPlayUI;
         public OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
 
         private RawImage m_Background;
@@ -30,6 +31,7 @@ namespace CDOverhaul.HUD.Gamemodes
             FullscreenWindow = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<OverhaulGamemodesUIFullscreenWindow>();
             FullscreenWindow.Initialize();
             OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(2).gameObject.AddComponent<ChapterSelectionUI>().Initialize<ChapterSelectionUI>(this);
+            OverhaulLastBotStandingPlayUI = MyModdedObject.GetObject<Transform>(3).gameObject.AddComponent<LastBotStandingPlayUI>().Initialize<LastBotStandingPlayUI>(this);
 
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsOverhaulGamemodesUIEnabled)
                 return;
@@ -39,6 +41,13 @@ namespace CDOverhaul.HUD.Gamemodes
             datas[0].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(0);
+            });
+
+            GameModeCardData[] datas2 = GameUIRoot.Instance.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
+            datas2[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            datas2[2].ClickedCallback.AddListener(delegate
+            {
+                ShowWithUI(1);
             });
 
             ShowWithUI(-1);
@@ -61,10 +70,14 @@ namespace CDOverhaul.HUD.Gamemodes
                 Show();
 
             OverhaulChapterSelectionUI.Hide();
+            OverhaulLastBotStandingPlayUI.Hide();
             switch (index)
             {
                 case 0:
                     OverhaulChapterSelectionUI.Show();
+                    break;
+                case 1:
+                    OverhaulLastBotStandingPlayUI.Show();
                     break;
             }
         }

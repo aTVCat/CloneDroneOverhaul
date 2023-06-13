@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MindSpaceSwordHandle
+  m_Shader: {fileID: 4800000, guid: 66d5cb5d54a81cb4eab81713b8ac867c, type: 3}
+  m_ShaderKeywords: _DIST_CHROM_ON _EMISSION _X_ON _Y_ON
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Diffuse:
+        m_Texture: {fileID: 2800000, guid: fc8bbf67d2235824db014c5f56497d6c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _M_map:
+        m_Texture: {fileID: 2800000, guid: 8e9292a11cfddbb43bb8bfda47b7d96f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 1, y: 1}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: be38b8bbb53cad64b9b3d61275690713, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _N_map:
+        m_Texture: {fileID: 2800000, guid: b684e96e8f979034aa9e9428a6f07258, type: 3}
+        m_Scale: {x: 3, y: 3}
+        m_Offset: {x: 0, y: 0}
+    - _originalDiffuse:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Zoom: 10.89
+    - _Amount: 1
+    - _Amplitude: 100
+    - _Bias: 0.112
+    - _BumpScale: 1
+    - _Circle_wave: 48.1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _Distance: 2
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 1
+    - _Opacity_gl: 1
+    - _OriginalUVSwitch: 0
+    - _OrigineX: 0.5
+    - _OrigineY: 0.512
+    - _Parallax: 0.02
+    - _Power: 1.364
+    - _Rotation: 0
+    - _Scale: 9.9
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _Speed: 0.05
+    - _Speed_Up: 10
+    - _Speed_face: 10
+    - _Speed_wave: 100
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _X: 1
+    - _Y: 1
+    - _ZWrite: 1
+    - _Zoom: 1
+    - _a: 12.5
+    - _cut_level: 2.71
+    - _deform: 1
+    - _dist_chrom: 1
+    - _glitchColor: 0
+    - _grey: 1
+    - _intensity: 5
+    - _mask_type: 0
+    - _monochrom: 0
+    - _noise_details: 7.39
+    - _t: 1
+    m_Colors:
+    - _Color: {r: 5.992157, g: 2.478469, b: 0, a: 1}
+    - _Color_diff: {r: 0.25, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _diff_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _glitchColor_c: {r: 0.8396226, g: 0.03564434, b: 0.1306269, a: 1}

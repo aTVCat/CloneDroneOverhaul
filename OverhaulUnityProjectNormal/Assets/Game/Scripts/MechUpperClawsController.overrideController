@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MechUpperClawsController
+  m_Controller: {fileID: 9100000, guid: 0b3d19108d0c00f4bbd26af6e4a91795, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3c494f91a861c8e47aaad48fabfdcad5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 33b84366725906044af4cfa96c33ad99, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4c7d2be1f002a8a4cbaccb9d2ab0c705, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fca00137a3e906f44ada54e924146d96, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 62f8f2ad8f5ebfb44a509e5aa18c1c66, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 90ec99e15598a7545be0e138686da7f4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8f38994b80d065e4c9f9b420bc0a248a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ac2fb1e3c40defb448f139eb42bf635c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0118103062a927346b5b9c80a12f16b3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 450ef5730139fcc40adb37f319aee5d3, type: 2}

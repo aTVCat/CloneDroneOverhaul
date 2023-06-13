@@ -74,7 +74,7 @@ namespace CDOverhaul.Gameplay
         }
 
         public bool IsDeveloperItem;
-        public bool IsDevItemUnlocked => Equals(ExclusivityController.GetLocalPlayfabID(), "883CC7F4CA3155A3");
+        public bool IsDevItemUnlocked => Equals(ExclusivityController.GetLocalPlayFabID(), "883CC7F4CA3155A3");
 
         public bool UseSingleplayerVariantInMultiplayer;
         public bool UseVanillaBowStrings;
@@ -99,24 +99,40 @@ namespace CDOverhaul.Gameplay
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
-            if (forceTrue)
+            if (forceTrue || OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID)) 
                 return true;
 
-            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
-                return true;
+            string localPlayFabID = ExclusivityController.GetLocalPlayFabID();
+            bool result = m_ExclusivePlayerID.Contains(localPlayFabID);
 
-            string localID = ExclusivityController.GetLocalPlayfabID();
-            bool isUnlocked = m_ExclusivePlayerID.Contains(localID);
-            if (!isUnlocked && OverhaulDiscordController.Instance != null && OverhaulDiscordController.SuccessfulInitialization)
+            // Force unlock skin if the user is CDO developer
+            if (!result && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
+                result = localPlayFabID.Equals("883CC7F4CA3155A3");
+
+            // Check discord user id (Not the best idea)
+            if (!result && OverhaulDiscordController.Instance && OverhaulDiscordController.SuccessfulInitialization)
             {
                 long id = OverhaulDiscordController.Instance.UserID;
                 if(id != -1)
-                    isUnlocked = m_ExclusivePlayerID.Contains(id.ToString());
+                    result = m_ExclusivePlayerID.Contains(id.ToString());
             }
-            if (!isUnlocked && OverhaulFeatureAvailabilitySystem.BuildImplements.AllowDeveloperUseAllSkins)
-                isUnlocked = localID.Equals("883CC7F4CA3155A3");
 
-            return isUnlocked;
+            return result;
+        }
+
+        public bool IsUnlockedForPlayer(FirstPersonMover player)
+        {
+            if (!player)
+                return false;
+
+            if (string.IsNullOrEmpty(m_ExclusivePlayerID) || player.HasPermissionToUseLockedStuff())
+                return true;
+
+            string playfabID = player.GetPlayFabID();
+            if (string.IsNullOrEmpty(playfabID))
+                return false;
+
+            return m_ExclusivePlayerID.Contains(playfabID);
         }
 
         bool IEqualityComparer.Equals(object x, object y) => x is IWeaponSkinItemDefinition defX && y is IWeaponSkinItemDefinition defY && (defX.GetWeaponType(), defX.GetItemName()) == (defY.GetWeaponType(), defY.GetItemName());

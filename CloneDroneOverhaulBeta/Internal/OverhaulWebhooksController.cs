@@ -20,6 +20,7 @@ namespace CDOverhaul
             "Can't find asset",
             "Unsupported color:",
             "Failed to read input report",
+            "Failed to start reading input report",
             "You are not a client",
             "DecompressOnLoad",
             "Failed to get input data",

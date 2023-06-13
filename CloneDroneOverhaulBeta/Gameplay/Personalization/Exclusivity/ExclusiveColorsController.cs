@@ -33,7 +33,7 @@ namespace CDOverhaul
             if (mover == null)
                 return;
 
-            string playFabID = GameModeManager.IsMultiplayer() ? mover.GetPlayFabID() : ExclusivityController.GetLocalPlayfabID();
+            string playFabID = GameModeManager.IsMultiplayer() ? mover.GetPlayFabID() : ExclusivityController.GetLocalPlayFabID();
             _ = m_PlayerColorsReadOnly.TryGetValue(playFabID, out ExclusiveColorInfo info);
             if (info.ColorToReplace == 0)
                 return;

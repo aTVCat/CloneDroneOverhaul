@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SawBladeMindSpace
+  m_Shader: {fileID: 4800000, guid: 28998650d2bdd54428393695c588b6a8, type: 3}
+  m_ShaderKeywords: _DIST_CHROM_ON _EMISSION _GLITCHCOLOR_ON _MASK_TYPE_ON _X_ON _Y_ON
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Diffuse:
+        m_Texture: {fileID: 2800000, guid: 11eda05f036a78746911ecf093be4964, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _M_map:
+        m_Texture: {fileID: 2800000, guid: cad07cb0131c1ad469f11eb7d8e419c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c7f79a1f733503e4eba7fd07beedb207, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _N_map:
+        m_Texture: {fileID: 2800000, guid: 66b831d2ba420cf4da28c0d56aa95678, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _originalDiffuse:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Amount: 1
+    - _Amplitude: 0
+    - _Bias: 0.65
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _Distance: 0
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 1
+    - _OriginalUVSwitch: 0
+    - _Parallax: 0.02
+    - _Power: 1.746
+    - _Scale: 3.27
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _Speed: 0.33
+    - _Speed_Up: 0
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _X: 1
+    - _Y: 1
+    - _ZWrite: 1
+    - _deform: 70
+    - _glitchColor: 1
+    - _intensity: 2
+    - _monochrom: 0
+    - _noise_details: 8.47
+    - _t: 1
+    m_Colors:
+    - _Color: {r: 0, g: 1, b: 0.8585174, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _diff_Color: {r: 0.4392157, g: 1, b: 0.9507832, a: 1}

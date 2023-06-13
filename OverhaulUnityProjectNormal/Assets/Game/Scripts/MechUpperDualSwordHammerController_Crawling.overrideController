@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MechUpperDualSwordHammerController_Crawling
+  m_Controller: {fileID: 9100000, guid: 0b3d19108d0c00f4bbd26af6e4a91795, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3c494f91a861c8e47aaad48fabfdcad5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 49bcee5ce8f4272469999277b5d5917b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4c7d2be1f002a8a4cbaccb9d2ab0c705, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a439aec53c6de5a4abc1f7eff5e17676, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 62f8f2ad8f5ebfb44a509e5aa18c1c66, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 684b1b8d7ac7bac46936f9fbf43ed942, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 865c40b1668be3d40b8632e4223fff3a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 17dd7ce89d6b5254695095bc44a8b841, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 1601902857ffd064cb4190d977bbb282, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 823da45a45f9afc409029019e44252d9, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6aae9982f26e8cf45b1de242029f29e3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1adc4945a25a7404c9417337733b20a5, type: 2}

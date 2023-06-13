@@ -11,16 +11,45 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         [OverhaulSetting("QoL.Last Bot Standing.Auto-Build", 0, false, " ", null, null, null)]
         public static int SelectedAutoBuildVariant;
 
-        private float m_TimeToRefreshVariables;
+        /// <summary>
+        /// All possible auto upgrade types
+        /// </summary>
+        public static readonly Dictionary<AutoBuildVariant, AutoBuildSequence> AutoUpgradeSequences = new Dictionary<AutoBuildVariant, AutoBuildSequence>()
+        {
+            { AutoBuildVariant.FullSword, new AutoBuildSequence(AutoBuildVariant.FullSword) },
+            { AutoBuildVariant.FullBow, new AutoBuildSequence(AutoBuildVariant.FullBow) },
+            { AutoBuildVariant.FullHammer, new AutoBuildSequence(AutoBuildVariant.FullHammer) },
+            { AutoBuildVariant.FullSpear, new AutoBuildSequence(AutoBuildVariant.FullSpear) },
 
-        private BattleRoyaleManager m_LBSManager;
+            { AutoBuildVariant.Kicker, new AutoBuildSequence(AutoBuildVariant.Kicker) },
+            { AutoBuildVariant.LightKicker, new AutoBuildSequence(AutoBuildVariant.LightKicker) },
+            { AutoBuildVariant.ArmoredKicker, new AutoBuildSequence(AutoBuildVariant.ArmoredKicker) },
+            { AutoBuildVariant.KickNDash, new AutoBuildSequence(AutoBuildVariant.KickNDash) },
+            { AutoBuildVariant.KickNRun, new AutoBuildSequence(AutoBuildVariant.KickNRun) },
+
+            { AutoBuildVariant.TacticalSword, new AutoBuildSequence(AutoBuildVariant.TacticalSword) },
+            { AutoBuildVariant.TacticalFireSword, new AutoBuildSequence(AutoBuildVariant.TacticalFireSword) },
+            { AutoBuildVariant.JetPackSword, new AutoBuildSequence(AutoBuildVariant.JetPackSword) },
+            { AutoBuildVariant.TacticalBow, new AutoBuildSequence(AutoBuildVariant.TacticalBow) },
+            { AutoBuildVariant.TacticalFireBow, new AutoBuildSequence(AutoBuildVariant.TacticalFireBow) },
+            { AutoBuildVariant.TacticalHammer, new AutoBuildSequence(AutoBuildVariant.TacticalHammer) },
+            { AutoBuildVariant.TacticalHammerKicker, new AutoBuildSequence(AutoBuildVariant.TacticalHammerKicker) },
+            { AutoBuildVariant.TacticalFireSpear, new AutoBuildSequence(AutoBuildVariant.TacticalFireSpear) },
+            { AutoBuildVariant.TacticalFireSpearKicker, new AutoBuildSequence(AutoBuildVariant.TacticalFireSpearKicker) },
+
+            { AutoBuildVariant.Spectator, new AutoBuildSequence(AutoBuildVariant.Spectator) },
+        };
+
+        private BattleRoyaleManager m_Manager;
+
+        private float m_TimeToUpdateState;
 
         private bool m_HasSelectedUpgrades;
-        public bool ShouldSelectUpgrades => !m_HasSelectedUpgrades && m_LBSManager != null && m_LBSManager.state.TimeToGameStart < ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random ? 15 : 9) && m_LBSManager.state.TimeToGameStart > 6;
+        public bool ShouldSelectUpgrades => !m_HasSelectedUpgrades && m_Manager != null && m_Manager.state.TimeToGameStart < ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random ? 15 : 9) && m_Manager.state.TimeToGameStart > 6;
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (firstPersonMover != null && firstPersonMover.IsMainPlayer() && hasInitializedModel)
+            if (firstPersonMover != null && firstPersonMover.IsMainPlayer())
                 m_HasSelectedUpgrades = false;
         }
 
@@ -31,7 +60,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
             if (Input.GetKeyDown(KeyCode.U))
             {
-                if (m_HasSelectedUpgrades || GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
+                if (m_HasSelectedUpgrades || !GameUIRoot.Instance || !GameUIRoot.Instance.UpgradeUI || !MultiplayerPlayerInfoManager.Instance || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
                     return;
 
                 _ = StaticCoroutineRunner.StartStaticCoroutine(selectUpgradesCorouitine());
@@ -39,10 +68,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             }
 
             float time = Time.unscaledTime;
-            if (time >= m_TimeToRefreshVariables)
+            if (time >= m_TimeToUpdateState)
             {
-                m_TimeToRefreshVariables = time + 0.5f;
-                m_LBSManager = BattleRoyaleManager.Instance;
+                m_TimeToUpdateState = time + 0.5f;
+                m_Manager = BattleRoyaleManager.Instance;
 
                 if (ShouldSelectUpgrades)
                 {
@@ -54,11 +83,15 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         private IEnumerator selectUpgradesCorouitine()
         {
-            if (GameUIRoot.Instance == null || GameUIRoot.Instance.UpgradeUI == null || MultiplayerPlayerInfoManager.Instance == null || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
+            AutoBuildVariant variant = (AutoBuildVariant)SelectedAutoBuildVariant;
+            if (variant == AutoBuildVariant.None)
+                yield break;
+
+            if (!GameUIRoot.Instance || !GameUIRoot.Instance.UpgradeUI || !MultiplayerPlayerInfoManager.Instance || !GameUIRoot.Instance.UpgradeUI.gameObject.activeInHierarchy)
                 yield break;
 
             UpgradeUI ui = GameUIRoot.Instance.UpgradeUI;
-            if ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random)
+            if (variant == AutoBuildVariant.Random)
             {
                 _ = ui.StartCoroutine(ui.CallPrivateMethod<IEnumerator>("selectRandomUpgrade"));
                 yield break;
@@ -69,213 +102,31 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 yield break;
 
             MultiplayerPlayerInfoState s = MultiplayerPlayerInfoManager.Instance.GetLocalPlayerInfoState();
-            if (s == null || s.IsDetached())
+            if (!s || s.IsDetached())
                 yield break;
 
             string playerPlayfabID = s.state.PlayFabID;
             if (string.IsNullOrEmpty(playerPlayfabID))
                 yield break;
 
-            int i = 0;
-            foreach (UpgradeUIIcon icon in icons)
+            bool success = AutoUpgradeSequences.TryGetValue(variant, out AutoBuildSequence autoBuildSequence);
+            if(!success || autoBuildSequence.Upgrades.IsNullOrEmpty())
+                yield break;
+
+            int currentUpgradeIndex = 0;
+            while (currentUpgradeIndex < autoBuildSequence.Upgrades.Length)
             {
-                if (i % 10 == 0)
-                    yield return null;
+                AutoBuildUpgrade autoBuildUpgrade = autoBuildSequence.Upgrades[currentUpgradeIndex];
+                if(autoBuildUpgrade == null)
+                    break;
 
-                if (icon == null)
+                UpgradeUIIcon icon = ui.GetUpgradeUIIcon(autoBuildUpgrade.Upgrade, autoBuildUpgrade.Level);
+                if (icon && icon.GetCanUpgradeRightNow(playerPlayfabID))
                 {
-                    i++;
-                    continue;
+                    icon.OnButtonClicked();
+                    yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
                 }
-
-                UpgradeDescription desc = icon.GetPrivateField<UpgradeDescription>("_upgradeDescription");
-                if (desc == null)
-                {
-                    i++;
-                    continue;
-                }
-
-                if (icon.GetCanUpgradeRightNow(playerPlayfabID))
-                    yield return ApplyBuildCoroutine(desc, icon, playerPlayfabID);
-
-                i++;
-            }
-            yield break;
-        }
-
-        public IEnumerator ApplyBuildCoroutine(UpgradeDescription desc, UpgradeUIIcon icon, string playerPlayfabID)
-        {
-            AutoBuildVariant variant = (AutoBuildVariant)SelectedAutoBuildVariant;
-            switch (variant)
-            {
-                case AutoBuildVariant.FullSword:
-                    if ((desc.UpgradeType == UpgradeType.SwordUnlock) ||
-                        (desc.UpgradeType == UpgradeType.FireSword && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.FireSword && desc.Level == 2))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.FullBow:
-                    if ((desc.UpgradeType == UpgradeType.BowUnlock) ||
-                        (desc.UpgradeType == UpgradeType.FireArrow && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.ArrowWidth && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.ArrowWidth && desc.Level == 2))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.FullHammer:
-                    if ((desc.UpgradeType == UpgradeType.Hammer && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.Hammer && desc.Level == 2) ||
-                        (desc.UpgradeType == UpgradeType.Hammer && desc.Level == 3))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.FullSpear:
-                    if ((desc.UpgradeType == UpgradeType.SpearUnlock) ||
-                        (desc.UpgradeType == UpgradeType.FireSpear && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.ShieldSize && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.JetPackSword:
-                    if ((desc.UpgradeType == UpgradeType.SwordUnlock) ||
-                        (desc.UpgradeType == UpgradeType.Jetpack && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.Kicker:
-                    if ((desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.KickPower && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 2))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.KickNDash:
-                    if ((desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 2) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 3))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.KickNRun:
-                    if ((desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.Jetpack && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.LightKicker:
-                    if ((desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.GetUp && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 2))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.Spectator:
-                    if ((desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 2) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 3) ||
-                        (desc.UpgradeType == UpgradeType.EnergyRecharge && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalSword:
-                    if ((desc.UpgradeType == UpgradeType.SwordUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.KickUnlock))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalFireSword:
-                    if ((desc.UpgradeType == UpgradeType.SwordUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.FireSword && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalBow:
-                    if ((desc.UpgradeType == UpgradeType.BowUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.ArrowWidth && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalFireBow:
-                    if ((desc.UpgradeType == UpgradeType.BowUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.FireArrow && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalFireSpear:
-                    if ((desc.UpgradeType == UpgradeType.SpearUnlock) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.FireSpear && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalFireSpearKicker:
-                    if ((desc.UpgradeType == UpgradeType.SpearUnlock) ||
-                        (desc.UpgradeType == UpgradeType.KickUnlock) ||
-                        (desc.UpgradeType == UpgradeType.FireSpear && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalHammer:
-                    if ((desc.UpgradeType == UpgradeType.Hammer && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.Hammer && desc.Level == 2) ||
-                        (desc.UpgradeType == UpgradeType.EnergyCapacity && desc.Level == 1))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
-                case AutoBuildVariant.TacticalHammerKicker:
-                    if ((desc.UpgradeType == UpgradeType.Hammer && desc.Level == 1) ||
-                        (desc.UpgradeType == UpgradeType.Hammer && desc.Level == 2) ||
-                        (desc.UpgradeType == UpgradeType.KickUnlock))
-                    {
-                        icon.OnButtonClicked();
-                        yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playerPlayfabID));
-                    }
-                    break;
+                currentUpgradeIndex++;
             }
             yield break;
         }

@@ -17,7 +17,7 @@ namespace CDOverhaul
         public static bool IsAnOverhaulModUser(this FirstPersonMover firstPersonMover)
         {
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
-            return info != null && info.GetHashtable() != null;
+            return info && info.GetHashtable() != null;
         }
 
         public static bool IsAnOverhaulModUser(this MultiplayerPlayerInfoState infoState)
@@ -30,6 +30,70 @@ namespace CDOverhaul
                 return false;
 
             return IsAnOverhaulModUser(character as FirstPersonMover);
+        }
+
+        public static bool IsOverhaulDeveloper(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover)
+                return false;
+
+            return firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3";
+        }
+
+        public static bool IsDebugBuildUser(this FirstPersonMover firstPersonMover)
+        {
+            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
+            if (!info)
+                return false;
+
+            string flags = info.GetFlagsData();
+            if (string.IsNullOrEmpty(flags))
+                return false;
+
+            return flags.Contains("debug");
+        }
+
+        public static bool HasPermissionToUseLockedStuff(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover)
+                return false;
+
+            return firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper();
+        }
+
+        public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)
+        {
+            List<UpgradeUIIcon> icons = upgradeUI.GetPrivateField<List<UpgradeUIIcon>>("_icons");
+            if (icons.IsNullOrEmpty())
+                return null;
+
+            UpgradeUIIcon result = null;
+            int index = 0;
+            do
+            {
+                UpgradeUIIcon icon = icons[index];
+                if(!icon)
+                {
+                    index++;
+                    continue;
+                }
+
+                UpgradeDescription upgradeDescription = icon.GetDescription();
+                if (!upgradeDescription)
+                {
+                    index++;
+                    continue;
+                }
+
+                if (upgradeDescription.UpgradeType == upgradeType && upgradeDescription.Level == upgradeLevel)
+                {
+                    result = icon;
+                    break;
+                }
+                index++;
+            } while (index < icons.Count);
+
+            return result;
         }
 
         /// <summary>
