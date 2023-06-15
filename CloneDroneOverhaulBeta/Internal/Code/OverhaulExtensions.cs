@@ -37,11 +37,20 @@ namespace CDOverhaul
             if (!firstPersonMover)
                 return false;
 
+            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && ExclusivityController.GetLocalPlayFabID() == "883CC7F4CA3155A3")
+                return true;
+
             return firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3";
         }
 
         public static bool IsDebugBuildUser(this FirstPersonMover firstPersonMover)
         {
+            if (!firstPersonMover)
+                return false;
+
+            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && OverhaulVersion.IsDebugBuild)
+                return true;
+
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
             if (!info)
                 return false;
