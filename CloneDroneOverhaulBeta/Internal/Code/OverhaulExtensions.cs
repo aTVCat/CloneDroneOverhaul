@@ -67,6 +67,9 @@ namespace CDOverhaul
             if (!firstPersonMover)
                 return false;
 
+            if (!firstPersonMover.IsPlayer())
+                return true;
+
             return firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper();
         }
 

@@ -1,4 +1,4 @@
-﻿#define AllowLevelDataPatches
+﻿//#define AllowLevelDataPatches
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -124,36 +124,48 @@ namespace CDOverhaul
             public static bool IsBootScreenEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_BOOT_SCREEN_ENABLED;
 
             /// <summary>
-            /// Startup screen
+            /// 
             /// </summary>
             private static readonly bool IS_DISCORD_PANEL_ENABLED = true;
             public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_DISCORD_PANEL_ENABLED;
 
             /// <summary>
-            /// Startup screen
+            /// 
             /// </summary>
-            private static readonly bool ARE_TOOLTIPS_ENABLED = true;
+            private static readonly bool ARE_TOOLTIPS_ENABLED = false;
             public static bool AreTooltipsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_TOOLTIPS_ENABLED;
 
             /// <summary>
-            /// Startup screen
+            /// 
             /// </summary>
-            private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = true;
+            private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = false;
             public static bool IsOverhaulGamemodesUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_OVERHAULED_GAMEMODES_UI_ENABLED;
 
             /// <summary>
-            /// Startup screen
+            /// 
             /// </summary>
             private static readonly bool IS_AUDIO_REVERB_FILTER_ENABLED = true;
             public static bool IsAudioReverbFilterEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_AUDIO_REVERB_FILTER_ENABLED;
 
             /// <summary>
-            /// Startup screen
+            /// 
             /// </summary>
-            private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = true;
+            private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = false;
             public static bool IsFirstUseSetupUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_FIRST_USE_SETUP_UI_ENABLED;
 
-            public static bool AllowDeveloperUseAllSkins { get; } = false;
+            /// <summary>
+            /// 
+            /// </summary>
+            private static readonly bool IS_COMBAT_OVERHAUL_ENABLED = false;
+            public static bool IsCombatOverhaulEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_COMBAT_OVERHAUL_ENABLED;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            private static readonly bool ARE_ROBOT_EFFECTS_ENABLED = false;
+            public static bool AreRobotEffectsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_ROBOT_EFFECTS_ENABLED;
+
+            public static readonly bool AllowDeveloperUseAllSkins = false;
         }
     }
 }

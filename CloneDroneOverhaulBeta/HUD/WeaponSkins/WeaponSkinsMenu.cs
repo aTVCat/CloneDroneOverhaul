@@ -78,6 +78,7 @@ namespace CDOverhaul.HUD
         public static WeaponSkinsMenu SkinsSelection;
         public static WeaponSkinsMenu OutfitSelection;
 
+        private static int s_CurrentlyEditingItemIndex = -1;
         public static WeaponSkinsImportedItemDefinition CurrentlyEditingItem;
         public static ModelOffset CurrentlyEditingOffset;
 
@@ -457,9 +458,16 @@ namespace CDOverhaul.HUD
             m_SkinEditorTranform.gameObject.SetActive(value);
             RefreshOptions(false);
 
-            if (value && CurrentlyEditingItem == null)
+            if (!value)
+                return;
+
+            if(s_CurrentlyEditingItemIndex == -1)
             {
-                EditSkin(0);
+                EditSkin(m_CustomSkinsDropdown.options.Count - 1);
+            }
+            else
+            {
+                EditSkin(s_CurrentlyEditingItemIndex);
             }
         }
 
@@ -554,10 +562,13 @@ namespace CDOverhaul.HUD
                 createdNew = true;
                 toEdit = WeaponSkinsImportedItemDefinition.GetNew(true);
             }
+
             CurrentlyEditingItem = toEdit;
             CurrentlyEditingOffset = null;
             RefreshOptions(createdNew);
             RefreshFields();
+
+            s_CurrentlyEditingItemIndex = createdNew ? m_CustomSkinsDropdown.options.Count - 1 : index;
         }
 
         public void SaveEditingSkin()

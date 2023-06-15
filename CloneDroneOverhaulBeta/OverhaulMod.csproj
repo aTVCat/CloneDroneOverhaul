@@ -516,6 +516,7 @@
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AmplifyColorSwapper_Patch.cs" />
+    <Compile Include="Internal\Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Internal\Patches\TrophyShelf_Patch.cs" />
     <Compile Include="Internal\Patches\ObjectPlacedInLevel_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEnemySpawner_Patch.cs" />

@@ -44,6 +44,10 @@ namespace CDOverhaul.Graphics
         private Renderer[] m_JawRenderers;
         private Renderer[] m_ShieldRenderers;
 
+        private LevelEditorCinematicCamera m_CinematicCamera;
+        private bool m_CineCameraOn;
+        private bool m_HasRefreshedCinematicCameraOnStart;
+
         private Transform m_FPModeCameraParent;
         private Camera m_Camera;
 
@@ -52,7 +56,7 @@ namespace CDOverhaul.Graphics
             base.Start();
 
             m_ShieldRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Shield);
-            m_HeadRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Head);
+            m_HeadRenderers = GetRenderersOfBodyPart(Owner, "Head");
             m_JawRenderers = GetRenderersOfBodyPart(Owner, "Jaw");
             m_Camera = Owner.GetPlayerCamera();
             m_FPModeCameraParent = Owner.GetBodyPartParent("Head");
@@ -60,6 +64,7 @@ namespace CDOverhaul.Graphics
             RefreshView();
 
             _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDisposed()
@@ -68,6 +73,7 @@ namespace CDOverhaul.Graphics
             SetHeadRenderersActive(true);
 
             OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDeath()
@@ -77,15 +83,54 @@ namespace CDOverhaul.Graphics
 
         private void LateUpdate()
         {
-            if (m_FPModeCameraParent != null && ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
+            if (!m_HasRefreshedCinematicCameraOnStart)
             {
-                m_Camera.transform.position = m_FPModeCameraParent.transform.position + (m_FPModeCameraParent.transform.up * 0.45f);
+                RefreshCinematicCameraOnStart();
+                m_HasRefreshedCinematicCameraOnStart = true;
+            }
+
+            if (!m_CineCameraOn && m_FPModeCameraParent != null && ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
+            {
+                if (!TimeManager.Instance.IsGamePaused()) m_Camera.fieldOfView = 80;
+                m_Camera.transform.position = m_FPModeCameraParent.transform.position + (m_FPModeCameraParent.transform.up * (ViewModesController.DefaultCameraUpTransformMultiplier + (ViewModesController.IsLargeBot(Owner) ? ViewModesController.AdditionalCameraUpTransformMultiplier : 0f)));
                 if (ViewModesController.SyncCameraWithHeadRotation)
                     m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
             if (Time.frameCount % 5 == 0)
                 RefreshHeadVisibility();
+
+            if (m_CineCameraOn)
+            {
+                if (!m_CinematicCamera || !m_CinematicCamera.HasTakenOverPlayerCamera())
+                    OnCinematicCameraTurnedOff();
+            }
+        }
+
+        public void RefreshCinematicCameraOnStart()
+        {
+            if (!m_Camera || !m_Camera.transform.parent || !m_Camera.transform.parent.parent)
+                return;
+
+            Transform cinematicCameraTransform = m_Camera.transform.parent.parent;
+            if (cinematicCameraTransform.gameObject.name.Contains("CinematicCamera"))
+            {
+                m_CinematicCamera = cinematicCameraTransform.GetComponent<LevelEditorCinematicCamera>();
+                m_CineCameraOn = m_CinematicCamera;
+            }
+        }
+
+        // Todo: Add a settings that allows first person mode even in cutscenes?
+        public void OnCinematicCameraTurnedOn(LevelEditorCinematicCamera cam)
+        {
+            m_CinematicCamera = cam;
+            m_CineCameraOn = true;
+        }
+
+        public void OnCinematicCameraTurnedOff()
+        {
+            m_CinematicCamera = null;
+            m_CineCameraOn = false;
         }
 
         public void RefreshView()
@@ -97,7 +142,7 @@ namespace CDOverhaul.Graphics
 
         public void RefreshHeadVisibility()
         {
-            SetHeadRenderersActive(!ViewModesController.IsFirstPersonModeEnabled || !Owner.IsMainPlayer() || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetHeadRenderersActive(m_CineCameraOn || !ViewModesController.IsFirstPersonModeEnabled || !Owner.IsMainPlayer() || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         public void SetHeadRenderersActive(bool value)

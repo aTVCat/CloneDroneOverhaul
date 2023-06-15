@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Graphics;
 using OverhaulAPI;
 using System;
 using System.Collections;
@@ -144,6 +145,20 @@ namespace CDOverhaul.Gameplay.Outfits
             accessory.transform.localEulerAngles = offset.OffsetEulerAngles;
             accessory.transform.localScale = offset.OffsetLocalScale;
             accessory.SetActive(true);
+        }
+
+        private void Update()
+        {
+            if(Time.frameCount % 10 == 0 && !m_SpawnedAccessories.IsNullOrEmpty() && Owner.IsMainPlayer())
+            {
+                foreach(GameObject gm in m_SpawnedAccessories.Values)
+                {
+                    if (!gm)
+                        continue;
+
+                    gm.SetActive(!ViewModesController.IsFirstPersonModeEnabled || PhotoManager.Instance.IsInPhotoMode());
+                }
+            }
         }
     }
 }
