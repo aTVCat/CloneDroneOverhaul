@@ -165,6 +165,12 @@ namespace CDOverhaul
             private static readonly bool ARE_ROBOT_EFFECTS_ENABLED = true;
             public static bool AreRobotEffectsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_ROBOT_EFFECTS_ENABLED;
 
+            /// <summary>
+            /// Enable the transition initially used in prototype builds
+            /// </summary>
+            private static readonly bool IS_NEW_TRANSITION_SCREEN_ENABLED = true;
+            public static bool IsNewTransitionScreenEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_NEW_TRANSITION_SCREEN_ENABLED;
+
             public static readonly bool AllowDeveloperUseAllSkins = true;
         }
     }
