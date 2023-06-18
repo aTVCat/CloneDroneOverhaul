@@ -132,13 +132,13 @@ namespace CDOverhaul
             /// <summary>
             /// 
             /// </summary>
-            private static readonly bool ARE_TOOLTIPS_ENABLED = false;
+            private static readonly bool ARE_TOOLTIPS_ENABLED = true;
             public static bool AreTooltipsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_TOOLTIPS_ENABLED;
 
             /// <summary>
             /// 
             /// </summary>
-            private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = false;
+            private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = true;
             public static bool IsOverhaulGamemodesUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_OVERHAULED_GAMEMODES_UI_ENABLED;
 
             /// <summary>
@@ -150,22 +150,22 @@ namespace CDOverhaul
             /// <summary>
             /// 
             /// </summary>
-            private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = false;
+            private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = true;
             public static bool IsFirstUseSetupUIEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_FIRST_USE_SETUP_UI_ENABLED;
 
             /// <summary>
             /// 
             /// </summary>
-            private static readonly bool IS_COMBAT_OVERHAUL_ENABLED = false;
+            private static readonly bool IS_COMBAT_OVERHAUL_ENABLED = true;
             public static bool IsCombatOverhaulEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_COMBAT_OVERHAUL_ENABLED;
 
             /// <summary>
             /// 
             /// </summary>
-            private static readonly bool ARE_ROBOT_EFFECTS_ENABLED = false;
+            private static readonly bool ARE_ROBOT_EFFECTS_ENABLED = true;
             public static bool AreRobotEffectsEnabled => !OverhaulVersion.IsUpdate2Hotfix && ARE_ROBOT_EFFECTS_ENABLED;
 
-            public static readonly bool AllowDeveloperUseAllSkins = false;
+            public static readonly bool AllowDeveloperUseAllSkins = true;
         }
     }
 }

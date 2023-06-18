@@ -22,6 +22,9 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void Show()
         {
+            if(!GamemodesUI.gameObject.activeSelf) 
+                GamemodesUI.Show();
+
             base.gameObject.SetActive(true);
             OnShow();
         }
@@ -30,6 +33,9 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void Hide()
         {
+            if (GamemodesUI.gameObject.activeSelf) 
+                GamemodesUI.Hide();
+
             base.gameObject.SetActive(false);
             OnHide();
         }

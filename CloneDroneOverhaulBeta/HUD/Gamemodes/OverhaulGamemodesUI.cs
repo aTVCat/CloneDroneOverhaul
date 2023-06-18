@@ -14,6 +14,8 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         public ChapterSelectionUI OverhaulChapterSelectionUI;
         public LastBotStandingPlayUI OverhaulLastBotStandingPlayUI;
+        public ChallengesUI OverhaulChallengesUI;
+
         public OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
 
         private RawImage m_Background;
@@ -30,8 +32,10 @@ namespace CDOverhaul.HUD.Gamemodes
             m_Background = MyModdedObject.GetObject<RawImage>(0);
             FullscreenWindow = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<OverhaulGamemodesUIFullscreenWindow>();
             FullscreenWindow.Initialize();
+
             OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(2).gameObject.AddComponent<ChapterSelectionUI>().Initialize<ChapterSelectionUI>(this);
             OverhaulLastBotStandingPlayUI = MyModdedObject.GetObject<Transform>(3).gameObject.AddComponent<LastBotStandingPlayUI>().Initialize<LastBotStandingPlayUI>(this);
+            OverhaulChallengesUI = MyModdedObject.GetObject<Transform>(5).gameObject.AddComponent<ChallengesUI>().Initialize<ChallengesUI>(this);
 
             if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsOverhaulGamemodesUIEnabled)
                 return;
@@ -41,6 +45,11 @@ namespace CDOverhaul.HUD.Gamemodes
             datas[0].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(0);
+            });
+            datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            datas[2].ClickedCallback.AddListener(delegate
+            {
+                ShowWithUI(2);
             });
 
             GameModeCardData[] datas2 = GameUIRoot.Instance.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
@@ -71,6 +80,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
             OverhaulChapterSelectionUI.Hide();
             OverhaulLastBotStandingPlayUI.Hide();
+            OverhaulChallengesUI.Hide();
             switch (index)
             {
                 case 0:
@@ -79,6 +89,9 @@ namespace CDOverhaul.HUD.Gamemodes
                 case 1:
                     OverhaulLastBotStandingPlayUI.Show();
                     break;
+                case 2:
+                    OverhaulChallengesUI.Show();
+                    break;
             }
         }
 
@@ -86,7 +99,6 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.gameObject.SetActive(false);
             FullscreenWindow.Hide();
-            ShowWithUI(-1);
         }
 
         public void ChangeBackgroundTexture(string filePath)

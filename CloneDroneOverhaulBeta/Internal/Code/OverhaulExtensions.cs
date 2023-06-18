@@ -62,6 +62,22 @@ namespace CDOverhaul
             return flags.Contains("debug");
         }
 
+        public static bool IsBlacklistedBuildUser(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover)
+                return false;
+
+            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
+            if (!info)
+                return false;
+
+            Hashtable hashtable = info.GetHashtable();
+            if (hashtable == null || !hashtable.ContainsKey("State.Version"))
+                return false;
+
+            return OverhaulVersion.BlacklistedVersions.Contains(hashtable["State.Version"]);
+        }
+
         public static bool HasPermissionToUseLockedStuff(this FirstPersonMover firstPersonMover)
         {
             if (!firstPersonMover)
@@ -70,7 +86,7 @@ namespace CDOverhaul
             if (!firstPersonMover.IsPlayer())
                 return true;
 
-            return firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper();
+            return (firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper()) && !firstPersonMover.IsBlacklistedBuildUser();
         }
 
         public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)

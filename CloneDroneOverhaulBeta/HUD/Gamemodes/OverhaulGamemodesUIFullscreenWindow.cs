@@ -12,11 +12,17 @@ namespace CDOverhaul.HUD.Gamemodes
 {
     public class OverhaulGamemodesUIFullscreenWindow : OverhaulBehaviour
     {
+        public static readonly Vector2 DefaultWindowSize = new Vector2(300, 150);
+        public static readonly Vector2 GameCustomizationWindowSize = new Vector2(400, 425);
+
         public bool IsActive => base.gameObject.activeSelf;
         public bool StateSwitchingInProgress;
 
         private Image m_Shading;
-        private Transform m_PanelTransform;
+        private RectTransform m_PanelTransform;
+        private CanvasGroup m_CanvasGroup;
+
+        private GameObject[] PageGameObjects = new GameObject[3];
 
         private Action m_Callback;
 
@@ -24,29 +30,84 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             m_Shading = moddedObject.GetObject<Image>(0);
-            m_PanelTransform = moddedObject.GetObject<Transform>(1);
+            m_PanelTransform = moddedObject.GetObject<RectTransform>(1);
+            m_CanvasGroup = moddedObject.GetObject<CanvasGroup>(5);
+
+            PageGameObjects[0] = moddedObject.GetObject<Transform>(2).gameObject;
+            PageGameObjects[0].AddComponent<DifficultySelectionPage>().Initialize(this);
+            PageGameObjects[1] = moddedObject.GetObject<Transform>(3).gameObject;
+            PageGameObjects[1].AddComponent<HostTypeSelectionPage>().Initialize(this);
+            PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
+            PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
 
             base.gameObject.SetActive(false);
         }
 
-        public void Show(Action onPressedStartButtonCallback)
+        public void Show(Action onPressedStartButtonCallback, int windowIndex)
         {
             if (IsActive || StateSwitchingInProgress)
                 return;
+
+            ShowPage(windowIndex);
 
             m_Callback = onPressedStartButtonCallback;
             StaticCoroutineRunner.StartStaticCoroutine(showAnimationCoroutine());
         }
 
-        public void Hide()
+        public void Hide(bool forceHideIfSwitching = false)
         {
             if (!IsActive || StateSwitchingInProgress)
+            {
+                if (!forceHideIfSwitching)
+                    return;
+
+                base.gameObject.SetActive(false);
                 return;
+            }
 
             StaticCoroutineRunner.StartStaticCoroutine(hideAnimationCoroutine());
         }
 
-        public void OnPressedStart()
+        public void ShowPage(int index)
+        {
+            int i = 0;
+            foreach(GameObject gameObject in PageGameObjects)
+            {
+                if (!gameObject)
+                {
+                    i++;
+                    continue;
+                }
+
+                FullscreenWindowPageBase pageBase = gameObject.GetComponent<FullscreenWindowPageBase>();
+                if (!pageBase)
+                {
+                    i++;
+                    continue;
+                }
+
+                if (i == index)
+                {
+                    gameObject.SetActive(true);
+                    m_PanelTransform.sizeDelta = pageBase.GetWindowSize();
+                }
+                else
+                    gameObject.SetActive(false);
+
+                i++;
+            }
+        }
+
+        public void GoToPage(int index)
+        {
+            FullscreenWindowPageBase pageBase = PageGameObjects[index].GetComponent<FullscreenWindowPageBase>();
+            if (!pageBase)
+                return;
+
+            StaticCoroutineRunner.StartStaticCoroutine(transitionToDifferentPage(pageBase.GetWindowSize(), index));
+        }
+
+        public void DoQuickStart()
         {
             if (StateSwitchingInProgress || m_Callback == null)
                 return;
@@ -101,10 +162,45 @@ namespace CDOverhaul.HUD.Gamemodes
             yield break;
         }
 
+        private IEnumerator transitionToDifferentPage(Vector2 targetSize, int pageIndex)
+        {
+            StateSwitchingInProgress = true;
+            OverhaulCanvasController.SetCanvasPixelPerfect(false);
+
+            for (int i2 = 0; i2 < 4; i2++)
+            {
+                m_PanelTransform.sizeDelta += (targetSize - m_PanelTransform.sizeDelta) * 0.25f;
+                m_CanvasGroup.alpha -= 0.25f;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            ShowPage(-1);
+
+            int i = 0;
+            while (i < 16)
+            {
+                m_PanelTransform.sizeDelta += (targetSize - m_PanelTransform.sizeDelta) * 0.25f;
+                yield return new WaitForSecondsRealtime(0.016f);
+
+                i++;
+            }
+            m_PanelTransform.sizeDelta = targetSize;
+            m_CanvasGroup.alpha = 0f;
+
+            ShowPage(pageIndex);
+            OverhaulCanvasController.SetCanvasPixelPerfect(true);
+            for(int i2 =0; i2 < 4; i2++)
+            {
+                m_CanvasGroup.alpha += 0.25f;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+
+            StateSwitchingInProgress = false;
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-                OnPressedStart();
+                DoQuickStart();
 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
                 Hide();

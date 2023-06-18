@@ -1,6 +1,6 @@
 Win64
 PlayerPath?
-D:/Clone drone stuff/Clone drone overhaul rewrite/OverhaulUnityProjectNormal/Assets/StreamingAssets/overhauldemostuff
+D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Assets/StreamingAssets/overhauldemostuff
 SceneListBegin?
 Assets/ModStuff/BetaOverhaul/Scenes/OverhaulFSEnvScene.unity
 Assets/ModStuff/BetaOverhaul/Scenes/TestScene.unity

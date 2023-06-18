@@ -12,7 +12,12 @@ namespace CDOverhaul
         private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0");
         private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.2");
 
-        public static Version ModVersion => (IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion));
+        public static string[] BlacklistedVersions = new string[]
+        {
+            "0.3.0.199" // A debug copy of the build was accidentally released to public
+        };
+
+        public static Version ModVersion => IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion);
 
         /// <summary>
         /// The version of game mod will definitely work 

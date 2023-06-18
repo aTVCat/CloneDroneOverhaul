@@ -11,7 +11,6 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Workshop
 {
-    // Todo: Complete all OnDisposed methods
     public class OverhaulWorkshopBrowserUI : OverhaulUI
     {
         #region Settings
