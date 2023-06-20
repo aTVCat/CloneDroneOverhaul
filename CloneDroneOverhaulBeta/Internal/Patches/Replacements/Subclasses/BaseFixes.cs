@@ -60,6 +60,7 @@ namespace CDOverhaul.Patches
         {
             if (LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
                 return;
+
             if (!piksielyPrst)
             {
                 _ = LocalizationManager.Instance.SupportedLanguages[0].UIFont != m_OgUIFont;

@@ -448,6 +448,7 @@
     <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
     <Compile Include="HUD\Gamemodes\Bases\ChallengesUI.cs" />
+    <Compile Include="HUD\Gamemodes\Bases\EndlessModeUI.cs" />
     <Compile Include="HUD\Gamemodes\FullscreenWindowPageBase.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodesUIFullscreenWindow.cs" />
     <Compile Include="HUD\Gamemodes\Bases\ChapterSelectionUI.cs" />

@@ -1,4 +1,7 @@
-﻿using CDOverhaul.HUD.Transitions;
+﻿using CDOverhaul.HUD.Gamemodes;
+using CDOverhaul.HUD.Transitions;
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -35,7 +38,7 @@ namespace CDOverhaul
             if (HasSpawnedTransitionHUD())
                 return;
 
-            s_CurrentTransition = Object.Instantiate(s_TransitionPrefab).AddComponent<OverhaulTransitionBehaviour>();
+            s_CurrentTransition = UnityEngine.Object.Instantiate(s_TransitionPrefab).AddComponent<OverhaulTransitionBehaviour>();
             s_CurrentTransition.Initialize(fadeOut, isSceneSwitching);
             s_FadeOutOnSceneLoad = isSceneSwitching;
         }
@@ -50,7 +53,7 @@ namespace CDOverhaul
                 s_CurrentTransition.Initialize(true);
                 return;
             }
-            Object.Destroy(s_CurrentTransition.gameObject);
+            UnityEngine.Object.Destroy(s_CurrentTransition.gameObject);
         }
 
         public static bool HasSpawnedTransitionHUD() => s_CurrentTransition;
@@ -58,6 +61,26 @@ namespace CDOverhaul
         public static void GoToMainMenu()
         {
             CreateTransition(true, false);
+        }
+
+        public static void DoTransitionWithAction(Action action, Func<bool> waitUntilFunc = null, float waitUntilEndDelay = 0.35f)
+        {
+            StaticCoroutineRunner.StartStaticCoroutine(doTransitionWithActionCoroutine(action, waitUntilFunc, waitUntilEndDelay));
+        }
+
+        private static IEnumerator doTransitionWithActionCoroutine(Action action, Func<bool> waitUntilFunc = null, float waitUntilEndDelay = 0.35f)
+        {
+            CreateTransition();
+
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            if (action != null) action.Invoke();
+            if(waitUntilFunc != null) yield return new WaitUntil(waitUntilFunc);
+
+            yield return new WaitForSecondsRealtime(waitUntilEndDelay);
+
+            EndTransition(true);
+            yield break;
         }
     }
 }

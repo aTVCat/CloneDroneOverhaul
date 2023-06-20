@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
@@ -16,11 +18,17 @@ namespace CDOverhaul.HUD.Gamemodes
 
         private OverhaulUI.PrefabAndContainer ChallengesContainer;
 
+        private Text m_ChallengeTitleLabel;
+        private Text m_ChallengeCompletionLabel;
+
         protected override void OnInitialize()
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
+            m_ChallengeTitleLabel = moddedObject.GetObject<Text>(3);
+            m_ChallengeCompletionLabel = moddedObject.GetObject<Text>(4);
             ChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 1);
             moddedObject.GetObject<Button>(2).onClick.AddListener(goBackToGamemodeSelection);
+            ShowChallengeTooltip(null);
         }
 
         protected override void OnShow()
@@ -62,7 +70,23 @@ namespace CDOverhaul.HUD.Gamemodes
             }
         }
 
-        public class UIChallengeEntry : OverhaulBehaviour
+        public void ShowChallengeTooltip(ChallengeDefinition definition)
+        {
+            if(definition == null)
+            {
+                m_ChallengeTitleLabel.text = "Hover cursor over challenge...";
+                m_ChallengeCompletionLabel.text = string.Empty;
+                return;
+            }
+
+            int allLevels = definition.GetNumberOfTotalLevels();
+            int beatenLevels = definition.GetNumberOfBeatenLevels();
+
+            m_ChallengeTitleLabel.text = LocalizationManager.Instance.GetTranslatedString(definition.ChallengeName, -1);
+            m_ChallengeCompletionLabel.text = allLevels == int.MaxValue ? beatenLevels + " Completed" : beatenLevels + "/" + allLevels + " Completed"; 
+        }
+
+        public class UIChallengeEntry : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             private ChallengesUI m_ChallengesUI;
             private ChallengeDefinition m_ChallengeDefinition;
@@ -73,6 +97,8 @@ namespace CDOverhaul.HUD.Gamemodes
             private Text m_Title;
             private Text m_Description;
             private Image m_Preview;
+
+            private bool m_IsHighlighted;
 
             public UIChallengeEntry Initialize(ChallengeDefinition definition, ModdedObject moddedObject, ChallengesUI challengesUI)
             {
@@ -107,8 +133,26 @@ namespace CDOverhaul.HUD.Gamemodes
 
             public void StartChallenge()
             {
-                m_ChallengesUI.Hide();
-                ChallengeManager.Instance.StartChallenge(m_ChallengeDefinition, false);
+                Action action = delegate
+                {
+                    ChallengeManager.Instance.StartChallenge(m_ChallengeDefinition, false);
+                    OverhaulGamemodesUI gamemodesUI = OverhaulController.GetController<OverhaulGamemodesUI>();
+                    if (gamemodesUI) gamemodesUI.Hide();
+                };
+                Func<bool> func = new Func<bool>(() => CharacterTracker.Instance.GetPlayer());
+                OverhaulTransitionController.DoTransitionWithAction(action, func, 0.10f);
+            }
+
+            public void OnPointerExit(PointerEventData eventData)
+            {
+                m_IsHighlighted = false;
+                m_ChallengesUI.ShowChallengeTooltip(null);
+            }
+
+            public void OnPointerEnter(PointerEventData eventData)
+            {
+                m_IsHighlighted = true;
+                m_ChallengesUI.ShowChallengeTooltip(m_ChallengeDefinition);
             }
         }
     }

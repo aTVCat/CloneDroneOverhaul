@@ -17,7 +17,8 @@ namespace CDOverhaul
         {
             { "883CC7F4CA3155A3", new ExclusiveColorInfo(new Color(0.76f, 0.85f, 1, 0.87f), 4) },
              { "193564D7A14F9C33", new ExclusiveColorInfo(new Color(0.45f, 0.04f, 0.65f, 1f), 10) },
-              { "F08DA308234126FB", new ExclusiveColorInfo(GetCyberkickColor(), 10) }
+              //{ "F08DA308234126FB", new ExclusiveColorInfo(GetCyberkickColor(), 10) },
+               { "F08DA308234126FB", new ExclusiveColorInfo("#76ff7a".ConvertHexToColor(), 16) }
         };
 
         private static readonly ReadOnlyDictionary<string, ExclusiveColorInfo> m_PlayerColorsReadOnly = new ReadOnlyDictionary<string, ExclusiveColorInfo>(m_PlayerInfos);

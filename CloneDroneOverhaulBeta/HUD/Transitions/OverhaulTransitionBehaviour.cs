@@ -24,6 +24,7 @@ namespace CDOverhaul.HUD.Transitions
         private bool m_HasInitialized;
         private float m_TimeToDestroy;
         private float m_TimeToDisconnect;
+        private float m_TimeToAllowColorUpdates;
 
         public void Initialize(bool fadeOut, bool realTransition = false)
         {
@@ -41,18 +42,23 @@ namespace CDOverhaul.HUD.Transitions
             m_Image.color = fadeOut ? Color.black : Color.clear;
             m_TimeToDestroy = fadeOut ? Time.unscaledTime + 3f : -1f;
             m_TimeToDisconnect = realTransition ? Time.unscaledTime + 0.5f : -1f;
+            //m_TimeToAllowColorUpdates = fadeOut ? Time.unscaledTime + 0.25f : -1f;
         }
 
         private void Update()
         {
-            Color currentColor = m_Image.color;
-            currentColor.a = Mathf.Lerp(currentColor.a, m_FadeOut ? 0f : 1f, Time.unscaledDeltaTime * UNSCALED_DELTA_TIME_MULTIPLIER);
-            m_Image.color = currentColor;
+            float time = Time.unscaledTime;
+            if (time >= m_TimeToAllowColorUpdates)
+            {
+                Color currentColor = m_Image.color;
+                currentColor.a = Mathf.Lerp(currentColor.a, m_FadeOut ? 0f : 1f, Time.unscaledDeltaTime * UNSCALED_DELTA_TIME_MULTIPLIER);
+                m_Image.color = currentColor;
+            }
 
-            if (m_TimeToDestroy != -1f && Time.unscaledTime >= m_TimeToDestroy)
+            if (m_TimeToDestroy != -1f && time >= m_TimeToDestroy)
                 Destroy(base.gameObject);
 
-            if(m_IsRealTransition && m_TimeToDisconnect != -1f && Time.unscaledTime >= m_TimeToDisconnect)
+            if(m_IsRealTransition && m_TimeToDisconnect != -1f && time >= m_TimeToDisconnect)
             {
                 Disconnect();
                 m_TimeToDisconnect = -1f;

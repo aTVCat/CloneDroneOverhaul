@@ -124,6 +124,76 @@ namespace CDOverhaul
             return result;
         }
 
+        #region ChallengeDefinition
+
+        public static int GetNumberOfBeatenLevels(this ChallengeDefinition challengeDefinition)
+        {
+            bool hadData = DataRepository.Instance.TryLoad<GameData>("ChallengeData" + challengeDefinition.ChallengeID, out GameData gameData, false);
+            if(!hadData || gameData == null)
+                return 0;
+
+            return gameData.LevelIDsBeatenThisPlaythrough.Count;
+        }
+
+        public static int GetNumberOfTotalLevels(this ChallengeDefinition challengeDefinition)
+        {
+            string id = challengeDefinition.ChallengeID.Replace("Coop", string.Empty);
+
+            List<LevelDescription> list = LevelManager.Instance.GetChallengeLevelDescriptions(id);
+            if (!list.IsNullOrEmpty())
+                return list.Count;
+
+            return int.MaxValue;
+        }
+
+        #endregion
+
+        #region LevelManager
+
+        /// <summary>
+        /// Get all levels related to challenges
+        /// </summary>
+        /// <param name="levelManager"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static Dictionary<string, List<LevelDescription>> GetAllChallengeLevelDescriptions(this LevelManager levelManager)
+        {
+            return levelManager.GetPrivateField<Dictionary<string, List<LevelDescription>>>("_challengeLevels");
+        }
+
+        /// <summary>
+        /// Get all challenge levels
+        /// </summary>
+        /// <param name="levelManager"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static List<LevelDescription> GetChallengeLevelDescriptions(this LevelManager levelManager, string challengeID)
+        {
+            Dictionary<string, List<LevelDescription>> all = levelManager.GetAllChallengeLevelDescriptions();
+            challengeID = challengeID.Replace("Coop", string.Empty);
+
+            all.TryGetValue(challengeID, out List<LevelDescription> result);
+            return result;
+        }
+
+        /// <summary>
+        /// Todo: Finish this method
+        /// </summary>
+        /// <param name="levelManager"></param>
+        /// <param name="index">0 - Story mode levels<br></br>1 - Endless mode levels</param>
+        /// <returns></returns>
+        public static List<LevelDescription> GetLevelDescriptions(this LevelManager levelManager, byte index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return levelManager.GetPrivateField<List<LevelDescription>>("_storyModeLevels");
+            }
+            return null;
+        }
+
+        #endregion
+
         /// <summary>
         /// Get a component of object with given index
         /// </summary>
