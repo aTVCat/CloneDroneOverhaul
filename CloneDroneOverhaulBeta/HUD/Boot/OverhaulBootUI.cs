@@ -16,7 +16,7 @@ namespace CDOverhaul
 
         public static void Show()
         {
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
                 return;
 
             m_HasEverShownUI = true;

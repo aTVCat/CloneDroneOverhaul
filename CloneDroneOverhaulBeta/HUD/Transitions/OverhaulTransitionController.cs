@@ -11,7 +11,7 @@ namespace CDOverhaul
     /// </summary>
     public static class OverhaulTransitionController
     {
-        public static bool IsNewTransitionEnabled => OverhaulFeatureAvailabilitySystem.BuildImplements.IsNewTransitionScreenEnabled;
+        public static bool IsNewTransitionEnabled => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled;
 
         private static GameObject s_TransitionPrefab;
 

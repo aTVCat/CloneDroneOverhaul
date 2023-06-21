@@ -7,8 +7,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public class AutoBuild : OverhaulGameplayController
     {
-        [SettingDropdownParameters("None@Random@Full sword@Full bow@Full hammer@Full spear@Kicker@Light kicker@Armored kicker@Kick'N'Dash@Kick'N'Run@Tactical sword@Tactical fire sword@Jetpack sword@Tactical bow@Tactical fire bow@Tactical Fire Spear@Fire Spear Kicker@Tactical Hammer@Hammer Kicker@Spectator")]
-        [OverhaulSetting("QoL.Last Bot Standing.Auto-Build", 0, false, " ", null, null, null)]
+        [OverhaulSettingDropdownParameters("None@Random@Full sword@Full bow@Full hammer@Full spear@Kicker@Light kicker@Armored kicker@Kick'N'Dash@Kick'N'Run@Tactical sword@Tactical fire sword@Jetpack sword@Tactical bow@Tactical fire bow@Tactical Fire Spear@Fire Spear Kicker@Tactical Hammer@Hammer Kicker@Spectator")]
+        [OverhaulSetting("QoL.Last Bot Standing.Auto-Build", 0, false, " ", null)]
         public static int SelectedAutoBuildVariant;
 
         /// <summary>

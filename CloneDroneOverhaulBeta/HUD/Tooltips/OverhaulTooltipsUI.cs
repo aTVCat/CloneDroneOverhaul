@@ -12,7 +12,7 @@ namespace CDOverhaul.HUD.Tooltips
         [OverhaulSetting("Mod.Tooltips.Show tooltips", true, !OverhaulVersion.IsUpdate2Hotfix)]
         public static bool ShowTooltips;
 
-        [SettingSliderParameters(false, 2f, 8f)]
+        [OverhaulSettingSliderParameters(false, 2f, 8f)]
         [OverhaulSetting("Mod.Tooltips.Show duration", 4f, !OverhaulVersion.IsUpdate2Hotfix)]
         public static float TooltipsShowDuration;
 
@@ -59,7 +59,7 @@ namespace CDOverhaul.HUD.Tooltips
 
         public void Show()
         {
-            if (!ShowTooltips || !OverhaulFeatureAvailabilitySystem.BuildImplements.AreTooltipsEnabled)
+            if (!ShowTooltips || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreTooltipsEnabled)
                 return;
 
             if (HaveToPopulateTooltips)

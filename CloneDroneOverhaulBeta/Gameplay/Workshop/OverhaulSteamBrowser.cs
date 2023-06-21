@@ -7,39 +7,59 @@ namespace CDOverhaul.Workshop
 {
     public static class OverhaulSteamBrowser
     {
-        public static readonly AppId_t CloneDroneSteamAppID = new AppId_t(597170U);
+        public static readonly AppId_t AppId = new AppId_t(597170U);
 
         private static readonly List<ulong> m_KnownUserIDs = new List<ulong>();
         private static readonly List<PublishedFileId_t> m_DownloadingItems = new List<PublishedFileId_t>();
 
         #region Workshop Items
 
-        public static void RequestItems(EUGCQuery query, EUGCMatchingUGCType typeOfContent, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo, string tag, int page, bool cache = false, bool returnLongDescription = false)
+        public static void RequestItems(EUGCQuery rank, EUGCMatchingUGCType contentType, Action<OverhaulWorkshopRequestResult> completedCallback, ProgressInformation progressInfo, string searchText, string tags, int page, bool cache = false, bool returnLongDescription = false)
         {
             if (completedCallback == null)
                 return;
 
             OverhaulWorkshopRequestResult requestResult = new OverhaulWorkshopRequestResult();
-            OverhaulRequestProgressInfo.SetProgress(progressInfo, 0f);
+            ProgressInformation.SetProgress(progressInfo, 0f);
 
-            UGCQueryHandle_t request = SteamUGC.CreateQueryAllUGCRequest(query, typeOfContent, CloneDroneSteamAppID, CloneDroneSteamAppID, (uint)page);
-            if (!CheckRequest(request))
+            UGCQueryHandle_t request = SteamUGC.CreateQueryAllUGCRequest(rank, contentType, AppId, AppId, (uint)page);
+            if (request.IsInvalid())
             {
+                Debug.LogWarning("[OverhaulMod] Request is invalid (Query: " + rank + ", Content type: " + contentType + ", Page: " + page + ", Cache: " + cache);
                 requestResult.Error = true;
-                Debug.LogWarning("[OverhaulMod] Request is invalid (Query: " + query + ", Content type: " + typeOfContent + ", Page: " + page + ", Cache: " + cache);
                 completedCallback.Invoke(requestResult);
                 return;
             }
 
             if (cache) _ = SteamUGC.SetAllowCachedResponse(request, 6);
             if (returnLongDescription) _ = SteamUGC.SetReturnLongDescription(request, true);
+            if (!string.IsNullOrEmpty(searchText)) _ = SteamUGC.SetSearchText(request, searchText);
             _ = SteamUGC.SetReturnAdditionalPreviews(request, true);
-            _ = SteamUGC.AddRequiredTag(request, tag);
+            _ = SteamUGC.AddRequiredTag(request, tags);
 
             SendUGCRequest(request, requestResult, completedCallback, progressInfo);
         }
 
-        public static void SendUGCRequest(UGCQueryHandle_t request, OverhaulWorkshopRequestResult requestResult, Action<OverhaulWorkshopRequestResult> completedCallback, OverhaulRequestProgressInfo progressInfo)
+        public static void RequestItems(EUGCQuery rank, EUGCMatchingUGCType contentType, Action<List<OverhaulWorkshopRequestResult>> completedCallback, ProgressInformation progressInfo, string searchText, string tags, int[] pages, bool cache = false, bool returnLongDescription = false)
+        {
+            List<OverhaulWorkshopRequestResult> results = new List<OverhaulWorkshopRequestResult>(pages.Length);
+            List<ProgressInformation> progressInformations = new List<ProgressInformation>(pages.Length);
+            ProgressInformation.SetProgress(progressInfo, 0f);
+
+            foreach (int page in pages)
+            {
+                ProgressInformation progressInformation = new ProgressInformation();
+                progressInformations.Add(progressInformation);
+
+                RequestItems(rank, contentType, delegate (OverhaulWorkshopRequestResult result)
+                {
+                    ProgressInformation.SetProgress(progressInfo, (float)results.Count / pages.Length);
+                    results.Add(result);
+                }, progressInformation, searchText, tags, page, cache, returnLongDescription);
+            }
+        }
+
+        public static void SendUGCRequest(UGCQueryHandle_t request, OverhaulWorkshopRequestResult requestResult, Action<OverhaulWorkshopRequestResult> completedCallback, ProgressInformation progressInfo)
         {
             if (completedCallback == null)
                 return;
@@ -47,37 +67,38 @@ namespace CDOverhaul.Workshop
             if (requestResult == null)
                 requestResult = new OverhaulWorkshopRequestResult();
 
-            if (!CheckRequest(request))
+            if (request.IsInvalid())
             {
-                requestResult.Error = true;
                 Debug.LogWarning("[OverhaulMod] Cannot send UGC request");
+                requestResult.Error = true;
                 completedCallback.Invoke(requestResult);
                 return;
             }
 
-            OverhaulRequestProgressInfo.SetProgress(progressInfo, 0.4f);
+            ProgressInformation.SetProgress(progressInfo, 0.4f);
             SteamAPICall_t apiCall = SteamUGC.SendQueryUGCRequest(request);
-            if (apiCall == SteamAPICall_t.Invalid)
+            if (apiCall.IsInvalid())
             {
                 requestResult.Error = true;
-                Debug.LogWarning("[OverhaulMod] APICall is invalid");
                 completedCallback.Invoke(requestResult);
                 return;
             }
+
             CallResult<SteamUGCQueryCompleted_t> apiCallResult = CallResult<SteamUGCQueryCompleted_t>.Create(delegate (SteamUGCQueryCompleted_t queryResult, bool bIOFailure)
             {
                 if (bIOFailure)
                 {
+                    Debug.LogWarning("[OverhaulMod] APICallResult IO error!");
                     requestResult.Error = true;
-                    Debug.LogWarning("[OverhaulMod] APICallResult had IO error!");
                     completedCallback.Invoke(requestResult);
                     return;
                 }
 
                 requestResult.PageCount = (int)((queryResult.m_unTotalMatchingResults / 50U) + 1U);
 
-                OverhaulRequestProgressInfo.SetProgress(progressInfo, 0.7f);
+                ProgressInformation.SetProgress(progressInfo, 0.7f);
                 OverhaulWorkshopItem[] items = new OverhaulWorkshopItem[queryResult.m_unNumResultsReturned];
+
                 int num = 0;
                 while (num < (int)queryResult.m_unNumResultsReturned)
                 {
@@ -104,23 +125,15 @@ namespace CDOverhaul.Workshop
                 }
                 requestResult.QueryCompleted = queryResult;
                 requestResult.ItemsReceived = items;
-                OverhaulRequestProgressInfo.SetProgress(progressInfo, 1f);
+                ProgressInformation.SetProgress(progressInfo, 1f);
                 completedCallback.Invoke(requestResult);
             });
             apiCallResult.Set(apiCall);
         }
 
-        public static bool CheckRequest(UGCQueryHandle_t request)
-        {
-            if (request == UGCQueryHandle_t.Invalid)
-            {
-                Debug.LogWarning("[OverhaulMod] Request is invalid");
-                return false;
-            }
-            return true;
-        }
-
         #endregion
+
+        #region Users
 
         public static bool RequestInfoAboutUser(CSteamID userID)
         {
@@ -133,6 +146,10 @@ namespace CDOverhaul.Workshop
 
             return result;
         }
+
+        #endregion
+
+        #region Items
 
         public static EItemState GetItemState(PublishedFileId_t id) => (EItemState)SteamUGC.GetItemState(id);
         public static bool IsSubscribedToItem(PublishedFileId_t id) => GetItemState(id).HasFlag(EItemState.k_EItemStateSubscribed);
@@ -206,7 +223,7 @@ namespace CDOverhaul.Workshop
             return true;
         }
 
-        public static void UpdateItemDownloadInfo(PublishedFileId_t id, OverhaulRequestProgressInfo progress) => OverhaulRequestProgressInfo.SetProgress(progress, GetItemDownloadProgress(id));
+        public static void UpdateItemDownloadInfo(PublishedFileId_t id, ProgressInformation progress) => ProgressInformation.SetProgress(progress, GetItemDownloadProgress(id));
 
         public static void SubscribeToItem(PublishedFileId_t id, Action<PublishedFileId_t, EResult> resultCallback = null)
         {
@@ -256,7 +273,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
             });
-            SteamAPICall_t apiCall = SteamUGC.AddItemToFavorites(CloneDroneSteamAppID, id);
+            SteamAPICall_t apiCall = SteamUGC.AddItemToFavorites(AppId, id);
             result.Set(apiCall, null);
         }
 
@@ -271,8 +288,34 @@ namespace CDOverhaul.Workshop
                     return;
                 }
             });
-            SteamAPICall_t apiCall = SteamUGC.RemoveItemFromFavorites(CloneDroneSteamAppID, id);
+            SteamAPICall_t apiCall = SteamUGC.RemoveItemFromFavorites(AppId, id);
             result.Set(apiCall, null);
         }
+
+        #endregion
+
+        #region Extensions
+
+        public static bool IsInvalid(this UGCQueryHandle_t request, bool warn = true)
+        {
+            if (request == UGCQueryHandle_t.Invalid)
+            {
+                if (warn) Debug.LogWarning("[OverhaulMod] Request is invalid");
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsInvalid(this SteamAPICall_t steamAPICall, bool warn = true)
+        {
+            if (steamAPICall == SteamAPICall_t.Invalid)
+            {
+                if (warn) Debug.LogWarning("[OverhaulMod] SteamAPICall is invalid");
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

@@ -364,7 +364,7 @@ namespace CDOverhaul.Gameplay
                     SpawnSkin(skin);
 
             // Todo: Make better VFX
-            if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
             {
                 WeaponSkinsController.RobotToPlayAnimationOn = null;
                 WeaponModel model = Owner.GetEquippedWeaponModel();

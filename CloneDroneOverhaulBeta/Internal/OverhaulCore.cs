@@ -62,7 +62,7 @@ namespace CDOverhaul
             OverhaulObjectStateModder.ClearDestroyedObjects();
             OverhaulAudioLibrary.Initialize();
             OverhaulEventsController.Initialize();
-            SettingsController.Initialize();
+            OverhaulSettingsController.Initialize();
             OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulController.InitializeStatic(controllers);
@@ -77,7 +77,7 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<ViewModesController>();
 
-            SettingsController.CreateHUD();
+            OverhaulSettingsController.CreateHUD();
             OverhaulGraphicsController.Initialize();
             ExclusivityController.Initialize();
             OverhaulTransitionController.Initialize();

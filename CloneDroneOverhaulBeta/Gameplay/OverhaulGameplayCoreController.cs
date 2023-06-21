@@ -55,11 +55,8 @@ namespace CDOverhaul.Gameplay
             if (IsDisposedOrDestroyed() || !hasInitializedModel || firstPersonMover == null)
                 return;
 
-            if (!OverhaulVersion.IsUpdate2Hotfix)
-            {
-                if (OverhaulFeatureAvailabilitySystem.BuildImplements.AreRobotEffectsEnabled) _ = firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
-                if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsCombatOverhaulEnabled) _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
-            }
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreRobotEffectsEnabled) _ = firstPersonMover.gameObject.AddComponent<RobotEffectsBehaviour>();
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled) _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
 
             firstPersonMover.GetPlayerCamera()?.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
         }

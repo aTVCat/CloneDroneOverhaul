@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("FixedUpdate")]
         private static void FixedUpdate_Postfix(ArrowProjectile __instance)
         {
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized || GameModeManager.IsMultiplayer() || !__instance.IsFlying() || !__instance.GetOwner())
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized || GameModeManager.IsMultiplayer() || !__instance.IsFlying() || !__instance.GetOwner())
                 return;
 
             Vector3 currentVelocity = __instance.GetPrivateField<Vector3>("_velocity");
@@ -29,7 +29,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            __instance.VelocityMagnitude = !OverhaulFeatureAvailabilitySystem.BuildImplements.IsCombatOverhaulEnabled || GameModeManager.IsMultiplayer() ? 40f : 75f;
+            __instance.VelocityMagnitude = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || GameModeManager.IsMultiplayer() ? 40f : 75f;
         }
     }
 }

@@ -71,9 +71,9 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (LevelEditorFixes.SelectionSettingsPanel == null)
                 return;
 
-            SettingInfo.SavePref(SettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColor", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(1).value);
-            SettingInfo.SavePref(SettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(3).value);
-            SettingInfo.SavePref(SettingsController.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(0).value);
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColor", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(1).value);
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(3).value);
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(0).value);
 
             OutlineColor = Color.HSVToRGB(OutlineColorRaw, OutlineColorBrightnessRaw, 1f);
             ThreeDOutline.UpdateMaterialProperties();

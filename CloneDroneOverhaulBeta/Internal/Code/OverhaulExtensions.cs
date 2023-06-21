@@ -5,11 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static RootMotion.FinalIK.VRIKCalibrator;
 
 namespace CDOverhaul
 {
     public static class OverhaulExtensions
     {
+        private static readonly TextEditor s_TextEditor = new TextEditor();
+
         public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
         public static bool IsNullOrEmpty(this Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
@@ -215,6 +218,8 @@ namespace CDOverhaul
             return @object;
         }
 
+        #region Strings
+
         /// <summary>
         /// Get color using hex
         /// </summary>
@@ -225,6 +230,16 @@ namespace CDOverhaul
             _ = ColorUtility.TryParseHtmlString(theString, out Color col);
             return col;
         }
+
+        public static void CopyToClipboard(this string @string)
+        {
+            s_TextEditor.text = @string;
+            s_TextEditor.SelectAll();
+            s_TextEditor.Copy();
+            s_TextEditor.text = string.Empty;
+        }
+
+        #endregion
 
         public static void SetLogoAndRootButtonsVisible(this TitleScreenUI titleScreenUI, in bool value)
         {

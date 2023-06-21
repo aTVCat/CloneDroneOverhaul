@@ -6,7 +6,7 @@ namespace CDOverhaul.Patches
 {
     public class BaseFixes : ReplacementBase
     {
-        [SettingInforms(1)]
+        [OverhaulSettingWithNotification(1)]
         [OverhaulSetting("Mod.Vanilla additions.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
         public static bool PixelsSimpleFont;
 

@@ -60,7 +60,7 @@ namespace CDOverhaul.Patches
             m_SpawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<OverhaulParametersMenu>().Show);
+            moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
             moddedObject.GetObject<Button>(3).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
             moddedObject.GetObject<Button>(6).onClick.AddListener(delegate
             {
@@ -85,13 +85,13 @@ namespace CDOverhaul.Patches
             Transform createPrivateModdedLobbyButtonTransform = Object.Instantiate(joinPublicMatchButtonTransform, joinPublicMatchButtonTransform.parent);
             createPrivateModdedLobbyButtonTransform.localPosition = new Vector3(57f, -150f, 0);
             Button createPrivateModdedLobbyButton = createPrivateModdedLobbyButtonTransform.GetComponent<Button>();
-            createPrivateModdedLobbyButton.interactable = OverhaulFeatureAvailabilitySystem.BuildImplements.IsCustomMultiplayerTestEnabled;
+            createPrivateModdedLobbyButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled;
             LocalizedTextField localizedTextFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<LocalizedTextField>();
             if (localizedTextFieldCreatePrivateModdedLobby)
             {
                 Object.Destroy(localizedTextFieldCreatePrivateModdedLobby);
                 Text textFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<Text>();
-                textFieldCreatePrivateModdedLobby.text = "Modded game" + (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsCustomMultiplayerTestEnabled ? " (Coming soon)" : string.Empty);
+                textFieldCreatePrivateModdedLobby.text = "Modded game" + (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled ? " (Coming soon)" : string.Empty);
             }
 
             SuccessfullyPatched = true;

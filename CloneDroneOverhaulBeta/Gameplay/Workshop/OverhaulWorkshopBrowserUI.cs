@@ -18,7 +18,7 @@ namespace CDOverhaul.Workshop
         [OverhaulSetting("Game interface.Network.New Workshop browser design", true, OverhaulVersion.IsUpdate2Hotfix)]
         public static bool UseThisUI;
 
-        [OverhaulSetting("Game interface.Network.Cache images", false, OverhaulVersion.IsUpdate2Hotfix, null, null, null, "Game interface.Network.New Workshop browser design")]
+        [OverhaulSetting("Game interface.Network.Cache images", false, OverhaulVersion.IsUpdate2Hotfix, null, "Game interface.Network.New Workshop browser design")]
         public static bool CacheImages;
 
 
@@ -119,7 +119,7 @@ namespace CDOverhaul.Workshop
 
         public bool? CurrentItemVote;
 
-        public OverhaulRequestProgressInfo CurrentRequestProgress;
+        public ProgressInformation CurrentRequestProgress;
         public OverhaulWorkshopRequestResult CurrentRequestResult;
         public bool IsPopulatingItems
         {
@@ -442,7 +442,7 @@ namespace CDOverhaul.Workshop
         private Transform m_ItemPageViewTransform;
         private Transform m_PageTransform;
 
-        private readonly OverhaulRequestProgressInfo m_ProgressInfo = new OverhaulRequestProgressInfo();
+        private readonly ProgressInformation m_ProgressInfo = new ProgressInformation();
 
         public void ViewItem(OverhaulWorkshopItem workshopItem)
         {
@@ -454,7 +454,7 @@ namespace CDOverhaul.Workshop
             if (ri.texture != null)
                 Destroy(ri.texture);
 
-            OverhaulRequestProgressInfo.SetProgress(m_ProgressInfo, 0f);
+            ProgressInformation.SetProgress(m_ProgressInfo, 0f);
             LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
             StaticCoroutineRunner.StopStaticCoroutine(waitUntilLevelIsDownloaded());
             m_ItemLoadingIndicatorTransform.gameObject.SetActive(false);
@@ -915,7 +915,7 @@ namespace CDOverhaul.Workshop
         public void ResetRequest()
         {
             IsPopulatingItems = false;
-            OverhaulRequestProgressInfo.SetProgress(CurrentRequestProgress, 1f);
+            ProgressInformation.SetProgress(CurrentRequestProgress, 1f);
             LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
             m_UnscaledTimeClickedOnOption = -1f;
@@ -936,12 +936,12 @@ namespace CDOverhaul.Workshop
             m_UnscaledTimeClickedOnOption = Time.unscaledTime;
             m_TimeToAllowPressingReloadButton = m_UnscaledTimeClickedOnOption + 1f;
             CurrentRequestResult = null;
-            CurrentRequestProgress = new OverhaulRequestProgressInfo();
+            CurrentRequestProgress = new ProgressInformation();
 
             SetErrorWindowActive(false);
             LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
-            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, LevelTypeRequiredTag, Page, true, true);
+            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, string.Empty, LevelTypeRequiredTag, Page, true, true);
         }
 
         /// <summary>

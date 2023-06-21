@@ -14,7 +14,7 @@ namespace CDOverhaul.HUD
         [OverhaulSetting("Game interface.Gameplay.New pause menu design", true, false, "The full redesign with new features implemented")]
         public static bool UseThisMenu;
 
-        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", null, null, "Game interface.Gameplay.New pause menu design")]
+        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", "Game interface.Gameplay.New pause menu design")]
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
@@ -98,7 +98,7 @@ namespace CDOverhaul.HUD
 
         public bool ScheduleHide;
 
-        private OverhaulParametersMenu m_Parameters;
+        private ParametersMenu m_Parameters;
 
         public override void Initialize()
         {
@@ -231,7 +231,7 @@ namespace CDOverhaul.HUD
             if (!WeaponSkinsController.HasNoticedSkinsButton)
             {
                 WeaponSkinsController.HasNoticedSkinsButton = true;
-                SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
+                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
                 m_PersonalizationNotification.gameObject.SetActive(false);
             }
 
@@ -311,7 +311,7 @@ namespace CDOverhaul.HUD
         {
             if (m_Parameters == null)
             {
-                m_Parameters = GetController<OverhaulParametersMenu>();
+                m_Parameters = GetController<ParametersMenu>();
                 if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
                 {
                     return;

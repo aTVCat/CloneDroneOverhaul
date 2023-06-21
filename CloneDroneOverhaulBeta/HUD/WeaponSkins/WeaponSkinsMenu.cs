@@ -932,7 +932,7 @@ namespace CDOverhaul.HUD
                 return;
 
             OverhaulPauseMenu menu = GetController<OverhaulPauseMenu>();
-            OverhaulParametersMenu paramsMenu = GetController<OverhaulParametersMenu>();
+            ParametersMenu paramsMenu = GetController<ParametersMenu>();
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
             if (menu == null || paramsMenu == null || escMenu == null)
             {
@@ -1351,16 +1351,16 @@ namespace CDOverhaul.HUD
             switch (weaponType)
             {
                 case WeaponType.Sword:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
                     break;
                 case WeaponType.Bow:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
                     break;
                 case WeaponType.Hammer:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
                     break;
                 case WeaponType.Spear:
-                    SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
                     break;
             }
             RefreshDefaultSkinButton();
@@ -1439,7 +1439,7 @@ namespace CDOverhaul.HUD
 
         public void SetAllowEnemiesUseSkins(bool value)
         {
-            SettingInfo.SavePref(SettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
         }
 
         public void DebugSetInputFieldsValues(ModelOffset transform)

@@ -10,10 +10,10 @@ namespace CDOverhaul.Patches
         public static bool GarbageCollectorEnabled;
         [OverhaulSetting("Optimization.Unloading.Clear cache on level spawn", false, false, "Free some memory when new level is loaded")]
         public static bool DoCleanupOnLevelSpawn;
-        [OverhaulSetting("Optimization.Unloading.Clear cache fully", false, false, "Free as much memory as possible when new level is loaded", null, null, "Optimization.Unloading.Clear cache on level spawn")]
+        [OverhaulSetting("Optimization.Unloading.Clear cache fully", false, false, "Free as much memory as possible when new level is loaded", "Optimization.Unloading.Clear cache on level spawn")]
         public static bool FullClean;
 
-        [SettingInforms(1)]
+        [OverhaulSettingWithNotification(1)]
         [OverhaulSetting("Optimization.Unloading.Reduce light sources count on scene", false, false)]
         public static bool ReduceLightCount;
 
@@ -22,7 +22,7 @@ namespace CDOverhaul.Patches
             base.Replace();
 
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
-            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, RefreshGC);
+            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshGC);
 
             _ = GameUIRoot.Instance.gameObject.AddComponent<GameUIRootBehaviour>();
 
@@ -57,7 +57,7 @@ namespace CDOverhaul.Patches
             base.Cancel();
 
             OverhaulEventsController.RemoveEventListener(GlobalEvents.LevelSpawned, CollectGarbage, true);
-            OverhaulEventsController.RemoveEventListener(SettingsController.SettingChangedEventString, RefreshGC);
+            OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshGC);
         }
     }
 }

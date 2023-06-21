@@ -99,7 +99,7 @@ namespace CDOverhaul
                 m_Alpha = 0f;
             }
 
-            public void UpdateIndicator(OverhaulRequestProgressInfo progress, bool hideIf0or1)
+            public void UpdateIndicator(ProgressInformation progress, bool hideIf0or1)
             {
                 if (progress == null || ((progress.Progress == 1f || progress.Progress == 0f) && hideIf0or1))
                 {
@@ -128,7 +128,7 @@ namespace CDOverhaul
                 FillImage.fillAmount = m_Progress;
             }
 
-            public static void UpdateIndicator(LoadingIndicator indicator, OverhaulRequestProgressInfo progress, bool hideIf0or1 = false)
+            public static void UpdateIndicator(LoadingIndicator indicator, ProgressInformation progress, bool hideIf0or1 = false)
             {
                 if (indicator == null)
                     return;

@@ -35,7 +35,7 @@ namespace CDOverhaul.Patches
             base.Replace();
 
             if (!m_AddedListeners)
-                _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, RefreshPatch);
+                _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshPatch);
             m_AddedListeners = true;
 
             _energyUI = GameUIRoot.Instance.EnergyUI;

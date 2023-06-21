@@ -193,7 +193,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (rectMask2D == null)
                 rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
 
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled)
                 return;
 
             RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;

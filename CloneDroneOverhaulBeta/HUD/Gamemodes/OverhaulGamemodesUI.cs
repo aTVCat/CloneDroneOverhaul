@@ -37,7 +37,7 @@ namespace CDOverhaul.HUD.Gamemodes
             OverhaulLastBotStandingPlayUI = MyModdedObject.GetObject<Transform>(3).gameObject.AddComponent<LastBotStandingPlayUI>().Initialize<LastBotStandingPlayUI>(this);
             OverhaulChallengesUI = MyModdedObject.GetObject<Transform>(5).gameObject.AddComponent<ChallengesUI>().Initialize<ChallengesUI>(this);
 
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsOverhaulGamemodesUIEnabled)
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsOverhaulGamemodesUIEnabled)
                 return;
 
             GameModeCardData[] datas = GameUIRoot.Instance.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;

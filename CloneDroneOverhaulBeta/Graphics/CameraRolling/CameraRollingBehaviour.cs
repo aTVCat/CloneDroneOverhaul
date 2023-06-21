@@ -14,27 +14,27 @@ namespace CDOverhaul.Graphics
         public static float AdditionalOffsetMultiplier = 0.6f;
         public static float AdditionalZOffset;
 
-        [SettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
+        [OverhaulSettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
         [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
         public static int TargetFPS;
 
         [OverhaulSetting("Graphics.Camera.Rolling", true, false, "The camera will tilt in the direction of the movement")]
         public static bool EnableCameraRolling;
-        [OverhaulSetting("Graphics.Camera.Invert axis", false, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSetting("Graphics.Camera.Invert axis", false, false, null, "Graphics.Camera.Rolling")]
         public static bool InvertAxis;
 
-        [OverhaulSetting("Graphics.Camera.Tilt when one legged", true, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSetting("Graphics.Camera.Tilt when one legged", true, false, null, "Graphics.Camera.Rolling")]
         public static bool TiltWhenOneLegged;
-        [OverhaulSetting("Graphics.Camera.Tilt when jumping", true, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSetting("Graphics.Camera.Tilt when jumping", true, false, null, "Graphics.Camera.Rolling")]
         public static bool TiltWhenJumping;
 
-        [OverhaulSetting("Graphics.Camera.Lock rotation by X", false, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSetting("Graphics.Camera.Lock rotation by X", false, false, null, "Graphics.Camera.Rolling")]
         public static bool LockX;
-        [OverhaulSetting("Graphics.Camera.Lock rotation by Z", false, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSetting("Graphics.Camera.Lock rotation by Z", false, false, null, "Graphics.Camera.Rolling")]
         public static bool LockZ;
 
-        [SettingSliderParameters(false, 0.7f, 1.2f)]
-        [OverhaulSetting("Graphics.Camera.Tilt multiplier", 1f, false, null, null, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingSliderParameters(false, 0.7f, 1.2f)]
+        [OverhaulSetting("Graphics.Camera.Tilt multiplier", 1f, false, null, "Graphics.Camera.Rolling")]
         public static float TiltMultiplier;
 
         private FirstPersonMover m_Owner;

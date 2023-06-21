@@ -22,11 +22,11 @@ namespace CDOverhaul.Patches
 
             if (value)
             {
-                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 2, false);
+                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Settings.Target framerate", true), 2, false);
             }
             else
             {
-                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 0, false);
+                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Settings.Target framerate", true), 0, false);
             }
         }
     }

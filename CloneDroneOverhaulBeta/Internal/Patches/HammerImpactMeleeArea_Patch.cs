@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnTriggerEnter")]
         private static void OnTriggerEnterPostfix(HammerImpactMeleeArea __instance, Collider otherCollider)
         {
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized)
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized)
                 return;
 
             if (!__instance.Owner)

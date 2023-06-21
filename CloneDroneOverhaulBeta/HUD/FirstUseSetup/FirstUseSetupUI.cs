@@ -27,7 +27,7 @@ namespace CDOverhaul.HUD
             m_UseOverhaulGraphicsSettingsOutline = MyModdedObject.GetObject<Outline>(1);
             base.gameObject.SetActive(false);
 
-            if (OverhaulFeatureAvailabilitySystem.BuildImplements.IsFirstUseSetupUIEnabled && !HasSetTheModUp && GameModeManager.IsOnTitleScreen())
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled && !HasSetTheModUp && GameModeManager.IsOnTitleScreen())
                 DelegateScheduler.Instance.Schedule(Show, 1f);
         }
 
@@ -48,7 +48,7 @@ namespace CDOverhaul.HUD
 
         public void EndSetup()
         {
-            SettingInfo.SavePref(SettingsController.GetSetting("Player.Mod.HasConfiguredMod", true), true);
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.Mod.HasConfiguredMod", true), true);
             Hide();
         }
 

@@ -14,7 +14,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public static void SavePreferences()
         {
-            SettingInfo info = SettingsController.GetSetting("Player.Outfits.Equipped", true);
+            SettingInfo info = OverhaulSettingsController.GetSetting("Player.Outfits.Equipped", true);
             if (info == null)
                 return;
 

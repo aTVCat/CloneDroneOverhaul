@@ -4,7 +4,7 @@ namespace CDOverhaul.Graphics
 {
     public class ViewModesController : OverhaulGameplayController
     {
-        [SettingDropdownParameters("Third person@First person")]
+        [OverhaulSettingDropdownParameters("Third person@First person")]
         [OverhaulSetting("Gameplay.Camera.View mode", 0, OverhaulVersion.IsUpdate2Hotfix)]
         public static int ViewModeType;
         [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false, OverhaulVersion.IsUpdate2Hotfix)]
@@ -37,7 +37,7 @@ namespace CDOverhaul.Graphics
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsViewModesSettingsEnabled || !hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsViewModesSettingsEnabled || !hasInitializedModel || !ViewModesExpansion.IsFirstPersonMoverSupported(firstPersonMover))
                 return;
             _ = firstPersonMover.gameObject.AddComponent<ViewModesExpansion>();
         }

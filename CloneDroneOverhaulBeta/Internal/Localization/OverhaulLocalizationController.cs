@@ -65,20 +65,36 @@ namespace CDOverhaul
                 SaveData();
                 return;
             }
+            /*
             StreamReader reader = File.OpenText(path);
-
             Task<string> task = reader.ReadToEndAsync();
             _ = await task;
             if (task.IsCanceled || task.IsFaulted)
             {
                 m_Error = true;
                 return;
+            }*/
+
+            using (Stream s = File.OpenRead(path))
+            using (StreamReader sr = new StreamReader(s))
+            using (JsonReader areader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                //serializer.CheckAdditionalContent = true;
+
+                OverhaulLocalizationData p = serializer.Deserialize<OverhaulLocalizationData>(areader);
+                if (p != null)
+                    p.RepairFields();
+
+                m_Error = false;
+                m_Data = p;
             }
 
+            /*
             m_Error = false;
             m_Data = JsonConvert.DeserializeObject<OverhaulLocalizationData>(task.Result);
             if (m_Data != null) m_Data.RepairFields();
-            task.Dispose();
+            task.Dispose();*/
 
             TryLocalizeHUD();
             ScheduleEvent();
