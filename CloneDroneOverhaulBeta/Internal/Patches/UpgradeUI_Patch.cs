@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.Graphics;
 using HarmonyLib;
-using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -19,7 +18,7 @@ namespace CDOverhaul.Patches
             do
             {
                 __instance.UpgradeUIBackground.transform.GetChild(i).gameObject.SetActive(challengeUpgradeConfigMode);
-               i++;
+                i++;
             } while (i < __instance.UpgradeUIBackground.transform.childCount);
         }
     }

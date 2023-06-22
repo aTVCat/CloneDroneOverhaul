@@ -1,9 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +9,7 @@ namespace CDOverhaul.HUD.Tooltips
         public const string LASER_COLOR = "#D9EAFF";
         public const string FIRE_COLOR = "#FFDAC0";
 
-        private FirstPersonMover m_Player;
+        private readonly FirstPersonMover m_Player;
         private WeaponType m_PlayerEquippedWeaponType;
 
         public override GameObject GetTooltipPrefab() => TooltipsController.TooltipsUI.GetDefaultPrefab();
@@ -40,10 +35,7 @@ namespace CDOverhaul.HUD.Tooltips
                 if (WeaponSkinsController.IsWeaponSupported(weaponType))
                 {
                     bool isFire = weaponSkins.IsFireVariant(weaponType);
-                    if (isFire)
-                        color = FIRE_COLOR.ConvertToColor();
-                    else
-                        color = LASER_COLOR.ConvertToColor();
+                    color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
                 }
             }
             SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;

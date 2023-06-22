@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Combat;
-using HarmonyLib;
+﻿using HarmonyLib;
 using ModLibrary;
 using UnityEngine;
 

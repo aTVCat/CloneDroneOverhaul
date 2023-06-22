@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
@@ -12,7 +6,7 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         protected override void OnInitialize()
         {
-            ModdedObject moddedObject = base.GetComponent<ModdedObject>();
+            _ = base.GetComponent<ModdedObject>();
         }
 
         protected override void OnShow()

@@ -461,7 +461,7 @@ namespace CDOverhaul.HUD
             if (!value)
                 return;
 
-            if(s_CurrentlyEditingItemIndex == -1)
+            if (s_CurrentlyEditingItemIndex == -1)
             {
                 EditSkin(m_CustomSkinsDropdown.options.Count - 1);
             }
@@ -978,7 +978,7 @@ namespace CDOverhaul.HUD
 
         public void SetMenuActive(bool value)
         {
-            if (IsDisposedOrDestroyed() || MyModdedObject == null) 
+            if (IsDisposedOrDestroyed() || MyModdedObject == null)
                 return;
 
             base.gameObject.SetActive(value);
@@ -1140,7 +1140,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator endPopulatingSkinsCoroutine()
         {
-            if (!IsOutfitSelection) 
+            if (!IsOutfitSelection)
                 SearchSkins(m_SearchBox.text);
 
             IsPopulatingSkins = false;

@@ -1,5 +1,4 @@
-﻿using CDOverhaul.HUD.Gamemodes;
-using CDOverhaul.HUD.Transitions;
+﻿using CDOverhaul.HUD.Transitions;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -25,7 +24,7 @@ namespace CDOverhaul
 
             if (IsNewTransitionEnabled)
             {
-                if(!s_TransitionPrefab)
+                if (!s_TransitionPrefab)
                     s_TransitionPrefab = OverhaulAssetsController.GetAsset("OverhaulTransition", OverhaulAssetPart.Main);
 
                 if (s_FadeOutOnSceneLoad)
@@ -48,7 +47,7 @@ namespace CDOverhaul
             if (!HasSpawnedTransitionHUD())
                 return;
 
-            if(fadeOut)
+            if (fadeOut)
             {
                 s_CurrentTransition.Initialize(true);
                 return;
@@ -65,7 +64,7 @@ namespace CDOverhaul
 
         public static void DoTransitionWithAction(Action action, Func<bool> waitUntilFunc = null, float waitUntilEndDelay = 0.35f)
         {
-            StaticCoroutineRunner.StartStaticCoroutine(doTransitionWithActionCoroutine(action, waitUntilFunc, waitUntilEndDelay));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(doTransitionWithActionCoroutine(action, waitUntilFunc, waitUntilEndDelay));
         }
 
         private static IEnumerator doTransitionWithActionCoroutine(Action action, Func<bool> waitUntilFunc = null, float waitUntilEndDelay = 0.35f)
@@ -74,8 +73,8 @@ namespace CDOverhaul
 
             yield return new WaitForSecondsRealtime(0.5f);
 
-            if (action != null) action.Invoke();
-            if(waitUntilFunc != null) yield return new WaitUntil(waitUntilFunc);
+            action?.Invoke();
+            if (waitUntilFunc != null) yield return new WaitUntil(waitUntilFunc);
 
             yield return new WaitForSecondsRealtime(waitUntilEndDelay);
 

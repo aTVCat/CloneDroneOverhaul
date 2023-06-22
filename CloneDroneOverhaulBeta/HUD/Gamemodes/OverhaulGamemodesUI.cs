@@ -1,10 +1,5 @@
 ﻿using CDOverhaul.NetworkAssets;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -103,7 +98,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void ChangeBackgroundTexture(string filePath)
         {
-            StaticCoroutineRunner.StartStaticCoroutine(changeBackgroundTextureCoroutine(filePath));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(changeBackgroundTextureCoroutine(filePath));
         }
 
         private IEnumerator changeBackgroundTextureCoroutine(string filePath)
@@ -111,7 +106,7 @@ namespace CDOverhaul.HUD.Gamemodes
             AllowSwitching = false;
 
             m_Background.color = Color.white;
-            for (int i = 0; i< 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 m_Background.color = new Color(m_Background.color.r - 0.25f, m_Background.color.g - 0.25f, m_Background.color.b - 0.25f, 1);
                 yield return new WaitForSecondsRealtime(0.017f);

@@ -1,10 +1,5 @@
 ﻿using CDOverhaul.NetworkAssets;
 using ModLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,7 +53,7 @@ namespace CDOverhaul.HUD
             LoadRobotHead(m_PlayerInfoState.state.CharacterModelIndex, m_PlayerInfoState.state.FavouriteColor);
             m_DetachedOrDisconnectedShading.gameObject.SetActive(m_PlayerInfoState.state.IsDisconnected);
             m_CDOUserTick.gameObject.SetActive(m_PlayerInfoState.IsAnOverhaulModUser());
-            m_PlayerNameText.text = (m_PlayerInfoState.IsAnOverhaulModUser() ? "<color=#FF3B26>[Overhaul]</color> " : string.Empty) + 
+            m_PlayerNameText.text = (m_PlayerInfoState.IsAnOverhaulModUser() ? "<color=#FF3B26>[Overhaul]</color> " : string.Empty) +
                 (ModBotUserIdentifier.Instance.IsUsingModBot(m_PlayerInfoState.state.PlayFabID) ? "<color=#ffac00>[Mod-Bot]</color> " : string.Empty) +
                 m_PlayerInfoState.state.DisplayName;
             m_PlayerPlatformText.text = GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)m_PlayerInfoState.state.PlatformID);
@@ -72,7 +67,7 @@ namespace CDOverhaul.HUD
                 successfullyGotColor = true;
             }
             catch { }
-            
+
             if (humanFavouriteColor == null || !successfullyGotColor)
             {
                 m_ColorIndicator.color = Color.clear;
@@ -104,7 +99,7 @@ namespace CDOverhaul.HUD
             OverhaulNetworkDownloadHandler n = new OverhaulNetworkDownloadHandler();
             n.DoneAction = delegate
             {
-                if (!this || this.IsDisposedOrDestroyed() || n == null || n.Error)
+                if (!this || IsDisposedOrDestroyed() || n == null || n.Error)
                     return;
 
                 m_RobotHeadImage.texture = n.DownloadedTexture;
@@ -114,7 +109,7 @@ namespace CDOverhaul.HUD
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login)
         {
-            switch(login)
+            switch (login)
             {
                 case PlayFab.ClientModels.LoginIdentityProvider.Custom:
                     return "<color=#cacaca>Custom</color>";

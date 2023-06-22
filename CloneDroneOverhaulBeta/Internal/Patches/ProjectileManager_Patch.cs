@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Graphics;
-using HarmonyLib;
+﻿using HarmonyLib;
 namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(ProjectileManager))]

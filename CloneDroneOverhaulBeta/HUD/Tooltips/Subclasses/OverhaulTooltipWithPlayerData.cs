@@ -1,11 +1,5 @@
-﻿using CDOverhaul.Gameplay;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Tooltips
 {
@@ -24,7 +18,7 @@ namespace CDOverhaul.HUD.Tooltips
                 if (CharacterTracker.Instance != null && Time.frameCount % 30 == 0)
                 {
                     FirstPersonMover newPlayer = CharacterTracker.Instance.GetPlayerRobot();
-                    if(newPlayer != Player)
+                    if (newPlayer != Player)
                     {
                         Player = newPlayer;
                         actionToInvokeIfNewPlayer?.Invoke();

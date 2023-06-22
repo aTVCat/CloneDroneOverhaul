@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Multiplayer;
 using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;

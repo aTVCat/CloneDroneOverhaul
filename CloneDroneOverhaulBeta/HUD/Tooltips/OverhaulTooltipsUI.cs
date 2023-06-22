@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.HUD.Tooltips
 {
@@ -41,7 +36,7 @@ namespace CDOverhaul.HUD.Tooltips
             if (!HaveToPopulateTooltips || !TooltipsController || HadBadStart)
                 return;
 
-            foreach(OverhaulTooltip tooltip in TooltipsController.GetTooltips())
+            foreach (OverhaulTooltip tooltip in TooltipsController.GetTooltips())
             {
                 GameObject gameObject = tooltip.GetTooltipPrefab();
                 if (gameObject)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
@@ -22,7 +17,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void Show()
         {
-            if(!GamemodesUI.gameObject.activeSelf) 
+            if (!GamemodesUI.gameObject.activeSelf)
                 GamemodesUI.Show();
 
             base.gameObject.SetActive(true);
@@ -33,7 +28,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void Hide()
         {
-            if (GamemodesUI.gameObject.activeSelf) 
+            if (GamemodesUI.gameObject.activeSelf)
                 GamemodesUI.Hide();
 
             base.gameObject.SetActive(false);

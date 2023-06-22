@@ -1,10 +1,5 @@
-﻿using Steamworks;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +17,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private RectTransform m_PanelTransform;
         private CanvasGroup m_CanvasGroup;
 
-        private GameObject[] PageGameObjects = new GameObject[3];
+        private readonly GameObject[] PageGameObjects = new GameObject[3];
 
         private Action m_Callback;
 
@@ -51,7 +46,7 @@ namespace CDOverhaul.HUD.Gamemodes
             ShowPage(windowIndex);
 
             m_Callback = onPressedStartButtonCallback;
-            StaticCoroutineRunner.StartStaticCoroutine(showAnimationCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(showAnimationCoroutine());
         }
 
         public void Hide(bool forceHideIfSwitching = false)
@@ -65,13 +60,13 @@ namespace CDOverhaul.HUD.Gamemodes
                 return;
             }
 
-            StaticCoroutineRunner.StartStaticCoroutine(hideAnimationCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(hideAnimationCoroutine());
         }
 
         public void ShowPage(int index)
         {
             int i = 0;
-            foreach(GameObject gameObject in PageGameObjects)
+            foreach (GameObject gameObject in PageGameObjects)
             {
                 if (!gameObject)
                 {
@@ -104,7 +99,7 @@ namespace CDOverhaul.HUD.Gamemodes
             if (!pageBase)
                 return;
 
-            StaticCoroutineRunner.StartStaticCoroutine(transitionToDifferentPage(pageBase.GetWindowSize(), index));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(transitionToDifferentPage(pageBase.GetWindowSize(), index));
         }
 
         public void DoQuickStart()
@@ -188,7 +183,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
             ShowPage(pageIndex);
             OverhaulCanvasController.SetCanvasPixelPerfect(true);
-            for(int i2 =0; i2 < 4; i2++)
+            for (int i2 = 0; i2 < 4; i2++)
             {
                 m_CanvasGroup.alpha += 0.25f;
                 yield return new WaitForSecondsRealtime(0.016f);

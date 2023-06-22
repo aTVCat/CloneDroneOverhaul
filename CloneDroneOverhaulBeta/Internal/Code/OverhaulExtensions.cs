@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static RootMotion.FinalIK.VRIKCalibrator;
 
 namespace CDOverhaul
 {
@@ -29,21 +28,16 @@ namespace CDOverhaul
                 return false;
 
             Character character = CharacterTracker.Instance.TryGetLivingCharacterWithPlayFabID(infoState.state.PlayFabID);
-            if (!character || character.IsDetached() || !(character is FirstPersonMover))
-                return false;
-
-            return IsAnOverhaulModUser(character as FirstPersonMover);
+            return character && !character.IsDetached() && character is FirstPersonMover
+&& IsAnOverhaulModUser(character as FirstPersonMover);
         }
 
         public static bool IsOverhaulDeveloper(this FirstPersonMover firstPersonMover)
         {
-            if (!firstPersonMover)
-                return false;
-
-            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && PlayFabDataController.GetLocalPlayFabID() == "883CC7F4CA3155A3")
-                return true;
-
-            return firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3";
+            return firstPersonMover
+&& (GameModeManager.IsSinglePlayer()
+                ? PlayFabDataController.GetLocalPlayFabID() == "883CC7F4CA3155A3"
+                : firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3");
         }
 
         public static bool IsDebugBuildUser(this FirstPersonMover firstPersonMover)
@@ -51,18 +45,15 @@ namespace CDOverhaul
             if (!firstPersonMover)
                 return false;
 
-            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && OverhaulVersion.IsDebugBuild)
-                return true;
+            if (GameModeManager.IsSinglePlayer())
+                return OverhaulVersion.IsDebugBuild;
 
             OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
             if (!info)
                 return false;
 
             string flags = info.GetFlagsData();
-            if (string.IsNullOrEmpty(flags))
-                return false;
-
-            return flags.Contains("debug");
+            return !string.IsNullOrEmpty(flags) && flags.Contains("debug");
         }
 
         public static bool IsBlacklistedBuildUser(this FirstPersonMover firstPersonMover)
@@ -75,21 +66,15 @@ namespace CDOverhaul
                 return false;
 
             Hashtable hashtable = info.GetHashtable();
-            if (hashtable == null || !hashtable.ContainsKey("State.Version"))
-                return false;
-
-            return OverhaulVersion.BlacklistedVersions.Contains(hashtable["State.Version"]);
+            return hashtable != null && hashtable.ContainsKey("State.Version")
+&& OverhaulVersion.BlacklistedVersions.Contains(hashtable["State.Version"]);
         }
 
-        public static bool HasPermissionToUseLockedStuff(this FirstPersonMover firstPersonMover)
+        public static bool IsForcedToUseLockedStuff(this FirstPersonMover firstPersonMover)
         {
-            if (!firstPersonMover)
-                return false;
-
-            if (!firstPersonMover.IsPlayer())
-                return true;
-
-            return (firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper()) && !firstPersonMover.IsBlacklistedBuildUser();
+            return firstPersonMover
+&& (!firstPersonMover.IsPlayer()
+|| ((firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper()) && !firstPersonMover.IsBlacklistedBuildUser()));
         }
 
         public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)
@@ -103,7 +88,7 @@ namespace CDOverhaul
             do
             {
                 UpgradeUIIcon icon = icons[index];
-                if(!icon)
+                if (!icon)
                 {
                     index++;
                     continue;
@@ -132,10 +117,7 @@ namespace CDOverhaul
         public static int GetNumberOfBeatenLevels(this ChallengeDefinition challengeDefinition)
         {
             bool hadData = DataRepository.Instance.TryLoad<GameData>("ChallengeData" + challengeDefinition.ChallengeID, out GameData gameData, false);
-            if(!hadData || gameData == null)
-                return 0;
-
-            return gameData.LevelIDsBeatenThisPlaythrough.Count;
+            return !hadData || gameData == null ? 0 : gameData.LevelIDsBeatenThisPlaythrough.Count;
         }
 
         public static int GetNumberOfTotalLevels(this ChallengeDefinition challengeDefinition)
@@ -143,10 +125,7 @@ namespace CDOverhaul
             string id = challengeDefinition.ChallengeID.Replace("Coop", string.Empty);
 
             List<LevelDescription> list = LevelManager.Instance.GetChallengeLevelDescriptions(id);
-            if (!list.IsNullOrEmpty())
-                return list.Count;
-
-            return int.MaxValue;
+            return !list.IsNullOrEmpty() ? list.Count : int.MaxValue;
         }
 
         #endregion
@@ -175,7 +154,7 @@ namespace CDOverhaul
             Dictionary<string, List<LevelDescription>> all = levelManager.GetAllChallengeLevelDescriptions();
             challengeID = challengeID.Replace("Coop", string.Empty);
 
-            all.TryGetValue(challengeID, out List<LevelDescription> result);
+            _ = all.TryGetValue(challengeID, out List<LevelDescription> result);
             return result;
         }
 

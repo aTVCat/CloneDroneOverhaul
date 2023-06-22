@@ -113,14 +113,14 @@ namespace CDOverhaul.HUD
             m_WorkshopLevelUpVote.onClick.AddListener(ToggleVoteUp);
             m_WorkshopLevelDownVote = MyModdedObject.GetObject<Button>(34);
             m_WorkshopLevelDownVote.onClick.AddListener(ToggleVoteDown);
-            m_WorkshopLevelDetails  = MyModdedObject.GetObject<Button>(35);
+            m_WorkshopLevelDetails = MyModdedObject.GetObject<Button>(35);
 
             m_PlayersInMatchPanel = MyModdedObject.GetObject<Transform>(26);
             m_PlayersInMatch = new PrefabAndContainer(MyModdedObject, 27, 28);
 
             m_PersonalizationButton = MyModdedObject.GetObject<Button>(0);
             m_PersonalizationButton.onClick.AddListener(OnPersonalizationButtonClicked);
-            m_PersonalizationButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_PersonalizationButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_PersonalizationPanel = MyModdedObject.GetObject<Transform>(1);
             m_PersonalizationSkinsButton = MyModdedObject.GetObject<Button>(2);
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
@@ -129,7 +129,7 @@ namespace CDOverhaul.HUD
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
-            m_ExitButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_ExitButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_ExitSelectPanel = MyModdedObject.GetObject<Transform>(5);
             m_ExitSelectToMainMenuButton = MyModdedObject.GetObject<Button>(6);
             m_ExitSelectToMainMenuButton.onClick.AddListener(OnMainMenuClicked);
@@ -138,13 +138,13 @@ namespace CDOverhaul.HUD
 
             m_AdvancementsButton = MyModdedObject.GetObject<Button>(8);
             m_AdvancementsButton.onClick.AddListener(OnAdvClicked);
-            m_AdvancementsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_AdvancementsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_AdvFillImage = MyModdedObject.GetObject<Image>(9);
             m_AdvCompletedText = MyModdedObject.GetObject<Text>(10);
 
             m_SettingsButton = MyModdedObject.GetObject<Button>(11);
             m_SettingsButton.onClick.AddListener(OnSettingsClicked);
-            m_SettingsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_SettingsButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_SettingsSelectPanel = MyModdedObject.GetObject<Transform>(12);
             m_GameSettingsButton = MyModdedObject.GetObject<Button>(13);
             m_GameSettingsButton.onClick.AddListener(OnGameSettingsClicked);
@@ -164,19 +164,19 @@ namespace CDOverhaul.HUD
 
             m_BackToLVLEditorButton = MyModdedObject.GetObject<Button>(24);
             m_BackToLVLEditorButton.onClick.AddListener(GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked);
-            m_BackToLVLEditorButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_BackToLVLEditorButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
             m_SkipLevelButton = MyModdedObject.GetObject<Button>(25);
             m_SkipLevelButton.onClick.AddListener(delegate
             {
                 GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
                 Hide();
             });
-            m_SkipLevelButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = m_SkipLevelButton.gameObject.AddComponent<OverhaulUIButtonScaler>();
 
             m_PersonalizationNotification = MyModdedObject.GetObject<Transform>(23);
 
             MyModdedObject.GetObject<Button>(16).onClick.AddListener(OnContinueClicked);
-            MyModdedObject.GetObject<Transform>(16).gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = MyModdedObject.GetObject<Transform>(16).gameObject.AddComponent<OverhaulUIButtonScaler>();
             MyModdedObject.GetObject<Button>(15).onClick.AddListener(delegate
             {
                 Transform t = TransformUtils.FindChildRecursive(GameUIRoot.Instance.EscMenu.transform, "SettingsButton(Clone)");
@@ -187,7 +187,7 @@ namespace CDOverhaul.HUD
                         b.onClick.Invoke();
                 }
             });
-            MyModdedObject.GetObject<Transform>(15).gameObject.AddComponent<OverhaulUIButtonScaler>();
+            _ = MyModdedObject.GetObject<Transform>(15).gameObject.AddComponent<OverhaulUIButtonScaler>();
 
             Hide();
         }

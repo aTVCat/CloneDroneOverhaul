@@ -101,7 +101,7 @@ namespace CDOverhaul
 #if AllowLevelDataPatches
             private static readonly bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = true;
 #else
-            private static bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
+            private static readonly bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
 #endif
             public static bool IsNewSaveAndLoadSystemEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED;
 
@@ -171,7 +171,7 @@ namespace CDOverhaul
             private static readonly bool IS_NEW_TRANSITION_SCREEN_ENABLED = true;
             public static bool IsNewTransitionScreenEnabled => !OverhaulVersion.IsUpdate2Hotfix && IS_NEW_TRANSITION_SCREEN_ENABLED;
 
-            public static readonly bool AllowDeveloperUseAllSkins = true;
+            public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }
     }
 }

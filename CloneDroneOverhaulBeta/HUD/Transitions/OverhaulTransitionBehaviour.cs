@@ -1,9 +1,4 @@
 ﻿using ModLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,7 +9,7 @@ namespace CDOverhaul.HUD.Transitions
     {
         public const float UNSCALED_DELTA_TIME_MULTIPLIER = 12.5f;
 
-        private static object s_Mutex = new object();
+        private static readonly object s_Mutex = new object();
 
         private Image m_Image;
 
@@ -24,12 +19,12 @@ namespace CDOverhaul.HUD.Transitions
         private bool m_HasInitialized;
         private float m_TimeToDestroy;
         private float m_TimeToDisconnect;
-        private float m_TimeToAllowColorUpdates;
+        private readonly float m_TimeToAllowColorUpdates;
 
         public void Initialize(bool fadeOut, bool realTransition = false)
         {
-            if(!m_FadeOut) m_FadeOut = fadeOut;
-            if(!m_IsRealTransition) m_IsRealTransition = realTransition;
+            if (!m_FadeOut) m_FadeOut = fadeOut;
+            if (!m_IsRealTransition) m_IsRealTransition = realTransition;
 
             if (!m_HasInitialized)
             {
@@ -58,7 +53,7 @@ namespace CDOverhaul.HUD.Transitions
             if (m_TimeToDestroy != -1f && time >= m_TimeToDestroy)
                 Destroy(base.gameObject);
 
-            if(m_IsRealTransition && m_TimeToDisconnect != -1f && time >= m_TimeToDisconnect)
+            if (m_IsRealTransition && m_TimeToDisconnect != -1f && time >= m_TimeToDisconnect)
             {
                 Disconnect();
                 m_TimeToDisconnect = -1f;

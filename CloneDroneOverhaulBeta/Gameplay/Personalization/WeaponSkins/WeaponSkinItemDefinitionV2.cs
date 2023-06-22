@@ -1,6 +1,5 @@
 ﻿using OverhaulAPI;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -99,21 +98,21 @@ namespace CDOverhaul.Gameplay
 
         bool IOverhaulItemDefinition.IsUnlocked(bool forceTrue)
         {
-            if (forceTrue || OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID)) 
+            if (forceTrue || OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
                 return true;
 
             string localPlayFabID = PlayFabDataController.GetLocalPlayFabID();
             bool result = m_ExclusivePlayerID.Contains(localPlayFabID);
 
             // Force unlock skin if the user is CDO developer
-            if (!result && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AllowDeveloperUseAllSkins)
+            if (!result && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 result = localPlayFabID.Equals("883CC7F4CA3155A3");
 
             // Check discord user id (Not the best idea)
             if (!result && OverhaulDiscordController.Instance && OverhaulDiscordController.SuccessfulInitialization)
             {
                 long id = OverhaulDiscordController.Instance.UserID;
-                if(id != -1)
+                if (id != -1)
                     result = m_ExclusivePlayerID.Contains(id.ToString());
             }
 
@@ -125,14 +124,10 @@ namespace CDOverhaul.Gameplay
             if (!player)
                 return false;
 
-            if (string.IsNullOrEmpty(m_ExclusivePlayerID) || player.HasPermissionToUseLockedStuff())
-                return true;
-
-            string playfabID = player.GetPlayFabID();
-            if (string.IsNullOrEmpty(playfabID))
-                return false;
-
-            return m_ExclusivePlayerID.Contains(playfabID);
+            return string.IsNullOrEmpty(m_ExclusivePlayerID) || player.IsForcedToUseLockedStuff()
+|| (GameModeManager.IsSinglePlayer() && player.IsPlayer()
+                ? m_ExclusivePlayerID.Contains(PlayFabDataController.GetLocalPlayFabID())
+                : m_ExclusivePlayerID.Contains(player.GetPlayFabID()));
         }
 
         bool IEqualityComparer.Equals(object x, object y) => x is IWeaponSkinItemDefinition defX && y is IWeaponSkinItemDefinition defY && (defX.GetWeaponType(), defX.GetItemName()) == (defY.GetWeaponType(), defY.GetItemName());

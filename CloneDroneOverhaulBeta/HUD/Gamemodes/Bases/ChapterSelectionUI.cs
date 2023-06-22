@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,7 +77,7 @@ namespace CDOverhaul.HUD.Gamemodes
             GamemodesUI.FullscreenWindow.Show(delegate
             {
                 MethodInfo info = MetagameProgressManager.Instance.GetType().GetMethod("ResetToChapter" + m_SelectedChapter, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-                info.Invoke(MetagameProgressManager.Instance, null);
+                _ = info.Invoke(MetagameProgressManager.Instance, null);
                 Singleton<GameFlowManager>.Instance.StartStoryModeGame(true);
                 Hide();
             }, 0);

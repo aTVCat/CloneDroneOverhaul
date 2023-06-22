@@ -1,16 +1,11 @@
-﻿using InjectionClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
     public class FullscreenWindowPageBase : OverhaulBehaviour
     {
-        private static List<FullscreenWindowPageBase> s_AllPages = new List<FullscreenWindowPageBase>();
+        private static readonly List<FullscreenWindowPageBase> s_AllPages = new List<FullscreenWindowPageBase>();
         public virtual Vector2 GetWindowSize() => OverhaulGamemodesUIFullscreenWindow.DefaultWindowSize;
 
         protected OverhaulGamemodesUIFullscreenWindow FullscreenWindow;

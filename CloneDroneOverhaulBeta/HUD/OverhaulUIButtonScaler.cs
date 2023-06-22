@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -56,7 +51,7 @@ namespace CDOverhaul.HUD
         {
             m_Click = false;
             m_Highlight = false;
-            if(m_TargetTransform) m_TargetTransform.localScale = IdleScale;
+            if (m_TargetTransform) m_TargetTransform.localScale = IdleScale;
         }
 
         private void updateScale(Vector3 target)

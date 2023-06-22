@@ -109,10 +109,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Skin.Bow"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedBowSkin,
                 ["Skin.Hammer"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedHammerSkin,
                 ["Skin.Spear"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSpearSkin,
+                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
                 ["State.Flags"] = GetHashtableFlags(),
                 ["State.Version"] = OverhaulVersion.ModVersion.ToString(),
-                [OutfitsWearer.IDInHashtable] = OutfitsController.EquippedAccessories,
                 ["Custom.Data"] = string.Empty,
             };
         }

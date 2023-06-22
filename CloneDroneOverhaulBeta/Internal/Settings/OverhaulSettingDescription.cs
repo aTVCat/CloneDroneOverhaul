@@ -1,7 +1,4 @@
-﻿using System.IO;
-using UnityEngine;
-
-namespace CDOverhaul
+﻿namespace CDOverhaul
 {
     public class OverhaulSettingDescription
     {

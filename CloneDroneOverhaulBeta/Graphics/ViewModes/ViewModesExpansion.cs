@@ -94,8 +94,8 @@ namespace CDOverhaul.Graphics
                 if (!TimeManager.Instance.IsGamePaused())
                     m_Camera.fieldOfView = 80;
 
-                m_Camera.transform.position = m_FPModeCameraParent.transform.position + 
-                    (m_FPModeCameraParent.transform.up * 
+                m_Camera.transform.position = m_FPModeCameraParent.transform.position +
+                    (m_FPModeCameraParent.transform.up *
                     (ViewModesController.DefaultCameraUpTransformMultiplier +
                     (ViewModesController.IsLargeBot(Owner) ? ViewModesController.AdditionalCameraUpTransformMultiplier : 0f) +
                     (Owner.IsRidingOtherCharacter() ? ViewModesController.AdditionalCameraUpTransformMultiplier * 2f : 0f)));

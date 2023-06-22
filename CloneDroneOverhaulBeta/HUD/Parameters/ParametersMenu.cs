@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD
         public static bool IsActive => Instance != null && Instance.gameObject.activeSelf;
 
         private static List<string> s_AllCategories;
-        private static List<string> s_SortCategories = new List<string>
+        private static readonly List<string> s_SortCategories = new List<string>
         {
             "Mod",
             "Gameplay",
@@ -61,7 +61,7 @@ namespace CDOverhaul.HUD
             Instance = this;
             ShouldSelectShortcuts = false;
 
-            if(s_AllCategories == null)
+            if (s_AllCategories == null)
             {
                 s_AllCategories = OverhaulSettingsController.GetAllCategories();
                 sortCategories();
@@ -158,7 +158,7 @@ namespace CDOverhaul.HUD
 
         private void sortCategories()
         {
-            foreach(string toSort in s_SortCategories)
+            foreach (string toSort in s_SortCategories)
             {
                 int currentIndex = s_AllCategories.IndexOf(toSort);
                 int newIndex = s_SortCategories.IndexOf(toSort);
@@ -170,7 +170,7 @@ namespace CDOverhaul.HUD
 
         private void refreshThemeOutlines()
         {
-            foreach(Image outline in m_ThemeGraphics)
+            foreach (Image outline in m_ThemeGraphics)
             {
                 if (!outline)
                     continue;

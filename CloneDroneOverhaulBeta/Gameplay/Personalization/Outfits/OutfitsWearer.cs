@@ -149,9 +149,9 @@ namespace CDOverhaul.Gameplay.Outfits
 
         private void Update()
         {
-            if(Time.frameCount % 10 == 0 && !m_SpawnedAccessories.IsNullOrEmpty() && Owner.IsMainPlayer())
+            if (Time.frameCount % 10 == 0 && !m_SpawnedAccessories.IsNullOrEmpty() && Owner.IsMainPlayer())
             {
-                foreach(GameObject gm in m_SpawnedAccessories.Values)
+                foreach (GameObject gm in m_SpawnedAccessories.Values)
                 {
                     if (!gm)
                         continue;

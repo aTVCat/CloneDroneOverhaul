@@ -110,14 +110,14 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 yield break;
 
             bool success = AutoUpgradeSequences.TryGetValue(variant, out AutoBuildSequence autoBuildSequence);
-            if(!success || autoBuildSequence.Upgrades.IsNullOrEmpty())
+            if (!success || autoBuildSequence.Upgrades.IsNullOrEmpty())
                 yield break;
 
             int currentUpgradeIndex = 0;
             while (currentUpgradeIndex < autoBuildSequence.Upgrades.Length)
             {
                 AutoBuildUpgrade autoBuildUpgrade = autoBuildSequence.Upgrades[currentUpgradeIndex];
-                if(autoBuildUpgrade == null)
+                if (autoBuildUpgrade == null)
                     break;
 
                 UpgradeUIIcon icon = ui.GetUpgradeUIIcon(autoBuildUpgrade.Upgrade, autoBuildUpgrade.Level);
