@@ -34,7 +34,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             }
 
             m_TimeToReceiveData = Time.time + 1f;
-            if (m_State.state.PlayFabID.Equals(ExclusivityController.GetLocalPlayFabID())) m_LocalPlayerInfo = this;
+            if (m_State.state.PlayFabID.Equals(PlayFabDataController.GetLocalPlayFabID())) m_LocalPlayerInfo = this;
         }
 
         private void Update()
@@ -51,7 +51,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public void RefreshData()
         {
             GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
-            newEvent.EventData = "[OverhaulPlayerInfoRefresh]@" + ExclusivityController.GetLocalPlayFabID() + "@" + SerializeData();
+            newEvent.EventData = "[OverhaulPlayerInfoRefresh]@" + PlayFabDataController.GetLocalPlayFabID() + "@" + SerializeData();
             newEvent.Send();
         }
 
@@ -73,11 +73,11 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
             if (moddedEvent.EventData.StartsWith("[OverhaulPlayerInfoRequest]@"))
             {
-                if (!moddedEvent.EventData.Contains(ExclusivityController.GetLocalPlayFabID()))
+                if (!moddedEvent.EventData.Contains(PlayFabDataController.GetLocalPlayFabID()))
                     return;
 
                 GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
-                newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + ExclusivityController.GetLocalPlayFabID() + "@" + SerializeData();
+                newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + PlayFabDataController.GetLocalPlayFabID() + "@" + SerializeData();
                 newEvent.Send();
             }
             bool isRefresh = moddedEvent.EventData.StartsWith("[OverhaulPlayerInfoRefresh]@");
@@ -104,7 +104,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             return new Hashtable
             {
-                ["ID"] = generateDefaultData ? replacedPlayfabID : ExclusivityController.GetLocalPlayFabID(),
+                ["ID"] = generateDefaultData ? replacedPlayfabID : PlayFabDataController.GetLocalPlayFabID(),
                 ["Skin.Sword"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSwordSkin,
                 ["Skin.Bow"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedBowSkin,
                 ["Skin.Hammer"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedHammerSkin,

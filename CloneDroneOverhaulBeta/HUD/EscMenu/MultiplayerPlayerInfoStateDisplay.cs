@@ -79,11 +79,12 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            /*
             Color favouriteColor = humanFavouriteColor.ColorValue;
             if (ExclusiveColorsController.GetExclusivePlayerInfo(m_PlayerInfoState.state.PlayFabID, out ExclusiveColorInfo? info) && info != null && info.Value.ColorToReplace == m_PlayerInfoState.state.FavouriteColor)
                 favouriteColor = info.Value.NewColor;
 
-            m_ColorIndicator.color = favouriteColor;
+            m_ColorIndicator.color = favouriteColor;*/
         }
 
         protected override void OnDisposed()

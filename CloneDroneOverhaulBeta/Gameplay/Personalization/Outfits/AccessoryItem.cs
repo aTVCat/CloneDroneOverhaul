@@ -44,7 +44,7 @@ namespace CDOverhaul.Gameplay.Outfits
             if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(AllowedPlayers))
                 return true;
 
-            string localID = ExclusivityController.GetLocalPlayFabID();
+            string localID = PlayFabDataController.GetLocalPlayFabID();
             bool isUnlocked = AllowedPlayers.Contains(localID);
             if (!isUnlocked && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AllowDeveloperUseAllSkins)
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");

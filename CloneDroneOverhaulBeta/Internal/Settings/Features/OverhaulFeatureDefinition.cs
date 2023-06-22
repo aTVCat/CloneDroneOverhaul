@@ -14,7 +14,7 @@ namespace CDOverhaul
                 606767773473046529
             };
 
-            public override bool IsAvailable() => OverhaulVersion.IsDebugBuild || ExclusivityController.IsDeveloper() || s_AllowedDiscordIDs.Contains(ExclusivityController.GetDiscordID());
+            public override bool IsAvailable() => OverhaulVersion.IsDebugBuild || PlayFabDataController.IsDeveloper() || s_AllowedDiscordIDs.Contains(PlayFabDataController.GetDiscordID());
         }
     }
 }

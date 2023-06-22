@@ -465,7 +465,7 @@ namespace CDOverhaul.Workshop
 
             RefreshManagementPanel();
 
-            m_FavouriteButton.image.color = "#2E2E2E".ConvertHexToColor();
+            m_FavouriteButton.image.color = "#2E2E2E".ConvertToColor();
             m_FavouriteButton.interactable = true;
             m_ItemPageViewTransform.gameObject.SetActive(true);
             m_Animator.Play("Base Layer.WorkshopUIViewItem");
@@ -576,11 +576,11 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem == null)
                 return;
 
-            m_FavouriteButton.image.color = "#2E2E2E".ConvertHexToColor();
+            m_FavouriteButton.image.color = "#2E2E2E".ConvertToColor();
             m_FavouriteButton.interactable = false;
             OverhaulSteamBrowser.MarkItemAsFavourite(ViewingWorkshopItem.ItemID, delegate (PublishedFileId_t t, EResult r, bool a)
             {
-                m_FavouriteButton.image.color = "#FFDA5A".ConvertHexToColor();
+                m_FavouriteButton.image.color = "#FFDA5A".ConvertToColor();
             });
         }
 
@@ -742,9 +742,9 @@ namespace CDOverhaul.Workshop
 
             CurrentItemVote = null;
             m_UpVoteButton.interactable = false;
-            m_UpVoteButton.image.color = "#414141".ConvertHexToColor();
+            m_UpVoteButton.image.color = "#414141".ConvertToColor();
             m_DownVoteButton.interactable = false;
-            m_DownVoteButton.image.color = "#414141".ConvertHexToColor();
+            m_DownVoteButton.image.color = "#414141".ConvertToColor();
 
             OverhaulSteamBrowser.GetItemVoteInfo(ViewingWorkshopItem.ItemID, delegate (bool skip, bool up, bool down, bool fail)
             {
@@ -754,13 +754,13 @@ namespace CDOverhaul.Workshop
                 m_UpVoteButton.interactable = true;
                 if (up)
                 {
-                    m_UpVoteButton.image.color = "#2DC869".ConvertHexToColor();
+                    m_UpVoteButton.image.color = "#2DC869".ConvertToColor();
                     CurrentItemVote = true;
                 }
                 m_DownVoteButton.interactable = true;
                 if (down)
                 {
-                    m_DownVoteButton.image.color = "#EC5454".ConvertHexToColor();
+                    m_DownVoteButton.image.color = "#EC5454".ConvertToColor();
                     CurrentItemVote = false;
                 }
             });

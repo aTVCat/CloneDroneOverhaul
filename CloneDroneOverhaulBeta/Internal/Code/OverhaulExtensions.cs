@@ -40,7 +40,7 @@ namespace CDOverhaul
             if (!firstPersonMover)
                 return false;
 
-            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && ExclusivityController.GetLocalPlayFabID() == "883CC7F4CA3155A3")
+            if (GameModeManager.IsMultiplayer() ? firstPersonMover.IsMainPlayer() : firstPersonMover.IsPlayer() && PlayFabDataController.GetLocalPlayFabID() == "883CC7F4CA3155A3")
                 return true;
 
             return firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3";
@@ -225,7 +225,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="theString"></param>
         /// <returns></returns>
-        public static Color ConvertHexToColor(this string theString)
+        public static Color ConvertToColor(this string theString)
         {
             _ = ColorUtility.TryParseHtmlString(theString, out Color col);
             return col;

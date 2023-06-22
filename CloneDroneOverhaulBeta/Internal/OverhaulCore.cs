@@ -79,7 +79,7 @@ namespace CDOverhaul
 
             OverhaulSettingsController.CreateHUD();
             OverhaulGraphicsController.Initialize();
-            ExclusivityController.Initialize();
+            PlayFabDataController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulLocalizationController.Initialize();
             OverhaulPatchNotes.Initialize();

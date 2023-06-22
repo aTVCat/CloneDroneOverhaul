@@ -41,9 +41,9 @@ namespace CDOverhaul.HUD.Tooltips
                 {
                     bool isFire = weaponSkins.IsFireVariant(weaponType);
                     if (isFire)
-                        color = FIRE_COLOR.ConvertHexToColor();
+                        color = FIRE_COLOR.ConvertToColor();
                     else
-                        color = LASER_COLOR.ConvertHexToColor();
+                        color = LASER_COLOR.ConvertToColor();
                 }
             }
             SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;

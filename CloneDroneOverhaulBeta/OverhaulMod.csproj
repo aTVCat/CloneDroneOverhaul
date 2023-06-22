@@ -413,6 +413,8 @@
     <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
     <Compile Include="Gameplay\ObjectModdedState\OverhaulObjectStateModder.cs" />
     <Compile Include="Gameplay\OverhaulVolumeController.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColor.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\AccessoryItem.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\AccessoryType.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\DefaultAccessoryItem.cs" />
@@ -466,7 +468,6 @@
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
     <Compile Include="Graphics\Environment\Mindspace\MindspaceOverhaulController.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\WeaponSkinItemDefinitionV2.cs" />
@@ -557,8 +558,7 @@
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\Management\OverhaulCharacterExpansion.cs" />
     <Compile Include="Internal\Debug\Console\OverhaulConsoleController.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsController.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\ExclusivityController.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\PlayFabDataController.cs" />
     <Compile Include="Internal\Debug\Console\IConsoleCommandReceiver.cs" />
     <Compile Include="Internal\Code\OverhaulExceptions.cs" />
     <Compile Include="Gameplay\OverhaulGamemodeManager.cs" />
