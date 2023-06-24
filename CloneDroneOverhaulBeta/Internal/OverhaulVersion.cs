@@ -1,60 +1,66 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace CDOverhaul
 {
     public static class OverhaulVersion
     {
-        /// <summary>
-        /// The version of the mod
-        /// </summary>
-        private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0");
-        private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.2");
+        private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.12.0");
+        private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.0");
 
-        public static string[] BlacklistedVersions = new string[]
+        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
+
+        public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
+        public static bool IsUpdate2 => !IsUpdate(Updates.VER_3);
+        public static bool IsUpdate4 => IsUpdate(Updates.VER_4);
+
+        public static Version ModVersion
         {
-            "0.3.0.199" // A debug copy of the build was accidentally released to public
-        };
-
-        public static Version ModVersion => IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion);
-
-        /// <summary>
-        /// The version of game mod will definitely work 
-        /// </summary>
-        public const string GameTargetVersion = "1.5.0.18";
-
-        /// <summary>
-        /// The full name of the mod
-        /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul " + buildString;
-        /// <summary>
-        /// The shortened name of the mod
-        /// </summary>
-        public static readonly string ModShortName = "Overhaul " + buildString;
-        private static string buildString => getVersionPrefixChar() + ModVersion.ToString() + DebugString;
+            get
+            {
+                switch (s_CurrentUpdate)
+                {
+                    case Updates.VER_2:
+                        return s_ModVersionUpdate2;
+                    case Updates.VER_4:
+                        return s_ModVersionUpdate4;
+                }
+                return s_AssemblyVersion;
+            }
+        }
+        public static string GetBuildString() => 'v' + ModVersion.ToString() + DebugString;
 
         /// <summary>
-        /// Are we still on 0.2?
+        /// The version of the game the mod will definitely work fine
         /// </summary>
-        public const bool IsUpdate2Hotfix = false;
+        public const string TargetGameVersion = "1.5.0.18";
 
-        /// <summary>
-        /// WIP
-        /// </summary>
-        public const bool IsUpdate4 = false;
+        public static readonly string Watermark = "Clone Drone Overhaul " + GetBuildString();
+        public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();
 
 #if DEBUG
         public const bool IsDebugBuild = true;
-        public const string DebugString = " (Debug)";
+        public const string DebugString = " [Debug]";
 #else
         public const bool IsDebugBuild = false;
         public const string DebugString = "";
 #endif
 
-        private static char getVersionPrefixChar()
+        private static readonly string[] s_BlacklistedVersions = new string[]
         {
-            return 'v';
+            "0.3.0.199" // A debug build was released to public by mistake xd
+        };
+        public static bool IsBlacklistedVersion(string versionString) => s_BlacklistedVersions.Contains(versionString);
+
+        public enum Updates
+        {
+            VER_2 = 0,
+
+            VER_3 = 1,
+
+            VER_4 = 2,
         }
     }
 }

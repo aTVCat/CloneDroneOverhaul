@@ -6,7 +6,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(WorldAudioSource))]
     internal static class WorldAudioSource_Patch
     {
-        [OverhaulSetting("Audio.Filters.Reverb", true, OverhaulVersion.IsUpdate2Hotfix)]
+        [OverhaulSetting("Audio.Filters.Reverb", true)]
         public static bool EnableReverbFilter;
 
         public static float DecayTime = 0.375f;

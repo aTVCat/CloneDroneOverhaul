@@ -27,7 +27,7 @@ namespace CDOverhaul.Gameplay
 
         public void SaveSkins()
         {
-            if (WeaponSkinsEditor.EditorEnabled)
+            if (WeaponSkinsEditor.EditorFullyEnabled)
             {
                 FileName = "ImportedSkins";
                 SaveData(true, "Download/Permanent");

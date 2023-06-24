@@ -159,8 +159,9 @@ namespace CDOverhaul.HUD
                     break;
             }
 
-            if (WeaponSkinsEditor.EditorEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
-                SetSelected(true, true);
+            /*
+            if (WeaponSkinsEditor.EditorFullyEnabled && WeaponSkinsEditor.ItemIsSelected(SkinItem))
+                SetSelected(true, true);*/
         }
 
         public void SelectThis()
@@ -216,17 +217,18 @@ namespace CDOverhaul.HUD
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            /*
             bool shiftPress = Input.GetKey(KeyCode.LeftShift);
             if (m_Button != null && m_Button.interactable)
             {
-                if (WeaponSkinsEditor.EditorEnabled && shiftPress)
+                if (WeaponSkinsEditor.EditorFullyEnabled && shiftPress)
                 {
                     SetSelected(!IsSelected);
                     WeaponSkinsEditor.SetSkinItemSelectedState(SkinItem, IsSelected);
                     return;
                 }
                 SelectThis();
-            }
+            }*/
         }
     }
 }

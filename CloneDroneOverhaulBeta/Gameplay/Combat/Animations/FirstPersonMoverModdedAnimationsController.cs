@@ -9,7 +9,7 @@ namespace CDOverhaul.Gameplay.Combat
     {
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (OverhaulVersion.IsUpdate2Hotfix || !hasInitializedModel || firstPersonMover == null)
+            if (OverhaulVersion.IsUpdate2 || !hasInitializedModel || firstPersonMover == null)
                 return;
 
             CharacterModel model = firstPersonMover.GetCharacterModel();

@@ -45,7 +45,7 @@ namespace CDOverhaul
                 {
                     new Embed()
                     {
-                        title = "__Game crashed. Client: " + OverhaulVersion.ModFullName + "__",
+                        title = "__Game crashed. Client: " + OverhaulVersion.Watermark + "__",
                         description = content,
                         color = int.Parse("E84A3F", System.Globalization.NumberStyles.HexNumber),
                     },

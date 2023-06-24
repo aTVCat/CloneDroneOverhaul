@@ -106,11 +106,11 @@ namespace CDOverhaul.HUD
                 }
                 m_VersionLabel.text = string.Concat(m_TitleScreenUIVersionLabel.text,
                "\n",
-                OverhaulVersion.ModFullName);
+                OverhaulVersion.Watermark);
             }
             else
             {
-                m_VersionLabel.text = OverhaulVersion.ModShortName;
+                m_VersionLabel.text = OverhaulVersion.ShortenedWatermark;
                 m_VersionLabel.gameObject.SetActive(WatermarkEnabled);
                 m_UpperButtonsContainer.gameObject.SetActive(false);
                 m_DiscordHolderTransform.gameObject.SetActive(false);

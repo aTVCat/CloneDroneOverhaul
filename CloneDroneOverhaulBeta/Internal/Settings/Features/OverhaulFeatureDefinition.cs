@@ -9,12 +9,7 @@ namespace CDOverhaul
 
         public class AbilityToManageSkins : OverhaulFeatureDefinition
         {
-            private static readonly long[] s_AllowedDiscordIDs = new long[]
-            {
-                606767773473046529
-            };
-
-            public override bool IsAvailable() => OverhaulVersion.IsDebugBuild || PlayFabDataController.IsDeveloper() || s_AllowedDiscordIDs.Contains(PlayFabDataController.GetDiscordID());
+            public override bool IsAvailable() => OverhaulVersion.IsDebugBuild || PlayFabDataController.IsDeveloper();
         }
     }
 }

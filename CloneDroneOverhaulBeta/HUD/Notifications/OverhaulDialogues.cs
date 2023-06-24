@@ -82,7 +82,7 @@ namespace CDOverhaul
             switch (presetType)
             {
                 case OverhaulDialoguePresetType.UnsupportedGameVersion:
-                    OverhaulDialogues.Create2BDialogue("Unsupported Clone Drone version!", "Current Overhaul mod version is made for version " + OverhaulVersion.GameTargetVersion + " of the game.\nThis may result bugs and crashes.\nYou may continue using the mod or delete one. It is better to update the mod", 24f, "Ok", null, "Visit site", delegate
+                    OverhaulDialogues.Create2BDialogue("Unsupported Clone Drone version!", "Current Overhaul mod version is made for version " + OverhaulVersion.TargetGameVersion + " of the game.\nThis may result bugs and crashes.\nYou may continue using the mod or delete one. It is better to update the mod", 24f, "Ok", null, "Visit site", delegate
                     {
                         UnityEngine.Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
                     }, new Vector2(330, 145));

@@ -6,10 +6,9 @@ namespace CDOverhaul.HUD.Tooltips
 {
     public class OverhaulCurrentWeaponTooltip : OverhaulTooltipWithPlayerData
     {
-        public const string LASER_COLOR = "#D9EAFF";
-        public const string FIRE_COLOR = "#FFDAC0";
+        public const string LASER_COLOR = "#AAD7FF";
+        public const string FIRE_COLOR = "#FFB47D";
 
-        private readonly FirstPersonMover m_Player;
         private WeaponType m_PlayerEquippedWeaponType;
 
         public override GameObject GetTooltipPrefab() => TooltipsController.TooltipsUI.GetDefaultPrefab();

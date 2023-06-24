@@ -66,15 +66,12 @@ namespace CDOverhaul
                 return false;
 
             Hashtable hashtable = info.GetHashtable();
-            return hashtable != null && hashtable.ContainsKey("State.Version")
-&& OverhaulVersion.BlacklistedVersions.Contains(hashtable["State.Version"]);
+            return hashtable != null && hashtable.ContainsKey("State.Version") && OverhaulVersion.IsBlacklistedVersion(hashtable["State.Version"].ToString());
         }
 
         public static bool IsForcedToUseLockedStuff(this FirstPersonMover firstPersonMover)
         {
-            return firstPersonMover
-&& (!firstPersonMover.IsPlayer()
-|| ((firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper()) && !firstPersonMover.IsBlacklistedBuildUser()));
+            return firstPersonMover && (!firstPersonMover.IsPlayer() || ((firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper()) && !firstPersonMover.IsBlacklistedBuildUser()));
         }
 
         public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)

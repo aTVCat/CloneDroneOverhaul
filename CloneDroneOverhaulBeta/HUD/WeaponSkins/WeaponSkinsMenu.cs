@@ -1020,7 +1020,7 @@ namespace CDOverhaul.HUD
             SetSkinEditingMenuActive(false);
             MyModdedObject.GetObject<Toggle>(7).isOn = WeaponSkinsController.AllowEnemiesWearSkins;
 
-            m_EditSkinButton.interactable = OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToManageSkins);
+            //m_EditSkinButton.interactable = OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToManageSkins);
             m_RefreshDatabaseButton.interactable = m_EditSkinButton.interactable;
 
             Transform container = GetContainer(true);

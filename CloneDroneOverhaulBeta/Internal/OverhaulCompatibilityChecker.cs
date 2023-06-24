@@ -9,7 +9,7 @@
                 OverhaulSessionController.SetKey("HasNotifiedPlayerAboutUnsupportedVersion", true);
 
                 string currentVersion = VersionNumberManager.Instance.GetVersionString();
-                if (!Equals(currentVersion, OverhaulVersion.GameTargetVersion))
+                if (!Equals(currentVersion, OverhaulVersion.TargetGameVersion))
                     DelegateScheduler.Instance.Schedule(showUnsupportedGameVersionDialogue, 1f);
             }
         }

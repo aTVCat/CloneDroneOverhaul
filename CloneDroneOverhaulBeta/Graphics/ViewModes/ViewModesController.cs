@@ -5,9 +5,9 @@ namespace CDOverhaul.Graphics
     public class ViewModesController : OverhaulGameplayController
     {
         [OverhaulSettingDropdownParameters("Third person@First person")]
-        [OverhaulSetting("Gameplay.Camera.View mode", 0, OverhaulVersion.IsUpdate2Hotfix)]
+        [OverhaulSetting("Gameplay.Camera.View mode", 0)]
         public static int ViewModeType;
-        [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false, OverhaulVersion.IsUpdate2Hotfix)]
+        [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false)]
         public static bool SyncCameraWithHeadRotation;
 
         public static readonly Vector3 DefaultCameraOffset = new Vector3(0, 0.45f, -0.1f);

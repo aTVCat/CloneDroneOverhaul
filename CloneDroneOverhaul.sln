@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloneDroneOverhaul", "CloneDroneOverhaul\CloneDroneOverhaul.csproj", "{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stuff", "Stuff", "{1BB41591-5D74-4FDE-99ED-ADBCC29DE57D}"
 	ProjectSection(SolutionItems) = preProject
 		Version.txt = Version.txt
@@ -26,10 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{845735E6-2A8C-46C5-94BC-3CC15A86EF1D}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAAF63A3-61F4-43F3-860C-B9C2C98B6F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -15,10 +15,10 @@ namespace CDOverhaul.Workshop
     {
         #region Settings
 
-        [OverhaulSetting("Game interface.Network.New Workshop browser design", true, OverhaulVersion.IsUpdate2Hotfix)]
+        [OverhaulSetting("Game interface.Network.New Workshop browser design", true)]
         public static bool UseThisUI;
 
-        [OverhaulSetting("Game interface.Network.Cache images", false, OverhaulVersion.IsUpdate2Hotfix, null, "Game interface.Network.New Workshop browser design")]
+        [OverhaulSetting("Game interface.Network.Cache images", false, false, null, "Game interface.Network.New Workshop browser design")]
         public static bool CacheImages;
 
 
@@ -75,7 +75,7 @@ namespace CDOverhaul.Workshop
 
         public bool TryShow()
         {
-            if (OverhaulVersion.IsUpdate2Hotfix || !UseThisUI)
+            if (OverhaulVersion.IsUpdate2 || !UseThisUI)
                 return false;
 
             Show();
