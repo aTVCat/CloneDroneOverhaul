@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-namespace CDOverhaul.Localization
+namespace CDOverhaul
 {
     [Serializable]
     public class OverhaulLocalizationData : OverhaulDataBase

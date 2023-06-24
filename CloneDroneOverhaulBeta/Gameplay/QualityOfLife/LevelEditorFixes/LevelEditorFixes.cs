@@ -249,8 +249,5 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             panel.anchoredPosition = new Vector2(150f, -50f);
             SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

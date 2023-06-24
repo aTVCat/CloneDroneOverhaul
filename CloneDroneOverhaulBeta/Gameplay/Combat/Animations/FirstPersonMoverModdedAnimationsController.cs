@@ -49,8 +49,5 @@ namespace CDOverhaul.Gameplay.Combat
 
             firstPersonMover.gameObject.AddComponent<FirstPersonMoverModdedAnimationsExpansion>().SetAnimationReferences(animationComponent, animationComponent2);
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

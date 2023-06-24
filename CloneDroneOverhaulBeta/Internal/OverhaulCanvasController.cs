@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD.Gamemodes;
-using CDOverhaul.Localization;
 using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
@@ -145,8 +144,5 @@ namespace CDOverhaul.HUD
             Destroy(HUDModdedObject.gameObject);
             Destroy(m_CanvasFromPrefab);
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

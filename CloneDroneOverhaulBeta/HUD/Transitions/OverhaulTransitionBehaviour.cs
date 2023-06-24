@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace CDOverhaul.HUD.Transitions
+namespace CDOverhaul
 {
     public class OverhaulTransitionBehaviour : OverhaulBehaviour
     {

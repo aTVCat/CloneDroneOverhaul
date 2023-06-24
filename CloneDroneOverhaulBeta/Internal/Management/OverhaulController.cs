@@ -8,7 +8,7 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of any controller in this mod.
     /// </summary>
-    public abstract class OverhaulController : OverhaulBehaviour, IConsoleCommandReceiver
+    public abstract class OverhaulController : OverhaulBehaviour
     {
         /// <summary>
         /// Check if an exception occurred while initializing the controller.
@@ -24,18 +24,6 @@ namespace CDOverhaul
         /// Called when mod was deactivated.
         /// </summary>
         public virtual void OnModDeactivated() { }
-
-        /// <summary>
-        /// The array of available commands you may type in debug console.
-        /// </summary>
-        /// <returns></returns>
-        public abstract string[] Commands();
-        /// <summary>
-        /// Called when any command ran.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public abstract string OnCommandRan(string[] command);
 
         protected override void OnDisposed()
         {

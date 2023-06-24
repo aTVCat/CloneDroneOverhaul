@@ -54,9 +54,6 @@ namespace CDOverhaul
             }
         }
 
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
-
         protected override void OnDisposed()
         {
             base.OnDisposed();

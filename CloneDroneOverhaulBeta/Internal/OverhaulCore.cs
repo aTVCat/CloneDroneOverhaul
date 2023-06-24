@@ -63,7 +63,6 @@ namespace CDOverhaul
             OverhaulAudioLibrary.Initialize();
             OverhaulEventsController.Initialize();
             OverhaulSettingsController.Initialize();
-            OverhaulConsoleController.Initialize();
             EnableCursorController.Reset();
             OverhaulController.InitializeStatic(controllers);
 

@@ -130,8 +130,5 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             }
             yield break;
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

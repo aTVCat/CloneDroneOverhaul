@@ -38,8 +38,5 @@ namespace CDOverhaul.Graphics
             return m_AllCameras;
         }
         public Camera GetMainCamera() => m_MainCamera;
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

@@ -34,8 +34,5 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 }
             }, 0.1f);
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

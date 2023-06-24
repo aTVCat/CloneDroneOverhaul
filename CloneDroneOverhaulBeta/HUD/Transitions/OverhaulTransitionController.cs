@@ -1,5 +1,4 @@
-﻿using CDOverhaul.HUD.Transitions;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 

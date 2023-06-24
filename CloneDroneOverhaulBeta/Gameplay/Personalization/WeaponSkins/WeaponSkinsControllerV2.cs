@@ -589,8 +589,5 @@ namespace CDOverhaul.Gameplay
         }
 
         IWeaponSkinItemDefinition[] IWeaponSkinsControllerV2.GetSkinItems(FirstPersonMover firstPersonMover) => Interface.GetSkinItems(ItemFilter.Equipped);
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

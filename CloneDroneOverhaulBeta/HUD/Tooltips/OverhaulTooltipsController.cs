@@ -52,8 +52,5 @@ namespace CDOverhaul.HUD.Tooltips
         }
 
         public List<OverhaulTooltip> GetTooltips() => m_Tooltips;
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

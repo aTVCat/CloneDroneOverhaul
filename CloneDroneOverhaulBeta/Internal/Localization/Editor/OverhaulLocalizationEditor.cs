@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CDOverhaul.Localization
+namespace CDOverhaul
 {
     public class OverhaulLocalizationEditor : OverhaulUI
     {

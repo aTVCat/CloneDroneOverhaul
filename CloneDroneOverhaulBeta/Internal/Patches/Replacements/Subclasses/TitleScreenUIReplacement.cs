@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using CDOverhaul.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
