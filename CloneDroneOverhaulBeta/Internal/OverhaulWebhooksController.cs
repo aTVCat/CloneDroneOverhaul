@@ -28,7 +28,8 @@ namespace CDOverhaul
             "entity which is detached",
             "InterruptDiscord",
             "SummonAllyAbility.spawnConstructionCube",
-            "CanApplyArmorPiece"
+            "CanApplyArmorPiece",
+            "MissingMethodException"
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 

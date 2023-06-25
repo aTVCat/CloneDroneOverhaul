@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
             if (type == LogType.Error || type == LogType.Exception)
             {
                 string report = "**" + logString + "**\n" + stackTrace;
-                if (OverhaulWebhooksController.HasExcludedError(report))
+                if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
                     return false;
 
                 string gamemode = string.Empty;
@@ -34,7 +34,7 @@ namespace CDOverhaul.Patches
                 if (report.Length > 1400)
                     report = report.Remove(1400);
 
-                report += string.Format("\n**GM: {0}, LevelID: {1}, GameVer: {2}, LangID: {3}, GameTime: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
+                report += string.Format("\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
 
                 OverhaulWebhooksController.ExecuteCrashReportsWebhook(report);
             }

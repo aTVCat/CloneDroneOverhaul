@@ -21,6 +21,7 @@ namespace CDOverhaul
 
             OnDisposed();
             IsDisposed = true;
+            AssignNullToAllVars(this);
             GC.SuppressFinalize(this);
         }
 
@@ -33,6 +34,12 @@ namespace CDOverhaul
                 {
                     field.SetValue(@object, null);
                 }
+            }
+
+            OverhaulDisposable overhaulDisposable = @object as OverhaulDisposable;
+            if(overhaulDisposable != null && !overhaulDisposable.IsDisposed)
+            {
+                overhaulDisposable.Dispose();
             }
         }
     }
