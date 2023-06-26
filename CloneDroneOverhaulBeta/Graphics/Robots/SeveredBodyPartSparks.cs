@@ -6,8 +6,6 @@ namespace CDOverhaul.Graphics.Robots
 {
     public class SeveredBodyPartSparks : OverhaulBehaviour
     {
-
-
         private float m_TimeToSpark;
 
         private void Start()

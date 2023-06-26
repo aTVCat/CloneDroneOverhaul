@@ -14,8 +14,8 @@ namespace CDOverhaul.HUD.Gamemodes
         public OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
 
         private RawImage m_Background;
-
-        private OverhaulDownloadInfo m_CurrentDownloadHandler;
+        private RawImage m_LastSpawnedBackground;
+        private Transform m_BackgroundContainer;
 
         public bool AllowSwitching;
 
@@ -25,6 +25,8 @@ namespace CDOverhaul.HUD.Gamemodes
             AllowSwitching = true;
 
             m_Background = MyModdedObject.GetObject<RawImage>(0);
+            m_Background.gameObject.SetActive(false);
+            m_BackgroundContainer = MyModdedObject.GetObject<Transform>(6);
             FullscreenWindow = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<OverhaulGamemodesUIFullscreenWindow>();
             FullscreenWindow.Initialize();
 
@@ -66,6 +68,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public void Show()
         {
             base.gameObject.SetActive(true);
+            DestroyBackground();
         }
 
         public void ShowWithUI(int index)
@@ -103,36 +106,48 @@ namespace CDOverhaul.HUD.Gamemodes
 
         private IEnumerator changeBackgroundTextureCoroutine(string filePath)
         {
-            AllowSwitching = false;
+            bool hasLoadedImage = false;
 
-            m_Background.color = Color.white;
-            for (int i = 0; i < 4; i++)
+            RawImage newBG = Instantiate(m_Background, m_BackgroundContainer);
+            newBG.gameObject.SetActive(true);
+            newBG.color = Color.clear;
+
+            OverhaulDownloadInfo overhaulDownloadInfo = new OverhaulDownloadInfo();
+            overhaulDownloadInfo.DoneAction = delegate
             {
-                m_Background.color = new Color(m_Background.color.r - 0.25f, m_Background.color.g - 0.25f, m_Background.color.b - 0.25f, 1);
-                yield return new WaitForSecondsRealtime(0.017f);
-            }
+                hasLoadedImage = true;
 
-            yield return null;
+                if (!newBG)
+                    return;
 
-            m_CurrentDownloadHandler = new OverhaulDownloadInfo();
-            m_CurrentDownloadHandler.DoneAction = delegate
-            {
-                if (m_Background.texture)
-                    Destroy(m_Background.texture);
-
-                m_Background.texture = m_CurrentDownloadHandler.DownloadedTexture;
+                newBG.texture = overhaulDownloadInfo.DownloadedTexture;
             };
-            OverhaulNetworkAssetsController.DownloadTexture("file://" + filePath, m_CurrentDownloadHandler);
-            yield return new WaitForSecondsRealtime(0.15f);
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + filePath, overhaulDownloadInfo);
 
+            yield return new WaitUntil(() => hasLoadedImage);
             for (int i = 0; i < 4; i++)
             {
-                m_Background.color = new Color(m_Background.color.r + 0.25f, m_Background.color.g + 0.25f, m_Background.color.b + 0.25f, 1);
-                yield return new WaitForSecondsRealtime(0.017f);
+                newBG.color = new Color(newBG.color.r + 0.25f, newBG.color.g + 0.25f, newBG.color.b + 0.25f, newBG.color.a + 0.25f);
+                yield return new WaitForSecondsRealtime(0.016f);
             }
-            m_Background.color = Color.white;
-            AllowSwitching = true;
+            newBG.color = Color.white;
+
+            DestroyBackground();
+            m_LastSpawnedBackground = newBG;
+
             yield break;
+        }
+
+        public void DestroyBackground()
+        {
+            if (m_LastSpawnedBackground)
+            {
+                if (m_LastSpawnedBackground.texture)
+                {
+                    Destroy(m_LastSpawnedBackground.texture);
+                }
+                Destroy(m_LastSpawnedBackground);
+            }
         }
     }
 }

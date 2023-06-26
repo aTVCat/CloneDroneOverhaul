@@ -17,7 +17,8 @@ namespace CDOverhaul.Gameplay.Pets
         public Vector3 OffsetTargetRotation;
         public Vector3 OffsetScale = Vector3.one;
 
-        public float LerpMultiplier;
+        public float FlyEffectMultiplier1 = 1.25f;
+        public float FlyEffectMultiplier2 = 0.025f;
 
         public bool FollowHeadRotation;
 
