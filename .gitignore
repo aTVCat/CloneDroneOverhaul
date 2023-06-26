@@ -361,5 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/OverhaulUnityProjectNormal/Assets/StreamingAssets
-/OverhaulUnityProjectNormal/Temp
+**/OverhaulUnityProjectNormal/Library
+/OverhaulUnityProjectNormal/Assets/StreamingAssets/
+/OverhaulUnityProjectNormal/Temp/
+/OverhaulUnityProjectNormal/Library/assetDatabase3
+/OverhaulUnityProjectNormal/Library/LastBuild.buildreport
