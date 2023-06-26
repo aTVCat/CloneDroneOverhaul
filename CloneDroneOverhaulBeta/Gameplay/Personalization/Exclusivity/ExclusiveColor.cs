@@ -30,16 +30,16 @@ namespace CDOverhaul
         {
             applied = false;
             color = currentColor;
-            if (!firstPersonMover)
+            if (!firstPersonMover || !firstPersonMover.IsPlayer())
                 return;
 
             string playFabID = string.Empty;
             if (GameModeManager.IsSinglePlayer())
                 playFabID = PlayFabDataController.GetLocalPlayFabID();
-            else if (firstPersonMover.IsMainPlayer())
+            else
                 playFabID = firstPersonMover.GetPlayFabID();
 
-            if (!RelatedPlayFabId.Contains(playFabID))
+            if (string.IsNullOrEmpty(playFabID) || !RelatedPlayFabId.Contains(playFabID))
                 return;
 
             int index = 0;
@@ -52,7 +52,7 @@ namespace CDOverhaul
                 {
                     applied = true;
                     color = NewColor;
-                    break;
+                    return;
                 }
                 index++;
             }

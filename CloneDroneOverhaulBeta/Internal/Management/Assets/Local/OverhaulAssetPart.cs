@@ -14,5 +14,6 @@
         Combat_Update,
         Preload,
         Experiments,
+        Pets,
     }
 }

@@ -64,5 +64,13 @@ namespace CDOverhaul.Gameplay.Pets
             s_RecentlyCreatedItem.Model = prefab;
             s_RecentlyCreatedItem.ModelName = prefab.name;
         }
+
+        public static PetBehaviourSettings GetBehaviourSettingsQuick()
+        {
+            if (s_RecentlyCreatedItem == null)
+                return null;
+
+            return s_RecentlyCreatedItem.BehaviourSettings;
+        }
     }
 }

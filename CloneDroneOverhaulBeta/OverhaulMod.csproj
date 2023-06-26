@@ -423,6 +423,8 @@
     <Compile Include="Gameplay\Personalization\Pets\PetInstanceBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\Pets\PetItem.cs" />
     <Compile Include="Gameplay\Personalization\Pets\PetsController.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\PetsWearer.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\TargetPositionNodes.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\VFXWeaponSkinSwitch.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Behaviours\MultipartWeaponBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Behaviours\MCBowSkinBehaviour.cs" />
@@ -447,6 +449,7 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Robots\RobotEffectsBehaviour.cs" />
+    <Compile Include="Graphics\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
@@ -494,6 +497,8 @@
     <Compile Include="HUD\Transitions\OverhaulTransitionBehaviour.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
+    <Compile Include="HUD\VanillaImprovements\EnergyUIImprovements.cs" />
+    <Compile Include="HUD\VanillaImprovements\VanillaUIImprovements.cs" />
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
@@ -525,6 +530,7 @@
     <Compile Include="Internal\Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />
     <Compile Include="Internal\Patches\PhotoManager_Patch.cs" />
+    <Compile Include="Internal\Patches\SeveredVolumeGenerator_Patch.cs" />
     <Compile Include="Internal\Patches\SwordBlockArea_Patch.cs" />
     <Compile Include="Internal\Patches\SettingsManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />

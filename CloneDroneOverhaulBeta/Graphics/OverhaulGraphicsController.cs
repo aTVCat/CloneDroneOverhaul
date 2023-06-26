@@ -1,5 +1,7 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Graphics.Robots;
 using CDOverhaul.HUD;
+using OverhaulAPI;
 using OverhaulAPI.SharedMonoBehaviours;
 using System;
 using System.Collections.Generic;
@@ -102,6 +104,8 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
+            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, RobotEffectsBehaviour.RobotDeathSparksVFXID);
+
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, patchAllCameras);

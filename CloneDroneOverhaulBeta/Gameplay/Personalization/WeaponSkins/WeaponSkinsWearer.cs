@@ -158,7 +158,7 @@ namespace CDOverhaul.Gameplay
             return model && IsFireVariant(model.WeaponType);
         }
 
-        public bool IsFireVariant(WeaponType type)
+        public bool IsFireVariant(WeaponType type, bool skins = true)
         {
             if (type == WeaponType.Sword)
             {
@@ -177,6 +177,13 @@ namespace CDOverhaul.Gameplay
             else if (type == WeaponType.Spear)
             {
                 if (Owner.HasUpgrade(UpgradeType.FireSpear))
+                {
+                    return true;
+                }
+            }
+            else if (!skins && type == WeaponType.Bow)
+            {
+                if (Owner.HasUpgrade(UpgradeType.FireArrow))
                 {
                     return true;
                 }

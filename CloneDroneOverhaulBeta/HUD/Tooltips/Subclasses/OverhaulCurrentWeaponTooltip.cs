@@ -1,4 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.NetworkAssets;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,9 @@ namespace CDOverhaul.HUD.Tooltips
     {
         public const string LASER_COLOR = "#AAD7FF";
         public const string FIRE_COLOR = "#FFB47D";
+
+        public static string IconsDirectory => OverhaulMod.Core.ModDirectory + "Assets/Tooltips/Weapons/";
+        private static Dictionary<string, Texture> s_CachedIcons = new Dictionary<string, Texture>();
 
         private WeaponType m_PlayerEquippedWeaponType;
 
@@ -31,16 +36,43 @@ namespace CDOverhaul.HUD.Tooltips
             if (weaponSkins)
             {
                 WeaponType weaponType = Player.GetEquippedWeaponType();
+                string weaponString = weaponType.ToString();
                 if (WeaponSkinsController.IsWeaponSupported(weaponType))
                 {
-                    bool isFire = weaponSkins.IsFireVariant(weaponType);
+                    bool isFire = weaponSkins.IsFireVariant(weaponType, false);
                     color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
+                    if(isFire) weaponString += "-Fire";
                 }
+                weaponString += ".png";
+                tryLoadIcon(weaponString);
             }
             SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;
 
             refreshData(true);
         }
+
+        private void tryLoadIcon(string fileName)
+        {
+            if (s_CachedIcons.ContainsKey(fileName))
+            {
+                SpawnedTooltipModdedObject.GetObject<RawImage>(0).texture = s_CachedIcons[fileName];
+                return;
+            }
+
+            OverhaulDownloadInfo downloadInfo = new OverhaulDownloadInfo();
+            downloadInfo.DoneAction = delegate
+            {
+                RawImage i = SpawnedTooltipModdedObject.GetObject<RawImage>(0);
+                if (!i)
+                    return;
+
+                i.texture = downloadInfo.DownloadedTexture;
+                if (!s_CachedIcons.ContainsKey(fileName))
+                    s_CachedIcons.Add(fileName, downloadInfo.DownloadedTexture);
+            };
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + IconsDirectory + fileName, downloadInfo);
+        }
+
         private void refreshData(bool showTooltipsIfNeeded)
         {
             if (!Player)

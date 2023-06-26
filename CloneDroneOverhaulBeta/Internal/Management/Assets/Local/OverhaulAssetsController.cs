@@ -28,6 +28,8 @@ namespace CDOverhaul
         public const string ModAssetBundle_Preload = "overhaulassets_preload";
 
         public const string ModAssetBundle_Experiments = "overhaulassets_experiments";
+
+        public const string ModAssetBundle_Pets = "overhaulassets_pets";
         #endregion
 
         /// <summary>
@@ -185,6 +187,9 @@ namespace CDOverhaul
                     break;
                 case OverhaulAssetPart.Experiments:
                     assetBundle = ModAssetBundle_Experiments;
+                    break;
+                case OverhaulAssetPart.Pets:
+                    assetBundle = ModAssetBundle_Pets;
                     break;
             }
 

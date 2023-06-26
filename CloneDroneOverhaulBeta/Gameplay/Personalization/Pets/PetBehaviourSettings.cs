@@ -13,8 +13,13 @@ namespace CDOverhaul.Gameplay.Pets
     /// </summary>
     public class PetBehaviourSettings
     {
-        public Vector3 OffsetTargetPosition;
+        public Tuple<string, Vector3>[] OffsetTargetPositionNodes;
+        public Vector3 OffsetTargetRotation;
+        public Vector3 OffsetScale = Vector3.one;
+
         public float LerpMultiplier;
+
+        public bool FollowHeadRotation;
 
         /// <summary>
         /// Stuff for editor
