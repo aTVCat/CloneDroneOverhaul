@@ -29,7 +29,8 @@ namespace CDOverhaul
             "InterruptDiscord",
             "SummonAllyAbility.spawnConstructionCube",
             "CanApplyArmorPiece",
-            "MissingMethodException"
+            "MissingMethodException",
+            "PlayUpperWithTimeSkipped",
         };
         private static bool m_HasExecutedCrashReportsWebhook = false;
 

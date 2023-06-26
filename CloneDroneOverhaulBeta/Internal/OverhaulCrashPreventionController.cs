@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace CDOverhaul
                 BoltLauncher.Shutdown();
                 return;
             }
-            if (GameModeManager.IsSinglePlayer() && !GameModeManager.IsInLevelEditor())
+            if (GameModeManager.IsSinglePlayer())
             {
                 if(PhotoManager.Instance.IsInPhotoMode())
                 {
@@ -52,22 +53,19 @@ namespace CDOverhaul
 
                 Character character = CharacterTracker.Instance.GetPlayer();
                 if (!character)
+                {
+                    /*
+                    LevelEditorCameraController cameraController = LevelEditorCameraManager.Instance.GetPrivateField<LevelEditorCameraController>("_cameraController");
+                    if (!cameraController)
+                        return;
+
+                    cameraController.transform.position = Vector3.zero;
+                    cameraController.transform.eulerAngles = cameraController.StartRotation;*/
                     return;
+                }
 
                 character.transform.position = new Vector3(0, 1, 0);
                 return;
-            }
-            if (GameModeManager.IsInLevelEditor())
-            {
-                Camera camera = Camera.main;
-                if (!camera)
-                {
-                    camera = Camera.current;
-                    if (!camera)
-                        return;
-                }
-
-                camera.transform.position = Vector3.zero;
             }
         }
 

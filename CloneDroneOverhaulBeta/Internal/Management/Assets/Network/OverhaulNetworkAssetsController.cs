@@ -76,6 +76,12 @@ namespace CDOverhaul.NetworkAssets
 
                 downloadHandler.Error = request.isHttpError || request.isNetworkError;
                 downloadHandler.ErrorString = request.error;
+                if (downloadHandler.Error)
+                {
+                    downloadHandler.OnDownloadComplete();
+                    yield break;
+                }
+
                 downloadHandler.DownloadedData = request.downloadHandler.data;
                 downloadHandler.DownloadedText = request.downloadHandler.text;
             }
@@ -115,6 +121,12 @@ namespace CDOverhaul.NetworkAssets
 
                 downloadHandler.Error = request.isHttpError || request.isNetworkError;
                 downloadHandler.ErrorString = request.error;
+                if (downloadHandler.Error)
+                {
+                    downloadHandler.OnDownloadComplete();
+                    yield break;
+                }
+
                 downloadHandler.DownloadedData = request.downloadHandler.data;
                 downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             }
