@@ -15,7 +15,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         private RawImage m_Background;
 
-        private OverhaulNetworkDownloadHandler m_CurrentDownloadHandler;
+        private OverhaulDownloadInfo m_CurrentDownloadHandler;
 
         public bool AllowSwitching;
 
@@ -114,7 +114,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
             yield return null;
 
-            m_CurrentDownloadHandler = new OverhaulNetworkDownloadHandler();
+            m_CurrentDownloadHandler = new OverhaulDownloadInfo();
             m_CurrentDownloadHandler.DoneAction = delegate
             {
                 if (m_Background.texture)
@@ -122,7 +122,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
                 m_Background.texture = m_CurrentDownloadHandler.DownloadedTexture;
             };
-            OverhaulNetworkController.DownloadTexture("file://" + filePath, m_CurrentDownloadHandler);
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + filePath, m_CurrentDownloadHandler);
             yield return new WaitForSecondsRealtime(0.15f);
 
             for (int i = 0; i < 4; i++)

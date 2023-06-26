@@ -10,23 +10,13 @@ namespace CDOverhaul.Gameplay.Outfits
     public abstract class AccessoryItem
     {
         public const string NoDescProvidedString = "No description provided.";
-        public const string NoAuthorString = "TBA";
+        public const string NoAuthorString = "N/A";
 
-        public string Name { get; private set; }
+        public string Name;
+        public string Description = NoDescProvidedString;
+        public string Author = NoAuthorString;
 
-        private string m_Description;
-        public string Description => string.IsNullOrEmpty(m_Description) ? NoDescProvidedString : m_Description;
-
-        private string m_Author;
-        public string Author
-        {
-            get => string.IsNullOrEmpty(m_Author) ? NoAuthorString : m_Author;
-            set => m_Author = value;
-        }
-
-        public AccessoryType Type { get; private set; }
-
-        public MechBodyPartType BodyPart { get; private set; }
+        public MechBodyPartType BodyPart;
 
         /// <summary>
         /// Character model names - Offset
@@ -36,16 +26,17 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <summary>
         /// A model of accessory
         /// </summary>
+        [NonSerialized]
         public GameObject Prefab;
 
-        public string AllowedPlayers;
+        public string UnlockedFor;
         public bool IsUnlocked()
         {
-            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(AllowedPlayers))
+            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(UnlockedFor))
                 return true;
 
             string localID = PlayFabDataController.GetLocalPlayFabID();
-            bool isUnlocked = AllowedPlayers.Contains(localID);
+            bool isUnlocked = UnlockedFor.Contains(localID);
             if (!isUnlocked && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
 
@@ -104,17 +95,15 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        /// <param name="type"></param>
+        /// <param name="partType"></param>
         /// <returns></returns>
-        public static T NewAccessory<T>(string name, string description, AccessoryType type, MechBodyPartType partType) where T : AccessoryItem
+        public static T NewAccessory<T>(string name, string description, MechBodyPartType partType) where T : AccessoryItem
         {
             T item = Activator.CreateInstance<T>();
             item.Name = name;
-            item.m_Description = description;
-            item.Type = type;
+            item.Description = description;
             item.BodyPart = partType;
             return item;
         }
-
     }
 }

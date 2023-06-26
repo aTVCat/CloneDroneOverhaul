@@ -88,23 +88,18 @@ namespace CDOverhaul.Gameplay.Outfits
                 if (accessoryItem.Prefab == null)
                     continue;
 
-                if (accessoryItem.Type.Equals(AccessoryType.Attached))
-                {
-                    MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
-                    if (bodyPart == null)
-                        continue;
+                MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
+                if (bodyPart == null)
+                    continue;
 
-                    Transform bodyPartTransform = bodyPart.transform.parent;
-                    if (bodyPartTransform == null)
-                        continue;
+                Transform bodyPartTransform = bodyPart.transform.parent;
+                if (bodyPartTransform == null)
+                    continue;
 
-                    GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
-                    SetPosition(instantiatedPrefab, accessoryItem);
-                    accessoryItem.SetUpPrefab(instantiatedPrefab);
-                    m_SpawnedAccessories.Add(accessoryItem.Name, instantiatedPrefab);
-                }
-                else
-                    throw new NotImplementedException("WIP: Detached accessories");
+                GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
+                SetPosition(instantiatedPrefab, accessoryItem);
+                accessoryItem.SetUpPrefab(instantiatedPrefab);
+                m_SpawnedAccessories.Add(accessoryItem.Name, instantiatedPrefab);
             }
         }
 

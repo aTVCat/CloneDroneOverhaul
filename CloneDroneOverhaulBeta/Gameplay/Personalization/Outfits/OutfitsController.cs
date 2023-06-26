@@ -50,22 +50,22 @@ namespace CDOverhaul.Gameplay.Outfits
 
         private void addAccessories() // Todo: Make an editor like weapon skins one
         {
-            AddAccessory<DefaultAccessoryItem>("Igrok's hat", "P_Acc_Head_Igrok's hat", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Igrok's hat", "P_Acc_Head_Igrok's hat", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
 
-            AddAccessory<DefaultAccessoryItem>("Halo", "P_Acc_Head_ImpostorHalo", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Halo", "P_Acc_Head_ImpostorHalo", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
 
-            AddAccessory<DefaultAccessoryItem>("Puss Hat", "P_Acc_Head_PussHat", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Puss Hat", "P_Acc_Head_PussHat", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.TabiDiscord);
 
-            AddAccessory<DefaultAccessoryItem>("Cone", "P_Acc_Head_ImpostorCone", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Cone", "P_Acc_Head_ImpostorCone", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ATVCatDiscord);
 
-            AddAccessory<DefaultAccessoryItem>("Deal with It", "P_Acc_DealWithIt", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Deal with It", "P_Acc_DealWithIt", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.CaptainMeowDiscord);
 
-            AddAccessory<DefaultAccessoryItem>("Horns", "P_Horns", AccessoryType.Attached, MechBodyPartType.Head);
+            AddAccessory<DefaultAccessoryItem>("Horns", "P_Horns", MechBodyPartType.Head);
             SetAuthor(WeaponSkinsController.ZoloRDiscord);
         }
 
@@ -80,12 +80,11 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <param name="descriptionFile"></param>
         public static void AddAccessory<T>(string accessoryName,
             string assetName,
-            AccessoryType accessoryType,
             MechBodyPartType accessoryBodyPart) where T : AccessoryItem
         {
             string desc = null;
 
-            AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryType, accessoryBodyPart);
+            AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryBodyPart);
             if (!string.IsNullOrEmpty(assetName)) item.Prefab = OverhaulAssetsController.GetAsset(assetName, OverhaulAssetPart.Accessories);
             item.SetUpOffsets();
             AllAccessories.Add(item);

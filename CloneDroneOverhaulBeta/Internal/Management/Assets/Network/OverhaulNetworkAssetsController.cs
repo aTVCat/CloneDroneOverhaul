@@ -1,88 +1,124 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace CDOverhaul.NetworkAssets
 {
-    public class OverhaulNetworkAssetsController
+    public static class OverhaulNetworkAssetsController
     {
-        public static OverhaulDownloadInfo DownloadData(string uri, Action<OverhaulDownloadInfo> doneCallback)
-        {
-            OverhaulDownloadInfo overhaulDownloadInfo = new OverhaulDownloadInfo(doneCallback);
-            StaticCoroutineRunner.StartStaticCoroutine(downloadFileCoroutine(uri, overhaulDownloadInfo));
-            return overhaulDownloadInfo;
-        }
+        public static string DownloadFolder => OverhaulMod.Core.ModDirectory + "Assets/Download/";
 
-        public static OverhaulDownloadInfo DownloadTexture(string uri, Action<OverhaulDownloadInfo> doneCallback)
-        {
-            OverhaulDownloadInfo overhaulDownloadInfo = new OverhaulDownloadInfo(doneCallback);
-            StaticCoroutineRunner.StartStaticCoroutine(downloadTextureCoroutine(uri, overhaulDownloadInfo));
-            return overhaulDownloadInfo;
-        }
+        public static float MultiplayerLocalPing => MultiplayerPlayerInfoManager.Instance == null ? 0f : MultiplayerPlayerInfoManager.Instance.GetLocalPing() / 1000f;
 
-        public static void DownloadTexture(string uri, RawImage rawImageComponent)
+        public static void DownloadText(string address, Text text)
         {
-            OverhaulDownloadInfo overhaulDownloadInfo = DownloadTexture(uri, delegate(OverhaulDownloadInfo info)
+            OverhaulDownloadInfo downloadInfo = new OverhaulDownloadInfo();
+            downloadInfo.DoneAction = delegate
             {
-                if (!rawImageComponent || info.DownloadError)
-                    return;
-
-                if (rawImageComponent.mainTexture)
-                    UnityEngine.Object.Destroy(rawImageComponent.texture);
-
-                rawImageComponent.texture = info.DownloadResult.Texture;
-            });
+                if (downloadInfo != null && text)
+                {
+                    text.text = downloadInfo.DownloadedText;
+                }
+            };
+            DownloadTexture(address, downloadInfo);
         }
 
-        public static void DownloadText(string uri, Text textComponent)
+        public static OverhaulDownloadInfo DownloadAndSaveData(string address, string directoryPath, string fileName, Action onDoneDownloadingAction)
         {
-            OverhaulDownloadInfo overhaulDownloadInfo = DownloadData(uri, delegate (OverhaulDownloadInfo info)
+            OverhaulDownloadInfo handler = new OverhaulDownloadInfo();
+            Action onDone = delegate
             {
-                if (!textComponent || info.DownloadError)
-                    return;
+                if (!handler.Error)
+                {
+                    if (!Directory.Exists(directoryPath))
+                        return;
 
-                textComponent.text = info.DownloadResult.Text;
-            });
+                    if (!handler.DownloadedData.IsNullOrEmpty())
+                        File.WriteAllBytes(directoryPath + fileName, handler.DownloadedData);
+                    else
+                        File.WriteAllText(directoryPath + fileName, handler.DownloadedText);
+                }
+            };
+
+            handler.DoneAction = onDone.Combine(onDoneDownloadingAction);
+            DownloadData(address, handler);
+            return handler;
         }
 
-        private static IEnumerator downloadFileCoroutine(string uri, OverhaulDownloadInfo downloadInfo)
+        public static OverhaulDownloadInfo DownloadData(string address, Action onDoneDownloadingAction)
+        {
+            OverhaulDownloadInfo h = new OverhaulDownloadInfo
+            {
+                DoneAction = onDoneDownloadingAction
+            };
+            DownloadData(address, h);
+            return h;
+        }
+
+        public static void DownloadData(string address, OverhaulDownloadInfo downloadHandler)
+        {
+            if (downloadHandler == null || downloadHandler.DoneAction == null)
+                return;
+
+            _ = StaticCoroutineRunner.StartStaticCoroutine(downloadDataCoroutine(address, downloadHandler));
+        }
+
+        private static IEnumerator downloadDataCoroutine(string address, OverhaulDownloadInfo downloadHandler)
         {
             yield return null;
 
-            using (UnityWebRequest request = UnityWebRequest.Get(uri))
+            using (UnityWebRequest request = UnityWebRequest.Get(address))
             {
-                downloadInfo.WebRequest = request;
+                downloadHandler.WebRequest = request;
                 yield return request.SendWebRequest();
 
-                downloadInfo.Error = request.isHttpError || request.isNetworkError;
-                downloadInfo.ErrorString = request.error;
-                downloadInfo.DownloadResult.ByteArray = request.downloadHandler.data;
-                downloadInfo.DownloadResult.Text = request.downloadHandler.text;
+                downloadHandler.Error = request.isHttpError || request.isNetworkError;
+                downloadHandler.ErrorString = request.error;
+                downloadHandler.DownloadedData = request.downloadHandler.data;
+                downloadHandler.DownloadedText = request.downloadHandler.text;
             }
-            downloadInfo.OnDownloadComplete();
+            downloadHandler.OnDownloadComplete();
             yield break;
         }
 
-        private static IEnumerator downloadTextureCoroutine(string uri, OverhaulDownloadInfo downloadInfo)
+        public static void DownloadTexture(string address, OverhaulDownloadInfo downloadHandler)
+        {
+            if (downloadHandler == null || downloadHandler.DoneAction == null)
+                return;
+
+            _ = StaticCoroutineRunner.StartStaticCoroutine(downloadTextureCoroutine(address, downloadHandler));
+        }
+
+        public static void DownloadTexture(string address, RawImage rawImage)
+        {
+            OverhaulDownloadInfo downloadInfo = new OverhaulDownloadInfo();
+            downloadInfo.DoneAction = delegate
+            {
+                if (downloadInfo != null && rawImage)
+                {
+                    rawImage.texture = downloadInfo.DownloadedTexture;
+                }
+            };
+            DownloadTexture(address, downloadInfo);
+        }
+
+        private static IEnumerator downloadTextureCoroutine(string address, OverhaulDownloadInfo downloadHandler)
         {
             yield return null;
 
-            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(uri))
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(address))
             {
-                downloadInfo.WebRequest = request;
+                downloadHandler.WebRequest = request;
                 yield return request.SendWebRequest();
 
-                downloadInfo.Error = request.isHttpError || request.isNetworkError;
-                downloadInfo.ErrorString = request.error;
-                downloadInfo.DownloadResult.ByteArray = request.downloadHandler.data;
-                downloadInfo.DownloadResult.Texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                downloadHandler.Error = request.isHttpError || request.isNetworkError;
+                downloadHandler.ErrorString = request.error;
+                downloadHandler.DownloadedData = request.downloadHandler.data;
+                downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             }
-            downloadInfo.OnDownloadComplete();
+            downloadHandler.OnDownloadComplete();
             yield break;
         }
     }

@@ -1199,12 +1199,12 @@ namespace CDOverhaul.HUD
                     newPrefab.gameObject.SetActive(true);
                     newPrefab.GetObject<Text>(1).text = itemName;
                     newPrefab.GetComponent<Button>().interactable = aitem.IsUnlocked();
-                    newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.AllowedPlayers);
+                    newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.UnlockedFor);
                     WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
                     b.IsOutfitSelection = true;
                     b.Initialize();
                     b.SetMenu(this);
-                    b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.AllowedPlayers));
+                    b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.UnlockedFor));
                     b.TrySelect();
 
                     itemsSpawned++;

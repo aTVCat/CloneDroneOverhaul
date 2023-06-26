@@ -46,12 +46,12 @@ namespace CDOverhaul.Gameplay
         public static float GetUpdateFilesDownloadProgress()
         {
             return IsDownloadingSkinsVersionFile && m_SkinsVersionFileDH != null
-                ? m_SkinsVersionFileDH.DonePercentage
+                ? m_SkinsVersionFileDH.Progress
                 : !IsDownloadingUpdateFiles
                 ? 0f
                 : m_SkinsImportFileDH == null || m_SkinsAssetBundleFileDH == null
                 ? 1f
-                : (m_SkinsAssetBundleFileDH.DonePercentage + m_SkinsImportFileDH.DonePercentage) / 2;
+                : (m_SkinsAssetBundleFileDH.Progress + m_SkinsImportFileDH.Progress) / 2;
         }
 
         public static float TimeUpdatesGotRefreshed = 0f;
@@ -59,9 +59,9 @@ namespace CDOverhaul.Gameplay
         public static bool IsAbleToRefreshUpdates => WaitsToBeUpdated || Time.unscaledTime >= TimeToAllowUpdateRefreshing;
         public static float CooldownFillAmount => !WaitsToBeUpdated ? 1f - Mathf.Clamp01((Time.unscaledTime - TimeUpdatesGotRefreshed) / (TimeToAllowUpdateRefreshing - TimeUpdatesGotRefreshed)) : 0f;
 
-        private static OverhaulNetworkDownloadHandler m_SkinsVersionFileDH;
-        private static OverhaulNetworkDownloadHandler m_SkinsImportFileDH;
-        private static OverhaulNetworkDownloadHandler m_SkinsAssetBundleFileDH;
+        private static OverhaulDownloadInfo m_SkinsVersionFileDH;
+        private static OverhaulDownloadInfo m_SkinsImportFileDH;
+        private static OverhaulDownloadInfo m_SkinsAssetBundleFileDH;
 
         private static string m_DownloadedVersionString;
 
@@ -107,15 +107,15 @@ namespace CDOverhaul.Gameplay
             if (WaitsToBeUpdated && !UnableToCheck)
             {
                 m_OnEndedUpdatingSkins = onRefreshed;
-                m_SkinsImportFileDH = OverhaulNetworkController.DownloadFile(SkinsImportFileAddress, onDownloadedSkinsImportFile);
-                m_SkinsAssetBundleFileDH = OverhaulNetworkController.DownloadFile(SkinsAssetBundleFileAddress, onDownloadedSkinsAssetBundleFile);
+                m_SkinsImportFileDH = OverhaulNetworkAssetsController.DownloadData(SkinsImportFileAddress, onDownloadedSkinsImportFile);
+                m_SkinsAssetBundleFileDH = OverhaulNetworkAssetsController.DownloadData(SkinsAssetBundleFileAddress, onDownloadedSkinsAssetBundleFile);
                 return;
             }
 
             IsDownloadingSkinsVersionFile = true;
             UnityWebRequest.ClearCookieCache();
             Action action = new Action(onDownloadedSkinsVersionFile).Combine(onRefreshed);
-            m_SkinsVersionFileDH = OverhaulNetworkController.DownloadFile(SkinsVersionFileAddress, action);
+            m_SkinsVersionFileDH = OverhaulNetworkAssetsController.DownloadData(SkinsVersionFileAddress, action);
         }
 
         private static void onDownloadedSkinsImportFile()
@@ -206,8 +206,8 @@ namespace CDOverhaul.Gameplay
             {
                 m_SkinsWaitingABToDownload.Add(assetBundle, new List<WeaponSkinsImportedItemDefinition>() { importedSkin });
 
-                OverhaulNetworkDownloadHandler h = null;
-                h = OverhaulNetworkController.DownloadAndSaveFile("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
+                OverhaulDownloadInfo h = null;
+                h = OverhaulNetworkAssetsController.DownloadAndSaveData("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
                 {
                     WeaponSkinsController c = OverhaulController.GetController<WeaponSkinsController>();
                     if (h != null && !h.Error && c != null && m_SkinsWaitingABToDownload.ContainsKey(assetBundle) && !m_SkinsWaitingABToDownload[assetBundle].IsNullOrEmpty())

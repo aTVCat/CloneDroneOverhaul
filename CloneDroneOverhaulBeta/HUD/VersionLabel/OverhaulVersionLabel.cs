@@ -153,7 +153,7 @@ namespace CDOverhaul.HUD
                 {
                     Application.OpenURL("https://discord.gg/qUkRhaqZZZ");
                 });
-                OverhaulNetworkDownloadHandler h1 = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo h1 = new OverhaulDownloadInfo();
                 h1.DoneAction = delegate
                 {
                     if (h1 != null && !h1.Error && overhaulServer != null)
@@ -164,7 +164,7 @@ namespace CDOverhaul.HUD
                     else if (h1.DownloadedTexture)
                         Destroy(h1.DownloadedTexture);
                 };
-                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Overhaul Mod Discord.png", h1);
+                OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Overhaul Mod Discord.png", h1);
 
                 ModdedObject modBotServer = m_ServersContainer.CreateNew();
                 modBotServer.GetObject<Text>(0).text = "Clone Drone Mod-Bot discord";
@@ -172,7 +172,7 @@ namespace CDOverhaul.HUD
                 {
                     Application.OpenURL("https://discord.gg/Em4n6gB");
                 });
-                OverhaulNetworkDownloadHandler h2 = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo h2 = new OverhaulDownloadInfo();
                 h2.DoneAction = delegate
                 {
                     if (h2 != null && !h2.Error && overhaulServer != null)
@@ -183,7 +183,7 @@ namespace CDOverhaul.HUD
                     else if (h2.DownloadedTexture)
                         Destroy(h2.DownloadedTexture);
                 };
-                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Mod-Bot discord.png", h2);
+                OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clone Drone Mod-Bot discord.png", h2);
 
                 ModdedObject doborogServer = m_ServersContainer.CreateNew();
                 doborogServer.GetObject<Text>(0).text = "Doborog";
@@ -191,7 +191,7 @@ namespace CDOverhaul.HUD
                 {
                     Application.OpenURL("https://discord.com/invite/VY7zEw2chm");
                 });
-                OverhaulNetworkDownloadHandler h3 = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo h3 = new OverhaulDownloadInfo();
                 h3.DoneAction = delegate
                 {
                     if (h3 != null && !h3.Error && overhaulServer != null)
@@ -202,7 +202,7 @@ namespace CDOverhaul.HUD
                     else if (h3.DownloadedTexture)
                         Destroy(h3.DownloadedTexture);
                 };
-                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Doborog.png", h3);
+                OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Doborog.png", h3);
 
                 ModdedObject clansServer = m_ServersContainer.CreateNew();
                 clansServer.GetObject<Text>(0).text = "Clan Headquarters RU/EN";
@@ -210,7 +210,7 @@ namespace CDOverhaul.HUD
                 {
                     Application.OpenURL("https://discord.gg/MM2PNdRV5P");
                 });
-                OverhaulNetworkDownloadHandler h4 = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo h4 = new OverhaulDownloadInfo();
                 h4.DoneAction = delegate
                 {
                     if (h4 != null && !h4.Error && overhaulServer != null)
@@ -221,7 +221,7 @@ namespace CDOverhaul.HUD
                     else if (h4.DownloadedTexture)
                         Destroy(h4.DownloadedTexture);
                 };
-                OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clan Headquarters RU-EN.png", h4);
+                OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/Discord/ServerIcons/Clan Headquarters RU-EN.png", h4);
             }
         }
 

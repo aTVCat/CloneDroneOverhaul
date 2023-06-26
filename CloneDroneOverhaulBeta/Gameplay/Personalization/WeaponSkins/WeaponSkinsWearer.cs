@@ -214,7 +214,7 @@ namespace CDOverhaul.Gameplay
                         }
                     }
                 }
-            }, 0.5f + OverhaulNetworkController.MultiplayerLocalPing);
+            }, 0.5f + OverhaulNetworkAssetsController.MultiplayerLocalPing);
 
             SpawnSkins();
         }

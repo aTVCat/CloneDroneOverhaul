@@ -416,10 +416,13 @@
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColor.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\AccessoryItem.cs" />
-    <Compile Include="Gameplay\Personalization\Outfits\AccessoryType.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\DefaultAccessoryItem.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\OutfitsController.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\OutfitsWearer.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\PetBehaviourSettings.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\PetInstanceBehaviour.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\PetItem.cs" />
+    <Compile Include="Gameplay\Personalization\Pets\PetsController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Base\VFXWeaponSkinSwitch.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Behaviours\MultipartWeaponBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins\Behaviours\MCBowSkinBehaviour.cs" />
@@ -498,8 +501,6 @@
     <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulDownloadInfo.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkAssetsController.cs" />
-    <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkController.cs" />
-    <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkDownloadHandler.cs" />
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />

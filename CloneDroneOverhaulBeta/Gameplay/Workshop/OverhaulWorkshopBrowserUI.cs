@@ -316,7 +316,7 @@ namespace CDOverhaul.Workshop
                         ShowRanksDropdown(array, 3, moreButton.transform.position.y);
                     });
 
-                    OverhaulNetworkDownloadHandler iconDownloadHandler = new OverhaulNetworkDownloadHandler();
+                    OverhaulDownloadInfo iconDownloadHandler = new OverhaulDownloadInfo();
                     iconDownloadHandler.DoneAction = delegate
                     {
                         if (moreButton != null && iconDownloadHandler != null && !iconDownloadHandler.Error)
@@ -329,7 +329,7 @@ namespace CDOverhaul.Workshop
                         }
                         if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
                     };
-                    OverhaulNetworkController.DownloadTexture(IconDirectory + "More.png", iconDownloadHandler);
+                    OverhaulNetworkAssetsController.DownloadTexture(IconDirectory + "More.png", iconDownloadHandler);
                     return;
                 }
                 ModdedObject m = m_RanksContainer.CreateNew();
@@ -475,13 +475,13 @@ namespace CDOverhaul.Workshop
             MyModdedObject.GetObject<Text>(25).text = workshopItem.TimeCreated.ToShortDateString() + "\n" + workshopItem.TimeUpdated.ToShortDateString() + "\n" + workshopItem.ItemSizeString;
             MyModdedObject.GetObject<Text>(26).text = workshopItem.ItemLongDescription;
 
-            OverhaulNetworkDownloadHandler hm = new OverhaulNetworkDownloadHandler();
+            OverhaulDownloadInfo hm = new OverhaulDownloadInfo();
             hm.DoneAction = delegate
             {
                 if (hm != null && !hm.Error && ri != null)
                     ri.texture = hm.DownloadedTexture;
             };
-            OverhaulNetworkController.DownloadTexture(workshopItem.PreviewURL, hm);
+            OverhaulNetworkAssetsController.DownloadTexture(workshopItem.PreviewURL, hm);
 
             int imagesCount = Mathf.Min(2, workshopItem.ItemAdditionalImages.Count);
             m_AdditionalPreviewsContainer.ClearContainer();
@@ -491,7 +491,7 @@ namespace CDOverhaul.Workshop
             for (int i = 0; i < imagesCount; i++)
             {
                 ModdedObject m = m_AdditionalPreviewsContainer.CreateNew();
-                OverhaulNetworkDownloadHandler h = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo h = new OverhaulDownloadInfo();
                 h.DoneAction = delegate
                 {
                     if (hm != null && !hm.Error && m != null)
@@ -507,7 +507,7 @@ namespace CDOverhaul.Workshop
                         });
                     }
                 };
-                OverhaulNetworkController.DownloadTexture(workshopItem.ItemAdditionalImages[i], h);
+                OverhaulNetworkAssetsController.DownloadTexture(workshopItem.ItemAdditionalImages[i], h);
             }
         }
 
@@ -1094,7 +1094,7 @@ namespace CDOverhaul.Workshop
 
             private void getIcon()
             {
-                OverhaulNetworkDownloadHandler iconDownloadHandler = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo iconDownloadHandler = new OverhaulDownloadInfo();
                 iconDownloadHandler.DoneAction = delegate
                 {
                     if (iconDownloadHandler != null && !iconDownloadHandler.Error && m_RankIcon != null)
@@ -1106,7 +1106,7 @@ namespace CDOverhaul.Workshop
                     }
                     if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
                 };
-                OverhaulNetworkController.DownloadTexture(IconDirectory + m_Rank.ToString() + ".png", iconDownloadHandler);
+                OverhaulNetworkAssetsController.DownloadTexture(IconDirectory + m_Rank.ToString() + ".png", iconDownloadHandler);
             }
 
             private void Update()
@@ -1245,10 +1245,10 @@ namespace CDOverhaul.Workshop
                 m_ThumbnailImage.enabled = false;
                 string texturePath = m_WorkshopItem.PreviewURL;
 
-                if (CacheImages && File.Exists(OverhaulNetworkController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png"))
-                    texturePath = "file://" + OverhaulNetworkController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png";
+                if (CacheImages && File.Exists(OverhaulNetworkAssetsController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png"))
+                    texturePath = "file://" + OverhaulNetworkAssetsController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png";
 
-                OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
+                OverhaulDownloadInfo handler = new OverhaulDownloadInfo();
                 handler.DoneAction = delegate
                 {
                     CanWorkWithImage(out bool can2);
@@ -1266,16 +1266,16 @@ namespace CDOverhaul.Workshop
                     m_ThumbnailImage.texture = handler.DownloadedTexture;
                     if (CacheImages) _ = StaticCoroutineRunner.StartStaticCoroutine(saveImageCoroutine(handler.DownloadedData, m_WorkshopItem.ItemID.m_PublishedFileId.ToString()));
                 };
-                OverhaulNetworkController.DownloadTexture(texturePath, handler);
+                OverhaulNetworkAssetsController.DownloadTexture(texturePath, handler);
                 yield return null;
 
                 CanWorkWithImage(out bool can3);
                 if (can3)
-                    while (handler.DonePercentage != 1f)
+                    while (handler.Progress != 1f)
                     {
                         try
                         {
-                            m_ThumbnailProgressBar.fillAmount = handler.DonePercentage;
+                            m_ThumbnailProgressBar.fillAmount = handler.Progress;
                         }
                         catch { }
                         yield return null;
@@ -1286,7 +1286,7 @@ namespace CDOverhaul.Workshop
 
             private IEnumerator saveImageCoroutine(byte[] image, string itemID)
             {
-                string path = NetworkAssets.OverhaulNetworkController.DownloadFolder + "Steam/";
+                string path = NetworkAssets.OverhaulNetworkAssetsController.DownloadFolder + "Steam/";
                 if (!Directory.Exists(path) || File.Exists(path + itemID + ".png"))
                     yield break;
 

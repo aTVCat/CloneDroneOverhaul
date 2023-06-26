@@ -189,7 +189,7 @@ namespace CDOverhaul.HUD
                 yield break;
             }
 
-            OverhaulNetworkDownloadHandler handler = new OverhaulNetworkDownloadHandler();
+            OverhaulDownloadInfo handler = new OverhaulDownloadInfo();
             handler.DoneAction = delegate
             {
                 if (attachTo != null)
@@ -203,7 +203,7 @@ namespace CDOverhaul.HUD
                     m_LoadedArt.Add(handler.DownloadedTexture);
                 }
             };
-            OverhaulNetworkController.DownloadTexture("file://" + path, handler);
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + path, handler);
             yield break;
         }
     }

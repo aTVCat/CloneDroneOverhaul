@@ -36,6 +36,7 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
             _ = OverhaulController.AddController<WeaponSkinsController>();
+            _ = OverhaulController.AddController<Pets.PetsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
 

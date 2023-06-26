@@ -96,7 +96,7 @@ namespace CDOverhaul.HUD
             if (filename.Contains("Emperor")) filename = "Emperor_0.png";
             if (filename.Contains("Sword 5")) filename = "Sword 5_0.png";
 
-            OverhaulNetworkDownloadHandler n = new OverhaulNetworkDownloadHandler();
+            OverhaulDownloadInfo n = new OverhaulDownloadInfo();
             n.DoneAction = delegate
             {
                 if (!this || IsDisposedOrDestroyed() || n == null || n.Error)
@@ -104,7 +104,7 @@ namespace CDOverhaul.HUD
 
                 m_RobotHeadImage.texture = n.DownloadedTexture;
             };
-            OverhaulNetworkController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/RobotHeads/" + filename, n);
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/RobotHeads/" + filename, n);
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login)
