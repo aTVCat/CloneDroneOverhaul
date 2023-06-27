@@ -10,10 +10,18 @@ namespace CDOverhaul.Gameplay.Pets
     public class PetsWearer : OverhaulCharacterExpansion
     {
         private List<PetInstanceBehaviour> m_SpawnedPets = new List<PetInstanceBehaviour>();
+        
+        public Transform HeadTransform
+        {
+            get;
+            private set;
+        }
 
         public override void Start()
         {
             base.Start();
+
+            HeadTransform = Owner.GetBodyPartParent("Head");
 
             m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
         }

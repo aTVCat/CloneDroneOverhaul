@@ -32,6 +32,8 @@ namespace CDOverhaul.Gameplay.Pets
                 new Tuple<string, UnityEngine.Vector3>(TargetPositionNodes.OwnerTransformRight, new UnityEngine.Vector3(1.5f, 1.5f))
             };
             PetItem.GetBehaviourSettingsQuick().OffsetScale = Vector3.one * 0.7f;
+            PetItem.GetBehaviourSettingsQuick().FollowHeadRotation = true;
+            PetItem.GetBehaviourSettingsQuick().RangeToLookAtEnemy = 20f;
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)

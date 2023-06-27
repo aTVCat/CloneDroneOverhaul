@@ -419,6 +419,7 @@
     <Compile Include="Gameplay\Personalization\Outfits\DefaultAccessoryItem.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\OutfitsController.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\OutfitsWearer.cs" />
+    <Compile Include="Gameplay\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Gameplay\Personalization\Pets\PetBehaviourSettings.cs" />
     <Compile Include="Gameplay\Personalization\Pets\PetInstanceBehaviour.cs" />
     <Compile Include="Gameplay\Personalization\Pets\PetItem.cs" />
@@ -442,6 +443,7 @@
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildVariant.cs" />
     <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\LevelEditorFixes.cs" />
     <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\SettingsPanel\LevelEditorSelectionSettingsPanel.cs" />
+    <Compile Include="Gameplay\QualityOfLife\ModBotTagDisabler\ModBotTagDisabler.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
@@ -489,6 +491,7 @@
     <Compile Include="Graphics\OverhaulCameraController.cs" />
     <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
+    <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationPanel.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltip.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltipsController.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltipsUI.cs" />
@@ -499,11 +502,11 @@
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
     <Compile Include="HUD\VanillaImprovements\EnergyUIImprovements.cs" />
     <Compile Include="HUD\VanillaImprovements\VanillaUIImprovements.cs" />
-    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenu.cs" />
+    <Compile Include="HUD\Personalization\PersonalizationMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlays.cs" />
     <Compile Include="HUD\Overlays\Subclasses\WideScreenOverlay.cs" />
-    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuSkinBehaviour.cs" />
-    <Compile Include="HUD\WeaponSkins\WeaponSkinsMenuWeaponBehaviour.cs" />
+    <Compile Include="HUD\Personalization\PersonalizationMenuEntryBehaviour.cs" />
+    <Compile Include="HUD\Personalization\PersonalizationMenuSecondEntryBehaviour.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulDownloadInfo.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkAssetsController.cs" />
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />

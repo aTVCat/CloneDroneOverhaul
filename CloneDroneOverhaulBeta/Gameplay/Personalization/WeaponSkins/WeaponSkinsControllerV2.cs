@@ -496,7 +496,7 @@ namespace CDOverhaul.Gameplay
             }
 
             OverhaulLoadingScreen.Instance.SetScreenActive(false);
-            WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
+            PersonalizationMenu.SkinsSelection.SetMenuActive(true);
             yield break;
         }
 

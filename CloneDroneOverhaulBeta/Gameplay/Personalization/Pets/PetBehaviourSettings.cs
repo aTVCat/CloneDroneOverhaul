@@ -20,6 +20,8 @@ namespace CDOverhaul.Gameplay.Pets
         public float FlyEffectMultiplier1 = 1.25f;
         public float FlyEffectMultiplier2 = 0.025f;
 
+        public float RangeToLookAtEnemy = -1;
+
         public bool FollowHeadRotation;
 
         /// <summary>

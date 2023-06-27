@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class WeaponSkinsMenuWeaponBehaviour : OverhaulBehaviour
+    public class PersonalizationMenuSecondEntryBehaviour : OverhaulBehaviour
     {
         #region Static
 
-        private static readonly List<WeaponSkinsMenuWeaponBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuWeaponBehaviour>();
+        private static readonly List<PersonalizationMenuSecondEntryBehaviour> m_InstantiatedButtons = new List<PersonalizationMenuSecondEntryBehaviour>();
 
         public static void SelectSpecific(WeaponType weaponType)
         {
@@ -17,7 +17,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            foreach (WeaponSkinsMenuWeaponBehaviour b in m_InstantiatedButtons)
+            foreach (PersonalizationMenuSecondEntryBehaviour b in m_InstantiatedButtons)
             {
                 if (b.m_WeaponType == weaponType)
                 {
@@ -35,7 +35,7 @@ namespace CDOverhaul.HUD
 
         private GameObject m_SelectedImage;
         private RectTransform m_TextTransform;
-        private WeaponSkinsMenu m_SkinsMenu;
+        private PersonalizationMenu m_SkinsMenu;
         private WeaponType m_WeaponType;
 
         private bool m_IsSelected;
@@ -69,7 +69,7 @@ namespace CDOverhaul.HUD
             m_TextTransform = null;
         }
 
-        public void SetMenu(WeaponSkinsMenu menu)
+        public void SetMenu(PersonalizationMenu menu)
         {
             if (IsDisposedOrDestroyed() || m_SkinsMenu != null)
                 return;

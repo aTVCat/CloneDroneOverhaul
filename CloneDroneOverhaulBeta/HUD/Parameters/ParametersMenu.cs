@@ -113,13 +113,8 @@ namespace CDOverhaul.HUD
 
             if (GameUIRoot.Instance != null)
             {
-                TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
-                if (tUI != null && tUI.gameObject.activeSelf)
-                    tUI.SetLogoAndRootButtonsVisible(false);
-
-                SettingsMenu mUI = GameUIRoot.Instance.SettingsMenu;
-                if (mUI != null && mUI.gameObject.activeSelf)
-                    mUI.Hide();
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+                GameUIRoot.Instance.SettingsMenu.Hide();
             }
 
             base.gameObject.SetActive(true);
@@ -145,12 +140,8 @@ namespace CDOverhaul.HUD
 
             TransformUtils.DestroyAllChildren(m_MainContainer);
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
-            if (GameUIRoot.Instance != null)
-            {
-                TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
-                if (tUI != null && tUI.gameObject.activeSelf)
-                    tUI.SetLogoAndRootButtonsVisible(true);
-            }
+            if (GameModeManager.Is(GameMode.None))
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
 
             OverhaulCanvasController.SetCanvasPixelPerfect(true);
             base.gameObject.SetActive(false);

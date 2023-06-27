@@ -8,20 +8,20 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class WeaponSkinsMenuSkinBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
+    public class PersonalizationMenuEntryBehaviour : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
     {
         public const string Normal = "#1C6BFF";
         public const string Exclusive = "#1C6BFF";
 
         #region Static
 
-        private static readonly List<WeaponSkinsMenuSkinBehaviour> m_InstantiatedButtons = new List<WeaponSkinsMenuSkinBehaviour>();
-        public static List<WeaponSkinsMenuSkinBehaviour> GetSpawnedButtons() => m_InstantiatedButtons;
+        private static readonly List<PersonalizationMenuEntryBehaviour> m_InstantiatedButtons = new List<PersonalizationMenuEntryBehaviour>();
+        public static List<PersonalizationMenuEntryBehaviour> GetSpawnedButtons() => m_InstantiatedButtons;
 
         public static void SelectSpecific(bool isOutfitSelection = false)
         {
             if (!m_InstantiatedButtons.IsNullOrEmpty())
-                foreach (WeaponSkinsMenuSkinBehaviour b in m_InstantiatedButtons)
+                foreach (PersonalizationMenuEntryBehaviour b in m_InstantiatedButtons)
                 {
                     if (isOutfitSelection && b.IsOutfitSelection)
                         b.TrySelect();
@@ -32,7 +32,7 @@ namespace CDOverhaul.HUD
 
         #endregion
 
-        private WeaponSkinsMenu m_SkinsMenu;
+        private PersonalizationMenu m_SkinsMenu;
 
         private GameObject m_SelectedImage;
 
@@ -67,10 +67,11 @@ namespace CDOverhaul.HUD
             m_Author = m.GetObject<InputField>(2);
             m_SkinName = m.GetObject<Text>(1);
             m_Cooldown = m.GetObject<Image>(4);
-            m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
+            m_Cooldown.fillAmount = PersonalizationMenu.GetSkinChangeCooldown();
             m_InstantiatedButtons.Add(this);
 
             m_Button = GetComponent<Button>();
+            m_Button.onClick.AddListener(SelectThis);
         }
 
         protected override void OnDisposed()
@@ -82,10 +83,10 @@ namespace CDOverhaul.HUD
         private void Update()
         {
             if (Time.frameCount % 2 == 0)
-                m_Cooldown.fillAmount = WeaponSkinsMenu.GetSkinChangeCooldown();
+                m_Cooldown.fillAmount = PersonalizationMenu.GetSkinChangeCooldown();
         }
 
-        public void SetMenu(WeaponSkinsMenu menu)
+        public void SetMenu(PersonalizationMenu menu)
         {
             if (IsDisposedOrDestroyed() || m_SkinsMenu != null)
                 return;
@@ -126,7 +127,7 @@ namespace CDOverhaul.HUD
             if (IsOutfitSelection)
             {
                 SetSelected(OutfitsController.EquippedAccessories.Contains(m_Skin), true);
-                WeaponSkinsMenu.StartCooldown();
+                PersonalizationMenu.StartCooldown();
 
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();
                 if (mover)
@@ -166,7 +167,7 @@ namespace CDOverhaul.HUD
 
         public void SelectThis()
         {
-            if (IsDisposedOrDestroyed() || m_SkinsMenu == null || !WeaponSkinsMenu.AllowChangingSkins())
+            if (IsDisposedOrDestroyed() || m_SkinsMenu == null || !PersonalizationMenu.AllowChangingSkins())
                 return;
 
             if (IsOutfitSelection)
@@ -185,7 +186,7 @@ namespace CDOverhaul.HUD
 
                     OutfitsController.EditingItem = item;
                     OutfitsController.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
-                    WeaponSkinsMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
+                    PersonalizationMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
                 }
                 return;
             }

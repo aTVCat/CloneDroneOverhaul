@@ -73,6 +73,7 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<AutoBuild>();
             _ = OverhaulController.AddController<LevelEditorFixes>();
+            _ = OverhaulController.AddController<ModBotTagDisabler>();
 
             _ = OverhaulController.AddController<ViewModesController>();
 

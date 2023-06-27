@@ -16,7 +16,8 @@ namespace CDOverhaul.HUD
     /// <summary>
     /// Used for outfits and skins menus
     /// </summary>
-    public class WeaponSkinsMenu : OverhaulUI
+    [Obsolete("This one will be split into several classes")]
+    public class PersonalizationMenu : OverhaulUI
     {
         private static bool m_HasRefreshedUpdates;
 
@@ -74,9 +75,10 @@ namespace CDOverhaul.HUD
         private Dropdown m_SearchByDropdown;
         private Button m_SearchOnlyExclusiveButton;
 
-        public bool IsOutfitSelection;
-        public static WeaponSkinsMenu SkinsSelection;
-        public static WeaponSkinsMenu OutfitSelection;
+        public PersonalizationCategory Category;
+        public bool IsOutfitSelection => Category == PersonalizationCategory.Outfits;
+        public static PersonalizationMenu SkinsSelection;
+        public static PersonalizationMenu OutfitSelection;
 
         private static int s_CurrentlyEditingItemIndex = -1;
         public static WeaponSkinsImportedItemDefinition CurrentlyEditingItem;
@@ -438,10 +440,10 @@ namespace CDOverhaul.HUD
                 m_ReimportAllButton.onClick.AddListener(delegate
                 {
                     WeaponSkinsController c = GetController<WeaponSkinsController>();
-                    if (c != null && WeaponSkinsMenu.SkinsSelection != null)
+                    if (c != null && PersonalizationMenu.SkinsSelection != null)
                     {
                         c.ReImportCustomSkins();
-                        WeaponSkinsMenu.SkinsSelection.SetMenuActive(true);
+                        PersonalizationMenu.SkinsSelection.SetMenuActive(true);
                     }
                 });
 
@@ -1110,7 +1112,7 @@ namespace CDOverhaul.HUD
             ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(false), GetContainer(false));
             newPrefab.gameObject.SetActive(true);
             newPrefab.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
-            WeaponSkinsMenuWeaponBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuWeaponBehaviour>();
+            PersonalizationMenuSecondEntryBehaviour b = newPrefab.gameObject.AddComponent<PersonalizationMenuSecondEntryBehaviour>();
             b.SetMenu(this);
             b.SetWeaponType(weaponType);
             b.SetSelected(false, true);
@@ -1132,7 +1134,7 @@ namespace CDOverhaul.HUD
                         mover.SetEquippedWeaponType(weaponType);
                     }
                 }
-                WeaponSkinsMenuWeaponBehaviour.SelectSpecific(weaponType);
+                PersonalizationMenuSecondEntryBehaviour.SelectSpecific(weaponType);
             }
 
             _ = StaticCoroutineRunner.StartStaticCoroutine(populateSkinsCoroutine(weaponType));
@@ -1200,7 +1202,7 @@ namespace CDOverhaul.HUD
                     newPrefab.GetObject<Text>(1).text = itemName;
                     newPrefab.GetComponent<Button>().interactable = aitem.IsUnlocked();
                     newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.UnlockedFor);
-                    WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
+                    PersonalizationMenuEntryBehaviour b = newPrefab.gameObject.AddComponent<PersonalizationMenuEntryBehaviour>();
                     b.IsOutfitSelection = true;
                     b.Initialize();
                     b.SetMenu(this);
@@ -1247,7 +1249,7 @@ namespace CDOverhaul.HUD
                 ModdedObject newPrefab = Instantiate<ModdedObject>(GetPrefab(true), GetContainer(true));
                 newPrefab.gameObject.SetActive(true);
                 newPrefab.GetObject<Text>(1).text = (skin as WeaponSkinItemDefinitionV2).HasNameOverride ? (skin as WeaponSkinItemDefinitionV2).OverrideName : skinName;
-                WeaponSkinsMenuSkinBehaviour b = newPrefab.gameObject.AddComponent<WeaponSkinsMenuSkinBehaviour>();
+                PersonalizationMenuEntryBehaviour b = newPrefab.gameObject.AddComponent<PersonalizationMenuEntryBehaviour>();
                 b.SkinItem = skin as WeaponSkinItemDefinitionV2;
                 b.Initialize();
                 b.SetMenu(this);
@@ -1306,14 +1308,14 @@ namespace CDOverhaul.HUD
 
         public void SearchSkins(string input)
         {
-            List<WeaponSkinsMenuSkinBehaviour> spawned = WeaponSkinsMenuSkinBehaviour.GetSpawnedButtons();
+            List<PersonalizationMenuEntryBehaviour> spawned = PersonalizationMenuEntryBehaviour.GetSpawnedButtons();
             if (spawned.IsNullOrEmpty())
                 return;
 
             int i = 0;
             do
             {
-                WeaponSkinsMenuSkinBehaviour b = spawned[i];
+                PersonalizationMenuEntryBehaviour b = spawned[i];
                 if (b)
                 {
                     bool condition1 = !m_SearchOnlyExclusive || b.GetSkinIsExclusive();
@@ -1365,7 +1367,7 @@ namespace CDOverhaul.HUD
             }
             RefreshDefaultSkinButton();
 
-            WeaponSkinsMenuSkinBehaviour.SelectSpecific();
+            PersonalizationMenuEntryBehaviour.SelectSpecific();
 
             if (!getController())
                 return;

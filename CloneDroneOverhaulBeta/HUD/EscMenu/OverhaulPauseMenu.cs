@@ -235,6 +235,7 @@ namespace CDOverhaul.HUD
                 m_PersonalizationNotification.gameObject.SetActive(false);
             }
 
+            m_PersonalizationButton.OnDeselect(null);
             m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
             m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsOutfits();
             SetPanelActive(m_PersonalizationPanel, m_PersonalizationButton.transform, !m_PersonalizationPanel.gameObject.activeSelf);
@@ -242,7 +243,7 @@ namespace CDOverhaul.HUD
 
         public void OnSkinsButtonClicked()
         {
-            WeaponSkinsMenu menu = WeaponSkinsMenu.SkinsSelection;
+            PersonalizationMenu menu = PersonalizationMenu.SkinsSelection;
             if (menu == null)
             {
                 return;
@@ -254,7 +255,7 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
-            WeaponSkinsMenu menu = WeaponSkinsMenu.OutfitSelection;
+            PersonalizationMenu menu = PersonalizationMenu.OutfitSelection;
             if (menu == null)
             {
                 return;
@@ -270,6 +271,7 @@ namespace CDOverhaul.HUD
 
         public void OnExitClicked()
         {
+            m_ExitButton.OnDeselect(null);
             SetPanelActive(m_ExitSelectPanel, m_ExitButton.transform, !m_ExitSelectPanel.gameObject.activeSelf);
         }
 
@@ -289,6 +291,7 @@ namespace CDOverhaul.HUD
 
         public void OnSettingsClicked()
         {
+            m_SettingsButton.OnDeselect(null);
             SetPanelActive(m_SettingsSelectPanel, m_SettingsButton.transform, !m_SettingsSelectPanel.gameObject.activeSelf);
         }
 

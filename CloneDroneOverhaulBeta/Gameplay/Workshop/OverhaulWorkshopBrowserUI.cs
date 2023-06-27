@@ -941,7 +941,7 @@ namespace CDOverhaul.Workshop
             SetErrorWindowActive(false);
             LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
-            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, string.Empty, LevelTypeRequiredTag, Page, true, true);
+            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, string.Empty, LevelTypeRequiredTag, Page, false, true);
         }
 
         /// <summary>
@@ -1197,7 +1197,10 @@ namespace CDOverhaul.Workshop
                 {
                     can = !IsDisposedOrDestroyed() && base.gameObject.activeInHierarchy && m_ThumbnailImage && m_ThumbnailProgressBar;
                 }
-                catch { }
+                catch 
+                {
+                    can = false;
+                }
             }
 
             public OverhaulWorkshopItem GetWorkshopItem() => m_WorkshopItem;
@@ -1236,12 +1239,7 @@ namespace CDOverhaul.Workshop
                 if (!can)
                     yield break;
 
-                try
-                {
-                    m_ThumbnailProgressBar.fillAmount = 0f;
-                }
-                catch { }
-                m_ThumbnailProgressBar.gameObject.SetActive(true);
+                m_ThumbnailProgressBar.gameObject.SetActive(false);
                 m_ThumbnailImage.enabled = false;
                 string texturePath = m_WorkshopItem.PreviewURL;
 
@@ -1258,7 +1256,6 @@ namespace CDOverhaul.Workshop
                     if (!this || IsDisposedOrDestroyed() || handler == null)
                         return;
 
-                    m_ThumbnailProgressBar.gameObject.SetActive(false);
                     m_ThumbnailImage.enabled = !handler.Error;
                     if (handler.Error)
                         return;
@@ -1268,18 +1265,6 @@ namespace CDOverhaul.Workshop
                 };
                 OverhaulNetworkAssetsController.DownloadTexture(texturePath, handler);
                 yield return null;
-
-                CanWorkWithImage(out bool can3);
-                if (can3)
-                    while (handler.Progress != 1f)
-                    {
-                        try
-                        {
-                            m_ThumbnailProgressBar.fillAmount = handler.Progress;
-                        }
-                        catch { }
-                        yield return null;
-                    }
 
                 yield break;
             }

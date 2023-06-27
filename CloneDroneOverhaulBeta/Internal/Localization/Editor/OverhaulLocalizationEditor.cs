@@ -45,9 +45,7 @@ namespace CDOverhaul
                 m_HasPopulated = true;
             }
 
-            TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
-            if (tUI.gameObject.activeSelf)
-                tUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
         }
 
         public void Hide()

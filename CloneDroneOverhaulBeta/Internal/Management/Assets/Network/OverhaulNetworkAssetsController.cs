@@ -67,8 +67,6 @@ namespace CDOverhaul.NetworkAssets
 
         private static IEnumerator downloadDataCoroutine(string address, OverhaulDownloadInfo downloadHandler)
         {
-            yield return null;
-
             using (UnityWebRequest request = UnityWebRequest.Get(address))
             {
                 downloadHandler.WebRequest = request;
@@ -76,14 +74,11 @@ namespace CDOverhaul.NetworkAssets
 
                 downloadHandler.Error = request.isHttpError || request.isNetworkError;
                 downloadHandler.ErrorString = request.error;
-                if (downloadHandler.Error)
+                if (!downloadHandler.Error)
                 {
-                    downloadHandler.OnDownloadComplete();
-                    yield break;
+                    downloadHandler.DownloadedData = request.downloadHandler.data;
+                    downloadHandler.DownloadedText = request.downloadHandler.text;
                 }
-
-                downloadHandler.DownloadedData = request.downloadHandler.data;
-                downloadHandler.DownloadedText = request.downloadHandler.text;
             }
             downloadHandler.OnDownloadComplete();
             yield break;
@@ -112,8 +107,6 @@ namespace CDOverhaul.NetworkAssets
 
         private static IEnumerator downloadTextureCoroutine(string address, OverhaulDownloadInfo downloadHandler)
         {
-            yield return null;
-
             using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(address))
             {
                 downloadHandler.WebRequest = request;
@@ -121,14 +114,11 @@ namespace CDOverhaul.NetworkAssets
 
                 downloadHandler.Error = request.isHttpError || request.isNetworkError;
                 downloadHandler.ErrorString = request.error;
-                if (downloadHandler.Error)
+                if (!downloadHandler.Error)
                 {
-                    downloadHandler.OnDownloadComplete();
-                    yield break;
+                    downloadHandler.DownloadedData = request.downloadHandler.data;
+                    downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
                 }
-
-                downloadHandler.DownloadedData = request.downloadHandler.data;
-                downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             }
             downloadHandler.OnDownloadComplete();
             yield break;
