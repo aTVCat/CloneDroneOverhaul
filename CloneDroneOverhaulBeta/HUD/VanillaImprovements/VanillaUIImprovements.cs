@@ -13,12 +13,15 @@ namespace CDOverhaul.HUD.Vanilla
         public static bool InstanceIsNull => Instance == null;
 
         private ModdedObject m_ModdedObject;
+
         public EnergyUIImprovements EnergyUI;
+        public TitleScreenUIImprovements TitleScreenUI;
 
         public override void Initialize()
         {
             m_ModdedObject = base.GetComponent<ModdedObject>();
             EnergyUI = m_ModdedObject.GetObject<Transform>(0).gameObject.AddComponent<EnergyUIImprovements>();
+            TitleScreenUI = m_ModdedObject.GetObject<Transform>(1).gameObject.AddComponent<TitleScreenUIImprovements>();
             Instance = this;
         }
 

@@ -18,6 +18,9 @@ namespace CDOverhaul.Patches
         private Vector3 m_OriginalAchievementsNewHintPosition;
         private Transform m_AchievementsNewHint;
 
+        private Transform m_MessagePanel;
+        public TitleScreenMessagePanel MessagePanelComponent;
+
         public override void Replace()
         {
             base.Replace();
@@ -45,6 +48,14 @@ namespace CDOverhaul.Patches
                 return;
             }
 
+            m_MessagePanel = TransformUtils.FindChildRecursive(target.transform, "TitleScreenMessagePanel");
+            if (m_MessagePanel == null)
+            {
+                SuccessfullyPatched = false;
+                return;
+            }
+            MessagePanelComponent = m_MessagePanel.GetComponent<TitleScreenMessagePanel>();
+
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -185f, 0f);
 
@@ -59,18 +70,15 @@ namespace CDOverhaul.Patches
             m_SpawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(1).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
-            moddedObject.GetObject<Button>(3).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
-            moddedObject.GetObject<Button>(6).onClick.AddListener(delegate
+            moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
+            m_SettingsText = moddedObject.GetObject<Text>(1);
+            moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
                 Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
             });
-            //moddedObject.GetObject<Button>(8).onClick.AddListener(OverhaulController.GetController<OverhaulAdditionalContentUI>().Show);
-            moddedObject.GetObject<Button>(8).interactable = false; //!OverhaulVersion.IsUpdate2Hotfix;
-            moddedObject.GetObject<Transform>(9).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            m_BugReportText = moddedObject.GetObject<Text>(7);
-            m_SettingsText = moddedObject.GetObject<Text>(4);
-            m_AdditContentText = moddedObject.GetObject<Text>(10);
+            m_BugReportText = moddedObject.GetObject<Text>(3);
+            moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
+            moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
 
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -158f, 0);
@@ -105,7 +113,6 @@ namespace CDOverhaul.Patches
 
             m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
             m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
-            m_AdditContentText.text = OverhaulLocalizationController.Localization.GetTranslation("Additional content");
         }
 
         public override void Cancel()

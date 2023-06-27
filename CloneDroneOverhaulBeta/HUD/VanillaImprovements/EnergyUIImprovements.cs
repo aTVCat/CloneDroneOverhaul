@@ -26,7 +26,7 @@ namespace CDOverhaul.HUD.Vanilla
         {
             if (SpawnedText.Contains(text))
             {
-                foreach(ErrorTextInstanceBehaviour instance in Instances)
+                foreach (ErrorTextInstanceBehaviour instance in Instances)
                 {
                     if (!instance)
                         continue;

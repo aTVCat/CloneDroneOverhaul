@@ -500,6 +500,7 @@
     <Compile Include="HUD\Transitions\OverhaulTransitionBehaviour.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
+    <Compile Include="HUD\VanillaImprovements\TitleScreenUIImprovements.cs" />
     <Compile Include="HUD\VanillaImprovements\EnergyUIImprovements.cs" />
     <Compile Include="HUD\VanillaImprovements\VanillaUIImprovements.cs" />
     <Compile Include="HUD\Personalization\PersonalizationMenu.cs" />
@@ -539,6 +540,7 @@
     <Compile Include="Internal\Patches\EnergyUI_Patch.cs" />
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AmplifyColorSwapper_Patch.cs" />
+    <Compile Include="Internal\Patches\TitleScreenMessagePanel_Patch.cs" />
     <Compile Include="Internal\Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Internal\Patches\TrophyShelf_Patch.cs" />
     <Compile Include="Internal\Patches\ObjectPlacedInLevel_Patch.cs" />

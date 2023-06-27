@@ -177,6 +177,12 @@ namespace CDOverhaul
             private static readonly bool ARE_ENERGY_UI_IMPROVEMENTS_ENABLED = true;
             public static bool AreEnergyUIImprovementsEnabled => !OverhaulVersion.IsUpdate2 && ARE_ENERGY_UI_IMPROVEMENTS_ENABLED;
 
+            /// <summary>
+            /// Enable the transition initially used in prototype builds
+            /// </summary>
+            private static readonly bool IS_NEW_WORKSHOP_BROWSER_ENABLED = false;
+            public static bool IsNewWorkshopBrowserEnabled => !OverhaulVersion.IsUpdate2 && IS_NEW_WORKSHOP_BROWSER_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }
