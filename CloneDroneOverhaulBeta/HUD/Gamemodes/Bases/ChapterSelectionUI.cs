@@ -49,9 +49,6 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void SelectChapter(int chapterIndex)
         {
-            if (!GamemodesUI.AllowSwitching)
-                return;
-
             m_SelectedChapter = chapterIndex;
             if (chapterIndex < 1)
                 m_SelectedChapter = 5;
@@ -87,7 +84,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Update();
 
-            if (!GamemodesUI.AllowSwitching || GamemodesUI.FullscreenWindow.IsActive)
+            if (GamemodesUI.FullscreenWindow.IsActive)
                 return;
 
             if (Input.GetKeyDown(KeyCode.Backspace))

@@ -12,6 +12,7 @@ namespace CDOverhaul.HUD.Gamemodes
             base.Initialize(fullscreenWindow);
 
             m_PublicButton = MyModdedObject.GetObject<Button>(0);
+            m_PublicButton.onClick.AddListener(OnPublicClick);
             m_PrivateButton = MyModdedObject.GetObject<Button>(1);
             m_PrivateButton.onClick.AddListener(OnPrivateClick);
         }
@@ -19,6 +20,11 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnPrivateClick()
         {
             FullscreenWindow.GoToPage(2);
+        }
+
+        public void OnPublicClick()
+        {
+            FullscreenWindow.DoQuickStart();
         }
     }
 }

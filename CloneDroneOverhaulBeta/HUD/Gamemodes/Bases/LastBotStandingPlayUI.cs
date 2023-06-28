@@ -1,12 +1,32 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
     public class LastBotStandingPlayUI : OverhaulGamemodeUIBase
     {
+        private Button m_GoBackButton;
+
+        private Button m_PlayButton;
+
+        protected override void OnInitialize()
+        {
+            ModdedObject moddedObject = base.GetComponent<ModdedObject>();
+            m_GoBackButton = moddedObject.GetObject<Button>(0);
+            m_GoBackButton.onClick.AddListener(goBackToGamemodeSelection);
+            m_PlayButton = moddedObject.GetObject<Button>(1);
+            m_PlayButton.onClick.AddListener(OnPlayClicked);
+        }
+
         protected override void OnShow()
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/LBSInviteBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
+        }
+
+        private void goBackToGamemodeSelection()
+        {
+            Hide();
+            GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
         }
 
         public void OnPlayClicked()
@@ -44,6 +64,9 @@ namespace CDOverhaul.HUD.Gamemodes
 
             if (Input.GetKeyDown(KeyCode.P))
                 OnPrivateMatchClick();
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                goBackToGamemodeSelection();
         }
     }
 }

@@ -183,6 +183,12 @@ namespace CDOverhaul
             private static readonly bool IS_NEW_WORKSHOP_BROWSER_ENABLED = false;
             public static bool IsNewWorkshopBrowserEnabled => !OverhaulVersion.IsUpdate2 && IS_NEW_WORKSHOP_BROWSER_ENABLED;
 
+            /// <summary>
+            /// Enable the transition initially used in prototype builds
+            /// </summary>
+            private static readonly bool IS_PETS_DEMO = true;
+            public static bool IsPetsDemo => OverhaulVersion.IsUpdate2 || IS_PETS_DEMO;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }

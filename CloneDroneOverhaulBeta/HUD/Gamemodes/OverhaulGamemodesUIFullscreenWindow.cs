@@ -10,6 +10,8 @@ namespace CDOverhaul.HUD.Gamemodes
         public static readonly Vector2 DefaultWindowSize = new Vector2(300, 150);
         public static readonly Vector2 GameCustomizationWindowSize = new Vector2(400, 425);
 
+        public OverhaulGamemodesUI GamemodesUI;
+
         public bool IsActive => base.gameObject.activeSelf;
         public bool StateSwitchingInProgress;
 

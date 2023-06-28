@@ -74,7 +74,7 @@ namespace CDOverhaul.Gameplay.Pets
 
         public static float GetDeltaTime()
         {
-            return (BoltNetwork.IsConnected ? BoltNetwork.FrameDeltaTime : Time.deltaTime) * 6f;
+            return (BoltNetwork.IsConnected ? BoltNetwork.FrameDeltaTime : Time.deltaTime) * 4.5f;
         }
 
         public FirstPersonMover GetNearestEnemyRobot(float maxRange)

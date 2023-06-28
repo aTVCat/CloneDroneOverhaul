@@ -34,7 +34,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Update();
 
-            if (!GamemodesUI.AllowSwitching || GamemodesUI.FullscreenWindow.IsActive)
+            if (GamemodesUI.FullscreenWindow.IsActive)
                 return;
 
             if (Input.GetKeyDown(KeyCode.Backspace))

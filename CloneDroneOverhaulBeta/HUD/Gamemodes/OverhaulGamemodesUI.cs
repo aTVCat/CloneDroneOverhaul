@@ -17,18 +17,16 @@ namespace CDOverhaul.HUD.Gamemodes
         private RawImage m_LastSpawnedBackground;
         private Transform m_BackgroundContainer;
 
-        public bool AllowSwitching;
-
         public override void Initialize()
         {
             base.gameObject.SetActive(false);
-            AllowSwitching = true;
 
             m_Background = MyModdedObject.GetObject<RawImage>(0);
             m_Background.gameObject.SetActive(false);
             m_BackgroundContainer = MyModdedObject.GetObject<Transform>(6);
             FullscreenWindow = MyModdedObject.GetObject<Transform>(1).gameObject.AddComponent<OverhaulGamemodesUIFullscreenWindow>();
             FullscreenWindow.Initialize();
+            FullscreenWindow.GamemodesUI = this;
 
             OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(2).gameObject.AddComponent<ChapterSelectionUI>().Initialize<ChapterSelectionUI>(this);
             OverhaulLastBotStandingPlayUI = MyModdedObject.GetObject<Transform>(3).gameObject.AddComponent<LastBotStandingPlayUI>().Initialize<LastBotStandingPlayUI>(this);

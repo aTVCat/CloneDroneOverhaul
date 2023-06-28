@@ -55,6 +55,7 @@ namespace CDOverhaul.HUD
         private Transform m_PersonalizationPanel;
         private Button m_PersonalizationSkinsButton;
         private Button m_PersonalizationOutfitsButton;
+        private Button m_PersonalizationPetsButton;
 
         private Button m_ExitButton;
         private Transform m_ExitSelectPanel;
@@ -126,6 +127,8 @@ namespace CDOverhaul.HUD
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
             m_PersonalizationOutfitsButton = MyModdedObject.GetObject<Button>(3);
             m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
+            m_PersonalizationPetsButton = MyModdedObject.GetObject<Button>(36);
+            m_PersonalizationPetsButton.interactable = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsPetsDemo;
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
