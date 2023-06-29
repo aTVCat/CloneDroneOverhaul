@@ -6,8 +6,9 @@ namespace CDOverhaul.HUD.Gamemodes
     public class LastBotStandingPlayUI : OverhaulGamemodeUIBase
     {
         private Button m_GoBackButton;
-
         private Button m_PlayButton;
+
+        private Toggle m_RelayToggle;
 
         protected override void OnInitialize()
         {
@@ -16,11 +17,14 @@ namespace CDOverhaul.HUD.Gamemodes
             m_GoBackButton.onClick.AddListener(goBackToGamemodeSelection);
             m_PlayButton = moddedObject.GetObject<Button>(1);
             m_PlayButton.onClick.AddListener(OnPlayClicked);
+            m_RelayToggle = moddedObject.GetObject<Toggle>(6);
+            m_RelayToggle.onValueChanged.AddListener(OnRelayToggleClick);
         }
 
         protected override void OnShow()
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/LBSInviteBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
+            m_RelayToggle.isOn = OverhaulCore.IsRelayConnectionEnabled;
         }
 
         private void goBackToGamemodeSelection()
@@ -53,6 +57,11 @@ namespace CDOverhaul.HUD.Gamemodes
                 GameType = GameRequestType.RandomBattleRoyale
             });
             Hide();
+        }
+
+        public void OnRelayToggleClick(bool newValue)
+        {
+            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Gameplay.Multiplayer.Relay Connection", true), newValue);
         }
 
         private void Update()

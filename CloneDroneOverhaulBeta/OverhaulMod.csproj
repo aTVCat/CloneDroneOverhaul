@@ -454,6 +454,7 @@
     <Compile Include="Graphics\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
+    <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />

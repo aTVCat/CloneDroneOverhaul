@@ -6,6 +6,7 @@ namespace CDOverhaul.HUD.Gamemodes
     public class CodeEnterPage : FullscreenWindowPageBase
     {
         private Button m_GoButton;
+        private Button m_BackButton;
         private InputField m_CodeField;
 
         public override Vector2 GetWindowSize() => OverhaulGamemodesUIFullscreenWindow.CodeEnterWindowSize;
@@ -19,11 +20,18 @@ namespace CDOverhaul.HUD.Gamemodes
             m_CodeField.text = string.Empty;
             m_GoButton = MyModdedObject.GetObject<Button>(1);
             m_GoButton.onClick.AddListener(OnGoClick);
+            m_BackButton = MyModdedObject.GetObject<Button>(2);
+            m_BackButton.onClick.AddListener(OnBackClick);
         }
 
         public void OnGoClick()
         {
             tryJoinLobby();
+        }
+
+        public void OnBackClick()
+        {
+            FullscreenWindow.Hide();
         }
 
         private async void tryJoinLobby()

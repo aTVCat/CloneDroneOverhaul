@@ -23,6 +23,9 @@ namespace CDOverhaul
 
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
+        [OverhaulSetting("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
+        public static bool IsRelayConnectionEnabled;
+
         /// <summary>
         /// The UI controller instance
         /// </summary>

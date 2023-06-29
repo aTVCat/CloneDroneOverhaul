@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
 
         private Text m_SettingsText;
         private Text m_BugReportText;
-        private Text m_AdditContentText;
+        private Text m_AboutOverhaulText;
 
         private Vector3 m_OriginalAchievementsNewHintPosition;
         private Transform m_AchievementsNewHint;
@@ -77,6 +77,8 @@ namespace CDOverhaul.Patches
                 Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
             });
             m_BugReportText = moddedObject.GetObject<Text>(3);
+            moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.GetController<AboutOverhaulMenu>().Show);
+            m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
             moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
 

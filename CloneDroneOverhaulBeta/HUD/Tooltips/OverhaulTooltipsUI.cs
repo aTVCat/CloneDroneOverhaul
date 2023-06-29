@@ -8,7 +8,7 @@ namespace CDOverhaul.HUD.Tooltips
         public static bool ShowTooltips;
 
         [OverhaulSettingSliderParameters(false, 2f, 8f)]
-        [OverhaulSetting("Mod.Tooltips.Show duration", 4f)]
+        [OverhaulSetting("Mod.Tooltips.Show duration", 4f, false, null, "Mod.Tooltips.Show tooltips")]
         public static float TooltipsShowDuration;
 
         public OverhaulTooltipsController TooltipsController;

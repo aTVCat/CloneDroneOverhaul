@@ -29,5 +29,12 @@ namespace CDOverhaul.Patches
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Settings.Target framerate", true), 0, false);
             }
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("GetForceRelayConnection")]
+        private static void GetForceRelayConnection_Postfix(ref bool __result)
+        {
+            __result = OverhaulCore.IsRelayConnectionEnabled;
+        }
     }
 }
