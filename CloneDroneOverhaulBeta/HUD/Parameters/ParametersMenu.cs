@@ -181,7 +181,7 @@ namespace CDOverhaul.HUD
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + category);
                 categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsController.GetSpriteForCategory(category);
-                categoryEntry.GetObject<Image>(2).color = OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
+                categoryEntry.GetObject<Image>(2).color = category == "Experimental" ? Color.red : OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
                 categoryEntry.gameObject.SetActive(true);
             }

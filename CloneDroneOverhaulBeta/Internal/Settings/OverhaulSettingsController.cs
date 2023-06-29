@@ -49,7 +49,7 @@ namespace CDOverhaul
                 List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
                 foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
                 {
-                    foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public))
+                    foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                     {
                         OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
                         if (neededAttribute != null)
