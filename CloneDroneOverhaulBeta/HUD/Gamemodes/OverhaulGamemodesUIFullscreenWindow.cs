@@ -9,17 +9,19 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         public static readonly Vector2 DefaultWindowSize = new Vector2(300, 150);
         public static readonly Vector2 GameCustomizationWindowSize = new Vector2(400, 425);
+        public static readonly Vector2 CodeEnterWindowSize = new Vector2(275, 100);
 
         public OverhaulGamemodesUI GamemodesUI;
 
         public bool IsActive => base.gameObject.activeSelf;
         public bool StateSwitchingInProgress;
+        public bool AllowPressingBackspace;
 
         private Image m_Shading;
         private RectTransform m_PanelTransform;
         private CanvasGroup m_CanvasGroup;
 
-        private readonly GameObject[] PageGameObjects = new GameObject[3];
+        private readonly GameObject[] PageGameObjects = new GameObject[4];
 
         private Action m_Callback;
 
@@ -36,6 +38,10 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[1].AddComponent<HostTypeSelectionPage>().Initialize(this);
             PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
             PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
+            PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
+            PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
+            PageGameObjects[3] = moddedObject.GetObject<Transform>(6).gameObject;
+            PageGameObjects[3].AddComponent<CodeEnterPage>().Initialize(this);
 
             base.gameObject.SetActive(false);
         }
@@ -87,6 +93,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 {
                     gameObject.SetActive(true);
                     m_PanelTransform.sizeDelta = pageBase.GetWindowSize();
+                    AllowPressingBackspace = pageBase.AllowPressingBackspace();
                 }
                 else
                     gameObject.SetActive(false);
@@ -199,7 +206,7 @@ namespace CDOverhaul.HUD.Gamemodes
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 DoQuickStart();
 
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
+            if (AllowPressingBackspace && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace)))
                 Hide();
         }
     }

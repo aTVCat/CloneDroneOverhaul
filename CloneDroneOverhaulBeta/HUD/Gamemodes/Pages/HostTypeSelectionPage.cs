@@ -6,6 +6,7 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         private Button m_PublicButton;
         private Button m_PrivateButton;
+        private Button m_JoinLobby;
 
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
@@ -15,11 +16,18 @@ namespace CDOverhaul.HUD.Gamemodes
             m_PublicButton.onClick.AddListener(OnPublicClick);
             m_PrivateButton = MyModdedObject.GetObject<Button>(1);
             m_PrivateButton.onClick.AddListener(OnPrivateClick);
+            m_JoinLobby = MyModdedObject.GetObject<Button>(2);
+            m_JoinLobby.onClick.AddListener(OnJoinLobbyClick);
         }
 
         public void OnPrivateClick()
         {
             FullscreenWindow.GoToPage(2);
+        }
+
+        public void OnJoinLobbyClick()
+        {
+            FullscreenWindow.GoToPage(3);
         }
 
         public void OnPublicClick()

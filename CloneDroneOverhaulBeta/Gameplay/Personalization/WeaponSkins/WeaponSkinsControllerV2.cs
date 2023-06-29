@@ -139,6 +139,7 @@ namespace CDOverhaul.Gameplay
                 CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
             }
 
+            /*
             for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
             {
                 if (m_WeaponSkins[i] == null)
@@ -147,7 +148,8 @@ namespace CDOverhaul.Gameplay
                 WeaponSkinItemDefinitionV2 item = m_WeaponSkins[i] as WeaponSkinItemDefinitionV2;
                 if (item.IsImportedSkin)
                     m_WeaponSkins.RemoveAt(i);
-            }
+            }*/
+            m_WeaponSkins.Clear();
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
@@ -430,6 +432,7 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
                 OverhaulLoadingScreen.Instance.SetScreenText("Reloading: " + def.GetItemName());
+                yield return null;
 
                 WeaponSkinModel m1 = def.GetModel(false, false);
                 if (m1 != null && m1.Model != null)
@@ -465,11 +468,11 @@ namespace CDOverhaul.Gameplay
 
                 progress++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(progress / (float)total);
-                if (progress % 2 == 0) yield return null;
             }
 
             OverhaulLoadingScreen.Instance.SetScreenText("Finishing...");
             OverhaulLoadingScreen.Instance.SetScreenFill(0f);
+            yield return null;
 
             WeaponSkinsController c = GetController<WeaponSkinsController>();
             if (c == null)
@@ -479,7 +482,24 @@ namespace CDOverhaul.Gameplay
             }
 
             WeaponSkinsController.HasUpdatedSkins = true;
-            c.ReImportCustomSkins();
+            //c.ReImportCustomSkins();
+
+            CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", true);
+            m_WeaponSkins.Clear();
+
+            int imported = 0;
+            foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
+            {
+                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
+                if (assetBundle != OverhaulAssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
+                    m_CustomAssetBundlesWithSkins.Add(assetBundle);
+
+                c.ImportSkin(customSkin, assetBundle);
+
+                imported++;
+                OverhaulLoadingScreen.Instance.SetScreenFill(imported / (float)CustomSkinsData.AllCustomSkins.Count);
+                yield return null;
+            }
 
             int charactersReloaded = 0;
             List<Character> characters = CharacterTracker.Instance.GetAllLivingCharacters();
@@ -496,7 +516,7 @@ namespace CDOverhaul.Gameplay
             }
 
             OverhaulLoadingScreen.Instance.SetScreenActive(false);
-            PersonalizationMenu.SkinsSelection.SetMenuActive(true);
+            PersonalizationMenu.SkinsSelection.SetMenuActive(false);
             yield break;
         }
 

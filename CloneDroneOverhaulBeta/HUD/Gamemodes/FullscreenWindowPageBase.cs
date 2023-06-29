@@ -7,6 +7,7 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         private static readonly List<FullscreenWindowPageBase> s_AllPages = new List<FullscreenWindowPageBase>();
         public virtual Vector2 GetWindowSize() => OverhaulGamemodesUIFullscreenWindow.DefaultWindowSize;
+        public virtual bool AllowPressingBackspace() => true;
 
         protected OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
         protected ModdedObject MyModdedObject;

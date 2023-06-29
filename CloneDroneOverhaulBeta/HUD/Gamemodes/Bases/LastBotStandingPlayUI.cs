@@ -59,6 +59,9 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Update();
 
+            if (GamemodesUI.FullscreenWindow.IsActive)
+                return;
+
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 OnPlayClicked();
 

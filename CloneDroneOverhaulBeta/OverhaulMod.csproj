@@ -466,6 +466,7 @@
     <Compile Include="HUD\Gamemodes\OverhaulGamemodeUIBase.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DifficultySelectionPage.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\CodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSGameCustomization.cs" />
     <Compile Include="HUD\Gamemodes\Pages\HostTypeSelectionPage.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
