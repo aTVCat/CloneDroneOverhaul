@@ -228,17 +228,9 @@ namespace CDOverhaul
                 return null;
 
             AssetBundle bundle = m_LoadedAssetBundles[assetBundle];
-            foreach (string str in bundle.GetAllAssetNames())
-            {
-                string assetName1 = str.Substring(str.LastIndexOf('/') + 1).Split('.')[0];
-                if (string.Equals(assetName1, assetName, StringComparison.OrdinalIgnoreCase))
-                {
-                    AssetLoadHandler handler = new AssetLoadHandler(doneCallback, bundle);
-                    _ = StaticCoroutineRunner.StartStaticCoroutine(getAssetAsyncCoroutine(bundle, assetBundle, handler));
-                    return handler;
-                }
-            }
-            return null;
+            AssetLoadHandler handler = new AssetLoadHandler(doneCallback, bundle);
+            _ = StaticCoroutineRunner.StartStaticCoroutine(getAssetAsyncCoroutine(bundle, assetName, handler));
+            return handler;
         }
 
         private static IEnumerator getAssetAsyncCoroutine(AssetBundle assetBundle, string assetName, AssetLoadHandler handler)

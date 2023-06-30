@@ -13,6 +13,8 @@ namespace CDOverhaul.Graphics
 {
     public static class OverhaulGraphicsController
     {
+        public const string GenericSparksVFX = "GenericSparks";
+
         #region Settings
 
         [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
@@ -104,7 +106,7 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, RobotEffectsBehaviour.RobotDeathSparksVFXID);
+            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, OverhaulGraphicsController.GenericSparksVFX);
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);

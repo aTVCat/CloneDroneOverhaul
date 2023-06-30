@@ -131,6 +131,7 @@ namespace CDOverhaul.Gameplay
 
         public void ReImportCustomSkins(bool reloadData = true)
         {
+            m_WeaponSkins.Clear();
             if (reloadData)
             {
                 if (CustomSkinsData != null && !CustomSkinsData.IsDisposed)
@@ -138,18 +139,6 @@ namespace CDOverhaul.Gameplay
 
                 CustomSkinsData = OverhaulDataBase.GetData<CustomWeaponSkinsData>("ImportedSkins", true, "Download/Permanent", HasUpdatedSkins);
             }
-
-            /*
-            for (int i = m_WeaponSkins.Count - 1; i > -1; i--)
-            {
-                if (m_WeaponSkins[i] == null)
-                    continue;
-
-                WeaponSkinItemDefinitionV2 item = m_WeaponSkins[i] as WeaponSkinItemDefinitionV2;
-                if (item.IsImportedSkin)
-                    m_WeaponSkins.RemoveAt(i);
-            }*/
-            m_WeaponSkins.Clear();
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {

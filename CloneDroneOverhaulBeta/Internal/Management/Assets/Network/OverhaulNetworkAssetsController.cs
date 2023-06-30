@@ -80,6 +80,7 @@ namespace CDOverhaul.NetworkAssets
                     downloadHandler.DownloadedText = request.downloadHandler.text;
                 }
             }
+
             downloadHandler.OnDownloadComplete();
             yield break;
         }
@@ -120,6 +121,7 @@ namespace CDOverhaul.NetworkAssets
                     downloadHandler.DownloadedTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
                 }
             }
+
             downloadHandler.OnDownloadComplete();
             yield break;
         }

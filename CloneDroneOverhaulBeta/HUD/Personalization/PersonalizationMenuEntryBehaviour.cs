@@ -134,7 +134,7 @@ namespace CDOverhaul.HUD
                 {
                     OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
                     if (outfits)
-                        outfits.SpawnAccessories();
+                        outfits.SpawnItems();
                 }
 
                 OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
@@ -180,12 +180,12 @@ namespace CDOverhaul.HUD
                     if (mover == null || !mover.HasCharacterModel())
                         return;
 
-                    AccessoryItem item = OutfitsController.GetAccessoryItem(m_Skin, false);
+                    OutfitItem item = OutfitsController.GetOutfitItem(m_Skin, false);
                     if (!item.Offsets.ContainsKey(mover.GetCharacterModel().gameObject.name))
                         return;
 
-                    OutfitsController.EditingItem = item;
-                    OutfitsController.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
+                    OutfitsEditor.EditingItem = item;
+                    OutfitsEditor.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
                     PersonalizationMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
                 }
                 return;

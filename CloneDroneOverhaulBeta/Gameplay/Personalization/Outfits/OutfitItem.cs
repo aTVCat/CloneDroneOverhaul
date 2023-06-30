@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public abstract class AccessoryItem
+    public class OutfitItem
     {
         public const string NoDescProvidedString = "No description provided.";
         public const string NoAuthorString = "N/A";
@@ -42,8 +42,6 @@ namespace CDOverhaul.Gameplay.Outfits
 
             return isUnlocked;
         }
-
-        public abstract void SetUpPrefab(GameObject prefab);
 
         public void SetUpOffsets()
         {
@@ -97,12 +95,13 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <param name="description"></param>
         /// <param name="partType"></param>
         /// <returns></returns>
-        public static T NewAccessory<T>(string name, string description, MechBodyPartType partType) where T : AccessoryItem
+        public static OutfitItem NewAccessory(string name, MechBodyPartType partType)
         {
-            T item = Activator.CreateInstance<T>();
-            item.Name = name;
-            item.Description = description;
-            item.BodyPart = partType;
+            OutfitItem item = new OutfitItem
+            {
+                Name = name,
+                BodyPart = partType
+            };
             return item;
         }
     }

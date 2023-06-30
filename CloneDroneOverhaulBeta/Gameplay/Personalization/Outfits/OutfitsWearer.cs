@@ -10,26 +10,22 @@ namespace CDOverhaul.Gameplay.Outfits
 {
     public class OutfitsWearer : OverhaulCharacterExpansion
     {
-        public const string IDInHashtable = "Outfits.Equipped";
+        private Dictionary<string, GameObject> m_SpawnedOutfitItems = new Dictionary<string, GameObject>();
 
         private OverhaulModdedPlayerInfo m_Info;
-
-        private Dictionary<string, GameObject> m_SpawnedAccessories;
+        public bool HasPlayerInfo => m_Info != null;
 
         private bool m_HasAddedEventListeners;
-        public bool HasPlayerInfo => m_Info != null;
 
         public override void Start()
         {
             base.Start();
 
-            m_SpawnedAccessories = new Dictionary<string, GameObject>();
-
-            m_Info = IsOwnerMainPlayer() ? OverhaulModdedPlayerInfo.GetLocalPlayerInfo() : OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
+            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             m_HasAddedEventListeners = true;
 
-            DelegateScheduler.Instance.Schedule(SpawnAccessories, 0.2f);
+            DelegateScheduler.Instance.Schedule(SpawnItems, 0.2f);
         }
 
         protected override void OnDeath()
@@ -43,7 +39,7 @@ namespace CDOverhaul.Gameplay.Outfits
             DestroyAccessories();
 
             m_Info = null;
-            m_SpawnedAccessories = null;
+            m_SpawnedOutfitItems = null;
             if (m_HasAddedEventListeners)
             {
                 m_HasAddedEventListeners = false;
@@ -53,10 +49,10 @@ namespace CDOverhaul.Gameplay.Outfits
 
         private void onGetData(Hashtable table)
         {
-            SpawnAccessories();
+            SpawnItems();
         }
 
-        public void SpawnAccessories()
+        public void SpawnItems()
         {
             DestroyAccessories();
 
@@ -70,83 +66,79 @@ namespace CDOverhaul.Gameplay.Outfits
             if (HasPlayerInfo)
             {
                 Hashtable hashtable = m_Info.GetHashtable();
-                if (hashtable != null && hashtable.ContainsKey(IDInHashtable))
-                    equippedItems = hashtable[IDInHashtable].ToString();
+                if (hashtable != null && hashtable.ContainsKey("Outfits.Equipped"))
+                    equippedItems = hashtable["Outfits.Equipped"].ToString();
             }
-            else
-            {
-                if (!GameModeManager.IsMultiplayer())
-                    equippedItems = OutfitsController.EquippedAccessories;
-            }
+            else if (!GameModeManager.IsMultiplayer())
+                equippedItems = OutfitsController.EquippedAccessories;
 
-            List<AccessoryItem> items = OutfitsController.GetAccessories(equippedItems);
+            List<OutfitItem> items = OutfitsController.GetOutfitItems(equippedItems);
             if (items.IsNullOrEmpty())
                 return;
 
-            foreach (AccessoryItem accessoryItem in items)
+            foreach (OutfitItem accessoryItem in items)
             {
-                if (accessoryItem.Prefab == null)
+                if (!accessoryItem.Prefab)
                     continue;
 
                 MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
-                if (bodyPart == null)
+                if (!bodyPart)
                     continue;
 
                 Transform bodyPartTransform = bodyPart.transform.parent;
-                if (bodyPartTransform == null)
+                if (!bodyPartTransform)
                     continue;
 
                 GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
-                SetPosition(instantiatedPrefab, accessoryItem);
-                accessoryItem.SetUpPrefab(instantiatedPrefab);
-                m_SpawnedAccessories.Add(accessoryItem.Name, instantiatedPrefab);
+                SetOffset(instantiatedPrefab, accessoryItem);
+                m_SpawnedOutfitItems.Add(accessoryItem.Name, instantiatedPrefab);
             }
         }
 
         public void DestroyAccessories()
         {
-            if (m_SpawnedAccessories.IsNullOrEmpty())
+            if (m_SpawnedOutfitItems.IsNullOrEmpty())
                 return;
 
-            foreach (string key in m_SpawnedAccessories.Keys)
+            foreach (string key in m_SpawnedOutfitItems.Keys)
             {
-                GameObject toDestroy = m_SpawnedAccessories[key];
+                GameObject toDestroy = m_SpawnedOutfitItems[key];
                 if (toDestroy)
                     Destroy(toDestroy);
             }
-            m_SpawnedAccessories.Clear();
+            m_SpawnedOutfitItems.Clear();
         }
 
-        public void SetPosition(GameObject accessory, AccessoryItem item)
+        public void SetOffset(GameObject outfitItem, OutfitItem item)
         {
-            if (accessory == null || item == null || Owner == null || !Owner.HasCharacterModel())
+            if (!outfitItem || item == null || !Owner || !Owner.HasCharacterModel())
                 return;
 
             string characterModelName = Owner.GetCharacterModel().gameObject.name;
             if (string.IsNullOrEmpty(characterModelName) || item.Offsets.IsNullOrEmpty() || !item.Offsets.ContainsKey(characterModelName))
             {
-                accessory.SetActive(false);
+                outfitItem.SetActive(false);
                 return;
             }
 
-            ModelOffset offset = item.Offsets[characterModelName];
-            if (offset.OffsetLocalScale == Vector3.zero)
+            ModelOffset modelOffset = item.Offsets[characterModelName];
+            if (modelOffset.OffsetLocalScale == Vector3.zero)
             {
-                accessory.SetActive(false);
+                outfitItem.SetActive(false);
                 return;
             }
 
-            accessory.transform.localPosition = offset.OffsetPosition;
-            accessory.transform.localEulerAngles = offset.OffsetEulerAngles;
-            accessory.transform.localScale = offset.OffsetLocalScale;
-            accessory.SetActive(true);
+            Transform outfitItemTransform = outfitItem.transform;
+            outfitItemTransform.localPosition = modelOffset.OffsetPosition;
+            outfitItemTransform.localEulerAngles = modelOffset.OffsetEulerAngles;
+            outfitItemTransform.localScale = modelOffset.OffsetLocalScale;
         }
 
         private void Update()
         {
-            if (Time.frameCount % 10 == 0 && !m_SpawnedAccessories.IsNullOrEmpty() && Owner.IsMainPlayer())
+            if (Time.frameCount % 10 == 0 && !m_SpawnedOutfitItems.IsNullOrEmpty() && Owner.IsMainPlayer())
             {
-                foreach (GameObject gm in m_SpawnedAccessories.Values)
+                foreach (GameObject gm in m_SpawnedOutfitItems.Values)
                 {
                     if (!gm)
                         continue;

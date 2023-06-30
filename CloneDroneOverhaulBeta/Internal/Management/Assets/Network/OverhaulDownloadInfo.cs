@@ -23,5 +23,14 @@ namespace CDOverhaul.NetworkAssets
             DoneAction?.Invoke();
             OverhaulDisposable.AssignNullToAllVars(this);
         }
+
+        public void CancelDownload()
+        {
+            if(WebRequest != null && !WebRequest.isDone)
+                WebRequest.Abort();
+
+            Error = true;
+            OnDownloadComplete();
+        }
     }
 }

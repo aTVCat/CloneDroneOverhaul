@@ -72,10 +72,7 @@ namespace CDOverhaul.Patches
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
             m_SettingsText = moddedObject.GetObject<Text>(1);
-            moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
-            {
-                Application.OpenURL("https://forms.gle/SmA9AoBfpxr1Pg676");
-            });
+            moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.GetController<OverhaulSurveyUI>().Show);
             m_BugReportText = moddedObject.GetObject<Text>(3);
             moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.GetController<AboutOverhaulMenu>().Show);
             m_AboutOverhaulText = moddedObject.GetObject<Text>(5);

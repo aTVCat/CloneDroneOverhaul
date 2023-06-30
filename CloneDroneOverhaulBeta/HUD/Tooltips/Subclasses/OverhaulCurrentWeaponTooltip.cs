@@ -37,13 +37,13 @@ namespace CDOverhaul.HUD.Tooltips
             {
                 WeaponType weaponType = Player.GetEquippedWeaponType();
                 string weaponString = weaponType.ToString();
-                if (WeaponSkinsController.IsWeaponSupported(weaponType))
-                {
-                    bool isFire = weaponSkins.IsFireVariant(weaponType, false);
-                    color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
-                    if(isFire) weaponString += "-Fire";
-                }
+
+                bool isFire = weaponSkins.IsFireVariant(weaponType, false);
+                color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
+                if (isFire) 
+                    weaponString += "-Fire";
                 weaponString += ".png";
+
                 tryLoadIcon(weaponString);
             }
             SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;
