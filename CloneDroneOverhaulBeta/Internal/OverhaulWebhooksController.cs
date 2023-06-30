@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Net;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -9,6 +10,12 @@ namespace CDOverhaul
     {
         public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
         public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);
+
+        public const string SurveysWebhook = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
+        public static readonly Uri SurveysWebhookUri = new Uri(SurveysWebhook);
+
+        public const string RolfsWebhook = "https://discord.com/api/webhooks/1124297396650782731/EgfIFiK8PcUp9ffjllabsMsvDbw2pzi1A6aJWSsAMC2axF_xuS7jQg9TJbncHgZaA1GW";
+        public static readonly Uri RolfsWebhookUri = new Uri(RolfsWebhook);
 
         [OverhaulSetting("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
         public static bool AllowSendingInformation;
@@ -53,17 +60,80 @@ namespace CDOverhaul
                     },
                 },
             };
-            ExecuteWebhook(obj1);
+            ExecuteWebhook(obj1, CrashReportsWebhookUri);
         }
 
-        public static async void ExecuteWebhook(WebhookObject webhookObject)
+        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
+        {
+            string rankContent = rank + "/5";
+            string improveContent = improveText;
+            string likedContent = likedText;
+            string gameLogs = includeGameLogs ? "Work in progress..." : "**NOT INCLUDED**";
+            string deviceInfo = includeDeviceInfo ?
+                string.Format("- OS: {0}\n- CPU: {1}\n Processors: {2}\n Frequency: {3}\n- GPU: {4}\n- Memory: {5} MBs\n- GPU Memory: {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
+
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = "__Feedback sent! Version: " + OverhaulVersion.ModVersion + "__",
+                embeds = new Embed[]
+                {
+                    new Embed()
+                    {
+                        title = "**Rank**",
+                        description = rankContent,
+                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Improve**",
+                        description = improveContent,
+                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                    },
+
+                    new Embed()
+                    {
+                        title = "**User's favorite**",
+                        description = likedContent,
+                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Game logs**",
+                        description = gameLogs,
+                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Device info**",
+                        description = deviceInfo,
+                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                    },
+                },
+            };
+            ExecuteWebhook(obj1, SurveysWebhookUri);
+        }
+        
+        // i made it just for fun
+        public static void ExecuteRoflsWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
+        {
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = improveText,
+            };
+            ExecuteWebhook(obj1, RolfsWebhookUri);
+        }
+
+        public static async void ExecuteWebhook(WebhookObject webhookObject, Uri uri)
         {
             try
             {
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    _ = await webClient.UploadStringTaskAsync(CrashReportsWebhookUri, "POST", JsonConvert.SerializeObject(webhookObject));
+                    _ = await webClient.UploadStringTaskAsync(uri, "POST", JsonConvert.SerializeObject(webhookObject));
                 }
             }
             catch { }
