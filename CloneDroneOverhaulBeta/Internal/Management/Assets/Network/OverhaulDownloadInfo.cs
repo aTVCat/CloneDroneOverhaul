@@ -26,7 +26,7 @@ namespace CDOverhaul.NetworkAssets
 
         public void CancelDownload()
         {
-            if(WebRequest != null && !WebRequest.isDone)
+            if (WebRequest != null && !WebRequest.isDone)
                 WebRequest.Abort();
 
             Error = true;

@@ -1192,12 +1192,11 @@ namespace CDOverhaul.Workshop
 
             public void CanWorkWithImage(out bool can)
             {
-                can = false;
                 try
                 {
                     can = !IsDisposedOrDestroyed() && base.gameObject.activeInHierarchy && m_ThumbnailImage && m_ThumbnailProgressBar;
                 }
-                catch 
+                catch
                 {
                     can = false;
                 }

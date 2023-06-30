@@ -63,7 +63,7 @@ namespace CDOverhaul
             ExecuteWebhook(obj1, CrashReportsWebhookUri);
         }
 
-        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
+        public static async void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
         {
             string rankContent = rank + "/5";
             string improveContent = improveText;
@@ -115,7 +115,7 @@ namespace CDOverhaul
             };
             ExecuteWebhook(obj1, SurveysWebhookUri);
         }
-        
+
         // i made it just for fun
         public static void ExecuteRoflsWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
         {

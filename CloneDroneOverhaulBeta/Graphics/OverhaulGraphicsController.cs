@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Graphics.Robots;
 using CDOverhaul.HUD;
 using OverhaulAPI;
 using OverhaulAPI.SharedMonoBehaviours;

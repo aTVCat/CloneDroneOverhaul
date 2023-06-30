@@ -84,7 +84,7 @@ namespace CDOverhaul.Gameplay.Pets
 
             FirstPersonMover result = null;
             float range = maxRange;
-            foreach(Character character in characters)
+            foreach (Character character in characters)
             {
                 if (!character || !(character is FirstPersonMover) || character == Owner)
                     continue;

@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Workshop;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {

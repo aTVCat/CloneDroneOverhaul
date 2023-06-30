@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -30,14 +26,10 @@ namespace CDOverhaul.Gameplay.Pets
             if (string.IsNullOrEmpty(UnlockedFor))
                 return true;
 
-            if (!firstPersonMover)
-                return false;
-
-            if (firstPersonMover.IsForcedToUseLockedStuff())
-                return true;
-
-            return GameModeManager.IsSinglePlayer()
-                ? UnlockedFor.Contains(PlayFabDataController.GetLocalPlayFabID()) : UnlockedFor.Contains(firstPersonMover.GetPlayFabID());
+            return firstPersonMover
+&& (firstPersonMover.IsForcedToUseLockedStuff()
+|| (GameModeManager.IsSinglePlayer()
+                ? UnlockedFor.Contains(PlayFabDataController.GetLocalPlayFabID()) : UnlockedFor.Contains(firstPersonMover.GetPlayFabID())));
         }
         public bool IsUnlocked() => IsUnlocked(CharacterTracker.Instance ? CharacterTracker.Instance.GetPlayerRobot() : null);
 
@@ -67,10 +59,7 @@ namespace CDOverhaul.Gameplay.Pets
 
         public static PetBehaviourSettings GetBehaviourSettingsQuick()
         {
-            if (s_RecentlyCreatedItem == null)
-                return null;
-
-            return s_RecentlyCreatedItem.BehaviourSettings;
+            return s_RecentlyCreatedItem == null ? null : s_RecentlyCreatedItem.BehaviourSettings;
         }
     }
 }

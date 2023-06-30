@@ -1,10 +1,4 @@
-﻿using ModLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -15,7 +9,7 @@ namespace CDOverhaul
             if (string.IsNullOrEmpty(crashString))
                 return false;
 
-            if(crashString.Contains("Screen position out of view frustum"))
+            if (crashString.Contains("Screen position out of view frustum"))
             {
                 FixScreenPosition();
                 return true;
@@ -37,7 +31,7 @@ namespace CDOverhaul
             }
             if (GameModeManager.IsSinglePlayer())
             {
-                if(PhotoManager.Instance.IsInPhotoMode())
+                if (PhotoManager.Instance.IsInPhotoMode())
                 {
                     Camera camera = Camera.main;
                     if (!camera)
@@ -71,7 +65,7 @@ namespace CDOverhaul
 
         public static void ShutdownBoltIfRunning()
         {
-            if(BoltNetwork.IsRunning)
+            if (BoltNetwork.IsRunning)
                 BoltLauncher.Shutdown();
         }
     }

@@ -121,16 +121,12 @@ namespace CDOverhaul.Gameplay
 
         public bool IsUnlockedForPlayer(FirstPersonMover player)
         {
-            if (string.IsNullOrEmpty(m_ExclusivePlayerID))
-                return true;
-
-            if (!player)
-                return false;
-
-            return (player.IsForcedToUseLockedStuff() 
+            return string.IsNullOrEmpty(m_ExclusivePlayerID)
+|| player
+&& ((player.IsForcedToUseLockedStuff()
                 || (GameModeManager.IsSinglePlayer()
                 ? m_ExclusivePlayerID.Contains(PlayFabDataController.GetLocalPlayFabID())
-                : m_ExclusivePlayerID.Contains(player.GetPlayFabID()))) && !player.IsBlacklistedBuildUser();
+                : m_ExclusivePlayerID.Contains(player.GetPlayFabID()))) && !player.IsBlacklistedBuildUser());
         }
 
         bool IEqualityComparer.Equals(object x, object y) => x is IWeaponSkinItemDefinition defX && y is IWeaponSkinItemDefinition defY && (defX.GetWeaponType(), defX.GetItemName()) == (defY.GetWeaponType(), defY.GetItemName());

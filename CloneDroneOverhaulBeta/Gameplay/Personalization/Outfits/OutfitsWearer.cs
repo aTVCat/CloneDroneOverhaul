@@ -1,7 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Graphics;
 using OverhaulAPI;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

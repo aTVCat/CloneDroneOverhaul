@@ -26,6 +26,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void OnGoClick()
         {
+            m_GoButton.interactable = false;
             tryJoinLobby();
         }
 
@@ -37,10 +38,12 @@ namespace CDOverhaul.HUD.Gamemodes
         private async void tryJoinLobby()
         {
             GameRequestType gameType = GameRequestType.BattleRoyaleInviteCodeJoin;
-            GameRequest gameRequest = new GameRequest();
-            gameRequest.GameType = gameType;
-            gameRequest.InviteCodeToJoin = m_CodeField.text;
-            gameRequest.Exclusivity = await MultiplayerMatchmakingManager.GetExclusivePlatformAsync();
+            GameRequest gameRequest = new GameRequest
+            {
+                GameType = gameType,
+                InviteCodeToJoin = m_CodeField.text,
+                Exclusivity = await MultiplayerMatchmakingManager.GetExclusivePlatformAsync()
+            };
 
             MultiplayerMatchmakingManager.Instance.ResetMatchmakingStartTime();
             Singleton<CustomMatchmakerClientAPI>.Instance.FindMatch(new CustomMatchmakeRequest
@@ -52,6 +55,8 @@ namespace CDOverhaul.HUD.Gamemodes
                 FullscreenWindow.GamemodesUI.Hide();
             }, delegate (CustomMatchmakerError error)
             {
+                m_GoButton.interactable = true;
+                OverhaulDialogues.CreateDialogue("Cannot enter the lobby", error.Type == CustomMatchmakerErrorType.InviteMatchFull ? "The lobby you want to connect to is full." : "No lobby found.", 0f, new Vector2(315, 160), null);
             });
         }
     }

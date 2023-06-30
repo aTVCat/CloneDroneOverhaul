@@ -1,5 +1,4 @@
-﻿using CDOverhaul.NetworkAssets;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -45,7 +44,7 @@ namespace CDOverhaul.HUD
             if (GameModeManager.Is(GameMode.None))
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
 
-            float num = (float)texture.width / (float)texture.height;
+            float num = texture.width / (float)texture.height;
             s_Viewer.Image.rectTransform.sizeDelta = new Vector2(s_Viewer.Image.rectTransform.rect.height * num, s_Viewer.Image.rectTransform.sizeDelta.y);
         }
 

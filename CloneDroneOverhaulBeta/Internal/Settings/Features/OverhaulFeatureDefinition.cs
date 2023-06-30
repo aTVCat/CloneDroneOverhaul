@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace CDOverhaul
+﻿namespace CDOverhaul
 {
     public class OverhaulFeatureDefinition
     {

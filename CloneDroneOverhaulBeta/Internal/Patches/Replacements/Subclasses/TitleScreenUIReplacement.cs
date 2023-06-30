@@ -48,6 +48,21 @@ namespace CDOverhaul.Patches
                 return;
             }
 
+            Transform quitButton = TransformUtils.FindChildRecursive(target.transform, "QuitButton");
+            if (quitButton)
+            {
+                Button button = quitButton.GetComponent<Button>();
+                button.onClick = new Button.ButtonClickedEvent();
+                button.onClick.AddListener(delegate
+                {
+                    OverhaulSurveyUI ui = OverhaulController.GetController<OverhaulSurveyUI>();
+                    if (ui)
+                        ui.Show();
+                    else
+                        Application.Quit();
+                });
+            }
+
             m_MessagePanel = TransformUtils.FindChildRecursive(target.transform, "TitleScreenMessagePanel");
             if (m_MessagePanel == null)
             {

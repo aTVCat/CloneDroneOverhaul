@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +6,8 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulSurveyUI : OverhaulUI
     {
+        public static bool HasSentFeedbackThisSession;
+
         private Button m_GoBack;
         private Button m_Send;
         private Button m_ExitGame;
@@ -50,7 +48,9 @@ namespace CDOverhaul.HUD
             m_RankButtons[4] = MyModdedObject.GetObject<Button>(5);
             m_RankButtons[4].onClick.AddListener(OnRank5Click);
             m_ImproveText = MyModdedObject.GetObject<InputField>(6);
+            m_ImproveText.text = string.Empty;
             m_LikedText = MyModdedObject.GetObject<InputField>(7);
+            m_LikedText.text = string.Empty;
 
             m_IncludeGameLogs = MyModdedObject.GetObject<Toggle>(8);
             m_IncludeDeviceLogs = MyModdedObject.GetObject<Toggle>(9);
@@ -62,6 +62,9 @@ namespace CDOverhaul.HUD
         {
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             base.gameObject.SetActive(true);
+
+            m_SendingLabelTransform.gameObject.SetActive(false);
+            SetAllInteractable(!HasSentFeedbackThisSession);
         }
 
         public void Hide()
@@ -85,6 +88,9 @@ namespace CDOverhaul.HUD
 
         public void OnSendClick()
         {
+            if (!checkFields() || HasSentFeedbackThisSession)
+                return;
+
             executeFeedbackWebHook();
         }
 
@@ -94,9 +100,57 @@ namespace CDOverhaul.HUD
         public void OnRank4Click() => SelectedRankIndex = 4;
         public void OnRank5Click() => SelectedRankIndex = 5;
 
+        public void SetAllInteractable(bool value)
+        {
+            foreach (Button b in m_RankButtons)
+                if (b)
+                    b.interactable = value;
+
+            m_ImproveText.interactable = value;
+            m_LikedText.interactable = value;
+            m_IncludeDeviceLogs.interactable = value;
+            m_IncludeGameLogs.interactable = value;
+            m_Send.interactable = value;
+        }
+
+        private bool checkFields()
+        {
+            if(SelectedRankIndex == -1)
+            {
+                OverhaulDialogues.CreateDialogue("Error", "You forgot to rate the modded experience...", 0f, new Vector2(315, 160), null);
+                return false;
+            }
+            if (string.IsNullOrEmpty(m_ImproveText.text) && SelectedRankIndex < 3)
+            {
+                OverhaulDialogues.CreateDialogue("Error", "You didn't enjoy the mod and didn't tell ME what thing(s) should to be improved?\nHuh..", 0f, new Vector2(315, 160), null);
+                return false;
+            }
+            if (string.IsNullOrEmpty(m_LikedText.text) && SelectedRankIndex > 3)
+            {
+                OverhaulDialogues.CreateDialogue("Error", "It doesn't seem that you don't have any favorite thing in the mod...", 0f, new Vector2(315, 160), null);
+                return false;
+            }
+            return true;
+        }
+
         private void executeFeedbackWebHook()
         {
+            HasSentFeedbackThisSession = true;
+
+            SetAllInteractable(false);
+            m_ExitGame.interactable = false;
+            m_SendingLabelTransform.gameObject.SetActive(true);
+            StaticCoroutineRunner.StartStaticCoroutine(executeFeedbackWebhookCoroutine());
+        }
+
+        private IEnumerator executeFeedbackWebhookCoroutine()
+        {
             OverhaulWebhooksController.ExecuteSurveysWebhook(SelectedRankIndex, m_ImproveText.text, m_LikedText.text, m_IncludeGameLogs.isOn, m_IncludeDeviceLogs.isOn);
+            yield return new WaitForSecondsRealtime(2f);
+            m_SendingLabelTransform.gameObject.SetActive(false);
+            m_ExitGame.interactable = true;
+            OverhaulDialogues.CreateDialogue("Feedback sent!", "", 0f, new Vector2(315, 40), null);
+            yield break;
         }
 
     }

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
 {
     public class PetsWearer : OverhaulCharacterExpansion
     {
-        private List<PetInstanceBehaviour> m_SpawnedPets = new List<PetInstanceBehaviour>();
-        
+        private readonly List<PetInstanceBehaviour> m_SpawnedPets = new List<PetInstanceBehaviour>();
+
         public Transform HeadTransform
         {
             get;
@@ -22,6 +18,9 @@ namespace CDOverhaul.Gameplay.Pets
             base.Start();
 
             HeadTransform = Owner.GetBodyPartParent("Head");
+
+            if (!IsOwnerMainPlayer())
+                return;
 
             m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
         }
@@ -37,7 +36,7 @@ namespace CDOverhaul.Gameplay.Pets
 
         public void TogglePetsVisibility()
         {
-            foreach(PetInstanceBehaviour b in m_SpawnedPets)
+            foreach (PetInstanceBehaviour b in m_SpawnedPets)
             {
                 if (!b)
                     continue;

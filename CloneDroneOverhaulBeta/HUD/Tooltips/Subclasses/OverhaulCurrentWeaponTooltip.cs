@@ -12,7 +12,7 @@ namespace CDOverhaul.HUD.Tooltips
         public const string FIRE_COLOR = "#FFB47D";
 
         public static string IconsDirectory => OverhaulMod.Core.ModDirectory + "Assets/Tooltips/Weapons/";
-        private static Dictionary<string, Texture> s_CachedIcons = new Dictionary<string, Texture>();
+        private static readonly Dictionary<string, Texture> s_CachedIcons = new Dictionary<string, Texture>();
 
         private WeaponType m_PlayerEquippedWeaponType;
 
@@ -40,7 +40,7 @@ namespace CDOverhaul.HUD.Tooltips
 
                 bool isFire = weaponSkins.IsFireVariant(weaponType, false);
                 color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
-                if (isFire) 
+                if (isFire)
                     weaponString += "-Fire";
                 weaponString += ".png";
 

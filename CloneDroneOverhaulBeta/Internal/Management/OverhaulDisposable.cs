@@ -36,8 +36,7 @@ namespace CDOverhaul
                 }
             }
 
-            OverhaulDisposable overhaulDisposable = @object as OverhaulDisposable;
-            if(overhaulDisposable != null && !overhaulDisposable.IsDisposed)
+            if (@object is OverhaulDisposable overhaulDisposable && !overhaulDisposable.IsDisposed)
             {
                 overhaulDisposable.Dispose();
             }

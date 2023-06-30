@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -25,9 +21,9 @@ namespace CDOverhaul.Gameplay.Pets
 
             Transform transform = firstPersonMover.transform;
             Vector3 result = Vector3.zero;
-            foreach(Tuple<string, Vector3> tuple in nodes)
+            foreach (Tuple<string, Vector3> tuple in nodes)
             {
-                if(tuple.Item1 == Offset)
+                if (tuple.Item1 == Offset)
                     result += tuple.Item2;
 
                 if (tuple.Item1 == OwnerTransformRight)

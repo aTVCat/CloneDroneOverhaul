@@ -1,13 +1,7 @@
 ﻿using CDOverhaul.NetworkAssets;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Windows.Forms.LinkLabel;
 
 namespace CDOverhaul.HUD.Vanilla
 {
@@ -58,7 +52,7 @@ namespace CDOverhaul.HUD.Vanilla
             {
                 UIImprovements = ui;
 
-                GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayfabTitleDataDownloaded, new Action(this.onGetTitleScreenMessageData));
+                GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayfabTitleDataDownloaded, new Action(onGetTitleScreenMessageData));
 
                 m_ModdedObject = base.GetComponent<ModdedObject>();
                 m_Header = m_ModdedObject.GetObject<Text>(1);
@@ -88,7 +82,7 @@ namespace CDOverhaul.HUD.Vanilla
 
             protected override void OnDisposed()
             {
-                GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.PlayfabTitleDataDownloaded, new Action(this.onGetTitleScreenMessageData));
+                GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.PlayfabTitleDataDownloaded, new Action(onGetTitleScreenMessageData));
                 if (m_DownloadedTexture)
                 {
                     Destroy(m_DownloadedTexture);
@@ -138,11 +132,11 @@ namespace CDOverhaul.HUD.Vanilla
                     if (overhaulDownloadInfo.Error)
                         return;
 
-                    if(!overhaulDownloadInfo.DownloadedTexture)
+                    if (!overhaulDownloadInfo.DownloadedTexture)
                         return;
 
                     Sprite sprite = (overhaulDownloadInfo.DownloadedTexture as Texture2D).FastSpriteCreate();
-                    float num = (float)overhaulDownloadInfo.DownloadedTexture.height / (float)overhaulDownloadInfo.DownloadedTexture.width;
+                    float num = overhaulDownloadInfo.DownloadedTexture.height / (float)overhaulDownloadInfo.DownloadedTexture.width;
                     m_MainHolderTransform.sizeDelta = new Vector2(m_MainHolderTransform.sizeDelta.x, m_MainHolderTransform.rect.width * num);
                     m_Image.sprite = sprite;
                     m_Image.enabled = true;

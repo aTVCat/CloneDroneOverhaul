@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,9 +73,9 @@ namespace CDOverhaul.HUD.Vanilla
                 if (Time.unscaledTime >= m_SpawnTime + 1.51f)
                 {
                     if (UIImprovements && !string.IsNullOrEmpty(Text))
-                        UIImprovements.SpawnedText.Remove(Text);
+                        _ = UIImprovements.SpawnedText.Remove(Text);
 
-                    UIImprovements.Instances.Remove(this);
+                    _ = UIImprovements.Instances.Remove(this);
                     Destroy(base.gameObject);
                     return;
                 }
