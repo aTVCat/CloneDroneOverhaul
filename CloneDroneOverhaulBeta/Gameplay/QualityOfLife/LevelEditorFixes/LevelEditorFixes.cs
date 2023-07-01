@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public override void Initialize()
         {
-            addUIs();
+            //addUIs();
             fixValues();
             fixUI();
 

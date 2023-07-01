@@ -73,11 +73,11 @@ namespace CDOverhaul
         /// <returns><see cref="AssetLoadHandler"/> containing progress variable</returns>
         public static AssetBundleLoadHandler LoadAssetBundleAsync(in string pathUnderModFolder, Action<AssetBundleLoadHandler> doneCallback)
         {
-            if (doneCallback == null || IsLoadingAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder))
+            if (doneCallback == null)
                 return null;
 
             AssetBundleLoadHandler handler = new AssetBundleLoadHandler(doneCallback, pathUnderModFolder);
-            if (HasLoadedAssetBundle(pathUnderModFolder))
+            if (IsLoadingAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder) || HasLoadedAssetBundle(pathUnderModFolder))
                 return handler;
 
             _ = StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler));
@@ -145,6 +145,31 @@ namespace CDOverhaul
         /// <param name="assetBundleName"></param>
         /// <returns></returns>
         public static bool HasLoadedAssetBundle(in string assetBundleName) => m_LoadedAssetBundles.ContainsKey(assetBundleName);
+        public static string GetLoadedAssetBundlesString()
+        {
+            string result = string.Empty;
+
+            if (m_LoadedAssetBundles.IsNullOrEmpty())
+                return result;
+
+            foreach (string name in m_LoadedAssetBundles.Keys)
+                result += name + "\n";
+
+            return result;
+        }
+
+        public static float GetAllAssetBundlesLoadPercent()
+        {
+            if (m_LoadedAssetBundles.IsNullOrEmpty())
+                return 0f;
+
+            int all = m_LoadingAssetBundles.Count;
+            float percents = 0f;
+            foreach (AssetBundleLoadHandler name in AssetBundleLoadHandler.LoadingBundles.Values)
+                percents += name != null && name.Request != null ? name.Request.progress : 0f;
+
+            return percents / all;
+        }
 
         /// <summary>
         /// Check if specified asset bundle is being loaded async-ly
@@ -284,6 +309,8 @@ namespace CDOverhaul
 
         public class AssetBundleLoadHandler : OverhaulDisposable
         {
+            public static readonly Dictionary<string, AssetBundleLoadHandler> LoadingBundles = new Dictionary<string, AssetBundleLoadHandler>();
+
             public AsyncOperation Request;
             public Action<AssetBundleLoadHandler> DoneAction;
 
@@ -293,10 +320,14 @@ namespace CDOverhaul
             {
                 DoneAction = onDone;
                 AssetBundlePath = bundleName;
+                LoadingBundles.Add(bundleName, this);
             }
 
             protected override void OnDisposed()
             {
+                if (LoadingBundles.ContainsKey(AssetBundlePath))
+                    LoadingBundles.Remove(AssetBundlePath);
+
                 Request = null;
                 DoneAction = null;
                 AssetBundlePath = null;

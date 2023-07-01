@@ -11,7 +11,18 @@ namespace CDOverhaul.Gameplay.Pets
         public override void Initialize()
         {
             base.Initialize();
+        }
 
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if (!hasInitializedModel)
+                return;
+
+            _ = firstPersonMover.gameObject.AddComponent<PetsWearer>();
+        }
+
+        public void AddPets()
+        {
             if (OverhaulSessionController.GetKey<bool>("hasInitialized"))
                 return;
 
@@ -30,14 +41,6 @@ namespace CDOverhaul.Gameplay.Pets
             PetItem.GetBehaviourSettingsQuick().OffsetScale = Vector3.one * 0.7f;
             PetItem.GetBehaviourSettingsQuick().FollowHeadRotation = true;
             PetItem.GetBehaviourSettingsQuick().RangeToLookAtEnemy = 20f;
-        }
-
-        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
-        {
-            if (!hasInitializedModel)
-                return;
-
-            _ = firstPersonMover.gameObject.AddComponent<PetsWearer>();
         }
     }
 }

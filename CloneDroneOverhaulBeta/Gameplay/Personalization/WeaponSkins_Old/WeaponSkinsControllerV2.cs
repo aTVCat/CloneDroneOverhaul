@@ -113,7 +113,6 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
 
             Interface = this;
-            addSkins();
         }
 
         protected override void OnDisposed()
@@ -332,12 +331,11 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        private void addSkins()
+        public void AddSkins()
         {
             if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
             {
                 OverhaulSessionController.SetKey("hasAddedSkins", true);
-                ;
                 PooledPrefabController.TurnObjectIntoPooledPrefab<VFXWeaponSkinSwitch>(OverhaulAssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
                 ReImportCustomSkins(true);
             }

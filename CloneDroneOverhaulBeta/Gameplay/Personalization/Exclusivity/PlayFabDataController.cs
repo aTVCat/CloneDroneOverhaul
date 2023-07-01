@@ -45,7 +45,7 @@ namespace CDOverhaul
 
         public static long GetDiscordID()
         {
-            return OverhaulDiscordController.Instance == null || OverhaulDiscordController.Instance.IsDisposedOrDestroyed() || !OverhaulDiscordController.SuccessfulInitialization
+            return !OverhaulDiscordController.HasInitialized
                 ? 0
                 : OverhaulDiscordController.Instance.UserID;
         }

@@ -38,7 +38,7 @@ namespace CDOverhaul
 
         public bool Error => Type == OverhaulSettingTypes.None || Field == null || string.IsNullOrEmpty(RawPath);
 
-        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in OverhaulSettingSliderParameters sliderParams = null, in OverhaulSettingDropdownParameters dropdownParams = null, in OverhaulUpdatedSetting formelyKnown = null)
+        internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in OverhaulUpdatedSetting formelyKnown = null)
         {
             RawPath = path;
             Type = GetSettingType(defValue);
@@ -49,9 +49,6 @@ namespace CDOverhaul
             Category = array[0];
             Section = array[1];
             Name = array[2];
-
-            SliderParameters = sliderParams;
-            DropdownParameters = dropdownParams;
 
             if (Error)
                 OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);

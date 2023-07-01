@@ -37,7 +37,7 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulController.AddController<WeaponSkinsController>();
             _ = OverhaulController.AddController<Pets.PetsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
-            _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
+            //_ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
 
             DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
         }

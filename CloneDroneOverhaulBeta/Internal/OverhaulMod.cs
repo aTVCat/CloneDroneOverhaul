@@ -5,6 +5,7 @@ using ModLibrary;
 using ModLibrary.YieldInstructions;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -29,6 +30,8 @@ namespace CDOverhaul
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
         public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Core != null;
+        public static bool IsHUDInitialized => Core.CanvasController;
+        public static bool HasBootProcessEnded;
 
         /// <summary>
         /// The instance of the core
@@ -126,7 +129,7 @@ namespace CDOverhaul
             if (IsModInitialized)
                 return;
 
-            GameObject gameObject = new GameObject("CloneDroneOverhaul_Core");
+            GameObject gameObject = new GameObject("OverhaulCore");
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
             _ = core.Initialize(out string errors);
 
@@ -172,5 +175,7 @@ namespace CDOverhaul
 
             return false;
         }
+
+        public static System.Type[] GetAllTypes() => Assembly.GetExecutingAssembly().GetTypes();
     }
 }

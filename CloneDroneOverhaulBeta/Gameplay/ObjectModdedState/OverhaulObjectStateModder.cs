@@ -38,7 +38,7 @@ namespace CDOverhaul.Patches
             return !dictionary.ContainsKey(paramName) ? default : (T)dictionary[paramName];
         }
 
-        public static void ClearDestroyedObjects()
+        public static void Reset()
         {
             List<int> ids = new List<int>();
             foreach (int id in m_CachedObjects.Keys)

@@ -9,12 +9,6 @@ namespace CDOverhaul.Gameplay.Outfits
         public override void Initialize()
         {
             base.Initialize();
-
-            if (OverhaulSessionController.GetKey<bool>("HasAddedAccessories"))
-                return;
-
-            OverhaulSessionController.SetKey("HasAddedAccessories", true);
-            addOutfitItems();
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -25,8 +19,13 @@ namespace CDOverhaul.Gameplay.Outfits
             _ = firstPersonMover.gameObject.AddComponent<OutfitsWearer>();
         }
 
-        private void addOutfitItems()
+        public void AddOutfitItems()
         {
+            if (OverhaulSessionController.GetKey<bool>("HasAddedAccessories"))
+                return;
+
+            OverhaulSessionController.SetKey("HasAddedAccessories", true);
+
             AddOutfitItemQuick("Igrok's hat", "P_Acc_Head_Igrok's hat", MechBodyPartType.Head);
             SetAuthorQuick(WeaponSkinsController.ATVCatDiscord);
 

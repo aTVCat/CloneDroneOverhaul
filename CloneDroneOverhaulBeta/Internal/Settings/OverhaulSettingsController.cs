@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.HUD;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -12,6 +13,8 @@ namespace CDOverhaul
         /// This event is sent if any setting value has changed
         /// </summary>
         public const string SettingChangedEventString = "OnSettingChanged";
+
+        public const BindingFlags Flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
         /// <summary>
         /// If the default value of a setting equals this one, the setting will be shown as button in UI
@@ -47,50 +50,63 @@ namespace CDOverhaul
                 OverhaulSessionController.SetKey("HasAddedOverhaulSettings", true);
 
                 List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
-                foreach (System.Type type in Assembly.GetExecutingAssembly().GetTypes())
+                Type[] allTypes = OverhaulMod.GetAllTypes();
+                int typeIndex = 0;
+                do
                 {
-                    foreach (FieldInfo field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                    Type currentType = allTypes[typeIndex];
+                    FieldInfo[] allFields = currentType.GetFields(Flags);
+                    if (allFields.IsNullOrEmpty())
                     {
-                        OverhaulSettingAttribute neededAttribute = field.GetCustomAttribute<OverhaulSettingAttribute>();
-                        if (neededAttribute != null)
-                        {
-                            OverhaulSettingWithNotification informs = field.GetCustomAttribute<OverhaulSettingWithNotification>();
-                            OverhaulUpdatedSetting formelyKnown = field.GetCustomAttribute<OverhaulUpdatedSetting>();
-                            OverhaulSettingSliderParameters sliderParams = field.GetCustomAttribute<OverhaulSettingSliderParameters>();
-                            OverhaulSettingDropdownParameters dropdownParams = field.GetCustomAttribute<OverhaulSettingDropdownParameters>();
-                            OverhaulSettingWithForcedInputField inputField = field.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
-                            SettingInfo info = AddSetting(neededAttribute.SettingRawPath, neededAttribute.DefaultValue, field, sliderParams, dropdownParams, formelyKnown);
-                            info.ForceInputField = inputField != null;
-                            info.SendMessageOfType = informs != null ? informs.Type : (byte)0;
-                            if (info.DefaultValue is long && (long)info.DefaultValue == SettingEventDispatcherFlag)
-                            {
-                                info.EventDispatcher = (OverhaulSettingWithEvent)field.GetValue(null);
-                            }
-                            if (neededAttribute.IsHidden)
-                            {
-                                m_HiddenEntries.Add(info.RawPath);
-                            }
-                            if (!string.IsNullOrEmpty(neededAttribute.Description))
-                            {
-                                AddDescription(neededAttribute.SettingRawPath, neededAttribute.Description);
-                            }
-                            if (!string.IsNullOrEmpty(neededAttribute.ParentSettingRawPath))
-                            {
-                                toParent.Add(neededAttribute);
-                            }
-                        }
+                        typeIndex++;
+                        continue;
                     }
-                }
+
+                    int fieldIndex = 0;
+                    do
+                    {
+                        FieldInfo currentField = allFields[fieldIndex];
+
+                        OverhaulSettingAttribute mainAttribute = currentField.GetCustomAttribute<OverhaulSettingAttribute>();
+                        if (mainAttribute == null)
+                        {
+                            fieldIndex++;
+                            continue;
+                        }
+
+                        OverhaulSettingWithNotification notificationAttribute = currentField.GetCustomAttribute<OverhaulSettingWithNotification>();
+                        OverhaulUpdatedSetting updatedSettingAttribute = currentField.GetCustomAttribute<OverhaulUpdatedSetting>();
+                        OverhaulSettingSliderParameters sliderParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingSliderParameters>();
+                        OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
+                        OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
+
+                        SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
+                        newSettingInfo.SliderParameters = sliderParametersAttribute;
+                        newSettingInfo.DropdownParameters = dropdownParametersAttribute;
+                        newSettingInfo.ForceInputField = forcedInputFieldAttribute != null;
+                        newSettingInfo.SendMessageOfType = notificationAttribute != null ? notificationAttribute.Type : (byte)0;
+                        AddDescription(mainAttribute.SettingRawPath, mainAttribute.Description);
+
+                        if (newSettingInfo.DefaultValue is long && (long)newSettingInfo.DefaultValue == SettingEventDispatcherFlag)
+                            newSettingInfo.EventDispatcher = (OverhaulSettingWithEvent)currentField.GetValue(null);
+
+                        if (mainAttribute.IsHidden)
+                            m_HiddenEntries.Add(newSettingInfo.RawPath);
+
+                        if (!string.IsNullOrEmpty(mainAttribute.ParentSettingRawPath))
+                            toParent.Add(mainAttribute);
+
+                        fieldIndex++;
+                    } while (fieldIndex < allFields.Length);
+
+                    typeIndex++;
+                } while (typeIndex < allTypes.Length);
 
                 SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
-
-                DelegateScheduler.Instance.Schedule(delegate
+                foreach (OverhaulSettingAttribute neededAttribute in toParent)
                 {
-                    foreach (OverhaulSettingAttribute neededAttribute in toParent)
-                    {
-                        SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
-                    }
-                }, 0.1f);
+                    SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                }
 
 #if DEBUG
                 DelegateScheduler.Instance.Schedule(delegate
@@ -145,6 +161,9 @@ namespace CDOverhaul
         internal static void CreateHUD()
         {
             OverhaulCanvasController h = OverhaulMod.Core.CanvasController;
+            if (!h)
+                return;
+
             HUD = h.AddHUD<ParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
         }
 
@@ -156,10 +175,10 @@ namespace CDOverhaul
         /// <param name="defaultValue"></param>
         /// <param name="field"></param>
         /// <returns></returns>
-        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in OverhaulSettingSliderParameters sliderParams = null, in OverhaulSettingDropdownParameters dropdownParams = null, in OverhaulUpdatedSetting formelyKnown = null)
+        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in OverhaulUpdatedSetting formelyKnown = null)
         {
             SettingInfo newSetting = new SettingInfo();
-            newSetting.SetUp<T>(path, defaultValue, field, sliderParams, dropdownParams, formelyKnown);
+            newSetting.SetUp<T>(path, defaultValue, field, formelyKnown);
             m_Settings.Add(newSetting);
             return newSetting;
         }

@@ -31,7 +31,7 @@ namespace CDOverhaul.Patches
             if (dontPlaySound)
                 return false;
 
-            if (isHeavy)
+            if (isHeavy && OverhaulAudioLibrary.HasLoadedSounds)
             {
                 _ = AudioManager.Instance.PlayClipAtPosition(OverhaulAudioLibrary.HeavyRobotFootsteps, __instance.transform.position, 0f, false, lowPitch ? 0.35f : 0.16f, lowPitch ? 0.85f : 0.98f, 0f);
                 return false;

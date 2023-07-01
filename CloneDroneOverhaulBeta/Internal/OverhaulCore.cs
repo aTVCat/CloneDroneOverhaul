@@ -1,12 +1,15 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Outfits;
+using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using CDOverhaul.Patches;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -39,7 +42,12 @@ namespace CDOverhaul
         {
             try
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 initialize();
+                stopwatch.Stop();
+
+                string contents = stopwatch.ElapsedMilliseconds + " Milliseconds";
+                OverhaulCore.WriteText(ModDirectory + "Logs/StartupTime.log", contents);
             }
             catch (Exception ex)
             {
@@ -55,43 +63,105 @@ namespace CDOverhaul
             if (OverhaulMod.Core != null)
                 return;
 
-            OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulMod.Core = this;
             _ = OverhaulAPI.API.LoadAPI();
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
-            OverhaulObjectStateModder.ClearDestroyedObjects();
-            OverhaulAudioLibrary.Initialize();
+            OverhaulObjectStateModder.Reset();
+            EnableCursorController.Reset();
+
             OverhaulEventsController.Initialize();
             OverhaulSettingsController.Initialize();
-            EnableCursorController.Reset();
             OverhaulController.InitializeStatic(controllers);
 
-            CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
-            _ = OverhaulController.AddController<OverhaulVolumeController>();
+            //CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
+            _ = OverhaulController.AddController<OverhaulVolumeController>();
 
             _ = OverhaulController.AddController<AutoBuild>();
             _ = OverhaulController.AddController<LevelEditorFixes>();
             _ = OverhaulController.AddController<ModBotTagDisabler>();
 
             _ = OverhaulController.AddController<ViewModesController>();
+            _ = OverhaulController.AddController<OverhaulDiscordController>();
 
-            OverhaulSettingsController.CreateHUD();
             OverhaulGraphicsController.Initialize();
             PlayFabDataController.Initialize();
-            OverhaulTransitionController.Initialize();
-            OverhaulLocalizationController.Initialize();
-            OverhaulPatchNotes.Initialize();
-            OverhaulBootUI.Show();
 
-            if (OverhaulDiscordController.Instance == null)
-                _ = new GameObject("OverhaulDiscordRPCController").AddComponent<OverhaulDiscordController>();
+            OverhaulCompatibilityChecker.CheckGameVersion();
+            if (!OverhaulBootUI.Show())
+            {
+                LoadSyncStuff();
+            }
+        }
+
+        public IEnumerator LoadAsyncStuff()
+        {
+            OverhaulCore.WriteText(ModDirectory + "Logs/StartupAssetBundles.log", OverhaulAssetsController.GetLoadedAssetBundlesString());
+
+            bool hasLoadedPart1Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part1);
+            bool hasLoadedPart2Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part2);
+            bool hasLoadedSkinsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Skins);
+            bool hasLoadedOutfitsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Accessouries);
+            bool hasLoadedPetsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Pets);
+            bool hasLoadedCombatUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_CombatUpdate);
+
+            if (!hasLoadedPart1Bundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedPart1Bundle = true;
+            });
+
+            if (!hasLoadedPart2Bundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part2, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedPart2Bundle = true;
+            });
+
+            if (!hasLoadedSkinsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedSkinsBundle = true;
+            });
+
+            if (!hasLoadedOutfitsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedOutfitsBundle = true;
+            });
+
+            if (!hasLoadedPetsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Pets, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedPetsBundle = true;
+            });
+
+            if (!hasLoadedCombatUpdateBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_CombatUpdate, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedCombatUpdateBundle = true;
+            });
+
+            yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle);
+            yield break;
+        }
+
+        public void LoadSyncStuff()
+        {
+            CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
+
+            _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
+
+            OverhaulController.GetController<WeaponSkinsController>().AddSkins();
+            OverhaulController.GetController<OutfitsController>().AddOutfitItems();
+            OverhaulController.GetController<PetsController>().AddPets();
+
+            OverhaulSettingsController.CreateHUD();
+            OverhaulLocalizationController.Initialize();
+            OverhaulTransitionController.Initialize();
+            OverhaulAudioLibrary.Initialize();
+            OverhaulPatchNotes.Initialize();
 
             ReplacementBase.CreateReplacements();
+
+            OverhaulMod.HasBootProcessEnded = true;
         }
 
         private void OnDestroy()
@@ -106,7 +176,6 @@ namespace CDOverhaul
             OverhaulLocalizationController.UpdateLoadingScreen();
             CameraRollingBehaviour.UpdateViewBobbing();
         }
-
 
         public static string ReadText(string filePath)
         {

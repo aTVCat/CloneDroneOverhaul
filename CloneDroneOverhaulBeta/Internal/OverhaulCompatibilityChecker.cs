@@ -10,7 +10,7 @@
 
                 string currentVersion = VersionNumberManager.Instance.GetVersionString();
                 if (!Equals(currentVersion, OverhaulVersion.TargetGameVersion))
-                    DelegateScheduler.Instance.Schedule(showUnsupportedGameVersionDialogue, 1f);
+                    DelegateScheduler.Instance.Schedule(showUnsupportedGameVersionDialogue, 3f);
             }
         }
 

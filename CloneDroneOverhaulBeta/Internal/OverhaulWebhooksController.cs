@@ -14,9 +14,6 @@ namespace CDOverhaul
         public const string SurveysWebhook = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
         public static readonly Uri SurveysWebhookUri = new Uri(SurveysWebhook);
 
-        public const string RolfsWebhook = "https://discord.com/api/webhooks/1124297396650782731/EgfIFiK8PcUp9ffjllabsMsvDbw2pzi1A6aJWSsAMC2axF_xuS7jQg9TJbncHgZaA1GW";
-        public static readonly Uri RolfsWebhookUri = new Uri(RolfsWebhook);
-
         [OverhaulSetting("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
         public static bool AllowSendingInformation;
 
@@ -114,16 +111,6 @@ namespace CDOverhaul
                 },
             };
             ExecuteWebhook(obj1, SurveysWebhookUri);
-        }
-
-        // i made it just for fun
-        public static void ExecuteRoflsWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
-        {
-            WebhookObject obj1 = new WebhookObject()
-            {
-                content = improveText,
-            };
-            ExecuteWebhook(obj1, RolfsWebhookUri);
         }
 
         public static async void ExecuteWebhook(WebhookObject webhookObject, Uri uri)

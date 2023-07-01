@@ -4,29 +4,29 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    internal class OverhaulDiscordController : OverhaulBehaviour
+    internal class OverhaulDiscordController : OverhaulController
     {
         [OverhaulSetting("Gameplay.Discord.Enable Overhaul Activity", true, false, "Restart the game if you've toggled this setting")]
-        public static bool EnableDiscordActivity;
+        public static bool IsEnabled;
 
-        public const long OverhaulModApplicationID = 1091373211163308073;
+        /// <summary>
+        /// Overhaul mod Discord App ID
+        /// </summary>
+        public const long ApplicationID = 1091373211163308073;
         public const CreateFlags CreateFlag = CreateFlags.NoRequireDiscord;
 
+        public const float ClientActivityRefreshRate = 1f;
+
         public static OverhaulDiscordController Instance;
-        private static Discord.Discord m_Client;
-        private static Discord.Activity m_ClientActivity;
-        private static Discord.ActivityManager.UpdateActivityHandler m_ActUpdHandler;
+        private static Discord.Discord s_DiscordClient;
+        private static Activity s_DiscordClientActivity;
+        private static ActivityManager.UpdateActivityHandler s_UpdateClientActivityHandler;
 
-        private static bool m_HasInitialized;
-        private static bool m_HasError;
+        private static bool s_Initialized;
+        public static bool HasInitialized => s_Initialized && s_DiscordClient != null && Instance;
 
-        private float m_TimeLeftToRefresh;
         private float m_UnscaledTimeToInitializeDiscord;
-
-        public static bool SuccessfulInitialization => !m_HasError &&
-            m_HasInitialized &&
-            m_Client != null &&
-            Instance != null;
+        private float m_TimeLeftToRefresh;
 
         /// <summary>
         /// The gamemode player is playing right now
@@ -34,12 +34,13 @@ namespace CDOverhaul
         public string CurrentGamemode { get; set; }
 
         /// <summary>
-        /// The details of gamemode (Progress)
+        /// The details of gamemode (Progress for example)
         /// </summary>
         public string CurrentGamemodeDetails { get; set; }
 
         private static bool m_HasUser;
         private static User m_User;
+
         public long UserID
         {
             get
@@ -47,10 +48,10 @@ namespace CDOverhaul
                 if (m_HasUser)
                     return m_User.Id;
 
-                if (!SuccessfulInitialization)
+                if (!HasInitialized)
                     return -1;
 
-                UserManager m = m_Client.GetUserManager();
+                UserManager m = s_DiscordClient.GetUserManager();
                 if (m == null)
                     return -1;
 
@@ -68,7 +69,6 @@ namespace CDOverhaul
                 return u.Id;
             }
         }
-
         public string UserName
         {
             get
@@ -76,10 +76,10 @@ namespace CDOverhaul
                 if (m_HasUser)
                     return m_User.Username;
 
-                if (!SuccessfulInitialization)
+                if (!HasInitialized)
                     return string.Empty;
 
-                UserManager m = m_Client.GetUserManager();
+                UserManager m = s_DiscordClient.GetUserManager();
                 if (m == null)
                     return string.Empty;
 
@@ -97,7 +97,6 @@ namespace CDOverhaul
                 return u.Username;
             }
         }
-
         public string UserDiscriminator
         {
             get
@@ -105,10 +104,10 @@ namespace CDOverhaul
                 if (m_HasUser)
                     return m_User.Discriminator;
 
-                if (!SuccessfulInitialization)
+                if (!HasInitialized)
                     return string.Empty;
 
-                UserManager m = m_Client.GetUserManager();
+                UserManager m = s_DiscordClient.GetUserManager();
                 if (m == null)
                     return string.Empty;
 
@@ -127,16 +126,16 @@ namespace CDOverhaul
             }
         }
 
-        public override void Start()
+        public override void Initialize()
         {
             Instance = this;
-            m_UnscaledTimeToInitializeDiscord = EnableDiscordActivity ? Time.unscaledTime + 1.5f : -1f;
+            m_UnscaledTimeToInitializeDiscord = IsEnabled ? Time.unscaledTime + 1.5f : -1f;
         }
 
         protected override void OnDisposed()
         {
             Instance = null;
-            OverhaulDisposable.AssignNullToAllVars(this);
+            base.OnDisposed();
         }
 
         private void Update()
@@ -147,12 +146,12 @@ namespace CDOverhaul
                 m_UnscaledTimeToInitializeDiscord = -1f;
             }
 
-            if (!SuccessfulInitialization)
+            if (!HasInitialized)
                 return;
 
             try
             {
-                m_Client.RunCallbacks();
+                s_DiscordClient.RunCallbacks();
             }
             catch
             {
@@ -160,27 +159,20 @@ namespace CDOverhaul
                 return;
             }
 
-            m_TimeLeftToRefresh -= Time.deltaTime;
-            if (m_TimeLeftToRefresh <= 0f && m_Client != null)
+            m_TimeLeftToRefresh -= Time.unscaledDeltaTime;
+            if (m_TimeLeftToRefresh <= 0f && s_DiscordClient != null)
             {
-                m_TimeLeftToRefresh = 5f;
-                updateGamemodeString();
-                updateDetailsString();
+                m_TimeLeftToRefresh = ClientActivityRefreshRate;
                 UpdateActivity();
             }
         }
 
-        private void OnApplicationQuit()
-        {
-            DestroyDiscord();
-        }
+        private void OnApplicationQuit() => DestroyDiscord();
 
         public void TryInitializeDiscord()
         {
-            if (m_HasError || m_HasInitialized)
-            {
+            if (!base.enabled || s_Initialized)
                 return;
-            }
 
             Discord.Discord client = null;
             Activity clientActivity;
@@ -188,7 +180,7 @@ namespace CDOverhaul
 
             try
             {
-                client = new Discord.Discord(OverhaulModApplicationID, (ulong)CreateFlag);
+                client = new Discord.Discord(ApplicationID, (ulong)CreateFlag);
             }
             catch
             {
@@ -196,7 +188,7 @@ namespace CDOverhaul
                 return;
             }
 
-            m_Client = client;
+            s_DiscordClient = client;
             clientActivityAssets = new ActivityAssets
             {
                 LargeImage = "defaultimage"
@@ -205,21 +197,20 @@ namespace CDOverhaul
             {
                 Assets = clientActivityAssets,
                 ApplicationId = 1091373211163308073,
-                Name = "Overhaul mod",
-                Details = "v" + OverhaulVersion.ModVersion.ToString(),
+                Name = "Overhaul Mod",
+                Details = "V" + OverhaulVersion.ModVersion.ToString(),
                 Type = ActivityType.Playing
             };
-            m_ClientActivity = clientActivity;
-            m_ActUpdHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);
+            s_DiscordClientActivity = clientActivity;
+            s_UpdateClientActivityHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);
 
-            m_HasInitialized = true;
+            s_Initialized = true;
         }
 
         public void InterruptDiscord(bool setHasError = true)
         {
-            m_Client = null;
-            m_HasInitialized = false;
-            m_HasError = setHasError;
+            s_DiscordClient = null;
+            s_Initialized = false;
             base.enabled = false;
         }
 
@@ -228,28 +219,30 @@ namespace CDOverhaul
         /// </summary>
         public void DestroyDiscord()
         {
-            if (m_Client == null)
+            if (!s_Initialized)
                 return;
 
-            m_Client.Dispose();
-            DestroyBehaviour();
+            s_DiscordClient.Dispose();
         }
 
         public void UpdateActivity()
         {
-            if (!SuccessfulInitialization)
+            if (!HasInitialized)
                 return;
 
-            m_ClientActivity.State = !string.IsNullOrEmpty(CurrentGamemodeDetails) ? CurrentGamemode + " [" + CurrentGamemodeDetails + "]" : CurrentGamemode;
+            updateCurrentGamemodeInfo();
+            updatedDetailsInfo();
 
-            ActivityManager manager = m_Client.GetActivityManager();
+            s_DiscordClientActivity.State = !string.IsNullOrEmpty(CurrentGamemodeDetails) ? CurrentGamemode + " [" + CurrentGamemodeDetails + "]" : CurrentGamemode;
+
+            ActivityManager manager = s_DiscordClient.GetActivityManager();
             if (manager == null)
             {
                 InterruptDiscord();
                 return;
             }
 
-            manager.UpdateActivity(m_ClientActivity, m_ActUpdHandler);
+            manager.UpdateActivity(s_DiscordClientActivity, s_UpdateClientActivityHandler);
         }
 
         private void handleActivityUpdate(Result res)
@@ -261,7 +254,7 @@ namespace CDOverhaul
         /// <summary>
         /// Update <see cref="CurrentGamemode"/> value
         /// </summary>
-        private void updateGamemodeString()
+        private void updateCurrentGamemodeInfo()
         {
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
             string gamemodeString = "Unknown game mode";
@@ -301,7 +294,7 @@ namespace CDOverhaul
                     gamemodeString = "Twitch mode";
                     break;
                 case GameMode.None:
-                    gamemodeString = "In main menu";
+                    gamemodeString = "Main menu";
                     break;
             }
 
@@ -311,15 +304,20 @@ namespace CDOverhaul
         /// <summary>
         /// Update <see cref="CurrentGamemodeDetails"/> value
         /// </summary>
-        private void updateDetailsString()
+        private void updatedDetailsInfo()
         {
             CurrentGamemodeDetails = string.Empty;
+            if (!GameFlowManager.Instance)
+                return;
+
             GameMode gm = GameFlowManager.Instance.GetCurrentGameMode();
             switch (gm)
             {
                 case GameMode.Story:
                     GameDataManager datam = GameDataManager.Instance;
                     MetagameProgressManager metaG = MetagameProgressManager.Instance;
+                    if(!datam || !metaG)
+                        return;
 
                     int levelsBeatenSm = 0;
                     int chapterNumber = 1;
@@ -350,29 +348,36 @@ namespace CDOverhaul
                     break;
 
                 case GameMode.Endless:
+                    if (!LevelManager.Instance || !EndlessModeManager.Instance)
+                        return;
+
                     int levelsBeaten = LevelManager.Instance.GetNumberOfLevelsWon() + 1;
                     string tier = EndlessModeManager.Instance.GetNextLevelDifficultyTier(levelsBeaten - 1).ToString();
                     CurrentGamemodeDetails = "Level " + levelsBeaten + ", " + tier;
                     break;
 
                 case GameMode.EndlessCoop:
+                    if (!LevelManager.Instance || !EndlessModeManager.Instance)
+                        return;
+
                     int levelsBeaten2 = LevelManager.Instance.GetNumberOfLevelsWon() + 1;
                     string tier2 = EndlessModeManager.Instance.GetNextLevelDifficultyTier(levelsBeaten2 - 1).ToString();
                     CurrentGamemodeDetails = "Level " + levelsBeaten2 + ", " + tier2;
                     break;
 
                 case GameMode.BattleRoyale:
+                    if (!MultiplayerMatchmakingManager.Instance)
+                        return;
+
                     CurrentGamemodeDetails = "Connecting to lobby...";
                     GameRequest request = MultiplayerMatchmakingManager.Instance.GetPrivateField<GameRequest>("_currentGameRequest");
                     if (request != null)
                     {
                         BattleRoyaleManager brManager = BattleRoyaleManager.Instance;
-                        if (brManager == null)
-                        {
+                        if (!brManager)
                             return;
-                        }
 
-                        string regionString = "Unknown region";
+                        string regionString = "N/A Region";
                         if (request.ForceRegion.HasValue)
                         {
                             CustomRegion reg = request.ForceRegion.Value;

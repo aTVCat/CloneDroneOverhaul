@@ -109,7 +109,7 @@ namespace CDOverhaul.Gameplay
                 result = localPlayFabID.Equals("883CC7F4CA3155A3");
 
             // Check discord user id (Not the best idea)
-            if (!result && OverhaulDiscordController.Instance && OverhaulDiscordController.SuccessfulInitialization)
+            if (!result && OverhaulDiscordController.Instance && OverhaulDiscordController.HasInitialized)
             {
                 long id = OverhaulDiscordController.Instance.UserID;
                 if (id != -1)
