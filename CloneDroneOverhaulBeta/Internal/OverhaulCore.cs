@@ -6,6 +6,7 @@ using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
+using CDOverhaul.MultiplayerSandbox;
 using CDOverhaul.Patches;
 using System;
 using System.Collections;
@@ -28,6 +29,8 @@ namespace CDOverhaul
 
         [OverhaulSetting("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
         public static bool IsRelayConnectionEnabled;
+
+        private static bool s_HasUpdatedLangFont;
 
         /// <summary>
         /// The UI controller instance
@@ -87,6 +90,7 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
+            _ = OverhaulController.AddController<MultiplayerSandboxController>();
 
             OverhaulGraphicsController.Initialize();
             PlayFabDataController.Initialize();
@@ -160,6 +164,12 @@ namespace CDOverhaul
             OverhaulPatchNotes.Initialize();
 
             ReplacementBase.CreateReplacements();
+
+            if (!s_HasUpdatedLangFont)
+            {
+                s_HasUpdatedLangFont = true;
+                LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
+            }
 
             OverhaulMod.HasBootProcessEnded = true;
         }

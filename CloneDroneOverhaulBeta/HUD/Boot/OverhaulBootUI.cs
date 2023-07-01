@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.HUD;
+using CDOverhaul.HUD.Vanilla;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ namespace CDOverhaul
         private float m_UnscaledTimeToHide;
         private bool m_IsPlayingAnimation;
 
+        private float m_ProgressLastFrame;
+
         public static bool Show()
         {
             if (Time.timeSinceLevelLoad > 15f || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
@@ -31,6 +34,7 @@ namespace CDOverhaul
 
             Instance = mainViewTransform.gameObject.AddComponent<OverhaulBootUI>();
             Instance.m_LoadingBar = moddedObject.GetObject<Slider>(1);
+            Instance.m_LoadingBar.value = 0f;
 
             Destroy(spawnedPrefab);
             return true;
@@ -62,7 +66,16 @@ namespace CDOverhaul
 
             if (m_LoadingBar)
             {
-                m_LoadingBar.value = OverhaulAssetsController.GetAllAssetBundlesLoadPercent();
+                if (OverhaulMod.HasBootProcessEnded)
+                {
+                    m_LoadingBar.value = 1f;
+                    return;
+                }
+
+                float newProgress = OverhaulAssetsController.GetAllAssetBundlesLoadPercent();
+                if (newProgress > m_ProgressLastFrame)
+                    m_LoadingBar.value = newProgress;
+                m_ProgressLastFrame = newProgress;
             }
         }
 
@@ -73,6 +86,12 @@ namespace CDOverhaul
 
         private void destroyUI()
         {
+            VanillaUIImprovements uIImprovements = OverhaulController.GetController<VanillaUIImprovements>();
+            if(uIImprovements && uIImprovements.TitleScreenUI && uIImprovements.TitleScreenUI.MessagePanel)
+            {
+                uIImprovements.TitleScreenUI.MessagePanel.PopulateTitleScreenMessage();
+            }
+
             Destroy(gameObject);
             Instance = null;
             AudioListener.volume = SettingsManager.Instance.GetSoundVolume();
@@ -105,6 +124,8 @@ namespace CDOverhaul
 
             yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
             OverhaulMod.Core.LoadSyncStuff();
+
+            yield return new WaitForSecondsRealtime(0.1f);
             destroyUI();
 
             yield break;

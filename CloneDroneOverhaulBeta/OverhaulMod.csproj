@@ -389,9 +389,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
-    <Compile Include="CustomMultiplayer\OverhaulMultiplayerEnvironment.cs" />
-    <Compile Include="CustomMultiplayer\OverhaulMultiplayerEntity.cs" />
-    <Compile Include="CustomMultiplayer\OverhaulMultiplayerObject.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Constants.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Core.cs" />
@@ -405,12 +402,13 @@
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\OverhaulAdvancedCharacterExpansion.cs" />
     <Compile Include="Gameplay\Combat\OverhaulCombatState.cs" />
-    <Compile Include="CustomMultiplayer\OverhaulMultiplayerCore.cs" />
-    <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfo.cs" />
-    <Compile Include="Gameplay\Multiplayer\OverhaulModdedPlayerInfoController.cs" />
-    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
-    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
-    <Compile Include="Gameplay\Multiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
+    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxController.cs" />
+    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxLobby.cs" />
+    <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfo.cs" />
+    <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfoController.cs" />
+    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
+    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusType.cs" />
+    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
     <Compile Include="Gameplay\ObjectModdedState\OverhaulObjectStateModder.cs" />
     <Compile Include="Gameplay\OverhaulVolumeController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColor.cs" />
@@ -473,6 +471,7 @@
     <Compile Include="HUD\Gamemodes\Pages\LBSGameCustomization.cs" />
     <Compile Include="HUD\Gamemodes\Pages\HostTypeSelectionPage.cs" />
     <Compile Include="HUD\LoadingScreens\OverhaulLoadingScreen.cs" />
+    <Compile Include="HUD\MultiplayerSandbox\MultiplayerSandboxUI.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
