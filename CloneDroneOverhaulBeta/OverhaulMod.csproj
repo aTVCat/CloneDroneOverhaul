@@ -404,6 +404,8 @@
     <Compile Include="Gameplay\Combat\OverhaulCombatState.cs" />
     <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxController.cs" />
     <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxLobby.cs" />
+    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxNetworking.cs" />
+    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxWorld.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfo.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfoController.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -466,6 +468,8 @@
     <Compile Include="HUD\Gamemodes\OverhaulGamemodesUI.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodeUIBase.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\SandboxActionSelectionPage.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\SandboxCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DifficultySelectionPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\CodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSGameCustomization.cs" />

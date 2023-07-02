@@ -1,5 +1,7 @@
 ﻿using CDOverhaul.Graphics;
+using CDOverhaul.MultiplayerSandbox;
 using HarmonyLib;
+using Steamworks;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -38,6 +40,20 @@ namespace CDOverhaul.Patches
             {
                 Object.Destroy(an);
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("onCharacterKilled")]
+        private static bool onCharacterKilled_Prefix(Character character)
+        {
+            if (!OverhaulGamemodeManager.IsMultiplayerSandbox())
+                return true;
+
+            if (!(character is FirstPersonMover))
+                return true;
+
+            FirstPersonMover firstPersonMover = character as FirstPersonMover;
+            return false;
         }
     }
 }

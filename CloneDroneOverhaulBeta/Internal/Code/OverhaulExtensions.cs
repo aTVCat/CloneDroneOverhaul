@@ -1,8 +1,11 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.MultiplayerSandbox;
 using ModLibrary;
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -182,6 +185,53 @@ namespace CDOverhaul
         public static bool IsForcedToUseLockedStuff(this FirstPersonMover firstPersonMover)
         {
             return firstPersonMover && (!firstPersonMover.IsPlayer() || firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper());
+        }
+
+        public static bool IsMultiplayerSandboxPlayer(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover || !OverhaulGamemodeManager.IsMultiplayerSandbox())
+                return false;
+
+            //PlayerSync sync = firstPersonMover.GetComponent<PlayerSync>();
+            //return sync;
+            return false;
+        }
+
+        public static bool IsMultiplayerSandboxHost(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover || !OverhaulGamemodeManager.IsMultiplayerSandbox())
+                return false;
+
+            //PlayerSync sync = firstPersonMover.GetComponent<PlayerSync>();
+            //return sync && sync.OwnerSteamID.IsMultiplayerSandboxHost();
+            return false;
+        }
+
+        #endregion
+
+        #region CSteamID
+
+        public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
+        {
+            if (!OverhaulGamemodeManager.IsMultiplayerSandbox() || steamId == CSteamID.Nil)
+                return false;
+
+            return MultiplayerSandboxController.Instance.Lobby.GetLobbyOwner() == steamId;
+        }
+
+        public static bool IsExcluded(this CSteamID steamID)
+        {
+            return steamID == CSteamID.Nil;
+        }
+
+        public static bool IsExcluded(this CSteamID steamID, CSteamID shouldNotEqual)
+        {
+            return IsExcluded(steamID) || steamID == shouldNotEqual;
+        }
+
+        public static bool IsExcluded(this CSteamID steamID, CSteamID[] shouldNotEqual)
+        {
+            return IsExcluded(steamID) || shouldNotEqual.Contains(steamID);
         }
 
         #endregion

@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private RectTransform m_PanelTransform;
         private CanvasGroup m_CanvasGroup;
 
-        private readonly GameObject[] PageGameObjects = new GameObject[4];
+        private readonly GameObject[] PageGameObjects = new GameObject[6];
 
         private Action m_Callback;
 
@@ -42,6 +42,10 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
             PageGameObjects[3] = moddedObject.GetObject<Transform>(6).gameObject;
             PageGameObjects[3].AddComponent<CodeEnterPage>().Initialize(this);
+            PageGameObjects[4] = moddedObject.GetObject<Transform>(7).gameObject;
+            PageGameObjects[4].AddComponent<SandboxActionSelectionPage>().Initialize(this);
+            PageGameObjects[5] = moddedObject.GetObject<Transform>(8).gameObject;
+            PageGameObjects[5].AddComponent<SandboxCodeEnterPage>().Initialize(this);
 
             base.gameObject.SetActive(false);
         }

@@ -52,12 +52,17 @@ namespace CDOverhaul.Gameplay
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
-            if (IsDisposedOrDestroyed() || !hasInitializedModel || firstPersonMover == null)
+            if (IsDisposedOrDestroyed() || !hasInitializedModel)
                 return;
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled) _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled) 
+                _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
 
-            firstPersonMover.GetPlayerCamera()?.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
+            Camera camera = firstPersonMover.GetPlayerCamera();
+            if (camera)
+            {
+                camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
+            }
         }
 
         private void Update()

@@ -8,21 +8,18 @@ namespace CDOverhaul
 {
     public class OverhaulBootUI : OverhaulBehaviour
     {
+        private static bool m_HasEverShownUI;
+
         public static OverhaulBootUI Instance;
         public static bool IsActive => Instance != null;
 
-        private static bool m_HasEverShownUI;
-
         private Slider m_LoadingBar;
-
-        private float m_UnscaledTimeToHide;
-        private bool m_IsPlayingAnimation;
 
         private float m_ProgressLastFrame;
 
         public static bool Show()
         {
-            if (Time.timeSinceLevelLoad > 15f || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled || m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
                 return false;
 
             m_HasEverShownUI = true;
@@ -109,8 +106,6 @@ namespace CDOverhaul
 
         private void playAnimation()
         {
-            m_IsPlayingAnimation = true;
-            m_UnscaledTimeToHide = Time.unscaledTime + 5;
             Animator animator = GetComponent<Animator>();
             animator.speed = 1f;
         }

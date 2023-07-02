@@ -27,7 +27,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnGoClick()
         {
             m_GoButton.interactable = false;
-            tryJoinLobby();
+            TryJoinLobby();
         }
 
         public void OnBackClick()
@@ -35,7 +35,7 @@ namespace CDOverhaul.HUD.Gamemodes
             FullscreenWindow.Hide();
         }
 
-        private async void tryJoinLobby()
+        protected virtual async void TryJoinLobby()
         {
             GameRequestType gameType = GameRequestType.BattleRoyaleInviteCodeJoin;
             GameRequest gameRequest = new GameRequest
@@ -59,5 +59,8 @@ namespace CDOverhaul.HUD.Gamemodes
                 OverhaulDialogues.CreateDialogue("Cannot enter the lobby", error.Type == CustomMatchmakerErrorType.InviteMatchFull ? "The lobby you want to connect to is full." : "No lobby found.", 0f, new Vector2(315, 160), null);
             });
         }
+
+        protected string GetInputFieldValue() => m_CodeField.text;
+        protected void SetInputFieldInteractable(bool value) => m_CodeField.interactable = value;
     }
 }

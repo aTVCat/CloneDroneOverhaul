@@ -6,7 +6,9 @@ namespace CDOverhaul.HUD.Gamemodes
     public class LastBotStandingPlayUI : OverhaulGamemodeUIBase
     {
         private Button m_GoBackButton;
+
         private Button m_PlayButton;
+        private Button m_PlaySandboxButton;
 
         private Toggle m_RelayToggle;
 
@@ -17,6 +19,8 @@ namespace CDOverhaul.HUD.Gamemodes
             m_GoBackButton.onClick.AddListener(goBackToGamemodeSelection);
             m_PlayButton = moddedObject.GetObject<Button>(1);
             m_PlayButton.onClick.AddListener(OnPlayClicked);
+            m_PlaySandboxButton = moddedObject.GetObject<Button>(3);
+            m_PlaySandboxButton.onClick.AddListener(OnSandboxClick);
             m_RelayToggle = moddedObject.GetObject<Toggle>(6);
             m_RelayToggle.onValueChanged.AddListener(OnRelayToggleClick);
         }
@@ -57,6 +61,11 @@ namespace CDOverhaul.HUD.Gamemodes
                 GameType = GameRequestType.RandomBattleRoyale
             });
             Hide();
+        }
+
+        public void OnSandboxClick()
+        {
+            GamemodesUI.FullscreenWindow.Show(OnPublicMatchClick, 4);
         }
 
         public void OnRelayToggleClick(bool newValue)

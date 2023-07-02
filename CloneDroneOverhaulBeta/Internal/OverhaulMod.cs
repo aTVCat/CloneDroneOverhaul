@@ -113,7 +113,7 @@ namespace CDOverhaul
         /// <param name="firstPersonMover"></param>
         protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
-            if (!IsModInitialized)
+            if (!IsModInitialized && !firstPersonMover)
                 return;
 
             // An event that is usually called before FPM full initialization
@@ -159,7 +159,7 @@ namespace CDOverhaul
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.15f);
-            if (firstPersonMover != null && firstPersonMover.HasCharacterModel())
+            if (firstPersonMover && firstPersonMover.HasCharacterModel())
                 OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
         }
 

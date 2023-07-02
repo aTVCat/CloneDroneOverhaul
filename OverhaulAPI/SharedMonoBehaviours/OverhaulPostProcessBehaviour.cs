@@ -30,12 +30,6 @@ namespace OverhaulAPI.SharedMonoBehaviours
                 b.enabled = b.EnableCondition == null || b.EnableCondition();
                 i++;
             } while (i < _spawnedBehaviours.Count);
-
-            /*
-            foreach (OverhaulPostProcessBehaviour b in _spawnedBehaviours)
-            {
-                b.enabled = b.EnableCondition == null || b.EnableCondition();
-            }*/
         }
 
         /// <summary>

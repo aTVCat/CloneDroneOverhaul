@@ -121,6 +121,15 @@ namespace CDOverhaul
             return true;
         }
 
+        public static void UnloadAllAssetBundles()
+        {
+            foreach(AssetBundle bundle in m_LoadedAssetBundles.Values)
+            {
+                bundle.Unload(true);
+            }
+            m_LoadedAssetBundles.Clear();
+        }
+
         /// <summary>
         /// Try load an asset bundle if one isn't loaded
         /// </summary>
