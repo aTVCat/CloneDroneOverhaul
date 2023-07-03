@@ -193,6 +193,8 @@ namespace CDOverhaul.Gameplay
 
         #endregion
 
+        private float m_TimeToRefreshWeaponVisibility;
+
         private bool m_WaitingToSpawnSkins;
         private bool m_HasEverSpawnedSkins;
 
@@ -369,6 +371,7 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition skin in skins)
                 if (skin != null && !HasSpawnedSkin(skin))
                     SpawnSkin(skin);
+
 
             // Todo: Make better VFX
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
@@ -612,9 +615,28 @@ namespace CDOverhaul.Gameplay
                     behaviour.OnSetColor(hsbcolor2.ToColor());
         }
 
+        // An attempt to fix invisible weapons in multiplayer
+        public void RefreshWeaponVisibility()
+        {
+            WeaponModel weapon = Owner.GetEquippedWeaponModel();
+            if (weapon)
+            {
+                weapon.gameObject.SetActive(true);
+            }
+        }
+
         private void Update()
         {
-            if (Owner != null && !SpawnedSkins.IsNullOrEmpty())
+            if (!Owner)
+                return;
+
+            if(Time.unscaledTime > m_TimeToRefreshWeaponVisibility)
+            {
+                m_TimeToRefreshWeaponVisibility = Time.unscaledTime + 1f;
+                RefreshWeaponVisibility();
+            }
+
+            if (!SpawnedSkins.IsNullOrEmpty())
             {
                 if (Time.frameCount % 3 == 0)
                 {

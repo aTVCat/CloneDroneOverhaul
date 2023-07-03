@@ -8,7 +8,7 @@ namespace CDOverhaul.Patches
     {
         [HarmonyPostfix]
         [HarmonyPatch("Show")]
-        private static void refreshTrophies_Postfix(UpgradeUI __instance, bool challengeUpgradeConfigMode = false, bool isStoryCutsceneMode = false, bool isMultiplayerSelection = false)
+        private static void Show_Postfix(UpgradeUI __instance, bool challengeUpgradeConfigMode = false, bool isStoryCutsceneMode = false, bool isMultiplayerSelection = false)
         {
             if (!OverhaulMod.IsModInitialized)
                 return;

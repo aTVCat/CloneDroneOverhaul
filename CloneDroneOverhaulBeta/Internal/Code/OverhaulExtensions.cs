@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.MultiplayerSandbox;
 using ModLibrary;
 using Steamworks;
@@ -123,6 +124,40 @@ namespace CDOverhaul
 
         #endregion
 
+        #region UpgradeManager
+
+        public static bool RevertUpgrade(this UpgradeManager upgradeManager, UpgradeDescription upgradeDescription)
+        {
+            if (!upgradeDescription || !upgradeManager)
+                return false;
+
+            UpgradeType upgradeToRevert = upgradeDescription.UpgradeType;
+            int upgradeLevelToRevert = upgradeDescription.Level;
+
+            Dictionary<UpgradeType, int> dictionary = GameDataManager.Instance.GetPlayerUpgradeDictionary();
+            if (UpgradeModesController.IsUnrevertableUpgrade(upgradeToRevert, upgradeLevelToRevert) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeToRevert))
+                return false;
+
+            int playerLevel = dictionary[upgradeToRevert];
+
+            if (playerLevel != upgradeLevelToRevert)
+                return false;
+
+            if (upgradeLevelToRevert > 1)
+            {
+                GameDataManager.Instance.SetUpgradeLevel(upgradeToRevert, upgradeLevelToRevert - 1);
+            }
+            else
+            {
+                dictionary.Remove(upgradeToRevert);
+            }
+            upgradeManager.SetAvailableSkillPoints(upgradeManager.GetAvailableSkillPoints() + upgradeDescription.GetSkillPointCost());
+            GlobalEventManager.Instance.Dispatch("UpgradeCompleted", upgradeDescription);
+            return true;
+        }
+
+        #endregion
+
         #region MultiplayerPlayerInfoState
 
         public static bool IsAnOverhaulModUser(this MultiplayerPlayerInfoState infoState)
@@ -213,10 +248,8 @@ namespace CDOverhaul
 
         public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
         {
-            if (!OverhaulGamemodeManager.IsMultiplayerSandbox() || steamId == CSteamID.Nil)
-                return false;
-
-            return MultiplayerSandboxController.Instance.Lobby.GetLobbyOwner() == steamId;
+            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil
+&& MultiplayerSandboxController.Instance.Lobby.GetLobbyOwner() == steamId;
         }
 
         public static bool IsExcluded(this CSteamID steamID)
@@ -313,6 +346,7 @@ namespace CDOverhaul
         }
 
         #endregion
+
 
         #region ChallengeDefinition
 

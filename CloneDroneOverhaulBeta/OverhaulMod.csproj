@@ -448,6 +448,9 @@
     <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\LevelEditorFixes.cs" />
     <Compile Include="Gameplay\QualityOfLife\LevelEditorFixes\SettingsPanel\LevelEditorSelectionSettingsPanel.cs" />
     <Compile Include="Gameplay\QualityOfLife\ModBotTagDisabler\ModBotTagDisabler.cs" />
+    <Compile Include="Gameplay\QualityOfLife\RevertUpgrades\UpgradeModesButtonBehaviour.cs" />
+    <Compile Include="Gameplay\QualityOfLife\RevertUpgrades\UpgradeModesController.cs" />
+    <Compile Include="Gameplay\QualityOfLife\RevertUpgrades\UpgradeMode.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulSteamBrowser.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopBrowserUI.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
@@ -556,6 +559,7 @@
     <Compile Include="Internal\Patches\LevelManager_Patch.cs" />
     <Compile Include="Internal\Patches\AmplifyColorSwapper_Patch.cs" />
     <Compile Include="Internal\Patches\TitleScreenMessagePanel_Patch.cs" />
+    <Compile Include="Internal\Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Internal\Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Internal\Patches\TrophyShelf_Patch.cs" />
     <Compile Include="Internal\Patches\ObjectPlacedInLevel_Patch.cs" />

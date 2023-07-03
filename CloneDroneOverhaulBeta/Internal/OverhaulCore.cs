@@ -153,6 +153,7 @@ namespace CDOverhaul
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
+            _ = OverhaulController.AddController<UpgradeModesController>();
 
             OverhaulController.GetController<WeaponSkinsController>().AddSkins();
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();
