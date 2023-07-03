@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.Gameplay;
+using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -74,7 +75,7 @@ namespace CDOverhaul
             EnergySource = null;
 
             OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
+            //OverhaulEventsController.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
         public override void Start()
@@ -84,7 +85,18 @@ namespace CDOverhaul
             EnergySource = base.GetComponent<EnergySource>();
 
             _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
-            _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
+            //_ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
+
+            CharacterExpansionContainer expansionContainer = GetComponent<CharacterExpansionContainer>();
+            if (!expansionContainer)
+            {
+                expansionContainer = base.gameObject.AddComponent<CharacterExpansionContainer>();
+                expansionContainer.MyInstanceId = Owner.GetInstanceID();
+                CharacterExpansionContainer.CachedContainers.Add(expansionContainer.MyInstanceId, expansionContainer);
+            }
+
+            if (!expansionContainer.Expansions.Contains(this))
+                expansionContainer.Expansions.Add(this);
         }
 
         /// <summary>

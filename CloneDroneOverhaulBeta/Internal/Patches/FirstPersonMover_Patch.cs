@@ -14,8 +14,12 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPreCommandExecute((FPMoveCommand)command);
@@ -37,8 +41,12 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPostCommandExecute((FPMoveCommand)command);
@@ -88,11 +96,34 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnEvent(fallingEvent);
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("RefreshUpgrades")]
+        private static void RefreshUpgrades_Postfix(FirstPersonMover __instance)
+        {
+            if (!OverhaulMod.IsModInitialized)
+                return;
+
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
+            {
+                if (b)
+                    b.OnUpgradesRefresh(__instance);
             }
         }
     }

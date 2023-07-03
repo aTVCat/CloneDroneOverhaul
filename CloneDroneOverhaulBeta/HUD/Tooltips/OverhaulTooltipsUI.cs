@@ -60,12 +60,14 @@ namespace CDOverhaul.HUD.Tooltips
             if (HaveToPopulateTooltips)
                 PopulateTooltipsContainer();
 
+            m_Container.SetActive(true);
             m_TimeToHideTooltips = Time.unscaledTime + TooltipsShowDuration;
         }
 
         private void Update()
         {
-            m_Container.SetActive(Time.unscaledTime < m_TimeToHideTooltips);
+            if(m_Container.activeSelf)
+                m_Container.SetActive(Time.unscaledTime < m_TimeToHideTooltips);
         }
     }
 }

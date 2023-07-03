@@ -46,6 +46,8 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("onCharacterKilled")]
         private static bool onCharacterKilled_Prefix(Character character)
         {
+            character.DisableInput();
+
             if (!OverhaulGamemodeManager.IsMultiplayerSandbox())
                 return true;
 

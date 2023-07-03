@@ -396,6 +396,7 @@
     <Compile Include="ExternalDLLs\DiscordGameSDK\LobbyManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\StorageManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\StoreManager.cs" />
+    <Compile Include="Gameplay\CharacterExpansionContainer.cs" />
     <Compile Include="Gameplay\Combat\AI\OverhaulAITunner.cs" />
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverModdedAnimationsController.cs" />
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverModdedAnimationsExpansion.cs" />
@@ -458,6 +459,8 @@
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
+    <Compile Include="HUD\Debug\OverhaulDebuggerUI.cs" />
+    <Compile Include="HUD\Debug\OverhaulProfilerEntryDisplay.cs" />
     <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\FirstUseSetupUI.cs" />
     <Compile Include="HUD\Gamemodes\Bases\ChallengesUI.cs" />
@@ -518,6 +521,7 @@
     <Compile Include="HUD\Personalization\PersonalizationMenuSecondEntryBehaviour.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulDownloadInfo.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkAssetsController.cs" />
+    <Compile Include="Internal\Management\Debug\OverhaulProfiler.cs" />
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />

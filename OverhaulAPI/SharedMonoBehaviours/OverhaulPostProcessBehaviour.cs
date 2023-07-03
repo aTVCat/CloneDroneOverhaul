@@ -20,9 +20,8 @@ namespace OverhaulAPI.SharedMonoBehaviours
         public static void APIUpdate()
         {
             if (_spawnedBehaviours.Count == 0)
-            {
                 return;
-            }
+
             int i = 0;
             do
             {

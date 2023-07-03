@@ -1,4 +1,6 @@
-﻿using ModLibrary;
+﻿using CDOverhaul.DebugTools;
+using ModLibrary;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace CDOverhaul.Graphics
@@ -46,7 +48,7 @@ namespace CDOverhaul.Graphics
         private float m_CursorMovementVelocityX;
         private float m_CursorMovementVelocityY;
 
-        public bool CanBeControlled => !IsDisposedOrDestroyed() /*&& PhotoManager.Instance != null ? PhotoManager.Instance.IsInPhotoMode() : true */&& m_Owner != null && m_PlayerCamera != null && m_SettingsManager != null;
+        public bool CanBeControlled => !IsDisposedOrDestroyed() && m_Owner && m_Owner.IsMainPlayer() && m_PlayerCamera && m_SettingsManager && !PhotoManager.Instance.IsInPhotoMode();
         public bool ForceZero => !EnableCameraRolling || !CanBeControlled || Cursor.visible || !m_Owner.IsMainPlayer() || m_Owner.IsAimingBow() || !m_Owner.IsPlayerInputEnabled();
 
         protected override void OnDisposed()
@@ -80,30 +82,32 @@ namespace CDOverhaul.Graphics
 
         public void UpdateRotation(float targetX, float targetY, float targetZ)
         {
-            if (!CanBeControlled)
-                return;
-
-            if (ForceZero)
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
+            if (CanBeControlled)
             {
-                targetX = 0f;
-                targetY = 0f;
-                targetZ = 0f;
+                if (ForceZero)
+                {
+                    targetX = 0f;
+                    targetY = 0f;
+                    targetZ = 0f;
+                }
+
+                float curX = m_TargetRotation.x;
+                float curY = m_TargetRotation.y;
+                float curZ = m_TargetRotation.z;
+                float multiply = Multiplier * Time.deltaTime * 15f * TiltMultiplier;
+
+                float cursorX = ForceZero ? 0f : Input.GetAxis("Mouse X") * multiply * (InvertAxis ? -1 : 1f);
+                float cursorY = ForceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? 1f : -1f) * multiply * (InvertAxis ? -1 : 1f);
+                m_CursorMovementVelocityX = Mathf.Clamp(m_CursorMovementVelocityX + ((cursorX - m_CursorMovementVelocityX) * 0.5f), -15f, 15f);
+                m_CursorMovementVelocityY = Mathf.Clamp(m_CursorMovementVelocityY + ((cursorY - m_CursorMovementVelocityY) * 0.5f), -15f, 15f);
+
+                m_TargetRotation += new Vector3(((targetX - curX) * multiply) + m_CursorMovementVelocityY,
+                    ((targetY - curY) * multiply) + m_CursorMovementVelocityX,
+                    (targetZ - curZ) * multiply);
+                m_PlayerCameraTransform.localEulerAngles = m_TargetRotation;
             }
-
-            float curX = m_TargetRotation[0];
-            float curY = m_TargetRotation[1];
-            float curZ = m_TargetRotation[2];
-            float multiply = Multiplier * Time.deltaTime * 15f * TiltMultiplier;
-
-            float cursorX = ForceZero ? 0f : Input.GetAxis("Mouse X") * multiply * (InvertAxis ? -1 : 1f);
-            float cursorY = ForceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? 1f : -1f) * multiply * (InvertAxis ? -1 : 1f);
-            m_CursorMovementVelocityX = Mathf.Clamp(m_CursorMovementVelocityX + ((cursorX - m_CursorMovementVelocityX) * 0.5f), -15f, 15f);
-            m_CursorMovementVelocityY = Mathf.Clamp(m_CursorMovementVelocityY + ((cursorY - m_CursorMovementVelocityY) * 0.5f), -15f, 15f);
-
-            m_TargetRotation += new Vector3(((targetX - curX) * multiply) + m_CursorMovementVelocityY,
-                ((targetY - curY) * multiply) + m_CursorMovementVelocityX,
-                (targetZ - curZ) * multiply);
-            m_PlayerCameraTransform.localEulerAngles = m_TargetRotation;
+            stopwatch.StopTimer("CameraRollingBehaviour.UpdateRotation");
         }
 
         private void LateUpdate()
@@ -111,6 +115,7 @@ namespace CDOverhaul.Graphics
             if (!CanBeControlled)
                 return;
 
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             float z = 0f;
             bool moveLeft = Input.GetKey(KeyCode.A);
             bool onlyRightLeg = m_Owner.IsDamaged(MechBodyPartType.RightLeg);
@@ -130,20 +135,24 @@ namespace CDOverhaul.Graphics
                 x += 1f;
 
             UpdateRotation(x + AdditionalXOffset, 0f, z + AdditionalZOffset);
+            stopwatch.StopTimer("CameraRollingBehaviour.LateUpdate");
         }
 
         private static bool XOR(bool a, bool b) => (a || b) && !(a && b);
 
         public static void UpdateViewBobbing()
         {
-            if (CharacterTracker.Instance == null)
-                return;
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
 
-            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? 2.1f : 0.6f;
+            if (CharacterTracker.Instance != null)
+            {
+                FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? 2.1f : 0.6f;
 
-            AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
-            AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
+                AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
+                AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
+            }
+            stopwatch.StopTimer("CameraRollingBehaviour.VB");
         }
     }
 }

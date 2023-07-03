@@ -39,7 +39,7 @@ namespace CDOverhaul.Gameplay
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
             //_ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
 
-            DelegateScheduler.Instance.Schedule(sendGamemodeWasUpdateEvent, 0.1f);
+            DelegateScheduler.Instance.Schedule(sendGamemodeUpdatedEvent, 0.1f);
         }
 
         protected override void OnDisposed()
@@ -72,7 +72,7 @@ namespace CDOverhaul.Gameplay
 
             GameMode currentGamemode = GameFlowManager.Instance.GetCurrentGameMode();
             if (!currentGamemode.Equals(m_GamemodePrevFrame))
-                sendGamemodeWasUpdateEvent();
+                sendGamemodeUpdatedEvent();
             m_GamemodePrevFrame = currentGamemode;
 
             Camera mainCamera = Camera.main;
@@ -84,12 +84,14 @@ namespace CDOverhaul.Gameplay
             if (!Equals(currentCamera, m_CurrentCamera))
                 OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             m_CurrentCamera = currentCamera;
+
+            CameraRollingBehaviour.UpdateViewBobbing();
         }
 
         /// <summary>
         /// Send <see cref="GamemodeChangedEventString"/> event
         /// </summary>
-        private void sendGamemodeWasUpdateEvent()
+        private void sendGamemodeUpdatedEvent()
         {
             if (IsDisposedOrDestroyed())
                 return;

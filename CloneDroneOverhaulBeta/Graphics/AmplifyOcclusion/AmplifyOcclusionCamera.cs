@@ -2,6 +2,8 @@
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
 using AmplifyOcclusion;
+using CDOverhaul.DebugTools;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Rendering;
@@ -630,29 +632,13 @@ public class AmplifyOcclusionEffect : MonoBehaviour
 
     private void OnPreRender()
     {
+        Stopwatch stopwatch = OverhaulProfiler.StartTimer();
         Profiler.BeginSample("AO - OnPreRender");
 
         checkMaterials(true);
 
         if (m_targetCamera != null)
         {
-#if UNITY_EDITOR
-			if( ( m_targetCamera.cameraType == UnityEngine.CameraType.SceneView ) &&
-				( ( ( PerPixelNormals == PerPixelNormalSource.GBuffer ) && ( m_targetCamera.orthographic == true ) ) ||
-				  ( PerPixelNormals == PerPixelNormalSource.Camera ) && 
-					
-#if UNITY_2019_1_OR_NEWER
-					( SceneView.lastActiveSceneView.sceneLighting == false )
-#else
-					( SceneView.lastActiveSceneView.m_SceneLighting == false )
-#endif
-
-					) )
-			{
-				PerPixelNormals = PerPixelNormalSource.None;
-			}
-#endif
-
             bool deferredReflections = GraphicsSettings.GetShaderMode(BuiltinShaderType.DeferredReflections) != BuiltinShaderMode.Disabled;
 
             if ((m_prevPerPixelNormals != PerPixelNormals) ||
@@ -743,29 +729,16 @@ public class AmplifyOcclusionEffect : MonoBehaviour
         else
         {
             m_targetCamera = GetComponent<Camera>();
-
             Update();
-
-#if UNITY_EDITOR
-			if( m_targetCamera.cameraType != UnityEngine.CameraType.SceneView )
-			{
-				System.Type T = System.Type.GetType( "UnityEditor.GameView,UnityEditor" );
-				UnityEngine.Object[] array = Resources.FindObjectsOfTypeAll( T );
-
-				if( array.Length > 0 )
-				{
-					EditorWindow gameView = (EditorWindow)array[ 0 ];
-					gameView.Focus();
-				}
-			}
-#endif
         }
 
+        stopwatch.StopTimer("AmplifyOcclusionCamera.OnPreRender");
         Profiler.EndSample();
     }
 
     private void OnPostRender()
     {
+        Stopwatch stopwatch = OverhaulProfiler.StartTimer();
         if (m_occlusionDepthRT != null)
         {
             m_occlusionDepthRT.MarkRestoreExpected();
@@ -777,6 +750,7 @@ public class AmplifyOcclusionEffect : MonoBehaviour
                 rt.MarkRestoreExpected();
             }
         }
+        stopwatch.StopTimer("AmplifyOcclusionCamera.OnPostRender");
     }
 
 

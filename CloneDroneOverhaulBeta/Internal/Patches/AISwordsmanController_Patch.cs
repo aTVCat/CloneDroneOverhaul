@@ -1,4 +1,7 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.DebugTools;
+using CDOverhaul.Gameplay;
+using HarmonyLib;
+using System.Diagnostics;
 
 namespace CDOverhaul.Patches
 {
@@ -12,20 +15,36 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
+
+            Character character = __instance.GetCharacter();
+            if (!character)
+            {
+                stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
+                return true;
+            }
+
+            int instanceId = character.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+            {
+                stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
+                return true;
+            }
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                 {
                     b.OnPreAIUpdate(__instance, out bool continueEx);
                     if (!continueEx)
                     {
-                        expansionBases = null;
+                        stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
                         return false;
                     }
                 }
             }
-
+            stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
             return true;
         }
 
@@ -36,12 +55,29 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
+
+            Character character = __instance.GetCharacter();
+            if (!character)
+            {
+                stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
+                return;
+            }
+
+            int instanceId = character.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+            {
+                stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
+                return;
+            }
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPostAIUpdate(__instance);
             }
+            stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
         }
     }
 }

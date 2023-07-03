@@ -26,7 +26,7 @@ namespace CDOverhaul
         public static bool HasInitialized => s_Initialized && s_DiscordClient != null && Instance;
 
         private float m_UnscaledTimeToInitializeDiscord;
-        private float m_TimeLeftToRefresh;
+        private float m_TimeToRefresh;
 
         /// <summary>
         /// The gamemode player is playing right now
@@ -140,7 +140,8 @@ namespace CDOverhaul
 
         private void Update()
         {
-            if (m_UnscaledTimeToInitializeDiscord != -1f && Time.unscaledTime >= m_UnscaledTimeToInitializeDiscord)
+            float time = Time.unscaledTime;
+            if (m_UnscaledTimeToInitializeDiscord != -1f && time >= m_UnscaledTimeToInitializeDiscord)
             {
                 TryInitializeDiscord();
                 m_UnscaledTimeToInitializeDiscord = -1f;
@@ -159,10 +160,9 @@ namespace CDOverhaul
                 return;
             }
 
-            m_TimeLeftToRefresh -= Time.unscaledDeltaTime;
-            if (m_TimeLeftToRefresh <= 0f && s_DiscordClient != null)
+            if (time > m_TimeToRefresh && s_DiscordClient != null)
             {
-                m_TimeLeftToRefresh = ClientActivityRefreshRate;
+                m_TimeToRefresh = time + ClientActivityRefreshRate;
                 UpdateActivity();
             }
         }

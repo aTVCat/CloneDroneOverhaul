@@ -1,5 +1,7 @@
-﻿using CDOverhaul.Gameplay;
+﻿using CDOverhaul.DebugTools;
+using CDOverhaul.Gameplay;
 using OverhaulAPI;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace CDOverhaul.Graphics.Robots
@@ -15,7 +17,7 @@ namespace CDOverhaul.Graphics.Robots
 
         private void Update()
         {
-            if (Time.time >= m_TimeToSpark)
+            if (Time.frameCount % 20 == 0 && Time.time >= m_TimeToSpark)
             {
                 setTime();
                 spark();
@@ -29,12 +31,14 @@ namespace CDOverhaul.Graphics.Robots
 
         private void spark()
         {
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             Vector3 vector3 = base.transform.position;
             vector3.x += UnityEngine.Random.Range(-1f, 1f);
             vector3.y += UnityEngine.Random.Range(-1f, 1f);
             vector3.z += UnityEngine.Random.Range(-1f, 1f);
 
             _ = PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(OverhaulGraphicsController.GenericSparksVFX, vector3, Vector3.zero);
+            stopwatch.StopTimer("SeveredBodyPartSparks.spark");
         }
     }
 }

@@ -181,12 +181,6 @@ namespace CDOverhaul
             ReplacementBase.CancelEverything();
         }
 
-        private void Update()
-        {
-            OverhaulLocalizationController.UpdateLoadingScreen();
-            CameraRollingBehaviour.UpdateViewBobbing();
-        }
-
         public static string ReadText(string filePath)
         {
             if (!File.Exists(filePath))

@@ -11,7 +11,10 @@ namespace CDOverhaul.Internal.Patches
         [HarmonyPatch("CreateVolumeCopy")]
         private static void CreateVolumeCopy_Postfix(SeveredBodyPart __result)
         {
-            _ = __result.gameObject.AddComponent<SeveredBodyPartSparks>();
+            if(Random.Range(0, 10) < 7)
+            {
+                _ = __result.gameObject.AddComponent<SeveredBodyPartSparks>();
+            }
             __result.gameObject.GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
         }
     }

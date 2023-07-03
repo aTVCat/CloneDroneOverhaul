@@ -19,6 +19,11 @@ namespace CDOverhaul
             Hide();
         }
 
+        private void Update()
+        {
+            OverhaulLocalizationController.UpdateLoadingScreen();
+        }
+
         public void Show()
         {
             base.gameObject.SetActive(true);
