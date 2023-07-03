@@ -85,7 +85,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
             _ = OverhaulController.AddController<OverhaulVolumeController>();
 
-            _ = OverhaulController.AddController<AutoBuild>();
+            _ = OverhaulController.AddController<AutoBuildController>();
             _ = OverhaulController.AddController<LevelEditorFixes>();
             _ = OverhaulController.AddController<ModBotTagDisabler>();
 
