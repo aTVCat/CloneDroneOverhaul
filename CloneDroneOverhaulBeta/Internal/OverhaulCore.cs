@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using CDOverhaul.DebugTools;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
@@ -157,11 +158,14 @@ namespace CDOverhaul
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();
             OverhaulController.GetController<PetsController>().AddPets();
 
+            OverhaulController.GetController<LevelEditorFixes>().AddUIs();
+
             OverhaulSettingsController.CreateHUD();
             OverhaulLocalizationController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulAudioLibrary.Initialize();
             OverhaulPatchNotes.Initialize();
+            OverhaulDebugActions.Initialize();
 
             ReplacementBase.CreateReplacements();
 

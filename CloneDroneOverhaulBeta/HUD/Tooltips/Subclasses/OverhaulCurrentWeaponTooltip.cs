@@ -39,7 +39,7 @@ namespace CDOverhaul.HUD.Tooltips
                 string weaponString = weaponType.ToString();
 
                 bool isFire = weaponSkins.IsFireVariant(weaponType, false);
-                color = isFire ? FIRE_COLOR.ConvertToColor() : LASER_COLOR.ConvertToColor();
+                color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
                 if (isFire)
                     weaponString += "-Fire";
                 weaponString += ".png";

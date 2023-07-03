@@ -21,7 +21,7 @@ namespace CDOverhaul
             RelatedPlayFabId = playFabId;
             ColorIndexToReplace = replace;
 
-            Color color = hex.ConvertToColor();
+            Color color = hex.ToColor();
             color.a = 1f - glowPercent;
             NewColor = color;
         }

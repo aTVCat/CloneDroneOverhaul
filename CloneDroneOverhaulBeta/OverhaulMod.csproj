@@ -459,6 +459,8 @@
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
+    <Compile Include="HUD\Debug\OverhaulDebugActionsEntryDisplay.cs" />
+    <Compile Include="Internal\Management\Debug\DebugActionAttribute.cs" />
     <Compile Include="HUD\Debug\OverhaulDebuggerUI.cs" />
     <Compile Include="HUD\Debug\OverhaulProfilerEntryDisplay.cs" />
     <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
@@ -521,6 +523,7 @@
     <Compile Include="HUD\Personalization\PersonalizationMenuSecondEntryBehaviour.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulDownloadInfo.cs" />
     <Compile Include="Internal\Management\Assets\Network\OverhaulNetworkAssetsController.cs" />
+    <Compile Include="Internal\Management\Debug\OverhaulDebugActions.cs" />
     <Compile Include="Internal\Management\Debug\OverhaulProfiler.cs" />
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditor.cs" />

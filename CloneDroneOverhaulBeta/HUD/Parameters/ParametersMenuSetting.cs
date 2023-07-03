@@ -82,11 +82,11 @@ namespace CDOverhaul.HUD
 
                 base.GetComponent<Image>().enabled = position == ParametersMenuSettingPosition.Normal;
                 m_ModdedObject.GetObject<Transform>(7).gameObject.SetActive(position == ParametersMenuSettingPosition.Top);
-                m_ModdedObject.GetObject<Image>(7).color = BGColor_Normal.ConvertToColor();
+                m_ModdedObject.GetObject<Image>(7).color = BGColor_Normal.ToColor();
                 m_ModdedObject.GetObject<Transform>(8).gameObject.SetActive(position == ParametersMenuSettingPosition.Center);
-                m_ModdedObject.GetObject<Image>(8).color = BGColor_Normal.ConvertToColor();
+                m_ModdedObject.GetObject<Image>(8).color = BGColor_Normal.ToColor();
                 m_ModdedObject.GetObject<Transform>(9).gameObject.SetActive(position == ParametersMenuSettingPosition.Bottom);
-                m_ModdedObject.GetObject<Image>(9).color = BGColor_Normal.ConvertToColor();
+                m_ModdedObject.GetObject<Image>(9).color = BGColor_Normal.ToColor();
                 m_MyPos = position;
             }
 

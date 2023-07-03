@@ -35,6 +35,6 @@ namespace CDOverhaul.Gameplay.Combat
             return !m || !m.HasCharacterModel() ? defaultColor : m.GetCharacterModel().GetFavouriteColor();
         }
 
-        public static Color GetUIThemeColor(string defaultColorHEX) => GetUIThemeColor(defaultColorHEX.ConvertToColor());
+        public static Color GetUIThemeColor(string defaultColorHEX) => GetUIThemeColor(defaultColorHEX.ToColor());
     }
 }

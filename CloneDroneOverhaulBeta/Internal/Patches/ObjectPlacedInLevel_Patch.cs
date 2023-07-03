@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Credits;
+using CDOverhaul.Gameplay.QualityOfLife;
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("replaceMaterialWithSelected")]
         private static bool replaceMaterialWithSelected_Prefix(ObjectPlacedInLevel __instance, Renderer targetRenderer)
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled)
+            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled || !LevelEditorSelectionSettingsPanel.EnableOutline)
                 return true;
 
             ThreeDOutline threeDOutline = targetRenderer.GetComponent<ThreeDOutline>();

@@ -46,12 +46,13 @@ namespace CDOverhaul
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = OverhaulVersion.IsDebugBuild ? "<@779372500521320469>" : string.Empty,
+                content = (OverhaulVersion.IsDebugBuild ? "<@779372500521320469> " : string.Empty) +
+                "__Game crashed! Version: " + OverhaulVersion.ModVersion + "__",
                 embeds = new Embed[]
                 {
                     new Embed()
                     {
-                        title = "__Game crashed. Client: " + OverhaulVersion.Watermark + "__",
+                        title = "**Stack trace**",
                         description = content,
                         color = int.Parse("E84A3F", System.Globalization.NumberStyles.HexNumber),
                     },
@@ -67,7 +68,7 @@ namespace CDOverhaul
             string likedContent = likedText;
             string gameLogs = includeGameLogs ? "Work in progress..." : "**NOT INCLUDED**";
             string deviceInfo = includeDeviceInfo ?
-                string.Format("- OS: {0}\n- CPU: {1}\n Processors: {2}\n Frequency: {3}\n- GPU: {4}\n- Memory: {5} MBs\n- GPU Memory: {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
+                string.Format("- **OS:** {0}\n- **CPU:** {1}\n Processors: {2}\n Frequency: {3}\n- **GPU:** {4}\n- **Memory:** {5} MBs\n- **GPU Memory:** {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
 
             WebhookObject obj1 = new WebhookObject()
             {

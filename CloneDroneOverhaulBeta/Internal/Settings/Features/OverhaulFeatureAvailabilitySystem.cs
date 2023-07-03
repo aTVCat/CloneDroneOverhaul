@@ -200,7 +200,7 @@ namespace CDOverhaul
             public static bool IsNewTransitionScreenEnabled => !OverhaulVersion.IsUpdate2 && IS_NEW_TRANSITION_SCREEN_ENABLED;
 
             /// <summary>
-            /// Enable the transition initially used in prototype builds
+            /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Energy UI Updates", true, false, "")]
@@ -208,7 +208,7 @@ namespace CDOverhaul
             public static bool AreEnergyUIImprovementsEnabled => !OverhaulVersion.IsUpdate2 && ARE_ENERGY_UI_IMPROVEMENTS_ENABLED;
 
             /// <summary>
-            /// Enable the transition initially used in prototype builds
+            /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Workshop Browser Overhaul", false, false, "Expect some crashes :|")]
@@ -216,12 +216,36 @@ namespace CDOverhaul
             public static bool IsNewWorkshopBrowserEnabled => !OverhaulVersion.IsUpdate2 && IS_NEW_WORKSHOP_BROWSER_ENABLED;
 
             /// <summary>
-            /// Enable the transition initially used in prototype builds
+            /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Pets DEMO", true, false, "")]
             private static readonly bool IS_PETS_DEMO = true;
             public static bool IsPetsDemo => OverhaulVersion.IsUpdate2 || IS_PETS_DEMO;
+
+            /// <summary>
+            /// Revert upgrade by right click
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Allow reverting upgrades", true, false, "")]
+            private static readonly bool ALLOW_REVERTING_UPGRADES = true;
+            public static bool AllowReveringUpgrades => !OverhaulVersion.IsUpdate2 && ALLOW_REVERTING_UPGRADES;
+
+            /// <summary>
+            /// Do some changes to usual level editor UI
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Vanilla level editor overhaul", false, false, "")]
+            private static readonly bool IS_VANILLA_LVL_EDITOR_UI_OVERHAUL_ENABLED = false;
+            public static bool IsVanillaLevelEditorUIOverhaulEnabled => OverhaulVersion.IsUpdate4 && IS_VANILLA_LVL_EDITOR_UI_OVERHAUL_ENABLED;
+
+            /// <summary>
+            /// Overhaul level editor UI completely
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Full level editor overhaul", false, false, "")]
+            private static readonly bool IS_FULL_LVL_EDITOR_UI_OVERHAUL_ENABLED = false;
+            public static bool IsFullLevelEditorUIOverhaulEnabled => OverhaulVersion.IsUpdate4 && IS_FULL_LVL_EDITOR_UI_OVERHAUL_ENABLED;
 
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;

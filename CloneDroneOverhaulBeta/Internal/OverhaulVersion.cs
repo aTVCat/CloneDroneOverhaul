@@ -8,7 +8,7 @@ namespace CDOverhaul
     {
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version s_ModVersionUpdate2 = new Version("0.2.12.0");
-        private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.0");
+        private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.1");
 
         private static readonly Updates s_CurrentUpdate = Updates.VER_3;
 

@@ -25,7 +25,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="theString"></param>
         /// <returns></returns>
-        public static Color ConvertToColor(this string theString)
+        public static Color ToColor(this string theString)
         {
             _ = ColorUtility.TryParseHtmlString(theString, out Color col);
             return col;
