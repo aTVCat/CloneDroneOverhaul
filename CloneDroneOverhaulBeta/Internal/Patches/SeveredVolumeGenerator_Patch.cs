@@ -2,7 +2,7 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace CDOverhaul.Internal.Patches
+namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(SeveredVolumeGenerator))]
     internal static class SeveredVolumeGenerator_Patch

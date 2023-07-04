@@ -101,7 +101,7 @@ namespace CDOverhaul.Gameplay
 
         public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover) =>
             !GameModeManager.IsInLevelEditor() &&
-            firstPersonMover != null &&
+            firstPersonMover &&
             !firstPersonMover.IsMindSpaceCharacter &&
             firstPersonMover.CharacterCategory != EnemyCategory.FleetAnalysisBots &&
             firstPersonMover.CharacterCategory != EnemyCategory.FleetCommanders;

@@ -464,6 +464,7 @@
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\Debug\OverhaulDebugActionsEntryDisplay.cs" />
+    <Compile Include="HUD\FirstUseSetup\TwoButtonsToggle.cs" />
     <Compile Include="Internal\Management\Debug\DebugActionAttribute.cs" />
     <Compile Include="HUD\Debug\OverhaulDebuggerUI.cs" />
     <Compile Include="HUD\Debug\OverhaulProfilerEntryDisplay.cs" />
@@ -543,6 +544,7 @@
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
+    <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\HammerImpactMeleeArea_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyNameTag_Patch.cs" />

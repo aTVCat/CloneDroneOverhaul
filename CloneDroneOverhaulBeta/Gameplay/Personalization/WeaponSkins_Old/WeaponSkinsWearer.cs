@@ -320,7 +320,7 @@ namespace CDOverhaul.Gameplay
                 return;
 
             // Don't spawn skins if multiplayer data isn't here
-            if (isMultiplayer && (PlayerInformation == null || !PlayerInformation.HasReceivedData || string.IsNullOrEmpty(PlayerInformation.GetData("ID"))))
+            if (isMultiplayer && (!PlayerInformation || !PlayerInformation.HasReceivedData || string.IsNullOrEmpty(PlayerInformation.GetData("ID"))))
                 return;
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
@@ -344,7 +344,7 @@ namespace CDOverhaul.Gameplay
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
                 {
-                    if (info == null || info.Model == null || (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
+                    if (info == null || !info.Model || (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
                         continue;
 
                     SetDefaultModelsActive(info.Model.transform);
@@ -371,7 +371,6 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition skin in skins)
                 if (skin != null && !HasSpawnedSkin(skin))
                     SpawnSkin(skin);
-
 
             // Todo: Make better VFX
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)

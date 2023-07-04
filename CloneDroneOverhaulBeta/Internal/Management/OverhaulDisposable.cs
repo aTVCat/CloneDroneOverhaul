@@ -36,10 +36,11 @@ namespace CDOverhaul
                 }
             }
 
+            /* // BRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUH
             if (@object is OverhaulDisposable overhaulDisposable && !overhaulDisposable.IsDisposed)
             {
                 overhaulDisposable.Dispose();
-            }
+            }*/
         }
     }
 }

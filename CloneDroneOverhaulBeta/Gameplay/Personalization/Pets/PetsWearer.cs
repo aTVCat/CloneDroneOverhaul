@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.Pets
             if (!IsOwnerMainPlayer())
                 return;
 
-            m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
+            //m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
         }
 
         private void Update()

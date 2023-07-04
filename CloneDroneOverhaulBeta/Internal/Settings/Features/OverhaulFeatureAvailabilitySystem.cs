@@ -211,8 +211,8 @@ namespace CDOverhaul
             /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
-            [OverhaulSetting("Experimental.Features.Workshop Browser Overhaul", false, false, "Expect some crashes :|")]
-            private static readonly bool IS_NEW_WORKSHOP_BROWSER_ENABLED = false;
+            [OverhaulSetting("Experimental.Features.Workshop Browser Overhaul2", true, false, "")]
+            private static readonly bool IS_NEW_WORKSHOP_BROWSER_ENABLED = true;
             public static bool IsNewWorkshopBrowserEnabled => !OverhaulVersion.IsUpdate2 && IS_NEW_WORKSHOP_BROWSER_ENABLED;
 
             /// <summary>

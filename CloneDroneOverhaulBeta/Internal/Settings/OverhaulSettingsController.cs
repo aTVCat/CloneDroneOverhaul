@@ -401,5 +401,23 @@ namespace CDOverhaul
 
             return m_HiddenEntries.Contains(path1);
         }
+
+        public static void SetSettingValue(string rawPath, object value)
+        {
+            SettingInfo setting = GetSetting(rawPath, true);
+            if (setting == null)
+                return;
+
+            SettingInfo.SavePref(setting, value);
+        }
+
+        public static void ResetSettingValue(string rawPath)
+        {
+            SettingInfo setting = GetSetting(rawPath, true);
+            if (setting == null)
+                return;
+
+            SettingInfo.SavePref(setting, setting.DefaultValue);
+        }
     }
 }

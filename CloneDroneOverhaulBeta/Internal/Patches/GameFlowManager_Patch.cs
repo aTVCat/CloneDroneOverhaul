@@ -1,7 +1,10 @@
 ﻿using CDOverhaul.Graphics;
+using CDOverhaul.HUD;
 using CDOverhaul.MultiplayerSandbox;
 using HarmonyLib;
+using ModLibrary;
 using Steamworks;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -57,5 +60,21 @@ namespace CDOverhaul.Patches
             FirstPersonMover firstPersonMover = character as FirstPersonMover;
             return false;
         }
+
+        /*
+        [HarmonyPrefix]
+        [HarmonyPatch("ShowTitleScreen")]
+        private static bool ShowTitleScreen_Prefix(GameFlowManager __instance)
+        {
+            if (FirstUseSetupUI.HasSetTheModUp)
+                return true;
+
+            LevelManager.Instance.SpawnCurrentLevel(false, "U6Bronze2", null).MoveNext();
+            __instance.StartCoroutine(__instance.CallPrivateMethod<IEnumerator>("waitThenShowTitleScreenCamera", null));
+
+            GameUIRoot.Instance.TitleScreenUI.Show();
+            GameUIRoot.Instance.RefreshCursorEnabled();
+            return false;
+        }*/
     }
 }
