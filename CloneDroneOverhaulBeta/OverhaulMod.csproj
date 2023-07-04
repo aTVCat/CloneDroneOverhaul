@@ -465,6 +465,7 @@
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\Debug\OverhaulDebugActionsEntryDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\TwoButtonsToggle.cs" />
+    <Compile Include="HUD\FullscreenDialogue\OverhaulFullscreenDialogueWindow.cs" />
     <Compile Include="Internal\Management\Debug\DebugActionAttribute.cs" />
     <Compile Include="HUD\Debug\OverhaulDebuggerUI.cs" />
     <Compile Include="HUD\Debug\OverhaulProfilerEntryDisplay.cs" />
