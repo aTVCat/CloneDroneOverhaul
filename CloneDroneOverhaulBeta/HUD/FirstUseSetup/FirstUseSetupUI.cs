@@ -1,16 +1,19 @@
 ﻿using CDOverhaul.Graphics;
+using CDOverhaul.Patches;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
     public class FirstUseSetupUI : OverhaulUI
     {
-        public const string SettingPath = "Player.Mod.HasConfiguredModV3";
+        public const string SettingPath = "Player.Mod.HasConfiguredModV4";
 
         [OverhaulSetting(SettingPath, false, true)]
         public static bool HasSetTheModUp;
 
         private Button m_DoneButton;
+        private ScrollRect m_ScrollRect;
 
         private TwoButtonsToggle m_SSAOToggle;
         private TwoButtonsToggle m_BloomOverhaulToggle;
@@ -18,6 +21,12 @@ namespace CDOverhaul.HUD
         private TwoButtonsToggle m_ChromaticAberrationToggle;
 
         private TwoButtonsToggle m_CameraRollingToggle;
+
+        private TwoButtonsToggle m_WatermarkToggle;
+        private TwoButtonsToggle m_NewEnergyUIToggle;
+
+        private TwoButtonsToggle m_AudioReverbToggle;
+        private TwoButtonsToggle m_SendCrashReportsToggle;
 
         private Button m_BrightAmpColPreset;
         private Button m_DarkAmpColPreset;
@@ -29,6 +38,8 @@ namespace CDOverhaul.HUD
 
             m_DoneButton = MyModdedObject.GetObject<Button>(0);
             m_DoneButton.onClick.AddListener(EndSetup);
+            m_ScrollRect = MyModdedObject.GetObject<ScrollRect>(22);
+            m_ScrollRect.verticalNormalizedPosition = 1f;
 
             m_SSAOToggle = new TwoButtonsToggle(MyModdedObject, 2, 1, SetSSAODisabled, SetSSAOEnabled, GetSSAOEnabled);
             m_BloomOverhaulToggle = new TwoButtonsToggle(MyModdedObject, 4, 3, SetBloomOverhaulDisabled, SetBloomOverhaulEnabled, GetBloomOverhaulEnabled);
@@ -37,6 +48,12 @@ namespace CDOverhaul.HUD
 
             m_CameraRollingToggle = new TwoButtonsToggle(MyModdedObject, 10, 9, SetCRDisabled, SetCREnabled, GetCREnabled);
 
+            m_WatermarkToggle = new TwoButtonsToggle(MyModdedObject, 15, 14, SetWatermarkDisabled, SetWatermarkEnabled, GetWatermarkEnabled);
+            m_NewEnergyUIToggle = new TwoButtonsToggle(MyModdedObject, 17, 16, SetNewEnergyUIDisabled, SetNewEnergyUIEnabled, GetNewEnergyUIEnabled);
+
+            m_AudioReverbToggle = new TwoButtonsToggle(MyModdedObject, 19, 18, SetAudioReverbDisabled, SetAudioReverbEnabled, GetAudioReverbEnabled);
+            m_SendCrashReportsToggle = new TwoButtonsToggle(MyModdedObject, 21, 20, SetSendCrashReportsDisabled, SetSendCrashReportsEnabled, GetSendCrashReportsEnabled);
+
             m_BrightAmpColPreset = MyModdedObject.GetObject<Button>(13);
             m_BrightAmpColPreset.onClick.AddListener(SetBrightAmpColPreset);
             m_DarkAmpColPreset = MyModdedObject.GetObject<Button>(12);
@@ -44,14 +61,19 @@ namespace CDOverhaul.HUD
             m_DefaultAmpColPreset = MyModdedObject.GetObject<Button>(11);
             m_DefaultAmpColPreset.onClick.AddListener(SetDefaultAmpColPreset);
 
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled || FirstUseSetupUI.HasSetTheModUp || !GameModeManager.IsOnTitleScreen())
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled || FirstUseSetupUI.HasSetTheModUp)
                 return;
 
+            ArenaCameraManager.Instance.ArenaCameraTransform.position = new Vector3(-43, 15, -3);
+            ArenaCameraManager.Instance.ArenaCameraTransform.eulerAngles = new Vector3(340, 276, 351);
             DelegateScheduler.Instance.Schedule(Show, 1f);
         }
 
         public void Show()
         {
+            if (!GameModeManager.IsOnTitleScreen())
+                return;
+
             base.gameObject.SetActive(true);
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
         }
@@ -132,7 +154,7 @@ namespace CDOverhaul.HUD
 
         #endregion
 
-        #region Vignette
+        #region Chromatic Aberration
 
         public bool GetCAEnabled()
         {
@@ -181,6 +203,76 @@ namespace CDOverhaul.HUD
         public void SetDefaultAmpColPreset()
         {
             OverhaulGraphicsController.ApplyAmplifyColorPresetDefault.EventAction.Invoke();
+        }
+
+        #endregion
+
+
+        #region Watermark
+
+        public bool GetWatermarkEnabled()
+        {
+            return OverhaulVersionLabel.WatermarkEnabled;
+        }
+        public void SetWatermarkEnabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Game interface.Information.Watermark", true);
+        }
+        public void SetWatermarkDisabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Game interface.Information.Watermark", false);
+        }
+
+        #endregion
+
+        #region New energy UI
+
+        public bool GetNewEnergyUIEnabled()
+        {
+            return EnergyUIReplacement.PatchHUD;
+        }
+        public void SetNewEnergyUIEnabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Game interface.Gameplay.New energy bar design", true);
+        }
+        public void SetNewEnergyUIDisabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Game interface.Gameplay.New energy bar design", false);
+        }
+
+        #endregion
+
+
+        #region Audio reverb
+
+        public bool GetAudioReverbEnabled()
+        {
+            return WorldAudioSource_Patch.EnableReverbFilter;
+        }
+        public void SetAudioReverbEnabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Audio.Filters.Reverb", true);
+        }
+        public void SetAudioReverbDisabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Audio.Filters.Reverb", false);
+        }
+
+        #endregion
+
+        #region Send crash reports
+
+        public bool GetSendCrashReportsEnabled()
+        {
+            return OverhaulWebhooksController.AllowSendingInformation;
+        }
+        public void SetSendCrashReportsEnabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Mod.Information.Send crash reports", true);
+        }
+        public void SetSendCrashReportsDisabled()
+        {
+            OverhaulSettingsController.SetSettingValue("Mod.Information.Send crash reports", false);
         }
 
         #endregion

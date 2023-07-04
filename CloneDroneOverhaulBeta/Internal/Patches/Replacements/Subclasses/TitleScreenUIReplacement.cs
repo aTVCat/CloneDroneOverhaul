@@ -63,6 +63,17 @@ namespace CDOverhaul.Patches
                 });
             }
 
+            Transform lvlEditorButton = TransformUtils.FindChildRecursive(target.transform, "LevelEditorButton");
+            if (lvlEditorButton)
+            {
+                Button button = lvlEditorButton.GetComponent<Button>();
+                button.onClick = new Button.ButtonClickedEvent();
+                button.onClick.AddListener(delegate
+                {
+                    OverhaulTransitionController.DoTransitionWithAction(target.OnLevelEditorButtonClicked, null, 1f);
+                });
+            }
+
             m_MessagePanel = TransformUtils.FindChildRecursive(target.transform, "TitleScreenMessagePanel");
             if (m_MessagePanel == null)
             {

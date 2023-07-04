@@ -32,12 +32,13 @@ namespace CDOverhaul.MultiplayerSandbox
 
         private void LateUpdate()
         {
-            MultiplayerSandboxNetworking.HandleIncomingPackets();
+            if (!FullInitialization)
+                return;
 
+            MultiplayerSandboxNetworking.HandleIncomingPackets();
             if (Input.GetKeyDown(KeyCode.I))
             {
-                if(Lobby != null)
-                    Lobby.LobbyID.ToString().CopyToClipboard();
+                Lobby.LobbyID.ToString().CopyToClipboard();
             }
         }
 
