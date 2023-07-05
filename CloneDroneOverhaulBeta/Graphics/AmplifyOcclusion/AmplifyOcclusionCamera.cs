@@ -2,7 +2,7 @@
 // Copyright (c) Amplify Creations, Lda <info@amplify.pt>
 
 using AmplifyOcclusion;
-using CDOverhaul.DebugTools;
+using CDOverhaul.DevTools;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Profiling;

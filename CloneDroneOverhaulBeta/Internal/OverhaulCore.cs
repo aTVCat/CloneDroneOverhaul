@@ -1,5 +1,5 @@
 ﻿using Bolt;
-using CDOverhaul.DebugTools;
+using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;

@@ -1,4 +1,4 @@
-﻿using CDOverhaul.DebugTools;
+﻿using CDOverhaul.DevTools;
 using CDOverhaul.HUD.Gamemodes;
 using CDOverhaul.HUD.Vanilla;
 using CDOverhaul.Workshop;
@@ -70,7 +70,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<VanillaUIImprovements>(HUDModdedObject.GetObject<ModdedObject>(1));
             _ = AddHUD<AboutOverhaulMenu>(HUDModdedObject.GetObject<ModdedObject>(2));
             _ = AddHUD<OverhaulSurveyUI>(HUDModdedObject.GetObject<ModdedObject>(14));
-            _ = AddHUD<OverhaulDebuggerUI>(HUDModdedObject.GetObject<ModdedObject>(21));
+            _ = AddHUD<OverhaulDevToolsUI>(HUDModdedObject.GetObject<ModdedObject>(21));
             _ = AddHUD<OverhaulFullscreenDialogueWindow>(HUDModdedObject.GetObject<ModdedObject>(22));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;

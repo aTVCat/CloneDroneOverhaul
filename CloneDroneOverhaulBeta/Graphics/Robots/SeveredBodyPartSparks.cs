@@ -1,4 +1,4 @@
-﻿using CDOverhaul.DebugTools;
+﻿using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
 using OverhaulAPI;
 using System.Diagnostics;
