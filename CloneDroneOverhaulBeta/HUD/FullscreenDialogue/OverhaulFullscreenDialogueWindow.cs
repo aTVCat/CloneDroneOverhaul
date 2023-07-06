@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.HUD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace CDOverhaul
         {
             Instance = this;
             m_WindowTransform = MyModdedObject.GetObject<RectTransform>(0);
+            m_WindowTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
             m_TitleLabel = MyModdedObject.GetObject<Text>(1);
             m_DescriptionLabel = MyModdedObject.GetObject<Text>(2);
             m_Icons = new GameObject[]
@@ -41,11 +43,13 @@ namespace CDOverhaul
         public void Hide()
         {
             base.gameObject.SetActive(false);
+            ShowCursor = false;
         }
 
         public void Show()
         {
             base.gameObject.SetActive(true);
+            ShowCursor = true;
         }
 
         public void ResetContents()

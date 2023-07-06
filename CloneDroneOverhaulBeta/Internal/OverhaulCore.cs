@@ -172,6 +172,7 @@ namespace CDOverhaul
             OverhaulDebugActions.Initialize();
 
             ReplacementBase.CreateReplacements();
+            OverhaulUpdateChecker.CheckForUpdates();
 
             if (!s_HasUpdatedLangFont)
             {

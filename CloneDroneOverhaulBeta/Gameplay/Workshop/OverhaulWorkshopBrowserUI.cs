@@ -244,7 +244,11 @@ namespace CDOverhaul.Workshop
             m_ItemPageViewTransform = MyModdedObject.GetObject<Transform>(20);
             m_ItemPageViewTransform.gameObject.SetActive(false);
             m_PageTransform = MyModdedObject.GetObject<Transform>(21);
+            m_PageTransform.gameObject.SetActive(false);
             _ = m_PageTransform.gameObject.AddComponent<ItemViewPageBehaviour>();
+            OverhaulUIPanelScaler scaler = m_PageTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
+            scaler.Multiplier = 15f;
+            scaler.StartScale = Vector3.one * 0.6f;
             m_ReloadPageButton = MyModdedObject.GetObject<Button>(51);
             m_ReloadPageButton.onClick.AddListener(RefreshLevelsList);
 
@@ -438,7 +442,6 @@ namespace CDOverhaul.Workshop
 
         #region Viewing the item
 
-        private Animator m_Animator;
         private Transform m_ItemPageViewTransform;
         private Transform m_PageTransform;
 
@@ -449,6 +452,7 @@ namespace CDOverhaul.Workshop
             ViewingWorkshopItem = workshopItem;
 
             // dispose textures first
+            m_PageTransform.gameObject.SetActive(false);
             m_ItemPageViewTransform.gameObject.SetActive(false);
             RawImage ri = MyModdedObject.GetObject<RawImage>(39);
             if (ri.texture != null)
@@ -467,8 +471,8 @@ namespace CDOverhaul.Workshop
 
             m_FavouriteButton.image.color = "#2E2E2E".ToColor();
             m_FavouriteButton.interactable = true;
+            m_PageTransform.gameObject.SetActive(true);
             m_ItemPageViewTransform.gameObject.SetActive(true);
-            m_Animator.Play("Base Layer.WorkshopUIViewItem");
 
             MyModdedObject.GetObject<Text>(23).text = workshopItem.ItemTitle;
             MyModdedObject.GetObject<Text>(24).text = workshopItem.CreatorNickname;
@@ -824,9 +828,6 @@ namespace CDOverhaul.Workshop
             PopulateRanks();
 
             MyModdedObject.GetObject<Transform>(40).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-
-            if (!m_Animator)
-                m_Animator = GetComponent<Animator>();
         }
 
         public void Hide(bool hiddenBecauseLoading = false)

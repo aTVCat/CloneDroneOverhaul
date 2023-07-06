@@ -8,14 +8,14 @@ namespace CDOverhaul.HUD
         public static OverhaulLoadingScreen Instance;
 
         private Text m_Header;
-        private Image m_Fill;
+        private Slider m_Fill;
 
         public override void Initialize()
         {
             m_Header = MyModdedObject.GetObject<Text>(0);
             m_Header.text = string.Empty;
-            m_Fill = MyModdedObject.GetObject<Image>(1);
-            m_Fill.fillAmount = 0f;
+            m_Fill = MyModdedObject.GetObject<Slider>(1);
+            m_Fill.value = 0f;
             Instance = this;
             SetScreenActive(false);
         }
@@ -46,7 +46,7 @@ namespace CDOverhaul.HUD
             if (IsDisposedOrDestroyed())
                 return;
 
-            m_Fill.fillAmount = amount;
+            m_Fill.value = amount;
         }
     }
 }

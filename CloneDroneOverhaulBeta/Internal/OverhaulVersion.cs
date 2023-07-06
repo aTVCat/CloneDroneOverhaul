@@ -6,6 +6,9 @@ namespace CDOverhaul
 {
     public static class OverhaulVersion
     {
+        public const string ModID = "rAnDomPaTcHeS1";
+        public const bool IsModBotBuild = false;
+
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version s_ModVersionUpdate2 = new Version("0.2.12.0");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.1");

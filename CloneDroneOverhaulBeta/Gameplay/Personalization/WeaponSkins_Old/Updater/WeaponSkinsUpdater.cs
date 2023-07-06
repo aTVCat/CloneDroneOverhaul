@@ -218,7 +218,7 @@ namespace CDOverhaul.Gameplay
                                 c.ImportSkin(def, assetBundle);
                         }
                     }
-                    // m_SkinsWaitingABToDownload.Remove(assetBundle);
+                    //m_SkinsWaitingABToDownload.Remove(assetBundle);
                 });
             }
             else

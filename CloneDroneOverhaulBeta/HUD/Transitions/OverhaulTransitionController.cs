@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    /// <summary>
-    /// Todo: Add better transitions with cool loading animation
-    /// </summary>
     public static class OverhaulTransitionController
     {
         public static bool IsNewTransitionEnabled => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled;

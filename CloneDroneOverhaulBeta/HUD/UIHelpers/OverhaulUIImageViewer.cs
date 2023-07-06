@@ -10,7 +10,9 @@ namespace CDOverhaul.HUD
         public static bool IsActive => !IsNull && s_Viewer.gameObject.activeInHierarchy;
 
         public RawImage Image;
+
         private float m_TimeToReceiveInput;
+        private bool m_WasTitleScreenLogoShown;
 
         public override void Initialize()
         {
@@ -30,8 +32,10 @@ namespace CDOverhaul.HUD
             if (IsNull)
                 return;
 
-            if (GameModeManager.Is(GameMode.None))
+            if (!value && GameModeManager.Is(GameMode.None) && s_Viewer.m_WasTitleScreenLogoShown)
+            {
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+            }
 
             s_Viewer.gameObject.SetActive(false);
             if (!value || !texture)
@@ -40,9 +44,12 @@ namespace CDOverhaul.HUD
             s_Viewer.gameObject.SetActive(value);
             s_Viewer.Image.texture = texture;
             s_Viewer.m_TimeToReceiveInput = Time.unscaledTime + 0.1f;
+            s_Viewer.m_WasTitleScreenLogoShown = GameUIRoot.Instance.TitleScreenUI.RootButtonsContainerBG.activeSelf;
 
             if (GameModeManager.Is(GameMode.None))
+            {
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            }
 
             float num = texture.width / (float)texture.height;
             s_Viewer.Image.rectTransform.sizeDelta = new Vector2(s_Viewer.Image.rectTransform.rect.height * num, s_Viewer.Image.rectTransform.sizeDelta.y);

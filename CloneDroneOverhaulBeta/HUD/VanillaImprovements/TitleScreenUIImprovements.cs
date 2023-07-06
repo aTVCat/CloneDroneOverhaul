@@ -27,8 +27,6 @@ namespace CDOverhaul.HUD.Vanilla
         {
             public static bool Show = true;
 
-            // Todo: Implement news editor for overhaul news
-
             public TitleScreenUIImprovements UIImprovements;
             public TitleScreenMessagePanel MessagePanel;
 
