@@ -122,7 +122,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
             string result = string.Empty;
 
             if (OverhaulVersion.IsDebugBuild)
-                result += "debug";
+                result += "debug ";
+
+            if (OverhaulDiscordController.HasInitialized)
+                result += "discord ";
 
             return result;
         }

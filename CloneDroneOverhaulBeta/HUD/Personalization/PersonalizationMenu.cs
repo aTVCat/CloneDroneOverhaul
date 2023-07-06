@@ -315,6 +315,12 @@ namespace CDOverhaul.HUD
         private Button m_SaveSkinSeparately;
         private Button m_LoadSeparatelySavedSkin;
 
+        private Button m_UpdateAuthorName;
+        private Transform m_UpdateAuthorNamePanel;
+        private InputField m_OldAuthorName;
+        private InputField m_NewAuthorName;
+        private Button m_DoneUpdatingAuthorName;
+
         public void SetSkinEditingMenuActive(bool value)
         {
             if (IsOutfitSelection)
@@ -324,6 +330,15 @@ namespace CDOverhaul.HUD
 
             if (!m_HasInitializedEditor)
             {
+                m_UpdateAuthorName = MyModdedObject.GetObject<Button>(87);
+                m_UpdateAuthorName.onClick.AddListener(ToggleAuthorNameUpdatePanel);
+                m_UpdateAuthorNamePanel = MyModdedObject.GetObject<Transform>(88);
+                m_UpdateAuthorNamePanel.gameObject.SetActive(false);
+                m_OldAuthorName = MyModdedObject.GetObject<InputField>(89);
+                m_NewAuthorName = MyModdedObject.GetObject<InputField>(90);
+                m_DoneUpdatingAuthorName = MyModdedObject.GetObject<Button>(91);
+                m_DoneUpdatingAuthorName.onClick.AddListener(UpdateAuthorName);
+
                 m_SaveSkinSeparately = MyModdedObject.GetObject<Button>(79);
                 m_SaveSkinSeparately.onClick.AddListener(SaveSkinSeparately);
                 m_LoadSeparatelySavedSkin = MyModdedObject.GetObject<Button>(80);
@@ -924,6 +939,23 @@ namespace CDOverhaul.HUD
             WeaponSkinsController.CustomSkinsData.AllCustomSkins.Add(loadedSkin);
             EditSkin(WeaponSkinsController.CustomSkinsData.AllCustomSkins.Count - 1);
             OverhaulDialogues.CreateDialogue("Successfully loaded skin", "Now you have to click on \"Save all\" button, then reload all skins", 4f, new Vector2(300, 300), new OverhaulDialogues.Button[] { });
+        }
+
+        public void ToggleAuthorNameUpdatePanel()
+        {
+            m_UpdateAuthorNamePanel.gameObject.SetActive(!m_UpdateAuthorNamePanel.gameObject.activeSelf);
+        }
+
+        public void UpdateAuthorName()
+        {
+            string toReplace = m_OldAuthorName.text;
+            string replaceWith = m_NewAuthorName.text;
+
+            foreach(WeaponSkinsImportedItemDefinition item in WeaponSkinsController.CustomSkinsData.AllCustomSkins)
+            {
+                item.Author = item.Author.Replace(toReplace, replaceWith);
+            }
+            m_UpdateAuthorNamePanel.gameObject.SetActive(false);
         }
 
         #endregion

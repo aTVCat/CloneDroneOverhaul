@@ -7,6 +7,7 @@ using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
+using CDOverhaul.LevelEditor;
 using CDOverhaul.MultiplayerSandbox;
 using CDOverhaul.Patches;
 using System;
@@ -92,6 +93,8 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
             _ = OverhaulController.AddController<MultiplayerSandboxController>();
+
+            _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 
             OverhaulGraphicsController.Initialize();
             PlayFabDataController.Initialize();
