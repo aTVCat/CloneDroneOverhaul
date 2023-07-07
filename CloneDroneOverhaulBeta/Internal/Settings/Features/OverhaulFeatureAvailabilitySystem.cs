@@ -247,6 +247,14 @@ namespace CDOverhaul
             private static readonly bool IS_FULL_LVL_EDITOR_UI_OVERHAUL_ENABLED = false;
             public static bool IsFullLevelEditorUIOverhaulEnabled => OverhaulVersion.IsUpdate4 && IS_FULL_LVL_EDITOR_UI_OVERHAUL_ENABLED;
 
+            /// <summary>
+            /// More functional photo mode
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Photo mode overhaul", true, false, "")]
+            private static readonly bool IS_PHOTO_MODE_OVERHAUL_ENABLED = true;
+            public static bool IsPhotoModeOverhaulEnabled => !OverhaulVersion.IsUpdate2 && IS_PHOTO_MODE_OVERHAUL_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }

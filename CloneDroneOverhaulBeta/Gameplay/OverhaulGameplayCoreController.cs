@@ -55,8 +55,11 @@ namespace CDOverhaul.Gameplay
             if (IsDisposedOrDestroyed() || !hasInitializedModel)
                 return;
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled) 
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled)
+            {
                 _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
+                //_ = firstPersonMover.gameObject.AddComponent<OverhaulRobotDynamicAnimator>();
+            }
 
             Camera camera = firstPersonMover.GetPlayerCamera();
             if (camera)

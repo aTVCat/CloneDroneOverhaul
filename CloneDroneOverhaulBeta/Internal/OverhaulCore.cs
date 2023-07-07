@@ -69,7 +69,7 @@ namespace CDOverhaul
                 return;
 
             OverhaulMod.Core = this;
-            _ = OverhaulAPI.API.LoadAPI();
+            _ = OverhaulAPI.OverhaulAPICore.LoadAPI();
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
@@ -157,6 +157,7 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.AddController<UpgradeModesController>();
+            _ = OverhaulController.AddController<AdvancedPhotomodeController>();
 
             OverhaulController.GetController<WeaponSkinsController>().AddSkins();
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();

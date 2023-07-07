@@ -18,7 +18,7 @@ namespace CDOverhaul.Gameplay
                 if (vfx == null)
                     return;
 
-                PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(vfx.transform, 5, itemDefinition.CollideWithEnvironmentVFXAssetName);
+                PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(vfx.transform, 5, itemDefinition.CollideWithEnvironmentVFXAssetName);
                 m_AllVFX.Add(itemDefinition, itemDefinition.CollideWithEnvironmentVFXAssetName);
             }
         }
@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay
                 return;
 
             Debug.Log((itemDefinition as IWeaponSkinItemDefinition).GetItemName() + " custom VFX!!");
-            _ = PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(itemDefinition.CollideWithEnvironmentVFXAssetName, position, eulerAngles);
+            _ = PooledPrefabController.SpawnEntry<WeaponSkinCustomVFXInstance>(itemDefinition.CollideWithEnvironmentVFXAssetName, position, eulerAngles);
         }
 
         public static void RemoveAllVFX() => m_AllVFX.Clear();

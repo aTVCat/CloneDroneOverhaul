@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.HUD;
+using OverhaulAPI.SharedMonoBehaviours;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,12 +43,15 @@ namespace CDOverhaul.DevTools
         public override void Initialize()
         {
             m_ProfilerGameObject = MyModdedObject.GetObject<Transform>(0).gameObject;
+            m_ProfilerGameObject.AddComponent<OverhaulDraggablePanel>();
             m_ScriptsTimeContainer = new PrefabAndContainer(MyModdedObject, 1, 2);
 
             m_DebugActionsGameObject = MyModdedObject.GetObject<Transform>(3).gameObject;
+            m_DebugActionsGameObject.AddComponent<OverhaulDraggablePanel>();
             m_DebugActionsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
 
             m_JsonEditorGameObject = MyModdedObject.GetObject<Transform>(8).gameObject;
+            m_JsonEditorGameObject.AddComponent<OverhaulDraggablePanel>();
             m_JsonEditorValuesContainer = new PrefabAndContainer(MyModdedObject, 12, 14);
             m_JsonEditorNewValueButtonContainer = new PrefabAndContainer(MyModdedObject, 13, 14);
             m_JsonObjectsDropdown = MyModdedObject.GetObject<Dropdown>(11);

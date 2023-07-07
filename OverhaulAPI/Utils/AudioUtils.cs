@@ -2,9 +2,9 @@
 
 namespace OverhaulAPI
 {
-    public static class AudioAPI
+    public static class AudioUtils
     {
-        public static AudioClipDefinition CreateDefinitionUsingClip(in AudioClip clip)
+        public static AudioClipDefinition ToAudioClipDefinition(this AudioClip clip)
         {
             AudioClipDefinition def = new AudioClipDefinition
             {

@@ -105,7 +105,7 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            PooledPrefabController.TurnObjectIntoPooledPrefab<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, OverhaulGraphicsController.GenericSparksVFX);
+            PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, OverhaulGraphicsController.GenericSparksVFX);
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
@@ -291,12 +291,12 @@ namespace CDOverhaul.Graphics
 
         private static void addShaderPassesToCamera(Camera camera)
         {
-            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
+            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulCameraEffect>() != null)
                 return;
 
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableBEFunc);
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
+            OverhaulCameraEffect.AddEffect(camera, m_EdgeBlur, m_EnableBEFunc);
+            OverhaulCameraEffect.AddEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
+            OverhaulCameraEffect.AddEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
         }
 
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)

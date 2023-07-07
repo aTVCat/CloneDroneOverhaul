@@ -37,7 +37,7 @@ namespace CDOverhaul.Graphics.Robots
             vector3.y += UnityEngine.Random.Range(-1f, 1f);
             vector3.z += UnityEngine.Random.Range(-1f, 1f);
 
-            _ = PooledPrefabController.SpawnObject<WeaponSkinCustomVFXInstance>(OverhaulGraphicsController.GenericSparksVFX, vector3, Vector3.zero);
+            _ = PooledPrefabController.SpawnEntry<WeaponSkinCustomVFXInstance>(OverhaulGraphicsController.GenericSparksVFX, vector3, Vector3.zero);
             stopwatch.StopTimer("SeveredBodyPartSparks.spark");
         }
     }

@@ -4,7 +4,7 @@ namespace CDOverhaul.Gameplay
 {
     public class WeaponSkinCustomVFXInstance : PooledPrefabInstanceBase
     {
-        public override void PreparePrefab()
+        public override void OnInitialize()
         {
         }
     }

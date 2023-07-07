@@ -120,7 +120,7 @@ namespace CDOverhaul
             yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
             OverhaulMod.Core.LoadSyncStuff();
 
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitForSecondsRealtime(0.3f);
             destroyUI();
 
             yield break;

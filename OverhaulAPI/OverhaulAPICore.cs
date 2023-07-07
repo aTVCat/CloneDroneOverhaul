@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OverhaulAPI
 {
-    public class API : MonoBehaviour
+    public class OverhaulAPICore : MonoBehaviour
     {
         /// <summary>
         /// The version of API
@@ -16,7 +16,7 @@ namespace OverhaulAPI
         /// <summary>
         /// The instance of API
         /// </summary>
-        public static API APIInstance = null;
+        public static OverhaulAPICore APIInstance;
 
         /// <summary>
         /// Throw an exception
@@ -26,30 +26,27 @@ namespace OverhaulAPI
         public static void ThrowException(in string message)
         {
             StackFrame f = new StackFrame(1);
-            throw new Exception("OverhaulAPI " + APIVersion.ToString() + " [" + f.GetMethod().DeclaringType + "_" + f.GetMethod().Name + "]" + " - " + message);
+            throw new Exception("OverhaulAPI Error " + APIVersion.ToString() + " [" + f.GetMethod().DeclaringType + "_" + f.GetMethod().Name + "]" + " - " + message);
         }
 
         /// <summary>
         /// Create new instance of API
         /// </summary>
         /// <returns></returns>
-        public static API LoadAPI()
+        public static OverhaulAPICore LoadAPI()
         {
-            if (APIInstance != null)
-            {
+            if (APIInstance)
                 return APIInstance;
-            }
 
-            APIInstance = new GameObject("OverhaulAPI v" + APIVersion.ToString()).AddComponent<API>();
+            APIInstance = new GameObject("OverhaulAPI Core v" + APIVersion.ToString() + " Instance").AddComponent<OverhaulAPICore>();
 
-            OverhaulPostProcessBehaviour.Reset();
-
+            OverhaulCameraEffect.Reset();
             return APIInstance;
         }
 
         private void Update()
         {
-            OverhaulPostProcessBehaviour.APIUpdate();
+            OverhaulCameraEffect.APIUpdate();
         }
     }
 }

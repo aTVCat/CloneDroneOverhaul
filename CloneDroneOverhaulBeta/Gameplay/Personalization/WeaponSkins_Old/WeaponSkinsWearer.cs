@@ -160,6 +160,9 @@ namespace CDOverhaul.Gameplay
 
         public bool IsFireVariant(WeaponType type, bool skins = true)
         {
+            if (!Owner || !Owner.IsAlive())
+                return false;
+
             if (type == WeaponType.Sword)
             {
                 if (Owner.HasUpgrade(UpgradeType.FireSword))
@@ -380,7 +383,7 @@ namespace CDOverhaul.Gameplay
                 if (model == null)
                     return;
 
-                _ = PooledPrefabController.SpawnObject<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
+                _ = PooledPrefabController.SpawnEntry<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
             }
         }
 

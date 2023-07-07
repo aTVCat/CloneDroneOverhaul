@@ -403,6 +403,7 @@
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\OverhaulAdvancedCharacterExpansion.cs" />
     <Compile Include="Gameplay\Combat\OverhaulCombatState.cs" />
+    <Compile Include="Gameplay\DynamicAnimationsTest\OverhaulRobotDynamicAnimator.cs" />
     <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxController.cs" />
     <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxLobby.cs" />
     <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxNetworking.cs" />
@@ -441,6 +442,9 @@
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Behaviours\WeaponSkinFireAnimator.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Import\WeaponSkinsEditor.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Import\WeaponSkinsImportedItemDefinition.cs" />
+    <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeController.cs" />
+    <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSettingAttribute.cs" />
+    <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSettings.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildController.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildSequence.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildUpgrade.cs" />
@@ -462,6 +466,7 @@
     <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
+    <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUI.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulDebugActionsEntryDisplay.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulJsonEditorEntryDisplay.cs" />

@@ -4,6 +4,6 @@ namespace CDOverhaul.Gameplay
 {
     public class VFXWeaponSkinSwitch : PooledPrefabInstanceBase
     {
-        protected override float LifeTime() => 5f;
+        protected override float GetLifeTime() => 5f;
     }
 }
