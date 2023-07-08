@@ -53,6 +53,12 @@ namespace CDOverhaul
 
         #endregion
 
+        #region Transform
+
+        public static Transform FindChildRecurisve(this Transform transform, string childName) => TransformUtils.FindChildRecursive(transform, childName);
+
+        #endregion
+
         #region ModdedObject
 
         /// <summary>

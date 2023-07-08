@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled)
             {
                 _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
-                //_ = firstPersonMover.gameObject.AddComponent<OverhaulRobotDynamicAnimator>();
+                _ = firstPersonMover.gameObject.AddComponent<OverhaulRobotDynamicAnimator>();
             }
 
             Camera camera = firstPersonMover.GetPlayerCamera();

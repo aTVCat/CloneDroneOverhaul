@@ -4,7 +4,7 @@
     {
         [AdvancedPhotomodeSetting("Override parameters", "General")]
         public static bool OverrideSettings = false;
-        public static bool IsOverridingSettings => OverrideSettings && AdvancedPhotomodeController.Instance.PhotoManager.IsInPhotoMode();
+        public static bool IsOverridingSettings => OverrideSettings && AdvancedPhotomodeController.Instance && AdvancedPhotomodeController.Instance.PhotoManager.IsInPhotoMode();
 
         [AdvancedPhotomodeSetting("Enable", "Ambient Occlusion")]
         public static bool SSAOEnable = true;

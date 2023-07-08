@@ -15,12 +15,17 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void LateUpdate()
         {
-            if (!Owner || !Owner.IsAlive())
+            if (!CanChangeHeadRotation())
                 return;
 
             Vector3 vector = m_HeadTransform.eulerAngles;
             vector.x = GetCameraEulerAngles().x - 10f;
             m_HeadTransform.eulerAngles = vector;
+        }
+
+        public bool CanChangeHeadRotation()
+        {
+            return m_HeadTransform && Owner && Owner.IsAlive() && !Owner.IsUsingAnyAbility() && !Owner.IsKicking() && !Owner.HasFallenDown() && !PhotoManager.Instance.IsInPhotoMode();
         }
 
         public Vector3 GetCameraEulerAngles()

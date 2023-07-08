@@ -15,5 +15,6 @@
         Preload,
         Experiments,
         Pets,
+        ArenaOverhaul,
     }
 }

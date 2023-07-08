@@ -6,6 +6,7 @@ using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
+using CDOverhaul.Graphics.ArenaOverhaul;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.MultiplayerSandbox;
@@ -116,6 +117,7 @@ namespace CDOverhaul
             bool hasLoadedOutfitsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Accessouries);
             bool hasLoadedPetsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Pets);
             bool hasLoadedCombatUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_CombatUpdate);
+            bool hasLoadedArenaUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul);
 
             if (!hasLoadedPart1Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
@@ -147,7 +149,12 @@ namespace CDOverhaul
                 hasLoadedCombatUpdateBundle = true;
             });
 
-            yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle);
+            if (!hasLoadedArenaUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            {
+                hasLoadedArenaUpdateBundle = true;
+            });
+
+            yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle && hasLoadedArenaUpdateBundle);
             yield break;
         }
 
@@ -158,6 +165,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.AddController<UpgradeModesController>();
             _ = OverhaulController.AddController<AdvancedPhotomodeController>();
+            _ = OverhaulController.AddController<ArenaOverhaulController>();
 
             OverhaulController.GetController<WeaponSkinsController>().AddSkins();
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();
