@@ -632,7 +632,7 @@ namespace CDOverhaul.Gameplay
             if (!Owner)
                 return;
 
-            if(Time.unscaledTime > m_TimeToRefreshWeaponVisibility)
+            if (Time.unscaledTime > m_TimeToRefreshWeaponVisibility)
             {
                 m_TimeToRefreshWeaponVisibility = Time.unscaledTime + 1f;
                 RefreshWeaponVisibility();

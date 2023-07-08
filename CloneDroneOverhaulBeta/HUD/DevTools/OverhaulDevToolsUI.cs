@@ -3,15 +3,11 @@ using CDOverhaul.HUD;
 using OverhaulAPI.SharedMonoBehaviours;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CDOverhaul.DevTools 
+namespace CDOverhaul.DevTools
 {
     public class OverhaulDevToolsUI : OverhaulUI
     {
@@ -43,15 +39,15 @@ namespace CDOverhaul.DevTools
         public override void Initialize()
         {
             m_ProfilerGameObject = MyModdedObject.GetObject<Transform>(0).gameObject;
-            m_ProfilerGameObject.AddComponent<OverhaulDraggablePanel>();
+            _ = m_ProfilerGameObject.AddComponent<OverhaulDraggablePanel>();
             m_ScriptsTimeContainer = new PrefabAndContainer(MyModdedObject, 1, 2);
 
             m_DebugActionsGameObject = MyModdedObject.GetObject<Transform>(3).gameObject;
-            m_DebugActionsGameObject.AddComponent<OverhaulDraggablePanel>();
+            _ = m_DebugActionsGameObject.AddComponent<OverhaulDraggablePanel>();
             m_DebugActionsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
 
             m_JsonEditorGameObject = MyModdedObject.GetObject<Transform>(8).gameObject;
-            m_JsonEditorGameObject.AddComponent<OverhaulDraggablePanel>();
+            _ = m_JsonEditorGameObject.AddComponent<OverhaulDraggablePanel>();
             m_JsonEditorValuesContainer = new PrefabAndContainer(MyModdedObject, 12, 14);
             m_JsonEditorNewValueButtonContainer = new PrefabAndContainer(MyModdedObject, 13, 14);
             m_JsonObjectsDropdown = MyModdedObject.GetObject<Dropdown>(11);
@@ -260,7 +256,7 @@ namespace CDOverhaul.DevTools
         {
             string text = m_NewJsonObjectPresets.options[m_NewJsonObjectPresets.value].text;
             m_NewJsonObjectDialogueGameObject.SetActive(false);
-            m_EditingJsonObject = (text == "NONE" ? OverhaulJsonEditor.CreateAndSaveJsonObject(m_NewJsonObjectName.text) : OverhaulJsonEditor.CreateAndSaveJsonObjectFromPreset(m_NewJsonObjectName.text, text));
+            m_EditingJsonObject = text == "NONE" ? OverhaulJsonEditor.CreateAndSaveJsonObject(m_NewJsonObjectName.text) : OverhaulJsonEditor.CreateAndSaveJsonObjectFromPreset(m_NewJsonObjectName.text, text);
             m_EditingJsonObjectName = m_NewJsonObjectName.text;
             updateJsonEditor();
             populateJsonEditor();

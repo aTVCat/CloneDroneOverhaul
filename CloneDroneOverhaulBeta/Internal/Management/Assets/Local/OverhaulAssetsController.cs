@@ -123,7 +123,7 @@ namespace CDOverhaul
 
         public static void UnloadAllAssetBundles()
         {
-            foreach(AssetBundle bundle in m_LoadedAssetBundles.Values)
+            foreach (AssetBundle bundle in m_LoadedAssetBundles.Values)
             {
                 bundle.Unload(true);
             }
@@ -335,7 +335,7 @@ namespace CDOverhaul
             protected override void OnDisposed()
             {
                 if (LoadingBundles.ContainsKey(AssetBundlePath))
-                    LoadingBundles.Remove(AssetBundlePath);
+                    _ = LoadingBundles.Remove(AssetBundlePath);
 
                 Request = null;
                 DoneAction = null;

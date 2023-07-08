@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.HUD
 {
     public class OverhaulUIPanelScaler : OverhaulBehaviour
     {
-        public float Multiplier = 10f; 
+        public float Multiplier = 10f;
         public Vector3 StartScale = Vector3.one * 1.05f;
         public Vector3 TargetScale = Vector3.one;
 

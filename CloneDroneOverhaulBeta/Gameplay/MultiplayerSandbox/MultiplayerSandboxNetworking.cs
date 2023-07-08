@@ -1,10 +1,7 @@
 ﻿using Steamworks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using UnityEngine;
 
 namespace CDOverhaul.MultiplayerSandbox
@@ -25,7 +22,7 @@ namespace CDOverhaul.MultiplayerSandbox
             do
             {
                 CSteamID steamID = users[index];
-                if(steamID.IsExcluded())
+                if (steamID.IsExcluded())
                 {
                     index++;
                     continue;
@@ -42,7 +39,7 @@ namespace CDOverhaul.MultiplayerSandbox
                 return;
 
             MultiplayerSandboxLobby lobby = MultiplayerSandboxController.Instance.Lobby;
-            CSteamID owner = SteamUser.GetSteamID(); 
+            CSteamID owner = SteamUser.GetSteamID();
             CSteamID[] users = lobby.GetLobbyMemberSteamIDs();
             int all = lobby.GetMemberCount();
             int index = 0;
@@ -74,12 +71,12 @@ namespace CDOverhaul.MultiplayerSandbox
             if (data.IsNullOrEmpty() && !CheckPacket(packet, out data))
                 return;
 
-            SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, packet.GetSendType(), packet.GetChannel());
+            _ = SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, packet.GetSendType(), packet.GetChannel());
         }
 
         public static bool CheckPacket(this Packet packet, out byte[] bytes)
         {
-            bytes = null; 
+            bytes = null;
 
             if (!MultiplayerSandboxController.FullInitialization)
                 return false;
@@ -106,7 +103,7 @@ namespace CDOverhaul.MultiplayerSandbox
                 while (SteamNetworking.IsP2PPacketAvailable(out uint s, i))
                 {
                     byte[] array = new byte[s];
-                    if(!SteamNetworking.ReadP2PPacket(array, s, out uint msgSize, out CSteamID owner, i))
+                    if (!SteamNetworking.ReadP2PPacket(array, s, out _, out _, i))
                     {
                         Debug.LogWarning("[CDO_MS] Cannot read P2P packet!");
                         continue;
@@ -155,7 +152,7 @@ namespace CDOverhaul.MultiplayerSandbox
                 {
                     BinaryFormatter binForm = new BinaryFormatter();
                     memStream.Write(array, 0, array.Length);
-                    memStream.Seek(0, SeekOrigin.Begin);
+                    _ = memStream.Seek(0, SeekOrigin.Begin);
                     return (Packet)binForm.Deserialize(memStream);
                 }
             }

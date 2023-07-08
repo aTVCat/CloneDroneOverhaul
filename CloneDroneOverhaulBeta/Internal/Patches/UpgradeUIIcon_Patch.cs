@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Graphics;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches

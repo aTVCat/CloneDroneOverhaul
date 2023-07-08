@@ -1,10 +1,4 @@
 ﻿using ModLibrary;
-using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.MultiplayerSandbox
@@ -38,8 +32,7 @@ namespace CDOverhaul.MultiplayerSandbox
 
             GameObject spawnPoint = new GameObject();
             spawnPoint.transform.position = new Vector3(0, 10f, 0);
-
-            FirstPersonMover firstPersonMover = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true, null);
+            _ = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true, null);
             /*PlayerSync sync = firstPersonMover.gameObject.AddComponent<PlayerSync>();
             sync.IsOwner = true;
             sync.OwnerSteamID = SteamUser.GetSteamID();*/

@@ -1,6 +1,4 @@
-﻿using CDOverhaul.HUD;
-using System;
-using System.Linq;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +19,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         };
         public static bool IsUnrevertableUpgrade(UpgradeType type, int level)
         {
-            foreach(Tuple<UpgradeType, int> tuple in UnrevertableUpgrades)
+            foreach (Tuple<UpgradeType, int> tuple in UnrevertableUpgrades)
             {
                 if (tuple.Item1 == type && (level <= tuple.Item2))
                     return true;
@@ -49,7 +47,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             spawnedButton.localEulerAngles = Vector3.zero;
             spawnedButton.localScale = Vector3.one;
             spawnedButton.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AllowReveringUpgrades);
-            spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
+            _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
 
             Button button = spawnedButton.GetComponent<Button>();
             button.onClick.AddListener(ToggleMode);

@@ -1,12 +1,5 @@
-﻿using InjectionClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CDOverhaul.MultiplayerSandbox;
 using UnityEngine.UI;
-using UnityEngine;
-using CDOverhaul.MultiplayerSandbox;
 
 namespace CDOverhaul.HUD.Gamemodes
 {

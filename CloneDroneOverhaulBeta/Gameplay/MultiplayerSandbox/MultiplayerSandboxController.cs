@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
-using Steamworks;
+﻿using Steamworks;
 using UnityEngine;
 
 namespace CDOverhaul.MultiplayerSandbox
@@ -51,12 +45,12 @@ namespace CDOverhaul.MultiplayerSandbox
 
             CallResult<LobbyCreated_t> apiCallResult = CallResult<LobbyCreated_t>.Create(delegate (LobbyCreated_t t, bool a)
             {
-                if(t.m_eResult != EResult.k_EResultOK)
+                if (t.m_eResult != EResult.k_EResultOK)
                 {
                     Debug.LogWarning("[CDO_MS] Cannot create lobby!");
                     return;
                 }
-                SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
+                _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
 
                 InitializeLobbyData((CSteamID)t.m_ulSteamIDLobby);
                 InitializeWorld();
@@ -75,7 +69,7 @@ namespace CDOverhaul.MultiplayerSandbox
 
             CallResult<LobbyEnter_t> apiCallResult = CallResult<LobbyEnter_t>.Create(delegate (LobbyEnter_t t, bool a)
             {
-                if(t.m_ulSteamIDLobby == (ulong)CSteamID.Nil || (EChatRoomEnterResponse)t.m_EChatRoomEnterResponse != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
+                if (t.m_ulSteamIDLobby == (ulong)CSteamID.Nil || (EChatRoomEnterResponse)t.m_EChatRoomEnterResponse != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
                 {
                     Debug.LogWarning("[CDO_MS] Cannot join the lobby!");
                     OverhaulEventsController.DispatchEvent(LobbyJoinFailEvent);
@@ -83,7 +77,7 @@ namespace CDOverhaul.MultiplayerSandbox
                 }
 
                 string version = SteamMatchmaking.GetLobbyData((CSteamID)t.m_ulSteamIDLobby, "modVer");
-                if(version != OverhaulVersion.ModVersion.ToString())
+                if (version != OverhaulVersion.ModVersion.ToString())
                 {
                     LeaveLobby((CSteamID)t.m_ulSteamIDLobby);
                     return;

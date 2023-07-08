@@ -1,10 +1,6 @@
 ﻿using CDOverhaul.DevTools;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul
 {
@@ -22,7 +18,7 @@ namespace CDOverhaul
         public OverhaulJsonObject(OverhaulJsonObjectPreset preset)
         {
             Values = new Dictionary<string, string>();
-            foreach(string @string in preset.Values)
+            foreach (string @string in preset.Values)
             {
                 Values.Add(@string, string.Empty);
             }

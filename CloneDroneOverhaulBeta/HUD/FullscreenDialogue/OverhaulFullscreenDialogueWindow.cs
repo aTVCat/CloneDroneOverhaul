@@ -1,9 +1,5 @@
 ﻿using CDOverhaul.HUD;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +25,7 @@ namespace CDOverhaul
         {
             Instance = this;
             m_WindowTransform = MyModdedObject.GetObject<RectTransform>(0);
-            m_WindowTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
+            _ = m_WindowTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
             m_TitleLabel = MyModdedObject.GetObject<Text>(1);
             m_DescriptionLabel = MyModdedObject.GetObject<Text>(2);
             m_Icons = new GameObject[]
@@ -79,7 +75,7 @@ namespace CDOverhaul
         {
             int iconIndex = (int)icon - 1;
             int i = 0;
-            foreach(GameObject gameObject in m_Icons)
+            foreach (GameObject gameObject in m_Icons)
             {
                 if (gameObject)
                 {
@@ -128,10 +124,7 @@ namespace CDOverhaul
             });
             Instance.AddButton(okButtonText, delegate
             {
-                if (okClicked != null)
-                {
-                    okClicked.Invoke();
-                }
+                okClicked?.Invoke();
                 Instance.Hide();
             }, "#FFFFFF", null, 100f);
             Instance.Show();
@@ -154,15 +147,12 @@ namespace CDOverhaul
 
             private void onClicked()
             {
-                if(ClickedAction != null)
-                {
-                    ClickedAction.Invoke();
-                }
+                ClickedAction?.Invoke();
             }
 
             private void LateUpdate()
             {
-                if(BecomeInteractableIf != null)
+                if (BecomeInteractableIf != null)
                 {
                     m_Button.interactable = BecomeInteractableIf();
                 }

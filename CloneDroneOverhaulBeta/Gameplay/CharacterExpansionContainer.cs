@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay
 {
@@ -17,7 +13,7 @@ namespace CDOverhaul.Gameplay
         {
             if (CachedContainers.ContainsKey(MyInstanceId))
             {
-                CachedContainers.Remove(MyInstanceId);
+                _ = CachedContainers.Remove(MyInstanceId);
             }
 
             Expansions.Clear();

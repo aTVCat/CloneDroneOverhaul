@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -15,11 +11,11 @@ namespace CDOverhaul.HUD
 
         public Action StateSetOnAction;
         public Button OnButton;
-        private Graphic m_OnButtonGraphic;
+        private readonly Graphic m_OnButtonGraphic;
 
         public Action StateSetOffAction;
         public Button OffButton;
-        private Graphic m_OffButtonGraphic;
+        private readonly Graphic m_OffButtonGraphic;
 
         public bool State
         {

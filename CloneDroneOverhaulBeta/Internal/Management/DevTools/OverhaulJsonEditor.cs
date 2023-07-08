@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace CDOverhaul.DevTools
@@ -16,7 +11,7 @@ namespace CDOverhaul.DevTools
         {
             int i = 0;
             string[] paths = GetAllFilePaths(ofJsonObjects);
-            foreach(string @string in paths)
+            foreach (string @string in paths)
             {
                 paths[i] = getName(@string);
                 i++;
@@ -77,11 +72,9 @@ namespace CDOverhaul.DevTools
         {
             bool hasDotJson = path.Contains(".json");
             bool isPath = path.Contains("/") || path.Contains("\\");
-            if (isPath)
-            {
-                return OverhaulCore.ReadText(path + (hasDotJson ? string.Empty : ".json"));
-            }
-            return OverhaulCore.ReadText((isJsonObject ? OverhaulJsonObject.JsonObjectsFolder : OverhaulJsonObjectPreset.PresetsFolder) + path + (hasDotJson ? string.Empty : ".json"));
+            return isPath
+                ? OverhaulCore.ReadText(path + (hasDotJson ? string.Empty : ".json"))
+                : OverhaulCore.ReadText((isJsonObject ? OverhaulJsonObject.JsonObjectsFolder : OverhaulJsonObjectPreset.PresetsFolder) + path + (hasDotJson ? string.Empty : ".json"));
         }
 
         private static string getName(string @string) => @string.Substring(@string.LastIndexOf('/') + 1).Replace(".json", string.Empty);

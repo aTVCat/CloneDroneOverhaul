@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using CDOverhaul.DevTools;
+﻿using CDOverhaul.DevTools;
 using CDOverhaul.NetworkAssets;
 using ModBotWebsiteAPI;
+using System;
+using System.Text.RegularExpressions;
 
 namespace CDOverhaul
 {
@@ -50,11 +46,9 @@ namespace CDOverhaul
 
         public static bool HasNewUpdate()
         {
-            if (OverhaulVersion.IsModBotBuild)
-            {
-                return OverhaulMod.Base.ModInfo.Version < DownloadedVersionNumber;
-            }
-            return OverhaulVersion.ModVersion < DownloadedVersion;
+            return OverhaulVersion.IsModBotBuild
+                ? OverhaulMod.Base.ModInfo.Version < DownloadedVersionNumber
+                : OverhaulVersion.ModVersion < DownloadedVersion;
         }
 
         public static void CheckForUpdates()
@@ -74,7 +68,7 @@ namespace CDOverhaul
 
         private static void checkForUpdateOnModBotSite()
         {
-            API.GetModData(OverhaulVersion.ModID, delegate(JsonObject jsonObject)
+            API.GetModData(OverhaulVersion.ModID, delegate (JsonObject jsonObject)
             {
                 if (jsonObject == null || string.IsNullOrEmpty(jsonObject.RawData))
                 {

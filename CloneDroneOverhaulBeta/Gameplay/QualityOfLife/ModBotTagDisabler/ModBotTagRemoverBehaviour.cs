@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
@@ -28,7 +22,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
             m_ForceRemoveTags = true;
 
-            if(!TextComponent)
+            if (!TextComponent)
             {
                 TextComponent = base.GetComponent<Text>();
                 if (!TextComponent)
@@ -38,7 +32,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 }
             }
 
-            if(TextComponent.text != NormalUsername)
+            if (TextComponent.text != NormalUsername)
             {
                 replaceName();
             }

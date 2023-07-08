@@ -23,13 +23,11 @@ namespace CDOverhaul.Gameplay.Pets
         public string UnlockedFor;
         public bool IsUnlocked(FirstPersonMover firstPersonMover)
         {
-            if (string.IsNullOrEmpty(UnlockedFor))
-                return true;
-
-            return firstPersonMover
+            return string.IsNullOrEmpty(UnlockedFor)
+|| (firstPersonMover
 && (firstPersonMover.IsForcedToUseLockedStuff()
 || (GameModeManager.IsSinglePlayer()
-                ? UnlockedFor.Contains(PlayFabDataController.GetLocalPlayFabID()) : UnlockedFor.Contains(firstPersonMover.GetPlayFabID())));
+                ? UnlockedFor.Contains(PlayFabDataController.GetLocalPlayFabID()) : UnlockedFor.Contains(firstPersonMover.GetPlayFabID()))));
         }
         public bool IsUnlocked() => IsUnlocked(CharacterTracker.Instance ? CharacterTracker.Instance.GetPlayerRobot() : null);
 

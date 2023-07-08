@@ -951,7 +951,7 @@ namespace CDOverhaul.HUD
             string toReplace = m_OldAuthorName.text;
             string replaceWith = m_NewAuthorName.text;
 
-            foreach(WeaponSkinsImportedItemDefinition item in WeaponSkinsController.CustomSkinsData.AllCustomSkins)
+            foreach (WeaponSkinsImportedItemDefinition item in WeaponSkinsController.CustomSkinsData.AllCustomSkins)
             {
                 item.Author = item.Author.Replace(toReplace, replaceWith);
             }

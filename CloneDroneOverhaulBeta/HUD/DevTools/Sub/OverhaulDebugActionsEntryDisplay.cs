@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace CDOverhaul.DevTools
@@ -28,10 +23,10 @@ namespace CDOverhaul.DevTools
 
         private void onClicked()
         {
-            if(MyMethod != null)
+            if (MyMethod != null)
             {
                 Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-                MyMethod.Invoke(null, null);
+                _ = MyMethod.Invoke(null, null);
                 stopwatch.StopTimer(MyMethod.DeclaringType.ToString().Replace("CDOverhaul.", string.Empty) + "." + MyMethod.Name);
             }
         }

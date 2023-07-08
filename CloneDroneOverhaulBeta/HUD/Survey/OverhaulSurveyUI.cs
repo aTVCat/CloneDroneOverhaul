@@ -115,7 +115,7 @@ namespace CDOverhaul.HUD
 
         private bool checkFields()
         {
-            if(SelectedRankIndex == -1)
+            if (SelectedRankIndex == -1)
             {
                 OverhaulDialogues.CreateDialogue("Error", "You forgot to rate the modded experience...", 0f, new Vector2(315, 160), null);
                 return false;
@@ -140,7 +140,7 @@ namespace CDOverhaul.HUD
             SetAllInteractable(false);
             m_ExitGame.interactable = false;
             m_SendingLabelTransform.gameObject.SetActive(true);
-            StaticCoroutineRunner.StartStaticCoroutine(executeFeedbackWebhookCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(executeFeedbackWebhookCoroutine());
         }
 
         private IEnumerator executeFeedbackWebhookCoroutine()

@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.HUD;
 using OverhaulAPI;
 using OverhaulAPI.SharedMonoBehaviours;
@@ -109,13 +110,13 @@ namespace CDOverhaul.Graphics
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, patchAllCameras);
+            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchAllCameras);
 
             m_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
             m_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
             m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
             m_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
-            patchAllCameras();
+            PatchAllCameras();
             RefreshLightsCount();
 
             if (!m_ConfiguredEventButtons)
@@ -315,14 +316,16 @@ namespace CDOverhaul.Graphics
 
         private static void refreshAmplifyOcclusion(AmplifyOcclusionEffect effect, bool updateList = true)
         {
+            bool dontOverrideSettings = !AdvancedPhotomodeSettings.IsOverridingSettings;
+
             effect.Bias = 0f;
             effect.BlurSharpness = 4f;
             effect.FilterResponse = 0.7f;
             effect.Bias = 0.2f;
-            effect.SampleCount = (AmplifyOcclusion.SampleCountLevel)AOSampleCount;
-            effect.Intensity = AOIntensity;
+            effect.SampleCount = dontOverrideSettings ? (AmplifyOcclusion.SampleCountLevel)AOSampleCount : (AmplifyOcclusion.SampleCountLevel)AdvancedPhotomodeSettings.SSAOSampleCount;
+            effect.Intensity = dontOverrideSettings ? AOIntensity : AdvancedPhotomodeSettings.SSAOIntensity;
             effect.ApplyMethod = DefferedRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
-            effect.enabled = AOEnabled;
+            effect.enabled = dontOverrideSettings ? AOEnabled : AdvancedPhotomodeSettings.SSAOEnable;
 
             // Remove destroyed instances
             if (!updateList || m_AOEffects.IsNullOrEmpty())
@@ -343,7 +346,7 @@ namespace CDOverhaul.Graphics
         }
 
 
-        private static void patchAllCameras()
+        public static void PatchAllCameras()
         {
             refreshApplicationTargetFramerate();
             foreach (Camera cam in CameraController.GetAllCameras())

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.DevTools
 {
@@ -14,11 +10,11 @@ namespace CDOverhaul.DevTools
         public static int GetEntriesCount() => s_ProfilerEntries.Count;
         public static string GetEntry(int index)
         {
-            if(s_ProfilerEntries.IsNullOrEmpty())
+            if (s_ProfilerEntries.IsNullOrEmpty())
                 return string.Empty;
 
             int i = 0;
-            foreach(string str in s_ProfilerEntries.Keys)
+            foreach (string str in s_ProfilerEntries.Keys)
             {
                 if (i == index)
                     return str;

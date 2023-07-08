@@ -30,26 +30,29 @@ namespace CDOverhaul
             }
         }
 
-        private byte _enableCursorConditionID = 0;
+        private byte m_EnableCursorConditionID = 0;
         protected bool ShowCursor
         {
+            get
+            {
+                return m_EnableCursorConditionID != 0;
+            }
             set
             {
                 if (value && !IsDisposedOrDestroyed())
                 {
-                    if (_enableCursorConditionID != 0)
-                    {
+                    if (m_EnableCursorConditionID != 0)
                         return;
-                    }
-                    _enableCursorConditionID = EnableCursorController.AddCondition();
+
+                    m_EnableCursorConditionID = EnableCursorController.AddCondition();
                 }
                 else
                 {
-                    if (_enableCursorConditionID != 0)
-                    {
-                        EnableCursorController.RemoveCondition(_enableCursorConditionID);
-                        _enableCursorConditionID = 0;
-                    }
+                    if (m_EnableCursorConditionID == 0)
+                        return;
+
+                    EnableCursorController.RemoveCondition(m_EnableCursorConditionID);
+                    m_EnableCursorConditionID = 0;
                 }
             }
         }

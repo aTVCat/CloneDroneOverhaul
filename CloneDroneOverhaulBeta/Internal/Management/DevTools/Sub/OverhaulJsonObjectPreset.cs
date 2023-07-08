@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.DevTools
 {
@@ -21,7 +17,7 @@ namespace CDOverhaul.DevTools
         public OverhaulJsonObjectPreset(OverhaulJsonObject jsonObject)
         {
             Values = new List<string>(jsonObject.Values.Count);
-            foreach(string @string in jsonObject.Values.Keys)
+            foreach (string @string in jsonObject.Values.Keys)
             {
                 Values.Add(@string);
             }

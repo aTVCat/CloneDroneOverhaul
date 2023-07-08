@@ -117,32 +117,32 @@ namespace CDOverhaul
             bool hasLoadedPetsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Pets);
             bool hasLoadedCombatUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_CombatUpdate);
 
-            if (!hasLoadedPart1Bundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedPart1Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedPart1Bundle = true;
             });
 
-            if (!hasLoadedPart2Bundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part2, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedPart2Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part2, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedPart2Bundle = true;
             });
 
-            if (!hasLoadedSkinsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedSkinsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedSkinsBundle = true;
             });
 
-            if (!hasLoadedOutfitsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedOutfitsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedOutfitsBundle = true;
             });
 
-            if (!hasLoadedPetsBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Pets, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedPetsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Pets, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedPetsBundle = true;
             });
 
-            if (!hasLoadedCombatUpdateBundle) OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_CombatUpdate, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
+            if (!hasLoadedCombatUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_CombatUpdate, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedCombatUpdateBundle = true;
             });

@@ -149,7 +149,7 @@ namespace CDOverhaul
             }
             else
             {
-                dictionary.Remove(upgradeToRevert);
+                _ = dictionary.Remove(upgradeToRevert);
             }
             upgradeManager.SetAvailableSkillPoints(upgradeManager.GetAvailableSkillPoints() + upgradeDescription.GetSkillPointCost());
             GlobalEventManager.Instance.Dispatch("UpgradeCompleted", upgradeDescription);

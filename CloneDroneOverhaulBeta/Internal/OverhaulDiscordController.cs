@@ -316,7 +316,7 @@ namespace CDOverhaul
                 case GameMode.Story:
                     GameDataManager datam = GameDataManager.Instance;
                     MetagameProgressManager metaG = MetagameProgressManager.Instance;
-                    if(!datam || !metaG)
+                    if (!datam || !metaG)
                         return;
 
                     int levelsBeatenSm = 0;

@@ -1,7 +1,5 @@
 ﻿using CDOverhaul.MultiplayerSandbox;
 using Steamworks;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
@@ -11,7 +9,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Initialize(fullscreenWindow);
 
-            OverhaulEventsController.AddEventListener(MultiplayerSandboxController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            _ = OverhaulEventsController.AddEventListener(MultiplayerSandboxController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override void OnDisposed()
@@ -23,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             FullscreenWindow.GamemodesUI.Hide();
 
-            if(!ulong.TryParse(GetInputFieldValue(), out ulong lobbyId))
+            if (!ulong.TryParse(GetInputFieldValue(), out ulong lobbyId))
             {
                 SetInputFieldInteractable(true);
                 return;

@@ -1,10 +1,5 @@
 ﻿using CDOverhaul.Graphics;
-using CDOverhaul.HUD;
-using CDOverhaul.MultiplayerSandbox;
 using HarmonyLib;
-using ModLibrary;
-using Steamworks;
-using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -54,11 +49,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulGamemodeManager.IsMultiplayerSandbox())
                 return true;
 
-            if (!(character is FirstPersonMover))
-                return true;
-
-            FirstPersonMover firstPersonMover = character as FirstPersonMover;
-            return false;
+            return !(character is FirstPersonMover);
         }
 
         /*

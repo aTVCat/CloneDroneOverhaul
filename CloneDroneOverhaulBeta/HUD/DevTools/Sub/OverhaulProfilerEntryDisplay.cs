@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.DevTools
@@ -26,27 +21,19 @@ namespace CDOverhaul.DevTools
 
         private void LateUpdate()
         {
-            if(m_MethodLabel && m_TimeLabel)
+            if (m_MethodLabel && m_TimeLabel)
             {
                 long ticks = OverhaulProfiler.GetEntryTicks(MyEntry);
                 long ms = OverhaulProfiler.GetEntryMs(MyEntry);
                 m_TimeLabel.text = ticks + " ticks, " + ms + " ms";
 
-                if(ms > 15)
+                if (ms > 15)
                 {
                     m_TimeLabel.color = Color.red;
                 }
-                else if (ms > 7)
-                {
-                    m_TimeLabel.color = "#FF7F08".ToColor();
-                }
-                else if (ms > 3)
-                {
-                    m_TimeLabel.color = Color.yellow;
-                }
                 else
                 {
-                    m_TimeLabel.color = Color.white;
+                    m_TimeLabel.color = ms > 7 ? "#FF7F08".ToColor() : ms > 3 ? Color.yellow : Color.white;
                 }
             }
         }

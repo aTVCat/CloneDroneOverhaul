@@ -1,19 +1,39 @@
 ﻿using CDOverhaul.HUD;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
 {
-    public class AdvancedPhotomodeController : OverhaulController 
+    public class AdvancedPhotomodeController : OverhaulController
     {
         public static AdvancedPhotomodeController Instance;
 
         public static bool IsAdvancedModeEnabled => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsPhotoModeOverhaulEnabled;
+
+        private static readonly List<AdvancedPhotomodeSettingAttribute> s_AllSettings = new List<AdvancedPhotomodeSettingAttribute>();
+        public static List<string> GetAllCategories()
+        {
+            List<string> result = new List<string>();
+            foreach(AdvancedPhotomodeSettingAttribute attribute in s_AllSettings)
+            {
+                if (!result.Contains(attribute.CategoryName))
+                    result.Add(attribute.CategoryName);
+            }
+            return result;
+        }
+        public static List<AdvancedPhotomodeSettingAttribute> GetAllSettingsOfCategory(string name)
+        {
+            List<AdvancedPhotomodeSettingAttribute> result = new List<AdvancedPhotomodeSettingAttribute>();
+            foreach (AdvancedPhotomodeSettingAttribute attribute in s_AllSettings)
+            {
+                if (attribute.CategoryName == name)
+                    result.Add(attribute);
+            }
+            return result;
+        }
 
         public PhotoManager PhotoManager
         {
@@ -48,8 +68,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             PhotoManager = PhotoManager.Instance;
             PhotoModeControls = GameUIRoot.Instance.PhotoModeControlsDisplay;
 
-            OverhaulEventsController.AddEventListener("EnteredPhotoMode", onEnteredPhotomode, true);
-            OverhaulEventsController.AddEventListener("ExitedPhotoMode", onExitedPhotomode, true);
+            _ = OverhaulEventsController.AddEventListener("EnteredPhotoMode", onEnteredPhotomode, true);
+            _ = OverhaulEventsController.AddEventListener("ExitedPhotoMode", onExitedPhotomode, true);
 
             m_PhotoControlsImage = PhotoModeControls.GetComponent<Image>();
             m_PhotoControlsObjects = new GameObject[PhotoModeControls.transform.childCount];
@@ -60,6 +80,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 index++;
             } while (index < PhotoModeControls.transform.childCount);
             SetVanillaUIVisible(false);
+
+            getAllSettings();
         }
 
         public override void OnModDeactivated()
@@ -76,10 +98,52 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             OverhaulEventsController.RemoveEventListener("ExitedPhotoMode", onExitedPhotomode, true);
         }
 
+        private void getAllSettings()
+        {
+            if (!OverhaulSessionController.GetKey<bool>("HasInitializedSettings"))
+            {
+                OverhaulSessionController.SetKey("HasInitializedSettings", true);
+
+                Type[] allTypes = OverhaulMod.GetAllTypes();
+                int typeIndex = 0;
+                do
+                {
+                    Type currentType = allTypes[typeIndex];
+                    FieldInfo[] allFields = currentType.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (allFields.IsNullOrEmpty())
+                    {
+                        typeIndex++;
+                        continue;
+                    }
+
+                    int fieldIndex = 0;
+                    do
+                    {
+                        FieldInfo currentField = allFields[fieldIndex];
+
+                        AdvancedPhotomodeSettingAttribute mainAttribute = currentField.GetCustomAttribute<AdvancedPhotomodeSettingAttribute>();
+                        if (mainAttribute == null)
+                        {
+                            fieldIndex++;
+                            continue;
+                        }
+
+                        mainAttribute.Field = currentField;
+                        mainAttribute.SliderParameters = currentField.GetCustomAttribute<AdvancedPhotomodeSliderParametersAttribute>();
+                        s_AllSettings.Add(mainAttribute);
+
+                        fieldIndex++;
+                    } while (fieldIndex < allFields.Length);
+
+                    typeIndex++;
+                } while (typeIndex < allTypes.Length);
+            }
+        }
+
         public void SetVanillaUIVisible(bool value)
         {
             m_PhotoControlsImage.enabled = value;
-            foreach(GameObject gameObject in m_PhotoControlsObjects)
+            foreach (GameObject gameObject in m_PhotoControlsObjects)
             {
                 if (gameObject)
                     gameObject.SetActive(value);

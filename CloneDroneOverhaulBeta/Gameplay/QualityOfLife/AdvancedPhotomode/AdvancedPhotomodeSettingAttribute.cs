@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
 {
@@ -10,6 +7,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
     {
         public string DisplayName;
         public string CategoryName;
+
+        public FieldInfo Field;
+
+        public AdvancedPhotomodeSliderParametersAttribute SliderParameters;
 
         public AdvancedPhotomodeSettingAttribute(string displayName, string category)
         {

@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CDOverhaul.Gameplay.QualityOfLife
+﻿namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public static class AdvancedPhotomodeSettings
     {
         [AdvancedPhotomodeSetting("Override parameters", "General")]
-        public static bool OverrideSettings;
+        public static bool OverrideSettings = false;
         public static bool IsOverridingSettings => OverrideSettings && AdvancedPhotomodeController.Instance.PhotoManager.IsInPhotoMode();
 
         [AdvancedPhotomodeSetting("Enable", "Ambient Occlusion")]
-        public static bool SSAOEnable;
+        public static bool SSAOEnable = true;
+
+        [AdvancedPhotomodeSliderParameters(0.1f, 1.2f)]
         [AdvancedPhotomodeSetting("Intensity", "Ambient Occlusion")]
-        public static float SSAOIntensity;
-        [AdvancedPhotomodeSetting("Intensity", "Ambient Occlusion")]
-        public static int SSAOSampleCount;
+        public static float SSAOIntensity = 0.75f;
+
+        [AdvancedPhotomodeSliderParameters(0, 3)]
+        [AdvancedPhotomodeSetting("Sample Count", "Ambient Occlusion")]
+        public static int SSAOSampleCount = 1;
     }
 }

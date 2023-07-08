@@ -84,7 +84,7 @@ namespace CDOverhaul
         private void destroyUI()
         {
             VanillaUIImprovements uIImprovements = OverhaulController.GetController<VanillaUIImprovements>();
-            if(uIImprovements && uIImprovements.TitleScreenUI && uIImprovements.TitleScreenUI.MessagePanel)
+            if (uIImprovements && uIImprovements.TitleScreenUI && uIImprovements.TitleScreenUI.MessagePanel)
             {
                 uIImprovements.TitleScreenUI.MessagePanel.PopulateTitleScreenMessage();
             }
