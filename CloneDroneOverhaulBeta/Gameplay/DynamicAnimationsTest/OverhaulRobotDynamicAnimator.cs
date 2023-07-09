@@ -25,7 +25,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public bool CanChangeHeadRotation()
         {
-            return m_HeadTransform && Owner && Owner.IsAlive() && !Owner.IsUsingAnyAbility() && !Owner.IsKicking() && !Owner.HasFallenDown() && !PhotoManager.Instance.IsInPhotoMode();
+            return GameModeManager.IsNonCoopMultiplayer() && m_HeadTransform && Owner && Owner.IsAlive() && !Owner.IsUsingAnyAbility() && !Owner.IsKicking() && !Owner.HasFallenDown() && !PhotoManager.Instance.IsInPhotoMode();
         }
 
         public Vector3 GetCameraEulerAngles()

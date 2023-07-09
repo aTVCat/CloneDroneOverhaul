@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -19,4 +19,4 @@ namespace CDOverhaul.Patches
             __instance.SupportsColorOverride = true;
         }
     }
-}
+}*/

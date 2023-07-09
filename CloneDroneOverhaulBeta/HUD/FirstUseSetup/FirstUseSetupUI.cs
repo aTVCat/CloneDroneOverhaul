@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
 {
     public class FirstUseSetupUI : OverhaulUI
     {
-        public const string SettingPath = "Player.Mod.HasConfiguredModV4";
+        public const string SettingPath = "Player.Mod.HasConfiguredModV5";
 
         [OverhaulSetting(SettingPath, false, true)]
         public static bool HasSetTheModUp;

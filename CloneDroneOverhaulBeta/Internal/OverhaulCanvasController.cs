@@ -66,7 +66,6 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));
             _ = AddHUD<FirstUseSetupUI>(HUDModdedObject.GetObject<ModdedObject>(16));
             _ = AddHUD<OverhaulGamemodesUI>(HUDModdedObject.GetObject<ModdedObject>(19));
-            _ = AddHUD<OverhaulGamemodesUI>(HUDModdedObject.GetObject<ModdedObject>(19));
             _ = AddHUD<VanillaUIImprovements>(HUDModdedObject.GetObject<ModdedObject>(1));
             _ = AddHUD<AboutOverhaulMenu>(HUDModdedObject.GetObject<ModdedObject>(2));
             _ = AddHUD<OverhaulSurveyUI>(HUDModdedObject.GetObject<ModdedObject>(14));

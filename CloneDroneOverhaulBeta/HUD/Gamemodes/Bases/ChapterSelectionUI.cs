@@ -73,9 +73,18 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             GamemodesUI.FullscreenWindow.Show(delegate
             {
-                MethodInfo info = MetagameProgressManager.Instance.GetType().GetMethod("ResetToChapter" + m_SelectedChapter, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-                _ = info.Invoke(MetagameProgressManager.Instance, null);
-                Singleton<GameFlowManager>.Instance.StartStoryModeGame(true);
+                if(m_SelectedChapter == 1)
+                    MetagameProgressManager.Instance.ResetToChapter1();
+                else if (m_SelectedChapter == 2)
+                    MetagameProgressManager.Instance.ResetToChapter2();
+                else if (m_SelectedChapter == 3)
+                    MetagameProgressManager.Instance.ResetToChapter3();
+                else if (m_SelectedChapter == 4)
+                    MetagameProgressManager.Instance.ResetToChapter4();
+                else if (m_SelectedChapter == 5)
+                    MetagameProgressManager.Instance.ResetToChapter5();
+
+                GameFlowManager.Instance.StartStoryModeGame(true);
                 Hide();
             }, 0);
         }
