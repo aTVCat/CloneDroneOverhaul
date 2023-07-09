@@ -89,6 +89,9 @@ namespace CDOverhaul.HUD
 
         public void LoadRobotHead(int characterModelIndex, int favouriteColorIndex)
         {
+            if (characterModelIndex < 0 || characterModelIndex > MultiplayerCharacterCustomizationManager.Instance.CharacterModels.Count - 1)
+                return;
+
             string modelName = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[characterModelIndex].Name;
             string filename = modelName + "_" + favouriteColorIndex + ".png";
             filename = filename.Replace("Bow 2", "Bow 1");
