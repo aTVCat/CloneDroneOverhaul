@@ -11,6 +11,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         public FieldInfo Field;
 
         public AdvancedPhotomodeSliderParametersAttribute SliderParameters;
+        public AdvancedPhotomodeRequireContentAttribute ContentParameters;
 
         public AdvancedPhotomodeSettingAttribute(string displayName, string category)
         {

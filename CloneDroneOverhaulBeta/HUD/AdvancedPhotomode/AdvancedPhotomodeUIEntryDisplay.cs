@@ -48,6 +48,13 @@ namespace CDOverhaul.HUD
 
             PopulateToggle(isBoolean);
             PopulateSlider(isFloat || isInt, isFloat);
+
+            if(SettingReference.ContentParameters != null)
+            {
+                bool hasLoaded = SettingReference.ContentParameters.HasLoadedContent();
+                ToggleReference.interactable = hasLoaded;
+                SliderReference.interactable = hasLoaded;
+            }
         }
 
         public void SetToggleVisible(bool value)
@@ -82,6 +89,7 @@ namespace CDOverhaul.HUD
         public void SetSliderVisible(bool value)
         {
             SliderReference.gameObject.SetActive(value);
+            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void PopulateSlider(bool settingIsNumber, bool isFloat)
@@ -115,6 +123,7 @@ namespace CDOverhaul.HUD
             else
                 SettingReference.Field.SetValue(null, (int)value);
             OverhaulGraphicsController.PatchAllCameras();
+            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
     }
 }

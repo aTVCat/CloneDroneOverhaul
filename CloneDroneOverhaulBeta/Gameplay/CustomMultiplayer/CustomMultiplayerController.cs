@@ -62,7 +62,6 @@ namespace CDOverhaul.CustomMultiplayer
                     OverhaulEventsController.DispatchEvent(LobbyJoinFailEvent);
                     return;
                 }
-                _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
 
                 InitializeLobbyData((CSteamID)t.m_ulSteamIDLobby);
                 InitializeWorld();
@@ -117,6 +116,8 @@ namespace CDOverhaul.CustomMultiplayer
             {
                 LobbyID = lobbyId
             };
+
+            _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
         }
 
         public void ResetLobby()

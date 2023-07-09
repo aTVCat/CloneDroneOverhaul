@@ -17,6 +17,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib;
+using CDOverhaul.BuiltIn.AdditionalContent;
 
 namespace CDOverhaul
 {
@@ -95,8 +98,6 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulDiscordController>();
             _ = OverhaulController.AddController<CustomMultiplayerController>();
 
-            _ = OverhaulController.AddController<AdditionalContentController>();
-
             _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 
             OverhaulGraphicsController.Initialize();
@@ -169,11 +170,15 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<AdvancedPhotomodeController>();
             _ = OverhaulController.AddController<ArenaOverhaulController>();
 
+            _ = OverhaulController.AddController<AdditionalContentController>();
+
             OverhaulController.GetController<WeaponSkinsController>().AddSkins();
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();
             OverhaulController.GetController<PetsController>().AddPets();
 
             OverhaulController.GetController<LevelEditorFixes>().AddUIs();
+
+            _ = OverhaulController.AddController<MoreSkyboxesController>();
 
             OverhaulSettingsController.CreateHUD();
             OverhaulLocalizationController.Initialize();
@@ -280,6 +285,15 @@ namespace CDOverhaul
                 exception = exc;
                 return false;
             }
+            return true;
+        }
+
+        public static bool UnZipFile(string path, string extractDirectory)
+        {
+            if (!File.Exists(path))
+                return false;
+
+            new FastZip().ExtractZip(path, extractDirectory, null);
             return true;
         }
 

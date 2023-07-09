@@ -446,6 +446,7 @@
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeController.cs" />
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSettingAttribute.cs" />
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSettings.cs" />
+    <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeRequireContentAttribute.cs" />
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSliderParametersAttribute.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildController.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildSequence.cs" />
@@ -480,6 +481,8 @@
     <Compile Include="HUD\OverhaulUIPanelScaler.cs" />
     <Compile Include="HUD\Tutorial\OverhaulTutorialUI.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentController.cs" />
+    <Compile Include="Internal\AdditonalContent\AdditionalContentLoader.cs" />
+    <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Management\DevTools\OverhaulJsonEditor.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />

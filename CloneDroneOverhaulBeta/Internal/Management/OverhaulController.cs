@@ -74,8 +74,8 @@ namespace CDOverhaul
         {
             Transform transform = transformOverride ?? s_ControllersGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
-            component.InitializeInternal();
             s_ControllersList.Add(component);
+            component.InitializeInternal();
             return component;
         }
 

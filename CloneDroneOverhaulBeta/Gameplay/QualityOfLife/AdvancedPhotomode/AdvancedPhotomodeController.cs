@@ -9,6 +9,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public class AdvancedPhotomodeController : OverhaulController
     {
+        public const string PhotoModeSettingUpdateEvent = "AdvancedPhotomode.SettingUpdate";
+
         public static AdvancedPhotomodeController Instance;
 
         public static bool IsAdvancedModeEnabled => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsPhotoModeOverhaulEnabled;
@@ -130,6 +132,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
                         mainAttribute.Field = currentField;
                         mainAttribute.SliderParameters = currentField.GetCustomAttribute<AdvancedPhotomodeSliderParametersAttribute>();
+                        mainAttribute.ContentParameters = currentField.GetCustomAttribute<AdvancedPhotomodeRequireContentAttribute>();
                         s_AllSettings.Add(mainAttribute);
 
                         fieldIndex++;

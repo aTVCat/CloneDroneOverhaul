@@ -261,6 +261,24 @@ namespace CDOverhaul
             return false;
         }
 
+        public static UnityEngine.Object[] GetAllObjects(in string assetBundleName)
+        {
+            if (!HasLoadedAssetBundle(assetBundleName))
+                return Array.Empty<UnityEngine.Object>();
+
+            AssetBundle bundle = m_LoadedAssetBundles[assetBundleName];
+            return bundle.LoadAllAssets();
+        }
+
+        public static T[] GetAllObjects<T>(in string assetBundleName) where T : UnityEngine.Object
+        {
+            if (!HasLoadedAssetBundle(assetBundleName))
+                return Array.Empty<T>();
+
+            AssetBundle bundle = m_LoadedAssetBundles[assetBundleName];
+            return bundle.LoadAllAssets<T>();
+        }
+
         public static AssetLoadHandler GetAssetAsync(in string assetBundle, in string assetName, Action<AssetLoadHandler> doneCallback)
         {
             if (doneCallback == null || IsLoadingAssetBundle(assetBundle) || !HasLoadedAssetBundle(assetBundle))

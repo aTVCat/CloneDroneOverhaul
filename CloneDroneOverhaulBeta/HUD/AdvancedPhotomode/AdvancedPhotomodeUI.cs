@@ -50,6 +50,8 @@ namespace CDOverhaul.HUD
 
         public void Show()
         {
+            AdvancedPhotomodeSettings.SkyboxMaterial = RenderSettings.skybox;
+
             base.gameObject.SetActive(true);
             SetPanelActive(true);
 
@@ -59,6 +61,7 @@ namespace CDOverhaul.HUD
                 m_HasPopulatedSettings = true;
             }
             OverhaulGraphicsController.PatchAllCameras();
+            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void Hide()
@@ -66,6 +69,12 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(false);
             ShowCursor = false;
             OverhaulGraphicsController.PatchAllCameras();
+            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+
+            if (AdvancedPhotomodeSettings.SkyboxMaterial)
+            {
+                RenderSettings.skybox = AdvancedPhotomodeSettings.SkyboxMaterial;
+            }
         }
 
         public void SetPanelActive(bool value)
