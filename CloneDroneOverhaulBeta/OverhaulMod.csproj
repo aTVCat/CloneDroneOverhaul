@@ -403,11 +403,12 @@
     <Compile Include="Gameplay\Combat\Animations\FirstPersonMoverAnimatorType.cs" />
     <Compile Include="Gameplay\Combat\OverhaulAdvancedCharacterExpansion.cs" />
     <Compile Include="Gameplay\Combat\OverhaulCombatState.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\OverhaulPacket.cs" />
     <Compile Include="Gameplay\DynamicAnimationsTest\OverhaulRobotDynamicAnimator.cs" />
-    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxController.cs" />
-    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxLobby.cs" />
-    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxNetworking.cs" />
-    <Compile Include="Gameplay\MultiplayerSandbox\MultiplayerSandboxWorld.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerController.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerLobby.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerPacketManagement.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerWorld.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfo.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfoController.cs" />
     <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -478,6 +479,7 @@
     <Compile Include="HUD\FullscreenDialogue\OverhaulFullscreenDialogueWindow.cs" />
     <Compile Include="HUD\OverhaulUIPanelScaler.cs" />
     <Compile Include="HUD\Tutorial\OverhaulTutorialUI.cs" />
+    <Compile Include="Internal\AdditonalContent\AdditionalContentController.cs" />
     <Compile Include="Internal\Management\DevTools\OverhaulJsonEditor.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />

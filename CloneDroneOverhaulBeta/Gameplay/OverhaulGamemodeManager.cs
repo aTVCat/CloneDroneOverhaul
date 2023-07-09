@@ -1,4 +1,4 @@
-﻿using CDOverhaul.MultiplayerSandbox;
+﻿using CDOverhaul.CustomMultiplayer;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -7,7 +7,7 @@ namespace CDOverhaul
     {
         private const string GunModID = "ee32ba1b-8c92-4f50-bdf4-400a14da829e";
 
-        public static bool IsMultiplayerSandbox() => MultiplayerSandboxController.Instance && MultiplayerSandboxController.FullInitialization;
+        public static bool IsMultiplayerSandbox() => CustomMultiplayerController.Instance && CustomMultiplayerController.FullInitialization;
 
         public static bool SupportsPersonalization() => true;
         public static bool SupportsOutfits() => !OverhaulVersion.IsUpdate2 && SupportsPersonalization();

@@ -4,18 +4,18 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace CDOverhaul.MultiplayerSandbox
+namespace CDOverhaul.CustomMultiplayer
 {
-    public static class MultiplayerSandboxNetworking
+    public static class CustomMultiplayerPacketManagement
     {
         public static int FixedFrames;
 
-        public static void SendToEveryone(this Packet packet)
+        public static void SendToEveryone(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
         {
             if (!CheckPacket(packet, out byte[] array))
                 return;
 
-            MultiplayerSandboxLobby lobby = MultiplayerSandboxController.Instance.Lobby;
+            CustomMultiplayerLobby lobby = CustomMultiplayerController.Lobby;
             CSteamID[] users = lobby.GetLobbyMemberSteamIDs();
             int all = lobby.GetMemberCount();
             int index = 0;
@@ -28,17 +28,17 @@ namespace CDOverhaul.MultiplayerSandbox
                     continue;
                 }
 
-                packet.SendTo(steamID, array);
+                packet.SendTo(steamID, array, sendType);
                 index++;
             } while (index < all);
         }
 
-        public static void SendToOthers(this Packet packet)
+        public static void SendToOthers(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
         {
             if (!CheckPacket(packet, out byte[] array))
                 return;
 
-            MultiplayerSandboxLobby lobby = MultiplayerSandboxController.Instance.Lobby;
+            CustomMultiplayerLobby lobby = CustomMultiplayerController.Lobby;
             CSteamID owner = SteamUser.GetSteamID();
             CSteamID[] users = lobby.GetLobbyMemberSteamIDs();
             int all = lobby.GetMemberCount();
@@ -52,33 +52,33 @@ namespace CDOverhaul.MultiplayerSandbox
                     continue;
                 }
 
-                packet.SendTo(steamID, array);
+                packet.SendTo(steamID, array, sendType);
                 index++;
             } while (index < all);
         }
 
-        public static void SendToHost(this Packet packet)
+        public static void SendToHost(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
         {
             if (!CheckPacket(packet, out byte[] array))
                 return;
 
-            CSteamID cSteamID = MultiplayerSandboxController.Instance.Lobby.GetLobbyOwner();
-            packet.SendTo(cSteamID, array);
+            CSteamID cSteamID = CustomMultiplayerController.Lobby.GetLobbyOwner();
+            packet.SendTo(cSteamID, array, sendType);
         }
 
-        public static void SendTo(this Packet packet, CSteamID steamID, byte[] data)
+        public static void SendTo(this OverhaulPacket packet, CSteamID steamID, byte[] data, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
         {
             if (data.IsNullOrEmpty() && !CheckPacket(packet, out data))
                 return;
 
-            _ = SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, packet.GetSendType(), packet.GetChannel());
+            _ = SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, sendType, packet.GetChannel());
         }
 
-        public static bool CheckPacket(this Packet packet, out byte[] bytes)
+        public static bool CheckPacket(this OverhaulPacket packet, out byte[] bytes)
         {
             bytes = null;
 
-            if (!MultiplayerSandboxController.FullInitialization)
+            if (!CustomMultiplayerController.FullInitialization)
                 return false;
 
             if (packet == null)
@@ -111,7 +111,7 @@ namespace CDOverhaul.MultiplayerSandbox
 
                     if (!array.IsNullOrEmpty())
                     {
-                        Packet receivedPacket = Packet.GetPacket(array);
+                        OverhaulPacket receivedPacket = OverhaulPacket.GetPacket(array);
                         receivedPacket.Handle();
                     }
                     else
@@ -119,41 +119,6 @@ namespace CDOverhaul.MultiplayerSandbox
                         Debug.LogWarning("[CDO_MS] We got empty byte array!");
                         continue;
                     }
-                }
-            }
-        }
-
-        [Serializable]
-        public class Packet
-        {
-            public ulong SteamID;
-
-            public virtual void Handle()
-            {
-                Debug.Log("Houston, we got a packet with number 1!!");
-            }
-
-            public virtual EP2PSend GetSendType() => EP2PSend.k_EP2PSendUnreliable;
-            public virtual int GetChannel() => 0;
-
-            public byte[] GetBytes()
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    bf.Serialize(ms, this);
-                    return ms.ToArray();
-                }
-            }
-
-            public static Packet GetPacket(byte[] array)
-            {
-                using (MemoryStream memStream = new MemoryStream())
-                {
-                    BinaryFormatter binForm = new BinaryFormatter();
-                    memStream.Write(array, 0, array.Length);
-                    _ = memStream.Seek(0, SeekOrigin.Begin);
-                    return (Packet)binForm.Deserialize(memStream);
                 }
             }
         }

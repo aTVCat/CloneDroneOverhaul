@@ -80,15 +80,10 @@ namespace CDOverhaul.DevTools
             if (!OverhaulVersion.IsDebugBuild)
                 return;
 
-            if (!CharacterTracker.Instance.GetPlayer())
-                return;
-
-            if (Input.GetKeyDown(KeyCode.Alpha7))
+            if (!IsUIActive && Input.GetKeyDown(KeyCode.Alpha7))
             {
-                if (!IsUIActive && !Cursor.visible)
-                {
+                if (ErrorManager.Instance.HasCrashed() || !GameModeManager.IsInLevelEditor())
                     SetEverythingActive(true);
-                }
             }
 
             if (IsUIActive)

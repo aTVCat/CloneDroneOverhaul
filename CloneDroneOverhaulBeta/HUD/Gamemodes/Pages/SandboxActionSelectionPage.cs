@@ -1,4 +1,4 @@
-﻿using CDOverhaul.MultiplayerSandbox;
+﻿using CDOverhaul.CustomMultiplayer;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnCreateLobbyClick()
         {
             FullscreenWindow.GamemodesUI.Hide();
-            MultiplayerSandboxController.Instance.CreateLobby();
+            CustomMultiplayerController.Instance.CreateLobby();
         }
 
         public void OnJoinLobbyClick()

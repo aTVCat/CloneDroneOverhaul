@@ -1,6 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.MultiplayerSandbox;
+using CDOverhaul.CustomMultiplayer;
 using ModLibrary;
 using Steamworks;
 using System;
@@ -254,8 +254,7 @@ namespace CDOverhaul
 
         public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
         {
-            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil
-&& MultiplayerSandboxController.Instance.Lobby.GetLobbyOwner() == steamId;
+            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && CustomMultiplayerController.Lobby.GetLobbyOwner() == steamId;
         }
 
         public static bool IsExcluded(this CSteamID steamID)

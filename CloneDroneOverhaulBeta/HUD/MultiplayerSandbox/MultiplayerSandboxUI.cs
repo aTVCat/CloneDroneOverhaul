@@ -1,4 +1,4 @@
-﻿namespace CDOverhaul.MultiplayerSandbox
+﻿namespace CDOverhaul.CustomMultiplayer
 {
     public class MultiplayerSandboxUI : OverhaulUI
     {

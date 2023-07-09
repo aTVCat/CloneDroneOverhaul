@@ -20,7 +20,7 @@ namespace CDOverhaul.HUD.Gamemodes
             m_PlayButton = moddedObject.GetObject<Button>(1);
             m_PlayButton.onClick.AddListener(OnPlayClicked);
             m_PlaySandboxButton = moddedObject.GetObject<Button>(3);
-            //m_PlaySandboxButton.onClick.AddListener(OnSandboxClick);
+            m_PlaySandboxButton.onClick.AddListener(OnSandboxClick);
             m_RelayToggle = moddedObject.GetObject<Toggle>(6);
             m_RelayToggle.onValueChanged.AddListener(OnRelayToggleClick);
         }

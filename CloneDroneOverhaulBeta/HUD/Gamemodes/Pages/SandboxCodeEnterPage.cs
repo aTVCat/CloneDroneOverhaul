@@ -1,4 +1,4 @@
-﻿using CDOverhaul.MultiplayerSandbox;
+﻿using CDOverhaul.CustomMultiplayer;
 using Steamworks;
 
 namespace CDOverhaul.HUD.Gamemodes
@@ -9,12 +9,12 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Initialize(fullscreenWindow);
 
-            _ = OverhaulEventsController.AddEventListener(MultiplayerSandboxController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            _ = OverhaulEventsController.AddEventListener(CustomMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener(MultiplayerSandboxController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            OverhaulEventsController.RemoveEventListener(CustomMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override async void TryJoinLobby()
@@ -26,7 +26,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 SetInputFieldInteractable(true);
                 return;
             }
-            MultiplayerSandboxController.Instance.JoinLobby((CSteamID)lobbyId);
+            CustomMultiplayerController.Instance.JoinLobby((CSteamID)lobbyId);
         }
 
         private void onFailedToJoinLobby()

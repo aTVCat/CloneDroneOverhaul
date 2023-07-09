@@ -1,8 +1,8 @@
 ﻿using Steamworks;
 
-namespace CDOverhaul.MultiplayerSandbox
+namespace CDOverhaul.CustomMultiplayer
 {
-    public class MultiplayerSandboxLobby
+    public class CustomMultiplayerLobby
     {
         public CSteamID LobbyID
         {

@@ -1,9 +1,9 @@
 ﻿using ModLibrary;
 using UnityEngine;
 
-namespace CDOverhaul.MultiplayerSandbox
+namespace CDOverhaul.CustomMultiplayer
 {
-    public class MultiplayerSandboxWorld
+    public class CustomMultiplayerWorld
     {
         public void StartGameInUsualWorld()
         {

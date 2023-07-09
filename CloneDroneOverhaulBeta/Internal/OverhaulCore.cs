@@ -9,7 +9,7 @@ using CDOverhaul.Graphics;
 using CDOverhaul.Graphics.ArenaOverhaul;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
-using CDOverhaul.MultiplayerSandbox;
+using CDOverhaul.CustomMultiplayer;
 using CDOverhaul.Patches;
 using System;
 using System.Collections;
@@ -93,7 +93,9 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
-            _ = OverhaulController.AddController<MultiplayerSandboxController>();
+            _ = OverhaulController.AddController<CustomMultiplayerController>();
+
+            _ = OverhaulController.AddController<AdditionalContentController>();
 
             _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 

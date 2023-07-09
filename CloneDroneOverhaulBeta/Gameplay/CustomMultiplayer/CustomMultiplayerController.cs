@@ -1,18 +1,31 @@
 ﻿using Steamworks;
 using UnityEngine;
 
-namespace CDOverhaul.MultiplayerSandbox
+namespace CDOverhaul.CustomMultiplayer
 {
-    public class MultiplayerSandboxController : OverhaulController
+    public class CustomMultiplayerController : OverhaulController
     {
         public const string LobbyJoinFailEvent = "OverhaulMultiplayer.LobbyJoinFail";
 
-        public static MultiplayerSandboxController Instance;
+        public static CustomMultiplayerController Instance
+        {
+            get;
+            private set;
+        }
 
-        public MultiplayerSandboxLobby Lobby;
-        public MultiplayerSandboxWorld World;
+        public static CustomMultiplayerLobby Lobby
+        {
+            get;
+            private set;
+        }
 
-        public static bool FullInitialization => Instance && Instance.Lobby != null && Instance.World != null;
+        public static  CustomMultiplayerWorld World
+        {
+            get;
+            private set;
+        }
+
+        public static bool FullInitialization => Instance && Lobby != null && World != null;
 
         public override void Initialize()
         {
@@ -21,7 +34,7 @@ namespace CDOverhaul.MultiplayerSandbox
 
         private void FixedUpdate()
         {
-            MultiplayerSandboxNetworking.FixedFrames++;
+            CustomMultiplayerPacketManagement.FixedFrames++;
         }
 
         private void LateUpdate()
@@ -29,11 +42,10 @@ namespace CDOverhaul.MultiplayerSandbox
             if (!FullInitialization)
                 return;
 
-            MultiplayerSandboxNetworking.HandleIncomingPackets();
+            CustomMultiplayerPacketManagement.HandleIncomingPackets();
+
             if (Input.GetKeyDown(KeyCode.I))
-            {
                 Lobby.LobbyID.ToString().CopyToClipboard();
-            }
         }
 
         /// <summary>
@@ -42,12 +54,12 @@ namespace CDOverhaul.MultiplayerSandbox
         public void CreateLobby(bool isPublic = false, int maxPlayers = 10)
         {
             SteamAPICall_t apiCall = SteamMatchmaking.CreateLobby(isPublic ? ELobbyType.k_ELobbyTypePublic : ELobbyType.k_ELobbyTypeFriendsOnly, maxPlayers);
-
             CallResult<LobbyCreated_t> apiCallResult = CallResult<LobbyCreated_t>.Create(delegate (LobbyCreated_t t, bool a)
             {
                 if (t.m_eResult != EResult.k_EResultOK)
                 {
                     Debug.LogWarning("[CDO_MS] Cannot create lobby!");
+                    OverhaulEventsController.DispatchEvent(LobbyJoinFailEvent);
                     return;
                 }
                 _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
@@ -66,7 +78,6 @@ namespace CDOverhaul.MultiplayerSandbox
         public void JoinLobby(CSteamID lobbyId)
         {
             SteamAPICall_t apiCall = SteamMatchmaking.JoinLobby(lobbyId);
-
             CallResult<LobbyEnter_t> apiCallResult = CallResult<LobbyEnter_t>.Create(delegate (LobbyEnter_t t, bool a)
             {
                 if (t.m_ulSteamIDLobby == (ulong)CSteamID.Nil || (EChatRoomEnterResponse)t.m_EChatRoomEnterResponse != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
@@ -80,6 +91,7 @@ namespace CDOverhaul.MultiplayerSandbox
                 if (version != OverhaulVersion.ModVersion.ToString())
                 {
                     LeaveLobby((CSteamID)t.m_ulSteamIDLobby);
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Version mismatch!", string.Format("The server is on {0} version of the mod (You're on {1})", version, OverhaulVersion.ModVersion.ToString()), 300, 175, OverhaulFullscreenDialogueWindow.IconType.Warn);
                     return;
                 }
 
@@ -93,9 +105,7 @@ namespace CDOverhaul.MultiplayerSandbox
         public void LeaveLobby(CSteamID lobbyId)
         {
             SteamMatchmaking.LeaveLobby(lobbyId);
-
-            Lobby = null;
-            World = null;
+            ResetAll();
         }
 
         public void InitializeLobbyData(CSteamID lobbyId)
@@ -103,16 +113,32 @@ namespace CDOverhaul.MultiplayerSandbox
             if (Lobby != null)
                 return;
 
-            Lobby = new MultiplayerSandboxLobby
+            Lobby = new CustomMultiplayerLobby
             {
                 LobbyID = lobbyId
             };
         }
 
+        public void ResetLobby()
+        {
+            Lobby = null;
+        }
+
         public void InitializeWorld()
         {
-            World = new MultiplayerSandboxWorld();
+            World = new CustomMultiplayerWorld();
             World.StartGameInUsualWorld();
+        }
+
+        public void ResetWorld()
+        {
+            World = null;
+        }
+
+        public void ResetAll()
+        {
+            ResetLobby();
+            ResetWorld();
         }
     }
 }
