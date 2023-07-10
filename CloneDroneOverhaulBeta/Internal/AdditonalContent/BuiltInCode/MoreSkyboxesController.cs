@@ -156,7 +156,7 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
                 return;
             }
 
-            if (levelDescription == null)
+            if (levelDescription == null || string.IsNullOrEmpty(levelDescription.PrefabName))
                 return;
 
             string levelId = string.Empty;
