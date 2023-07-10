@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.HUD;
+using HarmonyLib;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -15,6 +16,12 @@ namespace CDOverhaul.Patches
                 string report = "**" + logString + "**\n" + stackTrace;
                 if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
                     return false;
+
+                OverhaulCrashScreen crashScreen = OverhaulCrashScreen.Instance;
+                if (crashScreen)
+                {
+                    crashScreen.Show(logString, stackTrace);
+                }
 
                 string gamemode = string.Empty;
                 string gameVer = string.Empty;

@@ -474,6 +474,7 @@
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIEntryDisplay.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUITogglePatcher.cs" />
     <Compile Include="HUD\Boot\OverhaulBootUI.cs" />
+    <Compile Include="HUD\CrashScreen\OverhaulCrashScreen.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulDebugActionsEntryDisplay.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulJsonEditorEntryDisplay.cs" />
     <Compile Include="HUD\FirstUseSetup\TwoButtonsToggle.cs" />
@@ -566,6 +567,7 @@
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
+    <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\HammerImpactMeleeArea_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />

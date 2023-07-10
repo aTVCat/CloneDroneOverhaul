@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized)
                 return;
 
-            if (!__instance.Owner)
+            if (GameModeManager.IsMultiplayer() || !__instance.Owner)
                 return;
 
             HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
