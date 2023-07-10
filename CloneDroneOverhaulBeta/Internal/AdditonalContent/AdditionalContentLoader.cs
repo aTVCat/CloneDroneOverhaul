@@ -23,7 +23,7 @@ namespace CDOverhaul
             string[] zippedFiles = controller.GetZipFiles();
             if (!zippedFiles.IsNullOrEmpty())
             {
-                unZipFiles(zippedFiles, controller);
+                unZipFiles(zippedFiles, true, controller);
             }
 
             string[] directories = controller.GetContentDirectories();
@@ -50,6 +50,9 @@ namespace CDOverhaul
             }
             string uniqueIdFileContent = OverhaulCore.ReadText(uniqueIdFilePath);
 
+            if (s_LoadedContent.Contains(uniqueIdFileContent))
+                return;
+
             string assetsToLoadPath = directoryPath + "/AssetsToLoad.txt";
             if (!File.Exists(assetsToLoadPath))
             {
@@ -72,13 +75,14 @@ namespace CDOverhaul
 
         public static bool HasLoadedContent(string uniqueId) => s_LoadedContent.Contains(uniqueId);
 
-        private static void unZipFiles(string[] files, AdditionalContentController controller)
+        private static void unZipFiles(string[] files, bool deleteInitialFiles, AdditionalContentController controller)
         {
             int index = 0;
             do
             {
                 string path = files[index];
-                OverhaulCore.UnZipFile(path, controller.GetContentDirectory());
+                OverhaulCore.UnZipFile(path, controller.GetContentDirectory() + path.Substring(path.LastIndexOf('/') + 1).Replace(".zip", string.Empty));
+                if (deleteInitialFiles) File.Delete(path);
                 index++;
             } while (index < files.Length);
         }
