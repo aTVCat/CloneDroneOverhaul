@@ -30,7 +30,7 @@ namespace CDOverhaul
         /// <summary>
         /// Categories, sections and settings to be hidden in settings menu
         /// </summary>
-        private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins" };
+        private static readonly List<string> m_HiddenEntries = new List<string>() { "Player", "WeaponSkins", "Graphics.Rendering" };
 
         /// <summary>
         /// Loaded images from Assets/Settings/Ico directory

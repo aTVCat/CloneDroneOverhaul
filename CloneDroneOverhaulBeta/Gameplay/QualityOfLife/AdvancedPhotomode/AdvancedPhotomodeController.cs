@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using CDOverhaul.Graphics;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
 {
@@ -70,6 +71,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             PhotoManager = PhotoManager.Instance;
             PhotoModeControls = GameUIRoot.Instance.PhotoModeControlsDisplay;
 
+            _ = OverhaulEventsController.AddEventListener(PhotoModeSettingUpdateEvent, updateSettings);
             _ = OverhaulEventsController.AddEventListener("EnteredPhotoMode", onEnteredPhotomode, true);
             _ = OverhaulEventsController.AddEventListener("ExitedPhotoMode", onExitedPhotomode, true);
 
@@ -169,6 +171,19 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 return;
 
             NewUI.Hide();
+        }
+
+        private void updateSettings()
+        {
+            if (!PhotoManager.IsInPhotoMode())
+                return;
+
+            RenderSettings.fog = AdvancedPhotomodeSettings.OverrideSettings ? AdvancedPhotomodeSettings.Fog : AdvancedPhotomodeSettings.FogEnabled;
+            RenderSettings.fogStartDistance = AdvancedPhotomodeSettings.OverrideSettings ? AdvancedPhotomodeSettings.FogStart : AdvancedPhotomodeSettings.FogStartDistance;
+            RenderSettings.fogEndDistance = AdvancedPhotomodeSettings.OverrideSettings ? AdvancedPhotomodeSettings.FogEnd : AdvancedPhotomodeSettings.FogEndDistance;
+            RenderSettings.fogColor = AdvancedPhotomodeSettings.OverrideSettings ? new HSBColor(AdvancedPhotomodeSettings.FogColH, AdvancedPhotomodeSettings.FogColS, AdvancedPhotomodeSettings.FogColB).ToColor() : AdvancedPhotomodeSettings.FogColor;
+
+            OverhaulGraphicsController.PatchAllCameras();
         }
     }
 }

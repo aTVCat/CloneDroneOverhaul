@@ -222,7 +222,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             if(Time.unscaledTime >= m_TimeToRefreshVanillaArenaParts)
             {
                 m_TimeToRefreshVanillaArenaParts = Time.unscaledTime + 5f;
-                PatchVanillaParts(!GameModeManager.IsMultiplayer());
+                PatchVanillaParts(!GameModeManager.IsCoop());
             }
             Vector3 position = m_GarbageDoorTransform.position;
             position.x = -1.225f;

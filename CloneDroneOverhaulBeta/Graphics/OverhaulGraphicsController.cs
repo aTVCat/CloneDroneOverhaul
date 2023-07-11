@@ -18,8 +18,8 @@ namespace CDOverhaul.Graphics
 
         #region Settings
 
-        [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
-        public static bool DefferedRenderer;
+        [OverhaulSettingAttribute("Graphics.Rendering.Deferred renderingV2", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
+        public static bool DeferredRenderer;
 
         [OverhaulSetting("Graphics.Post effects.Set vanilla settings", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent SetBloomVanilla = new OverhaulSettingWithEvent();
@@ -180,7 +180,7 @@ namespace CDOverhaul.Graphics
                 return;
 
             if (!camera.name.Equals("TitleScreenLogoCamera"))
-                camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+                camera.renderingPath = !DeferredRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
 
             PatchBloom(camera.GetComponent<Bloom>());
             PatchAmplifyColor(camera.GetComponent<AmplifyColorBase>());
@@ -325,7 +325,7 @@ namespace CDOverhaul.Graphics
             effect.Bias = 0.2f;
             effect.SampleCount = dontOverrideSettings ? (AmplifyOcclusion.SampleCountLevel)AOSampleCount : (AmplifyOcclusion.SampleCountLevel)AdvancedPhotomodeSettings.SSAOSampleCount;
             effect.Intensity = dontOverrideSettings ? AOIntensity : AdvancedPhotomodeSettings.SSAOIntensity;
-            effect.ApplyMethod = DefferedRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
+            effect.ApplyMethod = DeferredRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
             effect.enabled = dontOverrideSettings ? AOEnabled : AdvancedPhotomodeSettings.SSAOEnable;
 
             // Remove destroyed instances

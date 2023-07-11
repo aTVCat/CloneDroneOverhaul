@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.DevTools;
+using CDOverhaul.HUD;
 using CDOverhaul.NetworkAssets;
 using ModBotWebsiteAPI;
 using System;
@@ -53,7 +54,7 @@ namespace CDOverhaul
 
         public static void CheckForUpdates()
         {
-            if (HasCheckedVersion)
+            if (HasCheckedVersion || !ModSetupWindow.HasSetTheModUp)
                 return;
 
             HasCheckedVersion = true;

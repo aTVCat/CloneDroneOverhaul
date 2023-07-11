@@ -83,7 +83,7 @@ namespace CDOverhaul.HUD
         {
             ToggleReference.OnDeselect(null);
             SettingReference.Field.SetValue(null, value);
-            OverhaulGraphicsController.PatchAllCameras();
+            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void SetSliderVisible(bool value)
