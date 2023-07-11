@@ -8,7 +8,7 @@ namespace CDOverhaul.Graphics
         private Camera[] m_AllCameras;
         private Camera m_MainCamera;
 
-        public bool IsMainCameraNull => !IsDisposedOrDestroyed() && m_MainCamera != null;
+        public bool IsMainCameraNull => !m_MainCamera;
         public static Camera MechCameraPrefab => PlayerCameraManager.Instance.MechCameraTransformPrefab.GetComponentInChildren<Camera>();
         public static Camera BattleCruiserCameraPrefab => PlayerCameraManager.Instance.BattleCruiserCameraPrefab.GetComponentInChildren<Camera>();
 

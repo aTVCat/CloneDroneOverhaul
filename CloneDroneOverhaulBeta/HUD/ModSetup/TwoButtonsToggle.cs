@@ -23,7 +23,7 @@ namespace CDOverhaul.HUD
             private set;
         }
 
-        public TwoButtonsToggle(ModdedObject moddedObject, int off, int on, Action offAction, Action onAction, Func<bool> setStateFunc)
+        public TwoButtonsToggle(ModdedObject moddedObject, int off, int on, Action offAction, Action onAction, Func<bool> setStateFunc, Func<bool> setInteractableFunc = null)
         {
             StateSetOnAction = onAction;
             OnButton = moddedObject.GetObject<Button>(on);
@@ -38,6 +38,13 @@ namespace CDOverhaul.HUD
             if (setStateFunc != null)
             {
                 SetState(setStateFunc(), false);
+            }
+
+            if(setInteractableFunc != null)
+            {
+                bool result = setInteractableFunc();
+                OnButton.interactable = result;
+                OffButton.interactable = result;
             }
         }
 

@@ -1,13 +1,15 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Device;
+using CDOverhaul.Graphics;
 using CDOverhaul.Patches;
+using InjectionClasses;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class FirstUseSetupUI : OverhaulUI
+    public class ModSetupWindow : OverhaulUI
     {
-        public const string SettingPath = "Player.Mod.HasConfiguredModV5";
+        public const string SettingPath = "Player.Mod.HasConfiguredModV6";
 
         [OverhaulSetting(SettingPath, false, true)]
         public static bool HasSetTheModUp;
@@ -41,7 +43,9 @@ namespace CDOverhaul.HUD
             m_ScrollRect = MyModdedObject.GetObject<ScrollRect>(22);
             m_ScrollRect.verticalNormalizedPosition = 1f;
 
-            m_SSAOToggle = new TwoButtonsToggle(MyModdedObject, 2, 1, SetSSAODisabled, SetSSAOEnabled, GetSSAOEnabled);
+            MyModdedObject.GetObject<Transform>(23).gameObject.AddComponent<RecommendationTooltip>().Initialize(Recommendations.GetSSAORecommendation(), Recommendations.GetSSAORecommendationString());
+
+            m_SSAOToggle = new TwoButtonsToggle(MyModdedObject, 2, 1, SetSSAODisabled, SetSSAOEnabled, GetSSAOEnabled, GetSSAOSupported);
             m_BloomOverhaulToggle = new TwoButtonsToggle(MyModdedObject, 4, 3, SetBloomOverhaulDisabled, SetBloomOverhaulEnabled, GetBloomOverhaulEnabled);
             m_VignetteToggle = new TwoButtonsToggle(MyModdedObject, 6, 5, SetVignetteDisabled, SetVignetteEnabled, GetVignetteEnabled);
             m_ChromaticAberrationToggle = new TwoButtonsToggle(MyModdedObject, 8, 7, SetCADisabled, SetCAEnabled, GetCAEnabled);
@@ -61,7 +65,7 @@ namespace CDOverhaul.HUD
             m_DefaultAmpColPreset = MyModdedObject.GetObject<Button>(11);
             m_DefaultAmpColPreset.onClick.AddListener(SetDefaultAmpColPreset);
 
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled || FirstUseSetupUI.HasSetTheModUp)
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled || ModSetupWindow.HasSetTheModUp)
                 return;
 
             ArenaCameraManager.Instance.ArenaCameraTransform.position = new Vector3(-43, 15, -3);
@@ -102,9 +106,13 @@ namespace CDOverhaul.HUD
 
         #region SSAO
 
+        public bool GetSSAOSupported()
+        {
+            return Recommendations.GetSSAORecommendation() != RecommendationLevel.Unsupported;
+        }
         public bool GetSSAOEnabled()
         {
-            return OverhaulGraphicsController.AOEnabled;
+            return GetSSAOSupported() && OverhaulGraphicsController.AOEnabled;
         }
         public void SetSSAOEnabled()
         {

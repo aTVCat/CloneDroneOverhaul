@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Device;
+using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.HUD;
 using OverhaulAPI;
@@ -302,7 +303,7 @@ namespace CDOverhaul.Graphics
 
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
         {
-            if (IgnoreCamera(camera) || camera != Camera.main)
+            if (IgnoreCamera(camera) || camera != Camera.main || Recommendations.GetSSAORecommendation() == RecommendationLevel.Unsupported)
                 return;
 
             AmplifyOcclusionEffect effect = camera.GetComponent<AmplifyOcclusionEffect>();

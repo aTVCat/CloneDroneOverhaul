@@ -8,10 +8,12 @@ namespace CDOverhaul.Graphics.Robots
 {
     public class SeveredBodyPartSparks : OverhaulBehaviour
     {
+        private OverhaulCameraController m_CameraController;
         private float m_TimeToSpark;
 
         private void Start()
         {
+            m_CameraController = OverhaulController.GetController<OverhaulCameraController>();
             setTime();
         }
 
@@ -31,6 +33,12 @@ namespace CDOverhaul.Graphics.Robots
 
         private void spark()
         {
+            if (!m_CameraController || m_CameraController.IsMainCameraNull)
+                return;
+
+            if (Vector3.Distance(m_CameraController.GetMainCamera().transform.position, base.transform.position) > 60f)
+                return;
+
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             Vector3 vector3 = base.transform.position;
             vector3.x += UnityEngine.Random.Range(-1f, 1f);

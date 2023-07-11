@@ -20,6 +20,7 @@ using UnityEngine;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib;
 using CDOverhaul.BuiltIn.AdditionalContent;
+using CDOverhaul.Device;
 
 namespace CDOverhaul
 {
@@ -78,6 +79,7 @@ namespace CDOverhaul
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
 
+            DeviceSpecifics.Initialize();
             OverhaulObjectStateModder.Reset();
             EnableCursorController.Reset();
 
