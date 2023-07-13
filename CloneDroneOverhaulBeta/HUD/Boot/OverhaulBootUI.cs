@@ -97,10 +97,9 @@ namespace CDOverhaul
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play(string.Empty);
-            if (OverhaulVersionLabel.Instance != null)
+            if (OverhaulVersionLabel.Instance)
             {
-                OverhaulVersionLabel.Instance.RefreshVersionLabel();
-                OverhaulVersionLabel.Instance.ShowDiscordPanel();
+                OverhaulVersionLabel.Instance.Refresh();
             }
         }
 

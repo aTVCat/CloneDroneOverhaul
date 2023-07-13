@@ -13,7 +13,10 @@ namespace CDOverhaul.Patches
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                string report = "**" + logString + "**\n" + stackTrace;
+                string report = "```" + logString + "\n" + stackTrace + "```";
+                if (report.Contains("_data is null;"))
+                    OverhaulCrashPreventionController.dataIsNUllError = true;
+
                 if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
                     return false;
 

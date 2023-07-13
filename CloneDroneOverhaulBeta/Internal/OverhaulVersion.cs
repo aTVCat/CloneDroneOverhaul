@@ -33,22 +33,20 @@ namespace CDOverhaul
                 return s_AssemblyVersion;
             }
         }
-        public static string GetBuildString() => 'v' + ModVersion.ToString() + DebugString;
+        public static string GetBuildString() => 'v' + ModVersion.ToString();
 
         /// <summary>
         /// The version of the game the mod will definitely work fine
         /// </summary>
         public const string TargetGameVersion = "1.5.0.18";
 
-        public static readonly string Watermark = "Clone Drone Overhaul " + GetBuildString();
+        public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
         public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();
 
 #if DEBUG
         public const bool IsDebugBuild = true;
-        public const string DebugString = " [Debug]";
 #else
         public const bool IsDebugBuild = false;
-        public const string DebugString = "";
 #endif
 
         private static readonly string[] s_BlacklistedVersions = new string[]

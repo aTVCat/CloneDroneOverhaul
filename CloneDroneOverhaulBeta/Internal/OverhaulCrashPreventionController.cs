@@ -4,6 +4,8 @@ namespace CDOverhaul
 {
     public static class OverhaulCrashPreventionController
     {
+        public static bool dataIsNUllError;
+
         public static bool TryPreventCrash(string crashString)
         {
             if (string.IsNullOrEmpty(crashString))

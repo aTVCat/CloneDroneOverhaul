@@ -220,7 +220,7 @@ namespace CDOverhaul.HUD
 
         public bool GetWatermarkEnabled()
         {
-            return OverhaulVersionLabel.WatermarkEnabled;
+            return OverhaulVersionLabel.EnableWatermarkInGameplay;
         }
         public void SetWatermarkEnabled()
         {
