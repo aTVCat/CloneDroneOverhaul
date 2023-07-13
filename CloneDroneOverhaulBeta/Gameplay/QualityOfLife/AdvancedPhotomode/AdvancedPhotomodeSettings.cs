@@ -41,11 +41,11 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         [AdvancedPhotomodeSetting("Enable", "Fog")]
         public static bool Fog = true;
 
-        [AdvancedPhotomodeSliderParameters(1f, 4000f)]
+        [AdvancedPhotomodeSliderParameters(1f, 2999.9f)]
         [AdvancedPhotomodeSetting("Start Distance", "Fog")]
         public static float FogStart = 100f;
 
-        [AdvancedPhotomodeSliderParameters(1.1f, 4000f)]
+        [AdvancedPhotomodeSliderParameters(1.1f, 3000f)]
         [AdvancedPhotomodeSetting("End Distance", "Fog")]
         public static float FogEnd = 400f;
 

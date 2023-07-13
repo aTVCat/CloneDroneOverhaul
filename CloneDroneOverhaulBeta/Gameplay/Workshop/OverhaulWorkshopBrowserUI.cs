@@ -828,7 +828,6 @@ namespace CDOverhaul.Workshop
             PopulateRanks();
 
             MyModdedObject.GetObject<Transform>(40).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            OverhaulVersionLabel.Instance.Refresh();
         }
 
         public void Hide(bool hiddenBecauseLoading = false)
@@ -837,7 +836,6 @@ namespace CDOverhaul.Workshop
             OverhaulCanvasController.SetCanvasPixelPerfect(true);
             base.gameObject.SetActive(false);
             if (!hiddenBecauseLoading) GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
-            OverhaulVersionLabel.Instance.Refresh();
         }
         public void Hide()
         {

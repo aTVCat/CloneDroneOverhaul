@@ -40,6 +40,8 @@ namespace CDOverhaul
             "CanApplyArmorPiece",
             "MissingMethodException",
             "PlayUpperWithTimeSkipped",
+            "_data is null",
+            "Could not allocate memory"
         };
 
 

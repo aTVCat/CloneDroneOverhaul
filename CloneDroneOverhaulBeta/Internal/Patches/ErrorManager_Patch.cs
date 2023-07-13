@@ -13,9 +13,15 @@ namespace CDOverhaul.Patches
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                string report = "```" + logString + "\n" + stackTrace + "```";
+                string report = "```" + logString + " " + stackTrace;
                 if (report.Contains("_data is null;"))
                     OverhaulCrashPreventionController.dataIsNUllError = true;
+
+                if (!OverhaulCrashPreventionController.couldntAllocateError && report.Contains("Could not allocate memory"))
+                {
+                    OverhaulCrashPreventionController.couldntAllocateError = true;
+                    OverhaulWebhooksController.ExecuteErrorsWebhook(report.Replace("```", string.Empty));
+                }
 
                 if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
                     return false;
@@ -44,7 +50,7 @@ namespace CDOverhaul.Patches
                 if (report.Length > 1400)
                     report = report.Remove(1400);
 
-                report += string.Format("\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
+                report += string.Format("```\r\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
 
                 OverhaulWebhooksController.ExecuteCrashReportsWebhook(report);
             }

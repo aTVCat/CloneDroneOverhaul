@@ -98,9 +98,10 @@ namespace CDOverhaul
             ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play(string.Empty);
             if (OverhaulVersionLabel.Instance)
-            {
                 OverhaulVersionLabel.Instance.Refresh();
-            }
+
+            if (OverhaulCrashPreventionController.dataIsNUllError)
+                OverhaulWebhooksController.ExecuteErrorsWebhook("_data is NULL");
         }
 
         private void playAnimation()

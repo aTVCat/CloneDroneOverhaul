@@ -5,6 +5,7 @@ namespace CDOverhaul
     public static class OverhaulCrashPreventionController
     {
         public static bool dataIsNUllError;
+        public static bool couldntAllocateError;
 
         public static bool TryPreventCrash(string crashString)
         {

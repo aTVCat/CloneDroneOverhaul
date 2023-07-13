@@ -41,6 +41,10 @@ namespace CDOverhaul.HUD.Tooltips
                 GameObject gameObject = tooltip.GetTooltipPrefab();
                 if (gameObject)
                 {
+                    OverhaulUIPanelScaler panelScaler = gameObject.AddComponent<OverhaulUIPanelScaler>();
+                    panelScaler.StartScale = new Vector3(1f, 0f, 1f);
+                    panelScaler.TargetScale = Vector3.one;
+
                     ModdedObject moddedObject = Instantiate(gameObject.GetComponent<ModdedObject>(), m_Container.transform);
                     moddedObject.gameObject.SetActive(true);
 

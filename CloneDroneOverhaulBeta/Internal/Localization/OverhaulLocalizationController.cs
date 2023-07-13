@@ -48,6 +48,15 @@ namespace CDOverhaul
             }
             OverhaulSessionController.SetKey("LoadedTranslations", true);
             loadData();
+
+            if (Error)
+            {
+                OverhaulWebhooksController.ExecuteErrorsWebhook("Localization PostInitialize - Error");
+                return;
+            }
+
+            TryLocalizeHUD();
+            ScheduleEvent();
         }
 
         private static async void loadData()
@@ -93,9 +102,6 @@ namespace CDOverhaul
             m_Data = JsonConvert.DeserializeObject<OverhaulLocalizationData>(task.Result);
             if (m_Data != null) m_Data.RepairFields();
             task.Dispose();*/
-
-            TryLocalizeHUD();
-            ScheduleEvent();
         }
 
         public static async void SaveData()
@@ -146,7 +152,7 @@ namespace CDOverhaul
 
         public static void TryLocalizeHUD()
         {
-            if (m_TryingToLocalizeHUD)
+            if (m_TryingToLocalizeHUD || !SettingsManager.Instance.IsInitialized())
                 return;
 
             _ = StaticCoroutineRunner.StartStaticCoroutine(localizeHUDCoroutine());

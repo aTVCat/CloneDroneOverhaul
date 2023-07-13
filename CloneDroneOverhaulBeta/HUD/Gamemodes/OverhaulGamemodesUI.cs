@@ -41,6 +41,14 @@ namespace CDOverhaul.HUD.Gamemodes
             {
                 ShowWithUI(0);
             });
+            datas[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            datas[1].ClickedCallback.AddListener(delegate
+            {
+                OverhaulTransitionController.DoTransitionWithAction(delegate
+                {
+                    GameUIRoot.Instance.TitleScreenUI.OnPlayEndlessButtonClicked();
+                }, () => CharacterTracker.Instance.GetPlayer(), 0.35f);
+            });
             datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[2].ClickedCallback.AddListener(delegate
             {

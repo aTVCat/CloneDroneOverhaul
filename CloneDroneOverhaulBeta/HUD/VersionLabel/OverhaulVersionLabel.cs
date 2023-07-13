@@ -66,6 +66,7 @@ namespace CDOverhaul.HUD
             _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
         }
 
+
         protected override void OnDisposed()
         {
             base.OnDisposed();
@@ -73,6 +74,14 @@ namespace CDOverhaul.HUD
 
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
             OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
+        }
+
+        private void Update()
+        {
+            if(Time.frameCount % 5 == 0)
+            {
+                Refresh();
+            }
         }
 
         public void Refresh()
