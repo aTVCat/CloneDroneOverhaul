@@ -14,6 +14,7 @@ namespace CDOverhaul.HUD
         private Button m_ExitButton;
 
         private PrefabAndContainer m_EntriesContainer;
+        private PrefabAndContainer m_ActionEntriesContainer;
         private PrefabAndContainer m_CategoryLabelsContainer;
 
         private bool m_HasPopulatedSettings;
@@ -24,6 +25,7 @@ namespace CDOverhaul.HUD
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(exitPhotomode);
             m_EntriesContainer = new PrefabAndContainer(MyModdedObject, 2, 3);
+            m_ActionEntriesContainer = new PrefabAndContainer(MyModdedObject, 5, 3);
             m_CategoryLabelsContainer = new PrefabAndContainer(MyModdedObject, 1, 3);
             Hide();
         }
@@ -70,8 +72,9 @@ namespace CDOverhaul.HUD
             ShowCursor = false;
             OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
-
-            AdvancedPhotomodeSettings.RestoreSettings();
+            
+            if(AdvancedPhotomodeController.HasEverEnteredPhotoMode)
+                AdvancedPhotomodeSettings.RestoreSettings();
         }
 
         public void SetPanelActive(bool value)
@@ -116,6 +119,18 @@ namespace CDOverhaul.HUD
                 List<AdvancedPhotomodeSettingAttribute> settings = AdvancedPhotomodeController.GetAllSettingsOfCategory(category);
                 foreach(AdvancedPhotomodeSettingAttribute advancedPhotomodeSetting in settings)
                 {
+                    if (!advancedPhotomodeSetting.IsAvailable)
+                        continue;
+
+                    if(advancedPhotomodeSetting.IsAction())
+                    {
+                        ModdedObject moddedObject2 = m_ActionEntriesContainer.CreateNew();
+                        moddedObject2.GetObject<Text>(0).text = advancedPhotomodeSetting.DisplayName;
+                        AdvancedPhotomodeUIActionEntryDisplay entryDisplay2 = moddedObject2.gameObject.AddComponent<AdvancedPhotomodeUIActionEntryDisplay>();
+                        entryDisplay2.Initialize(advancedPhotomodeSetting);
+                        continue;
+                    }
+
                     ModdedObject moddedObject1 = m_EntriesContainer.CreateNew();
                     moddedObject1.GetObject<Text>(0).text = advancedPhotomodeSetting.DisplayName;
                     AdvancedPhotomodeUIEntryDisplay entryDisplay = moddedObject1.gameObject.AddComponent<AdvancedPhotomodeUIEntryDisplay>();

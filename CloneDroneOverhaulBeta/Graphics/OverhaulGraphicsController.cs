@@ -319,6 +319,7 @@ namespace CDOverhaul.Graphics
         {
             bool dontOverrideSettings = !AdvancedPhotomodeSettings.IsOverridingSettings;
 
+            effect.PerPixelNormals = AmplifyOcclusionEffect.PerPixelNormalSource.None;
             effect.Bias = 0f;
             effect.BlurSharpness = 4f;
             effect.FilterResponse = 0.7f;

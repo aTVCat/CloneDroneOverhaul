@@ -105,6 +105,8 @@ namespace CDOverhaul
             OverhaulGraphicsController.Initialize();
             PlayFabDataController.Initialize();
 
+            OverhaulGPUInstancingController.Initialize();
+
             OverhaulCompatibilityChecker.CheckGameVersion();
             if (!OverhaulBootUI.Show())
             {

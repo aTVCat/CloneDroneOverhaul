@@ -389,6 +389,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
     <Compile Include="Internal\Device\DeviceSpecifics.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
@@ -574,6 +575,7 @@
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\HammerImpactMeleeArea_Patch.cs" />
+    <Compile Include="Internal\Patches\LevelEditorObjectPlacementManager_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyNameTag_Patch.cs" />
     <Compile Include="Internal\Patches\MultiplayerPlayerInfoLabel_Patch.cs" />
@@ -665,6 +667,11 @@
     <Compile Include="Internal\Management\Events\OverhaulEvent.cs" />
     <Compile Include="LevelEditor\LevelEditorMoveObjectsByCoordsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\GPUInstancing\MaterialInfo.cs" />
+    <Compile Include="Test\GPUInstancing\MatrixInfo.cs" />
+    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceObjectBehaviour.cs" />
+    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceDrawer.cs" />
+    <Compile Include="Test\GPUInstancing\OverhaulGPUInstancingController.cs" />
     <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
     <Compile Include="HUD\OverhaulUIButtonScaler.cs" />
     <Compile Include="Test\VRVoxelBurning\VRVoxelBurnEffectController.cs" />

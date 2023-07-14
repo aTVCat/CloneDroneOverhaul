@@ -255,6 +255,14 @@ namespace CDOverhaul
             private static readonly bool IS_PHOTO_MODE_OVERHAUL_ENABLED = true;
             public static bool IsPhotoModeOverhaulEnabled => !OverhaulVersion.IsUpdate2 && IS_PHOTO_MODE_OVERHAUL_ENABLED;
 
+            /// <summary>
+            /// A way to optimize huge levels
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.GPU Instancing", false, false, "")]
+            private static readonly bool IS_GPU_INSTANCING_ENABLED = false;
+            public static bool IsGpuInstancingEnabled => OverhaulVersion.IsUpdate4 && IS_GPU_INSTANCING_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }

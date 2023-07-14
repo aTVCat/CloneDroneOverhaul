@@ -1,11 +1,6 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using ModLibrary;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.BuiltIn.AdditionalContent
@@ -59,12 +54,19 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
             { "Story18", 11 },
             { "Story19", 1 },
             { "Story20", 13 },
+
+            { "Dino4-forest", 8 },
+            { "SpearSlopes", 13 },
+            { "JumpPadsIntoLava", 10 },
+            { "LavaSlopes", 13 },
+            { "CommandPlayground", 14 },
+            { "SpikeTrapLures", 9 },
         };
 
         public static readonly Dictionary<string, Hashtable> LightSettingOverrides = new Dictionary<string, Hashtable>()
         {
             // LBS
-            { "BR_PyramidsInSpace", new Hashtable() { { "FogColor", Color.white * 0.15f }, { "DLColor", Color.white * 0.15f }, { "AmbientColor", Color.clear } } },
+            { "BR_PyramidsInSpace", new Hashtable() { { "FogColor", Color.white * 0.15f }, { "DLColor", Color.white * 0.15f }, { "AmbientColor", new Color(0.2f, 0.2f, 0.2f, 1f) } } },
 
             // Story
             { "Story1", new Hashtable() { { "DLIntensity", 0.5f }, { "FogColor", new Color(0.03f, 0.08f, 0.16f, 1f) } } },
@@ -88,6 +90,13 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
             { "Story18", new Hashtable() { { "FogColor", new Color(0.3f, 0.25f, 0.25f, 1f) }, { "FogEnd", 2500f } } },
             { "Story19", new Hashtable() { { "FogColor", new Color(0.3f, 0.26f, 0.25f, 1f) }, { "FogEnd", 2250f }, { "DLColor", new Color(1f, 0.81f, 0.56f, 1f) }, { "DLX", 53f }, { "DLY", 105f  } } },
             { "Story20", new Hashtable() { { "FogColor", new Color(0.54f, 0.32f, 0.32f, 1f) }, { "FogEnd", 4500f }, { "DLColor", new Color(0.88f, 0.64f, 0.61f, 1f) }, { "DLIntensity", 0.35f }, { "DLX", 56f }, { "DLY", 107f } } },
+
+            { "Dino4-forest", new Hashtable() { { "FogColor", new Color(0.1086577f, 0.3277897f, 0.2324856f, 1f) },{ "DLColor", new Color(1f, 0.7215686f, 0.9568627f, 1f) },{ "AmbientColor", new Color(0.309256f, 0.3823529f, 0.3325849f, 1f) },{ "DLX", 58f }, { "DLY", 315f }, { "FogEnd", 2844.926f }, { "FogStart", 1540.611f }, { "SkyboxRotation", 0f }, { "DLIntensity", 1f }  } },
+            { "SpearSlopes", new Hashtable() { { "FogColor", new Color(0.4125639f, 0.2632322f, 0.3549019f, 1f) },{ "DLColor", new Color(0.3388727f, 0.1965629f, 0.2176958f, 1f) },{ "AmbientColor", new Color(0.7525375f, 0.7525375f, 0.7525375f, 1f) },{ "DLX", 45.20805f }, { "DLY", 136.9538f }, { "FogEnd", 3000f }, { "FogStart", 1562.763f }, { "SkyboxRotation", 22.60454f }, { "DLIntensity", 1.518016f }  } },
+            { "JumpPadsIntoLava", new Hashtable() { { "FogColor", new Color(0.2759494f, 0.5161552f, 0.3919843f, 1f) },{ "DLColor", new Color(0.5420117f, 0.2822682f, 0.32084f, 1f) },{ "AmbientColor", new Color(0.833792f, 0.833792f, 0.833792f, 1f) },{ "DLX", 45.20805f }, { "DLY", 136.9538f }, { "FogEnd", 3000f }, { "FogStart", 1562.763f }, { "SkyboxRotation", 86.42931f }, { "DLIntensity", 0.7867081f }  } },
+            { "LavaSlopes", new Hashtable() { { "FogColor", new Color(0.4053508f, 0.3967602f, 0.3289978f, 1f) },{ "DLColor", new Color(0.5420117f, 0.2822682f, 0.32084f, 1f) },{ "AmbientColor", new Color(0.833792f, 0.833792f, 0.833792f, 1f) },{ "DLX", 31.07964f }, { "DLY", 65.98457f }, { "FogEnd", 2822.782f }, { "FogStart", 1075.406f }, { "SkyboxRotation", 63.82579f }, { "DLIntensity", 0.7867081f }  } },
+            { "CommandPlayground", new Hashtable() { { "FogColor", new Color(0.2271916f, 0.4053508f, 0.3408875f, 1f) },{ "DLColor", new Color(0.4052095f, 0.2297763f, 0.4976911f, 1f) },{ "AmbientColor", new Color(0.833792f, 0.833792f, 0.833792f, 1f) },{ "DLX", 31.07964f }, { "DLY", 65.98457f }, { "FogEnd", 3000f }, { "FogStart", 1374.469f }, { "SkyboxRotation", 227.373f }, { "DLIntensity", 0.7867081f }  } },
+            { "SpikeTrapLures", new Hashtable() { { "FogColor", new Color(0.1882654f, 0.4053508f, 0.3075638f, 1f) },{ "DLColor", new Color(0.7119132f, 0.425966f, 0.6015041f, 1f) },{ "AmbientColor", new Color(0.833792f, 0.833792f, 0.833792f, 1f) },{ "DLX", 57.67406f }, { "DLY", 121.8296f }, { "FogEnd", 3000f }, { "FogStart", 1374.469f }, { "SkyboxRotation", 227.373f }, { "DLIntensity", 1.141282f }  } },
         };
 
         public static bool HasSkyboxes
@@ -109,9 +118,9 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
                 return;
 
             Skyboxes = OverhaulAssetsController.GetAllObjects<Material>(SkyboxesAssetBundle);
-            
-            OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
-            OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
+
+            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
+            _ = OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
         }
 
         public void SetSkybox(int index)
@@ -140,13 +149,17 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
             {
                 return;
             }
- 
+
             SetSkybox(AdvancedPhotomodeSettings.MoreSkyboxesIndex);
+
+            Material material = RenderSettings.skybox;
+            if (material && material.HasProperty("_Rotation"))
+                material.SetFloat("_Rotation", AdvancedPhotomodeSettings.SkyboxRotation);
         }
 
         private void refreshSkybox()
         {
-            LevelDescription levelDescription = null;
+            LevelDescription levelDescription;
             try
             {
                 levelDescription = LevelManager.Instance.GetCurrentLevelDescription();
@@ -158,27 +171,20 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
 
             if (levelDescription == null || string.IsNullOrEmpty(levelDescription.PrefabName))
                 return;
+            string levelId = levelDescription.PrefabName.Contains("/")
+    ? levelDescription.PrefabName.Substring(levelDescription.PrefabName.LastIndexOf("/") + 1)
+    : levelDescription.PrefabName;
 
-            string levelId = string.Empty;
-            if (levelDescription.PrefabName.Contains("/"))
-            {
-                levelId = levelDescription.PrefabName.Substring(levelDescription.PrefabName.LastIndexOf("/") + 1);
-            }
-            else
-            {
-                levelId = levelDescription.PrefabName;
-            }
-
-            if(SkyboxOverrides.TryGetValue(levelId, out int value))
+            if (SkyboxOverrides.TryGetValue(levelId, out int value))
             {
                 SetSkybox(value);
             }
 
             if (LightSettingOverrides.TryGetValue(levelId, out Hashtable hashtable))
             {
-                foreach(string key in hashtable.Keys)
+                foreach (string key in hashtable.Keys)
                 {
-                    if(key == "FogColor")
+                    if (key == "FogColor")
                     {
                         RenderSettings.fogColor = (Color)hashtable[key];
                     }
@@ -213,6 +219,14 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
                         Vector3 eulerAngles = DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles;
                         eulerAngles.y = (float)hashtable[key];
                         DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles = eulerAngles;
+                    }
+                    else if (key == "SkyboxRotation")
+                    {
+                        Material material = RenderSettings.skybox;
+                        if (material && material.HasProperty("_Rotation"))
+                        {
+                            material.SetFloat("_Rotation", (float)hashtable[key]);
+                        }
                     }
                 }
             }
