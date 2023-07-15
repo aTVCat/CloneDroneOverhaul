@@ -12,6 +12,7 @@ namespace CDOverhaul.HUD.Gamemodes
         protected override void OnShow()
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/chapter" + "5" + "Preview.jpeg");
+            GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
         }
 
         private void goBackToGamemodeSelection()

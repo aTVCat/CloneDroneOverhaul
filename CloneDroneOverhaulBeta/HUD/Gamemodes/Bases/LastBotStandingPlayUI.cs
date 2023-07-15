@@ -9,6 +9,8 @@ namespace CDOverhaul.HUD.Gamemodes
 
         private Button m_PlayButton;
         private Button m_PlaySandboxButton;
+        private Button m_RulesButton;
+        private Button m_PrevMatchesButton;
 
         private Toggle m_RelayToggle;
 
@@ -29,6 +31,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/LBSInviteBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
             m_RelayToggle.isOn = OverhaulCore.IsRelayConnectionEnabled;
+            GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
         }
 
         private void goBackToGamemodeSelection()

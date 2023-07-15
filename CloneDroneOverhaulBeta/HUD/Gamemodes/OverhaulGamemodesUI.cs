@@ -49,20 +49,40 @@ namespace CDOverhaul.HUD.Gamemodes
                     GameUIRoot.Instance.TitleScreenUI.OnPlayEndlessButtonClicked();
                 }, () => CharacterTracker.Instance.GetPlayer(), 0.35f);
             });
+            replaceOldImageWithNew(datas[1], "Endless.jpg");
             datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[2].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(2);
             });
+            replaceOldImageWithNew(datas[2], "Bot.jpg");
 
             GameModeCardData[] datas2 = GameUIRoot.Instance.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
+            replaceOldImageWithNew(datas2[0], "Humans.jpg");
+            replaceOldImageWithNew(datas2[1], "Bot.jpg");
             datas2[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas2[2].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(1);
             });
+            replaceOldImageWithNew(datas2[2], "Raptor.jpg");
+            replaceOldImageWithNew(datas2[3], "DuelHumans.jpg");
 
             ShowWithUI(-1);
+        }
+
+        private void replaceOldImageWithNew(GameModeCardData data, string fileNameUNderPreviewsFolder)
+        {
+            OverhaulDownloadInfo info = new OverhaulDownloadInfo();
+            info.DoneAction = delegate
+            {
+                if (info.Error)
+                    return;
+
+                Sprite sprite = (info.DownloadedTexture as Texture2D).ToSprite();
+                data.ThumbnailSprite = sprite;
+            };
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulCore.ModDirectoryStatic + "Assets/Previews/" + fileNameUNderPreviewsFolder, info);
         }
 
         protected override void OnDisposed()
@@ -80,7 +100,9 @@ namespace CDOverhaul.HUD.Gamemodes
         public void ShowWithUI(int index)
         {
             if (index != -1)
+            {
                 Show();
+            }
 
             OverhaulChapterSelectionUI.Hide();
             OverhaulLastBotStandingPlayUI.Hide();

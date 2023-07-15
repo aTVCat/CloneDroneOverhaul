@@ -63,6 +63,7 @@ namespace CDOverhaul.HUD.Gamemodes
                  " ",
                  num2
             });
+            GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
         }
 
         private void resetView()

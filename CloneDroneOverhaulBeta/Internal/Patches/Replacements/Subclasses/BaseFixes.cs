@@ -31,8 +31,14 @@ namespace CDOverhaul.Patches
             if (m_OgSubtitlesFont == null) m_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
             if (m_OgFontScale == -1f) m_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
+            UpdateSprites(GameUIRoot.Instance.transform);
 
-            foreach (Image image in Singleton<GameUIRoot>.Instance.GetComponentsInChildren<Image>(true))
+            SuccessfullyPatched = true;
+        }
+
+        public static void UpdateSprites(Transform transform)
+        {
+            foreach (Image image in transform.GetComponentsInChildren<Image>(true))
             {
                 if (image != null && image.sprite != null)
                 {
@@ -51,8 +57,6 @@ namespace CDOverhaul.Patches
                     }
                 }
             }
-
-            SuccessfullyPatched = true;
         }
 
         public static void SetEnglishFont(bool piksielyPrst)

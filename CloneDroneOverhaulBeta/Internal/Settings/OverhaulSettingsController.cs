@@ -242,7 +242,7 @@ namespace CDOverhaul
                     _ = texture1.LoadImage(File.ReadAllBytes(path), false);
                     texture1.Apply();
 
-                    m_UnknownCategoryIcon = texture1.FastSpriteCreate();
+                    m_UnknownCategoryIcon = texture1.ToSprite();
                     return m_UnknownCategoryIcon;
                 }
             }
@@ -262,7 +262,7 @@ namespace CDOverhaul
                     _ = texture.LoadImage(content, false);
                     texture.Apply();
 
-                    Sprite sprite = texture.FastSpriteCreate();
+                    Sprite sprite = texture.ToSprite();
                     m_CachedCategoryIcons.Add(categoryName, sprite);
                     return sprite;
                 }

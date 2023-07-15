@@ -133,7 +133,7 @@ namespace CDOverhaul.HUD.Vanilla
                     if (!overhaulDownloadInfo.DownloadedTexture)
                         return;
 
-                    Sprite sprite = (overhaulDownloadInfo.DownloadedTexture as Texture2D).FastSpriteCreate();
+                    Sprite sprite = (overhaulDownloadInfo.DownloadedTexture as Texture2D).ToSprite();
                     float num = overhaulDownloadInfo.DownloadedTexture.height / (float)overhaulDownloadInfo.DownloadedTexture.width;
                     m_MainHolderTransform.sizeDelta = new Vector2(m_MainHolderTransform.sizeDelta.x, m_MainHolderTransform.rect.width * num);
                     m_Image.sprite = sprite;

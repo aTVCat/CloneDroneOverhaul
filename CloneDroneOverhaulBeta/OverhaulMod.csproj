@@ -391,6 +391,7 @@
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
+    <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
     <Compile Include="Internal\Device\DeviceSpecifics.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Constants.cs" />

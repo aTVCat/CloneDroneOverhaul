@@ -47,7 +47,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="texture2D"></param>
         /// <returns></returns>
-        public static Sprite FastSpriteCreate(this Texture2D texture2D) => texture2D == null ? null : Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+        public static Sprite ToSprite(this Texture2D texture2D) => texture2D == null ? null : Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
 
         #endregion
 

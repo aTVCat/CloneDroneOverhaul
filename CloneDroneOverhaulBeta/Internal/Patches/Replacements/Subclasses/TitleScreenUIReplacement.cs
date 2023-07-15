@@ -82,6 +82,26 @@ namespace CDOverhaul.Patches
             }
             MessagePanelComponent = m_MessagePanel.GetComponent<TitleScreenMessagePanel>();
 
+            Transform singlePlayerGameModeSelectionMenu = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
+            if (singlePlayerGameModeSelectionMenu != null)
+            {
+                patchGameModeSelectScreen(singlePlayerGameModeSelectionMenu);
+            }
+
+            Transform multiPlayerGameModeSelectionMenu = TransformUtils.FindChildRecursive(target.transform, "MultiplayerModeSelectScreen");
+            if (multiPlayerGameModeSelectionMenu != null)
+            {
+                patchGameModeSelectScreen(multiPlayerGameModeSelectionMenu);
+            }
+
+            Transform multiplayerButtonNew = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW");
+            if (multiplayerButtonNew != null)
+            {
+                Button button = multiplayerButtonNew.GetComponent<Button>();
+                button.onClick = new Button.ButtonClickedEvent();
+                button.onClick.AddListener(target.OnMultiplayerButtonClicked);
+            }
+
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -185f, 0f);
 
@@ -127,6 +147,71 @@ namespace CDOverhaul.Patches
             }
 
             SuccessfullyPatched = true;
+        }
+
+        private void patchGameModeSelectScreen(Transform main)
+        {
+            GameModeSelectScreen gameModeSelectScreen = main.GetComponent<GameModeSelectScreen>();
+            BaseFixes.UpdateSprites(gameModeSelectScreen.ButtonPrefab.transform);
+
+            RectTransform rectTransformOfMain = main as RectTransform;
+            rectTransformOfMain.localScale = Vector3.one;
+
+            RectTransform box = main.FindChildRecurisve("Box") as RectTransform;
+            box.anchorMax = new Vector2(1f, 0.5f);
+            box.anchorMin = new Vector2(0f, 0.5f);
+            box.anchoredPosition = Vector2.zero;
+            box.sizeDelta = new Vector2(0f, 300f);
+            OverhaulUIPanelSlider slider1 = box.gameObject.AddComponent<OverhaulUIPanelSlider>();
+            slider1.TargetPosition = new Vector3(0f, 0, 0f);
+            slider1.StartPosition = new Vector3(1000f, 0, 0f);
+            slider1.Multiplier = 15f;
+
+            Transform cardContainer = main.FindChildRecurisve("CardContainer");
+            cardContainer.localScale = Vector3.one * 1.1f;
+            HorizontalLayoutGroup horizontalLayoutGroup = cardContainer.GetComponent<HorizontalLayoutGroup>();
+            horizontalLayoutGroup.spacing = 17f;
+
+            OverhaulUIPanelSlider slider = cardContainer.gameObject.AddComponent<OverhaulUIPanelSlider>();
+            slider.TargetPosition = new Vector3(0f, -13f, 0f);
+            slider.StartPosition = new Vector3(200f, -13f, 0f);
+            slider.Multiplier = 9f;
+
+            Transform bg = main.FindChildRecurisve("BG");
+            Image bgImage = bg.GetComponent<Image>();
+            bgImage.color = new Color(0.07f, 0.07f, 0.07f, 0.5f);
+
+            // Card
+            RectTransform cardTransform = gameModeSelectScreen.ButtonPrefab.transform as RectTransform;
+            cardTransform.sizeDelta = new Vector2(155f, 200f);
+            RectTransform cardBG = cardTransform.FindChildRecurisve("BG") as RectTransform;
+            cardBG.anchoredPosition = Vector2.zero;
+            cardBG.sizeDelta = Vector2.zero;
+            cardBG.GetComponent<Image>().color = new Color(0.5f, 0.7f, 1f, 0.3f);
+            UIColorSwapper cardBGColors = cardBG.GetComponent<UIColorSwapper>();
+            cardBGColors.ColorVariants[0] = new Color(0.5f, 0.7f, 1f, 0.3f);
+            cardBGColors.ColorVariants[1] = new Color(0f, 1f, 0.25f, 0.65f);
+            RectTransform cardImage = cardBG.FindChildRecurisve("GameModeImage") as RectTransform;
+            cardImage.sizeDelta = new Vector2(170f, 200f);
+
+            Transform cardButtonBG = cardTransform.FindChildRecurisve("buttonBG");
+            cardButtonBG.gameObject.SetActive(false);
+
+            Transform cardGamemodeButton = cardTransform.FindChildRecurisve("GameModeButton");
+            cardGamemodeButton.GetComponent<Image>().enabled = false;
+            cardGamemodeButton.FindChildRecurisve("Image (2)").gameObject.SetActive(false);
+
+            Transform cardHeadingLabel = cardGamemodeButton.FindChildRecurisve("headingLabel");
+            if (!cardHeadingLabel.GetComponent<Outline>())
+            {
+                cardHeadingLabel.gameObject.AddComponent<Outline>();
+                cardHeadingLabel.gameObject.AddComponent<Shadow>().effectDistance = Vector2.one * -1.5f;
+            }
+            cardHeadingLabel.GetComponent<Text>().color = Color.white;
+            cardHeadingLabel.localPosition = new Vector3(0, 5f);
+            UIColorSwapper cardGamemodeButtonColors = cardHeadingLabel.GetComponent<UIColorSwapper>();
+            cardGamemodeButtonColors.ColorVariants[0] = Color.white;
+            cardGamemodeButtonColors.ColorVariants[1] = new Color(0.3f, 1f, 0.35f, 1f);
         }
 
         private void localizeTexts()

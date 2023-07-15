@@ -28,6 +28,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/ChallengesBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
             populateChallengesIfNeeded();
+            GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
         }
 
         public override void Update()
