@@ -33,7 +33,7 @@ namespace CDOverhaul.HUD.Tooltips
 
         public void PopulateTooltipsContainer()
         {
-            if (!HaveToPopulateTooltips || !TooltipsController || HadBadStart)
+            if (!HaveToPopulateTooltips || !TooltipsController || Error)
                 return;
 
             foreach (OverhaulTooltip tooltip in TooltipsController.GetTooltips())

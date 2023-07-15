@@ -318,7 +318,7 @@ namespace CDOverhaul.HUD
             if (m_Parameters == null)
             {
                 m_Parameters = GetController<ParametersMenu>();
-                if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.HadBadStart)
+                if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.Error)
                 {
                     return;
                 }

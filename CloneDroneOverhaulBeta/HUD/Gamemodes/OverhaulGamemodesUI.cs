@@ -152,7 +152,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 {
                     Destroy(m_LastSpawnedBackground.texture);
                 }
-                Destroy(m_LastSpawnedBackground);
+                Destroy(m_LastSpawnedBackground.gameObject);
             }
         }
     }

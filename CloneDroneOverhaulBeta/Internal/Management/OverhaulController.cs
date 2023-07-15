@@ -13,7 +13,17 @@ namespace CDOverhaul
         /// <summary>
         /// Check if an exception occurred while initializing the controller.
         /// </summary>
-        public bool HadBadStart { get; private set; }
+        public bool Error
+        {
+            get;
+            private set;
+        }
+
+        public string ErrorString
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Called at the same time when controller is created.
@@ -36,14 +46,20 @@ namespace CDOverhaul
         internal void InitializeInternal()
         {
             _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+
+#if DEBUG
+            Initialize();
+            return;
+#endif
             try
             {
                 Initialize();
             }
             catch (Exception exc)
             {
-                Debug.LogError("Caught error while initializing Overhaul ModController [" + GetType() + "]: " + exc);
-                HadBadStart = true;
+                Debug.LogError("Error while initializing OverhaulController [" + GetType() + "]: " + exc);
+                Error = true;
+                ErrorString = exc.ToString();
                 base.enabled = false;
             }
         }
@@ -90,7 +106,7 @@ namespace CDOverhaul
             {
                 if (controllerr.GetType() == typeof(T))
                 {
-                    return controllerr.HadBadStart ? throw new Exception("Using incorrectly started controller is not allowed") : (T)controllerr;
+                    return controllerr.Error ? throw new Exception("Using incorrectly started controller is not allowed") : (T)controllerr;
                 }
             }
             return null;
