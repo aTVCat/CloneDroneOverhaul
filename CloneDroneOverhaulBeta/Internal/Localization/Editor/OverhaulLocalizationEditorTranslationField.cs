@@ -1,9 +1,12 @@
-﻿using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace CDOverhaul
 {
     public class OverhaulLocalizationEditorTranslationField : OverhaulBehaviour
     {
+        public static readonly List<OverhaulLocalizationEditorTranslationField> Fields = new List<OverhaulLocalizationEditorTranslationField>();
+
         public string MyLang;
         public string MyID;
 
@@ -24,10 +27,12 @@ namespace CDOverhaul
             MyIDInputField = idField;
             MyIDInputField.text = id;
             MyIDInputField.onEndEdit.AddListener(UpdateID);
+            Fields.Add(this);
         }
 
         protected override void OnDisposed()
         {
+            Fields.Remove(this);
             MyLang = null;
             MyID = null;
             MyLang = null;

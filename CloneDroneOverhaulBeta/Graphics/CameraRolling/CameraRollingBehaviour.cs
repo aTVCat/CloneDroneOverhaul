@@ -16,9 +16,11 @@ namespace CDOverhaul.Graphics
         public static float AdditionalOffsetMultiplier = 0.6f;
         public static float AdditionalZOffset;
 
-        [OverhaulSettingDropdownParameters("Unlimited@30@60@75@90@120@144@240")]
+        [OverhaulSettingDropdownParameters("Unlimited@30@60@75@90@120@144@165@240")]
         [OverhaulSettingAttribute("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
         public static int TargetFPS;
+        [OverhaulSetting("Graphics.Settings.VSync", false)]
+        public static bool VSyncEnabled;
 
         [OverhaulSetting("Graphics.Camera.Rolling", true, false, "The camera will tilt in the direction of the movement")]
         public static bool EnableCameraRolling;

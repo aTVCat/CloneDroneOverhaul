@@ -186,9 +186,8 @@ namespace CDOverhaul
         public static void AddDescription(in string settingPath, in string description)
         {
             if (GetSetting(settingPath) == null)
-            {
                 return;
-            }
+
             OverhaulSettingDescription desc = new OverhaulSettingDescription(description);
             if (!m_SettingDescriptions.ContainsKey(settingPath))
             {

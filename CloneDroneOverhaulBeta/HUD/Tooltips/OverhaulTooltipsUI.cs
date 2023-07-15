@@ -4,11 +4,11 @@ namespace CDOverhaul.HUD.Tooltips
 {
     public class OverhaulTooltipsUI : OverhaulUI
     {
-        [OverhaulSetting("Mod.Tooltips.Show tooltips", true)]
+        [OverhaulSetting("Game interface.Tooltips.Show tooltips", true)]
         public static bool ShowTooltips;
 
         [OverhaulSettingSliderParameters(false, 2f, 8f)]
-        [OverhaulSetting("Mod.Tooltips.Show duration", 4f, false, null, "Mod.Tooltips.Show tooltips")]
+        [OverhaulSetting("Game interface.Tooltips.Show duration", 4f, false, null, "Mod.Tooltips.Show tooltips")]
         public static float TooltipsShowDuration;
 
         public OverhaulTooltipsController TooltipsController;

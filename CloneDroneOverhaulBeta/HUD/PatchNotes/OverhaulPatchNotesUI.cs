@@ -20,6 +20,7 @@ namespace CDOverhaul.HUD
 
         private OverhaulUI.PrefabAndContainer m_ArtContainer;
         private Text m_Changelog;
+        private Text m_ChangelogHeader;
         private readonly List<Texture> m_LoadedArt = new List<Texture>();
 
         private Transform m_ClickOnImageLabel;
@@ -44,6 +45,7 @@ namespace CDOverhaul.HUD
             m_OldChangelogsPanel.gameObject.SetActive(false);
             m_ChangelogEntriesContainer = new PrefabAndContainer(MyModdedObject, 7, 8);
             m_ClickOnImageLabel = MyModdedObject.GetObject<Transform>(11);
+            m_ChangelogHeader = MyModdedObject.GetObject<Text>(12);
             Hide();
         }
 
@@ -65,8 +67,6 @@ namespace CDOverhaul.HUD
 
         public void Hide()
         {
-            OverhaulUIDescriptionTooltip.SetActive(false);
-
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
             base.gameObject.SetActive(false);
 
@@ -174,7 +174,7 @@ namespace CDOverhaul.HUD
             }
 
             m_ClickOnImageLabel.gameObject.SetActive(!info.Art.IsNullOrEmpty());
-            OverhaulUIDescriptionTooltip.SetActive(true, OverhaulLocalizationController.GetTranslation("PatchNotesTitle") + info.TargetModVersion, OverhaulLocalizationController.GetTranslation("PatchNotesDesc"));
+            m_ChangelogHeader.text = OverhaulLocalizationController.GetTranslation("PatchNotesTitle") + info.TargetModVersion;
         }
 
         private IEnumerator loadPicture(RawImage attachTo, string path)

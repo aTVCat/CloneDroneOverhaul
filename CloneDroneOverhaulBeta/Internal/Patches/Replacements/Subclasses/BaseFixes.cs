@@ -6,7 +6,7 @@ namespace CDOverhaul.Patches
     public class BaseFixes : ReplacementBase
     {
         [OverhaulSettingWithNotification(1)]
-        [OverhaulSetting("Mod.Vanilla additions.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
+        [OverhaulSetting("Game interface.Vanilla changes.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
         public static bool PixelsSimpleFont;
 
         private static Font m_OgUIFont;

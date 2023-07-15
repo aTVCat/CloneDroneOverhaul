@@ -32,6 +32,36 @@ namespace CDOverhaul.HUD
             "Optimization",
             "Shortcuts"
         };
+        private static readonly Dictionary<string, List<string>> s_SortSections = new Dictionary<string, List<string>>
+        {
+            { "Gameplay", new List<string>()
+            {
+                "Gameplay.Camera",
+                "Gameplay.Multiplayer",
+                "Gameplay.Voxels",
+                "Gameplay.Discord"
+            } },
+
+            { "Mod", new List<string>()
+            {
+                "Mod.Arena",
+                "Mod.Information",
+            } },
+
+            { "Graphics", new List<string>()
+            {
+                "Graphics.Settings",
+                "Graphics.Amplify Occlusion",
+                "Graphics.Post effects",
+                "Graphics.Shaders",
+                "Graphics.Amplify color",
+            } },
+
+            { "Game interface", new List<string>()
+            {
+                "Game interface.Information",
+            } },
+        };
 
         private ModdedObject m_CategoryEntryPrefab;
         private Transform m_CategoryContainer;
@@ -159,6 +189,22 @@ namespace CDOverhaul.HUD
             }
         }
 
+        private void sortSections(List<string> sectionsToSort, string currentCategory)
+        {
+            if (!s_SortSections.ContainsKey(currentCategory) || sectionsToSort.IsNullOrEmpty())
+                return;
+
+            List<string> sort = s_SortSections[currentCategory];
+            foreach (string toSort in sort)
+            {
+                int currentIndex = sectionsToSort.IndexOf(toSort);
+                int newIndex = sort.IndexOf(toSort);
+
+                sectionsToSort.RemoveAt(currentIndex);
+                sectionsToSort.Insert(newIndex, toSort);
+            }
+        }
+
         private void refreshThemeOutlines()
         {
             foreach (Image outline in m_ThemeGraphics)
@@ -183,6 +229,7 @@ namespace CDOverhaul.HUD
                 categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsController.GetSpriteForCategory(category);
                 categoryEntry.GetObject<Image>(2).color = category == "Experimental" ? Color.red : OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
+                categoryEntry.gameObject.AddComponent<OverhaulUIButtonScaler>();
                 categoryEntry.gameObject.SetActive(true);
             }
         }
@@ -224,6 +271,7 @@ namespace CDOverhaul.HUD
             }
 
             List<string> sections = OverhaulSettingsController.GetAllSections(categoryName);
+            sortSections(sections, categoryName);
             foreach (string sectionName in sections)
             {
                 yield return null;

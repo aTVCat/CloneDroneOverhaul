@@ -11,10 +11,12 @@ namespace CDOverhaul
 
         public override void Initialize()
         {
+            MyModdedObject.GetObject<Transform>(4).gameObject.SetActive(false);
             MyModdedObject.GetObject<Button>(0).onClick.AddListener(Hide);
             MyModdedObject.GetObject<Button>(6).onClick.AddListener(EndEditingLang);
             MyModdedObject.GetObject<Button>(8).onClick.AddListener(NewTranslation);
             MyModdedObject.GetObject<Button>(9).onClick.AddListener(OverhaulLocalizationController.SaveData);
+            MyModdedObject.GetObject<InputField>(10).onValueChanged.AddListener(Search);
 
             Hide();
         }
@@ -80,6 +82,20 @@ namespace CDOverhaul
                     EditLang(lang);
                 });
             }
+        }
+
+        public void Search(string text)
+        {
+            int i = 0;
+            do
+            {
+                OverhaulLocalizationEditorTranslationField field = OverhaulLocalizationEditorTranslationField.Fields[i];
+                if (field)
+                {
+                    field.gameObject.SetActive(string.IsNullOrEmpty(text) || field.MyID.Contains(text));
+                }
+                i++;
+            } while (i < OverhaulLocalizationEditorTranslationField.Fields.Count);
         }
 
         public void EndEditingLang()
