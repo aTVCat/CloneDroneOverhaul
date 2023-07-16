@@ -1,11 +1,11 @@
 {
-	"DisplayName": "Clone Drone Overhaul (Alpha)",
+	"DisplayName": "Clone Drone Overhaul",
 	"UniqueID": "rAnDomPaTcHeS1",
 	"MainDLLFileName": "OverhaulMod.dll",
 	"Author": "A Human on TV",
 	"Version": 15,
-	"ImageFileName": "ModPreview.png",
-	"Description": "What if Clone drone had stuff that you may want?\nVersion 0.2.11.1 changelog:\n- The main addition is weapon skins! There are 100+ skins\nNote: Everyone with this mod can see your skins in multiplayer.\n- Reworked mod framework. The mod is being prepared for upcoming major updates\n- Removed all unused assets. Now the mod weights 10 megabytes, instead of 40...\n- Removed useless features like LoDs and dithering\n- Graphics optimization. The mod should work better on low-end PCs\n- Many redesigned menus have been temporary removed. They'll return in new updates",
+	"ImageFileName": "CloneDroneOverhaulImage.png",
+	"Description": "What if Clone drone had stuff that you want?\nVersion 0.2.12.0 changelog:\n- The main addition is weapon skins! There are 110+ skins to equip\nNote: Everyone with this mod can see your skins in multiplayer.\n- Reworked mod framework. The mod is being prepared for upcoming major updates\n- Removed all unused assets. Now the mod weights 10 megabytes, instead of 40...\n- Graphics optimization. This mod should work better on low-end PCs",
 	"ModDependencies": [],
 	"Tags": [ "Level editor", "New abilites", "New features", "Graphics" ]
 }

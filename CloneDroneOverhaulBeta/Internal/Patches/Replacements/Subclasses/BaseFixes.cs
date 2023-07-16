@@ -79,7 +79,10 @@ namespace CDOverhaul.Patches
                 LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;
             }
 
-            LocalizationManager.Instance.SetCurrentLanguage(LocalizationManager.Instance.GetCurrentLanguageCode());
+            if (OverhaulVersion.IsUpdate2)
+            {
+                LocalizationManager.Instance.SetCurrentLanguage(LocalizationManager.Instance.GetCurrentLanguageCode());
+            }
         }
     }
 }
