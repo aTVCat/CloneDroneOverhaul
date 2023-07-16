@@ -108,14 +108,19 @@ namespace CDOverhaul
             OverhaulGPUInstancingController.Initialize();
 
             OverhaulCompatibilityChecker.CheckGameVersion();
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
+            {
+                if (!OverhaulBootUI.Show())
+                {
+                    LoadSyncStuff();
+                }
+            }
         }
 
         private void Start()
         {
-            if (!OverhaulBootUI.Show())
-            {
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
                 LoadSyncStuff();
-            }
         }
 
         public IEnumerator LoadAsyncStuff()

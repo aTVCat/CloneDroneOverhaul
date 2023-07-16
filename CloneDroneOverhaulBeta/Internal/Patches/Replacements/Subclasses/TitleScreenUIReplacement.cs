@@ -9,6 +9,7 @@ namespace CDOverhaul.Patches
         private Transform m_ButtonsTransform;
         private Transform m_SpawnedPanel;
 
+        private RectTransform m_SingleplayerButtonTransform;
         private RectTransform m_MultiplayerNEWButtonTransform;
 
         private Text m_SettingsText;
@@ -34,12 +35,55 @@ namespace CDOverhaul.Patches
             }
 
             m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
-            if (m_MultiplayerNEWButtonTransform == null)
+            if (m_MultiplayerNEWButtonTransform != null)
             {
-                SuccessfullyPatched = false;
-                return;
+                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
+                m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
             }
-            m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -85f, 0);
+
+            m_SingleplayerButtonTransform = TransformUtils.FindChildRecursive(target.transform, "PlaySingleplayer") as RectTransform;
+            if (m_SingleplayerButtonTransform != null)
+            {
+                m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
+                m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
+
+                RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
+                playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
+                playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
+                LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
+                Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
+                playModdedButtonTextComponent.text = "Player modded";
+                Object.Destroy(playModdedButtonText);
+
+                Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
+                Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
+                moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
+                GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
+                moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
+                {
+                    new GameModeCardData
+                    {
+                        NameOfMode = "Sandbox",
+                        Description = "Work in progress"
+                    }
+                };
+                patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
+                Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecurisve("exitButton (1)").GetComponent<Button>();
+                exitButton.onClick = new Button.ButtonClickedEvent();
+                exitButton.onClick.AddListener(delegate
+                {
+                    target.SetLogoAndRootButtonsVisible(true);
+                    moddedGameModesSelectScreen.Hide();
+                });
+
+                Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
+                playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
+                playModdedButtonComponent.onClick.AddListener(delegate
+                {
+                    target.SetLogoAndRootButtonsVisible(false);
+                    moddedGameModesSelectScreen.Show();
+                });
+            }
 
             m_AchievementsNewHint = TransformUtils.FindChildRecursive(target.transform, "AchievementsNewHint");
             if (m_AchievementsNewHint == null)
@@ -103,7 +147,7 @@ namespace CDOverhaul.Patches
             }
 
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
-            m_AchievementsNewHint.localPosition = new Vector3(70f, -185f, 0f);
+            m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
 
             GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
@@ -126,7 +170,7 @@ namespace CDOverhaul.Patches
             moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
 
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            m_ButtonsTransform.localPosition = new Vector3(0, -158f, 0);
+            m_ButtonsTransform.localPosition = new Vector3(0, -135f, 0);
 
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
