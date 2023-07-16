@@ -79,6 +79,7 @@ namespace CDOverhaul
                         OverhaulSettingSliderParameters sliderParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingSliderParameters>();
                         OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
                         OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
+                        OverhaulSettingRequireUpdate requireUpdateAttribute = currentField.GetCustomAttribute<OverhaulSettingRequireUpdate>();
 
                         SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
                         newSettingInfo.SliderParameters = sliderParametersAttribute;
@@ -90,7 +91,7 @@ namespace CDOverhaul
                         if (newSettingInfo.DefaultValue is long && (long)newSettingInfo.DefaultValue == SettingEventDispatcherFlag)
                             newSettingInfo.EventDispatcher = (OverhaulSettingWithEvent)currentField.GetValue(null);
 
-                        if (mainAttribute.IsHidden)
+                        if (mainAttribute.IsHidden || (requireUpdateAttribute != null && !requireUpdateAttribute.ShouldBeVisible()))
                             m_HiddenEntries.Add(newSettingInfo.RawPath);
 
                         if (!string.IsNullOrEmpty(mainAttribute.ParentSettingRawPath))

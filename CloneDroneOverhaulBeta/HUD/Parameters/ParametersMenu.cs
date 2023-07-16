@@ -224,6 +224,9 @@ namespace CDOverhaul.HUD
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
             foreach (string category in s_AllCategories)
             {
+                if (category == "Experimental" && OverhaulVersion.IsUpdate2)
+                    continue;
+
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(CategoryTranslationPrefix + category);
                 categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsController.GetSpriteForCategory(category);
@@ -283,11 +286,16 @@ namespace CDOverhaul.HUD
                 }
 
                 string[] array = sectionName.Split('.');
+                List<string> settings = OverhaulSettingsController.GetAllSettings(categoryName, array[1]);
+                if (settings.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
                 ModdedObject categoryEntry = Instantiate(m_SectionPrefab, m_MainContainer);
                 categoryEntry.gameObject.SetActive(true);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(SectionTranslationPrefix + array[1]);
 
-                List<string> settings = OverhaulSettingsController.GetAllSettings(categoryName, array[1]);
                 foreach (string settingName in settings)
                 {
                     List<string> childrenSettings = OverhaulSettingsController.GetChildrenSettings(settingName);

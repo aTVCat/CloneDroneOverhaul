@@ -263,6 +263,30 @@ namespace CDOverhaul
             private static readonly bool IS_GPU_INSTANCING_ENABLED = false;
             public static bool IsGpuInstancingEnabled => OverhaulVersion.IsUpdate4 && IS_GPU_INSTANCING_ENABLED;
 
+            /// <summary>
+            /// The redesign of game mode select screen
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.GameModeSelectScreen Redesign", true, false, "")]
+            private static readonly bool IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED = true;
+            public static bool IsGameModeSelectScreenRedesignEnabled => !OverhaulVersion.IsUpdate2 && IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED;
+
+            /// <summary>
+            /// Arena overhaul
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Arena overhaul", true, false, "")]
+            private static readonly bool IS_ARENA_OVERHAUL_ENABLED = true;
+            public static bool IsArenaOverhaulEnabled => !OverhaulVersion.IsUpdate2 && IS_ARENA_OVERHAUL_ENABLED;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Additional content support", true, false, "")]
+            private static readonly bool IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED = true;
+            public static bool IsAdditionalContentSupportEnabled => !OverhaulVersion.IsUpdate2 && IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }

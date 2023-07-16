@@ -64,7 +64,7 @@ namespace CDOverhaul.Patches
             }
 
             Transform lvlEditorButton = TransformUtils.FindChildRecursive(target.transform, "LevelEditorButton");
-            if (lvlEditorButton)
+            if (lvlEditorButton && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled)
             {
                 Button button = lvlEditorButton.GetComponent<Button>();
                 button.onClick = new Button.ButtonClickedEvent();
@@ -151,6 +151,9 @@ namespace CDOverhaul.Patches
 
         private void patchGameModeSelectScreen(Transform main)
         {
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGameModeSelectScreenRedesignEnabled)
+                return;
+
             GameModeSelectScreen gameModeSelectScreen = main.GetComponent<GameModeSelectScreen>();
             BaseFixes.UpdateSprites(gameModeSelectScreen.ButtonPrefab.transform);
 

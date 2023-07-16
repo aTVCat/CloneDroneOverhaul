@@ -52,6 +52,9 @@ namespace CDOverhaul.HUD
 
         public void Show()
         {
+            if (!AdvancedPhotomodeController.IsAdvancedModeEnabled)
+                return;
+
             AdvancedPhotomodeSettings.RememberCurrentSettings();
 
             base.gameObject.SetActive(true);
@@ -70,6 +73,10 @@ namespace CDOverhaul.HUD
         {
             base.gameObject.SetActive(false);
             ShowCursor = false;
+
+            if (!AdvancedPhotomodeController.IsAdvancedModeEnabled)
+                return;
+
             OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
             

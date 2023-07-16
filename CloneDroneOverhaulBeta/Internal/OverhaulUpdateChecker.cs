@@ -116,7 +116,7 @@ namespace CDOverhaul
             window.ResetContents();
             window.SetTitle("New update available!");
             window.SetDescription("Changelog:\n" + DownloadedDescription);
-            window.SetWindowSize(500f, 350f);
+            window.SetWindowSize(600f, 450f);
             window.AddButton("Ignore", delegate
             {
                 if (GameModeManager.IsOnTitleScreen())

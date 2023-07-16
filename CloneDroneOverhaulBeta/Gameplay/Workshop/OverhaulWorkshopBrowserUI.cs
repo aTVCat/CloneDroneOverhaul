@@ -15,9 +15,11 @@ namespace CDOverhaul.Workshop
     {
         #region Settings
 
+        [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
         [OverhaulSetting("Game interface.Network.New Workshop browser design", true)]
         public static bool UseThisUI;
 
+        [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
         [OverhaulSetting("Game interface.Network.Cache images", false, false, null, "Game interface.Network.New Workshop browser design")]
         public static bool CacheImages;
 

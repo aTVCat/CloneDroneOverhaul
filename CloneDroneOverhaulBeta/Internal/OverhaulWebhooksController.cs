@@ -41,7 +41,12 @@ namespace CDOverhaul
             "MissingMethodException",
             "PlayUpperWithTimeSkipped",
             "_data is null",
-            "Could not allocate memory"
+            "Could not allocate memory",
+            "MechBodyPart.UpdateMe",
+            "SwordBlockArea.TryProcessBlockCollision",
+            "Infinity or NaN floating point",
+            "AudioManager",
+            "ReleaseControlInternal",
         };
 
 

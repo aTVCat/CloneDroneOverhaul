@@ -80,6 +80,12 @@ namespace CDOverhaul.HUD
 
         public void OnExitGameClick()
         {
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled)
+            {
+                Application.Quit();
+                return;
+            }
+
             OverhaulTransitionController.DoTransitionWithAction(delegate
             {
                 Application.Quit();

@@ -73,6 +73,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &2567268950298770698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5722330574267851732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f7efa571c3c2e4a905018fefb941bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextComponent: {fileID: 717367282149356090}
+  LocalizationID: Something_Something
 --- !u!1 &7076687835294768285
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,8 +196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -184.26567, y: -159.62}
-  m_SizeDelta: {x: 268.5313, y: 67.95203}
+  m_AnchoredPosition: {x: -176.87, y: -96.798}
+  m_SizeDelta: {x: 283.33215, y: 193.59601}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3979484320628128994
 CanvasRenderer:
@@ -235,20 +249,6 @@ MonoBehaviour:
   ID: 
   objects:
   - {fileID: 0}
---- !u!114 &2567268950298770698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5722330574267851732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45f7efa571c3c2e4a905018fefb941bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TextComponent: {fileID: 717367282149356090}
-  LocalizationID: Something_Something
 --- !u!1001 &7931161870228268300
 PrefabInstance:
   m_ObjectHideFlags: 0

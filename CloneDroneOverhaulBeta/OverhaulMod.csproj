@@ -607,6 +607,7 @@
     <Compile Include="Internal\Settings\Features\OverhaulFeatureID.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingWithEvent.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingWithForcedInputField.cs" />
+    <Compile Include="Internal\Settings\OverhaulSettingRequireUpdate.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingWithNotification.cs" />
     <Compile Include="Internal\Settings\OverhaulUpdatedSetting.cs" />
     <Compile Include="HUD\Transitions\OverhaulTransitionController.cs" />

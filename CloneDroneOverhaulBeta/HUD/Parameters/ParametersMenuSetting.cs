@@ -231,7 +231,7 @@ namespace CDOverhaul.HUD
             }
 
             SettingInfo.SavePref(Setting, toSet);
-            if (m_HasChangedSettingValueBefore) informUser();
+            if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
 
@@ -255,7 +255,7 @@ namespace CDOverhaul.HUD
             }
 
             SettingInfo.SavePref(Setting, value);
-            if (m_HasChangedSettingValueBefore) informUser();
+            if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
 
@@ -265,7 +265,7 @@ namespace CDOverhaul.HUD
                 return;
 
             SettingInfo.SavePref(Setting, value);
-            if (m_HasChangedSettingValueBefore) informUser();
+            if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
 
@@ -297,7 +297,7 @@ namespace CDOverhaul.HUD
 
             Initialize(m_UI, m_ModdedObject, Setting.RawPath, m_MyPos, true);
 
-            if (m_HasChangedSettingValueBefore) informUser();
+            if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
 

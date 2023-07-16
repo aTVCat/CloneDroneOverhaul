@@ -90,7 +90,10 @@ namespace CDOverhaul.HUD
         public void LoadRobotHead(int characterModelIndex, int favouriteColorIndex)
         {
             if (characterModelIndex < 0 || characterModelIndex > MultiplayerCharacterCustomizationManager.Instance.CharacterModels.Count - 1)
+            {
+                m_RobotHeadImage.gameObject.SetActive(false);
                 return;
+            }
 
             string modelName = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[characterModelIndex].Name;
             string filename = modelName + "_" + favouriteColorIndex + ".png";

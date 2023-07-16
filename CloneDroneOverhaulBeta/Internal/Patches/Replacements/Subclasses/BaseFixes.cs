@@ -61,7 +61,7 @@ namespace CDOverhaul.Patches
 
         public static void SetEnglishFont(bool piksielyPrst)
         {
-            if (LocalizationManager.Instance == null || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
+            if (!LocalizationManager.Instance || LocalizationManager.Instance.SupportedLanguages.IsNullOrEmpty())
                 return;
 
             if (!piksielyPrst)
@@ -78,6 +78,8 @@ namespace CDOverhaul.Patches
                 LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;
             }
+
+            LocalizationManager.Instance.SetCurrentLanguage(LocalizationManager.Instance.GetCurrentLanguageCode());
         }
     }
 }

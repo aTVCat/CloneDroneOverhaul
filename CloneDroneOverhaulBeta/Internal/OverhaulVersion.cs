@@ -7,13 +7,13 @@ namespace CDOverhaul
     public static class OverhaulVersion
     {
         public const string ModID = "rAnDomPaTcHeS1";
-        public const bool IsModBotBuild = false;
+        public const bool IsModBotBuild = true;
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version s_ModVersionUpdate2 = new Version("0.2.12.0");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.1");
 
-        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
+        private static readonly Updates s_CurrentUpdate = Updates.VER_2;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
         public static bool IsUpdate2 => !IsUpdate(Updates.VER_3);
@@ -35,9 +35,6 @@ namespace CDOverhaul
         }
         public static string GetBuildString() => 'v' + ModVersion.ToString();
 
-        /// <summary>
-        /// The version of the game the mod will definitely work fine
-        /// </summary>
         public const string TargetGameVersion = "1.5.0.18";
 
         public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
