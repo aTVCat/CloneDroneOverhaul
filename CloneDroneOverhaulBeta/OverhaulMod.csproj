@@ -600,6 +600,7 @@
     <Compile Include="Internal\Patches\TrophyShelf_Patch.cs" />
     <Compile Include="Internal\Patches\ObjectPlacedInLevel_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEnemySpawner_Patch.cs" />
+    <Compile Include="Internal\Patches\MultiplayerButtonController_Patch.cs" />
     <Compile Include="Internal\Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\Features\OverhaulFeatureDefinition.cs" />

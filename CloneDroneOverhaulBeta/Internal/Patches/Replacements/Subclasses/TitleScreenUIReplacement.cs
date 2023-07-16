@@ -149,17 +149,6 @@ namespace CDOverhaul.Patches
                 patchGameModeSelectScreen(multiPlayerGameModeSelectionMenu);
             }
 
-            if (!OverhaulVersion.IsUpdate2)
-            {
-                Transform multiplayerButtonNew = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW");
-                if (multiplayerButtonNew != null)
-                {
-                    Button button = multiplayerButtonNew.GetComponent<Button>();
-                    button.onClick = new Button.ButtonClickedEvent();
-                    button.onClick.AddListener(target.OnMultiplayerButtonClicked);
-                }
-            }
-
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
 
