@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("GetCurrentLevelID")]
         private static void GetCurrentLevelID_Postfix(GameDataManager __instance, ref string __result)
         {
-            if (!ModSetupWindow.HasSetTheModUp && GameModeManager.IsOnTitleScreen())
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled && !ModSetupWindow.HasSetTheModUp && GameModeManager.IsOnTitleScreen())
                 __result = "U6Bronze2";
         }
     }

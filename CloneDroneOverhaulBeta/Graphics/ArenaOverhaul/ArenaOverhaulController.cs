@@ -153,6 +153,9 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         public void PatchVanillaParts(bool overhaul)
         {
+            if (!m_GiantScreen2Transform || !m_ReturnSignTransform)
+                return;
+
             if (!overhaul)
             {
                 m_GiantScreen2Transform.localPosition = m_OgGiantScreen2Position;
@@ -220,7 +223,13 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         private void Update()
         {
-            if(Time.unscaledTime >= m_TimeToRefreshVanillaArenaParts)
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled || !IsArenaOverhaulEnabled)
+                return;
+
+            if (!m_OverhaulGarbageDoorTransform || !m_GarbageDoorTransform)
+                return;
+
+            if (Time.unscaledTime >= m_TimeToRefreshVanillaArenaParts)
             {
                 m_TimeToRefreshVanillaArenaParts = Time.unscaledTime + 5f;
                 PatchVanillaParts(!GameModeManager.IsCoop());

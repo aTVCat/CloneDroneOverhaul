@@ -57,8 +57,7 @@ namespace CDOverhaul
             }
             catch (Exception exc)
             {
-                Debug.LogError("Error while initializing OverhaulController [" + GetType() + "]: " + exc);
-                Error = true;
+                OverhaulWebhooksController.ExecuteErrorsWebhook("Error while initializing OverhaulController [" + GetType() + "]: " + exc);
                 ErrorString = exc.ToString();
                 base.enabled = false;
             }

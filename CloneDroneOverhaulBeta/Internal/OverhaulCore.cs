@@ -57,7 +57,11 @@ namespace CDOverhaul
                 stopwatch.Stop();
 
                 string contents = stopwatch.ElapsedMilliseconds + " Milliseconds";
-                OverhaulCore.WriteText(ModDirectory + "Logs/StartupTime.log", contents);
+                try
+                {
+                    OverhaulCore.WriteText(ModDirectory + "Logs/StartupTime.log", contents);
+                }
+                catch { }
             }
             catch (Exception ex)
             {
@@ -125,7 +129,11 @@ namespace CDOverhaul
 
         public IEnumerator LoadAsyncStuff()
         {
-            OverhaulCore.WriteText(ModDirectory + "Logs/StartupAssetBundles.log", OverhaulAssetsController.GetLoadedAssetBundlesString());
+            try
+            {
+                OverhaulCore.WriteText(ModDirectory + "Logs/StartupAssetBundles.log", OverhaulAssetsController.GetLoadedAssetBundlesString());
+            }
+            catch { }
 
             bool hasLoadedPart1Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part1);
             bool hasLoadedPart2Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part2);
