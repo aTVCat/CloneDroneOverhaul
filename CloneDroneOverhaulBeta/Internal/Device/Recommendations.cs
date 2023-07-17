@@ -13,7 +13,7 @@ namespace CDOverhaul.Device
         public static int GetSSAORequiredShaderLevel() => 30;
         public static string GetSSAORequiredShaderLevelStiring() => "3.0";
 
-        public static int GetSSAORequiredGPUMemorySize() => 2000;
+        public static int GetSSAORequiredGPUMemorySize() => 2048;
 
         public static RecommendationLevel GetSSAORecommendation()
         {

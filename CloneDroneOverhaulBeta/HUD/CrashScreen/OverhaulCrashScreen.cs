@@ -65,8 +65,6 @@ namespace CDOverhaul.HUD
             m_StackTraceText.text = logString + " " + stackTrace;
 
             base.gameObject.SetActive(true);
-            CloseStackTrace();
-
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
 
             ShowCursor = true;

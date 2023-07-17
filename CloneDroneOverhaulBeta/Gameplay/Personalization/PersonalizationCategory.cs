@@ -2,6 +2,8 @@
 {
     public enum PersonalizationCategory
     {
+        None,
+
         WeaponSkins,
 
         Outfits,

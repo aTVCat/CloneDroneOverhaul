@@ -47,6 +47,7 @@ namespace CDOverhaul
             "Infinity or NaN floating point",
             "AudioManager",
             "ReleaseControlInternal",
+            "ThrowIfDisposedAndClosed",
         };
 
 

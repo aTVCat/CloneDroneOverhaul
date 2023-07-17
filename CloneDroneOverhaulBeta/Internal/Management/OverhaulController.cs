@@ -103,12 +103,31 @@ namespace CDOverhaul
         {
             foreach (OverhaulController controllerr in s_ControllersList)
             {
-                if (controllerr.GetType() == typeof(T))
+                if (controllerr is T)
                 {
-                    return controllerr.Error ? throw new Exception("Using incorrectly started controller is not allowed") : (T)controllerr;
+                    if (OverhaulVersion.IsTestMode && controllerr.Error)
+                        throw new Exception("Using incorrectly started controller is not allowed");
+
+                    return (T)controllerr;
                 }
             }
             return null;
+        }
+
+        public static T[] GetControllers<T>() where T : OverhaulController
+        {
+            List<T> result = new List<T>();
+            foreach (OverhaulController controllerr in s_ControllersList)
+            {
+                if (controllerr is T)
+                {
+                    if (OverhaulVersion.IsTestMode && controllerr.Error)
+                        throw new Exception("Using incorrectly started controller is not allowed");
+
+                    result.Add((T)controllerr);
+                }
+            }
+            return result.ToArray();
         }
 
         /// <summary>

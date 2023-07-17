@@ -56,7 +56,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
             _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
-            _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(5)).Category = Gameplay.PersonalizationCategory.Outfits;
+            _ = AddHUD<AccesoriesPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(5));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
             _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));

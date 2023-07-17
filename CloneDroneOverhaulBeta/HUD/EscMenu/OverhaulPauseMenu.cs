@@ -258,14 +258,12 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
-            PersonalizationMenu menu = PersonalizationMenu.OutfitSelection;
-            if (menu == null)
-            {
+            OverhaulPersonalizationPanel panel = OverhaulPersonalizationPanel.GetPanel(PersonalizationCategory.Outfits);
+            if (!panel)
                 return;
-            }
 
             Hide();
-            menu.SetMenuActive(true);
+            panel.Show();
         }
 
         #endregion

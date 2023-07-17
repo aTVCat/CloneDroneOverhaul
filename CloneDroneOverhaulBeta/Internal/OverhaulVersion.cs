@@ -42,8 +42,10 @@ namespace CDOverhaul
 
 #if DEBUG
         public const bool IsDebugBuild = true;
+        public const bool IsTestMode = true;
 #else
         public const bool IsDebugBuild = false;
+        public const bool IsTestMode = false;
 #endif
 
         private static readonly string[] s_BlacklistedVersions = new string[]
