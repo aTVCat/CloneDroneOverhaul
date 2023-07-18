@@ -389,6 +389,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
+    <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />

@@ -21,6 +21,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib;
 using CDOverhaul.BuiltIn.AdditionalContent;
 using CDOverhaul.Device;
+using CDOverhaul.Gameplay;
 
 namespace CDOverhaul
 {
@@ -192,6 +193,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<ArenaOverhaulController>();
 
             _ = OverhaulController.AddController<AdditionalContentController>();
+            _ = OverhaulController.AddController<OverhaulAchievementsController>();
 
             OverhaulController.GetController<WeaponSkinsController>().AddSkins();
             OverhaulController.GetController<OutfitsController>().AddOutfitItems();
