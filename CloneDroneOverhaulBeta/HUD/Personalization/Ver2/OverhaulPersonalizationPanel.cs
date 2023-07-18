@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -24,6 +25,11 @@ namespace CDOverhaul.HUD
             DoneButton = MyModdedObject.GetObject<Button>(array[0]);
             DoneButton.onClick.AddListener(OnDoneButtonClicked);
             MainItemContainer = new PrefabAndContainer(MyModdedObject, array[1], array[2]);
+
+            GameObject panelBG = MyModdedObject.GetObject<Transform>(array[6]).gameObject;
+            OverhaulUIAnchoredPanelSlider slider = panelBG.AddComponent<OverhaulUIAnchoredPanelSlider>();
+            slider.StartPosition = new Vector3(-300f, 0f, 0f);
+            slider.TargetPosition = GetTargetPosition();
 
             Hide();
         }
@@ -53,6 +59,7 @@ namespace CDOverhaul.HUD
         /// 3 - Search box
         /// 4 - Search exclusive button-toggle
         /// 5 - Search by dropdown
+        /// 6 - Panel BG
         /// </summary>
         /// <returns></returns>
         public virtual int[] GetObjectIndexes() => new int[]
@@ -63,6 +70,7 @@ namespace CDOverhaul.HUD
             3,
             4,
             5,
+            6,
         };
 
         public abstract PersonalizationCategory GetCategory();
@@ -76,6 +84,8 @@ namespace CDOverhaul.HUD
         {
             Hide();
         }
+
+        protected virtual Vector3 GetTargetPosition() => new Vector3(25f, 0f, 0f);
 
         public static OverhaulPersonalizationPanel GetPanel(PersonalizationCategory category)
         {

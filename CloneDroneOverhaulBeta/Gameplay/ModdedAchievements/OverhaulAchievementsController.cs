@@ -10,13 +10,18 @@ namespace CDOverhaul.Gameplay
 {
     public class OverhaulAchievementsController : OverhaulGameplayController
     {
+        private List<string> m_AddedAchievements = new List<string>();
+
         public override void Initialize()
         {
             base.Initialize();
         }
 
-        public static T CreateAchievement<T>(string name, string description, Sprite previewImage) where T : OverhaulAchievement
+        public T CreateAchievement<T>(string name, string description, Sprite previewImage) where T : OverhaulAchievement
         {
+            if (m_AddedAchievements.Contains(name))
+                return null;
+
             T achievement = ScriptableObject.CreateInstance<T>();
             achievement.Name = name;
             achievement.Description = description;
@@ -29,9 +34,7 @@ namespace CDOverhaul.Gameplay
             list.Add(achievement);
             manager.Achievements = list.ToArray();
 
-            Dictionary<string, GameplayAchievement> dictionary = manager.GetPrivateField<Dictionary<string, GameplayAchievement>>("_idToAchievementDictionary");
-            dictionary.Add(achievement.AchievementID, achievement);
-
+            m_AddedAchievements.Add(name);
             return achievement;
         }
     }

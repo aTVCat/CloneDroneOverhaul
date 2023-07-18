@@ -107,6 +107,11 @@ namespace CDOverhaul.HUD
             m_Description = m.GetObject<Text>(15);
             m_Description.text = string.Empty;
 
+            GameObject panelBG = MyModdedObject.GetObject<Transform>(92).gameObject;
+            OverhaulUIAnchoredPanelSlider slider = panelBG.AddComponent<OverhaulUIAnchoredPanelSlider>();
+            slider.StartPosition = new Vector3(-265f, 0f, 0f);
+            slider.TargetPosition = new Vector3(25f, 0f, 0f);
+
             m_DefaultSkinButton = m.GetObject<Button>(6);
             m_DefaultSkinButton.onClick.AddListener(SetDefaultSkin);
             if (base.gameObject.name.Equals("SkinsSelection"))

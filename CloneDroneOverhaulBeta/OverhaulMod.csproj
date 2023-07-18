@@ -393,6 +393,7 @@
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
+    <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
     <Compile Include="HUD\Personalization\Ver2\MountsPersonalizationPanel.cs" />
     <Compile Include="HUD\Personalization\Ver2\AccesoriesPersonalizationPanel.cs" />
