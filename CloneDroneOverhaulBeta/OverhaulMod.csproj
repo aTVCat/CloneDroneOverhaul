@@ -391,7 +391,10 @@
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
+    <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
+    <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
+    <Compile Include="HUD\ConnectionScreens\OverhaulConnectScreen.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
     <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
@@ -568,6 +571,8 @@
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationController.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
+    <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
+    <Compile Include="Internal\Management\UI\OverhaulUIVer2.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulCrashPreventionController.cs" />
     <Compile Include="Internal\OverhaulDiscordController.cs" />
@@ -661,7 +666,7 @@
     <Compile Include="Internal\Management\Data\ModDataContainerBase.cs" />
     <Compile Include="Internal\Management\Data\ModDataController.cs" />
     <Compile Include="Internal\Management\OverhaulController.cs" />
-    <Compile Include="Internal\Management\OverhaulUI.cs" />
+    <Compile Include="Internal\Management\UI\OverhaulUI.cs" />
     <Compile Include="HUD\VersionLabel\OverhaulVersionLabel.cs" />
     <Compile Include="Internal\Patches\Input\EnableCursorController.cs" />
     <Compile Include="Internal\Management\Events\OverhaulEventsController.cs" />

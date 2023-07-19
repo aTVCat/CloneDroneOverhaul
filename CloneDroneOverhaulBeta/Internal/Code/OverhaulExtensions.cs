@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace CDOverhaul
 {
@@ -74,10 +76,32 @@ namespace CDOverhaul
             return @gameObject.GetComponent<Type>();
         }
 
+        public static UnityEngine.Object GetObject(this ModdedObject moddedObject, in int index, Type type)
+        {
+            UnityEngine.Object @object = moddedObject.objects[index];
+            UnityEngine.GameObject @gameObject = @object as UnityEngine.GameObject;
+
+            return @gameObject.GetComponent(type);
+        }
+
         public static UnityEngine.Object GetObject(this ModdedObject moddedObject, in int index)
         {
             UnityEngine.Object @object = moddedObject.objects[index];
             return @object;
+        }
+
+        #endregion
+
+        #region Button
+
+        public static void AddOnClickListener(this Button button, UnityAction unityAction)
+        {
+            button.onClick.AddListener(unityAction);
+        }
+
+        public static void RemoveAllOnClickListeners(this Button button)
+        {
+            button.onClick = new Button.ButtonClickedEvent();
         }
 
         #endregion

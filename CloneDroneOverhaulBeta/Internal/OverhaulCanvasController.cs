@@ -74,6 +74,9 @@ namespace CDOverhaul.HUD
             _ = AddHUD<Tutorial.OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
             _ = AddHUD<AdvancedPhotomodeUI>(HUDModdedObject.GetObject<ModdedObject>(24));
             _ = AddHUD<OverhaulCrashScreen>(HUDModdedObject.GetObject<ModdedObject>(25));
+            _ = AddHUD<OverhaulAchievementsMenu>(HUDModdedObject.GetObject<ModdedObject>(26));
+            _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));
+            _ = AddHUD<OverhaulDisconnectScreen>(HUDModdedObject.GetObject<ModdedObject>(28));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

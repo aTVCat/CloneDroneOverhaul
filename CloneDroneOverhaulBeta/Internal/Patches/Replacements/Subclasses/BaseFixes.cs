@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
@@ -83,6 +84,27 @@ namespace CDOverhaul.Patches
             {
                 LocalizationManager.Instance.SetCurrentLanguage(LocalizationManager.Instance.GetCurrentLanguageCode());
             }
+        }
+
+        public static void ChangeButtonAction(Transform transform, string buttonObjectName, UnityAction action)
+        {
+            if (!transform || string.IsNullOrEmpty(buttonObjectName) || action == null)
+                return;
+
+            Transform transform1 = transform.FindChildRecurisve(buttonObjectName);
+            if (!transform1)
+            {
+                throw new System.Exception("Could not find " + buttonObjectName + " button under " + transform.name + " object");
+            }
+
+            Button button = transform1.GetComponent<Button>();
+            if (!button)
+            {
+                throw new System.Exception("Object " + buttonObjectName + " is not a button!");
+            }
+
+            button.RemoveAllOnClickListeners();
+            button.AddOnClickListener(action);
         }
     }
 }

@@ -19,13 +19,11 @@ namespace CDOverhaul
             get
             {
                 if (IsDisposedOrDestroyed())
-                {
                     return null;
-                }
+
                 if (m_ModdedObject == null)
-                {
                     m_ModdedObject = base.GetComponent<ModdedObject>();
-                }
+
                 return m_ModdedObject;
             }
         }

@@ -273,6 +273,22 @@ namespace CDOverhaul
             private static readonly bool IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED = true;
             public static bool IsAdditionalContentSupportEnabled => !OverhaulVersion.IsUpdate2 && IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED;
 
+            /// <summary>
+            /// 
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Achievements Menu Redesign", true, false, "")]
+            private static readonly bool IS_ACHIEVEMENTS_MENU_REDESIGN_ENABLED = true;
+            public static bool IsAchievementsMenuRedesignEnabled => OverhaulVersion.IsUpdate4 && IS_ACHIEVEMENTS_MENU_REDESIGN_ENABLED;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.Connection screens redesign", true, false, "")]
+            private static readonly bool IS_CONNECTION_SCREENS_REDESIGN_ENABLED = true;
+            public static bool IsConnectionScreensRedesignEnabled => OverhaulVersion.IsUpdate4 && IS_CONNECTION_SCREENS_REDESIGN_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }
