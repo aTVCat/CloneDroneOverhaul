@@ -113,6 +113,8 @@ namespace CDOverhaul.HUD
         private Button m_CancelReport;
         private Button m_Report;
 
+        private Dictionary<string, GameObject> m_Logos = new Dictionary<string, GameObject>();
+
         private bool m_HasVotedUp;
         private bool m_HasVotedDown;
 
@@ -242,6 +244,12 @@ namespace CDOverhaul.HUD
             m_ReportReason = MyModdedObject.GetObject<Dropdown>(48);
             m_ReportedPersonBehaviour = MyModdedObject.GetObject<InputField>(49);
             m_ReportedPersonBehaviour.text = string.Empty;
+
+            m_Logos.Add("ko", MyModdedObject.GetObject<Transform>(57).gameObject);
+            m_Logos.Add("ja", MyModdedObject.GetObject<Transform>(56).gameObject);
+            m_Logos.Add("zh-CN", MyModdedObject.GetObject<Transform>(55).gameObject);
+            m_Logos.Add("zh-TW", MyModdedObject.GetObject<Transform>(55).gameObject);
+            m_Logos.Add(string.Empty, MyModdedObject.GetObject<Transform>(54).gameObject);
 
             Hide();
         }
@@ -758,6 +766,16 @@ namespace CDOverhaul.HUD
             RefreshPlayersInMatch();
             RefreshCurrentWorkshopLevel();
             HidePlayerActions();
+
+            string langCode = SettingsManager.Instance.GetCurrentLanguageID();
+            foreach (GameObject value in m_Logos.Values)
+                value.SetActive(false);
+
+            foreach (string key in m_Logos.Keys)
+                if (key == langCode)
+                    m_Logos[key].SetActive(true);
+
+            m_Logos[string.Empty].SetActive(!m_Logos.ContainsKey(langCode));
 
             m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             m_BackToLVLEditorButton.gameObject.SetActive(GameModeManager.IsLevelPlaytest());

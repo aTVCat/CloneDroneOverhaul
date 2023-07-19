@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.HUD;
+using CDOverhaul.LevelEditor;
 using System.Collections.Generic;
 using System.Runtime;
 using UnityEngine;
@@ -9,10 +10,11 @@ namespace CDOverhaul.Gameplay.QualityOfLife
     public class LevelEditorFixes : OverhaulController
     {
         public static LevelEditorSelectionSettingsPanel SelectionSettingsPanel { get; private set; }
+        public static Toggle MoveObjectByCoords { get; private set; }
 
         public override void Initialize()
         {
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.Default;
         }
 
         private void assignAnimationClip(AnimationClip clip, List<string> toAssignTo)
@@ -269,6 +271,25 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 if (image1)
                     Destroy(image1);
             }
+
+            RectTransform toolbar = levelEditorUI.TopToolbar;
+            OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
+            GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");
+            if (prefabToInstantiate == null)
+                return;
+
+            RectTransform coordsToggle = Instantiate(prefabToInstantiate, toolbar).transform as RectTransform;
+            coordsToggle.localPosition = Vector3.zero;
+            coordsToggle.eulerAngles = Vector3.zero;
+            coordsToggle.localScale = Vector3.one;
+            coordsToggle.anchoredPosition = new Vector2(160f, 0f);
+            ModdedObject coordsToggleMO = coordsToggle.GetComponent<ModdedObject>();
+            Toggle coordsToggleComponent = coordsToggleMO.GetObject<Toggle>(0);
+            coordsToggleComponent.isOn = LevelEditorMoveObjectsByCoordsController.ToolEnabled;
+            coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
+            {
+                LevelEditorMoveObjectsByCoordsController.ToolEnabled = value;
+            });
         }
 
         public void AddUIs()

@@ -10,10 +10,28 @@ namespace CDOverhaul.LevelEditor
         public bool HasSelectedMainObject => m_MainObject;
         public bool HasDoneEverythingToMove => GameModeManager.IsInLevelEditor() && HasSelectedMainObject && m_ObjectsAndOffsets.Count > 1;
 
+        private static bool s_ToolEnabled;
         public static bool ToolEnabled
         {
-            get;
-            private set;
+            get => s_ToolEnabled;
+            set
+            {
+                s_ToolEnabled = value;
+                if (value)
+                {
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode enabled",
+                    "Now you can move several objects using coordinates panel in inspector window.",
+                    500, 175,
+                    OverhaulFullscreenDialogueWindow.IconType.None);
+                }
+                else
+                {
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode disabled",
+                    "The usual way of object movement is back.",
+                    500, 175,
+                    OverhaulFullscreenDialogueWindow.IconType.None);
+                }
+            }
         }
 
         private bool m_IgnoreSelections;
@@ -65,26 +83,6 @@ namespace CDOverhaul.LevelEditor
         {
             if (!GameModeManager.IsInLevelEditor())
                 return;
-
-            if (Input.GetKeyDown(KeyCode.Alpha0) && !UIManager.Instance.IsMouseOverUIElement())
-            {
-                ToolEnabled = !ToolEnabled;
-
-                if (ToolEnabled)
-                {
-                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode enabled",
-                    "Now you can move several objects using coordinates panel in inspector window.",
-                    500, 175,
-                    OverhaulFullscreenDialogueWindow.IconType.None);
-                }
-                else
-                {
-                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode disabled",
-                    "The usual way of object movement is back.",
-                    500, 175,
-                    OverhaulFullscreenDialogueWindow.IconType.None);
-                }
-            }
 
             if (HasDoneEverythingToMove)
                 foreach (ObjectPlacedInLevel obj in m_ObjectsAndOffsets.Keys)
