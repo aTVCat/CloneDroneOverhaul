@@ -33,6 +33,8 @@ namespace CDOverhaul
             Instance.m_LoadingBar = moddedObject.GetObject<Slider>(1);
             Instance.m_LoadingBar.value = 0f;
 
+            moddedObject.GetObject<Image>(2).color = Time.timeSinceLevelLoad < 6f ? Color.white : Color.black;
+
             Destroy(spawnedPrefab);
             return true;
         }

@@ -129,6 +129,12 @@ namespace CDOverhaul
             if (IsModInitialized)
                 return;
 
+            try
+            {
+                ModsPanelManager.Instance.CallPrivateMethod("closeModsMenu", null);
+            }
+            catch { }
+
             GameObject gameObject = new GameObject("OverhaulCore");
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
             _ = core.Initialize(out string errors);
