@@ -389,6 +389,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
     <Compile Include="Graphics\Camera\CameraFOVOverrider.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
     <Compile Include="HUD\Personalization\Ver2\MountsPersonalizationPanel.cs" />
     <Compile Include="HUD\Personalization\Ver2\AccesoriesPersonalizationPanel.cs" />
+    <Compile Include="HUD\Tooltips\Subclasses\OverhaulClosestPlayerTooltip.cs" />
     <Compile Include="Internal\Device\DeviceSpecifics.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\Constants.cs" />
@@ -549,7 +551,6 @@
     <Compile Include="HUD\Tooltips\OverhaulTooltipsController.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltipsUI.cs" />
     <Compile Include="HUD\Tooltips\Subclasses\OverhaulCurrentWeaponTooltip.cs" />
-    <Compile Include="HUD\Tooltips\Subclasses\OverhaulTooltipWithPlayerData.cs" />
     <Compile Include="HUD\Transitions\OverhaulTransitionBehaviour.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />

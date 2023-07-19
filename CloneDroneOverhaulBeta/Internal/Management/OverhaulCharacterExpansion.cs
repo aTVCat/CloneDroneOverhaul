@@ -33,10 +33,10 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && Owner != null && Owner.IsMainPlayer();
-        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && Owner != null && Owner.IsPlayer();
+        public bool IsOwnerMainPlayer() => !IsDisposedOrDestroyed() && Owner.IsMainPlayer();
+        public bool IsOwnerPlayer() => !IsDisposedOrDestroyed() && Owner.IsPlayer();
 
-        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && Owner != null && string.IsNullOrEmpty(Owner.GetPlayFabID());
+        public bool IsOwnerMultiplayerPlayer() => !IsDisposedOrDestroyed() && !string.IsNullOrEmpty(Owner.GetPlayFabID());
         public bool IsOwnerMultiplayerNotMainPlayer() => !IsOwnerMainPlayer() && IsOwnerMultiplayerPlayer();
 
         public bool IsEnemy() => !IsOwnerPlayer() && !Owner.IsPlayerTeam;

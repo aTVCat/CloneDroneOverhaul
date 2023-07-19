@@ -1,12 +1,13 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.NetworkAssets;
+using Steamworks;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Tooltips
 {
-    public class OverhaulCurrentWeaponTooltip : OverhaulTooltipWithPlayerData
+    public class OverhaulCurrentWeaponTooltip : OverhaulTooltip
     {
         public const string LASER_COLOR = "#AAD7FF";
         public const string FIRE_COLOR = "#FFB47D";
@@ -14,89 +15,58 @@ namespace CDOverhaul.HUD.Tooltips
         public static string IconsDirectory => OverhaulMod.Core.ModDirectory + "Assets/Tooltips/Weapons/";
         private static readonly Dictionary<string, Texture> s_CachedIcons = new Dictionary<string, Texture>();
 
-        private WeaponType m_PlayerEquippedWeaponType;
+        private RawImage m_Icon;
+        private Text m_Text;
 
-        public override GameObject GetTooltipPrefab() => TooltipsController.TooltipsUI.GetDefaultPrefab();
+        private bool m_IsLoadingIcon;
 
-        private void Update()
+        public override void Initialize()
         {
-            RefreshPlayer(delegate
-            {
-                if (!SpawnedTooltipModdedObject)
-                    return;
-
-                showTooltips(true);
-            });
-
-            if (!Player || !SpawnedTooltipModdedObject)
-                return;
-
-            Color color = Color.white;
-            WeaponSkinsWearer weaponSkins = Player.GetComponent<WeaponSkinsWearer>();
-            if (weaponSkins)
-            {
-                WeaponType weaponType = Player.GetEquippedWeaponType();
-                string weaponString = weaponType.ToString();
-
-                bool isFire = weaponSkins.IsFireVariant(weaponType, false);
-                color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
-                if (isFire)
-                    weaponString += "-Fire";
-                weaponString += ".png";
-
-                tryLoadIcon(weaponString);
-            }
-            SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;
-
-            refreshData(true);
+            m_Icon = MyModdedObject.GetObject<RawImage>(0);
+            m_Text = MyModdedObject.GetObject<Text>(1);
         }
 
         private void tryLoadIcon(string fileName)
         {
+            if (m_IsLoadingIcon)
+                return;
+
             if (s_CachedIcons.ContainsKey(fileName))
             {
-                SpawnedTooltipModdedObject.GetObject<RawImage>(0).texture = s_CachedIcons[fileName];
+                m_Icon.texture = s_CachedIcons[fileName];
                 return;
             }
 
+            m_IsLoadingIcon = true;
             OverhaulDownloadInfo downloadInfo = new OverhaulDownloadInfo();
             downloadInfo.DoneAction = delegate
             {
-                RawImage i = SpawnedTooltipModdedObject.GetObject<RawImage>(0);
-                if (!i)
+                m_IsLoadingIcon = false;
+                if (downloadInfo.Error)
+                {
+                    m_Icon.texture = null;
                     return;
+                }
 
-                i.texture = downloadInfo.DownloadedTexture;
+                m_Icon.texture = downloadInfo.DownloadedTexture;
                 if (!s_CachedIcons.ContainsKey(fileName))
                     s_CachedIcons.Add(fileName, downloadInfo.DownloadedTexture);
             };
             OverhaulNetworkAssetsController.DownloadTexture("file://" + IconsDirectory + fileName, downloadInfo);
         }
 
-        private void refreshData(bool showTooltipsIfNeeded)
+        public void ShowTooltip(WeaponType weaponType, bool isFire)
         {
-            if (!Player)
+            if (!MyModdedObject)
                 return;
 
-            WeaponType newWeaponType = Player.GetEquippedWeaponType();
-            if (m_PlayerEquippedWeaponType != newWeaponType)
-            {
-                m_PlayerEquippedWeaponType = newWeaponType;
-                if (showTooltipsIfNeeded)
-                    showTooltips(false);
-            }
-        }
+            Color color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
+            string weaponString = weaponType.ToString() + (isFire ? "-Fire" : string.Empty) + ".png";
 
-        private void showTooltips(bool refreshDataIfNeeded)
-        {
-            if (!SpawnedTooltipModdedObject)
-                return;
-
-            if (refreshDataIfNeeded)
-                refreshData(false);
-
-            SpawnedTooltipModdedObject.GetObject<Text>(1).text = m_PlayerEquippedWeaponType.ToString();
-            ShowTooltipsContainer();
+            m_Text.color = color;
+            m_Text.text = weaponType.ToString();
+            tryLoadIcon(weaponString);
+            Show();
         }
     }
 }

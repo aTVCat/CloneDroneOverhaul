@@ -2,22 +2,49 @@
 
 namespace CDOverhaul.HUD.Tooltips
 {
+    [RequireComponent(typeof(ModdedObject))]
     public abstract class OverhaulTooltip : OverhaulBehaviour
     {
-        protected internal OverhaulTooltipsController TooltipsController;
-        protected internal ModdedObject SpawnedTooltipModdedObject;
+        private OverhaulTooltipsController m_Controller;
+        protected OverhaulTooltipsController Controller
+        {
+            get
+            {
+                if (!m_Controller)
+                    m_Controller = OverhaulController.GetController<OverhaulTooltipsController>();
+
+                return m_Controller;
+            }
+        }
+
+        private ModdedObject m_MyModdedObject;
+        protected ModdedObject MyModdedObject
+        {
+            get
+            {
+                if (!m_MyModdedObject)
+                    m_MyModdedObject = base.GetComponent<ModdedObject>();
+
+                return m_MyModdedObject;
+            }
+        }
+
+        private float m_TimeToHide;
 
         public abstract void Initialize();
-        public abstract void OnSpawnedTooltip();
+        protected override void OnDisposed() => OverhaulDisposable.AssignNullToAllVars(this);
+        protected virtual float GetShowDuration() => 3f;
 
-        public abstract GameObject GetTooltipPrefab();
-
-        protected void ShowTooltipsContainer()
+        public void Show()
         {
-            if (!TooltipsController || !TooltipsController.TooltipsUI)
-                return;
+            base.gameObject.SetActive(true);
+            m_TimeToHide = Time.unscaledTime + GetShowDuration() + OverhaulTooltipsUI.TooltipsAdditionalShowDuration;
+        }
 
-            TooltipsController.TooltipsUI.Show();
+        private void Update()
+        {
+            if (Time.unscaledTime > m_TimeToHide)
+                base.gameObject.SetActive(false);
         }
     }
 }
