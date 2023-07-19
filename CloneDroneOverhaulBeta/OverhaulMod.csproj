@@ -596,6 +596,8 @@
     <Compile Include="Internal\Patches\ErrorManager_Patch.cs" />
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\CharacterFixExpansion.cs" />
     <Compile Include="Internal\Patches\SceneTransitionManager_Patch.cs" />
     <Compile Include="Internal\Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />
@@ -654,7 +656,6 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameUIRootBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\EnergyUIReplacement.cs" />
-    <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeOnStart.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\OptimizeRuntime.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingDescription.cs" />

@@ -60,7 +60,7 @@ namespace CDOverhaul.Gameplay.Combat
             if (!m_CurrentWeaponTooltip || !m_ClosestPlayerTooltip)
                 return;
 
-            if(Time.frameCount % 15 == 0 && GameModeManager.IsNonCoopMultiplayer())
+            if (OverhaulTooltipsUI.ShowPlayerInfos && Time.frameCount % 15 == 0 && GameModeManager.IsNonCoopMultiplayer())
             {
                 float maxRange = 30f;
                 Character character = null;

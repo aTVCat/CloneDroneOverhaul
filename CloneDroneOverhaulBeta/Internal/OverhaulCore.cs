@@ -22,23 +22,25 @@ using ICSharpCode.SharpZipLib;
 using CDOverhaul.BuiltIn.AdditionalContent;
 using CDOverhaul.Device;
 using CDOverhaul.Gameplay;
+using Steamworks;
 
 namespace CDOverhaul
 {
     public class OverhaulCore : GlobalEventListener
     {
+        [OverhaulSetting("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
+        public static bool IsRelayConnectionEnabled;
+
         /// <summary>
         /// The mod directory path.
         /// Ends with '/'
         /// </summary>
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
-
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
-        [OverhaulSetting("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
-        public static bool IsRelayConnectionEnabled;
-
         private static bool s_HasUpdatedLangFont;
+        public static bool IsSteamInitialized => SteamManager.Instance.Initialized;
+        public static bool IsSteamOverlayOpened => SteamUtils.IsOverlayEnabled();
 
         /// <summary>
         /// The UI controller instance
@@ -53,16 +55,7 @@ namespace CDOverhaul
         {
             try
             {
-                Stopwatch stopwatch = Stopwatch.StartNew();
                 initialize();
-                stopwatch.Stop();
-
-                string contents = stopwatch.ElapsedMilliseconds + " Milliseconds";
-                try
-                {
-                    OverhaulCore.WriteText(ModDirectory + "Logs/StartupTime.log", contents);
-                }
-                catch { }
             }
             catch (Exception ex)
             {
@@ -92,7 +85,6 @@ namespace CDOverhaul
             OverhaulSettingsController.Initialize();
             OverhaulController.InitializeStatic(controllers);
 
-            //CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
             _ = OverhaulController.AddController<OverhaulVolumeController>();
@@ -111,15 +103,8 @@ namespace CDOverhaul
             OverhaulPlayerIdentifier.Initialize();
 
             OverhaulGPUInstancingController.Initialize();
-
-            OverhaulCompatibilityChecker.CheckGameVersion();
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
-            {
-                if (!OverhaulBootUI.Show())
-                {
-                    LoadSyncStuff();
-                }
-            }
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled && !OverhaulBootUI.Show())
+                LoadSyncStuff();
         }
 
         private void Start()
@@ -130,12 +115,6 @@ namespace CDOverhaul
 
         public IEnumerator LoadAsyncStuff()
         {
-            try
-            {
-                OverhaulCore.WriteText(ModDirectory + "Logs/StartupAssetBundles.log", OverhaulAssetsController.GetLoadedAssetBundlesString());
-            }
-            catch { }
-
             bool hasLoadedPart1Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part1);
             bool hasLoadedPart2Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part2);
             bool hasLoadedSkinsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Skins);
@@ -212,6 +191,7 @@ namespace CDOverhaul
 
             ReplacementBase.CreateReplacements();
             OverhaulUpdateChecker.CheckForUpdates();
+            OverhaulCompatibilityChecker.CheckGameVersion();
 
             if (!s_HasUpdatedLangFont)
             {

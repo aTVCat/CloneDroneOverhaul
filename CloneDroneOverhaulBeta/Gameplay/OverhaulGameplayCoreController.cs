@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Graphics;
+using CDOverhaul.Patches;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
@@ -58,6 +59,7 @@ namespace CDOverhaul.Gameplay
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled)
             {
                 _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
+                //_ = firstPersonMover.gameObject.AddComponent<CharacterFixExpansion>();
                 //_ = firstPersonMover.gameObject.AddComponent<OverhaulRobotDynamicAnimator>();
             }
 
