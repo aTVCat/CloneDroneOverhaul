@@ -74,9 +74,9 @@ namespace CDOverhaul.Graphics
         public float GetTargetFoV()
         {
             if (m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom)
-                return PAUSED_VALUE;
+                return PAUSED_VALUE + ViewModesController.FOVOffset;
 
-            return ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE;
+            return (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset;
         }
     }
 }

@@ -13,6 +13,11 @@ namespace CDOverhaul.Graphics
         [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false, false, null, "Gameplay.Camera.View mode")]
         public static bool SyncCameraWithHeadRotation;
 
+        [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
+        [OverhaulSettingSliderParameters(false, -10f, 25f)]
+        [OverhaulSetting("Gameplay.Camera.Field of view offset", 0f, false, null, "Gameplay.Camera.View mode")]
+        public static float FOVOffset;
+
         public static readonly Vector3 DefaultCameraOffset = new Vector3(0, 0.45f, -0.1f);
         public const float DefaultCameraUpTransformMultiplier = 0.45f;
         public const float AdditionalCameraUpTransformMultiplier = 0.25f;
