@@ -73,7 +73,7 @@ namespace CDOverhaul.Gameplay
         }
 
         public bool IsDeveloperItem;
-        public bool IsDevItemUnlocked => Equals(PlayFabDataController.GetLocalPlayFabID(), "883CC7F4CA3155A3");
+        public bool IsDevItemUnlocked => Equals(OverhaulPlayerIdentifier.GetLocalPlayFabID(), "883CC7F4CA3155A3");
 
         public bool UseSingleplayerVariantInMultiplayer;
         public bool UseVanillaBowStrings;
@@ -101,7 +101,7 @@ namespace CDOverhaul.Gameplay
             if (forceTrue || OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(m_ExclusivePlayerID))
                 return true;
 
-            string localPlayFabID = PlayFabDataController.GetLocalPlayFabID();
+            string localPlayFabID = OverhaulPlayerIdentifier.GetLocalPlayFabID();
             bool result = m_ExclusivePlayerID.Contains(localPlayFabID);
 
             // Force unlock skin if the user is CDO developer
@@ -125,7 +125,7 @@ namespace CDOverhaul.Gameplay
 || (player
 && ((player.IsForcedToUseLockedStuff()
                 || (GameModeManager.IsSinglePlayer()
-                ? m_ExclusivePlayerID.Contains(PlayFabDataController.GetLocalPlayFabID())
+                ? m_ExclusivePlayerID.Contains(OverhaulPlayerIdentifier.GetLocalPlayFabID())
                 : m_ExclusivePlayerID.Contains(player.GetPlayFabID()))) && !player.IsBlacklistedBuildUser()));
         }
 

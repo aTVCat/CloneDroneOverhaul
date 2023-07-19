@@ -174,6 +174,14 @@ namespace CDOverhaul
 && IsAnOverhaulModUser(character as FirstPersonMover);
         }
 
+        public static bool IsLocalPlayer(this MultiplayerPlayerInfoState infoState)
+        {
+            if (!infoState || infoState.IsDetached() || string.IsNullOrEmpty(infoState.state.PlayFabID))
+                return false;
+
+            return OverhaulPlayerIdentifier.GetLocalPlayFabID() == infoState.state.PlayFabID;
+        }
+
         #endregion
 
         #region FirstPersonMover
@@ -188,7 +196,7 @@ namespace CDOverhaul
         {
             return firstPersonMover
 && (GameModeManager.IsSinglePlayer()
-                ? PlayFabDataController.GetLocalPlayFabID() == "883CC7F4CA3155A3"
+                ? OverhaulPlayerIdentifier.GetLocalPlayFabID() == "883CC7F4CA3155A3"
                 : firstPersonMover.GetPlayFabID() == "883CC7F4CA3155A3");
         }
 

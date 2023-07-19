@@ -31,6 +31,8 @@ namespace CDOverhaul.HUD
             m_RobotHeadImage = m_ModdedObject.GetObject<RawImage>(5);
             m_CDOUserTick = m_ModdedObject.GetObject<Transform>(6);
             m_PlayerWinsText = m_ModdedObject.GetObject<Text>(7);
+
+            m_ModdedObject.GetObject<Button>(8).onClick.AddListener(OnOptionsButtonClicked);
             RefreshPlayerInfo();
         }
 
@@ -87,6 +89,15 @@ namespace CDOverhaul.HUD
             OverhaulDisposable.AssignNullToAllVars(this);
         }
 
+        public void OnOptionsButtonClicked()
+        {
+            OverhaulPauseMenu pauseMenu = OverhaulController.GetController<OverhaulPauseMenu>();
+            if (pauseMenu)
+            {
+                pauseMenu.ShowPlayerActions(m_PlayerInfoState);
+            }
+        }
+
         public void LoadRobotHead(int characterModelIndex, int favouriteColorIndex)
         {
             if (characterModelIndex < 0 || characterModelIndex > MultiplayerCharacterCustomizationManager.Instance.CharacterModels.Count - 1)
@@ -113,8 +124,35 @@ namespace CDOverhaul.HUD
             OverhaulNetworkAssetsController.DownloadTexture("file://" + OverhaulMod.Core.ModDirectory + "Assets/RobotHeads/" + filename, n);
         }
 
-        public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login)
+        public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)
         {
+            if (!colored)
+            {
+                switch (login)
+                {
+                    case PlayFab.ClientModels.LoginIdentityProvider.Custom:
+                        return "Custom";
+                    case PlayFab.ClientModels.LoginIdentityProvider.CustomServer:
+                        return "Custom Server";
+
+                    case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
+                        return "Switch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
+                        return "Switch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
+                        return "PlayFab";
+                    case PlayFab.ClientModels.LoginIdentityProvider.PSN:
+                        return "PSN";
+                    case PlayFab.ClientModels.LoginIdentityProvider.Steam:
+                        return "Steam";
+                    case PlayFab.ClientModels.LoginIdentityProvider.Twitch:
+                        return "Twitch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
+                        return "XBox";
+                }
+                return "N/A";
+            }
+
             switch (login)
             {
                 case PlayFab.ClientModels.LoginIdentityProvider.Custom:

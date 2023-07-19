@@ -108,7 +108,7 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 
             OverhaulGraphicsController.Initialize();
-            PlayFabDataController.Initialize();
+            OverhaulPlayerIdentifier.Initialize();
 
             OverhaulGPUInstancingController.Initialize();
 

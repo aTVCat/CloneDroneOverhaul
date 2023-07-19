@@ -18,6 +18,7 @@ namespace CDOverhaul.HUD
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
+        private static List<string> s_ReportedPlayFabIDsThisSession = new List<string>();
 
         #region Open/Close menu
 
@@ -94,12 +95,31 @@ namespace CDOverhaul.HUD
         private Button m_WorkshopLevelDownVote;
         private Button m_WorkshopLevelDetails;
 
+        private GameObject m_PlayerActionsMenu;
+        private GameObject m_PlayerActionsSelectPanel;
+        private Text m_SelectedPlayerText;
+        private Button m_OpenMutePanel;
+        private Button m_OpenReportPanel;
+        private Button m_CopyUserInfo;
+        private Button m_PlayerActionsSelectClose;
+        private GameObject m_PlayerActionsMutePanel;
+        private Text m_MutePlayerText;
+        private Button m_Mute;
+        private Button m_CancelMute;
+        private GameObject m_PlayerActionsReportPanel;
+        private Text m_ReportPlayerText;
+        private Dropdown m_ReportReason;
+        private InputField m_ReportedPersonBehaviour;
+        private Button m_CancelReport;
+        private Button m_Report;
+
         private bool m_HasVotedUp;
         private bool m_HasVotedDown;
 
         public bool ScheduleHide;
 
         private ParametersMenu m_Parameters;
+        private MultiplayerPlayerInfoState m_TargetPlayer;
 
         public override void Initialize()
         {
@@ -191,6 +211,33 @@ namespace CDOverhaul.HUD
                 }
             });
             _ = MyModdedObject.GetObject<Transform>(15).gameObject.AddComponent<OverhaulUIButtonScaler>();
+
+            m_PlayerActionsMenu = MyModdedObject.GetObject<Transform>(37).gameObject;
+            m_SelectedPlayerText = MyModdedObject.GetObject<Text>(50);
+            m_PlayerActionsSelectPanel = MyModdedObject.GetObject<Transform>(38).gameObject;
+            m_PlayerActionsSelectClose = MyModdedObject.GetObject<Button>(39);
+            m_PlayerActionsSelectClose.onClick.AddListener(HidePlayerActions);
+            m_OpenMutePanel = MyModdedObject.GetObject<Button>(40);
+            m_OpenMutePanel.onClick.AddListener(ShowMutePanel);
+            m_OpenReportPanel = MyModdedObject.GetObject<Button>(41);
+            m_OpenReportPanel.onClick.AddListener(ShowReportPanel);
+            m_CopyUserInfo = MyModdedObject.GetObject<Button>(42);
+            m_CopyUserInfo.onClick.AddListener(CopyUserInfo);
+            m_PlayerActionsMutePanel = MyModdedObject.GetObject<Transform>(43).gameObject;
+            m_MutePlayerText = MyModdedObject.GetObject<Text>(51);
+            m_Mute = MyModdedObject.GetObject<Button>(44);
+            m_Mute.onClick.AddListener(MutePlayer);
+            m_CancelMute = MyModdedObject.GetObject<Button>(45);
+            m_CancelMute.onClick.AddListener(HidePlayerActions);
+            m_PlayerActionsReportPanel = MyModdedObject.GetObject<Transform>(46).gameObject;
+            m_ReportPlayerText = MyModdedObject.GetObject<Text>(52);
+            m_CancelReport = MyModdedObject.GetObject<Button>(47);
+            m_CancelReport.onClick.AddListener(HidePlayerActions);
+            m_Report = MyModdedObject.GetObject<Button>(53);
+            m_Report.onClick.AddListener(ReportPlayer);
+            m_ReportReason = MyModdedObject.GetObject<Dropdown>(48);
+            m_ReportedPersonBehaviour = MyModdedObject.GetObject<InputField>(49);
+            m_ReportedPersonBehaviour.text = string.Empty;
 
             Hide();
         }
@@ -561,6 +608,122 @@ namespace CDOverhaul.HUD
 
         #endregion
 
+        #region Player actions
+
+        public void ShowPlayerActions(MultiplayerPlayerInfoState player)
+        {
+            if (!player || player.IsDetached() || string.IsNullOrEmpty(player.state.PlayFabID))
+                return;
+
+            List<string> options = GameUIRoot.Instance.EscMenu.ReportUserMenu.ReportTypeOptions;
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            for (int i = 0; i < options.Count; i++)
+            {
+                string translatedString = LocalizationManager.Instance.GetTranslatedString(options[i]);
+                list.Add(new Dropdown.OptionData(translatedString, null));
+            }
+
+            m_TargetPlayer = player;
+            m_PlayerActionsMenu.SetActive(true);
+            m_PlayerActionsSelectPanel.SetActive(true);
+            m_SelectedPlayerText.text = "More: " + player.state.DisplayName;
+            m_PlayerActionsReportPanel.SetActive(false);
+            m_ReportPlayerText.text = "Report " + player.state.DisplayName + "?";
+            m_PlayerActionsMutePanel.SetActive(false);
+            m_MutePlayerText.text = "Mute " + player.state.DisplayName + "?";
+            m_CopyUserInfo.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToCopyUserInfos));
+            m_ReportedPersonBehaviour.text = string.Empty;
+            m_ReportReason.options = list;
+            m_ReportReason.value = 0;
+
+            bool hasBlocked = false;
+            BlockListData data = MultiplayerLoginManager.Instance.GetLocalPlayerBlockList();
+            foreach(var entry in data.BlockList)
+            {
+                hasBlocked = entry.PlayfabId == m_TargetPlayer.state.PlayFabID;
+                if (hasBlocked)
+                    break;
+            }
+            m_OpenMutePanel.interactable = !player.IsLocalPlayer() && !hasBlocked;
+            m_OpenReportPanel.interactable = !player.IsLocalPlayer() && !s_ReportedPlayFabIDsThisSession.Contains(player.state.PlayFabID);
+        }
+
+        public void ShowMutePanel()
+        {
+            m_PlayerActionsSelectPanel.SetActive(false);
+            m_PlayerActionsReportPanel.SetActive(false);
+            m_PlayerActionsMutePanel.SetActive(true);
+        }
+
+        public void ShowReportPanel()
+        {
+            m_PlayerActionsSelectPanel.SetActive(false);
+            m_PlayerActionsReportPanel.SetActive(true);
+            m_PlayerActionsMutePanel.SetActive(false);
+        }
+
+        public void HidePlayerActions()
+        {
+            m_TargetPlayer = null;
+            m_PlayerActionsMenu.SetActive(false);
+        }
+
+        public void CopyUserInfo()
+        {
+            if (!m_TargetPlayer || m_TargetPlayer.IsDetached())
+                return;
+
+            string.Format("{0} - {1} ({2}, {3})", new object[]
+            {
+                m_TargetPlayer.state.DisplayName,
+                m_TargetPlayer.state.LastBotStandingWins,
+                m_TargetPlayer.state.PlayFabID,
+                MultiplayerPlayerInfoStateDisplay.GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)m_TargetPlayer.state.PlatformID, false)
+            }).CopyToClipboard();
+            HidePlayerActions();
+        }
+
+        public void MutePlayer()
+        {
+            if (!m_TargetPlayer || m_TargetPlayer.IsDetached() || m_TargetPlayer.IsLocalPlayer()) 
+                return;
+
+            BlockListData blockListData = MultiplayerLoginManager.Instance.GetLocalPlayerBlockList();
+            if (blockListData == null)
+                return;
+
+            var entry = new BlockListData.Entry
+            {
+                DisplayName = m_TargetPlayer.state.DisplayName,
+                PlatformId = m_TargetPlayer.state.PlatformID,
+                PlayfabId = m_TargetPlayer.state.PlayFabID
+            };
+            blockListData.BlockList.Add(entry);
+            MultiplayerLoginManager.Instance.UpdateLocalPlayerBlockList(true, 1);
+            HidePlayerActions();
+        }
+
+        public void ReportPlayer()
+        {
+            if (!m_TargetPlayer || m_TargetPlayer.IsDetached() || m_TargetPlayer.IsLocalPlayer() || s_ReportedPlayFabIDsThisSession.Contains(m_TargetPlayer.state.PlayFabID))
+                return;
+
+            MultiplayerPlayerInfoState localPlayerInfoState = MultiplayerPlayerInfoManager.Instance.GetLocalPlayerInfoState();
+            string reportId = GameUIRoot.Instance.EscMenu.ReportUserMenu.ReportTypeOptions[m_ReportReason.value];
+            string description = m_ReportedPersonBehaviour.text;
+            string reportedPlayerPlayfabId = m_TargetPlayer.state.PlayFabID;
+            string reportedPlayerDisplayName = m_TargetPlayer.state.DisplayName;
+            string senderPlayfabId = localPlayerInfoState.state.PlayFabID;
+            localPlayerInfoState.GetOrPrepareSafeDisplayName(delegate (string displayName)
+            {
+                ReportManager.SendUserReport(reportId, description, senderPlayfabId, displayName, reportedPlayerPlayfabId, reportedPlayerDisplayName);
+            });
+            HidePlayerActions();
+            s_ReportedPlayFabIDsThisSession.Add(reportedPlayerPlayfabId);
+        }
+
+        #endregion
+
         public void OnContinueClicked()
         {
             if (!AllowToggleMenu)
@@ -583,9 +746,10 @@ namespace CDOverhaul.HUD
             RefreshStartMatchButton();
             RefreshPlayersInMatch();
             RefreshCurrentWorkshopLevel();
+            HidePlayerActions();
 
             m_SkipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
-            m_BackToLVLEditorButton.gameObject.SetActive((WorkshopLevelManager.Instance != null && WorkshopLevelManager.Instance.IsPlaytestActive()) || GameModeManager.IsLevelPlaytest());
+            m_BackToLVLEditorButton.gameObject.SetActive(GameModeManager.IsLevelPlaytest());
             m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
@@ -622,7 +786,7 @@ namespace CDOverhaul.HUD
 
         private void Update()
         {
-            if (AllowToggleMenu && Input.GetKeyDown(KeyCode.Alpha0))
+            if (AllowToggleMenu && Input.GetKeyDown(KeyCode.Alpha0) && !m_PlayerActionsMenu.activeSelf)
             {
                 ForceUseOldMenu = true;
                 Hide();

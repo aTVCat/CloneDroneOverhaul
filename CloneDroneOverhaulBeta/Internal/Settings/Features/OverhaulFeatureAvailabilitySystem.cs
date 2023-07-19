@@ -8,12 +8,13 @@ namespace CDOverhaul
 {
     public static class OverhaulFeatureAvailabilitySystem
     {
-        private static readonly ReadOnlyCollection<OverhaulFeatureDefinition> m_Features = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
+        private static readonly ReadOnlyCollection<OverhaulFeatureDefinition> s_Features = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
         {
-            CreateNew(OverhaulFeatureID.PermissionToManageSkins)
+            createNew(OverhaulFeatureID.PermissionToManageSkins),
+            createNew(OverhaulFeatureID.PermissionToCopyUserInfos)
         });
 
-        private static OverhaulFeatureDefinition CreateNew(OverhaulFeatureID id)
+        private static OverhaulFeatureDefinition createNew(OverhaulFeatureID id)
         {
             OverhaulFeatureDefinition def;
             switch (id)
@@ -21,12 +22,14 @@ namespace CDOverhaul
                 case OverhaulFeatureID.PermissionToManageSkins:
                     def = new OverhaulFeatureDefinition.AbilityToManageSkins();
                     break;
+                case OverhaulFeatureID.PermissionToCopyUserInfos:
+                    def = new OverhaulFeatureDefinition.AbilityToCopyUserInfos();
+                    break;
                 default:
                     def = new OverhaulFeatureDefinition();
                     break;
             }
             def.FeatureID = id;
-
             return def;
         }
 
@@ -35,41 +38,24 @@ namespace CDOverhaul
             if (OverhaulVersion.IsDebugBuild)
                 return true;
 
-            OverhaulFeatureDefinition def = GetFeatureDefinition(featureID);
+            OverhaulFeatureDefinition def = getFeatureDefinition(featureID);
             return def != null && def.IsAvailable();
         }
 
-        public static OverhaulFeatureDefinition GetFeatureDefinition(in OverhaulFeatureID featureID)
+        private static OverhaulFeatureDefinition getFeatureDefinition(in OverhaulFeatureID featureID)
         {
-            if (m_Features.IsNullOrEmpty())
+            if (s_Features.IsNullOrEmpty())
                 return null;
 
             int i = 0;
             do
             {
-                OverhaulFeatureDefinition def = m_Features[i];
+                OverhaulFeatureDefinition def = s_Features[i];
                 if (def != null && def.FeatureID == featureID)
                     return def;
                 i++;
-            } while (i < m_Features.Count);
+            } while (i < s_Features.Count);
             return null;
-        }
-
-        public static string GetStringOfFeature(in OverhaulFeatureID featureID)
-        {
-            switch (featureID)
-            {
-                case OverhaulFeatureID.PermissionToManageSkins:
-                    return "Permission to manage skins"; // Todo: Translate all
-                case OverhaulFeatureID.PermissionToEditLocalization:
-                    return "Permission to translate the mod";
-            }
-            return "Unknown feature (" + featureID.ToString() + ")";
-        }
-
-        public static string GetColoredStringOfFeature(in OverhaulFeatureID featureID)
-        {
-            return GetStringOfFeature(featureID).AddColor(IsFeatureUnlocked(featureID) ? Color.white : Color.gray);
         }
 
         /// <summary>

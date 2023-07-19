@@ -32,7 +32,7 @@ namespace CDOverhaul
             color = currentColor;
             if (!firstPersonMover || !firstPersonMover.IsPlayer())
                 return;
-            string playFabID = GameModeManager.IsSinglePlayer() ? PlayFabDataController.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
+            string playFabID = GameModeManager.IsSinglePlayer() ? OverhaulPlayerIdentifier.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
 
             if (string.IsNullOrEmpty(playFabID) || !RelatedPlayFabId.Contains(playFabID))
                 return;

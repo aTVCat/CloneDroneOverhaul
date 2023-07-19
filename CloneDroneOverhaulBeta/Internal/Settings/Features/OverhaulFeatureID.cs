@@ -7,5 +7,7 @@
         PermissionToManageSkins,
 
         PermissionToEditLocalization,
+
+        PermissionToCopyUserInfos
     }
 }

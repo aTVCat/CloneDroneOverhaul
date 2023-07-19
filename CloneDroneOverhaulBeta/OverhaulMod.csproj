@@ -499,7 +499,7 @@
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulProfilerEntryDisplay.cs" />
-    <Compile Include="HUD\EscMenu\MultiplayerPlayerInfoStateDisplay.cs" />
+    <Compile Include="HUD\PauseMenu\MultiplayerPlayerInfoStateDisplay.cs" />
     <Compile Include="HUD\ModSetup\ModSetupWindow.cs" />
     <Compile Include="HUD\Gamemodes\Bases\ChallengesUI.cs" />
     <Compile Include="HUD\Gamemodes\Bases\EndlessModeUI.cs" />
@@ -537,7 +537,7 @@
     <Compile Include="Graphics\AmplifyOcclusion\AmplifyOcclusion.cs" />
     <Compile Include="Graphics\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
     <Compile Include="Graphics\OverhaulCameraController.cs" />
-    <Compile Include="HUD\EscMenu\OverhaulPauseMenu.cs" />
+    <Compile Include="HUD\PauseMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationPanel.cs" />
     <Compile Include="HUD\Survey\OverhaulSurveyUI.cs" />
@@ -634,7 +634,7 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\EscMenuReplacement.cs" />
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\Management\OverhaulCharacterExpansion.cs" />
-    <Compile Include="Gameplay\Personalization\Exclusivity\PlayFabDataController.cs" />
+    <Compile Include="Gameplay\Personalization\Exclusivity\OverhaulPlayerIdentifier.cs" />
     <Compile Include="Internal\Code\OverhaulExceptions.cs" />
     <Compile Include="Gameplay\OverhaulGamemodeManager.cs" />
     <Compile Include="Internal\Patches\FirstPersonMover_Patch.cs" />

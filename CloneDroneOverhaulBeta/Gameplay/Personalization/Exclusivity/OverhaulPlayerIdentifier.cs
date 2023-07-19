@@ -1,35 +1,36 @@
-﻿
+﻿using Steamworks;
 
 namespace CDOverhaul
 {
-    internal static class PlayFabDataController
+    internal static class OverhaulPlayerIdentifier
     {
         public const string OnLoginSuccessEventString = "PlayfabLoginSuccessOverhaulMod";
 
-        private static string _playfabId;
-        private static bool _hasInitialized;
+        private static string s_SteamID;
+        private static string s_PlayFabID;
+        private static bool s_HasInitialized;
 
         public static void Initialize()
         {
-            if (_hasInitialized)
+            if (s_HasInitialized)
             {
                 DelegateScheduler.Instance.Schedule(scheduledOnLogin, 0.1f);
                 return;
             }
 
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
-            _hasInitialized = true;
+            s_HasInitialized = true;
         }
         private static void onLogin()
         {
-            _playfabId = GetLocalPlayFabID();
+            s_PlayFabID = GetLocalPlayFabID();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
         }
         private static void scheduledOnLogin()
         {
-            if (string.IsNullOrEmpty(_playfabId))
-                _playfabId = GetLocalPlayFabID();
+            if (string.IsNullOrEmpty(s_PlayFabID))
+                s_PlayFabID = GetLocalPlayFabID();
 
             OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
         }
@@ -41,6 +42,17 @@ namespace CDOverhaul
                 result = string.Empty;
 
             return result;
+        }
+
+        public static string GetLocalSteamID()
+        {
+            if (!SteamAPI.IsSteamRunning() || !SteamManager.Instance.Initialized)
+                return string.Empty;
+
+            if (string.IsNullOrEmpty(s_SteamID))
+                s_SteamID = SteamUser.GetSteamID().ToString();
+
+            return s_SteamID;
         }
 
         public static long GetDiscordID()
