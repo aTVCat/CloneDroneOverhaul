@@ -391,6 +391,7 @@
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
+    <Compile Include="Graphics\Camera\CameraFOVOverrider.cs" />
     <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
@@ -477,7 +478,7 @@
     <Compile Include="Gameplay\Workshop\ProgressInformation.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Graphics\ArenaOverhaul\ArenaOverhaulController.cs" />
-    <Compile Include="Graphics\CameraRolling\CameraRollingBehaviour.cs" />
+    <Compile Include="Graphics\Camera\CameraRollingBehaviour.cs" />
     <Compile Include="Graphics\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesController.cs" />
     <Compile Include="Graphics\ViewModes\ViewModesExpansion.cs" />

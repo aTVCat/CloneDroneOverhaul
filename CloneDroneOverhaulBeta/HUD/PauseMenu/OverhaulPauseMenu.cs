@@ -48,7 +48,7 @@ namespace CDOverhaul.HUD
         private Camera m_Camera;
 
         private float m_TimeMenuChangedItsState;
-        public bool AllowToggleMenu => Time.unscaledTime >= m_TimeMenuChangedItsState + 0.45f;
+        public bool AllowToggleMenu => true;// Time.unscaledTime >= m_TimeMenuChangedItsState + 0.45f;
 
         #endregion
 
@@ -205,6 +205,10 @@ namespace CDOverhaul.HUD
                 Transform t = TransformUtils.FindChildRecursive(GameUIRoot.Instance.EscMenu.transform, "SettingsButton(Clone)");
                 if (t != null)
                 {
+                    m_ExitSelectPanel.gameObject.SetActive(false);
+                    m_PersonalizationPanel.gameObject.SetActive(false);
+                    m_SettingsSelectPanel.gameObject.SetActive(false);
+
                     Button b = t.GetComponent<Button>();
                     if (b != null)
                         b.onClick.Invoke();
@@ -288,6 +292,9 @@ namespace CDOverhaul.HUD
             m_PersonalizationButton.OnDeselect(null);
             m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
             m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsOutfits();
+
+            m_SettingsSelectPanel.gameObject.SetActive(false);
+            m_ExitSelectPanel.gameObject.SetActive(false);
             SetPanelActive(m_PersonalizationPanel, m_PersonalizationButton.transform, !m_PersonalizationPanel.gameObject.activeSelf);
         }
 
@@ -320,6 +327,8 @@ namespace CDOverhaul.HUD
         public void OnExitClicked()
         {
             m_ExitButton.OnDeselect(null);
+            m_SettingsSelectPanel.gameObject.SetActive(false);
+            m_PersonalizationPanel.gameObject.SetActive(false);
             SetPanelActive(m_ExitSelectPanel, m_ExitButton.transform, !m_ExitSelectPanel.gameObject.activeSelf);
         }
 
@@ -341,6 +350,8 @@ namespace CDOverhaul.HUD
         {
             m_SettingsButton.OnDeselect(null);
             SetPanelActive(m_SettingsSelectPanel, m_SettingsButton.transform, !m_SettingsSelectPanel.gameObject.activeSelf);
+            m_ExitSelectPanel.gameObject.SetActive(false);
+            m_PersonalizationPanel.gameObject.SetActive(false);
         }
 
         public void OnGameSettingsClicked()
@@ -736,7 +747,7 @@ namespace CDOverhaul.HUD
         {
             m_TimeMenuChangedItsState = Time.unscaledTime;
             base.gameObject.SetActive(true);
-            animateCamera();
+            //animateCamera();
 
             TimeManager.Instance.OnGamePaused();
 
@@ -769,7 +780,7 @@ namespace CDOverhaul.HUD
             SetPanelActive(m_ExitSelectPanel, null, false);
             SetPanelActive(m_SettingsSelectPanel, null, false);
 
-            if (!m_IsAnimatingCamera && m_CameraAnimator != null)
+            if (!m_IsAnimatingCamera && m_CameraAnimator)
                 _ = StaticCoroutineRunner.StartStaticCoroutine(animateCameraCoroutine(m_Camera, m_CameraAnimator, true));
 
             if (!dontUnpause)

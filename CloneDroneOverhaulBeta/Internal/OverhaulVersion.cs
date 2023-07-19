@@ -13,7 +13,7 @@ namespace CDOverhaul
         private static readonly Version s_ModVersionUpdate2 = new Version("0.2.12.3");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
 
-        private static readonly Updates s_CurrentUpdate = Updates.VER_4;
+        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
         public static bool IsUpdate2 => !IsUpdate(Updates.VER_3);

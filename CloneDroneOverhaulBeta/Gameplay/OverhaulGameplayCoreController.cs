@@ -65,6 +65,7 @@ namespace CDOverhaul.Gameplay
             if (camera)
             {
                 camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
+                camera.gameObject.AddComponent<CameraFOVOverrider>().SetUpReferences(firstPersonMover);
             }
         }
 
