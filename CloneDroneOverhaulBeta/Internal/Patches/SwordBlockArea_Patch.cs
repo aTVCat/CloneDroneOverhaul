@@ -12,11 +12,26 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("OnTriggerEnter")]
         private static void OnTriggerEnter_Prefix(SwordBlockArea __instance, Collider otherCollider)
         {
-            if (OverhaulMod.IsModInitialized && __instance.SwordHitArea != null && __instance.SwordHitArea.IsDamageActive() && __instance.BounceWeaponOnEnvironmentImpact && !otherCollider.isTrigger && Tags.IsEnvironment(otherCollider.tag))
+            bool isEverythingFine = __instance.SwordHitArea && __instance.SwordHitArea.IsDamageActive();
+            if (OverhaulMod.IsModInitialized && isEverythingFine && __instance.BounceWeaponOnEnvironmentImpact && !otherCollider.isTrigger && Tags.IsEnvironment(otherCollider.tag))
             {
                 OverhaulCombatState.SwordBlockAreaEnvCollisionSkinItem = WeaponSkinsWearer.GetEquippedWeaponSkinItemDirectly(__instance.GetOwner());
                 OverhaulCombatState.SwordBlockAreaEnvCollisionPosition = __instance.SwordHitArea.GetEdgePointCenter();
                 OverhaulCombatState.SwordBlockAreaCollidedWithEnvironment = __instance;
+            }
+
+            HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
+            if (isEverythingFine && otherComponent)
+            {
+                FirstPersonMover owner = __instance.GetOwner();
+                if (!owner)
+                    return;
+
+                Vector3 midPos = (otherComponent.transform.position + __instance.transform.position) / 2f;
+                AttackManager.Instance.CreateSwordBlockVFX(midPos);
+                AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.SwordBlocks, midPos, 0f, false, 1f, Random.Range(0.95f, 1.05f));
+
+                owner.OnWeaponCollidedWithEnvironment();
             }
         }
     }
