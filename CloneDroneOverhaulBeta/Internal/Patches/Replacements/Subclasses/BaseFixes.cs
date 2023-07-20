@@ -41,11 +41,11 @@ namespace CDOverhaul.Patches
         {
             foreach (Image image in transform.GetComponentsInChildren<Image>(true))
             {
-                if (image != null && image.sprite != null)
+                if (image && image.sprite)
                 {
                     if (image.sprite.name.Equals("UISprite") || image.sprite.name.Equals("Knob"))
                     {
-                        image.sprite = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-Small2-16x16", OverhaulAssetPart.Part1);
+                        image.sprite = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
                     }
                     else if (image.sprite.name.Equals("Checkmark"))
                     {
@@ -54,7 +54,11 @@ namespace CDOverhaul.Patches
                     }
                     else if (image.sprite.name.Equals("Background"))
                     {
-                        image.sprite = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-Small-16x16", OverhaulAssetPart.Part1);
+                        image.sprite = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-16x16"/*"CanvasBright-Small-16x16"*/, OverhaulAssetPart.Part1);
+                    }
+                    else if (image.sprite.name.Equals("InputFieldBackground"))
+                    {
+                        image.sprite = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-16x16", OverhaulAssetPart.Part1);
                     }
                 }
             }

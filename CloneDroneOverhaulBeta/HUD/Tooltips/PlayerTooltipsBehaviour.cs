@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CDOverhaul.DevTools;
 using CDOverhaul.HUD.Tooltips;
 using CDOverhaul.HUD.Tutorial;
 using TMPro;
@@ -60,6 +62,7 @@ namespace CDOverhaul.Gameplay.Combat
             if (!m_CurrentWeaponTooltip || !m_ClosestPlayerTooltip)
                 return;
 
+            Stopwatch stopwatch = Stopwatch.StartNew();
             if (OverhaulTooltipsUI.ShowPlayerInfos && Time.frameCount % 15 == 0 && GameModeManager.IsNonCoopMultiplayer())
             {
                 float maxRange = 30f;
@@ -95,6 +98,7 @@ namespace CDOverhaul.Gameplay.Combat
                 m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, SkinsWearer.IsFireVariant(newEquippedWeaponType));
             }
             m_EquippedWeponType = newEquippedWeaponType;
+            stopwatch.StopTimer("Update");
         }
     }
 }
