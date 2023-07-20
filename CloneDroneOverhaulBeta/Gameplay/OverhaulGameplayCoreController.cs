@@ -33,7 +33,6 @@ namespace CDOverhaul.Gameplay
         {
             base.Initialize();
 
-            _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
             _ = OverhaulController.AddController<WeaponSkinsController>();
             _ = OverhaulController.AddController<Pets.PetsController>();

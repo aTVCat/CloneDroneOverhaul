@@ -389,6 +389,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
@@ -529,7 +530,7 @@
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
-    <Compile Include="Graphics\Environment\Mindspace\MindspaceOverhaulController.cs" />
+    <Compile Include="Graphics\Enchancements\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -587,6 +588,7 @@
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
+    <Compile Include="Internal\Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Internal\Patches\HammerImpactMeleeArea_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorObjectPlacementManager_Patch.cs" />
     <Compile Include="Internal\Patches\LevelEditorDataManager_Patch.cs" />

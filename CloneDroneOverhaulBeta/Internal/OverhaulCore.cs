@@ -23,6 +23,7 @@ using CDOverhaul.BuiltIn.AdditionalContent;
 using CDOverhaul.Device;
 using CDOverhaul.Gameplay;
 using Steamworks;
+using CDOverhaul.Gameplay.Mindspace;
 
 namespace CDOverhaul
 {
@@ -170,6 +171,9 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<UpgradeModesController>();
             _ = OverhaulController.AddController<AdvancedPhotomodeController>();
             _ = OverhaulController.AddController<ArenaOverhaulController>();
+
+            _ = OverhaulController.AddController<MindspaceOverhaulController>();
+            _ = OverhaulController.AddController<OverhaulVFXController>();
 
             _ = OverhaulController.AddController<AdditionalContentController>();
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
