@@ -20,12 +20,7 @@ namespace CDOverhaul
             if (!ShouldShowRoomCodePanel())
                 return;
 
-            TextEditor edit = new TextEditor
-            {
-                text = GetPrivateRoomCode()
-            };
-            edit.SelectAll();
-            edit.Copy();
+            GetPrivateRoomCode().CopyToClipboard();
         }
     }
 }

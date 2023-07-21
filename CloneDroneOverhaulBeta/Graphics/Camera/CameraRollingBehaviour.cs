@@ -87,27 +87,30 @@ namespace CDOverhaul.Graphics
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             if (CanBeControlled)
             {
-                if (ForceZero)
+                bool forceZero = ForceZero;
+                if (forceZero)
                 {
                     targetX = 0f;
                     targetY = 0f;
                     targetZ = 0f;
                 }
 
-                float curX = m_TargetRotation.x;
-                float curY = m_TargetRotation.y;
-                float curZ = m_TargetRotation.z;
-                float multiply = Multiplier * Time.deltaTime * 15f * TiltMultiplier;
+                float deltaTime = Time.unscaledDeltaTime;
+                float deltaTimeMultiplied = deltaTime * 20f;
+                float multiply = Multiplier * deltaTime * TiltMultiplier * 20f;
 
-                float cursorX = ForceZero ? 0f : Input.GetAxis("Mouse X") * multiply * (InvertAxis ? -1 : 1f);
-                float cursorY = ForceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? 1f : -1f) * multiply * (InvertAxis ? -1 : 1f);
-                m_CursorMovementVelocityX = Mathf.Clamp(m_CursorMovementVelocityX + ((cursorX - m_CursorMovementVelocityX) * 0.5f), -15f, 15f);
-                m_CursorMovementVelocityY = Mathf.Clamp(m_CursorMovementVelocityY + ((cursorY - m_CursorMovementVelocityY) * 0.5f), -15f, 15f);
+                float cursorX = forceZero ? 0f : Input.GetAxis("Mouse X") * multiply * (InvertAxis ? -1 : 1f);
+                float cursorY = forceZero ? 0f : Input.GetAxis("Mouse Y") * (m_SettingsManager.GetInvertMouse() ? 1f : -1f) * multiply * (InvertAxis ? -1 : 1f);
 
-                m_TargetRotation += new Vector3(((targetX - curX) * multiply) + m_CursorMovementVelocityY,
-                    ((targetY - curY) * multiply) + m_CursorMovementVelocityX,
-                    (targetZ - curZ) * multiply);
-                m_PlayerCameraTransform.localEulerAngles = m_TargetRotation;
+                m_CursorMovementVelocityX = Mathf.Lerp(m_CursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
+                m_CursorMovementVelocityY = Mathf.Lerp(m_CursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
+
+                Vector3 newTargetRotation = m_TargetRotation;
+                newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, targetX, multiply) + m_CursorMovementVelocityY, -10f, 10f);
+                newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_CursorMovementVelocityX, -10f, 10f);
+                newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -10f, 10f);
+                m_TargetRotation = newTargetRotation;
+                m_PlayerCameraTransform.localEulerAngles = newTargetRotation;
             }
             stopwatch.StopTimer("CameraRollingBehaviour.UpdateRotation");
         }
@@ -123,15 +126,15 @@ namespace CDOverhaul.Graphics
             bool onlyRightLeg = m_Owner.IsDamaged(MechBodyPartType.RightLeg);
             bool moveRight = Input.GetKey(KeyCode.D);
             bool onlyLeftLeg = m_Owner.IsDamaged(MechBodyPartType.LeftLeg);
-            if (!LockZ && XOR(moveLeft, moveRight))
+            if (!LockZ && xor(moveLeft, moveRight))
                 z = moveLeft ? TiltMoveHorizontal : -TiltMoveHorizontal;
-            if (!LockZ && TiltWhenOneLegged && XOR(onlyLeftLeg, onlyRightLeg))
+            if (!LockZ && TiltWhenOneLegged && xor(onlyLeftLeg, onlyRightLeg))
                 z += onlyLeftLeg ? TiltToAddWhenOneLegged : -TiltToAddWhenOneLegged;
 
             float x = 0f;
             bool moveForward = Input.GetKey(KeyCode.W);
             bool moveBackward = Input.GetKey(KeyCode.S);
-            if (!LockX && XOR(moveForward, moveBackward))
+            if (!LockX && xor(moveForward, moveBackward))
                 x = moveForward ? TiltMoveHorizontal : -TiltMoveHorizontal;
             if (!LockX && TiltWhenJumping && (m_Owner.IsJumping() || m_Owner.IsFreeFallingWithNoGroundInSight()))
                 x += 1f;
@@ -140,19 +143,18 @@ namespace CDOverhaul.Graphics
             stopwatch.StopTimer("CameraRollingBehaviour.LateUpdate");
         }
 
-        private static bool XOR(bool a, bool b) => (a || b) && !(a && b);
+        private static bool xor(bool a, bool b) => (a || b) && !(a && b);
 
         public static void UpdateViewBobbing()
         {
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-
             if (CharacterTracker.Instance != null)
             {
                 FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
                 AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? 2.1f : 0.6f;
 
                 AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
-                AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
+                //AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
             }
             stopwatch.StopTimer("CameraRollingBehaviour.VB");
         }

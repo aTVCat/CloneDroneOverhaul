@@ -11,11 +11,7 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnDisposed()
         {
-            if (CachedContainers.ContainsKey(MyInstanceId))
-            {
-                _ = CachedContainers.Remove(MyInstanceId);
-            }
-
+            _ = CachedContainers.Remove(MyInstanceId);
             Expansions.Clear();
             Expansions = null;
         }
