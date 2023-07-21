@@ -62,7 +62,7 @@ namespace CDOverhaul.Gameplay.Combat
             if (!m_CurrentWeaponTooltip || !m_ClosestPlayerTooltip)
                 return;
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             if (OverhaulTooltipsUI.ShowPlayerInfos && Time.frameCount % 15 == 0 && GameModeManager.IsNonCoopMultiplayer())
             {
                 float maxRange = 30f;

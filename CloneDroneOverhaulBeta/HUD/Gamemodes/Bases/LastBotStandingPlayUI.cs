@@ -8,7 +8,8 @@ namespace CDOverhaul.HUD.Gamemodes
         private Button m_GoBackButton;
 
         private Button m_PlayButton;
-        private Button m_PlaySandboxButton;
+        private Button m_PlayPrivateButton;
+
         private Button m_RulesButton;
         private Button m_PrevMatchesButton;
 
@@ -21,8 +22,8 @@ namespace CDOverhaul.HUD.Gamemodes
             m_GoBackButton.onClick.AddListener(goBackToGamemodeSelection);
             m_PlayButton = moddedObject.GetObject<Button>(1);
             m_PlayButton.onClick.AddListener(OnPlayClicked);
-            m_PlaySandboxButton = moddedObject.GetObject<Button>(3);
-            m_PlaySandboxButton.onClick.AddListener(OnSandboxClick);
+            m_PlayPrivateButton = moddedObject.GetObject<Button>(7);
+            m_PlayPrivateButton.onClick.AddListener(OnPrivateMatchClick);
             m_RelayToggle = moddedObject.GetObject<Toggle>(6);
             m_RelayToggle.onValueChanged.AddListener(OnRelayToggleClick);
         }
@@ -45,20 +46,6 @@ namespace CDOverhaul.HUD.Gamemodes
             if (ExperimentalBranchManager.Instance.UseGameye)
                 MultiplayerMatchmakingManager.Instance.Matchmaking20Private.StopSearching(false);
 
-            GamemodesUI.FullscreenWindow.Show(OnPublicMatchClick, 1);
-        }
-
-        public void OnPrivateMatchClick()
-        {
-            BoltGlobalEventListenerSingleton<MultiplayerMatchmakingManager>.Instance.FindAndJoinMatch(new GameRequest
-            {
-                GameType = GameRequestType.BattleRoyaleInviteCodeCreate
-            });
-            Hide();
-        }
-
-        public void OnPublicMatchClick()
-        {
             MultiplayerMatchmakingManager.Instance.FindAndJoinMatch(new GameRequest
             {
                 GameType = GameRequestType.RandomBattleRoyale
@@ -66,9 +53,9 @@ namespace CDOverhaul.HUD.Gamemodes
             Hide();
         }
 
-        public void OnSandboxClick()
+        public void OnPrivateMatchClick()
         {
-            GamemodesUI.FullscreenWindow.Show(OnPublicMatchClick, 4);
+            GamemodesUI.FullscreenWindow.Show(null, 1);
         }
 
         public void OnRelayToggleClick(bool newValue)

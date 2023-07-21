@@ -51,12 +51,12 @@ namespace OverhaulAPI
             base.gameObject.SetActive(false);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (!IsActivated)
                 return;
 
-            TimeLeft -= Time.fixedDeltaTime;
+            TimeLeft -= Time.deltaTime;
             if (TimeLeft <= 0)
                 ReturnToPool();
         }

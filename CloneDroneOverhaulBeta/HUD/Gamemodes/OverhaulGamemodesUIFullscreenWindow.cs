@@ -38,8 +38,6 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[1].AddComponent<HostTypeSelectionPage>().Initialize(this);
             PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
             PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
-            PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
-            PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
             PageGameObjects[3] = moddedObject.GetObject<Transform>(6).gameObject;
             PageGameObjects[3].AddComponent<CodeEnterPage>().Initialize(this);
             PageGameObjects[4] = moddedObject.GetObject<Transform>(7).gameObject;

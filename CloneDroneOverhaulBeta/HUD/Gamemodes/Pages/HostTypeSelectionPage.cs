@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
@@ -7,6 +8,8 @@ namespace CDOverhaul.HUD.Gamemodes
         private Button m_PublicButton;
         private Button m_PrivateButton;
         private Button m_JoinLobby;
+
+        public override Vector2 GetWindowSize() => new Vector3(300f, 125f);
 
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {

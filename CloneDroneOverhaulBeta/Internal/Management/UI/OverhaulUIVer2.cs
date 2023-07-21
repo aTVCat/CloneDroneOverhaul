@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModLibrary;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -28,11 +29,18 @@ namespace CDOverhaul
                 return;
             }
 
+            FillVariables(this);
+            Hide();
+        }
+
+        public static void FillVariables(OverhaulBehaviour behaviour)
+        {
+            ModdedObject moddedObject = behaviour.GetComponent<ModdedObject>();
             List<string> objectNames = new List<string>();
-            Type type = GetType();
+            Type type = behaviour.GetType();
 
             int objectIndex = 0;
-            foreach(UnityEngine.Object @object in MyModdedObject.objects)
+            foreach (UnityEngine.Object @object in moddedObject.objects)
             {
                 if (@object)
                 {
@@ -53,7 +61,7 @@ namespace CDOverhaul
                 {
                     FieldInfo info = fields[fieldIndex];
                     ObjectReferenceAttribute objectReference = info.GetCustomAttribute<ObjectReferenceAttribute>();
-                    if(objectReference != null)
+                    if (objectReference != null)
                     {
                         int indexInModdedObject = objectNames.IndexOf(objectReference.ObjectName);
                         if (indexInModdedObject == -1)
@@ -61,25 +69,24 @@ namespace CDOverhaul
 
                         Type fieldType = info.FieldType;
                         UnityEngine.Object component = null;
-                        if(fieldType == typeof(GameObject))
+                        if (fieldType == typeof(GameObject))
                         {
-                            component = (MyModdedObject.GetObject(indexInModdedObject, typeof(Transform)) as Transform).gameObject;
+                            component = (moddedObject.GetObject(indexInModdedObject, typeof(Transform)) as Transform).gameObject;
                         }
                         else
                         {
-                            component = MyModdedObject.GetObject(indexInModdedObject, fieldType);
+                            component = moddedObject.GetObject(indexInModdedObject, fieldType);
                         }
 
                         if (!component)
                             throw new Exception("Could not find component for " + info.Name + " in " + type.Name + "!");
 
-                        info.SetValue(this, component);
+                        info.SetValue(behaviour, component);
                     }
 
                     fieldIndex++;
                 } while (fieldIndex < fields.Length);
             }
-            Hide();
         }
 
         public virtual void Show()
