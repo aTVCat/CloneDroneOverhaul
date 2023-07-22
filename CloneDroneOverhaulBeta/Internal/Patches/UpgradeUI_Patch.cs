@@ -1,5 +1,9 @@
 ﻿using CDOverhaul.Graphics;
+using CDOverhaul.HUD;
 using HarmonyLib;
+using ModLibrary;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -20,6 +24,26 @@ namespace CDOverhaul.Patches
                 __instance.UpgradeUIBackground.transform.GetChild(i).gameObject.SetActive(challengeUpgradeConfigMode);
                 i++;
             } while (i < __instance.UpgradeUIBackground.transform.childCount);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("PopulateIcons")]
+        private static void PopulateIcons_Postfix(UpgradeUI __instance)
+        {
+            if (!OverhaulMod.IsModInitialized)
+                return;
+
+            foreach (UpgradeUIIcon icon in __instance.GetPrivateField<List<UpgradeUIIcon>>("_icons"))
+            {
+                if (icon.GetComponent<OverhaulUIAnchoredPanelSlider>())
+                    continue;
+
+                RectTransform rectTransform = icon.GetComponent<RectTransform>();
+                Vector3 position = rectTransform.anchoredPosition;
+
+                icon.gameObject.AddComponent<OverhaulUIAnchoredPanelSlider>().Initialize(Vector2.zero, position, 17.5f, 2);
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
         }
     }
 }

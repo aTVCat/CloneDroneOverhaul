@@ -154,6 +154,7 @@ namespace CDOverhaul.Patches
                         {
                             text.font = s_OpenSansExtraBoldFont;
                             text.fontSize -= 2;
+                            text.resizeTextMinSize -= 2;
                         }
                     }
                 }
