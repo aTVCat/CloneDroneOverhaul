@@ -32,6 +32,8 @@ namespace CDOverhaul
         public const string ModAssetBundle_Pets = "overhaulassets_pets";
 
         public const string ModAssetBundle_ArenaOverhaul = "overhaulassets_arenaupdate";
+
+        public const string ModAssetBundle_Fonts = "overhaulassets_fonts";
         #endregion
 
         /// <summary>
@@ -229,6 +231,9 @@ namespace CDOverhaul
                     break;
                 case OverhaulAssetPart.ArenaOverhaul:
                     assetBundle = ModAssetBundle_ArenaOverhaul;
+                    break;
+                case OverhaulAssetPart.Fonts:
+                    assetBundle = ModAssetBundle_Fonts;
                     break;
             }
 

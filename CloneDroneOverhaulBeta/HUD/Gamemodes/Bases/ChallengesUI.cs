@@ -10,16 +10,47 @@ namespace CDOverhaul.HUD.Gamemodes
         private bool m_HasPopulatedChallenges;
 
         private OverhaulUI.PrefabAndContainer ChallengesContainer;
+        private OverhaulUI.PrefabAndContainer CoopChallengesContainer;
 
         private Text m_ChallengeTitleLabel;
         private Text m_ChallengeCompletionLabel;
+
+        private ScrollRect m_ScrollRect;
+        private Transform m_SinglePlayerChallenges;
+        private Transform m_MultiPlayerChallenges;
+
+        private bool m_ViewCoopChallenges;
+        public bool ViewCoopChallenges
+        {
+            get => m_ViewCoopChallenges;
+            set
+            {
+                m_ViewCoopChallenges = value;
+                if (value)
+                {
+                    m_SinglePlayerChallenges.gameObject.SetActive(false);
+                    m_MultiPlayerChallenges.gameObject.SetActive(true);
+                    m_ScrollRect.content = m_MultiPlayerChallenges as RectTransform;
+                }
+                else
+                {
+                    m_SinglePlayerChallenges.gameObject.SetActive(true);
+                    m_MultiPlayerChallenges.gameObject.SetActive(false);
+                    m_ScrollRect.content = m_SinglePlayerChallenges as RectTransform;
+                }
+            }
+        }
 
         protected override void OnInitialize()
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             m_ChallengeTitleLabel = moddedObject.GetObject<Text>(3);
             m_ChallengeCompletionLabel = moddedObject.GetObject<Text>(4);
-            ChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 1);
+            m_ScrollRect = moddedObject.GetObject<ScrollRect>(5);
+            m_SinglePlayerChallenges = moddedObject.GetObject<Transform>(6);
+            m_MultiPlayerChallenges = moddedObject.GetObject<Transform>(7);
+            ChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 6);
+            CoopChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 7);
             moddedObject.GetObject<Button>(2).onClick.AddListener(goBackToGamemodeSelection);
             ShowChallengeTooltip(null);
         }
@@ -28,6 +59,12 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/ChallengesBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
             populateChallengesIfNeeded();
+
+            if (ViewCoopChallenges)
+            {
+                GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
+                return;
+            }
             GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
         }
 
@@ -45,6 +82,12 @@ namespace CDOverhaul.HUD.Gamemodes
         private void goBackToGamemodeSelection()
         {
             Hide();
+
+            if (ViewCoopChallenges)
+            {
+                GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
+                return;
+            }
             GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
         }
 
@@ -56,19 +99,28 @@ namespace CDOverhaul.HUD.Gamemodes
             m_HasPopulatedChallenges = true;
 
             ChallengesContainer.ClearContainer();
+            CoopChallengesContainer.ClearContainer();
             ChallengeDefinition[] allSoloChallenges = ChallengeManager.Instance.GetChallenges(false);
             foreach (ChallengeDefinition definition in allSoloChallenges)
             {
                 ModdedObject moddedObject = ChallengesContainer.CreateNew();
-                _ = moddedObject.gameObject.AddComponent<UIChallengeEntry>().Initialize(definition, moddedObject, this);
+                _ = moddedObject.gameObject.AddComponent<UIChallengeEntry>().Initialize(definition, moddedObject, this, false);
+            }
+
+            ChallengeDefinition[] allCoopChallenges = ChallengeManager.Instance.GetChallenges(true);
+            foreach (ChallengeDefinition definition in allCoopChallenges)
+            {
+                ModdedObject moddedObject = CoopChallengesContainer.CreateNew();
+                _ = moddedObject.gameObject.AddComponent<UIChallengeEntry>().Initialize(definition, moddedObject, this, true);
             }
         }
 
         public void ShowChallengeTooltip(ChallengeDefinition definition)
         {
-            if (definition == null)
+            bool isCoop = ViewCoopChallenges;
+            if (isCoop || definition == null)
             {
-                m_ChallengeTitleLabel.text = "Hover cursor over challenge...";
+                m_ChallengeTitleLabel.text = isCoop ? string.Empty : "Hover cursor over challenge...";
                 m_ChallengeCompletionLabel.text = string.Empty;
                 return;
             }
@@ -94,8 +146,11 @@ namespace CDOverhaul.HUD.Gamemodes
 
             private bool m_IsHighlighted;
 
-            public UIChallengeEntry Initialize(ChallengeDefinition definition, ModdedObject moddedObject, ChallengesUI challengesUI)
+            public bool IsCoop;
+
+            public UIChallengeEntry Initialize(ChallengeDefinition definition, ModdedObject moddedObject, ChallengesUI challengesUI, bool isCoop)
             {
+                IsCoop = isCoop;
                 m_ChallengesUI = challengesUI;
                 m_ChallengeDefinition = definition;
                 m_ShowWhenCompleted = new GameObject[2] { moddedObject.GetObject<Transform>(0).gameObject, moddedObject.GetObject<Transform>(1).gameObject };
@@ -122,6 +177,15 @@ namespace CDOverhaul.HUD.Gamemodes
                 SetCompletedVizuals(ChallengeManager.Instance.HasCompletedChallenge(m_ChallengeDefinition.ChallengeID));
                 m_Title.text = LocalizationManager.Instance.GetTranslatedString(m_ChallengeDefinition.ChallengeName, -1);
                 m_Description.text = LocalizationManager.Instance.GetTranslatedString(m_ChallengeDefinition.ChallengeDescription, -1);
+                if (IsCoop)
+                {
+                    CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(m_ChallengeDefinition.ChallengeID);
+                    if (characterModelCustomizationEntry != null)
+                    {
+                        m_Preview.sprite = characterModelCustomizationEntry.ImageSprite;
+                        return;
+                    }
+                }
                 m_Preview.sprite = m_ChallengeDefinition.ImageSprite;
             }
 
@@ -135,6 +199,16 @@ namespace CDOverhaul.HUD.Gamemodes
                 }
                 Func<bool> func = new Func<bool>(() => CharacterTracker.Instance.GetPlayer());
                 OverhaulTransitionController.DoTransitionWithAction(action, func, 0.10f);
+            }
+
+            private CharacterModelCustomizationEntry getCharacterModelUnlockedByChallenge(string challengeID)
+            {
+                CompleteChallengeAchievement completeChallengeAchievement = GameplayAchievementManager.Instance.GetCompleteChallengeAchievement(challengeID);
+                if (completeChallengeAchievement != null)
+                {
+                    return MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelUnlockedByAchievement(completeChallengeAchievement.AchievementID);
+                }
+                return null;
             }
 
             public void OnPointerExit(PointerEventData eventData)

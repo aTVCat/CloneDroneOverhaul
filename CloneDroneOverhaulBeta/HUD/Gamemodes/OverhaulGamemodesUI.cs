@@ -55,12 +55,19 @@ namespace CDOverhaul.HUD.Gamemodes
             datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[2].ClickedCallback.AddListener(delegate
             {
+                OverhaulChallengesUI.ViewCoopChallenges = false;
                 ShowWithUI(2);
             });
             replaceOldImageWithNew(datas[2], "Bot.jpg");
 
             GameModeCardData[] datas2 = GameUIRoot.Instance.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
             replaceOldImageWithNew(datas2[0], "Humans.jpg");
+            datas2[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            datas2[1].ClickedCallback.AddListener(delegate
+            {
+                OverhaulChallengesUI.ViewCoopChallenges = true;
+                ShowWithUI(2);
+            });
             replaceOldImageWithNew(datas2[1], "Bot.jpg");
             datas2[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas2[2].ClickedCallback.AddListener(delegate

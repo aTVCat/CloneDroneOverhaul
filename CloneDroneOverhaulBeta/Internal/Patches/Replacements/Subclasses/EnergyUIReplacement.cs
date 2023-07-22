@@ -71,6 +71,9 @@ namespace CDOverhaul.Patches
 
         public void RefreshPatch()
         {
+            if (!SuccessfullyPatched)
+                return;
+
             PatchEnergyUI(!PatchHUD);
         }
 

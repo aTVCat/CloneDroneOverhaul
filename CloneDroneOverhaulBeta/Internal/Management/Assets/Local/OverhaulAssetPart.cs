@@ -16,5 +16,6 @@
         Experiments,
         Pets,
         ArenaOverhaul,
+        Fonts
     }
 }
