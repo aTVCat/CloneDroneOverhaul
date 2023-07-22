@@ -3,7 +3,7 @@ using Steamworks;
 
 namespace CDOverhaul.HUD.Gamemodes
 {
-    public class SandboxCodeEnterPage : CodeEnterPage
+    public class SandboxCodeEnterPage : LBSCodeEnterPage
     {
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {

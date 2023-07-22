@@ -390,7 +390,11 @@
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
+    <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSMapDisplay.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\DuelPrivateMatchActions.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\DuelCodeEnterPage.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
@@ -516,13 +520,13 @@
     <Compile Include="HUD\Gamemodes\Bases\ChapterSelectionUI.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodesUI.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodeUIBase.cs" />
-    <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
+    <Compile Include="HUD\Gamemodes\Bases\DuelPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\SandboxActionSelectionPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\SandboxCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DifficultySelectionPage.cs" />
-    <Compile Include="HUD\Gamemodes\Pages\CodeEnterPage.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\LBSCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSGameCustomization.cs" />
-    <Compile Include="HUD\Gamemodes\Pages\HostTypeSelectionPage.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\LBSPrivateMatchActions.cs" />
     <Compile Include="HUD\LoadingScreen\OverhaulLoadingScreen.cs" />
     <Compile Include="HUD\MultiplayerSandbox\MultiplayerSandboxUI.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogueInstance.cs" />
@@ -601,6 +605,7 @@
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\CharacterFixExpansion.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameModeSelectPanelBehaviourFix.cs" />
     <Compile Include="Internal\Patches\SceneTransitionManager_Patch.cs" />
     <Compile Include="Internal\Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />

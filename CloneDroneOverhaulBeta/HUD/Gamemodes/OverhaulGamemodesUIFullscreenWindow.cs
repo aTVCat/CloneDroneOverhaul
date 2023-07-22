@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private RectTransform m_PanelTransform;
         private CanvasGroup m_CanvasGroup;
 
-        private readonly GameObject[] PageGameObjects = new GameObject[6];
+        private readonly GameObject[] PageGameObjects = new GameObject[10];
 
         private Action m_Callback;
 
@@ -35,15 +35,21 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[0] = moddedObject.GetObject<Transform>(2).gameObject;
             PageGameObjects[0].AddComponent<DifficultySelectionPage>().Initialize(this);
             PageGameObjects[1] = moddedObject.GetObject<Transform>(3).gameObject;
-            PageGameObjects[1].AddComponent<HostTypeSelectionPage>().Initialize(this);
+            PageGameObjects[1].AddComponent<LBSPrivateMatchActions>().Initialize(this);
             PageGameObjects[2] = moddedObject.GetObject<Transform>(4).gameObject;
             PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
             PageGameObjects[3] = moddedObject.GetObject<Transform>(6).gameObject;
-            PageGameObjects[3].AddComponent<CodeEnterPage>().Initialize(this);
+            PageGameObjects[3].AddComponent<LBSCodeEnterPage>().Initialize(this);
             PageGameObjects[4] = moddedObject.GetObject<Transform>(7).gameObject;
             PageGameObjects[4].AddComponent<SandboxActionSelectionPage>().Initialize(this);
             PageGameObjects[5] = moddedObject.GetObject<Transform>(8).gameObject;
             PageGameObjects[5].AddComponent<SandboxCodeEnterPage>().Initialize(this);
+            PageGameObjects[6] = moddedObject.GetObject<Transform>(9).gameObject;
+            PageGameObjects[6].AddComponent<DuelPrivateMatchActions>().Initialize(this);
+            PageGameObjects[7] = moddedObject.GetObject<Transform>(10).gameObject;
+            PageGameObjects[7].AddComponent<DuelGameCustomization>().Initialize(this);
+            PageGameObjects[8] = moddedObject.GetObject<Transform>(11).gameObject;
+            PageGameObjects[8].AddComponent<DuelCodeEnterPage>().Initialize(this);
 
             base.gameObject.SetActive(false);
         }

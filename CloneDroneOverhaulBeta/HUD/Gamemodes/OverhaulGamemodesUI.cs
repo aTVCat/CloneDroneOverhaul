@@ -10,6 +10,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public ChapterSelectionUI OverhaulChapterSelectionUI;
         public LastBotStandingPlayUI OverhaulLastBotStandingPlayUI;
         public ChallengesUI OverhaulChallengesUI;
+        public DuelPlayUI OverhaulDuelPlayUI;
 
         public OverhaulGamemodesUIFullscreenWindow FullscreenWindow;
 
@@ -31,6 +32,7 @@ namespace CDOverhaul.HUD.Gamemodes
             OverhaulChapterSelectionUI = MyModdedObject.GetObject<Transform>(2).gameObject.AddComponent<ChapterSelectionUI>().Initialize<ChapterSelectionUI>(this);
             OverhaulLastBotStandingPlayUI = MyModdedObject.GetObject<Transform>(3).gameObject.AddComponent<LastBotStandingPlayUI>().Initialize<LastBotStandingPlayUI>(this);
             OverhaulChallengesUI = MyModdedObject.GetObject<Transform>(5).gameObject.AddComponent<ChallengesUI>().Initialize<ChallengesUI>(this);
+            OverhaulDuelPlayUI = MyModdedObject.GetObject<Transform>(7).gameObject.AddComponent<DuelPlayUI>().Initialize<DuelPlayUI>(this);
 
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsOverhaulGamemodesUIEnabled)
                 return;
@@ -66,6 +68,11 @@ namespace CDOverhaul.HUD.Gamemodes
                 ShowWithUI(1);
             });
             replaceOldImageWithNew(datas2[2], "Raptor.jpg");
+            datas2[3].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            datas2[3].ClickedCallback.AddListener(delegate
+            {
+                ShowWithUI(3);
+            });
             replaceOldImageWithNew(datas2[3], "DuelHumans.jpg");
 
             ShowWithUI(-1);
@@ -107,6 +114,7 @@ namespace CDOverhaul.HUD.Gamemodes
             OverhaulChapterSelectionUI.Hide();
             OverhaulLastBotStandingPlayUI.Hide();
             OverhaulChallengesUI.Hide();
+            OverhaulDuelPlayUI.Hide();
             switch (index)
             {
                 case 0:
@@ -117,6 +125,9 @@ namespace CDOverhaul.HUD.Gamemodes
                     break;
                 case 2:
                     OverhaulChallengesUI.Show();
+                    break;
+                case 3:
+                    OverhaulDuelPlayUI.Show();
                     break;
             }
         }

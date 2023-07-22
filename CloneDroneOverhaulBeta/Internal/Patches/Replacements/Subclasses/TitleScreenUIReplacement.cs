@@ -202,6 +202,7 @@ namespace CDOverhaul.Patches
                 return;
 
             GameModeSelectScreen gameModeSelectScreen = main.GetComponent<GameModeSelectScreen>();
+            gameModeSelectScreen.gameObject.AddComponent<GameModeSelectPanelBehaviourFix>();
             BaseFixes.UpdateSprites(gameModeSelectScreen.ButtonPrefab.transform);
 
             RectTransform rectTransformOfMain = main as RectTransform;
@@ -212,6 +213,7 @@ namespace CDOverhaul.Patches
             box.anchorMin = new Vector2(0f, 0.5f);
             box.anchoredPosition = Vector2.zero;
             box.sizeDelta = new Vector2(0f, 300f);
+            box.gameObject.SetActive(true);
             OverhaulUIPanelSlider slider1 = box.gameObject.AddComponent<OverhaulUIPanelSlider>();
             slider1.TargetPosition = new Vector3(0f, 0, 0f);
             slider1.StartPosition = new Vector3(1000f, 0, 0f);
