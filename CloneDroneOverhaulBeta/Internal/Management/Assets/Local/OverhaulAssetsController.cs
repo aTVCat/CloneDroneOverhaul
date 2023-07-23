@@ -36,6 +36,8 @@ namespace CDOverhaul
         public const string ModAssetBundle_Fonts = "overhaulassets_fonts";
         #endregion
 
+        public const string STANDARD = "Standard";
+
         /// <summary>
         /// All loaded assets into memory
         /// </summary>
@@ -51,7 +53,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="pathUnderModFolder"></param>
         /// <returns><b>True</b> if asset bundle has been successfully loaded</returns>
-        public static bool TryLoadAssetBundle(in string pathUnderModFolder)
+        public static bool TryLoadAssetBundle(in string pathUnderModFolder, bool fixMaterials = true)
         {
             if (HasLoadedAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder))
                 return false;
@@ -60,6 +62,13 @@ namespace CDOverhaul
             try
             {
                 loadedAssetBundle = AssetBundle.LoadFromFile(OverhaulCore.ModDirectoryStatic + pathUnderModFolder);
+                if (fixMaterials)
+                {
+                    Material[] materials = loadedAssetBundle.LoadAllAssets<Material>(); // No fog fix
+                    foreach (Material material in materials)
+                        if (material.shader.name == STANDARD)
+                            material.shader = Shader.Find(STANDARD);
+                }
             }
             catch
             {
@@ -75,7 +84,7 @@ namespace CDOverhaul
         /// <param name="pathUnderModFolder"></param>
         /// <param name="doneCallback"></param>
         /// <returns><see cref="AssetLoadHandler"/> containing progress variable</returns>
-        public static AssetBundleLoadHandler LoadAssetBundleAsync(in string pathUnderModFolder, Action<AssetBundleLoadHandler> doneCallback)
+        public static AssetBundleLoadHandler LoadAssetBundleAsync(in string pathUnderModFolder, Action<AssetBundleLoadHandler> doneCallback, bool fixMaterials = true)
         {
             if (doneCallback == null)
                 return null;
@@ -84,11 +93,11 @@ namespace CDOverhaul
             if (IsLoadingAssetBundle(pathUnderModFolder) || !DoesAssetBundleExist(pathUnderModFolder) || HasLoadedAssetBundle(pathUnderModFolder))
                 return handler;
 
-            _ = StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(loadAssetBundleAsyncCoroutine(pathUnderModFolder, handler, fixMaterials));
             return handler;
         }
 
-        private static IEnumerator loadAssetBundleAsyncCoroutine(string pathUnderModFolder, AssetBundleLoadHandler handler)
+        private static IEnumerator loadAssetBundleAsyncCoroutine(string pathUnderModFolder, AssetBundleLoadHandler handler, bool fixMaterials)
         {
             m_LoadingAssetBundles.Add(pathUnderModFolder);
             AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(OverhaulCore.ModDirectoryStatic + pathUnderModFolder);
@@ -96,6 +105,14 @@ namespace CDOverhaul
 
             while (!assetBundleCreateRequest.isDone)
                 yield return null;
+
+            if (fixMaterials)
+            {
+                Material[] materials = assetBundleCreateRequest.assetBundle.LoadAllAssets<Material>(); // No fog fix
+                foreach (Material material in materials)
+                    if (material.shader.name == STANDARD)
+                        material.shader = Shader.Find(STANDARD);
+            }
 
             handler.OnDoneLoading();
             yield break;

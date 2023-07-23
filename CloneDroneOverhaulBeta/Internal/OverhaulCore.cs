@@ -132,7 +132,7 @@ namespace CDOverhaul
             if (!hasLoadedPart2Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part2, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedPart2Bundle = true;
-            });
+            }, false);
 
             if (!hasLoadedSkinsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
@@ -199,8 +199,7 @@ namespace CDOverhaul
 
             if (!s_HasUpdatedLangFont)
             {
-                s_HasUpdatedLangFont = true;
-                LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
+                StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
             }
 
             OverhaulMod.HasBootProcessEnded = true;
@@ -211,6 +210,14 @@ namespace CDOverhaul
             CanvasController = null;
             OverhaulMod.Core = null;
             ReplacementBase.CancelEverything();
+        }
+
+        private static IEnumerator updateLangFontCoroutine()
+        {
+            yield return new WaitUntil(() => SettingsManager.Instance.IsInitialized());
+            LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
+            s_HasUpdatedLangFont = true;
+            yield break;
         }
 
         public static string ReadText(string filePath)

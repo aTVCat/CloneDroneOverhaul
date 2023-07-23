@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static RootMotion.FinalIK.VRIKCalibrator.CalibrationData;
 
 namespace CDOverhaul.HUD
 {
@@ -38,8 +39,6 @@ namespace CDOverhaul.HUD
                 updateScale(HighlightedScale);
             else
                 updateScale(IdleScale);
-
-            m_TargetTransform.localScale = new Vector3(limitCoord(0), limitCoord(1), limitCoord(2));
         }
 
         protected override void OnDisposed()
@@ -56,12 +55,12 @@ namespace CDOverhaul.HUD
 
         private void updateScale(Vector3 target)
         {
-            m_TargetTransform.localScale += (target - m_TargetTransform.localScale) * Multiplier * Time.unscaledDeltaTime;
-        }
-
-        private float limitCoord(byte number)
-        {
-            return Mathf.Clamp(m_TargetTransform.localScale[number], PressedScale[number], HighlightedScale[number]);
+            float deltaTime = Time.unscaledDeltaTime * Multiplier;
+            Vector3 scale = base.transform.localScale;
+            scale.x = Mathf.Lerp(scale.x, target.x, deltaTime);
+            scale.y = Mathf.Lerp(scale.y, target.y, deltaTime);
+            scale.z = Mathf.Lerp(scale.z, target.z, deltaTime);
+            base.transform.localScale = scale;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

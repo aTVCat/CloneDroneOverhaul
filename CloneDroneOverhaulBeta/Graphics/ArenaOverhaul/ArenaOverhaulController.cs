@@ -132,7 +132,9 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             m_OverhaulGarbageDoorTransform = moddedObject.GetObject<Transform>(0);
 
             m_ArenaOverhaulMaterial = gameObject.GetComponentInChildren<MeshRenderer>().sharedMaterial;
+            m_ArenaOverhaulMaterial.shader = Shader.Find("Standard");
             m_ArenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
+            m_ArenaLightsMaterial.shader = Shader.Find("Standard");
 
             OverhaulEventsController.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate, true);
 
