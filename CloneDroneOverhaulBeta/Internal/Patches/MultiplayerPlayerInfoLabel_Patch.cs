@@ -18,5 +18,16 @@ namespace CDOverhaul.Patches
                 __instance.PlayerNameLabel.gameObject.AddComponent<ModBotTagRemoverBehaviour>().NormalUsername = playerState.state.DisplayName;
             }
         }
+
+        /*
+        [HarmonyPostfix]
+        [HarmonyPatch("GetKillFeedXOffset")]
+        private static void GetKillFeedXOffset_Postfix(MultiplayerPlayerInfoLabel __instance, ref float __result)
+        {
+            if (!OverhaulMod.IsModInitialized)
+                return;
+
+            __result -= 72f;
+        }*/
     }
 }
