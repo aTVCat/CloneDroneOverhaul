@@ -14,6 +14,9 @@ namespace CDOverhaul.Patches
 
         private const string ITEM_BACKGROUND = "Item Background";
 
+        private const string ARIAL = "Arial";
+        private const string KHMERUIB = "KhmerUIb";
+
         [OverhaulSettingWithNotification(1)]
         [OverhaulSetting("Game interface.Vanilla changes.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
         public static bool PixelsSimpleFont;
@@ -144,13 +147,13 @@ namespace CDOverhaul.Patches
                 {
                     if (!text.GetComponent<LocalizedTextField>())
                     {
-                        if(text.font.name == "Arial")
+                        if(text.font.name == ARIAL)
                         {
                             text.font = s_OpenSansRegularFont;
                             text.fontSize -= 2;
                             text.fontStyle = FontStyle.Normal;
                         }
-                        else if (text.font.name == "KhmerUIb")
+                        else if (text.font.name == KHMERUIB)
                         {
                             text.font = s_OpenSansExtraBoldFont;
                             text.fontSize -= 2;

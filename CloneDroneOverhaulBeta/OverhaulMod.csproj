@@ -404,8 +404,8 @@
     <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
     <Compile Include="HUD\ConnectionScreens\OverhaulConnectScreen.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
-    <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
+    <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
     <Compile Include="HUD\Personalization\Ver2\MountsPersonalizationPanel.cs" />
     <Compile Include="HUD\Personalization\Ver2\AccesoriesPersonalizationPanel.cs" />
     <Compile Include="HUD\Tooltips\Subclasses\OverhaulClosestPlayerTooltip.cs" />
@@ -587,6 +587,7 @@
     <Compile Include="Internal\OverhaulUpdateChecker.cs" />
     <Compile Include="Internal\OverhaulWebhooksController.cs" />
     <Compile Include="Internal\Patches\ArrowProjectile_Patch.cs" />
+    <Compile Include="Internal\Patches\ArenaMaterialSwapper_Patch.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />

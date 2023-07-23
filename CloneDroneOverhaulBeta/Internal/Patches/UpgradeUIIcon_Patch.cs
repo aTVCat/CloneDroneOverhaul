@@ -1,5 +1,9 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
 using HarmonyLib;
+using ModLibrary;
+using Sony.NP;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -19,6 +23,35 @@ namespace CDOverhaul.Patches
 
             __result = UpgradeManager.Instance.RevertUpgrade(__instance.GetDescription());
             return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("refreshDisplay")]
+        private static void refreshDisplay_Postfix(UpgradeUIIcon __instance)
+        {
+            CanvasGroup canvasGroup = __instance.GetComponent<CanvasGroup>();
+            if (!canvasGroup)
+                canvasGroup = __instance.gameObject.AddComponent<CanvasGroup>();
+
+            bool isUpgradeMode = OverhaulMod.IsModInitialized && UpgradeModesController.Mode == UpgradeMode.Upgrade;
+            if (!isUpgradeMode && !__instance.GetDescription().CanBeReverted())
+            {
+                canvasGroup.alpha = 0.3f;
+                return;
+            }
+            canvasGroup.alpha = 1f;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("Awake")]
+        private static void Awake_Postfix(UpgradeUIIcon __instance)
+        {
+            Transform selectableFrame = __instance.transform.FindChildRecurisve("SelectableFrame");
+            if (selectableFrame)
+            {
+                selectableFrame.localPosition = new Vector3(1f, 2f, 0f);
+                selectableFrame.localScale = new Vector3(1.2f, 1f, 1f);
+            }
         }
     }
 }

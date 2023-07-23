@@ -26,6 +26,7 @@ namespace CDOverhaul.Patches
             } while (i < __instance.UpgradeUIBackground.transform.childCount);
         }
 
+        
         [HarmonyPostfix]
         [HarmonyPatch("PopulateIcons")]
         private static void PopulateIcons_Postfix(UpgradeUI __instance)
@@ -33,6 +34,17 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
+            Transform transform = __instance.transform.FindChildRecurisve("IconContainer");
+            if (transform)
+            {
+                OverhaulUIPanelScaler scaler = transform.GetComponent<OverhaulUIPanelScaler>();
+                if (scaler)
+                {
+                    scaler.OnEnable();
+                }
+            }
+
+            /*
             foreach (UpgradeUIIcon icon in __instance.GetPrivateField<List<UpgradeUIIcon>>("_icons"))
             {
                 if (icon.GetComponent<OverhaulUIAnchoredPanelSlider>())
@@ -41,9 +53,9 @@ namespace CDOverhaul.Patches
                 RectTransform rectTransform = icon.GetComponent<RectTransform>();
                 Vector3 position = rectTransform.anchoredPosition;
 
-                icon.gameObject.AddComponent<OverhaulUIAnchoredPanelSlider>().Initialize(Vector2.zero, position, 17.5f, 2);
+                icon.gameObject.AddComponent<OverhaulUIAnchoredPanelSlider>().Initialize(Vector2.zero, position, 20f, 2);
                 rectTransform.anchoredPosition = Vector2.zero;
-            }
+            }*/
         }
     }
 }

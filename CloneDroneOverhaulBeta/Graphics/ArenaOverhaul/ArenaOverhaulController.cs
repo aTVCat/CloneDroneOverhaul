@@ -19,11 +19,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         public readonly string[] IgnoredArenaInteriorParts = new string[]
         {
-            /*
-            "ARENA_THRONE_END_PARTS-0",
-            "ARENA_THRONE_END_PARTS-2",
-            "ARENA_THRONE_END_PARTS-3",
-            "ArenaThroneSectionLights"*/
+            "ARENA_THRONE_END_PARTS-3"
         };
 
         private Transform m_WorldRootTransform;
@@ -82,7 +78,6 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
             m_ArenaFinalTransform = m_WorldRootTransform.FindChildRecurisve("ArenaFinal");
             m_ArenaUpperInteriorTransform = m_ArenaFinalTransform.FindChildRecurisve("Arena2019");
-            m_ArenaUpperInteriorTransform.gameObject.SetActive(false);
 
             m_LiftTransform = m_WorldRootTransform.FindChildRecurisve("LiftContainer");
             m_LiftWallTransform = m_LiftTransform.FindChildRecurisve("LiftWall (1)");
@@ -176,7 +171,6 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         public void SetVanillaPartsActive(bool value)
         {
-            /*
             for(int i = 0; i < m_ArenaUpperInteriorTransform.childCount; i++)
             {
                 GameObject gameObject = m_ArenaUpperInteriorTransform.GetChild(i).gameObject;
@@ -184,7 +178,14 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
                 {
                     gameObject.SetActive(value);
                 }
-            }*/
+                else
+                {
+                    if(gameObject.name == "ARENA_THRONE_END_PARTS-3")
+                    {
+                        gameObject.transform.localPosition = new Vector3(3.2f, 10f, 15.5f);
+                    }
+                }
+            }
             m_LiftWallTransform.gameObject.SetActive(value);
         }
 
@@ -239,6 +240,11 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             position.y += 1.21f;
             position.z = 0f;
             m_OverhaulGarbageDoorTransform.localPosition = position;
+
+            if (!m_ArenaUpperInteriorTransform)
+                return;
+
+            m_ArenaUpperInteriorTransform.gameObject.SetActive(!GameModeManager.IsInLevelEditor());
         }
     }
 }

@@ -2,25 +2,49 @@
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulUIPanelSlider : OverhaulBehaviour
+    public class OverhaulUIAnchoredPanelSlider : OverhaulBehaviour
     {
         public float Multiplier = 15f;
-        public Vector3 StartPosition = Vector3.zero + new Vector3(25f, 0f);
-        public Vector3 TargetPosition = Vector3.zero;
+        public Vector2 StartPosition = Vector2.zero - new Vector2(25f, 0f);
+        public Vector2 TargetPosition;
 
-        private void Update()
+        public int StopForFrames;
+        private int m_StopFramesLeft;
+
+        public void Initialize(Vector2 startPosition, Vector2 targetPosition, float multiplier = 15f, int stopFrames = 0)
         {
+            StartPosition = startPosition;
+            TargetPosition = targetPosition;
+            Multiplier = multiplier;
+            StopForFrames = stopFrames;
+            m_StopFramesLeft = stopFrames;
+        }
+
+        private void LateUpdate()
+        {
+            if (m_StopFramesLeft > 0)
+            {
+                m_StopFramesLeft--;
+                return;
+            }
+
+            RectTransform rectTransform = base.transform as RectTransform;
+
             float deltaTime = Time.unscaledDeltaTime * Multiplier;
-            Vector3 localPosition = base.transform.localPosition;
-            localPosition.x = Mathf.Lerp(localPosition.x, TargetPosition.x, deltaTime);
-            localPosition.y = Mathf.Lerp(localPosition.y, TargetPosition.y, deltaTime);
-            localPosition.z = Mathf.Lerp(localPosition.z, TargetPosition.z, deltaTime);
-            base.transform.localPosition = localPosition;
+            Vector2 position = rectTransform.anchoredPosition;
+            position.x = Mathf.Lerp(position.x, TargetPosition.x, deltaTime);
+            position.y = Mathf.Lerp(position.y, TargetPosition.y, deltaTime);
+            rectTransform.anchoredPosition = position;
         }
 
         public override void OnEnable()
         {
-            base.transform.localPosition = StartPosition;
+            if(StopForFrames != 0)
+            {
+                m_StopFramesLeft = StopForFrames;
+            }
+
+            (base.transform as RectTransform).anchoredPosition = StartPosition;
         }
     }
 }
