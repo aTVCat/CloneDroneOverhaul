@@ -11,21 +11,30 @@ namespace CDOverhaul.HUD
 {
     public class AccesoriesPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        public override PersonalizationCategory GetCategory() => PersonalizationCategory.Outfits;
+        private PrefabAndContainer m_BodyPartsContainer;
+        private PrefabAndContainer m_OutfitItemsContainer;
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            m_BodyPartsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
+            m_OutfitItemsContainer = new PrefabAndContainer(MyModdedObject, 6, 7);
+        }
 
         protected override void PopulateItems()
         {
-
+            StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 
-        protected override IEnumerator populateItemsCoroutine()
+        protected override IEnumerator PopulateItemsCoroutine()
         {
             IsPopulatingItems = true;
+            yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(false));
 
+            yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(true));
             IsPopulatingItems = false;
             yield break;
         }
-
-        protected override Vector3 GetTargetPosition() => new Vector3(135f, 0f, 0f);
     }
 }

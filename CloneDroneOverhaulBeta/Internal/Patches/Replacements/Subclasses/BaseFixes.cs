@@ -59,6 +59,8 @@ namespace CDOverhaul.Patches
 
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.ChallengeListItemDisplayPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.LevelEditorChallengeLevelDisplayPrefab.transform);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.transform);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.TagButtonPrefab.transform);
 
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.SectionConfigPanel.SectionListItemPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.HistoryPanel.ItemViewPrefab.transform);
@@ -81,14 +83,14 @@ namespace CDOverhaul.Patches
             UpdateSprites(propertyGroup.MethodButtonPrefab.transform);
             UpdateSprites(propertyGroup.CustomInspectorMethodCalledFromAnimationDropdownPrefab.transform);
 
-            UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -2);/*
+            UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);/*
             UpdateSprites(GameUIRoot.Instance.MultiplayerPlayerList.PlayerInfoLabelPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.KillFeedUI.KillFeedItemPool.Prefab);*/
 
             SuccessfullyPatched = true;
         }
 
-        public static void UpdateSprites(Transform transform, bool forceRegularFont = false, int offsetFontSize = 0, FontStyle forceFontStyle = (FontStyle)(-1))
+        public static void UpdateSprites(Transform transform, bool forceRegularFont = false, int offsetFontSize = -2, FontStyle forceFontStyle = (FontStyle)(-1))
         {
             if (!s_CanvasDark)
                 s_CanvasDark = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
@@ -154,14 +156,14 @@ namespace CDOverhaul.Patches
                         if(text.font.name == ARIAL || forceRegularFont)
                         {                            
                             text.font = s_OpenSansRegularFont;
-                            text.fontSize -= 2 + offsetFontSize;
+                            text.fontSize += offsetFontSize;
                             text.fontStyle = FontStyle.Normal;
                         }
                         else if (text.font.name == KHMERUIB)
                         {
                             text.font = s_OpenSansExtraBoldFont;
-                            text.fontSize -= 2 + offsetFontSize;
-                            text.resizeTextMinSize -= 2 + offsetFontSize;
+                            text.fontSize += offsetFontSize;
+                            text.resizeTextMinSize += offsetFontSize;
                         }
 
                         if (forceFontStyle != (FontStyle)(-1))

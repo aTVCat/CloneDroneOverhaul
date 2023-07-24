@@ -10,16 +10,18 @@ namespace CDOverhaul.HUD
 {
     public class MountsPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        public override PersonalizationCategory GetCategory() => PersonalizationCategory.Mounts;
-
         protected override void PopulateItems()
         {
-
+            StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 
-        protected override IEnumerator populateItemsCoroutine()
+        protected override IEnumerator PopulateItemsCoroutine()
         {
             IsPopulatingItems = true;
+            yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(false));
+
+            yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(true));
+            IsPopulatingItems = false;
             yield break;
         }
     }

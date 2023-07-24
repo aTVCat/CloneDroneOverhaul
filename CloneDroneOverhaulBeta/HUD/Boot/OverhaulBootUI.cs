@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.HUD.Vanilla;
+using CDOverhaul.NetworkAssets;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,8 @@ namespace CDOverhaul
             Instance = mainViewTransform.gameObject.AddComponent<OverhaulBootUI>();
             Instance.m_LoadingBar = moddedObject.GetObject<Slider>(1);
             Instance.m_LoadingBar.value = 0f;
+
+            OverhaulNetworkAssetsController.DownloadTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/BootUI_" + UnityEngine.Random.Range(1, 6) + ".jpg", moddedObject.GetObject<RawImage>(3));
 
             moddedObject.GetObject<Image>(2).color = Time.timeSinceLevelLoad < 6f ? Color.white : Color.black;
 
@@ -119,8 +122,11 @@ namespace CDOverhaul
             playAnimation();
             yield return new WaitForSecondsRealtime(2f);
 
-            yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
-            OverhaulMod.Core.LoadSyncStuff();
+            if (!OverhaulMod.HasBootProcessEnded)
+            {
+                yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
+                OverhaulMod.Core.LoadSyncStuff();
+            }
 
             yield return new WaitForSecondsRealtime(0.3f);
             destroyUI();

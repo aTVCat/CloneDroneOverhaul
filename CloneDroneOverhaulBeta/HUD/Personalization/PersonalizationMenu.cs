@@ -1301,7 +1301,7 @@ namespace CDOverhaul.HUD
                 itemsSpawned++;
                 SetFillProgress(itemsSpawned / (float)m_Items.Length);
 
-                yield return null;
+                if(itemsSpawned % 3 == 0) yield return null;
             }
 
             switch (weaponType)

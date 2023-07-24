@@ -283,6 +283,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             coordsToggle.eulerAngles = Vector3.zero;
             coordsToggle.localScale = Vector3.one;
             coordsToggle.anchoredPosition = new Vector2(160f, 0f);
+            coordsToggle.gameObject.SetActive(true);
             ModdedObject coordsToggleMO = coordsToggle.GetComponent<ModdedObject>();
             Toggle coordsToggleComponent = coordsToggleMO.GetObject<Toggle>(0);
             coordsToggleComponent.isOn = LevelEditorMoveObjectsByCoordsController.ToolEnabled;

@@ -320,7 +320,7 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
-            OverhaulPersonalizationPanel panel = OverhaulPersonalizationPanel.GetPanel(PersonalizationCategory.Outfits);
+            AccesoriesPersonalizationPanel panel = GetController<AccesoriesPersonalizationPanel>();
             if (!panel)
                 return;
 
