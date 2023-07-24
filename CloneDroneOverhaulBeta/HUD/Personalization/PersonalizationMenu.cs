@@ -1417,7 +1417,7 @@ namespace CDOverhaul.HUD
             }
             ShowSkinInfo(weaponType, skinName);
 
-            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;
             if (info != null && info.HasReceivedData)
                 info.RefreshData();
 

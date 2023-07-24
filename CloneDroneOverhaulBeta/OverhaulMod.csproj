@@ -389,12 +389,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSMapDisplay.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelPrivateMatchActions.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelCodeEnterPage.cs" />
+    <Compile Include="HUD\Personalization\Ver2\AccesoryItemDisplay.cs" />
+    <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationItemDisplay.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
@@ -430,11 +433,11 @@
     <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerLobby.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerPacketManagement.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerWorld.cs" />
-    <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfo.cs" />
-    <Compile Include="Gameplay\MultiplayerVanilla\OverhaulModdedPlayerInfoController.cs" />
-    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
-    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusType.cs" />
-    <Compile Include="Gameplay\MultiplayerVanilla\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfo.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoController.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
     <Compile Include="Gameplay\ObjectModdedState\OverhaulObjectStateModder.cs" />
     <Compile Include="Gameplay\OverhaulVolumeController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColor.cs" />

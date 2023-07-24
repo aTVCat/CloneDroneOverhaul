@@ -16,7 +16,7 @@ namespace CDOverhaul.Gameplay.Outfits
         public string Description = NoDescProvidedString;
         public string Author = NoAuthorString;
 
-        public MechBodyPartType BodyPart;
+        public string BodyPart;
 
         /// <summary>
         /// Character model names - Offset
@@ -95,7 +95,7 @@ namespace CDOverhaul.Gameplay.Outfits
         /// <param name="description"></param>
         /// <param name="partType"></param>
         /// <returns></returns>
-        public static OutfitItem NewAccessory(string name, MechBodyPartType partType)
+        public static OutfitItem NewAccessory(string name, string partType)
         {
             OutfitItem item = new OutfitItem
             {

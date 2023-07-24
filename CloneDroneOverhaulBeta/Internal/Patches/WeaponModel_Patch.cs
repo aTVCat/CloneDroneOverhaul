@@ -20,10 +20,10 @@ namespace CDOverhaul.Patches
             if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner))
                 return true;
 
-            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(owner);
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(owner);
             if (info != null || !GameModeManager.IsMultiplayer())
             {
-                Hashtable t = GameModeManager.IsMultiplayer() ? info.GetHashtable() : OverhaulModdedPlayerInfo.GenerateNewHashtable();
+                Hashtable t = GameModeManager.IsMultiplayer() ? info.Hashtable : OverhaulPlayerInfo.CreateNewHashtable();
                 if (t != null &&
                     t.Contains("Skin." + __instance.WeaponType) &&
                     !Equals(t["Skin." + __instance.WeaponType], "Default") &&

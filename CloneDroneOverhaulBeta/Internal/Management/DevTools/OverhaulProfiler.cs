@@ -38,7 +38,7 @@ namespace CDOverhaul.DevTools
         public static Stopwatch StartTimer() => OverhaulVersion.IsDebugBuild ? Stopwatch.StartNew() : null;
         public static void StopTimer(this Stopwatch stopwatch, string entryId)
         {
-            if (stopwatch == null)
+            if (stopwatch == null || !stopwatch.IsRunning)
                 return;
 
             stopwatch.Stop();

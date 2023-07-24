@@ -2,6 +2,7 @@
 using CDOverhaul.NetworkAssets;
 using ModLibrary;
 using OverhaulAPI;
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CDOverhaul.Gameplay
     {
         private WeaponSkinsController m_Controller;
 
-        public OverhaulModdedPlayerInfo PlayerInformation
+        public OverhaulPlayerInfo PlayerInformation
         {
             get;
             private set;
@@ -208,6 +209,9 @@ namespace CDOverhaul.Gameplay
             base.Start();
             m_Controller = OverhaulController.GetController<WeaponSkinsController>();
 
+            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+            /*
             DelegateScheduler.Instance.Schedule(delegate
             {
                 if (Owner != null && MultiplayerPlayerInfoManager.Instance != null)
@@ -215,18 +219,18 @@ namespace CDOverhaul.Gameplay
                     MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(Owner.GetPlayFabID());
                     if (pInfo != null)
                     {
-                        PlayerInformation = pInfo.GetComponent<OverhaulModdedPlayerInfo>();
+                        PlayerInformation = pInfo.GetComponent<OverhaulPlayerInfo>();
                         if (PlayerInformation != null)
                         {
-                            onGetPlayerInfo(PlayerInformation.GetHashtable());
+                            onGetPlayerInfo(PlayerInformation.Hashtable);
 
                             m_HasAddedListeners = true;
-                            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+                            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
                             PlayerInformation.RefreshData();
                         }
                     }
                 }
-            }, 0.5f + OverhaulNetworkAssetsController.MultiplayerLocalPing);
+            }, 0.5f + OverhaulNetworkAssetsController.MultiplayerLocalPing);*/
 
             SpawnSkins();
         }
@@ -236,7 +240,7 @@ namespace CDOverhaul.Gameplay
             base.OnDisposed();
 
             if (m_HasAddedListeners)
-                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
         protected override void OnRefresh() => SpawnSkins();
@@ -244,6 +248,7 @@ namespace CDOverhaul.Gameplay
 
         private void onGetPlayerInfo(Hashtable hash)
         {
+            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
             m_HasEverSpawnedSkins = false;
             IsMultiplayerControlled = true;
             OnRefresh();
@@ -300,7 +305,7 @@ namespace CDOverhaul.Gameplay
 
         public void SpawnSkins()
         {
-            if (IsDisposedOrDestroyed() || m_WaitingToSpawnSkins || !HasToRespawnSkins())
+            if (m_WaitingToSpawnSkins)
                 return;
 
             m_HasEverSpawnedSkins = true;
@@ -311,6 +316,7 @@ namespace CDOverhaul.Gameplay
 
         private void spawnSkins()
         {
+            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
             m_WaitingToSpawnSkins = false;
             bool isMultiplayer = GameModeManager.IsMultiplayer();
 
@@ -347,7 +353,7 @@ namespace CDOverhaul.Gameplay
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
                 {
-                    if (info == null || !info.Model || (!IsOutdatedModel(info) && info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
+                    if (info == null || !info.Model || info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
                         continue;
 
                     SetDefaultModelsActive(info.Model.transform);

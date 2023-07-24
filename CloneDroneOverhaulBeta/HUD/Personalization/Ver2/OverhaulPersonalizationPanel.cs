@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,6 +61,10 @@ namespace CDOverhaul.HUD
         {
             base.gameObject.SetActive(false);
             ShowCursor = false;
+
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;
+            if (info != null && info.HasReceivedData)
+                info.RefreshData();
         }
 
         #region Item related

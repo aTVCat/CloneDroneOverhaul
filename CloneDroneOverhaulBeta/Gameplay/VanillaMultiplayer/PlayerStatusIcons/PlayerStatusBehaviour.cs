@@ -6,7 +6,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
     public class PlayerStatusBehaviour : OverhaulCharacterExpansion
     {
         private static PlayerStatusBehaviour m_LocalBehaviour;
-        private OverhaulModdedPlayerInfo m_Info;
+        private OverhaulPlayerInfo m_Info;
 
         private GameObject m_WorldCanvasHolder;
         private PlayerStatusWorldCanvas m_WorldCanvas;
@@ -24,18 +24,18 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
             }
 
-            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
-            if (m_Info != null && m_Info.Equals(OverhaulModdedPlayerInfo.GetLocalPlayerInfo()))
+            m_Info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
+            if (m_Info != null && m_Info.Equals(OverhaulPlayerInfo.LocalOverhaulPlayerInfo))
                 m_LocalBehaviour = this;
 
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
             CreateCanvas();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
             m_Info = null;
             m_WorldCanvas = null;
             m_WorldCanvasHolder = null;
@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 return;
 
             if (m_Info == null)
-                m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
+                m_Info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
 
             int intValue = (int)type;
             if (m_Info != null && m_Info.HasReceivedData)

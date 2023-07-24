@@ -99,7 +99,7 @@ namespace CDOverhaul
                     if (!statee.IsDetached() && statee.state.PlayFabID != OverhaulPlayerIdentifier.GetLocalPlayFabID())
                     {
                         GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
-                        newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + statee.state.PlayFabID + "@" + OverhaulModdedPlayerInfo.SerializeData(true, statee.state.PlayFabID);
+                        newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + statee.state.PlayFabID + "@" + OverhaulPlayerInfo.SerializeData(true, statee.state.PlayFabID);
                         newEvent.Send();
                     }
                 }

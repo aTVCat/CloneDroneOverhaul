@@ -11,49 +11,60 @@ namespace CDOverhaul.Gameplay.Outfits
     {
         private Dictionary<string, GameObject> m_SpawnedOutfitItems = new Dictionary<string, GameObject>();
 
-        private OverhaulModdedPlayerInfo m_Info;
-        public bool HasPlayerInfo => m_Info != null;
-
         private bool m_HasAddedEventListeners;
+
+        public OverhaulPlayerInfo PlayerInformation
+        {
+            get;
+            private set;
+        }
 
         public override void Start()
         {
             base.Start();
 
-            m_Info = OverhaulModdedPlayerInfo.GetPlayerInfo(Owner);
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
-            m_HasAddedEventListeners = true;
+            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
 
-            DelegateScheduler.Instance.Schedule(SpawnItems, 0.2f);
+            if (!IsOwnerMainPlayer())
+            {
+                DelegateScheduler.Instance.Schedule(SpawnItems, 0.2f);
+            }
+            else
+            {
+                SpawnItems();
+            }
+            m_HasAddedEventListeners = true;
         }
 
         protected override void OnDeath()
         {
-            DestroyAccessories();
+            DestroyItems();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            DestroyAccessories();
+            DestroyItems();
 
-            m_Info = null;
+            PlayerInformation = null;
             m_SpawnedOutfitItems = null;
             if (m_HasAddedEventListeners)
             {
+                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
                 m_HasAddedEventListeners = false;
-                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulModdedPlayerInfo.InfoReceivedEventString, onGetData);
             }
         }
 
         private void onGetData(Hashtable table)
         {
+            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
             SpawnItems();
         }
 
         public void SpawnItems()
         {
-            DestroyAccessories();
+            DestroyItems();
 
             if (!OverhaulGamemodeManager.SupportsOutfits())
                 return;
@@ -62,16 +73,16 @@ namespace CDOverhaul.Gameplay.Outfits
                 return;
 
             string equippedItems = string.Empty;
-            if (HasPlayerInfo)
+            if (PlayerInformation)
             {
-                Hashtable hashtable = m_Info.GetHashtable();
+                Hashtable hashtable = PlayerInformation.Hashtable;
                 if (hashtable != null && hashtable.ContainsKey("Outfits.Equipped"))
                     equippedItems = hashtable["Outfits.Equipped"].ToString();
             }
-            else if (!GameModeManager.IsMultiplayer())
+            else if (!GameModeManager.IsMultiplayer() && (OutfitsController.AllowEnemiesWearAccesories || IsOwnerPlayer()))
                 equippedItems = OutfitsController.EquippedAccessories;
 
-            List<OutfitItem> items = OutfitsController.GetOutfitItems(equippedItems);
+            List<OutfitItem> items = OutfitsController.GetOutfitItemsBySaveString(equippedItems);
             if (items.IsNullOrEmpty())
                 return;
 
@@ -80,11 +91,7 @@ namespace CDOverhaul.Gameplay.Outfits
                 if (!accessoryItem.Prefab)
                     continue;
 
-                MechBodyPart bodyPart = Owner.GetBodyPart(accessoryItem.BodyPart);
-                if (!bodyPart)
-                    continue;
-
-                Transform bodyPartTransform = bodyPart.transform.parent;
+                Transform bodyPartTransform = Owner.GetBodyPartParent(accessoryItem.BodyPart);
                 if (!bodyPartTransform)
                     continue;
 
@@ -94,7 +101,7 @@ namespace CDOverhaul.Gameplay.Outfits
             }
         }
 
-        public void DestroyAccessories()
+        public void DestroyItems()
         {
             if (m_SpawnedOutfitItems.IsNullOrEmpty())
                 return;

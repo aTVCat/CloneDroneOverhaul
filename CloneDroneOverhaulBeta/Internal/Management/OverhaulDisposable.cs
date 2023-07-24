@@ -3,13 +3,11 @@ using System.Reflection;
 
 namespace CDOverhaul
 {
+    [Serializable]
     public class OverhaulDisposable : IDisposable
     {
-        public bool IsDisposed
-        {
-            get;
-            private set;
-        }
+        [NonSerialized]
+        public bool IsDisposed;
 
         ~OverhaulDisposable() => Dispose();
         protected virtual void OnDisposed() { }
@@ -35,12 +33,6 @@ namespace CDOverhaul
                     field.SetValue(@object, null);
                 }
             }
-
-            /* // BRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUH
-            if (@object is OverhaulDisposable overhaulDisposable && !overhaulDisposable.IsDisposed)
-            {
-                overhaulDisposable.Dispose();
-            }*/
         }
     }
 }

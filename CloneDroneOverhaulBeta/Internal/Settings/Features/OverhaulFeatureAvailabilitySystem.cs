@@ -289,6 +289,14 @@ namespace CDOverhaul
             private static readonly bool IS_CONNECTION_SCREENS_REDESIGN_ENABLED = true;
             public static bool IsConnectionScreensRedesignEnabled => OverhaulVersion.IsUpdate4 && IS_CONNECTION_SCREENS_REDESIGN_ENABLED;
 
+            /// <summary>
+            /// 
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.New play info sync way", true, false, "")]
+            private static readonly bool IS_NEW_PLAYER_INFO_SYNC_MECHANISM_ENABLED = true;
+            public static bool IsNewPlayerInfoSyncMechanismEnabled => IS_NEW_PLAYER_INFO_SYNC_MECHANISM_ENABLED;
+
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
         }

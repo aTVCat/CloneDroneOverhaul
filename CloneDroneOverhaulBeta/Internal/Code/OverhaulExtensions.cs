@@ -6,7 +6,9 @@ using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -221,8 +223,8 @@ namespace CDOverhaul
 
         public static bool IsAnOverhaulModUser(this FirstPersonMover firstPersonMover)
         {
-            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
-            return info && info.GetHashtable() != null;
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(firstPersonMover);
+            return info && info.Hashtable != null;
         }
 
         public static bool IsOverhaulDeveloper(this FirstPersonMover firstPersonMover)
@@ -241,11 +243,11 @@ namespace CDOverhaul
             if (GameModeManager.IsSinglePlayer())
                 return OverhaulVersion.IsDebugBuild;
 
-            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(firstPersonMover);
             if (!info)
                 return false;
 
-            string flags = info.GetFlagsData();
+            string flags = info.GetUserFlags();
             return !string.IsNullOrEmpty(flags) && flags.Contains("debug");
         }
 
@@ -254,11 +256,11 @@ namespace CDOverhaul
             if (!firstPersonMover)
                 return false;
 
-            OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetPlayerInfo(firstPersonMover);
+            OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(firstPersonMover);
             if (!info)
                 return false;
 
-            Hashtable hashtable = info.GetHashtable();
+            Hashtable hashtable = info.Hashtable;
             return hashtable != null && hashtable.ContainsKey("State.Version") && OverhaulVersion.IsBlacklistedVersion(hashtable["State.Version"].ToString());
         }
 
@@ -469,6 +471,37 @@ namespace CDOverhaul
         #region UpgradeTypeAndLevel
 
         public static bool IsTheSameUpgrade(this UpgradeTypeAndLevel upgradeTypeAndLevel, UpgradeDescription other) => (upgradeTypeAndLevel.UpgradeType, upgradeTypeAndLevel.Level) == (other.UpgradeType, other.Level);
+
+        #endregion
+
+        #region Object
+
+        public static byte[] SerializeObject(this object @object)
+        {
+            if (@object == null)
+                return Array.Empty<byte>();
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, @object);
+                return memoryStream.ToArray();
+            }
+        }
+
+        public static T DeserializeObject<T>(this byte[] array)
+        {
+            if (array.IsNullOrEmpty())
+                return default;
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                memoryStream.Write(array, 0, array.Length);
+                _ = memoryStream.Seek(0, SeekOrigin.Begin);
+                BinaryFormatter formatter = new BinaryFormatter();
+                return (T)formatter.Deserialize(memoryStream);
+            }
+        }
 
         #endregion
     }

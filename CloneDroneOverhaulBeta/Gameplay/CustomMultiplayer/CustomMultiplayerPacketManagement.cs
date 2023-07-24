@@ -87,7 +87,7 @@ namespace CDOverhaul.CustomMultiplayer
                 return false;
             }
 
-            bytes = packet.GetBytes();
+            bytes = packet.SerializeObject();
             if (bytes.IsNullOrEmpty())
             {
                 Debug.LogWarning("[CDO_MS] Byte array is empty!");
@@ -111,7 +111,7 @@ namespace CDOverhaul.CustomMultiplayer
 
                     if (!array.IsNullOrEmpty())
                     {
-                        OverhaulPacket receivedPacket = OverhaulPacket.GetPacket(array);
+                        OverhaulPacket receivedPacket = array.GetPacket();
                         receivedPacket.Handle();
                     }
                     else
@@ -120,6 +120,17 @@ namespace CDOverhaul.CustomMultiplayer
                         continue;
                     }
                 }
+            }
+        }
+
+        public static OverhaulPacket GetPacket(this byte[] array)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                memoryStream.Write(array, 0, array.Length);
+                _ = memoryStream.Seek(0, SeekOrigin.Begin);
+                BinaryFormatter formatter = new BinaryFormatter();
+                return (OverhaulPacket)formatter.Deserialize(memoryStream);
             }
         }
     }

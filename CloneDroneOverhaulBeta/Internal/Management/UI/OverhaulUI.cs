@@ -185,6 +185,7 @@ namespace CDOverhaul
 
                 ModdedObject result = UnityEngine.Object.Instantiate(Prefab, Container);
                 result.gameObject.SetActive(startActive);
+                result.gameObject.name = result.gameObject.name.Replace("(Clone)", string.Empty);
                 return result;
             }
 

@@ -137,7 +137,7 @@ namespace CDOverhaul.HUD
                         outfits.SpawnItems();
                 }
 
-                OverhaulModdedPlayerInfo info = OverhaulModdedPlayerInfo.GetLocalPlayerInfo();
+                OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;
                 if (info != null && info.HasReceivedData)
                     info.RefreshData();
 

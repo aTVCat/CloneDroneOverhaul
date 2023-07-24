@@ -87,7 +87,7 @@ namespace CDOverhaul
             OverhaulController.InitializeStatic(controllers);
 
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            _ = OverhaulController.AddController<OverhaulModdedPlayerInfoController>();
+            _ = OverhaulController.AddController<OverhaulPlayerInfoController>();
             _ = OverhaulController.AddController<OverhaulVolumeController>();
 
             _ = OverhaulController.AddController<AutoBuildController>();
