@@ -212,10 +212,11 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<AdditionalContentController>();
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
+            _ = OverhaulController.AddController<OverhaulRepositoryController>();
 
-            OverhaulController.GetController<WeaponSkinsController>().AddSkins();
-            OverhaulController.GetController<OutfitsController>().AddOutfitItems();
-            OverhaulController.GetController<PetsController>().AddPets();
+            OverhaulController.GetController<Gameplay.WeaponSkins.WeaponSkinsController>();
+            OverhaulController.GetController<OutfitsController>();
+            OverhaulController.GetController<PetsController>();
 
             OverhaulController.GetController<LevelEditorFixes>().AddUIs();
 

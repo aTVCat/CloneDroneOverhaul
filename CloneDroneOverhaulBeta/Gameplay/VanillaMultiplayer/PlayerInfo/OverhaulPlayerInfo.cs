@@ -114,11 +114,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
             }
             else if (eventData.IsAnswer)
             {
-                UnityEngine.Debug.LogWarning("GET ANSWER DATA " + eventData.SenderPlayFabID + " " + eventData.ReceiverPlayFabID);
+                if(m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
+                {
+                    UnityEngine.Debug.LogWarning("GET ANSWER DATA " + eventData.SenderPlayFabID + " " + eventData.ReceiverPlayFabID);
 
-                Hashtable = eventData.Hashtable;
-                OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
-                return;
+                    Hashtable = eventData.Hashtable;
+                    OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
+                    return;
+                }
             }
         }
 

@@ -134,7 +134,7 @@ namespace CDOverhaul.HUD
                 {
                     OutfitsWearer outfits = mover.GetComponent<OutfitsWearer>();
                     if (outfits)
-                        outfits.SpawnItems();
+                        outfits.RefreshItems();
                 }
 
                 OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;

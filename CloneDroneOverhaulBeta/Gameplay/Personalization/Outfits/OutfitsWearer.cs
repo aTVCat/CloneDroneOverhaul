@@ -7,34 +7,16 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public class OutfitsWearer : OverhaulCharacterExpansion
+    public class OutfitsWearer : PersonalizationItemsWearer
     {
         private Dictionary<string, GameObject> m_SpawnedOutfitItems = new Dictionary<string, GameObject>();
-
-        private bool m_HasAddedEventListeners;
-
-        public OverhaulPlayerInfo PlayerInformation
-        {
-            get;
-            private set;
-        }
 
         public override void Start()
         {
             base.Start();
 
-            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
+            RefreshItems();
             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
-
-            if (!IsOwnerMainPlayer())
-            {
-                DelegateScheduler.Instance.Schedule(SpawnItems, 0.2f);
-            }
-            else
-            {
-                SpawnItems();
-            }
-            m_HasAddedEventListeners = true;
         }
 
         protected override void OnDeath()
@@ -47,22 +29,16 @@ namespace CDOverhaul.Gameplay.Outfits
             base.OnDisposed();
             DestroyItems();
 
-            PlayerInformation = null;
             m_SpawnedOutfitItems = null;
-            if (m_HasAddedEventListeners)
-            {
-                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
-                m_HasAddedEventListeners = false;
-            }
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         private void onGetData(Hashtable table)
         {
-            PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
-            SpawnItems();
+            RefreshItems();
         }
 
-        public void SpawnItems()
+        public override void RefreshItems()
         {
             DestroyItems();
 
@@ -88,7 +64,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
             foreach (OutfitItem accessoryItem in items)
             {
-                if (!accessoryItem.Prefab)
+                if (!accessoryItem.Prefab || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
                     continue;
 
                 Transform bodyPartTransform = Owner.GetBodyPartParent(accessoryItem.BodyPart);

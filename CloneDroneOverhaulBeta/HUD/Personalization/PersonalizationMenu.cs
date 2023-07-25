@@ -191,7 +191,7 @@ namespace CDOverhaul.HUD
                         {
                             OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
                             if (ow != null)
-                                ow.SpawnItems();
+                                ow.RefreshItems();
                         }
                     });
 
@@ -244,7 +244,7 @@ namespace CDOverhaul.HUD
                             OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
                             if (ow != null)
                             {
-                                ow.SpawnItems();
+                                ow.RefreshItems();
                             }
                         }
                     });
@@ -1238,12 +1238,12 @@ namespace CDOverhaul.HUD
                     newPrefab.gameObject.SetActive(true);
                     newPrefab.GetObject<Text>(1).text = itemName;
                     newPrefab.GetComponent<Button>().interactable = aitem.IsUnlocked();
-                    newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.UnlockedFor);
+                    newPrefab.GetComponent<Animation>().enabled = !string.IsNullOrEmpty(aitem.ExclusiveFor);
                     PersonalizationMenuEntryBehaviour b = newPrefab.gameObject.AddComponent<PersonalizationMenuEntryBehaviour>();
                     b.IsOutfitSelection = true;
                     b.Initialize();
                     b.SetMenu(this);
-                    b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.UnlockedFor));
+                    b.SetSkin(itemName, aitem.Author, !string.IsNullOrEmpty(aitem.ExclusiveFor));
                     b.TrySelect();
 
                     itemsSpawned++;
@@ -1413,7 +1413,11 @@ namespace CDOverhaul.HUD
             if (mover != null)
             {
                 WeaponSkinsController.RobotToPlayAnimationOn = mover;
-                m_Controller.ApplySkinsOnCharacter(mover);
+                WeaponSkinsWearer wearer = mover.GetComponent<WeaponSkinsWearer>();
+                if (wearer)
+                {
+                    wearer.SpawnSkins();
+                }
             }
             ShowSkinInfo(weaponType, skinName);
 

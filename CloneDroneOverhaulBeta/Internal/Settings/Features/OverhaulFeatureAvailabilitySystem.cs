@@ -205,8 +205,8 @@ namespace CDOverhaul
             /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
-            [OverhaulSetting("Experimental.Features.Pets DEMO", true, false, "")]
-            private static readonly bool IS_PETS_DEMO = true;
+            [OverhaulSetting("Experimental.Features.Pets DEMOv2", false, false, "")]
+            private static readonly bool IS_PETS_DEMO = false;
             public static bool IsPetsDemo => OverhaulVersion.IsUpdate2 || IS_PETS_DEMO;
 
             /// <summary>

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
 {
-    public class PetItem // Sounds weird..?
+    public class PetItem : PersonalizationItem
     {
         private static PetItem s_RecentlyCreatedItem;
 

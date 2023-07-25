@@ -1,10 +1,9 @@
 ﻿namespace CDOverhaul.Gameplay.WeaponSkins
 {
-    public class WeaponSkinsWearer : OverhaulCharacterExpansion
+    public class WeaponSkinsWearer : PersonalizationItemsWearer
     {
-        public void SpawnSkins()
+        public override void RefreshItems()
         {
-
         }
     }
 }

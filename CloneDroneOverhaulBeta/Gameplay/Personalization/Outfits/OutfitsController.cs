@@ -2,32 +2,36 @@
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public class OutfitsController : OverhaulGameplayController
+    public class OutfitsController : PersonalizationItemsController
     {
+        public const char SEPARATOR = ',';
+
+        [OverhaulSetting("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
+        public static string EquippedAccessories;
+
         [OverhaulSetting("Player.Outfits.EnemiesUseOutfits", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearAccesories;
 
         public static readonly List<OutfitItem> AllOutfitItems = new List<OutfitItem>();
 
+        public static bool ItemsNeedRefresh
+        {
+            get;
+            set;
+        }
+
         public override void Initialize()
         {
+            ItemsNeedRefresh = true;
             base.Initialize();
         }
 
-        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        public override void AddItems()
         {
-            if (!hasInitializedModel)
+            if (!ItemsNeedRefresh)
                 return;
-
-            _ = firstPersonMover.gameObject.AddComponent<OutfitsWearer>();
-        }
-
-        public void AddOutfitItems()
-        {
-            if (OverhaulSessionController.GetKey<bool>("HasAddedAccessories"))
-                return;
-
-            OverhaulSessionController.SetKey("HasAddedAccessories", true);
+            ItemsNeedRefresh = false;
+            AllOutfitItems.Clear();
 
             AddOutfitItemQuick("Igrok's hat", "P_Acc_Head_Igrok's hat", "Head");
             SetOutfitItemAuthorQuick(WeaponSkinsController.ATVCatDiscord);
@@ -46,6 +50,14 @@ namespace CDOverhaul.Gameplay.Outfits
 
             AddOutfitItemQuick("Horns", "P_Horns", "Head");
             SetOutfitItemAuthorQuick(WeaponSkinsController.ZoloRDiscord);
+        }
+
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        {
+            if (!hasInitializedModel)
+                return;
+
+            _ = firstPersonMover.gameObject.AddComponent<OutfitsWearer>();
         }
 
         /// <summary>
@@ -117,7 +129,7 @@ namespace CDOverhaul.Gameplay.Outfits
         public static List<OutfitItem> GetOutfitItemsBySaveString(string itemsString)
         {
             List<OutfitItem> result = new List<OutfitItem>();
-            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(Separator.ToString()) && !AllOutfitItems.IsNullOrEmpty();
+            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(SEPARATOR.ToString()) && !AllOutfitItems.IsNullOrEmpty();
             if (!shouldSearchEquipped)
                 return result;
 
@@ -154,11 +166,6 @@ namespace CDOverhaul.Gameplay.Outfits
 
         #region Save data
 
-        [OverhaulSetting("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
-        public static string EquippedAccessories;
-
-        public const char Separator = ',';
-
         public static void SavePreferences()
         {
             SettingInfo info = OverhaulSettingsController.GetSetting("Player.Outfits.Equipped", true);
@@ -175,7 +182,7 @@ namespace CDOverhaul.Gameplay.Outfits
             if (item == null || (!item.IsUnlocked() && equip))
                 return;
 
-            string accessorySaveString = item.Name + Separator;
+            string accessorySaveString = item.Name + SEPARATOR;
             bool isEquipped = EquippedAccessories.Contains(accessorySaveString);
             if (isEquipped && !equip)
                 EquippedAccessories = EquippedAccessories.Replace(accessorySaveString, string.Empty);
@@ -193,7 +200,7 @@ namespace CDOverhaul.Gameplay.Outfits
                     OutfitsWearer outfitsWearer = firstPersonMover.GetComponent<OutfitsWearer>();
                     if (outfitsWearer)
                     {
-                        outfitsWearer.SpawnItems();
+                        outfitsWearer.RefreshItems();
                     }
                 }
             }

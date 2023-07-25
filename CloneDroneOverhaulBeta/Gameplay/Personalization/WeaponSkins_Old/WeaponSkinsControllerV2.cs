@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.HUD;
+using Esprima;
 using OverhaulAPI;
 using System;
 using System.Collections;
@@ -109,15 +110,7 @@ namespace CDOverhaul.Gameplay
         public override void Initialize()
         {
             base.Initialize();
-
-            _ = OverhaulEventsController.AddEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
-
             Interface = this;
-        }
-
-        protected override void OnDisposed()
-        {
-            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, ApplySkinsOnCharacter);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -125,7 +118,7 @@ namespace CDOverhaul.Gameplay
             if (!hasInitializedModel)
                 return;
 
-            ApplySkinsOnCharacter(firstPersonMover);
+            _ = firstPersonMover.gameObject.AddComponent<CDOverhaul.Gameplay.WeaponSkins.WeaponSkinsWearer>();
         }
 
         public void ReImportCustomSkins(bool reloadData = true)
@@ -341,20 +334,6 @@ namespace CDOverhaul.Gameplay
             }
         }
 
-        public void ApplySkinsOnCharacter(Character character)
-        {
-            if (character == null || !(character is FirstPersonMover))
-                return;
-
-            WeaponSkinsWearer wearer = character.GetComponent<WeaponSkinsWearer>();
-            if (wearer == null)
-            {
-                _ = character.gameObject.AddComponent<WeaponSkinsWearer>();
-                return;
-            }
-            wearer.SpawnSkins();
-        }
-
         public static WeaponVariant GetVariant(bool fire, bool multiplayer)
         {
             if (!fire && !multiplayer)
@@ -495,7 +474,11 @@ namespace CDOverhaul.Gameplay
                 if (character != null && character is FirstPersonMover && IsFirstPersonMoverSupported(character as FirstPersonMover))
                 {
                     WeaponSkinsController.SkinsDataIsDirty = true;
-                    c.ApplySkinsOnCharacter(character);
+                    WeaponSkinsWearer wearer = character.GetComponent<WeaponSkinsWearer>();
+                    if (wearer)
+                    {
+                        wearer.SpawnSkins();
+                    }
                     OverhaulLoadingScreen.Instance.SetScreenFill(charactersReloaded / (float)characters.Count);
                 }
                 charactersReloaded++;

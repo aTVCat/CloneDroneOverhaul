@@ -14,13 +14,6 @@ namespace CDOverhaul.Gameplay
     {
         private WeaponSkinsController m_Controller;
 
-        public OverhaulPlayerInfo PlayerInformation
-        {
-            get;
-            private set;
-        }
-        public bool IsMultiplayerControlled { get; private set; }
-
         #region Spawned skins collection
 
         /// <summary>
@@ -204,43 +197,26 @@ namespace CDOverhaul.Gameplay
 
         private bool m_HasAddedListeners;
 
+        public OverhaulPlayerInfo PlayerInformation
+        {
+            get;
+            private set;
+        }
+
         public override void Start()
         {
             base.Start();
             m_Controller = OverhaulController.GetController<WeaponSkinsController>();
-
             PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
-            /*
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                if (Owner != null && MultiplayerPlayerInfoManager.Instance != null)
-                {
-                    MultiplayerPlayerInfoState pInfo = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(Owner.GetPlayFabID());
-                    if (pInfo != null)
-                    {
-                        PlayerInformation = pInfo.GetComponent<OverhaulPlayerInfo>();
-                        if (PlayerInformation != null)
-                        {
-                            onGetPlayerInfo(PlayerInformation.Hashtable);
-
-                            m_HasAddedListeners = true;
-                            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
-                            PlayerInformation.RefreshData();
-                        }
-                    }
-                }
-            }, 0.5f + OverhaulNetworkAssetsController.MultiplayerLocalPing);*/
 
             SpawnSkins();
+            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-
-            if (m_HasAddedListeners)
-                OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
         protected override void OnRefresh() => SpawnSkins();
@@ -250,47 +226,10 @@ namespace CDOverhaul.Gameplay
         {
             PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
             m_HasEverSpawnedSkins = false;
-            IsMultiplayerControlled = true;
             OnRefresh();
         }
 
-        public bool IsOutdatedModel(WeaponSkinSpawnInfo info)
-        {
-            bool isFire = IsFireVariant(info.Type) && info.Type != WeaponType.Bow;
-            bool isMultiplayer = GameModeManager.UsesMultiplayerSpeedMultiplier() && info.Type == WeaponType.Sword;
-
-            switch (info.Variant)
-            {
-                case WeaponVariant.Default:
-                    return isFire || isMultiplayer;
-
-                case WeaponVariant.DefaultMultiplayer:
-                    return isFire || !isMultiplayer;
-
-                case WeaponVariant.Fire:
-                    return !isFire || isMultiplayer;
-
-                case WeaponVariant.FireMultiplayer:
-                    return !isFire || !isMultiplayer;
-            }
-            return true;
-        }
-
-        public bool HasToRespawnSkins()
-        {
-            if (IsOwnerMainPlayer())
-            {
-                foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
-                {
-                    if (IsOutdatedModel(info))
-                    {
-                        return true;
-                    }
-                }
-                return !m_HasEverSpawnedSkins || WeaponSkinsController.SkinsDataIsDirty;
-            }
-            return true;
-        }
+        public bool IsMultiplayerControlled() => PlayerInformation;
 
         public T GetSpecialBehaviourInEquippedWeapon<T>() where T : WeaponSkinBehaviour
         {
@@ -334,13 +273,15 @@ namespace CDOverhaul.Gameplay
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
             IWeaponSkinItemDefinition[] skins;
-            if (IsMultiplayerControlled)
+            if (IsMultiplayerControlled())
             {
-                skins = new IWeaponSkinItemDefinition[4];
-                skins[0] = controller.Interface.GetSkinItem(WeaponType.Sword, PlayerInformation.GetData("Skin.Sword"), ItemFilter.Everything, out _);
-                skins[1] = controller.Interface.GetSkinItem(WeaponType.Bow, PlayerInformation.GetData("Skin.Bow"), ItemFilter.Everything, out _);
-                skins[2] = controller.Interface.GetSkinItem(WeaponType.Hammer, PlayerInformation.GetData("Skin.Hammer"), ItemFilter.Everything, out _);
-                skins[3] = controller.Interface.GetSkinItem(WeaponType.Spear, PlayerInformation.GetData("Skin.Spear"), ItemFilter.Everything, out _);
+                skins = new IWeaponSkinItemDefinition[]
+                {
+                    controller.Interface.GetSkinItem(WeaponType.Sword, PlayerInformation.GetData("Skin.Sword"), ItemFilter.Everything, out _),
+                    controller.Interface.GetSkinItem(WeaponType.Bow, PlayerInformation.GetData("Skin.Bow"), ItemFilter.Everything, out _),
+                    controller.Interface.GetSkinItem(WeaponType.Hammer, PlayerInformation.GetData("Skin.Hammer"), ItemFilter.Everything, out _),
+                    controller.Interface.GetSkinItem(WeaponType.Spear, PlayerInformation.GetData("Skin.Spear"), ItemFilter.Everything, out _)
+                };
             }
             else
                 skins = controller.Interface.GetSkinItems(Owner);

@@ -21,6 +21,9 @@ namespace CDOverhaul
         /// </summary>
         public const long SettingEventDispatcherFlag = 10000000000000L;
 
+        [OverhaulSetting("Player.Settings.Version", 0, true)]
+        public static int SettingsVersion;
+
         /// <summary>
         /// All existing settings
         /// </summary>
@@ -157,6 +160,7 @@ namespace CDOverhaul
 #endif
             }
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
+            updateSettingVersion();
         }
 
         internal static void CreateHUD()
@@ -166,6 +170,20 @@ namespace CDOverhaul
                 return;
 
             HUD = h.AddHUD<ParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
+        }
+
+        private static void updateSettingVersion()
+        {
+            int currentVersion = SettingsVersion;
+            if(currentVersion < 1)
+            {
+                // do something
+            }
+            if (currentVersion < 2)
+            {
+                // do something
+            }
+            ResetSettingValue("Player.Settings.Version");
         }
 
         /// <summary>

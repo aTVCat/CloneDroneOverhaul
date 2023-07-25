@@ -1,13 +1,7 @@
-﻿using System;
+﻿using CDOverhaul.DevTools;
+using CDOverhaul.HUD.Tooltips;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CDOverhaul.DevTools;
-using CDOverhaul.HUD.Tooltips;
-using CDOverhaul.HUD.Tutorial;
-using TMPro;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
@@ -93,9 +87,9 @@ namespace CDOverhaul.Gameplay.Combat
             }
 
             WeaponType newEquippedWeaponType = Owner.GetEquippedWeaponType();
-            if(newEquippedWeaponType != m_EquippedWeponType)
+            if (newEquippedWeaponType != m_EquippedWeponType)
             {
-                m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, SkinsWearer.IsFireVariant(newEquippedWeaponType));
+                m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, SkinsWearer && SkinsWearer.IsFireVariant(newEquippedWeaponType));
             }
             m_EquippedWeponType = newEquippedWeaponType;
             stopwatch.StopTimer("Update");

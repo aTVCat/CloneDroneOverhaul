@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
 {
-    public class PetsWearer : OverhaulCharacterExpansion
+    public class PetsWearer : PersonalizationItemsWearer
     {
         private readonly List<PetInstanceBehaviour> m_SpawnedPets = new List<PetInstanceBehaviour>();
 
@@ -18,11 +18,6 @@ namespace CDOverhaul.Gameplay.Pets
             base.Start();
 
             HeadTransform = Owner.GetBodyPartParent("Head");
-
-            if (!IsOwnerMainPlayer())
-                return;
-
-            //m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
         }
 
         private void Update()
@@ -32,6 +27,11 @@ namespace CDOverhaul.Gameplay.Pets
 
             if (Input.GetKeyDown(KeyCode.P))
                 TogglePetsVisibility();
+        }
+
+        public override void RefreshItems()
+        {
+            //m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
         }
 
         public void TogglePetsVisibility()

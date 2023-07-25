@@ -7,15 +7,8 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public class OutfitItem
+    public class OutfitItem : PersonalizationItem
     {
-        public const string NoDescProvidedString = "No description provided.";
-        public const string NoAuthorString = "N/A";
-
-        public string Name;
-        public string Description = NoDescProvidedString;
-        public string Author = NoAuthorString;
-
         public string BodyPart;
 
         /// <summary>
@@ -29,14 +22,14 @@ namespace CDOverhaul.Gameplay.Outfits
         [NonSerialized]
         public GameObject Prefab;
 
-        public string UnlockedFor;
+        public string ExclusiveFor;
         public bool IsUnlocked()
         {
-            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(UnlockedFor))
+            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(ExclusiveFor))
                 return true;
 
             string localID = OverhaulPlayerIdentifier.GetLocalPlayFabID();
-            bool isUnlocked = UnlockedFor.Contains(localID);
+            bool isUnlocked = ExclusiveFor.Contains(localID);
             if (!isUnlocked && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 isUnlocked = localID.Equals("883CC7F4CA3155A3");
 

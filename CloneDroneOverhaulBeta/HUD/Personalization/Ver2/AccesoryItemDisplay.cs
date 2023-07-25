@@ -48,7 +48,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            m_IsExclusive = !string.IsNullOrEmpty(Item.UnlockedFor);
+            m_IsExclusive = !string.IsNullOrEmpty(Item.ExclusiveFor);
             m_IsSelected = OutfitsController.EquippedAccessories.Contains(Item.Name);
 
             ItemNameLabel.text = Item.Name;

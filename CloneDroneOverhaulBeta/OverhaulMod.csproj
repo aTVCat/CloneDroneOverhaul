@@ -389,6 +389,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\PersonalizationItemPropertyCategoryAttribute.cs" />
+    <Compile Include="Gameplay\Personalization\PersonalizationItem.cs" />
+    <Compile Include="Gameplay\Personalization\PersonalizationItemsController.cs" />
+    <Compile Include="Gameplay\Personalization\PersonalizationItemsWearer.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
@@ -510,6 +514,7 @@
     <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Device\RecommendationLevel.cs" />
     <Compile Include="Internal\Device\Recommendations.cs" />
+    <Compile Include="Internal\Management\Assets\Repository\OverhaulRepositoryController.cs" />
     <Compile Include="Internal\Management\DevTools\OverhaulJsonEditor.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />

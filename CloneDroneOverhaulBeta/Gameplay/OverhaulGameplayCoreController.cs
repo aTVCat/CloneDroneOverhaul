@@ -34,7 +34,7 @@ namespace CDOverhaul.Gameplay
             base.Initialize();
 
             _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
-            _ = OverhaulController.AddController<WeaponSkinsController>();
+            _ = OverhaulController.AddController<WeaponSkins.WeaponSkinsController>();
             _ = OverhaulController.AddController<Pets.PetsController>();
             _ = OverhaulController.AddController<Outfits.OutfitsController>();
 

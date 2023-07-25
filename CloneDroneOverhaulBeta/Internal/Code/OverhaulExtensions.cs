@@ -12,6 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace CDOverhaul
 {
@@ -286,6 +287,42 @@ namespace CDOverhaul
 
             //PlayerSync sync = firstPersonMover.GetComponent<PlayerSync>();
             //return sync && sync.OwnerSteamID.IsMultiplayerSandboxHost();
+            return false;
+        }
+
+        public static bool IsFireWeapon(this FirstPersonMover firstPersonMover, WeaponType type, bool skins = true)
+        {
+            if (!firstPersonMover || !firstPersonMover.IsAlive())
+                return false;
+
+            if (type == WeaponType.Sword)
+            {
+                if (firstPersonMover.HasUpgrade(UpgradeType.FireSword))
+                {
+                    return true;
+                }
+            }
+            else if (type == WeaponType.Hammer)
+            {
+                if (firstPersonMover.HasUpgrade(UpgradeType.FireHammer))
+                {
+                    return true;
+                }
+            }
+            else if (type == WeaponType.Spear)
+            {
+                if (firstPersonMover.HasUpgrade(UpgradeType.FireSpear))
+                {
+                    return true;
+                }
+            }
+            else if (!skins && type == WeaponType.Bow)
+            {
+                if (firstPersonMover.HasUpgrade(UpgradeType.FireArrow))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
