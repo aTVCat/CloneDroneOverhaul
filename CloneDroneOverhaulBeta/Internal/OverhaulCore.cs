@@ -1,6 +1,10 @@
 ﻿using Bolt;
+using CDOverhaul.BuiltIn.AdditionalContent;
+using CDOverhaul.CustomMultiplayer;
+using CDOverhaul.Device;
 using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
@@ -9,21 +13,14 @@ using CDOverhaul.Graphics;
 using CDOverhaul.Graphics.ArenaOverhaul;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
-using CDOverhaul.CustomMultiplayer;
 using CDOverhaul.Patches;
+using ICSharpCode.SharpZipLib.Zip;
+using Steamworks;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib;
-using CDOverhaul.BuiltIn.AdditionalContent;
-using CDOverhaul.Device;
-using CDOverhaul.Gameplay;
-using Steamworks;
-using CDOverhaul.Gameplay.Mindspace;
 
 namespace CDOverhaul
 {
@@ -50,6 +47,44 @@ namespace CDOverhaul
         {
             get;
             private set;
+        }
+
+        public override void OnEvent(GenericStringForModdingEvent moddedEvent)
+        {
+            if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData) || !moddedEvent.EventData.StartsWith(OverhaulPlayerInfoController.PlayerInfoEventPrefix))
+                return;
+
+            string[] split = moddedEvent.EventData.Split('@');
+            if (split[1] != OverhaulPlayerInfoController.PlayerInfoVersion)
+                return;
+
+            OverhaulPlayerInfoRefreshEventData eventData;
+            try
+            {
+                eventData = moddedEvent.BinaryData.DeserializeObject<OverhaulPlayerInfoRefreshEventData>();
+            }
+            catch
+            {
+                OverhaulWebhooksController.ExecuteErrorsWebhook("Could not deserialize OverhaulPlayerInfoRefreshEventData! Version: " + split[1]);
+                return;
+            }
+
+            // Exceptions
+            if (eventData == default)
+            {
+                OverhaulWebhooksController.ExecuteErrorsWebhook("Event data is DEFAULT! Version: " + split[1]);
+                return;
+            }
+            else if (eventData.IsRequest && eventData.IsAnswer)
+            {
+                OverhaulWebhooksController.ExecuteErrorsWebhook("The event is defined as Answer and Request at the same time! Version: " + split[1]);
+                return;
+            }
+
+            if(eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
+                foreach (OverhaulPlayerInfo overhaulPlayerInfo in OverhaulPlayerInfo.AllOverhaulPlayerInfos)
+                    if (overhaulPlayerInfo)
+                        overhaulPlayerInfo.OnGenericStringEvent(eventData);
         }
 
         internal bool Initialize(out string errorString)
@@ -199,7 +234,7 @@ namespace CDOverhaul
 
             if (!s_HasUpdatedLangFont)
             {
-                StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
+                _ = StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
             }
 
             OverhaulMod.HasBootProcessEnded = true;

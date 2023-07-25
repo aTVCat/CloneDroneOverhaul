@@ -40,6 +40,7 @@ namespace CDOverhaul.HUD
                 return;
 
             populateBodyPartsIfNeeded();
+            m_OutfitItemsContainer.ClearContainer();
             StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 

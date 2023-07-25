@@ -79,34 +79,6 @@ namespace CDOverhaul
             DeconstructCore();
         }
 
-#if DEBUG
-        protected override bool ImplementsSettingsWindow()
-        {
-            return true;
-        }
-
-        protected override void CreateSettingsWindow(ModOptionsWindowBuilder builder)
-        {
-            ModOptionsWindowBuilder.Page page1 = builder.AddPage("Dev Cheats");
-            page1.AddButton("Reset other players data", delegate
-            {
-                if (MultiplayerPlayerInfoManager.Instance == null)
-                    return;
-
-                List<MultiplayerPlayerInfoState> list = MultiplayerPlayerInfoManager.Instance.GetAllPlayerInfoStates();
-                foreach (MultiplayerPlayerInfoState statee in list)
-                {
-                    if (!statee.IsDetached() && statee.state.PlayFabID != OverhaulPlayerIdentifier.GetLocalPlayFabID())
-                    {
-                        GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(Bolt.GlobalTargets.AllClients);
-                        newEvent.EventData = "[OverhaulPlayerInfoAnswer]@" + statee.state.PlayFabID + "@" + OverhaulPlayerInfo.SerializeData(true, statee.state.PlayFabID);
-                        newEvent.Send();
-                    }
-                }
-            });
-        }
-#endif
-
         /// <summary>
         /// Used for events
         /// </summary>

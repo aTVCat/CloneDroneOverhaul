@@ -211,11 +211,12 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
                 overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
                 overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
-                overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 1f);
-                overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(0f, 0f);
+                overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 0.5f);
+                overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(1f, 0.5f);/*
                 overhaulLVLEditorSettingsButtonTransform.offsetMax = new Vector2(-2f, -2f);
-                overhaulLVLEditorSettingsButtonTransform.offsetMin = new Vector2(114f, 2f);
-                overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-2f, 0f);
+                overhaulLVLEditorSettingsButtonTransform.offsetMin = new Vector2(118f, 2f);*/
+                overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-3.5f, 0f);
+                overhaulLVLEditorSettingsButtonTransform.sizeDelta = new Vector2(20f, 18f);
                 Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
                 settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
                 settingsButtonImage.type = Image.Type.Sliced;

@@ -62,7 +62,7 @@ namespace CDOverhaul.Patches
                     playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
                     LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
                     Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
-                    playModdedButtonTextComponent.text = "Player modded";
+                    playModdedButtonTextComponent.text = "Play modded";
                     Object.Destroy(playModdedButtonText);
 
                     Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
