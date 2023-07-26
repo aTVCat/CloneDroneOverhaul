@@ -296,7 +296,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public void AddUIs()
         {
-            if (OverhaulVersion.IsUpdate2 || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
+            if (OverhaulVersion.IsVersion2 || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
                 return;
 
             OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;

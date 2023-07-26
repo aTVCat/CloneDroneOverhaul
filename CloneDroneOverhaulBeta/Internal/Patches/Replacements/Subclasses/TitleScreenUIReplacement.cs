@@ -37,7 +37,7 @@ namespace CDOverhaul.Patches
             m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
             if (m_MultiplayerNEWButtonTransform != null)
             {
-                if (!OverhaulVersion.IsUpdate2)
+                if (!OverhaulVersion.IsVersion2)
                 {
                     m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
                     m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
@@ -55,7 +55,7 @@ namespace CDOverhaul.Patches
                 m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
                 m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
 
-                if (!OverhaulVersion.IsUpdate2)
+                if (!OverhaulVersion.IsVersion2)
                 {
                     RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
                     playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);

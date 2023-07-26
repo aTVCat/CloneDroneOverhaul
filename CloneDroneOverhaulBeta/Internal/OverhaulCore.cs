@@ -172,7 +172,7 @@ namespace CDOverhaul
             if (!hasLoadedSkinsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedSkinsBundle = true;
-            });
+            }, false);
 
             if (!hasLoadedOutfitsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
@@ -214,9 +214,16 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
 
-            OverhaulController.GetController<Gameplay.WeaponSkins.WeaponSkinsController>();
-            OverhaulController.GetController<OutfitsController>();
-            OverhaulController.GetController<PetsController>();
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
+            {
+                _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
+            }
+            else
+            {
+                _ = OverhaulController.AddController<WeaponSkinsController>();
+            }
+            _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
+            _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
 
             OverhaulController.GetController<LevelEditorFixes>().AddUIs();
 

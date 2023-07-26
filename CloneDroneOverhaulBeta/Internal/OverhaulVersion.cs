@@ -16,8 +16,10 @@ namespace CDOverhaul
         private static readonly Updates s_CurrentUpdate = Updates.VER_3;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
-        public static bool IsUpdate2 => !IsUpdate(Updates.VER_3);
-        public static bool IsUpdate4 => IsUpdate(Updates.VER_4);
+        public static bool IsVersion2 => !IsUpdate(Updates.VER_3);
+        public static bool IsVersion3 => IsUpdate(Updates.VER_3);
+        public static bool IsVersion3Update => IsUpdate(Updates.VER_3_Update);
+        public static bool IsVersion4 => IsUpdate(Updates.VER_4);
 
         public static Version ModVersion
         {
@@ -56,11 +58,13 @@ namespace CDOverhaul
 
         public enum Updates
         {
-            VER_2 = 0,
+            VER_2,
 
-            VER_3 = 1,
+            VER_3,
 
-            VER_4 = 2,
+            VER_3_Update,
+
+            VER_4,
         }
     }
 }

@@ -111,6 +111,11 @@ namespace CDOverhaul.Gameplay
         {
             base.Initialize();
             Interface = this;
+
+            if(CustomSkinsData == null)
+            {
+                AddSkins();
+            }
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -118,7 +123,7 @@ namespace CDOverhaul.Gameplay
             if (!hasInitializedModel)
                 return;
 
-            _ = firstPersonMover.gameObject.AddComponent<CDOverhaul.Gameplay.WeaponSkins.WeaponSkinsWearer>();
+            _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
         }
 
         public void ReImportCustomSkins(bool reloadData = true)
@@ -207,10 +212,10 @@ namespace CDOverhaul.Gameplay
             string assetBundle)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
-            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle), null, false, false);
-            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle), null, true, false);
-            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle), null, false, true);
-            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle), null, true, true);
+            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle, false), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle, false), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle, false), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle, false), null, true, true);
             skin.AuthorDiscord = author;
         }
 
@@ -404,7 +409,7 @@ namespace CDOverhaul.Gameplay
                 if (m1 != null && m1.Model != null)
                 {
                     string nameOfModel = m1.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m1.SetModelVariant(gm, 0);
                 }
 
@@ -412,7 +417,7 @@ namespace CDOverhaul.Gameplay
                 if (m2 != null && m2.Model != null)
                 {
                     string nameOfModel = m2.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m2.SetModelVariant(gm, 0);
                 }
 
@@ -420,7 +425,7 @@ namespace CDOverhaul.Gameplay
                 if (m3 != null && m3.Model != null)
                 {
                     string nameOfModel = m3.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m3.SetModelVariant(gm, 0);
                 }
 
@@ -428,7 +433,7 @@ namespace CDOverhaul.Gameplay
                 if (m4 != null && m4.Model != null)
                 {
                     string nameOfModel = m4.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins);
+                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m4.SetModelVariant(gm, 0);
                 }
 

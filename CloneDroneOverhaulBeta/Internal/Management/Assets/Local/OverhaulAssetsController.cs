@@ -156,7 +156,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="pathUnderModFolder"></param>
         /// <returns><b>True</b> if asset bundle has been loaded</returns>
-        public static bool LoadAssetBundleIfNotLoaded(in string pathUnderModFolder) => DoesAssetBundleExist(pathUnderModFolder) && (HasLoadedAssetBundle(pathUnderModFolder) || TryLoadAssetBundle(pathUnderModFolder));
+        public static bool LoadAssetBundleIfNotLoaded(in string pathUnderModFolder, bool fixMaterials = true) => DoesAssetBundleExist(pathUnderModFolder) && (HasLoadedAssetBundle(pathUnderModFolder) || TryLoadAssetBundle(pathUnderModFolder, fixMaterials));
 
         /// <summary>
         /// Check if there's specific asset bundle on disk under mod directory
@@ -208,7 +208,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static bool IsLoadingAssetBundle(in string assetBundleName) => m_LoadingAssetBundles.Contains(assetBundleName);
 
-        public static T GetAsset<T>(in string assetName, in OverhaulAssetPart assetBundlePart) where T : UnityEngine.Object
+        public static T GetAsset<T>(in string assetName, in OverhaulAssetPart assetBundlePart, bool fixMaterials = true) where T : UnityEngine.Object
         {
             string assetBundle = null;
             switch (assetBundlePart)
@@ -254,26 +254,26 @@ namespace CDOverhaul
                     break;
             }
 
-            if (!LoadAssetBundleIfNotLoaded(assetBundle)) return null;
+            if (!LoadAssetBundleIfNotLoaded(assetBundle, fixMaterials)) return null;
             T result = m_LoadedAssetBundles[assetBundle].LoadAsset<T>(assetName);
             return result;
         }
 
-        public static T GetAsset<T>(in string assetName, in string assetBundleFileName) where T : UnityEngine.Object
+        public static T GetAsset<T>(in string assetName, in string assetBundleFileName, bool fixMaterials = true) where T : UnityEngine.Object
         {
-            if (!LoadAssetBundleIfNotLoaded(assetBundleFileName)) return null;
+            if (!LoadAssetBundleIfNotLoaded(assetBundleFileName, fixMaterials)) return null;
 
             T result = m_LoadedAssetBundles[assetBundleFileName].LoadAsset<T>(assetName);
             return result;
         }
 
-        public static GameObject GetAsset(in string assetName, in OverhaulAssetPart assetBundlePart) => GetAsset<GameObject>(assetName, assetBundlePart);
+        public static GameObject GetAsset(in string assetName, in OverhaulAssetPart assetBundlePart, bool fixMaterials = true) => GetAsset<GameObject>(assetName, assetBundlePart, fixMaterials);
 
-        public static bool TryGetAsset<T>(in string assetName, in string assetBundle, out T asset) where T : UnityEngine.Object
+        public static bool TryGetAsset<T>(in string assetName, in string assetBundle, out T asset, bool fixMaterials = true) where T : UnityEngine.Object
         {
             try
             {
-                asset = GetAsset<T>(assetName, assetBundle);
+                asset = GetAsset<T>(assetName, assetBundle, fixMaterials);
                 return true;
             }
             catch

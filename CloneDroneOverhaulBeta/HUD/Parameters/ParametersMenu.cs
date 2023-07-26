@@ -224,7 +224,7 @@ namespace CDOverhaul.HUD
             TransformUtils.DestroyAllChildren(m_CategoryContainer);
             foreach (string category in s_AllCategories)
             {
-                if (category == "Experimental" && OverhaulVersion.IsUpdate2)
+                if (category == "Experimental" && !OverhaulVersion.IsDebugBuild)
                     continue;
 
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);

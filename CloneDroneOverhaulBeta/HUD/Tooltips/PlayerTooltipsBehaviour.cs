@@ -89,7 +89,7 @@ namespace CDOverhaul.Gameplay.Combat
             WeaponType newEquippedWeaponType = Owner.GetEquippedWeaponType();
             if (newEquippedWeaponType != m_EquippedWeponType)
             {
-                m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, SkinsWearer && SkinsWearer.IsFireVariant(newEquippedWeaponType));
+                m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, Owner.IsFireWeapon(newEquippedWeaponType));
             }
             m_EquippedWeponType = newEquippedWeaponType;
             stopwatch.StopTimer("Update");

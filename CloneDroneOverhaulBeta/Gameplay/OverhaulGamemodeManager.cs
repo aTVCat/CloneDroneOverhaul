@@ -10,7 +10,7 @@ namespace CDOverhaul
         public static bool IsMultiplayerSandbox() => CustomMultiplayerController.Instance && CustomMultiplayerController.FullInitialization;
 
         public static bool SupportsPersonalization() => true;
-        public static bool SupportsOutfits() => !OverhaulVersion.IsUpdate2 && SupportsPersonalization();
+        public static bool SupportsOutfits() => !OverhaulVersion.IsVersion2 && SupportsPersonalization();
         public static bool SupportsBowSkins() => !OverhaulMod.IsModEnabled(GunModID) || GameModeManager.IsMultiplayer();
 
         public static bool ShouldShowRoomCodePanel() => MultiplayerMatchmakingManager.Instance != null && MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch();

@@ -20,6 +20,9 @@ namespace CDOverhaul.Patches
                 OverhaulCombatState.SwordBlockAreaCollidedWithEnvironment = __instance;
             }
 
+            if (!GameModeManager.IsMultiplayer())
+                return;
+
             HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
             if (isEverythingFine && otherComponent)
             {

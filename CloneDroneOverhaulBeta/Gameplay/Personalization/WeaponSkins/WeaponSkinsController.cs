@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Gameplay.Pets;
+using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay.WeaponSkins
 {
@@ -56,6 +57,8 @@ namespace CDOverhaul.Gameplay.WeaponSkins
         {
             if (!hasInitializedModel)
                 return;
+
+            _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
         }
     }
 }
