@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace CDOverhaul
 {
@@ -37,30 +32,30 @@ namespace CDOverhaul
             RepositoryFolder = OverhaulCore.ModDirectoryStatic + "Repository/";
             if (!Directory.Exists(RepositoryFolder))
             {
-                Directory.CreateDirectory(RepositoryFolder);
+                _ = Directory.CreateDirectory(RepositoryFolder);
             }
 
             string txtFile = RepositoryFolder + "Repository things go here.txt";
             if (!File.Exists(txtFile))
             {
-                File.Create(txtFile);
+                _ = File.Create(txtFile);
             }
 
-            foreach(string requiredDirectory in Directories)
+            foreach (string requiredDirectory in Directories)
             {
                 string path = RepositoryFolder + requiredDirectory;
                 if (!Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(path);
+                    _ = Directory.CreateDirectory(path);
                 }
 
-                if(!Directory.Exists(path + "Web/"))
+                if (!Directory.Exists(path + "Web/"))
                 {
-                    Directory.CreateDirectory(path + "Web/");
+                    _ = Directory.CreateDirectory(path + "Web/");
                 }
                 if (!Directory.Exists(path + "Local/"))
                 {
-                    Directory.CreateDirectory(path + "Local/");
+                    _ = Directory.CreateDirectory(path + "Local/");
                 }
             }
         }

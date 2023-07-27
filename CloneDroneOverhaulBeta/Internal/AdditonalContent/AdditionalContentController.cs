@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -27,7 +23,7 @@ namespace CDOverhaul
             {
                 AdditionalContentLoader.LoadAllContent();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Debug.LogWarning("ADDITIONAL CONTENT: " + exc);
             }
@@ -37,7 +33,7 @@ namespace CDOverhaul
         {
             string path = OverhaulMod.Core.ModDirectory + "Content/";
             if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+                _ = Directory.CreateDirectory(path);
 
             return path;
         }

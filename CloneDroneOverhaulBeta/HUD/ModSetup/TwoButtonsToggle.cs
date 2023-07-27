@@ -40,7 +40,7 @@ namespace CDOverhaul.HUD
                 SetState(setStateFunc(), false);
             }
 
-            if(setInteractableFunc != null)
+            if (setInteractableFunc != null)
             {
                 bool result = setInteractableFunc();
                 OnButton.interactable = result;

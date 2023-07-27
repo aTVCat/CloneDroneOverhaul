@@ -1,5 +1,8 @@
 ﻿using CDOverhaul.DevTools;
+using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.HUD.Gamemodes;
+using CDOverhaul.HUD.Overlays;
+using CDOverhaul.HUD.Tutorial;
 using CDOverhaul.HUD.Vanilla;
 using CDOverhaul.Workshop;
 using System.Collections.Generic;
@@ -54,9 +57,9 @@ namespace CDOverhaul.HUD
 
             _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
-            _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
+            _ = AddHUD<OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
-            _ = AddHUD<AccesoriesPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(5));
+            _ = AddHUD<AccessoriesPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(5));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
             _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
@@ -71,12 +74,13 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulSurveyUI>(HUDModdedObject.GetObject<ModdedObject>(14));
             _ = AddHUD<OverhaulDevToolsUI>(HUDModdedObject.GetObject<ModdedObject>(21));
             _ = AddHUD<OverhaulFullscreenDialogueWindow>(HUDModdedObject.GetObject<ModdedObject>(22));
-            _ = AddHUD<Tutorial.OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
+            _ = AddHUD<OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
             _ = AddHUD<AdvancedPhotomodeUI>(HUDModdedObject.GetObject<ModdedObject>(24));
             _ = AddHUD<OverhaulCrashScreen>(HUDModdedObject.GetObject<ModdedObject>(25));
             _ = AddHUD<OverhaulAchievementsMenu>(HUDModdedObject.GetObject<ModdedObject>(26));
             _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));
             _ = AddHUD<OverhaulDisconnectScreen>(HUDModdedObject.GetObject<ModdedObject>(28));
+            _ = AddHUD<PersonalizationEditorUI>(HUDModdedObject.GetObject<ModdedObject>(29));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

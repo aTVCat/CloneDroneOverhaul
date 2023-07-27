@@ -1,7 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Combat;
-using HarmonyLib;
-using UnityEngine;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -12,10 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("onArenaSettingsRefreshed")]
         private static bool onArenaSettingsRefreshed_Prefix(AmplifyColorSwapper __instance)
         {
-            if (!OverhaulMod.IsModInitialized)
-                return true;
-
-            return !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled;
+            return !OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled;
         }
     }
 }

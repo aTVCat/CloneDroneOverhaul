@@ -78,7 +78,7 @@ namespace CDOverhaul.Patches
                     }
                     };
                     patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                    Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecurisve("exitButton (1)").GetComponent<Button>();
+                    Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)").GetComponent<Button>();
                     exitButton.onClick = new Button.ButtonClickedEvent();
                     exitButton.onClick.AddListener(delegate
                     {
@@ -127,6 +127,17 @@ namespace CDOverhaul.Patches
                 {
                     OverhaulTransitionController.DoTransitionWithAction(target.OnLevelEditorButtonClicked, null, 1f);
                 });
+            }
+
+            RectTransform multiplayerErrorGroup = target.transform.FindRectChildRecursive("MultiplayerErrorGroup");
+            if (multiplayerErrorGroup)
+            {
+                multiplayerErrorGroup.anchoredPosition = new Vector2(10f, 90f);
+                RectTransform arrow = multiplayerErrorGroup.FindRectChildRecursive("Arrow");
+                if (arrow)
+                {
+                    arrow.anchoredPosition = new Vector2(-35f, 0f);
+                }
             }
 
             m_MessagePanel = TransformUtils.FindChildRecursive(target.transform, "TitleScreenMessagePanel");
@@ -202,13 +213,13 @@ namespace CDOverhaul.Patches
                 return;
 
             GameModeSelectScreen gameModeSelectScreen = main.GetComponent<GameModeSelectScreen>();
-            gameModeSelectScreen.gameObject.AddComponent<GameModeSelectPanelBehaviourFix>();
+            _ = gameModeSelectScreen.gameObject.AddComponent<GameModeSelectPanelBehaviourFix>();
             BaseFixes.UpdateSprites(gameModeSelectScreen.ButtonPrefab.transform);
 
             RectTransform rectTransformOfMain = main as RectTransform;
             rectTransformOfMain.localScale = Vector3.one;
 
-            RectTransform box = main.FindChildRecurisve("Box") as RectTransform;
+            RectTransform box = main.FindChildRecursive("Box") as RectTransform;
             box.anchorMax = new Vector2(1f, 0.5f);
             box.anchorMin = new Vector2(0f, 0.5f);
             box.anchoredPosition = Vector2.zero;
@@ -219,7 +230,7 @@ namespace CDOverhaul.Patches
             slider1.StartPosition = new Vector3(1000f, 0, 0f);
             slider1.Multiplier = 15f;
 
-            Transform cardContainer = main.FindChildRecurisve("CardContainer");
+            Transform cardContainer = main.FindChildRecursive("CardContainer");
             cardContainer.localScale = Vector3.one * 1.1f;
             HorizontalLayoutGroup horizontalLayoutGroup = cardContainer.GetComponent<HorizontalLayoutGroup>();
             horizontalLayoutGroup.spacing = 17f;
@@ -229,31 +240,31 @@ namespace CDOverhaul.Patches
             slider.StartPosition = new Vector3(200f, -13f, 0f);
             slider.Multiplier = 9f;
 
-            Transform bg = main.FindChildRecurisve("BG");
+            Transform bg = main.FindChildRecursive("BG");
             Image bgImage = bg.GetComponent<Image>();
             bgImage.color = new Color(0.07f, 0.07f, 0.07f, 0.5f);
 
             // Card
             RectTransform cardTransform = gameModeSelectScreen.ButtonPrefab.transform as RectTransform;
             cardTransform.sizeDelta = new Vector2(155f, 200f);
-            RectTransform cardBG = cardTransform.FindChildRecurisve("BG") as RectTransform;
+            RectTransform cardBG = cardTransform.FindChildRecursive("BG") as RectTransform;
             cardBG.anchoredPosition = Vector2.zero;
             cardBG.sizeDelta = Vector2.zero;
             cardBG.GetComponent<Image>().color = new Color(0.5f, 0.7f, 1f, 0.3f);
             UIColorSwapper cardBGColors = cardBG.GetComponent<UIColorSwapper>();
             cardBGColors.ColorVariants[0] = new Color(0.5f, 0.7f, 1f, 0.3f);
             cardBGColors.ColorVariants[1] = new Color(0f, 1f, 0.25f, 0.65f);
-            RectTransform cardImage = cardBG.FindChildRecurisve("GameModeImage") as RectTransform;
+            RectTransform cardImage = cardBG.FindChildRecursive("GameModeImage") as RectTransform;
             cardImage.sizeDelta = new Vector2(170f, 200f);
 
-            Transform cardButtonBG = cardTransform.FindChildRecurisve("buttonBG");
+            Transform cardButtonBG = cardTransform.FindChildRecursive("buttonBG");
             cardButtonBG.gameObject.SetActive(false);
 
-            Transform cardGamemodeButton = cardTransform.FindChildRecurisve("GameModeButton");
+            Transform cardGamemodeButton = cardTransform.FindChildRecursive("GameModeButton");
             cardGamemodeButton.GetComponent<Image>().enabled = false;
-            cardGamemodeButton.FindChildRecurisve("Image (2)").gameObject.SetActive(false);
+            cardGamemodeButton.FindChildRecursive("Image (2)").gameObject.SetActive(false);
 
-            Transform cardHeadingLabel = cardGamemodeButton.FindChildRecurisve("headingLabel");
+            Transform cardHeadingLabel = cardGamemodeButton.FindChildRecursive("headingLabel");
             if (!cardHeadingLabel.GetComponent<Outline>())
             {
                 _ = cardHeadingLabel.gameObject.AddComponent<Outline>();

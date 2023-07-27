@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CDOverhaul.Device
+﻿namespace CDOverhaul.Device
 {
     public static class Recommendations
     {
@@ -17,13 +11,11 @@ namespace CDOverhaul.Device
 
         public static RecommendationLevel GetSSAORecommendation()
         {
-            if (DeviceSpecifics.GPUShaderLevel < GetSSAORequiredShaderLevel())
-                return RecommendationLevel.Unsupported;
-
-            if (DeviceSpecifics.GPUMemorySize < GetSSAORequiredGPUMemorySize())
-                return RecommendationLevel.BelowReqirements;
-
-            return RecommendationLevel.Recommended;
+            return DeviceSpecifics.GPUShaderLevel < GetSSAORequiredShaderLevel()
+                ? RecommendationLevel.Unsupported
+                : DeviceSpecifics.GPUMemorySize < GetSSAORequiredGPUMemorySize()
+                ? RecommendationLevel.BelowReqirements
+                : RecommendationLevel.Recommended;
         }
 
         public static string GetSSAORecommendationString()
@@ -42,10 +34,7 @@ namespace CDOverhaul.Device
 
         public static bool GetSSAOSettingDefaultValue()
         {
-            if (GetSSAORecommendation() == RecommendationLevel.Recommended)
-                return true;
-
-            return false;
+            return GetSSAORecommendation() == RecommendationLevel.Recommended;
         }
 
         #endregion

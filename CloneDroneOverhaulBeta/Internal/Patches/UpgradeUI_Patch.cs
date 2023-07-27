@@ -1,8 +1,6 @@
 ﻿using CDOverhaul.Graphics;
 using CDOverhaul.HUD;
 using HarmonyLib;
-using ModLibrary;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -26,7 +24,7 @@ namespace CDOverhaul.Patches
             } while (i < __instance.UpgradeUIBackground.transform.childCount);
         }
 
-        
+
         [HarmonyPostfix]
         [HarmonyPatch("PopulateIcons")]
         private static void PopulateIcons_Postfix(UpgradeUI __instance)
@@ -34,7 +32,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            Transform transform = __instance.transform.FindChildRecurisve("IconContainer");
+            Transform transform = __instance.transform.FindChildRecursive("IconContainer");
             if (transform)
             {
                 OverhaulUIPanelScaler scaler = transform.GetComponent<OverhaulUIPanelScaler>();

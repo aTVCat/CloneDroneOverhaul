@@ -10,8 +10,8 @@ namespace CDOverhaul.HUD.Gamemodes
         private Button m_PlayButton;
         private Button m_PlayPrivateButton;
 
-        private Button m_RulesButton;
-        private Button m_PrevMatchesButton;
+        private readonly Button m_RulesButton;
+        private readonly Button m_PrevMatchesButton;
 
         private Toggle m_RelayToggle;
 

@@ -1,7 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Combat;
-using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Graphics;
-using CDOverhaul.Patches;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay

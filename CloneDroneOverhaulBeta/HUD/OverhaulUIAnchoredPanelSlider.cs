@@ -39,7 +39,7 @@ namespace CDOverhaul.HUD
 
         public override void OnEnable()
         {
-            if(StopForFrames != 0)
+            if (StopForFrames != 0)
             {
                 m_StopFramesLeft = StopForFrames;
             }

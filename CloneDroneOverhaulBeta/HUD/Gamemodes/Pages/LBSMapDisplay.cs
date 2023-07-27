@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,10 +7,10 @@ namespace CDOverhaul.HUD.Gamemodes
     public class LBSMapDisplay : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [ObjectReference("MapPreview")]
-        private RawImage m_PreviewImage;
+        private readonly RawImage m_PreviewImage;
 
         [ObjectReference("SelectedIndicator")]
-        private GameObject m_SelectedIndicator;
+        private readonly GameObject m_SelectedIndicator;
 
         private Button m_Button;
         public LBSGameCustomization GameCustomizationUI;
@@ -61,7 +56,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 }
                 else if (!value && IsSelected)
                 {
-                    GameCustomizationUI.SelectedLevels.Remove(LevelID);
+                    _ = GameCustomizationUI.SelectedLevels.Remove(LevelID);
                     onUpdateSelection(false);
                 }
             }
@@ -71,7 +66,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             initializeDisplay(ui);
             LevelID = levelDescription.LevelID;
-            if(ui.BrowsingLevelsType == 1)
+            if (ui.BrowsingLevelsType == 1)
             {
                 Sprite levelPreview = Resources.Load<Sprite>("Data/LevelEditorLevels/" + levelDescription.PrefabName + "_thumbnail");
                 if (levelPreview)
@@ -91,7 +86,7 @@ namespace CDOverhaul.HUD.Gamemodes
             m_Button = base.GetComponent<Button>();
             m_Button.AddOnClickListener(OnClick);
 
-            OverhaulUIVer2.FillVariables(this);
+            OverhaulUIVer2.AssignVariables(this);
         }
 
         public void OnClick()

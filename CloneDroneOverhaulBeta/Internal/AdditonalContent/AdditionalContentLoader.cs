@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -30,7 +26,7 @@ namespace CDOverhaul
             if (directories.IsNullOrEmpty())
                 return;
 
-            foreach(string directory in directories)
+            foreach (string directory in directories)
             {
                 LoadContent(directory);
             }
@@ -60,14 +56,14 @@ namespace CDOverhaul
             }
             string assetsToLoadContent = OverhaulCore.ReadText(assetsToLoadPath);
             string[] assetFiles = assetsToLoadContent.Split(',');
-            foreach(string assetFile in assetFiles)
+            foreach (string assetFile in assetFiles)
             {
                 string assetFilePath = "Content/" + directoryInfo.Name + "/" + assetFile;
                 Debug.Log(assetFilePath);
                 if (!File.Exists(OverhaulMod.Core.ModDirectory + assetFilePath))
                     continue;
 
-                OverhaulAssetsController.LoadAssetBundleIfNotLoaded(assetFilePath);
+                _ = OverhaulAssetsController.LoadAssetBundleIfNotLoaded(assetFilePath);
             }
 
             s_LoadedContent += uniqueIdFileContent + ", ";
@@ -81,7 +77,7 @@ namespace CDOverhaul
             do
             {
                 string path = files[index];
-                OverhaulCore.UnZipFile(path, controller.GetContentDirectory() + path.Substring(path.LastIndexOf('/') + 1).Replace(".zip", string.Empty));
+                _ = OverhaulCore.UnZipFile(path, controller.GetContentDirectory() + path.Substring(path.LastIndexOf('/') + 1).Replace(".zip", string.Empty));
                 if (deleteInitialFiles) File.Delete(path);
                 index++;
             } while (index < files.Length);

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static RootMotion.FinalIK.VRIKCalibrator.CalibrationData;
 
 namespace CDOverhaul.HUD
 {

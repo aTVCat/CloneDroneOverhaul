@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay.Pets;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay.WeaponSkins
 {

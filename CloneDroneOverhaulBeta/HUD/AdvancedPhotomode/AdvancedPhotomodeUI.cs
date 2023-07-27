@@ -32,10 +32,7 @@ namespace CDOverhaul.HUD
 
         private void LateUpdate()
         {
-            if (Input.GetMouseButton(1))
-                ShowCursor = false;
-            else
-                ShowCursor = m_PanelGameObject.gameObject.activeSelf;
+            ShowCursor = !Input.GetMouseButton(1) && m_PanelGameObject.gameObject.activeSelf;
 
             if (Input.GetKeyDown(KeyCode.C))
                 SetPanelActive(!m_PanelGameObject.gameObject.activeSelf);
@@ -79,8 +76,8 @@ namespace CDOverhaul.HUD
 
             OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
-            
-            if(AdvancedPhotomodeController.HasEverEnteredPhotoMode)
+
+            if (AdvancedPhotomodeController.HasEverEnteredPhotoMode)
                 AdvancedPhotomodeSettings.RestoreSettings();
         }
 
@@ -124,12 +121,12 @@ namespace CDOverhaul.HUD
                 moddedObject.GetObject<Text>(0).text = category;
 
                 List<AdvancedPhotomodeSettingAttribute> settings = AdvancedPhotomodeController.GetAllSettingsOfCategory(category);
-                foreach(AdvancedPhotomodeSettingAttribute advancedPhotomodeSetting in settings)
+                foreach (AdvancedPhotomodeSettingAttribute advancedPhotomodeSetting in settings)
                 {
                     if (!advancedPhotomodeSetting.IsAvailable)
                         continue;
 
-                    if(advancedPhotomodeSetting.IsAction())
+                    if (advancedPhotomodeSetting.IsAction())
                     {
                         ModdedObject moddedObject2 = m_ActionEntriesContainer.CreateNew();
                         moddedObject2.GetObject<Text>(0).text = advancedPhotomodeSetting.DisplayName;

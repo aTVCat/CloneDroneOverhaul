@@ -389,7 +389,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
-    <Compile Include="Gameplay\Personalization\Editor\PersonalizationItemPropertyCategoryAttribute.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditor.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertiesWindow.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditorUI.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyAttribute.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyDisplay.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItem.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsController.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsWearer.cs" />
@@ -414,7 +418,7 @@
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
     <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
     <Compile Include="HUD\Personalization\Ver2\MountsPersonalizationPanel.cs" />
-    <Compile Include="HUD\Personalization\Ver2\AccesoriesPersonalizationPanel.cs" />
+    <Compile Include="HUD\Personalization\Ver2\AccessoriesPersonalizationPanel.cs" />
     <Compile Include="HUD\Tooltips\Subclasses\OverhaulClosestPlayerTooltip.cs" />
     <Compile Include="Internal\Device\DeviceSpecifics.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\ActivityManager.cs" />
@@ -587,7 +591,10 @@
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationController.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
+    <Compile Include="Internal\Management\UI\ObjectComponentsAttribute.cs" />
+    <Compile Include="Internal\Management\UI\ToggleActionReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
+    <Compile Include="Internal\Management\UI\ButtonActionReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\OverhaulUIVer2.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulCrashPreventionController.cs" />

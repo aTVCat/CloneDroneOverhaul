@@ -12,7 +12,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static UnityEngine.UI.GridLayoutGroup;
 
 namespace CDOverhaul
 {
@@ -60,7 +59,8 @@ namespace CDOverhaul
 
         #region Transform
 
-        public static Transform FindChildRecurisve(this Transform transform, string childName) => TransformUtils.FindChildRecursive(transform, childName);
+        public static Transform FindChildRecursive(this Transform transform, string childName) => TransformUtils.FindChildRecursive(transform, childName);
+        public static RectTransform FindRectChildRecursive(this Transform transform, string childName) => TransformUtils.FindChildRecursive(transform, childName) as RectTransform;
 
         #endregion
 
@@ -464,7 +464,7 @@ namespace CDOverhaul
             if (upgrades.IsNullOrEmpty())
                 return false;
 
-            foreach(UpgradeTypeAndLevel upgradeTypeAndLevel in upgrades)
+            foreach (UpgradeTypeAndLevel upgradeTypeAndLevel in upgrades)
             {
                 if (upgradeTypeAndLevel.IsTheSameUpgrade(upgradeDescription))
                     return true;

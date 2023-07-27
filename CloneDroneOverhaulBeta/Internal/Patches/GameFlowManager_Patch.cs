@@ -46,10 +46,7 @@ namespace CDOverhaul.Patches
         {
             character.DisableInput();
 
-            if (!OverhaulGamemodeManager.IsMultiplayerSandbox())
-                return true;
-
-            return !(character is FirstPersonMover);
+            return !OverhaulGamemodeManager.IsMultiplayerSandbox() || !(character is FirstPersonMover);
         }
 
         /*

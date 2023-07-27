@@ -1,8 +1,6 @@
 ﻿using PicaVoxel;
 using System.Collections.Generic;
 using UnityEngine;
-using static RootMotion.FinalIK.HitReactionVRIK;
-using static RootMotion.FinalIK.IKSolver;
 
 namespace CDOverhaul.Gameplay
 {
@@ -81,12 +79,12 @@ namespace CDOverhaul.Gameplay
             color.g = getColorValue(color.g, RGBMultiplier);
             color.b = getColorValue(color.b, RGBMultiplier);
             color.a = getColorValue(color.a, AlphaMultiplier);
-            if(getColorGeneralNumber(color) < 4)
+            if (getColorGeneralNumber(color) < 4)
             {
-                list.Remove(point);
+                _ = list.Remove(point);
                 if (list.IsNullOrEmpty())
                 {
-                    s_BurningVoxels.Remove(frame.GetInstanceID());
+                    _ = s_BurningVoxels.Remove(frame.GetInstanceID());
                 }
             }
 

@@ -1,8 +1,5 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
 using HarmonyLib;
-using ModLibrary;
-using Sony.NP;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -46,7 +43,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Awake")]
         private static void Awake_Postfix(UpgradeUIIcon __instance)
         {
-            Transform selectableFrame = __instance.transform.FindChildRecurisve("SelectableFrame");
+            Transform selectableFrame = __instance.transform.FindChildRecursive("SelectableFrame");
             if (selectableFrame)
             {
                 selectableFrame.localPosition = new Vector3(1f, 2f, 0f);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -81,7 +77,7 @@ namespace CDOverhaul
             }
         }
 
-        
+
         public override void OnEnable()
         {
             if (m_Disabled)
@@ -102,7 +98,7 @@ namespace CDOverhaul
             Vector3 newEuler = base.transform.eulerAngles;
             Vector3 newLocalScale = base.transform.localScale;
 
-            if((newPos, newEuler, newLocalScale) != (m_OldPos, m_OldEuler, m_OldScale))
+            if ((newPos, newEuler, newLocalScale) != (m_OldPos, m_OldEuler, m_OldScale))
             {
                 UpdateDraw();
             }

@@ -175,7 +175,7 @@ namespace CDOverhaul
         private static void updateSettingVersion()
         {
             int currentVersion = SettingsVersion;
-            if(currentVersion < 1)
+            if (currentVersion < 1)
             {
                 // do something
             }

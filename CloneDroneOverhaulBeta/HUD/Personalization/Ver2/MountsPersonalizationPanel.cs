@@ -1,10 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace CDOverhaul.HUD
 {
@@ -12,7 +6,7 @@ namespace CDOverhaul.HUD
     {
         protected override void PopulateItems()
         {
-            StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 
         protected override IEnumerator PopulateItemsCoroutine()

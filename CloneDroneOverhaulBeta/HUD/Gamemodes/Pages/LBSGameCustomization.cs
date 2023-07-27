@@ -10,38 +10,38 @@ namespace CDOverhaul.HUD.Gamemodes
     public class LBSGameCustomization : FullscreenWindowPageBase
     {
         [ObjectReference("Scroll View")]
-        private ScrollRect m_ScrollRect;
+        private readonly ScrollRect m_ScrollRect;
         [ObjectReference("GridContent")]
-        private CanvasGroup m_GridContent;
+        private readonly CanvasGroup m_GridContent;
         [ObjectReference("VerticalContent")]
-        private CanvasGroup m_VerticalContent;
+        private readonly CanvasGroup m_VerticalContent;
 
         [ObjectReference("Start")]
-        private Button m_Start;
+        private readonly Button m_Start;
 
         [ObjectReference("WorkshopMapsPage")]
-        private Button m_BrowseWorkshopMaps;
+        private readonly Button m_BrowseWorkshopMaps;
         [ObjectReference("StandardMapsPage")]
-        private Button m_BrowseStandardMaps;
+        private readonly Button m_BrowseStandardMaps;
         [ObjectReference("LibraryMapsPage")]
-        private Button m_BrowseLocalMaps;
+        private readonly Button m_BrowseLocalMaps;
 
         [ObjectReference("IncludeAllToggle")]
-        private Toggle m_IncludeAll;
+        private readonly Toggle m_IncludeAll;
         [ObjectReference("Reload")]
-        private Button m_Refresh;
+        private readonly Button m_Refresh;
         [ObjectReference("GetMore")]
-        private Button m_GetMore;
+        private readonly Button m_GetMore;
 
         [ObjectReference("MapInfo")]
-        private GameObject m_MapInfo;
+        private readonly GameObject m_MapInfo;
         [ObjectReference("MapTitle")]
-        private Text m_MapTitle;
+        private readonly Text m_MapTitle;
         [ObjectReference("MapCreator")]
-        private Text m_MapCreator;
+        private readonly Text m_MapCreator;
 
         [ObjectReference("WorkshopMapEntry")]
-        private GameObject m_MapDisplayPrefab;
+        private readonly GameObject m_MapDisplayPrefab;
 
         public int BrowsingLevelsType
         {
@@ -79,7 +79,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
-            OverhaulUIVer2.FillVariables(this);
+            OverhaulUIVer2.AssignVariables(this);
 
             m_Start.AddOnClickListener(OnStartClicked);
 
@@ -107,7 +107,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void RefreshMaps()
         {
-            StaticCoroutineRunner.StartStaticCoroutine(refreshMapsCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(refreshMapsCoroutine());
         }
 
         private IEnumerator refreshMapsCoroutine()
@@ -116,7 +116,7 @@ namespace CDOverhaul.HUD.Gamemodes
             if (IsBrowsingStandardMaps())
             {
                 List<LevelDescription> standardLevels = LevelManager.Instance.GetPrivateField<List<LevelDescription>>("_battleRoyaleLevels");
-                foreach(LevelDescription level in standardLevels)
+                foreach (LevelDescription level in standardLevels)
                 {
                     if (IsStoppingLevelPopulation)
                     {
@@ -159,7 +159,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void SwitchContainer(bool grid)
         {
-            StaticCoroutineRunner.StartStaticCoroutine(switchContainerCoroutine(grid));
+            _ = StaticCoroutineRunner.StartStaticCoroutine(switchContainerCoroutine(grid));
         }
 
         private IEnumerator switchContainerCoroutine(bool grid)

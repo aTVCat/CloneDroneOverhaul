@@ -132,7 +132,7 @@ namespace CDOverhaul.Patches
                 }
             }
 
-            foreach(Mask mask in transform.GetComponentsInChildren<Mask>(true))
+            foreach (Mask mask in transform.GetComponentsInChildren<Mask>(true))
             {
                 if (mask)
                 {
@@ -142,7 +142,7 @@ namespace CDOverhaul.Patches
                     {
                         Object.Destroy(mask);
                         image.color = Color.clear;
-                        gameObject.AddComponent<RectMask2D>();
+                        _ = gameObject.AddComponent<RectMask2D>();
                     }
                 }
             }
@@ -153,8 +153,8 @@ namespace CDOverhaul.Patches
                 {
                     if (!text.GetComponent<LocalizedTextField>())
                     {
-                        if(text.font.name == ARIAL || forceRegularFont)
-                        {                            
+                        if (text.font.name == ARIAL || forceRegularFont)
+                        {
                             text.font = s_OpenSansRegularFont;
                             text.fontSize += offsetFontSize;
                             text.fontStyle = FontStyle.Normal;
@@ -206,7 +206,7 @@ namespace CDOverhaul.Patches
             if (!transform || string.IsNullOrEmpty(buttonObjectName) || action == null)
                 return;
 
-            Transform transform1 = transform.FindChildRecurisve(buttonObjectName);
+            Transform transform1 = transform.FindChildRecursive(buttonObjectName);
             if (!transform1)
             {
                 throw new System.Exception("Could not find " + buttonObjectName + " button under " + transform.name + " object");

@@ -1,7 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.NetworkAssets;
 using CDOverhaul.Workshop;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,7 +76,7 @@ namespace CDOverhaul.HUD
 
         private void Update()
         {
-            if(Time.frameCount % 5 == 0)
+            if (Time.frameCount % 5 == 0)
             {
                 Refresh();
             }

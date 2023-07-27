@@ -1,12 +1,5 @@
-﻿using CDOverhaul.Gameplay;
-using PicaVoxel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using UnityEngine;
-using static KopiLua.Lua;
 
 namespace CDOverhaul.Graphics.ArenaOverhaul
 {
@@ -76,51 +69,51 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
             m_WorldRootTransform = WorldRoot.Instance.transform;
 
-            m_ArenaFinalTransform = m_WorldRootTransform.FindChildRecurisve("ArenaFinal");
-            m_ArenaUpperInteriorTransform = m_ArenaFinalTransform.FindChildRecurisve("Arena2019");
+            m_ArenaFinalTransform = m_WorldRootTransform.FindChildRecursive("ArenaFinal");
+            m_ArenaUpperInteriorTransform = m_ArenaFinalTransform.FindChildRecursive("Arena2019");
 
-            m_LiftTransform = m_WorldRootTransform.FindChildRecurisve("LiftContainer");
-            m_LiftWallTransform = m_LiftTransform.FindChildRecurisve("LiftWall (1)");
+            m_LiftTransform = m_WorldRootTransform.FindChildRecursive("LiftContainer");
+            m_LiftWallTransform = m_LiftTransform.FindChildRecursive("LiftWall (1)");
 
-            m_ArenaMainTransform = m_ArenaFinalTransform.FindChildRecurisve("Arena");
-            m_EmperorSectionTransform = m_ArenaMainTransform.FindChildRecurisve("EmperorSection");
+            m_ArenaMainTransform = m_ArenaFinalTransform.FindChildRecursive("Arena");
+            m_EmperorSectionTransform = m_ArenaMainTransform.FindChildRecursive("EmperorSection");
             m_EmperorSectionTransform.localPosition = new Vector3(-12.9f, 5.0925f, 1.663f);
 
-            m_CommentatorBoxTransform = m_ArenaFinalTransform.FindChildRecurisve("CommentatorBox");
+            m_CommentatorBoxTransform = m_ArenaFinalTransform.FindChildRecursive("CommentatorBox");
             m_CommentatorBoxTransform.localPosition = new Vector3(-83.8f, 26.4f, 1.95f);
             m_CommentatorBoxTransform.localScale = Vector3.one * 1.3f;
-            m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecurisve("Commentatron");
+            m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecursive("Commentatron");
             m_CommentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);
-            m_AnalysisBotTransform = m_CommentatorBoxTransform.FindChildRecurisve("AnalysisBot");
+            m_AnalysisBotTransform = m_CommentatorBoxTransform.FindChildRecursive("AnalysisBot");
             m_AnalysisBotTransform.localPosition = new Vector3(5.2f, 4.7f, 0.52f);
 
-            m_ArenaCameraAnimatorTransform = m_ArenaFinalTransform.FindChildRecurisve("ArenaCameraAnimator");
-            m_CommentatorTargetTransform = m_ArenaCameraAnimatorTransform.FindChildRecurisve("CommentatorTarget");
+            m_ArenaCameraAnimatorTransform = m_ArenaFinalTransform.FindChildRecursive("ArenaCameraAnimator");
+            m_CommentatorTargetTransform = m_ArenaCameraAnimatorTransform.FindChildRecursive("CommentatorTarget");
             m_CommentatorTargetTransform.localPosition = new Vector3(-62.55f, 38f, 0f);
             m_CommentatorTargetTransform.localEulerAngles = new Vector3(8f, 270f, 0f);
 
-            m_TVsTransform = m_ArenaFinalTransform.FindChildRecurisve("ArenaSideTVs");
-            m_GiantScreen2Transform = m_TVsTransform.FindChildRecurisve("GiantScreen (2)");
+            m_TVsTransform = m_ArenaFinalTransform.FindChildRecursive("ArenaSideTVs");
+            m_GiantScreen2Transform = m_TVsTransform.FindChildRecursive("GiantScreen (2)");
             m_OgGiantScreen2Position = m_GiantScreen2Transform.localPosition;
             m_OgGiantScreen2EulerAngles = m_GiantScreen2Transform.localEulerAngles;
             m_OgGiantScreen2LocalScale = m_GiantScreen2Transform.localScale;
-            m_ArenaTVEndlessLevelTransform = m_TVsTransform.FindChildRecurisve("ArenaTV_EndlessLevel");
+            m_ArenaTVEndlessLevelTransform = m_TVsTransform.FindChildRecursive("ArenaTV_EndlessLevel");
             m_ArenaTVEndlessLevelTransform.localPosition = new Vector3(-76.5f, 25.15f, 0);
             m_ArenaTVEndlessLevelTransform.localEulerAngles = new Vector3(347.64f, 270f, 0f);
 
-            m_ArenaGroundArrowsTransform = m_ArenaFinalTransform.FindChildRecurisve("ArenaGroundArrows");
-            m_ReturnSignTransform = m_ArenaGroundArrowsTransform.FindChildRecurisve("ReturnSign");
+            m_ArenaGroundArrowsTransform = m_ArenaFinalTransform.FindChildRecursive("ArenaGroundArrows");
+            m_ReturnSignTransform = m_ArenaGroundArrowsTransform.FindChildRecursive("ReturnSign");
             m_OgReturnSignPosition = m_ReturnSignTransform.localPosition;
             m_OgReturnSignEulerAngles = m_ReturnSignTransform.localEulerAngles;
-            m_ArenaGroundArrowsSpotlightTransform = m_ArenaGroundArrowsTransform.FindChildRecurisve("Spotlight");
+            m_ArenaGroundArrowsSpotlightTransform = m_ArenaGroundArrowsTransform.FindChildRecursive("Spotlight");
             m_ArenaGroundArrowsSpotlightTransform.localPosition = new Vector3(60, 55, 0);
             m_ArenaGroundArrowsSpotlightTransform.localEulerAngles = new Vector3(47.5f, 90, 90);
             m_ArenaGroundArrowsSpotlightTransform.localScale = Vector3.one;
 
-            m_GarbageShuteTransform = m_ArenaFinalTransform.FindChildRecurisve("GarbageShute");
-            m_GarbageDoorTransform = m_GarbageShuteTransform.FindChildRecurisve("GarbageDoor2019");
+            m_GarbageShuteTransform = m_ArenaFinalTransform.FindChildRecursive("GarbageShute");
+            m_GarbageDoorTransform = m_GarbageShuteTransform.FindChildRecursive("GarbageDoor2019");
             m_GarbageDoorTransform.GetComponent<Renderer>().enabled = false;
-            m_GarbageDoor2Transform = m_GarbageShuteTransform.FindChildRecurisve("GarbageDoor2019Static");
+            m_GarbageDoor2Transform = m_GarbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
             m_GarbageDoor2Transform.GetComponent<Renderer>().enabled = false;
 
             GameObject gameObject = Instantiate(OverhaulAssetsController.GetAsset("ArenaOverhaul", OverhaulAssetPart.ArenaOverhaul), m_ArenaFinalTransform);
@@ -136,7 +129,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             m_ArenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
             m_ArenaLightsMaterial.shader = Shader.Find("Standard");
 
-            OverhaulEventsController.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate, true);
+            _ = OverhaulEventsController.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate, true);
 
             SetVanillaPartsActive(false);
             PatchVanillaParts(true);
@@ -173,7 +166,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         public void SetVanillaPartsActive(bool value)
         {
-            for(int i = 0; i < m_ArenaUpperInteriorTransform.childCount; i++)
+            for (int i = 0; i < m_ArenaUpperInteriorTransform.childCount; i++)
             {
                 GameObject gameObject = m_ArenaUpperInteriorTransform.GetChild(i).gameObject;
                 if (!IgnoredArenaInteriorParts.Contains(gameObject.name))
@@ -182,7 +175,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
                 }
                 else
                 {
-                    if(gameObject.name == "ARENA_THRONE_END_PARTS-3")
+                    if (gameObject.name == "ARENA_THRONE_END_PARTS-3")
                     {
                         gameObject.transform.localPosition = new Vector3(3.2f, 10f, 15.5f);
                     }

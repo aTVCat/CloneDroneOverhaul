@@ -1,10 +1,4 @@
 ﻿using CDOverhaul.Patches;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -13,8 +7,9 @@ namespace CDOverhaul.HUD
     {
         public static bool IsEnabled() => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAchievementsMenuRedesignEnabled;
 
+        [ButtonActionReference(nameof(OnBackButtonClicked))]
         [ObjectReference("BackButton")]
-        private Button m_BackButton;
+        private readonly Button m_BackButton;
 
         public override void Initialize()
         {
@@ -22,7 +17,6 @@ namespace CDOverhaul.HUD
             if (!IsEnabled())
                 return;
 
-            m_BackButton.AddOnClickListener(Hide);
             BaseFixes.ChangeButtonAction(TitleScreen.transform, "AchievementsButton", Show);
         }
 
@@ -36,6 +30,11 @@ namespace CDOverhaul.HUD
         {
             base.Hide();
             ShowTitleScreenButtons();
+        }
+
+        public void OnBackButtonClicked()
+        {
+            Hide();
         }
     }
 }

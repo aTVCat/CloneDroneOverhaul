@@ -32,7 +32,7 @@ namespace CDOverhaul.Patches
 
                 Vector3 midPos = (otherComponent.transform.position + __instance.transform.position) / 2f;
                 AttackManager.Instance.CreateSwordBlockVFX(midPos);
-                AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.SwordBlocks, midPos, 0f, false, 1f, Random.Range(0.95f, 1.05f));
+                _ = AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.SwordBlocks, midPos, 0f, false, 1f, Random.Range(0.95f, 1.05f));
 
                 owner.OnWeaponCollidedWithEnvironment();
             }

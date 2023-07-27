@@ -1,9 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Outfits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.HUD
 {
@@ -14,18 +9,8 @@ namespace CDOverhaul.HUD
             get;
             private set;
         }
-
-        private bool m_IsExclusive;
-        public bool IsExclusive
-        {
-            get => m_IsExclusive;
-        }
-
-        private bool m_IsSelected;
-        public bool IsSelected
-        {
-            get => m_IsSelected;
-        }
+        public bool IsExclusive { get; private set; }
+        public bool IsSelected { get; private set; }
 
         public override void Start()
         {
@@ -42,14 +27,14 @@ namespace CDOverhaul.HUD
 
         public void RefreshDisplay()
         {
-            if(Item == null)
+            if (Item == null)
             {
                 DestroyGameObject();
                 return;
             }
 
-            m_IsExclusive = !string.IsNullOrEmpty(Item.ExclusiveFor);
-            m_IsSelected = OutfitsController.EquippedAccessories.Contains(Item.Name);
+            IsExclusive = !string.IsNullOrEmpty(Item.ExclusiveFor);
+            IsSelected = OutfitsController.EquippedAccessories.Contains(Item.Name);
 
             ItemNameLabel.text = Item.Name;
             AuthorLabel.text = Item.Author;
@@ -65,7 +50,7 @@ namespace CDOverhaul.HUD
         {
             ButtonComponent.OnDeselect(null);
 
-            OutfitsController.SetAccessoryEquipped(Item, !m_IsSelected, true);
+            OutfitsController.SetAccessoryEquipped(Item, !IsSelected, true);
             // Todo: lock UI until player's accessories are refreshed
             RefreshDisplay();
         }

@@ -1,8 +1,4 @@
-﻿using ModLibrary;
-using Steamworks;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Gamemodes
@@ -10,14 +6,14 @@ namespace CDOverhaul.HUD.Gamemodes
     public class DuelGameCustomization : FullscreenWindowPageBase
     {
         [ObjectReference("Start")]
-        private Button m_Start;
+        private readonly Button m_Start;
 
         public override Vector2 GetWindowSize() => OverhaulGamemodesUIFullscreenWindow.GameCustomizationWindowSize;
 
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
-            OverhaulUIVer2.FillVariables(this);
+            OverhaulUIVer2.AssignVariables(this);
 
             m_Start.AddOnClickListener(OnStartClicked);
         }

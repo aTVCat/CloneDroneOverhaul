@@ -27,14 +27,7 @@ namespace CDOverhaul.DevTools
                 long ms = OverhaulProfiler.GetEntryMs(MyEntry);
                 m_TimeLabel.text = ticks + " ticks, " + ms + " ms";
 
-                if (ms > 15)
-                {
-                    m_TimeLabel.color = Color.red;
-                }
-                else
-                {
-                    m_TimeLabel.color = ms > 7 ? "#FF7F08".ToColor() : ms > 3 ? Color.yellow : Color.white;
-                }
+                m_TimeLabel.color = ms > 15 ? Color.red : ms > 7 ? "#FF7F08".ToColor() : ms > 3 ? Color.yellow : Color.white;
             }
         }
     }

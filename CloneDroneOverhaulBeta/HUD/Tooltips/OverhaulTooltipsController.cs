@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Combat;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +33,7 @@ namespace CDOverhaul.HUD.Tooltips
             if (!hasInitializedModel)
                 return;
 
-            firstPersonMover.gameObject.AddComponent<PlayerTooltipsBehaviour>();
+            _ = firstPersonMover.gameObject.AddComponent<PlayerTooltipsBehaviour>();
         }
 
         public void AddTooltip<T>(GameObject gameObject) where T : OverhaulTooltip

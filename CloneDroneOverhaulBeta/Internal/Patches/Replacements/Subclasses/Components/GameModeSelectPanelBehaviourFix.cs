@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -15,7 +10,7 @@ namespace CDOverhaul.Patches
         {
             if (!m_Box)
             {
-                m_Box = base.transform.FindChildRecurisve("Box");
+                m_Box = base.transform.FindChildRecursive("Box");
                 if (!m_Box)
                     return;
             }

@@ -1,18 +1,12 @@
 ﻿using CDOverhaul.DevTools;
-using Jint.Native.Set;
 using Steamworks;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCrashScreen : OverhaulUI 
+    public class OverhaulCrashScreen : OverhaulUI
     {
         private static OverhaulCrashScreen s_Instance;
         public static OverhaulCrashScreen Instance => OverhaulMod.IsHUDInitialized && OverhaulMod.IsModInitialized ? s_Instance : null;
@@ -118,7 +112,7 @@ namespace CDOverhaul.HUD
                 return;
 
             m_IsScreenshotting = true;
-            StartCoroutine(triggerScreenshotCoroutine());
+            _ = StartCoroutine(triggerScreenshotCoroutine());
         }
 
         private IEnumerator triggerScreenshotCoroutine()

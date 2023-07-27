@@ -21,7 +21,7 @@ namespace CDOverhaul.Patches
             {
                 Vector3 midPos = (otherComponent.transform.position + __instance.transform.position) / 2f;
                 AttackManager.Instance.CreateSwordBlockVFX(midPos);
-                AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.HammerImpacts, midPos, 0f, false, 1f, Random.Range(1.300f, 1.450f));
+                _ = AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.HammerImpacts, midPos, 0f, false, 1f, Random.Range(1.300f, 1.450f));
 
                 __instance.Owner.OnWeaponCollidedWithEnvironment();
                 if (otherComponent.Owner) otherComponent.Owner.OnWeaponCollidedWithEnvironment();
@@ -37,7 +37,7 @@ namespace CDOverhaul.Patches
 
                     Vector3 midPos = (swordBlockArea.transform.position + __instance.transform.position) / 2f;
                     AttackManager.Instance.CreateSwordBlockVFX(midPos);
-                    AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.SwordHitShield, midPos, 0f, false, 1f, Random.Range(0.925f, 1.075f));
+                    _ = AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.SwordHitShield, midPos, 0f, false, 1f, Random.Range(0.925f, 1.075f));
                 }
             }
         }

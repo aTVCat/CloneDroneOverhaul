@@ -1,7 +1,6 @@
 ﻿using CDOverhaul.Device;
 using CDOverhaul.Graphics;
 using CDOverhaul.Patches;
-using InjectionClasses;
 using UnityEngine;
 using UnityEngine.UI;
 

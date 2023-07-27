@@ -1,16 +1,12 @@
-﻿using ModLibrary;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
     public class OverhaulAchievementsController : OverhaulGameplayController
     {
-        private List<string> m_AddedAchievements = new List<string>();
+        private readonly List<string> m_AddedAchievements = new List<string>();
 
         public override void Initialize()
         {

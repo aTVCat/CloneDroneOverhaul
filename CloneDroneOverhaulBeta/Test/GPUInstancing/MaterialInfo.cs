@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul
 {
@@ -19,7 +14,7 @@ namespace CDOverhaul
 
         public bool Equals(MaterialInfo other)
         {
-            return (other.Name, other.TextureName, other.Color, other.Scale) == (this.Name, this.TextureName, this.Color, this.Scale);
+            return (other.Name, other.TextureName, other.Color, other.Scale) == (Name, TextureName, Color, Scale);
         }
 
         public MaterialInfo(Material material, Vector3 scale)

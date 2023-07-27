@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay.Outfits;
-
-namespace CDOverhaul.Gameplay.WeaponSkins
+﻿namespace CDOverhaul.Gameplay.WeaponSkins
 {
     public class WeaponSkinItem : PersonalizationItem
     {

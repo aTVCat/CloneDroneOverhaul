@@ -1,10 +1,6 @@
-﻿using CDOverhaul.Gameplay.Multiplayer;
-using System;
+﻿using CDOverhaul.Gameplay.Editors.Personalization;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.Gameplay
 {
@@ -14,13 +10,28 @@ namespace CDOverhaul.Gameplay
         public const string NO_AUTHOR_SPECIFIED = "N/A";
         public const string NO_NAME_SPECIFIED = "Unknown item";
 
+        [PersonalizationEditorProperty("Generic Info")]
         public string Name = NO_NAME_SPECIFIED;
+
+        [PersonalizationEditorProperty("Generic Info")]
         public string Description = NO_DESCRIPTION_PROVIDED;
+
+        [PersonalizationEditorProperty("Generic Info")]
         public string Author = NO_AUTHOR_SPECIFIED;
 
-        public static FieldInfo[] GetFields<T>() where T : PersonalizationItem
+        public static List<PersonalizationEditorPropertyAttribute> GetAllFields<T>() where T : PersonalizationItem
         {
-            return typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public);
+            List<PersonalizationEditorPropertyAttribute> result = new List<PersonalizationEditorPropertyAttribute>();
+            foreach (FieldInfo info in typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public))
+            {
+                PersonalizationEditorPropertyAttribute attribute = info.GetCustomAttribute<PersonalizationEditorPropertyAttribute>();
+                if (attribute != null)
+                {
+                    attribute.FieldReference = info;
+                    result.Add(attribute);
+                }
+            }
+            return result;
         }
     }
 }

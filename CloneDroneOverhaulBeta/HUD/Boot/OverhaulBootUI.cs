@@ -34,7 +34,7 @@ namespace CDOverhaul
             Instance.m_LoadingBar = moddedObject.GetObject<Slider>(1);
             Instance.m_LoadingBar.value = 0f;
 
-            OverhaulNetworkAssetsController.DownloadTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/BootUI_" + UnityEngine.Random.Range(1, 6) + ".jpg", moddedObject.GetObject<RawImage>(3));
+            OverhaulNetworkAssetsController.DownloadTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/BootUI_" + UnityEngine.Random.Range(1, 5) + ".jpg", moddedObject.GetObject<RawImage>(3));
 
             moddedObject.GetObject<Image>(2).color = Time.timeSinceLevelLoad < 6f ? Color.white : Color.black;
 

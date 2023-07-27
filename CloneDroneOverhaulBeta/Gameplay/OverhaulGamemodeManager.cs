@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.CustomMultiplayer;
-using UnityEngine;
 
 namespace CDOverhaul
 {

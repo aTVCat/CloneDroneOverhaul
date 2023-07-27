@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using Esprima;
 using OverhaulAPI;
 using System;
 using System.Collections;
@@ -112,7 +111,7 @@ namespace CDOverhaul.Gameplay
             base.Initialize();
             Interface = this;
 
-            if(CustomSkinsData == null)
+            if (CustomSkinsData == null)
             {
                 AddSkins();
             }

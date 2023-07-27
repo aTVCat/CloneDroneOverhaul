@@ -1,6 +1,4 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Graphics;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -28,7 +26,7 @@ namespace CDOverhaul.HUD
 
         private void onButtonClick()
         {
-            SettingReference.Method.Invoke(null, null);
+            _ = SettingReference.Method.Invoke(null, null);
         }
     }
 }

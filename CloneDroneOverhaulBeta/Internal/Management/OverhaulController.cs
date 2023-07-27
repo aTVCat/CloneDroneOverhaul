@@ -105,10 +105,9 @@ namespace CDOverhaul
             {
                 if (controllerr is T)
                 {
-                    if (OverhaulVersion.IsTestMode && controllerr.Error)
-                        throw new Exception("Using incorrectly started controller is not allowed");
-
-                    return (T)controllerr;
+                    return OverhaulVersion.IsTestMode && controllerr.Error
+                        ? throw new Exception("Using incorrectly started controller is not allowed")
+                        : (T)controllerr;
                 }
             }
             return null;

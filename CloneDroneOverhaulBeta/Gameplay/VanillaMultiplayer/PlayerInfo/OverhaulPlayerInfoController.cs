@@ -48,7 +48,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public static string GetUserFlags()
         {
             string result = string.Empty;
-            foreach(Tuple<Func<bool>, string> flag in UserFlags)
+            foreach (Tuple<Func<bool>, string> flag in UserFlags)
                 if (flag.Item1 != null && flag.Item1() && !string.IsNullOrEmpty(flag.Item2))
                     result += flag.Item2 + " ";
             return result;

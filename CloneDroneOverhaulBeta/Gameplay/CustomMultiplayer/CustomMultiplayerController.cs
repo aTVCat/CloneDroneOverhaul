@@ -19,7 +19,7 @@ namespace CDOverhaul.CustomMultiplayer
             private set;
         }
 
-        public static  CustomMultiplayerWorld World
+        public static CustomMultiplayerWorld World
         {
             get;
             private set;

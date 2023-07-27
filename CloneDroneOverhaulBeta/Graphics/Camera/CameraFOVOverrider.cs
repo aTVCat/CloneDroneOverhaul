@@ -1,9 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Graphics
@@ -49,7 +44,7 @@ namespace CDOverhaul.Graphics
             if (!OverrideFOV)
                 return;
 
-            if(!m_Owner)
+            if (!m_Owner)
             {
                 base.enabled = false;
                 return;
@@ -73,10 +68,9 @@ namespace CDOverhaul.Graphics
 
         public float GetTargetFoV()
         {
-            if (m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom)
-                return PAUSED_VALUE + ViewModesController.FOVOffset;
-
-            return (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset;
+            return m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom
+                ? PAUSED_VALUE + ViewModesController.FOVOffset
+                : (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset;
         }
     }
 }

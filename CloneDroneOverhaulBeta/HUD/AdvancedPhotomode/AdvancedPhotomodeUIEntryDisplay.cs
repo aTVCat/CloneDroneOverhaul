@@ -49,7 +49,7 @@ namespace CDOverhaul.HUD
             PopulateToggle(isBoolean);
             PopulateSlider(isFloat || isInt, isFloat);
 
-            if(SettingReference.ContentParameters != null)
+            if (SettingReference.ContentParameters != null)
             {
                 bool hasLoaded = SettingReference.ContentParameters.HasLoadedContent();
                 ToggleReference.interactable = hasLoaded;
@@ -104,10 +104,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            if (isFloat)
-                SliderReference.value = (float)SettingReference.Field.GetValue(null);
-            else
-                SliderReference.value = (int)SettingReference.Field.GetValue(null);
+            SliderReference.value = isFloat ? (float)SettingReference.Field.GetValue(null) : (int)SettingReference.Field.GetValue(null);
             SliderReference.wholeNumbers = !isFloat;
             SliderReference.minValue = SettingReference.SliderParameters.MinValue;
             SliderReference.maxValue = SettingReference.SliderParameters.MaxValue;
@@ -118,7 +115,7 @@ namespace CDOverhaul.HUD
         {
             bool isFloat = SettingReference.Field.FieldType == typeof(float);
 
-            if(isFloat)
+            if (isFloat)
                 SettingReference.Field.SetValue(null, value);
             else
                 SettingReference.Field.SetValue(null, (int)value);

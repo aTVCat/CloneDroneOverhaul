@@ -20,8 +20,7 @@ namespace CDOverhaul.Patches
 
             string path = objectPlacedLevelObjectEntry.PathUnderResources;
 
-            Transform prefabToInstantiate = null;
-            if(!s_CachedPrefabs.TryGetValue(path, out prefabToInstantiate))
+            if (!s_CachedPrefabs.TryGetValue(path, out Transform prefabToInstantiate))
             {
                 prefabToInstantiate = Resources.Load<Transform>(path);
                 if (!prefabToInstantiate)
@@ -47,14 +46,14 @@ namespace CDOverhaul.Patches
 
             Transform transform2 = Object.Instantiate(prefabToInstantiate, levelRoot, false);
             if (!objectPlacedLevelObjectEntry.IsSection())
-                transform2.gameObject.AddComponent<SectionMember>();
+                _ = transform2.gameObject.AddComponent<SectionMember>();
 
             __result = transform2.gameObject.AddComponent<ObjectPlacedInLevel>();
             __result.LevelObjectEntry = objectPlacedLevelObjectEntry;
             __result.Initialize(levelRoot);
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGpuInstancingEnabled)
-                __result.gameObject.AddComponent<OverhaulGPUInstanceObjectBehaviour>();
+                _ = __result.gameObject.AddComponent<OverhaulGPUInstanceObjectBehaviour>();
 
             __instance.CallPrivateMethod("registerObjectInAllObjectList", new object[] { __result });
             return false;

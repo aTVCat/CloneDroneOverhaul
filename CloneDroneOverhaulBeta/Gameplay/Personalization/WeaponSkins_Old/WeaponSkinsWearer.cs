@@ -1,8 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.NetworkAssets;
 using ModLibrary;
 using OverhaulAPI;
-using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -195,7 +193,7 @@ namespace CDOverhaul.Gameplay
         private bool m_WaitingToSpawnSkins;
         private bool m_HasEverSpawnedSkins;
 
-        private bool m_HasAddedListeners;
+        private readonly bool m_HasAddedListeners;
 
         public OverhaulPlayerInfo PlayerInformation
         {
@@ -272,20 +270,15 @@ namespace CDOverhaul.Gameplay
                 return;
 
             WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
-            IWeaponSkinItemDefinition[] skins;
-            if (IsMultiplayerControlled())
-            {
-                skins = new IWeaponSkinItemDefinition[]
+            IWeaponSkinItemDefinition[] skins = IsMultiplayerControlled()
+                ? (new IWeaponSkinItemDefinition[]
                 {
                     controller.Interface.GetSkinItem(WeaponType.Sword, PlayerInformation.GetData("Skin.Sword"), ItemFilter.Everything, out _),
                     controller.Interface.GetSkinItem(WeaponType.Bow, PlayerInformation.GetData("Skin.Bow"), ItemFilter.Everything, out _),
                     controller.Interface.GetSkinItem(WeaponType.Hammer, PlayerInformation.GetData("Skin.Hammer"), ItemFilter.Everything, out _),
                     controller.Interface.GetSkinItem(WeaponType.Spear, PlayerInformation.GetData("Skin.Spear"), ItemFilter.Everything, out _)
-                };
-            }
-            else
-                skins = controller.Interface.GetSkinItems(Owner);
-
+                })
+                : controller.Interface.GetSkinItems(Owner);
             if (skins.IsNullOrEmpty())
                 return;
 
@@ -294,7 +287,7 @@ namespace CDOverhaul.Gameplay
                 List<IWeaponSkinItemDefinition> toDelete = new List<IWeaponSkinItemDefinition>();
                 foreach (WeaponSkinSpawnInfo info in SpawnedSkins)
                 {
-                    if (info == null || !info.Model || info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins())
+                    if (info == null || !info.Model || (info.Type == WeaponType.Bow && !OverhaulGamemodeManager.SupportsBowSkins()))
                         continue;
 
                     SetDefaultModelsActive(info.Model.transform);

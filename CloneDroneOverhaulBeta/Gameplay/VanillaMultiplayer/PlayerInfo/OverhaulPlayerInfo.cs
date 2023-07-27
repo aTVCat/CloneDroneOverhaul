@@ -1,7 +1,5 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay.Outfits;
-using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -114,7 +112,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             }
             else if (eventData.IsAnswer)
             {
-                if(m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
+                if (m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
                 {
                     UnityEngine.Debug.LogWarning("GET ANSWER DATA " + eventData.SenderPlayFabID + " " + eventData.ReceiverPlayFabID);
 

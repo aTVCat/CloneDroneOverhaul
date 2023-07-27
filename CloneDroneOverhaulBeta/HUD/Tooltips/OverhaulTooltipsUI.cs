@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CDOverhaul.HUD.Tooltips
+﻿namespace CDOverhaul.HUD.Tooltips
 {
     public class OverhaulTooltipsUI : OverhaulUI
     {

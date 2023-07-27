@@ -1,10 +1,4 @@
-﻿using CDOverhaul.Gameplay.Outfits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -28,7 +22,7 @@ namespace CDOverhaul.HUD
 
         public override void Start()
         {
-            OverhaulUIVer2.FillVariables(this);
+            OverhaulUIVer2.AssignVariables(this);
         }
     }
 }

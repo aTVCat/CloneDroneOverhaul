@@ -1,7 +1,4 @@
 ﻿using CDOverhaul.Graphics.GPUInstancing;
-using HarmonyLib;
-using PicaVoxel;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +22,7 @@ namespace CDOverhaul
         }
 
         public void AddObject(Transform transform)
-        {            
+        {
         }
     }
 }

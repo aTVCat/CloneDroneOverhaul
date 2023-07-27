@@ -1,10 +1,6 @@
-﻿using CDOverhaul.Gameplay;
-using HarmonyLib;
-using ModLibrary;
+﻿using HarmonyLib;
 using PicaVoxel;
-using System.Collections.Generic;
 using UnityEngine;
-using static RootMotion.FinalIK.IKSolver;
 
 namespace CDOverhaul.Patches
 {

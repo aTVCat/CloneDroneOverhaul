@@ -4,10 +4,9 @@ using CDOverhaul.CustomMultiplayer;
 using CDOverhaul.Device;
 using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.Gameplay.Outfits;
-using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.Graphics.ArenaOverhaul;
@@ -81,7 +80,7 @@ namespace CDOverhaul
                 return;
             }
 
-            if(eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
+            if (eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
                 foreach (OverhaulPlayerInfo overhaulPlayerInfo in OverhaulPlayerInfo.AllOverhaulPlayerInfos)
                     if (overhaulPlayerInfo)
                         overhaulPlayerInfo.OnGenericStringEvent(eventData);
@@ -200,6 +199,8 @@ namespace CDOverhaul
 
         public void LoadSyncStuff()
         {
+            PersonalizationEditor.Initialize();
+
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
@@ -214,14 +215,9 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
-            {
-                _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
-            }
-            else
-            {
-                _ = OverhaulController.AddController<WeaponSkinsController>();
-            }
+            _ = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled
+                ? OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>()
+                : OverhaulController.AddController<WeaponSkinsController>();
             _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
             _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
 

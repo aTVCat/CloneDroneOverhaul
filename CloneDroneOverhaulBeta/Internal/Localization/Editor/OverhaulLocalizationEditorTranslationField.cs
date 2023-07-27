@@ -32,7 +32,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
-            Fields.Remove(this);
+            _ = Fields.Remove(this);
             MyLang = null;
             MyID = null;
             MyLang = null;

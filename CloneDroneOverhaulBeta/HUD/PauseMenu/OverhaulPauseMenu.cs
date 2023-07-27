@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Workshop;
 using Steamworks;
 using System.Collections;
@@ -18,7 +19,7 @@ namespace CDOverhaul.HUD
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
-        private static List<string> s_ReportedPlayFabIDsThisSession = new List<string>();
+        private static readonly List<string> s_ReportedPlayFabIDsThisSession = new List<string>();
 
         #region Open/Close menu
 
@@ -57,6 +58,7 @@ namespace CDOverhaul.HUD
         private Button m_PersonalizationSkinsButton;
         private Button m_PersonalizationOutfitsButton;
         private Button m_PersonalizationPetsButton;
+        private Button m_PersonalizationEditorButton;
 
         private Button m_ExitButton;
         private Transform m_ExitSelectPanel;
@@ -113,7 +115,7 @@ namespace CDOverhaul.HUD
         private Button m_CancelReport;
         private Button m_Report;
 
-        private Dictionary<string, GameObject> m_Logos = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> m_Logos = new Dictionary<string, GameObject>();
 
         private bool m_HasVotedUp;
         private bool m_HasVotedDown;
@@ -150,7 +152,10 @@ namespace CDOverhaul.HUD
             m_PersonalizationOutfitsButton = MyModdedObject.GetObject<Button>(3);
             m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
             m_PersonalizationPetsButton = MyModdedObject.GetObject<Button>(36);
+            m_PersonalizationPetsButton.onClick.AddListener(OnPetsButtonClicked);
             m_PersonalizationPetsButton.interactable = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsPetsDemo;
+            m_PersonalizationEditorButton = MyModdedObject.GetObject<Button>(58);
+            m_PersonalizationEditorButton.onClick.AddListener(OnPersonalizationEditorButtonClicked);
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
@@ -320,7 +325,28 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
-            AccesoriesPersonalizationPanel panel = GetController<AccesoriesPersonalizationPanel>();
+            AccessoriesPersonalizationPanel panel = GetController<AccessoriesPersonalizationPanel>();
+            if (!panel)
+                return;
+
+            Hide();
+            panel.Show();
+        }
+
+        public void OnPetsButtonClicked()
+        {
+            /*
+            AccesoriesPersonalizationPanel panel = GetController<AccessoriesPersonalizationPanel>();
+            if (!panel)
+                return;
+
+            Hide();
+            panel.Show();*/
+        }
+
+        public void OnPersonalizationEditorButtonClicked()
+        {
+            PersonalizationEditorUI panel = GetController<PersonalizationEditorUI>();
             if (!panel)
                 return;
 
@@ -657,7 +683,7 @@ namespace CDOverhaul.HUD
 
             bool hasBlocked = false;
             BlockListData data = MultiplayerLoginManager.Instance.GetLocalPlayerBlockList();
-            foreach(var entry in data.BlockList)
+            foreach (BlockListData.Entry entry in data.BlockList)
             {
                 hasBlocked = entry.PlayfabId == m_TargetPlayer.state.PlayFabID;
                 if (hasBlocked)
@@ -704,14 +730,14 @@ namespace CDOverhaul.HUD
 
         public void MutePlayer()
         {
-            if (!m_TargetPlayer || m_TargetPlayer.IsDetached() || m_TargetPlayer.IsLocalPlayer()) 
+            if (!m_TargetPlayer || m_TargetPlayer.IsDetached() || m_TargetPlayer.IsLocalPlayer())
                 return;
 
             BlockListData blockListData = MultiplayerLoginManager.Instance.GetLocalPlayerBlockList();
             if (blockListData == null)
                 return;
 
-            var entry = new BlockListData.Entry
+            BlockListData.Entry entry = new BlockListData.Entry
             {
                 DisplayName = m_TargetPlayer.state.DisplayName,
                 PlatformId = m_TargetPlayer.state.PlatformID,

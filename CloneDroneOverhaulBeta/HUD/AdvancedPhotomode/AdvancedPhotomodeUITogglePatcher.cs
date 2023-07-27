@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -18,7 +13,7 @@ namespace CDOverhaul.HUD
         private void Update()
         {
             bool newValue = ToggleReference.isOn;
-            if(m_ValueLastFrame != newValue)
+            if (m_ValueLastFrame != newValue)
             {
                 ObjectToToggle.SetActive(newValue);
             }

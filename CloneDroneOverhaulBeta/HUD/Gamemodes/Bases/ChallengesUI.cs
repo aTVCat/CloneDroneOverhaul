@@ -204,11 +204,9 @@ namespace CDOverhaul.HUD.Gamemodes
             private CharacterModelCustomizationEntry getCharacterModelUnlockedByChallenge(string challengeID)
             {
                 CompleteChallengeAchievement completeChallengeAchievement = GameplayAchievementManager.Instance.GetCompleteChallengeAchievement(challengeID);
-                if (completeChallengeAchievement != null)
-                {
-                    return MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelUnlockedByAchievement(completeChallengeAchievement.AchievementID);
-                }
-                return null;
+                return completeChallengeAchievement != null
+                    ? MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelUnlockedByAchievement(completeChallengeAchievement.AchievementID)
+                    : null;
             }
 
             public void OnPointerExit(PointerEventData eventData)

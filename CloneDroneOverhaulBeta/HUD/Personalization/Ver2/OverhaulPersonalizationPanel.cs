@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Multiplayer;
+﻿using CDOverhaul.Gameplay.Multiplayer;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +33,7 @@ namespace CDOverhaul.HUD
         public override void Initialize()
         {
             base.Initialize();
-            
+
             OverhaulUIAnchoredPanelSlider slider = PanelBG.AddComponent<OverhaulUIAnchoredPanelSlider>();
             slider.StartPosition = new Vector3(-300f, 0f, 0f);
             slider.TargetPosition = (PanelBG.transform as RectTransform).anchoredPosition;
@@ -78,7 +77,7 @@ namespace CDOverhaul.HUD
                 yield break;
 
             ScrollViewCanvasGroup.alpha = isOut ? 0f : 1f;
-            for(int i =0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ScrollViewCanvasGroup.alpha += isOut ? 0.25f : -0.25f;
                 yield return new WaitForSecondsRealtime(0.016f);

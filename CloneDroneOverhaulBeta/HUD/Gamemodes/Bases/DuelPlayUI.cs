@@ -6,22 +6,22 @@ namespace CDOverhaul.HUD.Gamemodes
     public class DuelPlayUI : OverhaulGamemodeUIBase
     {
         [ObjectReference("BackButton")]
-        private Button m_GoBack;
+        private readonly Button m_GoBack;
 
         [ObjectReference("PlayButton")]
-        private Button m_Play;
+        private readonly Button m_Play;
         [ObjectReference("PlayPrivateButton")]
-        private Button m_PlayPrivate;
+        private readonly Button m_PlayPrivate;
 
         [ObjectReference("PrevMatchesButton")]
-        private Button m_PrevMatches;
+        private readonly Button m_PrevMatches;
 
         [ObjectReference("RelayConnectionToggle")]
-        private Toggle m_Relay;
+        private readonly Toggle m_Relay;
 
         protected override void OnInitialize()
         {
-            OverhaulUIVer2.FillVariables(this);
+            OverhaulUIVer2.AssignVariables(this);
 
             m_GoBack.onClick.AddListener(goBackToGamemodeSelection);
             m_Play.onClick.AddListener(OnPlayClicked);

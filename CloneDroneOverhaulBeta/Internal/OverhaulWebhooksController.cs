@@ -1,5 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using DiscordWebhook;
+﻿using DiscordWebhook;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
