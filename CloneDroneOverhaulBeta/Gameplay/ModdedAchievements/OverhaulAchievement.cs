@@ -7,11 +7,11 @@
             base.Initialize();
         }
 
-        protected override void addEventListeners()
+        public override void addEventListeners()
         {
         }
 
-        protected override void removeEventListeners()
+        public override void removeEventListeners()
         {
         }
     }

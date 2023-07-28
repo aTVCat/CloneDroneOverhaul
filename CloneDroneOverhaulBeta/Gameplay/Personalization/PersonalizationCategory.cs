@@ -8,7 +8,7 @@
 
         Outfits,
 
-        Mounts,
+        Pets,
 
         Colors,
     }

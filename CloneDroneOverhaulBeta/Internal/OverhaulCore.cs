@@ -113,7 +113,7 @@ namespace CDOverhaul
             controllers.transform.SetParent(base.transform);
 
             DeviceSpecifics.Initialize();
-            OverhaulObjectStateModder.Reset();
+            //OverhaulObjectStateModder.Reset();
             EnableCursorController.Reset();
 
             OverhaulEventsController.Initialize();
@@ -215,9 +215,14 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
 
-            _ = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled
-                ? OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>()
-                : OverhaulController.AddController<WeaponSkinsController>();
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
+            {
+                _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
+            }
+            else
+            {
+                _ = OverhaulController.AddController<WeaponSkinsController>();
+            }
             _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
             _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
 

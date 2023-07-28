@@ -6,7 +6,7 @@ namespace CDOverhaul.Graphics
     public class CameraFOVOverrider : OverhaulBehaviour
     {
         public const float DEFAULT_VALUE = 0f;
-        public const float FIRST_PERSON_DEFAULT_VALUE = 15f;
+        public const float FIRST_PERSON_DEFAULT_VALUE = 20f;
 
         public const float PAUSED_VALUE = -20f;
 

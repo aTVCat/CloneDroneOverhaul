@@ -150,11 +150,19 @@ namespace CDOverhaul.Graphics
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             if (CharacterTracker.Instance != null)
             {
+                bool firstPerson = ViewModesController.IsFirstPersonModeEnabled;
                 FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-                AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? 2.1f : 0.6f;
+                AdditionalOffsetMultiplier = player != null && player.GetPrivateField<bool>("_isMovingForward") ? (firstPerson ? 7f : 2.1f) : (firstPerson ? 3f : 0.6f);
 
-                AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
-                //AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.5f;
+                if (ViewModesController.IsFirstPersonModeEnabled)
+                {
+                    AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.7f;
+                    AdditionalZOffset = Mathf.Sin((Time.time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.4f;
+                }
+                else
+                {
+                    AdditionalXOffset = Mathf.Sin(Time.time * AdditionalOffsetMultiplier) * 0.4f;
+                }
             }
             stopwatch.StopTimer("CameraRollingBehaviour.VB");
         }

@@ -1,6 +1,8 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Graphics;
 using HarmonyLib;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -125,6 +127,16 @@ namespace CDOverhaul.Patches
                 if (b)
                     b.OnUpgradesRefresh(__instance);
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("ReleaseNockedArrow")]
+        private static void ReleaseNockedArrow_Prefix(FirstPersonMover __instance, int serverFrame, ref Vector3 startPosition, Vector3 startFlyDirection, float rotationZ)
+        {
+            if (!OverhaulMod.IsModInitialized || !ViewModesController.IsFirstPersonModeEnabled)
+                return;
+
+            startPosition = __instance.GetCharacterModel().ArrowHolder.position;
         }
     }
 }

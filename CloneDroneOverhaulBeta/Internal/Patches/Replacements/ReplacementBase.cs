@@ -68,6 +68,7 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<OptimizeRuntime>();
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
+            _ = NewReplacement<CrosshairsUIReplacement>();
         }
 
         internal static void CancelEverything()

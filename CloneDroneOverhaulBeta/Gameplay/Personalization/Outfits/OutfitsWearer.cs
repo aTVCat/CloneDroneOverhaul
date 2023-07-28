@@ -19,11 +19,6 @@ namespace CDOverhaul.Gameplay.Outfits
             _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
-        protected override void OnDeath()
-        {
-            DestroyItems();
-        }
-
         protected override void OnDisposed()
         {
             base.OnDisposed();
@@ -31,6 +26,11 @@ namespace CDOverhaul.Gameplay.Outfits
 
             m_SpawnedOutfitItems = null;
             OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
+        }
+
+        protected override void OnDeath()
+        {
+            DestroyItems();
         }
 
         private void onGetData(Hashtable table)

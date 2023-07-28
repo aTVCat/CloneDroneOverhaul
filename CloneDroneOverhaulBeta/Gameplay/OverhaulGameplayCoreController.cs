@@ -53,7 +53,8 @@ namespace CDOverhaul.Gameplay
             {
                 _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
                 //_ = firstPersonMover.gameObject.AddComponent<CharacterFixExpansion>();
-                //_ = firstPersonMover.gameObject.AddComponent<OverhaulRobotDynamicAnimator>();
+                _ = firstPersonMover.gameObject.AddComponent<OverhaulRobotHeadRotator>();
+                _ = firstPersonMover.gameObject.AddComponent<RobotControlsExpansion>();
             }
 
             Camera camera = firstPersonMover.GetPlayerCamera();

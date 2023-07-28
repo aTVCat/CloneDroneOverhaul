@@ -326,6 +326,54 @@ namespace CDOverhaul
             return false;
         }
 
+        public static void GoToPreviousWeapon(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover)
+                return;
+
+            int equippedWeaponsCount = firstPersonMover._equippedWeapons.Count;
+
+            List<WeaponType> list = new List<WeaponType>(firstPersonMover._equippedWeapons);
+            if (list.Contains(WeaponType.Shield))
+            {
+                list.Remove(WeaponType.Shield);
+                equippedWeaponsCount--;
+            }
+            if (list.IsNullOrEmpty())
+                return;
+
+            int index = list.IndexOf(firstPersonMover._currentWeapon) - 1;
+            if (list.Count == 1 && firstPersonMover._droppedWeapons.Count != 0)
+                FirstPersonMover.dispatchAttemptedChangeToDroppedWeapon(firstPersonMover._droppedWeapons[0]);
+
+            if (index < 0)
+                index = equippedWeaponsCount - 1;
+
+            WeaponType weaponType = list[index];
+            if (GameModeManager.IsMultiplayer())
+            {
+                switch (weaponType)
+                {
+                    case WeaponType.Sword:
+                        firstPersonMover.SetWeapon1ButtonDown(true);
+                        break;
+                    case WeaponType.Bow:
+                        firstPersonMover.SetWeapon2ButtonDown(true);
+                        break;
+                    case WeaponType.Hammer:
+                        firstPersonMover.SetWeapon3ButtonDown(true);
+                        break;
+                    case WeaponType.Spear:
+                        firstPersonMover.SetWeapon4ButtonDown(true);
+                        break;
+                }
+            }
+            else
+            {
+                firstPersonMover.SetEquippedWeaponType(weaponType, true);
+            }
+        }
+
         #endregion
 
         #region CSteamID

@@ -13,6 +13,12 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public static List<PersonalizationEditorPropertyAttribute> PetItemFields;
 
+        public static PersonalizationItem EditingItem
+        {
+            get;
+            set;
+        }
+
         public static void Initialize()
         {
             if (WeaponSkinItemFields.IsNullOrEmpty())

@@ -7,17 +7,21 @@ namespace CDOverhaul.Gameplay.Pets
     {
         private readonly List<PetInstanceBehaviour> m_SpawnedPets = new List<PetInstanceBehaviour>();
 
+        private Transform m_HeadTransform;
         public Transform HeadTransform
         {
-            get;
-            private set;
+            get
+            {
+                if(!m_HeadTransform)
+                    m_HeadTransform = Owner.GetBodyPartParent("Head");
+
+                return m_HeadTransform;
+            }
         }
 
         public override void Start()
         {
             base.Start();
-
-            HeadTransform = Owner.GetBodyPartParent("Head");
         }
 
         private void Update()
