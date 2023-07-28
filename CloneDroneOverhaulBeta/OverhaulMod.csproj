@@ -399,6 +399,7 @@
     <Compile Include="Gameplay\Personalization\PersonalizationItem.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsController.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsWearer.cs" />
+    <Compile Include="Gameplay\Robots\Control\RobotCameraZoomExpansion.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />

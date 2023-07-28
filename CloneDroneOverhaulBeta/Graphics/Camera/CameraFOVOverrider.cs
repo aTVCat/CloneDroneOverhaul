@@ -1,4 +1,5 @@
-﻿using CDOverhaul.HUD;
+﻿using CDOverhaul.Gameplay.Combat;
+using CDOverhaul.HUD;
 using UnityEngine;
 
 namespace CDOverhaul.Graphics
@@ -70,7 +71,7 @@ namespace CDOverhaul.Graphics
         {
             return m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom
                 ? PAUSED_VALUE + ViewModesController.FOVOffset
-                : (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset;
+                : (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset + RobotCameraZoomExpansion.FOVOffset;
         }
     }
 }
