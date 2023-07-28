@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay.Combat
 
             if (Input.GetKey(KeyCode.Z))
             {
-                FOVOffset = Mathf.Lerp(FOVOffset, -20f, Time.unscaledDeltaTime * 10f);
+                FOVOffset = Mathf.Lerp(FOVOffset, -25f, Time.unscaledDeltaTime * 10f);
             }
             else
             {

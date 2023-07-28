@@ -302,7 +302,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.New personalization system", true, false, "")]
             private static readonly bool IS_NEW_PERSONALIZATION_SYSTEM_ENABLED = true;
-            public static bool IsNewPersonalizationSystemEnabled => OverhaulVersion.IsVersion3 && IS_NEW_PERSONALIZATION_SYSTEM_ENABLED;
+            public static bool IsNewPersonalizationSystemEnabled => OverhaulVersion.IsVersion3Update && IS_NEW_PERSONALIZATION_SYSTEM_ENABLED;
 
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;

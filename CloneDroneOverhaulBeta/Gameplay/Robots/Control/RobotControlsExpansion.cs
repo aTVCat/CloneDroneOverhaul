@@ -15,7 +15,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void Update()
         {
-            if (!Owner || !Owner.IsMainPlayer() || !Owner.IsAlive())
+            if (!Owner || Cursor.visible || !Owner.IsPlayerInputEnabled() || !Owner.IsMainPlayer() || !Owner.IsAlive())
                 return;
 
             float unscaledTime = Time.unscaledTime;
@@ -33,6 +33,11 @@ namespace CDOverhaul.Gameplay.Combat
                     Owner.GoToPreviousWeapon();
                     m_TimeToAllowSwitchingWeapons = unscaledTime + WEAPON_SWITCH_INTERVAL;
                 }
+            }
+
+            if (GameModeManager.IsSinglePlayer() && Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Owner.SetEquippedWeaponType(WeaponType.None, true);
             }
         }
     }
