@@ -3,13 +3,13 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingWithNotification : Attribute
+    public class OverhaulSettingRequiredValue : Attribute
     {
-        public byte Type;
+        public object TargetValue;
 
-        public OverhaulSettingWithNotification(byte type)
+        public OverhaulSettingRequiredValue(object targetValue)
         {
-            Type = type;
+            TargetValue = targetValue;
         }
     }
 }

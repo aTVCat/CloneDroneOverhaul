@@ -83,6 +83,12 @@ namespace CDOverhaul
                         OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
                         OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
                         OverhaulSettingRequireUpdate requireUpdateAttribute = currentField.GetCustomAttribute<OverhaulSettingRequireUpdate>();
+                        OverhaulSettingRequiredValue requiredValueAttribute = currentField.GetCustomAttribute<OverhaulSettingRequiredValue>();
+
+                        if (requiredValueAttribute != null)
+                        {
+                            mainAttribute.RequiredValue = requiredValueAttribute.TargetValue;
+                        }
 
                         SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
                         newSettingInfo.SliderParameters = sliderParametersAttribute;
@@ -109,7 +115,7 @@ namespace CDOverhaul
                 SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
                 foreach (OverhaulSettingAttribute neededAttribute in toParent)
                 {
-                    SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath);
+                    SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath, neededAttribute.RequiredValue);
                 }
 
 #if DEBUG
@@ -225,7 +231,7 @@ namespace CDOverhaul
             info.ValueToUnlock = targetValue;
         }
 
-        public static void SetSettingParent(in string settingPath, in string targetSettingPath)
+        public static void SetSettingParent(in string settingPath, in string targetSettingPath, in object requiredValue = null)
         {
             SettingInfo s1 = GetSetting(settingPath, true);
             SettingInfo s2 = GetSetting(targetSettingPath, true);
@@ -233,7 +239,7 @@ namespace CDOverhaul
                 return;
 
             s2.ParentSettingToThis(s1);
-            SetSettingDependency(targetSettingPath, settingPath, true);
+            SetSettingDependency(targetSettingPath, settingPath, requiredValue ?? true);
         }
 
         public static Sprite GetSpriteForCategory(in string categoryName)

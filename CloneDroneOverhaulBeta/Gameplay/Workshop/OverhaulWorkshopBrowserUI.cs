@@ -93,48 +93,6 @@ namespace CDOverhaul.Workshop
         private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
         private static ItemUIEntry[] m_SpawnedEntries;
 
-        #region State
-
-        public string LevelTypeRequiredTag
-        {
-            get;
-            private set;
-        }
-        public int Page
-        {
-            get;
-            private set;
-        }
-        public EUGCQuery RequiredRank
-        {
-            get;
-            private set;
-        }
-        public OverhaulWorkshopItem ViewingWorkshopItem
-        {
-            get;
-            private set;
-        }
-
-        public int PageCount;
-        public int ItemSelectionIndex;
-
-        public bool? CurrentItemVote;
-
-        public ProgressInformation CurrentRequestProgress;
-        public OverhaulWorkshopRequestResult CurrentRequestResult;
-        public bool IsPopulatingItems
-        {
-            get;
-            private set;
-        }
-
-        private float m_UnscaledTimeClickedOnOption;
-        private float m_TimeToAllowPressingReloadButton;
-        private float m_TimeToAllowUsingArrowKeys;
-
-        #endregion
-
         public bool ShouldShowManagementPanel() => ViewingWorkshopItem != null;
         public bool ShouldMakePlayButtonInteractable() => LevelTypeRequiredTag == "Challenge" || LevelTypeRequiredTag == "Adventure";
 
@@ -192,9 +150,77 @@ namespace CDOverhaul.Workshop
         private Transform m_PageSelectionTransform;
         private PrefabAndContainer m_PageContainer;
         private Button m_ReloadPageButton;
+        private Button m_BrowseInstalledButton;
+        private Button m_BrowseWorkshopButton;
+        private Button m_BrowsePublishedButton;
+
+        private Button m_SearchButton;
+        private GameObject m_SearchPanel;
+        private InputField m_SearchBox;
+        private Button m_StartSearchingButton;
 
         private PrefabAndContainer m_AdditionalPreviewsContainer;
         private LoadingIndicator m_ItemDownloadLI;
+
+        #endregion
+
+        #region State
+
+        private float m_UnscaledTimeClickedOnOption;
+        private float m_TimeToAllowPressingReloadButton;
+        private float m_TimeToAllowUsingArrowKeys;
+
+        public int PageCount;
+        public int ItemSelectionIndex;
+
+        public bool? CurrentItemVote;
+
+        public ProgressInformation CurrentRequestProgress;
+        public OverhaulWorkshopRequestResult CurrentRequestResult;
+
+        public bool IsViewingInstalledItems
+        {
+            get;
+            private set;
+        }
+        public CSteamID TargetAccount
+        {
+            get;
+            private set;
+        } = default;
+
+        public string LevelTypeRequiredTag
+        {
+            get;
+            private set;
+        }
+        public int Page
+        {
+            get;
+            private set;
+        }
+        public EUGCQuery RequiredRank
+        {
+            get;
+            private set;
+        }
+        public string SearchText
+        {
+            get;
+            private set;
+        }
+
+        public OverhaulWorkshopItem ViewingWorkshopItem
+        {
+            get;
+            private set;
+        }
+
+        public bool IsPopulatingItems
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -203,6 +229,68 @@ namespace CDOverhaul.Workshop
         public override void Initialize()
         {
             Instance = this;
+
+            m_BrowseInstalledButton = MyModdedObject.GetObject<Button>(53);
+            m_BrowseInstalledButton.onClick.AddListener(delegate
+            {
+                if (IsPopulatingItems)
+                    return;
+
+                TargetAccount = default;
+                IsViewingInstalledItems = true;
+                m_BrowseInstalledButton.interactable = false;
+                m_BrowseWorkshopButton.interactable = true;
+                m_BrowsePublishedButton.interactable = true;
+                RefreshLevelsList();
+            });
+            m_BrowseInstalledButton.interactable = true;
+            m_BrowseWorkshopButton = MyModdedObject.GetObject<Button>(54);
+            m_BrowseWorkshopButton.onClick.AddListener(delegate
+            {
+                if (IsPopulatingItems)
+                    return;
+
+                TargetAccount = default;
+                IsViewingInstalledItems = false;
+                m_BrowseInstalledButton.interactable = true;
+                m_BrowseWorkshopButton.interactable = false;
+                m_BrowsePublishedButton.interactable = true;
+                RefreshLevelsList();
+            });
+            m_BrowseWorkshopButton.interactable = false;
+            m_BrowsePublishedButton = MyModdedObject.GetObject<Button>(56);
+            m_BrowsePublishedButton.onClick.AddListener(delegate
+            {
+                if (IsPopulatingItems)
+                    return;
+
+                TargetAccount = SteamUser.GetSteamID();
+                IsViewingInstalledItems = false;
+                m_BrowseInstalledButton.interactable = true;
+                m_BrowseWorkshopButton.interactable = true;
+                m_BrowsePublishedButton.interactable = false;
+                RefreshLevelsList();
+            });
+            m_BrowsePublishedButton.interactable = true;
+            m_SearchButton = MyModdedObject.GetObject<Button>(55);
+            m_SearchButton.onClick.AddListener(delegate
+            {
+                m_SearchPanel.SetActive(!m_SearchPanel.activeSelf);
+                m_SearchBox.text = string.Empty;
+            });
+            m_SearchPanel = MyModdedObject.GetObject<Transform>(57).gameObject;
+            m_SearchPanel.SetActive(false);
+            m_SearchBox = MyModdedObject.GetObject<InputField>(58);
+            m_StartSearchingButton = MyModdedObject.GetObject<Button>(59);
+            m_StartSearchingButton.onClick.AddListener(delegate
+            {
+                if (IsPopulatingItems)
+                    return;
+
+                m_SearchPanel.SetActive(false);
+                SearchText = m_SearchBox.text;
+                RefreshLevelsList();
+            });
 
             m_UpVoteButton = MyModdedObject.GetObject<Button>(27);
             m_UpVoteButton.onClick.AddListener(VoteUp);
@@ -251,6 +339,7 @@ namespace CDOverhaul.Workshop
             OverhaulUIPanelScaler scaler = m_PageTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
             scaler.Multiplier = 15f;
             scaler.StartScale = Vector3.one * 0.6f;
+            scaler.StopForFrames = 3;
             m_ReloadPageButton = MyModdedObject.GetObject<Button>(51);
             m_ReloadPageButton.onClick.AddListener(RefreshLevelsList);
 
@@ -453,12 +542,15 @@ namespace CDOverhaul.Workshop
         {
             ViewingWorkshopItem = workshopItem;
 
-            // dispose textures first
             m_PageTransform.gameObject.SetActive(false);
             m_ItemPageViewTransform.gameObject.SetActive(false);
             RawImage ri = MyModdedObject.GetObject<RawImage>(39);
-            if (ri.texture != null)
+            if (ri.texture)
                 Destroy(ri.texture);
+
+            foreach (Texture texture in m_LoadedTextures)
+                if (texture)
+                    Destroy(texture);
 
             ProgressInformation.SetProgress(m_ProgressInfo, 0f);
             LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
@@ -596,7 +688,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             string url = ViewingWorkshopItem.ItemURL;
-            if (SteamManager.Instance != null && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
+            if (SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
             {
                 SteamFriends.ActivateGameOverlayToWebPage(url);
                 return;
@@ -609,7 +701,7 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem == null)
                 return;
 
-            if (SteamManager.Instance != null && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
+            if (SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
             {
                 SteamFriends.ActivateGameOverlayToUser("steamid", ViewingWorkshopItem.CreatorID);
                 return;
@@ -623,12 +715,7 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem == null)
                 return;
 
-            TextEditor editor = new TextEditor
-            {
-                text = ViewingWorkshopItem.ItemURL
-            };
-            editor.SelectAll();
-            editor.Copy();
+            ViewingWorkshopItem.ItemURL.CopyToClipboard();
         }
 
         public void EraseLevelProgress()
@@ -647,6 +734,12 @@ namespace CDOverhaul.Workshop
                 catch
                 {
                 }
+            }
+
+            string id = ViewingWorkshopItem.ItemID.ToString();
+            if (ChallengeManager.Instance._challengeDataDictionary.ContainsKey(id))
+            {
+                _ = ChallengeManager.Instance._challengeDataDictionary.Remove(id);
             }
         }
 
@@ -824,7 +917,7 @@ namespace CDOverhaul.Workshop
             base.gameObject.SetActive(true);
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             OverhaulCanvasController.SetCanvasPixelPerfect(false);
-            OverhaulUIDescriptionTooltip.SetActive(true, "Steam Workshop Browser", "Play and rate human levels!");
+            showDefaultInfo();
             RefreshLevelsList();
             PopulateLevelTypes();
             PopulateRanks();
@@ -842,6 +935,11 @@ namespace CDOverhaul.Workshop
         public void Hide()
         {
             Hide(false);
+        }
+
+        private void showDefaultInfo()
+        {
+            OverhaulUIDescriptionTooltip.SetActive(true, "Steam Workshop Browser", "Play and rate human levels!");
         }
 
         private void Update()
@@ -888,7 +986,6 @@ namespace CDOverhaul.Workshop
                 {
                     ItemSelectionIndex++;
                 }
-                refreshScrollRectPosition(ItemSelectionIndex, m_SpawnedEntries.Length);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
@@ -897,7 +994,6 @@ namespace CDOverhaul.Workshop
                 {
                     ItemSelectionIndex--;
                 }
-                refreshScrollRectPosition(ItemSelectionIndex, m_SpawnedEntries.Length);
             }
             else if (ItemSelectionIndex != -1 && ItemSelectionIndex < m_SpawnedEntries.Length && (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
             {
@@ -908,11 +1004,6 @@ namespace CDOverhaul.Workshop
                     ItemSelectionIndex = -1;
                 }
             }
-        }
-
-        private void refreshScrollRectPosition(int a, int total)
-        {
-            //MyModdedObject.GetObject<ScrollRect>(52).verticalNormalizedPosition = 1f - ((float)a / (float)total);
         }
 
         public void ResetRequest()
@@ -941,17 +1032,26 @@ namespace CDOverhaul.Workshop
             CurrentRequestResult = null;
             CurrentRequestProgress = new ProgressInformation();
 
+            if(TargetAccount != default)
+            {
+                OverhaulUIDescriptionTooltip.SetActive(true, SteamFriends.GetFriendPersonaName(TargetAccount) + "'s items", "wip desc");
+            }
+            else
+            {
+                showDefaultInfo();
+            }
+
             SetErrorWindowActive(false);
             LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
-            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnReceivedWorkshopResult, CurrentRequestProgress, string.Empty, LevelTypeRequiredTag, Page, false, true);
+            OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnGetWorkshopItems, CurrentRequestProgress, SearchText, LevelTypeRequiredTag, Page, false, true, IsViewingInstalledItems, TargetAccount.GetAccountID());
         }
 
         /// <summary>
         /// Called when our steam workshop request is done
         /// </summary>
         /// <param name="requestResult"></param>
-        public void OnReceivedWorkshopResult(OverhaulWorkshopRequestResult requestResult)
+        public void OnGetWorkshopItems(OverhaulWorkshopRequestResult requestResult)
         {
             IsPopulatingItems = false;
             CurrentRequestResult = requestResult;
@@ -1081,14 +1181,14 @@ namespace CDOverhaul.Workshop
             private void Start()
             {
                 m_Button = GetComponent<Button>();
-                if (m_Button != null)
+                if (m_Button)
                     m_Button.onClick.AddListener(onClicked);
             }
 
             private void onClicked()
             {
                 m_Button.OnDeselect(null);
-                if (OverhaulWorkshopBrowserUI.BrowserIsNull)
+                if (OverhaulWorkshopBrowserUI.BrowserIsNull || OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems)
                     return;
 
                 OverhaulWorkshopBrowserUI.Instance.Page = 1;
@@ -1115,7 +1215,7 @@ namespace CDOverhaul.Workshop
             private void Update()
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
-                    m_SelectedFrame.SetActive(m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
+                    m_SelectedFrame.SetActive(!OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems && m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
             }
 
             private void OnDestroy()
@@ -1177,6 +1277,8 @@ namespace CDOverhaul.Workshop
                     return null;
                 }
 
+                workshopItem.RefreshCreatorInfo();
+
                 ItemUIEntry entry = moddedObject.gameObject.AddComponent<ItemUIEntry>();
                 entry.m_WorkshopItem = workshopItem;
                 entry.m_CanvasRenderer = moddedObject.GetObject<CanvasRenderer>(1);
@@ -1187,6 +1289,8 @@ namespace CDOverhaul.Workshop
                 entry.m_ThumbnailProgressBar = moddedObject.GetObject<Image>(3);
                 entry.m_HoverOutline = moddedObject.GetObject<Transform>(5).gameObject;
                 entry.m_HoverOutline.SetActive(false);
+                entry.m_BeatenIndicator = moddedObject.GetObject<Transform>(6).gameObject;
+                entry.m_BeatenIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
                 entry.m_Index = index;
                 entry.SetTitleText(workshopItem.ItemTitle);
                 entry.LoadPreview();
@@ -1218,6 +1322,7 @@ namespace CDOverhaul.Workshop
             private Image m_ThumbnailProgressBar;
 
             private GameObject m_HoverOutline;
+            private GameObject m_BeatenIndicator;
 
             public bool Show;
             private int m_Index;

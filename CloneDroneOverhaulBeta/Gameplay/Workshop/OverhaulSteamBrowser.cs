@@ -14,7 +14,7 @@ namespace CDOverhaul.Workshop
 
         #region Workshop Items
 
-        public static void RequestItems(EUGCQuery rank, EUGCMatchingUGCType contentType, Action<OverhaulWorkshopRequestResult> completedCallback, ProgressInformation progressInfo, string searchText, string tags, int page, bool cache = false, bool returnLongDescription = false)
+        public static void RequestItems(EUGCQuery rankBt, EUGCMatchingUGCType contentType, Action<OverhaulWorkshopRequestResult> completedCallback, ProgressInformation progressInfo, string searchText, string tags, int page, bool allowCache = false, bool getFullDescription = false, bool getInstalled = false, AccountID_t accountPublishedItems = default)
         {
             if (completedCallback == null)
                 return;
@@ -22,17 +22,33 @@ namespace CDOverhaul.Workshop
             OverhaulWorkshopRequestResult requestResult = new OverhaulWorkshopRequestResult();
             ProgressInformation.SetProgress(progressInfo, 0f);
 
-            UGCQueryHandle_t request = SteamUGC.CreateQueryAllUGCRequest(rank, contentType, AppId, AppId, (uint)page);
+            UGCQueryHandle_t request;
+            if (getInstalled)
+            {
+                request = SteamUGC.CreateQueryUserUGCRequest(SteamUser.GetSteamID().GetAccountID(), EUserUGCList.k_EUserUGCList_Subscribed, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, AppId, AppId, (uint)page);
+            }
+            else
+            {
+                if(accountPublishedItems != default)
+                {
+                    request = SteamUGC.CreateQueryUserUGCRequest(accountPublishedItems, EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, AppId, AppId, (uint)page);
+                }
+                else
+                {
+                    request = SteamUGC.CreateQueryAllUGCRequest(rankBt, contentType, AppId, AppId, (uint)page);
+                }
+            }
+
             if (request.IsInvalid())
             {
-                Debug.LogWarning("[OverhaulMod] Request is invalid (Query: " + rank + ", Content type: " + contentType + ", Page: " + page + ", Cache: " + cache);
+                Debug.LogWarning("[OverhaulMod] Request is invalid (Query: " + rankBt + ", Content type: " + contentType + ", Page: " + page + ", Cache: " + allowCache);
                 requestResult.Error = true;
                 completedCallback.Invoke(requestResult);
                 return;
             }
 
-            if (cache) _ = SteamUGC.SetAllowCachedResponse(request, 6);
-            if (returnLongDescription) _ = SteamUGC.SetReturnLongDescription(request, true);
+            if (allowCache) _ = SteamUGC.SetAllowCachedResponse(request, 6);
+            if (getFullDescription) _ = SteamUGC.SetReturnLongDescription(request, true);
             if (!string.IsNullOrEmpty(searchText)) _ = SteamUGC.SetSearchText(request, searchText);
             _ = SteamUGC.SetReturnAdditionalPreviews(request, true);
             _ = SteamUGC.AddRequiredTag(request, tags);

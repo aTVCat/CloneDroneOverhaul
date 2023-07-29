@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            if (Input.GetKey(KeyCode.Z))
+            if (Input.GetKey(KeyCode.Z) || (ViewModesController.IsFirstPersonModeEnabled && Owner.IsAimingBow()))
             {
                 FOVOffset = Mathf.Lerp(FOVOffset, -25f, Time.unscaledDeltaTime * 10f);
             }

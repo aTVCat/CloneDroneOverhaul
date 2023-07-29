@@ -9,6 +9,7 @@ namespace CDOverhaul.Graphics
         [OverhaulSetting("Gameplay.Camera.View mode", 0)]
         public static int ViewModeType;
 
+        [OverhaulSettingRequiredValue(1)]
         [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
         [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false, false, null, "Gameplay.Camera.View mode")]
         public static bool SyncCameraWithHeadRotation;

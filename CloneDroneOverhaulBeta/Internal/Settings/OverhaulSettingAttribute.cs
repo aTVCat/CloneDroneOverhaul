@@ -13,6 +13,8 @@ namespace CDOverhaul
 
         public object DefaultValue;
 
+        public object RequiredValue;
+
         public bool IsHidden;
 
         public OverhaulSettingAttribute(string settingPath, object defValue, bool isHidden = false, string description = null, string parentSettingPath = null)
