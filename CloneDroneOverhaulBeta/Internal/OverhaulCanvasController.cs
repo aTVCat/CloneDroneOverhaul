@@ -81,6 +81,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));
             _ = AddHUD<OverhaulDisconnectScreen>(HUDModdedObject.GetObject<ModdedObject>(28));
             _ = AddHUD<PersonalizationEditorUI>(HUDModdedObject.GetObject<ModdedObject>(29));
+            _ = AddHUD<MountsPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(30));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

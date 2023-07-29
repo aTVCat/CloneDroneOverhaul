@@ -22,20 +22,6 @@ namespace CDOverhaul.Gameplay.Outfits
         [NonSerialized]
         public GameObject Prefab;
 
-        public string ExclusiveFor;
-        public bool IsUnlocked()
-        {
-            if (OverhaulVersion.IsDebugBuild || string.IsNullOrEmpty(ExclusiveFor))
-                return true;
-
-            string localID = OverhaulPlayerIdentifier.GetLocalPlayFabID();
-            bool isUnlocked = ExclusiveFor.Contains(localID);
-            if (!isUnlocked && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
-                isUnlocked = localID.Equals("883CC7F4CA3155A3");
-
-            return isUnlocked;
-        }
-
         public void SetUpOffsets()
         {
             string path = "Assets/AccessoriesOffsets/" + Name + "_Offsets.json";

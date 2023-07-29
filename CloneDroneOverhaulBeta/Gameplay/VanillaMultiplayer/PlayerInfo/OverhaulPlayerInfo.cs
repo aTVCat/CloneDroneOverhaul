@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay.Outfits;
+using CDOverhaul.Gameplay.Pets;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,6 +9,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
     public class OverhaulPlayerInfo : GlobalEventListener
     {
         public const string InfoReceivedEventString = "OnOverhaulPlayerInfoReceived";
+        public const string PlayerDataUpdateEventString = "OnPlayerDataUpdate";
 
         public static readonly List<OverhaulPlayerInfo> AllOverhaulPlayerInfos = new List<OverhaulPlayerInfo>();
 
@@ -118,6 +120,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
                     Hashtable = eventData.Hashtable;
                     OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
+                    OverhaulEventsController.DispatchEvent(PlayerDataUpdateEventString, m_PlayerInfoState.state.PlayFabID);
                     return;
                 }
             }
@@ -133,6 +136,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Skin.Hammer"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedHammerSkin,
                 ["Skin.Spear"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSpearSkin,
                 ["Outfits.Equipped"] = OutfitsController.EquippedAccessories,
+                ["Pets.Equipped"] = PetsController.EquippedPets,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
                 ["State.Flags"] = OverhaulPlayerInfoController.GetUserFlags(),
                 ["State.Version"] = OverhaulVersion.ModVersion.ToString(),

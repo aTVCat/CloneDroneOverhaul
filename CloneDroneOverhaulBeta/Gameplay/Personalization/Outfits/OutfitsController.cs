@@ -122,7 +122,6 @@ namespace CDOverhaul.Gameplay.Outfits
                 }
                 i++;
             } while (i < AllOutfitItems.Count);
-
             return result;
         }
 
@@ -166,15 +165,6 @@ namespace CDOverhaul.Gameplay.Outfits
 
         #region Save data
 
-        public static void SavePreferences()
-        {
-            SettingInfo info = OverhaulSettingsController.GetSetting("Player.Outfits.Equipped", true);
-            if (info == null)
-                return;
-
-            SettingInfo.SavePref(info, EquippedAccessories);
-        }
-
         public static List<OutfitItem> GetEquippedAccessories() => GetOutfitItemsBySaveString(EquippedAccessories);
 
         public static void SetAccessoryEquipped(OutfitItem item, bool equip, bool refreshPlayer = false)
@@ -191,7 +181,6 @@ namespace CDOverhaul.Gameplay.Outfits
                 EquippedAccessories += accessorySaveString;
 
             SavePreferences();
-
             if (refreshPlayer)
             {
                 FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();

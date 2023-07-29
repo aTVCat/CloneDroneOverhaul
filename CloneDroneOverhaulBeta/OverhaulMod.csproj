@@ -408,6 +408,7 @@
     <Compile Include="HUD\Gamemodes\Pages\LBSMapDisplay.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelPrivateMatchActions.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelCodeEnterPage.cs" />
+    <Compile Include="HUD\Personalization\Ver2\MountItemDisplay.cs" />
     <Compile Include="HUD\Personalization\Ver2\AccesoryItemDisplay.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationItemDisplay.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />

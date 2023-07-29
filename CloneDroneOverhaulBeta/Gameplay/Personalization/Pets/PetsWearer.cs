@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Outfits;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -22,6 +25,18 @@ namespace CDOverhaul.Gameplay.Pets
         public override void Start()
         {
             base.Start();
+            RefreshItems();
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            DestroyItems();
+        }
+
+        protected override void OnDeath()
+        {
+            DestroyItems();
         }
 
         private void Update()
@@ -35,7 +50,37 @@ namespace CDOverhaul.Gameplay.Pets
 
         public override void RefreshItems()
         {
-            //m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(PetsController.Pets[1], Owner));
+            DestroyItems();
+
+            if (!Owner)
+                return;
+
+            string equippedItems = string.Empty;
+            if (PlayerInformation)
+            {
+                Hashtable hashtable = PlayerInformation.Hashtable;
+                if (hashtable != null && hashtable.ContainsKey("Pets.Equipped"))
+                    equippedItems = hashtable["Pets.Equipped"].ToString();
+            }
+            else if (!GameModeManager.IsMultiplayer() && (PetsController.AllowEnemiesUsePets || IsOwnerPlayer()))
+                equippedItems = PetsController.EquippedPets;
+
+            foreach(PetItem petItem in PetsController.GetPetItemsBySaveString(equippedItems))
+            {
+                m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(petItem, Owner));
+            }
+        }
+
+        public void DestroyItems()
+        {
+            foreach (PetInstanceBehaviour b in m_SpawnedPets)
+            {
+                if (!b)
+                    continue;
+
+                b.DestroyGameObject();
+            }
+            m_SpawnedPets.Clear();
         }
 
         public void TogglePetsVisibility()

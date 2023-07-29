@@ -14,9 +14,7 @@ namespace CDOverhaul.Gameplay.Outfits
         public override void Start()
         {
             base.Start();
-
             RefreshItems();
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         protected override void OnDisposed()
@@ -25,7 +23,6 @@ namespace CDOverhaul.Gameplay.Outfits
             DestroyItems();
 
             m_SpawnedOutfitItems = null;
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
         }
 
         protected override void OnDeath()
@@ -33,19 +30,11 @@ namespace CDOverhaul.Gameplay.Outfits
             DestroyItems();
         }
 
-        private void onGetData(Hashtable table)
-        {
-            RefreshItems();
-        }
-
         public override void RefreshItems()
         {
             DestroyItems();
 
-            if (!OverhaulGamemodeManager.SupportsOutfits())
-                return;
-
-            if (Owner == null || !IsOwnerPlayer())
+            if (!Owner || !OverhaulGamemodeManager.SupportsOutfits())
                 return;
 
             string equippedItems = string.Empty;
@@ -58,11 +47,7 @@ namespace CDOverhaul.Gameplay.Outfits
             else if (!GameModeManager.IsMultiplayer() && (OutfitsController.AllowEnemiesWearAccesories || IsOwnerPlayer()))
                 equippedItems = OutfitsController.EquippedAccessories;
 
-            List<OutfitItem> items = OutfitsController.GetOutfitItemsBySaveString(equippedItems);
-            if (items.IsNullOrEmpty())
-                return;
-
-            foreach (OutfitItem accessoryItem in items)
+            foreach (OutfitItem accessoryItem in OutfitsController.GetOutfitItemsBySaveString(equippedItems))
             {
                 if (!accessoryItem.Prefab || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
                     continue;

@@ -44,7 +44,6 @@ namespace CDOverhaul.Patches
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
             ProjectileManager.Instance.ArrowPool.Prefab.GetComponent<Projectile>().VelocityMagnitude = 75f;
-
             
             AudioConfiguration audioConfiguration = AudioSettings.GetConfiguration();
             if (audioConfiguration.numVirtualVoices != 512)

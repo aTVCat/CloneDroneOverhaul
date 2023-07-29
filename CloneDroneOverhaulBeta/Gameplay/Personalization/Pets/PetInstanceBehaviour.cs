@@ -46,7 +46,7 @@ namespace CDOverhaul.Gameplay.Pets
                 FirstPersonMover firstPersonMover = GetNearestEnemyRobot(BehaviourSettings.RangeToLookAtEnemy);
                 if (firstPersonMover && Vector3.Distance(Owner.transform.position, firstPersonMover.transform.position) <= BehaviourSettings.RangeToLookAtEnemy)
                 {
-                    Vector3 lookPos = firstPersonMover.transform.position - base.transform.position;
+                    Vector3 lookPos = firstPersonMover.transform.position + (Vector3.up * 2f) - base.transform.position;
                     return Quaternion.LookRotation(lookPos) * Quaternion.Euler(BehaviourSettings.OffsetTargetRotation);
                 }
             }

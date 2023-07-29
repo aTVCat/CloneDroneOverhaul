@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.Gameplay.Outfits;
+using System;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -12,24 +13,8 @@ namespace CDOverhaul.Gameplay.Pets
         [NonSerialized]
         public string ModelName;
 
-        public string Name;
-        public string Description;
-        public string Author;
-
         public PetBehaviourSettings BehaviourSettings;
-
         public string[] UserSettings; // ex: bool:Follow player, int:Position type
-
-        public string UnlockedFor;
-        public bool IsUnlocked(FirstPersonMover firstPersonMover)
-        {
-            return string.IsNullOrEmpty(UnlockedFor)
-|| (firstPersonMover
-&& (firstPersonMover.IsForcedToUseLockedStuff()
-|| (GameModeManager.IsSinglePlayer()
-                ? UnlockedFor.Contains(OverhaulPlayerIdentifier.GetLocalPlayFabID()) : UnlockedFor.Contains(firstPersonMover.GetPlayFabID()))));
-        }
-        public bool IsUnlocked() => IsUnlocked(CharacterTracker.Instance ? CharacterTracker.Instance.GetPlayerRobot() : null);
 
         public static PetItem CreateNew(string name, string author, string description, string unlockedFor, string[] userSettings)
         {
@@ -38,7 +23,7 @@ namespace CDOverhaul.Gameplay.Pets
                 Name = name,
                 Author = author,
                 Description = description,
-                UnlockedFor = unlockedFor,
+                ExclusiveFor = unlockedFor,
                 BehaviourSettings = new PetBehaviourSettings(),
                 UserSettings = userSettings
             };

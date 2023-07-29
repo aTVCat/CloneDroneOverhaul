@@ -31,9 +31,7 @@ namespace CDOverhaul.HUD
         public static void ToggleMenu()
         {
             if (!m_Instance.AllowToggleMenu)
-            {
                 return;
-            }
 
             if (m_Instance.gameObject.activeSelf)
             {
@@ -335,13 +333,12 @@ namespace CDOverhaul.HUD
 
         public void OnPetsButtonClicked()
         {
-            /*
-            AccesoriesPersonalizationPanel panel = GetController<AccessoriesPersonalizationPanel>();
+            MountsPersonalizationPanel panel = GetController<MountsPersonalizationPanel>();
             if (!panel)
                 return;
 
             Hide();
-            panel.Show();*/
+            panel.Show();
         }
 
         public void OnPersonalizationEditorButtonClicked()
