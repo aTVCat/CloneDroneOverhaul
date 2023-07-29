@@ -1,5 +1,6 @@
 ﻿using DiscordWebhook;
 using Newtonsoft.Json;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -76,12 +77,12 @@ namespace CDOverhaul
             ExecuteWebhook(obj1, CrashReportsWebhookUri);
         }
 
-        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeGameLogs, bool includeDeviceInfo)
+        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeUserInfo, bool includeDeviceInfo)
         {
             string rankContent = rank + "/5";
             string improveContent = improveText;
             string likedContent = likedText;
-            string gameLogs = includeGameLogs ? "Work in progress..." : "**NOT INCLUDED**";
+            string userInfo = includeUserInfo ? (SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName()) : "**NOT INCLUDED**";
             string deviceInfo = includeDeviceInfo ?
                 string.Format("- **OS:** {0}\n- **CPU:** {1}\n Processors: {2}\n Frequency: {3}\n- **GPU:** {4}\n- **Memory:** {5} MBs\n- **GPU Memory:** {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
 
@@ -113,8 +114,8 @@ namespace CDOverhaul
 
                     new Embed()
                     {
-                        title = "**Game logs**",
-                        description = gameLogs,
+                        title = "**User info**",
+                        description = userInfo,
                         color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
                     },
 
