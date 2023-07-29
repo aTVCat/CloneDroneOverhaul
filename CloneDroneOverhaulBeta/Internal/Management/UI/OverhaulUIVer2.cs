@@ -35,42 +35,40 @@ namespace CDOverhaul
 
         public static void AssignVariables(OverhaulBehaviour behaviour)
         {
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
             ModdedObject moddedObject = behaviour.GetComponent<ModdedObject>();
-            List<string> objectNames = new List<string>();
+            Dictionary<string, int> objectsByNames = new Dictionary<string, int>();
             Type type = behaviour.GetType();
 
+            // Get all objects
             int objectIndex = 0;
             foreach (UnityEngine.Object @object in moddedObject.objects)
             {
                 if (@object)
-                {
-                    if (objectNames.Contains(@object.name))
-                    {
-                        throw new Exception("There's more than 1 object called " + @object.name + " in " + type.Name + "! Index: " + objectIndex);
-                    }
-                    objectNames.Add(@object.name);
-                }
+                    objectsByNames.Add(@object.name, objectIndex);
+
                 objectIndex++;
             }
 
-            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            // Actions with objects
+            FieldInfo[] fields = type.GetFields(bindingFlags);
             if (!fields.IsNullOrEmpty())
             {
                 int fieldIndex = 0;
                 do
                 {
                     FieldInfo info = fields[fieldIndex];
+
                     ObjectReferenceAttribute objectReference = info.GetCustomAttribute<ObjectReferenceAttribute>();
                     if (objectReference != null)
                     {
-                        int indexInModdedObject = objectNames.IndexOf(objectReference.ObjectName);
-                        if (indexInModdedObject == -1)
-                            throw new Exception("Could not find " + objectReference.ObjectName + " in " + type.Name + "!");
+                        int indexInModdedObject = objectsByNames[objectReference.ObjectName];
 
-                        Type fieldType = info.FieldType;
-                        UnityEngine.Object component = fieldType == typeof(GameObject)
-                            ? (moddedObject.GetObject(indexInModdedObject, typeof(Transform)) as Transform).gameObject
-                            : moddedObject.GetObject(indexInModdedObject, fieldType);
+                        Type targetFieldType = info.FieldType;
+                        UnityEngine.Object fieldValueToAssign = targetFieldType == typeof(GameObject) ? moddedObject.GetObject<Transform>(indexInModdedObject).gameObject : moddedObject.GetObject(indexInModdedObject, targetFieldType);
+
+                        // Add components
                         ObjectComponentsAttribute objectComponents = info.GetCustomAttribute<ObjectComponentsAttribute>();
                         if (objectComponents != null)
                         {
@@ -78,53 +76,56 @@ namespace CDOverhaul
                             foreach (Type componentType in objectComponents.Components)
                             {
                                 Component addedComponent = gameObject.AddComponent(componentType);
-                                if (fieldType == componentType)
-                                {
-                                    component = addedComponent;
-                                }
+                                if (targetFieldType == componentType)
+                                    fieldValueToAssign = addedComponent;
                             }
                         }
 
-                        if (!component)
-                        {
-                            throw new Exception("Could not find component for " + info.Name + " in " + type.Name + "!");
-                        }
+                        // Set is active
+                        ObjectDefaultVisibility defaultVisibility = info.GetCustomAttribute<ObjectDefaultVisibility>();
+                        if(defaultVisibility != null)
+                            moddedObject.GetObject<Transform>(indexInModdedObject).gameObject.SetActive(defaultVisibility.ShouldBeActive);
 
+                        if (!fieldValueToAssign)
+                            throw new Exception("Could not find component for " + info.Name + " in " + type.Name + "!");
+                        else
+                            info.SetValue(behaviour, fieldValueToAssign);
+
+                        // Assign action to button
                         ButtonActionReferenceAttribute buttonActionReference = info.GetCustomAttribute<ButtonActionReferenceAttribute>();
                         if (buttonActionReference != null)
                         {
-                            if (!(component is Button))
+                            if (!(fieldValueToAssign is Button))
                                 throw new Exception("Could not assign onClick action to " + objectReference.ObjectName + " since it is not a button!");
 
-                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, bindingFlags);
                             if (methodInfo == null)
                                 throw new Exception("Could not find method called " + buttonActionReference.MethodName + " to use for " + objectReference.ObjectName + "!");
 
-                            Button button = component as Button;
-                            button.onClick.AddListener(delegate
+                            Button button = fieldValueToAssign as Button;
+                            button.AddOnClickListener(delegate
                             {
                                 _ = methodInfo.Invoke(behaviour, null);
                             });
                         }
 
+                        // Assign action to toggle
                         ToggleActionReferenceAttribute toggleActionReference = info.GetCustomAttribute<ToggleActionReferenceAttribute>();
                         if (toggleActionReference != null)
                         {
-                            if (!(component is Toggle))
+                            if (!(fieldValueToAssign is Toggle))
                                 throw new Exception("Could not assign onValueChanged action to " + objectReference.ObjectName + " since it is not a toggle!");
 
-                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(bool) }, null);
+                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, bindingFlags, null, new Type[] { typeof(bool) }, null);
                             if (methodInfo == null)
                                 throw new Exception("Could not find method called " + buttonActionReference.MethodName + " to use for " + objectReference.ObjectName + "!");
 
-                            Toggle toggle = component as Toggle;
+                            Toggle toggle = fieldValueToAssign as Toggle;
                             toggle.onValueChanged.AddListener(delegate (bool value)
                             {
                                 _ = methodInfo.Invoke(behaviour, new object[] { value });
                             });
                         }
-
-                        info.SetValue(behaviour, component);
                     }
 
                     fieldIndex++;

@@ -75,24 +75,19 @@ namespace CDOverhaul
         /// <returns></returns>
         public static Type GetObject<Type>(this ModdedObject moddedObject, in int index) where Type : UnityEngine.Object
         {
-            UnityEngine.Object @object = moddedObject.objects[index];
-            UnityEngine.GameObject @gameObject = @object as UnityEngine.GameObject;
-
+            UnityEngine.GameObject @gameObject = moddedObject.objects[index] as UnityEngine.GameObject;
             return @gameObject.GetComponent<Type>();
         }
 
         public static UnityEngine.Object GetObject(this ModdedObject moddedObject, in int index, Type type)
         {
-            UnityEngine.Object @object = moddedObject.objects[index];
-            UnityEngine.GameObject @gameObject = @object as UnityEngine.GameObject;
-
+            UnityEngine.GameObject @gameObject = moddedObject.objects[index] as UnityEngine.GameObject;
             return @gameObject.GetComponent(type);
         }
 
         public static UnityEngine.Object GetObject(this ModdedObject moddedObject, in int index)
         {
-            UnityEngine.Object @object = moddedObject.objects[index];
-            return @object;
+            return moddedObject.objects[index];
         }
 
         #endregion

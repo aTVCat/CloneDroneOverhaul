@@ -595,6 +595,7 @@
     <Compile Include="Internal\Localization\OverhaulLocalizationController.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\Management\UI\ObjectComponentsAttribute.cs" />
+    <Compile Include="Internal\Management\UI\ObjectDefaultVisibility.cs" />
     <Compile Include="Internal\Management\UI\ToggleActionReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\ButtonActionReferenceAttribute.cs" />

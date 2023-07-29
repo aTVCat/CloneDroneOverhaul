@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Workshop
 {
-    public class OverhaulWorkshopBrowserUI : OverhaulUI
+    public class OverhaulWorkshopBrowserUI : OverhaulUIVer2
     {
         #region Settings
 
@@ -23,8 +23,7 @@ namespace CDOverhaul.Workshop
         [OverhaulSetting("Game interface.Network.Cache images", false, false, null, "Game interface.Network.New Workshop browser design")]
         public static bool CacheImages;
 
-
-        public static readonly List<Dropdown.OptionData> LevelTypes = new List<Dropdown.OptionData>
+        public static readonly List<Dropdown.OptionData> Tags = new List<Dropdown.OptionData>
         {
             new DropdownStringOptionData
             {
@@ -48,8 +47,6 @@ namespace CDOverhaul.Workshop
             },
         };
 
-        public static string IconDirectory => OverhaulMod.Core.ModDirectory + "Assets/Workshop/Ico/";
-
         public static readonly EUGCQuery[] GenericRanks = new EUGCQuery[]
         {
             EUGCQuery.k_EUGCQuery_RankedByVote,
@@ -65,50 +62,12 @@ namespace CDOverhaul.Workshop
             EUGCQuery.k_EUGCQuery_FavoritedByFriendsRankedByPublicationDate,
         };
 
-        public static readonly EUGCQuery[] UniqueRanks = new EUGCQuery[]
-        {
-            EUGCQuery.k_EUGCQuery_RankedByTextSearch,
-            EUGCQuery.k_EUGCQuery_RankedByNumTimesReported,
-        };
-
         #endregion
-
-        #region Patches
-
-        public bool TryShow()
-        {
-            if (OverhaulVersion.IsVersion2 || !UseThisUI)
-                return false;
-
-            Show();
-            return true;
-        }
-
-        #endregion
-
-        public static bool BrowserIsNull => Instance == null;
-        public static OverhaulWorkshopBrowserUI Instance;
-        public static bool IsActive => !BrowserIsNull && Instance.gameObject.activeSelf;
-
-        private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
-        private static ItemUIEntry[] m_SpawnedEntries;
-
-        public bool ShouldShowManagementPanel() => ViewingWorkshopItem != null;
-        public bool ShouldMakePlayButtonInteractable() => LevelTypeRequiredTag == "Challenge" || LevelTypeRequiredTag == "Adventure";
-
-        public bool ShouldMakeEraseDataButtonInteractable()
-        {
-            if (ViewingWorkshopItem == null)
-                return false;
-
-            string path = Application.persistentDataPath + "/ChallengeData" + ViewingWorkshopItem.ItemID + ".json";
-            return ShouldMakePlayButtonInteractable() && File.Exists(path);
-        }
-
-        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
 
         #region UI elements
 
+        [ButtonActionReference(nameof(Hide))]
+        [ObjectReference("CloseWorkshopBrowser")]
         private Button m_ExitButton;
 
         private PrefabAndContainer m_WorkshopItemsContainer;
@@ -118,45 +77,97 @@ namespace CDOverhaul.Workshop
         private PrefabAndContainer m_RankSeparatorsContainer;
         private LoadingIndicator m_LoadingIndicator;
 
+        [ObjectDefaultVisibility(false)]
+        [ObjectReference("RanksDropdown")]
         private GameObject m_RanksDropdown;
 
+        [ObjectReference("QuickInfoNew")]
         private GameObject m_QuickInfo;
+        [ObjectReference("QuickInfoName")]
         private Text m_QuickInfoLevelName;
+        [ObjectReference("QuickInfoDesc")]
         private Text m_QuickInfoLevelDesc;
+        [ObjectReference("QuickInfoStars")]
         private Text m_QuickInfoLevelStars;
-        private Text m_QuickInfoUserName;
-        private RawImage m_QuickInfoUserAvatar;
+        [ObjectReference("QuickInfoCreatorName")]
+        private Text m_QuickInfoCreatorName;
 
+        [ObjectDefaultVisibility(false)]
+        [ObjectReference("ErrorWindow")]
         private GameObject m_ErrorWindow;
+        [ButtonActionReference(nameof(RetryRequest))]
+        [ObjectReference("RetryButton")]
         private Button m_ErrorWindowRetryButton;
 
+        [ObjectReference("ManagementPanel")]
         private Transform m_ManagementButtonsContainer;
+        [ObjectReference("ItemLoadProgressBar")]
         private Transform m_ItemLoadingIndicatorTransform;
+        [ButtonActionReference(nameof(SubscribeToItem))]
+        [ObjectReference("Subscribe")]
         private Button m_SubscribeButton;
+        [ButtonActionReference(nameof(UnsubscribeFromItem))]
+        [ObjectReference("UnSubscribe")]
         private Button m_UnsubscribeButton;
+        [ButtonActionReference(nameof(OnPlayButtonClicked))]
+        [ObjectReference("PlayButton")]
         private Button m_PlayButton;
+        [ButtonActionReference(nameof(EraseLevelProgress))]
+        [ObjectReference("EraseProgress")]
         private Button m_EraseDataButton;
-        private Button m_ReloadButton;
+        [ButtonActionReference(nameof(ReloadItemView))]
+        [ObjectReference("ReloadPanelButton")]
+        private Button m_ReloadItemViewButton;
 
+        [ButtonActionReference(nameof(VoteUp))]
+        [ObjectReference("UpVote")]
         private Button m_UpVoteButton;
+        [ButtonActionReference(nameof(VoteDown))]
+        [ObjectReference("DownVote")]
         private Button m_DownVoteButton;
-        private Button m_FavouriteButton;
+        [ButtonActionReference(nameof(MarkItemAsFavourite))]
+        [ObjectReference("Favourite")]
+        private Button m_FavoriteButton;
+        [ButtonActionReference(nameof(OpenItemSteamPage))]
+        [ObjectReference("SteamPage")]
         private Button m_ItemSteamPageButton;
-        private Button m_ItemCreatorPageButton;
+        [ButtonActionReference(nameof(OpenItemAuthorProfilePage))]
+        [ObjectReference("CreatorProfile")]
+        private Button m_ItemCreatorProfileButton;
+        [ButtonActionReference(nameof(ViewAuthorItems))]
+        [ObjectReference("CreatorItems")]
+        private Button m_ViewCreatorItemsButton;
+        [ButtonActionReference(nameof(CopyItemLink))]
+        [ObjectReference("CopyLink")]
         private Button m_CopyItemLinkButton;
 
+        [ButtonActionReference(nameof(TogglePageSelectionPanel))]
+        [ObjectReference("ButtonPage")]
         private Button m_PageSelectionButton;
+        [ObjectReference("CurrentPageText")]
         private Text m_CurrentPageText;
+        [ObjectDefaultVisibility(false)]
+        [ObjectReference("PageSelection")]
         private Transform m_PageSelectionTransform;
-        private PrefabAndContainer m_PageContainer;
+        [ButtonActionReference(nameof(RefreshLevelsList))]
+        [ObjectReference("ButtonReloadPage")]
         private Button m_ReloadPageButton;
+        [ObjectReference("ButtonBrowseInstalledItems")]
         private Button m_BrowseInstalledButton;
+        [ObjectReference("ButtonBrowseWorkshopItems")]
         private Button m_BrowseWorkshopButton;
+        [ObjectReference("ButtonBrowserLocalUserItems")]
         private Button m_BrowsePublishedButton;
+        private PrefabAndContainer m_PageContainer;
 
+        [ObjectReference("ButtonSearch")]
         private Button m_SearchButton;
+        [ObjectDefaultVisibility(false)]
+        [ObjectReference("SearchPanel")]
         private GameObject m_SearchPanel;
+        [ObjectReference("SearchBox")]
         private InputField m_SearchBox;
+        [ObjectReference("ButtonStartSearching")]
         private Button m_StartSearchingButton;
 
         private PrefabAndContainer m_AdditionalPreviewsContainer;
@@ -177,6 +188,24 @@ namespace CDOverhaul.Workshop
 
         public ProgressInformation CurrentRequestProgress;
         public OverhaulWorkshopRequestResult CurrentRequestResult;
+
+        public static OverhaulWorkshopBrowserUI Instance;
+
+        private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
+        private static ItemUIEntry[] m_SpawnedEntries;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectReference("ItemPageFullscreen")]
+        private Transform m_ItemPageViewTransform;
+        [ObjectReference("Page")]
+        private Transform m_PageTransform;
+
+        private readonly ProgressInformation m_ProgressInfo = new ProgressInformation();
+
+        public static string IconsDirectory => OverhaulMod.Core.ModDirectory + "Assets/Workshop/Ico/";
+        public static bool BrowserIsNull => Instance == null;
+        public static bool IsActive => !BrowserIsNull && Instance.gameObject.activeSelf;
+        public bool IsViewingItemsByLocalUser => TargetAccount == SteamUser.GetSteamID();
 
         public bool IsViewingInstalledItems
         {
@@ -224,13 +253,11 @@ namespace CDOverhaul.Workshop
 
         #endregion
 
-        #region Initilaizing & disposing
-
         public override void Initialize()
         {
+            base.Initialize();
             Instance = this;
 
-            m_BrowseInstalledButton = MyModdedObject.GetObject<Button>(53);
             m_BrowseInstalledButton.onClick.AddListener(delegate
             {
                 if (IsPopulatingItems)
@@ -244,7 +271,6 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
             m_BrowseInstalledButton.interactable = true;
-            m_BrowseWorkshopButton = MyModdedObject.GetObject<Button>(54);
             m_BrowseWorkshopButton.onClick.AddListener(delegate
             {
                 if (IsPopulatingItems)
@@ -258,7 +284,6 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
             m_BrowseWorkshopButton.interactable = false;
-            m_BrowsePublishedButton = MyModdedObject.GetObject<Button>(56);
             m_BrowsePublishedButton.onClick.AddListener(delegate
             {
                 if (IsPopulatingItems)
@@ -272,16 +297,11 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
             m_BrowsePublishedButton.interactable = true;
-            m_SearchButton = MyModdedObject.GetObject<Button>(55);
             m_SearchButton.onClick.AddListener(delegate
             {
                 m_SearchPanel.SetActive(!m_SearchPanel.activeSelf);
                 m_SearchBox.text = string.Empty;
             });
-            m_SearchPanel = MyModdedObject.GetObject<Transform>(57).gameObject;
-            m_SearchPanel.SetActive(false);
-            m_SearchBox = MyModdedObject.GetObject<InputField>(58);
-            m_StartSearchingButton = MyModdedObject.GetObject<Button>(59);
             m_StartSearchingButton.onClick.AddListener(delegate
             {
                 if (IsPopulatingItems)
@@ -292,92 +312,129 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
 
-            m_UpVoteButton = MyModdedObject.GetObject<Button>(27);
-            m_UpVoteButton.onClick.AddListener(VoteUp);
-            m_DownVoteButton = MyModdedObject.GetObject<Button>(28);
-            m_DownVoteButton.onClick.AddListener(VoteDown);
-            m_FavouriteButton = MyModdedObject.GetObject<Button>(29);
-            m_FavouriteButton.onClick.AddListener(MarkItemAsFavourite);
-            m_ItemSteamPageButton = MyModdedObject.GetObject<Button>(30);
-            m_ItemSteamPageButton.onClick.AddListener(OpenItemSteamPage);
-            m_ItemCreatorPageButton = MyModdedObject.GetObject<Button>(43);
-            m_ItemCreatorPageButton.onClick.AddListener(OpenItemAuthorPage);
-            m_CopyItemLinkButton = MyModdedObject.GetObject<Button>(44);
-            m_CopyItemLinkButton.onClick.AddListener(CopyItemLink);
-            m_ReloadButton = MyModdedObject.GetObject<Button>(45);
-            m_ReloadButton.onClick.AddListener(ReloadItemView);
-
             m_WorkshopItemsContainer = new PrefabAndContainer(MyModdedObject, 1, 2);
             m_LevelTypesContainer = new PrefabAndContainer(MyModdedObject, 9, 10);
             m_RanksContainer = new PrefabAndContainer(MyModdedObject, 15, 16);
-            m_DropdownRanksContainer = new PrefabAndContainer(MyModdedObject, 15, 19);
+            m_DropdownRanksContainer = new PrefabAndContainer(MyModdedObject, 15, 16);
             m_RankSeparatorsContainer = new PrefabAndContainer(MyModdedObject, 17, 16);
             m_AdditionalPreviewsContainer = new PrefabAndContainer(MyModdedObject, 37, 38);
+            m_PageContainer = new PrefabAndContainer(MyModdedObject, 47, 48);
             m_LoadingIndicator = new LoadingIndicator(MyModdedObject, 3, 4);
             m_ItemDownloadLI = new LoadingIndicator(MyModdedObject, 34, 35);
-            m_RanksDropdown = MyModdedObject.GetObject<Transform>(18).gameObject;
-            m_RanksDropdown.gameObject.SetActive(false);
-            m_ExitButton = MyModdedObject.GetObject<Button>(0);
-            m_ExitButton.onClick.AddListener(Hide);
-            m_QuickInfo = MyModdedObject.GetObject<Transform>(5).gameObject;
-            m_QuickInfoLevelName = MyModdedObject.GetObject<Text>(6);
-            m_QuickInfoLevelDesc = MyModdedObject.GetObject<Text>(7);
-            m_QuickInfoLevelStars = MyModdedObject.GetObject<Text>(8);
-            m_ErrorWindow = MyModdedObject.GetObject<Transform>(11).gameObject;
-            m_ErrorWindow.SetActive(false);
-            m_ErrorWindowRetryButton = MyModdedObject.GetObject<Button>(12);
-            m_ErrorWindowRetryButton.onClick.AddListener(RetryRequest);
-            m_QuickInfoUserName = MyModdedObject.GetObject<Text>(13);
-            m_QuickInfoUserAvatar = MyModdedObject.GetObject<RawImage>(14);
-            m_QuickInfoUserAvatar.gameObject.SetActive(false);
+            m_CurrentPageText.text = "Page [1]";
 
-            m_ItemPageViewTransform = MyModdedObject.GetObject<Transform>(20);
-            m_ItemPageViewTransform.gameObject.SetActive(false);
-            m_PageTransform = MyModdedObject.GetObject<Transform>(21);
-            m_PageTransform.gameObject.SetActive(false);
             _ = m_PageTransform.gameObject.AddComponent<ItemViewPageBehaviour>();
             OverhaulUIPanelScaler scaler = m_PageTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
             scaler.Multiplier = 15f;
             scaler.StartScale = Vector3.one * 0.6f;
             scaler.StopForFrames = 3;
-            m_ReloadPageButton = MyModdedObject.GetObject<Button>(51);
-            m_ReloadPageButton.onClick.AddListener(RefreshLevelsList);
 
-            m_PageSelectionButton = MyModdedObject.GetObject<Button>(49);
-            m_PageSelectionButton.onClick.AddListener(TogglePageSelectionPanel);
-            m_CurrentPageText = MyModdedObject.GetObject<Text>(50);
-            m_CurrentPageText.text = "Page [1]";
-            m_PageSelectionTransform = MyModdedObject.GetObject<Transform>(46);
-            m_PageSelectionTransform.gameObject.SetActive(false);
-            m_PageContainer = new PrefabAndContainer(MyModdedObject, 47, 48);
-            Page = 1;
-
-            m_ManagementButtonsContainer = MyModdedObject.GetObject<Transform>(41);
-            m_ItemLoadingIndicatorTransform = MyModdedObject.GetObject<Transform>(34);
-            m_SubscribeButton = MyModdedObject.GetObject<Button>(31);
-            m_UnsubscribeButton = MyModdedObject.GetObject<Button>(42);
-            m_UnsubscribeButton.onClick.AddListener(UnsubscribeFromItem);
-            m_PlayButton = MyModdedObject.GetObject<Button>(32);
-            m_PlayButton.onClick.AddListener(OnPlayButtonClicked);
-            m_EraseDataButton = MyModdedObject.GetObject<Button>(33);
-            m_EraseDataButton.onClick.AddListener(EraseLevelProgress);
-
-            MyModdedObject.GetObject<Button>(39).onClick.AddListener(delegate
+            AssignActionToButton(MyModdedObject, "Subscribe", SubscribeToItem);
+            AssignActionToButton(MyModdedObject, "Thumbnail", delegate
             {
                 OverhaulUIImageViewer.SetActive(true, MyModdedObject.GetObject<RawImage>(39).texture);
             });
-            MyModdedObject.GetObject<Button>(31).onClick.AddListener(SubscribeToItem);
 
+            Page = 1;
             LevelTypeRequiredTag = "Adventure";
             RequiredRank = EUGCQuery.k_EUGCQuery_RankedByTrend;
+        }
 
-            Hide(true);
+        public override void Show()
+        {
+            base.Show();
+            OverhaulCanvasController.SetCanvasPixelPerfect(false);
+            showDefaultInfo();
+            RefreshLevelsList();
+            PopulateLevelTypes();
+            PopulateRanks();
+            HideTitleScreenButtons();
+
+            MyModdedObject.GetObject<Transform>(40).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
+        }
+
+        public override void Hide()
+        {
+            HideBrowser(false);
+        }
+
+        public void HideBrowser(bool hiddenBecauseLoading = false)
+        {
+            base.Hide();
+            OverhaulUIDescriptionTooltip.SetActive(false);
+            OverhaulCanvasController.SetCanvasPixelPerfect(true);
+            if (!hiddenBecauseLoading)
+                ShowTitleScreenButtons();
+        }
+
+        private void Update()
+        {
+            m_ReloadPageButton.interactable = Time.unscaledTime >= m_TimeToAllowPressingReloadButton;
+
+            LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
+            if (ShouldResetRequest())
+            {
+                SetErrorWindowActive(true);
+                ResetRequest();
+            }
+
+            if (ViewingWorkshopItem != null)
+            {
+                OverhaulSteamBrowser.UpdateItemDownloadInfo(ViewingWorkshopItem.ItemID, m_ProgressInfo);
+                LoadingIndicator.UpdateIndicator(m_ItemDownloadLI, m_ProgressInfo);
+            }
+
+            if (OverhaulVersion.IsDebugBuild && Time.frameCount % 3 == 0 && ViewingWorkshopItem != null)
+            {
+                MyModdedObject.GetObject<Text>(40).text = string.Format("Item name: {0}\nState: {1}\nD_Progress: {2}", new object[] { ViewingWorkshopItem.ItemTitle, OverhaulSteamBrowser.GetItemState(ViewingWorkshopItem.ItemID).ToString(), OverhaulSteamBrowser.GetItemDownloadProgress(ViewingWorkshopItem.ItemID) });
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (ViewingWorkshopItem != null)
+                {
+                    ViewItem(null);
+                    return;
+                }
+                HideBrowser();
+            }
+
+            if (m_SpawnedEntries.IsNullOrEmpty())
+                return;
+
+            float time = Time.unscaledTime;
+            if (time < m_TimeToAllowUsingArrowKeys) return;
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                m_TimeToAllowUsingArrowKeys = time + 0.1f;
+                if (ItemSelectionIndex < m_SpawnedEntries.Length - 1)
+                {
+                    ItemSelectionIndex++;
+                }
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                m_TimeToAllowUsingArrowKeys = time + 0.1f;
+                if (ItemSelectionIndex > 0)
+                {
+                    ItemSelectionIndex--;
+                }
+            }
+            else if (ItemSelectionIndex != -1 && ItemSelectionIndex < m_SpawnedEntries.Length && (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
+            {
+                ItemUIEntry entry = m_SpawnedEntries[ItemSelectionIndex];
+                if (entry != null && entry.HasWorkshopItem())
+                {
+                    ViewItem(entry.GetWorkshopItem());
+                    ItemSelectionIndex = -1;
+                }
+            }
         }
 
         public void PopulateLevelTypes()
         {
             m_LevelTypesContainer.ClearContainer();
-            foreach (DropdownStringOptionData data in LevelTypes)
+            foreach (DropdownStringOptionData data in Tags)
             {
                 ModdedObject m = m_LevelTypesContainer.CreateNew();
                 _ = LevelTypeUIEntry.CreateNew(m, data.StringValue);
@@ -424,7 +481,7 @@ namespace CDOverhaul.Workshop
                         }
                         if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
                     };
-                    OverhaulNetworkAssetsController.DownloadTexture(IconDirectory + "More.png", iconDownloadHandler);
+                    OverhaulNetworkAssetsController.DownloadTexture(IconsDirectory + "More.png", iconDownloadHandler);
                     return;
                 }
                 ModdedObject m = m_RanksContainer.CreateNew();
@@ -495,8 +552,6 @@ namespace CDOverhaul.Workshop
             Instance = null;
         }
 
-        #endregion
-
         #region Request parameters
 
         public void SetTag(string requiredTag, bool refreshLevelsList = true)
@@ -516,12 +571,11 @@ namespace CDOverhaul.Workshop
         public void SetRank(EUGCQuery rank, bool refreshLevelsList = true)
         {
             if (IsPopulatingItems || rank == RequiredRank)
-            {
                 return;
-            }
 
             HideRanksDropdown();
 
+            TargetAccount = default;
             RequiredRank = rank;
             if (refreshLevelsList)
             {
@@ -533,17 +587,8 @@ namespace CDOverhaul.Workshop
 
         #region Viewing the item
 
-        private Transform m_ItemPageViewTransform;
-        private Transform m_PageTransform;
-
-        private readonly ProgressInformation m_ProgressInfo = new ProgressInformation();
-
         public void ViewItem(OverhaulWorkshopItem workshopItem)
         {
-            ViewingWorkshopItem = workshopItem;
-
-            m_PageTransform.gameObject.SetActive(false);
-            m_ItemPageViewTransform.gameObject.SetActive(false);
             RawImage ri = MyModdedObject.GetObject<RawImage>(39);
             if (ri.texture)
                 Destroy(ri.texture);
@@ -552,21 +597,24 @@ namespace CDOverhaul.Workshop
                 if (texture)
                     Destroy(texture);
 
+            ViewingWorkshopItem = workshopItem;
+            if (workshopItem == null)
+            {
+                m_ItemPageViewTransform.gameObject.SetActive(false);
+                return;
+            }
+            m_ItemPageViewTransform.gameObject.SetActive(true);
+
             ProgressInformation.SetProgress(m_ProgressInfo, 0f);
             LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
             StaticCoroutineRunner.StopStaticCoroutine(waitUntilLevelIsDownloaded());
             m_ItemLoadingIndicatorTransform.gameObject.SetActive(false);
 
-            bool itemIsNUll = workshopItem == null;
-            if (itemIsNUll)
-                return;
-
             RefreshManagementPanel();
 
-            m_FavouriteButton.image.color = "#2E2E2E".ToColor();
-            m_FavouriteButton.interactable = true;
+            m_FavoriteButton.image.color = "#2E2E2E".ToColor();
+            m_FavoriteButton.interactable = true;
             m_PageTransform.gameObject.SetActive(true);
-            m_ItemPageViewTransform.gameObject.SetActive(true);
 
             MyModdedObject.GetObject<Text>(23).text = workshopItem.ItemTitle;
             MyModdedObject.GetObject<Text>(24).text = workshopItem.CreatorNickname;
@@ -674,11 +722,11 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem == null)
                 return;
 
-            m_FavouriteButton.image.color = "#2E2E2E".ToColor();
-            m_FavouriteButton.interactable = false;
+            m_FavoriteButton.image.color = "#2E2E2E".ToColor();
+            m_FavoriteButton.interactable = false;
             OverhaulSteamBrowser.MarkItemAsFavourite(ViewingWorkshopItem.ItemID, delegate (PublishedFileId_t t, EResult r, bool a)
             {
-                m_FavouriteButton.image.color = "#FFDA5A".ToColor();
+                m_FavoriteButton.image.color = "#FFDA5A".ToColor();
             });
         }
 
@@ -696,7 +744,7 @@ namespace CDOverhaul.Workshop
             Application.OpenURL(url);
         }
 
-        public void OpenItemAuthorPage()
+        public void OpenItemAuthorProfilePage()
         {
             if (ViewingWorkshopItem == null)
                 return;
@@ -708,6 +756,20 @@ namespace CDOverhaul.Workshop
             }
             string url = "https://steamcommunity.com/profiles/" + ViewingWorkshopItem.CreatorID;
             Application.OpenURL(url);
+        }
+
+        public void ViewAuthorItems()
+        {
+            if (ViewingWorkshopItem == null)
+                return;
+
+            IsViewingInstalledItems = false;
+            m_BrowseInstalledButton.interactable = true;
+            m_BrowseWorkshopButton.interactable = false;
+            m_BrowsePublishedButton.interactable = true;
+            TargetAccount = ViewingWorkshopItem.CreatorID;
+            RefreshLevelsList();
+            ViewItem(null);
         }
 
         public void CopyItemLink()
@@ -783,7 +845,7 @@ namespace CDOverhaul.Workshop
                 return;
             }
 
-            Hide();
+            HideBrowser();
             _ = WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(item);
         }
 
@@ -912,98 +974,9 @@ namespace CDOverhaul.Workshop
 
         #endregion
 
-        public void Show()
-        {
-            base.gameObject.SetActive(true);
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
-            OverhaulCanvasController.SetCanvasPixelPerfect(false);
-            showDefaultInfo();
-            RefreshLevelsList();
-            PopulateLevelTypes();
-            PopulateRanks();
-
-            MyModdedObject.GetObject<Transform>(40).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-        }
-
-        public void Hide(bool hiddenBecauseLoading = false)
-        {
-            OverhaulUIDescriptionTooltip.SetActive(false);
-            OverhaulCanvasController.SetCanvasPixelPerfect(true);
-            base.gameObject.SetActive(false);
-            if (!hiddenBecauseLoading) GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
-        }
-        public void Hide()
-        {
-            Hide(false);
-        }
-
         private void showDefaultInfo()
         {
             OverhaulUIDescriptionTooltip.SetActive(true, "Steam Workshop Browser", "Play and rate human levels!");
-        }
-
-        private void Update()
-        {
-            m_ReloadPageButton.interactable = Time.unscaledTime >= m_TimeToAllowPressingReloadButton;
-
-            LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
-            if (ShouldResetRequest())
-            {
-                SetErrorWindowActive(true);
-                ResetRequest();
-            }
-
-            if (ViewingWorkshopItem != null)
-            {
-                OverhaulSteamBrowser.UpdateItemDownloadInfo(ViewingWorkshopItem.ItemID, m_ProgressInfo);
-                LoadingIndicator.UpdateIndicator(m_ItemDownloadLI, m_ProgressInfo);
-            }
-
-            if (OverhaulVersion.IsDebugBuild && Time.frameCount % 3 == 0 && ViewingWorkshopItem != null)
-            {
-                MyModdedObject.GetObject<Text>(40).text = string.Format("Item name: {0}\nState: {1}\nD_Progress: {2}", new object[] { ViewingWorkshopItem.ItemTitle, OverhaulSteamBrowser.GetItemState(ViewingWorkshopItem.ItemID).ToString(), OverhaulSteamBrowser.GetItemDownloadProgress(ViewingWorkshopItem.ItemID) });
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (ViewingWorkshopItem != null)
-                {
-                    ViewItem(null);
-                    return;
-                }
-                Hide();
-            }
-
-            if (m_SpawnedEntries.IsNullOrEmpty())
-                return;
-
-            float time = Time.unscaledTime;
-            if (time < m_TimeToAllowUsingArrowKeys) return;
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                m_TimeToAllowUsingArrowKeys = time + 0.1f;
-                if (ItemSelectionIndex < m_SpawnedEntries.Length - 1)
-                {
-                    ItemSelectionIndex++;
-                }
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                m_TimeToAllowUsingArrowKeys = time + 0.1f;
-                if (ItemSelectionIndex > 0)
-                {
-                    ItemSelectionIndex--;
-                }
-            }
-            else if (ItemSelectionIndex != -1 && ItemSelectionIndex < m_SpawnedEntries.Length && (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
-            {
-                ItemUIEntry entry = m_SpawnedEntries[ItemSelectionIndex];
-                if (entry != null && entry.HasWorkshopItem())
-                {
-                    ViewItem(entry.GetWorkshopItem());
-                    ItemSelectionIndex = -1;
-                }
-            }
         }
 
         public void ResetRequest()
@@ -1034,7 +1007,9 @@ namespace CDOverhaul.Workshop
 
             if(TargetAccount != default)
             {
-                OverhaulUIDescriptionTooltip.SetActive(true, SteamFriends.GetFriendPersonaName(TargetAccount) + "'s items", "wip desc");
+                string persona = SteamFriends.GetFriendPersonaName(TargetAccount);
+                bool endsWithS = persona.ToLower().EndsWith("s");
+                OverhaulUIDescriptionTooltip.SetActive(true, persona + (endsWithS ? " items" : "'s items"), "View levels made by this user");
             }
             else
             {
@@ -1117,22 +1092,43 @@ namespace CDOverhaul.Workshop
         public void ShowQuickInfo(OverhaulWorkshopItem workshopItem)
         {
             if (workshopItem == null)
-            {
-                if (m_QuickInfoUserAvatar.texture != null)
-                {
-                    Destroy(m_QuickInfoUserAvatar.texture);
-                }
-                m_QuickInfo.SetActive(false);
                 return;
-            }
+
             string stars = workshopItem.Stars.ToString();
 
             m_QuickInfo.SetActive(true);
             m_QuickInfoLevelName.text = workshopItem.ItemTitle;
             m_QuickInfoLevelDesc.text = workshopItem.ItemLongDescription;
             m_QuickInfoLevelStars.text = stars.Length > 3 ? stars.Remove(3) : stars;
-            m_QuickInfoUserName.text = workshopItem.CreatorNickname;
+            m_QuickInfoCreatorName.text = workshopItem.CreatorNickname;
         }
+
+        public bool ShouldShowManagementPanel() => ViewingWorkshopItem != null;
+        public bool ShouldMakePlayButtonInteractable() => LevelTypeRequiredTag == "Challenge" || LevelTypeRequiredTag == "Adventure";
+
+        public bool ShouldMakeEraseDataButtonInteractable()
+        {
+            if (ViewingWorkshopItem == null)
+                return false;
+
+            string path = Application.persistentDataPath + "/ChallengeData" + ViewingWorkshopItem.ItemID + ".json";
+            return ShouldMakePlayButtonInteractable() && File.Exists(path);
+        }
+
+        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
+
+        #region Patches
+
+        public bool TryShow()
+        {
+            if (OverhaulVersion.IsVersion2 || !UseThisUI)
+                return false;
+
+            Show();
+            return true;
+        }
+
+        #endregion
 
         public class ItemViewPageBehaviour : OverhaulBehaviour
         {
@@ -1188,7 +1184,7 @@ namespace CDOverhaul.Workshop
             private void onClicked()
             {
                 m_Button.OnDeselect(null);
-                if (OverhaulWorkshopBrowserUI.BrowserIsNull || OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems)
+                if (OverhaulWorkshopBrowserUI.BrowserIsNull || OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems || OverhaulWorkshopBrowserUI.Instance.IsViewingItemsByLocalUser)
                     return;
 
                 OverhaulWorkshopBrowserUI.Instance.Page = 1;
@@ -1209,13 +1205,13 @@ namespace CDOverhaul.Workshop
                     }
                     if (iconDownloadHandler != null && iconDownloadHandler.DownloadedTexture) Destroy(iconDownloadHandler.DownloadedTexture);
                 };
-                OverhaulNetworkAssetsController.DownloadTexture(IconDirectory + m_Rank.ToString() + ".png", iconDownloadHandler);
+                OverhaulNetworkAssetsController.DownloadTexture(IconsDirectory + m_Rank.ToString() + ".png", iconDownloadHandler);
             }
 
             private void Update()
             {
                 if (!OverhaulWorkshopBrowserUI.BrowserIsNull && Time.frameCount % 3 == 0)
-                    m_SelectedFrame.SetActive(!OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems && m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
+                    m_SelectedFrame.SetActive(!OverhaulWorkshopBrowserUI.Instance.IsViewingInstalledItems && !OverhaulWorkshopBrowserUI.Instance.IsViewingItemsByLocalUser && m_Rank == OverhaulWorkshopBrowserUI.Instance.RequiredRank);
             }
 
             private void OnDestroy()
