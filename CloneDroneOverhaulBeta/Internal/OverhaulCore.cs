@@ -176,12 +176,12 @@ namespace CDOverhaul
             if (!hasLoadedOutfitsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedOutfitsBundle = true;
-            });
+            }, false);
 
             if (!hasLoadedPetsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Pets, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedPetsBundle = true;
-            });
+            }, false);
 
             if (!hasLoadedCombatUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_CombatUpdate, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
@@ -214,7 +214,6 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<AdditionalContentController>();
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
-
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
             {
                 _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();

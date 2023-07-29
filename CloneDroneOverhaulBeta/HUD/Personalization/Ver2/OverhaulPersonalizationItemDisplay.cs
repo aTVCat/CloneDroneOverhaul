@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CDOverhaul.Gameplay.Outfits;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -13,7 +14,7 @@ namespace CDOverhaul.HUD
         [ObjectReference("Name")]
         protected Text ItemNameLabel;
         [ObjectReference("Author")]
-        protected Text AuthorLabel;
+        protected InputField AuthorLabel;
 
         [ObjectReference("ExclusivityIndicator")]
         protected GameObject ExclusiveIndicator;

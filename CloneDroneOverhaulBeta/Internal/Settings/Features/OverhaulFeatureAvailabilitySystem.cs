@@ -238,7 +238,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Photo mode overhaul", true, false, "")]
             private static readonly bool IS_PHOTO_MODE_OVERHAUL_ENABLED = true;
-            public static bool IsPhotoModeOverhaulEnabled => !OverhaulVersion.IsVersion2 && IS_PHOTO_MODE_OVERHAUL_ENABLED;
+            public static bool IsPhotoModeOverhaulEnabled => OverhaulVersion.IsVersion3Update && IS_PHOTO_MODE_OVERHAUL_ENABLED;
 
             /// <summary>
             /// A way to optimize huge levels

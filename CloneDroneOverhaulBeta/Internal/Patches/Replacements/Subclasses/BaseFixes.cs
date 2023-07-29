@@ -45,11 +45,15 @@ namespace CDOverhaul.Patches
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
             ProjectileManager.Instance.ArrowPool.Prefab.GetComponent<Projectile>().VelocityMagnitude = 75f;
 
+            
             AudioConfiguration audioConfiguration = AudioSettings.GetConfiguration();
-            audioConfiguration.numVirtualVoices = 512;
-            audioConfiguration.numRealVoices = 32;
-            audioConfiguration.dspBufferSize = 1024;
-            AudioSettings.Reset(audioConfiguration);
+            if (audioConfiguration.numVirtualVoices != 512)
+            {
+                audioConfiguration.numVirtualVoices = 512;
+                audioConfiguration.numRealVoices = 32;
+                audioConfiguration.dspBufferSize = 1024;
+                AudioSettings.Reset(audioConfiguration);
+            }
 
             if (s_OgUIFont == null) s_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
             if (s_OgSubtitlesFont == null) s_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
