@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 modesController.SetMode(UpgradeMode.Upgrade);
             }
 
-            base.transform.localScale = GameModeManager.IsSinglePlayer() && !GameModeManager.IsInLevelEditor() ? Vector3.one : Vector3.zero;
+            base.transform.localScale = GameModeManager.IsSinglePlayer() && !GameModeManager.IsInLevelEditor() && !GameModeManager.IsChapter3Or4() ? Vector3.one : Vector3.zero;
         }
 
         protected override void OnDisposed()

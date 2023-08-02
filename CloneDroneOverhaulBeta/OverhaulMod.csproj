@@ -404,10 +404,12 @@
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\CoopChallengeCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSMapDisplay.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelPrivateMatchActions.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelCodeEnterPage.cs" />
+    <Compile Include="HUD\Gamemodes\Pages\CoopChallengePrivateMatchActions.cs" />
     <Compile Include="HUD\Personalization\Ver2\MountItemDisplay.cs" />
     <Compile Include="HUD\Personalization\Ver2\AccesoryItemDisplay.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationItemDisplay.cs" />
@@ -612,6 +614,7 @@
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
+    <Compile Include="Internal\Patches\StoryAllyNameTag_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
     <Compile Include="Internal\Patches\GlobalFireParticleSystem_Patch.cs" />

@@ -39,7 +39,7 @@ namespace CDOverhaul
 
         public const string TargetGameVersion = "1.5.0.18";
 
-        public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString() + " Preview";
+        public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
         public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();
 
 #if DEBUG

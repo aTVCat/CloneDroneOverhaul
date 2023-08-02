@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private RectTransform m_PanelTransform;
         private CanvasGroup m_CanvasGroup;
 
-        private readonly GameObject[] PageGameObjects = new GameObject[10];
+        private readonly GameObject[] PageGameObjects = new GameObject[20];
 
         private Action m_Callback;
 
@@ -50,6 +50,10 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[7].AddComponent<DuelGameCustomization>().Initialize(this);
             PageGameObjects[8] = moddedObject.GetObject<Transform>(11).gameObject;
             PageGameObjects[8].AddComponent<DuelCodeEnterPage>().Initialize(this);
+            PageGameObjects[9] = moddedObject.GetObject<Transform>(12).gameObject;
+            PageGameObjects[9].AddComponent<CoopChallengeCodeEnterPage>().Initialize(this);
+            PageGameObjects[10] = moddedObject.GetObject<Transform>(13).gameObject;
+            PageGameObjects[10].AddComponent<CoopChallengePrivateMatchActions>().Initialize(this);
 
             base.gameObject.SetActive(false);
         }

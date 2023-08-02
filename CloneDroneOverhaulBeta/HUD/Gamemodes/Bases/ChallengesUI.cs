@@ -19,6 +19,8 @@ namespace CDOverhaul.HUD.Gamemodes
         private Transform m_SinglePlayerChallenges;
         private Transform m_MultiPlayerChallenges;
 
+        private Button m_JoinButton;
+
         private bool m_ViewCoopChallenges;
         public bool ViewCoopChallenges
         {
@@ -49,6 +51,8 @@ namespace CDOverhaul.HUD.Gamemodes
             m_ScrollRect = moddedObject.GetObject<ScrollRect>(5);
             m_SinglePlayerChallenges = moddedObject.GetObject<Transform>(6);
             m_MultiPlayerChallenges = moddedObject.GetObject<Transform>(7);
+            m_JoinButton = moddedObject.GetObject<Button>(8);
+            m_JoinButton.AddOnClickListener(OnJoinButtonClicked);
             ChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 6);
             CoopChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 7);
             moddedObject.GetObject<Button>(2).onClick.AddListener(goBackToGamemodeSelection);
@@ -60,6 +64,7 @@ namespace CDOverhaul.HUD.Gamemodes
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/ChallengesBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
             populateChallengesIfNeeded();
 
+            m_JoinButton.gameObject.SetActive(ViewCoopChallenges);
             if (ViewCoopChallenges)
             {
                 GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
@@ -120,7 +125,7 @@ namespace CDOverhaul.HUD.Gamemodes
             bool isCoop = ViewCoopChallenges;
             if (isCoop || definition == null)
             {
-                m_ChallengeTitleLabel.text = isCoop ? string.Empty : "Hover cursor over challenge...";
+                m_ChallengeTitleLabel.text = isCoop ? string.Empty : OverhaulLocalizationController.GetTranslation("Hover mouse over challenge");
                 m_ChallengeCompletionLabel.text = string.Empty;
                 return;
             }
@@ -129,7 +134,12 @@ namespace CDOverhaul.HUD.Gamemodes
             int beatenLevels = definition.GetNumberOfBeatenLevels();
 
             m_ChallengeTitleLabel.text = LocalizationManager.Instance.GetTranslatedString(definition.ChallengeName, -1);
-            m_ChallengeCompletionLabel.text = allLevels == int.MaxValue ? beatenLevels + " Completed" : beatenLevels + "/" + allLevels + " Completed";
+            m_ChallengeCompletionLabel.text = allLevels == int.MaxValue ? beatenLevels + " " + OverhaulLocalizationController.GetTranslation("Completed of") : beatenLevels + "/" + allLevels + " " + OverhaulLocalizationController.GetTranslation("Completed of");
+        }
+
+        public void OnJoinButtonClicked()
+        {
+            GamemodesUI.FullscreenWindow.Show(null, 9);
         }
 
         public class UIChallengeEntry : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -191,11 +201,19 @@ namespace CDOverhaul.HUD.Gamemodes
 
             public void StartChallenge()
             {
+                if (IsCoop)
+                {
+                    CoopChallengePrivateMatchActions.ChallengeID = m_ChallengeDefinition.ChallengeID;
+                    m_ChallengesUI.GamemodesUI.FullscreenWindow.Show(null, 10);
+                    return;
+                }
+
                 void action()
                 {
                     ChallengeManager.Instance.StartChallenge(m_ChallengeDefinition, false);
                     OverhaulGamemodesUI gamemodesUI = OverhaulController.GetController<OverhaulGamemodesUI>();
-                    if (gamemodesUI) gamemodesUI.Hide();
+                    if (gamemodesUI) 
+                        gamemodesUI.Hide();
                 }
                 Func<bool> func = new Func<bool>(() => CharacterTracker.Instance.GetPlayer());
                 OverhaulTransitionController.DoTransitionWithAction(action, func, 0.10f);

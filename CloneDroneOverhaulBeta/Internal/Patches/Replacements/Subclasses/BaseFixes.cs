@@ -92,7 +92,8 @@ namespace CDOverhaul.Patches
             UpdateSprites(propertyGroup.MethodButtonPrefab.transform);
             UpdateSprites(propertyGroup.CustomInspectorMethodCalledFromAnimationDropdownPrefab.transform);
 
-            UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);/*
+            UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);
+            UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);/*
             UpdateSprites(GameUIRoot.Instance.MultiplayerPlayerList.PlayerInfoLabelPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.KillFeedUI.KillFeedItemPool.Prefab);*/
 

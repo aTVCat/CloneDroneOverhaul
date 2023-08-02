@@ -263,11 +263,13 @@ namespace CDOverhaul.Workshop
                 if (IsPopulatingItems)
                     return;
 
+                Page = 1;
                 TargetAccount = default;
                 IsViewingInstalledItems = true;
                 m_BrowseInstalledButton.interactable = false;
                 m_BrowseWorkshopButton.interactable = true;
                 m_BrowsePublishedButton.interactable = true;
+                m_SearchButton.interactable = false;
                 RefreshLevelsList();
             });
             m_BrowseInstalledButton.interactable = true;
@@ -276,11 +278,13 @@ namespace CDOverhaul.Workshop
                 if (IsPopulatingItems)
                     return;
 
+                Page = 1;
                 TargetAccount = default;
                 IsViewingInstalledItems = false;
                 m_BrowseInstalledButton.interactable = true;
                 m_BrowseWorkshopButton.interactable = false;
                 m_BrowsePublishedButton.interactable = true;
+                m_SearchButton.interactable = true;
                 RefreshLevelsList();
             });
             m_BrowseWorkshopButton.interactable = false;
@@ -289,11 +293,13 @@ namespace CDOverhaul.Workshop
                 if (IsPopulatingItems)
                     return;
 
+                Page = 1;
                 TargetAccount = SteamUser.GetSteamID();
                 IsViewingInstalledItems = false;
                 m_BrowseInstalledButton.interactable = true;
                 m_BrowseWorkshopButton.interactable = true;
                 m_BrowsePublishedButton.interactable = false;
+                m_SearchButton.interactable = false;
                 RefreshLevelsList();
             });
             m_BrowsePublishedButton.interactable = true;
@@ -307,6 +313,7 @@ namespace CDOverhaul.Workshop
                 if (IsPopulatingItems)
                     return;
 
+                Page = 1;
                 m_SearchPanel.SetActive(false);
                 SearchText = m_SearchBox.text;
                 RefreshLevelsList();
@@ -445,16 +452,17 @@ namespace CDOverhaul.Workshop
         public void PopulateRanks()
         {
             m_RanksContainer.ClearContainer();
-            populateRankArray(GenericRanks);
-            populateRankArray(FriendRanks);
+            populateRankArray(GenericRanks, "Rank by:");
+            populateRankArray(FriendRanks, "Other:");
         }
 
-        private void populateRankArray(EUGCQuery[] array)
+        private void populateRankArray(EUGCQuery[] array, string header)
         {
             if (array.IsNullOrEmpty())
                 return;
 
-            _ = m_RankSeparatorsContainer.CreateNew();
+            ModdedObject separator = m_RankSeparatorsContainer.CreateNew();
+            separator.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(header);
             int i = 0;
             do
             {
@@ -485,7 +493,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
                 ModdedObject m = m_RanksContainer.CreateNew();
-                m.GetObject<Text>(0).text = getRankString(array[i]);
+                m.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(getRankString(array[i]));
                 _ = RankUIEntry.CreateNew(m, array[i]);
                 i++;
             } while (i < array.Length);
@@ -509,7 +517,7 @@ namespace CDOverhaul.Workshop
                 case EUGCQuery.k_EUGCQuery_CreatedByFriendsRankedByPublicationDate:
                     return "Friends creations";
                 case EUGCQuery.k_EUGCQuery_FavoritedByFriendsRankedByPublicationDate:
-                    return "Friends favourite";
+                    return "Friends favorited";
                 case EUGCQuery.k_EUGCQuery_CreatedByFollowedUsersRankedByPublicationDate:
                     return "Your follows";
             }
@@ -561,6 +569,7 @@ namespace CDOverhaul.Workshop
                 return;
             }
 
+            Page = 1;
             LevelTypeRequiredTag = requiredTag;
             if (refreshLevelsList)
             {
@@ -575,6 +584,7 @@ namespace CDOverhaul.Workshop
 
             HideRanksDropdown();
 
+            Page = 1;
             TargetAccount = default;
             RequiredRank = rank;
             if (refreshLevelsList)
@@ -763,6 +773,7 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem == null)
                 return;
 
+            Page = 1;
             IsViewingInstalledItems = false;
             m_BrowseInstalledButton.interactable = true;
             m_BrowseWorkshopButton.interactable = false;
@@ -976,7 +987,7 @@ namespace CDOverhaul.Workshop
 
         private void showDefaultInfo()
         {
-            OverhaulUIDescriptionTooltip.SetActive(true, "Steam Workshop Browser", "Play and rate human levels!");
+            OverhaulUIDescriptionTooltip.SetActive(true, OverhaulLocalizationController.GetTranslation("Steam workshop browser"), OverhaulLocalizationController.GetTranslation("Play and rate human levels!"));
         }
 
         public void ResetRequest()
@@ -996,7 +1007,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             IsPopulatingItems = true;
-            m_CurrentPageText.text = string.Format("Page [{0}]", Page);
+            m_CurrentPageText.text = string.Format(OverhaulLocalizationController.GetTranslation("Page number"), Page);
             m_WorkshopItemsContainer.ClearContainer();
             m_PageSelectionTransform.gameObject.SetActive(false);
             m_PageSelectionButton.interactable = false;
@@ -1008,8 +1019,7 @@ namespace CDOverhaul.Workshop
             if(TargetAccount != default)
             {
                 string persona = SteamFriends.GetFriendPersonaName(TargetAccount);
-                bool endsWithS = persona.ToLower().EndsWith("s");
-                OverhaulUIDescriptionTooltip.SetActive(true, persona + (endsWithS ? " items" : "'s items"), "View levels made by this user");
+                OverhaulUIDescriptionTooltip.SetActive(true, string.Format(OverhaulLocalizationController.GetTranslation("LevelsBy"), persona), OverhaulLocalizationController.GetTranslation("View levels made by this user"));
             }
             else
             {
@@ -1063,9 +1073,11 @@ namespace CDOverhaul.Workshop
                 ItemUIEntry entry = ItemUIEntry.CreateNew(m_WorkshopItemsContainer.CreateNew(), CurrentRequestResult.ItemsReceived[itemIndex], itemIndex);
                 uiItems[itemIndex] = entry;
                 itemIndex++;
-                if (itemIndex % 10 == 0) yield return null;
 
-            } while (canPopulateItems(CurrentRequestResult) && itemIndex < CurrentRequestResult.ItemsReceived.Length);
+                if (itemIndex % 10 == 0)
+                    yield return null;
+
+            } while (canPopulateItems(CurrentRequestResult) && itemIndex < uiItems.Length);
 
             if (uiItems.IsNullOrEmpty())
                 yield break;
@@ -1080,10 +1092,11 @@ namespace CDOverhaul.Workshop
                 itemIndex++;
                 yield return new WaitForSecondsRealtime(0.024f);
 
-            } while (canPopulateItems(CurrentRequestResult) && itemIndex < CurrentRequestResult.ItemsReceived.Length);
+            } while (canPopulateItems(CurrentRequestResult) && itemIndex < uiItems.Length);
 
             yield break;
         }
+
         private bool canPopulateItems(OverhaulWorkshopRequestResult requestResult)
         {
             return requestResult != null && !requestResult.ItemsReceived.IsNullOrEmpty();
@@ -1095,11 +1108,14 @@ namespace CDOverhaul.Workshop
                 return;
 
             string stars = workshopItem.Stars.ToString();
+            if (stars == "1")
+                m_QuickInfoLevelStars.text = OverhaulLocalizationController.GetTranslation("Not rated");
+            else
+                m_QuickInfoLevelStars.text = stars.Length > 3 ? stars.Remove(3) : stars;
 
             m_QuickInfo.SetActive(true);
             m_QuickInfoLevelName.text = workshopItem.ItemTitle;
             m_QuickInfoLevelDesc.text = workshopItem.ItemLongDescription;
-            m_QuickInfoLevelStars.text = stars.Length > 3 ? stars.Remove(3) : stars;
             m_QuickInfoCreatorName.text = workshopItem.CreatorNickname;
         }
 

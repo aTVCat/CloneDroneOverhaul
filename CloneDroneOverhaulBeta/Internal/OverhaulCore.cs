@@ -291,51 +291,79 @@ namespace CDOverhaul
             return true;
         }
 
-        public static async void WriteTextAsync(string filePath, string content, IOStateInfo iOStateInfo = null)
+        public static async void WriteTextAsync(string filePath, string content, IOStateInfo iOStateInfo = null, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) return;
-            if (content == null) content = string.Empty;
+            if (string.IsNullOrEmpty(filePath)) 
+                return;
 
-            if (iOStateInfo != null) iOStateInfo.IsInProgress = true;
+            if (content == null)
+                content = string.Empty;
+
+            if (clearContents)
+                File.WriteAllText(filePath, string.Empty);
+
+            if (iOStateInfo != null) 
+                iOStateInfo.IsInProgress = true;
+
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
             using (FileStream stream = File.OpenWrite(filePath))
             {
                 await stream.WriteAsync(toWrite, 0, toWrite.Length);
-                if (iOStateInfo != null) iOStateInfo.IsInProgress = false;
+
+                if (iOStateInfo != null)
+                    iOStateInfo.IsInProgress = false;
             }
         }
 
-        public static IEnumerator WriteTextCoroutine(string filePath, string content, IOStateInfo iOStateInfo = null)
+        public static IEnumerator WriteTextCoroutine(string filePath, string content, IOStateInfo iOStateInfo = null, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) yield break;
-            if (content == null) content = string.Empty;
+            if (string.IsNullOrEmpty(filePath)) 
+                yield break;
 
-            if (iOStateInfo != null) iOStateInfo.IsInProgress = true;
+            if (content == null) 
+                content = string.Empty;
+
+            if (clearContents)
+                File.WriteAllText(filePath, string.Empty);
+
+            if (iOStateInfo != null) 
+                iOStateInfo.IsInProgress = true;
+
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
             using (FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096, true))
             {
                 yield return stream.WriteAsync(toWrite, 0, toWrite.Length);
-                if (iOStateInfo != null) iOStateInfo.IsInProgress = false;
+
+                if (iOStateInfo != null) 
+                    iOStateInfo.IsInProgress = false;
             }
             yield break;
         }
 
-        public static void WriteText(string filePath, string content)
+        public static void WriteText(string filePath, string content, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) return;
-            if (content == null) content = string.Empty;
+            if (string.IsNullOrEmpty(filePath)) 
+                return;
+
+            if (content == null)
+                content = string.Empty;
+
+            if(clearContents)
+                File.WriteAllText(filePath, string.Empty);
 
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
             using (FileStream stream = File.OpenWrite(filePath))
+            {
                 stream.Write(toWrite, 0, toWrite.Length);
+            }
         }
 
-        public static bool TryWriteText(string filePath, string content, out Exception exception)
+        public static bool TryWriteText(string filePath, string content, out Exception exception, bool clearContents = true)
         {
             exception = null;
             try
             {
-                WriteText(filePath, content);
+                WriteText(filePath, content, clearContents);
             }
             catch (Exception exc)
             {
