@@ -134,6 +134,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             SetVanillaPartsActive(false);
             PatchVanillaParts(true);
             setUpBattleCruiser();
+            onArenaSettingsUpdate();
         }
 
         public override void OnModDeactivated()
@@ -209,12 +210,17 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 
         private void onArenaSettingsUpdate()
         {
-            if (LevelManager.Instance.IsCurrentLevelHidingTheArena())
+            if (!LevelManager.Instance || !ArenaCustomizationManager.Instance || LevelManager.Instance.IsCurrentLevelHidingTheArena())
                 return;
 
             LevelEditorArenaSettings activeSettings = ArenaCustomizationManager.Instance.GetActiveSettings();
-            m_ArenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
-            m_ArenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
+            if (!activeSettings)
+                return;
+
+            if(m_ArenaOverhaulMaterial)
+                m_ArenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
+            if (m_ArenaLightsMaterial)
+                m_ArenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
         }
 
         private void Update()

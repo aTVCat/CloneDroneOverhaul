@@ -52,6 +52,9 @@ namespace CDOverhaul.Gameplay.Pets
         {
             DestroyItems();
 
+            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
+                return;
+
             if (!Owner)
                 return;
 

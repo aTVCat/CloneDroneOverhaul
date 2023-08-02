@@ -44,9 +44,12 @@ namespace CDOverhaul.Patches
 
             GameUIRoot.Instance.EmoteSelectionUI.GetComponent<Image>().enabled = false;
             ProjectileManager.Instance.ArrowPool.Prefab.GetComponent<Projectile>().VelocityMagnitude = 75f;
+
+            EmoteManager.Instance.PitchLimits.Max = 1f;
+            MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
             
             AudioConfiguration audioConfiguration = AudioSettings.GetConfiguration();
-            if (audioConfiguration.numVirtualVoices != 512)
+            if (audioConfiguration.numVirtualVoices != 512 && GameModeManager.IsOnTitleScreen())
             {
                 audioConfiguration.numVirtualVoices = 512;
                 audioConfiguration.numRealVoices = 32;
@@ -54,13 +57,15 @@ namespace CDOverhaul.Patches
                 AudioSettings.Reset(audioConfiguration);
             }
 
-            if (s_OgUIFont == null) s_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
-            if (s_OgSubtitlesFont == null) s_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
-            if (s_OgFontScale == -1f) s_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
+            if (!s_OgUIFont) 
+                s_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
+            if (!s_OgSubtitlesFont)
+                s_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
+            if (s_OgFontScale == -1f)
+                s_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
 
             UpdateSprites(GameUIRoot.Instance.transform);
-
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.FilesUI.DisplayPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.FilesUI.FolderPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LibraryUI.DisplayPrefab.transform);
@@ -93,10 +98,7 @@ namespace CDOverhaul.Patches
             UpdateSprites(propertyGroup.CustomInspectorMethodCalledFromAnimationDropdownPrefab.transform);
 
             UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);
-            UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);/*
-            UpdateSprites(GameUIRoot.Instance.MultiplayerPlayerList.PlayerInfoLabelPrefab.transform);
-            UpdateSprites(GameUIRoot.Instance.KillFeedUI.KillFeedItemPool.Prefab);*/
-
+            UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);
             SuccessfullyPatched = true;
         }
 

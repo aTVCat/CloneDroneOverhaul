@@ -62,7 +62,7 @@ namespace CDOverhaul.HUD.Tooltips
             string weaponString = weaponType.ToString() + (isFire ? "-Fire" : string.Empty) + ".png";
 
             m_Text.color = color;
-            m_Text.text = weaponType.ToString();
+            m_Text.text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
             tryLoadIcon(weaponString);
             Show();
         }

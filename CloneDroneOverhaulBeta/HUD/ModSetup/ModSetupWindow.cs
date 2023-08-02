@@ -8,7 +8,7 @@ namespace CDOverhaul.HUD
 {
     public class ModSetupWindow : OverhaulUI
     {
-        public const string SettingPath = "Player.Mod.HasConfiguredModV7";
+        public const string SettingPath = "Player.Mod.HasConfiguredModV8";
 
         [OverhaulSetting(SettingPath, false, true)]
         public static bool HasSetTheModUp;

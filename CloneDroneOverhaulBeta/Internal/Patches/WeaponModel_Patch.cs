@@ -13,11 +13,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
         {
-            if (!OverhaulMod.IsModInitialized || __instance.MeleeImpactArea == null)
+            if (!OverhaulMod.IsModInitialized || !__instance.MeleeImpactArea)
                 return true;
 
             FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
-            if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner))
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner) || !OverhaulController.GetController<WeaponSkinsController>())
                 return true;
 
             OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(owner);

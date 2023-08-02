@@ -285,7 +285,7 @@ namespace CDOverhaul
             return false;
         }
 
-        public static bool IsFireWeapon(this FirstPersonMover firstPersonMover, WeaponType type, bool skins = true)
+        public static bool IsFireWeapon(this FirstPersonMover firstPersonMover, WeaponType type)
         {
             if (!firstPersonMover || !firstPersonMover.IsAlive())
                 return false;
@@ -311,7 +311,7 @@ namespace CDOverhaul
                     return true;
                 }
             }
-            else if (!skins && type == WeaponType.Bow)
+            else if (type == WeaponType.Bow)
             {
                 if (firstPersonMover.HasUpgrade(UpgradeType.FireArrow))
                 {

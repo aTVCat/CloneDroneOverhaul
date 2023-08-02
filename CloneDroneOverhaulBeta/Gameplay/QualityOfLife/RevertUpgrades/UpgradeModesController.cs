@@ -17,11 +17,9 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             new Tuple<UpgradeType, int>(UpgradeType.Hammer, 1),
             new Tuple<UpgradeType, int>(UpgradeType.SpearUnlock, 1),
             new Tuple<UpgradeType, int>(UpgradeType.BowUnlock, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.Armor, 0),/*
-            new Tuple<UpgradeType, int>(UpgradeType.KickUnlock, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.FireResistance, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.FlameBreath, 1),*/
+            new Tuple<UpgradeType, int>(UpgradeType.Armor, 0),
         };
+
         public static bool IsUnrevertableUpgrade(UpgradeType type, int level)
         {
             foreach (Tuple<UpgradeType, int> tuple in UnrevertableUpgrades)
@@ -75,16 +73,16 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             Mode = upgradeMode;
 
             if (GameUIRoot.Instance && GameUIRoot.Instance.UpgradeUI && GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf)
-                GameUIRoot.Instance.UpgradeUI.CallPrivateMethod("PopulateIcons");
+                GameUIRoot.Instance.UpgradeUI.PopulateIcons();
 
             if (upgradeMode == UpgradeMode.Upgrade)
             {
                 m_ButtonGraphic.color = ReverUpgradesColor.ToColor();
-                m_ButtonText.text = "Revert upgrades";
+                m_ButtonText.text = OverhaulLocalizationController.GetTranslation("Revert Upgrades");
                 return;
             }
             m_ButtonGraphic.color = UpgradeColor.ToColor();
-            m_ButtonText.text = "Get upgrades";
+            m_ButtonText.text = OverhaulLocalizationController.GetTranslation("Get Upgrades");
         }
     }
 }

@@ -151,9 +151,10 @@ namespace CDOverhaul.HUD
             m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
             m_PersonalizationPetsButton = MyModdedObject.GetObject<Button>(36);
             m_PersonalizationPetsButton.onClick.AddListener(OnPetsButtonClicked);
-            m_PersonalizationPetsButton.interactable = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsPetsDemo;
+            m_PersonalizationPetsButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled;
             m_PersonalizationEditorButton = MyModdedObject.GetObject<Button>(58);
             m_PersonalizationEditorButton.onClick.AddListener(OnPersonalizationEditorButtonClicked);
+            m_PersonalizationEditorButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled;
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
