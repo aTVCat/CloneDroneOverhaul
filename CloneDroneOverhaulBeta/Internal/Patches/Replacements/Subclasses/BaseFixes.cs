@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Bolt;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -100,6 +101,8 @@ namespace CDOverhaul.Patches
 
             UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);
             UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);
+
+            UpdateSprites(PrefabDatabase.Find(BoltPrefabs.BattleRoyaleTransportBot).transform, false, 0);
             SuccessfullyPatched = true;
         }
 

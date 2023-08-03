@@ -1,30 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulAPI.SharedMonoBehaviours;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorPropertiesWindow : OverhaulBehaviour
+    public class PersonalizationEditorPropertiesWindow : PersonalizationEditorElement
     {
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorPropertyCategoryDisplay) })]
         [ObjectReference("CategoryPrefab")]
-        private Transform m_PropertyCategoryPrefab;
+        private readonly PersonalizationEditorPropertyCategoryDisplay m_PropertyCategoryPrefab;
 
         [ObjectReference("Content")]
-        private Transform m_Container;
+        private readonly Transform m_Container;
 
-        private bool m_HasAssignedValues;
+        private bool m_HasInitialized;
 
         public void Populate(PersonalizationCategory category)
         {
-            if (!m_HasAssignedValues)
+            if (!m_HasInitialized)
             {
                 OverhaulUIVer2.AssignVariables(this);
-                m_HasAssignedValues = true;
+                _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
+                m_HasInitialized = true;
             }
 
-            if(PersonalizationEditor.EditingItem == null)
+            if (PersonalizationEditor.EditingItem == null)
                 return;
 
-            List<PersonalizationEditorPropertyAttribute> properties = null;
+            List<PersonalizationEditorPropertyAttribute> properties;
             switch (category)
             {
                 case PersonalizationCategory.WeaponSkins:

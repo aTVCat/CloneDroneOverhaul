@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
     {
         public static bool IsEnabled() => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAchievementsMenuRedesignEnabled;
 
-        [ButtonActionReference(nameof(OnBackButtonClicked))]
+        [ActionReference(nameof(OnBackButtonClicked))]
         [ObjectReference("BackButton")]
         private readonly Button m_BackButton;
 

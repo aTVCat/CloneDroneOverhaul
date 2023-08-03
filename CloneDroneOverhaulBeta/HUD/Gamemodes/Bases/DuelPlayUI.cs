@@ -13,6 +13,7 @@ namespace CDOverhaul.HUD.Gamemodes
         [ObjectReference("PlayPrivateButton")]
         private readonly Button m_PlayPrivate;
 
+        [ActionReference(nameof(OnPrevMatchesClick))]
         [ObjectReference("PrevMatchesButton")]
         private readonly Button m_PrevMatches;
 
@@ -57,6 +58,11 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnPlayPrivateClick()
         {
             GamemodesUI.FullscreenWindow.Show(null, 6);
+        }
+
+        public void OnPrevMatchesClick()
+        {
+            OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow();
         }
 
         public void OnRelayToggleClick(bool newValue)

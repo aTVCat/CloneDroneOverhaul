@@ -2,6 +2,7 @@
 using CDOverhaul.Gameplay;
 using CDOverhaul.Graphics;
 using HarmonyLib;
+using ModLibrary;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -34,6 +35,15 @@ namespace CDOverhaul.Patches
         private static bool RollbackAsIfKicked_Prefix(FirstPersonMover __instance)
         {
             return !OverhaulMod.IsModInitialized || __instance.HasCharacterModel();
+        }
+
+        // Another attempt to fix invis weapons in multiplayer
+        [HarmonyPostfix]
+        [HarmonyPatch("OnSwordSwingStarted")]
+        private static void OnSwordSwingStarted_Postfix(FirstPersonMover __instance)
+        {
+            if (__instance._currentWeaponModel)
+                __instance._currentWeaponModel.gameObject.SetActive(true);
         }
 
         [HarmonyPostfix]

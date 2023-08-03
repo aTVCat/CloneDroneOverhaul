@@ -66,7 +66,7 @@ namespace CDOverhaul.Workshop
 
         #region UI elements
 
-        [ButtonActionReference(nameof(Hide))]
+        [ActionReference(nameof(Hide))]
         [ObjectReference("CloseWorkshopBrowser")]
         private Button m_ExitButton;
 
@@ -95,7 +95,7 @@ namespace CDOverhaul.Workshop
         [ObjectDefaultVisibility(false)]
         [ObjectReference("ErrorWindow")]
         private GameObject m_ErrorWindow;
-        [ButtonActionReference(nameof(RetryRequest))]
+        [ActionReference(nameof(RetryRequest))]
         [ObjectReference("RetryButton")]
         private Button m_ErrorWindowRetryButton;
 
@@ -103,45 +103,45 @@ namespace CDOverhaul.Workshop
         private Transform m_ManagementButtonsContainer;
         [ObjectReference("ItemLoadProgressBar")]
         private Transform m_ItemLoadingIndicatorTransform;
-        [ButtonActionReference(nameof(SubscribeToItem))]
+        [ActionReference(nameof(SubscribeToItem))]
         [ObjectReference("Subscribe")]
         private Button m_SubscribeButton;
-        [ButtonActionReference(nameof(UnsubscribeFromItem))]
+        [ActionReference(nameof(UnsubscribeFromItem))]
         [ObjectReference("UnSubscribe")]
         private Button m_UnsubscribeButton;
-        [ButtonActionReference(nameof(OnPlayButtonClicked))]
+        [ActionReference(nameof(OnPlayButtonClicked))]
         [ObjectReference("PlayButton")]
         private Button m_PlayButton;
-        [ButtonActionReference(nameof(EraseLevelProgress))]
+        [ActionReference(nameof(EraseLevelProgress))]
         [ObjectReference("EraseProgress")]
         private Button m_EraseDataButton;
-        [ButtonActionReference(nameof(ReloadItemView))]
+        [ActionReference(nameof(ReloadItemView))]
         [ObjectReference("ReloadPanelButton")]
         private Button m_ReloadItemViewButton;
 
-        [ButtonActionReference(nameof(VoteUp))]
+        [ActionReference(nameof(VoteUp))]
         [ObjectReference("UpVote")]
         private Button m_UpVoteButton;
-        [ButtonActionReference(nameof(VoteDown))]
+        [ActionReference(nameof(VoteDown))]
         [ObjectReference("DownVote")]
         private Button m_DownVoteButton;
-        [ButtonActionReference(nameof(MarkItemAsFavourite))]
+        [ActionReference(nameof(MarkItemAsFavourite))]
         [ObjectReference("Favourite")]
         private Button m_FavoriteButton;
-        [ButtonActionReference(nameof(OpenItemSteamPage))]
+        [ActionReference(nameof(OpenItemSteamPage))]
         [ObjectReference("SteamPage")]
         private Button m_ItemSteamPageButton;
-        [ButtonActionReference(nameof(OpenItemAuthorProfilePage))]
+        [ActionReference(nameof(OpenItemAuthorProfilePage))]
         [ObjectReference("CreatorProfile")]
         private Button m_ItemCreatorProfileButton;
-        [ButtonActionReference(nameof(ViewAuthorItems))]
+        [ActionReference(nameof(ViewAuthorItems))]
         [ObjectReference("CreatorItems")]
         private Button m_ViewCreatorItemsButton;
-        [ButtonActionReference(nameof(CopyItemLink))]
+        [ActionReference(nameof(CopyItemLink))]
         [ObjectReference("CopyLink")]
         private Button m_CopyItemLinkButton;
 
-        [ButtonActionReference(nameof(TogglePageSelectionPanel))]
+        [ActionReference(nameof(TogglePageSelectionPanel))]
         [ObjectReference("ButtonPage")]
         private Button m_PageSelectionButton;
         [ObjectReference("CurrentPageText")]
@@ -149,7 +149,7 @@ namespace CDOverhaul.Workshop
         [ObjectDefaultVisibility(false)]
         [ObjectReference("PageSelection")]
         private Transform m_PageSelectionTransform;
-        [ButtonActionReference(nameof(RefreshLevelsList))]
+        [ActionReference(nameof(RefreshLevelsList))]
         [ObjectReference("ButtonReloadPage")]
         private Button m_ReloadPageButton;
         [ObjectReference("ButtonBrowseInstalledItems")]

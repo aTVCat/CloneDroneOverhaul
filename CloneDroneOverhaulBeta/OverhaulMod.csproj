@@ -390,12 +390,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
-    <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditor.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorTypePanel.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorLoadPanel.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorSavePanel.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditor.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyCategoryDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertiesWindow.cs" />
     <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditorUI.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyAttribute.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditorElement.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItem.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsController.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsWearer.cs" />
@@ -599,9 +603,8 @@
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\Management\UI\ObjectComponentsAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectDefaultVisibility.cs" />
-    <Compile Include="Internal\Management\UI\ToggleActionReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
-    <Compile Include="Internal\Management\UI\ButtonActionReferenceAttribute.cs" />
+    <Compile Include="Internal\Management\UI\ActionReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\OverhaulUIVer2.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulCrashPreventionController.cs" />
@@ -610,6 +613,7 @@
     <Compile Include="Internal\OverhaulWebhooksController.cs" />
     <Compile Include="Internal\Patches\ArrowProjectile_Patch.cs" />
     <Compile Include="Internal\Patches\ArenaMaterialSwapper_Patch.cs" />
+    <Compile Include="Internal\Patches\AudioManager_Patch.cs" />
     <Compile Include="Internal\Patches\AttackManager_Patch.cs" />
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
@@ -813,6 +817,7 @@
   </ItemGroup>
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
+    <Publicize Include="bolt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -10,8 +10,8 @@ namespace CDOverhaul.HUD.Gamemodes
         private Button m_PlayButton;
         private Button m_PlayPrivateButton;
 
-        private readonly Button m_RulesButton;
-        private readonly Button m_PrevMatchesButton;
+        private Button m_RulesButton;
+        private Button m_PrevMatchesButton;
 
         private Toggle m_RelayToggle;
 
@@ -19,20 +19,44 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             m_GoBackButton = moddedObject.GetObject<Button>(0);
-            m_GoBackButton.onClick.AddListener(goBackToGamemodeSelection);
+            m_GoBackButton.AddOnClickListener(goBackToGamemodeSelection);
             m_PlayButton = moddedObject.GetObject<Button>(1);
-            m_PlayButton.onClick.AddListener(OnPlayClicked);
+            m_PlayButton.AddOnClickListener(OnPlayClicked);
             m_PlayPrivateButton = moddedObject.GetObject<Button>(7);
-            m_PlayPrivateButton.onClick.AddListener(OnPrivateMatchClick);
+            m_PlayPrivateButton.AddOnClickListener(OnPrivateMatchClick);
             m_RelayToggle = moddedObject.GetObject<Toggle>(6);
             m_RelayToggle.onValueChanged.AddListener(OnRelayToggleClick);
+            m_PrevMatchesButton = moddedObject.GetObject<Button>(5);
+            m_PrevMatchesButton.AddOnClickListener(OnPrevMatchesClick);
         }
 
         protected override void OnShow()
         {
+            ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             GamemodesUI.ChangeBackgroundTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/LBSInviteBG_" + UnityEngine.Random.Range(1, 5) + ".jpg");
             m_RelayToggle.isOn = OverhaulCore.IsRelayConnectionEnabled;
             GameUIRoot.Instance.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
+            moddedObject.GetObject<CanvasGroup>(11).alpha = 0.2f;
+
+            if (!PlayFabPlayerStatsManager.Instance || !OverhaulPlayerIdentifier.HasPlayfabID())
+                return;
+
+            PlayFabPlayerStats localPlayerStats = PlayFabPlayerStatsManager.Instance.GetLocalPlayerStats();
+            if (localPlayerStats == null)
+                return;
+
+            int lastBotStandingWins = localPlayerStats.LastBotStandingWins;
+            moddedObject.GetObject<CanvasGroup>(11).alpha = 1f;
+            moddedObject.GetObject<Text>(9).text = lastBotStandingWins.ToString();
+            BattleRoyaleGarbageBotPerWin garbageBotInfo = BattleRoyaleGarbageBotCustomizationManager.Instance.GetGarbageBotInfo(lastBotStandingWins);
+            moddedObject.GetObject<Image>(8).sprite = garbageBotInfo.PreviewImage;
+            BattleRoyaleGarbageBotPerWin upcomingGarbageBotInfo = BattleRoyaleGarbageBotCustomizationManager.Instance.GetUpcomingGarbageBotInfo(lastBotStandingWins);
+            if (upcomingGarbageBotInfo != null)
+            {
+                moddedObject.GetObject<Text>(10).text = upcomingGarbageBotInfo.MinWins.ToString();
+                return;
+            }
+            moddedObject.GetObject<Text>(10).text = "-";
         }
 
         private void goBackToGamemodeSelection()
@@ -56,6 +80,11 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnPrivateMatchClick()
         {
             GamemodesUI.FullscreenWindow.Show(null, 1);
+        }
+
+        public void OnPrevMatchesClick()
+        {
+            OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow();
         }
 
         public void OnRelayToggleClick(bool newValue)

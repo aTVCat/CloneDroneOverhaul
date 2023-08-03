@@ -23,8 +23,11 @@ namespace CDOverhaul
 
         public void Initialize(bool fadeOut, bool realTransition = false)
         {
-            if (!m_FadeOut) m_FadeOut = fadeOut;
-            if (!m_IsRealTransition) m_IsRealTransition = realTransition;
+            if (!m_FadeOut) 
+                m_FadeOut = fadeOut;
+
+            if (!m_IsRealTransition)
+                m_IsRealTransition = realTransition;
 
             if (!m_HasInitialized)
             {
@@ -40,8 +43,14 @@ namespace CDOverhaul
             //m_TimeToAllowColorUpdates = fadeOut ? Time.unscaledTime + 0.25f : -1f;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
+            if (IsDisposedOrDestroyed())
+                return;
+
+            bool settingsManagerAvailable = SettingsManager.Instance && SettingsManager.Instance.IsInitialized();
+            float setVolume = settingsManagerAvailable ? SettingsManager.Instance.GetSoundVolume() : 1f;
+
             float time = Time.unscaledTime;
             if (time >= m_TimeToAllowColorUpdates)
             {
@@ -50,8 +59,12 @@ namespace CDOverhaul
                 m_Image.color = currentColor;
             }
 
+            AudioListener.volume = !m_FadeOut && m_IsRealTransition ? (1f - m_Image.color.a) * setVolume : setVolume;
             if (m_TimeToDestroy != -1f && time >= m_TimeToDestroy)
-                Destroy(base.gameObject);
+            {
+                DestroyGameObject();
+                AudioListener.volume = setVolume;
+            }
 
             if (m_IsRealTransition && m_TimeToDisconnect != -1f && time >= m_TimeToDisconnect)
             {

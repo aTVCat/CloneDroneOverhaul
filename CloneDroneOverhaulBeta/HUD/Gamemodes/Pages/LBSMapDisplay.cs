@@ -97,7 +97,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private void onUpdateSelection(bool newValue)
         {
             m_SelectedIndicator.SetActive(newValue);
-            if (Type != 2)
+            /*if (Type != 2)
             {
                 if (newValue)
                 {
@@ -107,7 +107,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 {
                     base.transform.SetAsLastSibling();
                 }
-            }
+            }*/
         }
 
         public void OnPointerEnter(PointerEventData eventData)

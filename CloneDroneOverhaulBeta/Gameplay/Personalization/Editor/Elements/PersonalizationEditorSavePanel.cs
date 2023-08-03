@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace CDOverhaul.Gameplay.Editors.Personalization
+{
+    public class PersonalizationEditorSavePanel : PersonalizationEditorElement
+    {
+        [ActionReference(nameof(onSaveButtonClicked))]
+        [ObjectReference("SaveButton")]
+        private Button m_SaveButton;
+
+        [ActionReference(nameof(onAutoSaveToggleClicked))]
+        [ObjectReference("AutoSaveToggle")]
+        private Toggle m_AutoSaveToggle;
+
+        [ObjectReference("NeedsSavingIndicator")]
+        private GameObject m_NeedsSaveIndicator;
+
+        public bool NeedsSaving
+        {
+            get => m_NeedsSaveIndicator.activeSelf;
+            set => m_NeedsSaveIndicator.SetActive(value);
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            m_AutoSaveToggle.isOn = PersonalizationEditor.IsAutoSaveEnabled;
+            NeedsSaving = false;
+        }
+
+        private void onAutoSaveToggleClicked(bool newValue)
+        {
+            OverhaulSettingsController.SetSettingValue("Player.P_Editor.AutoSave", newValue);
+        }
+
+        private void onSaveButtonClicked()
+        {
+
+        }
+    }
+}

@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
     {
         [HarmonyPrefix]
         [HarmonyPatch("CreateSwordBlockVFX")]
-        private static bool CreateSwordBlockVFX_Prefix(AmplifyColorSwapper __instance)
+        private static bool CreateSwordBlockVFX_Prefix()
         {
             if (!OverhaulMod.IsModInitialized)
                 return true;

@@ -75,9 +75,11 @@ namespace CDOverhaul.Patches
                     new GameModeCardData
                     {
                         NameOfMode = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox"),
-                        Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc")
+                        Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc"),
+                        ClickedCallback = new UnityEngine.Events.UnityEvent()
                     }
                     };
+                    moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
                     patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
                     Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)").GetComponent<Button>();
                     exitButton.onClick = new Button.ButtonClickedEvent();

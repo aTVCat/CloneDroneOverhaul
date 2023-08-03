@@ -92,39 +92,39 @@ namespace CDOverhaul
                             info.SetValue(behaviour, fieldValueToAssign);
 
                         // Assign action to button
-                        ButtonActionReferenceAttribute buttonActionReference = info.GetCustomAttribute<ButtonActionReferenceAttribute>();
-                        if (buttonActionReference != null)
+                        ActionReferenceAttribute actionReference = info.GetCustomAttribute<ActionReferenceAttribute>();
+                        if (actionReference != null)
                         {
-                            if (!(fieldValueToAssign is Button))
-                                throw new Exception("Could not assign onClick action to " + objectReference.ObjectName + " since it is not a button!");
-
-                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, bindingFlags);
-                            if (methodInfo == null)
-                                throw new Exception("Could not find method called " + buttonActionReference.MethodName + " to use for " + objectReference.ObjectName + "!");
-
-                            Button button = fieldValueToAssign as Button;
-                            button.AddOnClickListener(delegate
+                            if(targetFieldType == typeof(Button))
                             {
-                                _ = methodInfo.Invoke(behaviour, null);
-                            });
-                        }
+                                Button button = fieldValueToAssign as Button;
+                                foreach (string methodName in actionReference.MethodNames)
+                                {
+                                    MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags);
+                                    if (methodInfo == null)
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
 
-                        // Assign action to toggle
-                        ToggleActionReferenceAttribute toggleActionReference = info.GetCustomAttribute<ToggleActionReferenceAttribute>();
-                        if (toggleActionReference != null)
-                        {
-                            if (!(fieldValueToAssign is Toggle))
-                                throw new Exception("Could not assign onValueChanged action to " + objectReference.ObjectName + " since it is not a toggle!");
-
-                            MethodInfo methodInfo = type.GetMethod(buttonActionReference.MethodName, bindingFlags, null, new Type[] { typeof(bool) }, null);
-                            if (methodInfo == null)
-                                throw new Exception("Could not find method called " + buttonActionReference.MethodName + " to use for " + objectReference.ObjectName + "!");
-
-                            Toggle toggle = fieldValueToAssign as Toggle;
-                            toggle.onValueChanged.AddListener(delegate (bool value)
+                                    button.AddOnClickListener(delegate
+                                    {
+                                        _ = methodInfo.Invoke(behaviour, null);
+                                    });
+                                }
+                            }
+                            else if (targetFieldType == typeof(Toggle))
                             {
-                                _ = methodInfo.Invoke(behaviour, new object[] { value });
-                            });
+                                Toggle toggle = fieldValueToAssign as Toggle;
+                                foreach (string methodName in actionReference.MethodNames)
+                                {
+                                    MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(bool) }, null);
+                                    if (methodInfo == null)
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+
+                                    toggle.onValueChanged.AddListener(delegate (bool value)
+                                    {
+                                        _ = methodInfo.Invoke(behaviour, new object[] { value });
+                                    });
+                                }
+                            }
                         }
                     }
 
