@@ -17,7 +17,7 @@ namespace CDOverhaul.Patches
                 return;
 
             HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
-            if (otherComponent)
+            if (otherComponent && otherComponent.DamageSourceType == DamageSourceType.Hammer)
             {
                 Vector3 midPos = (otherComponent.transform.position + __instance.transform.position) / 2f;
                 AttackManager.Instance.CreateSwordBlockVFX(midPos);
@@ -31,7 +31,7 @@ namespace CDOverhaul.Patches
             if (swordBlockArea)
             {
                 FirstPersonMover owner = swordBlockArea.GetOwner();
-                if (owner != __instance.Owner)
+                if (owner != __instance.Owner && swordBlockArea.SwordHitArea)
                 {
                     owner.OnSwordHitSword(__instance.Owner, null, false);
 

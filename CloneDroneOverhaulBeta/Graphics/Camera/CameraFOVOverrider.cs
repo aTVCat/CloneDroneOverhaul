@@ -32,12 +32,23 @@ namespace CDOverhaul.Graphics
         private PhotoManager m_PhotoManager;
         private UpgradeUI m_UpgradeUI;
 
+        private LevelEditorCinematicCamera m_CinematicCamera;
+        private bool m_CineCameraOn;
+        private bool m_HasRefreshedCinematicCameraOnStart;
+
         public void SetUpReferences(FirstPersonMover newOwner)
         {
             m_UpgradeUI = GameUIRoot.Instance.UpgradeUI;
             m_PhotoManager = PhotoManager.Instance;
             m_TimeManager = TimeManager.Instance;
             m_Owner = newOwner;
+
+            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+        }
+
+        protected override void OnDisposed()
+        {
+            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         private void LateUpdate()
@@ -57,9 +68,23 @@ namespace CDOverhaul.Graphics
                 if (!m_Camera)
                 {
                     base.enabled = false;
-                    OverhaulWebhooksController.ExecuteErrorsWebhook("CameraFOVOverrider - No camera found!");
                     return;
                 }
+            }
+
+            if (!m_HasRefreshedCinematicCameraOnStart)
+            {
+                RefreshCinematicCameraOnStart();
+                m_HasRefreshedCinematicCameraOnStart = true;
+            }
+
+            if (m_CineCameraOn)
+            {
+                if (!m_CinematicCamera || !m_CinematicCamera.HasTakenOverPlayerCamera())
+                    OnCinematicCameraTurnedOff();
+
+                if (m_CineCameraOn)
+                    return;
             }
 
             float deltaTime = Time.unscaledDeltaTime * DeltaTimeMultiplier;
@@ -72,6 +97,31 @@ namespace CDOverhaul.Graphics
             return m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom
                 ? PAUSED_VALUE + ViewModesController.FOVOffset
                 : (ViewModesController.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesController.FOVOffset + RobotCameraZoomExpansion.FOVOffset;
+        }
+
+        public void RefreshCinematicCameraOnStart()
+        {
+            if (!m_Camera || !m_Camera.transform.parent || !m_Camera.transform.parent.parent)
+                return;
+
+            Transform cinematicCameraTransform = m_Camera.transform.parent.parent;
+            if (cinematicCameraTransform.gameObject.name.Contains("CinematicCamera"))
+            {
+                m_CinematicCamera = cinematicCameraTransform.GetComponent<LevelEditorCinematicCamera>();
+                m_CineCameraOn = m_CinematicCamera;
+            }
+        }
+
+        private void OnCinematicCameraTurnedOn(LevelEditorCinematicCamera cinematicCamera)
+        {
+            m_CinematicCamera = cinematicCamera;
+            m_CineCameraOn = true;
+        }
+
+        private void OnCinematicCameraTurnedOff()
+        {
+            m_CinematicCamera = null;
+            m_CineCameraOn = false;
         }
     }
 }

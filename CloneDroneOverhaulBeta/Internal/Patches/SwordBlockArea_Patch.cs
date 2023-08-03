@@ -24,7 +24,7 @@ namespace CDOverhaul.Patches
                 return;
 
             HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
-            if (isEverythingFine && otherComponent)
+            if (isEverythingFine && otherComponent && otherComponent.DamageSourceType == DamageSourceType.Hammer)
             {
                 FirstPersonMover owner = __instance.GetOwner();
                 if (!owner)

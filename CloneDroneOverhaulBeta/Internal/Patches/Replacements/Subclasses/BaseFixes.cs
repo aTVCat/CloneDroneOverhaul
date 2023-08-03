@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -232,6 +233,17 @@ namespace CDOverhaul.Patches
 
             button.RemoveAllOnClickListeners();
             button.AddOnClickListener(action);
+        }
+
+        public static IEnumerator WaitThenMirrorEmote_Patched(EmoteDefinition emotePlayed)
+        {
+            yield return new WaitForSeconds(1f);
+            FirstPersonMover player = CharacterTracker.Instance.GetPlayerAlly() as FirstPersonMover;
+            if (player && !player.IsWeaponDamageActive())
+            {
+                EmoteManager.Instance.TriggerEmoteForPlayer(player, emotePlayed);
+            }
+            yield break;
         }
     }
 }

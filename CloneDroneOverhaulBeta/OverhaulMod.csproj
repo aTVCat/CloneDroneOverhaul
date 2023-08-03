@@ -614,6 +614,7 @@
     <Compile Include="Internal\Patches\Character_Patch.cs" />
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
+    <Compile Include="Internal\Patches\PlayerAllyManager_Patch.cs" />
     <Compile Include="Internal\Patches\StoryAllyNameTag_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
