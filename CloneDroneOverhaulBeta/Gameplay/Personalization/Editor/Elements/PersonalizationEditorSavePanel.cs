@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorSavePanel : PersonalizationEditorElement
+    public class PersonalizationEditorSavePanel : PersonalizationEditorUIElement
     {
         [ActionReference(nameof(onSaveButtonClicked))]
         [ObjectReference("SaveButton")]
@@ -42,7 +42,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void onSaveButtonClicked()
         {
-
+            NeedsSaving = false;
         }
     }
 }

@@ -12,11 +12,11 @@ namespace CDOverhaul.Gameplay
 
         [PersonalizationEditorProperty("Generic Info")]
         public string Name = NO_NAME_SPECIFIED;
-        [PersonalizationEditorProperty("Generic Info")]
+        [PersonalizationEditorProperty("Generic Info", true)]
         public string Description = NO_DESCRIPTION_PROVIDED;
         [PersonalizationEditorProperty("Generic Info")]
         public string Author = NO_AUTHOR_SPECIFIED;
-        [PersonalizationEditorProperty("Generic Info")]
+        [PersonalizationEditorProperty("Generic Info", true)]
         public string ExclusiveFor;
 
         public bool IsUnlocked()

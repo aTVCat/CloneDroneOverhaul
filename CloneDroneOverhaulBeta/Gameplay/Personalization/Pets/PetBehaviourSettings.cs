@@ -19,11 +19,5 @@ namespace CDOverhaul.Gameplay.Pets
         public float RangeToLookAtEnemy = -1;
 
         public bool FollowHeadRotation;
-
-        /// <summary>
-        /// Stuff for editor
-        /// </summary>
-        /// <returns></returns>
-        public static FieldInfo[] GetAllFields() => typeof(PetBehaviourSettings).GetFields(BindingFlags.Instance | BindingFlags.Public);
     }
 }

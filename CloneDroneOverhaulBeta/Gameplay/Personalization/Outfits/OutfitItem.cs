@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CDOverhaul.Gameplay.Editors.Personalization;
+using Newtonsoft.Json;
 using OverhaulAPI;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace CDOverhaul.Gameplay.Outfits
 {
     public class OutfitItem : PersonalizationItem
     {
+        [PersonalizationEditorProperty("Configuration")]
         public string BodyPart;
 
         /// <summary>

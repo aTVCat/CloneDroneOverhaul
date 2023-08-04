@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
@@ -52,7 +53,8 @@ namespace CDOverhaul
             }
 
             // Actions with objects
-            FieldInfo[] fields = type.GetFields(bindingFlags);
+            List<FieldInfo> fields = type.GetFields(bindingFlags).ToList();
+            fields.AddRange(type.BaseType.GetFields(bindingFlags).ToList());
             if (!fields.IsNullOrEmpty())
             {
                 int fieldIndex = 0;
@@ -125,11 +127,41 @@ namespace CDOverhaul
                                     });
                                 }
                             }
+                            else if (targetFieldType == typeof(InputField))
+                            {
+                                InputField inputField = fieldValueToAssign as InputField;
+                                foreach (string methodName in actionReference.MethodNames)
+                                {
+                                    MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(string) }, null);
+                                    if (methodInfo == null)
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+
+                                    inputField.onEndEdit.AddListener(delegate (string value)
+                                    {
+                                        _ = methodInfo.Invoke(behaviour, new object[] { value });
+                                    });
+                                }
+                            }
+                            else if (targetFieldType == typeof(Dropdown))
+                            {
+                                Dropdown dropdown = fieldValueToAssign as Dropdown;
+                                foreach (string methodName in actionReference.MethodNames)
+                                {
+                                    MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(int) }, null);
+                                    if (methodInfo == null)
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+
+                                    dropdown.onValueChanged.AddListener(delegate (int value)
+                                    {
+                                        _ = methodInfo.Invoke(behaviour, new object[] { value });
+                                    });
+                                }
+                            }
                         }
                     }
 
                     fieldIndex++;
-                } while (fieldIndex < fields.Length);
+                } while (fieldIndex < fields.Count);
             }
         }
 

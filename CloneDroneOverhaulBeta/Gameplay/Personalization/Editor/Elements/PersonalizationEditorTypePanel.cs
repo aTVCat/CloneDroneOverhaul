@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CDOverhaul.Gameplay.Outfits;
+using CDOverhaul.Gameplay.Pets;
+using CDOverhaul.Gameplay.WeaponSkins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorTypePanel : PersonalizationEditorElement
+    public class PersonalizationEditorTypePanel : PersonalizationEditorUIElement
     {
         [ActionReference(nameof(onChangeTypeButtonClicked))]
         [ObjectReference("ChangeTypeButton")]
@@ -50,17 +53,23 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void onSkinsButtonClicked()
         {
-
+            PersonalizationEditor.EditingCategory = PersonalizationCategory.WeaponSkins;
+            PersonalizationEditor.EditingItem = new WeaponSkinItem();
+            EditorUI.Refresh();
         }
 
         private void onOutfitsButtonClicked()
         {
-
+            PersonalizationEditor.EditingCategory = PersonalizationCategory.Outfits;
+            PersonalizationEditor.EditingItem = new OutfitItem();
+            EditorUI.Refresh();
         }
 
         private void onPetsButtonClicked()
         {
-
+            PersonalizationEditor.EditingCategory = PersonalizationCategory.Pets;
+            PersonalizationEditor.EditingItem = new PetItem();
+            EditorUI.Refresh();
         }
     }
 }

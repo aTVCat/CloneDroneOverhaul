@@ -1,10 +1,11 @@
 ﻿using OverhaulAPI.SharedMonoBehaviours;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorPropertiesWindow : PersonalizationEditorElement
+    public class PersonalizationEditorPropertiesWindow : PersonalizationEditorUIElement
     {
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorPropertyCategoryDisplay) })]
@@ -20,7 +21,6 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIVer2.AssignVariables(this);
                 _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
                 m_HasInitialized = true;
             }
@@ -28,6 +28,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (PersonalizationEditor.EditingItem == null)
                 return;
 
+            TransformUtils.DestroyAllChildren(m_Container);
             List<PersonalizationEditorPropertyAttribute> properties;
             switch (category)
             {
@@ -47,7 +48,27 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (properties.IsNullOrEmpty())
                 throw new System.NullReferenceException("The attributes list of " + category + " is null/empty");
 
+            List<string> categories = new List<string>();
+            foreach(PersonalizationEditorPropertyAttribute attribute in properties)
+            {
+                if (!string.IsNullOrEmpty(attribute.Category) && !categories.Contains(attribute.Category))
+                    categories.Add(attribute.Category);
+            }
 
+            foreach(string categoryToInstantiate in categories)
+            {
+                List<PersonalizationEditorPropertyAttribute> categoryFields = new List<PersonalizationEditorPropertyAttribute>();
+                foreach (PersonalizationEditorPropertyAttribute attribute in properties)
+                {
+                    if (attribute.Category == categoryToInstantiate)
+                        categoryFields.Add(attribute);
+                }
+
+                PersonalizationEditorPropertyCategoryDisplay categoryPrefab = Instantiate(m_PropertyCategoryPrefab, m_Container);
+                categoryPrefab.IsInstantiated = true;
+                categoryPrefab.Populate(categoryToInstantiate, categoryFields);
+                categoryPrefab.gameObject.SetActive(true);
+            }
         }
     }
 }

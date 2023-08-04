@@ -39,6 +39,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             ShowCursor = false;
         }
 
+        public void Refresh()
+        {
+            PropertiesWindow.Populate(PersonalizationEditor.EditingCategory);
+        }
+
         public void OnCloseButtonClicked()
         {
             Hide();

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorLoadPanel : PersonalizationEditorElement
+    public class PersonalizationEditorLoadPanel : PersonalizationEditorUIElement
     {
         [ActionReference(nameof(onLoadButtonClicked))]
         [ObjectReference("LoadButton")]

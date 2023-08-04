@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorPropertyDisplay : OverhaulBehaviour
+    public class PersonalizationEditorPropertyDisplay : PersonalizationEditorUIElement
     {
         [ObjectReference("Label")]
         public Text PropertyNameLabel;

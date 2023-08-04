@@ -16,6 +16,12 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public static List<PersonalizationEditorPropertyAttribute> PetItemFields;
 
+        public static PersonalizationCategory EditingCategory
+        {
+            get;
+            set;
+        } = PersonalizationCategory.WeaponSkins;
+
         public static PersonalizationItem EditingItem
         {
             get;
