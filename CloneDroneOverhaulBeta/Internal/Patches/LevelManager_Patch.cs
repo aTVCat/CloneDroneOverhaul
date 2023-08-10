@@ -1,21 +1,23 @@
-﻿/*using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Overmodes;
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(LevelManager))]
     internal static class LevelManager_Patch
     {
-        [HarmonyPostfix]
-        [HarmonyPatch("parseLevelSpreadSheets")]
-        private static void parseLevelSpreadSheets_Postfix()
+        [HarmonyPrefix]
+        [HarmonyPatch("getLevelDescriptions")]
+        private static bool getLevelDescriptions_Postfix(ref List<LevelDescription> __result)
         {
-            if (OverhaulVersion.Upd2Hotfix)
+            if(OvermodesController.Instance && OvermodesController.Instance.IsOvermode())
             {
-                return;
+                __result = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
+                return false;
             }
-
-            OverhaulLevelAdder.AddLevel("FUSRoom", "CombatTutorial", GameMode.Story, out _);
+            return true;
         }
     }
-}*/
+}

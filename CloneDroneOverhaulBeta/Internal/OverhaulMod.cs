@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Overmodes;
 using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
@@ -10,7 +11,7 @@ using UnityEngine;
 namespace CDOverhaul
 {
     /// <summary>
-    /// The base class of the mod. Starts up the mod
+    /// The base class of the mod. Launches the mod
     /// </summary>
     [MainModClass]
     public class OverhaulMod : Mod
@@ -21,68 +22,76 @@ namespace CDOverhaul
         public const string ModDeactivatedEventString = "ModDeactivated";
 
         /// <summary>
-        /// Define if we got errors while starting up the mod
-        /// </summary>
-        internal static bool IsCoreLoadedIncorrectly;
-
-        /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
-        public static bool IsModInitialized => !IsCoreLoadedIncorrectly && Core != null;
-        public static bool IsHUDInitialized => Core.CanvasController;
+        public static bool IsModInitialized => !IsLoadedIncorrectly && Core;
+        public static bool IsHUDInitialized => IsModInitialized && Core.CanvasController;
         public static bool HasBootProcessEnded;
+
+        /// <summary>
+        /// Define if we got errors while starting up the mod
+        /// </summary>
+        internal static bool IsLoadedIncorrectly;
 
         /// <summary>
         /// The instance of the core
         /// </summary>
-        public static OverhaulCore Core { get; internal set; }
+        public static OverhaulCore Core
+        {
+            get;
+            internal set;
+        }
 
         /// <summary>
         /// The instance of main mod class
         /// </summary>
-        public static OverhaulMod Base { get; internal set; }
+        public static OverhaulMod Base
+        {
+            get;
+            internal set;
+        }
 
         /// <summary>
         /// Create core when mod was loaded
         /// </summary>
-        protected override void OnModLoaded()
+        public override void OnModLoaded()
         {
             if (IsModInitialized)
                 return;
 
             Base = this;
-            TryCreateCore();
+            TryInstantiateCore();
         }
 
         /// <summary>
         /// Create core when mod was loaded or enabled
         /// </summary>
-        protected override void OnModEnabled()
+        public override void OnModEnabled()
         {
             if (IsModInitialized)
                 return;
 
             Base = this;
-            TryCreateCore();
+            TryInstantiateCore();
         }
 
         /// <summary>
         /// Destroy the when mod was deactivated
         /// </summary>
-        protected override void OnModDeactivated()
+        public override void OnModDeactivated()
         {
             if (!IsModInitialized)
                 return;
 
             Base = null;
-            DeconstructCore();
+            DestroyCore();
         }
 
         /// <summary>
         /// Used for events
         /// </summary>
         /// <param name="firstPersonMover"></param>
-        protected override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
             if (!IsModInitialized && !firstPersonMover)
                 return;
@@ -92,32 +101,48 @@ namespace CDOverhaul
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitializationAndDispatchEvent(firstPersonMover));
         }
 
+        public override Object OnResourcesLoad(string path)
+        {
+            if(OvermodesController.Instance && OvermodesController.Instance.IsOvermode() && path.Contains("Overmodes/"))
+            {
+                path = path.Replace("Data/LevelEditorLevels/", string.Empty);
+                List <LevelDescription> list = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
+                foreach(LevelDescription description in list)
+                {
+                    if (description.PrefabName == path)
+                        return new TextAsset(OverhaulCore.ReadText(description.PrefabName));
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Create the instance of mod core
         /// </summary>
-        internal void TryCreateCore()
+        internal void TryInstantiateCore()
         {
             if (IsModInitialized)
                 return;
 
             try
             {
-                ModsPanelManager.Instance.CallPrivateMethod("closeModsMenu", null);
+                ModsPanelManager.Instance.closeModsMenu();
             }
             catch { }
 
             GameObject gameObject = new GameObject("OverhaulCore");
             OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
-            _ = core.Initialize(out string errors);
+            _ = core.TryInitialize(out string errors);
 
-            if (errors != null)
+            if (!string.IsNullOrEmpty(errors))
                 OverhaulExceptions.OnModEarlyCrash(errors);
         }
 
         /// <summary>
         /// Destroy the instance of the core
         /// </summary>
-        internal void DeconstructCore()
+        internal void DestroyCore()
         {
             if (!IsModInitialized)
                 return;
@@ -135,22 +160,15 @@ namespace CDOverhaul
         private IEnumerator waitForRobotInitializationAndDispatchEvent(FirstPersonMover firstPersonMover)
         {
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
-            yield return new WaitForSecondsRealtime(0.15f);
+            yield return new WaitForSecondsRealtime(0.1f);
             if (firstPersonMover && firstPersonMover.HasCharacterModel())
-                OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+                OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
         }
 
         public static bool IsModEnabled(string modID)
         {
-            List<ModInfo> infos = ModsManager.Instance.GetActiveModInfos();
-            if (infos.IsNullOrEmpty())
-                return false;
-
-            foreach (ModInfo info in infos)
-                if (info.UniqueID.Equals(modID))
-                    return true;
-
-            return false;
+            LoadedModInfo loadedModInfo = ModsManager.Instance.GetLoadedModWithID(modID);
+            return loadedModInfo != null && loadedModInfo.OwnerModInfo != null && loadedModInfo.IsEnabled;
         }
 
         public static System.Type[] GetAllTypes() => Assembly.GetExecutingAssembly().GetTypes();

@@ -172,6 +172,7 @@
     <None Include="Assets\SSSAO\Resources\SimpleSSAO.shader" />
     <None Include="Assets\Game\Scripts\HOLOHolo2.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Blur.shader" />
+    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\MaskedUIBlur.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\CRTScreen.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\Neon.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\MotionBlur.shader" />

@@ -9,6 +9,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(WeaponModel))]
     internal static class WeaponModel_Patch
     {
+        /*
         [HarmonyPrefix]
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
@@ -21,18 +22,18 @@ namespace CDOverhaul.Patches
                 return true;
 
             OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(owner);
-            if (info != null || !GameModeManager.IsMultiplayer())
-            {
-                Hashtable t = GameModeManager.IsMultiplayer() ? info.Hashtable : OverhaulPlayerInfo.CreateNewHashtable();
-                if (t != null &&
-                    t.Contains("Skin." + __instance.WeaponType) &&
-                    !Equals(t["Skin." + __instance.WeaponType], "Default") &&
-                    ((!owner.IsPlayer() &&
-                    WeaponSkinsController.AllowEnemiesWearSkins) ||
-                    owner.IsPlayer()))
-                    return false;
-            }
+            if (info == null)
+                return true;
+
+            Hashtable t = GameModeManager.IsMultiplayer() ? info.Hashtable : OverhaulPlayerInfo.CreateNewHashtable();
+            if (t != null &&
+                t.Contains("Skin." + __instance.WeaponType) &&
+                !Equals(t["Skin." + __instance.WeaponType], "Default") &&
+                ((!owner.IsPlayer() &&
+                WeaponSkinsController.AllowEnemiesWearSkins) ||
+                owner.IsPlayer()))
+                return false;
             return true;
-        }
+        }*/
     }
 }

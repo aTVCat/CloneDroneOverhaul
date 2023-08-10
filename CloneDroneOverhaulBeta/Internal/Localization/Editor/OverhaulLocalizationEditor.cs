@@ -31,8 +31,6 @@ namespace CDOverhaul
             base.gameObject.SetActive(true);
             bool error = OverhaulLocalizationController.Error;
 
-            OverhaulUIDescriptionTooltip.SetActive(true, "Localization Editor", "Translate the mod!");
-
             MyModdedObject.GetObject<Transform>(3).gameObject.SetActive(error);
             if (error)
                 return;
@@ -58,7 +56,6 @@ namespace CDOverhaul
         public void Hide()
         {
             base.gameObject.SetActive(false);
-            OverhaulUIDescriptionTooltip.SetActive(false);
 
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)

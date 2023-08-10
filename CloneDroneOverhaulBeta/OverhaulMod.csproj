@@ -390,6 +390,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\EOverhaulMultiplayerMode.cs" />
+    <Compile Include="Gameplay\Overmodes\OvermodeBase.cs" />
+    <Compile Include="Gameplay\Overmodes\OvermodesController.cs" />
+    <Compile Include="Gameplay\Overmodes\TestOvermode.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorTypePanel.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorLoadPanel.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorSavePanel.cs" />
@@ -454,10 +458,10 @@
     <Compile Include="Gameplay\Robots\OverhaulCombatState.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulPacket.cs" />
     <Compile Include="Gameplay\Robots\Animations\OverhaulRobotHeadRotator.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerController.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerLobby.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerPacketManagement.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\CustomMultiplayerWorld.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerController.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerLobby.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerPacketManagement.cs" />
+    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerWorld.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfo.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoController.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -534,7 +538,11 @@
     <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Device\RecommendationLevel.cs" />
     <Compile Include="Internal\Device\Recommendations.cs" />
+    <Compile Include="Internal\Management\Assets\Container\OverhaulAssetsContainer.cs" />
+    <Compile Include="Internal\Management\Assets\Container\OverhaulAssetAttribute.cs" />
     <Compile Include="Internal\Management\Assets\Repository\OverhaulRepositoryController.cs" />
+    <Compile Include="Internal\Management\Code\MethodReferencingAttribute.cs" />
+    <Compile Include="Internal\Management\Code\FieldReferencingAttribute.cs" />
     <Compile Include="Internal\Management\DevTools\OverhaulJsonEditor.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />
@@ -681,7 +689,7 @@
     <Compile Include="Internal\Management\OverhaulBehaviour.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingDropdownParameters.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingSliderParameters.cs" />
-    <Compile Include="Internal\Code\OverhaulExtensions.cs" />
+    <Compile Include="Internal\Management\Code\OverhaulExtensions.cs" />
     <Compile Include="Internal\OverhaulCompatibilityChecker.cs" />
     <Compile Include="Internal\OverhaulSessionController.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\SettingsMenuReplacement.cs" />
@@ -689,7 +697,7 @@
     <Compile Include="Internal\Patches\SelectableUI_Patch.cs" />
     <Compile Include="Internal\Management\OverhaulCharacterExpansion.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\OverhaulPlayerIdentifier.cs" />
-    <Compile Include="Internal\Code\OverhaulExceptions.cs" />
+    <Compile Include="Internal\Management\Code\OverhaulExceptions.cs" />
     <Compile Include="Gameplay\OverhaulGamemodeManager.cs" />
     <Compile Include="Internal\Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Internal\Patches\GameUIRoot_Patch.cs" />
@@ -824,6 +832,7 @@
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
     <Publicize Include="bolt" />
+    <Publicize Include="ModLibrary" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

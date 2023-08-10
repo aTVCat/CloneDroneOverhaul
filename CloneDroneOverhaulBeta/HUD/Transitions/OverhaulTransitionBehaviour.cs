@@ -13,6 +13,9 @@ namespace CDOverhaul
 
         private Image m_Image;
 
+        private Transform m_TextTransform;
+        private Text m_Text;
+
         private bool m_IsRealTransition;
         private bool m_FadeOut;
 
@@ -34,11 +37,15 @@ namespace CDOverhaul
                 ModdedObject moddedObject = base.GetComponent<ModdedObject>();
                 m_Image = moddedObject.GetObject<Image>(0);
                 m_Image.color = fadeOut ? Color.black : Color.clear;
+                m_TextTransform = moddedObject.GetObject<Transform>(1);
+                m_TextTransform.localScale = fadeOut ? Vector3.one : Vector3.one * 1.5f;
+                m_Text = m_TextTransform.GetComponent<Text>();
+                m_Text.color = fadeOut ? Color.white : Color.clear;
                 m_HasInitialized = true;
             }
 
             m_Image.color = fadeOut ? Color.black : Color.clear;
-            m_TimeToDestroy = fadeOut ? Time.unscaledTime + 3f : -1f;
+            m_TimeToDestroy = fadeOut ? Time.unscaledTime + 0.75f : -1f;
             m_TimeToDisconnect = realTransition ? Time.unscaledTime + 0.5f : -1f;
             //m_TimeToAllowColorUpdates = fadeOut ? Time.unscaledTime + 0.25f : -1f;
         }
@@ -54,9 +61,21 @@ namespace CDOverhaul
             float time = Time.unscaledTime;
             if (time >= m_TimeToAllowColorUpdates)
             {
+                float multiplier = Time.unscaledDeltaTime * UNSCALED_DELTA_TIME_MULTIPLIER;
+
                 Color currentColor = m_Image.color;
-                currentColor.a = Mathf.Lerp(currentColor.a, m_FadeOut ? 0f : 1f, Time.unscaledDeltaTime * UNSCALED_DELTA_TIME_MULTIPLIER);
+                currentColor.a = Mathf.Lerp(currentColor.a, m_FadeOut ? 0f : 1f, multiplier);
                 m_Image.color = currentColor;
+
+                Color textColor = Color.white;
+                textColor.a = currentColor.a;
+                m_Text.color = textColor;
+
+                Vector3 currentScale = m_TextTransform.localScale;
+                currentScale.x = Mathf.Lerp(currentScale.x, m_FadeOut ? 1.5f : 1f, multiplier * 0.75f);
+                currentScale.y = Mathf.Lerp(currentScale.y, m_FadeOut ? 1.5f : 1f, multiplier * 0.75f);
+                currentScale.z = Mathf.Lerp(currentScale.z, m_FadeOut ? 1.5f : 1f, multiplier * 0.75f);
+                m_TextTransform.localScale = currentScale;
             }
 
             AudioListener.volume = !m_FadeOut && m_IsRealTransition ? (1f - m_Image.color.a) * setVolume : setVolume;

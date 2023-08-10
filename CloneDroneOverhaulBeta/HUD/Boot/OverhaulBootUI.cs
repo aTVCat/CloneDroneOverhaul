@@ -125,10 +125,10 @@ namespace CDOverhaul
             if (!OverhaulMod.HasBootProcessEnded)
             {
                 yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
-                OverhaulMod.Core.LoadSyncStuff();
+                yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff());
             }
 
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForSecondsRealtime(1f);
             destroyUI();
 
             yield break;

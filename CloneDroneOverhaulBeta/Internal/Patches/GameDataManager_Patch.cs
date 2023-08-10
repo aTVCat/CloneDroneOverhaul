@@ -1,4 +1,5 @@
-﻿using CDOverhaul.HUD;
+﻿using CDOverhaul.Gameplay.Overmodes;
+using CDOverhaul.HUD;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches
@@ -12,6 +13,9 @@ namespace CDOverhaul.Patches
         {
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled && !ModSetupWindow.HasSetTheModUp && GameModeManager.IsOnTitleScreen())
                 __result = "U6Bronze2";
+
+            if (OvermodesController.Instance && OvermodesController.Instance.IsOvermode())
+                __result = OvermodesController.Instance.CurrentOvermode.GetCurrentLevelID();
         }
     }
 }

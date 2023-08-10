@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
+using OverhaulAPI.SharedMonoBehaviours;
 using System.Collections.Generic;
 using System.Runtime;
 using UnityEngine;
@@ -69,6 +70,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             LevelEditorLibraryUI libraryUI = levelEditorUI.LibraryUI;
             if (inspector == null && libraryUI != null)
                 return;
+
+            inspector.gameObject.AddComponent<OverhaulDraggablePanel>();
 
             CustomInspectorPropertyGroup group = inspector.CustomInspectorPropertyGroupPrefab;
             if (group == null)

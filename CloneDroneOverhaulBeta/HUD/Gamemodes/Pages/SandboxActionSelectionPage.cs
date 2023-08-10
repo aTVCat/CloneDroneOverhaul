@@ -21,7 +21,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public void OnCreateLobbyClick()
         {
             FullscreenWindow.GamemodesUI.Hide();
-            CustomMultiplayerController.Instance.CreateLobby();
+            OverhaulMultiplayerController.Instance.CreateLobby(EOverhaulMultiplayerMode.SandBox);
         }
 
         public void OnJoinLobbyClick()

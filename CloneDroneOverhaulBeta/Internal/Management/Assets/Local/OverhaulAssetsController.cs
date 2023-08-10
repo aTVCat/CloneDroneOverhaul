@@ -307,7 +307,7 @@ namespace CDOverhaul
                 return null;
 
             AssetBundle bundle = m_LoadedAssetBundles[assetBundle];
-            AssetLoadHandler handler = new AssetLoadHandler(doneCallback, bundle);
+            AssetLoadHandler handler = new AssetLoadHandler(doneCallback);
             _ = StaticCoroutineRunner.StartStaticCoroutine(getAssetAsyncCoroutine(bundle, assetName, handler));
             return handler;
         }
@@ -331,19 +331,14 @@ namespace CDOverhaul
             public AsyncOperation Request;
             public Action<AssetLoadHandler> DoneAction;
 
-            public AssetBundle AssetBundle;
-
-            public AssetLoadHandler(Action<AssetLoadHandler> onDone, AssetBundle bundle)
+            public AssetLoadHandler(Action<AssetLoadHandler> onDone)
             {
                 DoneAction = onDone;
-                AssetBundle = bundle;
             }
 
             protected override void OnDisposed()
             {
-                Request = null;
                 DoneAction = null;
-                AssetBundle = null;
             }
 
             public void AsignRequest(AssetBundleRequest request)

@@ -7,6 +7,7 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
+using CDOverhaul.Gameplay.Overmodes;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.Graphics.ArenaOverhaul;
@@ -86,8 +87,9 @@ namespace CDOverhaul
                         overhaulPlayerInfo.OnGenericStringEvent(eventData);
         }
 
-        internal bool Initialize(out string errorString)
+        internal bool TryInitialize(out string errorString)
         {
+            errorString = null;
             try
             {
                 initialize();
@@ -95,10 +97,8 @@ namespace CDOverhaul
             catch (Exception ex)
             {
                 errorString = ex.ToString();
-                return false;
             }
-            errorString = null;
-            return true;
+            return errorString == null;
         }
 
         private void initialize()
@@ -130,22 +130,19 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
-            _ = OverhaulController.AddController<CustomMultiplayerController>();
+            _ = OverhaulController.AddController<OverhaulMultiplayerController>();
 
             _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 
-            OverhaulGraphicsController.Initialize();
             OverhaulPlayerIdentifier.Initialize();
-
-            OverhaulGPUInstancingController.Initialize();
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled && !OverhaulBootUI.Show())
-                LoadSyncStuff();
+                StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 
         private void Start()
         {
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
-                LoadSyncStuff();
+                StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 
         public IEnumerator LoadAsyncStuff()
@@ -197,11 +194,15 @@ namespace CDOverhaul
             yield break;
         }
 
-        public void LoadSyncStuff()
+        public IEnumerator LoadSyncStuff(bool waitForEndOfFrame = true)
         {
             PersonalizationEditor.Initialize();
+            OverhaulGraphicsController.Initialize();
+            OverhaulGPUInstancingController.Initialize();
 
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
+            if (waitForEndOfFrame)
+                yield return new WaitForEndOfFrame();
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.AddController<UpgradeModesController>();
@@ -210,10 +211,16 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<OverhaulVFXController>();
+            if (waitForEndOfFrame)
+                yield return new WaitForEndOfFrame();
 
             _ = OverhaulController.AddController<AdditionalContentController>();
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
+            _ = OverhaulController.AddController<OvermodesController>();
+            if (waitForEndOfFrame)
+                yield return new WaitForEndOfFrame();
+
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
             {
                 _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
@@ -228,6 +235,8 @@ namespace CDOverhaul
             OverhaulController.GetController<LevelEditorFixes>().AddUIs();
 
             _ = OverhaulController.AddController<MoreSkyboxesController>();
+            if (waitForEndOfFrame)
+                yield return new WaitForEndOfFrame();
 
             OverhaulSettingsController.CreateHUD();
             OverhaulLocalizationController.Initialize();
@@ -235,17 +244,18 @@ namespace CDOverhaul
             OverhaulAudioLibrary.Initialize();
             OverhaulPatchNotes.Initialize();
             OverhaulDebugActions.Initialize();
+            if (waitForEndOfFrame)
+                yield return new WaitForEndOfFrame();
 
             ReplacementBase.CreateReplacements();
             OverhaulUpdateChecker.CheckForUpdates();
             OverhaulCompatibilityChecker.CheckGameVersion();
 
             if (!s_HasUpdatedLangFont)
-            {
                 _ = StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
-            }
 
             OverhaulMod.HasBootProcessEnded = true;
+            yield break;
         }
 
         private void OnDestroy()
