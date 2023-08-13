@@ -103,7 +103,7 @@ namespace CDOverhaul
 
         public override Object OnResourcesLoad(string path)
         {
-            if(OvermodesController.Instance && OvermodesController.Instance.IsOvermode() && path.Contains("Overmodes/"))
+            if(OvermodesController.IsOvermode() && path.Contains("Overmodes/"))
             {
                 path = path.Replace("Data/LevelEditorLevels/", string.Empty);
                 List <LevelDescription> list = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();

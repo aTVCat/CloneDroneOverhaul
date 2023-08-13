@@ -34,7 +34,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            IsExclusive = !string.IsNullOrEmpty(Item.ExclusiveFor);
+            IsExclusive = !Item.ExclusiveFor.IsNullOrEmpty();
             IsSelected = PetsController.EquippedPets.Contains(Item.Name);
 
             ItemNameLabel.text = Item.Name;

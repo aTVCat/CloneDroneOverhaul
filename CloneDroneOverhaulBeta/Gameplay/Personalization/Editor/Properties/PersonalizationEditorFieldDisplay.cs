@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             set
             {
                 if (m_EditingField == null)
-                    InitialFieldValue = value.GetValue(PersonalizationEditor.EditingItem);
+                    InitialFieldValue = value.GetValue(TargetObject);
 
                 m_EditingField = value;
             }
@@ -30,25 +30,32 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public object FieldValue
         {
-            get => EditingField.GetValue(PersonalizationEditor.EditingItem);
-            set => EditingField.SetValue(PersonalizationEditor.EditingItem, value);
+            get => EditingField.GetValue(TargetObject);
+            set => EditingField.SetValue(TargetObject, value);
         }
 
         public Type FieldType => EditingField.FieldType;
 
+        public object TargetObject
+        {
+            get;
+            set;
+        }
+
         protected override bool AssignVariablesAutomatically() => false;
 
-        public virtual void Initialize(FieldInfo fieldToEdit)
+        public virtual void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
+            TargetObject = targetObject;
             EditingField = fieldToEdit;
 
-            OverhaulUIVer2.AssignVariables(this);
+            OverhaulUIVer2.AssignValues(this);
             m_Label.text = StringUtils.AddSpacesToCamelCasedString(fieldToEdit.Name);
         }
 
         public void OnFieldValueChanged()
         {
-            EditorUI.SavePanel.NeedsSaving = true;
+            EditorUI.SavePanel.NeedsToSave = true;
         }
     }
 }

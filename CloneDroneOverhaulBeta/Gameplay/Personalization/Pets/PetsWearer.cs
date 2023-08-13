@@ -52,10 +52,11 @@ namespace CDOverhaul.Gameplay.Pets
         {
             DestroyItems();
 
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
+            if (/*!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled || */!Owner)
                 return;
 
-            if (!Owner)
+            PetsController petsController = OverhaulController.GetController<PetsController>();
+            if (!petsController)
                 return;
 
             string equippedItems = string.Empty;
@@ -68,9 +69,13 @@ namespace CDOverhaul.Gameplay.Pets
             else if (!GameModeManager.IsMultiplayer() && (PetsController.AllowEnemiesUsePets || IsOwnerPlayer()))
                 equippedItems = PetsController.EquippedPets;
 
-            foreach(PetItem petItem in PetsController.GetPetItemsBySaveString(equippedItems))
+            foreach(PetItem petItem in petsController.GetItemsWithSaveString(equippedItems))
             {
-                m_SpawnedPets.Add(PetInstanceBehaviour.CreateInstance(petItem, Owner));
+                PetInstanceBehaviour instance = PetInstanceBehaviour.CreateInstance(petItem, Owner);
+                if (!instance)
+                    continue;
+
+                m_SpawnedPets.Add(instance);
             }
         }
 

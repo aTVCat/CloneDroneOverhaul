@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay.Editors.Personalization;
 using Newtonsoft.Json;
 using OverhaulAPI;
+using Pathfinding.Poly2Tri;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,18 +12,15 @@ namespace CDOverhaul.Gameplay.Outfits
     public class OutfitItem : PersonalizationItem
     {
         [PersonalizationEditorProperty("Configuration")]
-        public string BodyPart;
+        public string BodyPart = "Head";
 
         /// <summary>
         /// Character model names - Offset
         /// </summary>
         public Dictionary<string, ModelOffset> Offsets;
 
-        /// <summary>
-        /// A model of accessory
-        /// </summary>
-        [NonSerialized]
-        public GameObject Prefab;
+        [PersonalizationEditorProperty("Visuals")]
+        public OverhaulAssetInfo ItemModel;
 
         public void SetUpOffsets()
         {
@@ -59,10 +57,13 @@ namespace CDOverhaul.Gameplay.Outfits
 
         public GameObject InstantiateAccessory()
         {
-            if (Prefab == null)
+            if (ItemModel == null)
                 return null;
 
-            GameObject spawnedObject = UnityEngine.Object.Instantiate(Prefab);
+            if (!ItemModel.LoadAsset())
+                return null;
+
+            GameObject spawnedObject = UnityEngine.Object.Instantiate(ItemModel.Asset as GameObject);
             spawnedObject.name = spawnedObject.name.Replace("(Clone)", string.Empty);
             spawnedObject.SetActive(true);
             return spawnedObject;

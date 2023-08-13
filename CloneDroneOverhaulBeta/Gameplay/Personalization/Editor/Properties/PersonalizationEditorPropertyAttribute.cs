@@ -11,11 +11,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public bool UseAltDisplay;
         public object AdditionalParameters;
 
-        public PersonalizationEditorPropertyAttribute(string name, bool useAlternateVariant = false, object additParams = null)
+        public string SubClassFieldName;
+
+        public bool AssignValueIfNull;
+
+        public PersonalizationEditorPropertyAttribute(string name, bool useAlternateVariant = false, object additParams = null, bool assingValueIfNull = true)
         {
             Category = name;
             UseAltDisplay = useAlternateVariant;
             AdditionalParameters = additParams;
+            AssignValueIfNull = assingValueIfNull;
         }
     }
 }

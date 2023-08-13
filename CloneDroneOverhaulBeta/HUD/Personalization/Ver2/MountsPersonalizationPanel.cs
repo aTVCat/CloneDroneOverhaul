@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Gameplay.Outfits;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace CDOverhaul.HUD
             PetsController controller = GetController<PetsController>();
             if (controller)
             {
-                List<PetItem> list = PetsController.AllPetItems;
+                List<PersonalizationItem> list = controller.Items;
                 if (!list.IsNullOrEmpty())
                 {
                     foreach (PetItem item in list)

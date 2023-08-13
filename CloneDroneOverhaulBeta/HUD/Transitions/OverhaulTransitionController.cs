@@ -65,6 +65,12 @@ namespace CDOverhaul
 
         private static IEnumerator doTransitionWithActionCoroutine(Action action, Func<bool> waitUntilFunc = null, float waitUntilEndDelay = 0.35f)
         {
+            if (!s_TransitionPrefab)
+            {
+                action?.Invoke();
+                yield break;
+            }
+
             CreateTransition();
 
             yield return new WaitForSecondsRealtime(0.5f);

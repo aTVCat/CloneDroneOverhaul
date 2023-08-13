@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.CustomMultiplayer;
+using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
 using ModLibrary;
@@ -370,28 +371,31 @@ namespace CDOverhaul
             }
         }
 
+        public static void RefreshPersonalizationItems(this FirstPersonMover firstPersonMover)
+        {
+            if (!firstPersonMover)
+                return;
+
+            WeaponSkinsWearer legacySkinsWearer = firstPersonMover.GetComponent<WeaponSkinsWearer>();
+            if (legacySkinsWearer)
+                legacySkinsWearer.SpawnSkins();
+
+            foreach (PersonalizationItemsWearer itemsWearer in firstPersonMover.GetComponents<PersonalizationItemsWearer>())
+                itemsWearer.RefreshItems();
+        }
+
         #endregion
 
         #region CSteamID
 
         public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
         {
-            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && OverhaulMultiplayerController.Lobby.GetLobbyOwner() == steamId;
+            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && OverhaulMultiplayerController.Lobby.OwnerUserID == steamId;
         }
 
-        public static bool IsExcluded(this CSteamID steamID)
+        public static bool IsNil(this CSteamID steamID)
         {
             return steamID == CSteamID.Nil;
-        }
-
-        public static bool IsExcluded(this CSteamID steamID, CSteamID shouldNotEqual)
-        {
-            return IsExcluded(steamID) || steamID == shouldNotEqual;
-        }
-
-        public static bool IsExcluded(this CSteamID steamID, CSteamID[] shouldNotEqual)
-        {
-            return IsExcluded(steamID) || shouldNotEqual.Contains(steamID);
         }
 
         #endregion

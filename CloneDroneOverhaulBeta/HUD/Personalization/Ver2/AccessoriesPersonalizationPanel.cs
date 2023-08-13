@@ -1,4 +1,5 @@
-﻿using CDOverhaul.Gameplay.Outfits;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Outfits;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace CDOverhaul.HUD
             OutfitsController controller = GetController<OutfitsController>();
             if (controller)
             {
-                List<OutfitItem> list = OutfitsController.GetOutfitItemsOfBodyPart(SelectedBodyPart);
+                List<PersonalizationItem> list = controller.GetOutfitItemsOfBodyPart(SelectedBodyPart);
                 if (!list.IsNullOrEmpty())
                 {
                     foreach (OutfitItem item in list)
@@ -69,8 +70,10 @@ namespace CDOverhaul.HUD
             if (m_HasPopulatedBodyParts)
                 return;
 
+            OutfitsController controller = GetController<OutfitsController>();
+
             List<string> allBodyParts = new List<string>();
-            List<OutfitItem> list = OutfitsController.AllOutfitItems;
+            List<PersonalizationItem> list = controller.Items;
             foreach (OutfitItem item in list)
             {
                 if (!allBodyParts.Contains(item.BodyPart))

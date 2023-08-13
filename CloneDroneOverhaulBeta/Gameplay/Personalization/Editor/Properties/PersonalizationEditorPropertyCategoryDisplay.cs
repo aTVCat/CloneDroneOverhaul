@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("FloatProperty")]
         private readonly PersonalizationEditorFloatFieldDisplay m_FloatFieldDisplay;
 
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringSpecViewFieldDisplay) })]
+        [ObjectReference("StringProperty_SpecialView")]
+        private readonly PersonalizationEditorStringSpecViewFieldDisplay m_StringListFieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorAssetInfoFieldDisplay) })]
+        [ObjectReference("AssetProperty")]
+        private readonly PersonalizationEditorAssetInfoFieldDisplay m_AssetInfoFieldDisplay;
+
         [ObjectReference("Container")]
         private readonly ContentSizeFitter m_Container;
 
@@ -57,13 +68,29 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (!m_HasInitialized)
             {
-                OverhaulUIVer2.AssignVariables(this);
+                OverhaulUIVer2.AssignValues(this);
                 m_HasInitialized = true;
             }
 
             m_Header.text = categoryName;
             foreach (PersonalizationEditorPropertyAttribute property in properties)
             {
+                object targetObject = PersonalizationEditor.EditingItem;
+                if (!string.IsNullOrEmpty(property.SubClassFieldName))
+                {
+                    targetObject = PersonalizationEditor.EditingItem.GetTargetObjectOfSubClass(property.SubClassFieldName);
+                }
+
+                /*
+                if (property.AssignValueIfNull)
+                {
+                    object fieldValue = property.FieldReference.GetValue(targetObject);
+                    if(fieldValue == null)
+                    {
+                        property.FieldReference.SetValue(System.Activator.CreateInstance(property.FieldReference.FieldType), targetObject);
+                    }
+                }*/
+
                 PersonalizationEditorFieldDisplay fieldDisplay = null;
                 if (property.FieldReference.FieldType == typeof(string))
                 {
@@ -91,8 +118,23 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 {
                     fieldDisplay = Instantiate(m_BoolFieldDisplay, m_Container.transform);
                 }
-                fieldDisplay.gameObject.SetActive(true);
-                fieldDisplay.Initialize(property.FieldReference);
+                else if (property.FieldReference.FieldType == typeof(List<string>))
+                {
+                    fieldDisplay = Instantiate(m_StringListFieldDisplay, m_Container.transform);
+                }
+                else if (property.FieldReference.FieldType == typeof(OverhaulAssetInfo))
+                {
+                    fieldDisplay = Instantiate(m_AssetInfoFieldDisplay, m_Container.transform);
+                }
+
+                if (fieldDisplay)
+                {
+                    fieldDisplay.gameObject.SetActive(true);
+                    fieldDisplay.Initialize(property.FieldReference, targetObject);
+
+                    if (fieldDisplay is PersonalizationEditorStringSpecViewFieldDisplay)
+                        (fieldDisplay as PersonalizationEditorStringSpecViewFieldDisplay).InitializeField(EStringFieldDisplayType.UserIDs);
+                }
             }
         }
 

@@ -14,9 +14,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("Toggle")]
         private Toggle m_Toggle;
 
-        public override void Initialize(FieldInfo fieldToEdit)
+        public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
-            base.Initialize(fieldToEdit);
+            base.Initialize(fieldToEdit, targetObject);
             m_Toggle.isOn = (bool)FieldValue;
         }
 

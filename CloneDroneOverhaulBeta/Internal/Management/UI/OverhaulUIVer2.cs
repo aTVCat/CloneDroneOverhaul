@@ -30,11 +30,11 @@ namespace CDOverhaul
                 return;
             }
 
-            AssignVariables(this);
+            AssignValues(this);
             Hide();
         }
 
-        public static void AssignVariables(OverhaulBehaviour behaviour)
+        public static void AssignValues(OverhaulBehaviour behaviour)
         {
             BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 

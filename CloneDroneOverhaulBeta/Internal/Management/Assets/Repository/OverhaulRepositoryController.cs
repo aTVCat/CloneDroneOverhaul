@@ -24,7 +24,7 @@ namespace CDOverhaul
 
         public string GetFolder(string name)
         {
-            return RepositoryFolder + name + "/Local/";
+            return RepositoryFolder + name + "/";
         }
 
         private void createDirectories()
@@ -47,15 +47,6 @@ namespace CDOverhaul
                 if (!Directory.Exists(path))
                 {
                     _ = Directory.CreateDirectory(path);
-                }
-
-                if (!Directory.Exists(path + "Web/"))
-                {
-                    _ = Directory.CreateDirectory(path + "Web/");
-                }
-                if (!Directory.Exists(path + "Local/"))
-                {
-                    _ = Directory.CreateDirectory(path + "Local/");
                 }
             }
         }

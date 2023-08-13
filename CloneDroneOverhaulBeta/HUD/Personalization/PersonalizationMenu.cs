@@ -158,101 +158,6 @@ namespace CDOverhaul.HUD
                 m_AccessoryItems = new List<OutfitItem>();
                 OutfitSelection = this;
                 _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
-
-                if (OverhaulVersion.IsDebugBuild)
-                {
-                    m_DebugSaveButton = m.GetObject<Button>(28);
-                    m_DebugSaveButton.onClick.AddListener(delegate
-                    {
-                        if (OutfitsEditor.EditingItem == null || string.IsNullOrEmpty(OutfitsEditor.EditingCharacterModel))
-                            return;
-
-                        OutfitsEditor.EditingItem.SaveOffsets();
-                    });
-                    m_DebugApplyButton = m.GetObject<Button>(29);
-                    m_DebugApplyButton.onClick.AddListener(delegate
-                    {
-                        if (OutfitsEditor.EditingItem == null || string.IsNullOrEmpty(OutfitsEditor.EditingCharacterModel))
-                            return;
-
-                        ModelOffset off = OutfitsEditor.EditingItem.Offsets[OutfitsEditor.EditingCharacterModel];
-                        try
-                        {
-                            off.OffsetPosition = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(19).text), float.Parse(MyModdedObject.GetObject<InputField>(20).text), float.Parse(MyModdedObject.GetObject<InputField>(21).text));
-                            off.OffsetEulerAngles = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(22).text), float.Parse(MyModdedObject.GetObject<InputField>(23).text), float.Parse(MyModdedObject.GetObject<InputField>(24).text));
-                            off.OffsetLocalScale = new Vector3(float.Parse(MyModdedObject.GetObject<InputField>(25).text), float.Parse(MyModdedObject.GetObject<InputField>(26).text), float.Parse(MyModdedObject.GetObject<InputField>(27).text));
-                        }
-                        catch
-                        {
-
-                        }
-                        FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-                        if (player != null)
-                        {
-                            OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
-                            if (ow != null)
-                                ow.RefreshItems();
-                        }
-                    });
-
-                    DelegateScheduler.Instance.Schedule(delegate
-                    {
-                        m_DebugCharacterModelsDropdown = m.GetObject<Dropdown>(30);
-                        m_DebugCharacterModelsDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(true);
-                        m_DebugCharacterModelsDropdown.onValueChanged.AddListener(delegate (int index)
-                        {
-                            if (OutfitsEditor.EditingItem == null || string.IsNullOrEmpty(OutfitsEditor.EditingCharacterModel))
-                                return;
-
-                            SettingsManager.Instance.SetMultiplayerCharacterModelIndex(index);
-                            SettingsManager.Instance.SetUseSkinInSingleplayer(true);
-
-                            Vector3 pos = CharacterTracker.Instance.GetPlayerRobot().transform.position;
-                            CharacterTracker.Instance.DestroyExistingPlayer();
-
-                            GameObject gm = new GameObject("DebugSpawnpoint");
-                            gm.transform.position = pos;
-                            FirstPersonMover newPlayer = GameFlowManager.Instance.SpawnPlayer(gm.transform, true, true, null);
-                            OutfitsEditor.EditingCharacterModel = MultiplayerCharacterCustomizationManager.Instance.CharacterModels[index].CharacterModelPrefab.gameObject.name + "(Clone)";
-                            DebugSetInputFieldsValues(OutfitsEditor.EditingItem.Offsets[OutfitsEditor.EditingCharacterModel]);
-                            Destroy(gm);
-                        });
-                    }, 0.5f);
-
-                    m.GetObject<Button>(31).onClick.AddListener(delegate
-                    {
-                        if (OutfitsEditor.EditingItem == null || string.IsNullOrEmpty(OutfitsEditor.EditingCharacterModel))
-                            return;
-
-                        OutfitsEditor.ModelOffsetCopy = OutfitsEditor.EditingItem.Offsets[OutfitsEditor.EditingCharacterModel];
-                    });
-
-                    m.GetObject<Button>(32).onClick.AddListener(delegate
-                    {
-                        if (OutfitsEditor.EditingItem == null || string.IsNullOrEmpty(OutfitsEditor.EditingCharacterModel) || OutfitsEditor.ModelOffsetCopy == null)
-                            return;
-
-                        ModelOffset edititngOffset = OutfitsEditor.EditingItem.Offsets[OutfitsEditor.EditingCharacterModel];
-                        edititngOffset.OffsetPosition = OutfitsEditor.ModelOffsetCopy.OffsetPosition;
-                        edititngOffset.OffsetEulerAngles = OutfitsEditor.ModelOffsetCopy.OffsetEulerAngles;
-                        edititngOffset.OffsetLocalScale = OutfitsEditor.ModelOffsetCopy.OffsetLocalScale;
-                        DebugSetInputFieldsValues(edititngOffset);
-
-                        FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-                        if (player != null)
-                        {
-                            OutfitsWearer ow = player.GetComponent<OutfitsWearer>();
-                            if (ow != null)
-                            {
-                                ow.RefreshItems();
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    m.GetObject<Transform>(18).gameObject.SetActive(false);
-                }
             }
 
             SetMenuActive(false);
@@ -1217,6 +1122,7 @@ namespace CDOverhaul.HUD
 
             if (IsOutfitSelection)
             {
+                /*
                 m_AccessoryItems = OutfitsController.AllOutfitItems;
                 if (m_AccessoryItems.IsNullOrEmpty())
                 {
@@ -1251,7 +1157,7 @@ namespace CDOverhaul.HUD
                     yield return null;
                 }
 
-                yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());
+                yield return StaticCoroutineRunner.StartStaticCoroutine(endPopulatingSkinsCoroutine());*/
                 yield break;
             }
 

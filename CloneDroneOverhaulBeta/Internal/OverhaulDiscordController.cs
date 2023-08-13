@@ -1,6 +1,8 @@
 ﻿using Discord;
 using ModLibrary;
+using System;
 using UnityEngine;
+using static Discord.UserManager;
 
 namespace CDOverhaul
 {
@@ -23,20 +25,9 @@ namespace CDOverhaul
         private static ActivityManager.UpdateActivityHandler s_UpdateClientActivityHandler;
 
         private static bool s_Initialized;
-        public static bool HasInitialized => s_Initialized && s_DiscordClient != null && Instance;
 
         private float m_UnscaledTimeToInitializeDiscord;
         private float m_TimeToRefresh;
-
-        /// <summary>
-        /// The gamemode player is playing right now
-        /// </summary>
-        public string CurrentGamemode { get; set; }
-
-        /// <summary>
-        /// The details of gamemode (Progress for example)
-        /// </summary>
-        public string CurrentGamemodeDetails { get; set; }
 
         private static bool m_HasUser;
         private static User m_User;
@@ -125,6 +116,26 @@ namespace CDOverhaul
                 return u.Discriminator;
             }
         }
+
+        /// <summary>
+        /// The gamemode player is playing right now
+        /// </summary>
+        public string CurrentGamemode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The details of gamemode (Progress for example)
+        /// </summary>
+        public string CurrentGamemodeDetails
+        {
+            get;
+            set;
+        }
+
+        public static bool HasInitialized => s_Initialized && s_DiscordClient != null && Instance;
 
         public override void Initialize()
         {
@@ -389,6 +400,30 @@ namespace CDOverhaul
                     }
                     break;
             }
+        }
+
+        public static void GetUserInfo(long userId, Action<Discord.User> callback, Action<Result> errorCallback)
+        {
+            if (!HasInitialized)
+            {
+                return;
+            }
+
+            UserManager userManager = s_DiscordClient.GetUserManager();
+            if (userManager == null)
+                return;
+
+            GetUserHandler handler = new GetUserHandler(delegate (Result result, ref Discord.User user)
+            {
+                if (callback != null && result == Result.Ok)
+                {
+                    callback.Invoke(user);
+                    return;
+                }
+                errorCallback?.Invoke(result);
+
+            });
+            userManager.GetUser(userId, handler);
         }
     }
 }

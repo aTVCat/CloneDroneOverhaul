@@ -1,4 +1,5 @@
-﻿using CDOverhaul.HUD;
+﻿using CDOverhaul.Gameplay.Overmodes;
+using CDOverhaul.HUD;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
@@ -77,9 +78,16 @@ namespace CDOverhaul.Patches
                         NameOfMode = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox"),
                         Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc"),
                         ClickedCallback = new UnityEngine.Events.UnityEvent()
+                    },
+                    new GameModeCardData
+                    {
+                        NameOfMode = "Testing mode",
+                        Description = "",
+                        ClickedCallback = new UnityEngine.Events.UnityEvent()
                     }
                     };
                     moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
+                    moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
                     patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
                     Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)").GetComponent<Button>();
                     exitButton.onClick = new Button.ButtonClickedEvent();

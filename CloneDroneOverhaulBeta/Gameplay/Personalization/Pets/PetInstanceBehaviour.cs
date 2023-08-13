@@ -57,7 +57,13 @@ namespace CDOverhaul.Gameplay.Pets
 
         public static PetInstanceBehaviour CreateInstance(PetItem pet, FirstPersonMover firstPersonMover)
         {
-            GameObject gameObject = Instantiate(pet.Model);
+            if (pet == null || pet.PetModel == null)
+                return null;
+
+            if (!pet.PetModel.LoadAsset())
+                return null;
+
+            GameObject gameObject = Instantiate((pet.PetModel.Asset as GameObject));
             gameObject.transform.position = firstPersonMover.transform.position + new Vector3(0, 5, 0);
             gameObject.transform.localScale = pet.BehaviourSettings.OffsetScale;
             PetInstanceBehaviour petInstanceBehaviour = gameObject.AddComponent<PetInstanceBehaviour>();

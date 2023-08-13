@@ -86,7 +86,7 @@ namespace CDOverhaul.HUD.Gamemodes
             m_Button = base.GetComponent<Button>();
             m_Button.AddOnClickListener(OnClick);
 
-            OverhaulUIVer2.AssignVariables(this);
+            OverhaulUIVer2.AssignValues(this);
         }
 
         public void OnClick()

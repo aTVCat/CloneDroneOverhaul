@@ -14,9 +14,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("Dropdown2")]
         private Dropdown m_Dropdown;
 
-        public override void Initialize(FieldInfo fieldToEdit)
+        public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
-            base.Initialize(fieldToEdit);
+            base.Initialize(fieldToEdit, targetObject);
             m_Dropdown.value = (int)FieldValue;
         }
 

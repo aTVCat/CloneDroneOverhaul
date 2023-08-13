@@ -33,7 +33,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            IsExclusive = !string.IsNullOrEmpty(Item.ExclusiveFor);
+            IsExclusive = !Item.ExclusiveFor.IsNullOrEmpty();
             IsSelected = OutfitsController.EquippedAccessories.Contains(Item.Name);
 
             ItemNameLabel.text = Item.Name;

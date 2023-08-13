@@ -29,27 +29,9 @@ namespace CDOverhaul.Gameplay.WeaponSkins
         [OverhaulSettingAttribute(ARROW_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedArrowSkin;
 
-        public static readonly List<WeaponSkinItem> AllSkinItems = new List<WeaponSkinItem>();
-
-        public static bool ItemsNeedRefresh
-        {
-            get;
-            set;
-        }
-
         public override void Initialize()
         {
-            ItemsNeedRefresh = true;
             base.Initialize();
-        }
-
-        public override void AddItems()
-        {
-            if (!ItemsNeedRefresh)
-                return;
-            ItemsNeedRefresh = false;
-            AllSkinItems.Clear();
-
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
@@ -59,5 +41,7 @@ namespace CDOverhaul.Gameplay.WeaponSkins
 
             _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
         }
+
+        public override string GetRepositoryFolder() => "WeaponSkins";
     }
 }

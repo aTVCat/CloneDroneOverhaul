@@ -15,27 +15,12 @@ namespace CDOverhaul.Gameplay.Pets
         [OverhaulSetting("Player.Pets.EnemiesUsePets", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesUsePets;
 
-        public static readonly List<PetItem> AllPetItems = new List<PetItem>();
-
-        public static bool ItemsNeedRefresh
-        {
-            get;
-            set;
-        }
-
         public override void Initialize()
         {
-            ItemsNeedRefresh = true;
             base.Initialize();
         }
 
-        public override void AddItems()
-        {
-            if (!ItemsNeedRefresh)
-                return;
-            ItemsNeedRefresh = false;
-            AllPetItems.Clear();
-
+        /*
             AllPetItems.Add(PetItem.CreateNew("Developer Pet", "television_cat", "blah blah", string.Empty, null));
             PetItem.AttachModelQuick(OverhaulAssetsController.GetAsset("P_DeveloperPet", OverhaulAssetPart.Pets));
 
@@ -49,7 +34,7 @@ namespace CDOverhaul.Gameplay.Pets
             PetItem.GetBehaviourSettingsQuick().OffsetScale = Vector3.one * 0.7f;
             PetItem.GetBehaviourSettingsQuick().FollowHeadRotation = true;
             PetItem.GetBehaviourSettingsQuick().RangeToLookAtEnemy = 20f;
-        }
+        */
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
@@ -59,79 +44,26 @@ namespace CDOverhaul.Gameplay.Pets
             _ = firstPersonMover.gameObject.AddComponent<PetsWearer>();
         }
 
-        public static PetItem GetPetItem(string name, bool returnNullIfLocked = true)
-        {
-            bool canSearchThrough = !AllPetItems.IsNullOrEmpty() && !string.IsNullOrEmpty(name);
-            if (!canSearchThrough)
-                return null;
+        public override string GetRepositoryFolder() => "Pets";
 
-            PetItem result = null;
-            int i = 0;
-            do
-            {
-                PetItem item = AllPetItems[i];
-                if (name == item.Name)
-                {
-                    if (!item.IsUnlocked() && returnNullIfLocked)
-                        return null;
-
-                    result = item;
-                    break;
-                }
-                i++;
-            } while (i < AllPetItems.Count);
-            return result;
-        }
-
-        public static List<PetItem> GetPetItemsBySaveString(string itemsString)
-        {
-            List<PetItem> result = new List<PetItem>();
-            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(SEPARATOR.ToString()) && !AllPetItems.IsNullOrEmpty();
-            if (!shouldSearchEquipped)
-                return result;
-
-            foreach (PetItem item in AllPetItems)
-            {
-                if (itemsString.Contains(item.Name))
-                {
-                    PetItem aItem = GetPetItem(item.Name, false);
-                    if (aItem == null)
-                        continue;
-
-                    result.Add(aItem);
-                }
-            }
-            return result;
-        }
-
-        public static void SetPetEquipped(PetItem item, bool equip, bool refreshPlayer = false)
+        public static void SetPetEquipped(PersonalizationItem item, bool equip, bool refreshPlayer = false)
         {
             if (item == null || (!item.IsUnlocked() && equip))
                 return;
 
             string petSaveString = item.Name + SEPARATOR;
             bool isEquipped = EquippedPets.Contains(petSaveString);
+
             if (isEquipped && !equip)
                 EquippedPets = EquippedPets.Replace(petSaveString, string.Empty);
-
             else if (!isEquipped && equip)
                 EquippedPets += petSaveString;
 
             SavePreferences();
-            if (refreshPlayer)
-            {
-                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-                if (firstPersonMover)
-                {
-                    PetsWearer petsWearer = firstPersonMover.GetComponent<PetsWearer>();
-                    if (petsWearer)
-                    {
-                        petsWearer.RefreshItems();
-                    }
-                }
-            }
+            if(refreshPlayer)
+                CharacterTracker.Instance.GetPlayerRobot().RefreshPersonalizationItems();
         }
 
-        public static void SetPetEquipped(string item, bool equip) => SetPetEquipped(GetPetItem(item, equip), equip);
+        public void SetPetEquipped(string item, bool equip) => SetPetEquipped(GetItem(item), equip);
     }
 }

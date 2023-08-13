@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.WeaponSkins;
+using CDOverhaul.HUD.Tutorial;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorTypePanel : PersonalizationEditorUIElement
     {
+        public static bool HasPassedTutorial
+        {
+            get;
+            set;
+        }
+
         [ActionReference(nameof(onChangeTypeButtonClicked))]
         [ObjectReference("ChangeTypeButton")]
         private Button m_ChangeTypeButton;
@@ -35,10 +42,30 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("Button_Pets")]
         private Button m_PetsButton;
 
+        private Transform m_DefaultParent;
+
         public void SetPanelAndShadingActive(bool value)
         {
             m_TypesPanel.SetActive(value);
             m_Shading.SetActive(value);
+
+            if (value)
+            {
+                m_SkinsButton.interactable = OverhaulController.GetController<WeaponSkins.WeaponSkinsController>();
+            }
+        }
+
+        public void StartTutorial()
+        {
+            if (HasPassedTutorial)
+                return;
+
+            m_DefaultParent = base.transform.parent;
+            OverhaulTutorialUI tutorialUI = OverhaulController.GetController<OverhaulTutorialUI>();
+            tutorialUI.SetUITaskActive(true);
+            tutorialUI.ParentTransformToUITask(base.transform);
+            tutorialUI.SetTooltipActive(true);
+            tutorialUI.SetTooltipContext("Select the items type", "Click on that \"Select\" button and choose the kind of items you want to edit.");
         }
         
         private void hidePanelAndShading()
@@ -49,27 +76,34 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         private void onChangeTypeButtonClicked()
         {
             SetPanelAndShadingActive(true);
+            if (HasPassedTutorial)
+                return;
+
+            base.transform.SetParent(m_DefaultParent, true);
+            base.transform.SetAsFirstSibling();
+            base.gameObject.SetActive(false);
+            OverhaulTutorialUI tutorialUI = OverhaulController.GetController<OverhaulTutorialUI>();
+            tutorialUI.SetUITaskActive(false);
+            tutorialUI.SetTooltipActive(false);
+            HasPassedTutorial = true;
         }
 
         private void onSkinsButtonClicked()
         {
             PersonalizationEditor.EditingCategory = PersonalizationCategory.WeaponSkins;
-            PersonalizationEditor.EditingItem = new WeaponSkinItem();
-            EditorUI.Refresh();
+            EditorUI.LoadPanel.OnLoadButtonClicked();
         }
 
         private void onOutfitsButtonClicked()
         {
             PersonalizationEditor.EditingCategory = PersonalizationCategory.Outfits;
-            PersonalizationEditor.EditingItem = new OutfitItem();
-            EditorUI.Refresh();
+            EditorUI.LoadPanel.OnLoadButtonClicked();
         }
 
         private void onPetsButtonClicked()
         {
             PersonalizationEditor.EditingCategory = PersonalizationCategory.Pets;
-            PersonalizationEditor.EditingItem = new PetItem();
-            EditorUI.Refresh();
+            EditorUI.LoadPanel.OnLoadButtonClicked();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
-            OverhaulUIVer2.AssignVariables(this);
+            OverhaulUIVer2.AssignValues(this);
 
             m_Start.AddOnClickListener(OnStartClicked);
         }

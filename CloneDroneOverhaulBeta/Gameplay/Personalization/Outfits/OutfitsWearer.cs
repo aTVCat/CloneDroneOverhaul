@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.Graphics;
+﻿using CDOverhaul.Graphics;
 using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +36,10 @@ namespace CDOverhaul.Gameplay.Outfits
             if (!Owner || !OverhaulGamemodeManager.SupportsOutfits())
                 return;
 
+            OutfitsController outfitsController = OverhaulController.GetController<OutfitsController>();
+            if (!outfitsController)
+                return;
+
             string equippedItems = string.Empty;
             if (PlayerInformation)
             {
@@ -47,16 +50,16 @@ namespace CDOverhaul.Gameplay.Outfits
             else if (!GameModeManager.IsMultiplayer() && (OutfitsController.AllowEnemiesWearAccesories || IsOwnerPlayer()))
                 equippedItems = OutfitsController.EquippedAccessories;
 
-            foreach (OutfitItem accessoryItem in OutfitsController.GetOutfitItemsBySaveString(equippedItems))
+            foreach (OutfitItem accessoryItem in outfitsController.GetItemsWithSaveString(equippedItems))
             {
-                if (!accessoryItem.Prefab || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
+                if (accessoryItem.ItemModel == null|| !accessoryItem.ItemModel.LoadAsset() || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
                     continue;
 
                 Transform bodyPartTransform = Owner.GetBodyPartParent(accessoryItem.BodyPart);
                 if (!bodyPartTransform)
                     continue;
 
-                GameObject instantiatedPrefab = Instantiate(accessoryItem.Prefab, bodyPartTransform);
+                GameObject instantiatedPrefab = Instantiate(accessoryItem.ItemModel.Asset as GameObject, bodyPartTransform);
                 SetOffset(instantiatedPrefab, accessoryItem);
                 m_SpawnedOutfitItems.Add(accessoryItem.Name, instantiatedPrefab);
             }

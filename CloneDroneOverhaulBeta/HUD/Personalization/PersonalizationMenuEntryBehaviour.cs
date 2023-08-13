@@ -171,7 +171,7 @@ namespace CDOverhaul.HUD
                 return;
 
             if (IsOutfitSelection)
-            {
+            {/*
                 OutfitsController.SetAccessoryEquipped(m_Skin, !IsSelected);
                 SelectSpecific(true);
                 if (OverhaulVersion.IsDebugBuild && IsSelected)
@@ -187,7 +187,7 @@ namespace CDOverhaul.HUD
                     OutfitsEditor.EditingItem = item;
                     OutfitsEditor.EditingCharacterModel = mover.GetCharacterModel().gameObject.name;
                     PersonalizationMenu.OutfitSelection.DebugSetInputFieldsValues(item.Offsets[mover.GetCharacterModel().gameObject.name]);
-                }
+                }*/
                 return;
             }
             else if (IsSelected)

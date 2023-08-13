@@ -17,10 +17,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private bool m_HasInitialized;
 
+        protected override bool AssignVariablesAutomatically() => false;
+
         public void Populate(PersonalizationCategory category)
         {
             if (!m_HasInitialized)
             {
+                OverhaulUIVer2.AssignValues(this);
                 _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
                 m_HasInitialized = true;
             }

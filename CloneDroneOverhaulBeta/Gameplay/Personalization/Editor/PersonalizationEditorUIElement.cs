@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 throw new Exception("Override PersonalizationEditorElement in " + base.gameObject.name);
 
             if (AssignVariablesAutomatically())
-                OverhaulUIVer2.AssignVariables(this);
+                OverhaulUIVer2.AssignValues(this);
         }
 
         protected virtual bool AssignVariablesAutomatically() => true;

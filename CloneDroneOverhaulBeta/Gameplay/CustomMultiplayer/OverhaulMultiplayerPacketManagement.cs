@@ -7,79 +7,9 @@ namespace CDOverhaul.CustomMultiplayer
 {
     public static class OverhaulMultiplayerPacketManagement
     {
-        public static int FixedFrames;
-
-        public static void SendToEveryone(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
-        {
-            if (!CheckPacket(packet, out byte[] array))
-                return;
-
-            OverhaulMultiplayerLobby lobby = OverhaulMultiplayerController.Lobby;
-            CSteamID[] users = lobby.GetLobbyMemberSteamIDs();
-            int all = lobby.GetMemberCount();
-            int index = 0;
-            do
-            {
-                CSteamID steamID = users[index];
-                if (steamID.IsExcluded())
-                {
-                    index++;
-                    continue;
-                }
-
-                packet.SendTo(steamID, array, sendType);
-                index++;
-            } while (index < all);
-        }
-
-        public static void SendToOthers(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
-        {
-            if (!CheckPacket(packet, out byte[] array))
-                return;
-
-            OverhaulMultiplayerLobby lobby = OverhaulMultiplayerController.Lobby;
-            CSteamID owner = SteamUser.GetSteamID();
-            CSteamID[] users = lobby.GetLobbyMemberSteamIDs();
-            int all = lobby.GetMemberCount();
-            int index = 0;
-            do
-            {
-                CSteamID steamID = users[index];
-                if (steamID.IsExcluded(owner))
-                {
-                    index++;
-                    continue;
-                }
-
-                packet.SendTo(steamID, array, sendType);
-                index++;
-            } while (index < all);
-        }
-
-        public static void SendToHost(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
-        {
-            if (!CheckPacket(packet, out byte[] array))
-                return;
-
-            CSteamID cSteamID = OverhaulMultiplayerController.Lobby.GetLobbyOwner();
-            packet.SendTo(cSteamID, array, sendType);
-        }
-
-        public static void SendTo(this OverhaulPacket packet, CSteamID steamID, byte[] data, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
-        {
-            if (data.IsNullOrEmpty() && !CheckPacket(packet, out data))
-                return;
-
-            _ = SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, sendType, packet.GetChannel());
-        }
-
-        public static bool CheckPacket(this OverhaulPacket packet, out byte[] bytes)
+        public static bool PreparePacket(this OverhaulPacket packet, out byte[] bytes)
         {
             bytes = null;
-
-            if (!OverhaulMultiplayerController.FullInitialization)
-                return false;
-
             if (packet == null)
             {
                 Debug.LogWarning("[CDO_MS] Packet is null!");
@@ -87,12 +17,66 @@ namespace CDOverhaul.CustomMultiplayer
             }
 
             bytes = packet.SerializeObject();
-            if (bytes.IsNullOrEmpty())
-            {
-                Debug.LogWarning("[CDO_MS] Byte array is empty!");
-                return false;
-            }
             return true;
+        }
+
+        public static void SendToEveryone(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
+        {
+            if (!PreparePacket(packet, out byte[] array))
+                return;
+
+            CSteamID[] users = OverhaulMultiplayerController.Lobby.Members;
+            int all = users.Length;
+            int index = 0;
+            do
+            {
+                packet.Send(users[index], array, sendType);
+                index++;
+            } while (index < all);
+        }
+
+        public static void SendToOthers(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
+        {
+            if (!PreparePacket(packet, out byte[] array))
+                return;
+
+            OverhaulMultiplayerLobby lobby = OverhaulMultiplayerController.Lobby;
+            CSteamID owner = lobby.LocalUserID;
+            CSteamID[] users = lobby.Members;
+            int all = users.Length;
+            int index = 0;
+            do
+            {
+                CSteamID steamID = users[index];
+                if (steamID == owner)
+                {
+                    index++;
+                    continue;
+                }
+
+                packet.Send(steamID, array, sendType);
+                index++;
+            } while (index < all);
+        }
+
+        public static void SendToHost(this OverhaulPacket packet, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
+        {
+            if (!PreparePacket(packet, out byte[] array))
+                return;
+
+            CSteamID cSteamID = OverhaulMultiplayerController.Lobby.OwnerUserID;
+            packet.Send(cSteamID, array, sendType);
+        }
+
+        public static void Send(this OverhaulPacket packet, CSteamID steamID, byte[] data, EP2PSend sendType = EP2PSend.k_EP2PSendUnreliable)
+        {
+            if (steamID.IsNil())
+                return;
+
+            if (data.IsNullOrEmpty() && !PreparePacket(packet, out data))
+                return;
+
+            _ = SteamNetworking.SendP2PPacket(steamID, data, (uint)data.Length, sendType, packet.GetChannel());
         }
 
         public static void HandleIncomingPackets()
@@ -110,8 +94,11 @@ namespace CDOverhaul.CustomMultiplayer
 
                     if (!array.IsNullOrEmpty())
                     {
-                        OverhaulPacket receivedPacket = array.GetPacket();
-                        receivedPacket.Handle();
+                        OverhaulPacket receivedPacket = array.DeserializeObject<OverhaulPacket>();
+                        if(receivedPacket != default || receivedPacket != null)
+                        {
+                            receivedPacket.Handle();
+                        }
                     }
                     else
                     {
@@ -119,17 +106,6 @@ namespace CDOverhaul.CustomMultiplayer
                         continue;
                     }
                 }
-            }
-        }
-
-        public static OverhaulPacket GetPacket(this byte[] array)
-        {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                memoryStream.Write(array, 0, array.Length);
-                _ = memoryStream.Seek(0, SeekOrigin.Begin);
-                BinaryFormatter formatter = new BinaryFormatter();
-                return (OverhaulPacket)formatter.Deserialize(memoryStream);
             }
         }
     }

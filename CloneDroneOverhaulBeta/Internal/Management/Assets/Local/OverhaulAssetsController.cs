@@ -261,7 +261,8 @@ namespace CDOverhaul
 
         public static T GetAsset<T>(in string assetName, in string assetBundleFileName, bool fixMaterials = true) where T : UnityEngine.Object
         {
-            if (!LoadAssetBundleIfNotLoaded(assetBundleFileName, fixMaterials)) return null;
+            if (!LoadAssetBundleIfNotLoaded(assetBundleFileName, fixMaterials))
+                return null;
 
             T result = m_LoadedAssetBundles[assetBundleFileName].LoadAsset<T>(assetName);
             return result;
@@ -274,7 +275,7 @@ namespace CDOverhaul
             try
             {
                 asset = GetAsset<T>(assetName, assetBundle, fixMaterials);
-                return true;
+                return asset;
             }
             catch
             {

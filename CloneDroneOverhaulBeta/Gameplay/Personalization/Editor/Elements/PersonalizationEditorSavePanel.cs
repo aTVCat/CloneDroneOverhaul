@@ -21,7 +21,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("NeedsSavingIndicator")]
         private GameObject m_NeedsSaveIndicator;
 
-        public bool NeedsSaving
+        public bool NeedsToSave
         {
             get => m_NeedsSaveIndicator.activeSelf;
             set => m_NeedsSaveIndicator.SetActive(value);
@@ -32,7 +32,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             base.Start();
 
             m_AutoSaveToggle.isOn = PersonalizationEditor.IsAutoSaveEnabled;
-            NeedsSaving = false;
+            NeedsToSave = false;
         }
 
         private void onAutoSaveToggleClicked(bool newValue)
@@ -42,7 +42,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void onSaveButtonClicked()
         {
-            NeedsSaving = false;
+            PersonalizationEditor.SaveEditingItem(true);
+            NeedsToSave = false;
         }
     }
 }

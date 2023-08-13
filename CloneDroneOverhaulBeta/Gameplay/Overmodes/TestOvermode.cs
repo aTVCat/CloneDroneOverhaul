@@ -20,13 +20,16 @@ namespace CDOverhaul.Gameplay.Overmodes
         };
 
         public override GameMode GetGameMode() => (GameMode)20;
+        public override string GetGameModeName() => "TestMode";
         public override EOverhaulMultiplayerMode GetMultiplayerMode() => EOverhaulMultiplayerMode.SandBox;
 
         public override List<LevelDescription> GetLevelDescriptions()
         {
-            s_Levels[0].PrefabName = OverhaulMod.Core.ModDirectory + "Assets/Overmodes/CustomAnimationsRoom.json";
+            s_Levels[0].PrefabName = OverhaulMod.Core.ModDirectory + "Assets/Overmodes/TestPlace.json";
             return s_Levels;
         }
         public override string GetCurrentLevelID() => "test-level";
+
+        public override bool AllowUpgradeBots() => true;
     }
 }

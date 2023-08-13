@@ -23,7 +23,7 @@ namespace CDOverhaul.HUD
 
         public override void Start()
         {
-            OverhaulUIVer2.AssignVariables(this);
+            OverhaulUIVer2.AssignValues(this);
         }
     }
 }

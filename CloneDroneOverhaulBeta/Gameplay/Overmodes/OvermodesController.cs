@@ -28,12 +28,25 @@ namespace CDOverhaul.Gameplay.Overmodes
             Instance = null;
         }
 
-        public void test_StartGame()
+        private void Update()
+        {
+            if (!IsOvermode())
+                return;
+
+            if(CurrentOvermode.GameModeData != null && CurrentOvermode.GameModeData.IsDirty())
+            {
+                DataRepository.Instance.Save(CurrentOvermode.GameModeData, CurrentOvermode.GetGameModeName() + "_Data", false, true);
+                CurrentOvermode.GameModeData.SetDirty(false);
+            }
+        }
+
+        public void StartTestMode()
         {
             CurrentOvermode = new TestOvermode();
             CurrentOvermode.Start();
         }
 
-        public bool IsOvermode() => CurrentOvermode != null;
+        public static bool IsOvermode() => Instance && Instance.CurrentOvermode != null;
+        public static OvermodeBase GetOvermode() => IsOvermode() ? Instance.CurrentOvermode : null;
     }
 }

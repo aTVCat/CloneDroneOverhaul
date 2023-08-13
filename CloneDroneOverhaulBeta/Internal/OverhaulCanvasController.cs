@@ -45,6 +45,8 @@ namespace CDOverhaul.HUD
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
             SetCanvasPixelPerfect(true);
 
+            GameUIRoot.Instance.ErrorWindow.transform.SetAsLastSibling();
+
             ModdedObject prefabsModdedObject = moddedObject.GetObject<ModdedObject>(1);
             HUDPrefabsArray = new GameObject[prefabsModdedObject.objects.Count];
             int index = 0;
