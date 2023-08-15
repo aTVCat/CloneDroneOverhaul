@@ -1,24 +1,24 @@
 ﻿using System;
-using TMPro;
 
 namespace CDOverhaul
 {
     public class OverhaulAssetInfo
     {
-        public string AssetBundle;
-        public string AssetName;
+        public string AssetBundle = "none";
+        public string AssetName = "none";
 
         public bool FixMaterials;
 
         [NonSerialized]
         public UnityEngine.Object Asset;
 
+        public bool IsNone() => AssetBundle == "none" || AssetName == "none";
+
         public bool LoadAsset()
         {
-            if (!Asset && !OverhaulAssetsController.TryGetAsset<UnityEngine.Object>(AssetName, AssetBundle, out Asset, FixMaterials))
-                return false;
-
-            return Asset;
+            return !IsNone()
+&& (Asset || OverhaulAssetsController.TryGetAsset<UnityEngine.Object>(AssetName, AssetBundle, out Asset, FixMaterials))
+&& (bool)Asset;
         }
     }
 }

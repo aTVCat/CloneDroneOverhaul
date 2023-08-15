@@ -10,6 +10,10 @@ namespace AmplifyOcclusion
 
     public static class AmplifyOcclusionCommon
     {
+        public static Material OcclusionMaterial;
+        public static Material BlurMaterial;
+        public static Material ApplyMaterial;
+
         public static readonly int PerPixelNormalSourceCount = 4;
         public static readonly float[] m_temporalRotations = { 60.0f, 300.0f, 180.0f, 240.0f, 120.0f, 0.0f };
         public static readonly float[] m_spatialOffsets = { 0.0f, 0.5f, 0.25f, 0.75f };
@@ -25,21 +29,31 @@ namespace AmplifyOcclusion
 
         public static Material CreateMaterialWithShaderName(string aShaderName, bool aThroughErrorMsg)
         {
-            Shader shader = null;
             if (aShaderName == "Hidden/Amplify Occlusion/Occlusion")
             {
-                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Occlusion");
+                if (!OcclusionMaterial)
+                {
+                    OcclusionMaterial = new Material(AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Occlusion"));
+                }
+                return OcclusionMaterial;
             }
             if (aShaderName == "Hidden/Amplify Occlusion/Blur")
             {
-                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Blur");
+                if (!BlurMaterial)
+                {
+                    BlurMaterial = new Material(AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Blur"));
+                }
+                return BlurMaterial;
             }
             if (aShaderName == "Hidden/Amplify Occlusion/Apply")
             {
-                shader = AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Apply");
+                if (!ApplyMaterial)
+                {
+                    ApplyMaterial = new Material(AssetLoader.GetObjectFromFile<Shader>("effect_amplifyocclusion", "Apply"));
+                }
+                return ApplyMaterial;
             }
-
-            return new Material(shader) { hideFlags = HideFlags.DontSave };
+            return null;
         }
 
         public static int SafeAllocateTemporaryRT(CommandBuffer cb, string propertyName,

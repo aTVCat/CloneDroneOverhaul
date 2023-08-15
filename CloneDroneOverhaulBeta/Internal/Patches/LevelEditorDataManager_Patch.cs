@@ -1,7 +1,4 @@
 ﻿using HarmonyLib;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
 
 namespace CDOverhaul.Patches
 {

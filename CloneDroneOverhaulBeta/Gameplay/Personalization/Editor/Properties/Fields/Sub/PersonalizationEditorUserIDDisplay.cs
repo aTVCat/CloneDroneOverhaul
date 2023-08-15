@@ -1,13 +1,6 @@
 ﻿using Discord;
-using PlayFab;
-using PlayFab.ClientModels;
 using Steamworks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -22,13 +15,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         };
 
         [ObjectReference("DisplayName")]
-        private Text m_DisplayName;
+        private readonly Text m_DisplayName;
 
         [ObjectReference("ID")]
-        private Text m_DisplayID;
+        private readonly Text m_DisplayID;
 
         [ObjectReference("TypeLabel")]
-        private Text m_TypeLabel;
+        private readonly Text m_TypeLabel;
 
         private bool m_HasAlreadyInitialized;
 
@@ -83,7 +76,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             switch (type)
             {
                 case 1:
-                    if(!ulong.TryParse(id, out ulong result))
+                    if (!ulong.TryParse(id, out ulong result))
                     {
                         Error = true;
                         m_DisplayName.text = "ERROR";
@@ -91,7 +84,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                     }
 
                     m_DisplayName.text = SteamFriends.GetFriendPersonaName((CSteamID)result);
-                        break;
+                    break;
                 case 2:
                     if (!long.TryParse(id, out long result2))
                     {
@@ -112,7 +105,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                             m_DisplayName.text = user.Username;
                     }, delegate (Result r)
                     {
-                        if(m_DisplayName)
+                        if (m_DisplayName)
                             m_DisplayName.text = string.Format("[ERROR: {0}]", r);
                     });
                     break;
@@ -131,6 +124,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             EditorUI.PlayerInfoConfigMenu.Show(FieldDisplay.FieldValue as List<string>, Index, false, delegate (string newValue)
             {
+                if (newValue == "delete")
+                {
+                    FieldDisplay.Populate();
+                    EditorUI.SavePanel.NeedsToSave = true;
+                    return;
+                }
+
                 string text = PersonalizationEditor.GetOnlyID(newValue, out byte newType);
                 Initialize(text, newType, Index);
                 EditorUI.SavePanel.NeedsToSave = true;

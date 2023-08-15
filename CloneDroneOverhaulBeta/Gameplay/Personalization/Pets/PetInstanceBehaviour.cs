@@ -57,13 +57,24 @@ namespace CDOverhaul.Gameplay.Pets
 
         public static PetInstanceBehaviour CreateInstance(PetItem pet, FirstPersonMover firstPersonMover)
         {
-            if (pet == null || pet.PetModel == null)
+            if (pet == null || pet.PetModel == null || pet.PetVoxModel == null)
                 return null;
 
+            GameObject gameObject;
             if (!pet.PetModel.LoadAsset())
-                return null;
+            {
+                if (pet.PetVoxModel.IsNone())
+                    return null;
 
-            GameObject gameObject = Instantiate((pet.PetModel.Asset as GameObject));
+                gameObject = Instantiate(OverhaulUniquePrefabs.EmptyVolume.gameObject);
+                gameObject.SetActive(true);
+                _ = pet.PetVoxModel.TryLoad(gameObject);
+            }
+            else
+            {
+                gameObject = Instantiate(pet.PetModel.Asset as GameObject);
+            }
+
             gameObject.transform.position = firstPersonMover.transform.position + new Vector3(0, 5, 0);
             gameObject.transform.localScale = pet.BehaviourSettings.OffsetScale;
             PetInstanceBehaviour petInstanceBehaviour = gameObject.AddComponent<PetInstanceBehaviour>();

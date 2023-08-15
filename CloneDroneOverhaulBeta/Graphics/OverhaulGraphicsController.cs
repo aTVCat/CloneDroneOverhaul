@@ -70,8 +70,6 @@ namespace CDOverhaul.Graphics
         [OverhaulSettingDropdownParameters("Disabled@Photographic@FilmicACES")]
         [OverhaulSettingAttribute("Graphics.Amplify color.Tonemapper", 0, false)]
         public static int AmplifyColorTonemapper;
-        [OverhaulSettingAttribute("Graphics.Amplify color.Enable depth mask usage", false, false)]
-        public static bool AmplifyColorUseDepthMask;
 
         #endregion
 
@@ -80,9 +78,9 @@ namespace CDOverhaul.Graphics
         private static readonly List<Bloom> m_BloomEffects = new List<Bloom>();
         private static readonly List<AmplifyOcclusionEffect> m_AOEffects = new List<AmplifyOcclusionEffect>();
 
-        private static Material m_VignetteMaterial;
-        private static Material m_ChromaMaterial;
-        private static Material m_EdgeBlur;
+        private static Material s_VignetteMaterial;
+        private static Material s_ChromaMaterial;
+        private static Material s_EdgeBlur;
 
         private static readonly Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
         private static readonly Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
@@ -105,16 +103,28 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, OverhaulGraphicsController.GenericSparksVFX);
+            if(!PooledPrefabController.HasCreatedEntry(GenericSparksVFX))
+                PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
             _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchAllCameras);
 
-            m_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
-            m_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
-            m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
-            m_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
+            if (!s_ChromaMaterial)
+            {
+                s_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
+            }
+            if (!s_VignetteMaterial)
+            {
+                s_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
+                s_VignetteMaterial.SetFloat("_CenterY", -0.14f);
+            }
+            if (!s_EdgeBlur)
+            {
+                s_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
+
+            }
+
             PatchAllCameras();
             RefreshLightsCount();
 
@@ -174,38 +184,40 @@ namespace CDOverhaul.Graphics
 
         public static void PatchCamera(Camera camera)
         {
-            if (camera == null || camera.orthographic)
+            if (!camera || camera.orthographic)
                 return;
 
             if (!camera.name.Equals("TitleScreenLogoCamera"))
-                camera.renderingPath = !DeferredRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+                camera.renderingPath = RenderingPath.UsePlayerSettings;
 
             PatchBloom(camera.GetComponent<Bloom>());
             PatchAmplifyColor(camera.GetComponent<AmplifyColorBase>());
             refreshAmplifyOcclusionOnCamera(camera);
-            addShaderPassesToCamera(camera);
+            addImageEffectsToCamera(camera);
             refreshShaderMaterials();
         }
 
         public static void PatchBloom(Bloom bloom)
         {
-            if (bloom == null)
+            if (!bloom)
                 return;
 
             bloom.bloomBlurIterations = BloomIterations;
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
 
-            if (!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
-            if (!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
+            if (!bloom.gameObject.name.Equals("ArenaCamera")) 
+                bloom.enabled = BloomEnabled;
+
+            if (!m_BloomEffects.Contains(bloom))
+                m_BloomEffects.Add(bloom);
         }
 
         public static void PatchAmplifyColor(AmplifyColorBase effect)
         {
-            if (effect == null)
+            if (!effect)
                 return;
 
-            effect.UseDepthMask = AmplifyColorUseDepthMask;
             switch (AmplifyColorTonemapper)
             {
                 case 0:
@@ -289,14 +301,14 @@ namespace CDOverhaul.Graphics
             }
         }
 
-        private static void addShaderPassesToCamera(Camera camera)
+        private static void addImageEffectsToCamera(Camera camera)
         {
-            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulCameraEffect>() != null)
+            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulImageEffect>() != null)
                 return;
 
-            OverhaulCameraEffect.AddEffect(camera, m_EdgeBlur, m_EnableBEFunc);
-            OverhaulCameraEffect.AddEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
-            OverhaulCameraEffect.AddEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
+            OverhaulImageEffect.AddEffect(camera, s_EdgeBlur, m_EnableBEFunc);
+            OverhaulImageEffect.AddEffect(camera, s_ChromaMaterial, m_EnableCAFunc);
+            OverhaulImageEffect.AddEffect(camera, s_VignetteMaterial, m_EnableVignetteFunc);
         }
 
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
@@ -349,6 +361,10 @@ namespace CDOverhaul.Graphics
         public static void PatchAllCameras()
         {
             refreshApplicationTargetFramerate();
+
+            if (!CameraController)
+                return;
+
             foreach (Camera cam in CameraController.GetAllCameras())
             {
                 PatchCamera(cam);
@@ -385,14 +401,14 @@ namespace CDOverhaul.Graphics
                     PatchBloom(b);
                 }
             }
-            if (m_VignetteMaterial != null)
+            if (s_VignetteMaterial != null)
             {
-                m_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
+                s_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
             }
-            if (m_ChromaMaterial != null)
+            if (s_ChromaMaterial != null)
             {
-                m_ChromaMaterial.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
-                m_ChromaMaterial.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);
+                s_ChromaMaterial.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
+                s_ChromaMaterial.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);
             }
         }
 

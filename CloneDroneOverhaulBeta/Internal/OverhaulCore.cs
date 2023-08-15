@@ -136,13 +136,13 @@ namespace CDOverhaul
 
             OverhaulPlayerIdentifier.Initialize();
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled && !OverhaulBootUI.Show())
-                StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
+                _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 
         private void Start()
         {
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
-                StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
+                _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 
         public IEnumerator LoadAsyncStuff()
@@ -152,7 +152,6 @@ namespace CDOverhaul
             bool hasLoadedSkinsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Skins);
             bool hasLoadedOutfitsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Accessouries);
             bool hasLoadedPetsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Pets);
-            bool hasLoadedCombatUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_CombatUpdate);
             bool hasLoadedArenaUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul);
 
             if (!hasLoadedPart1Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
@@ -180,11 +179,6 @@ namespace CDOverhaul
                 hasLoadedPetsBundle = true;
             }, false);
 
-            if (!hasLoadedCombatUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_CombatUpdate, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedCombatUpdateBundle = true;
-            });
-
             if (!hasLoadedArenaUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
             {
                 hasLoadedArenaUpdateBundle = true;
@@ -197,12 +191,10 @@ namespace CDOverhaul
         public IEnumerator LoadSyncStuff(bool waitForEndOfFrame = true)
         {
             PersonalizationEditor.Initialize();
-            OverhaulGraphicsController.Initialize();
-            OverhaulGPUInstancingController.Initialize();
 
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
             if (waitForEndOfFrame)
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.AddController<UpgradeModesController>();
@@ -212,40 +204,40 @@ namespace CDOverhaul
             _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<OverhaulVFXController>();
             if (waitForEndOfFrame)
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
             _ = OverhaulController.AddController<AdditionalContentController>();
             _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
             _ = OverhaulController.AddController<OvermodesController>();
             if (waitForEndOfFrame)
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled)
-            {
-                _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
-            }
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWeaponSkinsSystemEnabled)
+                OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
             else
+                OverhaulController.AddController<WeaponSkinsController>();
+
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled)
             {
-                _ = OverhaulController.AddController<WeaponSkinsController>();
+                _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
+                _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
             }
-            _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
-            _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
 
             OverhaulController.GetController<LevelEditorFixes>().AddUIs();
 
             _ = OverhaulController.AddController<MoreSkyboxesController>();
             if (waitForEndOfFrame)
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
-            OverhaulSettingsController.CreateHUD();
             OverhaulLocalizationController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulAudioLibrary.Initialize();
             OverhaulPatchNotes.Initialize();
             OverhaulDebugActions.Initialize();
+            OverhaulGraphicsController.Initialize();
             if (waitForEndOfFrame)
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
             ReplacementBase.CreateReplacements();
             OverhaulUpdateChecker.CheckForUpdates();
@@ -303,7 +295,7 @@ namespace CDOverhaul
 
         public static async void WriteTextAsync(string filePath, string content, IOStateInfo iOStateInfo = null, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) 
+            if (string.IsNullOrEmpty(filePath))
                 return;
 
             if (content == null)
@@ -312,7 +304,7 @@ namespace CDOverhaul
             if (clearContents)
                 File.WriteAllText(filePath, string.Empty);
 
-            if (iOStateInfo != null) 
+            if (iOStateInfo != null)
                 iOStateInfo.IsInProgress = true;
 
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
@@ -327,16 +319,16 @@ namespace CDOverhaul
 
         public static IEnumerator WriteTextCoroutine(string filePath, string content, IOStateInfo iOStateInfo = null, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) 
+            if (string.IsNullOrEmpty(filePath))
                 yield break;
 
-            if (content == null) 
+            if (content == null)
                 content = string.Empty;
 
             if (clearContents)
                 File.WriteAllText(filePath, string.Empty);
 
-            if (iOStateInfo != null) 
+            if (iOStateInfo != null)
                 iOStateInfo.IsInProgress = true;
 
             byte[] toWrite = Encoding.UTF8.GetBytes(content);
@@ -344,7 +336,7 @@ namespace CDOverhaul
             {
                 yield return stream.WriteAsync(toWrite, 0, toWrite.Length);
 
-                if (iOStateInfo != null) 
+                if (iOStateInfo != null)
                     iOStateInfo.IsInProgress = false;
             }
             yield break;
@@ -352,13 +344,13 @@ namespace CDOverhaul
 
         public static void WriteText(string filePath, string content, bool clearContents = true)
         {
-            if (string.IsNullOrEmpty(filePath)) 
+            if (string.IsNullOrEmpty(filePath))
                 return;
 
             if (content == null)
                 content = string.Empty;
 
-            if(clearContents)
+            if (clearContents)
                 File.WriteAllText(filePath, string.Empty);
 
             byte[] toWrite = Encoding.UTF8.GetBytes(content);

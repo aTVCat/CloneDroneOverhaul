@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
 {
     public class RobotControlsExpansion : OverhaulCharacterExpansion
     {
+        [OverhaulSetting("Gameplay.Control.Switch weapons with mouse wheel", false)]
+        public static bool EnableMouseWheel;
+
         private const float WEAPON_SWITCH_INTERVAL = 0.15f;
 
         private float m_TimeToAllowSwitchingWeapons;
 
         private void Update()
         {
+            if (!EnableMouseWheel)
+                return;
+
             if (!Owner || Cursor.visible || !Owner.IsPlayerInputEnabled() || !Owner.IsMainPlayer() || !Owner.IsAlive())
                 return;
 

@@ -23,8 +23,6 @@ namespace CDOverhaul
 
         public const string ModAssetBundle_Main = "overhaulassets_main";
 
-        public const string ModAssetBundle_CombatUpdate = "overhaulassets_combatupdatestuff";
-
         public const string ModAssetBundle_Preload = "overhaulassets_preload";
 
         public const string ModAssetBundle_Experiments = "overhaulassets_experiments";
@@ -233,9 +231,6 @@ namespace CDOverhaul
                     break;
                 case OverhaulAssetPart.Main:
                     assetBundle = ModAssetBundle_Main;
-                    break;
-                case OverhaulAssetPart.Combat_Update:
-                    assetBundle = ModAssetBundle_CombatUpdate;
                     break;
                 case OverhaulAssetPart.Preload:
                     assetBundle = ModAssetBundle_Preload;

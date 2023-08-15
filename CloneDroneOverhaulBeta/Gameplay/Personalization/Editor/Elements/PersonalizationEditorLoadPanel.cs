@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -12,16 +7,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     {
         [ActionReference(nameof(OnLoadButtonClicked))]
         [ObjectReference("LoadButton")]
-        private Button m_LoadButton;
+        private readonly Button m_LoadButton;
 
         [ActionReference(nameof(OnReloadButtonClicked))]
         [ObjectReference("Button_Reload")]
-        private Button m_ReloadButton;
+        private readonly Button m_ReloadButton;
 
         [ObjectReference("NeedsReloadIndicator")]
-        private GameObject m_NeedsReloadIndicator;
+        private readonly GameObject m_NeedsReloadIndicator;
 
-        public bool NeedToReload
+        public bool NeedsToReload
         {
             get => m_NeedsReloadIndicator.activeSelf;
             set => m_NeedsReloadIndicator.SetActive(value);
@@ -30,7 +25,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public override void Start()
         {
             base.Start();
-            NeedToReload = false;
+            NeedsToReload = false;
         }
 
         public void OnLoadButtonClicked()

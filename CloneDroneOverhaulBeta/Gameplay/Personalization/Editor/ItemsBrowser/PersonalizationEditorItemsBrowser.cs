@@ -1,14 +1,9 @@
 ﻿using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
 using CDOverhaul.Gameplay.WeaponSkins;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using static Sony.NP.Commerce;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
@@ -16,18 +11,18 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     {
         [ObjectDefaultVisibility(false)]
         [ObjectReference("Shading")]
-        private GameObject m_Shading;
+        private readonly GameObject m_Shading;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("ItemPrefab")]
-        private ModdedObject m_Item;
+        private readonly ModdedObject m_Item;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("CreateNewPrefab")]
-        private Button m_CreateItem;
+        private readonly Button m_CreateItem;
 
         [ObjectReference("Content")]
-        private Transform m_Container;
+        private readonly Transform m_Container;
 
         private bool m_HasInitialized;
 
@@ -35,7 +30,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public void Show()
         {
-            if(!m_HasInitialized)
+            if (!m_HasInitialized)
             {
                 OverhaulUIVer2.AssignValues(this);
                 OverhaulUIVer2.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
@@ -75,7 +70,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             }
 
             List<PersonalizationItem> list = PersonalizationEditor.GetPersonalizationCategorySavedItems(PersonalizationEditor.EditingCategory);
-            if(list == null)
+            if (list == null)
                 itemsController.ItemsData = new PersonalizationItemsData() { Items = new List<PersonalizationItem>() { newItem } };
             else
                 list.Add(newItem);
@@ -96,7 +91,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (!m_Container)
                 return;
 
-            if(m_Container.childCount != 0)
+            if (m_Container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_Container);
 
             if (PersonalizationEditor.EditingCategory == PersonalizationCategory.None)

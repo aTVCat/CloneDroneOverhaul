@@ -2,7 +2,6 @@
 using CDOverhaul.Gameplay;
 using CDOverhaul.Graphics;
 using HarmonyLib;
-using ModLibrary;
 using UnityEngine;
 
 namespace CDOverhaul.Patches

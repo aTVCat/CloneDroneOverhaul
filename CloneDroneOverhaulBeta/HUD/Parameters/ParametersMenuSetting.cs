@@ -58,6 +58,8 @@ namespace CDOverhaul.HUD
                 m_DefValueButton = m_ModdedObject.GetObject<Button>(12);
                 m_DefValueButton.onClick.AddListener(setSettingDefaultValue);
 
+                m_ModdedObject.GetObject<Text>(17).text = OverhaulLocalizationController.GetTranslation("Reset");
+
                 base.gameObject.AddComponent<OverhaulUISelectionOutline>().SetGraphic(m_ModdedObject.GetObject<Image>(15));
             }
 

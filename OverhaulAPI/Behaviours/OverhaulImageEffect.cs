@@ -5,9 +5,9 @@ using UnityEngine;
 namespace OverhaulAPI.SharedMonoBehaviours
 {
     [RequireComponent(typeof(Camera))]
-    public class OverhaulCameraEffect : MonoBehaviour
+    public class OverhaulImageEffect : MonoBehaviour
     {
-        private static readonly List<OverhaulCameraEffect> s_Behaviours = new List<OverhaulCameraEffect>();
+        private static readonly List<OverhaulImageEffect> s_Behaviours = new List<OverhaulImageEffect>();
 
         internal static void Reset()
         {
@@ -22,7 +22,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
             int i = 0;
             do
             {
-                OverhaulCameraEffect b = s_Behaviours[i];
+                OverhaulImageEffect b = s_Behaviours[i];
                 b.enabled = b.EnableCondition == null || b.EnableCondition();
                 i++;
             } while (i < s_Behaviours.Count);
@@ -45,7 +45,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
                 OverhaulAPICore.ThrowException("ImageEffectMaterials are NULL.");
             }
 
-            OverhaulCameraEffect r = cam.gameObject.AddComponent<OverhaulCameraEffect>();
+            OverhaulImageEffect r = cam.gameObject.AddComponent<OverhaulImageEffect>();
             r.ShaderMaterial = imageEffectMaterial;
             r.EnableCondition = enableCondition;
             r.IsSupported = imageEffectMaterial.shader && imageEffectMaterial.shader.isSupported;

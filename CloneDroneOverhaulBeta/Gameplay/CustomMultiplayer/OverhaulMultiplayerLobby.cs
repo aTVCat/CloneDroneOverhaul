@@ -1,6 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using Discord;
-using Steamworks;
+﻿using Steamworks;
 
 namespace CDOverhaul.CustomMultiplayer
 {
@@ -58,7 +56,7 @@ namespace CDOverhaul.CustomMultiplayer
                 if (IsDirty)
                     Refresh();
 
-                if(m_MemberCount == 0)
+                if (m_MemberCount == 0)
                     m_MemberCount = SteamMatchmaking.GetNumLobbyMembers(LobbyID);
 
                 return m_MemberCount;

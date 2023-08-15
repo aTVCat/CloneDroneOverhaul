@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -12,7 +7,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     {
         [ActionReference(nameof(onChangedValue))]
         [ObjectReference("Toggle")]
-        private Toggle m_Toggle;
+        private readonly Toggle m_Toggle;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {

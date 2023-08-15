@@ -49,17 +49,17 @@ namespace CDOverhaul.Patches
 
             EmoteManager.Instance.PitchLimits.Max = 1f;
             MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
-            
+
             AudioConfiguration audioConfiguration = AudioSettings.GetConfiguration();
-            if (audioConfiguration.numVirtualVoices != 512 && GameModeManager.IsOnTitleScreen())
+            if (!OverhaulVersion.IsTestMode && audioConfiguration.numVirtualVoices != 512 && GameModeManager.IsOnTitleScreen())
             {
                 audioConfiguration.numVirtualVoices = 512;
                 audioConfiguration.numRealVoices = 32;
                 audioConfiguration.dspBufferSize = 1024;
-                AudioSettings.Reset(audioConfiguration);
+                _ = AudioSettings.Reset(audioConfiguration);
             }
 
-            if (!s_OgUIFont) 
+            if (!s_OgUIFont)
                 s_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;
             if (!s_OgSubtitlesFont)
                 s_OgSubtitlesFont = LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont;
@@ -72,6 +72,24 @@ namespace CDOverhaul.Patches
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.FilesUI.FolderPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LibraryUI.DisplayPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LibraryUI.FolderPrefab.transform);
+
+            UpdateSprites(GameUIRoot.Instance.TwitchEnemySettingsMenu.TwitchEnemyDisplayPrefab.transform);
+            Transform ps4ControllerLabel = GameUIRoot.Instance.SettingsMenu.transform.FindChildRecursive("Label_PS4");
+            if (ps4ControllerLabel)
+            {
+                ps4ControllerLabel.gameObject.SetActive(false);
+            }
+
+            Transform spectatingLabel = GameUIRoot.Instance.CurrentlySpectatingUI.transform.FindChildRecursive("SpectatingWord");
+            if (spectatingLabel)
+            {
+                spectatingLabel.gameObject.SetActive(false);
+            }
+            Transform currentUsernameLabel = GameUIRoot.Instance.CurrentlySpectatingUI.transform.FindChildRecursive("CurrentUsername");
+            if (currentUsernameLabel)
+            {
+                currentUsernameLabel.gameObject.SetActive(false);
+            }
 
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.ChallengeListItemDisplayPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.LevelEditorChallengeLevelDisplayPrefab.transform);

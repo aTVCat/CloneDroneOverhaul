@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Multiplayer;
-using System.Collections;
 
 namespace CDOverhaul.Gameplay
 {

@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.DevTools;
+using CDOverhaul.Patches;
 using Steamworks;
 using System.Collections;
 using UnityEngine;
@@ -6,51 +7,59 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCrashScreen : OverhaulUI
+    public class OverhaulCrashScreen : OverhaulUIVer2
     {
+        private static bool s_HasSentReport;
+
         private static OverhaulCrashScreen s_Instance;
         public static OverhaulCrashScreen Instance => OverhaulMod.IsHUDInitialized && OverhaulMod.IsModInitialized ? s_Instance : null;
 
+        [ObjectReference("ErrorMessage")]
         private Text m_ErrorText;
+        [ObjectReference("stacktraceText")]
         private Text m_StackTraceText;
 
+        [ActionReference(nameof(IgnoreCrash))]
+        [ObjectReference("IgnoreCrash")]
         private Button m_IgnoreCrash;
+        [ActionReference(nameof(GoToMainMenu))]
+        [ObjectReference("MainMenu")]
         private Button m_MainMenu;
+        [ActionReference(nameof(ExitGame))]
+        [ObjectReference("ExitGame")]
         private Button m_ExitGame;
 
+        [ActionReference(nameof(OpenStackTrace))]
+        [ObjectReference("ViewStacktrace")]
         private Button m_ViewStackTrace;
+        [ActionReference(nameof(TriggerScreenshot))]
+        [ObjectReference("Screenshot")]
         private Button m_MakeScreenshot;
 
+        [ActionReference(nameof(SendReport))]
+        [ObjectReference("SendReport")]
+        private Button m_SendReport;
+        [ObjectReference("SendReport")]
+        private CanvasGroup m_SendReportCanvasGroup;
+
+        [ObjectReference("StackTrace")]
         private GameObject m_StackTraceWindow;
+        [ActionReference(nameof(CloseStackTrace))]
+        [ObjectReference("CloseStackTraceButton")]
         private Button m_CloseStackTrace;
 
         private bool m_IsScreenshotting;
 
         public override void Initialize()
         {
+            base.Initialize();
             s_Instance = this;
+        }
 
-            m_ErrorText = MyModdedObject.GetObject<Text>(0);
-            m_StackTraceText = MyModdedObject.GetObject<Text>(8);
-
-            m_IgnoreCrash = MyModdedObject.GetObject<Button>(1);
-            m_IgnoreCrash.onClick.AddListener(IgnoreCrash);
-            m_MainMenu = MyModdedObject.GetObject<Button>(2);
-            m_MainMenu.onClick.AddListener(GoToMainMenu);
-            m_ExitGame = MyModdedObject.GetObject<Button>(3);
-            m_ExitGame.onClick.AddListener(ExitGame);
-
-            m_ViewStackTrace = MyModdedObject.GetObject<Button>(4);
-            m_ViewStackTrace.onClick.AddListener(OpenStackTrace);
-            m_MakeScreenshot = MyModdedObject.GetObject<Button>(5);
-            m_MakeScreenshot.onClick.AddListener(TriggerScreenshot);
-
-            m_StackTraceWindow = MyModdedObject.GetObject<Transform>(6).gameObject;
-            m_StackTraceWindow.gameObject.SetActive(false);
-            m_CloseStackTrace = MyModdedObject.GetObject<Button>(7);
-            m_CloseStackTrace.onClick.AddListener(CloseStackTrace);
-
-            Hide();
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            s_Instance = null;
         }
 
         public void Show(string logString, string stackTrace)
@@ -62,18 +71,23 @@ namespace CDOverhaul.HUD
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
 
             ShowCursor = true;
+            SetSendReportButtonInteractable(!s_HasSentReport);
         }
 
-        public void Hide()
+        public override void Hide()
         {
-            base.gameObject.SetActive(false);
-
+            base.Hide();
             if (GameModeManager.IsOnTitleScreen())
             {
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
             }
-
             ShowCursor = false;
+        }
+
+        public void SetSendReportButtonInteractable(bool value)
+        {
+            m_SendReport.interactable = value;
+            m_SendReportCanvasGroup.alpha = value ? 1f : 0.25f;
         }
 
         public void OpenStackTrace()
@@ -104,6 +118,19 @@ namespace CDOverhaul.HUD
             {
                 Application.Quit();
             });
+        }
+
+        public void SendReport()
+        {
+            if (s_HasSentReport)
+                return;
+
+            if (string.IsNullOrEmpty(ErrorManager_Patch.Report))
+                return;
+
+            OverhaulWebhooksController.ExecuteCrashReportsWebhook(ErrorManager_Patch.Report);
+            s_HasSentReport = true;
+            SetSendReportButtonInteractable(false);
         }
 
         public void TriggerScreenshot()

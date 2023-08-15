@@ -71,7 +71,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (inspector == null && libraryUI != null)
                 return;
 
-            inspector.gameObject.AddComponent<OverhaulDraggablePanel>();
+            _ = inspector.gameObject.AddComponent<OverhaulDraggablePanel>();
 
             CustomInspectorPropertyGroup group = inspector.CustomInspectorPropertyGroupPrefab;
             if (group == null)

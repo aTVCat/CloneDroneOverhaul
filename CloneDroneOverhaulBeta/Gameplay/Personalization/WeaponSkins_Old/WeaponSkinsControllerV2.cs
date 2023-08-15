@@ -35,22 +35,6 @@ namespace CDOverhaul.Gameplay
         public static bool HasUpdatedSkins;
         public static bool SkinsDataIsDirty;
 
-        public const string ATVCatDiscord = "A TVCat#9940";
-        public const string TabiDiscord = "[₮₳฿ł]#4233";
-        public const string CaptainMeowDiscord = "капитан кошачьих#7399";
-        public const string Igrok_X_XPDiscord = "Igrok_x_xp#2966";
-        public const string SonicGlebDiscord = "SonicGleb#4862";
-        public const string WaterDiscord = "Water#2977";
-        public const string LostCatDiscord = "TheLostCat#8845";
-        public const string ZoloRDiscord = "ZoloR#3380";
-        public const string SharpDiscord = "Luceferus#2219";
-        public const string HumanDiscord = "Human#8570";
-        public const string HizDiscord = "TheHiz#6138";
-        public const string KegaDiscord = "Mr. КеГ#3924";
-        public const string DGKDiscord = "dukogpom#0969";
-        public const string PsinaDiscord = "Psina#8702";
-        public const string And = " and ";
-
         private static readonly List<IWeaponSkinItemDefinition> m_WeaponSkins = new List<IWeaponSkinItemDefinition>();
         private static readonly List<string> m_CustomAssetBundlesWithSkins = new List<string>();
         public static void DeleteCustomAssetBundleFiles()

@@ -52,7 +52,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
             foreach (OutfitItem accessoryItem in outfitsController.GetItemsWithSaveString(equippedItems))
             {
-                if (accessoryItem.ItemModel == null|| !accessoryItem.ItemModel.LoadAsset() || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
+                if (accessoryItem.ItemModel == null || !accessoryItem.ItemModel.LoadAsset() || m_SpawnedOutfitItems.ContainsKey(accessoryItem.Name))
                     continue;
 
                 Transform bodyPartTransform = Owner.GetBodyPartParent(accessoryItem.BodyPart);

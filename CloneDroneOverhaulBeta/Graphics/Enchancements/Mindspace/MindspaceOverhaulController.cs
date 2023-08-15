@@ -7,7 +7,6 @@ namespace CDOverhaul.Gameplay.Mindspace
         public override void Initialize()
         {
             base.Initialize();
-
             fixSkybox();
         }
 

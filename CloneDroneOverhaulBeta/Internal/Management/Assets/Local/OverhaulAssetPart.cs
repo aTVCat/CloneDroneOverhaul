@@ -11,7 +11,6 @@
         Objects,
         Sounds,
         Main,
-        Combat_Update,
         Preload,
         Experiments,
         Pets,

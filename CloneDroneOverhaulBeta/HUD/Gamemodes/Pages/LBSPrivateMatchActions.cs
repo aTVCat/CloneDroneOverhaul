@@ -25,7 +25,12 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void OnPrivateClick()
         {
-            FullscreenWindow.GoToPage(2);
+            BoltGlobalEventListenerSingleton<MultiplayerMatchmakingManager>.Instance.FindAndJoinMatch(new GameRequest
+            {
+                GameType = GameRequestType.BattleRoyaleInviteCodeCreate
+            });
+            FullscreenWindow.GamemodesUI.Hide();
+            //FullscreenWindow.GoToPage(2);
         }
 
         public void OnJoinLobbyClick()

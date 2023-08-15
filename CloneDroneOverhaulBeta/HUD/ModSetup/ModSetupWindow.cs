@@ -90,6 +90,7 @@ namespace CDOverhaul.HUD
         public void EndSetup()
         {
             OverhaulSettingsController.SetSettingValue(SettingPath, true);
+            GameUIRoot.Instance.TitleScreenUI.OnCloneDroneLogoClicked();
             Hide();
         }
 

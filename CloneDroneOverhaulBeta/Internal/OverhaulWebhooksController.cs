@@ -56,14 +56,14 @@ namespace CDOverhaul
 
         public static void ExecuteCrashReportsWebhook(string content, bool forceSend = false)
         {
-            if ((!AllowSendingInformation || s_HasExecutedCrashReportsWebhook) && !forceSend)
+            if (s_HasExecutedCrashReportsWebhook && !forceSend)
                 return;
             s_HasExecutedCrashReportsWebhook = true;
 
             WebhookObject obj1 = new WebhookObject()
             {
                 content = (OverhaulVersion.IsDebugBuild ? "<@779372500521320469> " : string.Empty) +
-                "__Game crashed! Version: " + OverhaulVersion.ModVersion + "__",
+                "__New crash report! Version: " + OverhaulVersion.ModVersion + "__",
                 embeds = new Embed[]
                 {
                     new Embed()

@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.DevTools;
+using CDOverhaul.Gameplay;
 using ModLibrary;
 using System.Diagnostics;
 using UnityEngine;
@@ -50,6 +51,10 @@ namespace CDOverhaul.Graphics
         private float m_CursorMovementVelocityX;
         private float m_CursorMovementVelocityY;
 
+        private LevelEditorCinematicCamera m_CinematicCamera;
+        private bool m_CineCameraOn;
+        private bool m_HasRefreshedCinematicCameraOnStart;
+
         public bool CanBeControlled => !IsDisposedOrDestroyed() && m_Owner && m_Owner.IsMainPlayer() && m_PlayerCamera && m_SettingsManager && !PhotoManager.Instance.IsInPhotoMode();
         public bool ForceZero => !EnableCameraRolling || !CanBeControlled || Cursor.visible || !m_Owner.IsMainPlayer() || m_Owner.IsAimingBow() || !m_Owner.IsPlayerInputEnabled();
 
@@ -60,6 +65,7 @@ namespace CDOverhaul.Graphics
             m_PlayerCameraTransform = null;
             m_SettingsManager = null;
             OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
+            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         public void Initialize(FirstPersonMover firstPersonMover)
@@ -71,6 +77,7 @@ namespace CDOverhaul.Graphics
             m_SettingsManager = SettingsManager.Instance;
 
             _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
+            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         private void onDied(Character character)
@@ -105,10 +112,13 @@ namespace CDOverhaul.Graphics
                 m_CursorMovementVelocityX = Mathf.Lerp(m_CursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
                 m_CursorMovementVelocityY = Mathf.Lerp(m_CursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
 
+                bool isOnFloorFirstPersonMode = !m_CineCameraOn && m_Owner.IsOnFloorFromKick() && !m_Owner.IsGettingUpFromKick() && ViewModesController.IsFirstPersonModeEnabled;
+                float limit = isOnFloorFirstPersonMode ? 90f : 10f;
+
                 Vector3 newTargetRotation = m_TargetRotation;
-                newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, targetX, multiply) + m_CursorMovementVelocityY, -10f, 10f);
-                newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_CursorMovementVelocityX, -10f, 10f);
-                newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -10f, 10f);
+                newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, isOnFloorFirstPersonMode ? -60f : targetX, multiply) + m_CursorMovementVelocityY, -limit, limit);
+                newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_CursorMovementVelocityX, -limit, limit);
+                newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -limit, limit);
                 m_TargetRotation = newTargetRotation;
                 m_PlayerCameraTransform.localEulerAngles = newTargetRotation;
             }
@@ -119,6 +129,18 @@ namespace CDOverhaul.Graphics
         {
             if (!CanBeControlled)
                 return;
+
+            if (!m_HasRefreshedCinematicCameraOnStart)
+            {
+                RefreshCinematicCameraOnStart();
+                m_HasRefreshedCinematicCameraOnStart = true;
+            }
+
+            if (m_CineCameraOn)
+            {
+                if (!m_CinematicCamera || !m_CinematicCamera.HasTakenOverPlayerCamera())
+                    OnCinematicCameraTurnedOff();
+            }
 
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             float z = 0f;
@@ -165,6 +187,31 @@ namespace CDOverhaul.Graphics
                 }
             }
             stopwatch.StopTimer("CameraRollingBehaviour.VB");
+        }
+
+        public void RefreshCinematicCameraOnStart()
+        {
+            if (!base.transform.parent || !base.transform.parent.parent)
+                return;
+
+            Transform cinematicCameraTransform = base.transform.parent.parent;
+            if (cinematicCameraTransform.gameObject.name.Contains("CinematicCamera"))
+            {
+                m_CinematicCamera = cinematicCameraTransform.GetComponent<LevelEditorCinematicCamera>();
+                m_CineCameraOn = m_CinematicCamera;
+            }
+        }
+
+        public void OnCinematicCameraTurnedOn(LevelEditorCinematicCamera cam)
+        {
+            m_CinematicCamera = cam;
+            m_CineCameraOn = true;
+        }
+
+        public void OnCinematicCameraTurnedOff()
+        {
+            m_CinematicCamera = null;
+            m_CineCameraOn = false;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Editors.Personalization;
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -11,7 +11,7 @@ namespace CDOverhaul.Gameplay.Pets
     public class PetBehaviourSettings
     {
         [PersonalizationEditorProperty("Behaviour")]
-        public Tuple<string, Vector3>[] OffsetTargetPositionNodes;
+        public List<Tuple<string, Vector3>> OffsetTargetPositionNodes;
 
         [PersonalizationEditorProperty("Behaviour")]
         public Vector3 OffsetTargetRotation;

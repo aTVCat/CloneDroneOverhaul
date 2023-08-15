@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class OverhaulAchievementsController : OverhaulGameplayController
+    public class OverhaulAchievementsController : OverhaulController
     {
         private readonly List<string> m_AddedAchievements = new List<string>();
 
         public override void Initialize()
         {
-            base.Initialize();
         }
 
         public T CreateAchievement<T>(string name, string description, Sprite previewImage) where T : OverhaulAchievement

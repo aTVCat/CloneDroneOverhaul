@@ -35,7 +35,8 @@ namespace CDOverhaul.HUD
         private static readonly Dictionary<string, List<string>> s_SortSections = new Dictionary<string, List<string>>
         {
             { "Gameplay", new List<string>()
-            {
+            {             
+                "Gameplay.Control",
                 "Gameplay.Camera",
                 "Gameplay.Multiplayer",
                 "Gameplay.Voxels",

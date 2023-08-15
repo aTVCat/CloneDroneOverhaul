@@ -11,10 +11,18 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         private readonly GameObject m_Shading;
 
         [ObjectReference("Dropdown2")]
-        private Dropdown m_TypesDropdown;
+        private readonly Dropdown m_TypesDropdown;
 
         [ObjectReference("UserID")]
-        private InputField m_IDInputField;
+        private readonly InputField m_IDInputField;
+
+        [ActionReference(nameof(OnAddSelfIDClicked))]
+        [ObjectReference("AddSelfID")]
+        private readonly Button m_AddSelfIDButton;
+
+        [ActionReference(nameof(OnDeleteClicked))]
+        [ObjectReference("DeleteEntry")]
+        private readonly Button m_DeleteButton;
 
         private bool m_HasInitialized;
 
@@ -62,6 +70,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             AddNew = addNewEntry;
             CallBack = callback;
 
+            m_DeleteButton.interactable = !addNewEntry;
             m_TypesDropdown.interactable = AllowUsingManyIDTypes();
             m_TypesDropdown.value = 0;
 
@@ -99,14 +108,37 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                     text = "playfab ";
                     break;
             }
-            text += m_IDInputField.text;
+            text += m_IDInputField.text.Replace("https://steamcommunity.com/profiles/", string.Empty).Replace("/", string.Empty);
 
             if (EditingList != null)
                 EditingList[TargetIndex] = text;
 
-            if (CallBack != null)
-                CallBack(text);
+            CallBack?.Invoke(text);
             Hide();
+        }
+
+        public void OnDeleteClicked()
+        {
+            EditingList.RemoveAt(TargetIndex);
+            CallBack?.Invoke("delete");
+            Hide();
+        }
+
+        public void OnAddSelfIDClicked()
+        {
+            string text = string.Empty;
+            switch (m_TypesDropdown.value)
+            {
+                case 0:
+                    text = OverhaulPlayerIdentifier.GetLocalSteamID();
+                    break;
+                case 1:
+                    return;
+                case 2:
+                    text = OverhaulPlayerIdentifier.GetLocalPlayFabID();
+                    break;
+            }
+            m_IDInputField.text = text;
         }
 
         public static bool AllowUsingManyIDTypes() => OverhaulVersion.IsDebugBuild;

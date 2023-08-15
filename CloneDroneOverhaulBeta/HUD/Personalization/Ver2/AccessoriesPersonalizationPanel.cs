@@ -71,6 +71,8 @@ namespace CDOverhaul.HUD
                 return;
 
             OutfitsController controller = GetController<OutfitsController>();
+            if (!controller || controller.Items.IsNullOrEmpty())
+                return;
 
             List<string> allBodyParts = new List<string>();
             List<PersonalizationItem> list = controller.Items;

@@ -1,12 +1,4 @@
-﻿using CDOverhaul.Gameplay.Outfits;
-using CDOverhaul.Gameplay.Pets;
-using CDOverhaul.Gameplay.WeaponSkins;
-using CDOverhaul.HUD.Tutorial;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CDOverhaul.HUD.Tutorial;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,25 +14,25 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         [ActionReference(nameof(onChangeTypeButtonClicked))]
         [ObjectReference("ChangeTypeButton")]
-        private Button m_ChangeTypeButton;
+        private readonly Button m_ChangeTypeButton;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("TypesPanel")]
-        private GameObject m_TypesPanel;
+        private readonly GameObject m_TypesPanel;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("Shading")]
-        private GameObject m_Shading;
+        private readonly GameObject m_Shading;
 
         [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onSkinsButtonClicked) })]
         [ObjectReference("Button_Skins")]
-        private Button m_SkinsButton;
+        private readonly Button m_SkinsButton;
         [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onOutfitsButtonClicked) })]
         [ObjectReference("Button_Outfits")]
-        private Button m_OutfitsButton;
+        private readonly Button m_OutfitsButton;
         [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onPetsButtonClicked) })]
         [ObjectReference("Button_Pets")]
-        private Button m_PetsButton;
+        private readonly Button m_PetsButton;
 
         private Transform m_DefaultParent;
 
@@ -67,7 +59,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             tutorialUI.SetTooltipActive(true);
             tutorialUI.SetTooltipContext("Select the items type", "Click on that \"Select\" button and choose the kind of items you want to edit.");
         }
-        
+
         private void hidePanelAndShading()
         {
             SetPanelAndShadingActive(false);

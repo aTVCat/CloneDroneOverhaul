@@ -52,9 +52,9 @@ namespace CDOverhaul.HUD
         private Transform m_LoadIndicatorTransform;
         private Image m_LoadIndicatorFill;
 
-        private Button m_DebugApplyButton;
-        private Button m_DebugSaveButton;
-        private Dropdown m_DebugCharacterModelsDropdown;
+        private readonly Button m_DebugApplyButton;
+        private readonly Button m_DebugSaveButton;
+        private readonly Dropdown m_DebugCharacterModelsDropdown;
 
         private Text m_FileVersionText;
 

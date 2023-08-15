@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -43,6 +44,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectReference("AssetInfoConfigMenu")]
         public PersonalizationAssetInfoEditor AssetInfoConfigMenu;
 
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new Type[] { typeof(PersonalizationFileExplorer) })]
+        [ObjectReference("FileExplorer")]
+        public PersonalizationFileExplorer FileExplorerMenu;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new Type[] { typeof(PersonalizationTupleEditor) })]
+        [ObjectReference("TupleView")]
+        public PersonalizationTupleEditor TupleEditor;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -69,7 +80,15 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             LoadPanel.gameObject.SetActive(true);
             TypesPanel.gameObject.SetActive(true);
             PropertiesWindow.gameObject.SetActive(true);
+            _ = StaticCoroutineRunner.StartStaticCoroutine(refreshCoroutine());
+        }
+
+        private IEnumerator refreshCoroutine()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
             PropertiesWindow.Populate(PersonalizationEditor.EditingCategory);
+            yield break;
         }
 
         public void OnCloseButtonClicked()

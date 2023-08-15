@@ -1,9 +1,4 @@
-﻿using CDOverhaul.Gameplay.Outfits;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace CDOverhaul.Gameplay.Pets
+﻿namespace CDOverhaul.Gameplay.Pets
 {
     public class PetsController : PersonalizationItemsController
     {
@@ -51,7 +46,7 @@ namespace CDOverhaul.Gameplay.Pets
             if (item == null || (!item.IsUnlocked() && equip))
                 return;
 
-            string petSaveString = item.Name + SEPARATOR;
+            string petSaveString = item.GetID() + SEPARATOR;
             bool isEquipped = EquippedPets.Contains(petSaveString);
 
             if (isEquipped && !equip)
@@ -60,7 +55,7 @@ namespace CDOverhaul.Gameplay.Pets
                 EquippedPets += petSaveString;
 
             SavePreferences();
-            if(refreshPlayer)
+            if (refreshPlayer)
                 CharacterTracker.Instance.GetPlayerRobot().RefreshPersonalizationItems();
         }
 

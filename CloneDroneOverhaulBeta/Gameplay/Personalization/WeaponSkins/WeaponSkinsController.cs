@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CDOverhaul.Gameplay.WeaponSkins
+﻿namespace CDOverhaul.Gameplay.WeaponSkins
 {
     /// <summary>
     /// Another new skins controller that should work better this time

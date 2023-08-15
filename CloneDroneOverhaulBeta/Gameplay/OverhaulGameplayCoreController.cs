@@ -30,9 +30,6 @@ namespace CDOverhaul.Gameplay
         public override void Initialize()
         {
             base.Initialize();
-
-            _ = OverhaulController.AddController<FirstPersonMoverModdedAnimationsController>();
-
             DelegateScheduler.Instance.Schedule(sendGamemodeUpdatedEvent, 0.1f);
         }
 
@@ -51,7 +48,6 @@ namespace CDOverhaul.Gameplay
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled)
             {
-                _ = firstPersonMover.gameObject.AddComponent<OverhaulAITunner>();
                 //_ = firstPersonMover.gameObject.AddComponent<CharacterFixExpansion>();
                 _ = firstPersonMover.gameObject.AddComponent<OverhaulRobotHeadRotator>();
                 _ = firstPersonMover.gameObject.AddComponent<RobotControlsExpansion>();

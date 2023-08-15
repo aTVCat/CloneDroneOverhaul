@@ -1,15 +1,21 @@
 ﻿using CDOverhaul.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat
 {
     public class RobotCameraZoomExpansion : OverhaulCharacterExpansion
     {
+        [OverhaulSetting("Gameplay.Control.Hold Z to zoom camera", true)]
+        public static bool EnableZooming;
+        [OverhaulSetting("Gameplay.Control.Zoom when aiming", false, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        public static bool ZoomWhenAimingBow;
+        [OverhaulSettingSliderParameters(false, 10f, 35f)]
+        [OverhaulSetting("Gameplay.Control.Zoom strength", 25f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        public static float ZoomBy;
+        [OverhaulSettingSliderParameters(false, 2f, 30f)]
+        [OverhaulSetting("Gameplay.Control.Zoom hardness", 10f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        public static float ZoomHardness;
+
         public static float FOVOffset = 0f;
 
         public override void Start()
@@ -20,7 +26,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void Update()
         {
-            if (!Owner || !Owner.IsMainPlayer())
+            if (!EnableZooming || !Owner || !Owner.IsMainPlayer())
                 return;
 
             if (!Owner.IsAlive())
@@ -30,14 +36,9 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            if (Input.GetKey(KeyCode.Z) || (ViewModesController.IsFirstPersonModeEnabled && Owner.IsAimingBow()))
-            {
-                FOVOffset = Mathf.Lerp(FOVOffset, -25f, Time.unscaledDeltaTime * 10f);
-            }
-            else
-            {
-                FOVOffset = Mathf.Lerp(FOVOffset, 0f, Time.unscaledDeltaTime * 10f);
-            }
+            FOVOffset = Input.GetKey(KeyCode.Z) || ((ViewModesController.IsFirstPersonModeEnabled || ZoomWhenAimingBow) && Owner.IsAimingBow())
+                ? Mathf.Lerp(FOVOffset, -ZoomBy, Time.unscaledDeltaTime * ZoomHardness)
+                : Mathf.Lerp(FOVOffset, 0f, Time.unscaledDeltaTime * ZoomHardness);
         }
     }
 }

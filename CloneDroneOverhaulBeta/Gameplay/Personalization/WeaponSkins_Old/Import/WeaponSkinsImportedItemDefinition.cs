@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay
                 Name = "New skin",
                 Description = "lorem ipsum",
 
-                Author = WeaponSkinsController.ATVCatDiscord,
+                Author = "N/A",
                 OnlyAvailableFor = string.Empty,
                 IsDeveloperItem = false,
 

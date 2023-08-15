@@ -1,4 +1,6 @@
-﻿namespace CDOverhaul
+﻿using CDOverhaul.DevTools;
+
+namespace CDOverhaul
 {
     internal class OverhaulCompatibilityChecker
     {
@@ -10,11 +12,12 @@
             {
                 OverhaulSessionController.SetKey("HasNotifiedPlayerAboutUnsupportedVersion", true);
                 if (!CurrentBuildRunsOnSupportedVersion())
-                    DelegateScheduler.Instance.Schedule(showDialogueWindow, 3f);
+                    DelegateScheduler.Instance.Schedule(ShowDialogueWindow, 3f);
             }
         }
 
-        private static void showDialogueWindow()
+        [DebugAction("Unsupported version")]
+        public static void ShowDialogueWindow()
         {
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             OverhaulFullscreenDialogueWindow window = OverhaulFullscreenDialogueWindow.Instance;

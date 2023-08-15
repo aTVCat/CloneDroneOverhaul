@@ -1,7 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Overmodes;
-using CDOverhaul.Gameplay.QualityOfLife;
 using HarmonyLib;
-using UnityEngine;
 
 namespace CDOverhaul.Patches
 {

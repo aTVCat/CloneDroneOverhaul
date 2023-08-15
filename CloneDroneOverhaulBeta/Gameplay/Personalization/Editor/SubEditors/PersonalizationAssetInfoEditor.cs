@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,7 +73,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public void Hide(bool applyChanges)
         {
-            if(EditingInfo != null)
+            if (EditingInfo != null)
             {
                 if (applyChanges)
                 {
@@ -84,7 +83,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 }
                 EditingInfo = null;
             }
-            if(CallBack != null)
+            if (CallBack != null)
             {
                 CallBack();
                 CallBack = null;
@@ -109,7 +108,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (IsCheckingAsset)
                 return;
 
-            StaticCoroutineRunner.StartStaticCoroutine(checkAssetCoroutine());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(checkAssetCoroutine());
         }
 
         private IEnumerator checkAssetCoroutine()
@@ -117,7 +116,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             IsCheckingAsset = true;
             m_CheckAssetStateLabel.text = "Checking...";
             yield return new WaitForSecondsRealtime(0.2f);
-            if(OverhaulAssetsController.TryGetAsset(m_AssetField.text, m_AssetBundleField.text, out UnityEngine.Object asset, m_FixMaterialsToggle.isOn))
+            if (OverhaulAssetsController.TryGetAsset(m_AssetField.text, m_AssetBundleField.text, out UnityEngine.Object _, m_FixMaterialsToggle.isOn))
             {
                 m_CheckAssetStateLabel.text = "Asset found";
             }

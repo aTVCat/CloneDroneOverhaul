@@ -68,7 +68,7 @@ namespace CDOverhaul.Workshop
 
         [ActionReference(nameof(Hide))]
         [ObjectReference("CloseWorkshopBrowser")]
-        private Button m_ExitButton;
+        private readonly Button m_ExitButton;
 
         private PrefabAndContainer m_WorkshopItemsContainer;
         private PrefabAndContainer m_LevelTypesContainer;
@@ -79,96 +79,96 @@ namespace CDOverhaul.Workshop
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("RanksDropdown")]
-        private GameObject m_RanksDropdown;
+        private readonly GameObject m_RanksDropdown;
 
         [ObjectReference("QuickInfoNew")]
-        private GameObject m_QuickInfo;
+        private readonly GameObject m_QuickInfo;
         [ObjectReference("QuickInfoName")]
-        private Text m_QuickInfoLevelName;
+        private readonly Text m_QuickInfoLevelName;
         [ObjectReference("QuickInfoDesc")]
-        private Text m_QuickInfoLevelDesc;
+        private readonly Text m_QuickInfoLevelDesc;
         [ObjectReference("QuickInfoStars")]
-        private Text m_QuickInfoLevelStars;
+        private readonly Text m_QuickInfoLevelStars;
         [ObjectReference("QuickInfoCreatorName")]
-        private Text m_QuickInfoCreatorName;
+        private readonly Text m_QuickInfoCreatorName;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("ErrorWindow")]
-        private GameObject m_ErrorWindow;
+        private readonly GameObject m_ErrorWindow;
         [ActionReference(nameof(RetryRequest))]
         [ObjectReference("RetryButton")]
-        private Button m_ErrorWindowRetryButton;
+        private readonly Button m_ErrorWindowRetryButton;
 
         [ObjectReference("ManagementPanel")]
-        private Transform m_ManagementButtonsContainer;
+        private readonly Transform m_ManagementButtonsContainer;
         [ObjectReference("ItemLoadProgressBar")]
-        private Transform m_ItemLoadingIndicatorTransform;
+        private readonly Transform m_ItemLoadingIndicatorTransform;
         [ActionReference(nameof(SubscribeToItem))]
         [ObjectReference("Subscribe")]
-        private Button m_SubscribeButton;
+        private readonly Button m_SubscribeButton;
         [ActionReference(nameof(UnsubscribeFromItem))]
         [ObjectReference("UnSubscribe")]
-        private Button m_UnsubscribeButton;
+        private readonly Button m_UnsubscribeButton;
         [ActionReference(nameof(OnPlayButtonClicked))]
         [ObjectReference("PlayButton")]
-        private Button m_PlayButton;
+        private readonly Button m_PlayButton;
         [ActionReference(nameof(EraseLevelProgress))]
         [ObjectReference("EraseProgress")]
-        private Button m_EraseDataButton;
+        private readonly Button m_EraseDataButton;
         [ActionReference(nameof(ReloadItemView))]
         [ObjectReference("ReloadPanelButton")]
-        private Button m_ReloadItemViewButton;
+        private readonly Button m_ReloadItemViewButton;
 
         [ActionReference(nameof(VoteUp))]
         [ObjectReference("UpVote")]
-        private Button m_UpVoteButton;
+        private readonly Button m_UpVoteButton;
         [ActionReference(nameof(VoteDown))]
         [ObjectReference("DownVote")]
-        private Button m_DownVoteButton;
+        private readonly Button m_DownVoteButton;
         [ActionReference(nameof(MarkItemAsFavourite))]
         [ObjectReference("Favourite")]
-        private Button m_FavoriteButton;
+        private readonly Button m_FavoriteButton;
         [ActionReference(nameof(OpenItemSteamPage))]
         [ObjectReference("SteamPage")]
-        private Button m_ItemSteamPageButton;
+        private readonly Button m_ItemSteamPageButton;
         [ActionReference(nameof(OpenItemAuthorProfilePage))]
         [ObjectReference("CreatorProfile")]
-        private Button m_ItemCreatorProfileButton;
+        private readonly Button m_ItemCreatorProfileButton;
         [ActionReference(nameof(ViewAuthorItems))]
         [ObjectReference("CreatorItems")]
-        private Button m_ViewCreatorItemsButton;
+        private readonly Button m_ViewCreatorItemsButton;
         [ActionReference(nameof(CopyItemLink))]
         [ObjectReference("CopyLink")]
-        private Button m_CopyItemLinkButton;
+        private readonly Button m_CopyItemLinkButton;
 
         [ActionReference(nameof(TogglePageSelectionPanel))]
         [ObjectReference("ButtonPage")]
-        private Button m_PageSelectionButton;
+        private readonly Button m_PageSelectionButton;
         [ObjectReference("CurrentPageText")]
-        private Text m_CurrentPageText;
+        private readonly Text m_CurrentPageText;
         [ObjectDefaultVisibility(false)]
         [ObjectReference("PageSelection")]
-        private Transform m_PageSelectionTransform;
+        private readonly Transform m_PageSelectionTransform;
         [ActionReference(nameof(RefreshLevelsList))]
         [ObjectReference("ButtonReloadPage")]
-        private Button m_ReloadPageButton;
+        private readonly Button m_ReloadPageButton;
         [ObjectReference("ButtonBrowseInstalledItems")]
-        private Button m_BrowseInstalledButton;
+        private readonly Button m_BrowseInstalledButton;
         [ObjectReference("ButtonBrowseWorkshopItems")]
-        private Button m_BrowseWorkshopButton;
+        private readonly Button m_BrowseWorkshopButton;
         [ObjectReference("ButtonBrowserLocalUserItems")]
-        private Button m_BrowsePublishedButton;
+        private readonly Button m_BrowsePublishedButton;
         private PrefabAndContainer m_PageContainer;
 
         [ObjectReference("ButtonSearch")]
-        private Button m_SearchButton;
+        private readonly Button m_SearchButton;
         [ObjectDefaultVisibility(false)]
         [ObjectReference("SearchPanel")]
-        private GameObject m_SearchPanel;
+        private readonly GameObject m_SearchPanel;
         [ObjectReference("SearchBox")]
-        private InputField m_SearchBox;
+        private readonly InputField m_SearchBox;
         [ObjectReference("ButtonStartSearching")]
-        private Button m_StartSearchingButton;
+        private readonly Button m_StartSearchingButton;
 
         private PrefabAndContainer m_AdditionalPreviewsContainer;
         private LoadingIndicator m_ItemDownloadLI;
@@ -196,9 +196,9 @@ namespace CDOverhaul.Workshop
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("ItemPageFullscreen")]
-        private Transform m_ItemPageViewTransform;
+        private readonly Transform m_ItemPageViewTransform;
         [ObjectReference("Page")]
-        private Transform m_PageTransform;
+        private readonly Transform m_PageTransform;
 
         private readonly ProgressInformation m_ProgressInfo = new ProgressInformation();
 
@@ -1016,7 +1016,7 @@ namespace CDOverhaul.Workshop
             CurrentRequestResult = null;
             CurrentRequestProgress = new ProgressInformation();
 
-            if(TargetAccount != default)
+            if (TargetAccount != default)
             {
                 string persona = SteamFriends.GetFriendPersonaName(TargetAccount);
                 OverhaulUIDescriptionTooltip.SetActive(true, string.Format(OverhaulLocalizationController.GetTranslation("LevelsBy"), persona), OverhaulLocalizationController.GetTranslation("View levels made by this user"));
@@ -1108,10 +1108,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             string stars = workshopItem.Stars.ToString();
-            if (stars == "1")
-                m_QuickInfoLevelStars.text = OverhaulLocalizationController.GetTranslation("Not rated");
-            else
-                m_QuickInfoLevelStars.text = stars.Length > 3 ? stars.Remove(3) : stars;
+            m_QuickInfoLevelStars.text = stars == "1" ? OverhaulLocalizationController.GetTranslation("Not rated") : stars.Length > 3 ? stars.Remove(3) : stars;
 
             m_QuickInfo.SetActive(true);
             m_QuickInfoLevelName.text = workshopItem.ItemTitle;
@@ -1131,7 +1128,7 @@ namespace CDOverhaul.Workshop
             return ShouldMakePlayButtonInteractable() && File.Exists(path);
         }
 
-        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 4f;
+        public bool ShouldResetRequest() => IsPopulatingItems && Time.unscaledTime >= m_UnscaledTimeClickedOnOption + 10f;
 
         #region Patches
 
@@ -1362,8 +1359,9 @@ namespace CDOverhaul.Workshop
                 m_ThumbnailImage.enabled = false;
                 string texturePath = m_WorkshopItem.PreviewURL;
 
-                if (CacheImages && File.Exists(OverhaulNetworkAssetsController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png"))
-                    texturePath = "file://" + OverhaulNetworkAssetsController.DownloadFolder + "Steam/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png";
+                string path = OverhaulMod.Core.ModDirectory + "Assets/Workshop/DownloadedPreviews/" + m_WorkshopItem.ItemID.m_PublishedFileId + ".png";
+                if (CacheImages && File.Exists(path))
+                    texturePath = "file://" + path;
 
                 OverhaulDownloadInfo handler = new OverhaulDownloadInfo();
                 handler.DoneAction = delegate
@@ -1390,7 +1388,7 @@ namespace CDOverhaul.Workshop
 
             private IEnumerator saveImageCoroutine(byte[] image, string itemID)
             {
-                string path = NetworkAssets.OverhaulNetworkAssetsController.DownloadFolder + "Steam/";
+                string path = OverhaulMod.Core.ModDirectory + "Assets/Workshop/DownloadedPreviews/";
                 if (!Directory.Exists(path) || File.Exists(path + itemID + ".png"))
                     yield break;
 

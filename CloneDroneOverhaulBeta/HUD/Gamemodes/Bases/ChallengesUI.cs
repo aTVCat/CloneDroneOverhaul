@@ -212,7 +212,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 {
                     ChallengeManager.Instance.StartChallenge(m_ChallengeDefinition, false);
                     OverhaulGamemodesUI gamemodesUI = OverhaulController.GetController<OverhaulGamemodesUI>();
-                    if (gamemodesUI) 
+                    if (gamemodesUI)
                         gamemodesUI.Hide();
                 }
                 Func<bool> func = new Func<bool>(() => CharacterTracker.Instance.GetPlayer());

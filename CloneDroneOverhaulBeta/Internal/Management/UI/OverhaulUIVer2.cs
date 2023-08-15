@@ -85,7 +85,7 @@ namespace CDOverhaul
 
                         // Set is active
                         ObjectDefaultVisibility defaultVisibility = info.GetCustomAttribute<ObjectDefaultVisibility>();
-                        if(defaultVisibility != null)
+                        if (defaultVisibility != null)
                             moddedObject.GetObject<Transform>(indexInModdedObject).gameObject.SetActive(defaultVisibility.ShouldBeActive);
 
                         if (!fieldValueToAssign)
@@ -97,7 +97,7 @@ namespace CDOverhaul
                         ActionReferenceAttribute actionReference = info.GetCustomAttribute<ActionReferenceAttribute>();
                         if (actionReference != null)
                         {
-                            if(targetFieldType == typeof(Button))
+                            if (targetFieldType == typeof(Button))
                             {
                                 Button button = fieldValueToAssign as Button;
                                 foreach (string methodName in actionReference.MethodNames)

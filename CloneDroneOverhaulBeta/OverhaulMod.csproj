@@ -402,6 +402,11 @@
     <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditor.cs" />
     <Compile Include="Gameplay\Personalization\Editor\ItemsBrowser\PersonalizationEditorItemsBrowser.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\EStringFieldDisplayType.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorGuidFieldDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorVector3FieldDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorTupleFieldDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorListFieldDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorVoxAssetInfoFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorBoolFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorIntAltFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorIntFieldDisplay.cs" />
@@ -409,6 +414,7 @@
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorAssetInfoFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorStringSpecViewFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\PersonalizationEditorStringFieldDisplay.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\Sub\PersonalizationEditorListEntryDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\Fields\Sub\PersonalizationEditorUserIDDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorFieldDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorSubPropertyAttribute.cs" />
@@ -418,7 +424,9 @@
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyAttribute.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Properties\PersonalizationEditorPropertyDisplay.cs" />
     <Compile Include="Gameplay\Personalization\Editor\PersonalizationEditorUIElement.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\SubEditors\PersonalizationFileExplorer.cs" />
     <Compile Include="Gameplay\Personalization\Editor\SubEditors\PersonalizationAssetInfoEditor.cs" />
+    <Compile Include="Gameplay\Personalization\Editor\SubEditors\PersonalizationTupleEditor.cs" />
     <Compile Include="Gameplay\Personalization\Editor\SubEditors\PersonalizationPlayerInfoEditor.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItem.cs" />
     <Compile Include="Gameplay\Personalization\PersonalizationItemsController.cs" />
@@ -461,11 +469,6 @@
     <Compile Include="ExternalDLLs\DiscordGameSDK\StorageManager.cs" />
     <Compile Include="ExternalDLLs\DiscordGameSDK\StoreManager.cs" />
     <Compile Include="Gameplay\CharacterExpansionContainer.cs" />
-    <Compile Include="Gameplay\Robots\AI\OverhaulAITunner.cs" />
-    <Compile Include="Gameplay\Robots\Animations\FirstPersonMoverModdedAnimationsController.cs" />
-    <Compile Include="Gameplay\Robots\Animations\FirstPersonMoverModdedAnimationsExpansion.cs" />
-    <Compile Include="Gameplay\Robots\Animations\FirstPersonMoverAnimatorType.cs" />
-    <Compile Include="Gameplay\Robots\OverhaulAdvancedCharacterExpansion.cs" />
     <Compile Include="Gameplay\Robots\OverhaulCombatState.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulPacket.cs" />
     <Compile Include="Gameplay\Robots\Animations\OverhaulRobotHeadRotator.cs" />
@@ -549,10 +552,12 @@
     <Compile Include="Internal\Device\Recommendations.cs" />
     <Compile Include="Internal\Management\Assets\Container\OverhaulAssetsContainer.cs" />
     <Compile Include="Internal\Management\Assets\Container\OverhaulAssetAttribute.cs" />
+    <Compile Include="Internal\Management\Assets\Local\OverhaulVoxAssetInfo.cs" />
     <Compile Include="Internal\Management\Assets\Local\OverhaulAssetInfo.cs" />
     <Compile Include="Internal\Management\Assets\Repository\OverhaulRepositoryController.cs" />
     <Compile Include="Internal\Management\Code\MethodReferencingAttribute.cs" />
     <Compile Include="Internal\Management\Code\FieldReferencingAttribute.cs" />
+    <Compile Include="Internal\Management\Code\OverhaulUniquePrefabs.cs" />
     <Compile Include="Internal\Management\DevTools\OverhaulJsonEditor.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\DebugActionAttribute.cs" />
     <Compile Include="HUD\DevTools\OverhaulDevToolsUI.cs" />

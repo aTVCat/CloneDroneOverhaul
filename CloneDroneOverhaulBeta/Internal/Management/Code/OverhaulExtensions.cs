@@ -8,7 +8,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -333,7 +332,7 @@ namespace CDOverhaul
             List<WeaponType> list = new List<WeaponType>(firstPersonMover._equippedWeapons);
             if (list.Contains(WeaponType.Shield))
             {
-                list.Remove(WeaponType.Shield);
+                _ = list.Remove(WeaponType.Shield);
                 equippedWeaponsCount--;
             }
             if (list.IsNullOrEmpty())
@@ -597,7 +596,7 @@ namespace CDOverhaul
             List<FieldInfo> result = new List<FieldInfo>();
 
             FieldInfo[] fields = type.GetFields(bindingFlags);
-            foreach(FieldInfo info in fields)
+            foreach (FieldInfo info in fields)
             {
                 if (info.GetCustomAttribute<T>() != null)
                     result.Add(info);

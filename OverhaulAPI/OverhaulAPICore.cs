@@ -40,13 +40,13 @@ namespace OverhaulAPI
 
             APIInstance = new GameObject("OverhaulAPI Core v" + APIVersion.ToString() + " Instance").AddComponent<OverhaulAPICore>();
 
-            OverhaulCameraEffect.Reset();
+            OverhaulImageEffect.Reset();
             return APIInstance;
         }
 
         private void Update()
         {
-            OverhaulCameraEffect.APIUpdate();
+            OverhaulImageEffect.APIUpdate();
         }
     }
 }

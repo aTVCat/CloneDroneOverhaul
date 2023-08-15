@@ -1,11 +1,6 @@
-﻿using Esprima.Ast;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,14 +11,14 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorUserIDDisplay) })]
         [ObjectReference("PlayerIDPrefab")]
-        private PersonalizationEditorUserIDDisplay m_PlayerIDPrefab;
+        private readonly PersonalizationEditorUserIDDisplay m_PlayerIDPrefab;
 
         [ObjectDefaultVisibility(false)]
         [ObjectReference("AddPlayerIDPrefab")]
-        private Button m_AddPlayerIDPrefab;
+        private readonly Button m_AddPlayerIDPrefab;
 
         [ObjectReference("Content")]
-        private Transform m_Container;
+        private readonly Transform m_Container;
 
         public EStringFieldDisplayType DisplayType
         {
@@ -39,7 +34,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public void InitializeField(EStringFieldDisplayType type)
         {
             if (type == EStringFieldDisplayType.Default)
-                throw new Exception("PersonalizationEditorStringSpecViewFieldDisplay : Default, " + EditingField.Name);
+                throw new Exception("PersonalizationEditorStringSpecViewFieldDisplay : Default, " + FieldReference.Name);
 
             DisplayType = type;
             Populate();
@@ -63,6 +58,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                     component.FieldDisplay = this;
                     index++;
                 }
+
+                if (index > 20)
+                    return;
             }
 
             Button addId = Instantiate(m_AddPlayerIDPrefab, m_Container);
@@ -74,12 +72,10 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             EditorUI.PlayerInfoConfigMenu.Show(null, -1, true, delegate (string newValue)
             {
-                List<string> list = FieldValue as List<string>;
-                if(list == null)
+                if (!(FieldValue is List<string> list))
                 {
                     list = new List<string>();
-                    EditingField.SetValue(TargetObject, list);
-                    EditorUI.SavePanel.NeedsToSave = true;
+                    FieldValue = list;
                 }
                 list.Add(newValue);
                 Populate();

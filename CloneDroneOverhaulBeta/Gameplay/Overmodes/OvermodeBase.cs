@@ -1,9 +1,5 @@
 ﻿using CDOverhaul.CustomMultiplayer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDOverhaul.Gameplay.Overmodes
 {
@@ -26,15 +22,14 @@ namespace CDOverhaul.Gameplay.Overmodes
 
         public virtual void Start()
         {
-            if(DataRepository.Instance.TryLoad(GetGameModeName() + "_Data", out GameData data, false))
-                GameModeData = data;
-            else
-                GameModeData = GameDataManager.Instance.createNewGameData();
+            GameModeData = DataRepository.Instance.TryLoad(GetGameModeName() + "_Data", out GameData data, false)
+                ? data
+                : GameDataManager.Instance.createNewGameData();
 
             GameFlowManager.Instance._gameMode = GetGameMode();
             GameFlowManager.Instance.startSingplayerGameFromTitleScreen();
 
-            if(GetMultiplayerMode() != EOverhaulMultiplayerMode.None)
+            if (GetMultiplayerMode() != EOverhaulMultiplayerMode.None)
             {
                 OverhaulMultiplayerController.Instance.StartMultiplayer(GetMultiplayerMode());
             }

@@ -25,6 +25,11 @@ namespace OverhaulAPI
             Object.DontDestroyOnLoad(container.gameObject);
         }
 
+        public static bool HasCreatedEntry(in string id)
+        {
+            return s_Entries.ContainsKey(id);
+        }
+
         public static T SpawnEntry<T>(in string id, in Vector3 position, in Vector3 eulerAngles) where T : PooledPrefabInstanceBase
         {
             PooledPrefabContainer container = s_Entries[id];

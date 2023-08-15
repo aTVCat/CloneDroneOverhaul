@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
@@ -54,10 +53,9 @@ namespace CDOverhaul.Gameplay.Outfits
             if (items.IsNullOrEmpty())
                 return result;
 
-            foreach(PersonalizationItem item in items)
+            foreach (PersonalizationItem item in items)
             {
-                OutfitItem outfitItem = item as OutfitItem;
-                if (outfitItem != null && outfitItem.BodyPart == bodyPart)
+                if (item is OutfitItem outfitItem && outfitItem.BodyPart == bodyPart)
                     result.Add(item);
             }
             return result;
@@ -70,7 +68,7 @@ namespace CDOverhaul.Gameplay.Outfits
             if (item == null || (!item.IsUnlocked() && equip))
                 return;
 
-            string accessorySaveString = item.Name + SEPARATOR;
+            string accessorySaveString = item.GetID() + SEPARATOR;
             bool isEquipped = EquippedAccessories.Contains(accessorySaveString);
 
             if (isEquipped && !equip)

@@ -1,5 +1,4 @@
 ﻿using OverhaulAPI.SharedMonoBehaviours;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorPropertyCategoryDisplay) })]
         [ObjectReference("CategoryPrefab")]
-        private readonly PersonalizationEditorPropertyCategoryDisplay m_PropertyCategoryPrefab;
+        public readonly PersonalizationEditorPropertyCategoryDisplay PropertyCategoryPrefab;
 
         [ObjectReference("Content")]
         private readonly Transform m_Container;
@@ -52,13 +51,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 throw new System.NullReferenceException("The attributes list of " + category + " is null/empty");
 
             List<string> categories = new List<string>();
-            foreach(PersonalizationEditorPropertyAttribute attribute in properties)
+            foreach (PersonalizationEditorPropertyAttribute attribute in properties)
             {
                 if (!string.IsNullOrEmpty(attribute.Category) && !categories.Contains(attribute.Category))
                     categories.Add(attribute.Category);
             }
 
-            foreach(string categoryToInstantiate in categories)
+            foreach (string categoryToInstantiate in categories)
             {
                 List<PersonalizationEditorPropertyAttribute> categoryFields = new List<PersonalizationEditorPropertyAttribute>();
                 foreach (PersonalizationEditorPropertyAttribute attribute in properties)
@@ -67,7 +66,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                         categoryFields.Add(attribute);
                 }
 
-                PersonalizationEditorPropertyCategoryDisplay categoryPrefab = Instantiate(m_PropertyCategoryPrefab, m_Container);
+                PersonalizationEditorPropertyCategoryDisplay categoryPrefab = Instantiate(PropertyCategoryPrefab, m_Container);
                 categoryPrefab.IsInstantiated = true;
                 categoryPrefab.Populate(categoryToInstantiate, categoryFields);
                 categoryPrefab.gameObject.SetActive(true);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CDOverhaul.Gameplay.Overmodes
+﻿namespace CDOverhaul.Gameplay.Overmodes
 {
     public class OvermodesController : OverhaulGameplayController
     {
@@ -33,7 +27,7 @@ namespace CDOverhaul.Gameplay.Overmodes
             if (!IsOvermode())
                 return;
 
-            if(CurrentOvermode.GameModeData != null && CurrentOvermode.GameModeData.IsDirty())
+            if (CurrentOvermode.GameModeData != null && CurrentOvermode.GameModeData.IsDirty())
             {
                 DataRepository.Instance.Save(CurrentOvermode.GameModeData, CurrentOvermode.GetGameModeName() + "_Data", false, true);
                 CurrentOvermode.GameModeData.SetDirty(false);

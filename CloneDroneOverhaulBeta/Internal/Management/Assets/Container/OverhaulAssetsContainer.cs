@@ -33,18 +33,18 @@ namespace CDOverhaul
                 return;
 
             foreach (OverhaulAssetAttribute asset in assetsToLoadAsync)
-                StaticCoroutineRunner.StartStaticCoroutine(loadBundleThenAssetCoroutine(asset));
+                _ = StaticCoroutineRunner.StartStaticCoroutine(loadBundleThenAssetCoroutine(asset));
         }
 
         private static IEnumerator loadBundleThenAssetCoroutine(OverhaulAssetAttribute asset)
         {
             if (!OverhaulAssetsController.IsLoadingAssetBundle(asset.AssetBundle) && !OverhaulAssetsController.HasLoadedAssetBundle(asset.AssetBundle))
-                OverhaulAssetsController.LoadAssetBundleAsync(asset.AssetBundle, delegate { }, false);
+                _ = OverhaulAssetsController.LoadAssetBundleAsync(asset.AssetBundle, delegate { }, false);
             yield return new WaitUntil(() => OverhaulAssetsController.HasLoadedAssetBundle(asset.AssetBundle));
 
             bool hasLoadedAsset = false;
             OverhaulAssetsController.AssetLoadHandler handler = null;
-            OverhaulAssetsController.GetAssetAsync(asset.AssetBundle, asset.AssetName, delegate (OverhaulAssetsController.AssetLoadHandler h)
+            _ = OverhaulAssetsController.GetAssetAsync(asset.AssetBundle, asset.AssetName, delegate (OverhaulAssetsController.AssetLoadHandler h)
             {
                 hasLoadedAsset = true;
                 handler = h;

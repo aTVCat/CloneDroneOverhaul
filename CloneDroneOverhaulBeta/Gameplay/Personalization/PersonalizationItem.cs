@@ -17,10 +17,14 @@ namespace CDOverhaul.Gameplay
         public string Description = NO_DESCRIPTION_PROVIDED;
         [PersonalizationEditorProperty("Generic Info")]
         public string Author = NO_AUTHOR_SPECIFIED;
+        [PersonalizationEditorProperty("Generic Info")]
+        public Guid UniqueID = Guid.Empty;
         [PersonalizationEditorProperty("Generic Info", true)]
         public List<string> ExclusiveFor;
 
         public virtual void OnDeserialized() { }
+
+        public string GetID() => UniqueID.ToString();
 
         public bool IsUnlocked()
         {
@@ -38,10 +42,10 @@ namespace CDOverhaul.Gameplay
         }
         public bool IsUnlockedFor(string playFabID, string steamID)
         {
-            foreach(string id in ExclusiveFor)
+            foreach (string id in ExclusiveFor)
             {
-                string justId = PersonalizationEditor.GetOnlyID(id, out byte type);
-                if(justId == playFabID || justId == steamID)
+                string justId = PersonalizationEditor.GetOnlyID(id, out _);
+                if (justId == playFabID || justId == steamID)
                     return true;
             }
             return false;
@@ -53,7 +57,7 @@ namespace CDOverhaul.Gameplay
             FieldInfo info = type.GetField(name, BindingFlags.Instance | BindingFlags.Public);
             object value = info.GetValue(this);
 
-            if(value == null)
+            if (value == null)
             {
                 value = Activator.CreateInstance(info.FieldType);
                 info.SetValue(this, value);

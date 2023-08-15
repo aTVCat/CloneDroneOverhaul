@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Overmodes;
+﻿using CDOverhaul.Gameplay.Overmodes;
 using HarmonyLib;
 using System.Collections.Generic;
 
@@ -12,7 +11,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("getLevelDescriptions")]
         private static bool getLevelDescriptions_Postfix(ref List<LevelDescription> __result)
         {
-            if(OvermodesController.IsOvermode())
+            if (OvermodesController.IsOvermode())
             {
                 __result = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
                 return false;

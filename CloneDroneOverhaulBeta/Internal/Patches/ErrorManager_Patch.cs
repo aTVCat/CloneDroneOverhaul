@@ -7,6 +7,8 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(ErrorManager))]
     internal static class ErrorManager_Patch
     {
+        public static string Report;
+
         [HarmonyPrefix]
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
@@ -50,9 +52,7 @@ namespace CDOverhaul.Patches
                 if (report.Length > 1400)
                     report = report.Remove(1400);
 
-                report += string.Format("```\r\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
-
-                OverhaulWebhooksController.ExecuteCrashReportsWebhook(report);
+                Report = report + string.Format("```\r\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
             }
             return true;
         }

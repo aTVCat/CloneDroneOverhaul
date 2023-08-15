@@ -273,7 +273,7 @@
     <Compile Include="PooledPrefabs\PooledPrefabInstanceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Behaviours\OverhaulDraggablePanel.cs" />
-    <Compile Include="Behaviours\OverhaulCameraEffect.cs" />
+    <Compile Include="Behaviours\OverhaulImageEffect.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
     <Compile Include="UnsortedClasses\ModelOffset.cs" />
   </ItemGroup>

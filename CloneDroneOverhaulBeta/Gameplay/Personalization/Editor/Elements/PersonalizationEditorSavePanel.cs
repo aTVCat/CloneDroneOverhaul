@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -12,14 +7,14 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     {
         [ActionReference(nameof(onSaveButtonClicked))]
         [ObjectReference("SaveButton")]
-        private Button m_SaveButton;
+        private readonly Button m_SaveButton;
 
         [ActionReference(nameof(onAutoSaveToggleClicked))]
         [ObjectReference("AutoSaveToggle")]
-        private Toggle m_AutoSaveToggle;
+        private readonly Toggle m_AutoSaveToggle;
 
         [ObjectReference("NeedsSavingIndicator")]
-        private GameObject m_NeedsSaveIndicator;
+        private readonly GameObject m_NeedsSaveIndicator;
 
         public bool NeedsToSave
         {

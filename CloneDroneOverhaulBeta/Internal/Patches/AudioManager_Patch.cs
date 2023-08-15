@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Combat;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Linq;
 using UnityEngine;
 
@@ -9,7 +7,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(AudioManager))]
     internal static class AudioManager_Patch
     {
-        private static string[] s_KickSounds = new string[]
+        private static readonly string[] s_KickSounds = new string[]
         {
             "048982865-critical-damage",
             "048982866-jab-damage",

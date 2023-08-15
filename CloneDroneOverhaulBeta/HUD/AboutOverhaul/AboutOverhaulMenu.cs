@@ -1,6 +1,5 @@
 ﻿using Steamworks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {

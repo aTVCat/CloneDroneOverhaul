@@ -22,7 +22,12 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void OnPrivateClick()
         {
-            FullscreenWindow.GoToPage(7);
+            BoltGlobalEventListenerSingleton<MultiplayerMatchmakingManager>.Instance.FindAndJoinMatch(new GameRequest
+            {
+                GameType = GameRequestType.DuelInviteCodeCreate
+            });
+            FullscreenWindow.GamemodesUI.Hide();
+            //FullscreenWindow.GoToPage(7);
         }
 
         public void OnJoinLobbyClick()

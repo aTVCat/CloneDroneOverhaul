@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Graphics;
-using HarmonyLib;
+﻿using HarmonyLib;
 namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(PlayerAllyManager))]
@@ -15,7 +14,7 @@ namespace CDOverhaul.Patches
             if (!emotingPlayer || CharacterTracker.Instance.GetPlayerAlly() == emotingPlayer)
                 return false;
 
-            __instance.StartCoroutine(BaseFixes.WaitThenMirrorEmote_Patched(emotingPlayer.GetEmotePlaying()));
+            _ = __instance.StartCoroutine(BaseFixes.WaitThenMirrorEmote_Patched(emotingPlayer.GetEmotePlaying()));
             return false;
         }
     }

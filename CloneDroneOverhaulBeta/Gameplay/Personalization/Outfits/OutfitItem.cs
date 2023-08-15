@@ -1,8 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Editors.Personalization;
 using Newtonsoft.Json;
 using OverhaulAPI;
-using Pathfinding.Poly2Tri;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -21,6 +19,9 @@ namespace CDOverhaul.Gameplay.Outfits
 
         [PersonalizationEditorProperty("Visuals")]
         public OverhaulAssetInfo ItemModel;
+
+        [PersonalizationEditorProperty("Visuals")]
+        public OverhaulVoxAssetInfo ItemVoxModel;
 
         public void SetUpOffsets()
         {

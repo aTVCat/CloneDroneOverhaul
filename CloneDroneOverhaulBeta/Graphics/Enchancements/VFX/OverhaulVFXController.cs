@@ -10,22 +10,26 @@ namespace CDOverhaul.Graphics
 
         public const string FIRE_VFX = "FireParticles";
 
+        private static Transform s_SwordBlockVFX;
+
+        private static bool s_HasInitialized;
+
         public override void Initialize()
         {
-            AttackManager manager = AttackManager.Instance;
+            if(!s_HasInitialized)
+            {
+                s_SwordBlockVFX = OverhaulAssetsController.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
+                s_SwordBlockVFX.gameObject.AddComponent<DestroyAfterWait>().SetWaitTime(1f);
 
-            Transform newSwordBlockVFX = OverhaulAssetsController.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
-            newSwordBlockVFX.gameObject.AddComponent<DestroyAfterWait>().SetWaitTime(1f);
-            manager.SwordBlockVFXPrefab = newSwordBlockVFX;
-
-            Transform newSwordBlockFireVFX = OverhaulAssetsController.GetAsset("VFX_FireSwordBlock", OverhaulAssetPart.Part2).transform;
-            PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordBlockFireVFX, 10, FIRE_VFX);
-
-            Transform newSwordCutVFX = OverhaulAssetsController.GetAsset("VFX_CutLaser", OverhaulAssetPart.Part2).transform;
-            PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordCutVFX, 25, LASER_CUT_VFX);
-
-            Transform newSwordCutFireVFX = OverhaulAssetsController.GetAsset("VFX_CutFire", OverhaulAssetPart.Part2).transform;
-            PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordCutFireVFX, 25, FIRE_CUT_VFX);
+                Transform newSwordBlockFireVFX = OverhaulAssetsController.GetAsset("VFX_FireSwordBlock", OverhaulAssetPart.Part2).transform;
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordBlockFireVFX, 10, FIRE_VFX);
+                Transform newSwordCutVFX = OverhaulAssetsController.GetAsset("VFX_CutLaser", OverhaulAssetPart.Part2).transform;
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordCutVFX, 25, LASER_CUT_VFX);
+                Transform newSwordCutFireVFX = OverhaulAssetsController.GetAsset("VFX_CutFire", OverhaulAssetPart.Part2).transform;
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(newSwordCutFireVFX, 25, FIRE_CUT_VFX);
+                s_HasInitialized = true;
+            }
+            AttackManager.Instance.SwordBlockVFXPrefab = s_SwordBlockVFX;
         }
     }
 }

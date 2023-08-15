@@ -1,53 +1,12 @@
-﻿using CDOverhaul.Gameplay.Outfits;
-using CDOverhaul.Gameplay.Pets;
+﻿using CDOverhaul.Gameplay.Pets;
 
 namespace CDOverhaul.HUD
 {
     public class MountItemDisplay : OverhaulPersonalizationItemDisplay
     {
-        public PetItem Item
-        {
-            get;
-            private set;
-        }
-        public bool IsExclusive { get; private set; }
-        public bool IsSelected { get; private set; }
+        public override string GetEquippedItemsString() => PetsController.EquippedPets;
 
-        public override void Start()
-        {
-            base.Start();
-            ButtonComponent.AddOnClickListener(onClicked);
-
-            RefreshDisplay();
-        }
-
-        public void Initialize(PetItem outfitItem)
-        {
-            Item = outfitItem;
-        }
-
-        public void RefreshDisplay()
-        {
-            if (Item == null)
-            {
-                DestroyGameObject();
-                return;
-            }
-
-            IsExclusive = !Item.ExclusiveFor.IsNullOrEmpty();
-            IsSelected = PetsController.EquippedPets.Contains(Item.Name);
-
-            ItemNameLabel.text = Item.Name;
-            AuthorLabel.text = Item.Author;
-
-            AnimationComponent.enabled = IsExclusive;
-            ButtonComponent.interactable = !IsExclusive;
-
-            ExclusiveIndicator.SetActive(IsExclusive);
-            SelectedIndicator.SetActive(IsSelected);
-        }
-
-        private void onClicked()
+        public override void OnClicked()
         {
             ButtonComponent.OnDeselect(null);
 

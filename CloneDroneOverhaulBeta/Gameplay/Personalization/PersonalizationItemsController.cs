@@ -29,16 +29,13 @@ namespace CDOverhaul.Gameplay
         public string GetItemsDataFolder()
         {
             OverhaulRepositoryController repositoryController = GetController<OverhaulRepositoryController>();
-            if (!repositoryController)
-                return string.Empty;
-
-            return repositoryController.GetFolder(GetRepositoryFolder());
+            return !repositoryController ? string.Empty : repositoryController.GetFolder(GetRepositoryFolder());
         }
         public string GetItemsDataFile() => GetItemsDataFolder() + "ItemsData.json";
 
         public void ReloadItems()
         {
-            if(ItemsData != null)
+            if (ItemsData != null)
                 ItemsData.Dispose();
             ItemsData = null;
 
@@ -59,7 +56,7 @@ namespace CDOverhaul.Gameplay
             if (data.Items == null)
                 data.Items = new List<PersonalizationItem>();
 
-            foreach(PersonalizationItem item in data.Items)
+            foreach (PersonalizationItem item in data.Items)
             {
                 item.OnDeserialized();
             }
@@ -77,13 +74,13 @@ namespace CDOverhaul.Gameplay
             do
             {
                 PersonalizationItem item = list[i];
-                if(item == null || string.IsNullOrEmpty(item.Name))
+                if (item == null || string.IsNullOrEmpty(item.Name))
                 {
                     i++;
                     continue;
                 }
 
-                if(item.Name == name)
+                if (item.Name == name)
                 {
                     result = item;
                     break;
@@ -100,7 +97,7 @@ namespace CDOverhaul.Gameplay
                 return s_EmptyList;
 
             string[] split = saveString.Split(',');
-            if(split.IsNullOrEmpty())
+            if (split.IsNullOrEmpty())
                 return s_EmptyList;
 
             List<PersonalizationItem> result = new List<PersonalizationItem>();
@@ -114,7 +111,7 @@ namespace CDOverhaul.Gameplay
                     continue;
                 }
 
-                if (split.Contains(item.Name))
+                if (split.Contains(item.GetID()))
                 {
                     result.Add(item);
                 }

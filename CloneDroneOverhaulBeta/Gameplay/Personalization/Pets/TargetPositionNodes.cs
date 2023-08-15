@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
@@ -14,7 +15,7 @@ namespace CDOverhaul.Gameplay.Pets
         public const string OwnerTransformForward = "owner.TForward";
         public const string OwnerTransformBackward = "owner.TBackward";
 
-        public static Vector3 GetVector(Tuple<string, Vector3>[] nodes, FirstPersonMover firstPersonMover)
+        public static Vector3 GetVector(List<Tuple<string, Vector3>> nodes, FirstPersonMover firstPersonMover)
         {
             if (nodes.IsNullOrEmpty() || !firstPersonMover)
                 return Vector3.zero;
@@ -23,6 +24,9 @@ namespace CDOverhaul.Gameplay.Pets
             Vector3 result = Vector3.zero;
             foreach (Tuple<string, Vector3> tuple in nodes)
             {
+                if (tuple == null)
+                    continue; ;
+
                 if (tuple.Item1 == Offset)
                     result += tuple.Item2;
 

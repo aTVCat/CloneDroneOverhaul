@@ -33,10 +33,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return Vector3.zero;
 
             PlayerCameraMover cameraMover = Owner.GetCameraMover();
-            if (!cameraMover)
-                return Vector3.zero;
-
-            return cameraMover.transform.eulerAngles;
+            return !cameraMover ? Vector3.zero : cameraMover.transform.eulerAngles;
         }
     }
 }

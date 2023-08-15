@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -11,32 +8,56 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     public class PersonalizationEditorFieldDisplay : PersonalizationEditorUIElement
     {
         [ObjectReference("Label")]
-        private Text m_Label;
+        private readonly Text m_Label;
 
         protected object InitialFieldValue;
 
-        private FieldInfo m_EditingField;
-        public FieldInfo EditingField
+        public PersonalizationEditorPropertyCategoryDisplay Category
         {
-            get => m_EditingField;
+            get;
+            set;
+        }
+
+        public PersonalizationEditorListEntryDisplay ListFieldDisplay
+        {
+            get;
+            set;
+        }
+
+        private FieldInfo m_FieldReference;
+        public FieldInfo FieldReference
+        {
+            get => m_FieldReference;
             set
             {
-                if (m_EditingField == null)
+                if (m_FieldReference == null)
                     InitialFieldValue = value.GetValue(TargetObject);
 
-                m_EditingField = value;
+                m_FieldReference = value;
             }
         }
 
+        public Type FieldType => FieldReference.FieldType;
+
         public object FieldValue
         {
-            get => EditingField.GetValue(TargetObject);
-            set => EditingField.SetValue(TargetObject, value);
+            get => FieldReference.GetValue(TargetObject);
+            set => FieldReference.SetValue(TargetObject, value);
         }
 
-        public Type FieldType => EditingField.FieldType;
-
         public object TargetObject
+        {
+            get;
+            set;
+        }
+
+        public bool IsCollectionObject
+        {
+            get;
+            set;
+        }
+
+        public bool HasDifferentControl
         {
             get;
             set;
@@ -47,15 +68,34 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public virtual void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
             TargetObject = targetObject;
-            EditingField = fieldToEdit;
+            FieldReference = fieldToEdit;
 
             OverhaulUIVer2.AssignValues(this);
             m_Label.text = StringUtils.AddSpacesToCamelCasedString(fieldToEdit.Name);
         }
 
+        public virtual void InitializeAsCollectionObject(PersonalizationEditorListEntryDisplay listFieldDisplay, string displayName, object targetObject)
+        {
+            IsCollectionObject = true;
+
+            OverhaulUIVer2.AssignValues(this);
+            m_Label.text = displayName;
+            ListFieldDisplay = listFieldDisplay;
+            TargetObject = targetObject;
+        }
+
         public void OnFieldValueChanged()
         {
+            if (IsCollectionObject)
+            {
+                (ListFieldDisplay.List as IList)[ListFieldDisplay.Index] = FieldValue;
+            }
             EditorUI.SavePanel.NeedsToSave = true;
+        }
+
+        public void SetLabelText(string text)
+        {
+            m_Label.text = text;
         }
     }
 }

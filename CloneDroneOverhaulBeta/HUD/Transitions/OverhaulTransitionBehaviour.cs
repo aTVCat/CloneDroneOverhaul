@@ -26,7 +26,7 @@ namespace CDOverhaul
 
         public void Initialize(bool fadeOut, bool realTransition = false)
         {
-            if (!m_FadeOut) 
+            if (!m_FadeOut)
                 m_FadeOut = fadeOut;
 
             if (!m_IsRealTransition)

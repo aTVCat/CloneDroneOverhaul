@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -12,7 +8,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     {
         [ActionReference(nameof(onChangedValue))]
         [ObjectReference("Dropdown2")]
-        private Dropdown m_Dropdown;
+        private readonly Dropdown m_Dropdown;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
@@ -23,7 +19,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public void AddOptions(string[] options)
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>(options.Length);
-            foreach(string option in options)
+            foreach (string option in options)
             {
                 list.Add(new Dropdown.OptionData(option));
             }

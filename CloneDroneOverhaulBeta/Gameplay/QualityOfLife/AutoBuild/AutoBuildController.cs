@@ -94,11 +94,11 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             UpgradeUI ui = GameUIRoot.Instance.UpgradeUI;
             if (variant == AutoBuildVariant.Random)
             {
-                _ = ui.StartCoroutine(ui.CallPrivateMethod<IEnumerator>("selectRandomUpgrade"));
+                _ = ui.StartCoroutine(ui.selectRandomUpgrade());
                 yield break;
             }
 
-            List<UpgradeUIIcon> icons = ui.GetPrivateField<List<UpgradeUIIcon>>("_icons");
+            List<UpgradeUIIcon> icons = ui._icons;
             if (icons.IsNullOrEmpty())
                 yield break;
 

@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.Gameplay.Outfits;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +13,7 @@ namespace CDOverhaul.Gameplay.Pets
         {
             get
             {
-                if(!m_HeadTransform)
+                if (!m_HeadTransform)
                     m_HeadTransform = Owner.GetBodyPartParent("Head");
 
                 return m_HeadTransform;
@@ -69,7 +67,7 @@ namespace CDOverhaul.Gameplay.Pets
             else if (!GameModeManager.IsMultiplayer() && (PetsController.AllowEnemiesUsePets || IsOwnerPlayer()))
                 equippedItems = PetsController.EquippedPets;
 
-            foreach(PetItem petItem in petsController.GetItemsWithSaveString(equippedItems))
+            foreach (PetItem petItem in petsController.GetItemsWithSaveString(equippedItems))
             {
                 PetInstanceBehaviour instance = PetInstanceBehaviour.CreateInstance(petItem, Owner);
                 if (!instance)

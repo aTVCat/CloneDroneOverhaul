@@ -300,9 +300,17 @@ namespace CDOverhaul
             /// 
             /// </summary>
             [OverhaulSettingWithNotification(1)]
-            [OverhaulSetting("Experimental.Features.New personalization system", true, false, "")]
-            private static readonly bool IS_NEW_PERSONALIZATION_SYSTEM_ENABLED = true;
-            public static bool IsNewPersonalizationSystemEnabled => OverhaulVersion.IsVersion3Update && IS_NEW_PERSONALIZATION_SYSTEM_ENABLED;
+            [OverhaulSetting("Experimental.Features.New weapon skins system", true, false, "")]
+            private static readonly bool IS_NEW_WEAPON_SKINS_SYSTEM_ENABLED = true;
+            public static bool IsNewWeaponSkinsSystemEnabled => OverhaulVersion.IsVersion4 && IS_NEW_WEAPON_SKINS_SYSTEM_ENABLED;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            [OverhaulSettingWithNotification(1)]
+            [OverhaulSetting("Experimental.Features.New personalization categories", true, false, "")]
+            private static readonly bool ARE_NEW_PERSONALIZATION_CATEGORIES_ENABLED = true;
+            public static bool AreNewPersonalizationCategoriesEnabled => OverhaulVersion.IsVersion4 && ARE_NEW_PERSONALIZATION_CATEGORIES_ENABLED;
 
 
             public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;

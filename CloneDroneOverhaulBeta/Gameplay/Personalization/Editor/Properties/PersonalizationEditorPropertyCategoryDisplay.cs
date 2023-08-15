@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,42 +13,67 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
         [ObjectReference("StringProperty_Small")]
-        private readonly PersonalizationEditorStringFieldDisplay m_ShortStringFieldDisplay;
+        public readonly PersonalizationEditorStringFieldDisplay ShortStringFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
         [ObjectReference("StringProperty_Big")]
-        private readonly PersonalizationEditorStringFieldDisplay m_LongStringFieldDisplay;
+        public readonly PersonalizationEditorStringFieldDisplay LongStringFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorIntAltFieldDisplay) })]
         [ObjectReference("IntAltProperty")]
-        private readonly PersonalizationEditorIntAltFieldDisplay m_IntAltFieldDisplay;
+        public readonly PersonalizationEditorIntAltFieldDisplay IntAltFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorIntFieldDisplay) })]
         [ObjectReference("IntProperty")]
-        private readonly PersonalizationEditorIntFieldDisplay m_IntFieldDisplay;
+        public readonly PersonalizationEditorIntFieldDisplay IntFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorBoolFieldDisplay) })]
         [ObjectReference("BoolProperty")]
-        private readonly PersonalizationEditorBoolFieldDisplay m_BoolFieldDisplay;
+        public readonly PersonalizationEditorBoolFieldDisplay BoolFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorFloatFieldDisplay) })]
         [ObjectReference("FloatProperty")]
-        private readonly PersonalizationEditorFloatFieldDisplay m_FloatFieldDisplay;
+        public readonly PersonalizationEditorFloatFieldDisplay FloatFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringSpecViewFieldDisplay) })]
         [ObjectReference("StringProperty_SpecialView")]
-        private readonly PersonalizationEditorStringSpecViewFieldDisplay m_StringListFieldDisplay;
+        public readonly PersonalizationEditorStringSpecViewFieldDisplay StringListFieldDisplay;
 
         [ObjectDefaultVisibility(false)]
         [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorAssetInfoFieldDisplay) })]
         [ObjectReference("AssetProperty")]
-        private readonly PersonalizationEditorAssetInfoFieldDisplay m_AssetInfoFieldDisplay;
+        public readonly PersonalizationEditorAssetInfoFieldDisplay AssetInfoFieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorVoxAssetInfoFieldDisplay) })]
+        [ObjectReference("VoxAssetProperty")]
+        public readonly PersonalizationEditorVoxAssetInfoFieldDisplay VoxAssetInfoFieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorListFieldDisplay) })]
+        [ObjectReference("ListProperty")]
+        public readonly PersonalizationEditorListFieldDisplay ListOfTuple1FieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorTupleFieldDisplay) })]
+        [ObjectReference("TupleProperty")]
+        public readonly PersonalizationEditorTupleFieldDisplay TupleFieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorVector3FieldDisplay) })]
+        [ObjectReference("Vector3Property")]
+        public readonly PersonalizationEditorVector3FieldDisplay Vector3FieldDisplay;
+
+        [ObjectDefaultVisibility(false)]
+        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorGuidFieldDisplay) })]
+        [ObjectReference("GuidProperty")]
+        public readonly PersonalizationEditorGuidFieldDisplay GuidFieldDisplay;
 
         [ObjectReference("Container")]
         private readonly ContentSizeFitter m_Container;
@@ -81,59 +106,72 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                     targetObject = PersonalizationEditor.EditingItem.GetTargetObjectOfSubClass(property.SubClassFieldName);
                 }
 
-                /*
-                if (property.AssignValueIfNull)
-                {
-                    object fieldValue = property.FieldReference.GetValue(targetObject);
-                    if(fieldValue == null)
-                    {
-                        property.FieldReference.SetValue(System.Activator.CreateInstance(property.FieldReference.FieldType), targetObject);
-                    }
-                }*/
-
                 PersonalizationEditorFieldDisplay fieldDisplay = null;
                 if (property.FieldReference.FieldType == typeof(string))
                 {
-                    fieldDisplay = Instantiate(property.UseAltDisplay ? m_LongStringFieldDisplay : m_ShortStringFieldDisplay, m_Container.transform);
+                    fieldDisplay = Instantiate(property.UseAltDisplay ? LongStringFieldDisplay : ShortStringFieldDisplay, m_Container.transform);
                 }
                 else if (property.FieldReference.FieldType == typeof(int))
                 {
                     if (property.UseAltDisplay)
                     {
-                        fieldDisplay = Instantiate(m_IntAltFieldDisplay, m_Container.transform);
+                        fieldDisplay = Instantiate(IntAltFieldDisplay, m_Container.transform);
 
                         PersonalizationEditorIntAltFieldDisplay intAltDisplay = fieldDisplay as PersonalizationEditorIntAltFieldDisplay;
                         intAltDisplay.AddOptions(property.AdditionalParameters as string[]);
                     }
                     else
                     {
-                        fieldDisplay = Instantiate(m_IntFieldDisplay, m_Container.transform);
+                        fieldDisplay = Instantiate(IntFieldDisplay, m_Container.transform);
                     }
                 }
                 else if (property.FieldReference.FieldType == typeof(float))
                 {
-                    fieldDisplay = Instantiate(m_FloatFieldDisplay, m_Container.transform);
+                    fieldDisplay = Instantiate(FloatFieldDisplay, m_Container.transform);
                 }
                 else if (property.FieldReference.FieldType == typeof(bool))
                 {
-                    fieldDisplay = Instantiate(m_BoolFieldDisplay, m_Container.transform);
+                    fieldDisplay = Instantiate(BoolFieldDisplay, m_Container.transform);
                 }
                 else if (property.FieldReference.FieldType == typeof(List<string>))
                 {
-                    fieldDisplay = Instantiate(m_StringListFieldDisplay, m_Container.transform);
+                    fieldDisplay = Instantiate(StringListFieldDisplay, m_Container.transform);
                 }
                 else if (property.FieldReference.FieldType == typeof(OverhaulAssetInfo))
                 {
-                    fieldDisplay = Instantiate(m_AssetInfoFieldDisplay, m_Container.transform);
+                    fieldDisplay = Instantiate(AssetInfoFieldDisplay, m_Container.transform);
+                }
+                else if (property.FieldReference.FieldType == typeof(OverhaulVoxAssetInfo))
+                {
+                    fieldDisplay = Instantiate(VoxAssetInfoFieldDisplay, m_Container.transform);
+                }
+                else if (property.FieldReference.FieldType == typeof(List<Tuple<string, Vector3>>))
+                {
+                    fieldDisplay = Instantiate(ListOfTuple1FieldDisplay, m_Container.transform);
+                }
+                else if (property.FieldReference.FieldType == typeof(Vector3))
+                {
+                    fieldDisplay = Instantiate(Vector3FieldDisplay, m_Container.transform);
+                }
+                else if (property.FieldReference.FieldType == typeof(Guid))
+                {
+                    fieldDisplay = Instantiate(GuidFieldDisplay, m_Container.transform);
                 }
 
                 if (fieldDisplay)
                 {
                     fieldDisplay.gameObject.SetActive(true);
+                    fieldDisplay.Category = this;
                     fieldDisplay.Initialize(property.FieldReference, targetObject);
 
                     if (fieldDisplay is PersonalizationEditorStringSpecViewFieldDisplay)
                         (fieldDisplay as PersonalizationEditorStringSpecViewFieldDisplay).InitializeField(EStringFieldDisplayType.UserIDs);
+
+                    if (fieldDisplay is PersonalizationEditorListFieldDisplay)
+                    {
+                        PersonalizationEditorListFieldDisplay listFieldDisplay = fieldDisplay as PersonalizationEditorListFieldDisplay;
+                        listFieldDisplay.IsPositionNodesList = property.FieldReference.FieldType == typeof(List<Tuple<string, Vector3>>);
+                    }
                 }
             }
         }

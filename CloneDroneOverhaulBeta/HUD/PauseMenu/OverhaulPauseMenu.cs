@@ -149,12 +149,13 @@ namespace CDOverhaul.HUD
             m_PersonalizationSkinsButton.onClick.AddListener(OnSkinsButtonClicked);
             m_PersonalizationOutfitsButton = MyModdedObject.GetObject<Button>(3);
             m_PersonalizationOutfitsButton.onClick.AddListener(OnOutfitsButtonClicked);
+            m_PersonalizationOutfitsButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled;
             m_PersonalizationPetsButton = MyModdedObject.GetObject<Button>(36);
             m_PersonalizationPetsButton.onClick.AddListener(OnPetsButtonClicked);
-            m_PersonalizationPetsButton.interactable = true;
+            m_PersonalizationPetsButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled;
             m_PersonalizationEditorButton = MyModdedObject.GetObject<Button>(58);
             m_PersonalizationEditorButton.onClick.AddListener(OnPersonalizationEditorButtonClicked);
-            m_PersonalizationEditorButton.interactable = true;
+            m_PersonalizationEditorButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled;
 
             m_ExitButton = MyModdedObject.GetObject<Button>(4);
             m_ExitButton.onClick.AddListener(OnExitClicked);
@@ -303,7 +304,6 @@ namespace CDOverhaul.HUD
 
             m_PersonalizationButton.OnDeselect(null);
             m_PersonalizationSkinsButton.interactable = OverhaulGamemodeManager.SupportsPersonalization();
-            m_PersonalizationOutfitsButton.interactable = OverhaulGamemodeManager.SupportsOutfits();
 
             m_SettingsSelectPanel.gameObject.SetActive(false);
             m_ExitSelectPanel.gameObject.SetActive(false);

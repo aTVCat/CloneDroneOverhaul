@@ -1,7 +1,4 @@
 ﻿using CDOverhaul.Gameplay.Editors.Personalization;
-using CDOverhaul.Gameplay.Outfits;
-using System;
-using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Pets
 {
@@ -9,6 +6,9 @@ namespace CDOverhaul.Gameplay.Pets
     {
         [PersonalizationEditorProperty("Visuals")]
         public OverhaulAssetInfo PetModel;
+
+        [PersonalizationEditorProperty("Visuals")]
+        public OverhaulVoxAssetInfo PetVoxModel;
 
         [PersonalizationEditorSubProperty]
         public PetBehaviourSettings BehaviourSettings;

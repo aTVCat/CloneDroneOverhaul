@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.HUD;
-using ModLibrary;
 using System;
 using UnityEngine;
 using UnityEngine.UI;

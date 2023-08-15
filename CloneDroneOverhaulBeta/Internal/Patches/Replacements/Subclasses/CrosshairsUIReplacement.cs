@@ -1,8 +1,5 @@
 ﻿using CDOverhaul.Graphics;
-using CDOverhaul.HUD;
-using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
 {
@@ -12,7 +9,7 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
+            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
             updateCrossHairs();
             SuccessfullyPatched = true;
         }

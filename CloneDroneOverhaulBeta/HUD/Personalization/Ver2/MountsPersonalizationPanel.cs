@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Outfits;
 using CDOverhaul.Gameplay.Pets;
 using System.Collections;
 using System.Collections.Generic;

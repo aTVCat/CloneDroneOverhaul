@@ -169,15 +169,6 @@ namespace CDOverhaul
             updateSettingVersion();
         }
 
-        internal static void CreateHUD()
-        {
-            OverhaulCanvasController h = OverhaulMod.Core.CanvasController;
-            if (!h)
-                return;
-
-            HUD = h.AddHUD<ParametersMenu>(h.HUDModdedObject.GetObject<ModdedObject>(3));
-        }
-
         private static void updateSettingVersion()
         {
             int currentVersion = SettingsVersion;

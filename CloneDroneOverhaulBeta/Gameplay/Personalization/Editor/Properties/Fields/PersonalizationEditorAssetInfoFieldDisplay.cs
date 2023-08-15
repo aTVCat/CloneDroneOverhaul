@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
@@ -11,11 +6,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
     public class PersonalizationEditorAssetInfoFieldDisplay : PersonalizationEditorFieldDisplay
     {
         [ObjectReference("AssetPath")]
-        private Text m_AssetPath;
+        private readonly Text m_AssetPath;
 
         [ActionReference(nameof(editAssetInfo))]
         [ObjectReference("EditButton")]
-        private Button m_EditButton;
+        private readonly Button m_EditButton;
 
         public string PreviousText
         {
@@ -31,23 +26,19 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void refresh()
         {
-            OverhaulAssetInfo assetInfo = FieldValue as OverhaulAssetInfo;
-            if (assetInfo == null)
+            if (!(FieldValue is OverhaulAssetInfo assetInfo))
             {
                 assetInfo = new OverhaulAssetInfo();
-                EditingField.SetValue(TargetObject, assetInfo);
-                EditorUI.SavePanel.NeedsToSave = true;
+                FieldValue = assetInfo;
             }
 
-            OverhaulAssetInfo info = FieldValue as OverhaulAssetInfo;
-
-            string newText = string.Format("[{0}] {1}", new object[] { info.AssetBundle, info.AssetName });
-            if(!string.IsNullOrEmpty(PreviousText) && newText != PreviousText)
+            string newText = string.Format("[{0}] {1}", new object[] { assetInfo.AssetBundle, assetInfo.AssetName });
+            if (!string.IsNullOrEmpty(PreviousText) && newText != PreviousText)
             {
-                EditorUI.LoadPanel.NeedToReload = true;
+                EditorUI.LoadPanel.NeedsToReload = true;
             }
             PreviousText = newText;
-            m_AssetPath.text = string.Format("[{0}] {1}", new object[] { info.AssetBundle, info.AssetName });
+            m_AssetPath.text = newText;
         }
 
         private void editAssetInfo()

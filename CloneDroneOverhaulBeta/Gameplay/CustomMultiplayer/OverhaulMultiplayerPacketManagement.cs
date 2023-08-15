@@ -1,6 +1,4 @@
 ﻿using Steamworks;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace CDOverhaul.CustomMultiplayer
@@ -95,7 +93,7 @@ namespace CDOverhaul.CustomMultiplayer
                     if (!array.IsNullOrEmpty())
                     {
                         OverhaulPacket receivedPacket = array.DeserializeObject<OverhaulPacket>();
-                        if(receivedPacket != default || receivedPacket != null)
+                        if (receivedPacket != default || receivedPacket != null)
                         {
                             receivedPacket.Handle();
                         }
