@@ -24,7 +24,7 @@ namespace CDOverhaul.Gameplay.Combat
 
         public bool CanChangeHeadRotation()
         {
-            return m_HeadTransform && Owner && Owner.IsGrabbedByGarbageBot();
+            return m_HeadTransform && Owner && !Owner.IsDetached() && Owner.IsGrabbedByGarbageBot() && (Owner.state as IFirstPersonMoverState).ActiveEmoteIndex == -1;
         }
 
         public Vector3 GetCameraEulerAngles()

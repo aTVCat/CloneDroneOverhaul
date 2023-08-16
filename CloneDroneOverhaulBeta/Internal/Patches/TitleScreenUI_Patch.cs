@@ -15,13 +15,5 @@ namespace CDOverhaul.Patches
 
             __instance.transform.GetChild(1).gameObject.SetActive(visible);
         }
-
-        [HarmonyPrefix]
-        [HarmonyPatch("OnWorkshopBrowserButtonClicked")]
-        private static bool OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
-        {
-            // Todo: Move this to TitlscreenUI replacement
-            return !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWorkshopBrowserEnabled || !OverhaulMod.IsModInitialized || OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.Instance.TryShow();
-        }
     }
 }

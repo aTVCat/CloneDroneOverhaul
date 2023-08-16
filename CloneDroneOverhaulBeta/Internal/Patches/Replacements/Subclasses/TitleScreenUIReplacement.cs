@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Overmodes;
 using CDOverhaul.HUD;
+using CDOverhaul.Workshop;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -126,6 +127,23 @@ namespace CDOverhaul.Patches
                 {
                     OverhaulTransitionController.DoTransitionWithAction(target.OnLevelEditorButtonClicked, null, 1f);
                 });
+            }
+
+            Transform workshopButton = TransformUtils.FindChildRecursive(target.transform, "WorkshopButton");
+            if (workshopButton)
+            {
+                BaseFixes.ChangeButtonAction(workshopButton, "WorkshopButton", delegate
+                {
+                    bool canShowNewBrowser = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWorkshopBrowserEnabled && OverhaulWorkshopBrowserUI.UseThisUI && !OverhaulWorkshopBrowserUI.BrowserIsNull;
+                    if (canShowNewBrowser)
+                    {
+                        OverhaulWorkshopBrowserUI.Instance.Show();
+                    }
+                    else
+                    {
+                        GameUIRoot.Instance.TitleScreenUI.OnWorkshopBrowserButtonClicked();
+                    }
+                }); 
             }
 
             RectTransform multiplayerErrorGroup = target.transform.FindRectChildRecursive("MultiplayerErrorGroup");
@@ -288,6 +306,7 @@ namespace CDOverhaul.Patches
                     newCloseButton.transform.localScale = Vector3.one;
                     newCloseButton.onClick = ogCloseButton.GetComponent<Button>().onClick;
                     newCloseButton.gameObject.name = "GenericCloseButton";
+                    newCloseButton.gameObject.SetActive(true);
                 }
             }
         }

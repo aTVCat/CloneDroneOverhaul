@@ -135,22 +135,6 @@ namespace CDOverhaul
             return result;
         }
 
-        /// <summary>
-        /// Todo: Finish this method
-        /// </summary>
-        /// <param name="levelManager"></param>
-        /// <param name="index">0 - Story mode levels<br></br>1 - Endless mode levels</param>
-        /// <returns></returns>
-        public static List<LevelDescription> GetLevelDescriptions(this LevelManager levelManager, byte index)
-        {
-            switch (index)
-            {
-                case 0:
-                    return levelManager.GetPrivateField<List<LevelDescription>>("_storyModeLevels");
-            }
-            return null;
-        }
-
         #endregion
 
         #region UpgradeManager

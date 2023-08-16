@@ -15,7 +15,6 @@ namespace CDOverhaul.Patches
                 {
                     // Reducing camera resolution improves performance
                     cam.pixelRect = new Rect(new Vector2(0f, 0f), new Vector2(460f, 240f));
-                    cam.gameObject.AddComponent<ArenaCameraBehaviour>().Initialze(cam);
                 }
             }
 

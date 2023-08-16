@@ -228,12 +228,6 @@ namespace CDOverhaul.Patches
                 LocalizationManager.Instance.SupportedLanguages[0].SubtitlesFont = LocalizationManager.Instance.SupportedLanguages[7].SubtitlesFont;
                 LocalizationManager.Instance.SupportedLanguages[0].UIFontScale = 0.675f;
             }
-
-            /*
-            if (OverhaulVersion.IsVersion2)
-            {
-                LocalizationManager.Instance.SetCurrentLanguage(LocalizationManager.Instance.GetCurrentLanguageCode());
-            }*/
         }
 
         public static void ChangeButtonAction(Transform transform, string buttonObjectName, UnityAction action)

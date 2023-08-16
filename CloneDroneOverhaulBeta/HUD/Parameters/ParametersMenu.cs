@@ -29,7 +29,6 @@ namespace CDOverhaul.HUD
             "Graphics",
             "Audio",
             "Game interface",
-            "Optimization",
             "Shortcuts"
         };
         private static readonly Dictionary<string, List<string>> s_SortSections = new Dictionary<string, List<string>>
@@ -208,6 +207,9 @@ namespace CDOverhaul.HUD
 
         private void refreshThemeOutlines()
         {
+            if (m_ThemeGraphics.IsNullOrEmpty())
+                return;
+
             foreach (Image outline in m_ThemeGraphics)
             {
                 if (!outline)

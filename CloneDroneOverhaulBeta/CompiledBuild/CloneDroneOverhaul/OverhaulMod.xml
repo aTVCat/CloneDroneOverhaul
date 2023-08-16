@@ -4,19 +4,30 @@
         <name>OverhaulMod</name>
     </assembly>
     <members>
-        <member name="T:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerEnvironment">
+        <member name="M:CDOverhaul.CustomMultiplayer.OverhaulPacket.Handle">
             <summary>
-            A class where information about all modded objects and entities is stored
+            Called when we receive the packet
             </summary>
         </member>
-        <member name="P:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerCore.CoreInstance">
+        <member name="M:CDOverhaul.CustomMultiplayer.OverhaulMultiplayerController.StartMultiplayer(CDOverhaul.CustomMultiplayer.EOverhaulMultiplayerMode,System.Boolean,System.Int32)">
             <summary>
-            The instance of the modded multiplayer core
+            Create a lobby
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Multiplayer.Mods.OverhaulMultiplayerCore.Prefabs">
+        <member name="M:CDOverhaul.CustomMultiplayer.OverhaulMultiplayerController.JoinLobby(Steamworks.CSteamID)">
             <summary>
-            All prefabs that can work with this kind of multiplayer
+            Join specific lobby
+            </summary>
+            <param name="lobbyId"></param>
+        </member>
+        <member name="P:CDOverhaul.CustomMultiplayer.OverhaulMultiplayerLobby.OwnerUserID">
+            <summary>
+            The SteamID of lobby owner
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.CustomMultiplayer.OverhaulMultiplayerLobby.LocalUserID">
+            <summary>
+            The SteamID of local user
             </summary>
         </member>
         <member name="T:CDOverhaul.Gameplay.Combat.FirstPersonMoverModdedAnimationsController">
@@ -72,63 +83,39 @@
             <param name="animatorType"></param>
             <param name="value"></param>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryItem.Offsets">
+        <member name="F:CDOverhaul.Gameplay.Outfits.OutfitItem.Offsets">
             <summary>
             Character model names - Offset
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryItem.Prefab">
-            <summary>
-            A model of accessory
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Outfits.AccessoryItem.NewAccessory``1(System.String,System.String,CDOverhaul.Gameplay.Outfits.AccessoryType,MechBodyPartType)">
+        <member name="M:CDOverhaul.Gameplay.Outfits.OutfitItem.NewAccessory(System.String,System.String)">
             <summary>
             Create instance of accessory item including its name, description and type
             </summary>
             <typeparam name="T"></typeparam>
             <param name="name"></param>
             <param name="description"></param>
-            <param name="type"></param>
+            <param name="partType"></param>
             <returns></returns>
         </member>
-        <member name="T:CDOverhaul.Gameplay.Outfits.AccessoryType">
+        <member name="T:CDOverhaul.Gameplay.Pets.PetBehaviourSettings">
             <summary>
-            The accessories transform parameter
+            Customize pet's behaviour
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryType.Attached">
+        <member name="T:CDOverhaul.Gameplay.WeaponSkins.WeaponSkinsController">
             <summary>
-            Attached to body part
+            Another new skins controller that should work better this time
             </summary>
-        </member>
-        <member name="F:CDOverhaul.Gameplay.Outfits.AccessoryType.Detached">
-            <summary>
-            Attached to robot, but not to specific body part
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Outfits.OutfitsController.AddAccessory``1(System.String,System.String,CDOverhaul.Gameplay.Outfits.AccessoryType,MechBodyPartType)">
-            <summary>
-            Register an accessory
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="accessoryName"></param>
-            <param name="assetName"></param>
-            <param name="accessoryType"></param>
-            <param name="accessoryBodyPart"></param>
-            <param name="descriptionFile"></param>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Outfits.OutfitsController.GetAccessoryItem(System.String,System.Boolean)">
-            <summary>
-            Get accessory by name
-            </summary>
-            <param name="name"></param>
-            <param name="returnNullIfLocked"></param>
-            <returns></returns>
         </member>
         <member name="T:CDOverhaul.Gameplay.MultipartWeaponBehaviour">
             <summary>
             By Zerkie#5342
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildController.AutoUpgradeSequences">
+            <summary>
+            All possible auto upgrade types
             </summary>
         </member>
         <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.None">
@@ -434,55 +421,17 @@
             <param name="mover"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.Gameplay.OverhaulGameplayCoreController.sendGamemodeWasUpdateEvent">
+        <member name="M:CDOverhaul.Gameplay.OverhaulGameplayCoreController.sendGamemodeUpdatedEvent">
             <summary>
             Send <see cref="F:CDOverhaul.Gameplay.OverhaulGameplayCoreController.GamemodeChangedEventString"/> event
             </summary>
         </member>
-        <member name="M:CDOverhaul.Patches.OptimizeRuntime.CollectGarbage">
+        <member name="T:CDOverhaul.HUD.OverhaulPersonalizationPanel">
             <summary>
-            Reduce memory usage as much as possible
+            An updated version of <see cref="T:CDOverhaul.HUD.PersonalizationMenu"/> to be implemented in 0.3 updates/0.4
             </summary>
         </member>
-        <member name="T:CDOverhaul.Patches.ReplacementBase">
-            <summary>
-            This was made to patch the game without using HarmonyPatch
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Patches.ReplacementBase.HasReplaced">
-            <summary>
-            Check if replacement is working
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Patches.ReplacementBase.SuccessfullyPatched">
-            <summary>
-            This value doesn't affect anything, use it for marking fine working patches
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Patches.ReplacementBase.Replace">
-            <summary>
-            Do patch
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Patches.ReplacementBase.Cancel">
-            <summary>
-            Revert patch changes, called when mod is disabled
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Workshop.OverhaulSteamBrowser.GetItemVoteInfo(Steamworks.PublishedFileId_t,System.Action{System.Boolean,System.Boolean,System.Boolean,System.Boolean})">
-            <summary>
-            
-            </summary>
-            <param name="id"></param>
-            <param name="callback">1 - Skipped, 2 - Up, 3 - Down, 4 - Fail</param>
-        </member>
-        <member name="M:CDOverhaul.Workshop.OverhaulWorkshopBrowserUI.OnReceivedWorkshopResult(CDOverhaul.Workshop.OverhaulWorkshopRequestResult)">
-            <summary>
-            Called when our steam workshop request is done
-            </summary>
-            <param name="requestResult"></param>
-        </member>
-        <member name="T:CDOverhaul.HUD.WeaponSkinsMenu">
+        <member name="T:CDOverhaul.HUD.PersonalizationMenu">
             <summary>
             Used for outfits and skins menus
             </summary>
@@ -524,9 +473,22 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="T:CDOverhaul.NetworkAssets.OverhaulNetworkController">
+        <member name="M:CDOverhaul.Workshop.OverhaulSteamBrowser.GetItemVoteInfo(Steamworks.PublishedFileId_t,System.Action{System.Boolean,System.Boolean,System.Boolean,System.Boolean})">
             <summary>
-            Controller that can download stuff from GitHub<br>Todo: Cleanup code</br>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="callback">1 - Skipped, 2 - Up, 3 - Down, 4 - Fail</param>
+        </member>
+        <member name="M:CDOverhaul.Workshop.OverhaulWorkshopBrowserUI.OnGetWorkshopItems(CDOverhaul.Workshop.OverhaulWorkshopRequestResult)">
+            <summary>
+            Called when our steam workshop request is done
+            </summary>
+            <param name="requestResult"></param>
+        </member>
+        <member name="F:CDOverhaul.OverhaulDiscordController.ApplicationID">
+            <summary>
+            Overhaul mod Discord App ID
             </summary>
         </member>
         <member name="P:CDOverhaul.OverhaulDiscordController.CurrentGamemode">
@@ -536,7 +498,7 @@
         </member>
         <member name="P:CDOverhaul.OverhaulDiscordController.CurrentGamemodeDetails">
             <summary>
-            The details of gamemode (Progress)
+            The details of gamemode (Progress for example)
             </summary>
         </member>
         <member name="M:CDOverhaul.OverhaulDiscordController.DestroyDiscord">
@@ -544,90 +506,224 @@
             Destroying discord will result app quit
             </summary>
         </member>
-        <member name="M:CDOverhaul.OverhaulDiscordController.updateGamemodeString">
+        <member name="M:CDOverhaul.OverhaulDiscordController.updateCurrentGamemodeInfo">
             <summary>
             Update <see cref="P:CDOverhaul.OverhaulDiscordController.CurrentGamemode"/> value
             </summary>
         </member>
-        <member name="M:CDOverhaul.OverhaulDiscordController.updateDetailsString">
+        <member name="M:CDOverhaul.OverhaulDiscordController.updatedDetailsInfo">
             <summary>
             Update <see cref="P:CDOverhaul.OverhaulDiscordController.CurrentGamemodeDetails"/> value
             </summary>
         </member>
-        <member name="T:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements">
+        <member name="M:CDOverhaul.Patches.OptimizeRuntime.CollectGarbage">
+            <summary>
+            Reduce memory usage as much as possible
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Patches.ReplacementBase">
+            <summary>
+            This was made to patch the game without using HarmonyPatch
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.HasReplaced">
+            <summary>
+            Check if replacement is working
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.SuccessfullyPatched">
+            <summary>
+            This value doesn't affect anything, use it for marking fine working patches
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Replace">
+            <summary>
+            Do patch
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Cancel">
+            <summary>
+            Revert patch changes, called when mod is disabled
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild">
             <summary>
             Features that doesn't require player IDs to work. This class defines what things should be included in the build
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_SELECTION_OUTLINE_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_SELECTION_OUTLINE_ENABLED">
             <summary>
             Level editor selection outline
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_SKIN_SWITCHING_VFX_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_SKIN_SWITCHING_VFX_ENABLED">
             <summary>
             VFX that plays when switching skins
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_CUSTOM_MULTIPLAYER_TEST_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_CUSTOM_MULTIPLAYER_TEST_ENABLED">
             <summary>
             Allow creating private matches with additional things allowed
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED">
             <summary>
             Better way of saving/loading levels
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.APPLY_THEME_COLOR_ON_SETTINGS">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.APPLY_THEME_COLOR_ON_SETTINGS">
             <summary>
             Make tickboxes use player favourite color
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_VIEW_MODES_SETTING_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_VIEW_MODES_SETTING_ENABLED">
             <summary>
             First person mode
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_BOOT_SCREEN_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_BOOT_SCREEN_ENABLED">
             <summary>
             Startup screen
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_DISCORD_PANEL_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DISCORD_PANEL_ENABLED">
             <summary>
-            Startup screen
+            
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.ARE_TOOLTIPS_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ARE_TOOLTIPS_ENABLED">
             <summary>
-            Startup screen
+            
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_OVERHAULED_GAMEMODES_UI_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_OVERHAULED_GAMEMODES_UI_ENABLED">
             <summary>
-            Startup screen
+            
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_AUDIO_REVERB_FILTER_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_AUDIO_REVERB_FILTER_ENABLED">
             <summary>
-            Startup screen
+            
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.BuildImplements.IS_FIRST_USE_SETUP_UI_ENABLED">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_FIRST_USE_SETUP_UI_ENABLED">
             <summary>
-            Startup screen
+            
             </summary>
         </member>
-        <member name="T:CDOverhaul.OverhaulTransitionController">
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_COMBAT_OVERHAUL_ENABLED">
             <summary>
-            Todo: Add better transitions with cool loading animation
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ARE_ROBOT_EFFECTS_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_TRANSITION_SCREEN_ENABLED">
+            <summary>
+            Enable the transition initially used in prototype builds
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ARE_ENERGY_UI_IMPROVEMENTS_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_WORKSHOP_BROWSER_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_PETS_DEMO">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ALLOW_REVERTING_UPGRADES">
+            <summary>
+            Revert upgrade by right click
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_VANILLA_LVL_EDITOR_UI_OVERHAUL_ENABLED">
+            <summary>
+            Do some changes to usual level editor UI
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_FULL_LVL_EDITOR_UI_OVERHAUL_ENABLED">
+            <summary>
+            Overhaul level editor UI completely
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_PHOTO_MODE_OVERHAUL_ENABLED">
+            <summary>
+            More functional photo mode
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_GPU_INSTANCING_ENABLED">
+            <summary>
+            A way to optimize huge levels
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED">
+            <summary>
+            The redesign of game mode select screen
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_ARENA_OVERHAUL_ENABLED">
+            <summary>
+            Arena overhaul
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_ACHIEVEMENTS_MENU_REDESIGN_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_CONNECTION_SCREENS_REDESIGN_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_PLAYER_INFO_SYNC_MECHANISM_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_WEAPON_SKINS_SYSTEM_ENABLED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ARE_NEW_PERSONALIZATION_CATEGORIES_ENABLED">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:CDOverhaul.OverhaulBehaviour">
             <summary>
             MonoBehaviour class that replaces usual <see cref="T:UnityEngine.MonoBehaviour"/>
             </summary>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtensions.ToColor(System.String)">
+            <summary>
+            Get color using hex
+            </summary>
+            <param name="theString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtensions.ToSprite(UnityEngine.Texture2D)">
+            <summary>
+            Create sprite from texture
+            </summary>
+            <param name="texture2D"></param>
+            <returns></returns>
         </member>
         <member name="M:CDOverhaul.OverhaulExtensions.GetObject``1(ModdedObject,System.Int32@)">
             <summary>
@@ -638,18 +734,28 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulExtensions.ConvertHexToColor(System.String)">
+        <member name="M:CDOverhaul.OverhaulExtensions.GetAllChallengeLevelDescriptions(LevelManager)">
             <summary>
-            Get color using hex
+            Get all levels related to challenges
             </summary>
-            <param name="theString"></param>
+            <param name="levelManager"></param>
+            <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulExtensions.FastSpriteCreate(UnityEngine.Texture2D)">
+        <member name="M:CDOverhaul.OverhaulExtensions.GetChallengeLevelDescriptions(LevelManager,System.String)">
             <summary>
-            Create sprite from texture
+            Get all challenge levels
             </summary>
-            <param name="texture2D"></param>
+            <param name="levelManager"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CDOverhaul.OverhaulExtensions.GetLevelDescriptions(LevelManager,System.Byte)">
+            <summary>
+            Todo: Finish this method
+            </summary>
+            <param name="levelManager"></param>
+            <param name="index">0 - Story mode levels<br></br>1 - Endless mode levels</param>
             <returns></returns>
         </member>
         <member name="T:CDOverhaul.OverhaulSessionController">
@@ -686,11 +792,6 @@
             </summary>
             <param name="command"></param>
         </member>
-        <member name="P:CDOverhaul.ExclusiveColorsController.HasExclusiveAccess">
-            <summary>
-            Does local player have unlocked exclusive colors?
-            </summary>
-        </member>
         <member name="T:CDOverhaul.OverhaulExceptions">
             <summary>
             The exceptions that should occur only while testing!
@@ -715,37 +816,37 @@
             <b>Example: </b>Category.Section.Setting
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.SettingChangedEventString">
+        <member name="F:CDOverhaul.OverhaulSettingsController.SettingChangedEventString">
             <summary>
             This event is sent if any setting value has changed
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.SettingEventDispatcherFlag">
+        <member name="F:CDOverhaul.OverhaulSettingsController.SettingEventDispatcherFlag">
             <summary>
             If the default value of a setting equals this one, the setting will be shown as button in UI
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.m_Settings">
+        <member name="F:CDOverhaul.OverhaulSettingsController.m_Settings">
             <summary>
             All existing settings
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.m_HiddenEntries">
+        <member name="F:CDOverhaul.OverhaulSettingsController.m_HiddenEntries">
             <summary>
             Categories, sections and settings to be hidden in settings menu
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.m_CachedCategoryIcons">
+        <member name="F:CDOverhaul.OverhaulSettingsController.m_CachedCategoryIcons">
             <summary>
             Loaded images from Assets/Settings/Ico directory
             </summary>
         </member>
-        <member name="F:CDOverhaul.SettingsController.HUD">
+        <member name="F:CDOverhaul.OverhaulSettingsController.HUD">
             <summary>
             UI instance
             </summary>
         </member>
-        <member name="M:CDOverhaul.SettingsController.AddSetting``1(System.String@,``0@,System.Reflection.FieldInfo@,CDOverhaul.SettingSliderParameters@,CDOverhaul.SettingDropdownParameters@,CDOverhaul.SettingFormelyKnownAs@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.AddSetting``1(System.String@,``0@,System.Reflection.FieldInfo@,CDOverhaul.OverhaulUpdatedSetting@)">
             <summary>
             Add a setting and get full info about one
             </summary>
@@ -755,25 +856,25 @@
             <param name="field"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.SettingsController.GetAllCategories(System.Boolean@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.GetAllCategories(System.Boolean@)">
             <summary>
             Get all available categories including hidden if <paramref name="includeHidden"/> is true
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.SettingsController.GetAllSections(System.String@,System.Boolean@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.GetAllSections(System.String@,System.Boolean@)">
             <summary>
             Get all available sections under category including hidden if <paramref name="includeHidden"/> is true
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.SettingsController.GetAllSettings(System.String@,System.String@,System.Boolean@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.GetAllSettings(System.String@,System.String@,System.Boolean@)">
             <summary>
             Get all available settings including hidden if <paramref name="includeHidden"/> is true
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.SettingsController.GetSetting(System.String@,System.Boolean@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.GetSetting(System.String@,System.Boolean@)">
             <summary>
             Get setting info by typing path
             </summary>
@@ -781,7 +882,7 @@
             <param name="includeHidden"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.SettingsController.IsEntryHidden(System.String@)">
+        <member name="M:CDOverhaul.OverhaulSettingsController.IsEntryHidden(System.String@)">
             <summary>
             Check if the setting is hidden
             </summary>
@@ -798,14 +899,14 @@
             The list of loading asset bundles at the moment
             </summary>
         </member>
-        <member name="M:CDOverhaul.OverhaulAssetsController.TryLoadAssetBundle(System.String@)">
+        <member name="M:CDOverhaul.OverhaulAssetsController.TryLoadAssetBundle(System.String@,System.Boolean)">
             <summary>
             Try load an asset bundle if one exists
             </summary>
             <param name="pathUnderModFolder"></param>
             <returns><b>True</b> if asset bundle has been successfully loaded</returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulAssetsController.LoadAssetBundleAsync(System.String@,System.Action{CDOverhaul.OverhaulAssetsController.AssetBundleLoadHandler})">
+        <member name="M:CDOverhaul.OverhaulAssetsController.LoadAssetBundleAsync(System.String@,System.Action{CDOverhaul.OverhaulAssetsController.AssetBundleLoadHandler},System.Boolean)">
             <summary>
             Load asset bundle async
             </summary>
@@ -821,7 +922,7 @@
             <param name="unloadObjects">Destroy loaded objects to free memory</param>
             <returns><b>True</b> if asset bundle has been successfully unloaded</returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulAssetsController.LoadAssetBundleIfNotLoaded(System.String@)">
+        <member name="M:CDOverhaul.OverhaulAssetsController.LoadAssetBundleIfNotLoaded(System.String@,System.Boolean)">
             <summary>
             Try load an asset bundle if one isn't loaded
             </summary>
@@ -880,7 +981,7 @@
             The base class of any controller in this mod.
             </summary>
         </member>
-        <member name="P:CDOverhaul.OverhaulController.HadBadStart">
+        <member name="P:CDOverhaul.OverhaulController.Error">
             <summary>
             Check if an exception occurred while initializing the controller.
             </summary>
@@ -895,19 +996,6 @@
             <summary>
             Called when mod was deactivated.
             </summary>
-        </member>
-        <member name="M:CDOverhaul.OverhaulController.Commands">
-            <summary>
-            The array of available commands you may type in debug console.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CDOverhaul.OverhaulController.OnCommandRan(System.String[])">
-            <summary>
-            Called when any command ran.
-            </summary>
-            <param name="command"></param>
-            <returns></returns>
         </member>
         <member name="M:CDOverhaul.OverhaulController.InitializeStatic(UnityEngine.GameObject@)">
             <summary>
@@ -975,39 +1063,9 @@
             Check if <see cref="T:GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulVersion.m_ModVersion">
-            <summary>
-            The version of the mod
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulVersion.GameTargetVersion">
-            <summary>
-            The version of game mod will definitely work 
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulVersion.ModFullName">
-            <summary>
-            The full name of the mod
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulVersion.ModShortName">
-            <summary>
-            The shortened name of the mod
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulVersion.IsUpdate2Hotfix">
-            <summary>
-            Are we still on 0.2?
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulVersion.IsUpdate4">
-            <summary>
-            WIP
-            </summary>
-        </member>
         <member name="T:CDOverhaul.OverhaulMod">
             <summary>
-            The base class of the mod. Starts up the mod
+            The base class of the mod. Launches the mod
             </summary>
         </member>
         <member name="F:CDOverhaul.OverhaulMod.ModDeactivatedEventString">
@@ -1015,14 +1073,14 @@
             An event that is called when mod was deactivated by user
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulMod.IsCoreLoadedIncorrectly">
-            <summary>
-            Define if we got errors while starting up the mod
-            </summary>
-        </member>
         <member name="P:CDOverhaul.OverhaulMod.IsModInitialized">
             <summary>
             Returns <b>True</b> if <b><see cref="P:CDOverhaul.OverhaulMod.Core"/></b> is not <b>Null</b>
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.OverhaulMod.IsLoadedIncorrectly">
+            <summary>
+            Define if we got errors while starting up the mod
             </summary>
         </member>
         <member name="P:CDOverhaul.OverhaulMod.Core">
@@ -1056,12 +1114,12 @@
             </summary>
             <param name="firstPersonMover"></param>
         </member>
-        <member name="M:CDOverhaul.OverhaulMod.TryCreateCore">
+        <member name="M:CDOverhaul.OverhaulMod.TryInstantiateCore">
             <summary>
             Create the instance of mod core
             </summary>
         </member>
-        <member name="M:CDOverhaul.OverhaulMod.DeconstructCore">
+        <member name="M:CDOverhaul.OverhaulMod.DestroyCore">
             <summary>
             Destroy the instance of the core
             </summary>

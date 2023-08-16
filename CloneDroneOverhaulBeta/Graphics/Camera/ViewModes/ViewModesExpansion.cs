@@ -163,7 +163,6 @@ namespace CDOverhaul.Graphics
             }
         }
 
-        // Todo: Add a settings that allows first person mode even in cutscenes?
         public void OnCinematicCameraTurnedOn(LevelEditorCinematicCamera cam)
         {
             m_CinematicCamera = cam;

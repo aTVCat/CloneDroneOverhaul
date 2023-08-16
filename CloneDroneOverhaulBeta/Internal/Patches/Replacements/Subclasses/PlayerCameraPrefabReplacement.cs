@@ -4,24 +4,21 @@ namespace CDOverhaul.Patches
 {
     public class PlayerCameraPrefabReplacement : ReplacementBase
     {
-        private PlayerCameraMover _mover;
-
         public override void Replace()
         {
             base.Replace();
 
             Transform transform = PlayerCameraManager.Instance.MechCameraTransformPrefab;
-            _mover = transform.GetComponentInChildren<PlayerCameraMover>();
-            if (_mover == null)
+            if (transform)
             {
-                SuccessfullyPatched = false;
-                return;
+                PlayerCameraMover playerCameraMover = transform.GetComponentInChildren<PlayerCameraMover>();
+                if (playerCameraMover)
+                {
+                    playerCameraMover.MinDistanceFromCenter = 1f;
+                    playerCameraMover.PositionYChangePerDistance = -0.1f;
+                    playerCameraMover.ShortenedDistanceAddition = 3f;
+                }
             }
-
-            _mover.MinDistanceFromCenter = 1f;
-            _mover.PositionYChangePerDistance = -0.1f;
-            _mover.ShortenedDistanceAddition = 3f;
-
             SuccessfullyPatched = true;
         }
     }

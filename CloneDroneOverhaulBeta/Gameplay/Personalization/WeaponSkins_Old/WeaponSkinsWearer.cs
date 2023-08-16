@@ -314,17 +314,6 @@ namespace CDOverhaul.Gameplay
             foreach (IWeaponSkinItemDefinition skin in skins)
                 if (skin != null && !HasSpawnedSkin(skin))
                     SpawnSkin(skin);
-
-            // Todo: Make better VFX
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSkinSwitchingVFXEnabled && Owner == WeaponSkinsController.RobotToPlayAnimationOn)
-            {
-                WeaponSkinsController.RobotToPlayAnimationOn = null;
-                WeaponModel model = Owner.GetEquippedWeaponModel();
-                if (model == null)
-                    return;
-
-                _ = PooledPrefabController.SpawnEntry<VFXWeaponSkinSwitch>(WeaponSkinsController.VFX_ChangeSkinID, model.transform.position + new Vector3(0, 0.25f, 0f), Vector3.zero);
-            }
         }
 
         public void SetDefaultModelsActive(Transform transformToRemove = null)

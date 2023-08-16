@@ -5,8 +5,11 @@ namespace CDOverhaul.Patches
 {
     public class SettingsMenuReplacement : ReplacementBase
     {
-        private RectTransform m_BG; private Vector2 m_OgSizeDelta;
-        private HorizontalLayoutGroup m_TabHolder; private float m_OgSpacing;
+        private RectTransform m_BG;
+        private HorizontalLayoutGroup m_TabHolder;
+
+        private Vector2 m_OgSizeDelta;
+        private float m_OgSpacing;
 
         public override void Replace()
         {

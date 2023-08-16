@@ -5,22 +5,17 @@ namespace CDOverhaul.Patches
 {
     public class GameUIRootBehaviour : MonoBehaviour
     {
-        private GameUIRoot _uiRoot;
-        private GraphicRaycaster _raycaster;
-
-        private bool _hasInitialized;
+        private GraphicRaycaster m_GraphicRayCaster;
 
         private void Start()
         {
-            _uiRoot = GameUIRoot.Instance;
-            _raycaster = _uiRoot.GetComponent<GraphicRaycaster>();
-            _hasInitialized = true;
+            m_GraphicRayCaster = GameUIRoot.Instance.GetComponent<GraphicRaycaster>();
         }
 
         private void Update()
         {
-            if (_hasInitialized && Time.frameCount % 3 == 0)
-                _raycaster.enabled = Cursor.visible;
+            if (Time.frameCount % 3 == 0)
+                m_GraphicRayCaster.enabled = Cursor.visible;
         }
     }
 }

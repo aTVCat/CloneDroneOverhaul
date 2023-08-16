@@ -4,5 +4,3 @@
 - Improved mod framework
 - Improved UIs
 - Fixed many crashes
-
-Note: This is the last patch before Update 3

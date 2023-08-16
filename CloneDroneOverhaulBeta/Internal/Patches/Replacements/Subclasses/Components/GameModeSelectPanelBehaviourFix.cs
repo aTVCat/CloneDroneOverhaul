@@ -14,7 +14,6 @@ namespace CDOverhaul.Patches
                 if (!m_Box)
                     return;
             }
-
             m_Box.gameObject.SetActive(true);
         }
     }

@@ -648,7 +648,7 @@
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerAllyManager_Patch.cs" />
-    <Compile Include="Internal\Patches\Replacements\Subclasses\CanvasParametersUpdater.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\CanvasParametersUpdater.cs" />
     <Compile Include="Internal\Patches\StoryAllyNameTag_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />
@@ -663,7 +663,6 @@
     <Compile Include="Internal\Patches\EscMenu_Patch.cs" />
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
-    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\CharacterFixExpansion.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameModeSelectPanelBehaviourFix.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\CrosshairsUIReplacement.cs" />
     <Compile Include="Internal\Patches\SceneTransitionManager_Patch.cs" />
@@ -722,7 +721,6 @@
     <Compile Include="Internal\Patches\MechBodyPart_Patch.cs" />
     <Compile Include="Internal\Patches\CharacterModel_Patch.cs" />
     <Compile Include="Internal\Patches\AISwordsmanController_Patch.cs" />
-    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\ArenaCameraBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\EnergyUIReplacementBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameUIRootBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\EnergyUIReplacement.cs" />

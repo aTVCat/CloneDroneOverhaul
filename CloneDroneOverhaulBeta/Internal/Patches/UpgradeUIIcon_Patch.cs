@@ -43,9 +43,24 @@ namespace CDOverhaul.Patches
             if (!isUpgradeMode && !__instance.GetDescription().CanBeReverted())
             {
                 canvasGroup.alpha = 0.3f;
-                return;
             }
-            canvasGroup.alpha = 1f;
+            else
+            {
+                canvasGroup.alpha = 1f;
+            }
+
+            if (!__instance._upgradeDescription || !__instance._upgradeDescription.Icon)
+            {
+                RectTransform content = __instance.transform.FindRectChildRecursive("Content");
+                if (content)
+                {
+                    Image image = content.GetComponent<Image>();
+                    if (image)
+                    {
+                        image.sprite = OverhaulAssetsContainer.HQQuestionSprite;
+                    }
+                }
+            }
         }
 
         [HarmonyPostfix]
@@ -124,24 +139,6 @@ namespace CDOverhaul.Patches
                 Shadow shadow = content.gameObject.AddComponent<Shadow>();
                 shadow.effectColor = new Color(0f, 0f, 0f, 0.225f);
                 shadow.effectDistance = Vector2.one * -1.5f;
-            }
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch("Populate")]
-        private static void Populate_Postfix(UpgradeUIIcon __instance, UpgradeDescription upgradeDescription, Image line)
-        {
-            if(!upgradeDescription || !upgradeDescription.Icon)
-            {
-                RectTransform content = __instance.transform.FindRectChildRecursive("Content");
-                if (content)
-                {
-                    Image image = content.GetComponent<Image>();
-                    if (image)
-                    {
-                        image.sprite = OverhaulAssetsContainer.HQQuestionSprite;
-                    }
-                }
             }
         }
     }

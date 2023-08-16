@@ -13,7 +13,7 @@ namespace CDOverhaul
 
         private static readonly ReadOnlyCollection<ExclusiveColor> s_Colors = new ReadOnlyCollection<ExclusiveColor>(new List<ExclusiveColor>()
         {
-            new ExclusiveColor (A_TVCAT_ID, 4, new Color(0.76f, 0.85f, 1, 0.82f)),
+            new ExclusiveColor (A_TVCAT_ID, 4, new Color(0.76f, 0.85f, 1, 0.58f)),
             new ExclusiveColor (ZOLOR_ID, 10, new Color(0.45f, 0.04f, 0.65f, 1f)),
             new ExclusiveColor (ELECTRIFIED_CYBERKICK_ID, 10, "#630330", 0.13f),
             new ExclusiveColor (ELECTRIFIED_CYBERKICK_ID, 16, "#76ff7a", 0.13f),

@@ -8,59 +8,66 @@ namespace CDOverhaul.Patches
         [OverhaulSetting("Game interface.Gameplay.New energy bar design", true, false, "Make energy bar more stylish")]
         public static bool PatchHUD;
 
-        private bool m_AddedListeners;
+        private (Vector3, Vector3) m_Positions;
 
-        private EnergyUI _energyUI;
+        private Transform m_BG;
 
-        private (Vector3, Vector3) _positions;
+        private Image m_BarBG;
+        private Color m_BarBGInitColor;
+        private readonly Color m_BarBGPatchedColor = new Color(0, 0, 0.2f, 0.25f);
+        private (Vector3, Vector3) m_BarBGPositions;
+        private (Vector3, Vector3) m_BarBGScale = (new Vector3(1, 1, 1), new Vector3(1.04f, 1.3f, 1));
 
-        private Transform _bg;
+        private Image m_Glow;
+        private Color m_GlowColor;
+        private readonly Color m_GlowPatchedColor = new Color(0.1f, 0.4f, 1f, 0.9f);
+        private (Vector3, Vector3) m_GlowScale = (new Vector3(1, 1, 1), new Vector3(1.05f, 1, 1));
 
-        private Image _barBG;
-        private Color _barBGInitColor;
-        private readonly Color _barBGPatchedColor = new Color(0, 0, 0.2f, 0.25f);
-        private (Vector3, Vector3) _barBGPositions;
-        private (Vector3, Vector3) _barBGScale = (new Vector3(1, 1, 1), new Vector3(1.04f, 1.3f, 1));
+        private Transform m_CantJumpBG;
+        private (Vector3, Vector3) m_CantJumpBGScale = (Vector3.one, Vector3.zero);
 
-        private Image _glow;
-        private Color _glowColor;
-        private readonly Color _glowPatchedColor = new Color(0.1f, 0.4f, 1f, 0.9f);
-        private (Vector3, Vector3) _glowScale = (new Vector3(1, 1, 1), new Vector3(1.05f, 1, 1));
+        private bool m_HasAddedListeners;
 
-        private Transform _cantJumpBG;
-        private (Vector3, Vector3) _cantJumpBGScale = (Vector3.one, Vector3.zero);
+        private EnergyUI m_EnergyUI;
+        public EnergyUI EnergyUI
+        {
+            get
+            {
+                if (!m_EnergyUI)
+                {
+                    m_EnergyUI = GameUIRoot.Instance.EnergyUI;
+                }
+                return m_EnergyUI;
+            }
+        }
 
         public override void Replace()
         {
             base.Replace();
 
-            if (!m_AddedListeners)
-                _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshPatch);
-            m_AddedListeners = true;
-
-            _energyUI = GameUIRoot.Instance.EnergyUI;
-            if (_energyUI == null)
+            if (!m_HasAddedListeners)
             {
-                SuccessfullyPatched = false;
-                return;
+                _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshPatch);
+                m_HasAddedListeners = true;
             }
 
-            RectTransform transform = _energyUI.transform as RectTransform;
-            _positions.Item1 = transform.anchoredPosition;
-            _positions.Item2 = transform.anchoredPosition + new Vector2(0, 13);
+            RectTransform transform = EnergyUI.transform as RectTransform;
+            m_Positions.Item1 = transform.anchoredPosition;
+            m_Positions.Item2 = transform.anchoredPosition + new Vector2(0, 13);
 
-            _bg = transform.Find("FrameBG");
-            _barBG = transform.Find("BarBG").GetComponent<Image>();
-            _barBGInitColor = _barBG.color;
-            _barBGPositions.Item1 = _barBG.transform.localPosition;
-            _barBGPositions.Item2 = new Vector3(0, 9, 0);
-            _glow = transform.Find("GlowFill").GetComponent<Image>();
-            _glowColor = _glow.color;
-            _cantJumpBG = transform.Find("CantJumpBG");
+            m_BG = transform.Find("FrameBG");
+            m_BarBG = transform.Find("BarBG").GetComponent<Image>();
+            m_BarBGInitColor = m_BarBG.color;
+            m_BarBGPositions.Item1 = m_BarBG.transform.localPosition;
+            m_BarBGPositions.Item2 = new Vector3(0, 9, 0);
+            m_Glow = transform.Find("GlowFill").GetComponent<Image>();
+            m_GlowColor = m_Glow.color;
+            m_CantJumpBG = transform.Find("CantJumpBG");
 
-            _ = _energyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
-
+            _ = EnergyUI.gameObject.AddComponent<EnergyUIReplacementBehaviour>();
             SuccessfullyPatched = true;
+
+            PatchEnergyUI(!PatchHUD);
         }
 
         public override void Cancel()
@@ -71,27 +78,24 @@ namespace CDOverhaul.Patches
 
         public void RefreshPatch()
         {
-            if (!SuccessfullyPatched)
-                return;
-
             PatchEnergyUI(!PatchHUD);
         }
 
-        public void PatchEnergyUI(in bool recover)
+        public void PatchEnergyUI(bool recover)
         {
             if (!SuccessfullyPatched)
                 return;
 
-            (_energyUI.transform as RectTransform).anchoredPosition = recover ? _positions.Item1 : _positions.Item2;
-            _bg.gameObject.SetActive(recover);
-            _barBG.color = recover ? _barBGInitColor : _barBGPatchedColor;
-            _barBG.transform.localPosition = recover ? _barBGPositions.Item1 : _barBGPositions.Item2;
-            _barBG.transform.localScale = recover ? _barBGScale.Item1 : _barBGScale.Item2;
-            _glow.color = recover ? _glowColor : _glowPatchedColor;
-            _glow.transform.localScale = recover ? _glowScale.Item1 : _glowScale.Item2;
-            _cantJumpBG.localScale = recover ? _cantJumpBGScale.Item1 : _cantJumpBGScale.Item2;
+            (EnergyUI.transform as RectTransform).anchoredPosition = recover ? m_Positions.Item1 : m_Positions.Item2;
+            m_BG.gameObject.SetActive(recover);
+            m_BarBG.color = recover ? m_BarBGInitColor : m_BarBGPatchedColor;
+            m_BarBG.transform.localPosition = recover ? m_BarBGPositions.Item1 : m_BarBGPositions.Item2;
+            m_BarBG.transform.localScale = recover ? m_BarBGScale.Item1 : m_BarBGScale.Item2;
+            m_Glow.color = recover ? m_GlowColor : m_GlowPatchedColor;
+            m_Glow.transform.localScale = recover ? m_GlowScale.Item1 : m_GlowScale.Item2;
+            m_CantJumpBG.localScale = recover ? m_CantJumpBGScale.Item1 : m_CantJumpBGScale.Item2;
         }
 
-        public static void RefreshPatchStatic() => ReplacementBase.GetReplacement<EnergyUIReplacement>()?.RefreshPatch();
+        public static void RefreshPatchStatic() => GetReplacement<EnergyUIReplacement>()?.RefreshPatch();
     }
 }
