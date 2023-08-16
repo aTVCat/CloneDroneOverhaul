@@ -9,16 +9,14 @@ namespace CDOverhaul
         public const string ModID = "rAnDomPaTcHeS1";
         public const bool IsModBotBuild = true;
 
-        public const bool ForceShowUpdate2Version = true;
-
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.0");
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.1");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
 
-        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
+        private static readonly Updates s_CurrentUpdate = Updates.VER_2;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
-        public static bool IsVersion2 => !IsUpdate(Updates.VER_3);
+        public static bool IsVersionUnder3 => !IsUpdate(Updates.VER_3);
         public static bool IsVersion3 => IsUpdate(Updates.VER_3);
         public static bool IsVersion3Update => IsUpdate(Updates.VER_3_Update);
         public static bool IsVersion4 => IsUpdate(Updates.VER_4);
@@ -27,9 +25,6 @@ namespace CDOverhaul
         {
             get
             {
-                if(ForceShowUpdate2Version)
-                    return s_ModVersionUpdate2;
-
                 switch (s_CurrentUpdate)
                 {
                     case Updates.VER_2:

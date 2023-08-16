@@ -10,7 +10,7 @@ namespace CDOverhaul.Gameplay.Combat
         [OverhaulSetting("Gameplay.Control.Zoom when aiming", false, false, null, "Gameplay.Control.Hold Z to zoom camera")]
         public static bool ZoomWhenAimingBow;
         [OverhaulSettingSliderParameters(false, 10f, 35f)]
-        [OverhaulSetting("Gameplay.Control.Zoom strength", 25f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        [OverhaulSetting("Gameplay.Control.Zoom strength", 15f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
         public static float ZoomBy;
         [OverhaulSettingSliderParameters(false, 2f, 30f)]
         [OverhaulSetting("Gameplay.Control.Zoom hardness", 10f, false, null, "Gameplay.Control.Hold Z to zoom camera")]

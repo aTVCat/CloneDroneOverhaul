@@ -13,14 +13,11 @@ namespace CDOverhaul.Gameplay.Combat
 
         private void Update()
         {
-            if (!EnableMouseWheel)
-                return;
-
             if (!Owner || Cursor.visible || !Owner.IsPlayerInputEnabled() || !Owner.IsMainPlayer() || !Owner.IsAlive())
                 return;
 
             float unscaledTime = Time.unscaledTime;
-            bool allowScrolling = !Owner.IsAimingBow() && unscaledTime >= m_TimeToAllowSwitchingWeapons;
+            bool allowScrolling = EnableMouseWheel && !Owner.IsAimingBow() && unscaledTime >= m_TimeToAllowSwitchingWeapons;
             if (allowScrolling)
             {
                 float scroll = Input.mouseScrollDelta.y;

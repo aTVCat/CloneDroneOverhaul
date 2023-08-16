@@ -2,6 +2,7 @@
 using CDOverhaul.HUD;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
 {
@@ -22,6 +23,13 @@ namespace CDOverhaul.Patches
                 __instance.UpgradeUIBackground.transform.GetChild(i).gameObject.SetActive(challengeUpgradeConfigMode);
                 i++;
             } while (i < __instance.UpgradeUIBackground.transform.childCount);
+
+            Transform hexBG = __instance.transform.FindChildRecursive("HexBG");
+            if (hexBG)
+            {
+                hexBG.localPosition = new Vector3(-5.5f, 9.5f, 0f);
+                hexBG.localScale = Vector3.one * 1.2f;
+            }
         }
 
 

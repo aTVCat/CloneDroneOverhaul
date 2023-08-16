@@ -38,16 +38,8 @@ namespace CDOverhaul.Patches
             m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
             if (m_MultiplayerNEWButtonTransform != null)
             {
-                if (!OverhaulVersion.IsVersion2)
-                {
-                    m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
-                    m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
-                }
-                else
-                {
-                    m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -62.5f, 0);
-                    m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
-                }
+                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
+                m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
             }
 
             m_SingleplayerButtonTransform = TransformUtils.FindChildRecursive(target.transform, "PlaySingleplayer") as RectTransform;
@@ -56,54 +48,51 @@ namespace CDOverhaul.Patches
                 m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
                 m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
 
-                if (!OverhaulVersion.IsVersion2)
-                {
-                    RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
-                    playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
-                    playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
-                    LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
-                    Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
-                    playModdedButtonTextComponent.text = OverhaulLocalizationController.Localization.GetTranslation("Play modded");
-                    Object.Destroy(playModdedButtonText);
+                RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
+                playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
+                playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
+                LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
+                Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
+                playModdedButtonTextComponent.text = OverhaulLocalizationController.Localization.GetTranslation("Play modded");
+                Object.Destroy(playModdedButtonText);
 
-                    Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
-                    Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
-                    moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
-                    GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
-                    moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
-                    {
+                Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
+                Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
+                moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
+                GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
+                moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
+                {
                     new GameModeCardData
                     {
                         NameOfMode = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox"),
                         Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc"),
                         ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    },
+                    }/*,
                     new GameModeCardData
                     {
                         NameOfMode = "Testing mode",
                         Description = "",
                         ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    }
-                    };
-                    moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
-                    moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
-                    patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                    Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)").GetComponent<Button>();
-                    exitButton.onClick = new Button.ButtonClickedEvent();
-                    exitButton.onClick.AddListener(delegate
-                    {
-                        target.SetLogoAndRootButtonsVisible(true);
-                        moddedGameModesSelectScreen.Hide();
-                    });
+                    }*/
+                };
+                moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
+                //moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
+                patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
+                Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton").GetComponent<Button>();
+                exitButton.onClick = new Button.ButtonClickedEvent();
+                exitButton.onClick.AddListener(delegate
+                {
+                    target.SetLogoAndRootButtonsVisible(true);
+                    moddedGameModesSelectScreen.Hide();
+                });
 
-                    Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
-                    playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
-                    playModdedButtonComponent.onClick.AddListener(delegate
-                    {
-                        target.SetLogoAndRootButtonsVisible(false);
-                        moddedGameModesSelectScreen.Show();
-                    });
-                }
+                Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
+                playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
+                playModdedButtonComponent.onClick.AddListener(delegate
+                {
+                    target.SetLogoAndRootButtonsVisible(false);
+                    moddedGameModesSelectScreen.Show();
+                });
             }
 
             m_AchievementsNewHint = TransformUtils.FindChildRecursive(target.transform, "AchievementsNewHint");
@@ -285,6 +274,22 @@ namespace CDOverhaul.Patches
             UIColorSwapper cardGamemodeButtonColors = cardHeadingLabel.GetComponent<UIColorSwapper>();
             cardGamemodeButtonColors.ColorVariants[0] = Color.white;
             cardGamemodeButtonColors.ColorVariants[1] = new Color(0.3f, 1f, 0.35f, 1f);
+
+            OverhaulCanvasController canvasController = OverhaulMod.Core.CanvasController;
+            if (canvasController)
+            {
+                Transform ogCloseButton = gameModeSelectScreen.transform.FindChildRecursive("exitButton (1)");
+                if (ogCloseButton)
+                {
+                    ogCloseButton.gameObject.SetActive(false);
+                    Button newCloseButton = UnityEngine.Object.Instantiate(canvasController.GetHUDPrefab("GenericCloseButton"), ogCloseButton.parent).GetComponent<Button>();
+                    newCloseButton.transform.localPosition = new Vector3(350f, 125f, 0f);
+                    newCloseButton.transform.localEulerAngles = Vector3.zero;
+                    newCloseButton.transform.localScale = Vector3.one;
+                    newCloseButton.onClick = ogCloseButton.GetComponent<Button>().onClick;
+                    newCloseButton.gameObject.name = "GenericCloseButton";
+                }
+            }
         }
 
         private void localizeTexts()

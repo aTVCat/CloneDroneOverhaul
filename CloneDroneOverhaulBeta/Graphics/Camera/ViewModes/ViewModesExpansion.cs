@@ -1,4 +1,5 @@
 ﻿using CDOverhaul.Gameplay;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -6,7 +7,6 @@ namespace CDOverhaul.Graphics
 {
     public class ViewModesExpansion : OverhaulCharacterExpansion
     {
-        private static readonly Renderer[] s_EmptyRendererArray = new Renderer[0];
         public static readonly EnemyType[] UnsupportedCharacters = new EnemyType[]
         {
             EnemyType.EmperorNonCombat,
@@ -18,11 +18,11 @@ namespace CDOverhaul.Graphics
         public static Renderer[] GetRenderersOfBodyPart(in FirstPersonMover firstPersonMover, in MechBodyPartType bodyPartType)
         {
             if (!IsFirstPersonMoverSupported(firstPersonMover) || bodyPartType == MechBodyPartType.None)
-                return s_EmptyRendererArray;
+                return Array.Empty<Renderer>();
 
             MechBodyPart mechBodyPart = firstPersonMover.GetBodyPart(bodyPartType);
             if (mechBodyPart == null)
-                return s_EmptyRendererArray;
+                return Array.Empty<Renderer>();
 
             Renderer[] result = mechBodyPart.GetComponentsInChildren<Renderer>();
             return result;
@@ -30,19 +30,54 @@ namespace CDOverhaul.Graphics
         public static Renderer[] GetRenderersOfBodyPart(in FirstPersonMover firstPersonMover, in string bodyPart)
         {
             if (!IsFirstPersonMoverSupported(firstPersonMover) || string.IsNullOrEmpty(bodyPart))
-                return s_EmptyRendererArray;
+                return Array.Empty<Renderer>();
 
             Transform transform = firstPersonMover.GetBodyPartParent(bodyPart);
             if (transform == null)
-                return s_EmptyRendererArray;
+                return Array.Empty<Renderer>();
 
             Renderer[] result = transform.GetComponentsInChildren<Renderer>();
             return result;
         }
 
         private Renderer[] m_HeadRenderers;
+        public Renderer[] HeadRenderers
+        {
+            get
+            {
+                if (m_HeadRenderers.IsNullOrEmpty())
+                {
+                    m_HeadRenderers = GetRenderersOfBodyPart(Owner, "Head");
+                }
+                return m_HeadRenderers;
+            }
+        }
+
         private Renderer[] m_JawRenderers;
+        public Renderer[] JawRenderers
+        {
+            get
+            {
+                if (m_JawRenderers.IsNullOrEmpty())
+                {
+                    m_JawRenderers = GetRenderersOfBodyPart(Owner, "Jaw");
+                }
+                return m_JawRenderers;
+            }
+        }
+
         private Renderer[] m_ShieldRenderers;
+        public Renderer[] ShieldRenderers
+        {
+            get
+            {
+                if (m_ShieldRenderers.IsNullOrEmpty())
+                {
+                    m_ShieldRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Shield);
+                }
+                return m_ShieldRenderers;
+            }
+        }
 
         private LevelEditorCinematicCamera m_CinematicCamera;
         private bool m_CineCameraOn;
@@ -55,9 +90,6 @@ namespace CDOverhaul.Graphics
         {
             base.Start();
 
-            m_ShieldRenderers = GetRenderersOfBodyPart(Owner, MechBodyPartType.Shield);
-            m_HeadRenderers = GetRenderersOfBodyPart(Owner, "Head");
-            m_JawRenderers = GetRenderersOfBodyPart(Owner, "Jaw");
             m_Camera = Owner.GetPlayerCamera();
             m_FPModeCameraParent = Owner.GetBodyPartParent("Head");
 
@@ -108,7 +140,7 @@ namespace CDOverhaul.Graphics
                     m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
-            if (Time.frameCount % 5 == 0)
+            if (Time.frameCount % 10 == 0)
                 RefreshHeadVisibility();
 
             if (m_CineCameraOn)
@@ -147,33 +179,38 @@ namespace CDOverhaul.Graphics
         public void RefreshView()
         {
             m_Camera = Owner.GetPlayerCamera();
-
             RefreshHeadVisibility();
         }
 
         public void RefreshHeadVisibility()
         {
-            SetHeadRenderersActive(m_CineCameraOn || !ViewModesController.IsFirstPersonModeEnabled || !Owner.IsMainPlayer() || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetHeadRenderersActive(m_CineCameraOn || !ViewModesController.IsFirstPersonModeEnabled || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         public void SetHeadRenderersActive(bool value)
         {
-            if (!m_HeadRenderers.IsNullOrEmpty())
-                foreach (Renderer renderer in m_HeadRenderers)
+            if (!Owner || !Owner.IsMainPlayer())
+                return;
+
+            Renderer[] array1 = HeadRenderers;
+            if (!array1.IsNullOrEmpty())
+                foreach (Renderer renderer in array1)
                 {
                     if (renderer)
                         renderer.enabled = value;
                 }
 
-            if (!m_JawRenderers.IsNullOrEmpty())
-                foreach (Renderer renderer in m_JawRenderers)
+            Renderer[] array2 = JawRenderers;
+            if (!array2.IsNullOrEmpty())
+                foreach (Renderer renderer in array2)
                 {
                     if (renderer)
                         renderer.enabled = value;
                 }
 
-            if (!m_ShieldRenderers.IsNullOrEmpty())
-                foreach (Renderer renderer in m_ShieldRenderers)
+            Renderer[] array3 = ShieldRenderers;
+            if (!array3.IsNullOrEmpty())
+                foreach (Renderer renderer in array3)
                 {
                     if (renderer)
                         renderer.enabled = value;

@@ -191,6 +191,9 @@ namespace CDOverhaul
         public IEnumerator LoadSyncStuff(bool waitForEndOfFrame = true)
         {
             PersonalizationEditor.Initialize();
+            OverhaulAssetsContainer.Initialize();
+            if (waitForEndOfFrame)
+                yield return null;
 
             CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
             if (waitForEndOfFrame)

@@ -68,7 +68,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Level Editor Selection Outline", true, false, "Selected objects have outline")]
             private static readonly bool IS_SELECTION_OUTLINE_ENABLED = true;
-            public static bool IsSelectionOutLineEnabled => !OverhaulVersion.IsVersion2 && IS_SELECTION_OUTLINE_ENABLED;
+            public static bool IsSelectionOutLineEnabled => IS_SELECTION_OUTLINE_ENABLED;
 
             /// <summary>
             /// VFX that plays when switching skins
@@ -76,7 +76,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Skin Switch VFX", false, false, "")]
             private static readonly bool IS_SKIN_SWITCHING_VFX_ENABLED = false;
-            public static bool IsSkinSwitchingVFXEnabled => !OverhaulVersion.IsVersion2 && IS_SKIN_SWITCHING_VFX_ENABLED;
+            public static bool IsSkinSwitchingVFXEnabled => IS_SKIN_SWITCHING_VFX_ENABLED;
 
             /// <summary>
             /// Allow creating private matches with additional things allowed
@@ -84,17 +84,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Custom Multiplayer", false, false, "")]
             private static readonly bool IS_CUSTOM_MULTIPLAYER_TEST_ENABLED = false;
-            public static bool IsCustomMultiplayerTestEnabled => !OverhaulVersion.IsVersion2 && IS_CUSTOM_MULTIPLAYER_TEST_ENABLED;
-
-            /// <summary>
-            /// Better way of saving/loading levels
-            /// </summary>
-#if AllowLevelDataPatches
-            private static readonly bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = true;
-#else
-            private static readonly bool IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED = false;
-#endif
-            public static bool IsNewSaveAndLoadSystemEnabled => !OverhaulVersion.IsVersion2 && IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED;
+            public static bool IsCustomMultiplayerTestEnabled => IS_CUSTOM_MULTIPLAYER_TEST_ENABLED;
 
             /// <summary>
             /// Make tickboxes use player favourite color
@@ -102,7 +92,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.More Theme Color", false, false, "")]
             private static readonly bool APPLY_THEME_COLOR_ON_SETTINGS = false;
-            public static bool ApplyThemeColorOnSettings => !OverhaulVersion.IsVersion2 && APPLY_THEME_COLOR_ON_SETTINGS;
+            public static bool ApplyThemeColorOnSettings => APPLY_THEME_COLOR_ON_SETTINGS;
 
             /// <summary>
             /// First person mode
@@ -110,7 +100,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.View Modes Feature", true, false, "Enable first person mode")]
             private static readonly bool IS_VIEW_MODES_SETTING_ENABLED = true;
-            public static bool IsViewModesSettingsEnabled => !OverhaulVersion.IsVersion2 && IS_VIEW_MODES_SETTING_ENABLED;
+            public static bool IsViewModesSettingsEnabled => IS_VIEW_MODES_SETTING_ENABLED;
 
             /// <summary>
             /// Startup screen
@@ -118,15 +108,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Boot Screen", true, false, "Overhaul logo on game start")]
             private static readonly bool IS_BOOT_SCREEN_ENABLED = true;
-            public static bool IsBootScreenEnabled => !OverhaulVersion.IsVersion2 && IS_BOOT_SCREEN_ENABLED;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            [OverhaulSettingWithNotification(1)]
-            [OverhaulSetting("Experimental.Features.Discord Servers Panel", true, false, "")]
-            private static readonly bool IS_DISCORD_PANEL_ENABLED = true;
-            public static bool IsDiscordPanelEnabled => !OverhaulVersion.IsVersion2 && IS_DISCORD_PANEL_ENABLED;
+            public static bool IsBootScreenEnabled => IS_BOOT_SCREEN_ENABLED;
 
             /// <summary>
             /// 
@@ -134,7 +116,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Enable Tooltips", true, false, "")]
             private static readonly bool ARE_TOOLTIPS_ENABLED = true;
-            public static bool AreTooltipsEnabled => !OverhaulVersion.IsVersion2 && ARE_TOOLTIPS_ENABLED;
+            public static bool AreTooltipsEnabled => ARE_TOOLTIPS_ENABLED;
 
             /// <summary>
             /// 
@@ -142,7 +124,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Gamemodes UI Overhaul", true, false, "")]
             private static readonly bool IS_OVERHAULED_GAMEMODES_UI_ENABLED = true;
-            public static bool IsOverhaulGamemodesUIEnabled => !OverhaulVersion.IsVersion2 && IS_OVERHAULED_GAMEMODES_UI_ENABLED;
+            public static bool IsOverhaulGamemodesUIEnabled => IS_OVERHAULED_GAMEMODES_UI_ENABLED;
 
             /// <summary>
             /// 
@@ -150,7 +132,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Audio Reverb Filter", true, false, "")]
             private static readonly bool IS_AUDIO_REVERB_FILTER_ENABLED = true;
-            public static bool IsAudioReverbFilterEnabled => !OverhaulVersion.IsVersion2 && IS_AUDIO_REVERB_FILTER_ENABLED;
+            public static bool IsAudioReverbFilterEnabled => IS_AUDIO_REVERB_FILTER_ENABLED;
 
             /// <summary>
             /// 
@@ -158,7 +140,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.First Use Setup", true, false, "")]
             private static readonly bool IS_FIRST_USE_SETUP_UI_ENABLED = true;
-            public static bool IsFirstUseSetupUIEnabled => !OverhaulVersion.IsVersion2 && IS_FIRST_USE_SETUP_UI_ENABLED;
+            public static bool IsFirstUseSetupUIEnabled => IS_FIRST_USE_SETUP_UI_ENABLED;
 
             /// <summary>
             /// 
@@ -166,7 +148,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Combat Overhaul", true, false, "Faster arrows, hammers collide with each other")]
             private static readonly bool IS_COMBAT_OVERHAUL_ENABLED = true;
-            public static bool IsCombatOverhaulEnabled => !OverhaulVersion.IsVersion2 && IS_COMBAT_OVERHAUL_ENABLED;
+            public static bool IsCombatOverhaulEnabled => IS_COMBAT_OVERHAUL_ENABLED;
 
             /// <summary>
             /// 
@@ -174,7 +156,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Robot Effects", true, false, "Sparks on death")]
             private static readonly bool ARE_ROBOT_EFFECTS_ENABLED = true;
-            public static bool AreRobotEffectsEnabled => !OverhaulVersion.IsVersion2 && ARE_ROBOT_EFFECTS_ENABLED;
+            public static bool AreRobotEffectsEnabled => ARE_ROBOT_EFFECTS_ENABLED;
 
             /// <summary>
             /// Enable the transition initially used in prototype builds
@@ -182,7 +164,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.New Transition Screen", true, false, "With animation!")]
             private static readonly bool IS_NEW_TRANSITION_SCREEN_ENABLED = true;
-            public static bool IsNewTransitionScreenEnabled => !OverhaulVersion.IsVersion2 && IS_NEW_TRANSITION_SCREEN_ENABLED;
+            public static bool IsNewTransitionScreenEnabled => IS_NEW_TRANSITION_SCREEN_ENABLED;
 
             /// <summary>
             /// 
@@ -190,7 +172,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Energy UI Updates", true, false, "")]
             private static readonly bool ARE_ENERGY_UI_IMPROVEMENTS_ENABLED = true;
-            public static bool AreEnergyUIImprovementsEnabled => !OverhaulVersion.IsVersion2 && ARE_ENERGY_UI_IMPROVEMENTS_ENABLED;
+            public static bool AreEnergyUIImprovementsEnabled => ARE_ENERGY_UI_IMPROVEMENTS_ENABLED;
 
             /// <summary>
             /// 
@@ -198,7 +180,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Workshop Browser Overhaul2", true, false, "")]
             private static readonly bool IS_NEW_WORKSHOP_BROWSER_ENABLED = true;
-            public static bool IsNewWorkshopBrowserEnabled => !OverhaulVersion.IsVersion2 && IS_NEW_WORKSHOP_BROWSER_ENABLED;
+            public static bool IsNewWorkshopBrowserEnabled => IS_NEW_WORKSHOP_BROWSER_ENABLED;
 
             /// <summary>
             /// 
@@ -206,7 +188,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Pets DEMOv2", false, false, "")]
             private static readonly bool IS_PETS_DEMO = false;
-            public static bool IsPetsDemo => OverhaulVersion.IsVersion2 || IS_PETS_DEMO;
+            public static bool IsPetsDemo => IS_PETS_DEMO;
 
             /// <summary>
             /// Revert upgrade by right click
@@ -214,7 +196,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Allow reverting upgrades", true, false, "")]
             private static readonly bool ALLOW_REVERTING_UPGRADES = true;
-            public static bool AllowReveringUpgrades => !OverhaulVersion.IsVersion2 && ALLOW_REVERTING_UPGRADES;
+            public static bool AllowReveringUpgrades => ALLOW_REVERTING_UPGRADES;
 
             /// <summary>
             /// Do some changes to usual level editor UI
@@ -254,7 +236,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.GameModeSelectScreen Redesign", true, false, "")]
             private static readonly bool IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED = true;
-            public static bool IsGameModeSelectScreenRedesignEnabled => !OverhaulVersion.IsVersion2 && IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED;
+            public static bool IsGameModeSelectScreenRedesignEnabled => IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED;
 
             /// <summary>
             /// Arena overhaul
@@ -262,7 +244,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Arena overhaul", true, false, "")]
             private static readonly bool IS_ARENA_OVERHAUL_ENABLED = true;
-            public static bool IsArenaOverhaulEnabled => !OverhaulVersion.IsVersion2 && IS_ARENA_OVERHAUL_ENABLED;
+            public static bool IsArenaOverhaulEnabled => IS_ARENA_OVERHAUL_ENABLED;
 
             /// <summary>
             /// 
@@ -270,7 +252,7 @@ namespace CDOverhaul
             [OverhaulSettingWithNotification(1)]
             [OverhaulSetting("Experimental.Features.Additional content support", true, false, "")]
             private static readonly bool IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED = true;
-            public static bool IsAdditionalContentSupportEnabled => !OverhaulVersion.IsVersion2 && IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED;
+            public static bool IsAdditionalContentSupportEnabled => IS_ADDITIONAL_CONTENT_SUPPORT_ENABLED;
 
             /// <summary>
             /// 

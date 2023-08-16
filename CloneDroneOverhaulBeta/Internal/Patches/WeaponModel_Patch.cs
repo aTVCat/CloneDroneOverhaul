@@ -1,11 +1,14 @@
 ﻿using HarmonyLib;
+using UnityEngine;
+using System.Collections;
+using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Multiplayer;
 
 namespace CDOverhaul.Patches
 {
     [HarmonyPatch(typeof(WeaponModel))]
     internal static class WeaponModel_Patch
     {
-        /*
         [HarmonyPrefix]
         [HarmonyPatch("ReplaceModelWithVariantMatching")]
         private static bool ReplaceModelWithVariantMatching_Postfix(WeaponModel __instance, bool isOnFire, bool isMultiplayer, Color weaponGlowColor, bool isEMP)
@@ -30,6 +33,6 @@ namespace CDOverhaul.Patches
                 owner.IsPlayer()))
                 return false;
             return true;
-        }*/
+        }
     }
 }

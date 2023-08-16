@@ -550,8 +550,8 @@
     <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Device\RecommendationLevel.cs" />
     <Compile Include="Internal\Device\Recommendations.cs" />
-    <Compile Include="Internal\Management\Assets\Container\OverhaulAssetsContainer.cs" />
-    <Compile Include="Internal\Management\Assets\Container\OverhaulAssetAttribute.cs" />
+    <Compile Include="Internal\Management\Assets\OverhaulAssetsContainer.cs" />
+    <Compile Include="Internal\Management\Assets\OverhaulAssetAttribute.cs" />
     <Compile Include="Internal\Management\Assets\Local\OverhaulVoxAssetInfo.cs" />
     <Compile Include="Internal\Management\Assets\Local\OverhaulAssetInfo.cs" />
     <Compile Include="Internal\Management\Assets\Repository\OverhaulRepositoryController.cs" />
@@ -648,6 +648,7 @@
     <Compile Include="Internal\Patches\DataRepository_Patch.cs" />
     <Compile Include="Internal\Patches\EnemyFactory_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerAllyManager_Patch.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\CanvasParametersUpdater.cs" />
     <Compile Include="Internal\Patches\StoryAllyNameTag_Patch.cs" />
     <Compile Include="Internal\Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Internal\Patches\GameDataManager_Patch.cs" />

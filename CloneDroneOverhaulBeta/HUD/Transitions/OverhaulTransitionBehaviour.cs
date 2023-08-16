@@ -79,7 +79,7 @@ namespace CDOverhaul
             }
 
             AudioListener.volume = !m_FadeOut && m_IsRealTransition ? (1f - m_Image.color.a) * setVolume : setVolume;
-            if (m_TimeToDestroy != -1f && time >= m_TimeToDestroy)
+            if (ErrorManager.Instance.HasCrashed() || (m_TimeToDestroy != -1f && time >= m_TimeToDestroy))
             {
                 DestroyGameObject();
                 AudioListener.volume = setVolume;
