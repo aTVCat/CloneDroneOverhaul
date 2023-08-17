@@ -21,7 +21,7 @@ namespace CDOverhaul.Patches
                 return;
 
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();
-            if (filter == null)
+            if (!filter)
             {
                 filter = __instance.gameObject.AddComponent<AudioReverbFilter>();
             }

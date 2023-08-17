@@ -6,6 +6,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(MultiplayerPlayerInfoLabel))]
     internal static class MultiplayerPlayerInfoLabel_Patch
     {
+        /*
         [HarmonyPostfix]
         [HarmonyPatch("Initialize")]
         private static void Initialize_Postfix(MultiplayerPlayerInfoLabel __instance, MultiplayerPlayerInfoState playerState)
@@ -17,7 +18,7 @@ namespace CDOverhaul.Patches
             {
                 __instance.PlayerNameLabel.gameObject.AddComponent<ModBotTagRemoverBehaviour>().NormalUsername = playerState.state.DisplayName;
             }
-        }
+        }*/
 
         /*
         [HarmonyPostfix]

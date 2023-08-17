@@ -5,6 +5,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 {
     public class ArenaOverhaulController : OverhaulController
     {
+        [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
         [OverhaulSettingWithNotification(1)]
         [OverhaulSetting("Mod.Arena.Interior overhaul", true)]
         public static bool IsArenaOverhaulEnabled;

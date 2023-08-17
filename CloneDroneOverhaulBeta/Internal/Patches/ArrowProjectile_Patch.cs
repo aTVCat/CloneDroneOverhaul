@@ -14,9 +14,9 @@ namespace CDOverhaul.Patches
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || !OverhaulMod.IsModInitialized || GameModeManager.IsMultiplayer() || !__instance.IsFlying() || !__instance.GetOwner())
                 return;
 
-            Vector3 currentVelocity = __instance.GetPrivateField<Vector3>("_velocity");
-            Vector3 newVelocity = new Vector3(currentVelocity.x, currentVelocity.y - 0.0175f, currentVelocity.z);
-            __instance.SetPrivateField<Vector3>("_velocity", newVelocity);
+            Vector3 currentVelocity = __instance._velocity;
+            currentVelocity.y -= 0.0175f;
+            __instance._velocity = currentVelocity;
             __instance.transform.eulerAngles += new Vector3(0.04f, 0f, 0f);
         }
 

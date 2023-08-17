@@ -21,20 +21,24 @@ namespace CDOverhaul.HUD.Gamemodes
 
         private Button m_NextDiffButton;
         private Button m_PrevDiffButton;
+        private Button m_StartButton;
 
         private Text m_CurDifficultyText;
         private Outline m_CurDfficultyOutline;
         private Shadow m_CurDfficultyShadow;
 
+        public override Vector2 GetWindowSize() => new Vector2(300f, 175f);
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
 
             m_CurDifficultyText = MyModdedObject.GetObject<Text>(0);
             m_PrevDiffButton = MyModdedObject.GetObject<Button>(1);
-            m_PrevDiffButton.onClick.AddListener(OnPrevDifficultyClicked);
+            m_PrevDiffButton.AddOnClickListener(OnPrevDifficultyClicked);
             m_NextDiffButton = MyModdedObject.GetObject<Button>(2);
-            m_NextDiffButton.onClick.AddListener(OnNextDifficultyClicked);
+            m_NextDiffButton.AddOnClickListener(OnNextDifficultyClicked);
+            m_StartButton = MyModdedObject.GetObject<Button>(3);
+            m_StartButton.AddOnClickListener(fullscreenWindow.DoQuickStart);
 
             Shadow[] outlines = m_CurDifficultyText.GetComponents<Shadow>();
             m_CurDfficultyOutline = (Outline)outlines[0];

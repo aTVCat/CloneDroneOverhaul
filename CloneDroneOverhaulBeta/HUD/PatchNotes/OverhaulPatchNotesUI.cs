@@ -57,19 +57,20 @@ namespace CDOverhaul.HUD
 
         public void Show()
         {
+            if (GameModeManager.IsOnTitleScreen())
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+
             base.gameObject.SetActive(true);
-
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             m_OldChangelogsPanel.gameObject.SetActive(false);
-
             ViewChangelog(0);
         }
 
         public void Hide()
         {
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
-            base.gameObject.SetActive(false);
+            if (GameModeManager.IsOnTitleScreen())
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
 
+            base.gameObject.SetActive(false);
             DestroyLoadedPictures();
         }
 

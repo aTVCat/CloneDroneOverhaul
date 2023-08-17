@@ -65,10 +65,10 @@ namespace CDOverhaul.Graphics
         [OverhaulSetting("Graphics.Amplify color.Apply default preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent ApplyAmplifyColorPresetDefault = new OverhaulSettingWithEvent();
         [OverhaulSettingDropdownParameters("Default@More Blend@More Exposure@More B+E@Less Blend@Less Exposure@Less B+E@+B -E@-B +E")]
-        [OverhaulSettingAttribute("Graphics.Amplify color.Amplify color preset", 0, false)]
+        [OverhaulSettingAttribute("Graphics.Amplify color.Amplify color presetV2", 5, false)]
         public static int AmplifyColorMode;
         [OverhaulSettingDropdownParameters("Disabled@Photographic@FilmicACES")]
-        [OverhaulSettingAttribute("Graphics.Amplify color.Tonemapper", 0, false)]
+        [OverhaulSettingAttribute("Graphics.Amplify color.TonemapperV2", 2, false)]
         public static int AmplifyColorTonemapper;
 
         #endregion
@@ -149,9 +149,8 @@ namespace CDOverhaul.Graphics
 
                 ApplyAmplifyColorPreset1.EventAction = delegate
                 {
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 5);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 2);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 5);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 2);
 
                     ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
@@ -160,9 +159,8 @@ namespace CDOverhaul.Graphics
 
                 ApplyAmplifyColorPreset2.EventAction = delegate
                 {
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 2);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 1);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), true);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 2);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 1);
 
                     ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
@@ -171,9 +169,8 @@ namespace CDOverhaul.Graphics
 
                 ApplyAmplifyColorPresetDefault.EventAction = delegate
                 {
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 0);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 0);
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 0);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 0);
 
                     ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)

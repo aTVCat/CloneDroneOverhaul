@@ -46,23 +46,40 @@ namespace CDOverhaul.HUD.Gamemodes
             if (num == 1 && num2 == 1)
             {
                 m_ProgressText.gameObject.SetActive(false);
-                m_ContinueButtonText.text = LocalizationManager.Instance.GetTranslatedString("New Game");
+                m_ContinueButtonText.text = Singleton<LocalizationManager>.Instance.GetTranslatedString("New Game", -1);
             }
             else
             {
                 m_ProgressText.gameObject.SetActive(true);
-                m_ContinueButtonText.text = LocalizationManager.Instance.GetTranslatedString("Continue");
+                m_ContinueButtonText.text = LocalizationManager.Instance.GetTranslatedString("Continue", -1);
+                if (MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P10_ConqueredBattlecruiser))
+                {
+                    m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 5)";
+                }
+                else if (MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P7_CompletedTowerAssault))
+                {
+                    m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 4)";
+                }
+                else if (MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P5_DestroyedAlphaCentauri))
+                {
+                    m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 3)";
+                }
+                else
+                {
+                    m_ProgressText.text = string.Concat(new object[]
+                    {
+                    "(",
+                    LocalizationManager.Instance.GetTranslatedString("Chapter", -1),
+                    " ",
+                    num,
+                    ", ",
+                    LocalizationManager.Instance.GetTranslatedString("Level", -1),
+                    " ",
+                    num2,
+                    ")"
+                    });
+                }
             }
-            m_ProgressText.text = string.Concat(new object[]
-            {
-                 LocalizationManager.Instance.GetTranslatedString("Chapter", -1),
-                 " ",
-                 num,
-                 ", ",
-                 Singleton<LocalizationManager>.Instance.GetTranslatedString("Level", -1),
-                 " ",
-                 num2
-            });
             GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
         }
 

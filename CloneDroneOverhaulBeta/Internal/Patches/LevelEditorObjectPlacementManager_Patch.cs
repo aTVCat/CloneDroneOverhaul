@@ -55,7 +55,7 @@ namespace CDOverhaul.Patches
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGpuInstancingEnabled)
                 _ = __result.gameObject.AddComponent<OverhaulGPUInstanceObjectBehaviour>();
 
-            __instance.CallPrivateMethod("registerObjectInAllObjectList", new object[] { __result });
+            __instance.registerObjectInAllObjectList(__result);
             return false;
         }
     }

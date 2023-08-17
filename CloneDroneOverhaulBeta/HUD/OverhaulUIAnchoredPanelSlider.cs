@@ -11,15 +11,6 @@ namespace CDOverhaul.HUD
         public int StopForFrames;
         private int m_StopFramesLeft;
 
-        public void Initialize(Vector2 startPosition, Vector2 targetPosition, float multiplier = 15f, int stopFrames = 0)
-        {
-            StartPosition = startPosition;
-            TargetPosition = targetPosition;
-            Multiplier = multiplier;
-            StopForFrames = stopFrames;
-            m_StopFramesLeft = stopFrames;
-        }
-
         private void LateUpdate()
         {
             if (m_StopFramesLeft > 0)

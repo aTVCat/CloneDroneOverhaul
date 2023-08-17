@@ -246,6 +246,7 @@ namespace CDOverhaul.Patches
             slider1.TargetPosition = new Vector3(0f, 0, 0f);
             slider1.StartPosition = new Vector3(1000f, 0, 0f);
             slider1.Multiplier = 15f;
+            slider1.StopForFrames = 3;
 
             Transform cardContainer = main.FindChildRecursive("CardContainer");
             cardContainer.localScale = Vector3.one * 1.1f;
@@ -256,6 +257,7 @@ namespace CDOverhaul.Patches
             slider.TargetPosition = new Vector3(0f, -13f, 0f);
             slider.StartPosition = new Vector3(200f, -13f, 0f);
             slider.Multiplier = 9f;
+            slider.StopForFrames = 3;
 
             Transform bg = main.FindChildRecursive("BG");
             Image bgImage = bg.GetComponent<Image>();

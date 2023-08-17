@@ -8,8 +8,17 @@ namespace CDOverhaul.HUD
         public Vector3 StartPosition = Vector3.zero + new Vector3(25f, 0f);
         public Vector3 TargetPosition = Vector3.zero;
 
+        public int StopForFrames;
+        private int m_StopFramesLeft;
+
         private void Update()
         {
+            if (m_StopFramesLeft > 0)
+            {
+                m_StopFramesLeft--;
+                return;
+            }
+
             float deltaTime = Time.unscaledDeltaTime * Multiplier;
             Vector3 localPosition = base.transform.localPosition;
             localPosition.x = Mathf.Lerp(localPosition.x, TargetPosition.x, deltaTime);
@@ -20,6 +29,11 @@ namespace CDOverhaul.HUD
 
         public override void OnEnable()
         {
+            if (StopForFrames != 0)
+            {
+                m_StopFramesLeft = StopForFrames;
+            }
+
             base.transform.localPosition = StartPosition;
         }
     }

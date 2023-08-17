@@ -14,9 +14,9 @@ namespace CDOverhaul.Patches
                 return;
 
             if (player is FirstPersonMover)
-                OverhaulEventsController.DispatchEvent<FirstPersonMover>(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
+                OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
 
-            OverhaulEventsController.DispatchEvent<Character>(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
+            OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
         }
     }
 }

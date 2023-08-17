@@ -8,7 +8,7 @@ namespace CDOverhaul.HUD
 {
     public class ModSetupWindow : OverhaulUI
     {
-        public const string SettingPath = "Player.Mod.HasConfiguredModV8";
+        public const string SettingPath = "Player.Mod.HasConfiguredModV9";
 
         [OverhaulSetting(SettingPath, false, true)]
         public static bool HasSetTheModUp;
@@ -84,7 +84,9 @@ namespace CDOverhaul.HUD
         public void Hide()
         {
             base.gameObject.SetActive(false);
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+
+            if(GameModeManager.IsOnTitleScreen())
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
         }
 
         public void EndSetup()
