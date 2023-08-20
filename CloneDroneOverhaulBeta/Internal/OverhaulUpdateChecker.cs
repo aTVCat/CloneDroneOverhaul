@@ -49,7 +49,7 @@ namespace CDOverhaul
         {
             return OverhaulVersion.IsModBotBuild
                 ? OverhaulMod.Base.ModInfo.Version < DownloadedVersionNumber
-                : OverhaulVersion.ModVersion < DownloadedVersion;
+                : OverhaulVersion.modVersion < DownloadedVersion;
         }
 
         public static void CheckForUpdates()

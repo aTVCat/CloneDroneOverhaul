@@ -28,7 +28,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             if (m_Info != null && m_Info.Equals(OverhaulPlayerInfo.LocalOverhaulPlayerInfo))
                 m_LocalBehaviour = this;
 
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
+            OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetData);
             CreateCanvas();
         }
 

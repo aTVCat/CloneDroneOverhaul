@@ -151,13 +151,13 @@ namespace CDOverhaul.HUD
             {
                 ShowDescriptionTooltip(WeaponType.None, null, 0f);
                 SkinsSelection = this;
-                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
+                OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
             else
             {
                 m_AccessoryItems = new List<OutfitItem>();
                 OutfitSelection = this;
-                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
+                OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
             }
 
             SetMenuActive(false);
@@ -449,7 +449,7 @@ namespace CDOverhaul.HUD
             m_SkinBehavioursDropdown.value = CurrentlyEditingItem.BehaviourIndex;
 
             m_ParentToField.text = CurrentlyEditingItem.ParentTo;
-            m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.ModVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
+            m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.modVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
 
             m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
 
@@ -563,7 +563,7 @@ namespace CDOverhaul.HUD
             bool successMinVersionParsing = Version.TryParse(m_MinVersionField.text, out Version minVersion);
             if (!successMinVersionParsing)
             {
-                minVersion = (Version)OverhaulVersion.ModVersion.Clone();
+                minVersion = (Version)OverhaulVersion.modVersion.Clone();
             }
             CurrentlyEditingItem.MinVersion = minVersion;
 

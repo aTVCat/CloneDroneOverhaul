@@ -3,40 +3,36 @@ using UnityEngine;
 
 namespace CDOverhaul.Graphics
 {
-    public class OverhaulCameraController : OverhaulController
+    public class OverhaulCameraController : OverhaulManager
     {
-        private Camera[] m_AllCameras;
         private Camera m_MainCamera;
-
-        public bool IsMainCameraNull => !m_MainCamera;
-        public static Camera MechCameraPrefab => PlayerCameraManager.Instance.MechCameraTransformPrefab.GetComponentInChildren<Camera>();
-        public static Camera BattleCruiserCameraPrefab => PlayerCameraManager.Instance.BattleCruiserCameraPrefab.GetComponentInChildren<Camera>();
-
-        public override void Initialize()
+        public Camera mainCamera
         {
-            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
+            get
+            {
+                if (!m_MainCamera)
+                    m_MainCamera = Camera.main;
+
+                return m_MainCamera;
+            }
+            private set => m_MainCamera = value;
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
         }
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
-            m_AllCameras = null;
-            m_MainCamera = null;
         }
 
         public void RefreshVisibleCameras(Camera mainCamera)
         {
-            m_MainCamera = mainCamera;
-            m_AllCameras = Camera.allCameras;
+            this.mainCamera = mainCamera;
         }
-
-        public Camera[] GetAllCameras()
-        {
-            if (m_AllCameras.IsNullOrEmpty())
-                m_AllCameras = Camera.allCameras;
-
-            return m_AllCameras;
-        }
-        public Camera GetMainCamera() => m_MainCamera;
     }
 }

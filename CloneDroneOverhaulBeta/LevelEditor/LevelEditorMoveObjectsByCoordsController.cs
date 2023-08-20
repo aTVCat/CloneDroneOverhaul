@@ -38,7 +38,7 @@ namespace CDOverhaul.LevelEditor
 
         public override void Initialize()
         {
-            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+            OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }
 
         private void scheduleOnSelectionChanged()

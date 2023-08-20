@@ -32,6 +32,12 @@ namespace OverhaulAPI
 
         public static T SpawnEntry<T>(in string id, in Vector3 position, in Vector3 eulerAngles) where T : PooledPrefabInstanceBase
         {
+            if (!HasCreatedEntry(id))
+            {
+                Debug.LogWarning("[OVERHAUL] [Assets] " + id + " pooled prefab is not created!");
+                return null;
+            }
+
             PooledPrefabContainer container = s_Entries[id];
             T result = container.SpawnPooledPrefab<T>(position, eulerAngles);
             return result;

@@ -139,7 +139,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 ["Pets.Equipped"] = PetsController.EquippedPets,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
                 ["State.Flags"] = OverhaulPlayerInfoController.GetUserFlags(),
-                ["State.Version"] = OverhaulVersion.ModVersion.ToString(),
+                ["State.Version"] = OverhaulVersion.modVersion.ToString(),
                 ["Custom.Data"] = string.Empty,
             };
         }

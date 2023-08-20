@@ -43,7 +43,7 @@ namespace CDOverhaul.Graphics
             m_TimeManager = TimeManager.Instance;
             m_Owner = newOwner;
 
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDisposed()

@@ -86,10 +86,10 @@ namespace CDOverhaul.CustomMultiplayer
 
                 // Game version check
                 string version = SteamMatchmaking.GetLobbyData((CSteamID)t.m_ulSteamIDLobby, "modVer");
-                if (version != OverhaulVersion.ModVersion.ToString())
+                if (version != OverhaulVersion.modVersion.ToString())
                 {
                     LeaveLobby((CSteamID)t.m_ulSteamIDLobby);
-                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Version mismatch!", string.Format("The server uses different version of the mod (Server: {0}, You: {1})", version, OverhaulVersion.ModVersion.ToString()), 300, 175, OverhaulFullscreenDialogueWindow.IconType.Warn);
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Version mismatch!", string.Format("The server uses different version of the mod (Server: {0}, You: {1})", version, OverhaulVersion.modVersion.ToString()), 300, 175, OverhaulFullscreenDialogueWindow.IconType.Warn);
                     return;
                 }
 
@@ -114,7 +114,7 @@ namespace CDOverhaul.CustomMultiplayer
             Lobby = new OverhaulMultiplayerLobby(lobbyId);
             if (OverhaulMultiplayerState.IsHost)
             {
-                _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.ModVersion.ToString());
+                _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "modVer", OverhaulVersion.modVersion.ToString());
                 _ = SteamMatchmaking.SetLobbyData(Lobby.LobbyID, "mode", Mode.ToString());
             }
         }

@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Graphics;
 using HarmonyLib;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -17,8 +18,8 @@ namespace CDOverhaul.Patches
 
             if (duration == 1.5f)
             {
-                bloomEndIntensity = OverhaulGraphicsController.BloomIntensity;
-                bloomEndThreshold = OverhaulGraphicsController.BloomThreshold;
+                bloomEndIntensity = BloomOverhaulImageEffect.BloomIntensity;
+                bloomEndThreshold = BloomOverhaulImageEffect.BloomThreshold;
             }
         }
 
@@ -29,8 +30,8 @@ namespace CDOverhaul.Patches
             Bloom bl = ArenaCameraManager.Instance.TitleScreenLevelCamera.GetComponent<Bloom>();
             if (bl)
             {
-                bl.bloomIntensity = OverhaulGraphicsController.BloomIntensity;
-                bl.bloomThreshold = OverhaulGraphicsController.BloomThreshold;
+                bl.bloomIntensity = BloomOverhaulImageEffect.BloomIntensity;
+                bl.bloomThreshold = BloomOverhaulImageEffect.BloomThreshold;
             }
 
             Animator an = ArenaCameraManager.Instance.TitleScreenLevelCamera.GetComponent<Animator>();
@@ -47,6 +48,17 @@ namespace CDOverhaul.Patches
             character.DisableInput();
 
             return !OverhaulGamemodeManager.IsMultiplayerSandbox() || !(character is FirstPersonMover);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("Start")]
+        private static void Start_Prefix()
+        {
+            foreach(OverhaulController overhaulController in OverhaulController.allControllers)
+            {
+                OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.ModRl);
+                overhaulController.OnSceneReloaded();
+            }
         }
 
         /*

@@ -18,7 +18,7 @@ namespace CDOverhaul
                 return;
             }
 
-            _ = OverhaulEventsController.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
+            OverhaulEventsController.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             s_HasInitialized = true;
         }
         private static void onLogin()

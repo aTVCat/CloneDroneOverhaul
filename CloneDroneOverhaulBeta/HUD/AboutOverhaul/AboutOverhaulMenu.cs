@@ -34,7 +34,7 @@ namespace CDOverhaul.HUD
 
         public void OnDiscordServerButtonClicked()
         {
-            Application.OpenURL("https://discord.gg/qUkRhaqZZZ");
+            Application.OpenURL("https://discord.gg/RXN7uDUfwx");
         }
 
         public void OnGitHubButtonClicked()

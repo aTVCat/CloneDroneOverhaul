@@ -264,6 +264,7 @@ namespace CDOverhaul
         }
 
         public static GameObject GetAsset(in string assetName, in OverhaulAssetPart assetBundlePart, bool fixMaterials = true) => GetAsset<GameObject>(assetName, assetBundlePart, fixMaterials);
+        public static GameObject GetAsset(in string assetName, in string assetBundlePart, bool fixMaterials = true) => GetAsset<GameObject>(assetName, assetBundlePart, fixMaterials);
 
         public static bool TryGetAsset<T>(in string assetName, in string assetBundle, out T asset, bool fixMaterials = true) where T : UnityEngine.Object
         {

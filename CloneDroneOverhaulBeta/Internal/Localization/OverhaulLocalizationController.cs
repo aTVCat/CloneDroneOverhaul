@@ -39,7 +39,7 @@ namespace CDOverhaul
             if (controller != null)
                 m_ListOfTexts.AddRange(controller.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", controller.HUDModdedObject.transform));
 
-            _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
+            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, TryLocalizeHUD, true);
 
             if (OverhaulSessionController.GetKey<bool>("LoadedTranslations"))
             {
@@ -68,7 +68,7 @@ namespace CDOverhaul
                 m_Error = false;
                 m_Data = new OverhaulLocalizationData();
                 m_Data.RepairFields();
-                m_Data.SavedInVersion = OverhaulVersion.ModVersion;
+                m_Data.SavedInVersion = OverhaulVersion.modVersion;
                 SaveData();
                 return;
             }
@@ -108,7 +108,7 @@ namespace CDOverhaul
         {
             if (m_Data != null && m_Error.HasValue && !m_Error.Value && !m_IsSavingFile)
             {
-                m_Data.SavedInVersion = OverhaulVersion.ModVersion;
+                m_Data.SavedInVersion = OverhaulVersion.modVersion;
                 m_IsSavingFile = true;
 
                 if (OverhaulLoadingScreen.Instance != null)

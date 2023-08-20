@@ -10,6 +10,20 @@ namespace CDOverhaul
     /// </summary>
     public abstract class OverhaulController : OverhaulBehaviour
     {
+        private const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+        public static GameObject mainGameObject
+        {
+            get;
+            set;
+        }
+
+        public static List<OverhaulController> allControllers
+        {
+            get;
+            set;
+        } = new List<OverhaulController>();
+
         /// <summary>
         /// Check if an exception occurred while initializing the controller.
         /// </summary>
@@ -43,31 +57,15 @@ namespace CDOverhaul
             OverhaulDisposable.AssignNullToAllVars(this);
         }
 
-        internal void InitializeInternal()
-        {
-            _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+        public virtual void OnSceneReloaded() { }
 
-#if DEBUG
+        internal void InternalInitialize()
+        {
+            OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
             Initialize();
-            return;
-#endif
-            try
-            {
-                Initialize();
-            }
-            catch (Exception exc)
-            {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Error while initializing OverhaulController [" + GetType() + "]: " + exc);
-                ErrorString = exc.ToString();
-                base.enabled = false;
-            }
         }
 
         #region Static
-
-        private static readonly BindingFlags s_BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-        private static GameObject s_ControllersGameObject;
-        private static readonly List<OverhaulController> s_ControllersList = new List<OverhaulController>();
 
         /// <summary>
         /// Initialize static fields
@@ -75,8 +73,8 @@ namespace CDOverhaul
         /// <param name="controllersGO"></param>
         internal static void InitializeStatic(in GameObject controllersGO)
         {
-            s_ControllersGameObject = controllersGO;
-            s_ControllersList.Clear();
+            mainGameObject = controllersGO;
+            allControllers.Clear();
         }
 
         /// <summary>
@@ -87,10 +85,10 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
         {
-            Transform transform = transformOverride ?? s_ControllersGameObject.transform;
+            Transform transform = transformOverride ?? mainGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
-            s_ControllersList.Add(component);
-            component.InitializeInternal();
+            allControllers.Add(component);
+            component.InternalInitialize();
             return component;
         }
 
@@ -101,7 +99,7 @@ namespace CDOverhaul
         /// <returns></returns>
         public static T GetController<T>() where T : OverhaulController
         {
-            foreach (OverhaulController controllerr in s_ControllersList)
+            foreach (OverhaulController controllerr in allControllers)
             {
                 if (controllerr is T)
                 {
@@ -116,7 +114,7 @@ namespace CDOverhaul
         public static T[] GetControllers<T>() where T : OverhaulController
         {
             List<T> result = new List<T>();
-            foreach (OverhaulController controllerr in s_ControllersList)
+            foreach (OverhaulController controllerr in allControllers)
             {
                 if (controllerr is T)
                 {
@@ -140,7 +138,7 @@ namespace CDOverhaul
             {
                 throw new ArgumentNullException("Cannot remove controller instance because it is null.");
             }
-            _ = s_ControllersList.Remove(controllerInstance);
+            _ = allControllers.Remove(controllerInstance);
         }
 
         #endregion;

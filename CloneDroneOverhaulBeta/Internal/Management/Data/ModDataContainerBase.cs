@@ -38,7 +38,7 @@ namespace CDOverhaul
                 return;
 
             OnPreSave();
-            SavedInVersion = OverhaulVersion.ModVersion;
+            SavedInVersion = OverhaulVersion.modVersion;
             OverhaulDataController.SaveData(this, FileName, useModFolder, modFolderName);
             OnPostSave();
         }

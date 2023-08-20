@@ -76,8 +76,8 @@ namespace CDOverhaul.Graphics
             m_PlayerCameraTransform = playerCamera.transform;
             m_SettingsManager = SettingsManager.Instance;
 
-            _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
+            OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         private void onDied(Character character)

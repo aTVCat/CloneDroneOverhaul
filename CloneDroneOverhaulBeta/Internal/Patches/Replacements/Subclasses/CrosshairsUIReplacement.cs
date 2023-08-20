@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
+            OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
             updateCrossHairs();
             SuccessfullyPatched = true;
         }

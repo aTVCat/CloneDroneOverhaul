@@ -96,7 +96,7 @@ namespace CDOverhaul.Gameplay
             return result;
         }
 
-        public bool CanBeAdded() => MinVersion == null || OverhaulVersion.ModVersion >= MinVersion;
+        public bool CanBeAdded() => MinVersion == null || OverhaulVersion.modVersion >= MinVersion;
 
         public string Name;
         public string Description;

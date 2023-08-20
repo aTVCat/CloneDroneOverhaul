@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulMod.IsHUDInitialized)
+            if (!OverhaulMod.IsModInitialized || !OverhaulPauseMenu.Instance)
                 return true;
 
             if (OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)

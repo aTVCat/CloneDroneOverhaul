@@ -84,7 +84,7 @@ namespace CDOverhaul
             UpgradeCollection = base.GetComponent<UpgradeCollection>();
             EnergySource = base.GetComponent<EnergySource>();
 
-            _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
             //_ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
 
             CharacterExpansionContainer expansionContainer = GetComponent<CharacterExpansionContainer>();

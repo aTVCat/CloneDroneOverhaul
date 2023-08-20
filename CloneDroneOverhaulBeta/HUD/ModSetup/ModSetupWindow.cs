@@ -114,7 +114,7 @@ namespace CDOverhaul.HUD
         }
         public bool GetSSAOEnabled()
         {
-            return GetSSAOSupported() && OverhaulGraphicsController.AOEnabled;
+            return GetSSAOSupported() && AmplifyOclusionImageEffect.AOEnabled;
         }
         public void SetSSAOEnabled()
         {
@@ -131,7 +131,7 @@ namespace CDOverhaul.HUD
 
         public bool GetBloomOverhaulEnabled()
         {
-            return OverhaulGraphicsController.BloomIterations == 10;
+            return BloomOverhaulImageEffect.BloomIterations == 10;
         }
         public void SetBloomOverhaulEnabled()
         {
@@ -142,7 +142,7 @@ namespace CDOverhaul.HUD
         }
         public void SetBloomOverhaulDisabled()
         {
-            OverhaulGraphicsController.SetBloomVanilla.EventAction.Invoke();
+            //OverhaulGraphicsController.SetBloomVanilla.EventAction.Invoke();
         }
 
         #endregion
@@ -202,17 +202,17 @@ namespace CDOverhaul.HUD
 
         public void SetBrightAmpColPreset()
         {
-            OverhaulGraphicsController.ApplyAmplifyColorPreset1.EventAction.Invoke();
+            AmplifyColorOverhaulImageEffect.ApplyAmplifyColorPreset1.EventAction.Invoke();
         }
 
         public void SetDarkAmpColPreset()
         {
-            OverhaulGraphicsController.ApplyAmplifyColorPreset2.EventAction.Invoke();
+            AmplifyColorOverhaulImageEffect.ApplyAmplifyColorPreset2.EventAction.Invoke();
         }
 
         public void SetDefaultAmpColPreset()
         {
-            OverhaulGraphicsController.ApplyAmplifyColorPresetDefault.EventAction.Invoke();
+            AmplifyColorOverhaulImageEffect.ApplyAmplifyColorPresetDefault.EventAction.Invoke();
         }
 
         #endregion

@@ -41,14 +41,14 @@ namespace CDOverhaul.HUD
             m_TitleScreenWatermark = MyModdedObject.GetObject<Transform>(0).gameObject;
             m_TitleScreenWatermark.SetActive(false);
             m_TitleScreenVersionLabel = MyModdedObject.GetObject<Text>(1);
-            m_TitleScreenVersionLabel.text = OverhaulVersion.Watermark;
+            m_TitleScreenVersionLabel.text = OverhaulVersion.hasToShowFullBuildTag ? OverhaulVersion.fullBuildTag : OverhaulVersion.Watermark;
             m_TitleScreenDebugLabel = MyModdedObject.GetObject<Transform>(5).gameObject;
             m_TitleScreenDebugLabel.SetActive(OverhaulVersion.IsDebugBuild);
 
             m_GameplayWatermark = MyModdedObject.GetObject<Transform>(2).gameObject;
             m_GameplayWatermark.gameObject.SetActive(false);
             m_GameplayVersionLabel = MyModdedObject.GetObject<Text>(3);
-            m_GameplayVersionLabel.text = OverhaulVersion.ShortenedWatermark;
+            m_GameplayVersionLabel.text = OverhaulVersion.hasToShowFullBuildTag ? OverhaulVersion.fullBuildTag : OverhaulVersion.ShortenedWatermark;
             m_GameplayDebugLabel = MyModdedObject.GetObject<Transform>(4).gameObject;
             m_GameplayDebugLabel.SetActive(OverhaulVersion.IsDebugBuild);
 
@@ -60,8 +60,8 @@ namespace CDOverhaul.HUD
             m_PatchNotesButton = MyModdedObject.GetObject<Button>(7);
             m_PatchNotesButton.onClick.AddListener(onPatchNotesButtonClicked);
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
-            _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
+            OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
+            OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
         }
 
 

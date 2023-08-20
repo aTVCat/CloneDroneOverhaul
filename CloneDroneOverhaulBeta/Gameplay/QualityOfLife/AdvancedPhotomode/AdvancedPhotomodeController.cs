@@ -55,9 +55,9 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             PhotoManager = PhotoManager.Instance;
             PhotoModeControls = GameUIRoot.Instance.PhotoModeControlsDisplay;
 
-            _ = OverhaulEventsController.AddEventListener(PhotoModeSettingUpdateEvent, updateSettings);
-            _ = OverhaulEventsController.AddEventListener("EnteredPhotoMode", onEnteredPhotomode, true);
-            _ = OverhaulEventsController.AddEventListener("ExitedPhotoMode", onExitedPhotomode, true);
+            OverhaulEventsController.AddEventListener(PhotoModeSettingUpdateEvent, updateSettings);
+            OverhaulEventsController.AddEventListener("EnteredPhotoMode", onEnteredPhotomode, true);
+            OverhaulEventsController.AddEventListener("ExitedPhotoMode", onExitedPhotomode, true);
 
             m_PhotoControlsImage = PhotoModeControls.GetComponent<Image>();
             m_PhotoControlsObjects = new GameObject[PhotoModeControls.transform.childCount];

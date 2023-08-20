@@ -37,8 +37,8 @@ namespace CDOverhaul
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
         private static bool s_HasUpdatedLangFont;
-        public static bool IsSteamInitialized => SteamManager.Instance.Initialized;
-        public static bool IsSteamOverlayOpened => SteamUtils.IsOverlayEnabled();
+
+        public static event Action OnAssetsLoadDone;
 
         /// <summary>
         /// The UI controller instance
@@ -108,6 +108,7 @@ namespace CDOverhaul
 
             OverhaulMod.Core = this;
             _ = OverhaulAPI.OverhaulAPICore.LoadAPI();
+            DontDestroyOnLoad(this.gameObject);
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
@@ -119,6 +120,7 @@ namespace CDOverhaul
             OverhaulEventsController.Initialize();
             OverhaulSettingsController.Initialize();
             OverhaulController.InitializeStatic(controllers);
+            ModInitialize modInitialize = new ModInitialize();
 
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulPlayerInfoController>();
@@ -145,8 +147,31 @@ namespace CDOverhaul
                 _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 
+        private void Update()
+        {
+            if (!OverhaulDebugConsole.ConsoleInstance)
+                return;
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                bool isVisible = OverhaulDebugConsole.ConsoleInstance.gameObject.activeSelf;
+                if (isVisible)
+                {
+                    OverhaulDebugConsole.ConsoleInstance.Hide();
+                }
+                else
+                {
+                    OverhaulDebugConsole.ConsoleInstance.Show();
+                }
+            }
+        }
+
         public IEnumerator LoadAsyncStuff()
         {
+            QualitySettings.asyncUploadTimeSlice = 4;
+            QualitySettings.asyncUploadBufferSize = 16;
+            QualitySettings.asyncUploadPersistentBuffer = true;
+
             bool hasLoadedPart1Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part1);
             bool hasLoadedPart2Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part2);
             bool hasLoadedSkinsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Skins);
@@ -185,6 +210,10 @@ namespace CDOverhaul
             });
 
             yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle && hasLoadedArenaUpdateBundle);
+            if(OnAssetsLoadDone != null)
+            {
+                OnAssetsLoadDone();
+            }
             yield break;
         }
 
@@ -238,7 +267,7 @@ namespace CDOverhaul
             OverhaulAudioLibrary.Initialize();
             OverhaulPatchNotes.Initialize();
             OverhaulDebugActions.Initialize();
-            OverhaulGraphicsController.Initialize();
+            //OverhaulGraphicsController.Initialize();
             if (waitForEndOfFrame)
                 yield return null;
 

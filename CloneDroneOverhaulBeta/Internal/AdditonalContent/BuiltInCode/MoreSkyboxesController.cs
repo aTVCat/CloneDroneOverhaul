@@ -119,8 +119,8 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
 
             Skyboxes = OverhaulAssetsController.GetAllObjects<Material>(SkyboxesAssetBundle);
 
-            _ = OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
-            _ = OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
+            OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
+            OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
         }
 
         public void SetSkybox(int index)

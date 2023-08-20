@@ -63,7 +63,7 @@ namespace CDOverhaul
             WebhookObject obj1 = new WebhookObject()
             {
                 content = (OverhaulVersion.IsDebugBuild ? "<@779372500521320469> " : string.Empty) +
-                "__New crash report! Version: " + OverhaulVersion.ModVersion + "__",
+                "__New crash report! Version: " + OverhaulVersion.modVersion + "__",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -88,7 +88,7 @@ namespace CDOverhaul
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = "__Feedback sent! Version: " + OverhaulVersion.ModVersion + "__",
+                content = "__Feedback sent! Version: " + OverhaulVersion.modVersion + "__",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -138,7 +138,7 @@ namespace CDOverhaul
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = "__Non-Crashing Error! Version: " + OverhaulVersion.ModVersion + "__",
+                content = "__Non-Crashing Error! Version: " + OverhaulVersion.modVersion + "__",
                 embeds = new Embed[]
                 {
                     new Embed()

@@ -209,7 +209,7 @@ namespace CDOverhaul
                 Assets = clientActivityAssets,
                 ApplicationId = 1091373211163308073,
                 Name = "Overhaul Mod",
-                Details = "V" + OverhaulVersion.ModVersion.ToString(),
+                Details = "V" + OverhaulVersion.modVersion.ToString(),
                 Type = ActivityType.Playing
             };
             s_DiscordClientActivity = clientActivity;

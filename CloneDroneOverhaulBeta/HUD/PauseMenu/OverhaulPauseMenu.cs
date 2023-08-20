@@ -23,24 +23,24 @@ namespace CDOverhaul.HUD
 
         #region Open/Close menu
 
-        private static OverhaulPauseMenu m_Instance;
+        public static OverhaulPauseMenu Instance;
 
         private float m_TargetFoV = 60f;
         private bool m_IsAnimatingCamera;
 
         public static void ToggleMenu()
         {
-            if (!m_Instance.AllowToggleMenu)
+            if (!Instance || !Instance.AllowToggleMenu)
                 return;
 
-            if (m_Instance.gameObject.activeSelf)
+            if (Instance.gameObject.activeSelf)
             {
                 _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
-                m_Instance.Hide();
+                Instance.Hide();
                 return;
             }
             _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
-            m_Instance.Show();
+            Instance.Show();
         }
 
         private Animator m_CameraAnimator;
@@ -126,7 +126,7 @@ namespace CDOverhaul.HUD
         public override void Initialize()
         {
             base.Initialize();
-            m_Instance = this;
+            Instance = this;
 
             m_CurrentWorkshopLevel = MyModdedObject.GetObject<Transform>(29);
             m_WorkshopLevelTitleText = MyModdedObject.GetObject<Text>(30);

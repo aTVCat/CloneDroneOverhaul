@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.Graphics;
 using HarmonyLib;
 using ModLibrary;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -14,7 +15,11 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulGraphicsController.PatchAmplifyColorMode(__instance.GetPrivateField<AmplifyColorBase>("_amplifyColorBase"));
+            OverhaulGraphicsManager graphicsManager = OverhaulGraphicsManager.GetController<OverhaulGraphicsManager>();
+            if (!graphicsManager || !graphicsManager.amplifyColorOverhaul || !__instance._amplifyColorBase)
+                return;
+
+            graphicsManager.amplifyColorOverhaul.PatchCamera(__instance._amplifyColorBase.GetComponent<Camera>());
         }
     }
 }

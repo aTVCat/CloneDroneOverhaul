@@ -436,6 +436,11 @@
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
+    <Compile Include="Graphics\NewManager\Effects\AmplifyColorOverhaulImageEffect.cs" />
+    <Compile Include="Graphics\NewManager\Effects\AmplifyOclusionImageEffect.cs" />
+    <Compile Include="Graphics\NewManager\Effects\BloomOverhaulImageEffect.cs" />
+    <Compile Include="Graphics\NewManager\OverhaulGraphicsManager.cs" />
+    <Compile Include="Graphics\NewManager\OverhaulImageEffectBehaviour.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\CoopChallengeCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
@@ -550,6 +555,10 @@
     <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Device\RecommendationLevel.cs" />
     <Compile Include="Internal\Device\Recommendations.cs" />
+    <Compile Include="Internal\Management\DevTools\EDebugType.cs" />
+    <Compile Include="Internal\Management\DevTools\OverhaulDebug.cs" />
+    <Compile Include="Internal\Management\DevTools\OverhaulDebugConsole.cs" />
+    <Compile Include="Internal\ModInitialize.cs" />
     <Compile Include="Internal\Management\Assets\OverhaulAssetsContainer.cs" />
     <Compile Include="Internal\Management\Assets\OverhaulAssetAttribute.cs" />
     <Compile Include="Internal\Management\Assets\Local\OverhaulVoxAssetInfo.cs" />
@@ -630,6 +639,7 @@
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationController.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
+    <Compile Include="Internal\Management\OverhaulManager.cs" />
     <Compile Include="Internal\Management\UI\ObjectComponentsAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectDefaultVisibility.cs" />
     <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
@@ -843,6 +853,7 @@
     <Folder Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Archives\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Steam\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
+    <Folder Include="Internal\Management\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />

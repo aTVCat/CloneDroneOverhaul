@@ -9,7 +9,7 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Initialize(fullscreenWindow);
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            OverhaulEventsController.AddEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override void OnDisposed()

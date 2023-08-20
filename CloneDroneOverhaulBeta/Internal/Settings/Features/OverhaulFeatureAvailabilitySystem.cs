@@ -242,8 +242,8 @@ namespace CDOverhaul
             /// Arena overhaul
             /// </summary>
             [OverhaulSettingWithNotification(1)]
-            [OverhaulSetting("Experimental.Features.Arena overhaulV2", false, false, "")]
-            private static readonly bool IS_ARENA_OVERHAUL_ENABLED = false;
+            [OverhaulSetting("Experimental.Features.Arena overhaulV3", true, false, "")]
+            private static readonly bool IS_ARENA_OVERHAUL_ENABLED = true;
             public static bool IsArenaOverhaulEnabled => IS_ARENA_OVERHAUL_ENABLED;
 
             /// <summary>

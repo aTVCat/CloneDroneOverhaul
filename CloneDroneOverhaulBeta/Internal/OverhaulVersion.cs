@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -10,10 +11,10 @@ namespace CDOverhaul
         public const bool IsModBotBuild = true;
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.3");
-        private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.4");
+        private static readonly Version s_ModVersionUpdate3 = new Version("0.3.0.345");
 
-        private static readonly Updates s_CurrentUpdate = Updates.VER_2;
+        private static readonly Updates s_CurrentUpdate = Updates.VER_4;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
         public static bool IsVersionUnder3 => !IsUpdate(Updates.VER_3);
@@ -21,7 +22,7 @@ namespace CDOverhaul
         public static bool IsVersion3Update => IsUpdate(Updates.VER_3_Update);
         public static bool IsVersion4 => IsUpdate(Updates.VER_4);
 
-        public static Version ModVersion
+        public static Version modVersion
         {
             get
             {
@@ -29,19 +30,41 @@ namespace CDOverhaul
                 {
                     case Updates.VER_2:
                         return s_ModVersionUpdate2;
-                    case Updates.VER_4:
-                        return s_ModVersionUpdate4;
+                    case Updates.VER_3:
+                        return s_ModVersionUpdate3;
                 }
                 return s_AssemblyVersion;
             }
         }
-        public static string GetBuildString() => 'v' + ModVersion.ToString();
+
+        private static string s_FullBuildTag;
+        public static string fullBuildTag
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(s_FullBuildTag))
+                {
+                    FileInfo fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
+                    s_FullBuildTag = "alpha " + modVersion.ToString() + " " + fileInfo.LastWriteTime.ToShortDateString().Replace(".", string.Empty) + " [M1]";
+                }
+                return s_FullBuildTag;
+            }
+        }
+
+        public static bool hasToShowFullBuildTag
+        {
+            get
+            {
+                return IsDevelopmentBuild;
+            }
+        }
 
         public const string TargetGameVersion = "1.5.0.18";
 
-        public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
-        public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();
+        public static readonly string Watermark = "Overhaul Mod Alpha Build v" + modVersion.ToString();
+        public static readonly string ShortenedWatermark = "Overhaul v" + modVersion.ToString();
 
+        public const bool IsDevelopmentBuild = true;
 #if DEBUG
         public const bool IsDebugBuild = true;
         public const bool IsTestMode = true;

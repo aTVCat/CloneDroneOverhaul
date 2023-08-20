@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay
         public override void Start()
         {
             base.Start();
-            _ = OverhaulEventsController.AddEventListener<string>(OverhaulPlayerInfo.PlayerDataUpdateEventString, RefreshItemsMultiplayer);
+            OverhaulEventsController.AddEventListener<string>(OverhaulPlayerInfo.PlayerDataUpdateEventString, RefreshItemsMultiplayer);
 
             // Repair upgrade fix
             if (GameModeManager.IsSinglePlayer() && (Owner.IsPlayer() || Owner.IsPlayerTeam))

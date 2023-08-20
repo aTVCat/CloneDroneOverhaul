@@ -33,10 +33,10 @@ namespace CDOverhaul.Graphics.Robots
 
         private void spark()
         {
-            if (!m_CameraController || m_CameraController.IsMainCameraNull)
+            if (!m_CameraController || !m_CameraController.mainCamera)
                 return;
 
-            if (Vector3.Distance(m_CameraController.GetMainCamera().transform.position, base.transform.position) > 60f)
+            if (Vector3.Distance(m_CameraController.mainCamera.transform.position, base.transform.position) > 60f)
                 return;
 
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();

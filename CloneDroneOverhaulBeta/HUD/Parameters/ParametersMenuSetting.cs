@@ -98,7 +98,7 @@ namespace CDOverhaul.HUD
             configInputField(moddedObject);
 
             if (!notFirstInit)
-                _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
+                OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
 
             refresh();
         }

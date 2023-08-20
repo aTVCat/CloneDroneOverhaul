@@ -95,8 +95,8 @@ namespace CDOverhaul.Graphics
 
             RefreshView();
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDisposed()

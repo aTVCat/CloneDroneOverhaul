@@ -10,9 +10,21 @@ namespace OverhaulAPI.SharedMonoBehaviours
     {
         private RectTransform m_RectTransform;
 
-        private bool m_HasInitialized;
         private Vector2 m_DragOffset;
+
         private UIManager m_UIManager;
+        private UIManager UIManagerReference
+        {
+            get
+            {
+                if (!m_UIManager)
+                    m_UIManager = UIManager.Instance;
+
+                return m_UIManager;
+            }
+        }
+
+        public bool IsInitialized => UIManagerReference && m_RectTransform;
 
         /// <summary>
         /// Check if we are dragging the UI element
@@ -26,8 +38,6 @@ namespace OverhaulAPI.SharedMonoBehaviours
         private void Start()
         {
             m_RectTransform = base.GetComponent<RectTransform>();
-            m_UIManager = UIManager.Instance;
-            m_HasInitialized = m_RectTransform != null;
         }
 
         private void Update()
@@ -37,10 +47,10 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (!m_HasInitialized)
+            if (!IsInitialized)
                 return;
 
-            Vector2 position = m_UIManager.GetUIRootAnchoredPositionFromMousePosition();
+            Vector2 position = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition();
             m_DragOffset = position - m_RectTransform.anchoredPosition;
             IsDragging = true;
         }
@@ -48,10 +58,10 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         private void updateDrag()
         {
-            if (!m_HasInitialized || !IsDragging)
+            if (!IsInitialized || !IsDragging)
                 return;
 
-            Vector2 uirootAnchoredPositionFromMousePosition = m_UIManager.GetUIRootAnchoredPositionFromMousePosition();
+            Vector2 uirootAnchoredPositionFromMousePosition = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition();
             m_RectTransform.anchoredPosition = uirootAnchoredPositionFromMousePosition - m_DragOffset;
         }
     }
