@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Visuals;
 using HarmonyLib;
 
 namespace CDOverhaul.Patches
@@ -10,7 +10,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("SetQuality")]
         private static void SetQuality_Postfix()
         {
-            OverhaulGraphicsController.RefreshLightsCount();
+            OverhaulRenderManager.RefreshLightsCount();
         }
 
         [HarmonyPostfix]

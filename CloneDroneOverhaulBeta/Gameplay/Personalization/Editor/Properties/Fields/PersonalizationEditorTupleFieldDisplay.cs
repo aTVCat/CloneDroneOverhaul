@@ -8,13 +8,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
             base.Initialize(fieldToEdit, targetObject);
-            OverhaulUIVer2.AssignActionToButton(base.GetComponent<ModdedObject>(), "EditButton", EditTuple);
+            OverhaulUIController.AssignActionToButton(base.GetComponent<ModdedObject>(), "EditButton", EditTuple);
         }
 
         public override void InitializeAsCollectionObject(PersonalizationEditorListEntryDisplay listFieldDisplay, string displayName, object targetObject)
         {
             base.InitializeAsCollectionObject(listFieldDisplay, displayName, targetObject);
-            OverhaulUIVer2.AssignActionToButton(base.GetComponent<ModdedObject>(), "EditButton", EditTuple);
+            OverhaulUIController.AssignActionToButton(base.GetComponent<ModdedObject>(), "EditButton", EditTuple);
         }
 
         public void EditTuple()

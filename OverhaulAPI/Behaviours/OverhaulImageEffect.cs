@@ -9,6 +9,13 @@ namespace OverhaulAPI.SharedMonoBehaviours
     {
         private static readonly List<OverhaulImageEffect> s_Behaviours = new List<OverhaulImageEffect>();
 
+        private string m_EffectName;
+        public string effectName
+        {
+            get => m_EffectName;
+            set => m_EffectName = value;
+        }
+
         internal static void Reset()
         {
             s_Behaviours.Clear();
@@ -23,7 +30,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
             do
             {
                 OverhaulImageEffect b = s_Behaviours[i];
-                b.enabled = b.EnableCondition == null || b.EnableCondition();
+                b.enabled = (b.EnableCondition == null || b.EnableCondition()) && b.IsSupported;
                 i++;
             } while (i < s_Behaviours.Count);
         }
@@ -34,7 +41,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
         /// <param name="cam"></param>
         /// <param name="imageEffectMaterial"></param>
         /// <param name="enableCondition"></param>
-        public static void AddEffect(Camera cam, Material imageEffectMaterial, Func<bool> enableCondition = null)
+        public static OverhaulImageEffect AddEffect(Camera cam, Material imageEffectMaterial, Func<bool> enableCondition = null)
         {
             if (!cam)
             {
@@ -49,6 +56,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
             r.ShaderMaterial = imageEffectMaterial;
             r.EnableCondition = enableCondition;
             r.IsSupported = imageEffectMaterial.shader && imageEffectMaterial.shader.isSupported;
+            return r;
         }
 
         /// <summary>
@@ -62,8 +70,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (IsSupported)
-                Graphics.Blit(source, destination, ShaderMaterial);
+            Graphics.Blit(source, destination, ShaderMaterial);
         }
 
         private void Awake()
@@ -76,6 +83,5 @@ namespace OverhaulAPI.SharedMonoBehaviours
         {
             _ = s_Behaviours.Remove(this);
         }
-
     }
 }

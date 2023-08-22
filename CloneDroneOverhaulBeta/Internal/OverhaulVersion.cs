@@ -12,7 +12,7 @@ namespace CDOverhaul
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
         private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.4");
-        private static readonly Version s_ModVersionUpdate3 = new Version("0.3.0.345");
+        private static readonly Version s_ModVersionUpdate3 = new Version("0.3.0.346");
 
         private static readonly Updates s_CurrentUpdate = Updates.VER_4;
 
@@ -45,7 +45,7 @@ namespace CDOverhaul
                 if (string.IsNullOrEmpty(s_FullBuildTag))
                 {
                     FileInfo fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-                    s_FullBuildTag = "alpha " + modVersion.ToString() + " " + fileInfo.LastWriteTime.ToShortDateString().Replace(".", string.Empty) + " [M1]";
+                    s_FullBuildTag = "alpha_" + modVersion.ToString() + "_" + fileInfo.LastWriteTime.ToShortDateString().Replace(".", string.Empty) + "_m1";
                 }
                 return s_FullBuildTag;
             }

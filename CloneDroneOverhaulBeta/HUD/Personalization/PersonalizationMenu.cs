@@ -1349,7 +1349,7 @@ namespace CDOverhaul.HUD
             MyModdedObject.GetObject<Transform>(81).gameObject.SetActive(!string.IsNullOrEmpty(item.GetExclusivePlayerID()) && !item.IsUnlocked(OverhaulVersion.IsDebugBuild));
             MyModdedObject.GetObject<Transform>(82).gameObject.SetActive(string.IsNullOrEmpty(item.GetExclusivePlayerID()));
             MyModdedObject.GetObject<Transform>(86).gameObject.SetActive(!MyModdedObject.GetObject<Transform>(81).gameObject.activeSelf && !MyModdedObject.GetObject<Transform>(82).gameObject.activeSelf);
-            MyModdedObject.GetObject<Text>(16).text = string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description) ? OverhaulLocalizationController.GetTranslation("NoDesc") : (item as WeaponSkinItemDefinitionV2).Description;
+            MyModdedObject.GetObject<Text>(16).text = string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description) ? OverhaulLocalizationManager.GetTranslation("NoDesc") : (item as WeaponSkinItemDefinitionV2).Description;
             t.gameObject.SetActive(true);
             t.position = new Vector3(t.position.x, yPos, t.position.z);
         }
@@ -1366,7 +1366,7 @@ namespace CDOverhaul.HUD
         {
             MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
             MyModdedObject.GetObject<Text>(8).text = string.Empty;
-            m_Description.text = OverhaulLocalizationController.GetTranslation("NoDesc");
+            m_Description.text = OverhaulLocalizationManager.GetTranslation("NoDesc");
             if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
                 return;
 

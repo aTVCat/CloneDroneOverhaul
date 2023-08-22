@@ -54,7 +54,7 @@ namespace CDOverhaul.Patches
                 playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
                 LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
                 Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
-                playModdedButtonTextComponent.text = OverhaulLocalizationController.Localization.GetTranslation("Play modded");
+                playModdedButtonTextComponent.text = OverhaulLocalizationManager.LocalizationData.GetTranslation("Play modded");
                 Object.Destroy(playModdedButtonText);
 
                 Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
@@ -65,8 +65,8 @@ namespace CDOverhaul.Patches
                 {
                     new GameModeCardData
                     {
-                        NameOfMode = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox"),
-                        Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc"),
+                        NameOfMode = OverhaulLocalizationManager.LocalizationData.GetTranslation("Multiplayer Sandbox"),
+                        Description = OverhaulLocalizationManager.LocalizationData.GetTranslation("Multiplayer Sandbox Desc"),
                         ClickedCallback = new UnityEngine.Events.UnityEvent()
                     }/*,
                     new GameModeCardData
@@ -315,14 +315,14 @@ namespace CDOverhaul.Patches
 
         private void localizeTexts()
         {
-            if (!SuccessfullyPatched || OverhaulLocalizationController.Error)
+            if (!SuccessfullyPatched || OverhaulLocalizationManager.Error)
             {
                 return;
             }
 
-            m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
-            m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
-            m_AboutOverhaulText.text = OverhaulLocalizationController.Localization.GetTranslation("About Overhaul");
+            m_BugReportText.text = OverhaulLocalizationManager.LocalizationData.GetTranslation("TitleScreen_BugReport");
+            m_SettingsText.text = OverhaulLocalizationManager.LocalizationData.GetTranslation("TitleScreen_Settings");
+            m_AboutOverhaulText.text = OverhaulLocalizationManager.LocalizationData.GetTranslation("About Overhaul");
         }
 
         public override void Cancel()

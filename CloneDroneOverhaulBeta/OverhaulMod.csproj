@@ -435,12 +435,17 @@
     <Compile Include="Gameplay\Robots\Control\RobotCameraZoomExpansion.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
-    <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
-    <Compile Include="Graphics\NewManager\Effects\AmplifyColorOverhaulImageEffect.cs" />
-    <Compile Include="Graphics\NewManager\Effects\AmplifyOclusionImageEffect.cs" />
-    <Compile Include="Graphics\NewManager\Effects\BloomOverhaulImageEffect.cs" />
-    <Compile Include="Graphics\NewManager\OverhaulGraphicsManager.cs" />
-    <Compile Include="Graphics\NewManager\OverhaulImageEffectBehaviour.cs" />
+    <Compile Include="Visuals\Effects\DitheringUIEffect.cs" />
+    <Compile Include="Visuals\Effects\OverhaulUIEffectBehaviour.cs" />
+    <Compile Include="Visuals\Enchancements\VFX\OverhaulVFXController.cs" />
+    <Compile Include="Visuals\Effects\AmplifyColorOverhaulImageEffect.cs" />
+    <Compile Include="Visuals\Effects\AmplifyOclusionImageEffect.cs" />
+    <Compile Include="Visuals\Effects\BloomOverhaulImageEffect.cs" />
+    <Compile Include="Visuals\Effects\ChromaticAberrationImageEffect.cs" />
+    <Compile Include="Visuals\Effects\BlurEdgesImageEffect.cs" />
+    <Compile Include="Visuals\Effects\VignetteImageEffect.cs" />
+    <Compile Include="Visuals\OverhaulGraphicsManager.cs" />
+    <Compile Include="Visuals\Effects\OverhaulImageEffectBehaviour.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\CoopChallengeCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
@@ -454,7 +459,7 @@
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
-    <Compile Include="Graphics\Camera\CameraFOVOverrider.cs" />
+    <Compile Include="Visuals\Camera\CameraFOVOverrider.cs" />
     <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
@@ -533,11 +538,12 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
     <Compile Include="Gameplay\Workshop\ProgressInformation.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
-    <Compile Include="Graphics\ArenaOverhaul\ArenaOverhaulController.cs" />
-    <Compile Include="Graphics\Camera\CameraRollingBehaviour.cs" />
-    <Compile Include="Graphics\Robots\SeveredBodyPartSparks.cs" />
-    <Compile Include="Graphics\Camera\ViewModes\ViewModesController.cs" />
-    <Compile Include="Graphics\Camera\ViewModes\ViewModesExpansion.cs" />
+    <Compile Include="Visuals\ArenaOverhaul\ArenaOverhaulController.cs" />
+    <Compile Include="Visuals\Camera\CameraRollingBehaviour.cs" />
+    <Compile Include="Visuals\OverhaulUIEffectsManager.cs" />
+    <Compile Include="Visuals\Robots\SeveredBodyPartSparks.cs" />
+    <Compile Include="Visuals\Camera\ViewModes\ViewModesController.cs" />
+    <Compile Include="Visuals\Camera\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUI.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIEntryDisplay.cs" />
@@ -595,7 +601,7 @@
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
-    <Compile Include="Graphics\Enchancements\Mindspace\MindspaceOverhaulController.cs" />
+    <Compile Include="Visuals\Enchancements\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -606,9 +612,9 @@
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\WeaponSkinSpawnInfo.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinsWearer.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\WeaponVariant.cs" />
-    <Compile Include="Graphics\AmplifyOcclusion\AmplifyOcclusion.cs" />
-    <Compile Include="Graphics\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
-    <Compile Include="Graphics\OverhaulCameraController.cs" />
+    <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusion.cs" />
+    <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
+    <Compile Include="Visuals\OverhaulCameraManager.cs" />
     <Compile Include="HUD\PauseMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationPanel.cs" />
@@ -637,14 +643,14 @@
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />
-    <Compile Include="Internal\Localization\OverhaulLocalizationController.cs" />
+    <Compile Include="Internal\Localization\OverhaulLocalizationManager.cs" />
     <Compile Include="Internal\Localization\OverhaulLocalizationData.cs" />
     <Compile Include="Internal\Management\OverhaulManager.cs" />
     <Compile Include="Internal\Management\UI\ObjectComponentsAttribute.cs" />
     <Compile Include="Internal\Management\UI\ObjectDefaultVisibility.cs" />
     <Compile Include="Internal\Management\UI\ObjectReferenceAttribute.cs" />
     <Compile Include="Internal\Management\UI\ActionReferenceAttribute.cs" />
-    <Compile Include="Internal\Management\UI\OverhaulUIVer2.cs" />
+    <Compile Include="Internal\Management\UI\OverhaulUIController.cs" />
     <Compile Include="Internal\OverhaulAudioLibrary.cs" />
     <Compile Include="Internal\OverhaulCrashPreventionController.cs" />
     <Compile Include="Internal\OverhaulDiscordController.cs" />
@@ -706,7 +712,7 @@
     <Compile Include="Internal\Settings\OverhaulUpdatedSetting.cs" />
     <Compile Include="HUD\Transitions\OverhaulTransitionController.cs" />
     <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
-    <Compile Include="Graphics\OverhaulGraphicsController.cs" />
+    <Compile Include="Visuals\OverhaulRenderManager.cs" />
     <Compile Include="HUD\Parameters\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Parameters\ParametersMenuSetting.cs" />
     <Compile Include="HUD\Parameters\ParametersMenuCategoryButton.cs" />
@@ -853,7 +859,6 @@
     <Folder Include="CompiledBuild\CloneDroneOverhaul\AdditionalContent\Archives\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\Download\Steam\" />
     <Folder Include="CompiledBuild\CloneDroneOverhaul\Assets\OutfitDescriptions\" />
-    <Folder Include="Internal\Management\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />

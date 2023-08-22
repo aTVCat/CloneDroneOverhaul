@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCanvasController : OverhaulController
+    public class OverhaulCanvasController : OverhaulManager<OverhaulCanvasController>
     {
         /// <summary>
         /// The prefab name of HUD
@@ -38,6 +38,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
+            base.Initialize();
             m_CanvasFromPrefab = Instantiate(OverhaulAssetsController.GetAsset(OverhaulHUDName, OverhaulAssetPart.Part1));
 
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
@@ -116,7 +117,7 @@ namespace CDOverhaul.HUD
             return null;
         }
 
-        public List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
+        public static List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
         {
             List<T> list = new List<T>();
             if (targetTransform == null || targetTransform.childCount == 0)

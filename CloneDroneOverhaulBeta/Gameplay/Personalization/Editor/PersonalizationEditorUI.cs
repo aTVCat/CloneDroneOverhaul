@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorUI : OverhaulUIVer2
+    public class PersonalizationEditorUI : OverhaulUIController
     {
         [ObjectDefaultVisibility(false)]
         [ObjectReference("Shading")]

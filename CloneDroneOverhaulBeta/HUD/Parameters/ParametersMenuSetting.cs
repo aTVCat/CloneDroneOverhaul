@@ -58,7 +58,7 @@ namespace CDOverhaul.HUD
                 m_DefValueButton = m_ModdedObject.GetObject<Button>(12);
                 m_DefValueButton.onClick.AddListener(setSettingDefaultValue);
 
-                m_ModdedObject.GetObject<Text>(17).text = OverhaulLocalizationController.GetTranslation("Reset");
+                m_ModdedObject.GetObject<Text>(17).text = OverhaulLocalizationManager.GetTranslation("Reset");
 
                 base.gameObject.AddComponent<OverhaulUISelectionOutline>().SetGraphic(m_ModdedObject.GetObject<Image>(15));
             }
@@ -75,11 +75,11 @@ namespace CDOverhaul.HUD
             {
                 string[] array = settingPath.Split('.');
 
-                m_ModdedObject.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(ParametersMenu.SettingTranslationPrefix + array[2]);
+                m_ModdedObject.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(ParametersMenu.SettingTranslationPrefix + array[2]);
                 m_ModdedObject.GetObject<Text>(1).text = string.Empty;
                 if (Description != null)
                 {
-                    m_ModdedObject.GetObject<Text>(1).text = OverhaulLocalizationController.GetTranslation(ParametersMenu.SettingDescTranslationPrefix + array[2]);
+                    m_ModdedObject.GetObject<Text>(1).text = OverhaulLocalizationManager.GetTranslation(ParametersMenu.SettingDescTranslationPrefix + array[2]);
                 }
 
                 base.GetComponent<Image>().enabled = position == ParametersMenuSettingPosition.Normal;

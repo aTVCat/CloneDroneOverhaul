@@ -1,5 +1,5 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Graphics;
+using CDOverhaul.Visuals;
 using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
@@ -62,7 +62,6 @@ namespace CDOverhaul.HUD
                 populate();
                 m_HasPopulatedSettings = true;
             }
-            OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
@@ -74,7 +73,6 @@ namespace CDOverhaul.HUD
             if (!AdvancedPhotomodeController.IsAdvancedModeEnabled)
                 return;
 
-            OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
 
             if (AdvancedPhotomodeController.HasEverEnteredPhotoMode)

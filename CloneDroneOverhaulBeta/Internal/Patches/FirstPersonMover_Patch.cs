@@ -1,6 +1,6 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
-using CDOverhaul.Graphics;
+using CDOverhaul.Visuals;
 using HarmonyLib;
 using UnityEngine;
 

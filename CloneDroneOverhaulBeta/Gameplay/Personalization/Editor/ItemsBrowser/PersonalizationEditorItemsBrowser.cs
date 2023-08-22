@@ -32,8 +32,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIVer2.AssignValues(this);
-                OverhaulUIVer2.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                OverhaulUIController.AssignValues(this);
+                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
                 m_HasInitialized = true;
             }
 

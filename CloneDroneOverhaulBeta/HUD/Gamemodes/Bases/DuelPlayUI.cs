@@ -22,7 +22,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         protected override void OnInitialize()
         {
-            OverhaulUIVer2.AssignValues(this);
+            OverhaulUIController.AssignValues(this);
 
             m_GoBack.onClick.AddListener(goBackToGamemodeSelection);
             m_Play.onClick.AddListener(OnPlayClicked);

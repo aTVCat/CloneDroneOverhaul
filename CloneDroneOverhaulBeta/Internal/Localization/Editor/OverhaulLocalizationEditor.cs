@@ -14,21 +14,16 @@ namespace CDOverhaul
             MyModdedObject.GetObject<Button>(0).onClick.AddListener(Hide);
             MyModdedObject.GetObject<Button>(6).onClick.AddListener(EndEditingLang);
             MyModdedObject.GetObject<Button>(8).onClick.AddListener(NewTranslation);
-            MyModdedObject.GetObject<Button>(9).onClick.AddListener(OverhaulLocalizationController.SaveData);
+            MyModdedObject.GetObject<Button>(9).onClick.AddListener(OverhaulLocalizationManager.reference.SaveData);
             MyModdedObject.GetObject<InputField>(10).onValueChanged.AddListener(Search);
 
             Hide();
         }
 
-        private void Update()
-        {
-            OverhaulLocalizationController.UpdateLoadingScreen();
-        }
-
         public void Show()
         {
             base.gameObject.SetActive(true);
-            bool error = OverhaulLocalizationController.Error;
+            bool error = OverhaulLocalizationManager.Error;
 
             MyModdedObject.GetObject<Transform>(3).gameObject.SetActive(error);
             if (error)
@@ -36,7 +31,7 @@ namespace CDOverhaul
 
             if (!m_HasPopulated)
             {
-                foreach (string langCode in OverhaulLocalizationController.Localization.Translations.Keys)
+                foreach (string langCode in OverhaulLocalizationManager.LocalizationData.Translations.Keys)
                 {
                     ModdedObject m = Instantiate(MyModdedObject.GetObject<ModdedObject>(1), MyModdedObject.GetObject<Transform>(2));
                     m.gameObject.SetActive(true);
@@ -67,14 +62,14 @@ namespace CDOverhaul
             MyModdedObject.GetObject<Transform>(7).gameObject.SetActive(true);
 
             TransformUtils.DestroyAllChildren(MyModdedObject.GetObject<Transform>(5));
-            foreach (string str in OverhaulLocalizationController.Localization.Translations[lang].Keys)
+            foreach (string str in OverhaulLocalizationManager.LocalizationData.Translations[lang].Keys)
             {
                 ModdedObject m = Instantiate(MyModdedObject.GetObject<ModdedObject>(4), MyModdedObject.GetObject<Transform>(5));
                 m.gameObject.SetActive(true);
                 m.gameObject.AddComponent<OverhaulLocalizationEditorTranslationField>().Initialize(lang, str, m.GetObject<InputField>(0), m.GetObject<InputField>(1));
                 m.GetObject<Button>(2).onClick.AddListener(delegate
                 {
-                    OverhaulLocalizationController.Localization.RemoveTranslation(str);
+                    OverhaulLocalizationManager.LocalizationData.RemoveTranslation(str);
                     EditLang(lang);
                 });
             }
@@ -105,7 +100,7 @@ namespace CDOverhaul
             if (string.IsNullOrEmpty(m_EditingLang))
                 return;
 
-            OverhaulLocalizationController.Localization.AddTranslation("CoolThingTranslation");
+            OverhaulLocalizationManager.LocalizationData.AddTranslation("CoolThingTranslation");
             EditLang(m_EditingLang);
         }
     }

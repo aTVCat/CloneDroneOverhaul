@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Visuals;
 using CDOverhaul.HUD;
 using System;
 using System.Collections.Generic;
@@ -219,8 +219,6 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 0f);
             light.color = AdvancedPhotomodeSettings.OverrideSettings ? new HSBColor(AdvancedPhotomodeSettings.DLColH, AdvancedPhotomodeSettings.DLColS, AdvancedPhotomodeSettings.DLColB).ToColor() : AdvancedPhotomodeSettings.DLColorBefore;
             light.intensity = AdvancedPhotomodeSettings.OverrideSettings ? AdvancedPhotomodeSettings.DLIntensity : AdvancedPhotomodeSettings.DLIntensityBefore;
-
-            OverhaulGraphicsController.PatchAllCameras();
         }
     }
 }

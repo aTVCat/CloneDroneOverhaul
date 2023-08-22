@@ -61,7 +61,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasAlreadyInitialized)
             {
-                OverhaulUIVer2.AssignValues(this);
+                OverhaulUIController.AssignValues(this);
 
                 base.GetComponent<Button>().AddOnClickListener(EditInfo);
 

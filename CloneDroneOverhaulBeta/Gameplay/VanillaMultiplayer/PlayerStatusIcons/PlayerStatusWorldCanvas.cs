@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,13 +6,13 @@ namespace CDOverhaul.Gameplay.Multiplayer
 {
     public class PlayerStatusWorldCanvas : OverhaulBehaviour
     {
-        private OverhaulCameraController m_CameraController;
-        private OverhaulCameraController cameraController
+        private OverhaulCameraManager m_CameraController;
+        private OverhaulCameraManager cameraController
         {
             get
             {
                 if (!m_CameraController)
-                    m_CameraController = OverhaulController.GetController<OverhaulCameraController>();
+                    m_CameraController = OverhaulController.GetController<OverhaulCameraManager>();
 
                 return m_CameraController;
             }

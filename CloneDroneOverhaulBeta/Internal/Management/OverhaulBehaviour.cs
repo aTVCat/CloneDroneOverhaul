@@ -28,8 +28,20 @@ namespace CDOverhaul
         public virtual void OnDisable() { }
         protected virtual void OnDisposed() { }
 
-        public void DestroyGameObject() => Destroy(gameObject);
-        public void DestroyBehaviour() => Destroy(this);
+        public void DestroyGameObject()
+        {
+            if (IsDestroyed)
+                return;
+
+            Destroy(gameObject);
+        }
+        public void DestroyBehaviour()
+        {
+            if (IsDestroyed)
+                return;
+
+            Destroy(this);
+        }
 
         public void Dispose()
         {

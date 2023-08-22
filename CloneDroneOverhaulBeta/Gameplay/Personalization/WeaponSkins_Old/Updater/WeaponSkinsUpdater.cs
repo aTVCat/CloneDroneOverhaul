@@ -80,17 +80,17 @@ namespace CDOverhaul.Gameplay
 
         public static string GetAssetBundleFileStateString()
         {
-            return OverhaulLocalizationController.GetTranslation("FileVersion:") + WeaponSkinsController.GetSkinsFileVersion();
+            return OverhaulLocalizationManager.GetTranslation("FileVersion:") + WeaponSkinsController.GetSkinsFileVersion();
         }
 
         public static string GetUpdateStateString()
         {
-            return !HasUpdates ? UnableToCheck ? "Error".AddColor(Color.red) : OverhaulLocalizationController.GetTranslation("NoUpdatesAvailable") : OverhaulLocalizationController.GetTranslation("UpdatesAvailable").AddColor(UnityEngine.Color.red);
+            return !HasUpdates ? UnableToCheck ? "Error".AddColor(Color.red) : OverhaulLocalizationManager.GetTranslation("NoUpdatesAvailable") : OverhaulLocalizationManager.GetTranslation("UpdatesAvailable").AddColor(UnityEngine.Color.red);
         }
 
         public static string GetUpdateButtonText()
         {
-            return WaitsToBeUpdated ? OverhaulLocalizationController.GetTranslation("UpdateSkins") : OverhaulLocalizationController.GetTranslation("CheckForUpdates");
+            return WaitsToBeUpdated ? OverhaulLocalizationManager.GetTranslation("UpdateSkins") : OverhaulLocalizationManager.GetTranslation("CheckForUpdates");
         }
 
         public static void RefreshUpdates(Action onRefreshed)

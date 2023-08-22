@@ -70,7 +70,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             TargetObject = targetObject;
             FieldReference = fieldToEdit;
 
-            OverhaulUIVer2.AssignValues(this);
+            OverhaulUIController.AssignValues(this);
             m_Label.text = StringUtils.AddSpacesToCamelCasedString(fieldToEdit.Name);
         }
 
@@ -78,7 +78,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             IsCollectionObject = true;
 
-            OverhaulUIVer2.AssignValues(this);
+            OverhaulUIController.AssignValues(this);
             m_Label.text = displayName;
             ListFieldDisplay = listFieldDisplay;
             TargetObject = targetObject;

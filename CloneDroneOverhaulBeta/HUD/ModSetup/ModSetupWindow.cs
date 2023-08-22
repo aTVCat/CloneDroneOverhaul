@@ -1,5 +1,5 @@
 ﻿using CDOverhaul.Device;
-using CDOverhaul.Graphics;
+using CDOverhaul.Visuals;
 using CDOverhaul.Patches;
 using UnityEngine;
 using UnityEngine.UI;
@@ -151,7 +151,7 @@ namespace CDOverhaul.HUD
 
         public bool GetVignetteEnabled()
         {
-            return OverhaulGraphicsController.VignetteEnabled;
+            return VignetteImageEffect.VignetteEnabled;
         }
         public void SetVignetteEnabled()
         {
@@ -168,7 +168,7 @@ namespace CDOverhaul.HUD
 
         public bool GetCAEnabled()
         {
-            return OverhaulGraphicsController.ChromaticAberrationEnabled;
+            return ChromaticAberrationImageEffect.ChromaticAberrationEnabled;
         }
         public void SetCAEnabled()
         {

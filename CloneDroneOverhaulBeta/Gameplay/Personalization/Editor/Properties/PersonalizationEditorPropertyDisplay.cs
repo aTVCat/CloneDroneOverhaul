@@ -15,7 +15,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public override void Start()
         {
-            OverhaulUIVer2.AssignValues(this);
+            OverhaulUIController.AssignValues(this);
         }
     }
 }

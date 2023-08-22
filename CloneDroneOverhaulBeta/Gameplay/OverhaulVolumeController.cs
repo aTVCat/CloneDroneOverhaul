@@ -30,7 +30,7 @@ namespace CDOverhaul
                 if (Random.Range(0, 10) < 2)
                 {
                     Vector3 position = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
-                    _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Graphics.OverhaulVFXController.LASER_CUT_VFX, position, Vector3.zero);
+                    _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Visuals.OverhaulVFXController.LASER_CUT_VFX, position, Vector3.zero);
                 }
 
                 if (MakeLaserBurnVoxels)
@@ -59,7 +59,7 @@ namespace CDOverhaul
             if (Random.Range(0, 10) < 2)
             {
                 Vector3 position = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
-                _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Graphics.OverhaulVFXController.FIRE_CUT_VFX, position, Vector3.zero);
+                _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Visuals.OverhaulVFXController.FIRE_CUT_VFX, position, Vector3.zero);
             }
         }
 

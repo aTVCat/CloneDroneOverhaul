@@ -132,7 +132,7 @@ namespace CDOverhaul
 
         public static void ShowUnfinishedFeatureWindow()
         {
-            ShowOkWindow(OverhaulLocalizationController.GetTranslation("NotImplementedFeature"), OverhaulLocalizationController.GetTranslation("NotImplementedFeatureDesc"), 300, 175, IconType.Warn);
+            ShowOkWindow(OverhaulLocalizationManager.GetTranslation("NotImplementedFeature"), OverhaulLocalizationManager.GetTranslation("NotImplementedFeatureDesc"), 300, 175, IconType.Warn);
         }
 
         public class ActionButton : OverhaulBehaviour

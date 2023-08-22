@@ -14,7 +14,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Graphics.OverhaulVFXController.FIRE_VFX, positon, Vector3.zero);
+            _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Visuals.OverhaulVFXController.FIRE_VFX, positon, Vector3.zero);
         }
     }
 }

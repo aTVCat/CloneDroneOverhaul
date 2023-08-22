@@ -9,8 +9,8 @@ using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Overmodes;
 using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Graphics;
-using CDOverhaul.Graphics.ArenaOverhaul;
+using CDOverhaul.Visuals;
+using CDOverhaul.Visuals.ArenaOverhaul;
 using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
@@ -120,15 +120,13 @@ namespace CDOverhaul
             OverhaulEventsController.Initialize();
             OverhaulSettingsController.Initialize();
             OverhaulController.InitializeStatic(controllers);
+
             ModInitialize modInitialize = new ModInitialize();
+            modInitialize.Load();
 
             _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
             _ = OverhaulController.AddController<OverhaulPlayerInfoController>();
             _ = OverhaulController.AddController<OverhaulVolumeController>();
-
-            _ = OverhaulController.AddController<AutoBuildController>();
-            _ = OverhaulController.AddController<LevelEditorFixes>();
-            _ = OverhaulController.AddController<ModBotTagDisabler>();
 
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
@@ -262,12 +260,9 @@ namespace CDOverhaul
             if (waitForEndOfFrame)
                 yield return null;
 
-            OverhaulLocalizationController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulAudioLibrary.Initialize();
             OverhaulPatchNotes.Initialize();
-            OverhaulDebugActions.Initialize();
-            //OverhaulGraphicsController.Initialize();
             if (waitForEndOfFrame)
                 yield return null;
 

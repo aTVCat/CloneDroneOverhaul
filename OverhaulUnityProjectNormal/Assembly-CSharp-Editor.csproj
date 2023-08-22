@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
+    <Compile Include="Assets\Kino\Bloom\Editor\BloomEditor.cs" />
+    <Compile Include="Assets\Kino\Bloom\Editor\BloomGraphDrawer.cs" />
     <Compile Include="Assets\SSSAO\Editor\AxisPatternGenerator.cs" />
     <Compile Include="Assets\SSSAO\Editor\MinMaxRangeDrawer.cs" />
     <Reference Include="UnityEngine.Purchasing">

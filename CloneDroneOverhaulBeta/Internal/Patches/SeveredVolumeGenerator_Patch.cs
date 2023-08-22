@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics.Robots;
+﻿using CDOverhaul.Visuals.Robots;
 using HarmonyLib;
 using UnityEngine;
 

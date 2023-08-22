@@ -14,7 +14,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (HasDifferentControl)
             {
-                OverhaulUIVer2.AssignValues(this);
+                OverhaulUIController.AssignValues(this);
                 m_InputField.text = TargetObject as string;
             }
             else

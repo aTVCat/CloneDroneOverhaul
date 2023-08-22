@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CDOverhaul.Graphics.GPUInstancing
+namespace CDOverhaul.Visuals.GPUInstancing
 {
     public class MatrixInfo
     {

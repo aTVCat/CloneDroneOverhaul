@@ -30,8 +30,8 @@ namespace CDOverhaul.HUD.Tooltips
                 return;
 
             m_DisplayName.text = playerInfoState.state.DisplayName;
-            m_WinsCount.text = playerInfoState.state.LastBotStandingWins + " " + OverhaulLocalizationController.GetTranslation("Wins2");
-            m_KillsCount.text = playerInfoState.state.Kills + " " + OverhaulLocalizationController.GetTranslation("Kills");
+            m_WinsCount.text = playerInfoState.state.LastBotStandingWins + " " + OverhaulLocalizationManager.GetTranslation("Wins2");
+            m_KillsCount.text = playerInfoState.state.Kills + " " + OverhaulLocalizationManager.GetTranslation("Kills");
             Show();
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.HUD
 {
-    public class OverhaulConnectScreen : OverhaulUIVer2
+    public class OverhaulConnectScreen : OverhaulUIController
     {
         public static bool IsEnabled() => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsConnectionScreensRedesignEnabled;
 

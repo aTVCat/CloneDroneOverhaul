@@ -91,11 +91,13 @@
     <Compile Include="Assets\Game\Scripts\Voxel.cs" />
     <Compile Include="Assets\Game\Scripts\VoxelParticleSystem.cs" />
     <Compile Include="Assets\Game\Scripts\VoxelState.cs" />
+    <Compile Include="Assets\Kino\Bloom\Bloom.cs" />
     <Compile Include="Assets\Mesh Optimizer\Scripts\OptimizeMesh.cs" />
     <Compile Include="Assets\ModdedObject.cs" />
     <Compile Include="Assets\ModStuff\BetaOverhaul\LocalizeText.cs" />
     <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionCommon.cs" />
     <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
+    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
     <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\ShaderOnCamera.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\SnapshotShaders\Scripts\SnapshotCanvas.cs" />
@@ -142,9 +144,11 @@
     <None Include="Assets\Game\Scripts\CustomHologram_Flicker.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\Silhouette.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\EdgeBlur.shader" />
+    <None Include="Assets\Kino\Bloom\Shader\Bloom.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo.shader" />
+    <None Include="Assets\Kino\Bloom\Shader\Bloom.cginc" />
     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\VertexColoredFogOFF.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Common.cginc" />
@@ -174,6 +178,7 @@
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Blur.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\MaskedUIBlur.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\CRTScreen.shader" />
+    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\Neon.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\MotionBlur.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />

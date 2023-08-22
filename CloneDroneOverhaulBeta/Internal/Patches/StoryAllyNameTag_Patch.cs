@@ -10,11 +10,11 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Initialize")]
         private static void Initialize_Prefix(Character character, ref string name, Color nameColor)
         {
-            if (!OverhaulMod.IsModInitialized || OverhaulLocalizationController.Error)
+            if (!OverhaulMod.IsModInitialized || OverhaulLocalizationManager.Error)
                 return;
 
             if (name == "Ally")
-                name = OverhaulLocalizationController.GetTranslation("Ally");
+                name = OverhaulLocalizationManager.GetTranslation("Ally");
         }
     }
 }

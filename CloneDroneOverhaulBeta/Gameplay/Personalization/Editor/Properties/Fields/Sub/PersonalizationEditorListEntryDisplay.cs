@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public void Initialize(PersonalizationEditorListFieldDisplay fieldDisplay, object targetList, int index)
         {
-            OverhaulUIVer2.AssignValues(this);
+            OverhaulUIController.AssignValues(this);
             List = targetList;
             Index = index;
             FieldDisplay = fieldDisplay;

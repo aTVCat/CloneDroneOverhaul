@@ -125,7 +125,7 @@ namespace CDOverhaul.HUD.Gamemodes
             bool isCoop = ViewCoopChallenges;
             if (isCoop || definition == null)
             {
-                m_ChallengeTitleLabel.text = isCoop ? string.Empty : OverhaulLocalizationController.GetTranslation("Hover mouse over challenge");
+                m_ChallengeTitleLabel.text = isCoop ? string.Empty : OverhaulLocalizationManager.GetTranslation("Hover mouse over challenge");
                 m_ChallengeCompletionLabel.text = string.Empty;
                 return;
             }
@@ -134,7 +134,7 @@ namespace CDOverhaul.HUD.Gamemodes
             int beatenLevels = definition.GetNumberOfBeatenLevels();
 
             m_ChallengeTitleLabel.text = LocalizationManager.Instance.GetTranslatedString(definition.ChallengeName, -1);
-            m_ChallengeCompletionLabel.text = allLevels == int.MaxValue ? beatenLevels + " " + OverhaulLocalizationController.GetTranslation("Completed of") : beatenLevels + "/" + allLevels + " " + OverhaulLocalizationController.GetTranslation("Completed of");
+            m_ChallengeCompletionLabel.text = allLevels == int.MaxValue ? beatenLevels + " " + OverhaulLocalizationManager.GetTranslation("Completed of") : beatenLevels + "/" + allLevels + " " + OverhaulLocalizationManager.GetTranslation("Completed of");
         }
 
         public void OnJoinButtonClicked()

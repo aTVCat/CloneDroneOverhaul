@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Workshop
 {
-    public class OverhaulWorkshopBrowserUI : OverhaulUIVer2
+    public class OverhaulWorkshopBrowserUI : OverhaulUIController
     {
         #region Settings
 
@@ -460,7 +460,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             ModdedObject separator = m_RankSeparatorsContainer.CreateNew();
-            separator.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(header);
+            separator.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(header);
             int i = 0;
             do
             {
@@ -491,7 +491,7 @@ namespace CDOverhaul.Workshop
                     return;
                 }
                 ModdedObject m = m_RanksContainer.CreateNew();
-                m.GetObject<Text>(0).text = OverhaulLocalizationController.GetTranslation(getRankString(array[i]));
+                m.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(getRankString(array[i]));
                 _ = RankUIEntry.CreateNew(m, array[i]);
                 i++;
             } while (i < array.Length);
@@ -985,7 +985,7 @@ namespace CDOverhaul.Workshop
 
         private void showDefaultInfo()
         {
-            OverhaulUIDescriptionTooltip.SetActive(true, OverhaulLocalizationController.GetTranslation("Steam workshop browser"), OverhaulLocalizationController.GetTranslation("Play and rate human levels!"));
+            OverhaulUIDescriptionTooltip.SetActive(true, OverhaulLocalizationManager.GetTranslation("Steam workshop browser"), OverhaulLocalizationManager.GetTranslation("Play and rate human levels!"));
         }
 
         public void ResetRequest()
@@ -1005,7 +1005,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             IsPopulatingItems = true;
-            m_CurrentPageText.text = string.Format(OverhaulLocalizationController.GetTranslation("Page number"), Page);
+            m_CurrentPageText.text = string.Format(OverhaulLocalizationManager.GetTranslation("Page number"), Page);
             m_WorkshopItemsContainer.ClearContainer();
             m_PageSelectionTransform.gameObject.SetActive(false);
             m_PageSelectionButton.interactable = false;
@@ -1017,7 +1017,7 @@ namespace CDOverhaul.Workshop
             if (TargetAccount != default)
             {
                 string persona = SteamFriends.GetFriendPersonaName(TargetAccount);
-                OverhaulUIDescriptionTooltip.SetActive(true, string.Format(OverhaulLocalizationController.GetTranslation("LevelsBy"), persona), OverhaulLocalizationController.GetTranslation("View levels made by this user"));
+                OverhaulUIDescriptionTooltip.SetActive(true, string.Format(OverhaulLocalizationManager.GetTranslation("LevelsBy"), persona), OverhaulLocalizationManager.GetTranslation("View levels made by this user"));
             }
             else
             {
@@ -1106,7 +1106,7 @@ namespace CDOverhaul.Workshop
                 return;
 
             string stars = workshopItem.Stars.ToString();
-            m_QuickInfoLevelStars.text = stars == "1" ? OverhaulLocalizationController.GetTranslation("Not rated") : stars.Length > 3 ? stars.Remove(3) : stars;
+            m_QuickInfoLevelStars.text = stars == "1" ? OverhaulLocalizationManager.GetTranslation("Not rated") : stars.Length > 3 ? stars.Remove(3) : stars;
 
             m_QuickInfo.SetActive(true);
             m_QuickInfoLevelName.text = workshopItem.ItemTitle;

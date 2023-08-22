@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Visuals;
 using OverhaulAPI;
 using System.Collections;
 using System.Collections.Generic;

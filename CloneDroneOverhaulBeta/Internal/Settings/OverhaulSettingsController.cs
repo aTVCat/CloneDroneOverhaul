@@ -123,43 +123,43 @@ namespace CDOverhaul
                 {
                     foreach (SettingInfo neededAttribute in m_Settings)
                     {
-                        if (OverhaulLocalizationController.Error)
+                        if (OverhaulLocalizationManager.Error)
                         {
                             return;
                         }
 
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
-                            OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
                         }
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
                         }
                         OverhaulSettingDescription desc = OverhaulSettingsController.GetSettingDescription(neededAttribute.RawPath);
-                        if (desc != null) OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
+                        if (desc != null) OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
 
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section);
-                            OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.SectionTranslationPrefix + neededAttribute.Section] = neededAttribute.Section;
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section);
+                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SectionTranslationPrefix + neededAttribute.Section] = neededAttribute.Section;
                         }
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name);
-                            OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name);
+                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
                         }
 
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category);
-                            OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category] = neededAttribute.Category;
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category);
+                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category] = neededAttribute.Category;
                         }
-                        if (!OverhaulLocalizationController.HasTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category))
+                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category))
                         {
-                            OverhaulLocalizationController.Localization.AddTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category);
-                            OverhaulLocalizationController.Localization.Translations["en"][ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category] = GetCategoryDescription(neededAttribute.Category);
+                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category);
+                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category] = GetCategoryDescription(neededAttribute.Category);
                         }
                     }
                 }, 1f);

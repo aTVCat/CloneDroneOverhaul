@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulAchievementsMenu : OverhaulUIVer2
+    public class OverhaulAchievementsMenu : OverhaulUIController
     {
         public static bool IsEnabled() => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAchievementsMenuRedesignEnabled;
 

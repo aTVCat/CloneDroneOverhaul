@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics.GPUInstancing;
+﻿using CDOverhaul.Visuals.GPUInstancing;
 using System.Collections.Generic;
 using UnityEngine;
 

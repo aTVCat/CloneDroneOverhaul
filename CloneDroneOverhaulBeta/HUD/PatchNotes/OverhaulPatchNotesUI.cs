@@ -175,7 +175,7 @@ namespace CDOverhaul.HUD
             }
 
             m_ClickOnImageLabel.gameObject.SetActive(!info.Art.IsNullOrEmpty());
-            m_ChangelogHeader.text = OverhaulLocalizationController.GetTranslation("PatchNotesTitle") + info.TargetModVersion;
+            m_ChangelogHeader.text = OverhaulLocalizationManager.GetTranslation("PatchNotesTitle") + info.TargetModVersion;
         }
 
         private IEnumerator loadPicture(RawImage attachTo, string path)

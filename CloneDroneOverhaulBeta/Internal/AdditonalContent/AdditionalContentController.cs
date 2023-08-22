@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public class AdditionalContentController : OverhaulController
+    public class AdditionalContentController : OverhaulManager<AdditionalContentController>
     {
         public static bool HasLoadedContent
         {

@@ -18,7 +18,7 @@ namespace CDOverhaul
             MyID = id;
             MyLang = lang;
 
-            if (!OverhaulLocalizationController.Localization.Translations[MyLang].TryGetValue(MyID, out string text))
+            if (!OverhaulLocalizationManager.LocalizationData.Translations[MyLang].TryGetValue(MyID, out string text))
                 return;
 
             MyInputField = field;
@@ -40,15 +40,15 @@ namespace CDOverhaul
 
         public void UpdateText(string str)
         {
-            if (!OverhaulLocalizationController.Localization.Translations[MyLang].ContainsKey(MyID))
+            if (!OverhaulLocalizationManager.LocalizationData.Translations[MyLang].ContainsKey(MyID))
                 return;
 
-            OverhaulLocalizationController.Localization.Translations[MyLang][MyID] = str;
+            OverhaulLocalizationManager.LocalizationData.Translations[MyLang][MyID] = str;
         }
 
         public void UpdateID(string str)
         {
-            OverhaulLocalizationController.Localization.ReplaceTranslation(MyID, str);
+            OverhaulLocalizationManager.LocalizationData.ReplaceTranslation(MyID, str);
             MyID = str;
         }
     }

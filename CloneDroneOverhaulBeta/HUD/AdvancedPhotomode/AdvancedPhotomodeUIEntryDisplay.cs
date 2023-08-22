@@ -1,5 +1,5 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Graphics;
+using CDOverhaul.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -119,7 +119,6 @@ namespace CDOverhaul.HUD
                 SettingReference.Field.SetValue(null, value);
             else
                 SettingReference.Field.SetValue(null, (int)value);
-            OverhaulGraphicsController.PatchAllCameras();
             OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
     }

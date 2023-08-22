@@ -77,11 +77,11 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (upgradeMode == UpgradeMode.Upgrade)
             {
                 m_ButtonGraphic.color = ReverUpgradesColor.ToColor();
-                m_ButtonText.text = OverhaulLocalizationController.GetTranslation("Revert Upgrades");
+                m_ButtonText.text = OverhaulLocalizationManager.GetTranslation("Revert Upgrades");
                 return;
             }
             m_ButtonGraphic.color = UpgradeColor.ToColor();
-            m_ButtonText.text = OverhaulLocalizationController.GetTranslation("Get Upgrades");
+            m_ButtonText.text = OverhaulLocalizationManager.GetTranslation("Get Upgrades");
         }
     }
 }

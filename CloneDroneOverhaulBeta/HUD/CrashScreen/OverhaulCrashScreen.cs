@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCrashScreen : OverhaulUIVer2
+    public class OverhaulCrashScreen : OverhaulUIController
     {
         private static bool s_HasSentReport;
 

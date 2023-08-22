@@ -1,4 +1,4 @@
-﻿using CDOverhaul.Graphics;
+﻿using CDOverhaul.Visuals;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;

@@ -1,5 +1,5 @@
 ﻿using CDOverhaul.Gameplay.Combat;
-using CDOverhaul.Graphics;
+using CDOverhaul.Visuals;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay
