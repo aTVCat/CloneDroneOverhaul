@@ -43,7 +43,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (value)
             {
-                m_SkinsButton.interactable = OverhaulController.GetController<WeaponSkins.WeaponSkinsController>();
+                m_SkinsButton.interactable = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
             }
         }
 
@@ -53,7 +53,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 return;
 
             m_DefaultParent = base.transform.parent;
-            OverhaulTutorialUI tutorialUI = OverhaulController.GetController<OverhaulTutorialUI>();
+            OverhaulTutorialUI tutorialUI = OverhaulController.Get<OverhaulTutorialUI>();
             tutorialUI.SetUITaskActive(true);
             tutorialUI.ParentTransformToUITask(base.transform);
             tutorialUI.SetTooltipActive(true);
@@ -74,7 +74,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             base.transform.SetParent(m_DefaultParent, true);
             base.transform.SetAsFirstSibling();
             base.gameObject.SetActive(false);
-            OverhaulTutorialUI tutorialUI = OverhaulController.GetController<OverhaulTutorialUI>();
+            OverhaulTutorialUI tutorialUI = OverhaulController.Get<OverhaulTutorialUI>();
             tutorialUI.SetUITaskActive(false);
             tutorialUI.SetTooltipActive(false);
             HasPassedTutorial = true;

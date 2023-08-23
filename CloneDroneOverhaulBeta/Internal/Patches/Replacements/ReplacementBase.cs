@@ -54,7 +54,7 @@ namespace CDOverhaul.Patches
             return null;
         }
 
-        internal static void CreateReplacements()
+        internal static void AddAll()
         {
             Replacements.Clear();
 
@@ -69,7 +69,7 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<CrosshairsUIReplacement>();
         }
 
-        internal static void CancelEverything()
+        internal static void RemoveAll()
         {
             if (Replacements.IsNullOrEmpty())
                 return;

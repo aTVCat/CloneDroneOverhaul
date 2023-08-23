@@ -10,7 +10,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             get
             {
                 if (!m_EditorUI)
-                    m_EditorUI = OverhaulController.GetController<PersonalizationEditorUI>();
+                    m_EditorUI = OverhaulController.Get<PersonalizationEditorUI>();
 
                 return m_EditorUI;
             }

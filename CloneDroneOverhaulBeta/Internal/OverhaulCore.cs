@@ -112,27 +112,18 @@ namespace CDOverhaul
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
-
-            DeviceSpecifics.Initialize();
-            //OverhaulObjectStateModder.Reset();
-            EnableCursorController.Reset();
-
-            OverhaulEventsController.Initialize();
-            OverhaulSettingsController.Initialize();
             OverhaulController.InitializeStatic(controllers);
 
             ModInitialize modInitialize = new ModInitialize();
             modInitialize.Load();
 
-            _ = OverhaulController.AddController<OverhaulGameplayCoreController>();
-            _ = OverhaulController.AddController<OverhaulPlayerInfoController>();
-            _ = OverhaulController.AddController<OverhaulVolumeController>();
+            _ = OverhaulController.Add<OverhaulGameplayCoreController>();
+            _ = OverhaulController.Add<OverhaulPlayerInfoController>();
+            _ = OverhaulController.Add<OverhaulVoxelsController>();
 
-            _ = OverhaulController.AddController<ViewModesController>();
-            _ = OverhaulController.AddController<OverhaulDiscordController>();
-            _ = OverhaulController.AddController<OverhaulMultiplayerController>();
-
-            _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
+            _ = OverhaulController.Add<ViewModesController>();
+            _ = OverhaulController.Add<OverhaulDiscordController>();
+            _ = OverhaulController.Add<OverhaulMultiplayerController>();
 
             OverhaulPlayerIdentifier.Initialize();
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled && !OverhaulBootUI.Show())
@@ -222,41 +213,39 @@ namespace CDOverhaul
             if (waitForEndOfFrame)
                 yield return null;
 
-            CanvasController = OverhaulController.AddController<OverhaulCanvasController>();
+            CanvasController = OverhaulController.Add<OverhaulCanvasController>();
             if (waitForEndOfFrame)
                 yield return null;
 
-            _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
-            _ = OverhaulController.AddController<UpgradeModesController>();
-            _ = OverhaulController.AddController<AdvancedPhotomodeController>();
-            _ = OverhaulController.AddController<ArenaOverhaulController>();
+            _ = OverhaulController.Add<HUD.Tooltips.OverhaulTooltipsController>();
+            _ = OverhaulController.Add<UpgradeModesController>();
+            _ = OverhaulController.Add<AdvancedPhotomodeController>();
+            _ = OverhaulController.Add<ArenaOverhaulController>();
 
-            _ = OverhaulController.AddController<MindspaceOverhaulController>();
-            _ = OverhaulController.AddController<OverhaulVFXController>();
+            _ = OverhaulController.Add<MindspaceOverhaulController>();
+            _ = OverhaulController.Add<OverhaulVFXController>();
             if (waitForEndOfFrame)
                 yield return null;
 
-            _ = OverhaulController.AddController<AdditionalContentController>();
-            _ = OverhaulController.AddController<OverhaulAchievementsController>();
-            _ = OverhaulController.AddController<OverhaulRepositoryController>();
-            _ = OverhaulController.AddController<OvermodesController>();
+            _ = OverhaulController.Add<AdditionalContentController>();
+            _ = OverhaulController.Add<OverhaulAchievementsController>();
+            _ = OverhaulController.Add<OverhaulRepositoryController>();
+            _ = OverhaulController.Add<OvermodesController>();
             if (waitForEndOfFrame)
                 yield return null;
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWeaponSkinsSystemEnabled)
-                OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
+                OverhaulController.Add<Gameplay.WeaponSkins.WeaponSkinsController>();
             else
-                OverhaulController.AddController<WeaponSkinsController>();
+                OverhaulController.Add<WeaponSkinsController>();
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled)
             {
-                _ = OverhaulController.AddController<Gameplay.Pets.PetsController>();
-                _ = OverhaulController.AddController<Gameplay.Outfits.OutfitsController>();
+                _ = OverhaulController.Add<Gameplay.Pets.PetsController>();
+                _ = OverhaulController.Add<Gameplay.Outfits.OutfitsController>();
             }
 
-            OverhaulController.GetController<LevelEditorFixes>().AddUIs();
-
-            _ = OverhaulController.AddController<MoreSkyboxesController>();
+            _ = OverhaulController.Add<MoreSkyboxesController>();
             if (waitForEndOfFrame)
                 yield return null;
 
@@ -266,7 +255,6 @@ namespace CDOverhaul
             if (waitForEndOfFrame)
                 yield return null;
 
-            ReplacementBase.CreateReplacements();
             OverhaulUpdateChecker.CheckForUpdates();
             OverhaulCompatibilityChecker.CheckGameVersion();
 
@@ -281,7 +269,6 @@ namespace CDOverhaul
         {
             CanvasController = null;
             OverhaulMod.Core = null;
-            ReplacementBase.CancelEverything();
         }
 
         private static IEnumerator updateLangFontCoroutine()

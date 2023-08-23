@@ -14,6 +14,7 @@ namespace CDOverhaul
 
         public override void Initialize()
         {
+            base.Initialize();
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAdditionalContentSupportEnabled || HasLoadedContent)
                 return;
 

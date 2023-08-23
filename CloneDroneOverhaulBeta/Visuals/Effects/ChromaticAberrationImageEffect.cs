@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class ChromaticAberrationImageEffect : OverhaulImageEffectBehaviour
+    public class ChromaticAberrationImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
@@ -27,7 +27,7 @@ namespace CDOverhaul.Visuals
 
             if (PreviousCamera && PreviousCamera != CurrentCamera)
             {
-                OverhaulImageEffect effectComponent = GetImageEffect(camera, "ChromaticAberration");
+                OverhaulImageEffect effectComponent = GetImageEffect(PreviousCamera, "ChromaticAberration");
                 if (effectComponent)
                 {
                     Destroy(effectComponent);

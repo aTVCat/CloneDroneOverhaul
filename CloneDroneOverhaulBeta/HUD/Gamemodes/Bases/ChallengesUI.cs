@@ -211,7 +211,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 void action()
                 {
                     ChallengeManager.Instance.StartChallenge(m_ChallengeDefinition, false);
-                    OverhaulGamemodesUI gamemodesUI = OverhaulController.GetController<OverhaulGamemodesUI>();
+                    OverhaulGamemodesUI gamemodesUI = OverhaulController.Get<OverhaulGamemodesUI>();
                     if (gamemodesUI)
                         gamemodesUI.Hide();
                 }

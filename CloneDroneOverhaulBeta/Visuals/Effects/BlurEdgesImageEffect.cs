@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class BlurEdgesImageEffect : OverhaulImageEffectBehaviour
+    public class BlurEdgesImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
         public static bool BlurEdgesEnabled;
@@ -24,7 +24,7 @@ namespace CDOverhaul.Visuals
 
             if (PreviousCamera && PreviousCamera != CurrentCamera)
             {
-                OverhaulImageEffect effectComponent = GetImageEffect(camera, "BlurEdges");
+                OverhaulImageEffect effectComponent = GetImageEffect(PreviousCamera, "BlurEdges");
                 if (effectComponent)
                 {
                     Destroy(effectComponent);

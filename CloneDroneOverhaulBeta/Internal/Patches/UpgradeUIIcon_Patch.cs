@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized || isRandomSelectionInput)
                 return true;
 
-            UpgradeModesController modesController = OverhaulController.GetController<UpgradeModesController>();
+            UpgradeModesController modesController = OverhaulController.Get<UpgradeModesController>();
             if (!modesController || UpgradeModesController.Mode == UpgradeMode.Upgrade)
                 return true;
 

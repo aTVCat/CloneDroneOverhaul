@@ -13,7 +13,7 @@ namespace CDOverhaul.Visuals.Robots
 
         private void Start()
         {
-            m_CameraController = OverhaulController.GetController<OverhaulCameraManager>();
+            m_CameraController = OverhaulController.Get<OverhaulCameraManager>();
             setTime();
         }
 

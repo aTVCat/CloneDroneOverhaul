@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulGraphicsManager graphicsManager = OverhaulGraphicsManager.GetController<OverhaulGraphicsManager>();
+            OverhaulGraphicsManager graphicsManager = OverhaulGraphicsManager.Get<OverhaulGraphicsManager>();
             if (!graphicsManager || !graphicsManager.amplifyColorOverhaul || !__instance._amplifyColorBase)
                 return;
 

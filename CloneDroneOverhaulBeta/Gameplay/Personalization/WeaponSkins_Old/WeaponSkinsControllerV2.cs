@@ -428,7 +428,7 @@ namespace CDOverhaul.Gameplay
             OverhaulLoadingScreen.Instance.SetScreenFill(0f);
             yield return null;
 
-            WeaponSkinsController c = GetController<WeaponSkinsController>();
+            WeaponSkinsController c = Get<WeaponSkinsController>();
             if (c == null)
             {
                 OverhaulLoadingScreen.Instance.SetScreenActive(false);
@@ -494,7 +494,7 @@ namespace CDOverhaul.Gameplay
                     m_WeaponSkins.RemoveAt(i);
             }
 
-            GetController<WeaponSkinsController>().ReImportCustomSkins();
+            Get<WeaponSkinsController>().ReImportCustomSkins();
         }
 
         public static string GetSkinsFileVersion() => OverhaulCore.ReadText(OverhaulMod.Core.ModDirectory + "SkinsVersion.txt");

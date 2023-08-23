@@ -29,7 +29,7 @@ namespace CDOverhaul.HUD
             IsPopulatingItems = true;
             yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(false));
 
-            PetsController controller = GetController<PetsController>();
+            PetsController controller = Get<PetsController>();
             if (controller)
             {
                 List<PersonalizationItem> list = controller.Items;

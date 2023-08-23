@@ -5,6 +5,7 @@ using System.Text;
 using CDOverhaul.Gameplay;
 using CDOverhaul.HUD;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace CDOverhaul.Visuals
 {
@@ -48,11 +49,21 @@ namespace CDOverhaul.Visuals
             private set;
         }
 
+        public CameraTiltEffect tilt
+        {
+            get;
+            private set;
+        }
+
+        public CameraFOVEffect fov
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
-            addListeners();
-            OverhaulDebug.Log("GraphicsManager initialized", EDebugType.ModInit);
         }
 
         protected override void OnDisposed()
@@ -63,17 +74,18 @@ namespace CDOverhaul.Visuals
             chromaticAberration?.Dispose();
             vignette?.Dispose();
             blurEdges?.Dispose();
+            tilt?.Dispose();
+            fov?.Dispose();
             m_HasInstantiatedEffects = false;
-
-            removeListeners();
+ 
             base.OnDisposed();
             DestroyGameObject();
         }
 
         public override void OnSceneReloaded()
         {
+            base.OnSceneReloaded();
             DelegateScheduler.Instance.Schedule(PatchMainCamera, 0.1f);
-            addListeners();
         }
 
         protected override void OnAssetsLoaded()
@@ -81,15 +93,17 @@ namespace CDOverhaul.Visuals
             instantiateEffects();
         }
 
-        private void addListeners()
+        protected override void AddListeners()
         {
+            base.AddListeners();
             OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.CurrentCameraSwitchedEventString, PatchCamera);
             OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchMainCamera);
         }
 
-        private void removeListeners()
+        protected override void RemoveListeners()
         {
+            base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
             OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.CurrentCameraSwitchedEventString, PatchCamera);
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, PatchMainCamera);
@@ -106,6 +120,8 @@ namespace CDOverhaul.Visuals
             chromaticAberration = base.gameObject.AddComponent<ChromaticAberrationImageEffect>();
             vignette = base.gameObject.AddComponent<VignetteImageEffect>();
             blurEdges = base.gameObject.AddComponent<BlurEdgesImageEffect>();
+            tilt = base.gameObject.AddComponent<CameraTiltEffect>();
+            fov = base.gameObject.AddComponent<CameraFOVEffect>();
             m_HasInstantiatedEffects = true;
             PatchMainCamera();
         }
@@ -120,7 +136,7 @@ namespace CDOverhaul.Visuals
 
         public void PatchCamera(Camera camera)
         {
-            if (!m_HasInstantiatedEffects || !camera || camera.orthographic || OverhaulImageEffectBehaviour.IgnoredCameras.Contains(camera.gameObject.name))
+            if (!m_HasInstantiatedEffects || !camera || camera.orthographic || OverhaulCameraEffectBehaviour.IgnoredCameras.Contains(camera.gameObject.name))
                 return;
 
             amplifyOclusion.PatchCamera(camera);
@@ -129,6 +145,8 @@ namespace CDOverhaul.Visuals
             chromaticAberration.PatchCamera(camera);
             vignette.PatchCamera(camera);
             blurEdges.PatchCamera(camera);
+            tilt.PatchCamera(camera);
+            fov.PatchCamera(camera);
         }
     }
 }

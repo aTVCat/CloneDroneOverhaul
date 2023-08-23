@@ -79,7 +79,12 @@ namespace CDOverhaul.Patches
                 moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
                 //moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
                 patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton").GetComponent<Button>();
+                Transform exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton");
+                if (!exitButtonTransform)
+                {
+                    exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)");
+                }
+                Button exitButton = exitButtonTransform.GetComponent<Button>();
                 exitButton.onClick = new Button.ButtonClickedEvent();
                 exitButton.onClick.AddListener(delegate
                 {
@@ -110,7 +115,7 @@ namespace CDOverhaul.Patches
                 button.onClick = new Button.ButtonClickedEvent();
                 button.onClick.AddListener(delegate
                 {
-                    OverhaulSurveyUI ui = OverhaulController.GetController<OverhaulSurveyUI>();
+                    OverhaulSurveyUI ui = OverhaulController.Get<OverhaulSurveyUI>();
                     if (ui)
                         ui.Show();
                     else
@@ -180,7 +185,7 @@ namespace CDOverhaul.Patches
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
 
-            GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
+            GameObject panel = OverhaulMod.Core.CanvasController?.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
             {
                 SuccessfullyPatched = false;
@@ -191,14 +196,14 @@ namespace CDOverhaul.Patches
             m_SpawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
+            moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.Get<ParametersMenu>().Show);
             m_SettingsText = moddedObject.GetObject<Text>(1);
-            moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.GetController<OverhaulSurveyUI>().Show);
+            moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
             m_BugReportText = moddedObject.GetObject<Text>(3);
-            moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.GetController<AboutOverhaulMenu>().Show);
+            moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.Get<AboutOverhaulMenu>().Show);
             m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
             moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
+            moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.Get<OverhaulLocalizationEditor>().Show);
 
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -135f, 0);
@@ -298,11 +303,15 @@ namespace CDOverhaul.Patches
             OverhaulCanvasController canvasController = OverhaulMod.Core.CanvasController;
             if (canvasController)
             {
+                GameObject newButton = canvasController.GetHUDPrefab("GenericCloseButton");
+                if (!newButton)
+                    return;
+
                 Transform ogCloseButton = gameModeSelectScreen.transform.FindChildRecursive("exitButton (1)");
                 if (ogCloseButton)
                 {
                     ogCloseButton.gameObject.SetActive(false);
-                    Button newCloseButton = UnityEngine.Object.Instantiate(canvasController.GetHUDPrefab("GenericCloseButton"), ogCloseButton.parent).GetComponent<Button>();
+                    Button newCloseButton = UnityEngine.Object.Instantiate(newButton, ogCloseButton.parent).GetComponent<Button>();
                     newCloseButton.transform.localPosition = new Vector3(350f, 125f, 0f);
                     newCloseButton.transform.localEulerAngles = Vector3.zero;
                     newCloseButton.transform.localScale = Vector3.one;

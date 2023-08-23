@@ -28,7 +28,7 @@ namespace CDOverhaul.Gameplay
         public abstract string GetRepositoryFolder();
         public string GetItemsDataFolder()
         {
-            OverhaulRepositoryController repositoryController = GetController<OverhaulRepositoryController>();
+            OverhaulRepositoryController repositoryController = Get<OverhaulRepositoryController>();
             return !repositoryController ? string.Empty : repositoryController.GetFolder(GetRepositoryFolder());
         }
         public string GetItemsDataFile() => GetItemsDataFolder() + "ItemsData.json";

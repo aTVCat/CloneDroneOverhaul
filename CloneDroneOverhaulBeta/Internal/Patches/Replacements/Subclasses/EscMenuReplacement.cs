@@ -162,7 +162,7 @@ namespace CDOverhaul.Patches
 
         private void showParametersMenu()
         {
-            ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
+            ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
             if (menu != null)
             {
                 ParametersMenu.ShouldSelectShortcuts = true;

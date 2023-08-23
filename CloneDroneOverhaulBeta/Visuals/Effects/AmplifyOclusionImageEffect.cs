@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class AmplifyOclusionImageEffect : OverhaulImageEffectBehaviour
+    public class AmplifyOclusionImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;

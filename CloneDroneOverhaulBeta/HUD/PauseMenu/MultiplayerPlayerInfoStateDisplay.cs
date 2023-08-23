@@ -91,7 +91,7 @@ namespace CDOverhaul.HUD
 
         public void OnOptionsButtonClicked()
         {
-            OverhaulPauseMenu pauseMenu = OverhaulController.GetController<OverhaulPauseMenu>();
+            OverhaulPauseMenu pauseMenu = OverhaulController.Get<OverhaulPauseMenu>();
             if (pauseMenu)
             {
                 pauseMenu.ShowPlayerActions(m_PlayerInfoState);

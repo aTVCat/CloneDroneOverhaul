@@ -97,7 +97,7 @@ namespace CDOverhaul.HUD
         /// <typeparam name="T"></typeparam>
         /// <param name="moddedObject"></param>
         /// <returns></returns>
-        public T AddHUD<T>(ModdedObject moddedObject) where T : OverhaulUI => moddedObject == null ? null : OverhaulController.AddController<T>(moddedObject.transform);
+        public T AddHUD<T>(ModdedObject moddedObject) where T : OverhaulUI => moddedObject == null ? null : OverhaulController.Add<T>(moddedObject.transform);
 
         /// <summary>
         /// TBA
@@ -155,7 +155,7 @@ namespace CDOverhaul.HUD
         /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
         /// </summary>
         /// <param name="value"></param>
-        public static void SetCanvasPixelPerfect(in bool value) => GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = value;
+        public static void SetCanvasPixelPerfect(in bool value) => GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = !GameModeManager.IsInLevelEditor() && value;
 
         public override void OnModDeactivated() => destroyHUD();
         private void destroyHUD()

@@ -30,7 +30,9 @@ namespace CDOverhaul.Patches
         private static Font s_OpenSansRegularFont;
         private static Font s_OpenSansExtraBoldFont;
         private static Sprite s_CanvasDark;
+        private static Sprite s_CanvasDarkNoGrayOutline;
         private static Sprite s_CanvasBright;
+        private static Sprite s_CanvasBrightNoGrayOutline;
         private static Sprite s_Checkmark;
 
         public override void Replace()
@@ -50,6 +52,13 @@ namespace CDOverhaul.Patches
             EmoteManager.Instance.PitchLimits.Max = 1f;
             MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
 
+            AttackManager manager = AttackManager.Instance;
+            if (manager)
+            {
+                manager.HitColor = new Color(4f, 0.65f, 0.35f, 0.2f);
+                manager.BodyOnFireColor = new Color(1f, 0.42f, 0.22f, 0.1f);
+            }
+
             AudioConfiguration audioConfiguration = AudioSettings.GetConfiguration();
             if (!OverhaulVersion.IsTestMode && audioConfiguration.numVirtualVoices != 512 && GameModeManager.IsOnTitleScreen())
             {
@@ -67,7 +76,7 @@ namespace CDOverhaul.Patches
                 s_OgFontScale = LocalizationManager.Instance.SupportedLanguages[0].UIFontScale;
             SetEnglishFont(PixelsSimpleFont);
 
-            UpdateSprites(GameUIRoot.Instance.transform);
+            UpdateSprites(GameUIRoot.Instance.transform, false, -2, (FontStyle)(-1), true);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.FilesUI.DisplayPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.FilesUI.FolderPrefab.transform);
             UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LibraryUI.DisplayPrefab.transform);
@@ -91,31 +100,31 @@ namespace CDOverhaul.Patches
                 currentUsernameLabel.gameObject.SetActive(false);
             }
 
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.ChallengeListItemDisplayPrefab.transform);
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.LevelEditorChallengeLevelDisplayPrefab.transform);
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.transform);
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.TagButtonPrefab.transform);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.ChallengeListItemDisplayPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.ChallengeConfigUI.LevelEditorChallengeLevelDisplayPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.LevelTagSelector.LevelTagCategoryListPrefab.TagButtonPrefab.transform, false, -2, (FontStyle)(-1), false, true);
 
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.SectionConfigPanel.SectionListItemPrefab.transform);
-            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.HistoryPanel.ItemViewPrefab.transform);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.SectionConfigPanel.SectionListItemPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(GameUIRoot.Instance.LevelEditorUI.HistoryPanel.ItemViewPrefab.transform, false, -2, (FontStyle)(-1), false, true);
 
             LevelEditorInspector levelEditorInspector = GameUIRoot.Instance.LevelEditorUI.InspectorTransform.GetComponent<LevelEditorInspector>();
-            UpdateSprites(levelEditorInspector.CustomFieldContainer);
-            UpdateSprites(levelEditorInspector.CustomInspectorDescriptionBoxPrefab.transform);
-            UpdateSprites(levelEditorInspector.CustomInspectorPropertyGroupPrefab.transform);
+            UpdateSprites(levelEditorInspector.CustomFieldContainer, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(levelEditorInspector.CustomInspectorDescriptionBoxPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(levelEditorInspector.CustomInspectorPropertyGroupPrefab.transform, false, -2, (FontStyle)(-1), false, true);
 
             CustomInspectorPropertyGroup propertyGroup = levelEditorInspector.CustomInspectorPropertyGroupPrefab;
-            UpdateSprites(propertyGroup.CustomFieldCheckBoxPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldColorPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldEditorPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldEditorStringInputPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldEditorDropdownPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.StringToggleListWindowPrefab.transform);
-            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.StringToggleListWindowPrefab.ListItemPrefab.transform);
-            UpdateSprites(propertyGroup.CustomInspectorLevelSelectorFieldPrefab.transform);
-            UpdateSprites(propertyGroup.MethodButtonPrefab.transform);
-            UpdateSprites(propertyGroup.CustomInspectorMethodCalledFromAnimationDropdownPrefab.transform);
+            UpdateSprites(propertyGroup.CustomFieldCheckBoxPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldColorPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldEditorPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldEditorStringInputPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldEditorDropdownPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.StringToggleListWindowPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomFieldStringToggleListPrefab.StringToggleListWindowPrefab.ListItemPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomInspectorLevelSelectorFieldPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.MethodButtonPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(propertyGroup.CustomInspectorMethodCalledFromAnimationDropdownPrefab.transform, false, -2, (FontStyle)(-1), false, true);
 
             UpdateSprites(TwitchEnemySpawnManager.Instance.TwitchEnemyNameTagPool.Prefab, false, -3);
             UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);
@@ -124,12 +133,16 @@ namespace CDOverhaul.Patches
             SuccessfullyPatched = true;
         }
 
-        public static void UpdateSprites(Transform transform, bool forceRegularFont = false, int offsetFontSize = -2, FontStyle forceFontStyle = (FontStyle)(-1))
+        public static void UpdateSprites(Transform transform, bool forceRegularFont = false, int offsetFontSize = -2, FontStyle forceFontStyle = (FontStyle)(-1), bool checkLevelEditor = false, bool forceNoGrayOutline = false)
         {
             if (!s_CanvasDark)
                 s_CanvasDark = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
             if (!s_CanvasBright)
                 s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-16x16"/*"CanvasBright-Small-16x16"*/, OverhaulAssetPart.Part1);
+            if(!s_CanvasBrightNoGrayOutline)
+                s_CanvasBrightNoGrayOutline = s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-NGO", OverhaulAssetPart.Part1);
+            if (!s_CanvasDarkNoGrayOutline)
+                s_CanvasDarkNoGrayOutline = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ-NGO", OverhaulAssetPart.Part1);
             if (!s_Checkmark)
                 s_Checkmark = OverhaulAssetsController.GetAsset<Sprite>("CheckmarkSmall", OverhaulAssetPart.Part1);
             if (!s_OpenSansRegularFont)
@@ -144,7 +157,14 @@ namespace CDOverhaul.Patches
                     string name = image.sprite.name;
                     if (name.Equals(UI_SPRITE) || name.Equals(KNOB))
                     {
-                        image.sprite = s_CanvasDark;
+                        if (forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI")))
+                        {
+                            image.sprite = s_CanvasDarkNoGrayOutline;
+                        }
+                        else
+                        {
+                            image.sprite = s_CanvasDark;
+                        }
                     }
                     else if (name.Equals(CHECKMARK))
                     {
@@ -153,7 +173,14 @@ namespace CDOverhaul.Patches
                     }
                     else if (name.Equals(BACKGROUND) || name.Equals(INPUT_FIELD_BACKGROUND))
                     {
-                        image.sprite = s_CanvasBright;
+                        if (forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI")))
+                        {
+                            image.sprite = s_CanvasBrightNoGrayOutline;
+                        }
+                        else
+                        {
+                            image.sprite = s_CanvasBright;
+                        }
                     }
                     else if (image.name.Equals(ITEM_BACKGROUND))
                     {
@@ -207,6 +234,17 @@ namespace CDOverhaul.Patches
                     }
                 }
             }
+        }
+
+        public static bool CheckParentNameRecursive(Transform transform, string name)
+        {
+            if (!transform)
+                return false;
+
+            if (transform.name == name)
+                return true;
+
+            return CheckParentNameRecursive(transform.parent, name);
         }
 
         public static void SetEnglishFont(bool piksielyPrst)

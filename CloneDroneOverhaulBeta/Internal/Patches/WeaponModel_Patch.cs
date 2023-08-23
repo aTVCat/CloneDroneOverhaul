@@ -17,7 +17,7 @@ namespace CDOverhaul.Patches
                 return true;
 
             FirstPersonMover owner = __instance.MeleeImpactArea.Owner;
-            if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner) || !OverhaulController.GetController<WeaponSkinsController>())
+            if (!WeaponSkinsController.IsFirstPersonMoverSupported(owner) || !OverhaulController.Get<WeaponSkinsController>())
                 return true;
 
             OverhaulPlayerInfo info = OverhaulPlayerInfo.GetOverhaulPlayerInfo(owner);

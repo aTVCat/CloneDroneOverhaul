@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             get
             {
                 if (!m_CameraController)
-                    m_CameraController = OverhaulController.GetController<OverhaulCameraManager>();
+                    m_CameraController = OverhaulController.Get<OverhaulCameraManager>();
 
                 return m_CameraController;
             }

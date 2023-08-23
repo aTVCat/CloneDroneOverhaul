@@ -10,7 +10,7 @@ namespace CDOverhaul.Visuals
 {
     public class OverhaulUIEffectsManager : OverhaulManager<OverhaulUIEffectsManager>
     {
-         public GameObject canvasObject
+        public GameObject canvasObject
         {
             get;
             private set;
@@ -22,16 +22,6 @@ namespace CDOverhaul.Visuals
             private set;
         }
 
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
-        public override void OnSceneReloaded()
-        {
-            base.OnSceneReloaded();
-        }
-
         protected override void OnAssetsLoaded()
         {
             canvasObject = Instantiate(OverhaulAssetsController.GetAsset("UIImageEffects", OverhaulAssetPart.Part2, false));
@@ -39,11 +29,6 @@ namespace CDOverhaul.Visuals
 
             ModdedObject moddedObject = canvasObject.GetComponent<ModdedObject>();
             dithering = moddedObject.GetObject<Transform>(0).gameObject.AddComponent<DitheringUIEffect>();
-        }
-
-        protected override void OnDisposed()
-        {
-            base.OnDisposed();
         }
     }
 }

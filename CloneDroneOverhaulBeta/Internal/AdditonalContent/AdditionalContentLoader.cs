@@ -10,7 +10,7 @@ namespace CDOverhaul
 
         public static void LoadAllContent()
         {
-            AdditionalContentController controller = OverhaulController.GetController<AdditionalContentController>();
+            AdditionalContentController controller = OverhaulController.Get<AdditionalContentController>();
             if (!controller)
             {
                 throw new NullReferenceException("AdditionalContentController is NULL!");

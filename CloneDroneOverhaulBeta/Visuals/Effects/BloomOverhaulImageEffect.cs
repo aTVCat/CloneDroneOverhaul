@@ -9,7 +9,7 @@ using UnityStandardAssets.ImageEffects;
 
 namespace CDOverhaul.Visuals
 {
-    public class BloomOverhaulImageEffect : OverhaulImageEffectBehaviour
+    public class BloomOverhaulImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Post effects.Set vanilla settings", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent SetBloomVanilla = new OverhaulSettingWithEvent();
@@ -39,7 +39,7 @@ namespace CDOverhaul.Visuals
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
 
-                ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
+                ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
                     menu.PopulateCategory(menu.SelectedCategory, true);
             };

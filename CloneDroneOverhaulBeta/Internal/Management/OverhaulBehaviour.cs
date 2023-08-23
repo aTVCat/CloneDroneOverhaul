@@ -43,6 +43,15 @@ namespace CDOverhaul
             Destroy(this);
         }
 
+        public void Dispose(bool destroy)
+        {
+            Dispose();
+            if (destroy && !IsDestroyed)
+            {
+                DestroyBehaviour();
+            }
+        }
+
         public void Dispose()
         {
             if (IsDisposed)

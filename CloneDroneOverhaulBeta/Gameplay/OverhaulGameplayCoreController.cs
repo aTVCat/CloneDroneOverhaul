@@ -53,13 +53,6 @@ namespace CDOverhaul.Gameplay
                 _ = firstPersonMover.gameObject.AddComponent<RobotControlsExpansion>();
                 _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();
             }
-
-            Camera camera = firstPersonMover.GetPlayerCamera();
-            if (camera)
-            {
-                camera.gameObject.AddComponent<CameraRollingBehaviour>().Initialize(firstPersonMover);
-                camera.gameObject.AddComponent<CameraFOVOverrider>().SetUpReferences(firstPersonMover);
-            }
         }
 
         private void Update()
@@ -81,8 +74,6 @@ namespace CDOverhaul.Gameplay
             if (!Equals(currentCamera, m_CurrentCamera))
                 OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             m_CurrentCamera = currentCamera;
-
-            CameraRollingBehaviour.UpdateViewBobbing();
         }
 
         /// <summary>

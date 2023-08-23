@@ -392,6 +392,7 @@
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\EOverhaulMultiplayerMode.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerState.cs" />
+    <Compile Include="Gameplay\OverhaulGameplaySystem.cs" />
     <Compile Include="Gameplay\Overmodes\OvermodeBase.cs" />
     <Compile Include="Gameplay\Overmodes\OvermodesController.cs" />
     <Compile Include="Gameplay\Overmodes\TestOvermode.cs" />
@@ -435,6 +436,12 @@
     <Compile Include="Gameplay\Robots\Control\RobotCameraZoomExpansion.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
+    <Compile Include="Gameplay\OverhaulGameplayManager.cs" />
+    <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />
+    <Compile Include="LevelEditor\OverhaulLevelEditorManager.cs" />
+    <Compile Include="Visuals\Camera\CameraControllerBase.cs" />
+    <Compile Include="Visuals\Effects\CameraFOVEffect.cs" />
+    <Compile Include="Visuals\Effects\CameraTiltEffect.cs" />
     <Compile Include="Visuals\Effects\DitheringUIEffect.cs" />
     <Compile Include="Visuals\Effects\OverhaulUIEffectBehaviour.cs" />
     <Compile Include="Visuals\Enchancements\VFX\OverhaulVFXController.cs" />
@@ -445,7 +452,7 @@
     <Compile Include="Visuals\Effects\BlurEdgesImageEffect.cs" />
     <Compile Include="Visuals\Effects\VignetteImageEffect.cs" />
     <Compile Include="Visuals\OverhaulGraphicsManager.cs" />
-    <Compile Include="Visuals\Effects\OverhaulImageEffectBehaviour.cs" />
+    <Compile Include="Visuals\Effects\OverhaulCameraEffectBehaviour.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\CoopChallengeCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DuelGameCustomization.cs" />
@@ -459,7 +466,7 @@
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
     <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
-    <Compile Include="Visuals\Camera\CameraFOVOverrider.cs" />
+    <Compile Include="Visuals\Camera\CameraFOVController.cs" />
     <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
     <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
@@ -490,7 +497,7 @@
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
-    <Compile Include="Gameplay\OverhaulVolumeController.cs" />
+    <Compile Include="Visuals\OverhaulVoxelsController.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColor.cs" />
     <Compile Include="Gameplay\Personalization\Exclusivity\ExclusiveColorsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\Outfits\OutfitItem.cs" />
@@ -522,7 +529,7 @@
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSettings.cs" />
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeRequireContentAttribute.cs" />
     <Compile Include="Gameplay\QualityOfLife\AdvancedPhotomode\AdvancedPhotomodeSliderParametersAttribute.cs" />
-    <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildController.cs" />
+    <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildSystem.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildSequence.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildUpgrade.cs" />
     <Compile Include="Gameplay\QualityOfLife\AutoBuild\AutoBuildVariant.cs" />
@@ -539,7 +546,7 @@
     <Compile Include="Gameplay\Workshop\ProgressInformation.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
     <Compile Include="Visuals\ArenaOverhaul\ArenaOverhaulController.cs" />
-    <Compile Include="Visuals\Camera\CameraRollingBehaviour.cs" />
+    <Compile Include="Visuals\Camera\CameraTiltController.cs" />
     <Compile Include="Visuals\OverhaulUIEffectsManager.cs" />
     <Compile Include="Visuals\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Visuals\Camera\ViewModes\ViewModesController.cs" />
@@ -765,7 +772,7 @@
     <Compile Include="Internal\Patches\Replacements\Subclasses\PlayerCameraPrefabReplacement.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\TitleScreenUIReplacement.cs" />
     <Compile Include="Internal\Management\Events\OverhaulEvent.cs" />
-    <Compile Include="LevelEditor\LevelEditorMoveObjectsByCoordsController.cs" />
+    <Compile Include="LevelEditor\MoveByCoordsTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\GPUInstancing\MaterialInfo.cs" />
     <Compile Include="Test\GPUInstancing\MatrixInfo.cs" />

@@ -324,7 +324,7 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
-            AccessoriesPersonalizationPanel panel = GetController<AccessoriesPersonalizationPanel>();
+            AccessoriesPersonalizationPanel panel = Get<AccessoriesPersonalizationPanel>();
             if (!panel)
                 return;
 
@@ -334,7 +334,7 @@ namespace CDOverhaul.HUD
 
         public void OnPetsButtonClicked()
         {
-            MountsPersonalizationPanel panel = GetController<MountsPersonalizationPanel>();
+            MountsPersonalizationPanel panel = Get<MountsPersonalizationPanel>();
             if (!panel)
                 return;
 
@@ -344,7 +344,7 @@ namespace CDOverhaul.HUD
 
         public void OnPersonalizationEditorButtonClicked()
         {
-            PersonalizationEditorUI panel = GetController<PersonalizationEditorUI>();
+            PersonalizationEditorUI panel = Get<PersonalizationEditorUI>();
             if (!panel)
                 return;
 
@@ -408,7 +408,7 @@ namespace CDOverhaul.HUD
         {
             if (m_Parameters == null)
             {
-                m_Parameters = GetController<ParametersMenu>();
+                m_Parameters = Get<ParametersMenu>();
                 if (m_Parameters == null || m_Parameters.IsDisposedOrDestroyed() || m_Parameters.Error)
                 {
                     return;

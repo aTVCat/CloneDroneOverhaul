@@ -29,20 +29,31 @@ namespace CDOverhaul
 
         public override void Initialize()
         {
+            base.Initialize();
             m_ListOfTexts = new List<Text>();
             LoadData();
-            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);
         }
 
         public override void OnSceneReloaded()
         {
-            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);
+            base.OnSceneReloaded();
             RefreshTexts();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
+        }
+
+        protected override void AddListeners()
+        {
+            base.AddListeners();
+            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);
+        }
+
+        protected override void RemoveListeners()
+        {
+            base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);
         }
 
@@ -51,7 +62,7 @@ namespace CDOverhaul
             string path = OverhaulMod.Core.ModDirectory + "Assets/" + LocalizationFileName + ".json";
             if (!File.Exists(path))
             {
-                OverhaulDebug.Error("Could not find localization file " + path, EDebugType.ModInit);
+                OverhaulDebug.Error("Could not find localization file " + path, EDebugType.Initialize);
                 return;
             }
 

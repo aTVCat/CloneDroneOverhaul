@@ -5,10 +5,15 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public class ModBotTagRemoverBehaviour : OverhaulBehaviour
     {
-        public string NormalUsername;
         public Text TextComponent;
 
         private bool m_ForceRemoveTags;
+
+        public string NormalUsername
+        {
+            get;
+            set;
+        }
 
         public override void OnEnable()
         {

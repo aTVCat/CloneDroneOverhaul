@@ -56,7 +56,7 @@ namespace CDOverhaul.Patches
         {
             foreach(OverhaulController overhaulController in OverhaulController.allControllers)
             {
-                OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.ModRl);
+                OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.Initialize);
                 overhaulController.OnSceneReloaded();
             }
         }

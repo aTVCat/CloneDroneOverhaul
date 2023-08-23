@@ -10,12 +10,9 @@ namespace CDOverhaul
     {
         None,
 
-        ModInit,
-
-        ModRl,
-
+        Initialize,
         Assets,
-
-        Graphics
+        Graphics,
+        UI,
     }
 }

@@ -23,20 +23,21 @@ namespace CDOverhaul.Visuals
 
         public override void Initialize()
         {
+            base.Initialize();
             RefreshLightsCount();
             RefreshFrameRate();
-            OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
-            OverhaulDebug.Log("RenderManager initialized", EDebugType.ModInit);
+            OverhaulDebug.Log("RenderManager initialized", EDebugType.Initialize);
         }
 
-        public override void OnSceneReloaded()
+        protected override void AddListeners()
         {
+            base.AddListeners();
             OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
         }
 
-        protected override void OnDisposed()
+        protected override void RemoveListeners()
         {
-            base.OnDisposed();
+            base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
         }
 

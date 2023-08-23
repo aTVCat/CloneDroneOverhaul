@@ -56,10 +56,10 @@ namespace CDOverhaul
         /// </summary>
         public override void OnModLoaded()
         {
+            Base = this;
             if (IsModInitialized)
                 return;
 
-            Base = this;
             TryInstantiateCore();
         }
 
@@ -68,10 +68,10 @@ namespace CDOverhaul
         /// </summary>
         public override void OnModEnabled()
         {
+            Base = this;
             if (IsModInitialized)
                 return;
 
-            Base = this;
             TryInstantiateCore();
         }
 

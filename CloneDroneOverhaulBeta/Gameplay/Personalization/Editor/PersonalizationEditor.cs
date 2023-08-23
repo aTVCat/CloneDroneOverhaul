@@ -46,13 +46,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             switch (category)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    itemsController = OverhaulController.GetController<WeaponSkins.WeaponSkinsController>();
+                    itemsController = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
                     break;
                 case PersonalizationCategory.Outfits:
-                    itemsController = OverhaulController.GetController<Outfits.OutfitsController>();
+                    itemsController = OverhaulController.Get<Outfits.OutfitsController>();
                     break;
                 case PersonalizationCategory.Pets:
-                    itemsController = OverhaulController.GetController<Pets.PetsController>();
+                    itemsController = OverhaulController.Get<Pets.PetsController>();
                     break;
 
             }
@@ -64,11 +64,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             switch (category)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    return OverhaulController.GetController<WeaponSkins.WeaponSkinsController>();
+                    return OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
                 case PersonalizationCategory.Outfits:
-                    return OverhaulController.GetController<Outfits.OutfitsController>();
+                    return OverhaulController.Get<Outfits.OutfitsController>();
                 case PersonalizationCategory.Pets:
-                    return OverhaulController.GetController<Pets.PetsController>();
+                    return OverhaulController.Get<Pets.PetsController>();
             }
             return null;
         }
@@ -86,7 +86,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (!isUICall)
             {
-                PersonalizationEditorUI editorUI = OverhaulController.GetController<PersonalizationEditorUI>();
+                PersonalizationEditorUI editorUI = OverhaulController.Get<PersonalizationEditorUI>();
                 if (editorUI)
                     editorUI.SavePanel.NeedsToSave = false;
             }

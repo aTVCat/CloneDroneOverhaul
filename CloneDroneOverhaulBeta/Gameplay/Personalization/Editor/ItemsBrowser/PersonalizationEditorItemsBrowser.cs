@@ -56,15 +56,15 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             switch (PersonalizationEditor.EditingCategory)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    itemsController = OverhaulController.GetController<WeaponSkins.WeaponSkinsController>();
+                    itemsController = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
                     newItem = new WeaponSkinItem();
                     break;
                 case PersonalizationCategory.Outfits:
-                    itemsController = OverhaulController.GetController<Outfits.OutfitsController>();
+                    itemsController = OverhaulController.Get<Outfits.OutfitsController>();
                     newItem = new OutfitItem();
                     break;
                 case PersonalizationCategory.Pets:
-                    itemsController = OverhaulController.GetController<Pets.PetsController>();
+                    itemsController = OverhaulController.Get<Pets.PetsController>();
                     newItem = new PetItem();
                     break;
             }

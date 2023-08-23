@@ -37,7 +37,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             get
             {
                 if (!m_NewUI)
-                    m_NewUI = GetController<AdvancedPhotomodeUI>();
+                    m_NewUI = Get<AdvancedPhotomodeUI>();
 
                 return m_NewUI;
             }

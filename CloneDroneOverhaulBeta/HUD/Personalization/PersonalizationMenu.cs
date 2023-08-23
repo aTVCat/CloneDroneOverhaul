@@ -364,7 +364,7 @@ namespace CDOverhaul.HUD
                 m_ReimportAllButton = MyModdedObject.GetObject<Button>(73);
                 m_ReimportAllButton.onClick.AddListener(delegate
                 {
-                    WeaponSkinsController c = GetController<WeaponSkinsController>();
+                    WeaponSkinsController c = Get<WeaponSkinsController>();
                     if (c != null && PersonalizationMenu.SkinsSelection != null)
                     {
                         c.ReImportCustomSkins();
@@ -875,8 +875,8 @@ namespace CDOverhaul.HUD
             if (GameUIRoot.Instance == null)
                 return;
 
-            OverhaulPauseMenu menu = GetController<OverhaulPauseMenu>();
-            ParametersMenu paramsMenu = GetController<ParametersMenu>();
+            OverhaulPauseMenu menu = Get<OverhaulPauseMenu>();
+            ParametersMenu paramsMenu = Get<ParametersMenu>();
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
             if (menu == null || paramsMenu == null || escMenu == null)
             {
@@ -902,7 +902,7 @@ namespace CDOverhaul.HUD
             if (m_Controller != null)
                 return true;
 
-            m_Controller = GetController<WeaponSkinsController>();
+            m_Controller = Get<WeaponSkinsController>();
             return m_Controller != null;
         }
 

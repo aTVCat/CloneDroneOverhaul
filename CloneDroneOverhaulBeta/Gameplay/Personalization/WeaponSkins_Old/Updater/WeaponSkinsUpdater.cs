@@ -209,7 +209,7 @@ namespace CDOverhaul.Gameplay
                 OverhaulDownloadInfo h = null;
                 h = OverhaulNetworkAssetsController.DownloadAndSaveData("https://raw.githubusercontent.com/aTVCat/CloneDroneOverhaul/MayBranch/CloneDroneOverhaulBeta/CompiledBuild/CloneDroneOverhaul/" + assetBundle, OverhaulMod.Core.ModDirectory, assetBundle, delegate
                 {
-                    WeaponSkinsController c = OverhaulController.GetController<WeaponSkinsController>();
+                    WeaponSkinsController c = OverhaulController.Get<WeaponSkinsController>();
                     if (h != null && !h.Error && c != null && m_SkinsWaitingABToDownload.ContainsKey(assetBundle) && !m_SkinsWaitingABToDownload[assetBundle].IsNullOrEmpty())
                     {
                         foreach (WeaponSkinsImportedItemDefinition def in m_SkinsWaitingABToDownload[assetBundle])

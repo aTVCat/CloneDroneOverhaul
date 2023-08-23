@@ -14,7 +14,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulVolumeController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
+            OverhaulVoxelsController.OnVoxelDestroy(__instance, picaVoxelPoint, voxelAtPosition, impactDirectionWorld, fireSpreadDefinition, currentFrame);
         }
 
         // A fix of a crash

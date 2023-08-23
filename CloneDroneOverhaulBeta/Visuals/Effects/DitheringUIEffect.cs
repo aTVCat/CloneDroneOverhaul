@@ -16,7 +16,7 @@ namespace CDOverhaul.Visuals
         public static float Interval;
 
         [OverhaulSettingSliderParameters(false, 0.15f, 0.35f)]
-        [OverhaulSetting("Graphics.Post effects.Texture opaque", 0.3f, false, null, "Graphics.Post effects.Dithering")]
+        [OverhaulSetting("Graphics.Post effects.Texture opaque", 0.2f, false, null, "Graphics.Post effects.Dithering")]
         public static float Alpha;
 
         private RawImage m_RawImage;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class VignetteImageEffect : OverhaulImageEffectBehaviour
+    public class VignetteImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
@@ -30,7 +30,7 @@ namespace CDOverhaul.Visuals
 
             if (PreviousCamera && PreviousCamera != CurrentCamera)
             {
-                OverhaulImageEffect effectComponent = GetImageEffect(camera, "Vignette");
+                OverhaulImageEffect effectComponent = GetImageEffect(PreviousCamera, "Vignette");
                 if (effectComponent)
                 {
                     Destroy(effectComponent);

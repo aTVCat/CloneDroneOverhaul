@@ -52,7 +52,7 @@ namespace CDOverhaul
         protected override void OnDisposed()
         {
             OverhaulEventsController.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
-            RemoveController(this);
+            Remove(this);
 
             OverhaulDisposable.AssignNullToAllVars(this);
         }
@@ -83,7 +83,7 @@ namespace CDOverhaul
         /// <typeparam name="T"></typeparam>
         /// <param name="transformOverride"></param>
         /// <returns></returns>
-        public static T AddController<T>(in Transform transformOverride = null) where T : OverhaulController
+        public static T Add<T>(in Transform transformOverride = null) where T : OverhaulController
         {
             Transform transform = transformOverride ?? mainGameObject.transform;
             T component = transform.gameObject.AddComponent<T>();
@@ -97,7 +97,7 @@ namespace CDOverhaul
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T GetController<T>() where T : OverhaulController
+        public static T Get<T>() where T : OverhaulController
         {
             foreach (OverhaulController controllerr in allControllers)
             {
@@ -111,7 +111,7 @@ namespace CDOverhaul
             return null;
         }
 
-        public static T[] GetControllers<T>() where T : OverhaulController
+        public static T[] GetMany<T>() where T : OverhaulController
         {
             List<T> result = new List<T>();
             foreach (OverhaulController controllerr in allControllers)
@@ -132,7 +132,7 @@ namespace CDOverhaul
         /// </summary>
         /// <param name="controllerInstance"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        internal static void RemoveController(OverhaulController controllerInstance)
+        internal static void Remove(OverhaulController controllerInstance)
         {
             if (controllerInstance == null)
             {

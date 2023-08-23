@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class AmplifyColorOverhaulImageEffect : OverhaulImageEffectBehaviour
+    public class AmplifyColorOverhaulImageEffect : OverhaulCameraEffectBehaviour
     {
         [OverhaulSetting("Graphics.Amplify color.Apply \"Film bright\" preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent ApplyAmplifyColorPreset1 = new OverhaulSettingWithEvent();
@@ -31,7 +31,7 @@ namespace CDOverhaul.Visuals
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 5);
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 2);
 
-                ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
+                ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
                     menu.PopulateCategory(menu.SelectedCategory, true);
             };
@@ -41,7 +41,7 @@ namespace CDOverhaul.Visuals
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 2);
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 1);
 
-                ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
+                ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
                     menu.PopulateCategory(menu.SelectedCategory, true);
             };
@@ -51,7 +51,7 @@ namespace CDOverhaul.Visuals
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 0);
                 SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 0);
 
-                ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
+                ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
                     menu.PopulateCategory(menu.SelectedCategory, true);
             };

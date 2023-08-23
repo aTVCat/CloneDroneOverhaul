@@ -204,7 +204,7 @@ namespace CDOverhaul.Gameplay
         public override void Start()
         {
             base.Start();
-            m_Controller = OverhaulController.GetController<WeaponSkinsController>();
+            m_Controller = OverhaulController.Get<WeaponSkinsController>();
             PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
 
             SpawnSkins();
@@ -269,7 +269,7 @@ namespace CDOverhaul.Gameplay
             if (isMultiplayer && (!PlayerInformation || !PlayerInformation.HasReceivedData || string.IsNullOrEmpty(PlayerInformation.GetData("ID"))))
                 return;
 
-            WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
+            WeaponSkinsController controller = OverhaulController.Get<WeaponSkinsController>();
             IWeaponSkinItemDefinition[] skins = IsMultiplayerControlled()
                 ? (new IWeaponSkinItemDefinition[]
                 {
@@ -593,7 +593,7 @@ namespace CDOverhaul.Gameplay
             if (!WeaponSkinsController.IsWeaponSupported(weaponType))
                 return null;
 
-            WeaponSkinsController controller = OverhaulController.GetController<WeaponSkinsController>();
+            WeaponSkinsController controller = OverhaulController.Get<WeaponSkinsController>();
             if (controller == null || controller.Interface == null)
                 return null;
 

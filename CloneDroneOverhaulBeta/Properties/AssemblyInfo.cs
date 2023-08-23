@@ -3,7 +3,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Clone Drone Overhaul")]
-[assembly: AssemblyDescription("A mod for Clone Drone in the Danger Zone that changes most of the game")]
+[assembly: AssemblyDescription("A mod for Clone Drone in the Danger Zone that changes the game in many ways")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Clone Drone Overhaul Mod")]
@@ -12,6 +12,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("faaf63a3-61f4-43f3-860c-b9c2c98b6f3b")]
-[assembly: AssemblyVersion("0.4.0.1")]
+[assembly: AssemblyVersion("0.4.0.2")]
 [assembly: AssemblyFileVersion("0.4.0.0")]
 [assembly: NeutralResourcesLanguage("en")]

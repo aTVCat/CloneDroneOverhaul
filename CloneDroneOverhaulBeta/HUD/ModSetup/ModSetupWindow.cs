@@ -185,7 +185,7 @@ namespace CDOverhaul.HUD
 
         public bool GetCREnabled()
         {
-            return CameraRollingBehaviour.EnableCameraRolling;
+            return CameraTiltController.EnableCameraRolling;
         }
         public void SetCREnabled()
         {

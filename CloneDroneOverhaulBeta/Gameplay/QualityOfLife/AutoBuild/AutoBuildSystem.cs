@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
 {
-    public class AutoBuildController : OverhaulGameplayController
+    public class AutoBuildSystem : OverhaulGameplaySystem
     {
         [OverhaulUpdatedSetting("QoL.Last Bot Standing.Auto-Build")]
-        [OverhaulSettingDropdownParameters("None@Random@Full sword@Full bow@Full hammer@Full spear@Kicker@Light kicker@Armored kicker@Kick'N'Dash@Kick'N'Run@Tactical sword@Tactical fire sword@Jetpack sword@Tactical bow@Tactical fire bow@Tactical Fire Spear@Fire Spear Kicker@Tactical Hammer@Hammer Kicker@Spectator")]
+        [OverhaulSettingDropdownParameters("None@Random@Full sword@Full bow@Full hammer@Full spear@Kicker@Light kicker@Armored kicker@Kick'N'Dash@Kick'N'Run@Tactical sword@Tactical fire sword@Jetpack sword@Tactical bow@Tactical fire bow@Tactical Fire Spear@Fire Spear Kicker@Tactical Hammer@Hammer Kicker@Spectator@Energy Sword")]
         [OverhaulSetting("QoL.Multiplayer.Auto-Build", 0, false, " ", null)]
         public static int SelectedAutoBuildVariant;
 
@@ -39,6 +39,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             { AutoBuildVariant.TacticalFireSpearKicker, new AutoBuildSequence(AutoBuildVariant.TacticalFireSpearKicker) },
 
             { AutoBuildVariant.Spectator, new AutoBuildSequence(AutoBuildVariant.Spectator) },
+
+            { AutoBuildVariant.EnergySword, new AutoBuildSequence(AutoBuildVariant.EnergySword) },
         };
 
         private BattleRoyaleManager m_Manager;
@@ -48,9 +50,9 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private bool m_HasSelectedUpgrades;
         public bool ShouldSelectUpgrades => !m_HasSelectedUpgrades && m_Manager != null && m_Manager.state.TimeToGameStart < ((AutoBuildVariant)SelectedAutoBuildVariant == AutoBuildVariant.Random ? 15 : 9) && m_Manager.state.TimeToGameStart > 6;
 
-        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
+        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool initializedModel)
         {
-            if (firstPersonMover != null && firstPersonMover.IsMainPlayer())
+            if (firstPersonMover && firstPersonMover.IsMainPlayer())
                 m_HasSelectedUpgrades = false;
         }
 

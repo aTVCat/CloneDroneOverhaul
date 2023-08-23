@@ -120,6 +120,12 @@
                     Upgrades[3] = new AutoBuildUpgrade(UpgradeType.EnergyRecharge, 1);
                     break;
 
+                case AutoBuildVariant.EnergySword:
+                    Upgrades[0] = new AutoBuildUpgrade(UpgradeType.EnergyCapacity, 1);
+                    Upgrades[1] = new AutoBuildUpgrade(UpgradeType.EnergyCapacity, 2);
+                    Upgrades[2] = new AutoBuildUpgrade(UpgradeType.SwordUnlock, 1);
+                    break;
+
                 default:
                     throw new System.ArgumentException("Unsupported build variant");
             }

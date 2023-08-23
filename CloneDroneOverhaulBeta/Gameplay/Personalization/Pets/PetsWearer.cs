@@ -53,7 +53,7 @@ namespace CDOverhaul.Gameplay.Pets
             if (/*!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled || */!Owner)
                 return;
 
-            PetsController petsController = OverhaulController.GetController<PetsController>();
+            PetsController petsController = OverhaulController.Get<PetsController>();
             if (!petsController)
                 return;
 

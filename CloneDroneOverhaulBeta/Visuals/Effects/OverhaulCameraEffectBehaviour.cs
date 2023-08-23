@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class OverhaulImageEffectBehaviour : OverhaulBehaviour
+    public class OverhaulCameraEffectBehaviour : OverhaulBehaviour
     {
         public static readonly string[] IgnoredCameras = new string[]
         {

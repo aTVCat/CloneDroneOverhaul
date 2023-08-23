@@ -98,7 +98,7 @@ namespace CDOverhaul.HUD
 
         private void onPatchNotesButtonClicked()
         {
-            OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
+            OverhaulPatchNotesUI overhaulPatchNotesUI = Get<OverhaulPatchNotesUI>();
             if (!overhaulPatchNotesUI)
             {
                 m_PatchNotesButton.interactable = false;

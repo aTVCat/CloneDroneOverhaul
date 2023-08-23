@@ -12,6 +12,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
+            base.OnDisposed();
             OverhaulEventsController.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, onFirstPersonMoverSpawned);
             OverhaulEventsController.RemoveEventListener<FirstPersonMover>(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, onFirstPersonMoverSpawnedDelay);
         }

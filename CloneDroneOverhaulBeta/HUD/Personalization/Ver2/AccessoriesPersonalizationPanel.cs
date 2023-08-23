@@ -45,7 +45,7 @@ namespace CDOverhaul.HUD
             IsPopulatingItems = true;
             yield return StaticCoroutineRunner.StartStaticCoroutine(PlayFadeAnimation(false));
 
-            OutfitsController controller = GetController<OutfitsController>();
+            OutfitsController controller = Get<OutfitsController>();
             if (controller)
             {
                 List<PersonalizationItem> list = controller.GetOutfitItemsOfBodyPart(SelectedBodyPart);
@@ -70,7 +70,7 @@ namespace CDOverhaul.HUD
             if (m_HasPopulatedBodyParts)
                 return;
 
-            OutfitsController controller = GetController<OutfitsController>();
+            OutfitsController controller = Get<OutfitsController>();
             if (!controller || controller.Items.IsNullOrEmpty())
                 return;
 

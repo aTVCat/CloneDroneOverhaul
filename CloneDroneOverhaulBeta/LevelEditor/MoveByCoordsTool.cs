@@ -3,12 +3,16 @@ using UnityEngine;
 
 namespace CDOverhaul.LevelEditor
 {
-    public class LevelEditorMoveObjectsByCoordsController : OverhaulController
+    public class MoveByCoordsTool : OverhaulBehaviour
     {
         private readonly Dictionary<ObjectPlacedInLevel, Vector3> m_ObjectsAndOffsets = new Dictionary<ObjectPlacedInLevel, Vector3>();
+
         private ObjectPlacedInLevel m_MainObject;
+
+        private bool m_IgnoreSelections;
+
         public bool HasSelectedMainObject => m_MainObject;
-        public bool HasDoneEverythingToMove => GameModeManager.IsInLevelEditor() && HasSelectedMainObject && m_ObjectsAndOffsets.Count > 1;
+        public bool HasDoneEverythingToMove => HasSelectedMainObject && m_ObjectsAndOffsets.Count > 1;
 
         private static bool s_ToolEnabled;
         public static bool ToolEnabled
@@ -34,11 +38,14 @@ namespace CDOverhaul.LevelEditor
             }
         }
 
-        private bool m_IgnoreSelections;
-
-        public override void Initialize()
+        public override void Start()
         {
             OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+        }
+
+        protected override void OnDisposed()
+        {
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }
 
         private void scheduleOnSelectionChanged()
@@ -81,9 +88,6 @@ namespace CDOverhaul.LevelEditor
 
         private void Update()
         {
-            if (!GameModeManager.IsInLevelEditor())
-                return;
-
             if (HasDoneEverythingToMove)
                 foreach (ObjectPlacedInLevel obj in m_ObjectsAndOffsets.Keys)
                     obj.transform.position = m_MainObject.transform.position - m_ObjectsAndOffsets[obj];

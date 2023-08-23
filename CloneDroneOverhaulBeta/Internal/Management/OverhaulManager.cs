@@ -15,27 +15,50 @@ namespace CDOverhaul
             get
             {
                 if (!s_Reference)
-                    s_Reference = GetController<T>();
+                    s_Reference = Get<T>();
 
                 return s_Reference;
             }
         }
 
+        public bool HasAddedEventListeners
+        {
+            get;
+            protected set;
+        }
+
         public override void Initialize()
         {
             OverhaulCore.OnAssetsLoadDone += OnAssetsLoaded;
+            AddListeners();
         }
 
-        protected override void OnDisposed()
+        public override void OnSceneReloaded()
         {
-            base.OnDisposed();
-            s_Reference = null;
-            OverhaulCore.OnAssetsLoadDone -= OnAssetsLoaded;
+            AddListeners();
         }
 
         protected virtual void OnAssetsLoaded()
         {
 
+        }
+
+        protected override void OnDisposed()
+        {
+            base.OnDisposed();
+            RemoveListeners();
+            s_Reference = null;
+            OverhaulCore.OnAssetsLoadDone -= OnAssetsLoaded;
+        }
+
+        protected virtual void AddListeners()
+        {
+            HasAddedEventListeners = true;
+        }
+
+        protected virtual void RemoveListeners()
+        {
+            HasAddedEventListeners = false;
         }
     }
 }

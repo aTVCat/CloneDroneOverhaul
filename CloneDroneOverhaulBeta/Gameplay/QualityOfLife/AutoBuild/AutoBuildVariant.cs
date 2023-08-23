@@ -95,5 +95,9 @@
         /// </summary>
         Spectator,
 
+        /// <summary>
+        /// Sword unlock + Energy capacity 1 + Energy capacity 2
+        /// </summary>
+        EnergySword,
     }
 }

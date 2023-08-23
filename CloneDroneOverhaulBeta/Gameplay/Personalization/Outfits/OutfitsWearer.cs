@@ -36,7 +36,7 @@ namespace CDOverhaul.Gameplay.Outfits
             if (!Owner || !OverhaulGamemodeManager.SupportsOutfits())
                 return;
 
-            OutfitsController outfitsController = OverhaulController.GetController<OutfitsController>();
+            OutfitsController outfitsController = OverhaulController.Get<OutfitsController>();
             if (!outfitsController)
                 return;
 
