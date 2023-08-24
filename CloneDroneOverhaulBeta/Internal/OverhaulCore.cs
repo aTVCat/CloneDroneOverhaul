@@ -1,21 +1,13 @@
 ﻿using Bolt;
-using CDOverhaul.BuiltIn.AdditionalContent;
 using CDOverhaul.CustomMultiplayer;
-using CDOverhaul.Device;
-using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Editors.Personalization;
-using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.Overmodes;
 using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Visuals;
-using CDOverhaul.Visuals.ArenaOverhaul;
 using CDOverhaul.HUD;
-using CDOverhaul.LevelEditor;
-using CDOverhaul.Patches;
+using CDOverhaul.Visuals;
 using ICSharpCode.SharpZipLib.Zip;
-using Steamworks;
 using System;
 using System.Collections;
 using System.IO;
@@ -108,7 +100,7 @@ namespace CDOverhaul
 
             OverhaulMod.Core = this;
             _ = OverhaulAPI.OverhaulAPICore.LoadAPI();
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
 
             GameObject controllers = new GameObject("Controllers");
             controllers.transform.SetParent(base.transform);
@@ -121,7 +113,7 @@ namespace CDOverhaul
             _ = OverhaulController.Add<OverhaulPlayerInfoController>();
             _ = OverhaulController.Add<OverhaulVoxelsController>();
 
-            _ = OverhaulController.Add<ViewModesController>();
+            _ = OverhaulController.Add<ViewModesManager>();
             _ = OverhaulController.Add<OverhaulDiscordController>();
             _ = OverhaulController.Add<OverhaulMultiplayerController>();
 
@@ -199,10 +191,7 @@ namespace CDOverhaul
             });
 
             yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle && hasLoadedArenaUpdateBundle);
-            if(OnAssetsLoadDone != null)
-            {
-                OnAssetsLoadDone();
-            }
+            OnAssetsLoadDone?.Invoke();
             yield break;
         }
 
@@ -220,24 +209,18 @@ namespace CDOverhaul
             _ = OverhaulController.Add<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.Add<UpgradeModesController>();
             _ = OverhaulController.Add<AdvancedPhotomodeController>();
-            _ = OverhaulController.Add<ArenaOverhaulController>();
 
-            _ = OverhaulController.Add<MindspaceOverhaulController>();
             _ = OverhaulController.Add<OverhaulVFXController>();
             if (waitForEndOfFrame)
                 yield return null;
 
-            _ = OverhaulController.Add<AdditionalContentController>();
             _ = OverhaulController.Add<OverhaulAchievementsController>();
             _ = OverhaulController.Add<OverhaulRepositoryController>();
             _ = OverhaulController.Add<OvermodesController>();
             if (waitForEndOfFrame)
                 yield return null;
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWeaponSkinsSystemEnabled)
-                OverhaulController.Add<Gameplay.WeaponSkins.WeaponSkinsController>();
-            else
-                OverhaulController.Add<WeaponSkinsController>();
+            _ = OverhaulController.Add<Gameplay.WeaponSkins.WeaponSkinsController>();
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled)
             {
@@ -245,7 +228,6 @@ namespace CDOverhaul
                 _ = OverhaulController.Add<Gameplay.Outfits.OutfitsController>();
             }
 
-            _ = OverhaulController.Add<MoreSkyboxesController>();
             if (waitForEndOfFrame)
                 yield return null;
 

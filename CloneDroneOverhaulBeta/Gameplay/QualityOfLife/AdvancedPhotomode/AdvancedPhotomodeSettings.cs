@@ -1,4 +1,4 @@
-﻿using CDOverhaul.BuiltIn.AdditionalContent;
+﻿using CDOverhaul.Examples.AdditionalContent;
 using UnityEngine;
 using UnityEngine.Rendering;
 

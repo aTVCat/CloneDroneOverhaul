@@ -121,22 +121,22 @@ namespace CDOverhaul.Visuals
                 m_HasRefreshedCinematicCameraOnStart = true;
             }
 
-            if (!m_CineCameraOn && m_FPModeCameraParent != null && ViewModesController.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
+            if (!m_CineCameraOn && m_FPModeCameraParent != null && ViewModesManager.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
             {
                 //Vector3 bowAimOffset = Owner.IsAimingBow() ? ViewModesController.AimBowCameraOffset : Vector3.zero;
                 m_Camera.transform.parent.localPosition = new Vector3(0f, 1.3f, -4.8f);
 
                 m_Camera.transform.position = m_FPModeCameraParent.transform.position +
                     (m_FPModeCameraParent.transform.up *
-                    (ViewModesController.DefaultCameraUpTransformMultiplier +
-                    (ViewModesController.IsLargeBot(Owner) ? ViewModesController.AdditionalCameraUpTransformMultiplier : 0f) +
-                    (Owner.IsRidingOtherCharacter() ? ViewModesController.AdditionalCameraUpTransformMultiplier * 2f : 0f)));
+                    (ViewModesManager.DefaultCameraUpTransformMultiplier +
+                    (ViewModesManager.IsLargeBot(Owner) ? ViewModesManager.AdditionalCameraUpTransformMultiplier : 0f) +
+                    (Owner.IsRidingOtherCharacter() ? ViewModesManager.AdditionalCameraUpTransformMultiplier * 2f : 0f)));
 
                 Vector3 vector3 = m_Camera.transform.localPosition;
                 vector3.x = 0f;
                 m_Camera.transform.localPosition = vector3;
 
-                if (ViewModesController.SyncCameraWithHeadRotation)
+                if (ViewModesManager.SyncCameraWithHeadRotation)
                     m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
@@ -183,7 +183,7 @@ namespace CDOverhaul.Visuals
 
         public void RefreshHeadVisibility()
         {
-            SetHeadRenderersActive(m_CineCameraOn || !ViewModesController.IsFirstPersonModeEnabled || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetHeadRenderersActive(m_CineCameraOn || !ViewModesManager.IsFirstPersonModeEnabled || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         public void SetHeadRenderersActive(bool value)

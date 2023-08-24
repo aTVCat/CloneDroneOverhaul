@@ -1,6 +1,4 @@
 ﻿using CDOverhaul.DevTools;
-using CDOverhaul.Gameplay;
-using ModLibrary;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -107,7 +105,7 @@ namespace CDOverhaul.Visuals
         public void UpdateRotation(FirstPersonMover firstPersonMover, float targetX, float targetY, float targetZ)
         {
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-            if (CanBeControlled)
+            if (CanBeControlled && !(CinematicCamera && CinematicCamera.LookAtPlayer))
             {
                 bool forceZero = ForceZero;
                 if (forceZero)
@@ -127,7 +125,7 @@ namespace CDOverhaul.Visuals
                 m_CursorMovementVelocityX = Mathf.Lerp(m_CursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
                 m_CursorMovementVelocityY = Mathf.Lerp(m_CursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
 
-                bool isOnFloorFirstPersonMode = !IsCinematicCameraEnabled && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick() && ViewModesController.IsFirstPersonModeEnabled;
+                bool isOnFloorFirstPersonMode = !IsCinematicCameraEnabled && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick() && ViewModesManager.IsFirstPersonModeEnabled;
                 float limit = isOnFloorFirstPersonMode ? 90f : 10f;
 
                 Vector3 newTargetRotation = m_TargetRotation;
@@ -143,12 +141,12 @@ namespace CDOverhaul.Visuals
         public void UpdateViewBobbing()
         {
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-            bool firstPerson = ViewModesController.IsFirstPersonModeEnabled;
+            bool firstPerson = ViewModesManager.IsFirstPersonModeEnabled;
             float time = Time.time;
             FirstPersonMover player = CameraOwner;
 
             AdditionalOffsetMultiplier = player && player._isMovingForward ? (firstPerson ? 7f : 2.1f) : (firstPerson ? 3f : 0.6f);
-            if (ViewModesController.IsFirstPersonModeEnabled)
+            if (ViewModesManager.IsFirstPersonModeEnabled)
             {
                 AdditionalXOffset = Mathf.Sin(time * AdditionalOffsetMultiplier) * 0.7f;
                 AdditionalZOffset = Mathf.Sin((time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.4f;

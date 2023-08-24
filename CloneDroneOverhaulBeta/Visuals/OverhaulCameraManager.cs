@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
@@ -20,7 +19,7 @@ namespace CDOverhaul.Visuals
 
         public void RefreshMainCamera(Camera camera)
         {
-            this.mainCamera = camera;
+            mainCamera = camera;
         }
     }
 }

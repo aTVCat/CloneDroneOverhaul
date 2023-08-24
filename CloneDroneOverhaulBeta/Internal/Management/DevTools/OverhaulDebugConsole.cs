@@ -1,12 +1,7 @@
 ﻿using OverhaulAPI.SharedMonoBehaviours;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using static Pathfinding.BinaryHeap;
 
 namespace CDOverhaul
 {
@@ -16,7 +11,7 @@ namespace CDOverhaul
 
         private OverhaulUI.PrefabAndContainer m_LogsContainer;
 
-        private List<(string, LogType)> m_Logs = new List<(string, LogType)>(); // 1-log 2-type 3-repeat times
+        private readonly List<(string, LogType)> m_Logs = new List<(string, LogType)>(); // 1-log 2-type 3-repeat times
 
         public static void Initialize()
         {
@@ -25,7 +20,7 @@ namespace CDOverhaul
 
             GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulDebugConsole", "overhaulassets_debug", false);
             GameObject spawnedConsole = Instantiate(prefab);
-            spawnedConsole.transform.GetChild(0).gameObject.AddComponent<OverhaulDraggablePanel>();
+            _ = spawnedConsole.transform.GetChild(0).gameObject.AddComponent<OverhaulDraggablePanel>();
             DontDestroyOnLoad(spawnedConsole);
             ConsoleInstance = spawnedConsole.AddComponent<OverhaulDebugConsole>();
             ConsoleInstance.m_LogsContainer = new OverhaulUI.PrefabAndContainer(spawnedConsole.GetComponent<ModdedObject>(), 1, 2);

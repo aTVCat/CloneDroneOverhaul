@@ -52,6 +52,8 @@ namespace CDOverhaul.Patches
             EmoteManager.Instance.PitchLimits.Max = 1f;
             MultiplayerCharacterCustomizationManager.Instance.CharacterModels[17].UnlockedByAchievementID = string.Empty;
 
+            SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
+
             AttackManager manager = AttackManager.Instance;
             if (manager)
             {
@@ -139,7 +141,7 @@ namespace CDOverhaul.Patches
                 s_CanvasDark = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
             if (!s_CanvasBright)
                 s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-16x16"/*"CanvasBright-Small-16x16"*/, OverhaulAssetPart.Part1);
-            if(!s_CanvasBrightNoGrayOutline)
+            if (!s_CanvasBrightNoGrayOutline)
                 s_CanvasBrightNoGrayOutline = s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-NGO", OverhaulAssetPart.Part1);
             if (!s_CanvasDarkNoGrayOutline)
                 s_CanvasDarkNoGrayOutline = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ-NGO", OverhaulAssetPart.Part1);
@@ -157,14 +159,9 @@ namespace CDOverhaul.Patches
                     string name = image.sprite.name;
                     if (name.Equals(UI_SPRITE) || name.Equals(KNOB))
                     {
-                        if (forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI")))
-                        {
-                            image.sprite = s_CanvasDarkNoGrayOutline;
-                        }
-                        else
-                        {
-                            image.sprite = s_CanvasDark;
-                        }
+                        image.sprite = forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI"))
+                            ? s_CanvasDarkNoGrayOutline
+                            : s_CanvasDark;
                     }
                     else if (name.Equals(CHECKMARK))
                     {
@@ -173,14 +170,9 @@ namespace CDOverhaul.Patches
                     }
                     else if (name.Equals(BACKGROUND) || name.Equals(INPUT_FIELD_BACKGROUND))
                     {
-                        if (forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI")))
-                        {
-                            image.sprite = s_CanvasBrightNoGrayOutline;
-                        }
-                        else
-                        {
-                            image.sprite = s_CanvasBright;
-                        }
+                        image.sprite = forceNoGrayOutline || (checkLevelEditor && CheckParentNameRecursive(image.transform, "LevelEditorUI"))
+                            ? s_CanvasBrightNoGrayOutline
+                            : s_CanvasBright;
                     }
                     else if (image.name.Equals(ITEM_BACKGROUND))
                     {
@@ -238,13 +230,7 @@ namespace CDOverhaul.Patches
 
         public static bool CheckParentNameRecursive(Transform transform, string name)
         {
-            if (!transform)
-                return false;
-
-            if (transform.name == name)
-                return true;
-
-            return CheckParentNameRecursive(transform.parent, name);
+            return transform && (transform.name == name || CheckParentNameRecursive(transform.parent, name));
         }
 
         public static void SetEnglishFont(bool piksielyPrst)

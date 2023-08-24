@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.Visuals;
 using HarmonyLib;
-using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -54,7 +53,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Start")]
         private static void Start_Prefix()
         {
-            foreach(OverhaulController overhaulController in OverhaulController.allControllers)
+            foreach (OverhaulController overhaulController in OverhaulController.allControllers)
             {
                 OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.Initialize);
                 overhaulController.OnSceneReloaded();

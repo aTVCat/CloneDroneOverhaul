@@ -1,11 +1,4 @@
-﻿using CDOverhaul.Visuals;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CDOverhaul
+﻿namespace CDOverhaul
 {
     public class OverhaulManager<T> : OverhaulController where T : OverhaulController
     {

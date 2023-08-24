@@ -11,12 +11,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("MovePlayerCameraBack")]
         private static void MovePlayerCameraBack_Prefix(Character __instance, float moveTime)
         {
-            if (!OverhaulMod.IsModInitialized || !ViewModesController.IsFirstPersonModeEnabled)
+            if (!OverhaulMod.IsModInitialized || !ViewModesManager.IsFirstPersonModeEnabled)
                 return;
 
             Camera camera = __instance.GetPlayerCamera();
             if (camera != null && moveTime <= 0f)
-                camera.transform.localPosition = ViewModesController.DefaultCameraOffset;
+                camera.transform.localPosition = ViewModesManager.DefaultCameraOffset;
         }
     }
 }

@@ -30,59 +30,6 @@
             The SteamID of local user
             </summary>
         </member>
-        <member name="T:CDOverhaul.Gameplay.Combat.FirstPersonMoverModdedAnimationsController">
-            <summary>
-            Allows managing animations, that are not in game
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.Default_Player_Speed">
-            <summary>
-            The speed of every player in the game
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.Default_Enemy_Speed">
-            <summary>
-            The speed of any robot in the game
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.CharacterModel">
-            <summary>
-            Get cached character model instance
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.HasCharacterModel">
-            <summary>
-            Check if we have cached character model
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.GetAnimator(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
-            <summary>
-            Get animator script instance if we have one
-            </summary>
-            <param name="animatorType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.HasAnimator(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
-            <summary>
-            Check if we have animator of specified type
-            </summary>
-            <param name="animatorType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.GetAnimatorSpeed(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType)">
-            <summary>
-            Get speed of specific character model animator
-            </summary>
-            <param name="animatorType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CDOverhaul.Gameplay.Combat.OverhaulAdvancedCharacterExpansion.SetAnimatorSpeed(CDOverhaul.Gameplay.Combat.FirstPersonMoverAnimatorType,System.Single)">
-            <summary>
-            Set speed of specific character model animator
-            </summary>
-            <param name="animatorType"></param>
-            <param name="value"></param>
-        </member>
         <member name="F:CDOverhaul.Gameplay.Outfits.OutfitItem.Offsets">
             <summary>
             Character model names - Offset
@@ -113,7 +60,7 @@
             By Zerkie#5342
             </summary>
         </member>
-        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildController.AutoUpgradeSequences">
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildSystem.AutoUpgradeSequences">
             <summary>
             All possible auto upgrade types
             </summary>
@@ -221,6 +168,11 @@
         <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.Spectator">
             <summary>
             Energy capacity 1 + Energy capacity 2 +  Energy capacity 3 + Energy recharge 1
+            </summary>
+        </member>
+        <member name="F:CDOverhaul.Gameplay.QualityOfLife.AutoBuildVariant.EnergySword">
+            <summary>
+            Sword unlock + Energy capacity 1 + Energy capacity 2
             </summary>
         </member>
         <member name="T:CDOverhaul.Gameplay.IWeaponSkinsControllerV2">
@@ -426,6 +378,41 @@
             Send <see cref="F:CDOverhaul.Gameplay.OverhaulGameplayCoreController.GamemodeChangedEventString"/> event
             </summary>
         </member>
+        <member name="P:CDOverhaul.AdditionalContentControllerBase.ContentFolderFullPath">
+            <summary>
+            Full path to content folder
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.AdditionalContentControllerBase.ContentFolderPath">
+            <summary>
+            Path to content folder, doesn't include Overhaul mod folder path
+            </summary>
+        </member>
+        <member name="T:CDOverhaul.Patches.ReplacementBase">
+            <summary>
+            This was made to patch the game without using HarmonyPatch
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.HasReplaced">
+            <summary>
+            Check if replacement is working
+            </summary>
+        </member>
+        <member name="P:CDOverhaul.Patches.ReplacementBase.SuccessfullyPatched">
+            <summary>
+            This value doesn't affect anything, use it for marking fine working patches
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Replace">
+            <summary>
+            Do patch
+            </summary>
+        </member>
+        <member name="M:CDOverhaul.Patches.ReplacementBase.Cancel">
+            <summary>
+            Revert patch changes, called when mod is disabled
+            </summary>
+        </member>
         <member name="T:CDOverhaul.HUD.OverhaulPersonalizationPanel">
             <summary>
             An updated version of <see cref="T:CDOverhaul.HUD.PersonalizationMenu"/> to be implemented in 0.3 updates/0.4
@@ -516,36 +503,6 @@
             Update <see cref="P:CDOverhaul.OverhaulDiscordController.CurrentGamemodeDetails"/> value
             </summary>
         </member>
-        <member name="M:CDOverhaul.Patches.OptimizeRuntime.CollectGarbage">
-            <summary>
-            Reduce memory usage as much as possible
-            </summary>
-        </member>
-        <member name="T:CDOverhaul.Patches.ReplacementBase">
-            <summary>
-            This was made to patch the game without using HarmonyPatch
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Patches.ReplacementBase.HasReplaced">
-            <summary>
-            Check if replacement is working
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.Patches.ReplacementBase.SuccessfullyPatched">
-            <summary>
-            This value doesn't affect anything, use it for marking fine working patches
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Patches.ReplacementBase.Replace">
-            <summary>
-            Do patch
-            </summary>
-        </member>
-        <member name="M:CDOverhaul.Patches.ReplacementBase.Cancel">
-            <summary>
-            Revert patch changes, called when mod is disabled
-            </summary>
-        </member>
         <member name="T:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild">
             <summary>
             Features that doesn't require player IDs to work. This class defines what things should be included in the build
@@ -566,11 +523,6 @@
             Allow creating private matches with additional things allowed
             </summary>
         </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_NEW_SAVE_AND_LOAD_SYSTEM_ENABLED">
-            <summary>
-            Better way of saving/loading levels
-            </summary>
-        </member>
         <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.APPLY_THEME_COLOR_ON_SETTINGS">
             <summary>
             Make tickboxes use player favourite color
@@ -584,11 +536,6 @@
         <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_BOOT_SCREEN_ENABLED">
             <summary>
             Startup screen
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DISCORD_PANEL_ENABLED">
-            <summary>
-            
             </summary>
         </member>
         <member name="F:CDOverhaul.OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ARE_TOOLTIPS_ENABLED">
@@ -748,14 +695,6 @@
             </summary>
             <param name="levelManager"></param>
             <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CDOverhaul.OverhaulExtensions.GetLevelDescriptions(LevelManager,System.Byte)">
-            <summary>
-            Todo: Finish this method
-            </summary>
-            <param name="levelManager"></param>
-            <param name="index">0 - Story mode levels<br></br>1 - Endless mode levels</param>
             <returns></returns>
         </member>
         <member name="T:CDOverhaul.OverhaulSessionController">
@@ -1003,7 +942,7 @@
             </summary>
             <param name="controllersGO"></param>
         </member>
-        <member name="M:CDOverhaul.OverhaulController.AddController``1(UnityEngine.Transform@)">
+        <member name="M:CDOverhaul.OverhaulController.Add``1(UnityEngine.Transform@)">
             <summary>
             Create and initialize new controller
             </summary>
@@ -1011,14 +950,14 @@
             <param name="transformOverride"></param>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulController.GetController``1">
+        <member name="M:CDOverhaul.OverhaulController.Get``1">
             <summary>
             Get controller instance by its type
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.OverhaulController.RemoveController(CDOverhaul.OverhaulController)">
+        <member name="M:CDOverhaul.OverhaulController.Remove(CDOverhaul.OverhaulController)">
             <summary>
             Remove controller from existing controllers dictionary
             </summary>
@@ -1036,31 +975,21 @@
             <b>Note: gameobject with this script must have <see cref="T:ModdedObject"/></b>
             </summary>
         </member>
-        <member name="M:CDOverhaul.EnableCursorController.AddCondition">
+        <member name="M:CDOverhaul.EnableCursorController.DisableCursor">
             <summary>
             Make the game understand that cursor should be enabled until you remove condition (<see cref="!:EnableCursorController.RemoveCondition(in int)"/>) the ID which we got from this method
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CDOverhaul.EnableCursorController.RemoveCondition(System.Byte@)">
+        <member name="M:CDOverhaul.EnableCursorController.TryEnableCursor(System.Byte@)">
             <summary>
             Remove condition with ID
             </summary>
             <param name="id"></param>
         </member>
-        <member name="T:CDOverhaul.OverhaulEventsController">
-            <summary>
-            A simplified interaction with <see cref="T:GlobalEventManager"/> (not really)
-            </summary>
-        </member>
-        <member name="F:CDOverhaul.OverhaulEventsController.EventPrefix">
+        <member name="F:CDOverhaul.OverhaulEventsController.Prefix">
             <summary>
             This prefix is automatically added to any of mod events
-            </summary>
-        </member>
-        <member name="P:CDOverhaul.OverhaulEventsController.MayAddListeners">
-            <summary>
-            Check if <see cref="T:GlobalEventManager"/> instance is not <b>Null</b> (for some reason)
             </summary>
         </member>
         <member name="T:CDOverhaul.OverhaulMod">

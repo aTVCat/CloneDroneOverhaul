@@ -40,14 +40,7 @@ namespace CDOverhaul.Patches
                 canvasGroup = __instance.gameObject.AddComponent<CanvasGroup>();
 
             bool isUpgradeMode = OverhaulMod.IsModInitialized && UpgradeModesController.Mode == UpgradeMode.Upgrade;
-            if (!isUpgradeMode && !__instance.GetDescription().CanBeReverted())
-            {
-                canvasGroup.alpha = 0.3f;
-            }
-            else
-            {
-                canvasGroup.alpha = 1f;
-            }
+            canvasGroup.alpha = !isUpgradeMode && !__instance.GetDescription().CanBeReverted() ? 0.3f : 1f;
 
             if (!__instance._upgradeDescription || !__instance._upgradeDescription.Icon)
             {
@@ -121,7 +114,7 @@ namespace CDOverhaul.Patches
                     label.sizeDelta = Vector2.zero;
 
                     label.GetComponent<Text>().font = OverhaulAssetsContainer.TriggeringFanFaresFont;
-                    label.gameObject.AddComponent<BetterOutline>();
+                    _ = label.gameObject.AddComponent<BetterOutline>();
                 }
             }
 

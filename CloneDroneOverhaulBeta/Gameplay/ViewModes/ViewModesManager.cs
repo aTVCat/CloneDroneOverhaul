@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Visuals
 {
-    public class ViewModesController : OverhaulGameplayController
+    public class ViewModesManager : OverhaulGameplayController
     {
         [OverhaulSettingDropdownParameters("Third person@First person")]
         [OverhaulSetting("Gameplay.Camera.View mode", 0)]

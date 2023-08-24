@@ -1,8 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Scripting;
-
-namespace CDOverhaul.Patches
+﻿namespace CDOverhaul.Patches
 {
     public class OptimizeRuntime : ReplacementBase
     {

@@ -113,7 +113,7 @@ namespace CDOverhaul.Gameplay.Outfits
                     if (!gm)
                         continue;
 
-                    gm.SetActive(!ViewModesController.IsFirstPersonModeEnabled || PhotoManager.Instance.IsInPhotoMode());
+                    gm.SetActive(!ViewModesManager.IsFirstPersonModeEnabled || PhotoManager.Instance.IsInPhotoMode());
                 }
             }
         }

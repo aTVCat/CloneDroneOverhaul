@@ -2,7 +2,6 @@
 using CDOverhaul.LevelEditor;
 using OverhaulAPI.SharedMonoBehaviours;
 using System.Collections.Generic;
-using System.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -239,7 +238,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 iconObject.transform.localEulerAngles = Vector3.zero;
                 iconObject.transform.localScale = Vector3.one;
                 Image iconImage = iconObject.AddComponent<Image>();
-                if(OverhaulAssetsController.TryGetAsset("OutlineSettings-16x16", OverhaulAssetsController.ModAssetBundle_Part1, out Sprite asset))
+                if (OverhaulAssetsController.TryGetAsset("OutlineSettings-16x16", OverhaulAssetsController.ModAssetBundle_Part1, out Sprite asset))
                 {
                     iconImage.sprite = asset;
                 }

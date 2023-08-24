@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CDOverhaul.Gameplay;
 using System.Linq;
-using System.Text;
-using CDOverhaul.Gameplay;
-using CDOverhaul.HUD;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace CDOverhaul.Visuals
 {
@@ -77,7 +72,7 @@ namespace CDOverhaul.Visuals
             tilt?.Dispose();
             fov?.Dispose();
             m_HasInstantiatedEffects = false;
- 
+
             base.OnDisposed();
             DestroyGameObject();
         }

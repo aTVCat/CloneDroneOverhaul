@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -37,7 +32,7 @@ namespace CDOverhaul.Patches
         {
             if (!force)
             {
-                StartCoroutine(addReplacementsCoroutine());
+                _ = StartCoroutine(addReplacementsCoroutine());
                 return;
             }
             ReplacementBase.AddAll();

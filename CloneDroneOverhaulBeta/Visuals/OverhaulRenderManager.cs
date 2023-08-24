@@ -1,14 +1,4 @@
-﻿using CDOverhaul.Device;
-using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.HUD;
-using OverhaulAPI;
-using OverhaulAPI.SharedMonoBehaviours;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityStandardAssets.ImageEffects;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {

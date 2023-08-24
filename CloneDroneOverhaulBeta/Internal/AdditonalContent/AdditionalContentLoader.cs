@@ -1,78 +1,124 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class AdditionalContentLoader
+    public class AdditionalContentLoader : OverhaulDisposable
     {
         private static string s_LoadedContent = string.Empty;
 
-        public static void LoadAllContent()
+        public void LoadAllContent(AdditionalContentManager manager)
         {
-            AdditionalContentController controller = OverhaulController.Get<AdditionalContentController>();
-            if (!controller)
-            {
-                throw new NullReferenceException("AdditionalContentController is NULL!");
-            }
-
-            string[] zippedFiles = controller.GetZipFiles();
-            if (!zippedFiles.IsNullOrEmpty())
-            {
-                unZipFiles(zippedFiles, true, controller);
-            }
-
-            string[] directories = controller.GetContentDirectories();
-            if (directories.IsNullOrEmpty())
-                return;
-
-            foreach (string directory in directories)
-            {
-                LoadContent(directory);
-            }
+            unZipFiles(manager.GetZipFiles(), true, manager);
+            foreach (string directory in manager.GetContentDirectories())
+                LoadContent(directory, manager);
         }
 
-        public static void LoadContent(string directoryPath)
+        public void LoadContent(string directoryPath, AdditionalContentManager manager)
         {
-            if (string.IsNullOrEmpty(directoryPath) || !Directory.Exists(directoryPath))
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                OverhaulDebug.Warn("[AdditionalContentLoader] directoryPath is NULL or EMPTY!", EDebugType.Assets);
                 return;
+            }
+
+            if (!Directory.Exists(directoryPath))
+            {
+                OverhaulDebug.Warn("[AdditionalContentLoader] Cannot find directory: " + directoryPath, EDebugType.Assets);
+                return;
+            }
 
             DirectoryInfo directoryInfo = new DirectoryInfo(directoryPath);
 
             string uniqueIdFilePath = directoryPath + "/UniqueID.txt";
             if (!File.Exists(uniqueIdFilePath))
             {
-                throw new Exception(string.Format("[AdditionalContentLoader] File UniqueID.txt not found in {0} directory! Delete the directory!", directoryPath));
+                OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] File UniqueID.txt not found in {0} directory! Delete the directory!", directoryPath), EDebugType.Assets);
+                return;
             }
             string uniqueIdFileContent = OverhaulCore.ReadText(uniqueIdFilePath);
-
             if (s_LoadedContent.Contains(uniqueIdFileContent))
+            {
+                OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] {0} is already loaded!", uniqueIdFileContent), EDebugType.Assets);
                 return;
+            }
 
             string assetsToLoadPath = directoryPath + "/AssetsToLoad.txt";
             if (!File.Exists(assetsToLoadPath))
             {
-                throw new Exception(string.Format("[AdditionalContentLoader] File AssetsToLoad.txt not found in {0} directory! Delete the directory!", directoryPath));
+                OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] File AssetsToLoad.txt not found in {0} directory! Delete the directory!", directoryPath), EDebugType.Assets);
+                return;
             }
             string assetsToLoadContent = OverhaulCore.ReadText(assetsToLoadPath);
             string[] assetFiles = assetsToLoadContent.Split(',');
             foreach (string assetFile in assetFiles)
             {
                 string assetFilePath = "Content/" + directoryInfo.Name + "/" + assetFile;
-                Debug.Log(assetFilePath);
                 if (!File.Exists(OverhaulMod.Core.ModDirectory + assetFilePath))
                     continue;
 
-                _ = OverhaulAssetsController.LoadAssetBundleIfNotLoaded(assetFilePath);
+                OverhaulDebug.Log("[AdditionalContentLoader] Loading asset bundle: " + assetFilePath, EDebugType.Assets);
+                bool result = OverhaulAssetsController.LoadAssetBundleIfNotLoaded(assetFilePath);
+                OverhaulDebug.Log("[AdditionalContentLoader] Loaded asset bundle (" + assetFilePath + ") with result: " + result, EDebugType.Assets);
             }
 
+            string scriptsPath = directoryPath + "/Scripts.txt";
+            if (File.Exists(scriptsPath))
+            {
+                OverhaulDebug.Log(string.Format("[AdditionalContentLoader] File Scripts.txt found in {0} directory", directoryPath), EDebugType.Assets);
+
+                string scriptsContent = OverhaulCore.ReadText(scriptsPath);
+                string[] scripts = scriptsContent.Split(',');
+                foreach (string scriptRef in scripts)
+                {
+                    string scriptReference = scriptRef.Replace(",", string.Empty);
+                    if (string.IsNullOrEmpty(scriptReference))
+                        continue;
+
+                    OverhaulDebug.Log(string.Format("[AdditionalContentLoader] Instantiating script: {0}", scriptReference), EDebugType.Assets);
+
+                    Assembly assembly = scriptReference.StartsWith("CDOverhaul") ? Assembly.GetExecutingAssembly() : null;
+                    if (assembly == null)
+                    {
+                        OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] Could not find assembly for {0}", scriptReference), EDebugType.Assets);
+                        continue;
+                    }
+
+                    Type type = assembly.GetType(scriptReference);
+                    if (type == null)
+                    {
+                        OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] {0} script not found!", scriptReference), EDebugType.Assets);
+                        continue;
+                    }
+                    else
+                    {
+                        if (type.BaseType != typeof(AdditionalContentControllerBase))
+                        {
+                            OverhaulDebug.Warn(string.Format("[AdditionalContentLoader] Script {0} is not an AdditionalContentControllerBase!", scriptReference), EDebugType.Assets);
+                            continue;
+                        }
+                        string loadedContentFolderPath = "Content/" + directoryInfo.Name + "/";
+                        Component component = manager.gameObject.AddComponent(type);
+                        AdditionalContentControllerBase controllerBase = component as AdditionalContentControllerBase;
+                        controllerBase.ContentFolderFullPath = OverhaulMod.Core.ModDirectory + loadedContentFolderPath;
+                        controllerBase.ContentFolderPath = loadedContentFolderPath;
+                        manager.Controllers.Add(controllerBase);
+                    }
+                    OverhaulDebug.Log(string.Format("[AdditionalContentLoader] Instantiated script: {0}", scriptReference), EDebugType.Assets);
+                }
+            }
             s_LoadedContent += uniqueIdFileContent + ", ";
         }
 
         public static bool HasLoadedContent(string uniqueId) => s_LoadedContent.Contains(uniqueId);
 
-        private static void unZipFiles(string[] files, bool deleteInitialFiles, AdditionalContentController controller)
+        private static void unZipFiles(string[] files, bool deleteInitialFiles, AdditionalContentManager controller)
         {
+            if (files.IsNullOrEmpty())
+                return;
+
             int index = 0;
             do
             {

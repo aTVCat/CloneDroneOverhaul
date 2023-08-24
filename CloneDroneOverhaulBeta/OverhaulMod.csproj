@@ -437,14 +437,16 @@
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Gameplay\OverhaulGameplayManager.cs" />
+    <Compile Include="Internal\AdditonalContent\AdditionalContentControllerBase.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />
     <Compile Include="LevelEditor\OverhaulLevelEditorManager.cs" />
     <Compile Include="Visuals\Camera\CameraControllerBase.cs" />
+    <Compile Include="Gameplay\ViewModes\ViewModesManager.cs" />
     <Compile Include="Visuals\Effects\CameraFOVEffect.cs" />
     <Compile Include="Visuals\Effects\CameraTiltEffect.cs" />
     <Compile Include="Visuals\Effects\DitheringUIEffect.cs" />
     <Compile Include="Visuals\Effects\OverhaulUIEffectBehaviour.cs" />
-    <Compile Include="Visuals\Enchancements\VFX\OverhaulVFXController.cs" />
+    <Compile Include="Visuals\OverhaulVFXController.cs" />
     <Compile Include="Visuals\Effects\AmplifyColorOverhaulImageEffect.cs" />
     <Compile Include="Visuals\Effects\AmplifyOclusionImageEffect.cs" />
     <Compile Include="Visuals\Effects\BloomOverhaulImageEffect.cs" />
@@ -545,12 +547,11 @@
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopItem.cs" />
     <Compile Include="Gameplay\Workshop\ProgressInformation.cs" />
     <Compile Include="Gameplay\Workshop\OverhaulWorkshopRequestResult.cs" />
-    <Compile Include="Visuals\ArenaOverhaul\ArenaOverhaulController.cs" />
+    <Compile Include="Visuals\ArenaOverhaul\ArenaOverhaulManager.cs" />
     <Compile Include="Visuals\Camera\CameraTiltController.cs" />
     <Compile Include="Visuals\OverhaulUIEffectsManager.cs" />
     <Compile Include="Visuals\Robots\SeveredBodyPartSparks.cs" />
-    <Compile Include="Visuals\Camera\ViewModes\ViewModesController.cs" />
-    <Compile Include="Visuals\Camera\ViewModes\ViewModesExpansion.cs" />
+    <Compile Include="Gameplay\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUI.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIEntryDisplay.cs" />
@@ -563,9 +564,9 @@
     <Compile Include="HUD\FullscreenDialogue\OverhaulFullscreenDialogueWindow.cs" />
     <Compile Include="HUD\OverhaulUIPanelScaler.cs" />
     <Compile Include="HUD\Tutorial\OverhaulTutorialUI.cs" />
-    <Compile Include="Internal\AdditonalContent\AdditionalContentController.cs" />
+    <Compile Include="Internal\AdditonalContent\AdditionalContentManager.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentLoader.cs" />
-    <Compile Include="Internal\AdditonalContent\BuiltInCode\MoreSkyboxesController.cs" />
+    <Compile Include="Internal\AdditonalContent\Examples\MoreSkyboxesController.cs" />
     <Compile Include="Internal\Device\RecommendationLevel.cs" />
     <Compile Include="Internal\Device\Recommendations.cs" />
     <Compile Include="Internal\Management\DevTools\EDebugType.cs" />
@@ -608,7 +609,6 @@
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
     <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
-    <Compile Include="Visuals\Enchancements\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -774,14 +774,8 @@
     <Compile Include="Internal\Management\Events\OverhaulEvent.cs" />
     <Compile Include="LevelEditor\MoveByCoordsTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\GPUInstancing\MaterialInfo.cs" />
-    <Compile Include="Test\GPUInstancing\MatrixInfo.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceObjectBehaviour.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceDrawer.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstancingController.cs" />
     <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
     <Compile Include="HUD\OverhaulUIButtonScaler.cs" />
-    <Compile Include="Test\VRVoxelBurning\VRVoxelBurnEffectController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverhaulAPI\OverhaulAPI.csproj">

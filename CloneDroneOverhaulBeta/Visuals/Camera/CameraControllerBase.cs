@@ -4,7 +4,7 @@ namespace CDOverhaul.Visuals
 {
     public class CameraControllerBase : OverhaulBehaviour
     {
-        private LevelEditorCinematicCamera m_CinematicCamera;
+        protected LevelEditorCinematicCamera CinematicCamera;
 
         private Camera m_CameraReference;
         public Camera CameraReference
@@ -24,7 +24,7 @@ namespace CDOverhaul.Visuals
             protected set;
         }
 
-        public bool IsCinematicCameraEnabled => m_CinematicCamera && m_CinematicCamera._camera;
+        public bool IsCinematicCameraEnabled => CinematicCamera && CinematicCamera._camera;
 
         public override void Start()
         {
@@ -33,7 +33,7 @@ namespace CDOverhaul.Visuals
 
             if (base.transform.parent && base.transform.parent.parent)
             {
-                m_CinematicCamera = base.transform.parent.parent.GetComponent<LevelEditorCinematicCamera>();
+                CinematicCamera = base.transform.parent.parent.GetComponent<LevelEditorCinematicCamera>();
             }
         }
 
@@ -51,7 +51,7 @@ namespace CDOverhaul.Visuals
 
         private void onCinematicCameraEnabled(LevelEditorCinematicCamera cinematicCamera)
         {
-            m_CinematicCamera = cinematicCamera;
+            CinematicCamera = cinematicCamera;
         }
 
         private void onCharacterDied(Character character)

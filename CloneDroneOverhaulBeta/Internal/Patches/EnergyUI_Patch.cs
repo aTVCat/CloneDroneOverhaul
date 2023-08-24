@@ -1,6 +1,5 @@
 ﻿using CDOverhaul.HUD.Vanilla;
 using HarmonyLib;
-using ModLibrary;
 
 namespace CDOverhaul.Patches
 {

@@ -1,8 +1,7 @@
-﻿using CDOverhaul.Visuals;
-using CDOverhaul.HUD;
+﻿using CDOverhaul.HUD;
+using CDOverhaul.Visuals;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
 {
@@ -16,7 +15,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            __instance.UpgradeUIBackground.gameObject.SetActive(challengeUpgradeConfigMode || ViewModesController.IsFirstPersonModeEnabled);
+            __instance.UpgradeUIBackground.gameObject.SetActive(challengeUpgradeConfigMode || ViewModesManager.IsFirstPersonModeEnabled);
             int i = 0;
             do
             {

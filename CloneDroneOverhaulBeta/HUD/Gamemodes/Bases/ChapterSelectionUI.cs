@@ -56,18 +56,14 @@ namespace CDOverhaul.HUD.Gamemodes
                 {
                     m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 5)";
                 }
-                else if (MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P7_CompletedTowerAssault))
-                {
-                    m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 4)";
-                }
-                else if (MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P5_DestroyedAlphaCentauri))
-                {
-                    m_ProgressText.text = "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 3)";
-                }
                 else
                 {
-                    m_ProgressText.text = string.Concat(new object[]
-                    {
+                    m_ProgressText.text = MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P7_CompletedTowerAssault)
+                        ? "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 4)"
+                        : MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P5_DestroyedAlphaCentauri)
+                                            ? "(" + LocalizationManager.Instance.GetTranslatedString("Chapter", -1) + " 3)"
+                                            : string.Concat(new object[]
+                                                            {
                     "(",
                     LocalizationManager.Instance.GetTranslatedString("Chapter", -1),
                     " ",
@@ -77,7 +73,7 @@ namespace CDOverhaul.HUD.Gamemodes
                     " ",
                     num2,
                     ")"
-                    });
+                                                            });
                 }
             }
             GameUIRoot.Instance.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);

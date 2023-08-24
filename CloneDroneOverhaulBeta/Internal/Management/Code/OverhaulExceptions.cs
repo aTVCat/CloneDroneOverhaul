@@ -48,7 +48,7 @@ namespace CDOverhaul
 
                 GameObject.Destroy(obj.gameObject);
             });
-            _ = EnableCursorController.AddCondition();
+            _ = EnableCursorController.DisableCursor();
         }
     }
 }

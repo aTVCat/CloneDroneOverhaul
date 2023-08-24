@@ -13,7 +13,7 @@ namespace CDOverhaul
         /// Make the game understand that cursor should be enabled until you remove condition (<see cref="EnableCursorController.RemoveCondition(in int)"/>) the ID which we got from this method
         /// </summary>
         /// <returns></returns>
-        public static byte AddCondition()
+        public static byte DisableCursor()
         {
             byte number = _nextId;
             _nextId++;
@@ -29,7 +29,7 @@ namespace CDOverhaul
         /// Remove condition with ID
         /// </summary>
         /// <param name="id"></param>
-        public static void RemoveCondition(in byte id)
+        public static void TryEnableCursor(in byte id)
         {
             if (_conditionIDs.Remove(id))
             {

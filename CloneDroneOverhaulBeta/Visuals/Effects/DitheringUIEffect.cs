@@ -43,7 +43,7 @@ namespace CDOverhaul.Visuals
             {
                 m_HasGeneratedTextures = true;
                 NoiseTextures = textures;
-                StartCoroutine(ditheringLoopCoroutine());
+                _ = StartCoroutine(ditheringLoopCoroutine());
             });
         }
 
@@ -80,7 +80,7 @@ namespace CDOverhaul.Visuals
             }
             if (!NoiseTextures.IsNullOrEmpty())
             {
-                foreach(Texture2D texture2D in NoiseTextures)
+                foreach (Texture2D texture2D in NoiseTextures)
                 {
                     Destroy(texture2D);
                 }
@@ -100,7 +100,7 @@ namespace CDOverhaul.Visuals
 
         public void GenerateNoiseTextures(Action<Texture2D[]> callback)
         {
-            StartCoroutine(generateNoiseTexturesCoroutine(callback));
+            _ = StartCoroutine(generateNoiseTexturesCoroutine(callback));
         }
 
         private IEnumerator generateNoiseTexturesCoroutine(Action<Texture2D[]> callback)
@@ -137,7 +137,7 @@ namespace CDOverhaul.Visuals
                     float num5 = Mathf.PerlinNoise(x, y) + UnityEngine.Random.Range(-0.2f, 0.4f);
                     array[((int)num3 * texture2D.width) + (int)num4] = new Color(num5, num5, num5, 0.1f);
 
-                    if (num3 + num4 % 100 == 0)
+                    if (num3 + (num4 % 100) == 0)
                         yield return null;
                 }
             }

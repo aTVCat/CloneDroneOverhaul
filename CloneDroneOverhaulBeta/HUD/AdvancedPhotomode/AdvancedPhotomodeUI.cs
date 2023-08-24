@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.Visuals;
 using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;

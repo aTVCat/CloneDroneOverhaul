@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using ModLibrary;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +33,6 @@ namespace CDOverhaul.Patches
                         }
                         else
                         {
-                            // Todo: Show dialogue window here
                         }
 
                         __result = null;
@@ -51,9 +49,6 @@ namespace CDOverhaul.Patches
             __result = transform2.gameObject.AddComponent<ObjectPlacedInLevel>();
             __result.LevelObjectEntry = objectPlacedLevelObjectEntry;
             __result.Initialize(levelRoot);
-
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGpuInstancingEnabled)
-                _ = __result.gameObject.AddComponent<OverhaulGPUInstanceObjectBehaviour>();
 
             __instance.registerObjectInAllObjectList(__result);
             return false;

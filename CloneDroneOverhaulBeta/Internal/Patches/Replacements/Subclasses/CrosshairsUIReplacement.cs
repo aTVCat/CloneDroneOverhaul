@@ -22,7 +22,7 @@ namespace CDOverhaul.Patches
 
         private void updateCrossHairs()
         {
-            GameUIRoot.Instance.CrosshairsUI.Child.transform.localPosition = ViewModesController.IsFirstPersonModeEnabled ? Vector3.one * -2f : Vector3.zero;
+            GameUIRoot.Instance.CrosshairsUI.Child.transform.localPosition = ViewModesManager.IsFirstPersonModeEnabled ? Vector3.one * -2f : Vector3.zero;
         }
     }
 }

@@ -42,14 +42,14 @@ namespace CDOverhaul
                     if (m_EnableCursorConditionID != 0)
                         return;
 
-                    m_EnableCursorConditionID = EnableCursorController.AddCondition();
+                    m_EnableCursorConditionID = EnableCursorController.DisableCursor();
                 }
                 else
                 {
                     if (m_EnableCursorConditionID == 0)
                         return;
 
-                    EnableCursorController.RemoveCondition(m_EnableCursorConditionID);
+                    EnableCursorController.TryEnableCursor(m_EnableCursorConditionID);
                     m_EnableCursorConditionID = 0;
                 }
             }

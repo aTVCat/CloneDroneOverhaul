@@ -1,9 +1,9 @@
 ﻿using CDOverhaul.Device;
 using CDOverhaul.DevTools;
-using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using CDOverhaul.Visuals;
+using CDOverhaul.Visuals.ArenaOverhaul;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,22 +16,25 @@ namespace CDOverhaul
         {
             List<Action> toInit = new List<Action>()
             {
-                InitControllers,
+                InitMainControllers,
                 InitDebugManagers,
                 InitGraphicsManagers,
                 InitGameplayManagers,
                 InitLevelEditorManagers,
                 InitLocalizationManagers,
-                InitPatchManagers,
+                InitContentManagers,
+                InitEnhancementManagers,
             };
             foreach (Action action in toInit)
             {
+                string name = action.Method.Name;
+                OverhaulDebug.Log("Initializing: " + name, EDebugType.Initialize);
                 action();
-                OverhaulDebug.Log("Initialized: " + action.Method.Name, EDebugType.Initialize);
+                OverhaulDebug.Log("Initialized: " + name, EDebugType.Initialize);
             }
         }
 
-        public void InitControllers()
+        public void InitMainControllers()
         {
             EnableCursorController.Reset();
             DeviceSpecifics.Initialize();
@@ -78,12 +81,21 @@ namespace CDOverhaul
             _ = OverhaulController.Add<OverhaulLevelEditorManager>(levelEditorObject.transform);
         }
 
-        public void InitPatchManagers()
+        public void InitEnhancementManagers()
         {
-            GameObject patchesObject = new GameObject("Patches");
+            GameObject patchesObject = new GameObject("Enhancements");
             patchesObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
 
+            _ = OverhaulController.Add<ArenaOverhaulManager>(patchesObject.transform);
             _ = OverhaulController.Add<ReplacementsManager>(patchesObject.transform);
+        }
+
+        public void InitContentManagers()
+        {
+            GameObject contentObject = new GameObject("Content");
+            contentObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
+
+            _ = OverhaulController.Add<AdditionalContentManager>(contentObject.transform);
         }
     }
 }

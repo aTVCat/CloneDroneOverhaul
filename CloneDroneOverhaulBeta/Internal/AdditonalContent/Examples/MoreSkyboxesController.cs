@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CDOverhaul.BuiltIn.AdditionalContent
+namespace CDOverhaul.Examples.AdditionalContent
 {
-    public class MoreSkyboxesController : OverhaulController
+    public class MoreSkyboxesController : AdditionalContentControllerBase
     {
         public const string RequiredContent = "more-skyboxes-builtin-content";
 
@@ -99,28 +99,28 @@ namespace CDOverhaul.BuiltIn.AdditionalContent
             { "SpikeTrapLures", new Hashtable() { { "FogColor", new Color(0.1882654f, 0.4053508f, 0.3075638f, 1f) },{ "DLColor", new Color(0.7119132f, 0.425966f, 0.6015041f, 1f) },{ "AmbientColor", new Color(0.833792f, 0.833792f, 0.833792f, 1f) },{ "DLX", 57.67406f }, { "DLY", 121.8296f }, { "FogEnd", 3000f }, { "FogStart", 1374.469f }, { "SkyboxRotation", 227.373f }, { "DLIntensity", 1.141282f }  } },
         };
 
-        public static bool HasSkyboxes
-        {
-            get;
-            private set;
-        }
-
         public static Material[] Skyboxes
         {
             get;
             private set;
         }
 
-        public override void Initialize()
+        public override void Start()
         {
-            HasSkyboxes = AdditionalContentLoader.HasLoadedContent(RequiredContent);
-            if (!HasSkyboxes)
-                return;
-
+            base.Start();
             Skyboxes = OverhaulAssetsController.GetAllObjects<Material>(SkyboxesAssetBundle);
+        }
 
+        public override void AddListeners()
+        {
             OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
             OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
+        }
+
+        public override void RemoveListeners()
+        {
+            OverhaulEventsController.RemoveEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
+            OverhaulEventsController.RemoveEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
         }
 
         public void SetSkybox(int index)

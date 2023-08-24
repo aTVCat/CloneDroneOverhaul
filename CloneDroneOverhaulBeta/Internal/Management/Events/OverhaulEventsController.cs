@@ -34,7 +34,7 @@ namespace CDOverhaul
                 return;
 
             List<string> list = new List<string>();
-            foreach(string eventName in globalEventManager._eventListeners.Keys)
+            foreach (string eventName in globalEventManager._eventListeners.Keys)
             {
                 if (!eventName.Contains(Prefix))
                     continue;
@@ -42,9 +42,9 @@ namespace CDOverhaul
                 list.Add(eventName);
             }
 
-            foreach(string key in list)
+            foreach (string key in list)
             {
-                globalEventManager._eventListeners.Remove(key);
+                _ = globalEventManager._eventListeners.Remove(key);
             }
         }
 

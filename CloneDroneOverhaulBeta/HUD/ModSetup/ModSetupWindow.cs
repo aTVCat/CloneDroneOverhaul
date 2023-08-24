@@ -1,6 +1,6 @@
 ﻿using CDOverhaul.Device;
-using CDOverhaul.Visuals;
 using CDOverhaul.Patches;
+using CDOverhaul.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -85,7 +85,7 @@ namespace CDOverhaul.HUD
         {
             base.gameObject.SetActive(false);
 
-            if(GameModeManager.IsOnTitleScreen())
+            if (GameModeManager.IsOnTitleScreen())
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
         }
 
