@@ -15,5 +15,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public bool IsAnswer;
         public bool IsRequest;
+
+        protected override void OnDisposed()
+        {
+            AssignNullToAllVars(this);
+        }
     }
 }

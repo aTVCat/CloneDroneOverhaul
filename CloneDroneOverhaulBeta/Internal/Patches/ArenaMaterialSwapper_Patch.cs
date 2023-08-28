@@ -9,7 +9,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("onArenaSettingsRefreshed")]
         private static bool onArenaSettingsRefreshed_Prefix(AmplifyColorSwapper __instance)
         {
-            return !OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled;
+            return !OverhaulMod.IsModInitialized;
         }
     }
 }

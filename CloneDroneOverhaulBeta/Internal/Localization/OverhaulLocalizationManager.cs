@@ -44,13 +44,13 @@ namespace CDOverhaul
             base.OnDisposed();
         }
 
-        protected override void AddListeners()
+        public override void AddListeners()
         {
             base.AddListeners();
             OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);
         }
 
-        protected override void RemoveListeners()
+        public override void RemoveListeners()
         {
             base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, LocalizeUI, true);

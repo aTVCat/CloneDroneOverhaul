@@ -392,6 +392,7 @@
     <Compile Include="Credit\ThreeDOutline.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\EOverhaulMultiplayerMode.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerState.cs" />
+    <Compile Include="Gameplay\OverhaulGameplayEventsSystem.cs" />
     <Compile Include="Gameplay\OverhaulGameplaySystem.cs" />
     <Compile Include="Gameplay\Overmodes\OvermodeBase.cs" />
     <Compile Include="Gameplay\Overmodes\OvermodesController.cs" />
@@ -435,13 +436,15 @@
     <Compile Include="Gameplay\Personalization\PersonalizationItemsWearer.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotCameraZoomExpansion.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\IGenericStringEventListener.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Gameplay\OverhaulGameplayManager.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentControllerBase.cs" />
+    <Compile Include="Internal\Management\OverhaulAdvancedBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />
     <Compile Include="LevelEditor\OverhaulLevelEditorManager.cs" />
     <Compile Include="Visuals\Camera\CameraControllerBase.cs" />
-    <Compile Include="Gameplay\ViewModes\ViewModesManager.cs" />
+    <Compile Include="Gameplay\ViewModes\ViewModesSystem.cs" />
     <Compile Include="Visuals\Effects\CameraFOVEffect.cs" />
     <Compile Include="Visuals\Effects\CameraTiltEffect.cs" />
     <Compile Include="Visuals\Effects\DitheringUIEffect.cs" />
@@ -495,7 +498,7 @@
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerLobby.cs" />
     <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerPacketManagement.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfo.cs" />
-    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoController.cs" />
+    <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfosSystem.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusType.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusWorldCanvas.cs" />
@@ -718,7 +721,6 @@
     <Compile Include="Internal\Settings\OverhaulSettingWithNotification.cs" />
     <Compile Include="Internal\Settings\OverhaulUpdatedSetting.cs" />
     <Compile Include="HUD\Transitions\OverhaulTransitionController.cs" />
-    <Compile Include="Gameplay\OverhaulGameplayCoreController.cs" />
     <Compile Include="Visuals\OverhaulRenderManager.cs" />
     <Compile Include="HUD\Parameters\ParametersMenuSettingPosition.cs" />
     <Compile Include="HUD\Parameters\ParametersMenuSetting.cs" />

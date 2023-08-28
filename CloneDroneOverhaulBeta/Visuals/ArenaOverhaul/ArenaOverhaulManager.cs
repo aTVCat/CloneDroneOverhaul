@@ -86,7 +86,7 @@ namespace CDOverhaul.Visuals.ArenaOverhaul
 
         public void RefreshArenaLook()
         {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled || !IsArenaOverhaulEnabled)
+            if (!IsArenaOverhaulEnabled)
                 return;
 
             m_WorldRootTransform = WorldRoot.Instance.transform;
@@ -254,10 +254,7 @@ namespace CDOverhaul.Visuals.ArenaOverhaul
 
         private void Update()
         {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled || !IsArenaOverhaulEnabled)
-                return;
-
-            if (!m_OverhaulGarbageDoorTransform || !m_GarbageDoorTransform)
+            if (!IsArenaOverhaulEnabled || !m_OverhaulGarbageDoorTransform || !m_GarbageDoorTransform)
                 return;
 
             if (Time.unscaledTime >= m_TimeToRefreshVanillaArenaParts)

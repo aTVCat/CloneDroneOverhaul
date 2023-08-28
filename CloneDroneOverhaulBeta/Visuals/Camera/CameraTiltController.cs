@@ -125,7 +125,7 @@ namespace CDOverhaul.Visuals
                 m_CursorMovementVelocityX = Mathf.Lerp(m_CursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
                 m_CursorMovementVelocityY = Mathf.Lerp(m_CursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
 
-                bool isOnFloorFirstPersonMode = !IsCinematicCameraEnabled && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick() && ViewModesManager.IsFirstPersonModeEnabled;
+                bool isOnFloorFirstPersonMode = !IsCinematicCameraEnabled && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick() && ViewModesSystem.IsFirstPersonModeEnabled;
                 float limit = isOnFloorFirstPersonMode ? 90f : 10f;
 
                 Vector3 newTargetRotation = m_TargetRotation;
@@ -141,12 +141,12 @@ namespace CDOverhaul.Visuals
         public void UpdateViewBobbing()
         {
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-            bool firstPerson = ViewModesManager.IsFirstPersonModeEnabled;
+            bool firstPerson = ViewModesSystem.IsFirstPersonModeEnabled;
             float time = Time.time;
             FirstPersonMover player = CameraOwner;
 
             AdditionalOffsetMultiplier = player && player._isMovingForward ? (firstPerson ? 7f : 2.1f) : (firstPerson ? 3f : 0.6f);
-            if (ViewModesManager.IsFirstPersonModeEnabled)
+            if (ViewModesSystem.IsFirstPersonModeEnabled)
             {
                 AdditionalXOffset = Mathf.Sin(time * AdditionalOffsetMultiplier) * 0.7f;
                 AdditionalZOffset = Mathf.Sin((time + 0.2f) * AdditionalOffsetMultiplier * 1.2f) * 0.4f;

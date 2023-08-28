@@ -29,7 +29,7 @@ namespace CDOverhaul
         protected override void OnAssetsLoaded()
         {
             base.OnAssetsLoaded();
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAdditionalContentSupportEnabled || HasLoadedContent)
+            if (HasLoadedContent)
                 return;
 
             Controllers = new List<AdditionalContentControllerBase>();

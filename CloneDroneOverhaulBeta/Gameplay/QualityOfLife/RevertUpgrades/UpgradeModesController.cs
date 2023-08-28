@@ -51,7 +51,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             spawnedButton.localPosition = new Vector2(270, 155);
             spawnedButton.localEulerAngles = Vector3.zero;
             spawnedButton.localScale = Vector3.one;
-            spawnedButton.gameObject.SetActive(OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AllowReveringUpgrades);
+            spawnedButton.gameObject.SetActive(true);
             _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
 
             Button button = spawnedButton.GetComponent<Button>();

@@ -21,7 +21,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("SetErrorLabelVisible")]
         private static bool SetErrorLabelVisible_Prefix(string text)
         {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreEnergyUIImprovementsEnabled || !EnergyUIReplacement.PatchHUD || !OverhaulMod.IsModInitialized || VanillaUIImprovements.InstanceIsNull)
+            if (!EnergyUIReplacement.PatchHUD || !OverhaulMod.IsModInitialized || VanillaUIImprovements.InstanceIsNull)
                 return true;
 
             VanillaUIImprovements.Instance.EnergyUI.ShowText(text);
@@ -33,7 +33,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("onInsufficientEnergyAttempt")]
         private static bool onInsufficientEnergyAttempt_Prefix(EnergyUI __instance, float requestedAmount)
         {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreEnergyUIImprovementsEnabled || !EnergyUIReplacement.PatchHUD || !OverhaulMod.IsModInitialized || VanillaUIImprovements.InstanceIsNull)
+            if (!EnergyUIReplacement.PatchHUD || !OverhaulMod.IsModInitialized || VanillaUIImprovements.InstanceIsNull)
                 return true;
 
             __instance.showGlow(0f, requestedAmount, "InsufficientAmount");

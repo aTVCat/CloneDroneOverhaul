@@ -88,19 +88,17 @@ namespace CDOverhaul.Visuals
             instantiateEffects();
         }
 
-        protected override void AddListeners()
+        public override void AddListeners()
         {
             base.AddListeners();
-            OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.CurrentCameraSwitchedEventString, PatchCamera);
+            OverhaulEventsController.AddEventListener<Camera>(OverhaulCameraManager.CAMERA_CHANGED_EVENT, PatchCamera);
             OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchMainCamera);
         }
 
-        protected override void RemoveListeners()
+        public override void RemoveListeners()
         {
             base.RemoveListeners();
-            OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.CurrentCameraSwitchedEventString, PatchCamera);
+            OverhaulEventsController.RemoveEventListener<Camera>(OverhaulCameraManager.CAMERA_CHANGED_EVENT, PatchCamera);
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, PatchMainCamera);
         }
 

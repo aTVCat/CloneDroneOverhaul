@@ -19,13 +19,13 @@ namespace CDOverhaul.Visuals
             OverhaulDebug.Log("RenderManager initialized", EDebugType.Initialize);
         }
 
-        protected override void AddListeners()
+        public override void AddListeners()
         {
             base.AddListeners();
             OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
         }
 
-        protected override void RemoveListeners()
+        public override void RemoveListeners()
         {
             base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);

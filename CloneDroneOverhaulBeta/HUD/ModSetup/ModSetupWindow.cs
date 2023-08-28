@@ -64,7 +64,7 @@ namespace CDOverhaul.HUD
             m_DefaultAmpColPreset = MyModdedObject.GetObject<Button>(11);
             m_DefaultAmpColPreset.onClick.AddListener(SetDefaultAmpColPreset);
 
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsFirstUseSetupUIEnabled || ModSetupWindow.HasSetTheModUp)
+            if (HasSetTheModUp)
                 return;
 
             ArenaCameraManager.Instance.ArenaCameraTransform.position = new Vector3(-43, 15, -3);

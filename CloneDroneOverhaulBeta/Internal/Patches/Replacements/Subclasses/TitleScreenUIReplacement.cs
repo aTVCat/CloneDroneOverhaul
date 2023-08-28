@@ -123,7 +123,7 @@ namespace CDOverhaul.Patches
             }
 
             Transform lvlEditorButton = TransformUtils.FindChildRecursive(target.transform, "LevelEditorButton");
-            if (lvlEditorButton && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled)
+            if (lvlEditorButton)
             {
                 Button button = lvlEditorButton.GetComponent<Button>();
                 button.onClick = new Button.ButtonClickedEvent();
@@ -138,7 +138,7 @@ namespace CDOverhaul.Patches
             {
                 BaseFixes.ChangeButtonAction(workshopButton, "WorkshopButton", delegate
                 {
-                    bool canShowNewBrowser = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWorkshopBrowserEnabled && OverhaulWorkshopBrowserUI.UseThisUI && !OverhaulWorkshopBrowserUI.BrowserIsNull;
+                    bool canShowNewBrowser = OverhaulWorkshopBrowserUI.UseThisUI && !OverhaulWorkshopBrowserUI.BrowserIsNull;
                     if (canShowNewBrowser)
                     {
                         OverhaulWorkshopBrowserUI.Instance.Show();
@@ -209,30 +209,11 @@ namespace CDOverhaul.Patches
 
             OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
-
-            Transform joinPublicMatchButtonTransform = target.BattleRoyaleMenu.JoinRandomButton.transform;
-            joinPublicMatchButtonTransform.localPosition = new Vector3(-57f, -150f, 0);
-
-            Transform createPrivateModdedLobbyButtonTransform = Object.Instantiate(joinPublicMatchButtonTransform, joinPublicMatchButtonTransform.parent);
-            createPrivateModdedLobbyButtonTransform.localPosition = new Vector3(57f, -150f, 0);
-            Button createPrivateModdedLobbyButton = createPrivateModdedLobbyButtonTransform.GetComponent<Button>();
-            createPrivateModdedLobbyButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled;
-            LocalizedTextField localizedTextFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<LocalizedTextField>();
-            if (localizedTextFieldCreatePrivateModdedLobby)
-            {
-                Object.Destroy(localizedTextFieldCreatePrivateModdedLobby);
-                Text textFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<Text>();
-                textFieldCreatePrivateModdedLobby.text = "Modded game" + (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled ? " (Coming soon)" : string.Empty);
-            }
-
             SuccessfullyPatched = true;
         }
 
         private void patchGameModeSelectScreen(Transform main)
         {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGameModeSelectScreenRedesignEnabled)
-                return;
-
             GameModeSelectScreen gameModeSelectScreen = main.GetComponent<GameModeSelectScreen>();
             _ = gameModeSelectScreen.gameObject.AddComponent<GameModeSelectPanelBehaviourFix>();
             BaseFixes.UpdateSprites(gameModeSelectScreen.ButtonPrefab.transform);

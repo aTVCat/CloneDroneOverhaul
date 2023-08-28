@@ -208,61 +208,55 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (image)
                 Destroy(image);
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled)
-            {
-                RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
-                searchFieldRectT.pivot = new Vector2(0f, 0.5f);
-                searchFieldRectT.anchorMax = new Vector2(1f, 1f);
-                searchFieldRectT.anchorMin = new Vector2(0f, 0f);
-                searchFieldRectT.offsetMax = new Vector2(-27f, -2f);
-                searchFieldRectT.offsetMin = new Vector2(2f, 2f);
-                searchFieldRectT.anchoredPosition = new Vector2(2f, 0f);
-                searchFieldRectT.sizeDelta = new Vector2(-29f, -4f);
+            RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
+            searchFieldRectT.pivot = new Vector2(0f, 0.5f);
+            searchFieldRectT.anchorMax = new Vector2(1f, 1f);
+            searchFieldRectT.anchorMin = new Vector2(0f, 0f);
+            searchFieldRectT.offsetMax = new Vector2(-27f, -2f);
+            searchFieldRectT.offsetMin = new Vector2(2f, 2f);
+            searchFieldRectT.anchoredPosition = new Vector2(2f, 0f);
+            searchFieldRectT.sizeDelta = new Vector2(-29f, -4f);
 
-                RectTransform overhaulLVLEditorSettingsButtonTransform = new GameObject("OverhaulLevelEditorSettingsButton").AddComponent<RectTransform>();
-                overhaulLVLEditorSettingsButtonTransform.SetParent(searchFieldRectT.parent, false);
-                overhaulLVLEditorSettingsButtonTransform.localPosition = Vector3.zero;
-                overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
-                overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
-                overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
-                overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 0.5f);
-                overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(1f, 0.5f);
-                overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-3.5f, 0f);
-                overhaulLVLEditorSettingsButtonTransform.sizeDelta = new Vector2(20f, 18f);
-                Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
-                settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
-                settingsButtonImage.type = Image.Type.Sliced;
-                GameObject iconObject = new GameObject("Icon");
-                iconObject.transform.SetParent(overhaulLVLEditorSettingsButtonTransform);
-                iconObject.transform.localPosition = Vector3.zero;
-                iconObject.transform.localEulerAngles = Vector3.zero;
-                iconObject.transform.localScale = Vector3.one;
-                Image iconImage = iconObject.AddComponent<Image>();
-                if (OverhaulAssetsController.TryGetAsset("OutlineSettings-16x16", OverhaulAssetsController.ModAssetBundle_Part1, out Sprite asset))
-                {
-                    iconImage.sprite = asset;
-                }
+            RectTransform overhaulLVLEditorSettingsButtonTransform = new GameObject("OverhaulLevelEditorSettingsButton").AddComponent<RectTransform>();
+            overhaulLVLEditorSettingsButtonTransform.SetParent(searchFieldRectT.parent, false);
+            overhaulLVLEditorSettingsButtonTransform.localPosition = Vector3.zero;
+            overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
+            overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
+            overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
+            overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 0.5f);
+            overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(1f, 0.5f);
+            overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-3.5f, 0f);
+            overhaulLVLEditorSettingsButtonTransform.sizeDelta = new Vector2(20f, 18f);
+            Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
+            settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
+            settingsButtonImage.type = Image.Type.Sliced;
+            GameObject iconObject = new GameObject("Icon");
+            iconObject.transform.SetParent(overhaulLVLEditorSettingsButtonTransform);
+            iconObject.transform.localPosition = Vector3.zero;
+            iconObject.transform.localEulerAngles = Vector3.zero;
+            iconObject.transform.localScale = Vector3.one;
+            Image iconImage = iconObject.AddComponent<Image>();
+            if (OverhaulAssetsController.TryGetAsset("OutlineSettings-16x16", OverhaulAssetsController.ModAssetBundle_Part1, out Sprite asset))
+            {
+                iconImage.sprite = asset;
+            }
                 (iconObject.transform as RectTransform).sizeDelta = new Vector2(15, 15);
 
-                if (SelectionSettingsPanel)
-                {
-                    Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
-                    settingsButton.onClick.AddListener(SelectionSettingsPanel.ToggleVisibility);
-                }
-                else
-                {
-                    overhaulLVLEditorSettingsButtonTransform.gameObject.SetActive(false);
-                }
+            if (SelectionSettingsPanel)
+            {
+                Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
+                settingsButton.onClick.AddListener(SelectionSettingsPanel.ToggleVisibility);
+            }
+            else
+            {
+                overhaulLVLEditorSettingsButtonTransform.gameObject.SetActive(false);
             }
 
             RectTransform layoutContainer = libraryUI.ItemContainer;
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsVanillaLevelEditorUIOverhaulEnabled)
-            {
-                VerticalLayoutGroup verticalLayoutGroup = layoutContainer.GetComponent<VerticalLayoutGroup>();
-                verticalLayoutGroup.spacing = -2;
-                verticalLayoutGroup.padding.bottom = 15;
-                verticalLayoutGroup.padding.top = 5;
-            }
+            VerticalLayoutGroup verticalLayoutGroup = layoutContainer.GetComponent<VerticalLayoutGroup>();
+            verticalLayoutGroup.spacing = -1;
+            verticalLayoutGroup.padding.bottom = 15;
+            verticalLayoutGroup.padding.top = 5;
 
             LevelEditorLevelFilesUI levelEditorLevelFilesUI = levelEditorUI.FilesUI;
             if (levelEditorLevelFilesUI)

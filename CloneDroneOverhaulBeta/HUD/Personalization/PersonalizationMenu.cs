@@ -1329,7 +1329,7 @@ namespace CDOverhaul.HUD
 
             OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;
             if (info != null && info.HasReceivedData)
-                info.RefreshData();
+                info.UpdateData();
 
             StartCooldown();
         }

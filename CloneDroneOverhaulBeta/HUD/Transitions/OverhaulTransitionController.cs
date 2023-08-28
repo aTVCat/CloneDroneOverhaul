@@ -6,8 +6,7 @@ namespace CDOverhaul
 {
     public static class OverhaulTransitionController
     {
-        public static bool IsNewTransitionEnabled => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewTransitionScreenEnabled;
-
+        private static GameObject s_OldTransitionPrefab;
         private static GameObject s_TransitionPrefab;
 
         private static bool s_FadeOutOnSceneLoad;
@@ -15,17 +14,15 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            RectTransform rectT = OverhaulAssetsController.GetAsset("LoadingScreen", OverhaulAssetPart.Main).GetComponent<RectTransform>();
-            SceneTransitionManager.Instance.SceneTransitionCoverScreen = rectT;
+            if (!s_OldTransitionPrefab)
+                s_OldTransitionPrefab = OverhaulAssetsController.GetAsset("LoadingScreen", OverhaulAssetPart.Main);
+            if (!s_TransitionPrefab)
+                s_TransitionPrefab = OverhaulAssetsController.GetAsset("OverhaulTransition", OverhaulAssetPart.Main);
 
-            if (IsNewTransitionEnabled)
-            {
-                if (!s_TransitionPrefab)
-                    s_TransitionPrefab = OverhaulAssetsController.GetAsset("OverhaulTransition", OverhaulAssetPart.Main);
+            if (s_FadeOutOnSceneLoad)
+                CreateTransition(false, true);
 
-                if (s_FadeOutOnSceneLoad)
-                    CreateTransition(false, true);
-            }
+            SceneTransitionManager.Instance.SceneTransitionCoverScreen = s_OldTransitionPrefab.transform as RectTransform;
         }
 
         public static void CreateTransition(bool isSceneSwitching = false, bool fadeOut = false)

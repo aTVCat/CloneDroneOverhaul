@@ -142,7 +142,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ReleaseNockedArrow")]
         private static void ReleaseNockedArrow_Prefix(FirstPersonMover __instance, int serverFrame, ref Vector3 startPosition, Vector3 startFlyDirection, float rotationZ)
         {
-            if (!OverhaulMod.IsModInitialized || !ViewModesManager.IsFirstPersonModeEnabled || !__instance.IsMainPlayer())
+            if (!OverhaulMod.IsModInitialized || !ViewModesSystem.IsFirstPersonModeEnabled || !__instance.IsMainPlayer())
                 return;
 
             startPosition = __instance.GetCharacterModel().ArrowHolder.position;

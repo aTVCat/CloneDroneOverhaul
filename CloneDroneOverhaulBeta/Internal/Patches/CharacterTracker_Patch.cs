@@ -6,17 +6,17 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(CharacterTracker))]
     internal static class CharacterTracker_Patch
     {
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch("SetPlayer")]
-        private static void SetPlayer_Postfix(Character player)
+        private static void SetPlayer_Prefix(CharacterTracker __instance, Character player)
         {
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            if (player is FirstPersonMover)
-                OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.PlayerSetAsFirstPersonMover, player as FirstPersonMover);
+            if (__instance._player == player)
+                return;
 
-            OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.PlayerSetAsCharacter, player);
+            OverhaulEventsController.DispatchEvent(OverhaulGameplayManager.PLAYER_SET_EVENT, player);
         }
     }
 }

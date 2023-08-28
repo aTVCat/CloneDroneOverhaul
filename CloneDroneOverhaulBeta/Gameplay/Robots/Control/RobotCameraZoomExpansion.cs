@@ -36,7 +36,7 @@ namespace CDOverhaul.Gameplay.Combat
                 return;
             }
 
-            FOVOffset = Input.GetKey(KeyCode.Z) || ((ViewModesManager.IsFirstPersonModeEnabled || ZoomWhenAimingBow) && Owner.IsAimingBow())
+            FOVOffset = Input.GetKey(KeyCode.Z) || ((ViewModesSystem.IsFirstPersonModeEnabled || ZoomWhenAimingBow) && Owner.IsAimingBow())
                 ? Mathf.Lerp(FOVOffset, -ZoomBy, Time.unscaledDeltaTime * ZoomHardness)
                 : Mathf.Lerp(FOVOffset, 0f, Time.unscaledDeltaTime * ZoomHardness);
         }

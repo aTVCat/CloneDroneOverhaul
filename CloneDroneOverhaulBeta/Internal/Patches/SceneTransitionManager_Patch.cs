@@ -8,9 +8,6 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("DisconnectAndExitToMainMenu")]
         private static bool DisconnectAndExitToMainMenu_Prefix()
         {
-            if (!OverhaulTransitionController.IsNewTransitionEnabled)
-                return true;
-
             OverhaulTransitionController.GoToMainMenu();
             return false;
         }

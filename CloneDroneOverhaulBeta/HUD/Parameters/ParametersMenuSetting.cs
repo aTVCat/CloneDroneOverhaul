@@ -201,10 +201,6 @@ namespace CDOverhaul.HUD
 
             setToggleValue(SettingInfo.GetPref<bool>(Setting), false);
             m_Toggle.onValueChanged.AddListener(setToggleValue);
-
-            // This was just an experiment
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.ApplyThemeColorOnSettings)
-                m_ToggleBGOn.GetComponent<Image>().color = OverhaulCombatState.GetUIThemeColor(ParametersMenu.DefaultBarColor);
         }
 
         private void setInputFieldValue(string value)

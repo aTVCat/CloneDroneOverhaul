@@ -10,6 +10,7 @@ using CDOverhaul.Visuals;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -28,9 +29,11 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
-        private static bool s_HasUpdatedLangFont;
-
         public static event Action OnAssetsLoadDone;
+
+        private List<IGenericStringEventListener> m_GenericStringEventListeners = new List<IGenericStringEventListener>();
+
+        private static bool s_HasUpdatedLangFont;
 
         /// <summary>
         /// The UI controller instance
@@ -43,11 +46,15 @@ namespace CDOverhaul
 
         public override void OnEvent(GenericStringForModdingEvent moddedEvent)
         {
-            if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData) || !moddedEvent.EventData.StartsWith(OverhaulPlayerInfoController.PlayerInfoEventPrefix))
+            foreach (IGenericStringEventListener listener in m_GenericStringEventListeners)
+                if (listener != null)
+                    listener.OnGenericStringEvent(moddedEvent);
+
+            if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData) || !moddedEvent.EventData.StartsWith(OverhaulPlayerInfosSystem.EVENT_PREFIX))
                 return;
 
             string[] split = moddedEvent.EventData.Split('@');
-            if (split[1] != OverhaulPlayerInfoController.PlayerInfoVersion)
+            if (split[1] != OverhaulPlayerInfosSystem.VERSION)
                 return;
 
             OverhaulPlayerInfoRefreshEventData eventData;
@@ -57,7 +64,6 @@ namespace CDOverhaul
             }
             catch
             {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Could not deserialize OverhaulPlayerInfoRefreshEventData! Version: " + split[1]);
                 return;
             }
 
@@ -73,10 +79,27 @@ namespace CDOverhaul
                 return;
             }
 
-            if (eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
+            if (eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE || eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID())
                 foreach (OverhaulPlayerInfo overhaulPlayerInfo in OverhaulPlayerInfo.AllOverhaulPlayerInfos)
                     if (overhaulPlayerInfo)
                         overhaulPlayerInfo.OnGenericStringEvent(eventData);
+        }
+
+        public void AddGenericStringEventListener(IGenericStringEventListener listener)
+        {
+            if (m_GenericStringEventListeners == null)
+                m_GenericStringEventListeners = new List<IGenericStringEventListener>();
+
+            if (!m_GenericStringEventListeners.Contains(listener))
+                m_GenericStringEventListeners.Add(listener);
+        }
+
+        public void RemoveGenericStringEventListener(IGenericStringEventListener listener)
+        {
+            if (m_GenericStringEventListeners.IsNullOrEmpty())
+                return;
+
+            m_GenericStringEventListeners.Remove(listener);
         }
 
         internal bool TryInitialize(out string errorString)
@@ -106,25 +129,14 @@ namespace CDOverhaul
             controllers.transform.SetParent(base.transform);
             OverhaulController.InitializeStatic(controllers);
 
-            ModInitialize modInitialize = new ModInitialize();
-            modInitialize.Load();
+            using (ModInitialize modInitialize = new ModInitialize())
+                modInitialize.Load();
 
-            _ = OverhaulController.Add<OverhaulGameplayCoreController>();
-            _ = OverhaulController.Add<OverhaulPlayerInfoController>();
-            _ = OverhaulController.Add<OverhaulVoxelsController>();
-
-            _ = OverhaulController.Add<ViewModesManager>();
             _ = OverhaulController.Add<OverhaulDiscordController>();
             _ = OverhaulController.Add<OverhaulMultiplayerController>();
 
             OverhaulPlayerIdentifier.Initialize();
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled && !OverhaulBootUI.Show())
-                _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
-        }
-
-        private void Start()
-        {
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsBootScreenEnabled)
+            if (!OverhaulBootUI.Show())
                 _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
         }
 

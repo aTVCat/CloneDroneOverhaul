@@ -8,7 +8,7 @@ namespace CDOverhaul
     /// <summary>
     /// The base class of any controller in this mod.
     /// </summary>
-    public abstract class OverhaulController : OverhaulBehaviour
+    public abstract class OverhaulController : OverhaulAdvancedBehaviour
     {
         private const BindingFlags BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 

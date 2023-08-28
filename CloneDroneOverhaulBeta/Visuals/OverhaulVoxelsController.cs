@@ -4,21 +4,12 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public class OverhaulVoxelsController : OverhaulController
+    public class OverhaulVoxelsController : OverhaulBehaviour
     {
+        public const float COLOR_MULTIPLIER = 0.8f;
+
         [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
         public static bool MakeLaserBurnVoxels;
-
-        private static float m_OgFireBurnColorMultiplier = 0.8f;
-
-        public override void Initialize()
-        {
-            AttackManager manager = AttackManager.Instance;
-            if (manager)
-            {
-                m_OgFireBurnColorMultiplier = manager.FireBurnColorMultiplier;
-            }
-        }
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
@@ -61,7 +52,7 @@ namespace CDOverhaul
             }
         }
 
-        private static byte getColor(byte color) => (byte)Mathf.RoundToInt(color * m_OgFireBurnColorMultiplier);
+        private static byte getColor(byte color) => (byte)Mathf.RoundToInt(color * COLOR_MULTIPLIER);
 
         public static PicaVoxelPoint GetOffsetPoint(in PicaVoxelPoint picaVoxelPoint, in int OffX, in int OffY, in int OffZ) => new PicaVoxelPoint(picaVoxelPoint.X + OffX, picaVoxelPoint.Y + OffY, picaVoxelPoint.Z + OffZ);
         public static PicaVoxelPoint[] GetClosestPoints(in PicaVoxelPoint picaVoxelPoint)

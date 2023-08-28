@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("replaceMaterialWithSelected")]
         private static bool replaceMaterialWithSelected_Prefix(ObjectPlacedInLevel __instance, Renderer targetRenderer)
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled || !LevelEditorSelectionSettingsPanel.EnableOutline)
+            if (!OverhaulMod.IsModInitialized || !LevelEditorSelectionSettingsPanel.EnableOutline)
                 return true;
 
             ThreeDOutline threeDOutline = targetRenderer.GetComponent<ThreeDOutline>();
@@ -40,7 +40,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled && !m_Objects.IsNullOrEmpty() && m_Objects.ContainsKey(__instance))
+            if (!m_Objects.IsNullOrEmpty() && m_Objects.ContainsKey(__instance))
             {
                 List<ThreeDOutline> list = m_Objects[__instance];
                 if (!list.IsNullOrEmpty())

@@ -14,12 +14,6 @@
             }
         }
 
-        public bool HasAddedEventListeners
-        {
-            get;
-            protected set;
-        }
-
         public override void Initialize()
         {
             OverhaulCore.OnAssetsLoadDone += OnAssetsLoaded;
@@ -42,16 +36,6 @@
             RemoveListeners();
             s_Reference = null;
             OverhaulCore.OnAssetsLoadDone -= OnAssetsLoaded;
-        }
-
-        protected virtual void AddListeners()
-        {
-            HasAddedEventListeners = true;
-        }
-
-        protected virtual void RemoveListeners()
-        {
-            HasAddedEventListeners = false;
         }
     }
 }

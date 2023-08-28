@@ -15,7 +15,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            __instance.UpgradeUIBackground.gameObject.SetActive(challengeUpgradeConfigMode || ViewModesManager.IsFirstPersonModeEnabled);
+            __instance.UpgradeUIBackground.gameObject.SetActive(challengeUpgradeConfigMode || ViewModesSystem.IsFirstPersonModeEnabled);
             int i = 0;
             do
             {

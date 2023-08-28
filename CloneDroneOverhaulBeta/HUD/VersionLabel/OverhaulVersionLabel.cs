@@ -61,7 +61,7 @@ namespace CDOverhaul.HUD
             m_PatchNotesButton.onClick.AddListener(onPatchNotesButtonClicked);
 
             OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
-            OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
+            OverhaulEventsController.AddEventListener(OverhaulGameplayManager.GAMEMODE_CHANGED_EVENT, onGamemodeChanged);
         }
 
 
@@ -71,7 +71,7 @@ namespace CDOverhaul.HUD
             Instance = null;
 
             OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
-            OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
+            OverhaulEventsController.RemoveEventListener(OverhaulGameplayManager.GAMEMODE_CHANGED_EVENT, onGamemodeChanged);
         }
 
         private void Update()

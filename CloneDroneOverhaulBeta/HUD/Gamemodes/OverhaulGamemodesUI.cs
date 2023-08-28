@@ -34,9 +34,6 @@ namespace CDOverhaul.HUD.Gamemodes
             OverhaulChallengesUI = MyModdedObject.GetObject<Transform>(5).gameObject.AddComponent<ChallengesUI>().Initialize<ChallengesUI>(this);
             OverhaulDuelPlayUI = MyModdedObject.GetObject<Transform>(7).gameObject.AddComponent<DuelPlayUI>().Initialize<DuelPlayUI>(this);
 
-            if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsOverhaulGamemodesUIEnabled)
-                return;
-
             GameModeCardData[] datas = GameUIRoot.Instance.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;
             datas[0].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[0].ClickedCallback.AddListener(delegate

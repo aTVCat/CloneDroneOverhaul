@@ -34,13 +34,13 @@ namespace CDOverhaul.LevelEditor
             RemoveComponents();
         }
 
-        protected override void AddListeners()
+        public override void AddListeners()
         {
             base.AddListeners();
             OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorStarted, AddComponents, true);
         }
 
-        protected override void RemoveListeners()
+        public override void RemoveListeners()
         {
             base.RemoveListeners();
             OverhaulEventsController.RemoveEventListener(GlobalEvents.LevelEditorStarted, AddComponents, true);

@@ -8,8 +8,8 @@ namespace CDOverhaul.Gameplay.Multiplayer
 {
     public class OverhaulPlayerInfo : GlobalEventListener
     {
-        public const string InfoReceivedEventString = "OnOverhaulPlayerInfoReceived";
-        public const string PlayerDataUpdateEventString = "OnPlayerDataUpdate";
+        public const string GOT_INFO_EVENT = "PlayerInfoGet";
+        public const string UPDATE_INFO_EVENT = "PlayerInfoUpdate";
 
         public static readonly List<OverhaulPlayerInfo> AllOverhaulPlayerInfos = new List<OverhaulPlayerInfo>();
 
@@ -41,21 +41,17 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public string GetData(string id) => !HasReceivedData ? string.Empty : Hashtable[id].ToString();
         public string GetUserFlags() => !HasReceivedData || !Hashtable.ContainsKey("State.Flags") ? string.Empty : Hashtable["State.Flags"].ToString();
 
-        private void Start()
+        public void Initialize(MultiplayerPlayerInfoState infoState)
         {
             AllOverhaulPlayerInfos.Add(this);
-            m_PlayerInfoState = base.GetComponent<MultiplayerPlayerInfoState>();
-            if (m_PlayerInfoState)
-            {
-                if (m_PlayerInfoState.state.PlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID())
-                {
-                    LocalOverhaulPlayerInfo = this;
-                    LocalPlayerInfoState = m_PlayerInfoState;
-                }
+            m_PlayerInfoState = infoState;
 
-                RequestData();
-                return;
+            if (infoState.state.PlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID())
+            {
+                LocalOverhaulPlayerInfo = this;
+                LocalPlayerInfoState = infoState;
             }
+            RequestData();
         }
 
         private void OnDestroy()
@@ -68,15 +64,13 @@ namespace CDOverhaul.Gameplay.Multiplayer
             data.SenderPlayFabID = OverhaulPlayerIdentifier.GetLocalPlayFabID();
 
             GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(GlobalTargets.AllClients, ReliabilityModes.ReliableOrdered);
-            newEvent.EventData = OverhaulPlayerInfoController.PlayerInfoEventPrefix + OverhaulPlayerInfoController.PlayerInfoVersion;
+            newEvent.EventData = OverhaulPlayerInfosSystem.EVENT_PREFIX + OverhaulPlayerInfosSystem.VERSION;
             newEvent.BinaryData = data.SerializeObject();
             newEvent.Send();
         }
 
         public void RequestData()
         {
-            UnityEngine.Debug.LogWarning("REQUEST DATA " + OverhaulPlayerIdentifier.GetLocalPlayFabID() + " " + m_PlayerInfoState.state.PlayFabID);
-
             OverhaulPlayerInfoRefreshEventData eventData = new OverhaulPlayerInfoRefreshEventData
             {
                 ReceiverPlayFabID = m_PlayerInfoState.state.PlayFabID,
@@ -85,10 +79,8 @@ namespace CDOverhaul.Gameplay.Multiplayer
             CreateAndSendEvent(eventData);
         }
 
-        public void RefreshData()
+        public void UpdateData()
         {
-            UnityEngine.Debug.LogWarning("REFRESH DATA");
-
             OverhaulPlayerInfoRefreshEventData eventData = new OverhaulPlayerInfoRefreshEventData
             {
                 ReceiverPlayFabID = OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE,
@@ -102,8 +94,6 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             if (eventData.IsRequest)
             {
-                UnityEngine.Debug.LogWarning("GET REQUEST DATA " + OverhaulPlayerIdentifier.GetLocalPlayFabID() + " " + eventData.SenderPlayFabID);
-
                 OverhaulPlayerInfoRefreshEventData newEventData = new OverhaulPlayerInfoRefreshEventData
                 {
                     ReceiverPlayFabID = eventData.SenderPlayFabID,
@@ -116,29 +106,29 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 if (m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
                 {
-                    UnityEngine.Debug.LogWarning("GET ANSWER DATA " + eventData.SenderPlayFabID + " " + eventData.ReceiverPlayFabID);
-
                     Hashtable = eventData.Hashtable;
-                    OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
-                    OverhaulEventsController.DispatchEvent(PlayerDataUpdateEventString, m_PlayerInfoState.state.PlayFabID);
+                    OverhaulEventsController.DispatchEvent(GOT_INFO_EVENT, Hashtable);
+                    OverhaulEventsController.DispatchEvent(UPDATE_INFO_EVENT, m_PlayerInfoState.state.PlayFabID);
                     return;
                 }
             }
         }
 
-        public static Hashtable CreateNewHashtable(bool generateDefaultData = false, string replacedPlayfabID = "")
+        public static Hashtable CreateNewHashtable()
         {
             return new Hashtable
             {
-                ["ID"] = generateDefaultData ? replacedPlayfabID : OverhaulPlayerIdentifier.GetLocalPlayFabID(),
-                ["Skin.Sword"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSwordSkin,
-                ["Skin.Bow"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedBowSkin,
-                ["Skin.Hammer"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedHammerSkin,
-                ["Skin.Spear"] = generateDefaultData ? "Default" : WeaponSkinsController.EquippedSpearSkin,
+                ["ID"] = OverhaulPlayerIdentifier.GetLocalPlayFabID(),
+                ["Skin.Sword"] = WeaponSkinsController.EquippedSwordSkin,
+                ["Skin.Bow"] = WeaponSkinsController.EquippedBowSkin,
+                ["Skin.Hammer"] = WeaponSkinsController.EquippedHammerSkin,
+                ["Skin.Spear"] = WeaponSkinsController.EquippedSpearSkin,
+                ["Skin.Shield"] = string.Empty,
+                ["Skin.Arrow"] = string.Empty,
                 ["Outfits.Equipped"] = OutfitsController.EquippedAccessories,
                 ["Pets.Equipped"] = PetsController.EquippedPets,
                 ["State.Status"] = PlayerStatusBehaviour.GetOwnStatus(),
-                ["State.Flags"] = OverhaulPlayerInfoController.GetUserFlags(),
+                ["State.Flags"] = OverhaulPlayerInfosSystem.GetUserFlags(),
                 ["State.Version"] = OverhaulVersion.modVersion.ToString(),
                 ["Custom.Data"] = string.Empty,
             };
@@ -146,15 +136,10 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static OverhaulPlayerInfo GetOverhaulPlayerInfo(FirstPersonMover mover)
         {
-            if (!GameModeManager.IsMultiplayer() || !MultiplayerPlayerInfoManager.Instance || !mover)
+            if (GameModeManager.IsSinglePlayer() || !mover)
                 return null;
 
-            string playfabID = mover.GetPlayFabID();
-            if (string.IsNullOrEmpty(playfabID))
-                return null;
-
-            MultiplayerPlayerInfoState state = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(playfabID);
-            return state == null ? null : state.GetComponent<OverhaulPlayerInfo>();
+            return MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(mover.GetPlayFabID())?.GetComponent<OverhaulPlayerInfo>();
         }
     }
 }

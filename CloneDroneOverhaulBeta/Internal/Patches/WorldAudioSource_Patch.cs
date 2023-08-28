@@ -17,7 +17,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Initialize")]
         private static void Initialize_Postfix(WorldAudioSource __instance)
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAudioReverbFilterEnabled || __instance.gameObject.name.Contains("Global"))
+            if (!OverhaulMod.IsModInitialized || __instance.gameObject.name.Contains("Global"))
                 return;
 
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();

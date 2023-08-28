@@ -8,7 +8,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("GetArrowVelocity")]
         private static bool GetArrowVelocity_Postfix(ref float __result)
         {
-            __result = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || GameModeManager.IsMultiplayer() ? 40f : 75f;
+            __result = GameModeManager.IsMultiplayer() ? 40f : 75f;
             return false;
         }
     }

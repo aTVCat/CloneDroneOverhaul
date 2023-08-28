@@ -95,7 +95,7 @@ namespace CDOverhaul.Visuals
 
             RefreshView();
 
-            OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEventsController.AddEventListener(OverhaulGameplayManager.PLAYER_SET_EVENT, RefreshView);
             OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
@@ -104,7 +104,7 @@ namespace CDOverhaul.Visuals
             base.OnDisposed();
             SetHeadRenderersActive(true);
 
-            OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEventsController.RemoveEventListener(OverhaulGameplayManager.PLAYER_SET_EVENT, RefreshView);
             OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
@@ -121,22 +121,22 @@ namespace CDOverhaul.Visuals
                 m_HasRefreshedCinematicCameraOnStart = true;
             }
 
-            if (!m_CineCameraOn && m_FPModeCameraParent != null && ViewModesManager.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
+            if (!m_CineCameraOn && m_FPModeCameraParent != null && ViewModesSystem.IsFirstPersonModeEnabled && m_Camera != null && !PhotoManager.Instance.IsInPhotoMode())
             {
                 //Vector3 bowAimOffset = Owner.IsAimingBow() ? ViewModesController.AimBowCameraOffset : Vector3.zero;
                 m_Camera.transform.parent.localPosition = new Vector3(0f, 1.3f, -4.8f);
 
                 m_Camera.transform.position = m_FPModeCameraParent.transform.position +
                     (m_FPModeCameraParent.transform.up *
-                    (ViewModesManager.DefaultCameraUpTransformMultiplier +
-                    (ViewModesManager.IsLargeBot(Owner) ? ViewModesManager.AdditionalCameraUpTransformMultiplier : 0f) +
-                    (Owner.IsRidingOtherCharacter() ? ViewModesManager.AdditionalCameraUpTransformMultiplier * 2f : 0f)));
+                    (ViewModesSystem.DEFAULT_UP_MULTIPLIER +
+                    (ViewModesSystem.IsLargeBot(Owner) ? ViewModesSystem.ADDITIONAL_UP_MULTIPLIER : 0f) +
+                    (Owner.IsRidingOtherCharacter() ? ViewModesSystem.ADDITIONAL_UP_MULTIPLIER * 2f : 0f)));
 
                 Vector3 vector3 = m_Camera.transform.localPosition;
                 vector3.x = 0f;
                 m_Camera.transform.localPosition = vector3;
 
-                if (ViewModesManager.SyncCameraWithHeadRotation)
+                if (ViewModesSystem.SyncCameraWithHeadRotation)
                     m_Camera.transform.eulerAngles = m_FPModeCameraParent.transform.eulerAngles;
             }
 
@@ -183,7 +183,7 @@ namespace CDOverhaul.Visuals
 
         public void RefreshHeadVisibility()
         {
-            SetHeadRenderersActive(m_CineCameraOn || !ViewModesManager.IsFirstPersonModeEnabled || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetHeadRenderersActive(m_CineCameraOn || !ViewModesSystem.IsFirstPersonModeEnabled || !Owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         public void SetHeadRenderersActive(bool value)
