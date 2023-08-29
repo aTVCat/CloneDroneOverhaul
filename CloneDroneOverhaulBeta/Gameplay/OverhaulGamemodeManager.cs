@@ -6,7 +6,7 @@ namespace CDOverhaul
     {
         private const string GunModID = "ee32ba1b-8c92-4f50-bdf4-400a14da829e";
 
-        public static bool IsMultiplayerSandbox() => OverhaulMultiplayerController.Instance && OverhaulMultiplayerController.FullInitialization;
+        public static bool IsMultiplayerSandbox() => OverhaulMultiplayerManager.Instance && OverhaulMultiplayerManager.FullInitialization;
 
         public static bool SupportsPersonalization() => true;
         public static bool SupportsOutfits() => SupportsPersonalization();

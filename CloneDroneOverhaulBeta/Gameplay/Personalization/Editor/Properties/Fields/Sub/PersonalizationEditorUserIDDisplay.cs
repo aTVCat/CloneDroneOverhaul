@@ -92,14 +92,14 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                         m_DisplayName.text = "ERROR";
                         return;
                     }
-
-                    if (!OverhaulDiscordController.HasInitialized)
+                    /*
+                    if (!OverhaulDiscordRPC.HasInitialized)
                     {
                         m_DisplayName.text = "[No Client]";
                         break;
                     }
                     m_DisplayName.text = "[Loading...]";
-                    OverhaulDiscordController.GetUserInfo(result2, delegate (Discord.User user)
+                    OverhaulDiscordRPC.GetUserInfo(result2, delegate (Discord.User user)
                     {
                         if (m_DisplayName)
                             m_DisplayName.text = user.Username;
@@ -107,7 +107,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                     {
                         if (m_DisplayName)
                             m_DisplayName.text = string.Format("[ERROR: {0}]", r);
-                    });
+                    });*/
                     break;
                 case 3:
                     m_DisplayName.text = "[Nicknames are unsupported]";

@@ -11,7 +11,7 @@ namespace CDOverhaul.HUD.Tooltips
             get
             {
                 if (!m_Controller)
-                    m_Controller = OverhaulController.Get<OverhaulTooltipsController>();
+                    m_Controller = null;
 
                 return m_Controller;
             }

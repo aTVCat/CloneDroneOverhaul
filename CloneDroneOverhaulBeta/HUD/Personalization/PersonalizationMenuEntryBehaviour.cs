@@ -126,7 +126,7 @@ namespace CDOverhaul.HUD
             IsSelected = false;
             if (IsOutfitSelection)
             {
-                SetSelected(OutfitsController.EquippedAccessories.Contains(m_Skin), true);
+                SetSelected(OutfitsSystem.EquippedAccessories.Contains(m_Skin), true);
                 PersonalizationMenu.StartCooldown();
 
                 FirstPersonMover mover = CharacterTracker.Instance.GetPlayerRobot();

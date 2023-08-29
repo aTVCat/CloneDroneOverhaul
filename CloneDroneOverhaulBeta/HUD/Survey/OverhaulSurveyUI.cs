@@ -80,7 +80,7 @@ namespace CDOverhaul.HUD
 
         public void OnExitGameClick()
         {
-            OverhaulTransitionController.DoTransitionWithAction(delegate
+            OverhaulTransitionManager.reference.DoTransition(delegate
             {
                 Application.Quit();
             });
@@ -145,7 +145,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator executeFeedbackWebhookCoroutine()
         {
-            OverhaulWebhooksController.ExecuteSurveysWebhook(SelectedRankIndex, m_ImproveText.text, m_LikedText.text, m_IncludeGameLogs.isOn, m_IncludeDeviceLogs.isOn);
+            OverhaulWebhooks.ExecuteSurveysWebhook(SelectedRankIndex, m_ImproveText.text, m_LikedText.text, m_IncludeGameLogs.isOn, m_IncludeDeviceLogs.isOn);
             yield return new WaitForSecondsRealtime(2f);
             m_SendingLabelTransform.gameObject.SetActive(false);
             m_ExitGame.interactable = true;

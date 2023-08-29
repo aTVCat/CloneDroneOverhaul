@@ -114,7 +114,7 @@ namespace CDOverhaul.HUD
 
         public void ExitGame()
         {
-            OverhaulTransitionController.DoTransitionWithAction(delegate
+            OverhaulTransitionManager.reference.DoTransition(delegate
             {
                 Application.Quit();
             });
@@ -128,7 +128,7 @@ namespace CDOverhaul.HUD
             if (string.IsNullOrEmpty(ErrorManager_Patch.Report))
                 return;
 
-            OverhaulWebhooksController.ExecuteCrashReportsWebhook(ErrorManager_Patch.Report);
+            OverhaulWebhooks.ExecuteCrashReportsWebhook(ErrorManager_Patch.Report);
             s_HasSentReport = true;
             SetSendReportButtonInteractable(false);
         }

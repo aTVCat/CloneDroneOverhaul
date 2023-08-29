@@ -14,16 +14,16 @@ namespace CDOverhaul.Patches
             if (!ModSetupWindow.HasSetTheModUp && GameModeManager.IsOnTitleScreen())
                 __result = "U6Bronze2";
 
-            if (OvermodesController.IsOvermode())
-                __result = OvermodesController.Instance.CurrentOvermode.GetCurrentLevelID();
+            if (OvermodesManager.IsOvermode())
+                __result = OvermodesManager.Instance.CurrentOvermode.GetCurrentLevelID();
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("getCurrentGameData")]
         private static void getCurrentGameData_Postfix(GameDataManager __instance, ref GameData __result)
         {
-            if (OvermodesController.IsOvermode())
-                __result = OvermodesController.Instance.CurrentOvermode.GameModeData;
+            if (OvermodesManager.IsOvermode())
+                __result = OvermodesManager.Instance.CurrentOvermode.GameModeData;
         }
     }
 }

@@ -36,19 +36,19 @@ namespace CDOverhaul.Gameplay.Outfits
             if (!Owner || !OverhaulGamemodeManager.SupportsOutfits())
                 return;
 
-            OutfitsController outfitsController = OverhaulController.Get<OutfitsController>();
+            OutfitsSystem outfitsController = PersonalizationManager.reference?.outfits;
             if (!outfitsController)
                 return;
 
             string equippedItems = string.Empty;
-            if (PlayerInformation)
+            if (playerInformation)
             {
-                Hashtable hashtable = PlayerInformation.Hashtable;
+                Hashtable hashtable = playerInformation.Hashtable;
                 if (hashtable != null && hashtable.ContainsKey("Outfits.Equipped"))
                     equippedItems = hashtable["Outfits.Equipped"].ToString();
             }
-            else if (!GameModeManager.IsMultiplayer() && (OutfitsController.AllowEnemiesWearAccesories || IsOwnerPlayer()))
-                equippedItems = OutfitsController.EquippedAccessories;
+            else if (!GameModeManager.IsMultiplayer() && (OutfitsSystem.AllowEnemiesWearAccesories || IsOwnerPlayer()))
+                equippedItems = OutfitsSystem.EquippedAccessories;
 
             foreach (OutfitItem accessoryItem in outfitsController.GetItemsWithSaveString(equippedItems))
             {

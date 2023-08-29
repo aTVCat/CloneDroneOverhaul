@@ -22,10 +22,10 @@ namespace CDOverhaul.Patches
                 if (!OverhaulCrashPreventionController.couldntAllocateError && report.Contains("Could not allocate memory"))
                 {
                     OverhaulCrashPreventionController.couldntAllocateError = true;
-                    OverhaulWebhooksController.ExecuteErrorsWebhook(report.Replace("```", string.Empty));
+                    OverhaulWebhooks.ExecuteErrorsWebhook(report.Replace("```", string.Empty));
                 }
 
-                if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
+                if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooks.HasExcludedError(report))
                     return false;
 
                 OverhaulCrashScreen crashScreen = OverhaulCrashScreen.Instance;

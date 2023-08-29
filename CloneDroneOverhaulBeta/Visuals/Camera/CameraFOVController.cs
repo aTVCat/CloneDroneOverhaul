@@ -8,10 +8,12 @@ namespace CDOverhaul.Visuals
     {
         public const float DEFAULT_VALUE = 0f;
         public const float FIRST_PERSON_DEFAULT_VALUE = 20f;
-
         public const float PAUSED_VALUE = -20f;
-
         public const float MULTIPLIER = 12.5f;
+
+        private TimeManager m_TimeManager;
+        private PhotoManager m_PhotoManager;
+        private UpgradeUI m_UpgradeUI;
 
         private float m_CurrentFOV;
 
@@ -21,10 +23,6 @@ namespace CDOverhaul.Visuals
             get => m_OverrideFOV && !m_PhotoManager.IsInPhotoMode();
             set => m_OverrideFOV = value;
         }
-
-        private TimeManager m_TimeManager;
-        private PhotoManager m_PhotoManager;
-        private UpgradeUI m_UpgradeUI;
 
         public override void Start()
         {

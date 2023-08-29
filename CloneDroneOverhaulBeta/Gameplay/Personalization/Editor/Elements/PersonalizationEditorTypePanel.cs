@@ -43,7 +43,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (value)
             {
-                m_SkinsButton.interactable = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
+                m_SkinsButton.interactable = PersonalizationManager.reference?.weaponSkins;
             }
         }
 
@@ -82,19 +82,19 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void onSkinsButtonClicked()
         {
-            PersonalizationEditor.EditingCategory = PersonalizationCategory.WeaponSkins;
+            PersonalizationEditor.EditingCategory = EPersonalizationCategory.WeaponSkins;
             EditorUI.LoadPanel.OnLoadButtonClicked();
         }
 
         private void onOutfitsButtonClicked()
         {
-            PersonalizationEditor.EditingCategory = PersonalizationCategory.Outfits;
+            PersonalizationEditor.EditingCategory = EPersonalizationCategory.Outfits;
             EditorUI.LoadPanel.OnLoadButtonClicked();
         }
 
         private void onPetsButtonClicked()
         {
-            PersonalizationEditor.EditingCategory = PersonalizationCategory.Pets;
+            PersonalizationEditor.EditingCategory = EPersonalizationCategory.Pets;
             EditorUI.LoadPanel.OnLoadButtonClicked();
         }
     }

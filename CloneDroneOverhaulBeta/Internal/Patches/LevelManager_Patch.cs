@@ -11,9 +11,9 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("getLevelDescriptions")]
         private static bool getLevelDescriptions_Postfix(ref List<LevelDescription> __result)
         {
-            if (OvermodesController.IsOvermode())
+            if (OvermodesManager.IsOvermode())
             {
-                __result = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
+                __result = OvermodesManager.Instance.CurrentOvermode.GetLevelDescriptions();
                 return false;
             }
             return true;

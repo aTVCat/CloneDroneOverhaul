@@ -108,14 +108,6 @@ namespace CDOverhaul.Gameplay
             if (!result && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 result = localPlayFabID.Equals("883CC7F4CA3155A3");
 
-            // Check discord user id (Not the best idea)
-            if (!result && OverhaulDiscordController.Instance && OverhaulDiscordController.HasInitialized)
-            {
-                long id = OverhaulDiscordController.Instance.UserID;
-                if (id != -1)
-                    result = m_ExclusivePlayerID.Contains(id.ToString());
-            }
-
             return result;
         }
 

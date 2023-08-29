@@ -16,7 +16,7 @@
 
         public override void Initialize()
         {
-            OverhaulCore.OnAssetsLoadDone += OnAssetsLoaded;
+            ModInitialize.OnAssetsLoadDone += OnAssetsLoaded;
             AddListeners();
         }
 
@@ -35,7 +35,7 @@
             base.OnDisposed();
             RemoveListeners();
             s_Reference = null;
-            OverhaulCore.OnAssetsLoadDone -= OnAssetsLoaded;
+            ModInitialize.OnAssetsLoadDone -= OnAssetsLoaded;
         }
     }
 }

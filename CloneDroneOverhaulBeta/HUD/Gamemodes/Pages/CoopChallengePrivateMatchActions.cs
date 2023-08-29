@@ -29,7 +29,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 ChallengeManager.Instance.CreatePrivateCoopChallenge(ChallengeID);
                 FullscreenWindow.GamemodesUI.Hide();
             }
-            OverhaulTransitionController.DoTransitionWithAction(action, null, 0.10f);
+            OverhaulTransitionManager.reference.DoTransition(action, null, 0.10f);
         }
 
         public void OnPublicClick()
@@ -39,7 +39,7 @@ namespace CDOverhaul.HUD.Gamemodes
                 ChallengeManager.Instance.JoinPublicCoopChallenge(ChallengeID);
                 FullscreenWindow.GamemodesUI.Hide();
             }
-            OverhaulTransitionController.DoTransitionWithAction(action, null, 0.10f);
+            OverhaulTransitionManager.reference.DoTransition(action, null, 0.10f);
         }
     }
 }

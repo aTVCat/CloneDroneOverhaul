@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.RichPresence;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             base.Start();
             Tuple<Func<bool>, string> debugFlag = new Tuple<Func<bool>, string>(() => OverhaulVersion.IsDebugBuild, "debug ");
-            Tuple<Func<bool>, string> discordFlag = new Tuple<Func<bool>, string>(() => OverhaulDiscordController.HasInitialized, "discord ");
+            Tuple<Func<bool>, string> discordFlag = new Tuple<Func<bool>, string>(() => OverhaulRPCManager.reference.discord.initialized, "discord ");
             //Tuple<Func<bool>, string> testerFlag = new Tuple<Func<bool>, string>(() => OverhaulDiscordController.HasInitialized, "tester ");
         }
 

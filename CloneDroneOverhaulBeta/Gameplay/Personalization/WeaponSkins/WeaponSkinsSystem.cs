@@ -3,7 +3,7 @@
     /// <summary>
     /// Another new skins controller that should work better this time
     /// </summary>
-    public class WeaponSkinsController : PersonalizationItemsController
+    public class WeaponSkinsSystem : PersonalizationItemsSystemBase
     {
         public const string DEFAULT = "default";
 
@@ -26,11 +26,6 @@
         public static string EquippedShieldSkin;
         [OverhaulSettingAttribute(ARROW_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedArrowSkin;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {

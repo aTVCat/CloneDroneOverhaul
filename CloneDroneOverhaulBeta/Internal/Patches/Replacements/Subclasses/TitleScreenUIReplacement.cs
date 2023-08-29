@@ -129,7 +129,7 @@ namespace CDOverhaul.Patches
                 button.onClick = new Button.ButtonClickedEvent();
                 button.onClick.AddListener(delegate
                 {
-                    OverhaulTransitionController.DoTransitionWithAction(target.OnLevelEditorButtonClicked, null, 1f);
+                    OverhaulTransitionManager.reference.DoTransition(target.OnLevelEditorButtonClicked, null, 1f);
                 });
             }
 
@@ -184,7 +184,7 @@ namespace CDOverhaul.Patches
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
 
-            GameObject panel = OverhaulMod.Core.CanvasController?.GetHUDPrefab("TitleScreenUI_Buttons");
+            GameObject panel = OverhaulCanvasManager.reference?.GetHUDPrefab("TitleScreenUI_Buttons");
             if (panel == null)
             {
                 SuccessfullyPatched = false;
@@ -280,7 +280,7 @@ namespace CDOverhaul.Patches
             cardGamemodeButtonColors.ColorVariants[0] = Color.white;
             cardGamemodeButtonColors.ColorVariants[1] = new Color(0.3f, 1f, 0.35f, 1f);
 
-            OverhaulCanvasController canvasController = OverhaulMod.Core.CanvasController;
+            OverhaulCanvasManager canvasController = OverhaulCanvasManager.reference;
             if (canvasController)
             {
                 GameObject newButton = canvasController.GetHUDPrefab("GenericCloseButton");

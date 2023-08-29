@@ -7,28 +7,21 @@ using System.Linq;
 
 namespace CDOverhaul.Gameplay
 {
-    public abstract class PersonalizationItemsController : OverhaulGameplayController
+    public abstract class PersonalizationItemsSystemBase : OverhaulGameplaySystem
     {
-        private static readonly List<PersonalizationItem> s_EmptyList = new List<PersonalizationItem>();
-
         public PersonalizationItemsData ItemsData
         {
             get;
             set;
         }
 
-        public List<PersonalizationItem> Items => ItemsData == null ? s_EmptyList : ItemsData.Items;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-            ReloadItems();
-        }
+        public List<PersonalizationItem> Items => ItemsData?.Items;
 
         public abstract string GetRepositoryFolder();
+
         public string GetItemsDataFolder()
         {
-            OverhaulRepositoryController repositoryController = Get<OverhaulRepositoryController>();
+            OverhaulRepositoryManager repositoryController = OverhaulRepositoryManager.reference;
             return !repositoryController ? string.Empty : repositoryController.GetFolder(GetRepositoryFolder());
         }
         public string GetItemsDataFile() => GetItemsDataFolder() + "ItemsData.json";
@@ -63,10 +56,10 @@ namespace CDOverhaul.Gameplay
             ItemsData = data;
         }
 
-        public virtual PersonalizationItem GetItem(string name)
+        public virtual PersonalizationItem GetItem(string id)
         {
             List<PersonalizationItem> list = Items;
-            if (list.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(id) || list.IsNullOrEmpty())
                 return null;
 
             PersonalizationItem result = null;
@@ -74,13 +67,13 @@ namespace CDOverhaul.Gameplay
             do
             {
                 PersonalizationItem item = list[i];
-                if (item == null || string.IsNullOrEmpty(item.Name))
+                if (item == null)
                 {
                     i++;
                     continue;
                 }
 
-                if (item.Name == name)
+                if (item.GetID() == id)
                 {
                     result = item;
                     break;
@@ -94,11 +87,11 @@ namespace CDOverhaul.Gameplay
         {
             List<PersonalizationItem> list = Items;
             if (list.IsNullOrEmpty())
-                return s_EmptyList;
+                return null;
 
             string[] split = saveString.Split(',');
             if (split.IsNullOrEmpty())
-                return s_EmptyList;
+                return null;
 
             List<PersonalizationItem> result = new List<PersonalizationItem>();
             int i = 0;
@@ -124,7 +117,7 @@ namespace CDOverhaul.Gameplay
         {
             List<PersonalizationItem> list = Items;
             if (list.IsNullOrEmpty())
-                return s_EmptyList;
+                return null;
 
             List<PersonalizationItem> result = null;
             int i = 0;
@@ -151,11 +144,11 @@ namespace CDOverhaul.Gameplay
         {
             SettingInfo info = OverhaulSettingsController.GetSetting("Player.Outfits.Equipped", true);
             if (info != null)
-                SettingInfo.SavePref(info, OutfitsController.EquippedAccessories);
+                SettingInfo.SavePref(info, OutfitsSystem.EquippedAccessories);
 
             SettingInfo info2 = OverhaulSettingsController.GetSetting("Player.Pets.Equipped", true);
             if (info2 != null)
-                SettingInfo.SavePref(info2, PetsController.EquippedPets);
+                SettingInfo.SavePref(info2, PetSystem.EquippedPets);
         }
     }
 }

@@ -114,13 +114,11 @@ namespace CDOverhaul.Examples.AdditionalContent
         public override void AddListeners()
         {
             OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
-            OverhaulEventsController.AddEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
         }
 
         public override void RemoveListeners()
         {
             OverhaulEventsController.RemoveEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
-            OverhaulEventsController.RemoveEventListener(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent, refreshSkyboxPhotomode);
         }
 
         public void SetSkybox(int index)
@@ -128,9 +126,9 @@ namespace CDOverhaul.Examples.AdditionalContent
             if (index == -1)
             {
                 LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-                if (levelLightSettings && AdvancedPhotomodeSettings.MoreSkyboxesIndex == -1)
+                if (levelLightSettings)
                 {
-                    Material material2 = PhotoManager.Instance.IsInPhotoMode() ? AdvancedPhotomodeSettings.SkyboxMaterial : SkyBoxManager.Instance.LevelConfigurableSkyboxes[levelLightSettings.SkyboxIndex];
+                    Material material2 = SkyBoxManager.Instance.LevelConfigurableSkyboxes[levelLightSettings.SkyboxIndex];
                     if (material2)
                     {
                         RenderSettings.skybox = material2;
@@ -141,20 +139,6 @@ namespace CDOverhaul.Examples.AdditionalContent
 
             Material material = Skyboxes[index];
             RenderSettings.skybox = material;
-        }
-
-        private void refreshSkyboxPhotomode()
-        {
-            if (!PhotoManager.Instance.IsInPhotoMode())
-            {
-                return;
-            }
-
-            SetSkybox(AdvancedPhotomodeSettings.MoreSkyboxesIndex);
-
-            Material material = RenderSettings.skybox;
-            if (material && material.HasProperty("_Rotation"))
-                material.SetFloat("_Rotation", AdvancedPhotomodeSettings.SkyboxRotation);
         }
 
         private void refreshSkybox()

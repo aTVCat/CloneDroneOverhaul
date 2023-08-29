@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay
 {
-    public enum PersonalizationCategory
+    public enum EPersonalizationCategory
     {
         None,
 

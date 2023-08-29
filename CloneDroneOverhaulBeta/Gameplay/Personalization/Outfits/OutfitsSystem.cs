@@ -2,7 +2,7 @@
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public class OutfitsController : PersonalizationItemsController
+    public class OutfitsSystem : PersonalizationItemsSystemBase
     {
         public const char SEPARATOR = ',';
 
@@ -11,11 +11,6 @@ namespace CDOverhaul.Gameplay.Outfits
 
         [OverhaulSetting("Player.Outfits.EnemiesUseOutfits", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearAccesories;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
 
         /*
         AddOutfitItemQuick("Igrok's hat", "P_Acc_Head_Igrok's hat", "Head");
@@ -82,7 +77,7 @@ namespace CDOverhaul.Gameplay.Outfits
 
         }
 
-        public void SetAccessoryEquipped(string item, bool equip) => SetAccessoryEquipped(GetItem(item), equip);
+        public void SetAccessoryEquipped(string item, bool equip) => SetAccessoryEquipped(GetItem(item)?.GetID(), equip);
 
         #endregion
     }

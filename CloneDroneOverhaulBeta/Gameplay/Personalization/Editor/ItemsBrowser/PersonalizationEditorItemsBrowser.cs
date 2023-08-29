@@ -52,19 +52,19 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public void OnCreateNewClicked()
         {
             PersonalizationItem newItem = null;
-            PersonalizationItemsController itemsController = null;
+            PersonalizationItemsSystemBase itemsController = null;
             switch (PersonalizationEditor.EditingCategory)
             {
-                case PersonalizationCategory.WeaponSkins:
-                    itemsController = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
+                case EPersonalizationCategory.WeaponSkins:
+                    itemsController = PersonalizationManager.reference?.weaponSkins;
                     newItem = new WeaponSkinItem();
                     break;
-                case PersonalizationCategory.Outfits:
-                    itemsController = OverhaulController.Get<Outfits.OutfitsController>();
+                case EPersonalizationCategory.Outfits:
+                    itemsController = PersonalizationManager.reference?.outfits;
                     newItem = new OutfitItem();
                     break;
-                case PersonalizationCategory.Pets:
-                    itemsController = OverhaulController.Get<Pets.PetsController>();
+                case EPersonalizationCategory.Pets:
+                    itemsController = PersonalizationManager.reference?.pets;
                     newItem = new PetItem();
                     break;
             }
@@ -94,7 +94,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (m_Container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_Container);
 
-            if (PersonalizationEditor.EditingCategory == PersonalizationCategory.None)
+            if (PersonalizationEditor.EditingCategory == EPersonalizationCategory.None)
                 return;
 
             List<PersonalizationItem> list = PersonalizationEditor.GetPersonalizationCategorySavedItems(PersonalizationEditor.EditingCategory);

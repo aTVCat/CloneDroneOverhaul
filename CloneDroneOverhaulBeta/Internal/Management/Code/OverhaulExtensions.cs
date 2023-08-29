@@ -373,7 +373,7 @@ namespace CDOverhaul
 
         public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
         {
-            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && OverhaulMultiplayerController.Lobby.OwnerUserID == steamId;
+            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && OverhaulMultiplayerManager.Lobby.OwnerUserID == steamId;
         }
 
         public static bool IsNil(this CSteamID steamID)
@@ -513,7 +513,7 @@ namespace CDOverhaul
                 return false;
 
             Dictionary<UpgradeType, int> dictionary = GameDataManager.Instance.GetPlayerUpgradeDictionary();
-            if (UpgradeModesController.IsUnrevertableUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeDescription.UpgradeType))
+            if (UpgradeModesSystem.IsUnrevertableUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeDescription.UpgradeType))
                 return false;
 
             int playerLevel = dictionary[upgradeDescription.UpgradeType];

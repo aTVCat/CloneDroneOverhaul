@@ -29,20 +29,7 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
-        public static event Action OnAssetsLoadDone;
-
         private List<IGenericStringEventListener> m_GenericStringEventListeners = new List<IGenericStringEventListener>();
-
-        private static bool s_HasUpdatedLangFont;
-
-        /// <summary>
-        /// The UI controller instance
-        /// </summary>
-        public OverhaulCanvasController CanvasController
-        {
-            get;
-            private set;
-        }
 
         public override void OnEvent(GenericStringForModdingEvent moddedEvent)
         {
@@ -70,12 +57,12 @@ namespace CDOverhaul
             // Exceptions
             if (eventData == default)
             {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Event data is DEFAULT! Version: " + split[1]);
+                OverhaulWebhooks.ExecuteErrorsWebhook("Event data is DEFAULT! Version: " + split[1]);
                 return;
             }
             else if (eventData.IsRequest && eventData.IsAnswer)
             {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("The event is defined as Answer and Request at the same time! Version: " + split[1]);
+                OverhaulWebhooks.ExecuteErrorsWebhook("The event is defined as Answer and Request at the same time! Version: " + split[1]);
                 return;
             }
 
@@ -129,148 +116,35 @@ namespace CDOverhaul
             controllers.transform.SetParent(base.transform);
             OverhaulController.InitializeStatic(controllers);
 
-            using (ModInitialize modInitialize = new ModInitialize())
-                modInitialize.Load();
+            ModInitialize modInitialize = new ModInitialize();
+            modInitialize.LoadMainFramework();
 
-            _ = OverhaulController.Add<OverhaulDiscordController>();
-            _ = OverhaulController.Add<OverhaulMultiplayerController>();
-
-            OverhaulPlayerIdentifier.Initialize();
-            if (!OverhaulBootUI.Show())
-                _ = StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff(false));
+            OverhaulBootUI.Show(modInitialize);
         }
 
         private void Update()
         {
-            if (!OverhaulDebugConsole.ConsoleInstance)
+            OverhaulDebugConsole debugConsole = OverhaulDebugConsole.ConsoleInstance;
+            if (!debugConsole)
                 return;
 
             if (Input.GetKeyDown(KeyCode.F6))
             {
-                bool isVisible = OverhaulDebugConsole.ConsoleInstance.gameObject.activeSelf;
+                bool isVisible = debugConsole.gameObject.activeSelf;
                 if (isVisible)
                 {
-                    OverhaulDebugConsole.ConsoleInstance.Hide();
+                    debugConsole.Hide();
                 }
                 else
                 {
-                    OverhaulDebugConsole.ConsoleInstance.Show();
+                    debugConsole.Show();
                 }
             }
-        }
-
-        public IEnumerator LoadAsyncStuff()
-        {
-            QualitySettings.asyncUploadTimeSlice = 4;
-            QualitySettings.asyncUploadBufferSize = 16;
-            QualitySettings.asyncUploadPersistentBuffer = true;
-
-            bool hasLoadedPart1Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part1);
-            bool hasLoadedPart2Bundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Part2);
-            bool hasLoadedSkinsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Skins);
-            bool hasLoadedOutfitsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Accessouries);
-            bool hasLoadedPetsBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_Pets);
-            bool hasLoadedArenaUpdateBundle = OverhaulAssetsController.HasLoadedAssetBundle(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul);
-
-            if (!hasLoadedPart1Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part1, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedPart1Bundle = true;
-            });
-
-            if (!hasLoadedPart2Bundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Part2, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedPart2Bundle = true;
-            }, false);
-
-            if (!hasLoadedSkinsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Skins, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedSkinsBundle = true;
-            }, false);
-
-            if (!hasLoadedOutfitsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Accessouries, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedOutfitsBundle = true;
-            }, false);
-
-            if (!hasLoadedPetsBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_Pets, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedPetsBundle = true;
-            }, false);
-
-            if (!hasLoadedArenaUpdateBundle) _ = OverhaulAssetsController.LoadAssetBundleAsync(OverhaulAssetsController.ModAssetBundle_ArenaOverhaul, delegate (OverhaulAssetsController.AssetBundleLoadHandler h)
-            {
-                hasLoadedArenaUpdateBundle = true;
-            });
-
-            yield return new WaitUntil(() => hasLoadedPart1Bundle && hasLoadedPart2Bundle && hasLoadedSkinsBundle && hasLoadedOutfitsBundle && hasLoadedPetsBundle && hasLoadedArenaUpdateBundle);
-            OnAssetsLoadDone?.Invoke();
-            yield break;
-        }
-
-        public IEnumerator LoadSyncStuff(bool waitForEndOfFrame = true)
-        {
-            PersonalizationEditor.Initialize();
-            OverhaulAssetsContainer.Initialize();
-            if (waitForEndOfFrame)
-                yield return null;
-
-            CanvasController = OverhaulController.Add<OverhaulCanvasController>();
-            if (waitForEndOfFrame)
-                yield return null;
-
-            _ = OverhaulController.Add<HUD.Tooltips.OverhaulTooltipsController>();
-            _ = OverhaulController.Add<UpgradeModesController>();
-            _ = OverhaulController.Add<AdvancedPhotomodeController>();
-
-            _ = OverhaulController.Add<OverhaulVFXController>();
-            if (waitForEndOfFrame)
-                yield return null;
-
-            _ = OverhaulController.Add<OverhaulAchievementsController>();
-            _ = OverhaulController.Add<OverhaulRepositoryController>();
-            _ = OverhaulController.Add<OvermodesController>();
-            if (waitForEndOfFrame)
-                yield return null;
-
-            _ = OverhaulController.Add<Gameplay.WeaponSkins.WeaponSkinsController>();
-
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled)
-            {
-                _ = OverhaulController.Add<Gameplay.Pets.PetsController>();
-                _ = OverhaulController.Add<Gameplay.Outfits.OutfitsController>();
-            }
-
-            if (waitForEndOfFrame)
-                yield return null;
-
-            OverhaulTransitionController.Initialize();
-            OverhaulAudioLibrary.Initialize();
-            OverhaulPatchNotes.Initialize();
-            if (waitForEndOfFrame)
-                yield return null;
-
-            OverhaulUpdateChecker.CheckForUpdates();
-            OverhaulCompatibilityChecker.CheckGameVersion();
-
-            if (!s_HasUpdatedLangFont)
-                _ = StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
-
-            OverhaulMod.HasBootProcessEnded = true;
-            yield break;
         }
 
         private void OnDestroy()
         {
-            CanvasController = null;
             OverhaulMod.Core = null;
-        }
-
-        private static IEnumerator updateLangFontCoroutine()
-        {
-            yield return new WaitUntil(() => SettingsManager.Instance.IsInitialized());
-            LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
-            s_HasUpdatedLangFont = true;
-            yield break;
         }
 
         public static string ReadText(string filePath)

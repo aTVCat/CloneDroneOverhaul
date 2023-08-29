@@ -15,8 +15,8 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized || isRandomSelectionInput)
                 return true;
 
-            UpgradeModesController modesController = OverhaulController.Get<UpgradeModesController>();
-            if (!modesController || UpgradeModesController.Mode == UpgradeMode.Upgrade)
+            UpgradeModesSystem modesController = OverhaulGameplayManager.reference?.upgradeModes;
+            if (!modesController || UpgradeModesSystem.Mode == UpgradeMode.Upgrade)
                 return true;
 
             __result = UpgradeManager.Instance.RevertUpgrade(__instance.GetDescription());
@@ -39,7 +39,7 @@ namespace CDOverhaul.Patches
             if (!canvasGroup)
                 canvasGroup = __instance.gameObject.AddComponent<CanvasGroup>();
 
-            bool isUpgradeMode = OverhaulMod.IsModInitialized && UpgradeModesController.Mode == UpgradeMode.Upgrade;
+            bool isUpgradeMode = OverhaulMod.IsModInitialized && UpgradeModesSystem.Mode == UpgradeMode.Upgrade;
             canvasGroup.alpha = !isUpgradeMode && !__instance.GetDescription().CanBeReverted() ? 0.3f : 1f;
 
             if (!__instance._upgradeDescription || !__instance._upgradeDescription.Icon)

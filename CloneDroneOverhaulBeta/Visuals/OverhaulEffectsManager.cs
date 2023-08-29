@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Visuals
 {
-    public class OverhaulVFXController : OverhaulController
+    public class OverhaulEffectsManager : OverhaulManager<OverhaulEffectsManager>
     {
         public const string GenericSparksVFX = "GenericSparks";
 
@@ -17,8 +17,9 @@ namespace CDOverhaul.Visuals
 
         private static bool s_HasInitialized;
 
-        public override void Initialize()
+        protected override void OnAssetsLoaded()
         {
+            base.OnAssetsLoaded();
             if (!s_HasInitialized)
             {
                 s_SwordBlockVFX = OverhaulAssetsController.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
@@ -30,7 +31,21 @@ namespace CDOverhaul.Visuals
                 PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetsController.GetAsset("VFX_CutFire", OverhaulAssetPart.Part2).transform, 25, FIRE_CUT_VFX);
                 s_HasInitialized = true;
             }
-            AttackManager.Instance.SwordBlockVFXPrefab = s_SwordBlockVFX;
+            refreshAttackManager();
+        }
+
+        public override void OnSceneReloaded()
+        {
+            base.OnSceneReloaded();
+            refreshAttackManager();
+        }
+
+        private void refreshAttackManager()
+        {
+            if (s_SwordBlockVFX)
+            {
+                AttackManager.Instance.SwordBlockVFXPrefab = s_SwordBlockVFX;
+            }
         }
     }
 }

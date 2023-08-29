@@ -53,19 +53,19 @@ namespace CDOverhaul.Gameplay.Pets
             if (/*!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewPersonalizationSystemEnabled || */!Owner)
                 return;
 
-            PetsController petsController = OverhaulController.Get<PetsController>();
+            PetSystem petsController = PersonalizationManager.reference?.pets;
             if (!petsController)
                 return;
 
             string equippedItems = string.Empty;
-            if (PlayerInformation)
+            if (playerInformation)
             {
-                Hashtable hashtable = PlayerInformation.Hashtable;
+                Hashtable hashtable = playerInformation.Hashtable;
                 if (hashtable != null && hashtable.ContainsKey("Pets.Equipped"))
                     equippedItems = hashtable["Pets.Equipped"].ToString();
             }
-            else if (!GameModeManager.IsMultiplayer() && (PetsController.AllowEnemiesUsePets || IsOwnerPlayer()))
-                equippedItems = PetsController.EquippedPets;
+            else if (!GameModeManager.IsMultiplayer() && (PetSystem.AllowEnemiesUsePets || IsOwnerPlayer()))
+                equippedItems = PetSystem.EquippedPets;
 
             foreach (PetItem petItem in petsController.GetItemsWithSaveString(equippedItems))
             {

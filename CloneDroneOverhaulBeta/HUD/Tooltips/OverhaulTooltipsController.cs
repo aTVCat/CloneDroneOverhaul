@@ -1,24 +1,23 @@
-﻿using CDOverhaul.Gameplay.Combat;
+﻿using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.Combat;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.HUD.Tooltips
 {
-    public class OverhaulTooltipsController : OverhaulGameplayController
+    public class OverhaulTooltipsController : OverhaulGameplaySystem
     {
         public List<OverhaulTooltip> Tooltips
         {
             get;
             private set;
-        } = new List<OverhaulTooltip>();
+        }
 
         public OverhaulTooltipsUI TooltipsUI;
 
-        public override void Initialize()
+        public override void Start()
         {
-            base.Initialize();
-
-            OverhaulCanvasController canvasController = OverhaulMod.Core.CanvasController;
+            OverhaulCanvasManager canvasController = OverhaulCanvasManager.reference;
             if (!canvasController)
                 return;
 

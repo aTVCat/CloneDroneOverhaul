@@ -4,17 +4,13 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class OverhaulAchievementsController : OverhaulController
+    public class OverhaulAchievementsManager : OverhaulManager<OverhaulAchievementsManager>
     {
-        private readonly List<string> m_AddedAchievements = new List<string>();
-
-        public override void Initialize()
-        {
-        }
+        private readonly List<string> m_Achievements = new List<string>();
 
         public T CreateAchievement<T>(string name, string description, Sprite previewImage) where T : OverhaulAchievement
         {
-            if (m_AddedAchievements.Contains(name))
+            if (m_Achievements.Contains(name))
                 return null;
 
             T achievement = ScriptableObject.CreateInstance<T>();
@@ -29,7 +25,7 @@ namespace CDOverhaul.Gameplay
             list.Add(achievement);
             manager.Achievements = list.ToArray();
 
-            m_AddedAchievements.Add(name);
+            m_Achievements.Add(name);
             return achievement;
         }
     }

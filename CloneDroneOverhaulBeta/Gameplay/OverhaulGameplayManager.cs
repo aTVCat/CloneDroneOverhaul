@@ -38,6 +38,12 @@ namespace CDOverhaul
             private set;
         }
 
+        public UpgradeModesSystem upgradeModes
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -45,19 +51,23 @@ namespace CDOverhaul
             playerInfos = base.gameObject.AddComponent<OverhaulPlayerInfosSystem>();
             autoBuild = base.gameObject.AddComponent<AutoBuildSystem>();
             viewModes = base.gameObject.AddComponent<ViewModesSystem>();
+            upgradeModes = base.gameObject.AddComponent<UpgradeModesSystem>();
             /*_ = firstPersonMover.gameObject.AddComponent<CharacterFixExpansion>();
 _ = firstPersonMover.gameObject.AddComponent<OverhaulRobotHeadRotator>();
 _ = firstPersonMover.gameObject.AddComponent<RobotControlsExpansion>();
 _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
         }
 
+        protected override void OnAssetsLoaded()
+        {
+            base.OnAssetsLoaded();
+            upgradeModes?.PlaceButton();
+        }
+
         public override void OnSceneReloaded()
         {
             base.OnSceneReloaded();
-        }
-
-        protected override void OnAssetsLoaded()
-        {
+            upgradeModes?.PlaceButton();
         }
 
         protected override void OnDisposed()
@@ -75,6 +85,7 @@ _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
             playerInfos?.AddListeners();
             autoBuild?.AddListeners();
             viewModes?.AddListeners();
+            upgradeModes?.AddListeners();
         }
 
         public override void RemoveListeners()
@@ -87,6 +98,7 @@ _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
             playerInfos?.RemoveListeners();
             autoBuild?.RemoveListeners();
             viewModes?.RemoveListeners();
+            upgradeModes?.RemoveListeners();
         }
 
         private void onFirstPersonMoverSpawnedInternal(FirstPersonMover mover)
@@ -107,10 +119,11 @@ _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
 
         public void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool initializedModel)
         {
-            events.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
-            autoBuild.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
-            playerInfos.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
-            viewModes.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
+            events?.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
+            autoBuild?.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
+            playerInfos?.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
+            viewModes?.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
+            upgradeModes?.OnFirstPersonMoverSpawned(firstPersonMover, initializedModel);
         }
     }
 }

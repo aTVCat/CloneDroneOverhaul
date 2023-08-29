@@ -1,4 +1,4 @@
-﻿// I took it here: https://assetstore.unity.com/packages/tools/particles-effects/quick-outline-115488
+﻿// I took it from here: https://assetstore.unity.com/packages/tools/particles-effects/quick-outline-115488
 
 //
 //  Outline.cs
@@ -30,15 +30,11 @@ namespace CDOverhaul.Credits
         private void Awake()
         {
             renderers = GetComponentsInChildren<Renderer>();
-
             if (outlineFillMaterial == null || outlineMaskMaterial == null)
             {
                 outlineMaskMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetPart.Part2);
                 outlineFillMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetPart.Part2);
-                outlineMaskMaterial.name = "OutlineMask (Instance)";
-                outlineFillMaterial.name = "OutlineFill (Instance)";
             }
-
             LoadSmoothNormals();
         }
 

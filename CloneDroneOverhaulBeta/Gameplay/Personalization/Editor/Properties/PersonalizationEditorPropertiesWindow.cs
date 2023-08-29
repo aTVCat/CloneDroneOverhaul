@@ -18,7 +18,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         protected override bool AssignVariablesAutomatically() => false;
 
-        public void Populate(PersonalizationCategory category)
+        public void Populate(EPersonalizationCategory category)
         {
             if (!m_HasInitialized)
             {
@@ -34,13 +34,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             List<PersonalizationEditorPropertyAttribute> properties;
             switch (category)
             {
-                case PersonalizationCategory.WeaponSkins:
+                case EPersonalizationCategory.WeaponSkins:
                     properties = PersonalizationEditor.WeaponSkinItemFields;
                     break;
-                case PersonalizationCategory.Outfits:
+                case EPersonalizationCategory.Outfits:
                     properties = PersonalizationEditor.AccessoryItemFields;
                     break;
-                case PersonalizationCategory.Pets:
+                case EPersonalizationCategory.Pets:
                     properties = PersonalizationEditor.PetItemFields;
                     break;
                 default:

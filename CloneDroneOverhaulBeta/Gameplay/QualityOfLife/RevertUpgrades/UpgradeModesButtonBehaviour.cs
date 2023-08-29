@@ -16,7 +16,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     return;
             }
 
-            UpgradeModesController modesController = OverhaulController.Get<UpgradeModesController>();
+            UpgradeModesSystem modesController = OverhaulGameplayManager.reference?.upgradeModes;
             if (modesController)
             {
                 modesController.SetMode(UpgradeMode.Upgrade);

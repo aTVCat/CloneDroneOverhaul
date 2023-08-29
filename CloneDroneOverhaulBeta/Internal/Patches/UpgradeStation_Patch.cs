@@ -10,9 +10,9 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("notActivatable")]
         private static void notActivatable_Postfix(UpgradeStation __instance, ref bool __result)
         {
-            if (OvermodesController.IsOvermode() && __result)
+            if (OvermodesManager.IsOvermode() && __result)
             {
-                __result = !OvermodesController.GetOvermode().AllowUpgradeBots();
+                __result = !OvermodesManager.GetOvermode().AllowUpgradeBots();
             }
         }
     }

@@ -371,7 +371,7 @@ namespace CDOverhaul.HUD
 
         public void OnDesktopClicked()
         {
-            OverhaulTransitionController.DoTransitionWithAction(delegate
+            OverhaulTransitionManager.reference.DoTransition(delegate
             {
                 Application.Quit();
             });
@@ -809,7 +809,7 @@ namespace CDOverhaul.HUD
             m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
-            OverhaulCanvasController.SetCanvasPixelPerfect(false);
+            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
             ShowCursor = true;
         }
 
@@ -831,7 +831,7 @@ namespace CDOverhaul.HUD
             if (!dontUnpause)
             {
                 ShowCursor = false;
-                OverhaulCanvasController.SetCanvasPixelPerfect(true);
+                OverhaulCanvasManager.SetCanvasPixelPerfect(true);
             }
         }
 

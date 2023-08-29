@@ -1,8 +1,8 @@
 ﻿namespace CDOverhaul.Gameplay.Overmodes
 {
-    public class OvermodesController : OverhaulGameplayController
+    public class OvermodesManager : OverhaulManager<OvermodesManager>
     {
-        public static OvermodesController Instance;
+        public static OvermodesManager Instance;
 
         public OvermodeBase CurrentOvermode
         {

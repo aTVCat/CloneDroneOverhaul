@@ -132,6 +132,8 @@ namespace CDOverhaul.Patches
             UpdateSprites(PlayerAllyManager.Instance.StoryAllyNameTagPool.Prefab, false, -3);
 
             UpdateSprites(PrefabDatabase.Find(BoltPrefabs.BattleRoyaleTransportBot).transform, false, 0);
+
+            _ = StaticCoroutineRunner.StartStaticCoroutine(updateLangFontCoroutine());
             SuccessfullyPatched = true;
         }
 
@@ -283,6 +285,13 @@ namespace CDOverhaul.Patches
             {
                 EmoteManager.Instance.TriggerEmoteForPlayer(player, emotePlayed);
             }
+            yield break;
+        }
+
+        private static IEnumerator updateLangFontCoroutine()
+        {
+            yield return new WaitUntil(() => SettingsManager.Instance.IsInitialized());
+            LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
             yield break;
         }
     }

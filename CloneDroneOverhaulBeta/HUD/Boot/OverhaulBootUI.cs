@@ -9,54 +9,52 @@ namespace CDOverhaul
 {
     public class OverhaulBootUI : OverhaulBehaviour
     {
-        private static bool m_HasEverShownUI;
-
-        public static OverhaulBootUI Instance;
-        public static bool IsActive => Instance != null;
+        public static bool HasBeenInstantiated;
 
         private Slider m_LoadingBar;
+        private Image m_Shading;
+        private Animator m_Animator;
 
+        private ModInitialize m_ModInitialize;
         private float m_ProgressLastFrame;
 
-        public static bool Show()
+        public static bool Show(ModInitialize modInitialize)
         {
-            if (m_HasEverShownUI || !GameModeManager.IsOnTitleScreen())
+            if (HasBeenInstantiated || !GameModeManager.IsOnTitleScreen())
                 return false;
 
-            m_HasEverShownUI = true;
-            GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload);
-            GameObject spawnedPrefab = UnityEngine.Object.Instantiate(prefab);
+            HasBeenInstantiated = true;
+            GameObject spawnedPrefab = Instantiate(OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload));
             ModdedObject moddedObject = spawnedPrefab.GetComponent<ModdedObject>();
             Transform mainViewTransform = moddedObject.GetObject<Transform>(0);
-            OverhaulCanvasController.ParentTransformToGameUIRoot(mainViewTransform);
+            OverhaulCanvasManager.ParentTransformToGameUIRoot(mainViewTransform);
+            Destroy(spawnedPrefab);
 
-            Instance = mainViewTransform.gameObject.AddComponent<OverhaulBootUI>();
-            Instance.m_LoadingBar = moddedObject.GetObject<Slider>(1);
-            Instance.m_LoadingBar.value = 0f;
+            OverhaulBootUI bootUI = mainViewTransform.gameObject.AddComponent<OverhaulBootUI>();
+            bootUI.m_ModInitialize = modInitialize;
+            bootUI.m_ProgressLastFrame = 0f;
+            bootUI.m_Animator = mainViewTransform.GetComponent<Animator>();
+            bootUI.m_Animator.enabled = false;
+            bootUI.m_LoadingBar = moddedObject.GetObject<Slider>(1);
+            bootUI.m_LoadingBar.value = 0f;
+            bootUI.m_Shading = moddedObject.GetObject<Image>(2);
+            bootUI.m_Shading.color = Time.timeSinceLevelLoad < 6f ? Color.white : Color.black;
 
             OverhaulNetworkAssetsController.DownloadTexture(OverhaulMod.Core.ModDirectory + "Assets/Previews/BootUI_" + UnityEngine.Random.Range(1, 5) + ".jpg", moddedObject.GetObject<RawImage>(3));
-
-            moddedObject.GetObject<Image>(2).color = Time.timeSinceLevelLoad < 6f ? Color.white : Color.black;
-
-            Destroy(spawnedPrefab);
             return true;
         }
 
         private void Start()
         {
-            Animator animator = GetComponent<Animator>();
-            animator.speed = 0f;
-
-            ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
-            GameUIRoot.Instance.TitleScreenUI.Hide();
-
+            setEnvironmentActive(false);
             _ = StartCoroutine(waitThenPlayAnimation());
         }
 
         private void Update()
         {
-            if (IsDisposedOrDestroyed()) return;
+            if (IsDisposedOrDestroyed()) 
+                return;
+
             if (ErrorManager.Instance.HasCrashed())
             {
                 destroyUI();
@@ -66,24 +64,16 @@ namespace CDOverhaul
             AudioListener.volume = 0f;
             Time.timeScale = 0f;
 
-            if (m_LoadingBar)
+            if (OverhaulMod.HasBootProcessEnded)
             {
-                if (OverhaulMod.HasBootProcessEnded)
-                {
-                    m_LoadingBar.value = 1f;
-                    return;
-                }
-
-                float newProgress = OverhaulAssetsController.GetAllAssetBundlesLoadPercent();
-                if (newProgress > m_ProgressLastFrame)
-                    m_LoadingBar.value = newProgress;
-                m_ProgressLastFrame = newProgress;
+                m_LoadingBar.value = 1f;
+                return;
             }
-        }
 
-        private void OnDestroy()
-        {
-            Instance = null;
+            float newProgress = OverhaulAssetsController.GetAllAssetBundlesLoadPercent();
+            if (newProgress > m_ProgressLastFrame)
+                m_LoadingBar.value = newProgress;
+            m_ProgressLastFrame = newProgress;
         }
 
         private void destroyUI()
@@ -94,43 +84,44 @@ namespace CDOverhaul
                 uIImprovements.TitleScreenUI.MessagePanel.PopulateTitleScreenMessage();
             }
 
-            Destroy(gameObject);
-            Instance = null;
             AudioListener.volume = SettingsManager.Instance.GetSoundVolume();
             Time.timeScale = 1f;
-            GameUIRoot.Instance.TitleScreenUI.Show();
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
-            ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
-            ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play(string.Empty);
-            if (OverhaulVersionLabel.Instance)
-                OverhaulVersionLabel.Instance.Refresh();
+            setEnvironmentActive(true);
 
-            if (OverhaulCrashPreventionController.dataIsNUllError)
-                OverhaulWebhooksController.ExecuteErrorsWebhook("_data is NULL");
+            Destroy(gameObject);
         }
 
-        private void playAnimation()
+        private void setEnvironmentActive(bool value)
         {
-            Animator animator = GetComponent<Animator>();
-            animator.speed = 1f;
+            TitleScreenUI titleScreenUI = GameUIRoot.Instance?.TitleScreenUI;
+            if (titleScreenUI)
+            {
+                titleScreenUI.SetLogoAndRootButtonsVisible(value);
+                if (value)
+                    titleScreenUI.Show();
+                else
+                    titleScreenUI.Hide();
+            }
+            Camera arenaTitleScreenLogoCamera = ArenaCameraManager.Instance?.TitleScreenLogoCamera;
+            if (arenaTitleScreenLogoCamera)
+            {
+                arenaTitleScreenLogoCamera.gameObject.SetActive(value);
+            }
         }
 
         private IEnumerator waitThenPlayAnimation()
         {
             yield return new WaitForSecondsRealtime(4f);
 
-            playAnimation();
+            m_Animator.enabled = true;
             yield return new WaitForSecondsRealtime(2f);
 
             if (!OverhaulMod.HasBootProcessEnded)
             {
-                yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadAsyncStuff());
-                yield return StaticCoroutineRunner.StartStaticCoroutine(OverhaulMod.Core.LoadSyncStuff());
+                yield return StaticCoroutineRunner.StartStaticCoroutine(m_ModInitialize.LoadAssetsFramework());
+                yield return new WaitForSecondsRealtime(1f);
             }
-
-            yield return new WaitForSecondsRealtime(1f);
             destroyUI();
-
             yield break;
         }
     }

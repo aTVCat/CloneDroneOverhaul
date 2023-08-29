@@ -2,25 +2,37 @@
 
 namespace CDOverhaul
 {
-    internal class OverhaulCompatibilityChecker
+    internal static class OverhaulCompatibilityChecker
     {
-        public static bool CurrentBuildRunsOnSupportedVersion() => Equals(VersionNumberManager.Instance.GetVersionString(), OverhaulVersion.TargetGameVersion);
+        private static bool s_HasCheckedVersionCompatibility;
 
-        public static void CheckGameVersion()
+        private static bool s_playingOnSupportedVersion;
+        public static bool playingOnSupportedVersion
         {
-            if (!OverhaulSessionController.GetKey<bool>("HasNotifiedPlayerAboutUnsupportedVersion"))
+            get
             {
-                OverhaulSessionController.SetKey("HasNotifiedPlayerAboutUnsupportedVersion", true);
-                if (!CurrentBuildRunsOnSupportedVersion())
-                    DelegateScheduler.Instance.Schedule(ShowDialogueWindow, 3f);
+                if (!s_HasCheckedVersionCompatibility)
+                {
+                    s_playingOnSupportedVersion = Equals(VersionNumberManager.Instance?.GetVersionString(), OverhaulVersion.TargetGameVersion);
+                    s_HasCheckedVersionCompatibility = true;
+                }
+                return s_playingOnSupportedVersion;
             }
         }
 
-        [DebugAction("Unsupported version")]
-        public static void ShowDialogueWindow()
+        public static void CheckGameVersion()
         {
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            if (!playingOnSupportedVersion)
+                DelegateScheduler.Instance.Schedule(ShowUnsupportedVersionDialogue, 3f);
+        }
+
+        [DebugAction("Unsupported version")]
+        public static void ShowUnsupportedVersionDialogue()
+        {
             OverhaulFullscreenDialogueWindow window = OverhaulFullscreenDialogueWindow.Instance;
+            if (!window)
+                return;
+
             window.ResetContents();
             window.SetTitle("Unsupported game version");
             window.SetDescription("Current Overhaul mod build is made for version " + OverhaulVersion.TargetGameVersion + " of the game.\nYou may encounter bugs and crashes.\nIt's recommended to disable the mod or update one (If \"Get update\" button is active), but you can ignore this message.");
@@ -38,6 +50,7 @@ namespace CDOverhaul
                 window.Hide();
             }, "#FFFFFF", OverhaulUpdateChecker.HasNewUpdate, 100f);
             window.Show();
+            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
         }
     }
 }

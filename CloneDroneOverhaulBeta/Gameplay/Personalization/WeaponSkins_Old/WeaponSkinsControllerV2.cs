@@ -314,12 +314,7 @@ namespace CDOverhaul.Gameplay
 
         public void AddSkins()
         {
-            if (!OverhaulSessionController.GetKey<bool>("hasAddedSkins"))
-            {
-                OverhaulSessionController.SetKey("hasAddedSkins", true);
-                PooledPrefabController.CreateNewEntry<VFXWeaponSkinSwitch>(OverhaulAssetsController.GetAsset("VFX_SwitchSkin", OverhaulAssetPart.WeaponSkins).transform, 5, VFX_ChangeSkinID);
-                ReImportCustomSkins(true);
-            }
+            ReImportCustomSkins(true);
         }
 
         public static WeaponVariant GetVariant(bool fire, bool multiplayer)

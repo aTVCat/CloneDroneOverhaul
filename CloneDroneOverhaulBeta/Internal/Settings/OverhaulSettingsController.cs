@@ -48,123 +48,118 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            if (!OverhaulSessionController.GetKey<bool>("HasAddedOverhaulSettings"))
+            List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
+            Type[] allTypes = OverhaulMod.GetAllTypes();
+            int typeIndex = 0;
+            do
             {
-                OverhaulSessionController.SetKey("HasAddedOverhaulSettings", true);
+                Type currentType = allTypes[typeIndex];
+                FieldInfo[] allFields = currentType.GetFields(Flags);
+                if (allFields.IsNullOrEmpty())
+                {
+                    typeIndex++;
+                    continue;
+                }
 
-                List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
-                Type[] allTypes = OverhaulMod.GetAllTypes();
-                int typeIndex = 0;
+                int fieldIndex = 0;
                 do
                 {
-                    Type currentType = allTypes[typeIndex];
-                    FieldInfo[] allFields = currentType.GetFields(Flags);
-                    if (allFields.IsNullOrEmpty())
+                    FieldInfo currentField = allFields[fieldIndex];
+
+                    OverhaulSettingAttribute mainAttribute = currentField.GetCustomAttribute<OverhaulSettingAttribute>();
+                    if (mainAttribute == null)
                     {
-                        typeIndex++;
+                        fieldIndex++;
                         continue;
                     }
 
-                    int fieldIndex = 0;
-                    do
+                    OverhaulSettingWithNotification notificationAttribute = currentField.GetCustomAttribute<OverhaulSettingWithNotification>();
+                    OverhaulUpdatedSetting updatedSettingAttribute = currentField.GetCustomAttribute<OverhaulUpdatedSetting>();
+                    OverhaulSettingSliderParameters sliderParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingSliderParameters>();
+                    OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
+                    OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
+                    OverhaulSettingRequireUpdate requireUpdateAttribute = currentField.GetCustomAttribute<OverhaulSettingRequireUpdate>();
+                    OverhaulSettingRequiredValue requiredValueAttribute = currentField.GetCustomAttribute<OverhaulSettingRequiredValue>();
+
+                    if (requiredValueAttribute != null)
                     {
-                        FieldInfo currentField = allFields[fieldIndex];
+                        mainAttribute.RequiredValue = requiredValueAttribute.TargetValue;
+                    }
 
-                        OverhaulSettingAttribute mainAttribute = currentField.GetCustomAttribute<OverhaulSettingAttribute>();
-                        if (mainAttribute == null)
-                        {
-                            fieldIndex++;
-                            continue;
-                        }
+                    SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
+                    newSettingInfo.SliderParameters = sliderParametersAttribute;
+                    newSettingInfo.DropdownParameters = dropdownParametersAttribute;
+                    newSettingInfo.ForceInputField = forcedInputFieldAttribute != null;
+                    newSettingInfo.SendMessageOfType = notificationAttribute != null ? notificationAttribute.Type : (byte)0;
+                    AddDescription(mainAttribute.SettingRawPath, mainAttribute.Description);
 
-                        OverhaulSettingWithNotification notificationAttribute = currentField.GetCustomAttribute<OverhaulSettingWithNotification>();
-                        OverhaulUpdatedSetting updatedSettingAttribute = currentField.GetCustomAttribute<OverhaulUpdatedSetting>();
-                        OverhaulSettingSliderParameters sliderParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingSliderParameters>();
-                        OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
-                        OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
-                        OverhaulSettingRequireUpdate requireUpdateAttribute = currentField.GetCustomAttribute<OverhaulSettingRequireUpdate>();
-                        OverhaulSettingRequiredValue requiredValueAttribute = currentField.GetCustomAttribute<OverhaulSettingRequiredValue>();
+                    if (newSettingInfo.DefaultValue is long && (long)newSettingInfo.DefaultValue == SettingEventDispatcherFlag)
+                        newSettingInfo.EventDispatcher = (OverhaulSettingWithEvent)currentField.GetValue(null);
 
-                        if (requiredValueAttribute != null)
-                        {
-                            mainAttribute.RequiredValue = requiredValueAttribute.TargetValue;
-                        }
+                    if (mainAttribute.IsHidden || (requireUpdateAttribute != null && !requireUpdateAttribute.ShouldBeVisible()))
+                        m_HiddenEntries.Add(newSettingInfo.RawPath);
 
-                        SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
-                        newSettingInfo.SliderParameters = sliderParametersAttribute;
-                        newSettingInfo.DropdownParameters = dropdownParametersAttribute;
-                        newSettingInfo.ForceInputField = forcedInputFieldAttribute != null;
-                        newSettingInfo.SendMessageOfType = notificationAttribute != null ? notificationAttribute.Type : (byte)0;
-                        AddDescription(mainAttribute.SettingRawPath, mainAttribute.Description);
+                    if (!string.IsNullOrEmpty(mainAttribute.ParentSettingRawPath))
+                        toParent.Add(mainAttribute);
 
-                        if (newSettingInfo.DefaultValue is long && (long)newSettingInfo.DefaultValue == SettingEventDispatcherFlag)
-                            newSettingInfo.EventDispatcher = (OverhaulSettingWithEvent)currentField.GetValue(null);
+                    fieldIndex++;
+                } while (fieldIndex < allFields.Length);
 
-                        if (mainAttribute.IsHidden || (requireUpdateAttribute != null && !requireUpdateAttribute.ShouldBeVisible()))
-                            m_HiddenEntries.Add(newSettingInfo.RawPath);
+                typeIndex++;
+            } while (typeIndex < allTypes.Length);
 
-                        if (!string.IsNullOrEmpty(mainAttribute.ParentSettingRawPath))
-                            toParent.Add(mainAttribute);
-
-                        fieldIndex++;
-                    } while (fieldIndex < allFields.Length);
-
-                    typeIndex++;
-                } while (typeIndex < allTypes.Length);
-
-                SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
-                foreach (OverhaulSettingAttribute neededAttribute in toParent)
-                {
-                    SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath, neededAttribute.RequiredValue);
-                }
+            SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
+            foreach (OverhaulSettingAttribute neededAttribute in toParent)
+            {
+                SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath, neededAttribute.RequiredValue);
+            }
 
 #if DEBUG
-                DelegateScheduler.Instance.Schedule(delegate
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                foreach (SettingInfo neededAttribute in m_Settings)
                 {
-                    foreach (SettingInfo neededAttribute in m_Settings)
+                    if (OverhaulLocalizationManager.Error)
                     {
-                        if (OverhaulLocalizationManager.Error)
-                        {
-                            return;
-                        }
-
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
-                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
-                        }
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
-                        }
-                        OverhaulSettingDescription desc = OverhaulSettingsController.GetSettingDescription(neededAttribute.RawPath);
-                        if (desc != null) OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
-
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section);
-                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SectionTranslationPrefix + neededAttribute.Section] = neededAttribute.Section;
-                        }
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name);
-                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
-                        }
-
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category);
-                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category] = neededAttribute.Category;
-                        }
-                        if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category))
-                        {
-                            OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category);
-                            OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category] = GetCategoryDescription(neededAttribute.Category);
-                        }
+                        return;
                     }
-                }, 1f);
+
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingTranslationPrefix + neededAttribute.Name);
+                        OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                    }
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
+                    }
+                    OverhaulSettingDescription desc = OverhaulSettingsController.GetSettingDescription(neededAttribute.RawPath);
+                    if (desc != null) OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
+
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section);
+                        OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SectionTranslationPrefix + neededAttribute.Section] = neededAttribute.Section;
+                    }
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name);
+                        OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingButtonTranslationPrefix + neededAttribute.Name] = neededAttribute.Name;
+                    }
+
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category);
+                        OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryTranslationPrefix + neededAttribute.Category] = neededAttribute.Category;
+                    }
+                    if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category))
+                    {
+                        OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category);
+                        OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.CategoryDescTranslationPrefix + neededAttribute.Category] = GetCategoryDescription(neededAttribute.Category);
+                    }
+                }
+            }, 1f);
 #endif
-            }
             DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
             updateSettingVersion();
         }

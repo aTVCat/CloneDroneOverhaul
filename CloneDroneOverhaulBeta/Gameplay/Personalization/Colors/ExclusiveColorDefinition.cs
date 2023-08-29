@@ -2,21 +2,21 @@
 
 namespace CDOverhaul
 {
-    internal class ExclusiveColor
+    internal class ExclusiveColorDefinition
     {
         public string RelatedPlayFabId;
 
         public int ColorIndexToReplace;
         public Color NewColor;
 
-        public ExclusiveColor(string playFabId, int replace, Color newColor)
+        public ExclusiveColorDefinition(string playFabId, int replace, Color newColor)
         {
             RelatedPlayFabId = playFabId;
             ColorIndexToReplace = replace;
             NewColor = newColor;
         }
 
-        public ExclusiveColor(string playFabId, int replace, string hex, float glowPercent)
+        public ExclusiveColorDefinition(string playFabId, int replace, string hex, float glowPercent)
         {
             RelatedPlayFabId = playFabId;
             ColorIndexToReplace = replace;

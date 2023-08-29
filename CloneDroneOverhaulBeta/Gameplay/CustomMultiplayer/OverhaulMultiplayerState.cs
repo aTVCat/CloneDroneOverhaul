@@ -6,7 +6,7 @@
         {
             get
             {
-                return OverhaulMultiplayerController.Mode != EOverhaulMultiplayerMode.None;
+                return OverhaulMultiplayerManager.Mode != EOverhaulMultiplayerMode.None;
             }
         }
 
@@ -17,7 +17,7 @@
                 if (!IsMultiplayerMode)
                     return true;
 
-                OverhaulMultiplayerLobby lobby = OverhaulMultiplayerController.Lobby;
+                OverhaulMultiplayerLobby lobby = OverhaulMultiplayerManager.Lobby;
                 return lobby.OwnerUserID == lobby.LocalUserID;
             }
         }

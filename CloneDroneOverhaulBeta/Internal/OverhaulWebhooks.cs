@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class OverhaulWebhooksController
+    public static class OverhaulWebhooks
     {
         public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
         public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);

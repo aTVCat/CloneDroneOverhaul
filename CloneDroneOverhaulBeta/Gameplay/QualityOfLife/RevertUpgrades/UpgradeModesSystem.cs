@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Gameplay.QualityOfLife
 {
-    public class UpgradeModesController : OverhaulController
+    public class UpgradeModesSystem : OverhaulGameplaySystem
     {
-        public const string ReverUpgradesColor = "#992125";
-        public const string UpgradeColor = "#269921";
+        public const string REVERT_UPGRADES_COLOR = "#992125";
+        public const string GET_UPGRADES_COLOR = "#269921";
 
         public static readonly Tuple<UpgradeType, int>[] UnrevertableUpgrades = new Tuple<UpgradeType, int>[]
         {
@@ -38,27 +38,38 @@ namespace CDOverhaul.Gameplay.QualityOfLife
         private Image m_ButtonGraphic;
         private Text m_ButtonText;
 
-        public override void Initialize()
+        public void PlaceButton()
         {
             RectTransform upgradeUITransform = GameUIRoot.Instance.UpgradeUI.transform as RectTransform;
             RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
             RectTransform iconContainerTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "IconContainer") as RectTransform;
-            OverhaulUIPanelScaler panelScaler = iconContainerTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
-            panelScaler.Initialize(Vector3.one * 0.25f, Vector3.one, 15F, 3);
 
-            GameObject buttonPrefab = OverhaulMod.Core.CanvasController.GetHUDPrefab("UpgradeUI_ToggleUpgradeMode");
-            RectTransform spawnedButton = Instantiate(buttonPrefab, centerHolderTransform).GetComponent<RectTransform>();
-            spawnedButton.localPosition = new Vector2(270, 155);
-            spawnedButton.localEulerAngles = Vector3.zero;
-            spawnedButton.localScale = Vector3.one;
-            spawnedButton.gameObject.SetActive(true);
-            _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
+            OverhaulUIPanelScaler panelScaler = iconContainerTransform.GetComponent<OverhaulUIPanelScaler>();
+            if (!panelScaler)
+            {
+                panelScaler = iconContainerTransform.gameObject.AddComponent<OverhaulUIPanelScaler>();
+                panelScaler.Initialize(Vector3.one * 0.25f, Vector3.one, 15F, 3);
+            }
 
-            Button button = spawnedButton.GetComponent<Button>();
-            button.onClick.AddListener(ToggleMode);
-            m_ButtonGraphic = spawnedButton.GetComponent<Image>();
-            m_ButtonText = spawnedButton.GetChild(0).GetComponent<Text>();
+            OverhaulCanvasManager overhaulCanvasController = OverhaulCanvasManager.reference;
+            if (!m_ButtonGraphic && overhaulCanvasController)
+            {
+                GameObject buttonPrefab = overhaulCanvasController.GetHUDPrefab("UpgradeUI_ToggleUpgradeMode");
+                if (buttonPrefab)
+                {
+                    RectTransform spawnedButton = Instantiate(buttonPrefab, centerHolderTransform).GetComponent<RectTransform>();
+                    spawnedButton.localPosition = new Vector2(270, 155);
+                    spawnedButton.localEulerAngles = Vector3.zero;
+                    spawnedButton.localScale = Vector3.one;
+                    spawnedButton.gameObject.SetActive(true);
+                    _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
 
+                    Button button = spawnedButton.GetComponent<Button>();
+                    button.onClick.AddListener(ToggleMode);
+                    m_ButtonGraphic = spawnedButton.GetComponent<Image>();
+                    m_ButtonText = spawnedButton.GetChild(0).GetComponent<Text>();
+                }
+            }
             SetMode(UpgradeMode.Upgrade);
         }
 
@@ -74,13 +85,16 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (GameUIRoot.Instance && GameUIRoot.Instance.UpgradeUI && GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf)
                 GameUIRoot.Instance.UpgradeUI.PopulateIcons();
 
+            if (!m_ButtonGraphic || !m_ButtonText)
+                return;
+
             if (upgradeMode == UpgradeMode.Upgrade)
             {
-                m_ButtonGraphic.color = ReverUpgradesColor.ToColor();
+                m_ButtonGraphic.color = REVERT_UPGRADES_COLOR.ToColor();
                 m_ButtonText.text = OverhaulLocalizationManager.GetTranslation("Revert Upgrades");
                 return;
             }
-            m_ButtonGraphic.color = UpgradeColor.ToColor();
+            m_ButtonGraphic.color = GET_UPGRADES_COLOR.ToColor();
             m_ButtonText.text = OverhaulLocalizationManager.GetTranslation("Get Upgrades");
         }
     }

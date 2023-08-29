@@ -16,11 +16,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public static List<PersonalizationEditorPropertyAttribute> PetItemFields;
 
-        public static PersonalizationCategory EditingCategory
+        public static EPersonalizationCategory EditingCategory
         {
             get;
             set;
-        } = PersonalizationCategory.WeaponSkins;
+        } = EPersonalizationCategory.WeaponSkins;
 
         public static PersonalizationItem EditingItem
         {
@@ -40,35 +40,22 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 PetItemFields = PersonalizationItem.GetAllFields(typeof(PetItem));
         }
 
-        public static List<PersonalizationItem> GetPersonalizationCategorySavedItems(PersonalizationCategory category)
+        public static List<PersonalizationItem> GetPersonalizationCategorySavedItems(EPersonalizationCategory category)
         {
-            PersonalizationItemsController itemsController = null;
-            switch (category)
-            {
-                case PersonalizationCategory.WeaponSkins:
-                    itemsController = OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
-                    break;
-                case PersonalizationCategory.Outfits:
-                    itemsController = OverhaulController.Get<Outfits.OutfitsController>();
-                    break;
-                case PersonalizationCategory.Pets:
-                    itemsController = OverhaulController.Get<Pets.PetsController>();
-                    break;
-
-            }
+            PersonalizationItemsSystemBase itemsController = GetPersonalizationControllerByCategory(category);
             return itemsController && itemsController.ItemsData != null ? itemsController.ItemsData.Items : null;
         }
 
-        public static PersonalizationItemsController GetPersonalizationControllerByCategory(PersonalizationCategory category)
+        public static PersonalizationItemsSystemBase GetPersonalizationControllerByCategory(EPersonalizationCategory category)
         {
             switch (category)
             {
-                case PersonalizationCategory.WeaponSkins:
-                    return OverhaulController.Get<WeaponSkins.WeaponSkinsController>();
-                case PersonalizationCategory.Outfits:
-                    return OverhaulController.Get<Outfits.OutfitsController>();
-                case PersonalizationCategory.Pets:
-                    return OverhaulController.Get<Pets.PetsController>();
+                case EPersonalizationCategory.WeaponSkins:
+                    return PersonalizationManager.reference?.weaponSkins;
+                case EPersonalizationCategory.Outfits:
+                    return PersonalizationManager.reference?.outfits;
+                case EPersonalizationCategory.Pets:
+                    return PersonalizationManager.reference?.pets;
             }
             return null;
         }
@@ -78,7 +65,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             if (EditingItem == null)
                 return;
 
-            PersonalizationItemsController controller = GetPersonalizationControllerByCategory(EditingCategory);
+            PersonalizationItemsSystemBase controller = GetPersonalizationControllerByCategory(EditingCategory);
             if (!controller)
                 return;
 

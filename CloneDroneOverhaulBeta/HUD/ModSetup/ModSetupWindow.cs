@@ -274,7 +274,7 @@ namespace CDOverhaul.HUD
 
         public bool GetSendCrashReportsEnabled()
         {
-            return OverhaulWebhooksController.AllowSendingInformation;
+            return OverhaulWebhooks.AllowSendingInformation;
         }
         public void SetSendCrashReportsEnabled()
         {

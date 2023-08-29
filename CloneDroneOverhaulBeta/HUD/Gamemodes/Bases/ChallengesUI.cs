@@ -216,7 +216,7 @@ namespace CDOverhaul.HUD.Gamemodes
                         gamemodesUI.Hide();
                 }
                 Func<bool> func = new Func<bool>(() => CharacterTracker.Instance.GetPlayer());
-                OverhaulTransitionController.DoTransitionWithAction(action, func, 0.10f);
+                OverhaulTransitionManager.reference.DoTransition(action, func, 0.10f);
             }
 
             private CharacterModelCustomizationEntry getCharacterModelUnlockedByChallenge(string challengeID)

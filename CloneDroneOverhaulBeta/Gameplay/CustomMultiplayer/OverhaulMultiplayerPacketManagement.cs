@@ -23,7 +23,7 @@ namespace CDOverhaul.CustomMultiplayer
             if (!PreparePacket(packet, out byte[] array))
                 return;
 
-            CSteamID[] users = OverhaulMultiplayerController.Lobby.Members;
+            CSteamID[] users = OverhaulMultiplayerManager.Lobby.Members;
             int all = users.Length;
             int index = 0;
             do
@@ -38,7 +38,7 @@ namespace CDOverhaul.CustomMultiplayer
             if (!PreparePacket(packet, out byte[] array))
                 return;
 
-            OverhaulMultiplayerLobby lobby = OverhaulMultiplayerController.Lobby;
+            OverhaulMultiplayerLobby lobby = OverhaulMultiplayerManager.Lobby;
             CSteamID owner = lobby.LocalUserID;
             CSteamID[] users = lobby.Members;
             int all = users.Length;
@@ -62,7 +62,7 @@ namespace CDOverhaul.CustomMultiplayer
             if (!PreparePacket(packet, out byte[] array))
                 return;
 
-            CSteamID cSteamID = OverhaulMultiplayerController.Lobby.OwnerUserID;
+            CSteamID cSteamID = OverhaulMultiplayerManager.Lobby.OwnerUserID;
             packet.Send(cSteamID, array, sendType);
         }
 

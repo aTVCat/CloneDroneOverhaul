@@ -10,7 +10,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             set;
         }
 
-        public PersonalizationCategory Category
+        public EPersonalizationCategory Category
         {
             get;
             set;

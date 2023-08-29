@@ -4,13 +4,13 @@ namespace CDOverhaul.HUD
 {
     public class MountItemDisplay : OverhaulPersonalizationItemDisplay
     {
-        public override string GetEquippedItemsString() => PetsController.EquippedPets;
+        public override string GetEquippedItemsString() => PetSystem.EquippedPets;
 
         public override void OnClicked()
         {
             ButtonComponent.OnDeselect(null);
 
-            PetsController.SetPetEquipped(Item, !IsSelected, true);
+            PetSystem.SetPetEquipped(Item, !IsSelected, true);
             RefreshDisplay();
         }
     }

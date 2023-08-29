@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using CDOverhaul.RichPresence;
+using Steamworks;
 
 namespace CDOverhaul
 {
@@ -55,11 +56,15 @@ namespace CDOverhaul
             return s_SteamID;
         }
 
-        public static long GetDiscordID()
+        public static long GetLocalDiscordID()
         {
-            return !OverhaulDiscordController.HasInitialized
-                ? 0
-                : OverhaulDiscordController.Instance.UserID;
+            OverhaulDiscordRPC discordRPC = OverhaulRPCManager.reference?.discord;
+            if (!discordRPC)
+                return -1;
+
+            return !discordRPC.initialized
+                ? -1
+                : discordRPC.localUser.Id;
         }
 
         public static bool HasPlayfabID() => !string.IsNullOrEmpty(GetLocalPlayFabID());

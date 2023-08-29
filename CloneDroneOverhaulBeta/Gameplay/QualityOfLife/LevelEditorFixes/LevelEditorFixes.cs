@@ -14,7 +14,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public void Init()
         {
-            OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
+            OverhaulCanvasManager controller = OverhaulCanvasManager.reference;
             if (controller)
             {
                 GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_Settings");
@@ -276,7 +276,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     Destroy(image1);
             }
 
-            OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
+            OverhaulCanvasManager controller = OverhaulCanvasManager.reference;
             if (controller)
             {
                 GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");

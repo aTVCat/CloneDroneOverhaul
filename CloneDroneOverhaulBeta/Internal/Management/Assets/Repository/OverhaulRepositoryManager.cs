@@ -2,7 +2,7 @@
 
 namespace CDOverhaul
 {
-    public class OverhaulRepositoryController : OverhaulController
+    public class OverhaulRepositoryManager : OverhaulManager<OverhaulRepositoryManager>
     {
         public static readonly string[] Directories = new string[]
         {

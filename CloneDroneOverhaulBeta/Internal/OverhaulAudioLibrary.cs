@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class OverhaulAudioLibrary
+    public class OverhaulAudioLibrary : OverhaulManager<OverhaulAudioLibrary>
     {
         public static bool HasLoadedSounds;
 
-        public static AudioClipDefinition[] HeavyRobotFootsteps { get; private set; }
+        public static AudioClipDefinition[] HeavyRobotFootsteps;
 
-        internal static void Initialize()
+        protected override void OnAssetsLoaded()
         {
             if (HasLoadedSounds)
                 return;

@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul.Gameplay.Pets
 {
-    public class PetsController : PersonalizationItemsController
+    public class PetSystem : PersonalizationItemsSystemBase
     {
         public const char SEPARATOR = ',';
 
@@ -9,11 +9,6 @@
 
         [OverhaulSetting("Player.Pets.EnemiesUsePets", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesUsePets;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
 
         /*
             AllPetItems.Add(PetItem.CreateNew("Developer Pet", "television_cat", "blah blah", string.Empty, null));

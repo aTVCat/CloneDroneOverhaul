@@ -11,12 +11,9 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCanvasController : OverhaulManager<OverhaulCanvasController>
+    public class OverhaulCanvasManager : OverhaulManager<OverhaulCanvasManager>
     {
-        /// <summary>
-        /// The prefab name of HUD
-        /// </summary>
-        private const string OverhaulHUDName = "BetaOverhaulUI";
+        private static GameObject s_UIPrefab;
 
         /// <summary>
         /// The modded object with all UI references
@@ -36,10 +33,24 @@ namespace CDOverhaul.HUD
 
         public bool HasSpawnedHUD => HUDModdedObject != null;
 
-        public override void Initialize()
+        protected override void OnAssetsLoaded()
         {
-            base.Initialize();
-            m_CanvasFromPrefab = Instantiate(OverhaulAssetsController.GetAsset(OverhaulHUDName, OverhaulAssetPart.Part1));
+            base.OnAssetsLoaded();
+            InstantiateUI();
+        }
+
+        public override void OnSceneReloaded()
+        {
+            base.OnSceneReloaded();
+            InstantiateUI();
+        }
+
+        public void InstantiateUI()
+        {
+            if (!s_UIPrefab)
+                s_UIPrefab = OverhaulAssetsController.GetAsset("BetaOverhaulUI", OverhaulAssetPart.Part1);
+
+            m_CanvasFromPrefab = Instantiate(s_UIPrefab);
 
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
@@ -62,7 +73,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<ParametersMenu>(HUDModdedObject.GetObject<ModdedObject>(3));
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
             _ = AddHUD<OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
-            _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
+            //_ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
             _ = AddHUD<AccessoriesPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(5));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
             _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
@@ -79,7 +90,6 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulDevToolsUI>(HUDModdedObject.GetObject<ModdedObject>(21));
             _ = AddHUD<OverhaulFullscreenDialogueWindow>(HUDModdedObject.GetObject<ModdedObject>(22));
             _ = AddHUD<OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
-            _ = AddHUD<AdvancedPhotomodeUI>(HUDModdedObject.GetObject<ModdedObject>(24));
             _ = AddHUD<OverhaulCrashScreen>(HUDModdedObject.GetObject<ModdedObject>(25));
             _ = AddHUD<OverhaulAchievementsMenu>(HUDModdedObject.GetObject<ModdedObject>(26));
             _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));

@@ -31,7 +31,7 @@ namespace CDOverhaul.Gameplay.Overmodes
 
             if (GetMultiplayerMode() != EOverhaulMultiplayerMode.None)
             {
-                OverhaulMultiplayerController.Instance.StartMultiplayer(GetMultiplayerMode());
+                OverhaulMultiplayerManager.Instance.StartMultiplayer(GetMultiplayerMode());
             }
         }
     }

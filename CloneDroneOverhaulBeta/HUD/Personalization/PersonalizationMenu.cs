@@ -75,8 +75,8 @@ namespace CDOverhaul.HUD
         private Dropdown m_SearchByDropdown;
         private Button m_SearchOnlyExclusiveButton;
 
-        public PersonalizationCategory Category;
-        public bool IsOutfitSelection => Category == PersonalizationCategory.Outfits;
+        public EPersonalizationCategory Category;
+        public bool IsOutfitSelection => Category == EPersonalizationCategory.Outfits;
         public static PersonalizationMenu SkinsSelection;
         public static PersonalizationMenu OutfitSelection;
 

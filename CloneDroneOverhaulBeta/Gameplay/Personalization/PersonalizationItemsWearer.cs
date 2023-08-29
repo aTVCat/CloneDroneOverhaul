@@ -4,7 +4,7 @@ namespace CDOverhaul.Gameplay
 {
     public abstract class PersonalizationItemsWearer : OverhaulCharacterExpansion
     {
-        public OverhaulPlayerInfo PlayerInformation
+        public OverhaulPlayerInfo playerInformation
         {
             get => OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
         }

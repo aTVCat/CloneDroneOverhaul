@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace CDOverhaul.CustomMultiplayer
 {
-    public class OverhaulMultiplayerController : OverhaulController
+    public class OverhaulMultiplayerManager : OverhaulManager<OverhaulMultiplayerManager>
     {
         public const string LobbyJoinFailEvent = "OverhaulMultiplayer.LobbyJoinFail";
 
-        public static OverhaulMultiplayerController Instance;
+        public static OverhaulMultiplayerManager Instance;
 
         public static OverhaulMultiplayerLobby Lobby
         {

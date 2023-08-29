@@ -32,7 +32,7 @@ namespace CDOverhaul.Gameplay.Combat
         {
             base.Start();
 
-            m_Controller = OverhaulController.Get<OverhaulTooltipsController>();
+            m_Controller = null;
             m_CurrentWeaponTooltip = m_Controller.GetTooltip<OverhaulCurrentWeaponTooltip>();
             m_ClosestPlayerTooltip = m_Controller.GetTooltip<OverhaulClosestPlayerTooltip>();
 

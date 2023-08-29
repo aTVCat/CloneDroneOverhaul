@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            ExclusiveColorsControllerV2.FindAndApplyExclusiveColor(__instance.GetOwner(), newColor, out Color toReplace);
+            ExclusiveColorsSystem.FindAndApplyExclusiveColor(__instance.GetOwner(), newColor, out Color toReplace);
             newColor = toReplace;
         }
 

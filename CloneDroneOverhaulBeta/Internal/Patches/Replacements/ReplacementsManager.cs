@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CDOverhaul.HUD;
+using System.Collections;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -40,7 +41,7 @@ namespace CDOverhaul.Patches
 
         private IEnumerator addReplacementsCoroutine()
         {
-            yield return new WaitUntil(() => OverhaulMod.Core.CanvasController && !OverhaulLocalizationManager.Error);
+            yield return new WaitUntil(() => OverhaulCanvasManager.reference && !OverhaulLocalizationManager.Error);
             yield return null;
             ReplacementBase.AddAll();
             yield break;

@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Overmodes;
+using CDOverhaul.HUD;
 using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
@@ -25,7 +26,7 @@ namespace CDOverhaul
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
         public static bool IsModInitialized => !IsLoadedIncorrectly && Core;
-        public static bool IsHUDInitialized => IsModInitialized && Core.CanvasController;
+        public static bool IsHUDInitialized => IsModInitialized && OverhaulCanvasManager.reference;
         public static bool HasBootProcessEnded;
 
         /// <summary>
@@ -103,10 +104,10 @@ namespace CDOverhaul
 
         public override Object OnResourcesLoad(string path)
         {
-            if (OvermodesController.IsOvermode() && path.Contains("Overmodes/"))
+            if (OvermodesManager.IsOvermode() && path.Contains("Overmodes/"))
             {
                 path = path.Replace("Data/LevelEditorLevels/", string.Empty);
-                List<LevelDescription> list = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
+                List<LevelDescription> list = OvermodesManager.Instance.CurrentOvermode.GetLevelDescriptions();
                 foreach (LevelDescription description in list)
                 {
                     if (description.PrefabName == path)
