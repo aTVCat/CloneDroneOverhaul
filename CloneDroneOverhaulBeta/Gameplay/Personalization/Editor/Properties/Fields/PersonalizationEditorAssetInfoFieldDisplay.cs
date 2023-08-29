@@ -5,11 +5,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorAssetInfoFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ObjectReference("AssetPath")]
+        [UIElementReferenceAttribute("AssetPath")]
         private readonly Text m_AssetPath;
 
-        [ActionReference(nameof(editAssetInfo))]
-        [ObjectReference("EditButton")]
+        [UIElementActionReference(nameof(editAssetInfo))]
+        [UIElementReferenceAttribute("EditButton")]
         private readonly Button m_EditButton;
 
         public string PreviousText

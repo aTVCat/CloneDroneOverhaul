@@ -5,7 +5,7 @@ namespace CDOverhaul.CustomMultiplayer
 {
     public class OverhaulMultiplayerManager : OverhaulManager<OverhaulMultiplayerManager>
     {
-        public const string LobbyJoinFailEvent = "OverhaulMultiplayer.LobbyJoinFail";
+        public const string LOBBY_JOIN_FAIL_EVENT = "OverhaulMultiplayer.LobbyJoinFail";
 
         public static OverhaulMultiplayerManager Instance;
 
@@ -56,7 +56,7 @@ namespace CDOverhaul.CustomMultiplayer
                 if (t.m_eResult != EResult.k_EResultOK)
                 {
                     Debug.LogWarning("[CDO_MS] Cannot create lobby!");
-                    OverhaulEventsController.DispatchEvent(LobbyJoinFailEvent);
+                    OverhaulEvents.DispatchEvent(LOBBY_JOIN_FAIL_EVENT);
                     return;
                 }
 
@@ -80,7 +80,7 @@ namespace CDOverhaul.CustomMultiplayer
                 if ((EChatRoomEnterResponse)t.m_EChatRoomEnterResponse != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
                 {
                     Debug.LogWarning("[CDO_MS] Cannot join the lobby!");
-                    OverhaulEventsController.DispatchEvent(LobbyJoinFailEvent);
+                    OverhaulEvents.DispatchEvent(LOBBY_JOIN_FAIL_EVENT);
                     return;
                 }
 

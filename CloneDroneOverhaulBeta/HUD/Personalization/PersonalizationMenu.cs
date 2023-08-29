@@ -151,13 +151,13 @@ namespace CDOverhaul.HUD
             {
                 ShowDescriptionTooltip(WeaponType.None, null, 0f);
                 SkinsSelection = this;
-                OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
+                OverhaulEvents.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
             }
             else
             {
                 m_AccessoryItems = new List<OutfitItem>();
                 OutfitSelection = this;
-                OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
+                OverhaulEvents.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
             }
 
             SetMenuActive(false);

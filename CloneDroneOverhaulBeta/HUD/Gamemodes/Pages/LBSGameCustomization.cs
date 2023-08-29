@@ -9,38 +9,38 @@ namespace CDOverhaul.HUD.Gamemodes
 {
     public class LBSGameCustomization : FullscreenWindowPageBase
     {
-        [ObjectReference("Scroll View")]
+        [UIElementReferenceAttribute("Scroll View")]
         private readonly ScrollRect m_ScrollRect;
-        [ObjectReference("GridContent")]
+        [UIElementReferenceAttribute("GridContent")]
         private readonly CanvasGroup m_GridContent;
-        [ObjectReference("VerticalContent")]
+        [UIElementReferenceAttribute("VerticalContent")]
         private readonly CanvasGroup m_VerticalContent;
 
-        [ObjectReference("Start")]
+        [UIElementReferenceAttribute("Start")]
         private readonly Button m_Start;
 
-        [ObjectReference("WorkshopMapsPage")]
+        [UIElementReferenceAttribute("WorkshopMapsPage")]
         private readonly Button m_BrowseWorkshopMaps;
-        [ObjectReference("StandardMapsPage")]
+        [UIElementReferenceAttribute("StandardMapsPage")]
         private readonly Button m_BrowseStandardMaps;
-        [ObjectReference("LibraryMapsPage")]
+        [UIElementReferenceAttribute("LibraryMapsPage")]
         private readonly Button m_BrowseLocalMaps;
 
-        [ObjectReference("IncludeAllToggle")]
+        [UIElementReferenceAttribute("IncludeAllToggle")]
         private readonly Toggle m_IncludeAll;
-        [ObjectReference("Reload")]
+        [UIElementReferenceAttribute("Reload")]
         private readonly Button m_Refresh;
-        [ObjectReference("GetMore")]
+        [UIElementReferenceAttribute("GetMore")]
         private readonly Button m_GetMore;
 
-        [ObjectReference("MapInfo")]
+        [UIElementReferenceAttribute("MapInfo")]
         private readonly GameObject m_MapInfo;
-        [ObjectReference("MapTitle")]
+        [UIElementReferenceAttribute("MapTitle")]
         private readonly Text m_MapTitle;
-        [ObjectReference("MapCreator")]
+        [UIElementReferenceAttribute("MapCreator")]
         private readonly Text m_MapCreator;
 
-        [ObjectReference("WorkshopMapEntry")]
+        [UIElementReferenceAttribute("WorkshopMapEntry")]
         private readonly GameObject m_MapDisplayPrefab;
 
         public int BrowsingLevelsType
@@ -79,7 +79,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
 
             m_Start.AddOnClickListener(OnStartClicked);
 

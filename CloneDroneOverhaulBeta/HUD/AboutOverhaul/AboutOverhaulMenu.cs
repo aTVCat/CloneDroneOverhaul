@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CDOverhaul.HUD
 {
-    public class AboutOverhaulMenu : OverhaulUIController
+    public class AboutOverhaulMenu : UIController
     {
         public override void Initialize()
         {

@@ -6,22 +6,22 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationPlayerInfoEditor : PersonalizationEditorUIElement
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         private readonly GameObject m_Shading;
 
-        [ObjectReference("Dropdown2")]
+        [UIElementReferenceAttribute("Dropdown2")]
         private readonly Dropdown m_TypesDropdown;
 
-        [ObjectReference("UserID")]
+        [UIElementReferenceAttribute("UserID")]
         private readonly InputField m_IDInputField;
 
-        [ActionReference(nameof(OnAddSelfIDClicked))]
-        [ObjectReference("AddSelfID")]
+        [UIElementActionReference(nameof(OnAddSelfIDClicked))]
+        [UIElementReferenceAttribute("AddSelfID")]
         private readonly Button m_AddSelfIDButton;
 
-        [ActionReference(nameof(OnDeleteClicked))]
-        [ObjectReference("DeleteEntry")]
+        [UIElementActionReference(nameof(OnDeleteClicked))]
+        [UIElementReferenceAttribute("DeleteEntry")]
         private readonly Button m_DeleteButton;
 
         private bool m_HasInitialized;
@@ -56,9 +56,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
+                UIController.AssignValues(this);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
                 m_HasInitialized = true;
             }
 

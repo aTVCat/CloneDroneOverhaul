@@ -3,9 +3,6 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    /// <summary>
-    /// MonoBehaviour class that replaces usual <see cref="MonoBehaviour"/>
-    /// </summary>
     public class OverhaulBehaviour : MonoBehaviour, IDisposable
     {
         public bool IsDisposed

@@ -5,23 +5,23 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorVoxAssetInfoFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(editAssetInfo))]
-        [ObjectReference("EditButton")]
+        [UIElementActionReference(nameof(editAssetInfo))]
+        [UIElementReferenceAttribute("EditButton")]
         private readonly Button m_EditButton;
 
-        [ObjectReference("FilePath")]
+        [UIElementReferenceAttribute("FilePath")]
         private readonly Text m_FilePath;
 
-        [ActionReference(nameof(onVolumeNameChanged))]
-        [ObjectReference("VolumeNameField")]
+        [UIElementActionReference(nameof(onVolumeNameChanged))]
+        [UIElementReferenceAttribute("VolumeNameField")]
         private readonly InputField m_VolumeNameField;
 
-        [ActionReference(nameof(onVoxelSizeChanged))]
-        [ObjectReference("VoxelSizeField")]
+        [UIElementActionReference(nameof(onVoxelSizeChanged))]
+        [UIElementReferenceAttribute("VoxelSizeField")]
         private readonly InputField m_VoxelSizeField;
 
-        [ActionReference(nameof(onCenterPivotValueChanged))]
-        [ObjectReference("CenterPivot")]
+        [UIElementActionReference(nameof(onCenterPivotValueChanged))]
+        [UIElementReferenceAttribute("CenterPivot")]
         private readonly Toggle m_CenterPivot;
 
         private bool m_IsInitializing;

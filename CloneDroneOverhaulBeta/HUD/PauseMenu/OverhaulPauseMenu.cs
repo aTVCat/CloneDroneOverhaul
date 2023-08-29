@@ -324,32 +324,35 @@ namespace CDOverhaul.HUD
 
         public void OnOutfitsButtonClicked()
         {
+            /*
             AccessoriesPersonalizationPanel panel = Get<AccessoriesPersonalizationPanel>();
             if (!panel)
                 return;
 
             Hide();
-            panel.Show();
+            panel.Show();*/
         }
 
         public void OnPetsButtonClicked()
         {
+            /*
             MountsPersonalizationPanel panel = Get<MountsPersonalizationPanel>();
             if (!panel)
                 return;
 
             Hide();
-            panel.Show();
+            panel.Show();*/
         }
 
         public void OnPersonalizationEditorButtonClicked()
         {
+            /*
             PersonalizationEditorUI panel = Get<PersonalizationEditorUI>();
             if (!panel)
                 return;
 
             Hide();
-            panel.Show();
+            panel.Show();*/
         }
 
         #endregion

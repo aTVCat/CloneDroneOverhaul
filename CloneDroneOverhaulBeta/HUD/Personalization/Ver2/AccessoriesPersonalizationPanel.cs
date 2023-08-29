@@ -9,8 +9,8 @@ namespace CDOverhaul.HUD
 {
     public class AccessoriesPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        private PrefabAndContainer m_BodyPartsContainer;
-        private PrefabAndContainer m_OutfitItemsContainer;
+        private OverhaulUI.PrefabAndContainer m_BodyPartsContainer;
+        private OverhaulUI.PrefabAndContainer m_OutfitItemsContainer;
 
         private bool m_HasPopulatedBodyParts;
 
@@ -24,8 +24,8 @@ namespace CDOverhaul.HUD
         {
             base.Initialize();
 
-            m_BodyPartsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
-            m_OutfitItemsContainer = new PrefabAndContainer(MyModdedObject, 6, 7);
+            m_BodyPartsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 4, 5);
+            m_OutfitItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 6, 7);
 
             SelectedBodyPart = "Head";
         }

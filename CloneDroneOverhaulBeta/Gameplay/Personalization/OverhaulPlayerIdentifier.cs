@@ -19,21 +19,21 @@ namespace CDOverhaul
                 return;
             }
 
-            OverhaulEventsController.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
             s_HasInitialized = true;
         }
         private static void onLogin()
         {
             s_PlayFabID = GetLocalPlayFabID();
-            OverhaulEventsController.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
-            OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
+            OverhaulEvents.RemoveEventListener(GlobalEvents.PlayfabLoginSuccess, onLogin, true);
+            OverhaulEvents.DispatchEvent(OnLoginSuccessEventString);
         }
         private static void scheduledOnLogin()
         {
             if (string.IsNullOrEmpty(s_PlayFabID))
                 s_PlayFabID = GetLocalPlayFabID();
 
-            OverhaulEventsController.DispatchEvent(OnLoginSuccessEventString);
+            OverhaulEvents.DispatchEvent(OnLoginSuccessEventString);
         }
 
         public static string GetLocalPlayFabID()

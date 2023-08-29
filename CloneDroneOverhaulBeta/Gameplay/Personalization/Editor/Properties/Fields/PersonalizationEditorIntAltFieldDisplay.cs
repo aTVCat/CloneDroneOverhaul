@@ -6,8 +6,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorIntAltFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(onChangedValue))]
-        [ObjectReference("Dropdown2")]
+        [UIElementActionReference(nameof(onChangedValue))]
+        [UIElementReferenceAttribute("Dropdown2")]
         private readonly Dropdown m_Dropdown;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)

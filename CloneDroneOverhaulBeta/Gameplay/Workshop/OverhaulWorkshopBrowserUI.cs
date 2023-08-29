@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.Workshop
 {
-    public class OverhaulWorkshopBrowserUI : OverhaulUIController
+    public class OverhaulWorkshopBrowserUI : UIController
     {
         #region Settings
 
@@ -64,112 +64,112 @@ namespace CDOverhaul.Workshop
 
         #region UI elements
 
-        [ActionReference(nameof(Hide))]
-        [ObjectReference("CloseWorkshopBrowser")]
+        [UIElementActionReference(nameof(Hide))]
+        [UIElementReferenceAttribute("CloseWorkshopBrowser")]
         private readonly Button m_ExitButton;
 
-        private PrefabAndContainer m_WorkshopItemsContainer;
-        private PrefabAndContainer m_LevelTypesContainer;
-        private PrefabAndContainer m_RanksContainer;
-        private PrefabAndContainer m_DropdownRanksContainer;
-        private PrefabAndContainer m_RankSeparatorsContainer;
-        private LoadingIndicator m_LoadingIndicator;
+        private OverhaulUI.PrefabAndContainer m_WorkshopItemsContainer;
+        private OverhaulUI.PrefabAndContainer m_LevelTypesContainer;
+        private OverhaulUI.PrefabAndContainer m_RanksContainer;
+        private OverhaulUI.PrefabAndContainer m_DropdownRanksContainer;
+        private OverhaulUI.PrefabAndContainer m_RankSeparatorsContainer;
+        private OverhaulUI.LoadingIndicator m_LoadingIndicator;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("RanksDropdown")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("RanksDropdown")]
         private readonly GameObject m_RanksDropdown;
 
-        [ObjectReference("QuickInfoNew")]
+        [UIElementReferenceAttribute("QuickInfoNew")]
         private readonly GameObject m_QuickInfo;
-        [ObjectReference("QuickInfoName")]
+        [UIElementReferenceAttribute("QuickInfoName")]
         private readonly Text m_QuickInfoLevelName;
-        [ObjectReference("QuickInfoDesc")]
+        [UIElementReferenceAttribute("QuickInfoDesc")]
         private readonly Text m_QuickInfoLevelDesc;
-        [ObjectReference("QuickInfoStars")]
+        [UIElementReferenceAttribute("QuickInfoStars")]
         private readonly Text m_QuickInfoLevelStars;
-        [ObjectReference("QuickInfoCreatorName")]
+        [UIElementReferenceAttribute("QuickInfoCreatorName")]
         private readonly Text m_QuickInfoCreatorName;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("ErrorWindow")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("ErrorWindow")]
         private readonly GameObject m_ErrorWindow;
-        [ActionReference(nameof(RetryRequest))]
-        [ObjectReference("RetryButton")]
+        [UIElementActionReference(nameof(RetryRequest))]
+        [UIElementReferenceAttribute("RetryButton")]
         private readonly Button m_ErrorWindowRetryButton;
 
-        [ObjectReference("ManagementPanel")]
+        [UIElementReferenceAttribute("ManagementPanel")]
         private readonly Transform m_ManagementButtonsContainer;
-        [ObjectReference("ItemLoadProgressBar")]
+        [UIElementReferenceAttribute("ItemLoadProgressBar")]
         private readonly Transform m_ItemLoadingIndicatorTransform;
-        [ActionReference(nameof(SubscribeToItem))]
-        [ObjectReference("Subscribe")]
+        [UIElementActionReference(nameof(SubscribeToItem))]
+        [UIElementReferenceAttribute("Subscribe")]
         private readonly Button m_SubscribeButton;
-        [ActionReference(nameof(UnsubscribeFromItem))]
-        [ObjectReference("UnSubscribe")]
+        [UIElementActionReference(nameof(UnsubscribeFromItem))]
+        [UIElementReferenceAttribute("UnSubscribe")]
         private readonly Button m_UnsubscribeButton;
-        [ActionReference(nameof(OnPlayButtonClicked))]
-        [ObjectReference("PlayButton")]
+        [UIElementActionReference(nameof(OnPlayButtonClicked))]
+        [UIElementReferenceAttribute("PlayButton")]
         private readonly Button m_PlayButton;
-        [ActionReference(nameof(EraseLevelProgress))]
-        [ObjectReference("EraseProgress")]
+        [UIElementActionReference(nameof(EraseLevelProgress))]
+        [UIElementReferenceAttribute("EraseProgress")]
         private readonly Button m_EraseDataButton;
-        [ActionReference(nameof(ReloadItemView))]
-        [ObjectReference("ReloadPanelButton")]
+        [UIElementActionReference(nameof(ReloadItemView))]
+        [UIElementReferenceAttribute("ReloadPanelButton")]
         private readonly Button m_ReloadItemViewButton;
 
-        [ActionReference(nameof(VoteUp))]
-        [ObjectReference("UpVote")]
+        [UIElementActionReference(nameof(VoteUp))]
+        [UIElementReferenceAttribute("UpVote")]
         private readonly Button m_UpVoteButton;
-        [ActionReference(nameof(VoteDown))]
-        [ObjectReference("DownVote")]
+        [UIElementActionReference(nameof(VoteDown))]
+        [UIElementReferenceAttribute("DownVote")]
         private readonly Button m_DownVoteButton;
-        [ActionReference(nameof(MarkItemAsFavourite))]
-        [ObjectReference("Favourite")]
+        [UIElementActionReference(nameof(MarkItemAsFavourite))]
+        [UIElementReferenceAttribute("Favourite")]
         private readonly Button m_FavoriteButton;
-        [ActionReference(nameof(OpenItemSteamPage))]
-        [ObjectReference("SteamPage")]
+        [UIElementActionReference(nameof(OpenItemSteamPage))]
+        [UIElementReferenceAttribute("SteamPage")]
         private readonly Button m_ItemSteamPageButton;
-        [ActionReference(nameof(OpenItemAuthorProfilePage))]
-        [ObjectReference("CreatorProfile")]
+        [UIElementActionReference(nameof(OpenItemAuthorProfilePage))]
+        [UIElementReferenceAttribute("CreatorProfile")]
         private readonly Button m_ItemCreatorProfileButton;
-        [ActionReference(nameof(ViewAuthorItems))]
-        [ObjectReference("CreatorItems")]
+        [UIElementActionReference(nameof(ViewAuthorItems))]
+        [UIElementReferenceAttribute("CreatorItems")]
         private readonly Button m_ViewCreatorItemsButton;
-        [ActionReference(nameof(CopyItemLink))]
-        [ObjectReference("CopyLink")]
+        [UIElementActionReference(nameof(CopyItemLink))]
+        [UIElementReferenceAttribute("CopyLink")]
         private readonly Button m_CopyItemLinkButton;
 
-        [ActionReference(nameof(TogglePageSelectionPanel))]
-        [ObjectReference("ButtonPage")]
+        [UIElementActionReference(nameof(TogglePageSelectionPanel))]
+        [UIElementReferenceAttribute("ButtonPage")]
         private readonly Button m_PageSelectionButton;
-        [ObjectReference("CurrentPageText")]
+        [UIElementReferenceAttribute("CurrentPageText")]
         private readonly Text m_CurrentPageText;
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("PageSelection")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("PageSelection")]
         private readonly Transform m_PageSelectionTransform;
-        [ActionReference(nameof(RefreshLevelsList))]
-        [ObjectReference("ButtonReloadPage")]
+        [UIElementActionReference(nameof(RefreshLevelsList))]
+        [UIElementReferenceAttribute("ButtonReloadPage")]
         private readonly Button m_ReloadPageButton;
-        [ObjectReference("ButtonBrowseInstalledItems")]
+        [UIElementReferenceAttribute("ButtonBrowseInstalledItems")]
         private readonly Button m_BrowseInstalledButton;
-        [ObjectReference("ButtonBrowseWorkshopItems")]
+        [UIElementReferenceAttribute("ButtonBrowseWorkshopItems")]
         private readonly Button m_BrowseWorkshopButton;
-        [ObjectReference("ButtonBrowserLocalUserItems")]
+        [UIElementReferenceAttribute("ButtonBrowserLocalUserItems")]
         private readonly Button m_BrowsePublishedButton;
-        private PrefabAndContainer m_PageContainer;
+        private OverhaulUI.PrefabAndContainer m_PageContainer;
 
-        [ObjectReference("ButtonSearch")]
+        [UIElementReferenceAttribute("ButtonSearch")]
         private readonly Button m_SearchButton;
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("SearchPanel")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("SearchPanel")]
         private readonly GameObject m_SearchPanel;
-        [ObjectReference("SearchBox")]
+        [UIElementReferenceAttribute("SearchBox")]
         private readonly InputField m_SearchBox;
-        [ObjectReference("ButtonStartSearching")]
+        [UIElementReferenceAttribute("ButtonStartSearching")]
         private readonly Button m_StartSearchingButton;
 
-        private PrefabAndContainer m_AdditionalPreviewsContainer;
-        private LoadingIndicator m_ItemDownloadLI;
+        private OverhaulUI.PrefabAndContainer m_AdditionalPreviewsContainer;
+        private OverhaulUI.LoadingIndicator m_ItemDownloadLI;
 
         #endregion
 
@@ -192,10 +192,10 @@ namespace CDOverhaul.Workshop
         private static readonly List<Texture> m_LoadedTextures = new List<Texture>();
         private static ItemUIEntry[] m_SpawnedEntries;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("ItemPageFullscreen")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("ItemPageFullscreen")]
         private readonly Transform m_ItemPageViewTransform;
-        [ObjectReference("Page")]
+        [UIElementReferenceAttribute("Page")]
         private readonly Transform m_PageTransform;
 
         private readonly ProgressInformation m_ProgressInfo = new ProgressInformation();
@@ -317,15 +317,15 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
 
-            m_WorkshopItemsContainer = new PrefabAndContainer(MyModdedObject, 1, 2);
-            m_LevelTypesContainer = new PrefabAndContainer(MyModdedObject, 9, 10);
-            m_RanksContainer = new PrefabAndContainer(MyModdedObject, 15, 16);
-            m_DropdownRanksContainer = new PrefabAndContainer(MyModdedObject, 15, 16);
-            m_RankSeparatorsContainer = new PrefabAndContainer(MyModdedObject, 17, 16);
-            m_AdditionalPreviewsContainer = new PrefabAndContainer(MyModdedObject, 37, 38);
-            m_PageContainer = new PrefabAndContainer(MyModdedObject, 47, 48);
-            m_LoadingIndicator = new LoadingIndicator(MyModdedObject, 3, 4);
-            m_ItemDownloadLI = new LoadingIndicator(MyModdedObject, 34, 35);
+            m_WorkshopItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 1, 2);
+            m_LevelTypesContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 9, 10);
+            m_RanksContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 15, 16);
+            m_DropdownRanksContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 15, 16);
+            m_RankSeparatorsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 17, 16);
+            m_AdditionalPreviewsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 37, 38);
+            m_PageContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 47, 48);
+            m_LoadingIndicator = new OverhaulUI.LoadingIndicator(MyModdedObject, 3, 4);
+            m_ItemDownloadLI = new OverhaulUI.LoadingIndicator(MyModdedObject, 34, 35);
             m_CurrentPageText.text = "Page [1]";
 
             _ = m_PageTransform.gameObject.AddComponent<ItemViewPageBehaviour>();
@@ -376,7 +376,7 @@ namespace CDOverhaul.Workshop
         {
             m_ReloadPageButton.interactable = Time.unscaledTime >= m_TimeToAllowPressingReloadButton;
 
-            LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
+            OverhaulUI.LoadingIndicator.UpdateIndicator(m_LoadingIndicator, CurrentRequestProgress);
             if (ShouldResetRequest())
             {
                 SetErrorWindowActive(true);
@@ -386,7 +386,7 @@ namespace CDOverhaul.Workshop
             if (ViewingWorkshopItem != null)
             {
                 OverhaulSteamBrowser.UpdateItemDownloadInfo(ViewingWorkshopItem.ItemID, m_ProgressInfo);
-                LoadingIndicator.UpdateIndicator(m_ItemDownloadLI, m_ProgressInfo);
+                OverhaulUI.LoadingIndicator.UpdateIndicator(m_ItemDownloadLI, m_ProgressInfo);
             }
 
             if (OverhaulVersion.IsDebugBuild && Time.frameCount % 3 == 0 && ViewingWorkshopItem != null)
@@ -614,7 +614,7 @@ namespace CDOverhaul.Workshop
             m_ItemPageViewTransform.gameObject.SetActive(true);
 
             ProgressInformation.SetProgress(m_ProgressInfo, 0f);
-            LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
+            OverhaulUI.LoadingIndicator.ResetIndicator(m_ItemDownloadLI);
             StaticCoroutineRunner.StopStaticCoroutine(waitUntilLevelIsDownloaded());
             m_ItemLoadingIndicatorTransform.gameObject.SetActive(false);
 
@@ -992,7 +992,7 @@ namespace CDOverhaul.Workshop
         {
             IsPopulatingItems = false;
             ProgressInformation.SetProgress(CurrentRequestProgress, 1f);
-            LoadingIndicator.ResetIndicator(m_LoadingIndicator);
+            OverhaulUI.LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
             m_UnscaledTimeClickedOnOption = -1f;
             CurrentRequestResult = null;
@@ -1025,7 +1025,7 @@ namespace CDOverhaul.Workshop
             }
 
             SetErrorWindowActive(false);
-            LoadingIndicator.ResetIndicator(m_LoadingIndicator);
+            OverhaulUI.LoadingIndicator.ResetIndicator(m_LoadingIndicator);
             StaticCoroutineRunner.StopStaticCoroutine(populateItemsCoroutine());
             OverhaulSteamBrowser.RequestItems(RequiredRank, Steamworks.EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items_ReadyToUse, OnGetWorkshopItems, CurrentRequestProgress, SearchText, LevelTypeRequiredTag, Page, false, true, IsViewingInstalledItems, TargetAccount.GetAccountID());
         }

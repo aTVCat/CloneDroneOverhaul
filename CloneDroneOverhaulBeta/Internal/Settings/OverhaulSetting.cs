@@ -51,7 +51,7 @@ namespace CDOverhaul
             Name = array[2];
 
             if (Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+                return;
 
             TryAddPref(this, formelyKnown);
             TuneUpValues();
@@ -59,10 +59,7 @@ namespace CDOverhaul
 
         internal void TuneUpValues()
         {
-            if (Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-
-            if (Type == OverhaulSettingTypes.Other)
+            if (Error || Type == OverhaulSettingTypes.Other)
                 return;
 
             object obj = GetPref<object>(this);
@@ -107,7 +104,7 @@ namespace CDOverhaul
         public static void TryAddPref(in SettingInfo setting, in OverhaulUpdatedSetting formelyKnown)
         {
             if (setting == null || setting.Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+                return;
 
             if (!PlayerPrefs.HasKey(setting.RawPath))
             {
@@ -137,17 +134,14 @@ namespace CDOverhaul
         public static bool HasPref(in SettingInfo setting)
         {
             if (setting == null || setting.Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
+                return false;
 
             return PlayerPrefs.HasKey(setting.RawPath);
         }
 
         public static void SavePref(in SettingInfo setting, in object value, in bool dispatchEvent = true)
         {
-            if (setting == null || setting.Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-
-            if (setting.Type == OverhaulSettingTypes.Other)
+            if (setting == null || setting.Error || setting.Type == OverhaulSettingTypes.Other)
                 return;
 
             switch (setting.Type)
@@ -172,22 +166,17 @@ namespace CDOverhaul
                     PlayerPrefs.SetString(setting.RawPath, d);
                     setting.Field.SetValue(null, (string)value);
                     break;
-                default:
-                    OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingSaveError);
-                    break;
             }
 
-            if (dispatchEvent) DispatchSettingsRefreshedEvent();
+            if (dispatchEvent) 
+                DispatchSettingsRefreshedEvent();
 
             PlayerPrefs.Save();
         }
 
         public static T GetPref<T>(in SettingInfo setting)
         {
-            if (setting == null || setting.Error)
-                OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingError);
-
-            if (setting.Type == OverhaulSettingTypes.Other)
+            if (setting == null || setting.Error || setting.Type == OverhaulSettingTypes.Other)
                 return default;
 
             object result = null;
@@ -205,13 +194,10 @@ namespace CDOverhaul
                 case OverhaulSettingTypes.String:
                     result = PlayerPrefs.GetString(setting.RawPath);
                     break;
-                default:
-                    OverhaulExceptions.ThrowException(OverhaulExceptions.Exc_SettingGetError);
-                    break;
             }
             return (T)result;
         }
 
-        public static void DispatchSettingsRefreshedEvent() => OverhaulEventsController.DispatchEvent(OverhaulSettingsController.SettingChangedEventString);
+        public static void DispatchSettingsRefreshedEvent() => OverhaulEvents.DispatchEvent(OverhaulSettingsController.SettingChangedEventString);
     }
 }

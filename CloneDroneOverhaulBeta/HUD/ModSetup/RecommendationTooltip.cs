@@ -11,7 +11,7 @@ namespace CDOverhaul.HUD
 
         private bool m_IsMouseIn;
 
-        public void Initialize(RecommendationLevel level, string text)
+        public void Initialize(ERecommendationLevel level, string text)
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             m_TextPanel = moddedObject.GetObject<Transform>(3).gameObject;
@@ -19,13 +19,13 @@ namespace CDOverhaul.HUD
 
             moddedObject.GetObject<Text>(7).text = text;
 
-            moddedObject.GetObject<Transform>(0).gameObject.SetActive(level == RecommendationLevel.Recommended);
-            moddedObject.GetObject<Transform>(1).gameObject.SetActive(level == RecommendationLevel.BelowReqirements);
-            moddedObject.GetObject<Transform>(2).gameObject.SetActive(level == RecommendationLevel.Unsupported);
+            moddedObject.GetObject<Transform>(0).gameObject.SetActive(level == ERecommendationLevel.Recommended);
+            moddedObject.GetObject<Transform>(1).gameObject.SetActive(level == ERecommendationLevel.BelowReqirements);
+            moddedObject.GetObject<Transform>(2).gameObject.SetActive(level == ERecommendationLevel.Unsupported);
 
-            moddedObject.GetObject<Transform>(4).gameObject.SetActive(level == RecommendationLevel.Recommended);
-            moddedObject.GetObject<Transform>(5).gameObject.SetActive(level == RecommendationLevel.BelowReqirements);
-            moddedObject.GetObject<Transform>(6).gameObject.SetActive(level == RecommendationLevel.Unsupported);
+            moddedObject.GetObject<Transform>(4).gameObject.SetActive(level == ERecommendationLevel.Recommended);
+            moddedObject.GetObject<Transform>(5).gameObject.SetActive(level == ERecommendationLevel.BelowReqirements);
+            moddedObject.GetObject<Transform>(6).gameObject.SetActive(level == ERecommendationLevel.Unsupported);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

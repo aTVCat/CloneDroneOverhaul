@@ -9,19 +9,19 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorItemsBrowser : PersonalizationEditorUIElement
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         private readonly GameObject m_Shading;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("ItemPrefab")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("ItemPrefab")]
         private readonly ModdedObject m_Item;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("CreateNewPrefab")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("CreateNewPrefab")]
         private readonly Button m_CreateItem;
 
-        [ObjectReference("Content")]
+        [UIElementReferenceAttribute("Content")]
         private readonly Transform m_Container;
 
         private bool m_HasInitialized;
@@ -32,8 +32,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                UIController.AssignValues(this);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
                 m_HasInitialized = true;
             }
 

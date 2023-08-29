@@ -8,16 +8,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorStringSpecViewFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorUserIDDisplay) })]
-        [ObjectReference("PlayerIDPrefab")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorUserIDDisplay) })]
+        [UIElementReferenceAttribute("PlayerIDPrefab")]
         private readonly PersonalizationEditorUserIDDisplay m_PlayerIDPrefab;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("AddPlayerIDPrefab")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("AddPlayerIDPrefab")]
         private readonly Button m_AddPlayerIDPrefab;
 
-        [ObjectReference("Content")]
+        [UIElementReferenceAttribute("Content")]
         private readonly Transform m_Container;
 
         public EStringFieldDisplayType DisplayType

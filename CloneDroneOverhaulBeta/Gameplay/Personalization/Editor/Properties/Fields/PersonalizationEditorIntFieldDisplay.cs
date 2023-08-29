@@ -5,8 +5,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorIntFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(onChangedValue))]
-        [ObjectReference("InputField")]
+        [UIElementActionReference(nameof(onChangedValue))]
+        [UIElementReferenceAttribute("InputField")]
         private readonly InputField m_InputField;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)

@@ -199,7 +199,7 @@ namespace CDOverhaul.Patches
             m_SettingsText = moddedObject.GetObject<Text>(1);
             moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
             m_BugReportText = moddedObject.GetObject<Text>(3);
-            moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.Get<AboutOverhaulMenu>().Show);
+            //moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.Get<AboutOverhaulMenu>().Show);
             m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
             moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.Get<OverhaulLocalizationEditor>().Show);
@@ -207,7 +207,7 @@ namespace CDOverhaul.Patches
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -135f, 0);
 
-            OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
             SuccessfullyPatched = true;
         }
@@ -319,7 +319,7 @@ namespace CDOverhaul.Patches
             base.Cancel();
             if (SuccessfullyPatched)
             {
-                OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+                OverhaulEvents.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
                 m_ButtonsTransform.localScale = Vector3.one;
                 m_ButtonsTransform.localPosition = new Vector3(0, -195.5f, 0);
                 m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -87.8241f, 0);

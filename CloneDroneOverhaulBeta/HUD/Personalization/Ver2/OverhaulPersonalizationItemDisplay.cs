@@ -6,19 +6,19 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPersonalizationItemDisplay : OverhaulBehaviour
     {
-        [ObjectReference("OutfitItemEntry")]
+        [UIElementReferenceAttribute("OutfitItemEntry")]
         protected Button ButtonComponent;
-        [ObjectReference("OutfitItemEntry")]
+        [UIElementReferenceAttribute("OutfitItemEntry")]
         protected Animation AnimationComponent;
 
-        [ObjectReference("Name")]
+        [UIElementReferenceAttribute("Name")]
         protected Text ItemNameLabel;
-        [ObjectReference("Author")]
+        [UIElementReferenceAttribute("Author")]
         protected InputField AuthorLabel;
 
-        [ObjectReference("ExclusivityIndicator")]
+        [UIElementReferenceAttribute("ExclusivityIndicator")]
         protected GameObject ExclusiveIndicator;
-        [ObjectReference("Selected")]
+        [UIElementReferenceAttribute("Selected")]
         protected GameObject SelectedIndicator;
 
         public PersonalizationItem Item
@@ -32,7 +32,7 @@ namespace CDOverhaul.HUD
 
         public override void Start()
         {
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
             ButtonComponent.AddOnClickListener(OnClicked);
 
             RefreshDisplay();

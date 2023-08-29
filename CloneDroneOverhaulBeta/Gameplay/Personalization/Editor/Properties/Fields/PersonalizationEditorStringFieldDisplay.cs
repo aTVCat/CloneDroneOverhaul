@@ -6,15 +6,15 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorStringFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(onChangedValue))]
-        [ObjectReference("InputField")]
+        [UIElementActionReference(nameof(onChangedValue))]
+        [UIElementReferenceAttribute("InputField")]
         private readonly InputField m_InputField;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)
         {
             if (HasDifferentControl)
             {
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
                 m_InputField.text = TargetObject as string;
             }
             else

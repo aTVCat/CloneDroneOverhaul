@@ -139,7 +139,7 @@ namespace CDOverhaul.Visuals.ArenaOverhaul
             m_ArenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
             m_ArenaLightsMaterial.shader = Shader.Find("Standard");
 
-            OverhaulEventsController.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate, true);
+            OverhaulEvents.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate, true);
 
             SetVanillaPartsActive(false);
             PatchVanillaParts(true);

@@ -5,15 +5,15 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorSavePanel : PersonalizationEditorUIElement
     {
-        [ActionReference(nameof(onSaveButtonClicked))]
-        [ObjectReference("SaveButton")]
+        [UIElementActionReference(nameof(onSaveButtonClicked))]
+        [UIElementReferenceAttribute("SaveButton")]
         private readonly Button m_SaveButton;
 
-        [ActionReference(nameof(onAutoSaveToggleClicked))]
-        [ObjectReference("AutoSaveToggle")]
+        [UIElementActionReference(nameof(onAutoSaveToggleClicked))]
+        [UIElementReferenceAttribute("AutoSaveToggle")]
         private readonly Toggle m_AutoSaveToggle;
 
-        [ObjectReference("NeedsSavingIndicator")]
+        [UIElementReferenceAttribute("NeedsSavingIndicator")]
         private readonly GameObject m_NeedsSaveIndicator;
 
         public bool NeedsToSave

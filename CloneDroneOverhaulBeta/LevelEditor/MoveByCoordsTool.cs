@@ -40,12 +40,12 @@ namespace CDOverhaul.LevelEditor
 
         public override void Start()
         {
-            OverhaulEventsController.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+            OverhaulEvents.RemoveEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
         }
 
         private void scheduleOnSelectionChanged()

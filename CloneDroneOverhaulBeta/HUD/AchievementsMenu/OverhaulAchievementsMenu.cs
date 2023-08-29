@@ -3,12 +3,12 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulAchievementsMenu : OverhaulUIController
+    public class OverhaulAchievementsMenu : UIController
     {
         public static bool IsEnabled() => OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAchievementsMenuRedesignEnabled;
 
-        [ActionReference(nameof(OnBackButtonClicked))]
-        [ObjectReference("BackButton")]
+        [UIElementActionReference(nameof(OnBackButtonClicked))]
+        [UIElementReferenceAttribute("BackButton")]
         private readonly Button m_BackButton;
 
         public override void Initialize()

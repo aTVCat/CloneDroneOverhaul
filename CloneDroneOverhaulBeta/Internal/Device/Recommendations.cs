@@ -9,24 +9,24 @@
 
         public static int GetSSAORequiredGPUMemorySize() => 2048;
 
-        public static RecommendationLevel GetSSAORecommendation()
+        public static ERecommendationLevel GetSSAORecommendation()
         {
             return DeviceSpecifics.GPUShaderLevel < GetSSAORequiredShaderLevel()
-                ? RecommendationLevel.Unsupported
+                ? ERecommendationLevel.Unsupported
                 : DeviceSpecifics.GPUMemorySize < GetSSAORequiredGPUMemorySize()
-                ? RecommendationLevel.BelowReqirements
-                : RecommendationLevel.Recommended;
+                ? ERecommendationLevel.BelowReqirements
+                : ERecommendationLevel.Recommended;
         }
 
         public static string GetSSAORecommendationString()
         {
             switch (GetSSAORecommendation())
             {
-                case RecommendationLevel.Recommended:
+                case ERecommendationLevel.Recommended:
                     return string.Format("Your graphics card has more than {0}Mb of memory, Shader Model {1} is supported.", new object[] { GetSSAORequiredGPUMemorySize(), GetSSAORequiredShaderLevelStiring() });
-                case RecommendationLevel.BelowReqirements:
+                case ERecommendationLevel.BelowReqirements:
                     return string.Format("Your graphics card has less than {0}Mb of memory, Shader Model {1} is supported. This may result FPS drops.", new object[] { GetSSAORequiredGPUMemorySize(), GetSSAORequiredShaderLevelStiring() });
-                case RecommendationLevel.Unsupported:
+                case ERecommendationLevel.Unsupported:
                     return string.Format("Your graphics card doesn't support Shader Model {0}.", new object[] { GetSSAORequiredShaderLevelStiring() });
             }
             return "Unknown error";
@@ -34,7 +34,7 @@
 
         public static bool GetSSAOSettingDefaultValue()
         {
-            return GetSSAORecommendation() == RecommendationLevel.Recommended;
+            return GetSSAORecommendation() == ERecommendationLevel.Recommended;
         }
 
         #endregion

@@ -7,45 +7,45 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulCrashScreen : OverhaulUIController
+    public class OverhaulCrashScreen : UIController
     {
         private static bool s_HasSentReport;
 
         private static OverhaulCrashScreen s_Instance;
         public static OverhaulCrashScreen Instance => OverhaulMod.IsHUDInitialized && OverhaulMod.IsModInitialized ? s_Instance : null;
 
-        [ObjectReference("ErrorMessage")]
+        [UIElementReferenceAttribute("ErrorMessage")]
         private readonly Text m_ErrorText;
-        [ObjectReference("stacktraceText")]
+        [UIElementReferenceAttribute("stacktraceText")]
         private readonly Text m_StackTraceText;
 
-        [ActionReference(nameof(IgnoreCrash))]
-        [ObjectReference("IgnoreCrash")]
+        [UIElementActionReference(nameof(IgnoreCrash))]
+        [UIElementReferenceAttribute("IgnoreCrash")]
         private readonly Button m_IgnoreCrash;
-        [ActionReference(nameof(GoToMainMenu))]
-        [ObjectReference("MainMenu")]
+        [UIElementActionReference(nameof(GoToMainMenu))]
+        [UIElementReferenceAttribute("MainMenu")]
         private readonly Button m_MainMenu;
-        [ActionReference(nameof(ExitGame))]
-        [ObjectReference("ExitGame")]
+        [UIElementActionReference(nameof(ExitGame))]
+        [UIElementReferenceAttribute("ExitGame")]
         private readonly Button m_ExitGame;
 
-        [ActionReference(nameof(OpenStackTrace))]
-        [ObjectReference("ViewStacktrace")]
+        [UIElementActionReference(nameof(OpenStackTrace))]
+        [UIElementReferenceAttribute("ViewStacktrace")]
         private readonly Button m_ViewStackTrace;
-        [ActionReference(nameof(TriggerScreenshot))]
-        [ObjectReference("Screenshot")]
+        [UIElementActionReference(nameof(TriggerScreenshot))]
+        [UIElementReferenceAttribute("Screenshot")]
         private readonly Button m_MakeScreenshot;
 
-        [ActionReference(nameof(SendReport))]
-        [ObjectReference("SendReport")]
+        [UIElementActionReference(nameof(SendReport))]
+        [UIElementReferenceAttribute("SendReport")]
         private readonly Button m_SendReport;
-        [ObjectReference("SendReport")]
+        [UIElementReferenceAttribute("SendReport")]
         private readonly CanvasGroup m_SendReportCanvasGroup;
 
-        [ObjectReference("StackTrace")]
+        [UIElementReferenceAttribute("StackTrace")]
         private readonly GameObject m_StackTraceWindow;
-        [ActionReference(nameof(CloseStackTrace))]
-        [ObjectReference("CloseStackTraceButton")]
+        [UIElementActionReference(nameof(CloseStackTrace))]
+        [UIElementReferenceAttribute("CloseStackTraceButton")]
         private readonly Button m_CloseStackTrace;
 
         private bool m_IsScreenshotting;

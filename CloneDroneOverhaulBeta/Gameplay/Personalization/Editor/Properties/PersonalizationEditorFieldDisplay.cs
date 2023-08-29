@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorFieldDisplay : PersonalizationEditorUIElement
     {
-        [ObjectReference("Label")]
+        [UIElementReferenceAttribute("Label")]
         private readonly Text m_Label;
 
         protected object InitialFieldValue;
@@ -70,7 +70,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             TargetObject = targetObject;
             FieldReference = fieldToEdit;
 
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
             m_Label.text = StringUtils.AddSpacesToCamelCasedString(fieldToEdit.Name);
         }
 
@@ -78,7 +78,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             IsCollectionObject = true;
 
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
             m_Label.text = displayName;
             ListFieldDisplay = listFieldDisplay;
             TargetObject = targetObject;

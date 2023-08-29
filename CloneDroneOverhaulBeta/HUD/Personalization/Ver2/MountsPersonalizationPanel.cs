@@ -7,12 +7,12 @@ namespace CDOverhaul.HUD
 {
     public class MountsPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        private PrefabAndContainer m_PetItemsContainer;
+        private OverhaulUI.PrefabAndContainer m_PetItemsContainer;
 
         public override void Initialize()
         {
             base.Initialize();
-            m_PetItemsContainer = new PrefabAndContainer(MyModdedObject, 6, 7);
+            m_PetItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 6, 7);
         }
 
         protected override void PopulateItems()

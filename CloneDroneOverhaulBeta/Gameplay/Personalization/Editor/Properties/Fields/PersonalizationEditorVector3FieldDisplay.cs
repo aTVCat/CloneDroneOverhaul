@@ -7,16 +7,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorVector3FieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(onXChanged))]
-        [ObjectReference("InputField_X")]
+        [UIElementActionReference(nameof(onXChanged))]
+        [UIElementReferenceAttribute("InputField_X")]
         private readonly InputField m_X;
 
-        [ActionReference(nameof(onYChanged))]
-        [ObjectReference("InputField_Y")]
+        [UIElementActionReference(nameof(onYChanged))]
+        [UIElementReferenceAttribute("InputField_Y")]
         private readonly InputField m_Y;
 
-        [ActionReference(nameof(onZChanged))]
-        [ObjectReference("InputField_Z")]
+        [UIElementActionReference(nameof(onZChanged))]
+        [UIElementReferenceAttribute("InputField_Z")]
         private readonly InputField m_Z;
 
         private Action<Vector3> m_OnValueChangedAction;
@@ -25,7 +25,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (HasDifferentControl)
             {
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
             }
             else
             {

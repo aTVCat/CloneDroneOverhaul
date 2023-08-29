@@ -73,9 +73,10 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (!isUICall)
             {
+                /*
                 PersonalizationEditorUI editorUI = OverhaulController.Get<PersonalizationEditorUI>();
                 if (editorUI)
-                    editorUI.SavePanel.NeedsToSave = false;
+                    editorUI.SavePanel.NeedsToSave = false;*/
             }
         }
 

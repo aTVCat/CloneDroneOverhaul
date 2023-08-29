@@ -6,11 +6,11 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorGuidFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ObjectReference("InputField")]
+        [UIElementReferenceAttribute("InputField")]
         private readonly InputField m_InputField;
 
-        [ActionReference(nameof(NewGuid))]
-        [ObjectReference("NewGuid")]
+        [UIElementActionReference(nameof(NewGuid))]
+        [UIElementReferenceAttribute("NewGuid")]
         private readonly Button m_NewGuid;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)

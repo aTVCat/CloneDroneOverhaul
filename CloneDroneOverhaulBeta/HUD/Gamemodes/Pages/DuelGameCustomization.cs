@@ -5,7 +5,7 @@ namespace CDOverhaul.HUD.Gamemodes
 {
     public class DuelGameCustomization : FullscreenWindowPageBase
     {
-        [ObjectReference("Start")]
+        [UIElementReferenceAttribute("Start")]
         private readonly Button m_Start;
 
         public override Vector2 GetWindowSize() => OverhaulGamemodesUIFullscreenWindow.GameCustomizationWindowSize;
@@ -13,7 +13,7 @@ namespace CDOverhaul.HUD.Gamemodes
         public override void Initialize(OverhaulGamemodesUIFullscreenWindow fullscreenWindow)
         {
             base.Initialize(fullscreenWindow);
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
 
             m_Start.AddOnClickListener(OnStartClicked);
         }

@@ -9,16 +9,16 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorListFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ObjectReference("Content")]
+        [UIElementReferenceAttribute("Content")]
         private readonly Transform m_Container;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorListEntryDisplay) })]
-        [ObjectReference("ListEntry")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorListEntryDisplay) })]
+        [UIElementReferenceAttribute("ListEntry")]
         private readonly PersonalizationEditorListEntryDisplay m_EntryPrefab;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("AddValue")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("AddValue")]
         private readonly Button m_AddValuePrefab;
 
         public bool IsPositionNodesList

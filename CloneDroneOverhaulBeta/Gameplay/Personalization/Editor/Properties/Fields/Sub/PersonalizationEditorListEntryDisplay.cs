@@ -5,7 +5,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorListEntryDisplay : PersonalizationEditorUIElement
     {
-        [ObjectReference("BG")]
+        [UIElementReferenceAttribute("BG")]
         private readonly Transform m_Container;
 
         public PersonalizationEditorListFieldDisplay FieldDisplay
@@ -30,7 +30,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public void Initialize(PersonalizationEditorListFieldDisplay fieldDisplay, object targetList, int index)
         {
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
             List = targetList;
             Index = index;
             FieldDisplay = fieldDisplay;

@@ -9,8 +9,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             get
             {
+                /*
                 if (!m_EditorUI)
-                    m_EditorUI = OverhaulController.Get<PersonalizationEditorUI>();
+                    m_EditorUI = OverhaulController.Get<PersonalizationEditorUI>();*/
 
                 return m_EditorUI;
             }
@@ -22,7 +23,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
                 throw new Exception("Override PersonalizationEditorElement in " + base.gameObject.name);
 
             if (AssignVariablesAutomatically())
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
         }
 
         protected virtual bool AssignVariablesAutomatically() => true;

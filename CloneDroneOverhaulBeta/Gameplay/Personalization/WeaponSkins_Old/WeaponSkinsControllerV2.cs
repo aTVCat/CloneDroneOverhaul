@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay
 {
-    public class WeaponSkinsController : OverhaulGameplayController, IWeaponSkinsControllerV2
+    public class WeaponSkinsController : OverhaulController, IWeaponSkinsControllerV2
     {
         public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
         {
@@ -92,21 +92,12 @@ namespace CDOverhaul.Gameplay
 
         public override void Initialize()
         {
-            base.Initialize();
             Interface = this;
 
             if (CustomSkinsData == null)
             {
                 AddSkins();
             }
-        }
-
-        public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
-        {
-            if (!hasInitializedModel)
-                return;
-
-            _ = firstPersonMover.gameObject.AddComponent<WeaponSkinsWearer>();
         }
 
         public void ReImportCustomSkins(bool reloadData = true)

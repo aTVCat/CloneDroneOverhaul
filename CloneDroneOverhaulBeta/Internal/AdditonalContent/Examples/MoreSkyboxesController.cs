@@ -113,12 +113,12 @@ namespace CDOverhaul.Examples.AdditionalContent
 
         public override void AddListeners()
         {
-            OverhaulEventsController.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
         }
 
         public override void RemoveListeners()
         {
-            OverhaulEventsController.RemoveEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
+            OverhaulEvents.RemoveEventListener(GlobalEvents.LightSettingsRefreshed, refreshSkybox, true);
         }
 
         public void SetSkybox(int index)

@@ -5,8 +5,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorBoolFieldDisplay : PersonalizationEditorFieldDisplay
     {
-        [ActionReference(nameof(onChangedValue))]
-        [ObjectReference("Toggle")]
+        [UIElementActionReference(nameof(onChangedValue))]
+        [UIElementReferenceAttribute("Toggle")]
         private readonly Toggle m_Toggle;
 
         public override void Initialize(FieldInfo fieldToEdit, object targetObject)

@@ -12,7 +12,7 @@ namespace CDOverhaul.Gameplay
         public override void Start()
         {
             base.Start();
-            OverhaulEventsController.AddEventListener<string>(OverhaulPlayerInfo.UPDATE_INFO_EVENT, RefreshItemsMultiplayer);
+            OverhaulEvents.AddEventListener<string>(OverhaulPlayerInfo.UPDATE_INFO_EVENT, RefreshItemsMultiplayer);
 
             // Repair upgrade fix
             if (GameModeManager.IsSinglePlayer() && (Owner.IsPlayer() || Owner.IsPlayerTeam))
@@ -29,7 +29,7 @@ namespace CDOverhaul.Gameplay
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener<string>(OverhaulPlayerInfo.UPDATE_INFO_EVENT, RefreshItemsMultiplayer);
+            OverhaulEvents.RemoveEventListener<string>(OverhaulPlayerInfo.UPDATE_INFO_EVENT, RefreshItemsMultiplayer);
         }
 
         public abstract void RefreshItems();

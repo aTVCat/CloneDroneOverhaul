@@ -16,7 +16,7 @@ namespace CDOverhaul.Patches
             if (__instance._player == player)
                 return;
 
-            OverhaulEventsController.DispatchEvent(OverhaulGameplayManager.PLAYER_SET_EVENT, player);
+            OverhaulEvents.DispatchEvent(OverhaulGameplayManager.PLAYER_SET_EVENT, player);
         }
     }
 }

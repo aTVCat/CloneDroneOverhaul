@@ -5,15 +5,15 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorLoadPanel : PersonalizationEditorUIElement
     {
-        [ActionReference(nameof(OnLoadButtonClicked))]
-        [ObjectReference("LoadButton")]
+        [UIElementActionReference(nameof(OnLoadButtonClicked))]
+        [UIElementReferenceAttribute("LoadButton")]
         private readonly Button m_LoadButton;
 
-        [ActionReference(nameof(OnReloadButtonClicked))]
-        [ObjectReference("Button_Reload")]
+        [UIElementActionReference(nameof(OnReloadButtonClicked))]
+        [UIElementReferenceAttribute("Button_Reload")]
         private readonly Button m_ReloadButton;
 
-        [ObjectReference("NeedsReloadIndicator")]
+        [UIElementReferenceAttribute("NeedsReloadIndicator")]
         private readonly GameObject m_NeedsReloadIndicator;
 
         public bool NeedsToReload

@@ -73,7 +73,7 @@ namespace CDOverhaul
             EnableCursorController.Reset();
             DeviceSpecifics.Initialize();
 
-            OverhaulEventsController.Initialize();
+            OverhaulEvents.Initialize();
             OverhaulSettingsController.Initialize();
         }
 
@@ -157,10 +157,9 @@ namespace CDOverhaul
             GameObject miscObject = new GameObject("Misc");
             miscObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
 
-            _ = OverhaulController.Add<OverhaulAchievementsManager>(miscObject.transform);
             _ = OverhaulController.Add<OverhaulAudioLibrary>(miscObject.transform);
             _ = OverhaulController.Add<OverhaulTransitionManager>(miscObject.transform);
-            _ = OverhaulController.Add<OverhaulCanvasManager>(miscObject.transform);
+            _ = OverhaulController.Add<OverhaulUIManager>(miscObject.transform);
         }
 
         public IEnumerator LoadAssetsCoroutine()

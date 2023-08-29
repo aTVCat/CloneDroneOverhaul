@@ -78,8 +78,8 @@ _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
         public override void AddListeners()
         {
             base.AddListeners();
-            OverhaulEventsController.AddEventListener<FirstPersonMover>(FIRST_PERSON_SPAWNED_EVENT, onFirstPersonMoverSpawnedInternal);
-            OverhaulEventsController.AddEventListener<FirstPersonMover>(FIRST_PERSON_INITIALIZED_EVENT, onFirstPersonMoverSpawnedDelayInternal);
+            OverhaulEvents.AddEventListener<FirstPersonMover>(FIRST_PERSON_SPAWNED_EVENT, onFirstPersonMoverSpawnedInternal);
+            OverhaulEvents.AddEventListener<FirstPersonMover>(FIRST_PERSON_INITIALIZED_EVENT, onFirstPersonMoverSpawnedDelayInternal);
 
             events?.AddListeners();
             playerInfos?.AddListeners();
@@ -91,8 +91,8 @@ _ = firstPersonMover.gameObject.AddComponent<RobotCameraZoomExpansion>();*/
         public override void RemoveListeners()
         {
             base.RemoveListeners();
-            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(FIRST_PERSON_SPAWNED_EVENT, onFirstPersonMoverSpawnedInternal);
-            OverhaulEventsController.RemoveEventListener<FirstPersonMover>(FIRST_PERSON_INITIALIZED_EVENT, onFirstPersonMoverSpawnedDelayInternal);
+            OverhaulEvents.RemoveEventListener<FirstPersonMover>(FIRST_PERSON_SPAWNED_EVENT, onFirstPersonMoverSpawnedInternal);
+            OverhaulEvents.RemoveEventListener<FirstPersonMover>(FIRST_PERSON_INITIALIZED_EVENT, onFirstPersonMoverSpawnedDelayInternal);
 
             events?.RemoveListeners();
             playerInfos?.RemoveListeners();

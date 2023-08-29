@@ -16,7 +16,7 @@ namespace CDOverhaul.Gameplay
             GameMode newGameMode = GameFlowManager.Instance._gameMode;
             if (!newGameMode.Equals(m_GameModePrevFrame))
             {
-                OverhaulEventsController.DispatchEvent(OverhaulGameplayManager.GAMEMODE_CHANGED_EVENT);
+                OverhaulEvents.DispatchEvent(OverhaulGameplayManager.GAMEMODE_CHANGED_EVENT);
                 m_GameModePrevFrame = newGameMode;
             }
         }

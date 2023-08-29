@@ -8,7 +8,7 @@ namespace CDOverhaul.HUD
     /// <summary>
     /// An updated version of <see cref="PersonalizationMenu"/> to be implemented in 0.3 updates/0.4
     /// </summary>
-    public abstract class OverhaulPersonalizationPanel : OverhaulUIController
+    public abstract class OverhaulPersonalizationPanel : UIController
     {
         protected Vector2 TargetAnchorPosition;
 
@@ -19,16 +19,16 @@ namespace CDOverhaul.HUD
         }
 
 
-        [ObjectReference("BG")]
+        [UIElementReferenceAttribute("BG")]
         protected GameObject PanelBG;
 
-        [ObjectReference("Button_Done")]
+        [UIElementReferenceAttribute("Button_Done")]
         protected Button DoneButton;
 
-        [ObjectReference("ScrollRect")]
+        [UIElementReferenceAttribute("ScrollRect")]
         protected CanvasGroup ScrollViewCanvasGroup;
 
-        protected PrefabAndContainer MainItemContainer;
+        protected OverhaulUI.PrefabAndContainer MainItemContainer;
 
         public override void Initialize()
         {

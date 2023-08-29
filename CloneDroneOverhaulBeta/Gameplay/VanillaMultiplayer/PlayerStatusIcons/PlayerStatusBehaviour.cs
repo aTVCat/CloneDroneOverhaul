@@ -28,14 +28,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
             if (m_Info != null && m_Info.Equals(OverhaulPlayerInfo.LocalOverhaulPlayerInfo))
                 m_LocalBehaviour = this;
 
-            OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.GOT_INFO_EVENT, onGetData);
+            OverhaulEvents.AddEventListener<Hashtable>(OverhaulPlayerInfo.GOT_INFO_EVENT, onGetData);
             CreateCanvas();
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.GOT_INFO_EVENT, onGetData);
+            OverhaulEvents.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.GOT_INFO_EVENT, onGetData);
             m_Info = null;
             m_WorldCanvas = null;
             m_WorldCanvasHolder = null;

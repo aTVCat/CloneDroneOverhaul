@@ -74,7 +74,7 @@ namespace CDOverhaul
             UpgradeCollection = null;
             EnergySource = null;
 
-            OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            OverhaulEvents.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
             //OverhaulEventsController.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
         }
 
@@ -84,7 +84,7 @@ namespace CDOverhaul
             UpgradeCollection = base.GetComponent<UpgradeCollection>();
             EnergySource = base.GetComponent<EnergySource>();
 
-            OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
+            OverhaulEvents.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDeath, true);
             //_ = OverhaulEventsController.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, OnUpgradesRefresh, true);
 
             CharacterExpansionContainer expansionContainer = GetComponent<CharacterExpansionContainer>();

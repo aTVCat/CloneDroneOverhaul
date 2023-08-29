@@ -14,13 +14,13 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             "PlayFab",
         };
 
-        [ObjectReference("DisplayName")]
+        [UIElementReferenceAttribute("DisplayName")]
         private readonly Text m_DisplayName;
 
-        [ObjectReference("ID")]
+        [UIElementReferenceAttribute("ID")]
         private readonly Text m_DisplayID;
 
-        [ObjectReference("TypeLabel")]
+        [UIElementReferenceAttribute("TypeLabel")]
         private readonly Text m_TypeLabel;
 
         private bool m_HasAlreadyInitialized;
@@ -61,7 +61,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasAlreadyInitialized)
             {
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
 
                 base.GetComponent<Button>().AddOnClickListener(EditInfo);
 

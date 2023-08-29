@@ -39,14 +39,12 @@ namespace CDOverhaul.Visuals.Robots
             if (Vector3.Distance(m_CameraController.mainCamera.transform.position, base.transform.position) > 60f)
                 return;
 
-            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             Vector3 vector3 = base.transform.position;
             vector3.x += UnityEngine.Random.Range(-1f, 1f);
             vector3.y += UnityEngine.Random.Range(-1f, 1f);
             vector3.z += UnityEngine.Random.Range(-1f, 1f);
 
             _ = PooledPrefabController.SpawnEntry<WeaponSkinCustomVFXInstance>(OverhaulEffectsManager.GenericSparksVFX, vector3, Vector3.zero);
-            stopwatch.StopTimer("SeveredBodyPartSparks.spark");
         }
     }
 }

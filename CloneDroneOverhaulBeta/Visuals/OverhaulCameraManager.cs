@@ -15,7 +15,7 @@ namespace CDOverhaul.Visuals
                 if (!m_MainCamera || !m_MainCamera.enabled || !m_MainCamera.gameObject.activeInHierarchy)
                 {
                     m_MainCamera = Camera.main;
-                    OverhaulEventsController.DispatchEvent(CAMERA_CHANGED_EVENT, m_MainCamera);
+                    OverhaulEvents.DispatchEvent(CAMERA_CHANGED_EVENT, m_MainCamera);
                 }
 
                 return m_MainCamera;

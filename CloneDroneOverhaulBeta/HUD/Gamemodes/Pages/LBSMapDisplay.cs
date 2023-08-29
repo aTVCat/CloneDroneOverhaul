@@ -6,10 +6,10 @@ namespace CDOverhaul.HUD.Gamemodes
 {
     public class LBSMapDisplay : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [ObjectReference("MapPreview")]
+        [UIElementReferenceAttribute("MapPreview")]
         private readonly RawImage m_PreviewImage;
 
-        [ObjectReference("SelectedIndicator")]
+        [UIElementReferenceAttribute("SelectedIndicator")]
         private readonly GameObject m_SelectedIndicator;
 
         private Button m_Button;
@@ -86,7 +86,7 @@ namespace CDOverhaul.HUD.Gamemodes
             m_Button = base.GetComponent<Button>();
             m_Button.AddOnClickListener(OnClick);
 
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
         }
 
         public void OnClick()

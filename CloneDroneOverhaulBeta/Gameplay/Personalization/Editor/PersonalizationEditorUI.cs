@@ -4,54 +4,54 @@ using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Editors.Personalization
 {
-    public class PersonalizationEditorUI : OverhaulUIController
+    public class PersonalizationEditorUI : UIController
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         public GameObject Shading;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorPropertiesWindow) })]
-        [ObjectReference("PropertiesPanel")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorPropertiesWindow) })]
+        [UIElementReferenceAttribute("PropertiesPanel")]
         public PersonalizationEditorPropertiesWindow PropertiesWindow;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorSavePanel) })]
-        [ObjectReference("SavePanel")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorSavePanel) })]
+        [UIElementReferenceAttribute("SavePanel")]
         public PersonalizationEditorSavePanel SavePanel;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorLoadPanel) })]
-        [ObjectReference("LoadPanel")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorLoadPanel) })]
+        [UIElementReferenceAttribute("LoadPanel")]
         public PersonalizationEditorLoadPanel LoadPanel;
 
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorTypePanel) })]
-        [ObjectReference("TypeSelectionPanel")]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorTypePanel) })]
+        [UIElementReferenceAttribute("TypeSelectionPanel")]
         public PersonalizationEditorTypePanel TypesPanel;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationEditorItemsBrowser) })]
-        [ObjectReference("ItemsBrowser")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationEditorItemsBrowser) })]
+        [UIElementReferenceAttribute("ItemsBrowser")]
         public PersonalizationEditorItemsBrowser ItemsBrowser;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationPlayerInfoEditor) })]
-        [ObjectReference("PlayerIDConfigMenu")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationPlayerInfoEditor) })]
+        [UIElementReferenceAttribute("PlayerIDConfigMenu")]
         public PersonalizationPlayerInfoEditor PlayerInfoConfigMenu;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationAssetInfoEditor) })]
-        [ObjectReference("AssetInfoConfigMenu")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationAssetInfoEditor) })]
+        [UIElementReferenceAttribute("AssetInfoConfigMenu")]
         public PersonalizationAssetInfoEditor AssetInfoConfigMenu;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationFileExplorer) })]
-        [ObjectReference("FileExplorer")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationFileExplorer) })]
+        [UIElementReferenceAttribute("FileExplorer")]
         public PersonalizationFileExplorer FileExplorerMenu;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new Type[] { typeof(PersonalizationTupleEditor) })]
-        [ObjectReference("TupleView")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new Type[] { typeof(PersonalizationTupleEditor) })]
+        [UIElementReferenceAttribute("TupleView")]
         public PersonalizationTupleEditor TupleEditor;
 
         public override void Initialize()

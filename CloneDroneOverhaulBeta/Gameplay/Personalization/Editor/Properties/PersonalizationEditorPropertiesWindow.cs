@@ -6,12 +6,12 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorPropertiesWindow : PersonalizationEditorUIElement
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorPropertyCategoryDisplay) })]
-        [ObjectReference("CategoryPrefab")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorPropertyCategoryDisplay) })]
+        [UIElementReferenceAttribute("CategoryPrefab")]
         public readonly PersonalizationEditorPropertyCategoryDisplay PropertyCategoryPrefab;
 
-        [ObjectReference("Content")]
+        [UIElementReferenceAttribute("Content")]
         private readonly Transform m_Container;
 
         private bool m_HasInitialized;
@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
                 _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
                 m_HasInitialized = true;
             }

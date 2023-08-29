@@ -4,7 +4,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorPropertyDisplay : PersonalizationEditorUIElement
     {
-        [ObjectReference("Label")]
+        [UIElementReferenceAttribute("Label")]
         public Text PropertyNameLabel;
 
         public PersonalizationEditorPropertyAttribute AttributeReference
@@ -15,7 +15,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         public override void Start()
         {
-            OverhaulUIController.AssignValues(this);
+            UIController.AssignValues(this);
         }
     }
 }

@@ -28,8 +28,8 @@ namespace CDOverhaul.Visuals
 
         public override void Start()
         {
-            OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled, true);
-            OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onCharacterDied, true);
+            OverhaulEvents.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled, true);
+            OverhaulEvents.AddEventListener<Character>(GlobalEvents.CharacterKilled, onCharacterDied, true);
 
             if (base.transform.parent && base.transform.parent.parent)
             {
@@ -39,8 +39,8 @@ namespace CDOverhaul.Visuals
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled, true);
-            OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onCharacterDied, true);
+            OverhaulEvents.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled, true);
+            OverhaulEvents.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onCharacterDied, true);
             OverhaulDisposable.AssignNullToAllVars(this);
         }
 

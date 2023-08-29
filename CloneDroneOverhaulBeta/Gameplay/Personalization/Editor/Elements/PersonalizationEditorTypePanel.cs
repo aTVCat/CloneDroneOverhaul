@@ -12,26 +12,26 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             set;
         }
 
-        [ActionReference(nameof(onChangeTypeButtonClicked))]
-        [ObjectReference("ChangeTypeButton")]
+        [UIElementActionReference(nameof(onChangeTypeButtonClicked))]
+        [UIElementReferenceAttribute("ChangeTypeButton")]
         private readonly Button m_ChangeTypeButton;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("TypesPanel")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("TypesPanel")]
         private readonly GameObject m_TypesPanel;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         private readonly GameObject m_Shading;
 
-        [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onSkinsButtonClicked) })]
-        [ObjectReference("Button_Skins")]
+        [UIElementActionReference(new string[] { nameof(hidePanelAndShading), nameof(onSkinsButtonClicked) })]
+        [UIElementReferenceAttribute("Button_Skins")]
         private readonly Button m_SkinsButton;
-        [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onOutfitsButtonClicked) })]
-        [ObjectReference("Button_Outfits")]
+        [UIElementActionReference(new string[] { nameof(hidePanelAndShading), nameof(onOutfitsButtonClicked) })]
+        [UIElementReferenceAttribute("Button_Outfits")]
         private readonly Button m_OutfitsButton;
-        [ActionReference(new string[] { nameof(hidePanelAndShading), nameof(onPetsButtonClicked) })]
-        [ObjectReference("Button_Pets")]
+        [UIElementActionReference(new string[] { nameof(hidePanelAndShading), nameof(onPetsButtonClicked) })]
+        [UIElementReferenceAttribute("Button_Pets")]
         private readonly Button m_PetsButton;
 
         private Transform m_DefaultParent;

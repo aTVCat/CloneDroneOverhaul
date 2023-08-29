@@ -110,7 +110,7 @@ namespace CDOverhaul.HUD
 
         public bool GetSSAOSupported()
         {
-            return Recommendations.GetSSAORecommendation() != RecommendationLevel.Unsupported;
+            return Recommendations.GetSSAORecommendation() != ERecommendationLevel.Unsupported;
         }
         public bool GetSSAOEnabled()
         {
@@ -222,7 +222,7 @@ namespace CDOverhaul.HUD
 
         public bool GetWatermarkEnabled()
         {
-            return OverhaulVersionLabel.EnableWatermarkInGameplay;
+            return UIOverhaulVersionLabel.EnableWatermarkInGameplay;
         }
         public void SetWatermarkEnabled()
         {

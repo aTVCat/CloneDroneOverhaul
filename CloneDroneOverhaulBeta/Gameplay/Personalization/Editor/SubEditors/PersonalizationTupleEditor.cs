@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationTupleEditor : PersonalizationEditorUIElement
     {
-        [ObjectReference("Container")]
+        [UIElementReferenceAttribute("Container")]
         private readonly Transform m_Container;
 
         private bool m_HasInitialized;
@@ -30,8 +30,8 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                UIController.AssignValues(this);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
                 _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
                 m_HasInitialized = true;
             }

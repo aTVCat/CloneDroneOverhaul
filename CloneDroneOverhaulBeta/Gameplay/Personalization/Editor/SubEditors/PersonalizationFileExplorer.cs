@@ -8,18 +8,18 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationFileExplorer : PersonalizationEditorUIElement
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         private readonly GameObject m_Shading;
 
-        [ActionReference(nameof(OnCheckFileClicked))]
-        [ObjectReference("CheckFile")]
+        [UIElementActionReference(nameof(OnCheckFileClicked))]
+        [UIElementReferenceAttribute("CheckFile")]
         private readonly Button m_CheckFileButton;
 
-        [ObjectReference("CheckFileStatusLabel")]
+        [UIElementReferenceAttribute("CheckFileStatusLabel")]
         private readonly Text m_CheckFileStatusLabel;
 
-        [ObjectReference("FilePath")]
+        [UIElementReferenceAttribute("FilePath")]
         private readonly InputField m_FilePath;
 
         private bool m_HasInitialized;
@@ -42,9 +42,9 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
+                UIController.AssignValues(this);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
                 m_HasInitialized = true;
             }
 

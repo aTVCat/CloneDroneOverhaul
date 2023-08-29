@@ -7,75 +7,75 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationEditorPropertyCategoryDisplay : PersonalizationEditorUIElement
     {
-        [ObjectReference("Header")]
+        [UIElementReferenceAttribute("Header")]
         private readonly Text m_Header;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
-        [ObjectReference("StringProperty_Small")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
+        [UIElementReferenceAttribute("StringProperty_Small")]
         public readonly PersonalizationEditorStringFieldDisplay ShortStringFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
-        [ObjectReference("StringProperty_Big")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorStringFieldDisplay) })]
+        [UIElementReferenceAttribute("StringProperty_Big")]
         public readonly PersonalizationEditorStringFieldDisplay LongStringFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorIntAltFieldDisplay) })]
-        [ObjectReference("IntAltProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorIntAltFieldDisplay) })]
+        [UIElementReferenceAttribute("IntAltProperty")]
         public readonly PersonalizationEditorIntAltFieldDisplay IntAltFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorIntFieldDisplay) })]
-        [ObjectReference("IntProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorIntFieldDisplay) })]
+        [UIElementReferenceAttribute("IntProperty")]
         public readonly PersonalizationEditorIntFieldDisplay IntFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorBoolFieldDisplay) })]
-        [ObjectReference("BoolProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorBoolFieldDisplay) })]
+        [UIElementReferenceAttribute("BoolProperty")]
         public readonly PersonalizationEditorBoolFieldDisplay BoolFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorFloatFieldDisplay) })]
-        [ObjectReference("FloatProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorFloatFieldDisplay) })]
+        [UIElementReferenceAttribute("FloatProperty")]
         public readonly PersonalizationEditorFloatFieldDisplay FloatFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorStringSpecViewFieldDisplay) })]
-        [ObjectReference("StringProperty_SpecialView")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorStringSpecViewFieldDisplay) })]
+        [UIElementReferenceAttribute("StringProperty_SpecialView")]
         public readonly PersonalizationEditorStringSpecViewFieldDisplay StringListFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorAssetInfoFieldDisplay) })]
-        [ObjectReference("AssetProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorAssetInfoFieldDisplay) })]
+        [UIElementReferenceAttribute("AssetProperty")]
         public readonly PersonalizationEditorAssetInfoFieldDisplay AssetInfoFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorVoxAssetInfoFieldDisplay) })]
-        [ObjectReference("VoxAssetProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorVoxAssetInfoFieldDisplay) })]
+        [UIElementReferenceAttribute("VoxAssetProperty")]
         public readonly PersonalizationEditorVoxAssetInfoFieldDisplay VoxAssetInfoFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorListFieldDisplay) })]
-        [ObjectReference("ListProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorListFieldDisplay) })]
+        [UIElementReferenceAttribute("ListProperty")]
         public readonly PersonalizationEditorListFieldDisplay ListOfTuple1FieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorTupleFieldDisplay) })]
-        [ObjectReference("TupleProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorTupleFieldDisplay) })]
+        [UIElementReferenceAttribute("TupleProperty")]
         public readonly PersonalizationEditorTupleFieldDisplay TupleFieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorVector3FieldDisplay) })]
-        [ObjectReference("Vector3Property")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorVector3FieldDisplay) })]
+        [UIElementReferenceAttribute("Vector3Property")]
         public readonly PersonalizationEditorVector3FieldDisplay Vector3FieldDisplay;
 
-        [ObjectDefaultVisibility(false)]
-        [ObjectComponents(new System.Type[] { typeof(PersonalizationEditorGuidFieldDisplay) })]
-        [ObjectReference("GuidProperty")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementComponents(new System.Type[] { typeof(PersonalizationEditorGuidFieldDisplay) })]
+        [UIElementReferenceAttribute("GuidProperty")]
         public readonly PersonalizationEditorGuidFieldDisplay GuidFieldDisplay;
 
-        [ObjectReference("Container")]
+        [UIElementReferenceAttribute("Container")]
         private readonly ContentSizeFitter m_Container;
 
         private bool m_HasInitialized;
@@ -93,7 +93,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
+                UIController.AssignValues(this);
                 m_HasInitialized = true;
             }
 

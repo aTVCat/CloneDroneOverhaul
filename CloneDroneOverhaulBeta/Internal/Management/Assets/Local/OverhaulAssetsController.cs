@@ -34,7 +34,7 @@ namespace CDOverhaul
         public const string ModAssetBundle_Fonts = "overhaulassets_fonts";
         #endregion
 
-        public const string STANDARD = "Standard";
+        public const string STANDARD_SHADER = "Standard";
 
         /// <summary>
         /// All loaded assets into memory
@@ -64,8 +64,8 @@ namespace CDOverhaul
                 {
                     Material[] materials = loadedAssetBundle.LoadAllAssets<Material>(); // No fog fix
                     foreach (Material material in materials)
-                        if (material.shader.name == STANDARD)
-                            material.shader = Shader.Find(STANDARD);
+                        if (material.shader.name == STANDARD_SHADER)
+                            material.shader = Shader.Find(STANDARD_SHADER);
                 }
             }
             catch
@@ -108,8 +108,8 @@ namespace CDOverhaul
             {
                 Material[] materials = assetBundleCreateRequest.assetBundle.LoadAllAssets<Material>(); // No fog fix
                 foreach (Material material in materials)
-                    if (material.shader.name == STANDARD)
-                        material.shader = Shader.Find(STANDARD);
+                    if (material.shader.name == STANDARD_SHADER)
+                        material.shader = Shader.Find(STANDARD_SHADER);
             }
 
             handler.OnDoneLoading();

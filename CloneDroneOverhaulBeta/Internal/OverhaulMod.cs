@@ -98,7 +98,7 @@ namespace CDOverhaul
                 return;
 
             // An event that is usually called before FPM full initialization
-            OverhaulEventsController.DispatchEvent(OverhaulGameplayManager.FIRST_PERSON_SPAWNED_EVENT, firstPersonMover);
+            OverhaulEvents.DispatchEvent(OverhaulGameplayManager.FIRST_PERSON_SPAWNED_EVENT, firstPersonMover);
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitializationAndDispatchEvent(firstPersonMover));
         }
 
@@ -131,13 +131,7 @@ namespace CDOverhaul
                 ModsPanelManager.Instance.closeModsMenu();
             }
             catch { }
-
-            GameObject gameObject = new GameObject("OverhaulCore");
-            OverhaulCore core = gameObject.AddComponent<OverhaulCore>();
-            _ = core.TryInitialize(out string errors);
-
-            if (!string.IsNullOrEmpty(errors))
-                OverhaulExceptions.OnModEarlyCrash(errors);
+            new GameObject("OverhaulCore").AddComponent<OverhaulCore>().TryInitialize();
         }
 
         /// <summary>
@@ -148,7 +142,7 @@ namespace CDOverhaul
             if (!IsModInitialized)
                 return;
 
-            OverhaulEventsController.DispatchEvent(ModDeactivatedEventString);
+            OverhaulEvents.DispatchEvent(ModDeactivatedEventString);
             GameObject.Destroy(Core.gameObject);
             Core = null;
         }
@@ -163,7 +157,7 @@ namespace CDOverhaul
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return null;
             if (firstPersonMover && firstPersonMover.HasCharacterModel())
-                OverhaulEventsController.DispatchEvent(OverhaulGameplayManager.FIRST_PERSON_INITIALIZED_EVENT, firstPersonMover);
+                OverhaulEvents.DispatchEvent(OverhaulGameplayManager.FIRST_PERSON_INITIALIZED_EVENT, firstPersonMover);
         }
 
         public static bool IsModEnabled(string modID)

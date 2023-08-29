@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CDOverhaul
 {
@@ -72,54 +73,46 @@ namespace CDOverhaul
                         overhaulPlayerInfo.OnGenericStringEvent(eventData);
         }
 
-        public void AddGenericStringEventListener(IGenericStringEventListener listener)
+        internal void TryInitialize()
         {
-            if (m_GenericStringEventListeners == null)
-                m_GenericStringEventListeners = new List<IGenericStringEventListener>();
-
-            if (!m_GenericStringEventListeners.Contains(listener))
-                m_GenericStringEventListeners.Add(listener);
-        }
-
-        public void RemoveGenericStringEventListener(IGenericStringEventListener listener)
-        {
-            if (m_GenericStringEventListeners.IsNullOrEmpty())
-                return;
-
-            m_GenericStringEventListeners.Remove(listener);
-        }
-
-        internal bool TryInitialize(out string errorString)
-        {
-            errorString = null;
             try
             {
-                initialize();
+                if (OverhaulMod.Core != null)
+                    return;
+
+                OverhaulMod.Core = this;
+                _ = OverhaulAPI.OverhaulAPICore.LoadAPI();
+                DontDestroyOnLoad(gameObject);
+
+                GameObject controllers = new GameObject("Controllers");
+                controllers.transform.SetParent(base.transform);
+                OverhaulController.InitializeStatic(controllers);
+
+                ModInitialize modInitialize = new ModInitialize();
+                modInitialize.LoadMainFramework();
+
+                OverhaulBootUI.Show(modInitialize);
             }
             catch (Exception ex)
             {
-                errorString = ex.ToString();
+                onInitFail(ex.ToString());
             }
-            return errorString == null;
         }
 
-        private void initialize()
+        private void onInitFail(string exc)
         {
-            if (OverhaulMod.Core != null)
-                return;
+            OverhaulMod.IsLoadedIncorrectly = true;
+            ModdedObject obj = Instantiate(OverhaulAssetsController.GetAsset<GameObject>("LoadErrorCanvas", OverhaulAssetPart.Main)).GetComponent<ModdedObject>();
+            obj.GetObject<Text>(0).text = exc;
+            obj.GetObject<Button>(1).onClick.AddListener(delegate
+            {
+                ErrorManager.Instance._hasCrashed = false;
+                TimeManager.Instance.OnGameUnPaused();
+                GameUIRoot.Instance.ErrorWindow.Hide();
 
-            OverhaulMod.Core = this;
-            _ = OverhaulAPI.OverhaulAPICore.LoadAPI();
-            DontDestroyOnLoad(gameObject);
-
-            GameObject controllers = new GameObject("Controllers");
-            controllers.transform.SetParent(base.transform);
-            OverhaulController.InitializeStatic(controllers);
-
-            ModInitialize modInitialize = new ModInitialize();
-            modInitialize.LoadMainFramework();
-
-            OverhaulBootUI.Show(modInitialize);
+                Destroy(obj.gameObject);
+            });
+            _ = EnableCursorController.DisableCursor();
         }
 
         private void Update()
@@ -197,31 +190,6 @@ namespace CDOverhaul
                 if (iOStateInfo != null)
                     iOStateInfo.IsInProgress = false;
             }
-        }
-
-        public static IEnumerator WriteTextCoroutine(string filePath, string content, IOStateInfo iOStateInfo = null, bool clearContents = true)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                yield break;
-
-            if (content == null)
-                content = string.Empty;
-
-            if (clearContents)
-                File.WriteAllText(filePath, string.Empty);
-
-            if (iOStateInfo != null)
-                iOStateInfo.IsInProgress = true;
-
-            byte[] toWrite = Encoding.UTF8.GetBytes(content);
-            using (FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096, true))
-            {
-                yield return stream.WriteAsync(toWrite, 0, toWrite.Length);
-
-                if (iOStateInfo != null)
-                    iOStateInfo.IsInProgress = false;
-            }
-            yield break;
         }
 
         public static void WriteText(string filePath, string content, bool clearContents = true)

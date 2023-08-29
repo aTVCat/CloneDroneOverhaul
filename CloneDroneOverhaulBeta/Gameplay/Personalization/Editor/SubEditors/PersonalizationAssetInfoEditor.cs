@@ -7,23 +7,23 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public class PersonalizationAssetInfoEditor : PersonalizationEditorUIElement
     {
-        [ObjectDefaultVisibility(false)]
-        [ObjectReference("Shading")]
+        [UIElementDefaultVisibilityStateAttribute(false)]
+        [UIElementReferenceAttribute("Shading")]
         private readonly GameObject m_Shading;
 
-        [ObjectReference("AssetBundle")]
+        [UIElementReferenceAttribute("AssetBundle")]
         private readonly InputField m_AssetBundleField;
 
-        [ObjectReference("AssetName")]
+        [UIElementReferenceAttribute("AssetName")]
         private readonly InputField m_AssetField;
 
-        [ObjectReference("FixMaterialsToggle")]
+        [UIElementReferenceAttribute("FixMaterialsToggle")]
         private readonly Toggle m_FixMaterialsToggle;
 
-        [ObjectReference("CheckAsset")]
+        [UIElementReferenceAttribute("CheckAsset")]
         private readonly Button m_CheckAssetButton;
 
-        [ObjectReference("CheckAssetStateLabel")]
+        [UIElementReferenceAttribute("CheckAssetStateLabel")]
         private readonly Text m_CheckAssetStateLabel;
 
         private bool m_HasInitialized;
@@ -52,10 +52,10 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                OverhaulUIController.AssignValues(this);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
-                OverhaulUIController.AssignActionToButton(GetComponent<ModdedObject>(), "CheckAsset", OnCheckAssetClicked);
+                UIController.AssignValues(this);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
+                UIController.AssignActionToButton(GetComponent<ModdedObject>(), "CheckAsset", OnCheckAssetClicked);
                 m_CheckAssetStateLabel.text = string.Empty;
                 m_HasInitialized = true;
             }

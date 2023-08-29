@@ -23,14 +23,14 @@ namespace CDOverhaul.Gameplay.Multiplayer
         public override void AddListeners()
         {
             base.AddListeners();
-            OverhaulEventsController.AddEventListener<IPlayerInfoState>(GlobalEvents.MultiplayerPlayerInfoStateAttached, onAttachedInfoState, true);
+            OverhaulEvents.AddEventListener<IPlayerInfoState>(GlobalEvents.MultiplayerPlayerInfoStateAttached, onAttachedInfoState, true);
             OverhaulDebug.Log("InfosSystem - AddedListeners", EDebugType.Initialize);
         }
 
         public override void RemoveListeners()
         {
             base.RemoveListeners();
-            OverhaulEventsController.RemoveEventListener<IPlayerInfoState>(GlobalEvents.MultiplayerPlayerInfoStateAttached, onAttachedInfoState, true);
+            OverhaulEvents.RemoveEventListener<IPlayerInfoState>(GlobalEvents.MultiplayerPlayerInfoStateAttached, onAttachedInfoState, true);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
