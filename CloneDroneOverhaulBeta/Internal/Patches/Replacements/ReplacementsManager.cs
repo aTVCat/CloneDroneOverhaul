@@ -41,7 +41,7 @@ namespace CDOverhaul.Patches
 
         private IEnumerator addReplacementsCoroutine()
         {
-            yield return new WaitUntil(() => OverhaulCanvasManager.reference && !OverhaulLocalizationManager.Error);
+            yield return new WaitUntil(() => !OverhaulLocalizationManager.Error);
             yield return null;
             ReplacementBase.AddAll();
             yield break;

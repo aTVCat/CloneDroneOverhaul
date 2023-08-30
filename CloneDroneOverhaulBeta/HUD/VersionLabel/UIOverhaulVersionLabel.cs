@@ -30,6 +30,9 @@ namespace CDOverhaul.HUD
         [UIElementActionReference(nameof(onPatchNotesButtonClicked))]
         [UIElementReference(7)]
         private Button m_PatchNotesButton;
+        [UIElementActionReference(nameof(onTestUIClicked))]
+        [UIElementReference(8)]
+        private Button m_TestUIButton;
 
         private Text m_TitleScreenUIVersionLabel;
         private GameObject m_TitleScreenRootButtons;
@@ -83,6 +86,11 @@ namespace CDOverhaul.HUD
             }
 
             overhaulPatchNotesUI.Show();*/
+        }
+
+        private void onTestUIClicked()
+        {
+            OverhaulUIManager.reference.Show<UITest>("UI_TestElements");
         }
     }
 }

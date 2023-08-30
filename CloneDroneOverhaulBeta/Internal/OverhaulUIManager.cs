@@ -20,7 +20,7 @@ namespace CDOverhaul
             private set;
         }
 
-        public GameObject canvasObject
+        public Transform containerTransform
         {
             get;
             private set;
@@ -49,21 +49,26 @@ namespace CDOverhaul
 
         private void instantiateCanvas()
         {
-            if (canvasObject)
+            if (containerTransform)
                 return;
 
             m_InstantiatedPrefabs.Clear();
             if (!canvasObjectPrefab)
                 canvasObjectPrefab = OverhaulAssetsController.GetAsset("OverhaulUIBase", OverhaulAssetPart.Part1, false);
 
-            canvasObject = Instantiate(canvasObjectPrefab, GameUIRoot.Instance.transform);
-            canvasObject.name = "OverhaulUIs";
+            GameObject canvasObject = Instantiate(canvasObjectPrefab, GameUIRoot.Instance.transform);
             canvasObject.transform.localScale = Vector3.one;
+
+            ModdedObject moddedObject = canvasObject.GetComponent<ModdedObject>();
+            containerTransform = moddedObject.GetObject<Transform>(0);
+            containerTransform.SetParent(containerTransform.parent.parent, false);
+            containerTransform.name = "OverhaulUIs";
+            Destroy(canvasObject);
         }
 
         private void showMainUIs()
         {
-            if (!canvasObject)
+            if (!containerTransform)
                 return;
 
             Show<UIOverhaulVersionLabel>("UI_VersionLabel");
@@ -85,7 +90,7 @@ namespace CDOverhaul
                 {
                     toInstantiate = m_CachedPrefabs[assetKey];
                 }
-                toShow = Instantiate(toInstantiate, canvasObject.transform).AddComponent<T>();
+                toShow = Instantiate(toInstantiate, containerTransform, false).AddComponent<T>();
                 toShow.Initialize();
                 m_InstantiatedPrefabs.Add(assetKey, toShow);
                 OverhaulDebug.Log("Initialized UI: " + assetKey, EDebugType.UI);

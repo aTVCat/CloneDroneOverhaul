@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.HUD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -117,7 +118,17 @@ namespace CDOverhaul
                         int indexInModdedObject = objectReference.UsesIndexes ? objectReference.ObjectIndex : objectsByNames[objectReference.ObjectName];
 
                         Type targetFieldType = info.FieldType;
-                        UnityEngine.Object fieldValueToAssign = targetFieldType == typeof(GameObject) ? moddedObject.GetObject<Transform>(indexInModdedObject).gameObject : moddedObject.GetObject(indexInModdedObject, targetFieldType);
+                        UnityEngine.Object fieldValueToAssign = null;
+
+                        if(targetFieldType == typeof(UIElementDropdown))
+                        {
+                            GameObject gameObject = moddedObject.GetObject<Transform>(indexInModdedObject).gameObject;
+                            fieldValueToAssign = UIUtility.InitDropdown(gameObject);
+                        }
+                        else
+                        {
+                            fieldValueToAssign = targetFieldType == typeof(GameObject) ? moddedObject.GetObject<Transform>(indexInModdedObject).gameObject : moddedObject.GetObject(indexInModdedObject, targetFieldType);
+                        }
 
                         // Add components
                         UIElementComponentsAttribute objectComponents = info.GetCustomAttribute<UIElementComponentsAttribute>();

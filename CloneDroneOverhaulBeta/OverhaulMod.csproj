@@ -440,6 +440,10 @@
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\IGenericStringEventListener.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Gameplay\OverhaulGameplayManager.cs" />
+    <Compile Include="HUD\Components\UIElementButton.cs" />
+    <Compile Include="HUD\Components\UIElementDropdown.cs" />
+    <Compile Include="HUD\Components\UIUtility.cs" />
+    <Compile Include="HUD\Test\UITest.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentControllerBase.cs" />
     <Compile Include="Internal\Management\OverhaulAdvancedBehaviour.cs" />
     <Compile Include="Internal\OverhaulUIManager.cs" />
