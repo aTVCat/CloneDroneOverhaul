@@ -181,7 +181,7 @@ namespace CDOverhaul.HUD.Gamemodes
         private IEnumerator transitionToDifferentPage(Vector2 targetSize, int pageIndex)
         {
             StateSwitchingInProgress = true;
-            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
+            OverhaulUIManager.SetCanvasPixelPerfect(false);
 
             for (int i2 = 0; i2 < 4; i2++)
             {
@@ -203,7 +203,7 @@ namespace CDOverhaul.HUD.Gamemodes
             m_CanvasGroup.alpha = 0f;
 
             ShowPage(pageIndex);
-            OverhaulCanvasManager.SetCanvasPixelPerfect(true);
+            OverhaulUIManager.SetCanvasPixelPerfect(true);
             for (int i2 = 0; i2 < 4; i2++)
             {
                 m_CanvasGroup.alpha += 0.25f;

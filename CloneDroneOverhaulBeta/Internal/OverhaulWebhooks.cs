@@ -26,10 +26,9 @@ namespace CDOverhaul
         {
             "DebugMenu.OnThrowErrorClicked",
             "UnityExplorer",
-            "Can't find asset",
             "Unsupported color:",
-            "Failed to read input report",
-            "Failed to start reading input report",
+            "input",
+            "Input",
             "You are not a client",
             "DecompressOnLoad",
             "Failed to get input data",
@@ -49,7 +48,6 @@ namespace CDOverhaul
             "ReleaseControlInternal",
             "ThrowIfDisposedAndClosed",
         };
-
 
         private static bool s_HasExecutedCrashReportsWebhook = false;
         private static readonly List<string> s_CaughtErrors = new List<string>();

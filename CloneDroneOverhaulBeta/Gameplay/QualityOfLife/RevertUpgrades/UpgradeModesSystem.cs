@@ -51,24 +51,19 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                 panelScaler.Initialize(Vector3.one * 0.25f, Vector3.one, 15F, 3);
             }
 
-            OverhaulCanvasManager overhaulCanvasController = OverhaulCanvasManager.reference;
-            if (!m_ButtonGraphic && overhaulCanvasController)
+            OverhaulUIPrefabs uiPrefabs = OverhaulUIManager.reference?.uiPrefabs;
+            if (!m_ButtonGraphic && uiPrefabs)
             {
-                GameObject buttonPrefab = overhaulCanvasController.GetHUDPrefab("UpgradeUI_ToggleUpgradeMode");
-                if (buttonPrefab)
-                {
-                    RectTransform spawnedButton = Instantiate(buttonPrefab, centerHolderTransform).GetComponent<RectTransform>();
-                    spawnedButton.localPosition = new Vector2(270, 155);
-                    spawnedButton.localEulerAngles = Vector3.zero;
-                    spawnedButton.localScale = Vector3.one;
-                    spawnedButton.gameObject.SetActive(true);
-                    _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
+                RectTransform spawnedButton = uiPrefabs.InstantiatePrefab("UIPrefab_UpgradeUIModeToggle", centerHolderTransform, true).GetComponent<RectTransform>();
+                spawnedButton.localPosition = new Vector2(270, 155);
+                spawnedButton.localEulerAngles = Vector3.zero;
+                spawnedButton.localScale = Vector3.one;
+                _ = spawnedButton.gameObject.AddComponent<UpgradeModesButtonBehaviour>();
 
-                    Button button = spawnedButton.GetComponent<Button>();
-                    button.onClick.AddListener(ToggleMode);
-                    m_ButtonGraphic = spawnedButton.GetComponent<Image>();
-                    m_ButtonText = spawnedButton.GetChild(0).GetComponent<Text>();
-                }
+                Button button = spawnedButton.GetComponent<Button>();
+                button.onClick.AddListener(ToggleMode);
+                m_ButtonGraphic = spawnedButton.GetComponent<Image>();
+                m_ButtonText = spawnedButton.GetChild(0).GetComponent<Text>();
             }
             SetMode(UpgradeMode.Upgrade);
         }

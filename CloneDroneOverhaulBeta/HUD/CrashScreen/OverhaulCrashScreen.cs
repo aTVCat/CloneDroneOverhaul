@@ -12,7 +12,7 @@ namespace CDOverhaul.HUD
         private static bool s_HasSentReport;
 
         private static OverhaulCrashScreen s_Instance;
-        public static OverhaulCrashScreen Instance => OverhaulMod.IsHUDInitialized && OverhaulMod.IsModInitialized ? s_Instance : null;
+        public static OverhaulCrashScreen Instance => OverhaulMod.IsModInitialized ? s_Instance : null;
 
         [UIElementReferenceAttribute("ErrorMessage")]
         private readonly Text m_ErrorText;

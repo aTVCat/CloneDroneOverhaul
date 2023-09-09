@@ -27,7 +27,7 @@ namespace CDOverhaul
             GameObject spawnedPrefab = Instantiate(OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload));
             ModdedObject moddedObject = spawnedPrefab.GetComponent<ModdedObject>();
             Transform mainViewTransform = moddedObject.GetObject<Transform>(0);
-            OverhaulCanvasManager.ParentTransformToGameUIRoot(mainViewTransform);
+            OverhaulUIManager.ParentTransformToGameUIRoot(mainViewTransform);
             Destroy(spawnedPrefab);
 
             OverhaulBootUI bootUI = mainViewTransform.gameObject.AddComponent<OverhaulBootUI>();

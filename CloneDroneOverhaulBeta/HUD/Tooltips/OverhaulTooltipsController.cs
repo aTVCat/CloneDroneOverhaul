@@ -17,11 +17,12 @@ namespace CDOverhaul.HUD.Tooltips
 
         public override void Start()
         {
+            /*
             OverhaulCanvasManager canvasController = OverhaulCanvasManager.reference;
             if (!canvasController)
                 return;
 
-            TooltipsUI = canvasController.AddHUD<OverhaulTooltipsUI>(canvasController.HUDModdedObject.GetObject<ModdedObject>(18));
+            TooltipsUI = canvasController.AddHUD<OverhaulTooltipsUI>(canvasController.HUDModdedObject.GetObject<ModdedObject>(18));*/
 
             AddTooltip<OverhaulCurrentWeaponTooltip>(TooltipsUI.MyModdedObject.GetObject<Transform>(1).gameObject);
             AddTooltip<OverhaulClosestPlayerTooltip>(TooltipsUI.MyModdedObject.GetObject<Transform>(2).gameObject);

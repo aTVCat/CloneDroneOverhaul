@@ -446,7 +446,8 @@
     <Compile Include="HUD\Test\UITest.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentControllerBase.cs" />
     <Compile Include="Internal\Management\OverhaulAdvancedBehaviour.cs" />
-    <Compile Include="Internal\OverhaulUIManager.cs" />
+    <Compile Include="Internal\Management\UI\OverhaulUIManager.cs" />
+    <Compile Include="Internal\Management\UI\OverhaulUIPrefabs.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCBase.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCManager.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />

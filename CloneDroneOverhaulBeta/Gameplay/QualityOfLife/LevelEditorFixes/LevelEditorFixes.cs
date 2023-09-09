@@ -14,26 +14,18 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public void Init()
         {
-            OverhaulCanvasManager controller = OverhaulCanvasManager.reference;
-            if (controller)
+            OverhaulUIPrefabs uiPrefabs = OverhaulUIManager.reference?.uiPrefabs;
+            if (uiPrefabs)
             {
-                GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_Settings");
-                if (prefabToInstantiate)
-                {
-                    RectTransform panel = Instantiate(prefabToInstantiate, GameUIRoot.Instance.LevelEditorUI.transform).transform as RectTransform;
-                    panel.localPosition = Vector3.zero;
-                    panel.eulerAngles = Vector3.zero;
-                    panel.localScale = Vector3.one;
-                    panel.pivot = new Vector2(0f, 0.5f);
-                    panel.anchorMax = new Vector2(0f, 0.5f);
-                    panel.anchorMin = new Vector2(0f, 0.5f);
-                    panel.anchoredPosition = new Vector2(150f, -50f);
-                    SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
-                }
-                else
-                {
-                    OverhaulDebug.Warn("Could not find HUDPrefab: LevelEditorUI_Settings", EDebugType.Assets);
-                }
+                RectTransform panel = uiPrefabs.InstantiatePrefab("UIPrefab_SelectionOutlineSettings", GameUIRoot.Instance.LevelEditorUI.transform, false).transform as RectTransform;
+                panel.localPosition = Vector3.zero;
+                panel.eulerAngles = Vector3.zero;
+                panel.localScale = Vector3.one;
+                panel.pivot = new Vector2(0f, 0.5f);
+                panel.anchorMax = new Vector2(0f, 0.5f);
+                panel.anchorMin = new Vector2(0f, 0.5f);
+                panel.anchoredPosition = new Vector2(150f, -50f);
+                SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
             }
             else
             {
@@ -276,30 +268,21 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     Destroy(image1);
             }
 
-            OverhaulCanvasManager controller = OverhaulCanvasManager.reference;
-            if (controller)
+            OverhaulUIPrefabs uiPrefabs = OverhaulUIManager.reference?.uiPrefabs;
+            if (uiPrefabs)
             {
-                GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");
-                if (prefabToInstantiate)
+                RectTransform coordsToggle = uiPrefabs.InstantiatePrefab("UIPrefab_ToggleWithNoLabel", levelEditorUI.TopToolbar, true).transform as RectTransform;
+                coordsToggle.localPosition = Vector3.zero;
+                coordsToggle.eulerAngles = Vector3.zero;
+                coordsToggle.localScale = Vector3.one;
+                coordsToggle.anchoredPosition = new Vector2(160f, 0f);
+                ModdedObject coordsToggleMO = coordsToggle.GetComponent<ModdedObject>();
+                Toggle coordsToggleComponent = coordsToggleMO.GetObject<Toggle>(0);
+                coordsToggleComponent.isOn = MoveByCoordsTool.ToolEnabled;
+                coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
                 {
-                    RectTransform coordsToggle = Instantiate(prefabToInstantiate, levelEditorUI.TopToolbar).transform as RectTransform;
-                    coordsToggle.localPosition = Vector3.zero;
-                    coordsToggle.eulerAngles = Vector3.zero;
-                    coordsToggle.localScale = Vector3.one;
-                    coordsToggle.anchoredPosition = new Vector2(160f, 0f);
-                    coordsToggle.gameObject.SetActive(true);
-                    ModdedObject coordsToggleMO = coordsToggle.GetComponent<ModdedObject>();
-                    Toggle coordsToggleComponent = coordsToggleMO.GetObject<Toggle>(0);
-                    coordsToggleComponent.isOn = MoveByCoordsTool.ToolEnabled;
-                    coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
-                    {
-                        MoveByCoordsTool.ToolEnabled = value;
-                    });
-                }
-                else
-                {
-                    OverhaulDebug.Warn("Could not find HUDPrefab: LevelEditorUI_MoveObjectsByCoords", EDebugType.Assets);
-                }
+                    MoveByCoordsTool.ToolEnabled = value;
+                });
             }
             else
             {

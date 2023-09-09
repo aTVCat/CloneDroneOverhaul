@@ -91,12 +91,6 @@ namespace CDOverhaul
             }
         }
 
-        public void GetTexts()
-        {
-            m_ListOfTexts.Clear();
-            m_ListOfTexts.AddRange(OverhaulCanvasManager.GetAllComponentsWithModdedObjectRecursive<Text>("LID_", OverhaulCanvasManager.reference.HUDModdedObject.transform));
-        }
-
         public void RefreshTexts()
         {
             LocalizeUI();

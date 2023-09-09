@@ -13,6 +13,7 @@ namespace CDOverhaul.Patches
         private const string CHECKMARK = "Checkmark";
         private const string BACKGROUND = "Background";
         private const string INPUT_FIELD_BACKGROUND = "InputFieldBackground";
+        private const string EXIT_BUTTON = "ExitButton";
 
         private const string ITEM_BACKGROUND = "Item Background";
 
@@ -34,6 +35,7 @@ namespace CDOverhaul.Patches
         private static Sprite s_CanvasBright;
         private static Sprite s_CanvasBrightNoGrayOutline;
         private static Sprite s_Checkmark;
+        private static Sprite s_ExitIcon;
 
         public override void Replace()
         {
@@ -149,10 +151,13 @@ namespace CDOverhaul.Patches
                 s_CanvasDarkNoGrayOutline = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ-NGO", OverhaulAssetPart.Part1);
             if (!s_Checkmark)
                 s_Checkmark = OverhaulAssetsController.GetAsset<Sprite>("CheckmarkSmall", OverhaulAssetPart.Part1);
+            if (!s_ExitIcon)
+                s_ExitIcon = OverhaulAssetsController.GetAsset<Sprite>("Close-Colored-16x16", OverhaulAssetPart.Part1);
             if (!s_OpenSansRegularFont)
                 s_OpenSansRegularFont = OverhaulAssetsController.GetAsset<Font>("OpenSans-Regular", OverhaulAssetPart.Fonts);
             if (!s_OpenSansExtraBoldFont)
                 s_OpenSansExtraBoldFont = OverhaulAssetsController.GetAsset<Font>("OpenSans-ExtraBold", OverhaulAssetPart.Fonts);
+
 
             foreach (Image image in transform.GetComponentsInChildren<Image>(true))
             {
@@ -183,7 +188,11 @@ namespace CDOverhaul.Patches
                             rectTransform.anchorMax = new Vector2(0.985f, 1f);
                         if (rectTransform.anchorMin == Vector2.zero)
                             rectTransform.anchorMin = new Vector2(0.015f, 0f);
-                    }
+                    }/*
+                    else if (image.sprite.texture && image.sprite.texture.name.Equals(EXIT_BUTTON))
+                    {
+                        image.sprite = s_ExitIcon;
+                    }*/
                 }
             }
 

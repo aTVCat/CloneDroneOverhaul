@@ -348,7 +348,7 @@ namespace CDOverhaul.Workshop
         public override void Show()
         {
             base.Show();
-            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
+            OverhaulUIManager.SetCanvasPixelPerfect(false);
             showDefaultInfo();
             RefreshLevelsList();
             PopulateLevelTypes();
@@ -367,7 +367,7 @@ namespace CDOverhaul.Workshop
         {
             base.Hide();
             OverhaulUIDescriptionTooltip.SetActive(false);
-            OverhaulCanvasManager.SetCanvasPixelPerfect(true);
+            OverhaulUIManager.SetCanvasPixelPerfect(true);
             if (!hiddenBecauseLoading)
                 ShowTitleScreenButtons();
         }

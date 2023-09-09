@@ -1,4 +1,4 @@
-﻿using CDOverhaul.DevTools;
+﻿/*using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.HUD.Gamemodes;
 using CDOverhaul.HUD.Overlays;
@@ -54,8 +54,6 @@ namespace CDOverhaul.HUD
 
             ModdedObject moddedObject = m_CanvasFromPrefab.GetComponent<ModdedObject>();
             HUDModdedObject = moddedObject.GetObject<ModdedObject>(0);
-            ParentTransformToGameUIRoot(HUDModdedObject.transform);
-            SetCanvasPixelPerfect(true);
 
             GameUIRoot.Instance.ErrorWindow.transform.SetAsLastSibling();
 
@@ -69,7 +67,6 @@ namespace CDOverhaul.HUD
             }
             prefabsModdedObject.gameObject.SetActive(false);
 
-            /*
             _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
             _ = AddHUD<ParametersMenu>(HUDModdedObject.GetObject<ModdedObject>(3));
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
@@ -96,7 +93,7 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));
             _ = AddHUD<OverhaulDisconnectScreen>(HUDModdedObject.GetObject<ModdedObject>(28));
             _ = AddHUD<PersonalizationEditorUI>(HUDModdedObject.GetObject<ModdedObject>(29));
-            _ = AddHUD<MountsPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(30));*/
+            _ = AddHUD<MountsPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(30));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -128,46 +125,6 @@ namespace CDOverhaul.HUD
             return null;
         }
 
-        public static List<T> GetAllComponentsWithModdedObjectRecursive<T>(string targetModdedObjectId, Transform targetTransform) where T : Component
-        {
-            List<T> list = new List<T>();
-            if (targetTransform == null || targetTransform.childCount == 0)
-                return list;
-
-            for (int i = 0; i < targetTransform.childCount; i++)
-            {
-                Transform t = targetTransform.GetChild(i);
-                T component = t.GetComponent<T>();
-                ModdedObject m = t.GetComponent<ModdedObject>();
-                if (component != null && m != null && !string.IsNullOrEmpty(m.ID) && m.ID.Contains(targetModdedObjectId))
-                {
-                    list.Add(component);
-                }
-                list.AddRange(GetAllComponentsWithModdedObjectRecursive<T>(targetModdedObjectId, t));
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// Parent transform to <see cref="GameUIRoot"/>.Instance.transform and instantly fix position and scale
-        /// </summary>
-        /// <param name="transform"></param>
-        public static void ParentTransformToGameUIRoot(in Transform transform)
-        {
-            if (GameUIRoot.Instance == null)
-                return;
-
-            transform.SetParent(GameUIRoot.Instance.transform);
-            transform.localPosition = Vector3.zero;
-            transform.localScale = Vector3.one;
-        }
-
-        /// <summary>
-        /// Set <see cref="Canvas.pixelPerfect"/> value in <see cref="GameUIRoot"/>
-        /// </summary>
-        /// <param name="value"></param>
-        public static void SetCanvasPixelPerfect(in bool value) => GameUIRoot.Instance.GetComponent<Canvas>().pixelPerfect = !GameModeManager.IsInLevelEditor() && value;
-
         public override void OnModDeactivated() => destroyHUD();
         private void destroyHUD()
         {
@@ -178,4 +135,4 @@ namespace CDOverhaul.HUD
             Destroy(m_CanvasFromPrefab);
         }
     }
-}
+}*/

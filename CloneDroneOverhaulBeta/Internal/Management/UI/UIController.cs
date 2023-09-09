@@ -78,6 +78,11 @@ namespace CDOverhaul
             Hide();
         }
 
+        public virtual void OnGetArguments(object[] args)
+        {
+
+        }
+
         protected override void OnDisposed()
         {
             OverhaulDisposable.AssignNullToAllVars(this);

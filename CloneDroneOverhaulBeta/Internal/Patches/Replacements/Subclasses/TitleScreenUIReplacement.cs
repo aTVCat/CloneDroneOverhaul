@@ -78,7 +78,7 @@ namespace CDOverhaul.Patches
                 moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
                 //moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
                 patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                Transform exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton");
+                Transform exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("UIPrefab_CloseButton");
                 if (!exitButtonTransform)
                 {
                     exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)");
@@ -184,25 +184,18 @@ namespace CDOverhaul.Patches
             m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
             m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
 
-            GameObject panel = OverhaulCanvasManager.reference?.GetHUDPrefab("TitleScreenUI_Buttons");
-            if (panel == null)
-            {
-                SuccessfullyPatched = false;
-                return;
-            }
-            m_SpawnedPanel = GameObject.Instantiate(panel, m_ButtonsTransform).transform;
+            m_SpawnedPanel = OverhaulUIManager.reference?.uiPrefabs?.InstantiatePrefab("UIPrefab_TitleScreenUIButtons", m_ButtonsTransform, true).transform;
             m_SpawnedPanel.SetAsFirstSibling();
-            m_SpawnedPanel.gameObject.SetActive(true);
 
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.Get<ParametersMenu>().Show);
+            //moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.Get<ParametersMenu>().Show);
             m_SettingsText = moddedObject.GetObject<Text>(1);
-            moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
+            //moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
             m_BugReportText = moddedObject.GetObject<Text>(3);
             //moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.Get<AboutOverhaulMenu>().Show);
             m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
             moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.Get<OverhaulLocalizationEditor>().Show);
+            //moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.Get<OverhaulLocalizationEditor>().Show);
 
             m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             m_ButtonsTransform.localPosition = new Vector3(0, -135f, 0);
@@ -280,24 +273,19 @@ namespace CDOverhaul.Patches
             cardGamemodeButtonColors.ColorVariants[0] = Color.white;
             cardGamemodeButtonColors.ColorVariants[1] = new Color(0.3f, 1f, 0.35f, 1f);
 
-            OverhaulCanvasManager canvasController = OverhaulCanvasManager.reference;
-            if (canvasController)
+            OverhaulUIPrefabs uiPrefabs = OverhaulUIManager.reference?.uiPrefabs;
+            if (uiPrefabs)
             {
-                GameObject newButton = canvasController.GetHUDPrefab("GenericCloseButton");
-                if (!newButton)
-                    return;
-
                 Transform ogCloseButton = gameModeSelectScreen.transform.FindChildRecursive("exitButton (1)");
                 if (ogCloseButton)
                 {
                     ogCloseButton.gameObject.SetActive(false);
-                    Button newCloseButton = UnityEngine.Object.Instantiate(newButton, ogCloseButton.parent).GetComponent<Button>();
+                    Button newCloseButton = uiPrefabs.InstantiatePrefab("UIPrefab_CloseButton", ogCloseButton.parent, true).GetComponent<Button>();
                     newCloseButton.transform.localPosition = new Vector3(350f, 125f, 0f);
                     newCloseButton.transform.localEulerAngles = Vector3.zero;
                     newCloseButton.transform.localScale = Vector3.one;
                     newCloseButton.onClick = ogCloseButton.GetComponent<Button>().onClick;
                     newCloseButton.gameObject.name = "GenericCloseButton";
-                    newCloseButton.gameObject.SetActive(true);
                 }
             }
         }

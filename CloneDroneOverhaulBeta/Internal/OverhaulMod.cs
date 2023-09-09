@@ -26,7 +26,6 @@ namespace CDOverhaul
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
         /// </summary>
         public static bool IsModInitialized => !IsLoadedIncorrectly && Core;
-        public static bool IsHUDInitialized => IsModInitialized && OverhaulCanvasManager.reference;
         public static bool HasBootProcessEnded;
 
         /// <summary>

@@ -150,7 +150,7 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(true);
             refreshThemeOutlines();
             populateCategories();
-            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
+            OverhaulUIManager.SetCanvasPixelPerfect(false);
 
             if (ShouldSelectShortcuts)
             {
@@ -173,7 +173,7 @@ namespace CDOverhaul.HUD
             if (GameModeManager.Is(GameMode.None))
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
 
-            OverhaulCanvasManager.SetCanvasPixelPerfect(true);
+            OverhaulUIManager.SetCanvasPixelPerfect(true);
             base.gameObject.SetActive(false);
         }
 

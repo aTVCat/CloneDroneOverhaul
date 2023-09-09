@@ -812,7 +812,7 @@ namespace CDOverhaul.HUD
             m_PersonalizationNotification.gameObject.SetActive(!WeaponSkinsController.HasNoticedSkinsButton && !GameModeManager.IsInLevelEditor());
             m_PersonalizationButton.interactable = !GameModeManager.IsInLevelEditor();
 
-            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
+            OverhaulUIManager.SetCanvasPixelPerfect(false);
             ShowCursor = true;
         }
 
@@ -834,7 +834,7 @@ namespace CDOverhaul.HUD
             if (!dontUnpause)
             {
                 ShowCursor = false;
-                OverhaulCanvasManager.SetCanvasPixelPerfect(true);
+                OverhaulUIManager.SetCanvasPixelPerfect(true);
             }
         }
 

@@ -59,7 +59,7 @@ namespace CDOverhaul.LevelEditor
                 fixes.Init();
             }
 
-            OverhaulCanvasManager.SetCanvasPixelPerfect(false);
+            OverhaulUIManager.SetCanvasPixelPerfect(false);
         }
 
         public void RemoveComponents()
