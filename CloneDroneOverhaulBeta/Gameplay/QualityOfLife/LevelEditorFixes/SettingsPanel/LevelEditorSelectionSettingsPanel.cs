@@ -7,15 +7,15 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 {
     public class LevelEditorSelectionSettingsPanel : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
-        [OverhaulSetting("Player.LevelEditor.EnableOutline", true, true)]
+        [OverhaulSettingAttribute_Old("Player.LevelEditor.EnableOutline", true, true)]
         public static bool EnableOutline;
 
-        [OverhaulSetting("Player.LevelEditor.SelectionOutlineColor", 0.6f, true)]
+        [OverhaulSettingAttribute_Old("Player.LevelEditor.SelectionOutlineColor", 0.6f, true)]
         public static float OutlineColorRaw;
-        [OverhaulSetting("Player.LevelEditor.SelectionOutlineColorBrightness", 0f, true)]
+        [OverhaulSettingAttribute_Old("Player.LevelEditor.SelectionOutlineColorBrightness", 0f, true)]
         public static float OutlineColorBrightnessRaw;
 
-        [OverhaulSetting("Player.LevelEditor.SelectionOutlineWidth", 3.5f, true)]
+        [OverhaulSettingAttribute_Old("Player.LevelEditor.SelectionOutlineWidth", 3.5f, true)]
         public static float OutlineWidth;
 
         public static Color OutlineColor { get; private set; }
@@ -77,10 +77,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             if (LevelEditorFixes.SelectionSettingsPanel == null)
                 return;
 
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColor", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(1).value);
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(3).value);
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(0).value);
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.LevelEditor.EnableOutline", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Toggle>(4).isOn);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineColor", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(1).value);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(3).value);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Slider>(0).value);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.EnableOutline", true), LevelEditorFixes.SelectionSettingsPanel.GetComponent<ModdedObject>().GetObject<Toggle>(4).isOn);
 
             OutlineColor = Color.HSVToRGB(OutlineColorRaw, OutlineColorBrightnessRaw, 1f);
             ThreeDOutline.UpdateMaterialProperties();
@@ -88,17 +88,17 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public static void ResetSettings()
         {
-            SettingInfo info1 = OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColor", true);
-            SettingInfo.SavePref(info1, info1.DefaultValue);
+            OverhaulSettingInfo_Old info1 = OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineColor", true);
+            OverhaulSettingInfo_Old.SavePref(info1, info1.DefaultValue);
 
-            SettingInfo info2 = OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true);
-            SettingInfo.SavePref(info2, info2.DefaultValue);
+            OverhaulSettingInfo_Old info2 = OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineColorBrightness", true);
+            OverhaulSettingInfo_Old.SavePref(info2, info2.DefaultValue);
 
-            SettingInfo info3 = OverhaulSettingsController.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true);
-            SettingInfo.SavePref(info3, info3.DefaultValue);
+            OverhaulSettingInfo_Old info3 = OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.SelectionOutlineWidth", true);
+            OverhaulSettingInfo_Old.SavePref(info3, info3.DefaultValue);
 
-            SettingInfo info4 = OverhaulSettingsController.GetSetting("Player.LevelEditor.EnableOutline", true);
-            SettingInfo.SavePref(info4, info4.DefaultValue);
+            OverhaulSettingInfo_Old info4 = OverhaulSettingsManager_Old.GetSetting("Player.LevelEditor.EnableOutline", true);
+            OverhaulSettingInfo_Old.SavePref(info4, info4.DefaultValue);
 
             OutlineColor = Color.HSVToRGB(OutlineColorRaw, OutlineColorBrightnessRaw, 1f);
             ThreeDOutline.UpdateMaterialProperties();

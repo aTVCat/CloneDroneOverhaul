@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using static MessageMenu;
 
 namespace CDOverhaul
 {
@@ -70,7 +71,7 @@ namespace CDOverhaul
 
             m_InstantiatedPrefabs.Clear();
             if (!canvasObjectPrefab)
-                canvasObjectPrefab = OverhaulAssetsController.GetAsset("OverhaulUIBase", OverhaulAssetPart.Part1, false);
+                canvasObjectPrefab = OverhaulAssetLoader.GetAsset("OverhaulUIBase", OverhaulAssetPart.Part1, false);
 
             GameObject canvasObject = Instantiate(canvasObjectPrefab, GameUIRoot.Instance.transform);
             canvasObject.transform.localScale = Vector3.one;
@@ -87,7 +88,7 @@ namespace CDOverhaul
             if (!containerTransform)
                 return;
 
-            Show<UIOverhaulVersionLabel>("UI_VersionLabel", new object[] { "replaceUIEffects" });
+            UIConstants.ShowVersionLabel();
         }
 
         public T Show<T>(string assetKey, object[] args = null) where T : UIController
@@ -99,7 +100,7 @@ namespace CDOverhaul
                 GameObject toInstantiate = null;
                 if (!m_CachedPrefabs.ContainsKey(assetKey))
                 {
-                    toInstantiate = OverhaulAssetsController.GetAsset(assetKey, OverhaulAssetPart.Part1, false);
+                    toInstantiate = OverhaulAssetLoader.GetAsset(assetKey, OverhaulAssetPart.Part1, false);
                     m_CachedPrefabs.Add(assetKey, toInstantiate);
                 }
                 else
@@ -118,7 +119,13 @@ namespace CDOverhaul
             }
             toShow.Show();
             OverhaulDebug.Log("Showed UI: " + assetKey, EDebugType.UI);
-            return null;
+            return toShow;
+        }
+
+        public T GetUI<T>(string assetKey) where T : UIController
+        {
+            m_InstantiatedPrefabs.TryGetValue(assetKey, out UIController result);
+            return (T)result;
         }
 
         private void prepareUIObject(GameObject gameObject, object[] args)
@@ -126,7 +133,7 @@ namespace CDOverhaul
             if (!gameObject || args.IsNullOrEmpty())
                 return;
 
-            if (args.Contains("replaceUIEffects"))
+            if (!args.Contains(UIConstants.Arguments.DONT_UPDATE_EFFECTS))
             {
                 replaceUIEffects(gameObject);
             }

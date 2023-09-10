@@ -142,13 +142,13 @@ namespace CDOverhaul.Gameplay
 
         public static void SavePreferences()
         {
-            SettingInfo info = OverhaulSettingsController.GetSetting("Player.Outfits.Equipped", true);
+            OverhaulSettingInfo_Old info = OverhaulSettingsManager_Old.GetSetting("Player.Outfits.Equipped", true);
             if (info != null)
-                SettingInfo.SavePref(info, OutfitsSystem.EquippedAccessories);
+                OverhaulSettingInfo_Old.SavePref(info, OutfitsSystem.EquippedAccessories);
 
-            SettingInfo info2 = OverhaulSettingsController.GetSetting("Player.Pets.Equipped", true);
+            OverhaulSettingInfo_Old info2 = OverhaulSettingsManager_Old.GetSetting("Player.Pets.Equipped", true);
             if (info2 != null)
-                SettingInfo.SavePref(info2, PetSystem.EquippedPets);
+                OverhaulSettingInfo_Old.SavePref(info2, PetSystem.EquippedPets);
         }
     }
 }

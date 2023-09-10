@@ -89,7 +89,7 @@ namespace CDOverhaul.HUD.Gamemodes
 
         public void OnRelayToggleClick(bool newValue)
         {
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Gameplay.Multiplayer.Relay Connection", true), newValue);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Gameplay.Multiplayer.Relay Connection", true), newValue);
         }
 
         private void Update()

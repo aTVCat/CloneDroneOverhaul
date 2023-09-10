@@ -7,7 +7,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 {
     public static class PersonalizationEditor
     {
-        [OverhaulSetting("Player.P_Editor.AutoSave", true, true)]
+        [OverhaulSettingAttribute_Old("Player.P_Editor.AutoSave", true, true)]
         public static bool IsAutoSaveEnabled;
 
         public static List<PersonalizationEditorPropertyAttribute> WeaponSkinItemFields;

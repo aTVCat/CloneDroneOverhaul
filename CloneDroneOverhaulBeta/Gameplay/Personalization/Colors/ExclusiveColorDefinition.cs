@@ -26,16 +26,15 @@ namespace CDOverhaul
             NewColor = color;
         }
 
-        public void TryApplyColorOnRobot(FirstPersonMover firstPersonMover, Color currentColor, out Color color, out bool applied)
+        public bool TryApplyColorOnRobot(FirstPersonMover firstPersonMover, Color currentColor, out Color color)
         {
-            applied = false;
             color = currentColor;
             if (!firstPersonMover || !firstPersonMover.IsPlayer())
-                return;
+                return false;
             string playFabID = GameModeManager.IsSinglePlayer() ? OverhaulPlayerIdentifier.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
 
             if (string.IsNullOrEmpty(playFabID) || !RelatedPlayFabId.Contains(playFabID))
-                return;
+                return false;
 
             int index = 0;
             foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
@@ -45,12 +44,12 @@ namespace CDOverhaul
 
                 if (favColor.ColorValue.Equals(currentColor) && index == ColorIndexToReplace)
                 {
-                    applied = true;
                     color = NewColor;
-                    return;
+                    return true;
                 }
                 index++;
             }
+            return false;
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingSliderParameters : Attribute
+    public class OverhaulSettingSliderParameters : OverhaulSettingBaseAttribute
     {
         public bool UseWholeNumbers;
         public float Min;

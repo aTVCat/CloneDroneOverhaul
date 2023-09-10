@@ -32,8 +32,8 @@ namespace CDOverhaul.Credits
             renderers = GetComponentsInChildren<Renderer>();
             if (outlineFillMaterial == null || outlineMaskMaterial == null)
             {
-                outlineMaskMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineMask", OverhaulAssetPart.Part2);
-                outlineFillMaterial = OverhaulAssetsController.GetAsset<Material>("OutlineFill", OverhaulAssetPart.Part2);
+                outlineMaskMaterial = OverhaulAssetLoader.GetAsset<Material>("OutlineMask", OverhaulAssetPart.Part2);
+                outlineFillMaterial = OverhaulAssetLoader.GetAsset<Material>("OutlineFill", OverhaulAssetPart.Part2);
             }
             LoadSmoothNormals();
         }

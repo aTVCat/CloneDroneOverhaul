@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD.Vanilla
     public class EnergyUIImprovements : OverhaulBehaviour
     {
         private ModdedObject m_ModdedObject;
-        public OverhaulUI.PrefabAndContainer ErrorTextContainer;
+        public PrefabContainer ErrorTextContainer;
 
         public List<string> SpawnedText = new List<string>();
         public List<ErrorTextInstanceBehaviour> Instances = new List<ErrorTextInstanceBehaviour>();
@@ -15,7 +15,7 @@ namespace CDOverhaul.HUD.Vanilla
         public override void Start()
         {
             m_ModdedObject = base.GetComponent<ModdedObject>();
-            ErrorTextContainer = new OverhaulUI.PrefabAndContainer(m_ModdedObject, 0, 1);
+            ErrorTextContainer = new PrefabContainer(m_ModdedObject, 0, 1);
         }
 
         public void ShowText(string text)
@@ -33,7 +33,7 @@ namespace CDOverhaul.HUD.Vanilla
                 return;
             }
 
-            ModdedObject moddedObject = ErrorTextContainer.CreateNew();
+            ModdedObject moddedObject = ErrorTextContainer.InstantiateEntry();
             moddedObject.transform.localPosition = Vector3.zero;
             moddedObject.GetComponent<Text>().text = text;
             ErrorTextInstanceBehaviour component = moddedObject.gameObject.AddComponent<ErrorTextInstanceBehaviour>();

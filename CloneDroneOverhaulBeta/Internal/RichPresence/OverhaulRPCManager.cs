@@ -4,7 +4,7 @@
     {
         // Todo: make more settings
         [OverhaulSettingWithNotification(1)]
-        [OverhaulSetting("Mod.Information.Rich Presence", true)]
+        [OverhaulSettingAttribute_Old("Mod.Information.Rich Presence", true)]
         public static bool EnableRPC;
 
         public OverhaulDiscordRPC discord

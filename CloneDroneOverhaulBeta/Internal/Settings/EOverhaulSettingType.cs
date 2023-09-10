@@ -1,12 +1,19 @@
 ﻿namespace CDOverhaul
 {
-    public enum OverhaulSettingTypes
+    public enum EOverhaulSettingType
     {
         None,
+
         Bool,
+
         Int,
+
         Float,
+
         String,
+
+        KeyCode,
+
         Other
     }
 }

@@ -5,7 +5,7 @@ namespace CDOverhaul.Patches
 {
     public class EnergyUIReplacement : ReplacementBase
     {
-        [OverhaulSetting("Game interface.Gameplay.New energy bar design", true, false, "Make energy bar more stylish")]
+        [OverhaulSettingAttribute_Old("Game interface.Gameplay.New energy bar design", true, false, "Make energy bar more stylish")]
         public static bool PatchHUD;
 
         private (Vector3, Vector3) m_Positions;
@@ -47,7 +47,7 @@ namespace CDOverhaul.Patches
 
             if (!m_HasAddedListeners)
             {
-                OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshPatch);
+                OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, RefreshPatch);
                 m_HasAddedListeners = true;
             }
 

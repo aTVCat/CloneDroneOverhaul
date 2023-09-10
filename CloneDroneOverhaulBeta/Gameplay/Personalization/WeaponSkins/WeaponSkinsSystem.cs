@@ -14,17 +14,17 @@
         public const string SHIELD_SKIN_SETTING = "Player.WeaponSkinsV2.Shield";
         public const string ARROW_SKIN_SETTING = "Player.WeaponSkinsV2.Arrow";
 
-        [OverhaulSettingAttribute(SWORD_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(SWORD_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedSwordSkin;
-        [OverhaulSettingAttribute(BOW_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(BOW_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedBowSkin;
-        [OverhaulSettingAttribute(HAMMER_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(HAMMER_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedHammerSkin;
-        [OverhaulSettingAttribute(SPEAR_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(SPEAR_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedSpearSkin;
-        [OverhaulSettingAttribute(SHIELD_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(SHIELD_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedShieldSkin;
-        [OverhaulSettingAttribute(ARROW_SKIN_SETTING, DEFAULT, true)]
+        [OverhaulSettingAttribute_Old(ARROW_SKIN_SETTING, DEFAULT, true)]
         public static string EquippedArrowSkin;
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)

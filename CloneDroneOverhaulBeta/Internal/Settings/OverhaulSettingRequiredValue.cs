@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingWithNotification : Attribute
+    public class OverhaulSettingWithNotification : OverhaulSettingBaseAttribute
     {
         public byte Type;
 

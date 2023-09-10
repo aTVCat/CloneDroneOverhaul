@@ -60,7 +60,7 @@ namespace CDOverhaul
                     continue;
 
                 OverhaulDebug.Log("[AdditionalContentLoader] Loading asset bundle: " + assetFilePath, EDebugType.Assets);
-                bool result = OverhaulAssetsController.LoadAssetBundleIfNotLoaded(assetFilePath);
+                bool result = OverhaulAssetLoader.LoadAssetBundleIfNotLoaded(assetFilePath);
                 OverhaulDebug.Log("[AdditionalContentLoader] Loaded asset bundle (" + assetFilePath + ") with result: " + result, EDebugType.Assets);
             }
 

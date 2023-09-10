@@ -9,14 +9,14 @@ namespace CDOverhaul.Patches
         {
             base.Replace();
 
-            OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
+            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, updateCrossHairs);
             updateCrossHairs();
             SuccessfullyPatched = true;
         }
 
         public override void Cancel()
         {
-            OverhaulEvents.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, updateCrossHairs);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, updateCrossHairs);
             base.Cancel();
         }
 

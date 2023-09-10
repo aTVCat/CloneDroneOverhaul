@@ -5,15 +5,15 @@ namespace CDOverhaul.Gameplay.Combat
 {
     public class RobotCameraZoomExpansion : OverhaulCharacterExpansion
     {
-        [OverhaulSetting("Gameplay.Control.Hold Z to zoom camera", true)]
+        [OverhaulSettingAttribute_Old("Gameplay.Control.Hold Z to zoom camera", true)]
         public static bool EnableZooming;
-        [OverhaulSetting("Gameplay.Control.Zoom when aiming", false)]
+        [OverhaulSettingAttribute_Old("Gameplay.Control.Zoom when aiming", false)]
         public static bool ZoomWhenAimingBow;
         [OverhaulSettingSliderParameters(false, 10f, 35f)]
-        [OverhaulSetting("Gameplay.Control.Zoom strength", 15f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        [OverhaulSettingAttribute_Old("Gameplay.Control.Zoom strength", 15f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
         public static float ZoomBy;
         [OverhaulSettingSliderParameters(false, 2f, 30f)]
-        [OverhaulSetting("Gameplay.Control.Zoom hardness", 10f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
+        [OverhaulSettingAttribute_Old("Gameplay.Control.Zoom hardness", 10f, false, null, "Gameplay.Control.Hold Z to zoom camera")]
         public static float ZoomHardness;
 
         public static float FOVOffset = 0f;

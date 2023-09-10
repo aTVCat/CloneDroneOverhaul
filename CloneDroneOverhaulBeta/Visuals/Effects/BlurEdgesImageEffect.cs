@@ -6,7 +6,7 @@ namespace CDOverhaul.Visuals
 {
     public class BlurEdgesImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSetting("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
+        [OverhaulSettingAttribute_Old("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
         public static bool BlurEdgesEnabled;
 
         private static Material s_Material;
@@ -16,7 +16,7 @@ namespace CDOverhaul.Visuals
         {
             base.PatchCamera(camera);
             if (!s_Material)
-                s_Material = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
+                s_Material = OverhaulAssetLoader.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
 
             if (PreviousCamera && PreviousCamera != CurrentCamera)
             {

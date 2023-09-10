@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingDropdownParameters : Attribute
+    public class OverhaulSettingDropdownParameters : OverhaulSettingBaseAttribute
     {
         public const char UsualSeparator = '@';
 

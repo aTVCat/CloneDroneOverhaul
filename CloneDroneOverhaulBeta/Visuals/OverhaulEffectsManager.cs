@@ -22,13 +22,13 @@ namespace CDOverhaul.Visuals
             base.OnAssetsLoaded();
             if (!s_HasInitialized)
             {
-                s_SwordBlockVFX = OverhaulAssetsController.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
+                s_SwordBlockVFX = OverhaulAssetLoader.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
                 s_SwordBlockVFX.gameObject.AddComponent<DestroyAfterWait>().SetWaitTime(1f);
 
-                PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
-                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetsController.GetAsset("VFX_FireSwordBlock", OverhaulAssetPart.Part2).transform, 10, FIRE_VFX);
-                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetsController.GetAsset("VFX_CutLaser", OverhaulAssetPart.Part2).transform, 25, LASER_CUT_VFX);
-                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetsController.GetAsset("VFX_CutFire", OverhaulAssetPart.Part2).transform, 25, FIRE_CUT_VFX);
+                PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetLoader.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetLoader.GetAsset("VFX_FireSwordBlock", OverhaulAssetPart.Part2).transform, 10, FIRE_VFX);
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetLoader.GetAsset("VFX_CutLaser", OverhaulAssetPart.Part2).transform, 25, LASER_CUT_VFX);
+                PooledPrefabController.CreateNewEntry<PooledPrefabInstanceBase>(OverhaulAssetLoader.GetAsset("VFX_CutFire", OverhaulAssetPart.Part2).transform, 25, FIRE_CUT_VFX);
                 s_HasInitialized = true;
             }
             refreshAttackManager();

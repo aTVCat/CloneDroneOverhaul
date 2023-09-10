@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class OverhaulAssetsController
+    public static class OverhaulAssetLoader
     {
         #region File names
         public const string ModAssetBundle_Part1 = "overhaulassets_p1";

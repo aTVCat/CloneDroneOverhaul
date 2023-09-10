@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingAttribute : Attribute
+    public class OverhaulSettingAttribute_Old : Attribute
     {
         public string SettingRawPath;
 
@@ -17,7 +17,7 @@ namespace CDOverhaul
 
         public bool IsHidden;
 
-        public OverhaulSettingAttribute(string settingPath, object defValue, bool isHidden = false, string description = null, string parentSettingPath = null)
+        public OverhaulSettingAttribute_Old(string settingPath, object defValue, bool isHidden = false, string description = null, string parentSettingPath = null)
         {
             SettingRawPath = settingPath;
             DefaultValue = defValue;

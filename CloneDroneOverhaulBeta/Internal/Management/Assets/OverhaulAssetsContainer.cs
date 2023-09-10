@@ -25,7 +25,7 @@ namespace CDOverhaul
                     continue;
                 }
 
-                UnityEngine.Object @object = OverhaulAssetsController.GetAsset<UnityEngine.Object>(asset.AssetName, asset.AssetBundle, asset.FixMaterials);
+                UnityEngine.Object @object = OverhaulAssetLoader.GetAsset<UnityEngine.Object>(asset.AssetName, asset.AssetBundle, asset.FixMaterials);
                 if (@object is Texture2D && asset.FieldReference.FieldType == typeof(Sprite))
                 {
                     @object = (@object as Texture2D).ToSprite();
@@ -43,13 +43,13 @@ namespace CDOverhaul
 
         private static IEnumerator loadBundleThenAssetCoroutine(OverhaulAssetAttribute asset)
         {
-            if (!OverhaulAssetsController.IsLoadingAssetBundle(asset.AssetBundle) && !OverhaulAssetsController.HasLoadedAssetBundle(asset.AssetBundle))
-                _ = OverhaulAssetsController.LoadAssetBundleAsync(asset.AssetBundle, delegate { }, false);
-            yield return new WaitUntil(() => OverhaulAssetsController.HasLoadedAssetBundle(asset.AssetBundle));
+            if (!OverhaulAssetLoader.IsLoadingAssetBundle(asset.AssetBundle) && !OverhaulAssetLoader.HasLoadedAssetBundle(asset.AssetBundle))
+                _ = OverhaulAssetLoader.LoadAssetBundleAsync(asset.AssetBundle, delegate { }, false);
+            yield return new WaitUntil(() => OverhaulAssetLoader.HasLoadedAssetBundle(asset.AssetBundle));
 
             bool hasLoadedAsset = false;
-            OverhaulAssetsController.AssetLoadHandler handler = null;
-            _ = OverhaulAssetsController.GetAssetAsync(asset.AssetBundle, asset.AssetName, delegate (OverhaulAssetsController.AssetLoadHandler h)
+            OverhaulAssetLoader.AssetLoadHandler handler = null;
+            _ = OverhaulAssetLoader.GetAssetAsync(asset.AssetBundle, asset.AssetName, delegate (OverhaulAssetLoader.AssetLoadHandler h)
             {
                 hasLoadedAsset = true;
                 handler = h;
@@ -64,10 +64,10 @@ namespace CDOverhaul
             yield break;
         }
 
-        [OverhaulAsset(OverhaulAssetsController.ModAssetBundle_Fonts, "triggering_fanfares", false, false)]
+        [OverhaulAsset(OverhaulAssetLoader.ModAssetBundle_Fonts, "triggering_fanfares", false, false)]
         public static Font TriggeringFanFaresFont;
 
-        [OverhaulAsset(OverhaulAssetsController.ModAssetBundle_Part2, "HQ-Question-256x256", false, false)]
+        [OverhaulAsset(OverhaulAssetLoader.ModAssetBundle_Part2, "HQ-Question-256x256", false, false)]
         public static Sprite HQQuestionSprite;
     }
 }

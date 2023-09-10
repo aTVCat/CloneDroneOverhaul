@@ -9,15 +9,15 @@ namespace CDOverhaul.Visuals
         public const float ADDITIONAL_UP_MULTIPLIER = 0.25f;
 
         [OverhaulSettingDropdownParameters("Third person@First person")]
-        [OverhaulSetting("Gameplay.Camera.View mode", 0)]
+        [OverhaulSettingAttribute_Old("Gameplay.Camera.View mode", 0)]
         public static int ViewModeType;
 
         [OverhaulSettingRequiredValue(1)]
-        [OverhaulSetting("Gameplay.Camera.Sync camera with head rotation", false, false, null, "Gameplay.Camera.View mode")]
+        [OverhaulSettingAttribute_Old("Gameplay.Camera.Sync camera with head rotation", false, false, null, "Gameplay.Camera.View mode")]
         public static bool SyncCameraWithHeadRotation;
 
         [OverhaulSettingSliderParameters(false, -10f, 25f)]
-        [OverhaulSetting("Gameplay.Camera.Field of view offset", 0f)]
+        [OverhaulSettingAttribute_Old("Gameplay.Camera.Field of view offset", 0f)]
         public static float FOVOffset;
 
         public static readonly Vector3 DefaultCameraOffset = new Vector3(0, 0.45f, -0.1f);

@@ -14,10 +14,10 @@ namespace CDOverhaul.DevTools
         public static bool IsUIActive;
 
         private GameObject m_ProfilerGameObject;
-        private OverhaulUI.PrefabAndContainer m_ScriptsTimeContainer;
+        private PrefabContainer m_ScriptsTimeContainer;
 
         private GameObject m_DebugActionsGameObject;
-        private OverhaulUI.PrefabAndContainer m_DebugActionsContainer;
+        private PrefabContainer m_DebugActionsContainer;
 
         private Graphic[] m_ThemeLines;
         private Button m_CloseButton;
@@ -26,11 +26,11 @@ namespace CDOverhaul.DevTools
         {
             m_ProfilerGameObject = MyModdedObject.GetObject<Transform>(0).gameObject;
             _ = m_ProfilerGameObject.AddComponent<OverhaulDraggablePanel>();
-            m_ScriptsTimeContainer = new PrefabAndContainer(MyModdedObject, 1, 2);
+            m_ScriptsTimeContainer = new PrefabContainer(MyModdedObject, 1, 2);
 
             m_DebugActionsGameObject = MyModdedObject.GetObject<Transform>(3).gameObject;
             _ = m_DebugActionsGameObject.AddComponent<OverhaulDraggablePanel>();
-            m_DebugActionsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
+            m_DebugActionsContainer = new PrefabContainer(MyModdedObject, 4, 5);
 
             m_ThemeLines = new Graphic[2];
             m_ThemeLines[0] = MyModdedObject.GetObject<Graphic>(6);
@@ -98,10 +98,10 @@ namespace CDOverhaul.DevTools
                     i++;
                 } while (i < target);
 
-                m_ScriptsTimeContainer.ClearContainer();
+                m_ScriptsTimeContainer.Clear();
                 foreach (string str in entries)
                 {
-                    ModdedObject moddedObject = m_ScriptsTimeContainer.CreateNew();
+                    ModdedObject moddedObject = m_ScriptsTimeContainer.InstantiateEntry();
                     OverhaulProfilerEntryDisplay entryDisplay = moddedObject.gameObject.AddComponent<OverhaulProfilerEntryDisplay>();
                     entryDisplay.MyEntry = str;
                 }
@@ -120,7 +120,7 @@ namespace CDOverhaul.DevTools
             List<Tuple<string, MethodInfo>> tuples = OverhaulDebugActions.GetAllDebugActions();
             foreach (Tuple<string, MethodInfo> tuple in tuples)
             {
-                ModdedObject moddedObject = m_DebugActionsContainer.CreateNew();
+                ModdedObject moddedObject = m_DebugActionsContainer.InstantiateEntry();
                 OverhaulDebugActionsEntryDisplay entryDisplay = moddedObject.gameObject.AddComponent<OverhaulDebugActionsEntryDisplay>();
                 entryDisplay.MyEntry = tuple.Item1;
                 entryDisplay.MyMethod = tuple.Item2;

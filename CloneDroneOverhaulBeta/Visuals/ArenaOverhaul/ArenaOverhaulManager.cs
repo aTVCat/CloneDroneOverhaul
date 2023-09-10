@@ -6,7 +6,7 @@ namespace CDOverhaul.Visuals.ArenaOverhaul
     public class ArenaOverhaulManager : OverhaulManager<ArenaOverhaulManager>
     {
         [OverhaulSettingWithNotification(1)]
-        [OverhaulSetting("Mod.Arena.Interior overhaul", true)]
+        [OverhaulSettingAttribute_Old("Mod.Arena.Interior overhaul", true)]
         public static bool IsArenaOverhaulEnabled;
 
         public readonly string[] IgnoredParts = new string[]
@@ -126,7 +126,7 @@ namespace CDOverhaul.Visuals.ArenaOverhaul
             m_GarbageDoor2Transform = m_GarbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
             m_GarbageDoor2Transform.GetComponent<Renderer>().enabled = false;
 
-            GameObject gameObject = Instantiate(OverhaulAssetsController.GetAsset("ArenaOverhaul", OverhaulAssetPart.ArenaOverhaul), m_ArenaFinalTransform);
+            GameObject gameObject = Instantiate(OverhaulAssetLoader.GetAsset("ArenaOverhaul", OverhaulAssetPart.ArenaOverhaul), m_ArenaFinalTransform);
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localEulerAngles = Vector3.zero;
             gameObject.transform.localScale = Vector3.one;

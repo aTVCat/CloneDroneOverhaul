@@ -188,7 +188,7 @@ namespace CDOverhaul.Patches
             m_SpawnedPanel.SetAsFirstSibling();
 
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            //moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.Get<ParametersMenu>().Show);
+            moddedObject.GetObject<Button>(0).onClick.AddListener(UIConstants.ShowSettingsMenu);
             m_SettingsText = moddedObject.GetObject<Text>(1);
             //moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
             m_BugReportText = moddedObject.GetObject<Text>(3);

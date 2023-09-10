@@ -108,7 +108,7 @@ namespace CDOverhaul.Examples.AdditionalContent
         public override void Start()
         {
             base.Start();
-            Skyboxes = OverhaulAssetsController.GetAllObjects<Material>(SkyboxesAssetBundle);
+            Skyboxes = OverhaulAssetLoader.GetAllObjects<Material>(SkyboxesAssetBundle);
         }
 
         public override void AddListeners()

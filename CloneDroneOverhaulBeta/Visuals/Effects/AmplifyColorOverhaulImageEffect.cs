@@ -6,21 +6,21 @@ namespace CDOverhaul.Visuals
 {
     public class AmplifyColorOverhaulImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSetting("Graphics.Amplify color.Apply \"Film bright\" preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Graphics.Amplify color.Apply \"Film bright\" preset", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent ApplyAmplifyColorPreset1 = new OverhaulSettingWithEvent();
 
-        [OverhaulSetting("Graphics.Amplify color.Apply \"Film dark\" preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Graphics.Amplify color.Apply \"Film dark\" preset", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent ApplyAmplifyColorPreset2 = new OverhaulSettingWithEvent();
 
-        [OverhaulSetting("Graphics.Amplify color.Apply default preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Graphics.Amplify color.Apply default preset", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent ApplyAmplifyColorPresetDefault = new OverhaulSettingWithEvent();
 
         [OverhaulSettingDropdownParameters("Default@More Blend@More Exposure@More B+E@Less Blend@Less Exposure@Less B+E@+B -E@-B +E")]
-        [OverhaulSetting("Graphics.Amplify color.Amplify color presetV2", 5, false)]
+        [OverhaulSettingAttribute_Old("Graphics.Amplify color.Amplify color presetV2", 5, false)]
         public static int AmplifyColorMode;
 
         [OverhaulSettingDropdownParameters("Disabled@Photographic@FilmicACES")]
-        [OverhaulSetting("Graphics.Amplify color.TonemapperV2", 2, false)]
+        [OverhaulSettingAttribute_Old("Graphics.Amplify color.TonemapperV2", 2, false)]
         public static int AmplifyColorTonemapper;
 
         public override void Start()
@@ -28,8 +28,8 @@ namespace CDOverhaul.Visuals
             base.Start();
             ApplyAmplifyColorPreset1.EventAction = delegate
             {
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 5);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 2);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 5);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.TonemapperV2", true), 2);
 
                 ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
@@ -38,8 +38,8 @@ namespace CDOverhaul.Visuals
 
             ApplyAmplifyColorPreset2.EventAction = delegate
             {
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 2);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 1);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 2);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.TonemapperV2", true), 1);
 
                 ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)
@@ -48,8 +48,8 @@ namespace CDOverhaul.Visuals
 
             ApplyAmplifyColorPresetDefault.EventAction = delegate
             {
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 0);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 0);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 0);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Amplify color.TonemapperV2", true), 0);
 
                 ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)

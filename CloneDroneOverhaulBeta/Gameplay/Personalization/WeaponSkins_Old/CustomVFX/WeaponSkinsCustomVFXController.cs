@@ -13,7 +13,7 @@ namespace CDOverhaul.Gameplay
             if (SkinHasCustomVFX(itemDefinition))
                 return;
 
-            if (OverhaulAssetsController.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
+            if (OverhaulAssetLoader.TryGetAsset<GameObject>(itemDefinition.CollideWithEnvironmentVFXAssetName, itemDefinition.OverrideAssetBundle, out GameObject vfx))
             {
                 if (vfx == null)
                     return;

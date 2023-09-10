@@ -19,5 +19,9 @@ namespace CDOverhaul
             ObjectIndex = index;
             UsesIndexes = true;
         }
+
+        public UIElementReferenceAttribute()
+        {
+        }
     }
 }

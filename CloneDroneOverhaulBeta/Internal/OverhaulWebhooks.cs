@@ -19,7 +19,7 @@ namespace CDOverhaul
         public const string ErrorsWebhook = "https://discord.com/api/webhooks/1129035917324189745/FGpPRyvgI9YxyrCutXPoWrIGjJ0Z0KueFs4_pqU2wSLUsmYfVYm_qR9yTt-XST40ntSp";
         public static readonly Uri ErrorsWebhookUri = new Uri(ErrorsWebhook);
 
-        [OverhaulSetting("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
+        [OverhaulSettingAttribute_Old("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
         public static bool AllowSendingInformation;
 
         public static readonly string[] IgnoredStrings = new string[]

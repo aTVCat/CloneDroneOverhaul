@@ -8,7 +8,7 @@ namespace CDOverhaul
     {
         public const float COLOR_MULTIPLIER = 0.8f;
 
-        [OverhaulSetting("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
+        [OverhaulSettingAttribute_Old("Gameplay.Voxels.Make laser burn voxels", true, false, "Cutting robots with normal sword would leave nearby voxels burnt")]
         public static bool MakeLaserBurnVoxels;
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)

@@ -9,8 +9,8 @@ namespace CDOverhaul.HUD.Gamemodes
     {
         private bool m_HasPopulatedChallenges;
 
-        private OverhaulUI.PrefabAndContainer ChallengesContainer;
-        private OverhaulUI.PrefabAndContainer CoopChallengesContainer;
+        private PrefabContainer ChallengesContainer;
+        private PrefabContainer CoopChallengesContainer;
 
         private Text m_ChallengeTitleLabel;
         private Text m_ChallengeCompletionLabel;
@@ -53,8 +53,8 @@ namespace CDOverhaul.HUD.Gamemodes
             m_MultiPlayerChallenges = moddedObject.GetObject<Transform>(7);
             m_JoinButton = moddedObject.GetObject<Button>(8);
             m_JoinButton.AddOnClickListener(OnJoinButtonClicked);
-            ChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 6);
-            CoopChallengesContainer = new OverhaulUI.PrefabAndContainer(moddedObject, 0, 7);
+            ChallengesContainer = new PrefabContainer(moddedObject, 0, 6);
+            CoopChallengesContainer = new PrefabContainer(moddedObject, 0, 7);
             moddedObject.GetObject<Button>(2).onClick.AddListener(goBackToGamemodeSelection);
             ShowChallengeTooltip(null);
         }
@@ -103,19 +103,19 @@ namespace CDOverhaul.HUD.Gamemodes
 
             m_HasPopulatedChallenges = true;
 
-            ChallengesContainer.ClearContainer();
-            CoopChallengesContainer.ClearContainer();
+            ChallengesContainer.Clear();
+            CoopChallengesContainer.Clear();
             ChallengeDefinition[] allSoloChallenges = ChallengeManager.Instance.GetChallenges(false);
             foreach (ChallengeDefinition definition in allSoloChallenges)
             {
-                ModdedObject moddedObject = ChallengesContainer.CreateNew();
+                ModdedObject moddedObject = ChallengesContainer.InstantiateEntry();
                 _ = moddedObject.gameObject.AddComponent<UIChallengeEntry>().Initialize(definition, moddedObject, this, false);
             }
 
             ChallengeDefinition[] allCoopChallenges = ChallengeManager.Instance.GetChallenges(true);
             foreach (ChallengeDefinition definition in allCoopChallenges)
             {
-                ModdedObject moddedObject = CoopChallengesContainer.CreateNew();
+                ModdedObject moddedObject = CoopChallengesContainer.InstantiateEntry();
                 _ = moddedObject.gameObject.AddComponent<UIChallengeEntry>().Initialize(definition, moddedObject, this, true);
             }
         }

@@ -64,6 +64,7 @@ namespace CDOverhaul
 
         public override void Initialize() { }
 
+        [System.Obsolete]
         public class LoadingIndicator
         {
             public CanvasGroup CanvasGr;
@@ -141,60 +142,6 @@ namespace CDOverhaul
 
                 indicator.m_Progress = 0f;
                 indicator.FillImage.fillAmount = 0f;
-            }
-        }
-
-        public class PrefabAndContainer
-        {
-            public ModdedObject Prefab;
-            public Transform Container;
-
-            public PrefabAndContainer(ModdedObject moddedObject, int indexOfPrefab, int indexOfContainer)
-            {
-                if (moddedObject == null)
-                    throw new System.ArgumentNullException();
-
-                setUp(moddedObject.GetObject(indexOfPrefab), moddedObject.GetObject<Transform>(indexOfContainer));
-            }
-
-            public PrefabAndContainer(Object prefab, Transform container)
-            {
-                setUp(prefab, container);
-            }
-
-            private void setUp(Object prefab, Transform container)
-            {
-                if (prefab == null || container == null)
-                    throw new System.ArgumentNullException();
-
-                if (!(prefab is GameObject))
-                    throw new System.ArgumentException("UnityEngine.Object must be GameObject");
-
-                if (!(prefab as GameObject).GetComponent<ModdedObject>())
-                    throw new System.NullReferenceException("ModdedObject component not found");
-
-                Prefab = (prefab as GameObject).GetComponent<ModdedObject>();
-                Prefab.gameObject.SetActive(false);
-                Container = container;
-            }
-
-            public ModdedObject CreateNew(bool startActive = true)
-            {
-                if (Prefab == null || Container == null)
-                    return null;
-
-                ModdedObject result = UnityEngine.Object.Instantiate(Prefab, Container);
-                result.gameObject.SetActive(startActive);
-                result.gameObject.name = result.gameObject.name.Replace("(Clone)", string.Empty);
-                return result;
-            }
-
-            public void ClearContainer()
-            {
-                if (Container == null)
-                    return;
-
-                TransformUtils.DestroyAllChildren(Container);
             }
         }
     }

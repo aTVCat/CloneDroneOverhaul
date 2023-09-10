@@ -32,7 +32,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
         private void onAutoSaveToggleClicked(bool newValue)
         {
-            OverhaulSettingsController.SetSettingValue("Player.P_Editor.AutoSave", newValue);
+            OverhaulSettingsManager_Old.SetSettingValue("Player.P_Editor.AutoSave", newValue);
         }
 
         private void onSaveButtonClicked()

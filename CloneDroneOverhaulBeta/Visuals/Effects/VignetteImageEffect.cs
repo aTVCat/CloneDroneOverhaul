@@ -6,11 +6,11 @@ namespace CDOverhaul.Visuals
 {
     public class VignetteImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSetting("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
+        [OverhaulSettingAttribute_Old("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
 
         [OverhaulSettingSliderParameters(false, -0.2f, 0.3f)]
-        [OverhaulSetting("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, "Graphics.Shaders.Vignette")]
+        [OverhaulSettingAttribute_Old("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
 
         private static Material s_Material;
@@ -20,7 +20,7 @@ namespace CDOverhaul.Visuals
         {
             base.PatchCamera(camera);
             if (!s_Material)
-                s_Material = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
+                s_Material = OverhaulAssetLoader.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
 
             s_Material.SetFloat("_CenterY", -0.14f);
 

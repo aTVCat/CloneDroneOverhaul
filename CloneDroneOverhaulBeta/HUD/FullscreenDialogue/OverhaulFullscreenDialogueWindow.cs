@@ -19,7 +19,7 @@ namespace CDOverhaul
         private Text m_TitleLabel;
         private Text m_DescriptionLabel;
         private GameObject[] m_Icons;
-        private PrefabAndContainer m_ButtonsContainer;
+        private PrefabContainer m_ButtonsContainer;
 
         public override void Initialize()
         {
@@ -32,7 +32,7 @@ namespace CDOverhaul
             {
                  MyModdedObject.GetObject<Transform>(3).gameObject
             };
-            m_ButtonsContainer = new PrefabAndContainer(MyModdedObject, 4, 5);
+            m_ButtonsContainer = new PrefabContainer(MyModdedObject, 4, 5);
             Hide();
         }
 
@@ -52,7 +52,7 @@ namespace CDOverhaul
         {
             SetIcon(IconType.None);
             SetWindowSize(DefaultWidth, DefaultHeight);
-            m_ButtonsContainer.ClearContainer();
+            m_ButtonsContainer.Clear();
         }
 
         public void SetWindowSize(float width, float height)
@@ -87,7 +87,7 @@ namespace CDOverhaul
 
         public void AddButton(string text, Action onClickAction, string frameHexColor = "#FFFFFF", Func<bool> setInteractableIf = null, float preferredWidth = 0f)
         {
-            ModdedObject moddedObject = m_ButtonsContainer.CreateNew();
+            ModdedObject moddedObject = m_ButtonsContainer.InstantiateEntry();
             moddedObject.GetObject<Text>(0).text = text;
             moddedObject.GetObject<Image>(1).color = frameHexColor.ToColor();
             LayoutElement layoutElement = moddedObject.GetComponent<LayoutElement>();

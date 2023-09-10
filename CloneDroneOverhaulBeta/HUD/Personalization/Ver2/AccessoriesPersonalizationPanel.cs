@@ -9,8 +9,8 @@ namespace CDOverhaul.HUD
 {
     public class AccessoriesPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        private OverhaulUI.PrefabAndContainer m_BodyPartsContainer;
-        private OverhaulUI.PrefabAndContainer m_OutfitItemsContainer;
+        private PrefabContainer m_BodyPartsContainer;
+        private PrefabContainer m_OutfitItemsContainer;
 
         private bool m_HasPopulatedBodyParts;
 
@@ -24,8 +24,8 @@ namespace CDOverhaul.HUD
         {
             base.Initialize();
 
-            m_BodyPartsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 4, 5);
-            m_OutfitItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 6, 7);
+            m_BodyPartsContainer = new PrefabContainer(MyModdedObject, 4, 5);
+            m_OutfitItemsContainer = new PrefabContainer(MyModdedObject, 6, 7);
 
             SelectedBodyPart = "Head";
         }
@@ -36,7 +36,7 @@ namespace CDOverhaul.HUD
                 return;
 
             populateBodyPartsIfNeeded();
-            m_OutfitItemsContainer.ClearContainer();
+            m_OutfitItemsContainer.Clear();
             _ = StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 
@@ -53,7 +53,7 @@ namespace CDOverhaul.HUD
                 {
                     foreach (OutfitItem item in list)
                     {
-                        ModdedObject outfitItemDisplay = m_OutfitItemsContainer.CreateNew();
+                        ModdedObject outfitItemDisplay = m_OutfitItemsContainer.InstantiateEntry();
                         AccesoryItemDisplay displayComponent = outfitItemDisplay.gameObject.AddComponent<AccesoryItemDisplay>();
                         displayComponent.Initialize(item);
                     }
@@ -84,7 +84,7 @@ namespace CDOverhaul.HUD
 
             foreach (string bodyPart in allBodyParts)
             {
-                ModdedObject bodyPartDisplay = m_BodyPartsContainer.CreateNew();
+                ModdedObject bodyPartDisplay = m_BodyPartsContainer.InstantiateEntry();
                 bodyPartDisplay.GetObject<Transform>(0).gameObject.SetActive(bodyPart == SelectedBodyPart);
                 bodyPartDisplay.GetObject<Text>(1).text = bodyPart;
             }

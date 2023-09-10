@@ -34,7 +34,6 @@ namespace CDOverhaul
                 InitDebugManagers,
                 InitGraphicsManagers,
                 InitLevelEditorManagers,
-                InitLocalizationManagers,
                 InitContentManagers,
                 InitEnhancementManagers,
                 InitMiscManagers,
@@ -72,9 +71,14 @@ namespace CDOverhaul
         {
             EnableCursorController.Reset();
             DeviceSpecifics.Initialize();
-
             OverhaulEvents.Initialize();
-            OverhaulSettingsController.Initialize();
+            OverhaulSettingsManager_Old.Initialize();
+
+            GameObject mainObject = new GameObject("Main");
+            mainObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
+
+            _ = OverhaulController.Add<OverhaulSettingsManager>(mainObject.transform);
+            _ = OverhaulController.Add<OverhaulLocalizationManager>(mainObject.transform);
         }
 
         public void InitDebugManagers()
@@ -93,11 +97,6 @@ namespace CDOverhaul
             _ = OverhaulController.Add<OverhaulGraphicsManager>(graphicsObject.transform);
             _ = OverhaulController.Add<OverhaulUIEffectsManager>(graphicsObject.transform);
             _ = OverhaulController.Add<OverhaulEffectsManager>(graphicsObject.transform);
-        }
-
-        public void InitLocalizationManagers()
-        {
-            _ = OverhaulController.Add<OverhaulLocalizationManager>();
         }
 
         public void InitGameplayManagers()
@@ -166,12 +165,12 @@ namespace CDOverhaul
         {
             List<string> toLoad = new List<string>()
             {
-                OverhaulAssetsController.ModAssetBundle_Part1,
-                OverhaulAssetsController.ModAssetBundle_Part2,
-                OverhaulAssetsController.ModAssetBundle_Skins,
-                OverhaulAssetsController.ModAssetBundle_Accessouries,
-                OverhaulAssetsController.ModAssetBundle_Pets,
-                OverhaulAssetsController.ModAssetBundle_ArenaOverhaul,
+                OverhaulAssetLoader.ModAssetBundle_Part1,
+                OverhaulAssetLoader.ModAssetBundle_Part2,
+                OverhaulAssetLoader.ModAssetBundle_Skins,
+                OverhaulAssetLoader.ModAssetBundle_Accessouries,
+                OverhaulAssetLoader.ModAssetBundle_Pets,
+                OverhaulAssetLoader.ModAssetBundle_ArenaOverhaul,
             };
             excludeLoadedAssetBundles(toLoad);
 
@@ -181,7 +180,7 @@ namespace CDOverhaul
             {
                 int index = i;
                 string assetBundle = toLoad[index];
-                OverhaulAssetsController.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetsController.AssetBundleLoadHandler handler)
+                OverhaulAssetLoader.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetLoader.AssetBundleLoadHandler handler)
                 {
                     boolArray[index] = true;
                 });
@@ -202,7 +201,7 @@ namespace CDOverhaul
             int i = list.Count - 1;
             do
             {
-                if (OverhaulAssetsController.HasLoadedAssetBundle(list[i]))
+                if (OverhaulAssetLoader.HasLoadedAssetBundle(list[i]))
                     list.RemoveAt(i);
 
                 i--;

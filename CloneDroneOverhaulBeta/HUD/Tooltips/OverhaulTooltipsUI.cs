@@ -2,14 +2,14 @@
 {
     public class OverhaulTooltipsUI : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Tooltips.Show tooltips", true)]
+        [OverhaulSettingAttribute_Old("Game interface.Tooltips.Show tooltips", true)]
         public static bool ShowTooltips;
 
         [OverhaulSettingSliderParameters(false, -1f, 3f)]
-        [OverhaulSetting("Game interface.Tooltips.Additional show duration", 0f, false, null, "Game interface.Tooltips.Show tooltips")]
+        [OverhaulSettingAttribute_Old("Game interface.Tooltips.Additional show duration", 0f, false, null, "Game interface.Tooltips.Show tooltips")]
         public static float TooltipsAdditionalShowDuration;
 
-        [OverhaulSetting("Game interface.Tooltips.Show player information", true, false, null, "Game interface.Tooltips.Show tooltips")]
+        [OverhaulSettingAttribute_Old("Game interface.Tooltips.Show player information", true, false, null, "Game interface.Tooltips.Show tooltips")]
         public static bool ShowPlayerInfos;
     }
 }

@@ -10,23 +10,23 @@ namespace CDOverhaul.Visuals
         public const float HORIZONTAL_TILT = 1.8f;
         public const float ONE_LEG_TILT = 2.6f;
 
-        [OverhaulSetting("Graphics.Camera.Rolling", true, false, "The camera will tilt in the direction of the movement")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Rolling", true, false, "The camera will tilt in the direction of the movement")]
         public static bool EnableCameraRolling;
-        [OverhaulSetting("Graphics.Camera.Invert axis", false, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Invert axis", false, false, null, "Graphics.Camera.Rolling")]
         public static bool InvertAxis;
 
-        [OverhaulSetting("Graphics.Camera.Tilt when one legged", true, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Tilt when one legged", true, false, null, "Graphics.Camera.Rolling")]
         public static bool TiltWhenOneLegged;
-        [OverhaulSetting("Graphics.Camera.Tilt when jumping", true, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Tilt when jumping", true, false, null, "Graphics.Camera.Rolling")]
         public static bool TiltWhenJumping;
 
-        [OverhaulSetting("Graphics.Camera.Lock rotation by X", false, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Lock rotation by X", false, false, null, "Graphics.Camera.Rolling")]
         public static bool LockX;
-        [OverhaulSetting("Graphics.Camera.Lock rotation by Z", false, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Lock rotation by Z", false, false, null, "Graphics.Camera.Rolling")]
         public static bool LockZ;
 
         [OverhaulSettingSliderParameters(false, 0.7f, 1.2f)]
-        [OverhaulSetting("Graphics.Camera.Tilt multiplier", 1f, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingAttribute_Old("Graphics.Camera.Tilt multiplier", 1f, false, null, "Graphics.Camera.Rolling")]
         public static float TiltMultiplier;
 
         private Transform m_PlayerCameraTransform;

@@ -4,10 +4,10 @@
     {
         public const char SEPARATOR = ',';
 
-        [OverhaulSetting("Player.Pets.Equipped", "", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.Pets.Equipped", "", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedPets;
 
-        [OverhaulSetting("Player.Pets.EnemiesUsePets", false, !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.Pets.EnemiesUsePets", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesUsePets;
 
         /*

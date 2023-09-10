@@ -24,7 +24,7 @@ namespace CDOverhaul
                 return false;
 
             HasBeenInstantiated = true;
-            GameObject spawnedPrefab = Instantiate(OverhaulAssetsController.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload));
+            GameObject spawnedPrefab = Instantiate(OverhaulAssetLoader.GetAsset("OverhaulBootUI", OverhaulAssetPart.Preload));
             ModdedObject moddedObject = spawnedPrefab.GetComponent<ModdedObject>();
             Transform mainViewTransform = moddedObject.GetObject<Transform>(0);
             OverhaulUIManager.ParentTransformToGameUIRoot(mainViewTransform);
@@ -70,7 +70,7 @@ namespace CDOverhaul
                 return;
             }
 
-            float newProgress = OverhaulAssetsController.GetAllAssetBundlesLoadPercent();
+            float newProgress = OverhaulAssetLoader.GetAllAssetBundlesLoadPercent();
             if (newProgress > m_ProgressLastFrame)
                 m_LoadingBar.value = newProgress;
             m_ProgressLastFrame = newProgress;

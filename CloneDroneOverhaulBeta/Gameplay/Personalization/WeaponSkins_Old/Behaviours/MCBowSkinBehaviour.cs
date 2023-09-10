@@ -38,10 +38,10 @@ namespace CDOverhaul.Gameplay
         public override void OnPreLoad()
         {
             m_HasFrames = true;
-            m_Frame1 = OverhaulAssetsController.GetAsset<Mesh>("MCBowMesh1", OverhaulAssetPart.WeaponSkins);
-            m_Frame2 = OverhaulAssetsController.GetAsset<Mesh>("MCBowMesh2", OverhaulAssetPart.WeaponSkins);
-            m_Frame3 = OverhaulAssetsController.GetAsset<Mesh>("MCBowMesh3", OverhaulAssetPart.WeaponSkins);
-            m_Frame4 = OverhaulAssetsController.GetAsset<Mesh>("MCBowMesh4", OverhaulAssetPart.WeaponSkins);
+            m_Frame1 = OverhaulAssetLoader.GetAsset<Mesh>("MCBowMesh1", OverhaulAssetPart.WeaponSkins);
+            m_Frame2 = OverhaulAssetLoader.GetAsset<Mesh>("MCBowMesh2", OverhaulAssetPart.WeaponSkins);
+            m_Frame3 = OverhaulAssetLoader.GetAsset<Mesh>("MCBowMesh3", OverhaulAssetPart.WeaponSkins);
+            m_Frame4 = OverhaulAssetLoader.GetAsset<Mesh>("MCBowMesh4", OverhaulAssetPart.WeaponSkins);
         }
 
         public override void Start()

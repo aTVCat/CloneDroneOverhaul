@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public static class OverhaulSettingsController
+    public static class OverhaulSettingsManager_Old
     {
         /// <summary>
         /// This event is sent if any setting value has changed
@@ -21,13 +21,13 @@ namespace CDOverhaul
         /// </summary>
         public const long SettingEventDispatcherFlag = 10000000000000L;
 
-        [OverhaulSetting("Player.Settings.Version", 0, true)]
+        [OverhaulSettingAttribute_Old("Player.Settings.Version", 0, true)]
         public static int SettingsVersion;
 
         /// <summary>
         /// All existing settings
         /// </summary>
-        private static readonly List<SettingInfo> m_Settings = new List<SettingInfo>();
+        private static readonly List<OverhaulSettingInfo_Old> m_Settings = new List<OverhaulSettingInfo_Old>();
         private static readonly Dictionary<string, OverhaulSettingDescription> m_SettingDescriptions = new Dictionary<string, OverhaulSettingDescription>();
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace CDOverhaul
         /// </summary>
         public static ParametersMenu HUD;
 
-        internal static void Initialize()
+        public static void Initialize()
         {
-            List<OverhaulSettingAttribute> toParent = new List<OverhaulSettingAttribute>();
+            List<OverhaulSettingAttribute_Old> toParent = new List<OverhaulSettingAttribute_Old>();
             Type[] allTypes = OverhaulMod.GetAllTypes();
             int typeIndex = 0;
             do
@@ -66,7 +66,7 @@ namespace CDOverhaul
                 {
                     FieldInfo currentField = allFields[fieldIndex];
 
-                    OverhaulSettingAttribute mainAttribute = currentField.GetCustomAttribute<OverhaulSettingAttribute>();
+                    OverhaulSettingAttribute_Old mainAttribute = currentField.GetCustomAttribute<OverhaulSettingAttribute_Old>();
                     if (mainAttribute == null)
                     {
                         fieldIndex++;
@@ -77,7 +77,6 @@ namespace CDOverhaul
                     OverhaulUpdatedSetting updatedSettingAttribute = currentField.GetCustomAttribute<OverhaulUpdatedSetting>();
                     OverhaulSettingSliderParameters sliderParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingSliderParameters>();
                     OverhaulSettingDropdownParameters dropdownParametersAttribute = currentField.GetCustomAttribute<OverhaulSettingDropdownParameters>();
-                    OverhaulSettingWithForcedInputField forcedInputFieldAttribute = currentField.GetCustomAttribute<OverhaulSettingWithForcedInputField>();
                     OverhaulSettingRequireUpdate requireUpdateAttribute = currentField.GetCustomAttribute<OverhaulSettingRequireUpdate>();
                     OverhaulSettingRequiredValue requiredValueAttribute = currentField.GetCustomAttribute<OverhaulSettingRequiredValue>();
 
@@ -86,10 +85,9 @@ namespace CDOverhaul
                         mainAttribute.RequiredValue = requiredValueAttribute.TargetValue;
                     }
 
-                    SettingInfo newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
+                    OverhaulSettingInfo_Old newSettingInfo = AddSetting(mainAttribute.SettingRawPath, mainAttribute.DefaultValue, currentField, updatedSettingAttribute);
                     newSettingInfo.SliderParameters = sliderParametersAttribute;
                     newSettingInfo.DropdownParameters = dropdownParametersAttribute;
-                    newSettingInfo.ForceInputField = forcedInputFieldAttribute != null;
                     newSettingInfo.SendMessageOfType = notificationAttribute != null ? notificationAttribute.Type : (byte)0;
                     AddDescription(mainAttribute.SettingRawPath, mainAttribute.Description);
 
@@ -109,7 +107,7 @@ namespace CDOverhaul
             } while (typeIndex < allTypes.Length);
 
             SetSettingDependency("Gameplay.Camera.View mode", "Gameplay.Camera.Sync camera with head rotation", 1);
-            foreach (OverhaulSettingAttribute neededAttribute in toParent)
+            foreach (OverhaulSettingAttribute_Old neededAttribute in toParent)
             {
                 SetSettingParent(neededAttribute.SettingRawPath, neededAttribute.ParentSettingRawPath, neededAttribute.RequiredValue);
             }
@@ -117,7 +115,7 @@ namespace CDOverhaul
 #if DEBUG
             DelegateScheduler.Instance.Schedule(delegate
             {
-                foreach (SettingInfo neededAttribute in m_Settings)
+                foreach (OverhaulSettingInfo_Old neededAttribute in m_Settings)
                 {
                     if (OverhaulLocalizationManager.Error)
                     {
@@ -133,7 +131,7 @@ namespace CDOverhaul
                     {
                         OverhaulLocalizationManager.LocalizationData.AddTranslation(ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name);
                     }
-                    OverhaulSettingDescription desc = OverhaulSettingsController.GetSettingDescription(neededAttribute.RawPath);
+                    OverhaulSettingDescription desc = OverhaulSettingsManager_Old.GetSettingDescription(neededAttribute.RawPath);
                     if (desc != null) OverhaulLocalizationManager.LocalizationData.Translations["en"][ParametersMenu.SettingDescTranslationPrefix + neededAttribute.Name] = desc.Description;
 
                     if (!OverhaulLocalizationManager.HasTranslation(ParametersMenu.SectionTranslationPrefix + neededAttribute.Section))
@@ -160,7 +158,7 @@ namespace CDOverhaul
                 }
             }, 1f);
 #endif
-            DelegateScheduler.Instance.Schedule(SettingInfo.DispatchSettingsRefreshedEvent, 0.1f);
+            DelegateScheduler.Instance.Schedule(OverhaulSettingInfo_Old.DispatchSettingsRefreshedEvent, 0.1f);
             updateSettingVersion();
         }
 
@@ -186,9 +184,9 @@ namespace CDOverhaul
         /// <param name="defaultValue"></param>
         /// <param name="field"></param>
         /// <returns></returns>
-        public static SettingInfo AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in OverhaulUpdatedSetting formelyKnown = null)
+        public static OverhaulSettingInfo_Old AddSetting<T>(in string path, in T defaultValue, in FieldInfo field, in OverhaulUpdatedSetting formelyKnown = null)
         {
-            SettingInfo newSetting = new SettingInfo();
+            OverhaulSettingInfo_Old newSetting = new OverhaulSettingInfo_Old();
             newSetting.SetUp<T>(path, defaultValue, field, formelyKnown);
             m_Settings.Add(newSetting);
             return newSetting;
@@ -208,8 +206,8 @@ namespace CDOverhaul
 
         public static void SetSettingDependency(in string toDepend, in string targetSetting, in object targetValue)
         {
-            SettingInfo info = GetSetting(targetSetting);
-            SettingInfo info2 = GetSetting(toDepend);
+            OverhaulSettingInfo_Old info = GetSetting(targetSetting);
+            OverhaulSettingInfo_Old info2 = GetSetting(toDepend);
             if (info == null || info2 == null)
                 return;
 
@@ -219,8 +217,8 @@ namespace CDOverhaul
 
         public static void SetSettingParent(in string settingPath, in string targetSettingPath, in object requiredValue = null)
         {
-            SettingInfo s1 = GetSetting(settingPath, true);
-            SettingInfo s2 = GetSetting(targetSettingPath, true);
+            OverhaulSettingInfo_Old s1 = GetSetting(settingPath, true);
+            OverhaulSettingInfo_Old s2 = GetSetting(targetSettingPath, true);
             if (s1 == null || s2 == null)
                 return;
 
@@ -288,7 +286,7 @@ namespace CDOverhaul
         public static List<string> GetAllCategories(in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in m_Settings)
+            foreach (OverhaulSettingInfo_Old s in m_Settings)
             {
                 if (!result.Contains(s.Category))
                 {
@@ -306,7 +304,7 @@ namespace CDOverhaul
         public static List<string> GetAllSections(in string categoryToSearchIn, in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in m_Settings)
+            foreach (OverhaulSettingInfo_Old s in m_Settings)
             {
                 if (s.Category == categoryToSearchIn && !result.Contains(s.Category + "." + s.Section))
                 {
@@ -324,7 +322,7 @@ namespace CDOverhaul
         public static List<string> GetAllSettings(in string categoryToSearchIn, in string sectionToSearchIn, in bool includeHidden = false)
         {
             List<string> result = new List<string>();
-            foreach (SettingInfo s in m_Settings)
+            foreach (OverhaulSettingInfo_Old s in m_Settings)
             {
                 if (s.Category == categoryToSearchIn && s.Section == sectionToSearchIn && !result.Contains(s.RawPath))
                 {
@@ -346,9 +344,9 @@ namespace CDOverhaul
         /// <param name="path"></param>
         /// <param name="includeHidden"></param>
         /// <returns></returns>
-        public static SettingInfo GetSetting(in string path, in bool includeHidden = false)
+        public static OverhaulSettingInfo_Old GetSetting(in string path, in bool includeHidden = false)
         {
-            foreach (SettingInfo s in m_Settings)
+            foreach (OverhaulSettingInfo_Old s in m_Settings)
             {
                 if (s.RawPath == path && (!IsEntryHidden(s.RawPath) || includeHidden))
                     return s;
@@ -414,20 +412,20 @@ namespace CDOverhaul
 
         public static void SetSettingValue(string rawPath, object value)
         {
-            SettingInfo setting = GetSetting(rawPath, true);
+            OverhaulSettingInfo_Old setting = GetSetting(rawPath, true);
             if (setting == null)
                 return;
 
-            SettingInfo.SavePref(setting, value);
+            OverhaulSettingInfo_Old.SavePref(setting, value);
         }
 
         public static void ResetSettingValue(string rawPath)
         {
-            SettingInfo setting = GetSetting(rawPath, true);
+            OverhaulSettingInfo_Old setting = GetSetting(rawPath, true);
             if (setting == null)
                 return;
 
-            SettingInfo.SavePref(setting, setting.DefaultValue);
+            OverhaulSettingInfo_Old.SavePref(setting, setting.DefaultValue);
         }
     }
 }

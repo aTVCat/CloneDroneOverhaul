@@ -15,10 +15,10 @@ namespace CDOverhaul.HUD
         private Button m_OldChangelogsButton;
 
         private Transform m_OldChangelogsPanel;
-        private OverhaulUI.PrefabAndContainer m_ChangelogEntriesContainer;
+        private PrefabContainer m_ChangelogEntriesContainer;
         private Button m_CloseOldChangelogsButton;
 
-        private OverhaulUI.PrefabAndContainer m_ArtContainer;
+        private PrefabContainer m_ArtContainer;
         private Text m_Changelog;
         private Text m_ChangelogHeader;
         private readonly List<Texture> m_LoadedArt = new List<Texture>();
@@ -35,7 +35,7 @@ namespace CDOverhaul.HUD
             m_GitHubButton.onClick.AddListener(OnGitHubClicked);
             m_ModBotButton = MyModdedObject.GetObject<Button>(2);
             m_ModBotButton.onClick.AddListener(OnModBotClicked);
-            m_ArtContainer = new PrefabAndContainer(MyModdedObject, 3, 4);
+            m_ArtContainer = new PrefabContainer(MyModdedObject, 3, 4);
             m_Changelog = MyModdedObject.GetObject<Text>(5);
             m_OldChangelogsButton = MyModdedObject.GetObject<Button>(10);
             m_OldChangelogsButton.onClick.AddListener(OnOldChangelogsClicked);
@@ -43,7 +43,7 @@ namespace CDOverhaul.HUD
             m_CloseOldChangelogsButton.onClick.AddListener(OnCloseOldChangelogsClicked);
             m_OldChangelogsPanel = MyModdedObject.GetObject<Transform>(6);
             m_OldChangelogsPanel.gameObject.SetActive(false);
-            m_ChangelogEntriesContainer = new PrefabAndContainer(MyModdedObject, 7, 8);
+            m_ChangelogEntriesContainer = new PrefabContainer(MyModdedObject, 7, 8);
             m_ClickOnImageLabel = MyModdedObject.GetObject<Transform>(11);
             m_ChangelogHeader = MyModdedObject.GetObject<Text>(12);
             Hide();
@@ -109,7 +109,7 @@ namespace CDOverhaul.HUD
         {
             m_OldChangelogsPanel.gameObject.SetActive(true);
 
-            m_ChangelogEntriesContainer.ClearContainer();
+            m_ChangelogEntriesContainer.Clear();
             if (OverhaulPatchNotes.AllChangelogs.IsNullOrEmpty())
                 return;
 
@@ -118,7 +118,7 @@ namespace CDOverhaul.HUD
             {
                 int index2 = index;
 
-                ModdedObject m = m_ChangelogEntriesContainer.CreateNew();
+                ModdedObject m = m_ChangelogEntriesContainer.InstantiateEntry();
                 m.GetComponent<Button>().onClick.AddListener(delegate
                 {
                     ViewChangelog(index2);
@@ -139,7 +139,7 @@ namespace CDOverhaul.HUD
         public void ViewChangelog(int index)
         {
             DestroyLoadedPictures();
-            m_ArtContainer.ClearContainer();
+            m_ArtContainer.Clear();
             m_Changelog.text = string.Empty;
             if (!base.gameObject.activeInHierarchy || OverhaulPatchNotes.AllChangelogs.IsNullOrEmpty())
             {
@@ -161,7 +161,7 @@ namespace CDOverhaul.HUD
             {
                 foreach (string art in info.Art)
                 {
-                    ModdedObject m = m_ArtContainer.CreateNew();
+                    ModdedObject m = m_ArtContainer.InstantiateEntry();
                     m.GetComponent<Button>().onClick.AddListener(delegate
                     {
                         if (m != null)

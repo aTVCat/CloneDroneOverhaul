@@ -18,7 +18,7 @@ namespace CDOverhaul.Visuals
 
         protected override void OnAssetsLoaded()
         {
-            canvasObject = Instantiate(OverhaulAssetsController.GetAsset("UIImageEffects", OverhaulAssetPart.Part2, false));
+            canvasObject = Instantiate(OverhaulAssetLoader.GetAsset("UIImageEffects", OverhaulAssetPart.Part2, false));
             DontDestroyOnLoad(canvasObject);
 
             ModdedObject moddedObject = canvasObject.GetComponent<ModdedObject>();

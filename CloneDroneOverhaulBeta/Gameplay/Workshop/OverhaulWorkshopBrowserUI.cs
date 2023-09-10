@@ -15,10 +15,10 @@ namespace CDOverhaul.Workshop
     {
         #region Settings
 
-        [OverhaulSetting("Game interface.Network.New Workshop browser design", true)]
+        [OverhaulSettingAttribute_Old("Game interface.Network.New Workshop browser design", true)]
         public static bool UseThisUI;
 
-        [OverhaulSetting("Game interface.Network.Cache images", false, false, null, "Game interface.Network.New Workshop browser design")]
+        [OverhaulSettingAttribute_Old("Game interface.Network.Cache images", false, false, null, "Game interface.Network.New Workshop browser design")]
         public static bool CacheImages;
 
         public static readonly List<Dropdown.OptionData> Tags = new List<Dropdown.OptionData>
@@ -68,11 +68,11 @@ namespace CDOverhaul.Workshop
         [UIElementReferenceAttribute("CloseWorkshopBrowser")]
         private readonly Button m_ExitButton;
 
-        private OverhaulUI.PrefabAndContainer m_WorkshopItemsContainer;
-        private OverhaulUI.PrefabAndContainer m_LevelTypesContainer;
-        private OverhaulUI.PrefabAndContainer m_RanksContainer;
-        private OverhaulUI.PrefabAndContainer m_DropdownRanksContainer;
-        private OverhaulUI.PrefabAndContainer m_RankSeparatorsContainer;
+        private PrefabContainer m_WorkshopItemsContainer;
+        private PrefabContainer m_LevelTypesContainer;
+        private PrefabContainer m_RanksContainer;
+        private PrefabContainer m_DropdownRanksContainer;
+        private PrefabContainer m_RankSeparatorsContainer;
         private OverhaulUI.LoadingIndicator m_LoadingIndicator;
 
         [UIElementDefaultVisibilityStateAttribute(false)]
@@ -156,7 +156,7 @@ namespace CDOverhaul.Workshop
         private readonly Button m_BrowseWorkshopButton;
         [UIElementReferenceAttribute("ButtonBrowserLocalUserItems")]
         private readonly Button m_BrowsePublishedButton;
-        private OverhaulUI.PrefabAndContainer m_PageContainer;
+        private PrefabContainer m_PageContainer;
 
         [UIElementReferenceAttribute("ButtonSearch")]
         private readonly Button m_SearchButton;
@@ -168,7 +168,7 @@ namespace CDOverhaul.Workshop
         [UIElementReferenceAttribute("ButtonStartSearching")]
         private readonly Button m_StartSearchingButton;
 
-        private OverhaulUI.PrefabAndContainer m_AdditionalPreviewsContainer;
+        private PrefabContainer m_AdditionalPreviewsContainer;
         private OverhaulUI.LoadingIndicator m_ItemDownloadLI;
 
         #endregion
@@ -317,13 +317,13 @@ namespace CDOverhaul.Workshop
                 RefreshLevelsList();
             });
 
-            m_WorkshopItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 1, 2);
-            m_LevelTypesContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 9, 10);
-            m_RanksContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 15, 16);
-            m_DropdownRanksContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 15, 16);
-            m_RankSeparatorsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 17, 16);
-            m_AdditionalPreviewsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 37, 38);
-            m_PageContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 47, 48);
+            m_WorkshopItemsContainer = new PrefabContainer(MyModdedObject, 1, 2);
+            m_LevelTypesContainer = new PrefabContainer(MyModdedObject, 9, 10);
+            m_RanksContainer = new PrefabContainer(MyModdedObject, 15, 16);
+            m_DropdownRanksContainer = new PrefabContainer(MyModdedObject, 15, 16);
+            m_RankSeparatorsContainer = new PrefabContainer(MyModdedObject, 17, 16);
+            m_AdditionalPreviewsContainer = new PrefabContainer(MyModdedObject, 37, 38);
+            m_PageContainer = new PrefabContainer(MyModdedObject, 47, 48);
             m_LoadingIndicator = new OverhaulUI.LoadingIndicator(MyModdedObject, 3, 4);
             m_ItemDownloadLI = new OverhaulUI.LoadingIndicator(MyModdedObject, 34, 35);
             m_CurrentPageText.text = "Page [1]";
@@ -438,10 +438,10 @@ namespace CDOverhaul.Workshop
 
         public void PopulateLevelTypes()
         {
-            m_LevelTypesContainer.ClearContainer();
+            m_LevelTypesContainer.Clear();
             foreach (DropdownStringOptionData data in Tags)
             {
-                ModdedObject m = m_LevelTypesContainer.CreateNew();
+                ModdedObject m = m_LevelTypesContainer.InstantiateEntry();
                 _ = LevelTypeUIEntry.CreateNew(m, data.StringValue);
                 m.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(data.text);
             }
@@ -449,7 +449,7 @@ namespace CDOverhaul.Workshop
 
         public void PopulateRanks()
         {
-            m_RanksContainer.ClearContainer();
+            m_RanksContainer.Clear();
             populateRankArray(GenericRanks, "Rank by:");
             populateRankArray(FriendRanks, "Other:");
         }
@@ -459,14 +459,14 @@ namespace CDOverhaul.Workshop
             if (array.IsNullOrEmpty())
                 return;
 
-            ModdedObject separator = m_RankSeparatorsContainer.CreateNew();
+            ModdedObject separator = m_RankSeparatorsContainer.InstantiateEntry();
             separator.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(header);
             int i = 0;
             do
             {
                 if (i == 3 && array.Length > 4)
                 {
-                    ModdedObject moreButton = m_RanksContainer.CreateNew();
+                    ModdedObject moreButton = m_RanksContainer.InstantiateEntry();
                     moreButton.GetObject<Text>(0).text = string.Format("More [{0}]", array.Length - i);
                     moreButton.GetObject<Transform>(2).gameObject.SetActive(false);
                     moreButton.GetComponent<Button>().onClick.AddListener(delegate
@@ -490,7 +490,7 @@ namespace CDOverhaul.Workshop
                     OverhaulNetworkAssetsController.DownloadTexture(IconsDirectory + "More.png", iconDownloadHandler);
                     return;
                 }
-                ModdedObject m = m_RanksContainer.CreateNew();
+                ModdedObject m = m_RanksContainer.InstantiateEntry();
                 m.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(getRankString(array[i]));
                 _ = RankUIEntry.CreateNew(m, array[i]);
                 i++;
@@ -530,14 +530,14 @@ namespace CDOverhaul.Workshop
                 return;
             }
 
-            m_DropdownRanksContainer.ClearContainer();
+            m_DropdownRanksContainer.Clear();
             if (array.IsNullOrEmpty())
                 return;
 
             int i = startIndex;
             do
             {
-                ModdedObject m = m_DropdownRanksContainer.CreateNew();
+                ModdedObject m = m_DropdownRanksContainer.InstantiateEntry();
                 m.GetObject<Text>(0).text = getRankString(array[i]);
                 _ = RankUIEntry.CreateNew(m, array[i]);
                 i++;
@@ -638,13 +638,13 @@ namespace CDOverhaul.Workshop
             OverhaulNetworkAssetsController.DownloadTexture(workshopItem.PreviewURL, hm);
 
             int imagesCount = Mathf.Min(2, workshopItem.ItemAdditionalImages.Count);
-            m_AdditionalPreviewsContainer.ClearContainer();
+            m_AdditionalPreviewsContainer.Clear();
             if (imagesCount == 0)
                 return;
 
             for (int i = 0; i < imagesCount; i++)
             {
-                ModdedObject m = m_AdditionalPreviewsContainer.CreateNew();
+                ModdedObject m = m_AdditionalPreviewsContainer.InstantiateEntry();
                 OverhaulDownloadInfo h = new OverhaulDownloadInfo();
                 h.DoneAction = delegate
                 {
@@ -947,13 +947,13 @@ namespace CDOverhaul.Workshop
 
             if (!active)
             {
-                m_PageContainer.ClearContainer();
+                m_PageContainer.Clear();
 
                 int i = 1;
                 do
                 {
                     int pageIndex = i;
-                    ModdedObject page = m_PageContainer.CreateNew();
+                    ModdedObject page = m_PageContainer.InstantiateEntry();
                     page.GetObject<Text>(0).text = i.ToString();
                     page.GetComponent<Button>().onClick.AddListener(delegate
                     {
@@ -1006,7 +1006,7 @@ namespace CDOverhaul.Workshop
 
             IsPopulatingItems = true;
             m_CurrentPageText.text = string.Format(OverhaulLocalizationManager.GetTranslation("Page number"), Page);
-            m_WorkshopItemsContainer.ClearContainer();
+            m_WorkshopItemsContainer.Clear();
             m_PageSelectionTransform.gameObject.SetActive(false);
             m_PageSelectionButton.interactable = false;
             m_UnscaledTimeClickedOnOption = Time.unscaledTime;
@@ -1068,7 +1068,7 @@ namespace CDOverhaul.Workshop
                     continue;
                 }
 
-                ItemUIEntry entry = ItemUIEntry.CreateNew(m_WorkshopItemsContainer.CreateNew(), CurrentRequestResult.ItemsReceived[itemIndex], itemIndex);
+                ItemUIEntry entry = ItemUIEntry.CreateNew(m_WorkshopItemsContainer.InstantiateEntry(), CurrentRequestResult.ItemsReceived[itemIndex], itemIndex);
                 uiItems[itemIndex] = entry;
                 itemIndex++;
 

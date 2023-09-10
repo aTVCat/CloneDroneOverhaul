@@ -4,7 +4,7 @@ namespace CDOverhaul.Gameplay.Combat
 {
     public class RobotControlsExpansion : OverhaulCharacterExpansion
     {
-        [OverhaulSetting("Gameplay.Control.Switch weapons with mouse wheel", false)]
+        [OverhaulSettingAttribute_Old("Gameplay.Control.Switch weapons with mouse wheel", false)]
         public static bool EnableMouseWheel;
 
         private const float WEAPON_SWITCH_INTERVAL = 0.15f;

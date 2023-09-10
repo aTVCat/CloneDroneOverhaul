@@ -16,8 +16,8 @@ namespace CDOverhaul
 
             HasLoadedSounds = true;
             HeavyRobotFootsteps = new AudioClipDefinition[2];
-            HeavyRobotFootsteps[0] = OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetPart.Sounds).ToAudioClipDefinition();
-            HeavyRobotFootsteps[1] = OverhaulAssetsController.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetPart.Sounds).ToAudioClipDefinition();
+            HeavyRobotFootsteps[0] = OverhaulAssetLoader.GetAsset<AudioClip>("HeavyFootStep1", OverhaulAssetPart.Sounds).ToAudioClipDefinition();
+            HeavyRobotFootsteps[1] = OverhaulAssetLoader.GetAsset<AudioClip>("HeavyFootStep2", OverhaulAssetPart.Sounds).ToAudioClipDefinition();
         }
     }
 }

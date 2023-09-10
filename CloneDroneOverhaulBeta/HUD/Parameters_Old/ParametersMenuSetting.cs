@@ -32,7 +32,7 @@ namespace CDOverhaul.HUD
         private ModdedObject m_ModdedObject;
         private ParametersMenu m_UI;
 
-        public SettingInfo Setting;
+        public OverhaulSettingInfo_Old Setting;
         public OverhaulSettingDescription Description;
         private ParametersMenuSettingPosition m_MyPos;
 
@@ -63,13 +63,13 @@ namespace CDOverhaul.HUD
                 base.gameObject.AddComponent<OverhaulUISelectionOutline>().SetGraphic(m_ModdedObject.GetObject<Image>(15));
             }
 
-            if (Setting == null) Setting = OverhaulSettingsController.GetSetting(settingPath);
+            if (Setting == null) Setting = OverhaulSettingsManager_Old.GetSetting(settingPath);
             if (Setting == null || Setting.Error)
             {
                 base.gameObject.SetActive(false);
                 return;
             }
-            if (Description == null) Description = OverhaulSettingsController.GetSettingDescription(settingPath);
+            if (Description == null) Description = OverhaulSettingsManager_Old.GetSettingDescription(settingPath);
 
             if (!notFirstInit)
             {
@@ -92,20 +92,20 @@ namespace CDOverhaul.HUD
                 m_MyPos = position;
             }
 
-            configToggle(moddedObject, Setting.Type == OverhaulSettingTypes.Bool, position);
+            configToggle(moddedObject, Setting.Type == EOverhaulSettingType.Bool, position);
             configSlider(moddedObject, Setting.SliderParameters);
             configDropdown(moddedObject, Setting.DropdownParameters);
             configInputField(moddedObject);
 
             if (!notFirstInit)
-                OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
+                OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, refresh);
 
             refresh();
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEvents.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, refresh);
             _ = _spawnedBehaviours.Remove(this);
 
             OverhaulDisposable.AssignNullToAllVars(this);
@@ -119,7 +119,7 @@ namespace CDOverhaul.HUD
             if (!m_Toggle || Setting == null || Setting.Error)
                 return;
 
-            m_Toggle.enabled = value && Setting.Type == OverhaulSettingTypes.Bool && !Setting.ForceInputField;
+            m_Toggle.enabled = value && Setting.Type == EOverhaulSettingType.Bool && !Setting.ForceInputField;
         }
 
         private void refresh()
@@ -136,13 +136,13 @@ namespace CDOverhaul.HUD
             if (!m_InputField)
                 return;
 
-            bool active = Setting.Type == OverhaulSettingTypes.String || Setting.ForceInputField;
+            bool active = Setting.Type == EOverhaulSettingType.String || Setting.ForceInputField;
 
             m_InputField.gameObject.SetActive(active);
             if (!active)
                 return;
 
-            m_InputField.text = SettingInfo.GetPref<object>(Setting).ToString();
+            m_InputField.text = OverhaulSettingInfo_Old.GetPref<object>(Setting).ToString();
             m_InputField.onEndEdit.AddListener(setInputFieldValue);
         }
 
@@ -159,7 +159,7 @@ namespace CDOverhaul.HUD
                 return;
 
             m_Dropdown.options = parameters.Options;
-            m_Dropdown.value = SettingInfo.GetPref<int>(Setting);
+            m_Dropdown.value = OverhaulSettingInfo_Old.GetPref<int>(Setting);
             m_Dropdown.onValueChanged.AddListener(setDropdownValue);
         }
 
@@ -178,7 +178,7 @@ namespace CDOverhaul.HUD
             m_Slider.wholeNumbers = parameters.UseWholeNumbers;
             m_Slider.minValue = parameters.Min;
             m_Slider.maxValue = parameters.Max;
-            m_Slider.value = parameters.UseWholeNumbers ? SettingInfo.GetPref<int>(Setting) : SettingInfo.GetPref<float>(Setting);
+            m_Slider.value = parameters.UseWholeNumbers ? OverhaulSettingInfo_Old.GetPref<int>(Setting) : OverhaulSettingInfo_Old.GetPref<float>(Setting);
             m_Slider.onValueChanged.AddListener(setSliderValue);
         }
 
@@ -199,7 +199,7 @@ namespace CDOverhaul.HUD
             if (!isBool)
                 return;
 
-            setToggleValue(SettingInfo.GetPref<bool>(Setting), false);
+            setToggleValue(OverhaulSettingInfo_Old.GetPref<bool>(Setting), false);
             m_Toggle.onValueChanged.AddListener(setToggleValue);
         }
 
@@ -211,15 +211,15 @@ namespace CDOverhaul.HUD
             object toSet;
             switch (Setting.Type)
             {
-                case OverhaulSettingTypes.Bool:
+                case EOverhaulSettingType.Bool:
                     bool success1 = bool.TryParse(value, out bool result);
                     toSet = success1 ? result : Setting.DefaultValue;
                     break;
-                case OverhaulSettingTypes.Float:
+                case EOverhaulSettingType.Float:
                     bool success2 = float.TryParse(value, out float result2);
                     toSet = success2 ? result2 : Setting.DefaultValue;
                     break;
-                case OverhaulSettingTypes.Int:
+                case EOverhaulSettingType.Int:
                     bool success3 = int.TryParse(value, out int result3);
                     toSet = success3 ? result3 : Setting.DefaultValue;
                     break;
@@ -228,7 +228,7 @@ namespace CDOverhaul.HUD
                     break;
             }
 
-            SettingInfo.SavePref(Setting, toSet);
+            OverhaulSettingInfo_Old.SavePref(Setting, toSet);
             if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
@@ -252,7 +252,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            SettingInfo.SavePref(Setting, value);
+            OverhaulSettingInfo_Old.SavePref(Setting, value);
             if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
@@ -262,7 +262,7 @@ namespace CDOverhaul.HUD
             if (IsDisposedOrDestroyed())
                 return;
 
-            SettingInfo.SavePref(Setting, value);
+            OverhaulSettingInfo_Old.SavePref(Setting, value);
             if (!m_HasChangedSettingValueBefore) informUser();
             m_HasChangedSettingValueBefore = true;
         }
@@ -273,9 +273,9 @@ namespace CDOverhaul.HUD
                 return;
 
             if (Setting.SliderParameters.UseWholeNumbers)
-                SettingInfo.SavePref(Setting, Mathf.RoundToInt(value));
+                OverhaulSettingInfo_Old.SavePref(Setting, Mathf.RoundToInt(value));
             else
-                SettingInfo.SavePref(Setting, value);
+                OverhaulSettingInfo_Old.SavePref(Setting, value);
         }
 
         private void copySettingId()
@@ -291,7 +291,7 @@ namespace CDOverhaul.HUD
             if (IsDisposedOrDestroyed())
                 return;
 
-            SettingInfo.SavePref(Setting, Setting.DefaultValue);
+            OverhaulSettingInfo_Old.SavePref(Setting, Setting.DefaultValue);
 
             Initialize(m_UI, m_ModdedObject, Setting.RawPath, m_MyPos, true);
 

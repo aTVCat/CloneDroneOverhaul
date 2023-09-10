@@ -7,7 +7,7 @@ namespace CDOverhaul.HUD
 {
     public class UIOverhaulVersionLabel : UIController
     {
-        [OverhaulSetting("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
+        [OverhaulSettingAttribute_Old("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
         public static bool EnableWatermarkInGameplay;
 
         [UIElementReference(0)]
@@ -90,7 +90,7 @@ namespace CDOverhaul.HUD
 
         private void onTestUIClicked()
         {
-            OverhaulUIManager.reference.Show<UITest>("UI_TestElements");
+            UIConstants.ShowUITest();
         }
     }
 }

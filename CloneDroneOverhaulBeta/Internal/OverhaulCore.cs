@@ -20,7 +20,7 @@ namespace CDOverhaul
 {
     public class OverhaulCore : GlobalEventListener
     {
-        [OverhaulSetting("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
+        [OverhaulSettingAttribute_Old("Gameplay.Multiplayer.Relay Connection", false, false, "This one fixes connection issues, but also increases/decreases ping for some users")]
         public static bool IsRelayConnectionEnabled;
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace CDOverhaul
         private void onInitFail(string exc)
         {
             OverhaulMod.IsLoadedIncorrectly = true;
-            ModdedObject obj = Instantiate(OverhaulAssetsController.GetAsset<GameObject>("LoadErrorCanvas", OverhaulAssetPart.Main)).GetComponent<ModdedObject>();
+            ModdedObject obj = Instantiate(OverhaulAssetLoader.GetAsset<GameObject>("LoadErrorCanvas", OverhaulAssetPart.Main)).GetComponent<ModdedObject>();
             obj.GetObject<Text>(0).text = exc;
             obj.GetObject<Button>(1).onClick.AddListener(delegate
             {

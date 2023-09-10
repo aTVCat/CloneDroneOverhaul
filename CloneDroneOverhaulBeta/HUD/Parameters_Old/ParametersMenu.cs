@@ -93,7 +93,7 @@ namespace CDOverhaul.HUD
 
             if (s_AllCategories == null)
             {
-                s_AllCategories = OverhaulSettingsController.GetAllCategories();
+                s_AllCategories = OverhaulSettingsManager_Old.GetAllCategories();
                 sortCategories();
             }
 
@@ -232,7 +232,7 @@ namespace CDOverhaul.HUD
 
                 ModdedObject categoryEntry = Instantiate(m_CategoryEntryPrefab, m_CategoryContainer);
                 categoryEntry.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(CategoryTranslationPrefix + category);
-                categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsController.GetSpriteForCategory(category);
+                categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsManager_Old.GetSpriteForCategory(category);
                 categoryEntry.GetObject<Image>(2).color = category == "Experimental" ? Color.red : OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
                 _ = categoryEntry.gameObject.AddComponent<OverhaulUIButtonScaler>();
@@ -268,7 +268,7 @@ namespace CDOverhaul.HUD
             m_ButtonContainers.Clear();
             TransformUtils.DestroyAllChildren(m_MainContainer);
 
-            string desc = OverhaulSettingsController.GetCategoryDescription(categoryName);
+            string desc = OverhaulSettingsManager_Old.GetCategoryDescription(categoryName);
             if (!string.IsNullOrEmpty(desc))
             {
                 ModdedObject categoryDesc = Instantiate(m_PageDescPrefab, m_MainContainer);
@@ -276,7 +276,7 @@ namespace CDOverhaul.HUD
                 categoryDesc.GetObject<Text>(0).text = OverhaulLocalizationManager.GetTranslation(CategoryDescTranslationPrefix + categoryName);
             }
 
-            List<string> sections = OverhaulSettingsController.GetAllSections(categoryName);
+            List<string> sections = OverhaulSettingsManager_Old.GetAllSections(categoryName);
             sortSections(sections, categoryName);
             foreach (string sectionName in sections)
             {
@@ -289,7 +289,7 @@ namespace CDOverhaul.HUD
                 }
 
                 string[] array = sectionName.Split('.');
-                List<string> settings = OverhaulSettingsController.GetAllSettings(categoryName, array[1]);
+                List<string> settings = OverhaulSettingsManager_Old.GetAllSettings(categoryName, array[1]);
                 if (settings.IsNullOrEmpty())
                 {
                     continue;
@@ -301,7 +301,7 @@ namespace CDOverhaul.HUD
 
                 foreach (string settingName in settings)
                 {
-                    List<string> childrenSettings = OverhaulSettingsController.GetChildrenSettings(settingName);
+                    List<string> childrenSettings = OverhaulSettingsManager_Old.GetChildrenSettings(settingName);
                     PopulateSetting(settingName, childrenSettings.Count == 0 ? ParametersMenuSettingPosition.Normal : ParametersMenuSettingPosition.Top);
                     int index = 0;
                     if (childrenSettings.Count != 0)
@@ -340,7 +340,7 @@ namespace CDOverhaul.HUD
             if (IsDisposedOrDestroyed() || !base.gameObject.activeSelf)
                 return;
 
-            SettingInfo info = OverhaulSettingsController.GetSetting(path, false);
+            OverhaulSettingInfo_Old info = OverhaulSettingsManager_Old.GetSetting(path, false);
             if (info != null)
             {
                 if (info.EventDispatcher != null)

@@ -7,12 +7,12 @@ namespace CDOverhaul.HUD
 {
     public class MountsPersonalizationPanel : OverhaulPersonalizationPanel
     {
-        private OverhaulUI.PrefabAndContainer m_PetItemsContainer;
+        private PrefabContainer m_PetItemsContainer;
 
         public override void Initialize()
         {
             base.Initialize();
-            m_PetItemsContainer = new OverhaulUI.PrefabAndContainer(MyModdedObject, 6, 7);
+            m_PetItemsContainer = new PrefabContainer(MyModdedObject, 6, 7);
         }
 
         protected override void PopulateItems()
@@ -20,7 +20,7 @@ namespace CDOverhaul.HUD
             if (IsPopulatingItems)
                 return;
 
-            m_PetItemsContainer.ClearContainer();
+            m_PetItemsContainer.Clear();
             _ = StaticCoroutineRunner.StartStaticCoroutine(PopulateItemsCoroutine());
         }
 
@@ -37,7 +37,7 @@ namespace CDOverhaul.HUD
                 {
                     foreach (PetItem item in list)
                     {
-                        ModdedObject outfitItemDisplay = m_PetItemsContainer.CreateNew();
+                        ModdedObject outfitItemDisplay = m_PetItemsContainer.InstantiateEntry();
                         MountItemDisplay displayComponent = outfitItemDisplay.gameObject.AddComponent<MountItemDisplay>();
                         displayComponent.Initialize(item);
                     }

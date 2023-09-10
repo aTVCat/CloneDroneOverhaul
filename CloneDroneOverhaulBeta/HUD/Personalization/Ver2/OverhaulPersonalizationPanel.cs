@@ -28,7 +28,7 @@ namespace CDOverhaul.HUD
         [UIElementReferenceAttribute("ScrollRect")]
         protected CanvasGroup ScrollViewCanvasGroup;
 
-        protected OverhaulUI.PrefabAndContainer MainItemContainer;
+        protected PrefabContainer MainItemContainer;
 
         public override void Initialize()
         {

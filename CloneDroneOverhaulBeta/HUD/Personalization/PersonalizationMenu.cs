@@ -451,7 +451,7 @@ namespace CDOverhaul.HUD
             m_ParentToField.text = CurrentlyEditingItem.ParentTo;
             m_MinVersionField.text = CurrentlyEditingItem.MinVersion == null ? OverhaulVersion.modVersion.ToString() : CurrentlyEditingItem.MinVersion.ToString();
 
-            m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
+            m_AssetBundleField.text = string.IsNullOrEmpty(CurrentlyEditingItem.AssetBundleFileName) ? OverhaulAssetLoader.ModAssetBundle_Skins : CurrentlyEditingItem.AssetBundleFileName;
 
             m_SPLaserModelField.text = CurrentlyEditingItem.SingleplayerLaserModelName;
             m_SPFireModelField.text = CurrentlyEditingItem.SingleplayerFireModelName;
@@ -556,7 +556,7 @@ namespace CDOverhaul.HUD
 
             CurrentlyEditingItem.CollideWithEnvironmentVFXAssetName = m_CustomVFXEnvCollisionField.text;
 
-            if (!OverhaulAssetsController.DoesAssetBundleExist(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
+            if (!OverhaulAssetLoader.DoesAssetBundleExist(m_AssetBundleField.text)) OverhaulDialogues.CreateDialogue("Asset bundle not found!", m_AssetBundleField.text + " doesn't exist in mod folder.", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
             CurrentlyEditingItem.AssetBundleFileName = m_AssetBundleField.text;
 
             CurrentlyEditingItem.ParentTo = m_ParentToField.text;
@@ -570,7 +570,7 @@ namespace CDOverhaul.HUD
             bool hasSPLaserModel = true;
             try
             {
-                OverhaulAssetsController.PreloadAsset<GameObject>(m_SPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                OverhaulAssetLoader.PreloadAsset<GameObject>(m_SPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
@@ -581,7 +581,7 @@ namespace CDOverhaul.HUD
             bool hasSPFireModel = true;
             try
             {
-                OverhaulAssetsController.PreloadAsset<GameObject>(m_SPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                OverhaulAssetLoader.PreloadAsset<GameObject>(m_SPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
             }
             catch
             {
@@ -594,7 +594,7 @@ namespace CDOverhaul.HUD
                 bool hasMPLaserModel = true;
                 try
                 {
-                    OverhaulAssetsController.PreloadAsset<GameObject>(m_MPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                    OverhaulAssetLoader.PreloadAsset<GameObject>(m_MPLaserModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {
@@ -605,7 +605,7 @@ namespace CDOverhaul.HUD
                 bool hasMPFireModel = true;
                 try
                 {
-                    OverhaulAssetsController.PreloadAsset<GameObject>(m_MPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
+                    OverhaulAssetLoader.PreloadAsset<GameObject>(m_MPFireModelField.text, CurrentlyEditingItem.AssetBundleFileName);
                 }
                 catch
                 {
@@ -1296,16 +1296,16 @@ namespace CDOverhaul.HUD
             switch (weaponType)
             {
                 case WeaponType.Sword:
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Sword", true), skinName);
+                    OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.Sword", true), skinName);
                     break;
                 case WeaponType.Bow:
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Bow", true), skinName);
+                    OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.Bow", true), skinName);
                     break;
                 case WeaponType.Hammer:
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
+                    OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.Hammer", true), skinName);
                     break;
                 case WeaponType.Spear:
-                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.Spear", true), skinName);
+                    OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.Spear", true), skinName);
                     break;
             }
             RefreshDefaultSkinButton();
@@ -1388,7 +1388,7 @@ namespace CDOverhaul.HUD
 
         public void SetAllowEnemiesUseSkins(bool value)
         {
-            SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
+            OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.EnemiesUseSkins", true), value);
         }
 
         public void DebugSetInputFieldsValues(ModelOffset transform)

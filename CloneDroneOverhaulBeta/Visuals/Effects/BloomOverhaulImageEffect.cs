@@ -6,22 +6,22 @@ namespace CDOverhaul.Visuals
 {
     public class BloomOverhaulImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSetting("Graphics.Post effects.Set vanilla settings", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Graphics.Post effects.Set vanilla settings", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent SetBloomVanilla = new OverhaulSettingWithEvent();
 
-        [OverhaulSetting("Graphics.Post effects.Enable bloom", true, false, "Make every light shine better", "Bloom.png")]
+        [OverhaulSettingAttribute_Old("Graphics.Post effects.Enable bloom", true, false, "Make every light shine better", "Bloom.png")]
         public static bool BloomEnabled;
 
         [OverhaulSettingSliderParameters(true, 1, 10)]
-        [OverhaulSetting("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", "Graphics.Post effects.Enable bloom")]
         public static int BloomIterations;
 
         [OverhaulSettingSliderParameters(false, 0.1f, 2f)]
-        [OverhaulSetting("Graphics.Post effects.Bloom intensity", 0.7f, false, null, "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom intensity", 0.7f, false, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomIntensity;
 
         [OverhaulSettingSliderParameters(false, 0.85f, 2f)]
-        [OverhaulSetting("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomThreshold;
 
         public override void Start()
@@ -29,10 +29,10 @@ namespace CDOverhaul.Visuals
             base.Start();
             SetBloomVanilla.EventAction = delegate
             {
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Enable bloom", true), true);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom iterations", true), 2);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Post effects.Enable bloom", true), true);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Post effects.Bloom iterations", true), 2);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
 
                 ParametersMenu menu = OverhaulController.Get<ParametersMenu>();
                 if (menu && menu.gameObject.activeSelf)

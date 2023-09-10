@@ -17,7 +17,7 @@ namespace CDOverhaul
         public bool LoadAsset()
         {
             return !IsNone()
-&& (Asset || OverhaulAssetsController.TryGetAsset<UnityEngine.Object>(AssetName, AssetBundle, out Asset, FixMaterials))
+&& (Asset || OverhaulAssetLoader.TryGetAsset<UnityEngine.Object>(AssetName, AssetBundle, out Asset, FixMaterials))
 && (bool)Asset;
         }
     }

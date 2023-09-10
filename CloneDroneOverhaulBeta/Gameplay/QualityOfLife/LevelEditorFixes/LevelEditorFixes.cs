@@ -228,7 +228,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             iconObject.transform.localEulerAngles = Vector3.zero;
             iconObject.transform.localScale = Vector3.one;
             Image iconImage = iconObject.AddComponent<Image>();
-            if (OverhaulAssetsController.TryGetAsset("OutlineSettings-16x16", OverhaulAssetsController.ModAssetBundle_Part1, out Sprite asset))
+            if (OverhaulAssetLoader.TryGetAsset("OutlineSettings-16x16", OverhaulAssetLoader.ModAssetBundle_Part1, out Sprite asset))
             {
                 iconImage.sprite = asset;
             }

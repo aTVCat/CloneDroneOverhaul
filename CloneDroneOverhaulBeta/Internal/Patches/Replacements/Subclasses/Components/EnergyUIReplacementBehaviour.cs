@@ -4,7 +4,7 @@ namespace CDOverhaul.Patches
 {
     public class EnergyUIReplacementBehaviour : MonoBehaviour
     {
-        [OverhaulSetting("Game interface.Gameplay.Hide energy bar when full", true, false, "Energy bar will become transparent when you're fully charged", "Game interface.Gameplay.New energy bar design")]
+        [OverhaulSettingAttribute_Old("Game interface.Gameplay.Hide energy bar when full", true, false, "Energy bar will become transparent when you're fully charged", "Game interface.Gameplay.New energy bar design")]
         public static bool HideEnergyUIWhenFull;
 
         private EnergyUI m_EnergyUI;

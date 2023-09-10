@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingRequireUpdate : Attribute
+    public class OverhaulSettingRequireUpdate : OverhaulSettingBaseAttribute
     {
         public OverhaulVersion.Updates MinimumUpdateRequired;
 

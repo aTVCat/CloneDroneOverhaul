@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace CDOverhaul
 {
-    public class SettingInfo
+    public class OverhaulSettingInfo_Old
     {
         /// <summary>
-        /// <b>Example: </b>Category.Section.Setting
+        /// <b>Example: </b>Category.Section.Setting name
         /// </summary>
         public string RawPath { get; set; }
         public object DefaultValue { get; set; }
@@ -24,9 +24,9 @@ namespace CDOverhaul
         public OverhaulSettingSliderParameters SliderParameters { get; set; }
         public OverhaulSettingDropdownParameters DropdownParameters { get; set; }
 
-        public OverhaulSettingTypes Type { get; set; }
+        public EOverhaulSettingType Type { get; set; }
 
-        public SettingInfo CanBeLockedBy { get; set; }
+        public OverhaulSettingInfo_Old CanBeLockedBy { get; set; }
         public object ValueToUnlock { get; set; }
         public bool IsUnlocked() => CanBeLockedBy == null || object.Equals(CanBeLockedBy.Field.GetValue(null), ValueToUnlock);
 
@@ -36,7 +36,7 @@ namespace CDOverhaul
 
         public byte SendMessageOfType { get; set; }
 
-        public bool Error => Type == OverhaulSettingTypes.None || Field == null || string.IsNullOrEmpty(RawPath);
+        public bool Error => Type == EOverhaulSettingType.None || Field == null || string.IsNullOrEmpty(RawPath);
 
         internal void SetUp<T>(in string path, in object defValue, in FieldInfo field, in OverhaulUpdatedSetting formelyKnown = null)
         {
@@ -59,7 +59,7 @@ namespace CDOverhaul
 
         internal void TuneUpValues()
         {
-            if (Error || Type == OverhaulSettingTypes.Other)
+            if (Error || Type == EOverhaulSettingType.Other)
                 return;
 
             object obj = GetPref<object>(this);
@@ -73,35 +73,35 @@ namespace CDOverhaul
             }
         }
 
-        public void ParentSettingToThis(in SettingInfo setting)
+        public void ParentSettingToThis(in OverhaulSettingInfo_Old setting)
         {
             ChildSettings.Add(setting.RawPath);
             setting.IsChildSetting = true;
         }
 
-        public static OverhaulSettingTypes GetSettingType<T>()
+        public static EOverhaulSettingType GetSettingType<T>()
         {
             return typeof(T) == typeof(bool)
-                ? OverhaulSettingTypes.Bool
+                ? EOverhaulSettingType.Bool
                 : typeof(T) == typeof(int)
-                ? OverhaulSettingTypes.Int
+                ? EOverhaulSettingType.Int
                 : typeof(T) == typeof(float)
-                ? OverhaulSettingTypes.Float
-                : typeof(T) == typeof(string) ? OverhaulSettingTypes.String : typeof(T) == typeof(long) ? OverhaulSettingTypes.Other : OverhaulSettingTypes.None;
+                ? EOverhaulSettingType.Float
+                : typeof(T) == typeof(string) ? EOverhaulSettingType.String : typeof(T) == typeof(long) ? EOverhaulSettingType.Other : EOverhaulSettingType.None;
         }
 
-        public static OverhaulSettingTypes GetSettingType(in object @object)
+        public static EOverhaulSettingType GetSettingType(in object @object)
         {
             return @object is bool
-                ? OverhaulSettingTypes.Bool
+                ? EOverhaulSettingType.Bool
                 : @object is int
-                ? OverhaulSettingTypes.Int
+                ? EOverhaulSettingType.Int
                 : @object is float
-                ? OverhaulSettingTypes.Float
-                : @object is string ? OverhaulSettingTypes.String : @object is long ? OverhaulSettingTypes.Other : OverhaulSettingTypes.None;
+                ? EOverhaulSettingType.Float
+                : @object is string ? EOverhaulSettingType.String : @object is long ? EOverhaulSettingType.Other : EOverhaulSettingType.None;
         }
 
-        public static void TryAddPref(in SettingInfo setting, in OverhaulUpdatedSetting formelyKnown)
+        public static void TryAddPref(in OverhaulSettingInfo_Old setting, in OverhaulUpdatedSetting formelyKnown)
         {
             if (setting == null || setting.Error)
                 return;
@@ -112,16 +112,16 @@ namespace CDOverhaul
                 {
                     switch (setting.Type)
                     {
-                        case OverhaulSettingTypes.Bool:
+                        case EOverhaulSettingType.Bool:
                             SavePref(setting, PlayerPrefs.GetInt(formelyKnown.RawPath) == 1);
                             break;
-                        case OverhaulSettingTypes.Int:
+                        case EOverhaulSettingType.Int:
                             SavePref(setting, PlayerPrefs.GetInt(formelyKnown.RawPath));
                             break;
-                        case OverhaulSettingTypes.Float:
+                        case EOverhaulSettingType.Float:
                             SavePref(setting, PlayerPrefs.GetFloat(formelyKnown.RawPath));
                             break;
-                        case OverhaulSettingTypes.String:
+                        case EOverhaulSettingType.String:
                             SavePref(setting, PlayerPrefs.GetString(formelyKnown.RawPath));
                             break;
                     }
@@ -131,7 +131,7 @@ namespace CDOverhaul
             }
         }
 
-        public static bool HasPref(in SettingInfo setting)
+        public static bool HasPref(in OverhaulSettingInfo_Old setting)
         {
             if (setting == null || setting.Error)
                 return false;
@@ -139,29 +139,29 @@ namespace CDOverhaul
             return PlayerPrefs.HasKey(setting.RawPath);
         }
 
-        public static void SavePref(in SettingInfo setting, in object value, in bool dispatchEvent = true)
+        public static void SavePref(in OverhaulSettingInfo_Old setting, in object value, in bool dispatchEvent = true)
         {
-            if (setting == null || setting.Error || setting.Type == OverhaulSettingTypes.Other)
+            if (setting == null || setting.Error || setting.Type == EOverhaulSettingType.Other)
                 return;
 
             switch (setting.Type)
             {
-                case OverhaulSettingTypes.Bool:
+                case EOverhaulSettingType.Bool:
                     int a = (bool)value ? 1 : 0;
                     PlayerPrefs.SetInt(setting.RawPath, a);
                     setting.Field.SetValue(null, (bool)value);
                     break;
-                case OverhaulSettingTypes.Int:
+                case EOverhaulSettingType.Int:
                     int b = (int)value;
                     PlayerPrefs.SetInt(setting.RawPath, b);
                     setting.Field.SetValue(null, (int)value);
                     break;
-                case OverhaulSettingTypes.Float:
+                case EOverhaulSettingType.Float:
                     float c = (float)value;
                     PlayerPrefs.SetFloat(setting.RawPath, c);
                     setting.Field.SetValue(null, (float)value);
                     break;
-                case OverhaulSettingTypes.String:
+                case EOverhaulSettingType.String:
                     string d = (string)value;
                     PlayerPrefs.SetString(setting.RawPath, d);
                     setting.Field.SetValue(null, (string)value);
@@ -174,30 +174,30 @@ namespace CDOverhaul
             PlayerPrefs.Save();
         }
 
-        public static T GetPref<T>(in SettingInfo setting)
+        public static T GetPref<T>(in OverhaulSettingInfo_Old setting)
         {
-            if (setting == null || setting.Error || setting.Type == OverhaulSettingTypes.Other)
+            if (setting == null || setting.Error || setting.Type == EOverhaulSettingType.Other)
                 return default;
 
             object result = null;
             switch (setting.Type)
             {
-                case OverhaulSettingTypes.Bool:
+                case EOverhaulSettingType.Bool:
                     result = PlayerPrefs.GetInt(setting.RawPath) == 1;
                     break;
-                case OverhaulSettingTypes.Int:
+                case EOverhaulSettingType.Int:
                     result = PlayerPrefs.GetInt(setting.RawPath);
                     break;
-                case OverhaulSettingTypes.Float:
+                case EOverhaulSettingType.Float:
                     result = PlayerPrefs.GetFloat(setting.RawPath);
                     break;
-                case OverhaulSettingTypes.String:
+                case EOverhaulSettingType.String:
                     result = PlayerPrefs.GetString(setting.RawPath);
                     break;
             }
             return (T)result;
         }
 
-        public static void DispatchSettingsRefreshedEvent() => OverhaulEvents.DispatchEvent(OverhaulSettingsController.SettingChangedEventString);
+        public static void DispatchSettingsRefreshedEvent() => OverhaulEvents.DispatchEvent(OverhaulSettingsManager_Old.SettingChangedEventString);
     }
 }

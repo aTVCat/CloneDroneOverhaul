@@ -12,10 +12,10 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulPauseMenu : OverhaulUI
     {
-        [OverhaulSetting("Game interface.Gameplay.New pause menu design", true, false, "The full redesign with new features implemented")]
+        [OverhaulSettingAttribute_Old("Game interface.Gameplay.New pause menu design", true, false, "The full redesign with new features implemented")]
         public static bool UseThisMenu;
 
-        [OverhaulSetting("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", "Game interface.Gameplay.New pause menu design")]
+        [OverhaulSettingAttribute_Old("Game interface.Gameplay.Zoom camera", true, false, "If camera zoom breaks gameplay, disable this setting", "Game interface.Gameplay.New pause menu design")]
         public static bool UseZoom;
 
         public static bool ForceUseOldMenu;
@@ -85,7 +85,7 @@ namespace CDOverhaul.HUD
         private Transform m_PersonalizationNotification;
 
         private Transform m_PlayersInMatchPanel;
-        private PrefabAndContainer m_PlayersInMatch;
+        private PrefabContainer m_PlayersInMatch;
 
         private Transform m_CurrentWorkshopLevel;
         private Text m_WorkshopLevelTitleText;
@@ -139,7 +139,7 @@ namespace CDOverhaul.HUD
             m_WorkshopLevelDetails = MyModdedObject.GetObject<Button>(35);
 
             m_PlayersInMatchPanel = MyModdedObject.GetObject<Transform>(26);
-            m_PlayersInMatch = new PrefabAndContainer(MyModdedObject, 27, 28);
+            m_PlayersInMatch = new PrefabContainer(MyModdedObject, 27, 28);
 
             m_PersonalizationButton = MyModdedObject.GetObject<Button>(0);
             m_PersonalizationButton.onClick.AddListener(OnPersonalizationButtonClicked);
@@ -298,7 +298,7 @@ namespace CDOverhaul.HUD
             if (!WeaponSkinsController.HasNoticedSkinsButton)
             {
                 WeaponSkinsController.HasNoticedSkinsButton = true;
-                SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
+                OverhaulSettingInfo_Old.SavePref(OverhaulSettingsManager_Old.GetSetting("Player.WeaponSkins.NoticedSkinsButton", true), true);
                 m_PersonalizationNotification.gameObject.SetActive(false);
             }
 
@@ -549,7 +549,7 @@ namespace CDOverhaul.HUD
         public void RefreshPlayersInMatch()
         {
             m_PlayersInMatchPanel.gameObject.SetActive(false);
-            m_PlayersInMatch.ClearContainer();
+            m_PlayersInMatch.Clear();
 
             MultiplayerPlayerInfoManager manager = MultiplayerPlayerInfoManager.Instance;
             if (!GameModeManager.IsMultiplayer() || GameModeManager.IsMultiplayerDuel() || !manager)
@@ -570,7 +570,7 @@ namespace CDOverhaul.HUD
                     continue;
                 }
 
-                ModdedObject entry = m_PlayersInMatch.CreateNew();
+                ModdedObject entry = m_PlayersInMatch.InstantiateEntry();
                 MultiplayerPlayerInfoStateDisplay display = entry.gameObject.AddComponent<MultiplayerPlayerInfoStateDisplay>();
                 display.Initialize(multiplayerPlayerInfo, entry);
 

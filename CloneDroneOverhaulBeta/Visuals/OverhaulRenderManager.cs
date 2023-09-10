@@ -5,10 +5,10 @@ namespace CDOverhaul.Visuals
     public class OverhaulRenderManager : OverhaulManager<OverhaulRenderManager>
     {
         [OverhaulSettingDropdownParameters("Unlimited@30@60@75@90@120@144@165@240")]
-        [OverhaulSetting("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
+        [OverhaulSettingAttribute_Old("Graphics.Settings.Target framerate", 2, false, "Limit maximum frames per second")]
         public static int TargetFPS;
 
-        [OverhaulSetting("Graphics.Settings.VSync", false)]
+        [OverhaulSettingAttribute_Old("Graphics.Settings.VSync", false)]
         public static bool VSyncEnabled;
 
         public override void Initialize()
@@ -22,13 +22,13 @@ namespace CDOverhaul.Visuals
         public override void AddListeners()
         {
             base.AddListeners();
-            OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
+            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, RefreshFrameRate);
         }
 
         public override void RemoveListeners()
         {
             base.RemoveListeners();
-            OverhaulEvents.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, RefreshFrameRate);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, RefreshFrameRate);
         }
 
         public static void RefreshFrameRate()

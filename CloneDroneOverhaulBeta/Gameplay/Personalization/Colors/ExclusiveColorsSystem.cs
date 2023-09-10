@@ -6,7 +6,6 @@ namespace CDOverhaul
 {
     internal static class ExclusiveColorsSystem
     {
-        // These are PlayFab IDs
         private const string A_TVCAT_ID = "883CC7F4CA3155A3";
         private const string ZOLOR_ID = "193564D7A14F9C33";
         private const string ELECTRIFIED_CYBERKICK_ID = "F08DA308234126FB";
@@ -26,8 +25,7 @@ namespace CDOverhaul
             newColor = currentColor;
             foreach (ExclusiveColorDefinition exclusiveColor in s_Colors)
             {
-                exclusiveColor.TryApplyColorOnRobot(firstPersonMover, currentColor, out newColor, out bool success);
-                if (success)
+                if (exclusiveColor.TryApplyColorOnRobot(firstPersonMover, currentColor, out newColor))
                     return;
             }
         }

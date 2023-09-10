@@ -87,7 +87,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             holder.transform.localPosition = new Vector3(0, 5, 0);
             m_WorldCanvasHolder = holder;
 
-            GameObject prefab = OverhaulAssetsController.GetAsset("PlayStatus", OverhaulAssetPart.Part2);
+            GameObject prefab = OverhaulAssetLoader.GetAsset("PlayStatus", OverhaulAssetPart.Part2);
             GameObject instantiatedPrefab = Instantiate(prefab, m_WorldCanvasHolder.transform);
             instantiatedPrefab.transform.localScale = Vector3.one * 0.02f;
             instantiatedPrefab.transform.localPosition = Vector3.zero;

@@ -6,10 +6,10 @@ namespace CDOverhaul.Gameplay.Outfits
     {
         public const char SEPARATOR = ',';
 
-        [OverhaulSetting("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedAccessories;
 
-        [OverhaulSetting("Player.Outfits.EnemiesUseOutfits", false, !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.Outfits.EnemiesUseOutfits", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearAccesories;
 
         /*

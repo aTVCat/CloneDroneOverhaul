@@ -7,10 +7,10 @@ namespace CDOverhaul.Patches
 {
     public class EscMenuReplacement : ReplacementBase
     {
-        [OverhaulSetting("Shortcuts.Personalization.Skins", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Shortcuts.Personalization.Skins", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent OpenSkinsMenuFromSettings = new OverhaulSettingWithEvent();
 
-        [OverhaulSetting("Shortcuts.Personalization.Outfits", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        [OverhaulSettingAttribute_Old("Shortcuts.Personalization.Outfits", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent OpenOutfitsMenuFromSettings = new OverhaulSettingWithEvent();
 
         public const string OpenSkinsFromSettingsEventString = "Settings.OpenSkins";

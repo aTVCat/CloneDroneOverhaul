@@ -69,18 +69,18 @@ namespace CDOverhaul.Gameplay
         public const string VFX_ChangeSkinID = "WeaponSkinChangedVFX";
         public static FirstPersonMover RobotToPlayAnimationOn;
 
-        [OverhaulSettingAttribute("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.Sword", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedSwordSkin;
-        [OverhaulSettingAttribute("Player.WeaponSkins.Bow", "Default", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.Bow", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedBowSkin;
-        [OverhaulSettingAttribute("Player.WeaponSkins.Hammer", "Default", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.Hammer", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedHammerSkin;
-        [OverhaulSettingAttribute("Player.WeaponSkins.Spear", "Default", !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.Spear", "Default", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedSpearSkin;
 
-        [OverhaulSettingAttribute("Player.WeaponSkins.EnemiesUseSkins", false, !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.EnemiesUseSkins", false, !OverhaulVersion.IsDebugBuild)]
         public static bool AllowEnemiesWearSkins;
-        [OverhaulSettingAttribute("Player.WeaponSkins.NoticedSkinsButton", false, !OverhaulVersion.IsDebugBuild)]
+        [OverhaulSettingAttribute_Old("Player.WeaponSkins.NoticedSkinsButton", false, !OverhaulVersion.IsDebugBuild)]
         public static bool HasNoticedSkinsButton;
 
         public static bool IsFirstPersonMoverSupported(FirstPersonMover firstPersonMover) =>
@@ -113,11 +113,11 @@ namespace CDOverhaul.Gameplay
 
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
-                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
-                if (assetBundle != OverhaulAssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
+                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetLoader.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
+                if (assetBundle != OverhaulAssetLoader.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
                     m_CustomAssetBundlesWithSkins.Add(assetBundle);
 
-                if (!OverhaulAssetsController.DoesAssetBundleExist(assetBundle))
+                if (!OverhaulAssetLoader.DoesAssetBundleExist(assetBundle))
                 {
                     WeaponSkinsUpdater.DownloadAssetBundleThenAddSkin(customSkin, assetBundle);
                     continue;
@@ -186,10 +186,10 @@ namespace CDOverhaul.Gameplay
             string assetBundle)
         {
             WeaponSkinItemDefinitionV2 skin = Interface.NewSkinItem(weaponType, name, ItemFilter.None) as WeaponSkinItemDefinitionV2;
-            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerNormalModel, assetBundle, false), null, false, false);
-            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(singleplayerFireModel, assetBundle, false), null, true, false);
-            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerNormalModel, assetBundle, false), null, false, true);
-            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetsController.GetAsset<GameObject>(multiplayerFireModel, assetBundle, false), null, true, true);
+            if (!string.IsNullOrEmpty(singleplayerNormalModel) && singleplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetLoader.GetAsset<GameObject>(singleplayerNormalModel, assetBundle, false), null, false, false);
+            if (!string.IsNullOrEmpty(singleplayerFireModel) && singleplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetLoader.GetAsset<GameObject>(singleplayerFireModel, assetBundle, false), null, true, false);
+            if (!string.IsNullOrEmpty(multiplayerNormalModel) && multiplayerNormalModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetLoader.GetAsset<GameObject>(multiplayerNormalModel, assetBundle, false), null, false, true);
+            if (!string.IsNullOrEmpty(multiplayerFireModel) && multiplayerFireModel != "-") (skin as IWeaponSkinItemDefinition).SetModel(OverhaulAssetLoader.GetAsset<GameObject>(multiplayerFireModel, assetBundle, false), null, true, true);
             skin.AuthorDiscord = author;
         }
 
@@ -343,7 +343,7 @@ namespace CDOverhaul.Gameplay
             int skinsChecked = 0;
             foreach (IWeaponSkinItemDefinition def in m_WeaponSkins)
             {
-                string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? OverhaulAssetsController.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
+                string assetBundle = string.IsNullOrEmpty((def as WeaponSkinItemDefinitionV2).OverrideAssetBundle) ? OverhaulAssetLoader.ModAssetBundle_Skins : (def as WeaponSkinItemDefinitionV2).OverrideAssetBundle;
                 if (!allAssetBundles.Contains(assetBundle))
                     allAssetBundles.Add(assetBundle);
 
@@ -359,7 +359,7 @@ namespace CDOverhaul.Gameplay
             skinsChecked = 0;
             foreach (string assetBundle in allAssetBundles)
             {
-                _ = OverhaulAssetsController.TryUnloadAssetBundle(assetBundle, true);
+                _ = OverhaulAssetLoader.TryUnloadAssetBundle(assetBundle, true);
                 skinsChecked++;
                 OverhaulLoadingScreen.Instance.SetScreenFill(skinsChecked / (float)allAssetBundles.Count);
                 yield return null;
@@ -378,7 +378,7 @@ namespace CDOverhaul.Gameplay
                 if (m1 != null && m1.Model != null)
                 {
                     string nameOfModel = m1.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
+                    GameObject gm = OverhaulAssetLoader.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m1.SetModelVariant(gm, 0);
                 }
 
@@ -386,7 +386,7 @@ namespace CDOverhaul.Gameplay
                 if (m2 != null && m2.Model != null)
                 {
                     string nameOfModel = m2.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
+                    GameObject gm = OverhaulAssetLoader.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m2.SetModelVariant(gm, 0);
                 }
 
@@ -394,7 +394,7 @@ namespace CDOverhaul.Gameplay
                 if (m3 != null && m3.Model != null)
                 {
                     string nameOfModel = m3.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
+                    GameObject gm = OverhaulAssetLoader.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m3.SetModelVariant(gm, 0);
                 }
 
@@ -402,7 +402,7 @@ namespace CDOverhaul.Gameplay
                 if (m4 != null && m4.Model != null)
                 {
                     string nameOfModel = m4.Model.name;
-                    GameObject gm = OverhaulAssetsController.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
+                    GameObject gm = OverhaulAssetLoader.GetAsset(nameOfModel, OverhaulAssetPart.WeaponSkins, false);
                     m4.SetModelVariant(gm, 0);
                 }
 
@@ -430,8 +430,8 @@ namespace CDOverhaul.Gameplay
             int imported = 0;
             foreach (WeaponSkinsImportedItemDefinition customSkin in CustomSkinsData.AllCustomSkins)
             {
-                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetsController.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
-                if (assetBundle != OverhaulAssetsController.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
+                string assetBundle = string.IsNullOrEmpty(customSkin.AssetBundleFileName) ? OverhaulAssetLoader.ModAssetBundle_Skins : customSkin.AssetBundleFileName;
+                if (assetBundle != OverhaulAssetLoader.ModAssetBundle_Skins && !m_CustomAssetBundlesWithSkins.Contains(assetBundle))
                     m_CustomAssetBundlesWithSkins.Add(assetBundle);
 
                 c.ImportSkin(customSkin, assetBundle);

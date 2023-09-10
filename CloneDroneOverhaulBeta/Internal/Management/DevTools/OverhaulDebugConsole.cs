@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using CDOverhaul.HUD;
 
 namespace CDOverhaul
 {
@@ -9,7 +10,7 @@ namespace CDOverhaul
     {
         public static OverhaulDebugConsole ConsoleInstance;
 
-        private OverhaulUI.PrefabAndContainer m_LogsContainer;
+        private PrefabContainer m_LogsContainer;
 
         private readonly List<(string, LogType)> m_Logs = new List<(string, LogType)>(); // 1-log 2-type 3-repeat times
 
@@ -18,12 +19,12 @@ namespace CDOverhaul
             if (ConsoleInstance)
                 return;
 
-            GameObject prefab = OverhaulAssetsController.GetAsset("OverhaulDebugConsole", "overhaulassets_debug", false);
+            GameObject prefab = OverhaulAssetLoader.GetAsset("OverhaulDebugConsole", "overhaulassets_debug", false);
             GameObject spawnedConsole = Instantiate(prefab);
             _ = spawnedConsole.transform.GetChild(0).gameObject.AddComponent<OverhaulDraggablePanel>();
             DontDestroyOnLoad(spawnedConsole);
             ConsoleInstance = spawnedConsole.AddComponent<OverhaulDebugConsole>();
-            ConsoleInstance.m_LogsContainer = new OverhaulUI.PrefabAndContainer(spawnedConsole.GetComponent<ModdedObject>(), 1, 2);
+            ConsoleInstance.m_LogsContainer = new PrefabContainer(spawnedConsole.GetComponent<ModdedObject>(), 1, 2);
         }
 
         public override void Awake()
@@ -65,7 +66,7 @@ namespace CDOverhaul
 
         public void PopulateLog((string, LogType) tuple)
         {
-            ModdedObject logDisplay = m_LogsContainer.CreateNew();
+            ModdedObject logDisplay = m_LogsContainer.InstantiateEntry();
             logDisplay.transform.SetAsFirstSibling();
             Text text = logDisplay.GetObject<Text>(0);
             text.text = tuple.Item1;

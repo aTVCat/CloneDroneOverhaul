@@ -116,7 +116,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
             IsCheckingAsset = true;
             m_CheckAssetStateLabel.text = "Checking...";
             yield return new WaitForSecondsRealtime(0.2f);
-            if (OverhaulAssetsController.TryGetAsset(m_AssetField.text, m_AssetBundleField.text, out UnityEngine.Object _, m_FixMaterialsToggle.isOn))
+            if (OverhaulAssetLoader.TryGetAsset(m_AssetField.text, m_AssetBundleField.text, out UnityEngine.Object _, m_FixMaterialsToggle.isOn))
             {
                 m_CheckAssetStateLabel.text = "Asset found";
             }

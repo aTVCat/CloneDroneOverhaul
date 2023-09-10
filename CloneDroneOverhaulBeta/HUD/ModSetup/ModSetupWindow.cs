@@ -10,7 +10,7 @@ namespace CDOverhaul.HUD
     {
         public const string SettingPath = "Player.Mod.HasConfiguredModV9";
 
-        [OverhaulSetting(SettingPath, false, true)]
+        [OverhaulSettingAttribute_Old(SettingPath, false, true)]
         public static bool HasSetTheModUp;
 
         private Button m_DoneButton;
@@ -91,7 +91,7 @@ namespace CDOverhaul.HUD
 
         public void EndSetup()
         {
-            OverhaulSettingsController.SetSettingValue(SettingPath, true);
+            OverhaulSettingsManager_Old.SetSettingValue(SettingPath, true);
             GameUIRoot.Instance.TitleScreenUI.OnCloneDroneLogoClicked();
             Hide();
         }
@@ -118,11 +118,11 @@ namespace CDOverhaul.HUD
         }
         public void SetSSAOEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Amplify Occlusion.Enable", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Amplify Occlusion.Enable", true);
         }
         public void SetSSAODisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Amplify Occlusion.Enable", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Amplify Occlusion.Enable", false);
         }
 
         #endregion
@@ -135,10 +135,10 @@ namespace CDOverhaul.HUD
         }
         public void SetBloomOverhaulEnabled()
         {
-            OverhaulSettingsController.ResetSettingValue("Graphics.Post effects.Enable bloom");
-            OverhaulSettingsController.ResetSettingValue("Graphics.Post effects.Bloom iterations");
-            OverhaulSettingsController.ResetSettingValue("Graphics.Post effects.Bloom intensity");
-            OverhaulSettingsController.ResetSettingValue("Graphics.Post effects.Bloom Threshold");
+            OverhaulSettingsManager_Old.ResetSettingValue("Graphics.Post effects.Enable bloom");
+            OverhaulSettingsManager_Old.ResetSettingValue("Graphics.Post effects.Bloom iterations");
+            OverhaulSettingsManager_Old.ResetSettingValue("Graphics.Post effects.Bloom intensity");
+            OverhaulSettingsManager_Old.ResetSettingValue("Graphics.Post effects.Bloom Threshold");
         }
         public void SetBloomOverhaulDisabled()
         {
@@ -155,11 +155,11 @@ namespace CDOverhaul.HUD
         }
         public void SetVignetteEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Shaders.Vignette", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Shaders.Vignette", true);
         }
         public void SetVignetteDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Shaders.Vignette", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Shaders.Vignette", false);
         }
 
         #endregion
@@ -172,11 +172,11 @@ namespace CDOverhaul.HUD
         }
         public void SetCAEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Shaders.Chromatic Aberration", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Shaders.Chromatic Aberration", true);
         }
         public void SetCADisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Shaders.Chromatic Aberration", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Shaders.Chromatic Aberration", false);
         }
 
         #endregion
@@ -189,11 +189,11 @@ namespace CDOverhaul.HUD
         }
         public void SetCREnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Camera.Rolling", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Camera.Rolling", true);
         }
         public void SetCRDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Graphics.Camera.Rolling", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Graphics.Camera.Rolling", false);
         }
 
         #endregion
@@ -226,11 +226,11 @@ namespace CDOverhaul.HUD
         }
         public void SetWatermarkEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Game interface.Information.Watermark", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Game interface.Information.Watermark", true);
         }
         public void SetWatermarkDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Game interface.Information.Watermark", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Game interface.Information.Watermark", false);
         }
 
         #endregion
@@ -243,11 +243,11 @@ namespace CDOverhaul.HUD
         }
         public void SetNewEnergyUIEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Game interface.Gameplay.New energy bar design", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Game interface.Gameplay.New energy bar design", true);
         }
         public void SetNewEnergyUIDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Game interface.Gameplay.New energy bar design", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Game interface.Gameplay.New energy bar design", false);
         }
 
         #endregion
@@ -261,11 +261,11 @@ namespace CDOverhaul.HUD
         }
         public void SetAudioReverbEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Audio.Filters.Reverb", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Audio.Filters.Reverb", true);
         }
         public void SetAudioReverbDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Audio.Filters.Reverb", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Audio.Filters.Reverb", false);
         }
 
         #endregion
@@ -278,11 +278,11 @@ namespace CDOverhaul.HUD
         }
         public void SetSendCrashReportsEnabled()
         {
-            OverhaulSettingsController.SetSettingValue("Mod.Information.Send crash reports", true);
+            OverhaulSettingsManager_Old.SetSettingValue("Mod.Information.Send crash reports", true);
         }
         public void SetSendCrashReportsDisabled()
         {
-            OverhaulSettingsController.SetSettingValue("Mod.Information.Send crash reports", false);
+            OverhaulSettingsManager_Old.SetSettingValue("Mod.Information.Send crash reports", false);
         }
 
         #endregion

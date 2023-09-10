@@ -67,15 +67,11 @@ namespace CDOverhaul
 
         public virtual void Initialize()
         {
-            if (MyModdedObject.objects.IsNullOrEmpty())
+            if (!MyModdedObject.objects.IsNullOrEmpty())
             {
-                Hide();
-                return;
+                AssignValues(this);
             }
-
-            AssignValues(this);
             AddListeners();
-            Hide();
         }
 
         public virtual void OnGetArguments(object[] args)
@@ -83,10 +79,45 @@ namespace CDOverhaul
 
         }
 
+        protected virtual bool HideTitleScreen() => false;
+        protected virtual bool WaitForEscapeKeyToHide() => false;
+
         protected override void OnDisposed()
         {
             OverhaulDisposable.AssignNullToAllVars(this);
             RemoveListeners();
+        }
+
+        public virtual void Update()
+        {
+            if (WaitForEscapeKeyToHide() && Input.GetKeyDown(KeyCode.Escape))
+                Hide();
+        }
+
+        public virtual void Show()
+        {
+            base.gameObject.SetActive(true);
+            if (HideTitleScreen())
+                HideTitleScreenButtons();
+        }
+
+        public virtual void Hide()
+        {
+            base.gameObject.SetActive(false);
+            if (HideTitleScreen())
+                ShowTitleScreenButtons();
+        }
+
+        protected void HideTitleScreenButtons()
+        {
+            if (TitleScreen)
+                TitleScreen.SetLogoAndRootButtonsVisible(false);
+        }
+
+        protected void ShowTitleScreenButtons()
+        {
+            if (GameModeManager.IsOnTitleScreen() && TitleScreen)
+                TitleScreen.SetLogoAndRootButtonsVisible(true);
         }
 
         public static void AssignValues(OverhaulBehaviour behaviour)
@@ -116,16 +147,33 @@ namespace CDOverhaul
                 do
                 {
                     FieldInfo info = fields[fieldIndex];
+                    Type targetFieldType = info.FieldType;
+                    object fieldValueToAssign = null;
+                    bool skip = false;
+
+                    if (targetFieldType == typeof(PrefabContainer))
+                    {
+                        PrefabContainerAttribute prefabContainerAttribute = info.GetCustomAttribute<PrefabContainerAttribute>();
+                        if (prefabContainerAttribute != null)
+                        {
+                            fieldValueToAssign = new PrefabContainer(moddedObject.GetObject<ModdedObject>(prefabContainerAttribute.PrefabIndex), moddedObject.GetObject<Transform>(prefabContainerAttribute.ContainerIndex));
+                        }
+
+                        skip = true;
+                        info.SetValue(behaviour, fieldValueToAssign);
+                    }
+
+                    if (skip)
+                    {
+                        fieldIndex++;
+                        continue;
+                    }
 
                     UIElementReferenceAttribute objectReference = info.GetCustomAttribute<UIElementReferenceAttribute>();
                     if (objectReference != null)
                     {
                         int indexInModdedObject = objectReference.UsesIndexes ? objectReference.ObjectIndex : objectsByNames[objectReference.ObjectName];
-
-                        Type targetFieldType = info.FieldType;
-                        UnityEngine.Object fieldValueToAssign = null;
-
-                        if(targetFieldType == typeof(UIElementDropdown))
+                        if (targetFieldType == typeof(UIElementDropdown))
                         {
                             GameObject gameObject = moddedObject.GetObject<Transform>(indexInModdedObject).gameObject;
                             fieldValueToAssign = UIUtility.InitDropdown(gameObject);
@@ -153,7 +201,7 @@ namespace CDOverhaul
                         if (defaultVisibility != null)
                             moddedObject.GetObject<Transform>(indexInModdedObject).gameObject.SetActive(defaultVisibility.ShouldBeActive);
 
-                        if (!fieldValueToAssign)
+                        if (fieldValueToAssign == null)
                             throw new Exception("Could not find component for " + info.Name + " in " + type.Name + "!");
                         else
                             info.SetValue(behaviour, fieldValueToAssign);
@@ -282,28 +330,6 @@ namespace CDOverhaul
                 }
             }
             throw new NullReferenceException("AddComponentToGameObject: Could not find GameObject called " + objectName + "!");
-        }
-
-        public virtual void Show()
-        {
-            base.gameObject.SetActive(true);
-        }
-
-        public virtual void Hide()
-        {
-            base.gameObject.SetActive(false);
-        }
-
-        protected void HideTitleScreenButtons()
-        {
-            if (TitleScreen)
-                TitleScreen.SetLogoAndRootButtonsVisible(false);
-        }
-
-        protected void ShowTitleScreenButtons()
-        {
-            if (GameModeManager.IsOnTitleScreen() && TitleScreen)
-                TitleScreen.SetLogoAndRootButtonsVisible(true);
         }
     }
 }

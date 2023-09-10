@@ -6,11 +6,11 @@ namespace CDOverhaul.Visuals
 {
     public class ChromaticAberrationImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSetting("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
+        [OverhaulSettingAttribute_Old("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
 
         [OverhaulSettingSliderParameters(false, 0f, 0.001f)]
-        [OverhaulSetting("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, "Graphics.Shaders.Chromatic Aberration")]
+        [OverhaulSettingAttribute_Old("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
         private static Material s_Material;
@@ -20,7 +20,7 @@ namespace CDOverhaul.Visuals
         {
             base.PatchCamera(camera);
             if (!s_Material)
-                s_Material = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
+                s_Material = OverhaulAssetLoader.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
 
             s_Material.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
             s_Material.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);

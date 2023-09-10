@@ -24,8 +24,8 @@ namespace CDOverhaul
 
         protected override void OnAssetsLoaded()
         {
-            s_OldTransitionPrefab = OverhaulAssetsController.GetAsset("LoadingScreen", OverhaulAssetPart.Main);
-            s_TransitionPrefab = OverhaulAssetsController.GetAsset("OverhaulTransition", OverhaulAssetPart.Main);
+            s_OldTransitionPrefab = OverhaulAssetLoader.GetAsset("LoadingScreen", OverhaulAssetPart.Main);
+            s_TransitionPrefab = OverhaulAssetLoader.GetAsset("OverhaulTransition", OverhaulAssetPart.Main);
             refreshCoverScreen();
         }
 

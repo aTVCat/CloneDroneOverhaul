@@ -28,18 +28,18 @@ namespace CDOverhaul.HUD
             m_UIManager = null;
         }
 
-        public GameObject InstantiatePrefab(string key, Transform parent, bool visible, string assetBundle = OverhaulAssetsController.ModAssetBundle_Part1)
+        public GameObject InstantiatePrefab(string key, Transform parent, bool visible, string assetBundle = OverhaulAssetLoader.ModAssetBundle_Part1)
         {
             GameObject prefab = null;
             m_CachedPrefabs.TryGetValue(key, out prefab);
             if(prefab == null)
             {
-                prefab = OverhaulAssetsController.GetAsset(key, assetBundle, false);
+                prefab = OverhaulAssetLoader.GetAsset(key, assetBundle, false);
                 m_CachedPrefabs.Add(key, prefab);
             }
             else if (!prefab)
             {
-                prefab = OverhaulAssetsController.GetAsset(key, assetBundle, false);
+                prefab = OverhaulAssetLoader.GetAsset(key, assetBundle, false);
                 m_CachedPrefabs[key] = prefab;
             }
 

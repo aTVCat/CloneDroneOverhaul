@@ -3,7 +3,7 @@
 namespace CDOverhaul
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class OverhaulSettingRequiredValue : Attribute
+    public class OverhaulSettingRequiredValue : OverhaulSettingBaseAttribute
     {
         public object TargetValue;
 

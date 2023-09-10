@@ -2,7 +2,7 @@
 {
     public class ModBotTagDisabler : OverhaulGameplaySystem
     {
-        [OverhaulSetting("QoL.Multiplayer.Disable Mod-Bot tags", false)]
+        [OverhaulSettingAttribute_Old("QoL.Multiplayer.Disable Mod-Bot tags", false)]
         public static bool DisableTags;
     }
 }

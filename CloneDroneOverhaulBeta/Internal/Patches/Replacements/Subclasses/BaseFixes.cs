@@ -21,7 +21,7 @@ namespace CDOverhaul.Patches
         private const string KHMERUIB = "KhmerUIb";
 
         [OverhaulSettingWithNotification(1)]
-        [OverhaulSetting("Game interface.Vanilla changes.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
+        [OverhaulSettingAttribute_Old("Game interface.Vanilla changes.\"Piksieli Prst\" font", true, false, "This font makes Overhaul's UI less differ from game UI")]
         public static bool PixelsSimpleFont;
 
         private static Font s_OgUIFont;
@@ -142,21 +142,21 @@ namespace CDOverhaul.Patches
         public static void UpdateSprites(Transform transform, bool forceRegularFont = false, int offsetFontSize = -2, FontStyle forceFontStyle = (FontStyle)(-1), bool checkLevelEditor = false, bool forceNoGrayOutline = false)
         {
             if (!s_CanvasDark)
-                s_CanvasDark = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
+                s_CanvasDark = OverhaulAssetLoader.GetAsset<Sprite>("CanvasDark-SQ2-16x16"/*"CanvasDark-Small2-16x16"*/, OverhaulAssetPart.Part1);
             if (!s_CanvasBright)
-                s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-16x16"/*"CanvasBright-Small-16x16"*/, OverhaulAssetPart.Part1);
+                s_CanvasBright = OverhaulAssetLoader.GetAsset<Sprite>("CanvasBright-SQ-16x16"/*"CanvasBright-Small-16x16"*/, OverhaulAssetPart.Part1);
             if (!s_CanvasBrightNoGrayOutline)
-                s_CanvasBrightNoGrayOutline = s_CanvasBright = OverhaulAssetsController.GetAsset<Sprite>("CanvasBright-SQ-NGO", OverhaulAssetPart.Part1);
+                s_CanvasBrightNoGrayOutline = s_CanvasBright = OverhaulAssetLoader.GetAsset<Sprite>("CanvasBright-SQ-NGO", OverhaulAssetPart.Part1);
             if (!s_CanvasDarkNoGrayOutline)
-                s_CanvasDarkNoGrayOutline = OverhaulAssetsController.GetAsset<Sprite>("CanvasDark-SQ-NGO", OverhaulAssetPart.Part1);
+                s_CanvasDarkNoGrayOutline = OverhaulAssetLoader.GetAsset<Sprite>("CanvasDark-SQ-NGO", OverhaulAssetPart.Part1);
             if (!s_Checkmark)
-                s_Checkmark = OverhaulAssetsController.GetAsset<Sprite>("CheckmarkSmall", OverhaulAssetPart.Part1);
+                s_Checkmark = OverhaulAssetLoader.GetAsset<Sprite>("CheckmarkSmall", OverhaulAssetPart.Part1);
             if (!s_ExitIcon)
-                s_ExitIcon = OverhaulAssetsController.GetAsset<Sprite>("Close-Colored-16x16", OverhaulAssetPart.Part1);
+                s_ExitIcon = OverhaulAssetLoader.GetAsset<Sprite>("Close-Colored-16x16", OverhaulAssetPart.Part1);
             if (!s_OpenSansRegularFont)
-                s_OpenSansRegularFont = OverhaulAssetsController.GetAsset<Font>("OpenSans-Regular", OverhaulAssetPart.Fonts);
+                s_OpenSansRegularFont = OverhaulAssetLoader.GetAsset<Font>("OpenSans-Regular", OverhaulAssetPart.Fonts);
             if (!s_OpenSansExtraBoldFont)
-                s_OpenSansExtraBoldFont = OverhaulAssetsController.GetAsset<Font>("OpenSans-ExtraBold", OverhaulAssetPart.Fonts);
+                s_OpenSansExtraBoldFont = OverhaulAssetLoader.GetAsset<Font>("OpenSans-ExtraBold", OverhaulAssetPart.Fonts);
 
 
             foreach (Image image in transform.GetComponentsInChildren<Image>(true))
