@@ -441,10 +441,15 @@
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
     <Compile Include="Gameplay\OverhaulGameplayManager.cs" />
     <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuCategoryButton.cs" />
+    <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuSectionButton.cs" />
+    <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuSettingInfoDisplay.cs" />
+    <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuKeyBinder.cs" />
+    <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuToggle.cs" />
+    <Compile Include="HUD\UIElementGraphicColorUpdater.cs" />
     <Compile Include="Internal\Management\UI\Components\UIElementButton.cs" />
     <Compile Include="Internal\Management\UI\Components\UIElementDropdown.cs" />
     <Compile Include="Internal\Management\UI\Components\UIUtility.cs" />
-    <Compile Include="HUD\SettingsMenu\UIOverhaulSettingsMenu.cs" />
+    <Compile Include="HUD\SettingsMenu\UISettingsMenu.cs" />
     <Compile Include="HUD\Test\UITestElements.cs" />
     <Compile Include="Internal\AdditonalContent\AdditionalContentControllerBase.cs" />
     <Compile Include="Internal\Management\OverhaulAdvancedBehaviour.cs" />

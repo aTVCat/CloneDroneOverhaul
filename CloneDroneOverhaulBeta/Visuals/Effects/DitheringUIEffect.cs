@@ -8,16 +8,16 @@ namespace CDOverhaul.Visuals
     public class DitheringUIEffect : OverhaulUIEffectBehaviour
     {
         [OverhaulSettingWithNotification(1)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Dithering", false)]
-        public static bool DitheringEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.DITHERING, "Enable Dithering")]
+        public static bool DitheringEnabled = true;
 
-        [OverhaulSettingSliderParameters(false, 0.024f, 0.044f)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Update interval", 0.034f, false, null, "Graphics.Post effects.Dithering")]
-        public static float Interval;
+        [OverhaulSettingSliderParameters(0.024f, 0.044f)]
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.DITHERING, "Refresh Rate")]
+        public static float Interval = 0.034f;
 
-        [OverhaulSettingSliderParameters(false, 0.15f, 0.35f)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Texture opaque", 0.2f, false, null, "Graphics.Post effects.Dithering")]
-        public static float Alpha;
+        [OverhaulSettingSliderParameters(0.15f, 0.35f)]
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.DITHERING, "Texture Opaque")]
+        public static float Alpha = 0.25f;
 
         private RawImage m_RawImage;
 

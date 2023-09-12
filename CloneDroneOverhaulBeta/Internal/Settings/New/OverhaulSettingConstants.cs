@@ -15,6 +15,8 @@ namespace CDOverhaul
             public const string TEST_CATEGORY2 = "Test category 2";
 
             public const string TEST_CATEGORY3 = "Test category 3";
+
+            public const string GRAPHICS = "Graphics";
         }
 
         public static class Sections
@@ -24,6 +26,8 @@ namespace CDOverhaul
             public const string TEST_SECTION2 = "Test section 2";
 
             public const string TEST_SECTION3 = "Test section 3";
+
+            public const string DITHERING = "Dithering";
         }
     }
 }

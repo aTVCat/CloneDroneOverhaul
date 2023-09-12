@@ -1,4 +1,5 @@
-﻿using CDOverhaul.NetworkAssets;
+﻿using CDOverhaul.Gameplay.Combat;
+using CDOverhaul.NetworkAssets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,24 +19,13 @@ namespace CDOverhaul.HUD
         [UIElementReference("SelectedIndicator")]
         private GameObject m_SelectedIndicator;
 
+        [UIElementReference("SelectedIndicator")]
+        private Graphic m_SelectedIndicatorGraphic;
+
         [UIElementReference("Icon")]
         private RawImage m_Icon;
 
-        private UIOverhaulSettingsMenu m_SettingsMenu;
-
-        private string m_Text;
-        public string text
-        {
-            get
-            {
-                return m_Text;
-            }
-            set
-            {
-                m_Text = value;
-                m_Label.text = value;
-            }
-        }
+        private UISettingsMenu m_SettingsMenu;
 
         private bool m_Selected;
         public bool selected
@@ -52,7 +42,7 @@ namespace CDOverhaul.HUD
                 if (!value)
                     return;
 
-                UIOverhaulSettingsMenu settingsMenu = m_SettingsMenu;
+                UISettingsMenu settingsMenu = m_SettingsMenu;
                 if (!settingsMenu)
                     return;
 
@@ -61,6 +51,7 @@ namespace CDOverhaul.HUD
                 {
                     categoryButton.selected = false;
                 }
+                m_SelectedIndicatorGraphic.color = OverhaulCombatState.GetUIThemeColor(UISettingsMenu.DefaultBarColor);
             }
         }
 
@@ -72,7 +63,7 @@ namespace CDOverhaul.HUD
 
         public override void Awake()
         {
-            m_SettingsMenu = OverhaulUIManager.reference?.GetUI<UIOverhaulSettingsMenu>(UIConstants.UI_SETTINGS_MENU);
+            m_SettingsMenu = OverhaulUIManager.reference?.GetUI<UISettingsMenu>(UIConstants.UI_SETTINGS_MENU);
             if (!m_SettingsMenu)
             {
                 OverhaulDebug.Error("CategoryButton - m_SettingsMenu is NULL! Manager existence: " + OverhaulUIManager.reference, EDebugType.UI);
@@ -89,28 +80,30 @@ namespace CDOverhaul.HUD
         public override void Start()
         {
             selected = m_SettingsMenu.selectedCategoryId == categoryId;
-            text = categoryId;
-            attachIcon();
+            m_Label.text = categoryId;
+            loadIcon();
         }
 
         protected override void OnDisposed()
         {
             if (m_Icon && m_Icon.texture)
                 Destroy(m_Icon.texture);
+
+            OverhaulDisposable.AssignNullToAllVars(this);
         }
 
-        private void attachIcon()
+        private void loadIcon()
         {
             string path = OverhaulMod.Core.ModDirectory + "Assets/Settings/" + categoryId + ".png";
             if (!File.Exists(path))
             {
-                path = OverhaulMod.Core.ModDirectory + "Assets/Settings/UnknownCategory.png";
+                path = OverhaulMod.Core.ModDirectory + "Assets/Settings/Unknown.png";
             }
 
             OverhaulDownloadInfo overhaulDownloadInfo = new OverhaulDownloadInfo();
             overhaulDownloadInfo.DoneAction = delegate
             {
-                if (overhaulDownloadInfo.Error)
+                if (!m_Icon || overhaulDownloadInfo.Error)
                     return;
 
                 Texture texture = overhaulDownloadInfo.DownloadedTexture;
@@ -125,9 +118,11 @@ namespace CDOverhaul.HUD
             if (!base.enabled || selected)
                 return;
 
-            m_SettingsMenu.selectedCategoryId = categoryId;
             selected = true;
+            m_SettingsMenu.selectedCategoryId = categoryId;
+            m_SettingsMenu.selectedSectionId = string.Empty;
             m_SettingsMenu.recentSelectedCategoryButton = this;
+            m_SettingsMenu.Populate();
         }
     }
 }

@@ -11,8 +11,11 @@ namespace CDOverhaul
 
         public List<Dropdown.OptionData> Options;
 
-        public OverhaulSettingDropdownParameters(string values, char separator = UsualSeparator)
+        public float Height;
+
+        public OverhaulSettingDropdownParameters(string values, float height = 150f, char separator = UsualSeparator)
         {
+            Height = height;
             Options = new List<Dropdown.OptionData>();
             foreach (string str in values.Split(separator))
             {

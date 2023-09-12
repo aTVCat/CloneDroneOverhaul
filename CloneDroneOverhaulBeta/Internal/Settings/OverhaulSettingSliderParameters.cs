@@ -15,5 +15,11 @@ namespace CDOverhaul
             Min = min;
             Max = max;
         }
+
+        public OverhaulSettingSliderParameters(float min, float max)
+        {
+            Min = min;
+            Max = max;
+        }
     }
 }

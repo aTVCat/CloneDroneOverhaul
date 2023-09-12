@@ -129,8 +129,8 @@ namespace CDOverhaul
             List<string> list = new List<string>();
             foreach (OverhaulSettingInfo info in Settings)
             {
-                if (info.category == category && !list.Contains(info.category))
-                    list.Add(info.category);
+                if (info.category == category && !list.Contains(info.section))
+                    list.Add(info.section);
             }
             return list;
         }

@@ -92,7 +92,7 @@ namespace CDOverhaul.HUD
             set;
         }
 
-        public override void Start()
+        public override void Awake()
         {
             UIController.AssignValues(this);
             UIElementButton button = base.gameObject.AddComponent<UIElementButton>();
@@ -128,17 +128,6 @@ namespace CDOverhaul.HUD
             {
                 CollapseDropdown();
             }
-        }
-
-        public void TestOptions()
-        {
-            options = new List<Dropdown.OptionData>()
-            {
-                new Dropdown.OptionData() { text = "Test 1"},
-                new Dropdown.OptionData() { text = "Test 2"},
-                new Dropdown.OptionData() { text = "Test 3"},
-                new Dropdown.OptionData() { text = "Test 4"},
-            };
         }
 
         public void ExpandDropdown()

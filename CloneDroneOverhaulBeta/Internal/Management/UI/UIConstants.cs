@@ -27,12 +27,12 @@ namespace CDOverhaul.HUD
         }
 
         /// <summary>
-        /// <see cref="UIOverhaulSettingsMenu"/>
+        /// <see cref="UISettingsMenu"/>
         /// </summary>
         public const string UI_SETTINGS_MENU = "UI_SettingsMenu";
         public static void ShowSettingsMenu()
         {
-            OverhaulUIManager.reference.Show<UIOverhaulSettingsMenu>(UI_SETTINGS_MENU);
+            OverhaulUIManager.reference.Show<UISettingsMenu>(UI_SETTINGS_MENU);
         }
 
         public static class Arguments
