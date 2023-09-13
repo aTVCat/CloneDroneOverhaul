@@ -198,6 +198,6 @@ namespace CDOverhaul
             return (T)result;
         }
 
-        public static void DispatchSettingsRefreshedEvent() => OverhaulEvents.DispatchEvent(OverhaulSettingsManager_Old.SettingChangedEventString);
+        public static void DispatchSettingsRefreshedEvent() => OverhaulEvents.DispatchEvent(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT);
     }
 }

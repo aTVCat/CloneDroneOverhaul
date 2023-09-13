@@ -20,6 +20,24 @@ namespace CDOverhaul.HUD
         [PrefabContainer(5, 3)]
         private readonly PrefabContainer m_SectionButtonsContainer;
 
+        [UIElementActionReference(nameof(Hide))]
+        [UIElementReference("CloseHitbox")]
+        private readonly Button m_CloseButton;
+
+        [UIElementDefaultVisibilityState(true)]
+        [UIElementReference("Title")]
+        private readonly GameObject m_ListHeader;
+
+        [UIElementReference("ListTitleLabel")]
+        private readonly Text m_ListHeaderText;
+
+        [UIElementActionReference(nameof(ReturnToCateogryView))]
+        [UIElementReference("BackToCategoryListButton")]
+        private readonly Button m_BackToCategoryListButton;
+
+        [UIElementReference("BackToCategoryListButton")]
+        private readonly GameObject m_BackToCategoryListButtonObject;
+
         [UIElementReference("ThemeOutline")]
         private readonly Graphic m_ThemeOutline;
 
@@ -124,6 +142,7 @@ namespace CDOverhaul.HUD
 
         public void Populate()
         {
+            m_BackToCategoryListButtonObject.SetActive(false);
             m_EmptyListIndicator.SetActive(false);
             m_SectionButtonsContainer.Clear();
 
@@ -135,6 +154,7 @@ namespace CDOverhaul.HUD
 
             if (string.IsNullOrEmpty(selectedSectionId))
             {
+                m_ListHeaderText.text = selectedCategoryId;
                 // Sections stuff
                 List<string> sections = m_SettingsManager.GetSections(selectedCategoryId);
                 if (!sections.IsNullOrEmpty())
@@ -157,6 +177,9 @@ namespace CDOverhaul.HUD
                 return;
             }
 
+            m_BackToCategoryListButtonObject.SetActive(true);
+            m_ListHeaderText.text = selectedSectionId;
+
             if (!settingInfos.IsNullOrEmpty())
             {
                 int settingIndex = 0;
@@ -167,6 +190,12 @@ namespace CDOverhaul.HUD
                     settingIndex++;
                 } while (settingIndex < settingInfos.Count);
             }
+        }
+
+        public void ReturnToCateogryView()
+        {
+            selectedSectionId = string.Empty;
+            Populate();
         }
 
         private IEnumerator waitUntilKeyWasPressed()

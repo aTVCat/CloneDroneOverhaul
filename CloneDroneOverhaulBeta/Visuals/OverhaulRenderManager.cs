@@ -22,13 +22,13 @@ namespace CDOverhaul.Visuals
         public override void AddListeners()
         {
             base.AddListeners();
-            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, RefreshFrameRate);
+            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT, RefreshFrameRate);
         }
 
         public override void RemoveListeners()
         {
             base.RemoveListeners();
-            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, RefreshFrameRate);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT, RefreshFrameRate);
         }
 
         public static void RefreshFrameRate()

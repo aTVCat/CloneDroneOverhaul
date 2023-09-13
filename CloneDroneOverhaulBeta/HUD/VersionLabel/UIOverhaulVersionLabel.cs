@@ -7,8 +7,8 @@ namespace CDOverhaul.HUD
 {
     public class UIOverhaulVersionLabel : UIController
     {
-        [OverhaulSettingAttribute_Old("Game interface.Information.Watermark", true, false, "Show mod version label during gameplay")]
-        public static bool EnableWatermarkInGameplay;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.USER_INTERFACE, OverhaulSettingConstants.Sections.VERSION_LABEL, "Always show label")]
+        public static bool AlwaysShow = true;
 
         [UIElementReference(0)]
         private GameObject m_TitleScreenWatermark;
@@ -69,7 +69,7 @@ namespace CDOverhaul.HUD
         {
             bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
             bool shouldShowOnTitleScreen = !OverhaulWorkshopBrowserUI.IsActive;
-            bool shouldShowInGameplay = EnableWatermarkInGameplay;
+            bool shouldShowInGameplay = AlwaysShow;
 
             m_UpperButtonsContainer.gameObject.SetActive(m_TitleScreenRootButtons.activeInHierarchy);
             m_TitleScreenWatermark.SetActive(isOnTitleScreen && shouldShowOnTitleScreen);

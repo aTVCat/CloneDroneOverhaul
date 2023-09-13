@@ -91,7 +91,12 @@ namespace CDOverhaul
                 ModInitialize modInitialize = new ModInitialize();
                 modInitialize.LoadMainFramework();
 
-                OverhaulBootUI.Show(modInitialize);
+                if(!UIOverhaulStartupScreen.EnableStartupScreen)
+                {
+                    loadAssets(modInitialize);
+                    return;
+                }
+                UIOverhaulStartupScreen.Show(modInitialize);
             }
             catch (Exception ex)
             {
@@ -135,9 +140,9 @@ namespace CDOverhaul
             }
         }
 
-        private void OnDestroy()
+        private void loadAssets(ModInitialize modInitialize)
         {
-            OverhaulMod.Core = null;
+            base.StartCoroutine(modInitialize.LoadAssetsFramework(false));
         }
 
         public static string ReadText(string filePath)

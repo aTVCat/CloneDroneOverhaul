@@ -72,6 +72,7 @@ namespace CDOverhaul
                 defaultValue = fieldInfo.GetValue(null),
                 isHidden = settingAttribute.IsHidden
             };
+            result.fieldReference.SetValue(null, result.GetValue<object>());
 
             result.AddAttribute(settingAttribute);
             foreach (OverhaulSettingBaseAttribute attribute in fieldInfo.GetCustomAttributes<OverhaulSettingBaseAttribute>())

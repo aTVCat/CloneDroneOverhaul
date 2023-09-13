@@ -144,7 +144,8 @@ namespace CDOverhaul
 
         public void SetValue(object value)
         {
-            fieldReference.SetValue(null, value);            
+            fieldReference.SetValue(null, value);
+            OverhaulEvents.DispatchEvent(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT);
         }
 
         public void SetValue(object value, bool save)

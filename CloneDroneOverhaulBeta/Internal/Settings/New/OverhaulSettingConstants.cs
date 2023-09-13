@@ -17,6 +17,8 @@ namespace CDOverhaul
             public const string TEST_CATEGORY3 = "Test category 3";
 
             public const string GRAPHICS = "Graphics";
+
+            public const string USER_INTERFACE = "User interface";
         }
 
         public static class Sections
@@ -28,6 +30,12 @@ namespace CDOverhaul
             public const string TEST_SECTION3 = "Test section 3";
 
             public const string DITHERING = "Dithering";
+
+            public const string BOOT_SCREEN = "Startup screen";
+
+            public const string VERSION_LABEL = "Version label";
+
+            public const string ENHANCEMENTS = "Enhancements";
         }
     }
 }

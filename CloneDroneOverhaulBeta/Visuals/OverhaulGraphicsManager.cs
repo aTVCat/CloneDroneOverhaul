@@ -92,14 +92,14 @@ namespace CDOverhaul.Visuals
         {
             base.AddListeners();
             OverhaulEvents.AddEventListener<Camera>(OverhaulCameraManager.CAMERA_CHANGED_EVENT, PatchCamera);
-            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, PatchMainCamera);
+            OverhaulEvents.AddEventListener(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT, PatchMainCamera);
         }
 
         public override void RemoveListeners()
         {
             base.RemoveListeners();
             OverhaulEvents.RemoveEventListener<Camera>(OverhaulCameraManager.CAMERA_CHANGED_EVENT, PatchCamera);
-            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SettingChangedEventString, PatchMainCamera);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsManager_Old.SETTING_VALUE_UPDATED_EVENT, PatchMainCamera);
         }
 
         private void instantiateEffects()

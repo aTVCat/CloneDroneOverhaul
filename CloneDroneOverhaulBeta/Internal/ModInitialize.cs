@@ -49,11 +49,11 @@ namespace CDOverhaul
             }
         }
 
-        public IEnumerator LoadAssetsFramework()
+        public IEnumerator LoadAssetsFramework(bool async)
         {
             List<IEnumerator> toInit = new List<IEnumerator>()
             {
-                LoadAssetsCoroutine()
+                LoadAssetsCoroutine(async)
             };
 
             QualitySettings.asyncUploadTimeSlice = 4;
@@ -161,15 +161,12 @@ namespace CDOverhaul
             _ = OverhaulController.Add<OverhaulUIManager>(miscObject.transform);
         }
 
-        public IEnumerator LoadAssetsCoroutine()
+        public IEnumerator LoadAssetsCoroutine(bool async = true)
         {
             List<string> toLoad = new List<string>()
             {
                 OverhaulAssetLoader.ModAssetBundle_Part1,
                 OverhaulAssetLoader.ModAssetBundle_Part2,
-                OverhaulAssetLoader.ModAssetBundle_Skins,
-                OverhaulAssetLoader.ModAssetBundle_Accessouries,
-                OverhaulAssetLoader.ModAssetBundle_Pets,
                 OverhaulAssetLoader.ModAssetBundle_ArenaOverhaul,
             };
             excludeLoadedAssetBundles(toLoad);
@@ -180,14 +177,21 @@ namespace CDOverhaul
             {
                 int index = i;
                 string assetBundle = toLoad[index];
-                OverhaulAssetLoader.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetLoader.AssetBundleLoadHandler handler)
+                if (!async)
                 {
-                    boolArray[index] = true;
-                });
+                    OverhaulAssetLoader.LoadAssetBundleIfNotLoaded(assetBundle, true);
+                }
+                else
+                {
+                    OverhaulAssetLoader.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetLoader.AssetBundleLoadHandler handler)
+                    {
+                        boolArray[index] = true;
+                    });
+                }
                 i--;
             } while (i > -1);
 
-            yield return new WaitUntil(() => !boolArray.Contains(false));
+            yield return new WaitUntil(() => !async || !boolArray.Contains(false));
             OverhaulMod.HasBootProcessEnded = true;
             TriggerAssetLoadDoneEvent();
             yield break;

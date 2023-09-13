@@ -12,7 +12,7 @@ namespace CDOverhaul
         /// <summary>
         /// This event is sent if any setting value has changed
         /// </summary>
-        public const string SettingChangedEventString = "OnSettingChanged";
+        public const string SETTING_VALUE_UPDATED_EVENT = "OnSettingChanged";
 
         public const BindingFlags Flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 

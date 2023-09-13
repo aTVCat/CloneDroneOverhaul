@@ -222,7 +222,7 @@ namespace CDOverhaul.HUD
 
         public bool GetWatermarkEnabled()
         {
-            return UIOverhaulVersionLabel.EnableWatermarkInGameplay;
+            return UIOverhaulVersionLabel.AlwaysShow;
         }
         public void SetWatermarkEnabled()
         {

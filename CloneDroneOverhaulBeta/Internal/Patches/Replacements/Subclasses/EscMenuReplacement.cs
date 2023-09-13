@@ -28,7 +28,6 @@ namespace CDOverhaul.Patches
         private Vector2 m_LvlEditorButtonOgPosition;
         private Vector2 m_SkipLevelButtonOgPosition;
 
-        private bool m_IsWaitingToPatchButtons;
         private bool m_SetUpButtons;
 
         private void setUpButtons()
@@ -95,58 +94,43 @@ namespace CDOverhaul.Patches
                 return;
             }
 
-            if (m_IsWaitingToPatchButtons)
-                return;
+            m_SettingsButtonOgSizeDelta = m_SettingsButton.sizeDelta;
+            m_SettingsButton.sizeDelta = new Vector2(75, 30);
+            m_SettingsButton.localPosition = new Vector3(-39f, m_SettingsButton.localPosition.y, 0f);
 
-            m_IsWaitingToPatchButtons = true;
-            DelegateScheduler.Instance.Schedule(delegate
+            m_ModSettingsButton = UnityEngine.Object.Instantiate(m_SettingsButton, m_BG);
+            m_ModSettingsButton.localScale = Vector3.one;
+            m_ModSettingsButton.localPosition = new Vector3(39f, m_SettingsButton.localPosition.y, 0f);
+            m_ModSettingsButton.gameObject.name = "OverhaulSettingsButton";
+
+            LocalizedTextField l = m_ModSettingsButton.GetComponentInChildren<LocalizedTextField>();
+            if (l == null)
             {
-                m_IsWaitingToPatchButtons = false;
-                m_SettingsButtonOgSizeDelta = m_SettingsButton.sizeDelta;
-                m_SettingsButton.sizeDelta = new Vector2(75, 30);
-                m_SettingsButton.localPosition = new Vector3(-39f, m_SettingsButton.localPosition.y, 0f);
+                SuccessfullyPatched = false;
+                return;
+            }
 
-                m_ModSettingsButton = UnityEngine.Object.Instantiate(m_SettingsButton, m_BG);
-                m_ModSettingsButton.localScale = Vector3.one;
-                m_ModSettingsButton.localPosition = new Vector3(39f, m_SettingsButton.localPosition.y, 0f);
-                m_ModSettingsButton.gameObject.name = "OverhaulSettingsButton";
+            Text text = l.GetComponent<Text>();
+            if (text == null)
+            {
+                SuccessfullyPatched = false;
+                return;
+            }
+            text.text = "Overhaul";
+            UnityEngine.Object.Destroy(l);
 
-                LocalizedTextField l = m_ModSettingsButton.GetComponentInChildren<LocalizedTextField>();
-                if (l == null)
-                {
-                    SuccessfullyPatched = false;
-                    return;
-                }
-
-                Text text = l.GetComponent<Text>();
-                if (text == null)
-                {
-                    SuccessfullyPatched = false;
-                    return;
-                }
-                text.text = "Overhaul";
-                UnityEngine.Object.Destroy(l);
-
-                UnityEngine.UI.Button b = m_ModSettingsButton.GetComponent<UnityEngine.UI.Button>();
-                if (b == null)
-                {
-                    SuccessfullyPatched = false;
-                    return;
-                }
-
-                b.onClick.RemoveAllListeners();
-                b.onClick.AddListener(showParametersMenu);
-
-                SuccessfullyPatched = true;
-            }, 0.5f);
+            UnityEngine.UI.Button b = m_ModSettingsButton.GetComponent<UnityEngine.UI.Button>();
+            if (b)
+            {
+                b.onClick = new Button.ButtonClickedEvent();
+                b.onClick.AddListener(UIConstants.ShowSettingsMenu);
+            }
+            SuccessfullyPatched = true;
         }
 
         public override void Cancel()
         {
             base.Cancel();
-            if (m_IsWaitingToPatchButtons)
-                return;
-
             if (SuccessfullyPatched)
             {
                 SuccessfullyPatched = false;
