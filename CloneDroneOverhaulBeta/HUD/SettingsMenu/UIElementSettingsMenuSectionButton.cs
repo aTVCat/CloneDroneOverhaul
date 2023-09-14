@@ -21,9 +21,9 @@ namespace CDOverhaul.HUD
         [UIElementReference("Outline")]
         private readonly Graphic m_Outline;
 
-        [UIElementComponents(new System.Type[] { typeof(UIElementGraphicColorUpdater) })]
+        [UIElementComponents(new System.Type[] { typeof(UIComponentGraphicColorUpdater) })]
         [UIElementReference("Icon")]
-        private readonly UIElementGraphicColorUpdater m_IconColors;
+        private readonly UIComponentGraphicColorUpdater m_IconColors;
 
         private UISettingsMenu m_SettingsMenu;
 

@@ -11,8 +11,6 @@ namespace CDOverhaul
         public const bool IsModBotBuild = false;
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.4");
-        private static readonly Version s_ModVersionUpdate3 = new Version("0.3.0.346");
 
         private static readonly Updates s_CurrentUpdate = Updates.VER_4;
 
@@ -26,13 +24,6 @@ namespace CDOverhaul
         {
             get
             {
-                switch (s_CurrentUpdate)
-                {
-                    case Updates.VER_2:
-                        return s_ModVersionUpdate2;
-                    case Updates.VER_3:
-                        return s_ModVersionUpdate3;
-                }
                 return s_AssemblyVersion;
             }
         }

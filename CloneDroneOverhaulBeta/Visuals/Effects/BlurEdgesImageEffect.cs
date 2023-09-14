@@ -6,8 +6,8 @@ namespace CDOverhaul.Visuals
 {
     public class BlurEdgesImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSettingAttribute_Old("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
-        public static bool BlurEdgesEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.SHADERS, "Enable Blur edges shader")]
+        public static bool BlurEdgesEnabled = false;
 
         private static Material s_Material;
         private static readonly Func<bool> s_EnableFunction = () => BlurEdgesEnabled;

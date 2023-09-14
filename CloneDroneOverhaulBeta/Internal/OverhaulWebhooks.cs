@@ -4,6 +4,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -80,10 +81,11 @@ namespace CDOverhaul
             string rankContent = rank + "/5";
             string improveContent = improveText;
             string likedContent = likedText;
-            string userInfo = includeUserInfo ? (SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName()) : "**NOT INCLUDED**";
+            string userInfo = includeUserInfo ? (SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName()) : "**Not included**";
             string deviceInfo = includeDeviceInfo ?
                 string.Format("- **OS:** {0}\n- **CPU:** {1}\n Processors: {2}\n Frequency: {3}\n- **GPU:** {4}\n- **Memory:** {5} MBs\n- **GPU Memory:** {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
 
+            int color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
             {
                 content = "__Feedback sent! Version: " + OverhaulVersion.modVersion + "__",
@@ -91,37 +93,37 @@ namespace CDOverhaul
                 {
                     new Embed()
                     {
-                        title = "**Rank**",
-                        description = rankContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        title = "**Rank: " + rankContent + "**",
+                        description = string.Empty,
+                        color = color,
                     },
 
                     new Embed()
                     {
                         title = "**Improve**",
                         description = improveContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**User's favorite**",
+                        title = "**Favorite**",
                         description = likedContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**User info**",
+                        title = "**User information**",
                         description = userInfo,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**Device info**",
+                        title = "**Device information**",
                         description = deviceInfo,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
                 },
             };

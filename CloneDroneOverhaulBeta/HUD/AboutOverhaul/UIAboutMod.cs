@@ -3,8 +3,11 @@ using UnityEngine;
 
 namespace CDOverhaul.HUD
 {
-    public class AboutOverhaulMenu : UIController
+    public class UIAboutMod : UIController
     {
+        protected override bool HideTitleScreen() => true;
+        protected override bool WaitForEscapeKeyToHide() => true;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -13,18 +16,6 @@ namespace CDOverhaul.HUD
             AssignActionToButton(MyModdedObject, "SteamButton", OnAuthorSteamButtonClicked);
             AssignActionToButton(MyModdedObject, "ModBotButton", OnModBotButtonClicked);
             AssignActionToButton(MyModdedObject, "GitHubButton", OnGitHubButtonClicked);
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            HideTitleScreenButtons();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            ShowTitleScreenButtons();
         }
 
         public void OnBackButtonClicked()

@@ -445,7 +445,7 @@
     <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuSettingInfoDisplay.cs" />
     <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuKeyBinder.cs" />
     <Compile Include="HUD\SettingsMenu\UIElementSettingsMenuToggle.cs" />
-    <Compile Include="HUD\UIElementGraphicColorUpdater.cs" />
+    <Compile Include="HUD\UIComponentGraphicColorUpdater.cs" />
     <Compile Include="Internal\Management\UI\Components\UIElementButton.cs" />
     <Compile Include="Internal\Management\UI\Components\UIElementDropdown.cs" />
     <Compile Include="Internal\Management\UI\Components\UIUtility.cs" />
@@ -573,7 +573,7 @@
     <Compile Include="Visuals\OverhaulUIEffectsManager.cs" />
     <Compile Include="Visuals\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Gameplay\ViewModes\ViewModesExpansion.cs" />
-    <Compile Include="HUD\AboutOverhaul\AboutOverhaulMenu.cs" />
+    <Compile Include="HUD\AboutOverhaul\UIAboutMod.cs" />
     <Compile Include="HUD\Boot\UIOverhaulStartupScreen.cs" />
     <Compile Include="HUD\CrashScreen\OverhaulCrashScreen.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulDebugActionsEntryDisplay.cs" />
@@ -623,8 +623,8 @@
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
-    <Compile Include="HUD\PatchNotes\OverhaulPatchNotes.cs" />
-    <Compile Include="HUD\PatchNotes\OverhaulPatchNotesUI.cs" />
+    <Compile Include="HUD\PatchNotes\Changelogs.cs" />
+    <Compile Include="HUD\PatchNotes\UIChangelog.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -641,13 +641,13 @@
     <Compile Include="HUD\PauseMenu\OverhaulPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationPanel.cs" />
-    <Compile Include="HUD\Survey\OverhaulSurveyUI.cs" />
+    <Compile Include="HUD\FeedbackMenu\UIFeedbackMenu.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltip.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltipsController.cs" />
     <Compile Include="HUD\Tooltips\OverhaulTooltipsUI.cs" />
     <Compile Include="HUD\Tooltips\Subclasses\OverhaulCurrentWeaponTooltip.cs" />
     <Compile Include="HUD\Transitions\OverhaulTransitionBehaviour.cs" />
-    <Compile Include="HUD\UIHelpers\OverhaulUIImageViewer.cs" />
+    <Compile Include="HUD\UIHelpers\UIImageViewer.cs" />
     <Compile Include="HUD\UIHelpers\OverhaulUIDescriptionTooltip.cs" />
     <Compile Include="HUD\VanillaImprovements\TitleScreenUIImprovements.cs" />
     <Compile Include="HUD\VanillaImprovements\EnergyUIImprovements.cs" />
@@ -783,7 +783,7 @@
     <Compile Include="LevelEditor\MoveByCoordsTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
-    <Compile Include="HUD\OverhaulUIButtonScaler.cs" />
+    <Compile Include="HUD\UIComponentButtonScaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverhaulAPI\OverhaulAPI.csproj">

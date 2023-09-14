@@ -31,7 +31,7 @@ namespace CDOverhaul.HUD
         [UIElementReference("ListTitleLabel")]
         private readonly Text m_ListHeaderText;
 
-        [UIElementActionReference(nameof(ReturnToCateogryView))]
+        [UIElementActionReference(nameof(ReturnToSectionList))]
         [UIElementReference("BackToCategoryListButton")]
         private readonly Button m_BackToCategoryListButton;
 
@@ -74,13 +74,13 @@ namespace CDOverhaul.HUD
 
                 if (value)
                 {
-                    StartCoroutine(waitUntilKeyWasPressed());
+                    _ = StartCoroutine(waitUntilKeyWasPressed());
                 }
             }
         }
 
         protected override bool HideTitleScreen() => true;
-        protected override bool WaitForEscapeKeyToHide() => true;
+        protected override bool WaitForEscapeKeyToHide() => !currentKeyBinder;
 
         public override void Initialize()
         {
@@ -171,7 +171,7 @@ namespace CDOverhaul.HUD
             }
 
             List<OverhaulSettingInfo> settingInfos = m_SettingsManager.GetSettingInfos(selectedCategoryId, selectedSectionId);
-            if(settingInfos.IsNullOrEmpty() && settingInfos.IsNullOrEmpty())
+            if (settingInfos.IsNullOrEmpty() && settingInfos.IsNullOrEmpty())
             {
                 m_EmptyListIndicator.SetActive(true);
                 return;
@@ -192,7 +192,7 @@ namespace CDOverhaul.HUD
             }
         }
 
-        public void ReturnToCateogryView()
+        public void ReturnToSectionList()
         {
             selectedSectionId = string.Empty;
             Populate();
@@ -202,7 +202,7 @@ namespace CDOverhaul.HUD
         {
             float timeToStop = Time.unscaledTime + 7f;
             yield return new WaitUntil(() => (Event.current.isKey && Event.current.keyCode != KeyCode.None) || Time.unscaledTime >= timeToStop);
-            if(Time.unscaledTime < timeToStop)
+            if (Time.unscaledTime < timeToStop)
             {
                 currentKeyBinder.BindKey(Event.current.keyCode);
                 currentKeyBinder = null;
@@ -215,6 +215,7 @@ namespace CDOverhaul.HUD
             ModdedObject moddedObject = m_CategoriesContainer.InstantiateEntry();
             UIElementSettingsMenuCategoryButton categoryButton = moddedObject.gameObject.AddComponent<UIElementSettingsMenuCategoryButton>();
             categoryButton.categoryId = category;
+            _ = moddedObject.gameObject.AddComponent<UIComponentButtonScaler>();
             return categoryButton;
         }
 
@@ -224,6 +225,7 @@ namespace CDOverhaul.HUD
             UIElementSettingsMenuSectionButton sectionButton = moddedObject.gameObject.AddComponent<UIElementSettingsMenuSectionButton>();
             sectionButton.categoryId = category;
             sectionButton.sectionId = section;
+            _ = moddedObject.gameObject.AddComponent<UIComponentButtonScaler>();
             return sectionButton;
         }
 

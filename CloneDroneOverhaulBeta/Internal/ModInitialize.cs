@@ -149,7 +149,7 @@ namespace CDOverhaul
         public void InitMiscManagers()
         {
             PersonalizationEditor.Initialize();
-            OverhaulPatchNotes.Initialize();
+            Changelogs.Initialize();
             OverhaulCompatibilityChecker.CheckGameVersion();
             OverhaulUpdateChecker.CheckForUpdates();
 

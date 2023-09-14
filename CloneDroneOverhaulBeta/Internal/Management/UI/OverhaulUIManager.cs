@@ -110,7 +110,6 @@ namespace CDOverhaul
                 toShow = Instantiate(toInstantiate, containerTransform, false).AddComponent<T>();
                 prepareUIObject(toShow.gameObject, args);
                 toShow.Initialize();
-                toShow.OnGetArguments(args);
                 m_InstantiatedPrefabs.Add(assetKey, toShow);
             }
             else
@@ -118,6 +117,7 @@ namespace CDOverhaul
                 toShow = (T)m_InstantiatedPrefabs[assetKey];
             }
             toShow.Show();
+            toShow.OnGetArguments(args);
             OverhaulDebug.Log("Showed UI: " + assetKey, EDebugType.UI);
             return toShow;
         }
@@ -126,6 +126,12 @@ namespace CDOverhaul
         {
             m_InstantiatedPrefabs.TryGetValue(assetKey, out UIController result);
             return (T)result;
+        }
+
+        public bool IsVisible(string assetKey)
+        {
+            UIController uiController = GetUI<UIController>(assetKey);
+            return uiController && uiController.gameObject.activeSelf;
         }
 
         private void prepareUIObject(GameObject gameObject, object[] args)

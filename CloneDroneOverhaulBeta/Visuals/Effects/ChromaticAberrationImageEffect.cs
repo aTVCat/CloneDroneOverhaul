@@ -6,12 +6,12 @@ namespace CDOverhaul.Visuals
 {
     public class ChromaticAberrationImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSettingAttribute_Old("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
-        public static bool ChromaticAberrationEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.SHADERS, "Enable Chromatic aberration shader")]
+        public static bool ChromaticAberrationEnabled = true;
 
         [OverhaulSettingSliderParameters(false, 0f, 0.001f)]
-        [OverhaulSettingAttribute_Old("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, "Graphics.Shaders.Chromatic Aberration")]
-        public static float ChromaticAberrationIntensity;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.SHADERS, "Chromatic aberration intensity")]
+        public static float ChromaticAberrationIntensity = 0.0002f;
 
         private static Material s_Material;
         private static readonly Func<bool> s_EnableFunction = () => ChromaticAberrationEnabled;

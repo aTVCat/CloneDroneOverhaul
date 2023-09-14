@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace CDOverhaul
 {
-    public static class OverhaulPatchNotes
+    public static class Changelogs
     {
         public static readonly List<PatchInfo> AllChangelogs = new List<PatchInfo>();
 
         public static void Initialize()
         {
+            AllChangelogs.Add(new PatchInfo(new Version(0, 4, 0, 12), "0.4.0.12", new string[] { "Img1.jpg" }));
             AllChangelogs.Add(new PatchInfo(new Version(0, 2, 13, 3), "0.2.13.3", new string[] { }));
             AllChangelogs.Add(new PatchInfo(new Version(0, 2, 12, 0), "0.2.12.0", new string[] { }));
             AllChangelogs.Add(new PatchInfo(new Version(0, 2, 11, 1), "0.2.11.1", new string[] { }));
@@ -28,13 +29,13 @@ namespace CDOverhaul
                 private set;
             }
 
-            public string[] Art;
+            public string[] Images;
 
             public PatchInfo(Version targetVersion, string folderName, string[] art)
             {
                 TargetModVersion = targetVersion;
                 Folder = folderName;
-                Art = art;
+                Images = art;
 
                 DirectoryPath = OverhaulMod.Core.ModDirectory + "Assets/Changelogs/" + Folder + "/";
             }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class UIElementGraphicColorUpdater : OverhaulBehaviour
+    public class UIComponentGraphicColorUpdater : OverhaulBehaviour
     {
         private Graphic m_Graphic;
 

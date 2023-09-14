@@ -112,14 +112,7 @@ namespace CDOverhaul.Patches
             {
                 Button button = quitButton.GetComponent<Button>();
                 button.onClick = new Button.ButtonClickedEvent();
-                button.onClick.AddListener(delegate
-                {
-                    OverhaulSurveyUI ui = OverhaulController.Get<OverhaulSurveyUI>();
-                    if (ui)
-                        ui.Show();
-                    else
-                        Application.Quit();
-                });
+                button.onClick.AddListener(UIConstants.ShowFeedbackMenu);
             }
 
             Transform lvlEditorButton = TransformUtils.FindChildRecursive(target.transform, "LevelEditorButton");
@@ -190,9 +183,9 @@ namespace CDOverhaul.Patches
             ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
             moddedObject.GetObject<Button>(0).onClick.AddListener(UIConstants.ShowSettingsMenu);
             m_SettingsText = moddedObject.GetObject<Text>(1);
-            //moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.Get<OverhaulSurveyUI>().Show);
+            moddedObject.GetObject<Button>(2).onClick.AddListener(UIConstants.ShowFeedbackMenu);
             m_BugReportText = moddedObject.GetObject<Text>(3);
-            //moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.Get<AboutOverhaulMenu>().Show);
+            moddedObject.GetObject<Button>(4).onClick.AddListener(UIConstants.ShowAboutMod);
             m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
             moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
             //moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.Get<OverhaulLocalizationEditor>().Show);

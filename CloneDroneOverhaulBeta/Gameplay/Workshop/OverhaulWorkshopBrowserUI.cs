@@ -337,7 +337,7 @@ namespace CDOverhaul.Workshop
             AssignActionToButton(MyModdedObject, "Subscribe", SubscribeToItem);
             AssignActionToButton(MyModdedObject, "Thumbnail", delegate
             {
-                OverhaulUIImageViewer.SetActive(true, MyModdedObject.GetObject<RawImage>(39).texture);
+                UIConstants.ShowImageViewer((Texture2D)MyModdedObject.GetObject<RawImage>(39).texture);
             });
 
             Page = 1;
@@ -656,7 +656,7 @@ namespace CDOverhaul.Workshop
                         {
                             if (m != null)
                             {
-                                OverhaulUIImageViewer.SetActive(true, m.GetObject<RawImage>(0).texture);
+                                UIConstants.ShowImageViewer((Texture2D)m.GetObject<RawImage>(0).texture);
                             }
                         });
                     }
@@ -1147,7 +1147,7 @@ namespace CDOverhaul.Workshop
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (GameUIRoot.Instance == null || BrowserIsNull || OverhaulUIImageViewer.IsActive)
+                    if (GameUIRoot.Instance == null || BrowserIsNull || OverhaulUIManager.reference.IsVisible(UIConstants.UI_IMAGE_VIEWER))
                         return;
 
                     Graphic g = base.GetComponent<Graphic>();

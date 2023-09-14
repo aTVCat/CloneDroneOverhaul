@@ -5,16 +5,16 @@ namespace CDOverhaul.Visuals
 {
     public class AmplifyOclusionImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSettingAttribute_Old("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
-        public static bool AOEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.AMPLIFY_OCCLUSION, "Enable SSAO")]
+        public static bool AOEnabled = true;
 
         [OverhaulSettingSliderParameters(false, 0.7f, 1.3f)]
-        [OverhaulSettingAttribute_Old("Graphics.Amplify Occlusion.Intensity", 0.75f, false, null, "Graphics.Amplify Occlusion.Enable")]
-        public static float AOIntensity;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.AMPLIFY_OCCLUSION, "SSAO Intensity")]
+        public static float AOIntensity = 0.75f;
 
         [OverhaulSettingDropdownParameters("Low@Medium@High@Very high")]
-        [OverhaulSettingAttribute_Old("Graphics.Amplify Occlusion.Sample Count", 1, false, null, "Graphics.Amplify Occlusion.Enable")]
-        public static int AOSampleCount;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.AMPLIFY_OCCLUSION, "SSAO Sample count")]
+        public static int AOSampleCount = 1;
 
         public override void PatchCamera(Camera camera)
         {

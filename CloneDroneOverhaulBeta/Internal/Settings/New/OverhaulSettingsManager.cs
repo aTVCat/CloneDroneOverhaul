@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using static Sony.NP.Commerce;
-using static System.Collections.Specialized.BitVector32;
 
 namespace CDOverhaul
 {
@@ -42,7 +40,7 @@ namespace CDOverhaul
                 {
                     FieldInfo currentField = allFields[fieldIndex];
                     OverhaulSettingInfo settingInfo = CreateSettingInfo(currentField);
-                    if(settingInfo == null)
+                    if (settingInfo == null)
                     {
                         fieldIndex++;
                         continue;

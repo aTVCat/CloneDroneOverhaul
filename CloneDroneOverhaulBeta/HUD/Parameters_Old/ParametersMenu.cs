@@ -235,7 +235,7 @@ namespace CDOverhaul.HUD
                 categoryEntry.GetObject<Image>(1).sprite = OverhaulSettingsManager_Old.GetSpriteForCategory(category);
                 categoryEntry.GetObject<Image>(2).color = category == "Experimental" ? Color.red : OverhaulCombatState.GetUIThemeColor(DefaultBarColor);
                 categoryEntry.gameObject.AddComponent<ParametersMenuCategoryButton>().Initialize(this, categoryEntry, category);
-                _ = categoryEntry.gameObject.AddComponent<OverhaulUIButtonScaler>();
+                _ = categoryEntry.gameObject.AddComponent<UIComponentButtonScaler>();
                 categoryEntry.gameObject.SetActive(true);
             }
         }

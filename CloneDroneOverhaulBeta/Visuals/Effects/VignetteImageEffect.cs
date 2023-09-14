@@ -6,12 +6,12 @@ namespace CDOverhaul.Visuals
 {
     public class VignetteImageEffect : OverhaulCameraEffectBehaviour
     {
-        [OverhaulSettingAttribute_Old("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
-        public static bool VignetteEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.OTHER, "Enable Vignette")]
+        public static bool VignetteEnabled = true;
 
         [OverhaulSettingSliderParameters(false, -0.2f, 0.3f)]
-        [OverhaulSettingAttribute_Old("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, "Graphics.Shaders.Vignette")]
-        public static float VignetteIntensity;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.OTHER, "Vignette intensity")]
+        public static float VignetteIntensity = 0.05f;
 
         private static Material s_Material;
         private static readonly Func<bool> s_EnableFunction = () => VignetteEnabled;

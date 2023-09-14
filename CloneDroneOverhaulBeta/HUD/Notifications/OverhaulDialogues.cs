@@ -60,7 +60,7 @@ namespace CDOverhaul
 
         public static void CreateDialogue(string title, string description, float additionalTime, Vector2? size, Button[] buttons)
         {
-            if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
+            if (!m_Instance || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
                 return;
 
             m_Instance.CreateDialogueInstance(title, description, additionalTime, size, buttons);
@@ -68,7 +68,7 @@ namespace CDOverhaul
 
         public static void Create2BDialogue(string title, string description, float additionalTime, string b1Text, UnityAction b1Act, string b2Text, UnityAction b2Act, Vector2? size)
         {
-            if (m_Instance == null || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
+            if (!m_Instance || m_Instance.IsDisposedOrDestroyed() || !IsInitialized)
                 return;
 
             Button[] buttons = new Button[2];

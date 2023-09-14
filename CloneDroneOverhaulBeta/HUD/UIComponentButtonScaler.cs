@@ -4,32 +4,19 @@ using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
 {
-    public class OverhaulUIButtonScaler : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    public class UIComponentButtonScaler : OverhaulBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
+        private bool m_Highlight;
+        private bool m_Click;
+
         public Vector3 IdleScale = Vector3.one;
         public Vector3 HighlightedScale = new Vector3(1.02f, 1.02f, 1.02f);
         public Vector3 PressedScale = new Vector3(0.95f, 0.95f, 0.95f);
 
         public float Multiplier = 30f;
 
-        public Button LocalButton;
-        private Transform m_TargetTransform;
-
-        private bool m_Highlight;
-        private bool m_Click;
-
         private void Update()
         {
-            if (!LocalButton)
-            {
-                LocalButton = GetComponent<Button>();
-                if (!LocalButton)
-                    return;
-            }
-
-            if (!m_TargetTransform)
-                m_TargetTransform = LocalButton.transform;
-
             m_Click = m_Highlight && Input.GetMouseButton(0);
 
             if (m_Click)
@@ -49,7 +36,7 @@ namespace CDOverhaul.HUD
         {
             m_Click = false;
             m_Highlight = false;
-            if (m_TargetTransform) m_TargetTransform.localScale = IdleScale;
+            base.transform.localScale = IdleScale;
         }
 
         private void updateScale(Vector3 target)

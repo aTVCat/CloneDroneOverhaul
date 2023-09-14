@@ -60,7 +60,7 @@ namespace CDOverhaul.HUD.Vanilla
                 m_ImageButton = m_Image.GetComponent<Button>();
                 m_ImageButton.onClick.AddListener(delegate
                 {
-                    OverhaulUIImageViewer.SetActive(true, m_DownloadedTexture);
+                    UIConstants.ShowImageViewer((Texture2D)m_DownloadedTexture);
                 });
                 m_ImageButton.enabled = false;
                 m_CloseButton = m_ModdedObject.GetObject<Button>(4);

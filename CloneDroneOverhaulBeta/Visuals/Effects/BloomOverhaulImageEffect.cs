@@ -9,20 +9,20 @@ namespace CDOverhaul.Visuals
         [OverhaulSettingAttribute_Old("Graphics.Post effects.Set vanilla settings", OverhaulSettingsManager_Old.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent SetBloomVanilla = new OverhaulSettingWithEvent();
 
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Enable bloom", true, false, "Make every light shine better", "Bloom.png")]
-        public static bool BloomEnabled;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.BLOOM, "Enable Bloom")]
+        public static bool BloomEnabled = true;
 
         [OverhaulSettingSliderParameters(true, 1, 10)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", "Graphics.Post effects.Enable bloom")]
-        public static int BloomIterations;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.BLOOM, "Bloom iterations")]
+        public static int BloomIterations = 10;
 
         [OverhaulSettingSliderParameters(false, 0.1f, 2f)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom intensity", 0.7f, false, null, "Graphics.Post effects.Enable bloom")]
-        public static float BloomIntensity;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.BLOOM, "Bloom intensity")]
+        public static float BloomIntensity = 0.7f;
 
         [OverhaulSettingSliderParameters(false, 0.85f, 2f)]
-        [OverhaulSettingAttribute_Old("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, "Graphics.Post effects.Enable bloom")]
-        public static float BloomThreshold;
+        [OverhaulSetting(OverhaulSettingConstants.Categories.GRAPHICS, OverhaulSettingConstants.Sections.BLOOM, "Bloom threshold")]
+        public static float BloomThreshold = 1.25f;
 
         public override void Start()
         {

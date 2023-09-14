@@ -78,14 +78,7 @@ namespace CDOverhaul.HUD
 
         private void onPatchNotesButtonClicked()
         {
-            /*OverhaulPatchNotesUI overhaulPatchNotesUI = Get<OverhaulPatchNotesUI>();
-            if (!overhaulPatchNotesUI)
-            {
-                m_PatchNotesButton.interactable = false;
-                return;
-            }
-
-            overhaulPatchNotesUI.Show();*/
+            UIConstants.ShowChangelogPanel();
         }
 
         private void onTestUIClicked()

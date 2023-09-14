@@ -29,7 +29,17 @@ namespace CDOverhaul
 
             public const string TEST_SECTION3 = "Test section 3";
 
+
             public const string DITHERING = "Dithering";
+
+            public const string AMPLIFY_OCCLUSION = "Amplify Occlusion";
+
+            public const string BLOOM = "Bloom";
+
+            public const string SHADERS = "Shaders";
+
+            public const string OTHER = "Other";
+
 
             public const string BOOT_SCREEN = "Startup screen";
 
