@@ -10,7 +10,8 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            return !OverhaulCrashScreen.Instance;
+            OverhaulUIManager uiManager = OverhaulUIManager.reference;
+            return !uiManager || !uiManager.hasLoadedAssets;
         }
     }
 }

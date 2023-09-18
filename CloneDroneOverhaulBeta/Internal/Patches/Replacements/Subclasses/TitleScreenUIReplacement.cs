@@ -87,7 +87,7 @@ namespace CDOverhaul.Patches
                 exitButton.onClick = new Button.ButtonClickedEvent();
                 exitButton.onClick.AddListener(delegate
                 {
-                    target.SetLogoAndRootButtonsVisible(true);
+                    target.setLogoAndRootButtonsVisible(true);
                     moddedGameModesSelectScreen.Hide();
                 });
 
@@ -95,7 +95,7 @@ namespace CDOverhaul.Patches
                 playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
                 playModdedButtonComponent.onClick.AddListener(delegate
                 {
-                    target.SetLogoAndRootButtonsVisible(false);
+                    target.setLogoAndRootButtonsVisible(false);
                     moddedGameModesSelectScreen.Show();
                 });
             }

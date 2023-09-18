@@ -26,7 +26,7 @@ namespace CDOverhaul.Gameplay.Combat
             }
         }
 
-        private WeaponType m_EquippedWeponType;
+        private WeaponType m_EquippedWeaponType;
 
         public override void Start()
         {
@@ -87,11 +87,11 @@ namespace CDOverhaul.Gameplay.Combat
             }
 
             WeaponType newEquippedWeaponType = Owner.GetEquippedWeaponType();
-            if (newEquippedWeaponType != m_EquippedWeponType)
+            if (newEquippedWeaponType != m_EquippedWeaponType)
             {
                 m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, Owner.IsFireWeapon(newEquippedWeaponType));
             }
-            m_EquippedWeponType = newEquippedWeaponType;
+            m_EquippedWeaponType = newEquippedWeaponType;
             stopwatch.StopTimer("Update");
         }
     }

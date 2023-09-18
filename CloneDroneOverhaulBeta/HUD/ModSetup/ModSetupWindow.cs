@@ -78,7 +78,7 @@ namespace CDOverhaul.HUD
                 return;
 
             base.gameObject.SetActive(true);
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(false);
         }
 
         public void Hide()
@@ -86,7 +86,7 @@ namespace CDOverhaul.HUD
             base.gameObject.SetActive(false);
 
             if (GameModeManager.IsOnTitleScreen())
-                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
         }
 
         public void EndSetup()

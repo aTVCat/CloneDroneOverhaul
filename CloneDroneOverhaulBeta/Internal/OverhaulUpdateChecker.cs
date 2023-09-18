@@ -110,7 +110,7 @@ namespace CDOverhaul
         [DebugAction("[Mod-Bot] New version message")]
         private static void showModBotWindow()
         {
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(false);
             OverhaulFullscreenDialogueWindow window = OverhaulFullscreenDialogueWindow.Instance;
             window.ResetContents();
             window.SetTitle("New update available!");
@@ -119,13 +119,13 @@ namespace CDOverhaul
             window.AddButton("Ignore", delegate
             {
                 if (GameModeManager.IsOnTitleScreen())
-                    GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                    GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 window.Hide();
             });
             window.AddButton("Get update", delegate
             {
                 if (GameModeManager.IsOnTitleScreen())
-                    GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                    GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 UnityEngine.Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
                 window.Hide();
             }, "#FFFFFF", null, 100f);
@@ -135,7 +135,7 @@ namespace CDOverhaul
         [DebugAction("[GitHub] New version message")]
         private static void showGitHubWindow()
         {
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(false);
             OverhaulFullscreenDialogueWindow window = OverhaulFullscreenDialogueWindow.Instance;
             window.ResetContents();
             window.SetTitle("New update available!");
@@ -143,12 +143,12 @@ namespace CDOverhaul
             window.SetWindowSize(300f, 170f);
             window.AddButton("Ignore", delegate
             {
-                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 window.Hide();
             });
             window.AddButton("Get update", delegate
             {
-                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 UnityEngine.Application.OpenURL("https://github.com/aTVCat/CloneDroneOverhaul/releases");
                 window.Hide();
             }, "#FFFFFF", null, 100f);

@@ -461,7 +461,6 @@
     <Compile Include="Internal\RichPresence\OverhaulRPCBase.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCManager.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />
-    <Compile Include="Internal\RichPresence\OverhaulSteamRPC.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingBaseAttribute.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingConstants.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingInfo.cs" />
@@ -574,8 +573,8 @@
     <Compile Include="Visuals\Robots\SeveredBodyPartSparks.cs" />
     <Compile Include="Gameplay\ViewModes\ViewModesExpansion.cs" />
     <Compile Include="HUD\AboutOverhaul\UIAboutMod.cs" />
-    <Compile Include="HUD\Boot\UIOverhaulStartupScreen.cs" />
-    <Compile Include="HUD\CrashScreen\OverhaulCrashScreen.cs" />
+    <Compile Include="HUD\StartupScreen\UIOverhaulStartupScreen.cs" />
+    <Compile Include="HUD\CrashScreen\UIErrorScreen.cs" />
     <Compile Include="HUD\DevTools\Sub\OverhaulDebugActionsEntryDisplay.cs" />
     <Compile Include="HUD\ModSetup\TwoButtonsToggle.cs" />
     <Compile Include="HUD\FullscreenDialogue\OverhaulFullscreenDialogueWindow.cs" />
@@ -623,8 +622,8 @@
     <Compile Include="HUD\Notifications\OverhaulDialoguePresetType.cs" />
     <Compile Include="HUD\Notifications\OverhaulDialogues.cs" />
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
-    <Compile Include="HUD\PatchNotes\Changelogs.cs" />
-    <Compile Include="HUD\PatchNotes\UIChangelog.cs" />
+    <Compile Include="HUD\Changelog\Changelogs.cs" />
+    <Compile Include="HUD\Changelog\UIChangelog.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -638,7 +637,7 @@
     <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusion.cs" />
     <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
     <Compile Include="Visuals\OverhaulCameraManager.cs" />
-    <Compile Include="HUD\PauseMenu\OverhaulPauseMenu.cs" />
+    <Compile Include="HUD\PauseMenu\UIPauseMenu.cs" />
     <Compile Include="HUD\Overlays\OverhaulOverlayBase.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationPanel.cs" />
     <Compile Include="HUD\FeedbackMenu\UIFeedbackMenu.cs" />

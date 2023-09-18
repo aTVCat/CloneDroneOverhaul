@@ -40,17 +40,17 @@ namespace CDOverhaul
             window.SetWindowSize(500f, 250f);
             window.AddButton("OK", delegate
             {
-                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 window.Hide();
             });
             window.AddButton("Get update", delegate
             {
-                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+                GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(true);
                 UnityEngine.Application.OpenURL("https://modbot.org/modPreview.html?modID=rAnDomPaTcHeS1");
                 window.Hide();
             }, "#FFFFFF", OverhaulUpdateChecker.HasNewUpdate, 100f);
             window.Show();
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(false);
         }
     }
 }

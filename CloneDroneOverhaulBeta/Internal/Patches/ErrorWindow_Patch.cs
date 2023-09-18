@@ -10,12 +10,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulPauseMenu.Instance)
+            if (!OverhaulMod.IsModInitialized || !UIPauseMenu.Instance)
                 return true;
 
-            if (OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)
+            if (UIPauseMenu.UseThisMenu && !UIPauseMenu.ForceUseOldMenu)
             {
-                OverhaulPauseMenu.ToggleMenu();
+                UIPauseMenu.ToggleMenu();
                 return false;
             }
             return true;

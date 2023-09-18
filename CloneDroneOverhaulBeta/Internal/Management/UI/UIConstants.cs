@@ -51,6 +51,12 @@ namespace CDOverhaul.HUD
             OverhaulUIManager.reference.Show<UIImageViewer>(UI_IMAGE_VIEWER, new object[] { texture });
         }
 
+        public const string UI_ERROR_SCREEN = "UI_ErrorScreen";
+        public static void ShowErrorScreen(string error, string stacktrace)
+        {
+            OverhaulUIManager.reference.Show<UIErrorScreen>(UI_ERROR_SCREEN, new object[] { error, stacktrace });
+        }
+
         public static class Arguments
         {
             public const string DONT_UPDATE_EFFECTS = "dontUpdateEffects";

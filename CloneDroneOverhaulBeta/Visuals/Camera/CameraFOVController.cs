@@ -52,7 +52,7 @@ namespace CDOverhaul.Visuals
 
         public float GetTargetFoV()
         {
-            return m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && OverhaulPauseMenu.UseZoom
+            return m_TimeManager.IsGamePaused() && !m_UpgradeUI.gameObject.activeSelf && UIPauseMenu.UseZoom
                 ? PAUSED_VALUE + ViewModesSystem.FOVOffset
                 : (ViewModesSystem.IsFirstPersonModeEnabled ? FIRST_PERSON_DEFAULT_VALUE : DEFAULT_VALUE) + ViewModesSystem.FOVOffset + RobotCameraZoomExpansion.FOVOffset;
         }

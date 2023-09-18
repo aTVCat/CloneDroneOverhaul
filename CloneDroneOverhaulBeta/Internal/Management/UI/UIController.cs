@@ -12,6 +12,24 @@ namespace CDOverhaul
     public class UIController : OverhaulAdvancedBehaviour
     {
         private ModdedObject m_ModdedObject;
+
+        private TitleScreenUI m_TitleScreen;
+
+        private byte m_EnableCursorConditionID = 0;
+
+        private bool m_WereTitleScreenButtonsActive;
+
+        public TitleScreenUI TitleScreen
+        {
+            get
+            {
+                if (!m_TitleScreen)
+                    m_TitleScreen = GameUIRoot.Instance?.TitleScreenUI;
+
+                return m_TitleScreen;
+            }
+        }
+
         public ModdedObject MyModdedObject
         {
             get
@@ -26,7 +44,6 @@ namespace CDOverhaul
             }
         }
 
-        private byte m_EnableCursorConditionID = 0;
         protected bool ShowCursor
         {
             get
@@ -53,18 +70,6 @@ namespace CDOverhaul
             }
         }
 
-        private TitleScreenUI m_TitleScreen;
-        public TitleScreenUI TitleScreen
-        {
-            get
-            {
-                if (!m_TitleScreen)
-                    m_TitleScreen = GameUIRoot.Instance?.TitleScreenUI;
-
-                return m_TitleScreen;
-            }
-        }
-
         public virtual void Initialize()
         {
             if (!MyModdedObject.objects.IsNullOrEmpty())
@@ -81,6 +86,7 @@ namespace CDOverhaul
 
         protected virtual bool HideTitleScreen() => false;
         protected virtual bool WaitForEscapeKeyToHide() => false;
+        protected virtual bool RememberTitleScreenButtonsState() => true;
 
         protected override void OnDisposed()
         {
@@ -111,13 +117,16 @@ namespace CDOverhaul
         protected void HideTitleScreenButtons()
         {
             if (TitleScreen)
-                TitleScreen.SetLogoAndRootButtonsVisible(false);
+            {
+                m_WereTitleScreenButtonsActive = TitleScreen.RootButtonsContainerBG.activeSelf;
+                TitleScreen.setLogoAndRootButtonsVisible(false);
+            }
         }
 
         protected void ShowTitleScreenButtons()
         {
             if (GameModeManager.IsOnTitleScreen() && TitleScreen)
-                TitleScreen.SetLogoAndRootButtonsVisible(true);
+                TitleScreen.setLogoAndRootButtonsVisible(RememberTitleScreenButtonsState() ? m_WereTitleScreenButtonsActive : true);
         }
 
         public static void AssignValues(OverhaulBehaviour behaviour)

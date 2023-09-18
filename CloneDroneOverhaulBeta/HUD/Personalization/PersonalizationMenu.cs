@@ -875,7 +875,7 @@ namespace CDOverhaul.HUD
             if (GameUIRoot.Instance == null)
                 return;
 
-            OverhaulPauseMenu menu = Get<OverhaulPauseMenu>();
+            UIPauseMenu menu = Get<UIPauseMenu>();
             ParametersMenu paramsMenu = Get<ParametersMenu>();
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
             if (menu == null || paramsMenu == null || escMenu == null)

@@ -413,15 +413,6 @@ namespace CDOverhaul
 
         #endregion
 
-        #region TitleScreenUI
-
-        public static void SetLogoAndRootButtonsVisible(this TitleScreenUI titleScreenUI, in bool value)
-        {
-            titleScreenUI.CallPrivateMethod("setLogoAndRootButtonsVisible", new object[] { value });
-        }
-
-        #endregion
-
         #region UpgradeUIIcon
 
         public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)

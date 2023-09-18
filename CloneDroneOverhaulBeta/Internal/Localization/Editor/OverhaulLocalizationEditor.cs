@@ -44,7 +44,7 @@ namespace CDOverhaul
                 m_HasPopulated = true;
             }
 
-            GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            GameUIRoot.Instance.TitleScreenUI.setLogoAndRootButtonsVisible(false);
         }
 
         public void Hide()
@@ -53,7 +53,7 @@ namespace CDOverhaul
 
             TitleScreenUI tUI = GameUIRoot.Instance.TitleScreenUI;
             if (tUI.gameObject.activeSelf)
-                tUI.SetLogoAndRootButtonsVisible(true);
+                tUI.setLogoAndRootButtonsVisible(true);
         }
 
         public void EditLang(string lang)

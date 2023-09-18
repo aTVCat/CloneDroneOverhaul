@@ -34,6 +34,12 @@ namespace CDOverhaul
             private set;
         }
 
+        public bool hasLoadedAssets
+        {
+            get;
+            private set;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -48,6 +54,8 @@ namespace CDOverhaul
             showMainUIs();
             if(!uiPrefabs)
                 uiPrefabs = base.gameObject.AddComponent<OverhaulUIPrefabs>();
+
+            hasLoadedAssets = true;
         }
 
         protected override void OnDisposed()
@@ -107,10 +115,18 @@ namespace CDOverhaul
                 {
                     toInstantiate = m_CachedPrefabs[assetKey];
                 }
-                toShow = Instantiate(toInstantiate, containerTransform, false).AddComponent<T>();
-                prepareUIObject(toShow.gameObject, args);
-                toShow.Initialize();
+                var gameObject = Instantiate(toInstantiate, containerTransform, false);
+                try
+                {
+                    prepareUIObject(gameObject, args);
+                }
+                catch(Exception exc)
+                {
+                    OverhaulDebug.Warn(exc, EDebugType.UI);
+                }
+                toShow = gameObject.AddComponent<T>();
                 m_InstantiatedPrefabs.Add(assetKey, toShow);
+                toShow.Initialize();
             }
             else
             {
@@ -148,9 +164,12 @@ namespace CDOverhaul
         private void replaceUIEffects(GameObject gameObject)
         {
             Outline[] outlines = gameObject.GetComponentsInChildren<Outline>();
+            if (outlines.IsNullOrEmpty())
+                return;
+
             foreach(Outline outline in outlines)
             {
-                if (outline.GetType() != typeof(Outline))
+                if (!outline || outline.GetType() != typeof(Outline))
                     continue;
 
                 BetterOutline betterOutline = outline.gameObject.AddComponent<BetterOutline>();

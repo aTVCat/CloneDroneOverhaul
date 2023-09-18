@@ -2,18 +2,11 @@
 {
     public class OverhaulRPCManager : OverhaulManager<OverhaulRPCManager>
     {
-        // Todo: make more settings
         [OverhaulSettingWithNotification(1)]
         [OverhaulSettingAttribute_Old("Mod.Information.Rich Presence", true)]
-        public static bool EnableRPC;
+        public static bool EnableRPC = true;
 
         public OverhaulDiscordRPC discord
-        {
-            get;
-            private set;
-        }
-
-        public OverhaulSteamRPC steam
         {
             get;
             private set;
@@ -26,7 +19,6 @@
                 return;
 
             discord = base.gameObject.AddComponent<OverhaulDiscordRPC>();
-            steam = base.gameObject.AddComponent<OverhaulSteamRPC>();
         }
     }
 }

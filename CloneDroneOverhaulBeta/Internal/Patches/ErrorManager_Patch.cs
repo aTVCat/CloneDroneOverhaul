@@ -28,11 +28,7 @@ namespace CDOverhaul.Patches
                 if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooks.HasExcludedError(report))
                     return false;
 
-                OverhaulCrashScreen crashScreen = OverhaulCrashScreen.Instance;
-                if (crashScreen)
-                {
-                    crashScreen.Show(logString, stackTrace);
-                }
+                UIConstants.ShowErrorScreen(logString, stackTrace);
 
                 string gamemode = string.Empty;
                 string gameVer = string.Empty;
