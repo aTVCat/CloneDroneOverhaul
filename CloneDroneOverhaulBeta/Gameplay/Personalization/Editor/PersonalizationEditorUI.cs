@@ -63,15 +63,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         public override void Show()
         {
             base.Show();
-            ShowCursor = true;
-
             TypesPanel.StartTutorial();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            ShowCursor = false;
         }
 
         public void Refresh()

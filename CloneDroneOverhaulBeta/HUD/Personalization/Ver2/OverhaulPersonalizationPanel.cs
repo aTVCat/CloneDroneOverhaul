@@ -48,19 +48,15 @@ namespace CDOverhaul.HUD
                 OnDoneButtonClicked();
         }
 
-        public void Show()
+        public override void Show()
         {
-            base.gameObject.SetActive(true);
-            ShowCursor = true;
-
+            base.Show();
             PopulateItems();
         }
 
-        public void Hide()
+        public override void Hide()
         {
-            base.gameObject.SetActive(false);
-            ShowCursor = false;
-
+            base.Hide();
             OverhaulPlayerInfo info = OverhaulPlayerInfo.LocalOverhaulPlayerInfo;
             if (info != null && info.HasReceivedData)
                 info.UpdateData();

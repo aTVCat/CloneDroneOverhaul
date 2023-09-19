@@ -52,14 +52,7 @@ namespace CDOverhaul.HUD
         public override void Show()
         {
             base.Show();
-            ShowCursor = true;
             SetSendReportButtonInteractable(!s_HasSentReport);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            ShowCursor = false;
         }
 
         public override void OnGetArguments(object[] args)

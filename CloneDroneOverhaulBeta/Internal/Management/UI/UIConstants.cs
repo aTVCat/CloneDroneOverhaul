@@ -57,6 +57,12 @@ namespace CDOverhaul.HUD
             OverhaulUIManager.reference.Show<UIErrorScreen>(UI_ERROR_SCREEN, new object[] { error, stacktrace });
         }
 
+        public const string UI_PAUSE_MENU = "UI_PauseMenu";
+        public static void ShowPauseScreen()
+        {
+            OverhaulUIManager.reference.Show<UIPauseMenu>(UI_PAUSE_MENU);
+        }
+
         public static class Arguments
         {
             public const string DONT_UPDATE_EFFECTS = "dontUpdateEffects";

@@ -10,12 +10,25 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            if (!OverhaulMod.IsModInitialized || !UIPauseMenu.Instance)
+            if (!OverhaulMod.IsModInitialized)
                 return true;
 
             if (UIPauseMenu.UseThisMenu && !UIPauseMenu.ForceUseOldMenu)
             {
-                UIPauseMenu.ToggleMenu();
+                UIPauseMenu pauseMenu = OverhaulUIManager.reference?.GetUI<UIPauseMenu>(UIConstants.UI_PAUSE_MENU);
+                if (!pauseMenu)
+                {
+                    UIConstants.ShowPauseScreen();
+                }
+                else
+                {
+                    if (!pauseMenu.gameObject.activeSelf)
+                    {
+                        pauseMenu.Show();
+                        return false;
+                    }
+                    pauseMenu.Hide();
+                }
                 return false;
             }
             return true;

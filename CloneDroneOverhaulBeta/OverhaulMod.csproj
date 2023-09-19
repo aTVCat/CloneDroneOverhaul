@@ -495,9 +495,6 @@
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationItemDisplay.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
     <Compile Include="Visuals\Camera\CameraFOVController.cs" />
-    <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
-    <Compile Include="HUD\ConnectionScreens\OverhaulDisconnectScreen.cs" />
-    <Compile Include="HUD\ConnectionScreens\OverhaulConnectScreen.cs" />
     <Compile Include="HUD\ModSetup\RecommendationTooltip.cs" />
     <Compile Include="HUD\OverhaulUIPanelSlider.cs" />
     <Compile Include="HUD\OverhaulUIAnchoredPanelSlider.cs" />
@@ -722,7 +719,7 @@
     <Compile Include="Internal\Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\Features\OverhaulFeatureDefinition.cs" />
-    <Compile Include="Internal\Settings\Features\OverhaulFeatureAvailabilitySystem.cs" />
+    <Compile Include="Internal\Settings\Features\OverhaulFeaturesSystem.cs" />
     <Compile Include="Internal\Settings\Features\OverhaulFeatureID.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingWithEvent.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingRequireUpdate.cs" />

@@ -875,19 +875,16 @@ namespace CDOverhaul.HUD
             if (GameUIRoot.Instance == null)
                 return;
 
-            UIPauseMenu menu = Get<UIPauseMenu>();
-            ParametersMenu paramsMenu = Get<ParametersMenu>();
+            UIPauseMenu menu = OverhaulUIManager.reference?.GetUI<UIPauseMenu>(UIConstants.UI_PAUSE_MENU);
             EscMenu escMenu = GameUIRoot.Instance.EscMenu;
-            if (menu == null || paramsMenu == null || escMenu == null)
+            if (menu == null || escMenu == null)
             {
                 OverhaulDialogues.CreateDialogue("Error occurred while applying new offsets", "Skin (spawned model): " + CurrentlyEditingItem.Name + " wasn't updated", 4f, new Vector2(300, 200), new OverhaulDialogues.Button[] { });
                 return;
             }
 
-            menu.ScheduleHide = true;
             menu.Hide();
             escMenu.Hide();
-            paramsMenu.Hide();
             SetMenuActive(true);
         }
 

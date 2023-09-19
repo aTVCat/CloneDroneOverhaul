@@ -105,7 +105,7 @@ namespace CDOverhaul.Gameplay
             bool result = m_ExclusivePlayerID.Contains(localPlayFabID);
 
             // Force unlock skin if the user is CDO developer
-            if (!result && OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
+            if (!result && OverhaulFeaturesSystem.Implemented.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 result = localPlayFabID.Equals("883CC7F4CA3155A3");
 
             return result;

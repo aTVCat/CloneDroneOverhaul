@@ -37,6 +37,8 @@ namespace CDOverhaul.HUD
         private Text m_TitleScreenUIVersionLabel;
         private GameObject m_TitleScreenRootButtons;
 
+        protected override bool AutoCursorManagement() => false;
+
         public override void Initialize()
         {
             base.Initialize();

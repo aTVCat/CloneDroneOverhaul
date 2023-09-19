@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.AccessControl;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static KopiLua.Lua;
 
 namespace CDOverhaul
 {
@@ -44,14 +46,32 @@ namespace CDOverhaul
             }
         }
 
+        private bool m_HideCursor;
         protected bool ShowCursor
         {
             get
             {
+                bool useBetterMethod = OverhaulFeaturesSystem.Implemented.IsImplemented(OverhaulFeaturesSystem.Implemented.NEW_CURSOR_HIDING_METHOD);
+                if (useBetterMethod)
+                {
+                    return m_HideCursor;
+                }
                 return m_EnableCursorConditionID != 0;
             }
             set
             {
+                bool useBetterMethod = OverhaulFeaturesSystem.Implemented.IsImplemented(OverhaulFeaturesSystem.Implemented.NEW_CURSOR_HIDING_METHOD);
+                if (useBetterMethod)
+                {
+                    m_HideCursor = value;
+                    GameUIRoot gameUIRoot = GameUIRoot.Instance;
+                    if (gameUIRoot)
+                    {
+                        gameUIRoot.RefreshCursorEnabled();
+                    }
+                    return;
+                }
+
                 if (value && !IsDisposedOrDestroyed())
                 {
                     if (m_EnableCursorConditionID != 0)
@@ -72,6 +92,7 @@ namespace CDOverhaul
 
         public virtual void Initialize()
         {
+            InternalModBot.RegisterShouldCursorBeEnabledDelegate.Register(ShouldHideCursor);
             if (!MyModdedObject.objects.IsNullOrEmpty())
             {
                 AssignValues(this);
@@ -79,20 +100,25 @@ namespace CDOverhaul
             AddListeners();
         }
 
+        protected override void OnDisposed()
+        {
+            RemoveListeners();
+            ShowCursor = false;
+            InternalModBot.RegisterShouldCursorBeEnabledDelegate.UnRegister(ShouldHideCursor);
+            OverhaulDisposable.AssignNullToAllVars(this);
+        }
+
         public virtual void OnGetArguments(object[] args)
         {
 
         }
 
+        protected virtual bool ShouldHideCursor() => ShowCursor;
+
         protected virtual bool HideTitleScreen() => false;
         protected virtual bool WaitForEscapeKeyToHide() => false;
         protected virtual bool RememberTitleScreenButtonsState() => true;
-
-        protected override void OnDisposed()
-        {
-            OverhaulDisposable.AssignNullToAllVars(this);
-            RemoveListeners();
-        }
+        protected virtual bool AutoCursorManagement() => true;
 
         public virtual void Update()
         {
@@ -105,6 +131,8 @@ namespace CDOverhaul
             base.gameObject.SetActive(true);
             if (HideTitleScreen())
                 HideTitleScreenButtons();
+            if (AutoCursorManagement())
+                ShowCursor = true;
         }
 
         public virtual void Hide()
@@ -112,6 +140,8 @@ namespace CDOverhaul
             base.gameObject.SetActive(false);
             if (HideTitleScreen())
                 ShowTitleScreenButtons();
+            if (AutoCursorManagement())
+                ShowCursor = false;
         }
 
         protected void HideTitleScreenButtons()
@@ -226,7 +256,7 @@ namespace CDOverhaul
                                 {
                                     MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags);
                                     if (methodInfo == null)
-                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for button " + objectReference.ObjectName + "!");
 
                                     button.AddOnClickListener(delegate
                                     {
@@ -241,7 +271,7 @@ namespace CDOverhaul
                                 {
                                     MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(bool) }, null);
                                     if (methodInfo == null)
-                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for toggle " + objectReference.ObjectName + "!");
 
                                     toggle.onValueChanged.AddListener(delegate (bool value)
                                     {
@@ -256,7 +286,7 @@ namespace CDOverhaul
                                 {
                                     MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(string) }, null);
                                     if (methodInfo == null)
-                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for inputfield " + objectReference.ObjectName + "!");
 
                                     inputField.onEndEdit.AddListener(delegate (string value)
                                     {
@@ -271,7 +301,7 @@ namespace CDOverhaul
                                 {
                                     MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(int) }, null);
                                     if (methodInfo == null)
-                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for " + objectReference.ObjectName + "!");
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for dropdown " + objectReference.ObjectName + "!");
 
                                     dropdown.onValueChanged.AddListener(delegate (int value)
                                     {
@@ -306,6 +336,13 @@ namespace CDOverhaul
                 }
             }
             throw new NullReferenceException("AssignActionToButton: Could not find button called " + objectName + "!");
+        }
+
+        public static void AssignActionToButton(ModdedObject moddedObject, int index, Action action)
+        {
+            Button component = (moddedObject.objects[index] as GameObject).GetComponent<Button>();
+            if (component)
+                component.AddOnClickListener(new UnityAction(action));
         }
 
         public static void AssignActionToToggle(ModdedObject moddedObject, string objectName, Action<bool> action)
