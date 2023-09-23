@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UdpKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,12 @@ namespace CDOverhaul
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
         private List<IGenericStringEventListener> m_GenericStringEventListeners = new List<IGenericStringEventListener>();
+
+        public static bool isShuttingDownBolt
+        {
+            get;
+            internal set;
+        }
 
         public override void OnEvent(GenericStringForModdingEvent moddedEvent)
         {
@@ -71,6 +78,11 @@ namespace CDOverhaul
                 foreach (OverhaulPlayerInfo overhaulPlayerInfo in OverhaulPlayerInfo.AllOverhaulPlayerInfos)
                     if (overhaulPlayerInfo)
                         overhaulPlayerInfo.OnGenericStringEvent(eventData);
+        }
+
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback, UdpConnectionDisconnectReason disconnectReason)
+        {
+            isShuttingDownBolt = true;
         }
 
         internal void TryInitialize()

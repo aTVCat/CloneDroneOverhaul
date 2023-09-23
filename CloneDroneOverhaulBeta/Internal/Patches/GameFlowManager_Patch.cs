@@ -54,11 +54,6 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Start")]
         private static void Start_Prefix()
         {
-            foreach (OverhaulController overhaulController in OverhaulController.allControllers)
-            {
-                OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.Initialize);
-                overhaulController.OnSceneReloaded();
-            }
         }
 
         /*

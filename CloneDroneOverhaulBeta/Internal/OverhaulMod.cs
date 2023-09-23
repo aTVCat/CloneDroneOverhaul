@@ -17,10 +17,12 @@ namespace CDOverhaul
     [MainModClass]
     public class OverhaulMod : Mod
     {
+        public const string MOD_ID = "rAnDomPaTcHeS1";
+
         /// <summary>
         /// An event that is called when mod was deactivated by user
         /// </summary>
-        public const string ModDeactivatedEventString = "ModDeactivated";
+        public const string MOD_DEACTIVATED_EVENT = "ModDeactivated";
 
         /// <summary>
         /// Returns <b>True</b> if <b><see cref="OverhaulMod.Core"/></b> is not <b>Null</b>
@@ -68,6 +70,7 @@ namespace CDOverhaul
         /// </summary>
         public override void OnModEnabled()
         {
+            OverhaulCore.isShuttingDownBolt = false;
             Base = this;
             if (IsModInitialized)
                 return;
@@ -141,7 +144,7 @@ namespace CDOverhaul
             if (!IsModInitialized)
                 return;
 
-            OverhaulEvents.DispatchEvent(ModDeactivatedEventString);
+            OverhaulEvents.DispatchEvent(MOD_DEACTIVATED_EVENT);
             GameObject.Destroy(Core.gameObject);
             Core = null;
         }

@@ -128,6 +128,9 @@ namespace CDOverhaul
 
         public virtual void Show()
         {
+            if (IsDisposedOrDestroyed())
+                return;
+
             base.gameObject.SetActive(true);
             if (HideTitleScreen())
                 HideTitleScreenButtons();
@@ -137,6 +140,9 @@ namespace CDOverhaul
 
         public virtual void Hide()
         {
+            if (IsDisposedOrDestroyed())
+                return;
+
             base.gameObject.SetActive(false);
             if (HideTitleScreen())
                 ShowTitleScreenButtons();

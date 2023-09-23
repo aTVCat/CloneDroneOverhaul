@@ -25,7 +25,7 @@ namespace CDOverhaul
 
         internal static void Initialize()
         {
-            AddEventListener(OverhaulMod.ModDeactivatedEventString, Deconstruct);
+            AddEventListener(OverhaulMod.MOD_DEACTIVATED_EVENT, Deconstruct);
         }
 
         internal static void Deconstruct()

@@ -15,6 +15,9 @@ namespace CDOverhaul.Patches
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
+                if (OverhaulCore.isShuttingDownBolt)
+                    return false;
+
                 string report = "```" + logString + " " + stackTrace;
                 if (report.Contains("_data is null;"))
                     OverhaulCrashPreventionController.dataIsNUllError = true;

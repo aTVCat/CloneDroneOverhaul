@@ -50,7 +50,8 @@ namespace CDOverhaul
             if (!Controllers.IsNullOrEmpty())
                 foreach (AdditionalContentControllerBase controllerBase in Controllers)
                 {
-                    controllerBase.Dispose(true);
+                    if(controllerBase)
+                        controllerBase.Dispose(true);
                 }
             Controllers.Clear();
             base.OnDisposed();

@@ -51,7 +51,7 @@ namespace CDOverhaul
 
         protected override void OnDisposed()
         {
-            OverhaulEvents.RemoveEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+            OverhaulEvents.RemoveEventListener(OverhaulMod.MOD_DEACTIVATED_EVENT, OnModDeactivated);
             Remove(this);
 
             OverhaulDisposable.AssignNullToAllVars(this);
@@ -61,7 +61,7 @@ namespace CDOverhaul
 
         internal void InternalInitialize()
         {
-            OverhaulEvents.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
+            OverhaulEvents.AddEventListener(OverhaulMod.MOD_DEACTIVATED_EVENT, OnModDeactivated);
             Initialize();
         }
 

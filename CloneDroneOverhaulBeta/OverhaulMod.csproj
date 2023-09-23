@@ -458,6 +458,7 @@
     <Compile Include="Internal\Management\UI\PrefabContainer.cs" />
     <Compile Include="Internal\Management\UI\PrefabContainerAttribute.cs" />
     <Compile Include="Internal\Management\UI\UIConstants.cs" />
+    <Compile Include="Internal\Patches\ModsManager_Patch.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCBase.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCManager.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />

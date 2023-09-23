@@ -56,6 +56,7 @@ namespace CDOverhaul
                 uiPrefabs = base.gameObject.AddComponent<OverhaulUIPrefabs>();
 
             hasLoadedAssets = true;
+            OverhaulDebug.Log("OUIM - AssetsLoaded", EDebugType.UI);
         }
 
         protected override void OnDisposed()
@@ -70,6 +71,7 @@ namespace CDOverhaul
             base.OnSceneReloaded();
             instantiateCanvas();
             showMainUIs();
+            OverhaulDebug.Log("OUIM - Reloaded", EDebugType.UI);
         }
 
         private void instantiateCanvas()
@@ -101,6 +103,14 @@ namespace CDOverhaul
 
         public T Show<T>(string assetKey, object[] args = null) where T : UIController
         {
+            if (OverhaulCore.isShuttingDownBolt)
+                return null;
+
+            foreach(UIController ui in m_InstantiatedPrefabs.Values)
+            {
+                OverhaulDebug.Log("Instantiated prefab - " + ui.name, EDebugType.UI);
+            }
+
             OverhaulDebug.Log(string.Format("Show UI: {0} <{1}>", new object[] { assetKey, typeof(T).ToString() }), EDebugType.UI);
             T toShow = null;
             if (!m_InstantiatedPrefabs.ContainsKey(assetKey))
@@ -131,6 +141,10 @@ namespace CDOverhaul
             else
             {
                 toShow = (T)m_InstantiatedPrefabs[assetKey];
+                if (!toShow)
+                {
+                    OverhaulDebug.Warn("OUIM - Instantiated UIController was destroyed: " + assetKey, EDebugType.UI);
+                }
             }
             toShow.Show();
             toShow.OnGetArguments(args);
@@ -163,6 +177,9 @@ namespace CDOverhaul
 
         private void replaceUIEffects(GameObject gameObject)
         {
+            if (!gameObject)
+                return;
+
             Outline[] outlines = gameObject.GetComponentsInChildren<Outline>();
             if (outlines.IsNullOrEmpty())
                 return;

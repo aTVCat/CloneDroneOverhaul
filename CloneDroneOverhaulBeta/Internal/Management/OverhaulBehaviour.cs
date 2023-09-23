@@ -17,7 +17,7 @@ namespace CDOverhaul
             private set;
         }
 
-        public bool IsDisposedOrDestroyed() => IsDestroyed || IsDestroyed || !OverhaulMod.IsModInitialized;
+        public bool IsDisposedOrDestroyed() => IsDestroyed || IsDisposed || !OverhaulMod.IsModInitialized;
 
         public virtual void Awake() { }
         public virtual void Start() { }

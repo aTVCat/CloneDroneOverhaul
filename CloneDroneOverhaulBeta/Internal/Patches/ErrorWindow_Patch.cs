@@ -13,12 +13,16 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            if (UIPauseMenu.UseThisMenu && !UIPauseMenu.ForceUseOldMenu)
+            OverhaulUIManager uiManager = OverhaulUIManager.reference;
+            if (uiManager && UIPauseMenu.UseThisMenu && !UIPauseMenu.ForceUseOldMenu)
             {
-                UIPauseMenu pauseMenu = OverhaulUIManager.reference?.GetUI<UIPauseMenu>(UIConstants.UI_PAUSE_MENU);
+                UIPauseMenu pauseMenu = uiManager.GetUI<UIPauseMenu>(UIConstants.UI_PAUSE_MENU);
                 if (!pauseMenu)
                 {
                     UIConstants.ShowPauseScreen();
+                    pauseMenu = uiManager.GetUI<UIPauseMenu>(UIConstants.UI_PAUSE_MENU);
+                    if (!pauseMenu)
+                        return true;
                 }
                 else
                 {
