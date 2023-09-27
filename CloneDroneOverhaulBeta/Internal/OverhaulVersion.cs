@@ -10,7 +10,7 @@ namespace CDOverhaul
         public const bool IsModBotBuild = true;
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.3");
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.4");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
 
         private static readonly Updates s_CurrentUpdate = Updates.VER_2;

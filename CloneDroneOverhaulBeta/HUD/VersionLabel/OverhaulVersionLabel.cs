@@ -28,16 +28,7 @@ namespace CDOverhaul.HUD
 
         public override void Initialize()
         {
-            if (IsDisposedOrDestroyed())
-                return;
-
             Instance = this;
-            if (!GameUIRoot.Instance || !GameUIRoot.Instance.TitleScreenUI || !GameUIRoot.Instance.TitleScreenUI.VersionLabel)
-            {
-                base.enabled = false;
-                return;
-            }
-
             m_TitleScreenWatermark = MyModdedObject.GetObject<Transform>(0).gameObject;
             m_TitleScreenWatermark.SetActive(false);
             m_TitleScreenVersionLabel = MyModdedObject.GetObject<Text>(1);
@@ -59,9 +50,6 @@ namespace CDOverhaul.HUD
             m_UpperButtonsContainer = MyModdedObject.GetObject<Transform>(6).gameObject;
             m_PatchNotesButton = MyModdedObject.GetObject<Button>(7);
             m_PatchNotesButton.onClick.AddListener(onPatchNotesButtonClicked);
-
-            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
-            _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
         }
 
 
@@ -69,17 +57,12 @@ namespace CDOverhaul.HUD
         {
             base.OnDisposed();
             Instance = null;
-
-            OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, onSettingsChanged);
-            OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.GamemodeChangedEventString, onGamemodeChanged);
         }
 
         private void Update()
         {
             if (Time.frameCount % 5 == 0)
-            {
                 Refresh();
-            }
         }
 
         public void Refresh()
@@ -101,21 +84,11 @@ namespace CDOverhaul.HUD
             OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
             if (!overhaulPatchNotesUI)
             {
-                m_PatchNotesButton.interactable = false;
+                m_PatchNotesButton.gameObject.SetActive(false);
                 return;
             }
 
             overhaulPatchNotesUI.Show();
-        }
-
-        private void onGamemodeChanged()
-        {
-            Refresh();
-        }
-
-        private void onSettingsChanged()
-        {
-            Refresh();
         }
     }
 }

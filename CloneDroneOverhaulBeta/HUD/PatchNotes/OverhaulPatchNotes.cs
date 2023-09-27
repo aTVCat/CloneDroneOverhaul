@@ -13,6 +13,7 @@ namespace CDOverhaul
             {
                 OverhaulSessionController.SetKey("HasAddedChangelogs", true);
 
+                AllChangelogs.Add(new PatchInfo(new Version(0, 2, 13, 4), "0.2.13.4", new string[] { }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 13, 3), "0.2.13.3", new string[] { }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 12, 0), "0.2.12.0", new string[] { }));
                 AllChangelogs.Add(new PatchInfo(new Version(0, 2, 11, 1), "0.2.11.1", new string[] { }));

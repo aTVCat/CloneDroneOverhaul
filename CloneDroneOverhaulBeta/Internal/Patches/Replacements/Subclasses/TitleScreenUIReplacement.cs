@@ -22,100 +22,92 @@ namespace CDOverhaul.Patches
         private Transform m_AchievementsNewHint;
 
         private Transform m_MessagePanel;
-        public TitleScreenMessagePanel MessagePanelComponent;
 
         public override void Replace()
         {
             base.Replace();
-            TitleScreenUI target = GameUIRoot.Instance.TitleScreenUI;
-
-            m_ButtonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
-            if (m_ButtonsTransform == null)
-            {
-                SuccessfullyPatched = false;
+            TitleScreenUI target = GameUIRoot.Instance?.TitleScreenUI;
+            if (!target)
                 return;
-            }
 
-            m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
-            if (m_MultiplayerNEWButtonTransform != null)
-            {
-                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
-                m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
-            }
-
+            /*
             m_SingleplayerButtonTransform = TransformUtils.FindChildRecursive(target.transform, "PlaySingleplayer") as RectTransform;
-            if (m_SingleplayerButtonTransform != null)
+            if (m_SingleplayerButtonTransform)
             {
-                m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
-                m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
-
                 RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
-                playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
-                playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
-                LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
-                Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
-                playModdedButtonTextComponent.text = OverhaulLocalizationController.Localization.GetTranslation("Play modded");
-                Object.Destroy(playModdedButtonText);
-
-                Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
-                Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
-                moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
-                GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
-                moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
+                if (playModdedButton)
                 {
+                    m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
+                    if (m_MultiplayerNEWButtonTransform)
+                    {
+                        m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
+                        m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
+                    }
+
+                    m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
+                    m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
+
+                    playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
+                    playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
+                    LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
+                    if (playModdedButtonText)
+                    {
+                        Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
+                        playModdedButtonTextComponent.text = OverhaulLocalizationController.Localization.GetTranslation("Play modded");
+                        Object.Destroy(playModdedButtonText);
+                    }
+
+                    Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
+                    Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
+                    moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
+                    GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
+                    moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
+                    {
                     new GameModeCardData
                     {
-                        NameOfMode = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox"),
-                        Description = OverhaulLocalizationController.Localization.GetTranslation("Multiplayer Sandbox Desc"),
+                        NameOfMode = "Multiplayer Sandbox",
+                        Description = "Coming in update 5 or later...",
                         ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    }/*,
-                    new GameModeCardData
-                    {
-                        NameOfMode = "Testing mode",
-                        Description = "",
-                        ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    }*/
-                };
-                moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
-                //moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
-                patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton").GetComponent<Button>();
-                exitButton.onClick = new Button.ButtonClickedEvent();
-                exitButton.onClick.AddListener(delegate
-                {
-                    target.SetLogoAndRootButtonsVisible(true);
-                    moddedGameModesSelectScreen.Hide();
-                });
+                    }
+                    };
+                    moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
+                    patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
 
-                Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
-                playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
-                playModdedButtonComponent.onClick.AddListener(delegate
-                {
-                    target.SetLogoAndRootButtonsVisible(false);
-                    moddedGameModesSelectScreen.Show();
-                });
-            }
+                    Button exitButton = moddedGamemodesSelectionScreenTransform.FindChildRecursive("GenericCloseButton").GetComponent<Button>();
+                    exitButton.onClick = new Button.ButtonClickedEvent();
+                    exitButton.onClick.AddListener(delegate
+                    {
+                        target.SetLogoAndRootButtonsVisible(true);
+                        moddedGameModesSelectScreen.Hide();
+                    });
+
+                    Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
+                    playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
+                    playModdedButtonComponent.onClick.AddListener(delegate
+                    {
+                        target.SetLogoAndRootButtonsVisible(false);
+                        moddedGameModesSelectScreen.Show();
+                    });
+                }
+            }*/
 
             m_AchievementsNewHint = TransformUtils.FindChildRecursive(target.transform, "AchievementsNewHint");
-            if (m_AchievementsNewHint == null)
+            if (m_AchievementsNewHint)
             {
-                SuccessfullyPatched = false;
-                return;
+                m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
+                m_AchievementsNewHint.localPosition = new Vector3(70f, -182.5f, 0f);
             }
 
             Transform quitButton = TransformUtils.FindChildRecursive(target.transform, "QuitButton");
             if (quitButton)
             {
+                OverhaulSurveyUI ui = OverhaulController.GetController<OverhaulSurveyUI>();
+                if (!ui)
+                    return;
+
                 Button button = quitButton.GetComponent<Button>();
                 button.onClick = new Button.ButtonClickedEvent();
-                button.onClick.AddListener(delegate
-                {
-                    OverhaulSurveyUI ui = OverhaulController.GetController<OverhaulSurveyUI>();
-                    if (ui)
-                        ui.Show();
-                    else
-                        Application.Quit();
-                });
+                button.onClick.AddListener(ui.Show);
             }
 
             Transform lvlEditorButton = TransformUtils.FindChildRecursive(target.transform, "LevelEditorButton");
@@ -132,7 +124,9 @@ namespace CDOverhaul.Patches
             Transform workshopButton = TransformUtils.FindChildRecursive(target.transform, "WorkshopButton");
             if (workshopButton)
             {
-                BaseFixes.ChangeButtonAction(workshopButton, "WorkshopButton", delegate
+                Button button = workshopButton.GetComponent<Button>();
+                button.onClick = new Button.ButtonClickedEvent();
+                button.onClick.AddListener(delegate
                 {
                     bool canShowNewBrowser = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWorkshopBrowserEnabled && OverhaulWorkshopBrowserUI.UseThisUI && !OverhaulWorkshopBrowserUI.BrowserIsNull;
                     if (canShowNewBrowser)
@@ -149,78 +143,55 @@ namespace CDOverhaul.Patches
             RectTransform multiplayerErrorGroup = target.transform.FindRectChildRecursive("MultiplayerErrorGroup");
             if (multiplayerErrorGroup)
             {
-                multiplayerErrorGroup.anchoredPosition = new Vector2(10f, 90f);
+                multiplayerErrorGroup.anchoredPosition = new Vector2(10f, 65f);
                 RectTransform arrow = multiplayerErrorGroup.FindRectChildRecursive("Arrow");
                 if (arrow)
                 {
-                    arrow.anchoredPosition = new Vector2(-35f, 0f);
+                    arrow.anchoredPosition = new Vector2(-37.5f, 0f);
                 }
             }
 
-            m_MessagePanel = TransformUtils.FindChildRecursive(target.transform, "TitleScreenMessagePanel");
-            if (m_MessagePanel == null)
-            {
-                SuccessfullyPatched = false;
-                return;
-            }
-            MessagePanelComponent = m_MessagePanel.GetComponent<TitleScreenMessagePanel>();
-
             Transform singlePlayerGameModeSelectionMenu = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
-            if (singlePlayerGameModeSelectionMenu != null)
+            if (singlePlayerGameModeSelectionMenu)
             {
                 patchGameModeSelectScreen(singlePlayerGameModeSelectionMenu);
             }
 
             Transform multiPlayerGameModeSelectionMenu = TransformUtils.FindChildRecursive(target.transform, "MultiplayerModeSelectScreen");
-            if (multiPlayerGameModeSelectionMenu != null)
+            if (multiPlayerGameModeSelectionMenu)
             {
                 patchGameModeSelectScreen(multiPlayerGameModeSelectionMenu);
             }
 
-            m_OriginalAchievementsNewHintPosition = m_AchievementsNewHint.localPosition;
-            m_AchievementsNewHint.localPosition = new Vector3(70f, -162.5f, 0f);
-
-            GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
-            if (panel == null)
+            m_ButtonsTransform = TransformUtils.FindChildRecursive(target.transform, "BottomButtons");
+            if (m_ButtonsTransform)
             {
-                SuccessfullyPatched = false;
-                return;
+                GameObject panel = OverhaulMod.Core.CanvasController.GetHUDPrefab("TitleScreenUI_Buttons");
+                if (panel == null)
+                {
+                    SuccessfullyPatched = false;
+                    return;
+                }
+                m_SpawnedPanel = GameObject.Instantiate(panel, m_ButtonsTransform).transform;
+                m_SpawnedPanel.SetAsFirstSibling();
+                m_SpawnedPanel.gameObject.SetActive(true);
+
+                ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
+                moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
+                m_SettingsText = moddedObject.GetObject<Text>(1);
+                moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.GetController<OverhaulSurveyUI>().Show);
+                m_BugReportText = moddedObject.GetObject<Text>(3);
+                moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.GetController<AboutOverhaulMenu>().Show);
+                m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
+                moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
+                moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
+
+                m_ButtonsTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                m_ButtonsTransform.localPosition = new Vector3(0, -160f, 0);
             }
-            m_SpawnedPanel = GameObject.Instantiate(panel, m_ButtonsTransform).transform;
-            m_SpawnedPanel.SetAsFirstSibling();
-            m_SpawnedPanel.gameObject.SetActive(true);
-
-            ModdedObject moddedObject = m_SpawnedPanel.GetComponent<ModdedObject>();
-            moddedObject.GetObject<Button>(0).onClick.AddListener(OverhaulController.GetController<ParametersMenu>().Show);
-            m_SettingsText = moddedObject.GetObject<Text>(1);
-            moddedObject.GetObject<Button>(2).onClick.AddListener(OverhaulController.GetController<OverhaulSurveyUI>().Show);
-            m_BugReportText = moddedObject.GetObject<Text>(3);
-            moddedObject.GetObject<Button>(4).onClick.AddListener(OverhaulController.GetController<AboutOverhaulMenu>().Show);
-            m_AboutOverhaulText = moddedObject.GetObject<Text>(5);
-            moddedObject.GetObject<Transform>(6).gameObject.SetActive(OverhaulVersion.IsDebugBuild);
-            moddedObject.GetObject<Button>(6).onClick.AddListener(OverhaulController.GetController<OverhaulLocalizationEditor>().Show);
-
-            m_ButtonsTransform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            m_ButtonsTransform.localPosition = new Vector3(0, -135f, 0);
 
             _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
-
-            Transform joinPublicMatchButtonTransform = target.BattleRoyaleMenu.JoinRandomButton.transform;
-            joinPublicMatchButtonTransform.localPosition = new Vector3(-57f, -150f, 0);
-
-            Transform createPrivateModdedLobbyButtonTransform = Object.Instantiate(joinPublicMatchButtonTransform, joinPublicMatchButtonTransform.parent);
-            createPrivateModdedLobbyButtonTransform.localPosition = new Vector3(57f, -150f, 0);
-            Button createPrivateModdedLobbyButton = createPrivateModdedLobbyButtonTransform.GetComponent<Button>();
-            createPrivateModdedLobbyButton.interactable = OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled;
-            LocalizedTextField localizedTextFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<LocalizedTextField>();
-            if (localizedTextFieldCreatePrivateModdedLobby)
-            {
-                Object.Destroy(localizedTextFieldCreatePrivateModdedLobby);
-                Text textFieldCreatePrivateModdedLobby = createPrivateModdedLobbyButtonTransform.GetComponentInChildren<Text>();
-                textFieldCreatePrivateModdedLobby.text = "Modded game" + (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCustomMultiplayerTestEnabled ? " (Coming soon)" : string.Empty);
-            }
-
             SuccessfullyPatched = true;
         }
 
@@ -315,14 +286,15 @@ namespace CDOverhaul.Patches
 
         private void localizeTexts()
         {
-            if (!SuccessfullyPatched || OverhaulLocalizationController.Error)
-            {
+            if (OverhaulLocalizationController.Error)
                 return;
-            }
 
-            m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
-            m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
-            m_AboutOverhaulText.text = OverhaulLocalizationController.Localization.GetTranslation("About Overhaul");
+            if (m_BugReportText)
+                m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
+            if (m_SettingsText)
+                m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
+            if(m_AboutOverhaulText)
+                m_AboutOverhaulText.text = OverhaulLocalizationController.Localization.GetTranslation("About Overhaul");
         }
 
         public override void Cancel()

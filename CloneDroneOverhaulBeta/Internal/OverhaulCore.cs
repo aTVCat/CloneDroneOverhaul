@@ -65,7 +65,6 @@ namespace CDOverhaul
             }
             catch
             {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Could not deserialize OverhaulPlayerInfoRefreshEventData! Version: " + split[1]);
                 return;
             }
 
