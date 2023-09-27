@@ -1,6 +1,8 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.Visuals;
 using HarmonyLib;
+using InternalModBot;
+using ModLibrary;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -54,6 +56,12 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("Start")]
         private static void Start_Prefix()
         {
+            OverhaulCore.isShuttingDownBolt = false;
+            foreach (OverhaulController overhaulController in OverhaulController.allControllers)
+            {
+                OverhaulDebug.Log("Calling OnSceneReloaded - " + overhaulController.GetType().ToString(), EDebugType.Initialize);
+                overhaulController.OnSceneReloaded();
+            }
         }
 
         /*

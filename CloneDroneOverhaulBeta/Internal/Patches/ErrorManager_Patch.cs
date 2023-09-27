@@ -15,7 +15,8 @@ namespace CDOverhaul.Patches
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                if (OverhaulCore.isShuttingDownBolt)
+                OverhaulTransitionManager transitionManager = OverhaulTransitionManager.reference;
+                if (OverhaulCore.isShuttingDownBolt || (transitionManager && transitionManager.doingTransition))
                     return false;
 
                 string report = "```" + logString + " " + stackTrace;
