@@ -458,10 +458,12 @@
     <Compile Include="Internal\Management\UI\PrefabContainer.cs" />
     <Compile Include="Internal\Management\UI\PrefabContainerAttribute.cs" />
     <Compile Include="Internal\Management\UI\UIConstants.cs" />
+    <Compile Include="Internal\Patches\ArenaCameraManager_Patch.cs" />
     <Compile Include="Internal\Patches\ModsManager_Patch.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCBase.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCManager.cs" />
     <Compile Include="Internal\Patches\Replacements\ReplacementsManager.cs" />
+    <Compile Include="Internal\Settings\Features\EBuildFeatures.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingBaseAttribute.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingConstants.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingInfo.cs" />
@@ -469,6 +471,10 @@
     <Compile Include="Internal\Settings\New\OverhaulSettingAttribute.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingsTest.cs" />
     <Compile Include="LevelEditor\OverhaulLevelEditorManager.cs" />
+    <Compile Include="Test\TitleScreenOverhaul\TitleScreenCustomizationSystem.cs" />
+    <Compile Include="Test\TitleScreenOverhaul\TitleScreenOverhaulManager.cs" />
+    <Compile Include="Test\TitleScreenOverhaul\UIElementTitleScreenCustomizationPanel.cs" />
+    <Compile Include="Test\TitleScreenOverhaul\UITitleScreenOverhaul.cs" />
     <Compile Include="Visuals\Camera\CameraControllerBase.cs" />
     <Compile Include="Gameplay\ViewModes\ViewModesSystem.cs" />
     <Compile Include="Visuals\Effects\CameraFOVEffect.cs" />
@@ -721,7 +727,7 @@
     <Compile Include="Internal\Patches\WeaponModel_Patch.cs" />
     <Compile Include="Internal\Settings\Features\OverhaulFeatureDefinition.cs" />
     <Compile Include="Internal\Settings\Features\OverhaulFeaturesSystem.cs" />
-    <Compile Include="Internal\Settings\Features\OverhaulFeatureID.cs" />
+    <Compile Include="Internal\Settings\Features\EUnlockableFeatures.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingWithEvent.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingRequireUpdate.cs" />
     <Compile Include="Internal\Settings\OverhaulSettingRequiredValue.cs" />

@@ -24,7 +24,7 @@ namespace CDOverhaul.HUD
 
         public override void Awake()
         {
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
             Button button = base.GetComponent<Button>();
             button.AddOnClickListener(StartBindingAKey);
         }

@@ -47,7 +47,7 @@ namespace CDOverhaul.HUD
         {
             m_Button = base.GetComponent<Button>();
             m_Button.AddOnClickListener(OnClicked);
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
         }
 
         public void OnClicked()

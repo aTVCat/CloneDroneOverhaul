@@ -35,7 +35,7 @@ namespace CDOverhaul.Gameplay
             string localSteamID = OverhaulPlayerIdentifier.GetLocalSteamID();
 
             bool isUnlocked = IsUnlockedFor(localPlayFabID, localSteamID);
-            if (!isUnlocked && OverhaulFeaturesSystem.Implemented.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
+            if (!isUnlocked && OverhaulFeaturesSystem.IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF)
                 isUnlocked = localPlayFabID.Equals("883CC7F4CA3155A3");
 
             return isUnlocked;

@@ -67,7 +67,7 @@ namespace CDOverhaul.HUD
                 return;
             }
 
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
         }
 
         public override void Start()

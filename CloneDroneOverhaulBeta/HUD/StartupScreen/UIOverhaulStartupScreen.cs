@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD.Vanilla;
 using CDOverhaul.NetworkAssets;
+using CDOverhaul.Patches;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -125,7 +126,10 @@ namespace CDOverhaul
             {
                 titleScreenUI.setLogoAndRootButtonsVisible(value);
                 if (value)
-                    titleScreenUI.Show();
+                    if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference)
+                        TitleScreenOverhaulManager.reference.DoTitleScreenOverhaul();
+                    else
+                        titleScreenUI.Show();
                 else
                     titleScreenUI.Hide();
             }

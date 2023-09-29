@@ -7,21 +7,31 @@ namespace CDOverhaul
 {
     public static class OverhaulFeaturesSystem
     {
-        private static readonly ReadOnlyCollection<OverhaulFeatureDefinition> s_Features = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
+        public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
+
+        public const string NEW_CURSOR_HIDING_METHOD = "NewCursorHidingMethod";
+
+        private static readonly ReadOnlyDictionary<EBuildFeatures, bool> s_BuildFeatures = new ReadOnlyDictionary<EBuildFeatures, bool>(new Dictionary<EBuildFeatures, bool>()
         {
-            createNew(OverhaulFeatureID.PermissionToManageSkins),
-            createNew(OverhaulFeatureID.PermissionToCopyUserInfos)
+            { EBuildFeatures.Cursor_Disabling_Through_ModBot, true },
+            { EBuildFeatures.TitleScreen_Overhaul, true }
         });
 
-        private static OverhaulFeatureDefinition createNew(OverhaulFeatureID id)
+        private static readonly ReadOnlyCollection<OverhaulFeatureDefinition> s_UnlockableFeatures = new ReadOnlyCollection<OverhaulFeatureDefinition>(new List<OverhaulFeatureDefinition>()
+        {
+            createNew(EUnlockableFeatures.PermissionToManageSkins),
+            createNew(EUnlockableFeatures.PermissionToCopyUserInfos)
+        });
+
+        private static OverhaulFeatureDefinition createNew(EUnlockableFeatures id)
         {
             OverhaulFeatureDefinition def;
             switch (id)
             {
-                case OverhaulFeatureID.PermissionToManageSkins:
+                case EUnlockableFeatures.PermissionToManageSkins:
                     def = new OverhaulFeatureDefinition.AbilityToManageSkins();
                     break;
-                case OverhaulFeatureID.PermissionToCopyUserInfos:
+                case EUnlockableFeatures.PermissionToCopyUserInfos:
                     def = new OverhaulFeatureDefinition.AbilityToCopyUserInfos();
                     break;
                 default:
@@ -32,7 +42,23 @@ namespace CDOverhaul
             return def;
         }
 
-        public static bool IsFeatureUnlocked(in OverhaulFeatureID featureID)
+        private static OverhaulFeatureDefinition getFeatureDefinition(in EUnlockableFeatures featureID)
+        {
+            if (s_UnlockableFeatures.IsNullOrEmpty())
+                return null;
+
+            int i = 0;
+            do
+            {
+                OverhaulFeatureDefinition def = s_UnlockableFeatures[i];
+                if (def != null && def.FeatureID == featureID)
+                    return def;
+                i++;
+            } while (i < s_UnlockableFeatures.Count);
+            return null;
+        }
+
+        public static bool IsFeatureUnlocked(in EUnlockableFeatures featureID)
         {
             if (OverhaulVersion.IsDebugBuild)
                 return true;
@@ -41,43 +67,9 @@ namespace CDOverhaul
             return def != null && def.IsAvailable();
         }
 
-        private static OverhaulFeatureDefinition getFeatureDefinition(in OverhaulFeatureID featureID)
+        public static bool IsFeatureImplemented(EBuildFeatures buildFeature)
         {
-            if (s_Features.IsNullOrEmpty())
-                return null;
-
-            int i = 0;
-            do
-            {
-                OverhaulFeatureDefinition def = s_Features[i];
-                if (def != null && def.FeatureID == featureID)
-                    return def;
-                i++;
-            } while (i < s_Features.Count);
-            return null;
-        }
-
-        /// <summary>
-        /// Features that doesn't require player IDs to work. This class defines what things should be included in the build
-        /// </summary>
-        public static class Implemented
-        {
-            public const bool IS_DEVELOPER_ALLOWED_TO_USE_LOCKED_STUFF = true;
-
-            public const string NEW_CURSOR_HIDING_METHOD = "NewCursorHidingMethod";
-
-            private static readonly Dictionary<string, bool> s_Features = new Dictionary<string, bool>()
-            {
-                { NEW_CURSOR_HIDING_METHOD, true }
-            };
-
-            public static bool IsImplemented(string key)
-            {
-                if (!s_Features.ContainsKey(key))
-                    return false;
-
-                return s_Features[key];
-            }
+            return !s_BuildFeatures.ContainsKey(buildFeature) ? false : s_BuildFeatures[buildFeature];
         }
     }
 }

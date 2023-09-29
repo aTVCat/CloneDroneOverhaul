@@ -109,14 +109,13 @@ namespace CDOverhaul
             if (OvermodesManager.IsOvermode() && path.Contains("Overmodes/"))
             {
                 path = path.Replace("Data/LevelEditorLevels/", string.Empty);
-                List<LevelDescription> list = OvermodesManager.Instance.CurrentOvermode.GetLevelDescriptions();
-                foreach (LevelDescription description in list)
-                {
-                    if (description.PrefabName == path)
-                        return new TextAsset(OverhaulCore.ReadText(description.PrefabName));
-                }
+                return new TextAsset(OverhaulCore.ReadText(path));
             }
-
+            if (path.Contains("&leveloverride"))
+            {
+                path = path.Replace("Data/LevelEditorLevels/&leveloverride", string.Empty);
+                return new TextAsset(OverhaulCore.ReadText(path));
+            }
             return null;
         }
 

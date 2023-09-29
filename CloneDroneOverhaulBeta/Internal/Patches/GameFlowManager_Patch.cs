@@ -3,6 +3,7 @@ using CDOverhaul.Visuals;
 using HarmonyLib;
 using InternalModBot;
 using ModLibrary;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -64,20 +65,26 @@ namespace CDOverhaul.Patches
             }
         }
 
-        /*
         [HarmonyPrefix]
         [HarmonyPatch("ShowTitleScreen")]
         private static bool ShowTitleScreen_Prefix(GameFlowManager __instance)
         {
-            if (FirstUseSetupUI.HasSetTheModUp)
+            if(OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference)
+            {
+                TitleScreenOverhaulManager.reference.DoTitleScreenOverhaul();
+                return false;
+            }
+            return true;
+            /*
+            if (ModSetupWindow.HasSetTheModUp)
                 return true;
 
             LevelManager.Instance.SpawnCurrentLevel(false, "U6Bronze2", null).MoveNext();
-            __instance.StartCoroutine(__instance.CallPrivateMethod<IEnumerator>("waitThenShowTitleScreenCamera", null));
+            __instance.StartCoroutine(__instance.waitThenShowTitleScreenCamera());
 
             GameUIRoot.Instance.TitleScreenUI.Show();
             GameUIRoot.Instance.RefreshCursorEnabled();
-            return false;
-        }*/
+            return false;*/
+        }
     }
 }

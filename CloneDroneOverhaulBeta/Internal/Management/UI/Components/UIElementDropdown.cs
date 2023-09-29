@@ -92,9 +92,9 @@ namespace CDOverhaul.HUD
             set;
         }
 
-        public override void Awake()
+        public void Initialize()
         {
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
             UIElementButton button = base.gameObject.AddComponent<UIElementButton>();
             button.AddOnClickListener(ExpandDropdown);
         }
@@ -177,7 +177,7 @@ namespace CDOverhaul.HUD
 
             public void Init(int index, Dropdown.OptionData optionData, UIElementDropdown dropdown)
             {
-                UIController.AssignValues(this);
+                UIController.AssignVariables(this);
                 m_Button = base.gameObject.GetComponent<Button>();
                 m_Button.AddOnClickListener(Press);
 

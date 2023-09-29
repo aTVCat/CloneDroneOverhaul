@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using static Sony.NP.Commerce;
 
 namespace CDOverhaul
 {
@@ -132,6 +133,24 @@ namespace CDOverhaul
                     list.Add(info.section);
             }
             return list;
+        }
+
+        public void SaveFieldValueOfClass(Type type, string fieldName)
+        {
+            foreach (OverhaulSettingInfo info in Settings)
+            {
+                if (info.fieldReference.DeclaringType == type && info.fieldReference.Name == fieldName)
+                    info.SaveValue();
+            }
+        }
+
+        public void AddOnSaveCallbackToField(Type type, string fieldName, Action action)
+        {
+            foreach (OverhaulSettingInfo info in Settings)
+            {
+                if (info.fieldReference.DeclaringType == type && info.fieldReference.Name == fieldName)
+                    info.onValueSavedCallback += action;
+            }
         }
     }
 }

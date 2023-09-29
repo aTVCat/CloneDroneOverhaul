@@ -18,6 +18,7 @@ namespace CDOverhaul.HUD
             if (!result)
             {
                 result = target.AddComponent<UIElementDropdown>();
+                result.Initialize();
             }
             return result;
         }

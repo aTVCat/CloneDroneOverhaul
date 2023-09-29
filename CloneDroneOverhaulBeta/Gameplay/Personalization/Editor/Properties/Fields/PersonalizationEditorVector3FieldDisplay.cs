@@ -25,7 +25,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (HasDifferentControl)
             {
-                UIController.AssignValues(this);
+                UIController.AssignVariables(this);
             }
             else
             {

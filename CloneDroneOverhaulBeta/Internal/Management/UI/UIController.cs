@@ -51,7 +51,7 @@ namespace CDOverhaul
         {
             get
             {
-                bool useBetterMethod = OverhaulFeaturesSystem.Implemented.IsImplemented(OverhaulFeaturesSystem.Implemented.NEW_CURSOR_HIDING_METHOD);
+                bool useBetterMethod = OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.Cursor_Disabling_Through_ModBot);
                 if (useBetterMethod)
                 {
                     return m_HideCursor;
@@ -60,7 +60,7 @@ namespace CDOverhaul
             }
             set
             {
-                bool useBetterMethod = OverhaulFeaturesSystem.Implemented.IsImplemented(OverhaulFeaturesSystem.Implemented.NEW_CURSOR_HIDING_METHOD);
+                bool useBetterMethod = OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.Cursor_Disabling_Through_ModBot);
                 if (useBetterMethod)
                 {
                     m_HideCursor = value;
@@ -95,7 +95,7 @@ namespace CDOverhaul
             InternalModBot.RegisterShouldCursorBeEnabledDelegate.Register(ShouldHideCursor);
             if (!MyModdedObject.objects.IsNullOrEmpty())
             {
-                AssignValues(this);
+                AssignVariables(this);
             }
             AddListeners();
         }
@@ -165,7 +165,7 @@ namespace CDOverhaul
                 TitleScreen.setLogoAndRootButtonsVisible(RememberTitleScreenButtonsState() ? m_WereTitleScreenButtonsActive : true);
         }
 
-        public static void AssignValues(OverhaulBehaviour behaviour)
+        public static void AssignVariables(OverhaulBehaviour behaviour)
         {
             BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
@@ -313,6 +313,21 @@ namespace CDOverhaul
                                     {
                                         _ = methodInfo.Invoke(behaviour, new object[] { value });
                                     });
+                                }
+                            }
+                            else if (targetFieldType == typeof(UIElementDropdown))
+                            {
+                                UIElementDropdown dropdown = fieldValueToAssign as UIElementDropdown;
+                                foreach (string methodName in actionReference.MethodNames)
+                                {
+                                    MethodInfo methodInfo = type.GetMethod(methodName, bindingFlags, null, new Type[] { typeof(int) }, null);
+                                    if (methodInfo == null)
+                                        throw new Exception("Could not find method called " + actionReference.MethodNames + " to use for CDO dropdown " + objectReference.ObjectName + "!");
+
+                                    dropdown.onValueChanged = delegate (int value)
+                                    {
+                                        _ = methodInfo.Invoke(behaviour, new object[] { value });
+                                    };
                                 }
                             }
                         }

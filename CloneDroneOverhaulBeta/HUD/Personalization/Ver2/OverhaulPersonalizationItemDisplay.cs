@@ -32,7 +32,7 @@ namespace CDOverhaul.HUD
 
         public override void Start()
         {
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
             ButtonComponent.AddOnClickListener(OnClicked);
 
             RefreshDisplay();

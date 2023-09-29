@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDOverhaul.Patches;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,6 +62,12 @@ namespace CDOverhaul.HUD
         public static void ShowPauseScreen()
         {
             OverhaulUIManager.reference.Show<UIPauseMenu>(UI_PAUSE_MENU);
+        }
+
+        public const string UI_NEW_TITLE_SCREEN = "UI_NewTitleScreen";
+        public static void ShowNewTitleScreen()
+        {
+            OverhaulUIManager.reference.Show<UITitleScreenOverhaul>(UI_NEW_TITLE_SCREEN);
         }
 
         public static class Arguments

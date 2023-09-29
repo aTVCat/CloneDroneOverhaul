@@ -19,6 +19,8 @@ namespace CDOverhaul
             public const string GRAPHICS = "Graphics";
 
             public const string USER_INTERFACE = "User interface";
+
+            public const string INTERNAL = "Internal";
         }
 
         public static class Sections
@@ -46,6 +48,8 @@ namespace CDOverhaul
             public const string VERSION_LABEL = "Version label";
 
             public const string ENHANCEMENTS = "Enhancements";
+
+            public const string TITLE_SCREEN = "Title screen";
         }
     }
 }

@@ -38,7 +38,8 @@ namespace CDOverhaul
                 InitEnhancementManagers,
                 InitMiscManagers,
                 InitGameplayManagers,
-                InitUserManagers
+                InitUserManagers,
+                InitOverhaulManagers
             };
             foreach (Action action in toInit)
             {
@@ -159,6 +160,17 @@ namespace CDOverhaul
             _ = OverhaulController.Add<OverhaulAudioLibrary>(miscObject.transform);
             _ = OverhaulController.Add<OverhaulTransitionManager>(miscObject.transform);
             _ = OverhaulController.Add<OverhaulUIManager>(miscObject.transform);
+        }
+
+        public void InitOverhaulManagers()
+        {
+            GameObject overhaulObject = new GameObject("Overhaul");
+            overhaulObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
+
+            if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul))
+            {
+                _ = OverhaulController.Add<TitleScreenOverhaulManager>(overhaulObject.transform);
+            }
         }
 
         public IEnumerator LoadAssetsCoroutine(bool async = true)

@@ -1,6 +1,6 @@
 ﻿namespace CDOverhaul
 {
-    public enum OverhaulFeatureID
+    public enum EUnlockableFeatures
     {
         None,
 

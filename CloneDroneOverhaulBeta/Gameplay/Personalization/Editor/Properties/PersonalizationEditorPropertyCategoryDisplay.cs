@@ -93,7 +93,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
 
             if (!m_HasInitialized)
             {
-                UIController.AssignValues(this);
+                UIController.AssignVariables(this);
                 m_HasInitialized = true;
             }
 

@@ -106,10 +106,17 @@ namespace CDOverhaul.RichPresence
 
         public void DisposeDiscordClient()
         {
-            if (!initialized)
+            if (!initialized || m_Client == null)
                 return;
 
-            m_Client.Dispose();
+            try
+            {
+                m_Client.Dispose();
+            }
+            catch
+            {
+
+            }
         }
 
         private void handleActivityUpdate(Result res)

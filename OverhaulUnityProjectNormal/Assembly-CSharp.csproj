@@ -140,15 +140,14 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <None Include="Assets\Game\Scripts\CustomPlanet_Clouds.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
+    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\PixelNES.shader" />
     <None Include="Assets\Game\Scripts\CustomHologram_Flicker.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\Silhouette.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\EdgeBlur.shader" />
-    <None Include="Assets\Kino\Bloom\Shader\Bloom.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo.shader" />
-    <None Include="Assets\Kino\Bloom\Shader\Bloom.cginc" />
     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\VertexColoredFogOFF.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Common.cginc" />
@@ -178,8 +177,8 @@
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Blur.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\MaskedUIBlur.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\CRTScreen.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\SnapshotShaders\Shaders\Neon.shader" />
+    <None Include="Assets\Kino\Bloom\Shader\Bloom.cginc" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\MotionBlur.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
@@ -217,6 +216,7 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\Game\Scripts\CustomScanline.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\D3D11.hlsl" />
+    <None Include="Assets\Kino\Bloom\Shader\Bloom.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ModelsEffect\SoftShader.shader" />
     <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Apply.shader" />

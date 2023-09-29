@@ -99,6 +99,25 @@ namespace CDOverhaul
             set => m_IsHidden = value;
         }
 
+        private List<Action> m_OnValueSavedCallbacks;
+        public event Action onValueSavedCallback
+        {
+            add
+            {
+                if (m_OnValueSavedCallbacks == null)
+                    m_OnValueSavedCallbacks = new List<Action>();
+
+                if (m_OnValueSavedCallbacks.Contains(value))
+                    return;
+
+                m_OnValueSavedCallbacks.Add(value);
+            }
+            remove
+            {
+                m_OnValueSavedCallbacks.Remove(value);
+            }
+        }
+
         private EOverhaulSettingType getSettingType(Type type)
         {
             EOverhaulSettingType result;
@@ -176,6 +195,29 @@ namespace CDOverhaul
                 PlayerPrefs.SetString(path, (string)toSave);
             else if (type == typeof(KeyCode))
                 PlayerPrefs.SetInt(path, (int)(KeyCode)toSave);
+
+            if (m_OnValueSavedCallbacks.IsNullOrEmpty())
+                return;
+
+            List<int> toRemove = new List<int>();
+            int index = 0;
+            foreach(Action action in m_OnValueSavedCallbacks)
+            {
+                if(action.Target != null)
+                {
+                    action();
+                }
+                else
+                {
+                    toRemove.Add(index);
+                }
+                index++;
+            }
+
+            foreach(int toRemoveIndex in toRemove)
+            {
+                m_OnValueSavedCallbacks.RemoveAt(toRemoveIndex);
+            }
         }
 
         public void AddAttribute(Attribute attribute) => m_Attributes.Add(attribute);

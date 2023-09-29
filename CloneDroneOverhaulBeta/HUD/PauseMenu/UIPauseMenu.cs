@@ -702,7 +702,7 @@ namespace CDOverhaul.HUD
             m_ReportPlayerText.text = "Report " + player.state.DisplayName + "?";
             m_PlayerActionsMutePanel.SetActive(false);
             m_MutePlayerText.text = "Mute " + player.state.DisplayName + "?";
-            m_CopyUserInfo.gameObject.SetActive(OverhaulFeaturesSystem.IsFeatureUnlocked(OverhaulFeatureID.PermissionToCopyUserInfos));
+            m_CopyUserInfo.gameObject.SetActive(OverhaulFeaturesSystem.IsFeatureUnlocked(EUnlockableFeatures.PermissionToCopyUserInfos));
             m_ReportedPersonBehaviour.text = string.Empty;
             m_ReportReason.options = list;
             m_ReportReason.value = 0;

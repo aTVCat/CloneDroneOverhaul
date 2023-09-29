@@ -42,7 +42,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                UIController.AssignValues(this);
+                UIController.AssignVariables(this);
                 UIController.AssignActionToButton(GetComponent<ModdedObject>(), "BackButton", Hide);
                 UIController.AssignActionToButton(GetComponent<ModdedObject>(), "Done", OnDoneClicked);
                 m_HasInitialized = true;

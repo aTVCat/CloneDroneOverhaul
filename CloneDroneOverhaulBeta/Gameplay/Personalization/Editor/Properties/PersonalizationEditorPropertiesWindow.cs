@@ -22,7 +22,7 @@ namespace CDOverhaul.Gameplay.Editors.Personalization
         {
             if (!m_HasInitialized)
             {
-                UIController.AssignValues(this);
+                UIController.AssignVariables(this);
                 _ = base.gameObject.AddComponent<OverhaulDraggablePanel>();
                 m_HasInitialized = true;
             }

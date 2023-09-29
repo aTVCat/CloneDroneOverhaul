@@ -5,7 +5,7 @@ namespace CDOverhaul
 {
     public class OverhaulFeatureDefinition
     {
-        public OverhaulFeatureID FeatureID;
+        public EUnlockableFeatures FeatureID;
         public virtual bool IsAvailable() => false;
 
         public class AbilityToManageSkins : OverhaulFeatureDefinition

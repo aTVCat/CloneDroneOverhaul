@@ -74,7 +74,7 @@ namespace CDOverhaul.HUD
             Button button = base.GetComponent<Button>();
             button.AddOnClickListener(OnClicked);
 
-            UIController.AssignValues(this);
+            UIController.AssignVariables(this);
         }
 
         public override void Start()
