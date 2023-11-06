@@ -65,36 +65,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
-    <Compile Include="Assets\Kino\Bloom\Editor\BloomEditor.cs" />
-    <Compile Include="Assets\Kino\Bloom\Editor\BloomGraphDrawer.cs" />
-    <Compile Include="Assets\SSSAO\Editor\AxisPatternGenerator.cs" />
-    <Compile Include="Assets\SSSAO\Editor\MinMaxRangeDrawer.cs" />
     <Reference Include="UnityEngine.Purchasing">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -331,16 +327,16 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -701,14 +697,6 @@
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{E96B598C-7745-299D-B9A6-4445FDC68D72}</Project>
       <Name>Assembly-CSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="Whinarn.UnityMeshSimplifier.Runtime.csproj">
-      <Project>{6A4C1440-762B-2767-6C69-BD9F0C05D7ED}</Project>
-      <Name>Whinarn.UnityMeshSimplifier.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="Whinarn.UnityMeshSimplifier.Editor.csproj">
-      <Project>{F5CB5E62-0379-24B9-73AC-34053029E553}</Project>
-      <Name>Whinarn.UnityMeshSimplifier.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

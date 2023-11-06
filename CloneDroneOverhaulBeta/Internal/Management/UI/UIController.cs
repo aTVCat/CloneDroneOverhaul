@@ -7,7 +7,6 @@ using System.Security.AccessControl;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static KopiLua.Lua;
 
 namespace CDOverhaul
 {
@@ -331,6 +330,9 @@ namespace CDOverhaul
                                 }
                             }
                         }
+
+                        if(fieldValueToAssign is IInitializable)
+                            (fieldValueToAssign as IInitializable).Initialize();
                     }
 
                     fieldIndex++;

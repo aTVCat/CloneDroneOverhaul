@@ -64,47 +64,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Game\Scripts\BaseBodyPart.cs" />
-    <Compile Include="Assets\Game\Scripts\BasicAnimator.cs" />
-    <Compile Include="Assets\Game\Scripts\Batch.cs" />
-    <Compile Include="Assets\Game\Scripts\BodyPartConnection.cs" />
-    <Compile Include="Assets\Game\Scripts\Chunk.cs" />
-    <Compile Include="Assets\Game\Scripts\CollisionDetector.cs" />
-    <Compile Include="Assets\Game\Scripts\CollisionMode.cs" />
-    <Compile Include="Assets\Game\Scripts\Constructor.cs" />
-    <Compile Include="Assets\Game\Scripts\Destructor.cs" />
-    <Compile Include="Assets\Game\Scripts\Exploder.cs" />
-    <Compile Include="Assets\Game\Scripts\Frame.cs" />
-    <Compile Include="Assets\Game\Scripts\Helper.cs" />
-    <Compile Include="Assets\Game\Scripts\ManagedBehaviour.cs" />
-    <Compile Include="Assets\Game\Scripts\MechBodyPart.cs" />
-    <Compile Include="Assets\Game\Scripts\MechBodyPartType.cs" />
-    <Compile Include="Assets\Game\Scripts\MeshGenerator.cs" />
-    <Compile Include="Assets\Game\Scripts\MeshingMode.cs" />
-    <Compile Include="Assets\Game\Scripts\MindSpaceBodyPart.cs" />
-    <Compile Include="Assets\Game\Scripts\MinMaxRange.cs" />
-    <Compile Include="Assets\Game\Scripts\PicaVoxelBox.cs" />
-    <Compile Include="Assets\Game\Scripts\PicaVoxelPoint.cs" />
-    <Compile Include="Assets\Game\Scripts\QubicleImport.cs" />
-    <Compile Include="Assets\Game\Scripts\RandomDeformer.cs" />
-    <Compile Include="Assets\Game\Scripts\Volume.cs" />
-    <Compile Include="Assets\Game\Scripts\Voxel.cs" />
-    <Compile Include="Assets\Game\Scripts\VoxelParticleSystem.cs" />
-    <Compile Include="Assets\Game\Scripts\VoxelState.cs" />
-    <Compile Include="Assets\Kino\Bloom\Bloom.cs" />
-    <Compile Include="Assets\Mesh Optimizer\Scripts\OptimizeMesh.cs" />
     <Compile Include="Assets\ModdedObject.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\LocalizeText.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionCommon.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\ShaderOnCamera.cs" />
-    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
-    <Compile Include="Assets\SnapshotShaders\Scripts\SnapshotCanvas.cs" />
-    <Compile Include="Assets\SnapshotShaders\Scripts\SnapshotFilter.cs" />
-    <Compile Include="Assets\SnapshotShaders\Scripts\SnapshotMode.cs" />
-    <Compile Include="Assets\SSSAO\MinMaxRangeAttribute.cs" />
-    <Compile Include="Assets\SSSAO\SimpleScreenSpaceAmbientOcclusion.cs" />
+    <Compile Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
+    <Compile Include="Assets\ModStuff\Shaders\ShaderOnCamera.cs" />
+    <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotCanvas.cs" />
+    <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotFilter.cs" />
+    <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotMode.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -138,123 +103,95 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
-    <None Include="Assets\Game\Scripts\CustomPlanet_Clouds.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\PixelNES.shader" />
-    <None Include="Assets\Game\Scripts\CustomHologram_Flicker.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Silhouette.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\EdgeBlur.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\ApplyPostEffect.cginc" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\PixelNES.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Silhouette.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\EdgeBlur.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo.shader" />
-    <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\VertexColoredFogOFF.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Common.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\ChromaticAb.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\OcclusionFunctions.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\PencilEffect.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ModelsEffect\Shield.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Models\WeaponSkins\WeaponSkinsAssetBundleVersion.txt" />
-    <None Include="Assets\Game\Scripts\PicaVoxelPicaVoxel PBR OneMinus Alpha Emissive.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\SimpleGrabPassBlur.shader" />
-    <None Include="Assets\Game\Scripts\CustomWipe_NoKeyframe.shader" />
+    <None Include="Assets\ModStuff\QuickOutline\OutlineFill.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\VertexColoredFogOFF.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\Common.cginc" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\ChromaticAb.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\OcclusionFunctions.cginc" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\PencilEffect.shader" />
+    <None Include="Assets\ModStuff\Shaders\ModelsEffect\Shield.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Game\Scripts\CustomHyperdrive.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo2.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Base.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Base.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\GaussianBlur.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
-    <None Include="Assets\SnapshotShaders\Shaders\PixelSNES.shader" />
-    <None Include="Assets\Game\Scripts\CustomPlanet_Clouds_Atmosphere.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Pride.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Painting.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Greyscale.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Occlusion.shader" />
-    <None Include="Assets\SSSAO\Resources\SimpleSSAO.shader" />
-    <None Include="Assets\Game\Scripts\HOLOHolo2.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Blur.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\MaskedUIBlur.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\CRTScreen.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Neon.shader" />
-    <None Include="Assets\Kino\Bloom\Shader\Bloom.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\MotionBlur.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\GaussianBlur.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\TemporalFilter.cginc" />
+    <None Include="Assets\ModStuff\SnapshotShaders\PixelSNES.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Pride.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Painting.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Greyscale.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\Occlusion.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\Blur.shader" />
+    <None Include="Assets\ModStuff\Shaders\UI\MaskedUIBlur.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\CRTScreen.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Neon.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\MotionBlur.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Game\Scripts\CustomArmor_Shader_UNLIT.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo_adv.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\PixelGB.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\EdgeDetect.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\StdLib.hlsl" />
-    <None Include="Assets\Game\Scripts\PicaVoxelPicaVoxel Unlit.shader" />
-    <None Include="Assets\Game\Scripts\ddShadersdd_Invert.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\PixelGB.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\EdgeDetect.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\StdLib.hlsl" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
-    <None Include="Assets\Game\Scripts\HOLOHolo.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\CommonFunctions.cginc" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\CommonFunctions.cginc" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\xRLib.hlsl" />
-    <None Include="Assets\Game\Scripts\CustomPlanet_Base_OCEANMOD.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\xRLib.hlsl" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\GTAO.cginc" />
-    <None Include="Assets\Game\Scripts\CustomHorizontal Skybox.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\BlurFunctions.cginc" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\GTAO.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\SnapshotShaders\Shaders\Sepia.shader" />
-    <None Include="Assets\QuickOutline\Resources\Shaders\OutlineMask.shader" />
-    <None Include="Assets\Game\Scripts\PicaVoxelPicaVoxel Diffuse.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Sepia.shader" />
+    <None Include="Assets\ModStuff\QuickOutline\OutlineMask.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\Game\Scripts\HOLOHolo_adv.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\TAA.shader" />
-    <None Include="Assets\Game\Scripts\CustomPlanets_Atmosphere.shader" />
-    <None Include="Assets\Game\Scripts\HOLOHolo2_0.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\TAA.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\Game\Scripts\CustomScanline.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\D3D11.hlsl" />
-    <None Include="Assets\Kino\Bloom\Shader\Bloom.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\D3D11.hlsl" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ModelsEffect\SoftShader.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Apply.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Test\HoloShader\HOLOHolo2_0.shader" />
-    <None Include="Assets\Game\Scripts\PicaVoxelPicaVoxel PBR.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\Spotlight.shader" />
+    <None Include="Assets\ModStuff\Shaders\ModelsEffect\SoftShader.shader" />
+    <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\Apply.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\Spotlight.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\ThreeDOutlineShader.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\ThreeDOutlineShader.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
-    <None Include="Assets\SnapshotShaders\Shaders\Bloom.shader" />
+    <None Include="Assets\ModStuff\SnapshotShaders\Bloom.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\ECAB.shader" />
+    <None Include="Assets\ModStuff\Shaders\ImageEffects\ECAB.shader" />
     <Reference Include="UnityEngine.Purchasing">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -458,7 +395,7 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/Clone drone stuff/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -805,16 +742,6 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Whinarn.UnityMeshSimplifier.Runtime.csproj">
-      <Project>{6A4C1440-762B-2767-6C69-BD9F0C05D7ED}</Project>
-      <Name>Whinarn.UnityMeshSimplifier.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="Whinarn.UnityMeshSimplifier.Editor.csproj">
-      <Project>{F5CB5E62-0379-24B9-73AC-34053029E553}</Project>
-      <Name>Whinarn.UnityMeshSimplifier.Editor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

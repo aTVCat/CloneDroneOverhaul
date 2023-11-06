@@ -16,13 +16,21 @@ namespace CDOverhaul.Patches
         [OverhaulSetting(OverhaulSettingConstants.Categories.INTERNAL, OverhaulSettingConstants.Sections.TITLE_SCREEN, "Override Level ID")]
         public static string OverrideLevelPath = string.Empty;
 
+        [OverhaulSetting(OverhaulSettingConstants.Categories.INTERNAL, OverhaulSettingConstants.Sections.TITLE_SCREEN, "Override Workshop Level ID")]
+        public static string OverrideWorkshopLevelID = string.Empty;
+
         [OverhaulSettingDropdownParameters("Left@Center@")]
         [OverhaulSetting(OverhaulSettingConstants.Categories.INTERNAL, OverhaulSettingConstants.Sections.TITLE_SCREEN, "UI Alignment")]
         public static int UIAlignment = 0;
 
         public bool OverridesLevel()
         {
-            return !string.IsNullOrEmpty(OverrideLevelPath);
+            return GameModeManager.Is(GameMode.None) && !string.IsNullOrEmpty(OverrideLevelPath);
+        }
+
+        public bool OverridesLevelWithWorkshop()
+        {
+            return GameModeManager.Is(GameMode.None) && !string.IsNullOrEmpty(OverrideWorkshopLevelID);
         }
 
         public LevelDescription GetOverrideLevelDescription()
@@ -48,17 +56,12 @@ namespace CDOverhaul.Patches
         {
             error = null;
 
-            if (OverridesLevel())
+            bool justOverrides = OverridesLevel();
+            bool overridesWithWorkshop = OverridesLevelWithWorkshop();
+            if (justOverrides && !overridesWithWorkshop)
             {
-                if (File.Exists(OverrideLevelPath))
-                {
-                    spawnUserLevel(out error);
-                    return;
-                }
-                else
-                {
-                    error = "Could not find level: " + OverrideLevelPath;
-                }
+                spawnUserLevel(out error);
+                return;
             }
             spawnGameLevel(out error);
         }
@@ -66,6 +69,13 @@ namespace CDOverhaul.Patches
         private void spawnGameLevel(out string error)
         {
             error = null;
+
+            GameDataManager dataManager = GameDataManager.Instance;
+            if (!dataManager)
+            {
+                error = "DataManager script is missing!";
+                return;
+            }
 
             LevelManager levelManager = LevelManager.Instance;
             if (!levelManager)
@@ -75,7 +85,22 @@ namespace CDOverhaul.Patches
             }
 
             levelManager.CleanUpLevelThisFrame();
-            levelManager.PickNextLevel();
+            if (OverridesLevelWithWorkshop())
+            {
+                List<LevelDescription> list = WorkshopLevelManager.Instance._endlessWorkshopLevels;
+                if (!list.IsNullOrEmpty())
+                {
+                    dataManager.SetCurrentLevelID(list[UnityEngine.Random.Range(0, list.Count)].LevelID);
+                }
+                else
+                {
+                    levelManager.PickNextLevel();
+                }
+            }
+            else
+            {
+                levelManager.PickNextLevel();
+            }
             levelManager.SpawnCurrentLevelNow();
             ArenaCameraManager.Instance.ShowTitleScreenCamera();
             ArenaCameraManager.Instance.SetArenaPreviewModeActive(true);

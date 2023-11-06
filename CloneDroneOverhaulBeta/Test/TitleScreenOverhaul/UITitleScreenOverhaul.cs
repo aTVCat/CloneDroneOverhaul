@@ -15,11 +15,6 @@ namespace CDOverhaul.Patches
         [UIElementReference("Buttons")]
         private OverhaulUIAnchoredPanelSlider m_ButtonsContainer;
 
-        [UIElementComponents(new System.Type[] { typeof(UIElementTitleScreenCustomizationPanel) })]
-        [UIElementDefaultVisibilityState(false)]
-        [UIElementReference("CustomizationPanel")]
-        private UIElementTitleScreenCustomizationPanel m_CustomizationPanel;
-
         [UIElementReference("Buttons")]
         private RectTransform m_ButtonsRectTransform;
 
@@ -27,20 +22,27 @@ namespace CDOverhaul.Patches
         [UIElementReference("CustomizeTitleScreenButton")]
         private Button m_CustomizeButton;
 
+        [UIElementDefaultVisibilityState(true)]
+        [UIElementComponents(new System.Type[] { typeof(UIElementTitleScreenCustomizationPanel) })]
+        [UIElementReference("CustomizationPanel")]
+        private UIElementTitleScreenCustomizationPanel m_CustomizationPanel;
+
+        [UIElementReference("Gradient")]
+        private GameObject m_GradientObject;
+
         public override void Initialize()
         {
             base.Initialize();
-            RefreshAlignment();
-            m_CustomizationPanel.Initialize();
             OverhaulSettingsManager.reference.AddOnSaveCallbackToField(typeof(TitleScreenCustomizationSystem), nameof(TitleScreenCustomizationSystem.UIAlignment), onAlignmentSettingUpdated);
+            RefreshUI();
         }
 
         public void OnCustomizeButtonClicked()
         {
-            m_CustomizationPanel.gameObject.SetActive(!m_CustomizationPanel.gameObject.activeSelf);
+            m_CustomizationPanel.SetOpened(!m_CustomizationPanel.opened);
         }
 
-        public void RefreshAlignment()
+        public void RefreshUI()
         {
             RectTransform rectTransform = m_ButtonsRectTransform;
             rectTransform.anchoredPosition = Vector2.zero;
@@ -64,11 +66,13 @@ namespace CDOverhaul.Patches
                     break;
             }
             ArenaCameraManager.Instance.updateLogoCameraRect();
+
+            m_GradientObject.SetActive(value == 0);
         }
 
         private void onAlignmentSettingUpdated()
         {
-            RefreshAlignment();
+            RefreshUI();
         }
     }
 }

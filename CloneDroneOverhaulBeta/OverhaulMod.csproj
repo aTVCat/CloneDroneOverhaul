@@ -459,6 +459,7 @@
     <Compile Include="Internal\Management\UI\PrefabContainerAttribute.cs" />
     <Compile Include="Internal\Management\UI\UIConstants.cs" />
     <Compile Include="Internal\Patches\ArenaCameraManager_Patch.cs" />
+    <Compile Include="Internal\Patches\GameModeManager_Patch.cs" />
     <Compile Include="Internal\Patches\ModsManager_Patch.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCBase.cs" />
     <Compile Include="Internal\RichPresence\OverhaulRPCManager.cs" />
@@ -471,6 +472,7 @@
     <Compile Include="Internal\Settings\New\OverhaulSettingAttribute.cs" />
     <Compile Include="Internal\Settings\New\OverhaulSettingsTest.cs" />
     <Compile Include="LevelEditor\OverhaulLevelEditorManager.cs" />
+    <Compile Include="Test\Interfaces\IInitializable.cs" />
     <Compile Include="Test\TitleScreenOverhaul\TitleScreenCustomizationSystem.cs" />
     <Compile Include="Test\TitleScreenOverhaul\TitleScreenOverhaulManager.cs" />
     <Compile Include="Test\TitleScreenOverhaul\UIElementTitleScreenCustomizationPanel.cs" />

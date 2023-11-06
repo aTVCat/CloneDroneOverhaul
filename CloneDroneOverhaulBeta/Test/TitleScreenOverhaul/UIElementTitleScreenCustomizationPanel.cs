@@ -5,31 +5,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul
 {
-    public class UIElementTitleScreenCustomizationPanel : OverhaulBehaviour
+    public class UIElementTitleScreenCustomizationPanel : OverhaulBehaviour, IInitializable
     {
         [UIElementActionReference(nameof(OnLevelPathFieldEdited))]
         [UIElementReference(0)]
         private InputField m_LevelFileInputField;
 
+        [UIElementActionReference(nameof(OnWorkshopLevelIDFieldEdited))]
+        [UIElementReference(4)]
+        private InputField m_WorkshopLevelIDInputField;
+
         [UIElementActionReference(nameof(OnReloadButtonClicked))]
         [UIElementReference(1)]
         private Button m_ReloadButton;
-
-        [UIElementReference(2)]
-        private Text m_ErrorLabel;
 
         [UIElementActionReference(nameof(OnUIAlignmentFieldEdited))]
         [UIElementReference("UIAlignmentDropdown")]
         private UIElementDropdown m_Dropdown;
 
+        private OverhaulUIAnchoredPanelSlider m_Slider;
+
+        public bool opened
+        {
+            get;
+            private set;
+        }
+
         public void Initialize()
         {
             UIController.AssignVariables(this);
-            m_ErrorLabel.text = string.Empty;
             m_LevelFileInputField.text = TitleScreenCustomizationSystem.OverrideLevelPath;
             m_Dropdown.options = new List<Dropdown.OptionData>()
             {
@@ -37,12 +46,22 @@ namespace CDOverhaul
                 new Dropdown.OptionData() { text = "Center" }
             };
             m_Dropdown.value = TitleScreenCustomizationSystem.UIAlignment;
+
+            m_Slider = base.gameObject.AddComponent<OverhaulUIAnchoredPanelSlider>();
+            m_Slider.StartPosition = new Vector2(280f, 0f);
+            (base.transform as RectTransform).anchoredPosition = m_Slider.StartPosition;
+            SetOpened(false);
+        }
+
+        public void SetOpened(bool value)
+        {
+            opened = value;
+            m_Slider.TargetPosition = new Vector2(value ? 0f : 280f, 0f);
         }
 
         public void OnReloadButtonClicked()
         {
             TitleScreenOverhaulManager.reference.customizationSystem.SpawnLevel(out string error);
-            m_ErrorLabel.text = error;
         }
 
         public void OnLevelPathFieldEdited(string newValue)
@@ -52,6 +71,15 @@ namespace CDOverhaul
 
             TitleScreenCustomizationSystem.OverrideLevelPath = newValue;
             OverhaulSettingsManager.reference.SaveFieldValueOfClass(typeof(TitleScreenCustomizationSystem), nameof(TitleScreenCustomizationSystem.OverrideLevelPath));
+        }
+
+        public void OnWorkshopLevelIDFieldEdited(string newValue)
+        {
+            newValue = newValue.Replace("https://steamcommunity.com/workshop/filedetails/?id=", string.Empty).Replace("/", string.Empty);
+            m_WorkshopLevelIDInputField.text = newValue;
+
+            TitleScreenCustomizationSystem.OverrideWorkshopLevelID = newValue;
+            OverhaulSettingsManager.reference.SaveFieldValueOfClass(typeof(TitleScreenCustomizationSystem), nameof(TitleScreenCustomizationSystem.OverrideWorkshopLevelID));
         }
 
         public void OnUIAlignmentFieldEdited(int newValue)
