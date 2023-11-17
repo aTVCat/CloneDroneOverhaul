@@ -19,17 +19,16 @@ namespace CDOverhaul
         public const string ErrorsWebhook = "https://discord.com/api/webhooks/1129035917324189745/FGpPRyvgI9YxyrCutXPoWrIGjJ0Z0KueFs4_pqU2wSLUsmYfVYm_qR9yTt-XST40ntSp";
         public static readonly Uri ErrorsWebhookUri = new Uri(ErrorsWebhook);
 
-        [OverhaulSetting("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
+        [OverhaulSettingAttribute("Mod.Information.Send crash reports", true, false, "Once the game is crashed, a crash log will be sent to mod owner")]
         public static bool AllowSendingInformation;
 
         public static readonly string[] IgnoredStrings = new string[]
         {
             "DebugMenu.OnThrowErrorClicked",
             "UnityExplorer",
-            "Can't find asset",
             "Unsupported color:",
-            "Failed to read input report",
-            "Failed to start reading input report",
+            "input",
+            "Input",
             "You are not a client",
             "DecompressOnLoad",
             "Failed to get input data",
@@ -49,7 +48,6 @@ namespace CDOverhaul
             "ReleaseControlInternal",
             "ThrowIfDisposedAndClosed",
         };
-
 
         private static bool s_HasExecutedCrashReportsWebhook = false;
         private static readonly List<string> s_CaughtErrors = new List<string>();
@@ -79,13 +77,32 @@ namespace CDOverhaul
 
         public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeUserInfo, bool includeDeviceInfo)
         {
-            string rankContent = rank + "/5";
+            string rankContent = "n/a";
+            switch (rank)
+            {
+                case 1:
+                    rankContent = "Bad";
+                    break;
+                case 2:
+                    rankContent = "Meh";
+                    break;
+                case 3:
+                    rankContent = "Good";
+                    break;
+                case 4:
+                    rankContent = "Fine";
+                    break;
+                case 5:
+                    rankContent = "Excellent";
+                    break;
+            }
             string improveContent = improveText;
             string likedContent = likedText;
-            string userInfo = includeUserInfo ? (SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName()) : "**NOT INCLUDED**";
+            string userInfo = SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName();
             string deviceInfo = includeDeviceInfo ?
                 string.Format("- **OS:** {0}\n- **CPU:** {1}\n Processors: {2}\n Frequency: {3}\n- **GPU:** {4}\n- **Memory:** {5} MBs\n- **GPU Memory:** {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
 
+            int color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
             {
                 content = "__Feedback sent! Version: " + OverhaulVersion.ModVersion + "__",
@@ -93,37 +110,37 @@ namespace CDOverhaul
                 {
                     new Embed()
                     {
-                        title = "**Rank**",
-                        description = rankContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        title = "**Rank: " + rankContent + "**",
+                        description = string.Empty,
+                        color = color,
                     },
 
                     new Embed()
                     {
                         title = "**Improve**",
                         description = improveContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**User's favorite**",
+                        title = "**Favorite**",
                         description = likedContent,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**User info**",
+                        title = "**User information**",
                         description = userInfo,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**Device info**",
+                        title = "**Device information**",
                         description = deviceInfo,
-                        color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber),
+                        color = color,
                     },
                 },
             };

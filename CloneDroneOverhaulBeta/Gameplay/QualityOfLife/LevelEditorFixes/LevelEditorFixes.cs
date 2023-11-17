@@ -15,7 +15,6 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
         public override void Initialize()
         {
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.Default;
         }
 
         private void assignAnimationClip(AnimationClip clip, List<string> toAssignTo)
@@ -276,6 +275,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     Destroy(image1);
             }
 
+            /*
             RectTransform toolbar = levelEditorUI.TopToolbar;
             OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
             GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");
@@ -294,7 +294,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
             {
                 LevelEditorMoveObjectsByCoordsController.ToolEnabled = value;
-            });
+            });*/
         }
 
         public void AddUIs()
@@ -317,7 +317,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             panel.anchoredPosition = new Vector2(150f, -50f);
             SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
 
-            fixValues();
+            //fixValues();
             fixUI();
             DelegateScheduler.Instance.Schedule(LevelEditorSelectionSettingsPanel.RefreshSliders, 1f);
         }

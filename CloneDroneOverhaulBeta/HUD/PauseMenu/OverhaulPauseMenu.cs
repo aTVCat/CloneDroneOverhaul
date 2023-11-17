@@ -136,7 +136,6 @@ namespace CDOverhaul.HUD
             m_WorkshopLevelUpVote.onClick.AddListener(ToggleVoteUp);
             m_WorkshopLevelDownVote = MyModdedObject.GetObject<Button>(34);
             m_WorkshopLevelDownVote.onClick.AddListener(ToggleVoteDown);
-            m_WorkshopLevelDetails = MyModdedObject.GetObject<Button>(35);
 
             m_PlayersInMatchPanel = MyModdedObject.GetObject<Transform>(26);
             m_PlayersInMatch = new PrefabAndContainer(MyModdedObject, 27, 28);

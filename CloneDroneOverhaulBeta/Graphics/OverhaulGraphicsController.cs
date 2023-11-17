@@ -51,8 +51,8 @@ namespace CDOverhaul.Graphics
 
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;
-        [OverhaulSettingSliderParameters(false, 0.7f, 1.3f)]
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.75f, false, null, "Graphics.Amplify Occlusion.Enable")]
+        [OverhaulSettingSliderParameters(false, 0.6f, 1.3f)]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.65f, false, null, "Graphics.Amplify Occlusion.Enable")]
         public static float AOIntensity;
         [OverhaulSettingDropdownParameters("Low@Medium@High@Very high")]
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, "Graphics.Amplify Occlusion.Enable")]

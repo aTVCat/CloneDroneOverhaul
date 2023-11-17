@@ -47,7 +47,7 @@ namespace CDOverhaul.Gameplay.Combat
             if (!Owner || !Owner.IsMainPlayer())
                 return;
 
-            if (!Owner.IsAlive())
+            if (!Owner.IsAttachedAndAlive())
             {
                 base.enabled = false;
                 return;
@@ -56,7 +56,6 @@ namespace CDOverhaul.Gameplay.Combat
             if (!m_CurrentWeaponTooltip || !m_ClosestPlayerTooltip)
                 return;
 
-            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             if (OverhaulTooltipsUI.ShowPlayerInfos && Time.frameCount % 15 == 0 && GameModeManager.IsNonCoopMultiplayer())
             {
                 float maxRange = 30f;
@@ -92,7 +91,6 @@ namespace CDOverhaul.Gameplay.Combat
                 m_CurrentWeaponTooltip.ShowTooltip(newEquippedWeaponType, Owner.IsFireWeapon(newEquippedWeaponType));
             }
             m_EquippedWeponType = newEquippedWeaponType;
-            stopwatch.StopTimer("Update");
         }
     }
 }

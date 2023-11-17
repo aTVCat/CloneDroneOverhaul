@@ -62,9 +62,8 @@ namespace CDOverhaul.HUD
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
             _ = AddHUD<OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
             _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
-            _ = AddHUD<AccessoriesPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(5));
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
-            _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<ChangelogUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
             _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
@@ -75,16 +74,10 @@ namespace CDOverhaul.HUD
             _ = AddHUD<VanillaUIImprovements>(HUDModdedObject.GetObject<ModdedObject>(1));
             _ = AddHUD<AboutOverhaulMenu>(HUDModdedObject.GetObject<ModdedObject>(2));
             _ = AddHUD<OverhaulSurveyUI>(HUDModdedObject.GetObject<ModdedObject>(14));
-            _ = AddHUD<OverhaulDevToolsUI>(HUDModdedObject.GetObject<ModdedObject>(21));
             _ = AddHUD<OverhaulFullscreenDialogueWindow>(HUDModdedObject.GetObject<ModdedObject>(22));
             _ = AddHUD<OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
             _ = AddHUD<AdvancedPhotomodeUI>(HUDModdedObject.GetObject<ModdedObject>(24));
             _ = AddHUD<OverhaulCrashScreen>(HUDModdedObject.GetObject<ModdedObject>(25));
-            _ = AddHUD<OverhaulAchievementsMenu>(HUDModdedObject.GetObject<ModdedObject>(26));
-            _ = AddHUD<OverhaulConnectScreen>(HUDModdedObject.GetObject<ModdedObject>(27));
-            _ = AddHUD<OverhaulDisconnectScreen>(HUDModdedObject.GetObject<ModdedObject>(28));
-            _ = AddHUD<PersonalizationEditorUI>(HUDModdedObject.GetObject<ModdedObject>(29));
-            _ = AddHUD<MountsPersonalizationPanel>(HUDModdedObject.GetObject<ModdedObject>(30));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;

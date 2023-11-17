@@ -1,4 +1,5 @@
-﻿using CDOverhaul.HUD;
+﻿using CDOverhaul.Graphics;
+using CDOverhaul.HUD;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace CDOverhaul
         /// </summary>
         public const long SettingEventDispatcherFlag = 10000000000000L;
 
-        [OverhaulSetting("Player.Settings.Version", 0, true)]
+        [OverhaulSetting("Player.Settings.Version", 1, true)]
         public static int SettingsVersion;
 
         /// <summary>
@@ -174,11 +175,8 @@ namespace CDOverhaul
             int currentVersion = SettingsVersion;
             if (currentVersion < 1)
             {
-                // do something
-            }
-            if (currentVersion < 2)
-            {
-                // do something
+                OverhaulGraphicsController.AOIntensity = 0.65f;
+                SetSettingValue("Graphics.Amplify Occlusion.Intensity", 0.65f);
             }
             ResetSettingValue("Player.Settings.Version");
         }

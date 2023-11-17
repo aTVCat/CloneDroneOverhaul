@@ -38,48 +38,48 @@ namespace CDOverhaul.HUD.Gamemodes
                 return;
 
             GameModeCardData[] datas = GameUIRoot.Instance.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;
-            datas[0].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            /*datas[0].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[0].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(0);
-            });
-            datas[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            });*/
+            /*datas[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[1].ClickedCallback.AddListener(delegate
             {
                 OverhaulTransitionController.DoTransitionWithAction(delegate
                 {
                     GameUIRoot.Instance.TitleScreenUI.OnPlayEndlessButtonClicked();
                 }, () => CharacterTracker.Instance.GetPlayer(), 0.35f);
-            });
+            });*/
             replaceOldImageWithNew(datas[1], "Endless.jpg");
-            datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            /*datas[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas[2].ClickedCallback.AddListener(delegate
             {
                 OverhaulChallengesUI.ViewCoopChallenges = false;
                 ShowWithUI(2);
-            });
+            });*/
             replaceOldImageWithNew(datas[2], "Bot.jpg");
 
             GameModeCardData[] datas2 = GameUIRoot.Instance.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
             replaceOldImageWithNew(datas2[0], "Humans.jpg");
-            datas2[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            /*datas2[1].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas2[1].ClickedCallback.AddListener(delegate
             {
                 OverhaulChallengesUI.ViewCoopChallenges = true;
                 ShowWithUI(2);
-            });
+            });*/
             replaceOldImageWithNew(datas2[1], "Bot.jpg");
-            datas2[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            /*datas2[2].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas2[2].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(1);
-            });
+            });*/
             replaceOldImageWithNew(datas2[2], "Raptor.jpg");
-            datas2[3].ClickedCallback = new UnityEngine.Events.UnityEvent();
+            /*datas2[3].ClickedCallback = new UnityEngine.Events.UnityEvent();
             datas2[3].ClickedCallback.AddListener(delegate
             {
                 ShowWithUI(3);
-            });
+            });*/
             replaceOldImageWithNew(datas2[3], "DuelHumans.jpg");
 
             ShowWithUI(-1);

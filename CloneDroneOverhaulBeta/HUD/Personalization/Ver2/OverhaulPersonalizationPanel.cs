@@ -39,7 +39,6 @@ namespace CDOverhaul.HUD
             slider.TargetPosition = (PanelBG.transform as RectTransform).anchoredPosition;
 
             DoneButton.onClick.AddListener(OnDoneButtonClicked);
-            Hide();
         }
 
         protected virtual void Update()

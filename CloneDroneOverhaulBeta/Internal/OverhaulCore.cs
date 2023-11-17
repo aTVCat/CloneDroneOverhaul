@@ -54,10 +54,6 @@ namespace CDOverhaul
             if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData) || !moddedEvent.EventData.StartsWith(OverhaulPlayerInfoController.PlayerInfoEventPrefix))
                 return;
 
-            string[] split = moddedEvent.EventData.Split('@');
-            if (split[1] != OverhaulPlayerInfoController.PlayerInfoVersion)
-                return;
-
             OverhaulPlayerInfoRefreshEventData eventData;
             try
             {
@@ -69,16 +65,8 @@ namespace CDOverhaul
             }
 
             // Exceptions
-            if (eventData == default)
-            {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Event data is DEFAULT! Version: " + split[1]);
+            if (eventData == default || (eventData.IsRequest && eventData.IsAnswer))
                 return;
-            }
-            else if (eventData.IsRequest && eventData.IsAnswer)
-            {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("The event is defined as Answer and Request at the same time! Version: " + split[1]);
-                return;
-            }
 
             if (eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
                 foreach (OverhaulPlayerInfo overhaulPlayerInfo in OverhaulPlayerInfo.AllOverhaulPlayerInfos)
@@ -235,7 +223,7 @@ namespace CDOverhaul
             OverhaulLocalizationController.Initialize();
             OverhaulTransitionController.Initialize();
             OverhaulAudioLibrary.Initialize();
-            OverhaulPatchNotes.Initialize();
+            Changelogs.Initialize();
             OverhaulDebugActions.Initialize();
             OverhaulGraphicsController.Initialize();
             if (waitForEndOfFrame)

@@ -46,21 +46,7 @@ namespace CDOverhaul
         internal void InitializeInternal()
         {
             _ = OverhaulEventsController.AddEventListener(OverhaulMod.ModDeactivatedEventString, OnModDeactivated);
-
-#if DEBUG
             Initialize();
-            return;
-#endif
-            try
-            {
-                Initialize();
-            }
-            catch (Exception exc)
-            {
-                OverhaulWebhooksController.ExecuteErrorsWebhook("Error while initializing OverhaulController [" + GetType() + "]: " + exc);
-                ErrorString = exc.ToString();
-                base.enabled = false;
-            }
         }
 
         #region Static

@@ -75,8 +75,6 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public void RequestData()
         {
-            UnityEngine.Debug.LogWarning("REQUEST DATA " + OverhaulPlayerIdentifier.GetLocalPlayFabID() + " " + m_PlayerInfoState.state.PlayFabID);
-
             OverhaulPlayerInfoRefreshEventData eventData = new OverhaulPlayerInfoRefreshEventData
             {
                 ReceiverPlayFabID = m_PlayerInfoState.state.PlayFabID,
@@ -87,8 +85,6 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public void RefreshData()
         {
-            UnityEngine.Debug.LogWarning("REFRESH DATA");
-
             OverhaulPlayerInfoRefreshEventData eventData = new OverhaulPlayerInfoRefreshEventData
             {
                 ReceiverPlayFabID = OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE,
@@ -102,8 +98,6 @@ namespace CDOverhaul.Gameplay.Multiplayer
         {
             if (eventData.IsRequest)
             {
-                UnityEngine.Debug.LogWarning("GET REQUEST DATA " + OverhaulPlayerIdentifier.GetLocalPlayFabID() + " " + eventData.SenderPlayFabID);
-
                 OverhaulPlayerInfoRefreshEventData newEventData = new OverhaulPlayerInfoRefreshEventData
                 {
                     ReceiverPlayFabID = eventData.SenderPlayFabID,
@@ -116,8 +110,6 @@ namespace CDOverhaul.Gameplay.Multiplayer
             {
                 if (m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
                 {
-                    UnityEngine.Debug.LogWarning("GET ANSWER DATA " + eventData.SenderPlayFabID + " " + eventData.ReceiverPlayFabID);
-
                     Hashtable = eventData.Hashtable;
                     OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
                     OverhaulEventsController.DispatchEvent(PlayerDataUpdateEventString, m_PlayerInfoState.state.PlayFabID);

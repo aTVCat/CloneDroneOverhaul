@@ -104,8 +104,6 @@ namespace CDOverhaul.HUD
 
             m_TextPrefab = m.GetObject<Text>(14);
             m_TextPrefab.gameObject.SetActive(false);
-            m_Description = m.GetObject<Text>(15);
-            m_Description.text = string.Empty;
 
             GameObject panelBG = MyModdedObject.GetObject<Transform>(92).gameObject;
             OverhaulUIAnchoredPanelSlider slider = panelBG.AddComponent<OverhaulUIAnchoredPanelSlider>();
@@ -114,51 +112,31 @@ namespace CDOverhaul.HUD
 
             m_DefaultSkinButton = m.GetObject<Button>(6);
             m_DefaultSkinButton.onClick.AddListener(SetDefaultSkin);
-            if (base.gameObject.name.Equals("SkinsSelection"))
-            {
-                m_LoadIndicatorTransform = m.GetObject<Transform>(18);
-                m_LoadIndicatorFill = m.GetObject<Image>(19);
+            m_LoadIndicatorTransform = m.GetObject<Transform>(18);
+            m_LoadIndicatorFill = m.GetObject<Image>(19);
 
-                // Skin editor stuff
-                m_FileVersionText = m.GetObject<Text>(20);
-                m_RefreshDatabaseButton = m.GetObject<Button>(21);
-                m_RefreshDatabaseButton.onClick.AddListener(WeaponSkinsController.ReloadAllModels);
-                m_EditSkinButton = m.GetObject<Button>(22);
-                m_EditSkinButton.onClick.AddListener(ShowSkinEditor);
-                m_SkinEditorTranform = m.GetObject<Transform>(23);
-                m_SkinEditorExitButton = m.GetObject<Button>(24);
-                m_SkinEditorExitButton.onClick.AddListener(HideSkinEditor);
-                m_UpdateSkinsButton = m.GetObject<Button>(67);
-                m_UpdateSkinsButton.onClick.AddListener(RefreshSkinUpdates);
-                m_UpdateSkinsText = m.GetObject<Text>(68);
-                m_SkinsUpdateRefreshButtonCooldownFill = m.GetObject<Image>(69);
+            // Skin editor stuff
+            m_FileVersionText = m.GetObject<Text>(20);
+            m_RefreshDatabaseButton = m.GetObject<Button>(21);
+            m_RefreshDatabaseButton.onClick.AddListener(WeaponSkinsController.ReloadAllModels);
+            m_EditSkinButton = m.GetObject<Button>(22);
+            m_EditSkinButton.onClick.AddListener(ShowSkinEditor);
 
-                m_SearchBox = m.GetObject<InputField>(83);
-                m_SearchBox.text = string.Empty;
-                m_SearchBox.onValueChanged.AddListener(SearchSkins);
-                m_SearchByDropdown = m.GetObject<Dropdown>(84);
-                m_SearchByDropdown.onValueChanged.AddListener(ResetSearchBox);
-                m_SearchOnlyExclusiveButton = m.GetObject<Button>(85);
-                m_SearchOnlyExclusiveButton.onClick.AddListener(ToggleSearchOnlyExclusive);
-                RefreshSearchExclusiveSkinsButton();
-            }
+            m_SearchBox = m.GetObject<InputField>(83);
+            m_SearchBox.text = string.Empty;
+            m_SearchBox.onValueChanged.AddListener(SearchSkins);
+            m_SearchByDropdown = m.GetObject<Dropdown>(84);
+            m_SearchByDropdown.onValueChanged.AddListener(ResetSearchBox);
+            m_SearchOnlyExclusiveButton = m.GetObject<Button>(85);
+            m_SearchOnlyExclusiveButton.onClick.AddListener(ToggleSearchOnlyExclusive);
+            RefreshSearchExclusiveSkinsButton();
 
             m.GetObject<Button>(4).onClick.AddListener(OnDoneButtonClicked);
             m.GetObject<Toggle>(7).onValueChanged.AddListener(SetAllowEnemiesUseSkins);
-            MyModdedObject.GetObject<Text>(8).text = string.Empty;
 
-            if (base.gameObject.name.Equals("SkinsSelection"))
-            {
-                ShowDescriptionTooltip(WeaponType.None, null, 0f);
-                SkinsSelection = this;
-                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
-            }
-            else
-            {
-                m_AccessoryItems = new List<OutfitItem>();
-                OutfitSelection = this;
-                _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenOutfitsFromSettingsEventString, OpenMenuFromSettings);
-            }
+            ShowDescriptionTooltip(WeaponType.None, null, 0f);
+            SkinsSelection = this;
+            _ = OverhaulEventsController.AddEventListener(EscMenuReplacement.OpenSkinsFromSettingsEventString, OpenMenuFromSettings);
 
             SetMenuActive(false);
         }
@@ -1364,26 +1342,6 @@ namespace CDOverhaul.HUD
 
         public void ShowSkinInfo(WeaponType type, string skinName)
         {
-            MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(false);
-            MyModdedObject.GetObject<Text>(8).text = string.Empty;
-            m_Description.text = OverhaulLocalizationController.GetTranslation("NoDesc");
-            if (type == WeaponType.None || string.IsNullOrEmpty(skinName))
-                return;
-
-            IWeaponSkinItemDefinition item = m_Controller.Interface.GetSkinItem(type, skinName, ItemFilter.Everything, out _);
-            if (item == null)
-                return;
-
-            MyModdedObject.GetObject<Text>(8).text = (item as WeaponSkinItemDefinitionV2).HasNameOverride ? (item as WeaponSkinItemDefinitionV2).OverrideName : skinName;
-
-            MyModdedObject.GetObject<Transform>(9).gameObject.SetActive(item.GetModel(false, false) != null);
-            MyModdedObject.GetObject<Transform>(10).gameObject.SetActive(item.GetModel(false, true) != null || item.GetWeaponType() != WeaponType.Sword || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
-            MyModdedObject.GetObject<Transform>(11).gameObject.SetActive(item.GetModel(true, false) != null || item.GetWeaponType() == WeaponType.Bow);
-            MyModdedObject.GetObject<Transform>(12).gameObject.SetActive(item.GetModel(true, true) != null || item.GetWeaponType() != WeaponType.Sword || item.GetWeaponType() == WeaponType.Bow || (item as WeaponSkinItemDefinitionV2).UseSingleplayerVariantInMultiplayer);
-            MyModdedObject.GetObject<Transform>(13).gameObject.SetActive(true);
-
-            if (!string.IsNullOrEmpty((item as WeaponSkinItemDefinitionV2).Description))
-                m_Description.text = (item as WeaponSkinItemDefinitionV2).Description;
         }
 
         public void SetAllowEnemiesUseSkins(bool value)

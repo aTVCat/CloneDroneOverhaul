@@ -5,7 +5,6 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
 {
     public class ArenaOverhaulController : OverhaulController
     {
-        [OverhaulSettingRequireUpdate(OverhaulVersion.Updates.VER_3)]
         [OverhaulSettingWithNotification(1)]
         [OverhaulSetting("Mod.Arena.Interior overhaul", true)]
         public static bool IsArenaOverhaulEnabled;
@@ -83,8 +82,12 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             m_CommentatorBoxTransform.localPosition = new Vector3(-83.8f, 26.4f, 1.95f);
             m_CommentatorBoxTransform.localScale = Vector3.one * 1.3f;
             m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecursive("Commentatron");
+            if(!m_CommentatronTransform)
+                m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecursive("Commentatron_Xmas(Clone)");
             m_CommentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);
             m_AnalysisBotTransform = m_CommentatorBoxTransform.FindChildRecursive("AnalysisBot");
+            if (!m_AnalysisBotTransform)
+                m_AnalysisBotTransform = m_CommentatorBoxTransform.FindChildRecursive("AnalysisBot_Xmas(Clone)");
             m_AnalysisBotTransform.localPosition = new Vector3(5.2f, 4.7f, 0.52f);
 
             m_ArenaCameraAnimatorTransform = m_ArenaFinalTransform.FindChildRecursive("ArenaCameraAnimator");

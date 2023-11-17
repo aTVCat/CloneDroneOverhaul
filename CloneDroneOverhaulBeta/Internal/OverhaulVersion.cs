@@ -10,10 +10,10 @@ namespace CDOverhaul
         public const bool IsModBotBuild = true;
 
         private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.4");
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.5");
         private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
 
-        private static readonly Updates s_CurrentUpdate = Updates.VER_2;
+        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
 
         public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
         public static bool IsVersionUnder3 => !IsUpdate(Updates.VER_3);
@@ -37,7 +37,7 @@ namespace CDOverhaul
         }
         public static string GetBuildString() => 'v' + ModVersion.ToString();
 
-        public const string TargetGameVersion = "1.5.0.18";
+        public const string TargetGameVersion = "1.6.0.34";
 
         public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
         public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();

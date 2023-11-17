@@ -58,11 +58,18 @@ namespace CDOverhaul.HUD.Tooltips
             if (!MyModdedObject)
                 return;
 
-            Color color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
-            string weaponString = weaponType.ToString() + (isFire ? "-Fire" : string.Empty) + ".png";
+            Color color = Color.white;
+            string weaponString = weaponType.ToString() + ".png";
+            string text = weaponType.ToString();
+            if (weaponType != WeaponType.None)
+            {
+                color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
+                weaponString = weaponType.ToString() + (isFire ? "-Fire" : string.Empty) + ".png";
+                text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
+            }
 
             m_Text.color = color;
-            m_Text.text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
+            m_Text.text = text;
             tryLoadIcon(weaponString);
             Show();
         }

@@ -81,7 +81,7 @@ namespace CDOverhaul.HUD
 
         private void onPatchNotesButtonClicked()
         {
-            OverhaulPatchNotesUI overhaulPatchNotesUI = GetController<OverhaulPatchNotesUI>();
+            ChangelogUI overhaulPatchNotesUI = GetController<ChangelogUI>();
             if (!overhaulPatchNotesUI)
             {
                 m_PatchNotesButton.gameObject.SetActive(false);

@@ -7,6 +7,7 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(ArrowProjectile))]
     internal static class ArrowProjectile_Patch
     {
+        /*
         [HarmonyPostfix]
         [HarmonyPatch("FixedUpdate")]
         private static void FixedUpdate_Postfix(ArrowProjectile __instance)
@@ -28,6 +29,6 @@ namespace CDOverhaul.Patches
                 return;
 
             __instance.VelocityMagnitude = !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsCombatOverhaulEnabled || GameModeManager.IsMultiplayer() ? 40f : 75f;
-        }
+        }*/
     }
 }
