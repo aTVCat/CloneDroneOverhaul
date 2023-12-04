@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace OverhaulMod.UI
+namespace OverhaulMod
 {
     public class OverhaulBehaviour : MonoBehaviour
     {
@@ -36,6 +36,36 @@ namespace OverhaulMod.UI
         public UnityEngine.Object GetObject(string name, Type type)
         {
             return moddedObject.GetObject(type, name);
+        }
+
+        public virtual void Awake()
+        {
+
+        }
+
+        public virtual void Start()
+        {
+
+        }
+
+        public virtual void Update()
+        {
+
+        }
+
+        public virtual void OnEnable()
+        {
+
+        }
+
+        public virtual void OnDisable()
+        {
+
+        }
+
+        public virtual void OnDestroy()
+        {
+
         }
     }
 }

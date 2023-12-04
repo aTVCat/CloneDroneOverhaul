@@ -2,6 +2,7 @@
 using ModLibrary.YieldInstructions;
 using OverhaulMod.Patches.Replacements;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -114,14 +115,16 @@ namespace OverhaulMod
             yield return new WaitForCharacterModelInitialization(firstPersonMover);
             yield return new WaitUntil(() => !firstPersonMover || firstPersonMover.gameObject.activeInHierarchy);
             yield return new WaitForEndOfFrame();
-            if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
+            if (firstPersonMover && firstPersonMover.IsAlive())
             {
                 ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);
             }
             yield return new WaitForEndOfFrame();
-            if(firstPersonMover && firstPersonMover.IsAttachedAndAlive())
+            if (firstPersonMover && firstPersonMover.IsAlive())
             {
                 firstPersonMover.RefreshModWeaponModels();
+
+                firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
             }
             yield break;
         }

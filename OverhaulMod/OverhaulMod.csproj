@@ -375,6 +375,9 @@
     <Compile Include="Combat\AIBehaviours\RandomDashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
     <Compile Include="IModLoadListener.cs" />
+    <Compile Include="Patches\RobotAddon.cs" />
+    <Compile Include="TransformInfo.cs" />
+    <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />
     <Compile Include="UI\DeveloperMenu\UIDeveloperMenu.cs" />
     <Compile Include="Utils\AssetBundleConstants.cs" />
     <Compile Include="Combat\ModEnemiesManager.cs" />
@@ -389,10 +392,10 @@
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModManagers.cs" />
     <Compile Include="Managers\ModResources.cs" />
-    <Compile Include="Patches\LevelEditorObjectPlacementManager_Patch.cs" />
-    <Compile Include="Patches\LevelObjectsLibraryManager_Patch.cs" />
-    <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
-    <Compile Include="Patches\FirstPersonMover_Patch.cs" />
+    <Compile Include="Patches\Harmony\LevelEditorObjectPlacementManager_Patch.cs" />
+    <Compile Include="Patches\Harmony\LevelObjectsLibraryManager_Patch.cs" />
+    <Compile Include="Patches\Harmony\WeaponAITuningManager_Patch.cs" />
+    <Compile Include="Patches\Harmony\FirstPersonMover_Patch.cs" />
     <Compile Include="Patches\Replacements\GameModeSelectMenusSimplePatch.cs" />
     <Compile Include="Patches\Replacements\ModReplacement.cs" />
     <Compile Include="PrefabStorage.cs" />
@@ -421,6 +424,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
+    <Folder Include="Personalization\" />
   </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>

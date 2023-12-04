@@ -61,7 +61,6 @@ namespace OverhaulMod
                 (GameObject, Type) tuple = m_Weapons[weaponType];
 
                 GameObject gameObject = Instantiate(tuple.Item1, handR, false);
-                gameObject.SetActive(firstPersonMover.GetEquippedWeaponType() == weaponType);
                 ModWeaponModel modWeaponModel = (ModWeaponModel)gameObject.AddComponent(tuple.Item2);
                 modWeaponModel.WeaponType = weaponType;
                 modWeaponModel.SetOwner(firstPersonMover);
@@ -111,6 +110,8 @@ namespace OverhaulMod
                         firstPersonMover.SetEquippedWeaponType(weaponType, false);
                     }
                 }
+
+                gameObject.SetActive(firstPersonMover.GetEquippedWeaponType() == weaponType);
             }
         }
     }

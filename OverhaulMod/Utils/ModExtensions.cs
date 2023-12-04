@@ -58,6 +58,29 @@ namespace OverhaulMod
             return type == typeof(GameObject) ? gameObject : (Object)(gameObject?.GetComponent(type));
         }
 
+        public static void SetLocalTransform(this Transform transform, Vector3 localPosition, Vector3 localEulerAngles, Vector3 localScale)
+        {
+            transform.localPosition = localPosition;
+            transform.localEulerAngles = localEulerAngles;
+            transform.localScale = localScale;
+        }
+
+        public static void SetLocalTransform(this Transform transform, Vector3 localPosition, Vector3 localEulerAngles)
+        {
+            transform.localPosition = localPosition;
+            transform.localEulerAngles = localEulerAngles;
+        }
+
+        public static void SetLocalTransform(this Transform transform, Vector3 localPosition)
+        {
+            transform.localPosition = localPosition;
+        }
+
+        public static void SetLocalTransform(this Transform transform, TransformInfo transformInfo)
+        {
+            transform.SetLocalTransform(transformInfo.Position, transformInfo.EulerAngles, transformInfo.LocalScale);
+        }
+
         public static List<ModWeaponModel> GetModWeaponModels(this FirstPersonMover firstPersonMover)
         {
             if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
