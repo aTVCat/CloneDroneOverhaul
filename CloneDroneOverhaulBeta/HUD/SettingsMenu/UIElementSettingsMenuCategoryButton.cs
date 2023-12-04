@@ -1,11 +1,6 @@
 ﻿using CDOverhaul.Gameplay.Combat;
 using CDOverhaul.NetworkAssets;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,16 +9,16 @@ namespace CDOverhaul.HUD
     public class UIElementSettingsMenuCategoryButton : OverhaulBehaviour
     {
         [UIElementReference("CategoryLabel")]
-        private Text m_Label;
+        private readonly Text m_Label;
 
         [UIElementReference("SelectedIndicator")]
-        private GameObject m_SelectedIndicator;
+        private readonly GameObject m_SelectedIndicator;
 
         [UIElementReference("SelectedIndicator")]
-        private Graphic m_SelectedIndicatorGraphic;
+        private readonly Graphic m_SelectedIndicatorGraphic;
 
         [UIElementReference("Icon")]
-        private RawImage m_Icon;
+        private readonly RawImage m_Icon;
 
         private UISettingsMenu m_SettingsMenu;
 

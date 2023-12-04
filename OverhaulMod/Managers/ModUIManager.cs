@@ -1,0 +1,134 @@
+﻿using OverhaulMod.UI;
+using System.Collections.Generic;
+using UnityEngine;
+using OverhaulMod.Utils;
+
+namespace OverhaulMod
+{
+    public class ModUIManager : Singleton<ModUIManager>
+    {
+        private Transform m_gameUIRootTransform;
+        public Transform GameUIRootTransform
+        {
+            get
+            {
+                if (!m_gameUIRootTransform)
+                {
+                    m_gameUIRootTransform = ModCache.gameUIRoot.transform;
+                }
+                return m_gameUIRootTransform;
+            }
+        }
+
+        private Dictionary<string, GameObject> m_InstantiatedUIs;
+
+        public override void Awake()
+        {
+            base.Awake();
+
+            m_InstantiatedUIs = new Dictionary<string, GameObject>();
+
+            ModCore.GameInitialized += onGameInitialized;
+        }
+
+        private void OnDestroy()
+        {
+            ModCore.GameInitialized -= onGameInitialized;
+        }
+
+        private void onGameInitialized()
+        {
+            m_InstantiatedUIs.Clear();
+
+            _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", EUILayer.BeforeCrashScreen);
+        }
+
+        public bool HasInstantiatedUI(string assetKey)
+        {
+            return m_InstantiatedUIs.ContainsKey(assetKey);
+        }
+
+        public int GetSiblingIndex(EUILayer layer)
+        {
+            switch (layer)
+            {
+                default:
+                    return 0;
+                case EUILayer.Last:
+                    return GameUIRootTransform.childCount;
+                case EUILayer.BeforeTitleScreen:
+                    return ModCache.titleScreenUI.transform.GetSiblingIndex();
+                case EUILayer.AfterTitleScreen:
+                    return ModCache.titleScreenUI.transform.GetSiblingIndex() + 1;
+                case EUILayer.BeforeEscMenu:
+                    return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex();
+                case EUILayer.AfterEscMenu:
+                    return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex() + 1;
+                case EUILayer.BeforeCrashScreen:
+                    return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex();
+                case EUILayer.AfterCrashScreen:
+                    return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex() + 1;
+            }
+        }
+
+        public T Show<T>(string assetBundle, string assetKey, EUILayer layer = EUILayer.Last) where T : ModUIBehaviour
+        {
+            string fullName = assetBundle + "." + assetKey;
+            if (!HasInstantiatedUI(fullName))
+            {
+                GameObject prefab = ModResources.GetResource<GameObject>(assetBundle, assetKey);
+                GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
+                gameObject.SetActive(true);
+                T result1 = gameObject.AddComponent<T>();
+                result1.fullName = fullName;
+                result1.Initialize();
+                result1.Show();
+                RectTransform transform = gameObject.transform as RectTransform;
+                transform.SetSiblingIndex(GetSiblingIndex(layer));
+                transform.anchorMin = Vector2.zero;
+                transform.anchorMax = Vector2.one;
+                transform.sizeDelta = Vector2.zero;
+                transform.anchoredPosition = Vector2.zero;
+                transform.localScale = Vector3.one;
+
+                m_InstantiatedUIs.Add(fullName, gameObject);
+                return result1;
+            }
+
+            T result = m_InstantiatedUIs[fullName].GetComponent<T>();
+            result.Show();
+            return result;
+        }
+
+        public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : ModUIBehaviour
+        {
+            T result = Show<T>(assetBundle, assetKey, EUILayer.Last);
+            if (parent)
+            {
+                result.transform.SetParent(parent);
+            }
+            return result;
+        }
+
+        internal void RemoveFromList(ModUIBehaviour uIBehaviour)
+        {
+            _ = m_InstantiatedUIs.Remove(uIBehaviour.fullName);
+        }
+
+        public enum EUILayer
+        {
+            First,
+
+            BeforeTitleScreen,
+            AfterTitleScreen,
+
+            BeforeEscMenu,
+            AfterEscMenu,
+
+            BeforeCrashScreen,
+            AfterCrashScreen,
+
+            Last
+        }
+    }
+}

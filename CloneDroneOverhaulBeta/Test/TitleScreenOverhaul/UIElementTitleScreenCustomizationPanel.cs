@@ -1,10 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using CDOverhaul.Patches;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,19 +10,19 @@ namespace CDOverhaul
     {
         [UIElementActionReference(nameof(OnLevelPathFieldEdited))]
         [UIElementReference(0)]
-        private InputField m_LevelFileInputField;
+        private readonly InputField m_LevelFileInputField;
 
         [UIElementActionReference(nameof(OnWorkshopLevelIDFieldEdited))]
         [UIElementReference(4)]
-        private InputField m_WorkshopLevelIDInputField;
+        private readonly InputField m_WorkshopLevelIDInputField;
 
         [UIElementActionReference(nameof(OnReloadButtonClicked))]
         [UIElementReference(1)]
-        private Button m_ReloadButton;
+        private readonly Button m_ReloadButton;
 
         [UIElementActionReference(nameof(OnUIAlignmentFieldEdited))]
         [UIElementReference("UIAlignmentDropdown")]
-        private UIElementDropdown m_Dropdown;
+        private readonly UIElementDropdown m_Dropdown;
 
         private OverhaulUIAnchoredPanelSlider m_Slider;
 
@@ -61,7 +57,7 @@ namespace CDOverhaul
 
         public void OnReloadButtonClicked()
         {
-            TitleScreenOverhaulManager.reference.customizationSystem.SpawnLevel(out string error);
+            TitleScreenOverhaulManager.reference.customization.SpawnLevel(out _);
         }
 
         public void OnLevelPathFieldEdited(string newValue)

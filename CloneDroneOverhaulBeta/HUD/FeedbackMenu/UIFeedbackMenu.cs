@@ -10,51 +10,51 @@ namespace CDOverhaul.HUD
 
         [UIElementActionReference(nameof(OnRank1Click))]
         [UIElementReference("BadRank")]
-        private Button m_Rank1Button;
+        private readonly Button m_Rank1Button;
 
         [UIElementActionReference(nameof(OnRank2Click))]
         [UIElementReference("MehRank")]
-        private Button m_Rank2Button;
+        private readonly Button m_Rank2Button;
 
         [UIElementActionReference(nameof(OnRank3Click))]
         [UIElementReference("NeutralRank")]
-        private Button m_Rank3Button;
+        private readonly Button m_Rank3Button;
 
         [UIElementActionReference(nameof(OnRank4Click))]
         [UIElementReference("GoodRank")]
-        private Button m_Rank4Button;
+        private readonly Button m_Rank4Button;
 
         [UIElementActionReference(nameof(OnRank5Click))]
         [UIElementReference("SatisfiedRank")]
-        private Button m_Rank5Button;
+        private readonly Button m_Rank5Button;
 
         [UIElementReference("improve")]
-        private InputField m_ImproveText;
+        private readonly InputField m_ImproveText;
 
         [UIElementReference("like")]
-        private InputField m_LikedText;
+        private readonly InputField m_LikedText;
 
         [UIElementReference("IncludeUsername")]
-        private Toggle m_IncludeGameLogs;
+        private readonly Toggle m_IncludeGameLogs;
 
         [UIElementReference("IncludeDeviceInfo")]
-        private Toggle m_IncludeDeviceLogs;
+        private readonly Toggle m_IncludeDeviceLogs;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("StatusLabel")]
-        private Transform m_SendingLabelTransform;
+        private readonly Transform m_SendingLabelTransform;
 
         [UIElementActionReference(nameof(OnBackClicked))]
         [UIElementReference("BackButton")]
-        private Button m_GoBackButton;
+        private readonly Button m_GoBackButton;
 
         [UIElementActionReference(nameof(OnSendClicked))]
         [UIElementReference("SendFeedback")]
-        private Button m_SendButton;
+        private readonly Button m_SendButton;
 
         [UIElementActionReference(nameof(OnExitGameClicked))]
         [UIElementReference("CloseGameButton")]
-        private Button m_ExitGameButton;
+        private readonly Button m_ExitGameButton;
 
         private int m_SelectedRank;
         public int SelectedRank

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -12,14 +7,14 @@ namespace CDOverhaul.HUD
     public class UIElementSettingsMenuToggle : OverhaulBehaviour
     {
         [UIElementReference("EnabledGraphic")]
-        private GameObject m_EnabledStateObjects;
+        private readonly GameObject m_EnabledStateObjects;
         [UIElementReference("HandleOn")]
-        private Graphic m_EnabledStateHandle;
+        private readonly Graphic m_EnabledStateHandle;
 
         [UIElementReference("DisabledGraphic")]
-        private GameObject m_DisabledStateObjects;
+        private readonly GameObject m_DisabledStateObjects;
         [UIElementReference("HandleOff")]
-        private Graphic m_DisabledStateHandle;
+        private readonly Graphic m_DisabledStateHandle;
 
         private Button m_Button;
 
@@ -36,12 +31,7 @@ namespace CDOverhaul.HUD
             }
         }
 
-        private UnityAction<bool> m_OnValueChanged;
-        public UnityAction<bool> onValueChanged
-        {
-            get => m_OnValueChanged;
-            set => m_OnValueChanged = value;
-        }
+        public UnityAction<bool> onValueChanged { get; set; }
 
         public override void Awake()
         {
@@ -53,10 +43,7 @@ namespace CDOverhaul.HUD
         public void OnClicked()
         {
             isOn = !isOn;
-            if(onValueChanged != null)
-            {
-                onValueChanged(isOn);
-            }
+            onValueChanged?.Invoke(isOn);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Discord;
-using Steamworks;
+﻿using Steamworks;
 using System.Collections.Generic;
 using UnityEngine.UI;
 

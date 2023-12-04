@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD
@@ -13,31 +8,31 @@ namespace CDOverhaul.HUD
     public class UIElementDropdown : OverhaulBehaviour
     {
         [UIElementReference("SelectedOptionLabel")]
-        private Text m_SelectedOptionText;
+        private readonly Text m_SelectedOptionText;
 
         [UIElementDefaultVisibilityState(true)]
         [UIElementReference("CollapsedIcon")]
-        private GameObject m_CollapseIcon;
+        private readonly GameObject m_CollapseIcon;
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("ExpandedIcon")]
-        private GameObject m_ExpandIcon;
+        private readonly GameObject m_ExpandIcon;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("TheDropdown")]
-        private GameObject m_DropdownObject;
+        private readonly GameObject m_DropdownObject;
         [UIElementReference("TheDropdown")]
-        private RectTransform m_DropdownTransform;
+        private readonly RectTransform m_DropdownTransform;
         [UIElementReference("TheDropdown")]
-        private CanvasGroup m_DropdownCanvasGroup;
+        private readonly CanvasGroup m_DropdownCanvasGroup;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("DropdownEntry")]
-        private ModdedObject m_DropdownEntry;
+        private readonly ModdedObject m_DropdownEntry;
         [UIElementReference("Content")]
-        private Transform m_Container;
+        private readonly Transform m_Container;
 
         [UIElementReference("EmptyText")]
-        private GameObject m_EmptyText;
+        private readonly GameObject m_EmptyText;
 
         private bool m_Expanded;
         public bool expanded
@@ -118,13 +113,13 @@ namespace CDOverhaul.HUD
                 m_DropdownCanvasGroup.alpha = Mathf.Lerp(alpha, 0f, multipliedDeltaTime);
                 sizeDelta.y = Mathf.Lerp(sizeDelta.y, 30f, multipliedDeltaTime);
 
-                if(alpha <= 0.05f)
+                if (alpha <= 0.05f)
                     m_DropdownObject.SetActive(false);
             }
 
             m_DropdownTransform.sizeDelta = sizeDelta;
 
-            if(isExpanded && Input.GetMouseButtonDown(0) && !UIManager.Instance.IsMouseOverUIElement(m_DropdownObject))
+            if (isExpanded && Input.GetMouseButtonDown(0) && !UIManager.Instance.IsMouseOverUIElement(m_DropdownObject))
             {
                 CollapseDropdown();
             }
@@ -152,7 +147,7 @@ namespace CDOverhaul.HUD
             m_EmptyText.SetActive(false);
 
             int index = 0;
-            foreach(Dropdown.OptionData optionData in options)
+            foreach (Dropdown.OptionData optionData in options)
             {
                 ModdedObject moddedObject = Instantiate(m_DropdownEntry, m_Container);
                 moddedObject.gameObject.SetActive(true);
@@ -165,9 +160,9 @@ namespace CDOverhaul.HUD
         private class UIElementDropdownEntryDisplay : OverhaulBehaviour
         {
             [UIElementReference("SelectedIndicator")]
-            private GameObject m_SelectedIndicator;
+            private readonly GameObject m_SelectedIndicator;
             [UIElementReference("Label")]
-            private Text m_Label;
+            private readonly Text m_Label;
 
             private Button m_Button;
 

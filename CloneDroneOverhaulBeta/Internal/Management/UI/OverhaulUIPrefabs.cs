@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CDOverhaul.HUD
 {
     public class OverhaulUIPrefabs : OverhaulBehaviour
     {
-        private OverhaulUIManager m_UIManager;
-
         private Dictionary<string, GameObject> m_CachedPrefabs;
 
         public override void Awake()
         {
             m_CachedPrefabs = new Dictionary<string, GameObject>();
-            m_UIManager = OverhaulUIManager.reference;
         }
 
         protected override void OnDisposed()
         {
-            if(!m_CachedPrefabs.IsNullOrEmpty())
+            if (!m_CachedPrefabs.IsNullOrEmpty())
                 m_CachedPrefabs.Clear();
 
             m_CachedPrefabs = null;
-            m_UIManager = null;
         }
 
         public GameObject InstantiatePrefab(string key, Transform parent, bool visible, string assetBundle = OverhaulAssetLoader.ModAssetBundle_Part1)
         {
-            GameObject prefab = null;
-            m_CachedPrefabs.TryGetValue(key, out prefab);
-            if(prefab == null)
+            _ = m_CachedPrefabs.TryGetValue(key, out GameObject prefab);
+            if (prefab == null)
             {
                 prefab = OverhaulAssetLoader.GetAsset(key, assetBundle, false);
                 m_CachedPrefabs.Add(key, prefab);

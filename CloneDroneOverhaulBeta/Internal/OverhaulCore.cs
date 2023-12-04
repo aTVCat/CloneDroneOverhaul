@@ -1,15 +1,7 @@
 ﻿using Bolt;
-using CDOverhaul.CustomMultiplayer;
-using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.Gameplay.Overmodes;
-using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.HUD;
-using CDOverhaul.Visuals;
 using ICSharpCode.SharpZipLib.Zip;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -31,7 +23,7 @@ namespace CDOverhaul
         public string ModDirectory => OverhaulMod.Base.ModInfo.FolderPath;
         public static string ModDirectoryStatic => OverhaulMod.Base.ModInfo.FolderPath;
 
-        private List<IGenericStringEventListener> m_GenericStringEventListeners = new List<IGenericStringEventListener>();
+        private readonly List<IGenericStringEventListener> m_GenericStringEventListeners = new List<IGenericStringEventListener>();
 
         public static bool isShuttingDownBolt
         {
@@ -103,12 +95,12 @@ namespace CDOverhaul
                 ModInitialize modInitialize = new ModInitialize();
                 modInitialize.LoadMainFramework();
 
-                if(!UIOverhaulStartupScreen.EnableStartupScreen)
+                if (!UIOverhaulStartupScreen.EnableStartupScreen)
                 {
                     loadAssets(modInitialize);
                     return;
                 }
-                UIOverhaulStartupScreen.Show(modInitialize);
+                _ = UIOverhaulStartupScreen.Show(modInitialize);
             }
             catch (Exception ex)
             {
@@ -154,7 +146,7 @@ namespace CDOverhaul
 
         private void loadAssets(ModInitialize modInitialize)
         {
-            base.StartCoroutine(modInitialize.LoadAssetsFramework(false));
+            _ = base.StartCoroutine(modInitialize.LoadAssetsFramework(false));
         }
 
         public static string ReadText(string filePath)

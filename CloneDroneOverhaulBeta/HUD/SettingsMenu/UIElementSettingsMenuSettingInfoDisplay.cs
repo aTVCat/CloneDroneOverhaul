@@ -1,12 +1,5 @@
-﻿using Sony.NP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
-using static Sony.NP.Commerce;
 
 namespace CDOverhaul.HUD
 {
@@ -27,25 +20,25 @@ namespace CDOverhaul.HUD
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("Dropdown")]
-        private UIElementDropdown m_Dropdown;
+        private readonly UIElementDropdown m_Dropdown;
 
         [UIElementDefaultVisibilityState(false)]
-        [UIElementComponents(new System.Type[] {typeof(UIElementSettingsMenuToggle)})]
+        [UIElementComponents(new System.Type[] { typeof(UIElementSettingsMenuToggle) })]
         [UIElementReference("Toggle")]
-        private UIElementSettingsMenuToggle m_Toggle;
+        private readonly UIElementSettingsMenuToggle m_Toggle;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("Slider")]
-        private Slider m_Slider;
+        private readonly Slider m_Slider;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference("InputField")]
-        private InputField m_InputField;
+        private readonly InputField m_InputField;
 
         [UIElementDefaultVisibilityState(false)]
         [UIElementComponents(new System.Type[] { typeof(UIElementSettingsMenuKeyBinder) })]
         [UIElementReference("KeyCode")]
-        private UIElementSettingsMenuKeyBinder m_KeyCode;
+        private readonly UIElementSettingsMenuKeyBinder m_KeyCode;
 
         private UISettingsMenu m_SettingsMenu;
 
@@ -112,7 +105,7 @@ namespace CDOverhaul.HUD
                     m_Slider.gameObject.SetActive(true);
                     m_Slider.wholeNumbers = false;
                     OverhaulSettingSliderParameters sliderParameters = settingInfo.GetAttribute<OverhaulSettingSliderParameters>();
-                    if(sliderParameters != null)
+                    if (sliderParameters != null)
                     {
                         m_Slider.minValue = sliderParameters.Min;
                         m_Slider.maxValue = sliderParameters.Max;

@@ -136,10 +136,9 @@ namespace CDOverhaul.Gameplay.Multiplayer
 
         public static OverhaulPlayerInfo GetOverhaulPlayerInfo(FirstPersonMover mover)
         {
-            if (GameModeManager.IsSinglePlayer() || !mover)
-                return null;
-
-            return MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(mover.GetPlayFabID())?.GetComponent<OverhaulPlayerInfo>();
+            return GameModeManager.IsSinglePlayer() || !mover
+                ? null
+                : (MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(mover.GetPlayFabID())?.GetComponent<OverhaulPlayerInfo>());
         }
     }
 }

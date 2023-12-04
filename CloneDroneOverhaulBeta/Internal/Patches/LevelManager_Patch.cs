@@ -16,7 +16,7 @@ namespace CDOverhaul.Patches
                 __result = OvermodesManager.Instance.CurrentOvermode.GetLevelDescriptions();
                 return false;
             }
-            if(OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference.customizationSystem.OverridesLevelWithWorkshop())
+            if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference.customization.OverridesLevelWithWorkshop())
             {
                 __result = WorkshopLevelManager.Instance._endlessWorkshopLevels;
             }

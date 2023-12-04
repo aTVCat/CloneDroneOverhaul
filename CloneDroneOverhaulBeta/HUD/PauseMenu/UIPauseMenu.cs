@@ -23,154 +23,154 @@ namespace CDOverhaul.HUD
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnPersonalizationButtonClicked))]
         [UIElementReference(0)]
-        private Button m_PersonalizationButton;
+        private readonly Button m_PersonalizationButton;
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference(1)]
-        private Transform m_PersonalizationPanel;
+        private readonly Transform m_PersonalizationPanel;
         [UIElementActionReference(nameof(OnSkinsButtonClicked))]
         [UIElementReference(2)]
-        private Button m_PersonalizationSkinsButton;
+        private readonly Button m_PersonalizationSkinsButton;
         [UIElementActionReference(nameof(OnOutfitsButtonClicked))]
         [UIElementReference(3)]
-        private Button m_PersonalizationOutfitsButton;
+        private readonly Button m_PersonalizationOutfitsButton;
         [UIElementActionReference(nameof(OnPetsButtonClicked))]
         [UIElementReference(36)]
-        private Button m_PersonalizationPetsButton;
+        private readonly Button m_PersonalizationPetsButton;
         [UIElementActionReference(nameof(OnPersonalizationEditorButtonClicked))]
         [UIElementReference(58)]
-        private Button m_PersonalizationEditorButton;
+        private readonly Button m_PersonalizationEditorButton;
         [UIElementReference(24)]
-        private GameObject m_PersonalizationNotification;
+        private readonly GameObject m_PersonalizationNotification;
 
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnExitButtonClicked))]
         [UIElementReference(4)]
-        private Button m_ExitButton;
+        private readonly Button m_ExitButton;
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference(5)]
-        private Transform m_ExitSelectPanel;
+        private readonly Transform m_ExitSelectPanel;
         [UIElementActionReference(nameof(OnMainMenuButtonClicked))]
         [UIElementReference(6)]
-        private Button m_ExitSelectToMainMenuButton;
+        private readonly Button m_ExitSelectToMainMenuButton;
         [UIElementActionReference(nameof(OnDesktopButtonClicked))]
         [UIElementReference(7)]
-        private Button m_ExitSelectToDesktopButton;
+        private readonly Button m_ExitSelectToDesktopButton;
 
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnAdvancementsButtonClicked))]
         [UIElementReference(8)]
-        private Button m_AdvancementsButton;
+        private readonly Button m_AdvancementsButton;
         [UIElementReference(10)]
-        private Text m_AdvCompletedText;
+        private readonly Text m_AdvCompletedText;
         [UIElementReference(9)]
-        private Image m_AdvFillImage;
+        private readonly Image m_AdvFillImage;
 
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnSettingsButtonClicked))]
         [UIElementReference(11)]
-        private Button m_SettingsButton;
+        private readonly Button m_SettingsButton;
         [UIElementDefaultVisibilityState(false)]
         [UIElementReference(12)]
-        private Transform m_SettingsSelectPanel;
+        private readonly Transform m_SettingsSelectPanel;
         [UIElementActionReference(nameof(OnGameSettingsButtonClicked))]
         [UIElementReference(13)]
-        private Button m_GameSettingsButton;
+        private readonly Button m_GameSettingsButton;
         [UIElementActionReference(nameof(OnModSettingsButtonClicked))]
         [UIElementReference(14)]
-        private Button m_ModSettingsButton;
+        private readonly Button m_ModSettingsButton;
 
         [UIElementReference(17)]
-        private GameObject m_RoomCodePanel;
+        private readonly GameObject m_RoomCodePanel;
         [UIElementReference(20)]
-        private InputField m_RoomCodeField;
+        private readonly InputField m_RoomCodeField;
         [UIElementActionReference(nameof(OnCopyRoomCodeButtonClicked))]
         [UIElementReference(19)]
-        private Button m_RoomCodeCopyButton;
+        private readonly Button m_RoomCodeCopyButton;
         [UIElementActionReference(nameof(OnRoomCodeRevealButtonClicked))]
         [UIElementReference(18)]
-        private Button m_RoomCodeRevealButton;
+        private readonly Button m_RoomCodeRevealButton;
         [UIElementActionReference(nameof(OnStartMatchButtonClicked))]
         [UIElementReference(21)]
-        private Button m_StartMatchButton;
+        private readonly Button m_StartMatchButton;
         [UIElementReference(22)]
-        private Text m_StartMatchButtonText;
+        private readonly Text m_StartMatchButtonText;
 
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnReturnToLevelEditorButtonClicked))]
         [UIElementReference(24)]
-        private Button m_BackToLVLEditorButton;
+        private readonly Button m_BackToLVLEditorButton;
         [UIElementComponents(new System.Type[] { typeof(UIComponentButtonScaler) })]
         [UIElementActionReference(nameof(OnSkipLevelButtonClicked))]
         [UIElementReference(25)]
-        private Button m_SkipLevelButton;
+        private readonly Button m_SkipLevelButton;
 
         [UIElementReference(26)]
-        private GameObject m_PlayersInMatchPanel;
+        private readonly GameObject m_PlayersInMatchPanel;
         [PrefabContainer(27, 28)]
-        private PrefabContainer m_PlayersInMatch;
+        private readonly PrefabContainer m_PlayersInMatch;
 
         [UIElementReference(29)]
-        private GameObject m_CurrentWorkshopLevel;
+        private readonly GameObject m_CurrentWorkshopLevel;
         [UIElementReference(30)]
-        private Text m_WorkshopLevelTitleText;
+        private readonly Text m_WorkshopLevelTitleText;
         [UIElementReference(31)]
-        private Text m_WorkshopLevelCreatorText;
+        private readonly Text m_WorkshopLevelCreatorText;
         [UIElementReference(32)]
-        private Text m_WorkshopLevelDescriptionText;
+        private readonly Text m_WorkshopLevelDescriptionText;
         [UIElementActionReference(nameof(OnVoteUpButtonClicked))]
         [UIElementReference(33)]
-        private Button m_WorkshopLevelUpVote;
+        private readonly Button m_WorkshopLevelUpVote;
         [UIElementActionReference(nameof(OnVoteDownButtonClicked))]
         [UIElementReference(34)]
-        private Button m_WorkshopLevelDownVote;
+        private readonly Button m_WorkshopLevelDownVote;
 
         [UIElementReference(37)]
-        private GameObject m_PlayerActionsMenu;
+        private readonly GameObject m_PlayerActionsMenu;
         [UIElementReference(38)]
-        private GameObject m_PlayerActionsSelectPanel;
+        private readonly GameObject m_PlayerActionsSelectPanel;
         [UIElementReference(50)]
-        private Text m_SelectedPlayerText;
+        private readonly Text m_SelectedPlayerText;
         [UIElementActionReference(nameof(ShowMutePanel))]
         [UIElementReference(40)]
-        private Button m_OpenMutePanel;
+        private readonly Button m_OpenMutePanel;
         [UIElementActionReference(nameof(ShowReportPanel))]
         [UIElementReference(41)]
-        private Button m_OpenReportPanel;
+        private readonly Button m_OpenReportPanel;
         [UIElementActionReference(nameof(CopyUserInfo))]
         [UIElementReference(42)]
-        private Button m_CopyUserInfo;
+        private readonly Button m_CopyUserInfo;
         [UIElementActionReference(nameof(HidePlayerActions))]
         [UIElementReference(39)]
-        private Button m_PlayerActionsSelectClose;
+        private readonly Button m_PlayerActionsSelectClose;
         [UIElementReference(43)]
-        private GameObject m_PlayerActionsMutePanel;
+        private readonly GameObject m_PlayerActionsMutePanel;
         [UIElementReference(51)]
-        private Text m_MutePlayerText;
+        private readonly Text m_MutePlayerText;
         [UIElementActionReference(nameof(MutePlayer))]
         [UIElementReference(44)]
-        private Button m_Mute;
+        private readonly Button m_Mute;
         [UIElementActionReference(nameof(HidePlayerActions))]
         [UIElementReference(45)]
-        private Button m_CancelMute;
+        private readonly Button m_CancelMute;
         [UIElementReference(46)]
-        private GameObject m_PlayerActionsReportPanel;
+        private readonly GameObject m_PlayerActionsReportPanel;
         [UIElementReference(52)]
-        private Text m_ReportPlayerText;
+        private readonly Text m_ReportPlayerText;
         [UIElementReference(48)]
-        private Dropdown m_ReportReason;
+        private readonly Dropdown m_ReportReason;
         [UIElementReference(49)]
-        private InputField m_ReportedPersonBehaviour;
+        private readonly InputField m_ReportedPersonBehaviour;
         [UIElementActionReference(nameof(HidePlayerActions))]
         [UIElementReference(47)]
-        private Button m_CancelReport;
+        private readonly Button m_CancelReport;
         [UIElementActionReference(nameof(ReportPlayer))]
         [UIElementReference(53)]
-        private Button m_Report;
+        private readonly Button m_Report;
 
         [UIElementReference(59)]
-        private CanvasGroup m_CanvasGroup;
+        private readonly CanvasGroup m_CanvasGroup;
         [UIElementReference(60)]
-        private RawImage m_BlurImage;
+        private readonly RawImage m_BlurImage;
 
         private Material m_BlurMaterial;
 
@@ -292,7 +292,7 @@ namespace CDOverhaul.HUD
             alpha = Mathf.Lerp(alpha, m_IsHidding ? 0f : m_TargetCanvasGroupAlpha, deltaTime);
             m_CanvasGroup.alpha = alpha;
 
-            if(m_IsHidding && alpha <= 0.1f)
+            if (m_IsHidding && alpha <= 0.1f)
             {
                 m_IsHidding = false;
                 base.gameObject.SetActive(false);
@@ -301,9 +301,8 @@ namespace CDOverhaul.HUD
 
             if (!m_BlurMaterial)
                 return;
-
-            float blurSize = m_BlurMaterial.GetFloat("_Size");
-            blurSize = Mathf.Lerp(alpha, m_IsHidding ? 0f : m_TargetBlurSize, deltaTime);
+            _ = m_BlurMaterial.GetFloat("_Size");
+            float blurSize = Mathf.Lerp(alpha, m_IsHidding ? 0f : m_TargetBlurSize, deltaTime);
             m_BlurMaterial.SetFloat("_Size", blurSize);
         }
 
@@ -474,7 +473,7 @@ namespace CDOverhaul.HUD
 
             isTemporaryHidden = true;
             GameUIRoot.Instance.AchievementProgressUI.Show();
-            base.StartCoroutine(waitUntilAdvancementsMenuIsClosed());
+            _ = base.StartCoroutine(waitUntilAdvancementsMenuIsClosed());
         }
 
         private IEnumerator waitUntilAdvancementsMenuIsClosed()

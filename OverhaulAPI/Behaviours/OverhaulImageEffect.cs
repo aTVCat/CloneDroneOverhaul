@@ -9,12 +9,7 @@ namespace OverhaulAPI.SharedMonoBehaviours
     {
         private static readonly List<OverhaulImageEffect> s_Behaviours = new List<OverhaulImageEffect>();
 
-        private string m_EffectName;
-        public string effectName
-        {
-            get => m_EffectName;
-            set => m_EffectName = value;
-        }
+        public string effectName { get; set; }
 
         internal static void Reset()
         {

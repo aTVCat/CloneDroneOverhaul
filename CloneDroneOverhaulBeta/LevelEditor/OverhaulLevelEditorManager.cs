@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay.QualityOfLife;
-using CDOverhaul.HUD;
 
 namespace CDOverhaul.LevelEditor
 {

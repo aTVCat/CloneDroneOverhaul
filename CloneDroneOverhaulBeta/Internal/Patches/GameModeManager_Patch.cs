@@ -1,6 +1,4 @@
-﻿using CDOverhaul.Gameplay.Overmodes;
-using CDOverhaul.HUD;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -13,7 +11,7 @@ namespace CDOverhaul.Patches
         {
             if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul))
             {
-                __result = TitleScreenOverhaulManager.reference.customizationSystem.OverridesLevelWithWorkshop();
+                __result = TitleScreenOverhaulManager.reference.customization.OverridesLevelWithWorkshop();
             }
         }
     }

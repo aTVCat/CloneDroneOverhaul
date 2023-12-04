@@ -69,7 +69,7 @@ namespace CDOverhaul
 
         public static bool IsFeatureImplemented(EBuildFeatures buildFeature)
         {
-            return !s_BuildFeatures.ContainsKey(buildFeature) ? false : s_BuildFeatures[buildFeature];
+            return s_BuildFeatures.ContainsKey(buildFeature) && s_BuildFeatures[buildFeature];
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using CDOverhaul.HUD;
-using CDOverhaul.Visuals;
+﻿using CDOverhaul.Visuals;
 using HarmonyLib;
-using InternalModBot;
-using ModLibrary;
-using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -69,7 +65,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("ShowTitleScreen")]
         private static bool ShowTitleScreen_Prefix(GameFlowManager __instance)
         {
-            if(OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference)
+            if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference)
             {
                 TitleScreenOverhaulManager.reference.DoTitleScreenOverhaul();
                 return false;

@@ -58,7 +58,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             StringBuilder builder = new StringBuilder();
             foreach (Tuple<Func<bool>, string> flag in UserFlags)
                 if (flag.Item1 != null && flag.Item1() && !string.IsNullOrEmpty(flag.Item2))
-                    builder.Append(flag);
+                    _ = builder.Append(flag);
 
             return builder.ToString();
         }

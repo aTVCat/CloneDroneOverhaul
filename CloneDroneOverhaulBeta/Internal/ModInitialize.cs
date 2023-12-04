@@ -3,7 +3,6 @@ using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Gameplay.Overmodes;
-using CDOverhaul.HUD;
 using CDOverhaul.LevelEditor;
 using CDOverhaul.Patches;
 using CDOverhaul.RichPresence;
@@ -131,8 +130,8 @@ namespace CDOverhaul
             GameObject contentObject = new GameObject("Content");
             contentObject.transform.SetParent(OverhaulController.mainGameObject.transform.parent);
 
-            _ = OverhaulController.Add<OverhaulRepositoryManager>(contentObject.transform);
-            _ = OverhaulController.Add<AdditionalContentManager>(contentObject.transform);
+            _ = OverhaulController.Add<OverhaulContentManager>(contentObject.transform);
+            _ = OverhaulController.Add<AddonManager>(contentObject.transform);
             _ = OverhaulController.Add<OvermodesManager>(contentObject.transform);
             _ = OverhaulController.Add<PersonalizationManager>(contentObject.transform);
         }
@@ -191,11 +190,11 @@ namespace CDOverhaul
                 string assetBundle = toLoad[index];
                 if (!async)
                 {
-                    OverhaulAssetLoader.LoadAssetBundleIfNotLoaded(assetBundle, true);
+                    _ = OverhaulAssetLoader.LoadAssetBundleIfNotLoaded(assetBundle, true);
                 }
                 else
                 {
-                    OverhaulAssetLoader.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetLoader.AssetBundleLoadHandler handler)
+                    _ = OverhaulAssetLoader.LoadAssetBundleAsync(assetBundle, delegate (OverhaulAssetLoader.AssetBundleLoadHandler handler)
                     {
                         boolArray[index] = true;
                     });

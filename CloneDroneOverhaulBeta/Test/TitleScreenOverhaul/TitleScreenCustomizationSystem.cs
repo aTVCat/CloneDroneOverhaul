@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.Analytics;
 
 namespace CDOverhaul.Patches
 {
@@ -54,8 +49,6 @@ namespace CDOverhaul.Patches
 
         public void SpawnLevel(out string error)
         {
-            error = null;
-
             bool justOverrides = OverridesLevel();
             bool overridesWithWorkshop = OverridesLevelWithWorkshop();
             if (justOverrides && !overridesWithWorkshop)
@@ -125,12 +118,12 @@ namespace CDOverhaul.Patches
             }
 
             LevelDescription levelDescription = GetOverrideLevelDescription();
-            if(!levelManager._endlessLevels.Contains(levelDescription))
+            if (!levelManager._endlessLevels.Contains(levelDescription))
                 levelManager._endlessLevels.Add(levelDescription);
 
             dataManager.SetCurrentLevelID(OVERRIDE_LEVEL_ID);
 
-            base.StartCoroutine(spawnLevelCoroutine());
+            _ = base.StartCoroutine(spawnLevelCoroutine());
         }
 
         private IEnumerator spawnLevelCoroutine()

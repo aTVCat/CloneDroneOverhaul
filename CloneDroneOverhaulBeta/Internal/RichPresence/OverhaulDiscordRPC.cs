@@ -1,13 +1,9 @@
 ﻿using Discord;
-using ModLibrary;
-using System;
-using UnityEngine;
-using static Discord.UserManager;
 
 namespace CDOverhaul.RichPresence
 {
     public class OverhaulDiscordRPC : OverhaulRPCBase
-    {        
+    {
         /// <summary>
         /// Overhaul mod Discord App ID
         /// </summary>
@@ -69,7 +65,7 @@ namespace CDOverhaul.RichPresence
         public override void RefreshInformation()
         {
             base.RefreshInformation();
-            GetGameModeDetailsString();
+            _ = GetGameModeDetailsString();
 
             m_Activity.State = !string.IsNullOrEmpty(GameModeDetailsString) ? GameModeString + " [" + GameModeDetailsString + "]" : GameModeString;
             m_Client.GetActivityManager().UpdateActivity(m_Activity, m_ActivityHandler);

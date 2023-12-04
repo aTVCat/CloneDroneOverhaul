@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.AccessControl;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -51,11 +50,7 @@ namespace CDOverhaul
             get
             {
                 bool useBetterMethod = OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.Cursor_Disabling_Through_ModBot);
-                if (useBetterMethod)
-                {
-                    return m_HideCursor;
-                }
-                return m_EnableCursorConditionID != 0;
+                return useBetterMethod ? m_HideCursor : m_EnableCursorConditionID != 0;
             }
             set
             {
@@ -161,7 +156,7 @@ namespace CDOverhaul
         protected void ShowTitleScreenButtons()
         {
             if (GameModeManager.IsOnTitleScreen() && TitleScreen)
-                TitleScreen.setLogoAndRootButtonsVisible(RememberTitleScreenButtonsState() ? m_WereTitleScreenButtonsActive : true);
+                TitleScreen.setLogoAndRootButtonsVisible(!RememberTitleScreenButtonsState() || m_WereTitleScreenButtonsActive);
         }
 
         public static void AssignVariables(OverhaulBehaviour behaviour)
@@ -331,7 +326,7 @@ namespace CDOverhaul
                             }
                         }
 
-                        if(fieldValueToAssign is IInitializable)
+                        if (fieldValueToAssign is IInitializable)
                             (fieldValueToAssign as IInitializable).Initialize();
                     }
 

@@ -38,8 +38,8 @@ namespace CDOverhaul.Patches
             m_MultiplayerNEWButtonTransform = TransformUtils.FindChildRecursive(target.transform, "MultiplayerButton_NEW") as RectTransform;
             if (m_MultiplayerNEWButtonTransform != null)
             {
-                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(45, -62.5f, 0);
-                m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(85f, 27.5f);
+                m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -62.5f, 0);
+                m_MultiplayerNEWButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
             }
 
             m_SingleplayerButtonTransform = TransformUtils.FindChildRecursive(target.transform, "PlaySingleplayer") as RectTransform;
@@ -47,57 +47,6 @@ namespace CDOverhaul.Patches
             {
                 m_SingleplayerButtonTransform.localPosition = new Vector3(0, -30f, 0);
                 m_SingleplayerButtonTransform.sizeDelta = new Vector2(175f, 27.5f);
-
-                RectTransform playModdedButton = Object.Instantiate(m_SingleplayerButtonTransform, m_SingleplayerButtonTransform.parent);
-                playModdedButton.localPosition = new Vector3(-45, -62.5f, 0);
-                playModdedButton.sizeDelta = new Vector2(85f, 27.5f);
-                LocalizedTextField playModdedButtonText = playModdedButton.GetComponentInChildren<LocalizedTextField>();
-                Text playModdedButtonTextComponent = playModdedButtonText.GetComponent<Text>();
-                playModdedButtonTextComponent.text = OverhaulLocalizationManager.LocalizationData.GetTranslation("Play modded");
-                Object.Destroy(playModdedButtonText);
-
-                Transform gamemodeSelectionScreenPrefab = TransformUtils.FindChildRecursive(target.transform, "SingleplayerModeSelectScreen");
-                Transform moddedGamemodesSelectionScreenTransform = Object.Instantiate(gamemodeSelectionScreenPrefab, gamemodeSelectionScreenPrefab.parent);
-                moddedGamemodesSelectionScreenTransform.gameObject.SetActive(false);
-                GameModeSelectScreen moddedGameModesSelectScreen = moddedGamemodesSelectionScreenTransform.GetComponent<GameModeSelectScreen>();
-                moddedGameModesSelectScreen.GameModeData = new GameModeCardData[]
-                {
-                    new GameModeCardData
-                    {
-                        NameOfMode = OverhaulLocalizationManager.LocalizationData.GetTranslation("Multiplayer Sandbox"),
-                        Description = OverhaulLocalizationManager.LocalizationData.GetTranslation("Multiplayer Sandbox Desc"),
-                        ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    }/*,
-                    new GameModeCardData
-                    {
-                        NameOfMode = "Testing mode",
-                        Description = "",
-                        ClickedCallback = new UnityEngine.Events.UnityEvent()
-                    }*/
-                };
-                moddedGameModesSelectScreen.GameModeData[0].ClickedCallback.AddListener(OverhaulFullscreenDialogueWindow.ShowUnfinishedFeatureWindow);
-                //moddedGameModesSelectScreen.GameModeData[1].ClickedCallback.AddListener(OverhaulController.GetController<OvermodesController>().StartTestMode);
-                patchGameModeSelectScreen(moddedGamemodesSelectionScreenTransform);
-                Transform exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("UIPrefab_CloseButton");
-                if (!exitButtonTransform)
-                {
-                    exitButtonTransform = moddedGamemodesSelectionScreenTransform.FindChildRecursive("exitButton (1)");
-                }
-                Button exitButton = exitButtonTransform.GetComponent<Button>();
-                exitButton.onClick = new Button.ButtonClickedEvent();
-                exitButton.onClick.AddListener(delegate
-                {
-                    target.setLogoAndRootButtonsVisible(true);
-                    moddedGameModesSelectScreen.Hide();
-                });
-
-                Button playModdedButtonComponent = playModdedButton.GetComponent<Button>();
-                playModdedButtonComponent.onClick = new Button.ButtonClickedEvent();
-                playModdedButtonComponent.onClick.AddListener(delegate
-                {
-                    target.setLogoAndRootButtonsVisible(false);
-                    moddedGameModesSelectScreen.Show();
-                });
             }
 
             m_AchievementsNewHint = TransformUtils.FindChildRecursive(target.transform, "AchievementsNewHint");

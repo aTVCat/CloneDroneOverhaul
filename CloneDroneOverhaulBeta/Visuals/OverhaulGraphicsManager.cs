@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace CDOverhaul.Visuals

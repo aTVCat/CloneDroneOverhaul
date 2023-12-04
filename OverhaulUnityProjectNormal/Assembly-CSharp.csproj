@@ -131,7 +131,6 @@
     <None Include="Assets\ModStuff\Shaders\UI\MaskedUIBlur.shader" />
     <None Include="Assets\ModStuff\SnapshotShaders\CRTScreen.shader" />
     <None Include="Assets\ModStuff\SnapshotShaders\Neon.shader" />
-    <None Include="Assets\ModStuff\Shaders\ImageEffects\MotionBlur.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
@@ -152,7 +151,6 @@
     <None Include="Assets\ModStuff\SnapshotShaders\Sepia.shader" />
     <None Include="Assets\ModStuff\QuickOutline\OutlineMask.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\ModStuff\Shaders\ImageEffects\TAA.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\ModStuff\Shaders\ImageEffects\D3D11.hlsl" />

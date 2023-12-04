@@ -1,8 +1,8 @@
-﻿using OverhaulAPI.SharedMonoBehaviours;
+﻿using CDOverhaul.HUD;
+using OverhaulAPI.SharedMonoBehaviours;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using CDOverhaul.HUD;
 
 namespace CDOverhaul
 {

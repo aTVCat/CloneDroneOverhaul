@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -12,29 +9,12 @@ namespace CDOverhaul
     {
         public OverhaulSettingInfo()
         {
-            m_Attributes = new List<Attribute>();
+            attributes = new List<Attribute>();
         }
 
-        private string m_Name;
-        public string name
-        {
-            get => m_Name;
-            private set => m_Name = value;
-        }
-
-        private string m_Section;
-        public string section
-        {
-            get => m_Section;
-            private set => m_Section = value;
-        }
-
-        private string m_Category;
-        public string category
-        {
-            get => m_Category;
-            private set => m_Category = value;
-        }
+        public string name { get; private set; }
+        public string section { get; private set; }
+        public string category { get; private set; }
 
         private string m_Path;
         public string path
@@ -64,40 +44,11 @@ namespace CDOverhaul
             }
         }
 
-        private Type m_FieldType;
-        public Type fieldType
-        {
-            get => m_FieldType;
-            private set => m_FieldType = value;
-        }
-
-        private EOverhaulSettingType m_SettingType;
-        public EOverhaulSettingType settingType
-        {
-            get => m_SettingType;
-            private set => m_SettingType = value;
-        }
-
-        private List<Attribute> m_Attributes;
-        public List<Attribute> attributes
-        {
-            get => m_Attributes;
-            private set => m_Attributes = value;
-        }
-
-        private object m_DefaultValue;
-        public object defaultValue
-        {
-            get => m_DefaultValue;
-            set => m_DefaultValue = value;
-        }
-
-        private bool m_IsHidden;
-        public bool isHidden
-        {
-            get => m_IsHidden;
-            set => m_IsHidden = value;
-        }
+        public Type fieldType { get; private set; }
+        public EOverhaulSettingType settingType { get; private set; }
+        public List<Attribute> attributes { get; private set; }
+        public object defaultValue { get; set; }
+        public bool isHidden { get; set; }
 
         private List<Action> m_OnValueSavedCallbacks;
         public event Action onValueSavedCallback
@@ -114,7 +65,7 @@ namespace CDOverhaul
             }
             remove
             {
-                m_OnValueSavedCallbacks.Remove(value);
+                _ = m_OnValueSavedCallbacks.Remove(value);
             }
         }
 
@@ -123,16 +74,13 @@ namespace CDOverhaul
             EOverhaulSettingType result;
             if (type == typeof(bool))
                 result = EOverhaulSettingType.Bool;
-            else if (type == typeof(int))
-                result = EOverhaulSettingType.Int;
-            else if (type == typeof(float))
-                result = EOverhaulSettingType.Float;
-            else if (type == typeof(string))
-                result = EOverhaulSettingType.String;
-            else if (type == typeof(KeyCode))
-                result = EOverhaulSettingType.KeyCode;
-            else
-                result = EOverhaulSettingType.Other;
+            else result = type == typeof(int)
+                ? EOverhaulSettingType.Int
+                : type == typeof(float)
+                ? EOverhaulSettingType.Float
+                : type == typeof(string)
+                ? EOverhaulSettingType.String
+                : type == typeof(KeyCode) ? EOverhaulSettingType.KeyCode : EOverhaulSettingType.Other;
             return result;
         }
 
@@ -201,9 +149,9 @@ namespace CDOverhaul
 
             List<int> toRemove = new List<int>();
             int index = 0;
-            foreach(Action action in m_OnValueSavedCallbacks)
+            foreach (Action action in m_OnValueSavedCallbacks)
             {
-                if(action.Target != null)
+                if (action.Target != null)
                 {
                     action();
                 }
@@ -214,17 +162,17 @@ namespace CDOverhaul
                 index++;
             }
 
-            foreach(int toRemoveIndex in toRemove)
+            foreach (int toRemoveIndex in toRemove)
             {
                 m_OnValueSavedCallbacks.RemoveAt(toRemoveIndex);
             }
         }
 
-        public void AddAttribute(Attribute attribute) => m_Attributes.Add(attribute);
-        public void AddAttributeRange(List<Attribute> attributes) => m_Attributes.AddRange(attributes);
+        public void AddAttribute(Attribute attribute) => attributes.Add(attribute);
+        public void AddAttributeRange(List<Attribute> attributes) => this.attributes.AddRange(attributes);
         public T GetAttribute<T>() where T : Attribute
         {
-            foreach (Attribute attribute in m_Attributes)
+            foreach (Attribute attribute in attributes)
             {
                 if (attribute.GetType() == typeof(T))
                     return (T)attribute;

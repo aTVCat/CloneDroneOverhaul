@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Workshop;
+﻿using CDOverhaul.Workshop;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,28 +10,28 @@ namespace CDOverhaul.HUD
         public static bool AlwaysShow = true;
 
         [UIElementReference(0)]
-        private GameObject m_TitleScreenWatermark;
+        private readonly GameObject m_TitleScreenWatermark;
         [UIElementReference(1)]
-        private Text m_TitleScreenVersionLabel;
+        private readonly Text m_TitleScreenVersionLabel;
         [UIElementReference(5)]
-        private GameObject m_TitleScreenDebugLabel;
+        private readonly GameObject m_TitleScreenDebugLabel;
 
         [UIElementReference(2)]
-        private GameObject m_GameplayWatermark;
+        private readonly GameObject m_GameplayWatermark;
         [UIElementReference(3)]
-        private Text m_GameplayVersionLabel;
+        private readonly Text m_GameplayVersionLabel;
         [UIElementReference(4)]
-        private GameObject m_GameplayDebugLabel;
+        private readonly GameObject m_GameplayDebugLabel;
 
         [UIElementReference(6)]
-        private GameObject m_UpperButtonsContainer;
+        private readonly GameObject m_UpperButtonsContainer;
 
         [UIElementActionReference(nameof(onPatchNotesButtonClicked))]
         [UIElementReference(7)]
-        private Button m_PatchNotesButton;
+        private readonly Button m_PatchNotesButton;
         [UIElementActionReference(nameof(onTestUIClicked))]
         [UIElementReference(8)]
-        private Button m_TestUIButton;
+        private readonly Button m_TestUIButton;
 
         private Text m_TitleScreenUIVersionLabel;
         private GameObject m_TitleScreenRootButtons;

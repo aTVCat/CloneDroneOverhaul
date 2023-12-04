@@ -59,10 +59,9 @@ namespace CDOverhaul
         public static long GetLocalDiscordID()
         {
             OverhaulDiscordRPC discordRPC = OverhaulRPCManager.reference?.discord;
-            if (!discordRPC)
-                return -1;
-
-            return !discordRPC.initialized
+            return !discordRPC
+                ? -1
+                : !discordRPC.initialized
                 ? -1
                 : discordRPC.localUser.Id;
         }

@@ -1,10 +1,4 @@
-﻿using Esprima.Ast;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,14 +7,9 @@ namespace CDOverhaul.HUD
     public class UIElementSettingsMenuKeyBinder : OverhaulBehaviour
     {
         [UIElementReference("BindedKeyLabel")]
-        private Text m_BindKeyLabel;
+        private readonly Text m_BindKeyLabel;
 
-        private UnityAction<KeyCode> m_OnValueChanged;
-        public UnityAction<KeyCode> onValueChanged
-        {
-            get => m_OnValueChanged;
-            set => m_OnValueChanged = value;
-        }
+        public UnityAction<KeyCode> onValueChanged { get; set; }
 
         public override void Awake()
         {
@@ -31,8 +20,7 @@ namespace CDOverhaul.HUD
 
         public void BindKey(KeyCode key)
         {
-            if(onValueChanged != null)
-                onValueChanged(key);
+            onValueChanged?.Invoke(key);
 
             RefreshLabel(key);
         }

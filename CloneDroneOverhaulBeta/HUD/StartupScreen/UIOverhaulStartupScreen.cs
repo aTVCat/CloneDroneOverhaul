@@ -1,4 +1,5 @@
-﻿using CDOverhaul.HUD.Vanilla;
+﻿using CDOverhaul.HUD;
+using CDOverhaul.HUD.Vanilla;
 using CDOverhaul.NetworkAssets;
 using CDOverhaul.Patches;
 using System.Collections;
@@ -21,6 +22,8 @@ namespace CDOverhaul
 
         [OverhaulSetting(OverhaulSettingConstants.Categories.USER_INTERFACE, OverhaulSettingConstants.Sections.BOOT_SCREEN, "Screenshots folder")]
         public static string ScreenshotsFolder = "";
+
+        public static UIOverhaulStartupScreen Instance;
 
         public static bool HasBeenInstantiated;
 
@@ -59,6 +62,7 @@ namespace CDOverhaul
             bootUI.m_BackgroundImage = moddedObject.GetObject<RawImage>(3);
             bootUI.m_CanvasGroup = mainViewTransform.GetComponent<CanvasGroup>();
             bootUI.m_CanvasGroup.alpha = 1f;
+            Instance = bootUI;
             moddedObject.GetObject<Image>(4).enabled = UseBlur;
 
             string imagePath = OverhaulMod.Core.ModDirectory + "Assets/Previews/BootUI_" + UnityEngine.Random.Range(1, 5) + ".jpg";
@@ -116,7 +120,7 @@ namespace CDOverhaul
             if (m_IsBecomingHidden)
                 return;
 
-            base.StartCoroutine(hideAnimation());
+            _ = base.StartCoroutine(hideAnimation());
         }
 
         private void setEnvironmentActive(bool value)
@@ -127,7 +131,7 @@ namespace CDOverhaul
                 titleScreenUI.setLogoAndRootButtonsVisible(value);
                 if (value)
                     if (OverhaulFeaturesSystem.IsFeatureImplemented(EBuildFeatures.TitleScreen_Overhaul) && TitleScreenOverhaulManager.reference)
-                        TitleScreenOverhaulManager.reference.DoTitleScreenOverhaul();
+                        UIConstants.ShowNewTitleScreen();
                     else
                         titleScreenUI.Show();
                 else
