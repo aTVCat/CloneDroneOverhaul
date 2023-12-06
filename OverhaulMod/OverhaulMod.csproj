@@ -375,6 +375,7 @@
     <Compile Include="Combat\AIBehaviours\RandomDashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
     <Compile Include="IModLoadListener.cs" />
+    <Compile Include="Patches\Harmony\SelectableUI_Patch.cs" />
     <Compile Include="Patches\RobotAddon.cs" />
     <Compile Include="TransformInfo.cs" />
     <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />

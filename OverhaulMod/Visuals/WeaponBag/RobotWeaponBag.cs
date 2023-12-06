@@ -69,7 +69,7 @@ namespace OverhaulMod.Visuals
                 {
                     Destroy(bag.gameObject);
                 }
-                Destroy(gameObject);
+                Destroy(this);
                 return;
             }
 

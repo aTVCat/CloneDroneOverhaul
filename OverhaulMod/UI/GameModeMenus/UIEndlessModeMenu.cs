@@ -6,7 +6,7 @@ namespace OverhaulMod.UI
     public class UIEndlessModeMenu : ModUIBehaviour
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
-        [UIElement("ExitButton")]
+        [UIElement("CloseButton")]
         private readonly Button m_ExitButton;
 
         [UIElementAction(nameof(OnPlayButtonClicked))]

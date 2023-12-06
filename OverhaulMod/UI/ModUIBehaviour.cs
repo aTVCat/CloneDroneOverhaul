@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
                 {
                     object @object = elementAttribute.HasIndex()
                         ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
-                        : (object)GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                        : GetObject(elementAttribute.Name, fieldInfo.FieldType);
 
                     UIElementActionAttribute actionAttribute = fieldInfo.GetCustomAttribute<UIElementActionAttribute>();
                     if (actionAttribute != null)
@@ -44,11 +44,14 @@ namespace OverhaulMod.UI
                         if (fieldInfo.FieldType == typeof(Button))
                         {
                             MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                            Button button = @object as Button;
-                            button.onClick.AddListener(delegate
+                            if(methodInfo != null)
                             {
-                                _ = methodInfo.Invoke(this, null);
-                            });
+                                Button button = @object as Button;
+                                button.onClick.AddListener(delegate
+                                {
+                                    _ = methodInfo.Invoke(this, null);
+                                });
+                            }
                         }
                     }
 

@@ -275,6 +275,48 @@
     <Reference Include="Unity.Locator">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/Unity.Locator.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Timeline">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Networking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.GoogleAudioSpatializer">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/Editor/UnityEditor.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GoogleAudioSpatializer">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SpatialTracking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/Editor/UnityEditor.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.VR">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Graphs">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
     </Reference>

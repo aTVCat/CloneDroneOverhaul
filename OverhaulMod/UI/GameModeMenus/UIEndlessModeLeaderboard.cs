@@ -9,7 +9,7 @@ namespace OverhaulMod.UI
     public class UIEndlessModeLeaderboard : ModUIBehaviour
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
-        [UIElement("ExitButton")]
+        [UIElement("CloseButton")]
         private readonly Button m_ExitButton;
 
         [UIElementAction(nameof(OnExportButtonClicked))]

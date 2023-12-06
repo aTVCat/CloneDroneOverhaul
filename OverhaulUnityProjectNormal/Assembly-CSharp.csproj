@@ -64,12 +64,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ColorForState.cs" />
+    <Compile Include="Assets\GameUIThemeData.cs" />
     <Compile Include="Assets\ModdedObject.cs" />
     <Compile Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
     <Compile Include="Assets\ModStuff\Shaders\ShaderOnCamera.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotCanvas.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotFilter.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotMode.cs" />
+    <Compile Include="Assets\SelectableUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\UISelectionState.cs" />
     <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\ApplyPostEffect.cginc" />
     <None Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\ModStuff\SnapshotShaders\PixelNES.shader" />
@@ -370,6 +374,27 @@
     </Reference>
     <Reference Include="Unity.Locator">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/Unity.Locator.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GoogleAudioSpatializer">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
