@@ -19,5 +19,10 @@ namespace OverhaulMod.Utils
         {
             _ = ModUIManager.Instance.Show<UIEndlessModeLeaderboard>(AssetBundleConstants.UI, "UI_EndlessModeLeaderboard", parent);
         }
+
+        public static void ShowSettingsMenuRework()
+        {
+            _ = ModUIManager.Instance.Show<UISettingsMenu>(AssetBundleConstants.UI, "UI_SettingsMenuRework", ModUIManager.EUILayer.AfterTitleScreen);
+        }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
 using ModLibrary;
-using Org.BouncyCastle.Crypto;
 using OverhaulMod.Combat.Weapons;
-using static BoltAssets;
 
 namespace OverhaulMod.Patches
 {
@@ -13,11 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("tryKick")]
         private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
-            if (__instance._characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52))
-            {
-                return false;
-            }
-            return true;
+            return !__instance._characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
         }
 
         [HarmonyPrefix]

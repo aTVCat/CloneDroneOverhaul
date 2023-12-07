@@ -126,7 +126,7 @@ namespace OverhaulMod
 
                 if (firstPersonMover.IsAttachedAndAlive())
                 {
-                    firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
                 }
             }
             yield break;

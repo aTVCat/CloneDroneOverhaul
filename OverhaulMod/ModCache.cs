@@ -125,17 +125,6 @@ namespace OverhaulMod
             }
         }
 
-        private static GameUIThemeData s_gameUIThemeData;
-        public static GameUIThemeData gameUIThemeData
-        {
-            get
-            {
-                return s_gameUIThemeData;
-            }
-            set
-            {
-                s_gameUIThemeData = value;
-            }
-        }
+        public static GameUIThemeData gameUIThemeData { get; set; }
     }
 }

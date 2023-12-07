@@ -1,7 +1,7 @@
 ﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
-using OverhaulMod.Utils;
 
 namespace OverhaulMod
 {
@@ -71,7 +71,7 @@ namespace OverhaulMod
             }
         }
 
-        public T Show<T>(string assetBundle, string assetKey, EUILayer layer = EUILayer.Last) where T : ModUIBehaviour
+        public T Show<T>(string assetBundle, string assetKey, EUILayer layer = EUILayer.Last) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
             if (!HasInstantiatedUI(fullName))
@@ -100,7 +100,7 @@ namespace OverhaulMod
             return result;
         }
 
-        public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : ModUIBehaviour
+        public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : OverhaulUIBehaviour
         {
             T result = Show<T>(assetBundle, assetKey, EUILayer.Last);
             if (parent)
@@ -110,7 +110,17 @@ namespace OverhaulMod
             return result;
         }
 
-        internal void RemoveFromList(ModUIBehaviour uIBehaviour)
+        public T Get<T>(string assetBundle, string assetKey) where T : OverhaulUIBehaviour
+        {
+            string fullName = assetBundle + "." + assetKey;
+            if(m_InstantiatedUIs.TryGetValue(fullName, out GameObject gameObject))
+            {
+                return gameObject?.GetComponent<T>();
+            }
+            return null;
+        }
+
+        internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
             _ = m_InstantiatedUIs.Remove(uIBehaviour.fullName);
         }

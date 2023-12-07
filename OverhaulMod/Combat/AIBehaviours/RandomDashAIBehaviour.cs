@@ -22,7 +22,7 @@ namespace OverhaulMod.Combat.AIBehaviours
             {
                 m_NextTime = Time.time + WaitBetweenDashes.GetRandomValue();
 
-                 float multiplier = _firstPersonMover.IsJumping() ? 0.5f : 1f;
+                float multiplier = _firstPersonMover.IsJumping() ? 0.5f : 1f;
 
                 _firstPersonMover.AddVelocity(_firstPersonMover.transform.forward * 25f * multiplier);
                 _firstPersonMover.playDashAnimation(false);

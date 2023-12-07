@@ -8,15 +8,14 @@ namespace OverhaulMod
         public override void Awake()
         {
             base.Awake();
-            base.gameObject.AddComponent<UIDeveloperMenu>();
+            _ = base.gameObject.AddComponent<UIDeveloperMenu>();
         }
 
         public void DispatchModLoadedEvent()
         {
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
             {
-                IModLoadListener modLoadListener = behaviour as IModLoadListener;
-                if (modLoadListener != null)
+                if (behaviour is IModLoadListener modLoadListener)
                     modLoadListener.OnModLoaded();
             }
         }

@@ -1,5 +1,5 @@
-﻿using UnityEngine.Events;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
+using UnityEngine.Events;
 
 namespace OverhaulMod.Patches.Replacements
 {

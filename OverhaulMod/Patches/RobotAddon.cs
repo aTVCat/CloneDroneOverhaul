@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-
-namespace OverhaulMod.Patches
+﻿namespace OverhaulMod.Patches
 {
     public class RobotAddon : OverhaulBehaviour
     {

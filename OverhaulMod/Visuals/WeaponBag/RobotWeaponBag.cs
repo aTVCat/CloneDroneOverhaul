@@ -105,18 +105,10 @@ namespace OverhaulMod.Visuals
             {
                 if (!WeaponToRenderer.ContainsKey(weaponType))
                 {
-                    Transform renderer = null;
-                    if(weaponType == WeaponType.Spear)
-                    {
-                        renderer = weaponModel.PartsToDrop[0];
-                    }
-                    else
-                    {
-                        renderer = weaponModel.getExistingWeaponModel();
-                    }
+                    Transform renderer = weaponType == WeaponType.Spear ? weaponModel.PartsToDrop[0] : weaponModel.getExistingWeaponModel();
                     if (renderer)
                     {
-                        if(weaponType == WeaponType.Bow)
+                        if (weaponType == WeaponType.Bow)
                         {
                             renderer = renderer.parent;
                         }
