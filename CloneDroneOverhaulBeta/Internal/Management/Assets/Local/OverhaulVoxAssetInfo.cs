@@ -23,7 +23,7 @@ namespace CDOverhaul
             if (!File.Exists(path))
                 return false;
 
-            MagicaVoxelImporter.MagicaVoxelImport(path, VolumeName, VoxelSize, CenterPivot, volume.gameObject);
+            //MagicaVoxelImporter.MagicaVoxelImport(path, VolumeName, VoxelSize, CenterPivot, volume.gameObject);
             return true;
         }
 

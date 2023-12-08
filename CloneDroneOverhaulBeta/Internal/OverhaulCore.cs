@@ -7,7 +7,6 @@ using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Editors.Personalization;
 using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
-using CDOverhaul.Gameplay.Overmodes;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
 using CDOverhaul.Graphics.ArenaOverhaul;
@@ -117,7 +116,6 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<ViewModesController>();
             _ = OverhaulController.AddController<OverhaulDiscordController>();
-            _ = OverhaulController.AddController<OverhaulMultiplayerController>();
 
             _ = OverhaulController.AddController<LevelEditorMoveObjectsByCoordsController>();
 
@@ -197,9 +195,7 @@ namespace CDOverhaul
                 yield return null;
 
             _ = OverhaulController.AddController<AdditionalContentController>();
-            _ = OverhaulController.AddController<OverhaulAchievementsController>();
             _ = OverhaulController.AddController<OverhaulRepositoryController>();
-            _ = OverhaulController.AddController<OvermodesController>();
             if (waitForEndOfFrame)
                 yield return null;
 

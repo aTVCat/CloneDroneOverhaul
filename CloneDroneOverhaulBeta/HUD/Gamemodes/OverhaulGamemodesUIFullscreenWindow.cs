@@ -40,10 +40,6 @@ namespace CDOverhaul.HUD.Gamemodes
             PageGameObjects[2].AddComponent<LBSGameCustomization>().Initialize(this);
             PageGameObjects[3] = moddedObject.GetObject<Transform>(6).gameObject;
             PageGameObjects[3].AddComponent<LBSCodeEnterPage>().Initialize(this);
-            PageGameObjects[4] = moddedObject.GetObject<Transform>(7).gameObject;
-            PageGameObjects[4].AddComponent<SandboxActionSelectionPage>().Initialize(this);
-            PageGameObjects[5] = moddedObject.GetObject<Transform>(8).gameObject;
-            PageGameObjects[5].AddComponent<SandboxCodeEnterPage>().Initialize(this);
             PageGameObjects[6] = moddedObject.GetObject<Transform>(9).gameObject;
             PageGameObjects[6].AddComponent<DuelPrivateMatchActions>().Initialize(this);
             PageGameObjects[7] = moddedObject.GetObject<Transform>(10).gameObject;

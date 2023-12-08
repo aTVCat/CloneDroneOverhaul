@@ -9,12 +9,12 @@ namespace CDOverhaul.HUD.Gamemodes
         {
             base.Initialize(fullscreenWindow);
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            //_ = OverhaulEventsController.AddEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
+            //OverhaulEventsController.RemoveEventListener(OverhaulMultiplayerController.LobbyJoinFailEvent, onFailedToJoinLobby);
         }
 
         protected override async void TryJoinLobby()

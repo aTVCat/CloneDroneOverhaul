@@ -390,11 +390,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Credit\ThreeDOutline.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\EOverhaulMultiplayerMode.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerState.cs" />
-    <Compile Include="Gameplay\Overmodes\OvermodeBase.cs" />
-    <Compile Include="Gameplay\Overmodes\OvermodesController.cs" />
-    <Compile Include="Gameplay\Overmodes\TestOvermode.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorTypePanel.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorLoadPanel.cs" />
     <Compile Include="Gameplay\Personalization\Editor\Elements\PersonalizationEditorSavePanel.cs" />
@@ -447,8 +442,6 @@
     <Compile Include="HUD\Personalization\Ver2\AccesoryItemDisplay.cs" />
     <Compile Include="HUD\Personalization\Ver2\OverhaulPersonalizationItemDisplay.cs" />
     <Compile Include="HUD\Tooltips\PlayerTooltipsBehaviour.cs" />
-    <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievement.cs" />
-    <Compile Include="Gameplay\ModdedAchievements\OverhaulAchievementsController.cs" />
     <Compile Include="Graphics\Camera\CameraFOVOverrider.cs" />
     <Compile Include="HUD\AchievementsMenu\OverhaulAchievementsMenu.cs" />
     <Compile Include="HUD\AdvancedPhotomode\AdvancedPhotomodeUIActionEntryDisplay.cs" />
@@ -470,11 +463,7 @@
     <Compile Include="ExternalDLLs\DiscordGameSDK\StoreManager.cs" />
     <Compile Include="Gameplay\CharacterExpansionContainer.cs" />
     <Compile Include="Gameplay\Robots\OverhaulCombatState.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\OverhaulPacket.cs" />
     <Compile Include="Gameplay\Robots\Animations\OverhaulRobotHeadRotator.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerController.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerLobby.cs" />
-    <Compile Include="Gameplay\CustomMultiplayer\OverhaulMultiplayerPacketManagement.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfo.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoController.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerStatusIcons\PlayerStatusBehaviour.cs" />
@@ -572,8 +561,6 @@
     <Compile Include="HUD\Gamemodes\OverhaulGamemodesUI.cs" />
     <Compile Include="HUD\Gamemodes\OverhaulGamemodeUIBase.cs" />
     <Compile Include="HUD\Gamemodes\Bases\DuelPlayUI.cs" />
-    <Compile Include="HUD\Gamemodes\Pages\SandboxActionSelectionPage.cs" />
-    <Compile Include="HUD\Gamemodes\Pages\SandboxCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\DifficultySelectionPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSCodeEnterPage.cs" />
     <Compile Include="HUD\Gamemodes\Pages\LBSGameCustomization.cs" />
@@ -751,14 +738,7 @@
     <Compile Include="Internal\Management\Events\OverhaulEvent.cs" />
     <Compile Include="LevelEditor\LevelEditorMoveObjectsByCoordsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\GPUInstancing\MaterialInfo.cs" />
-    <Compile Include="Test\GPUInstancing\MatrixInfo.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceObjectBehaviour.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstanceDrawer.cs" />
-    <Compile Include="Test\GPUInstancing\OverhaulGPUInstancingController.cs" />
-    <Compile Include="Test\PicavoxelImport\MagicaVoxelImporter.cs" />
     <Compile Include="HUD\OverhaulUIButtonScaler.cs" />
-    <Compile Include="Test\VRVoxelBurning\VRVoxelBurnEffectController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverhaulAPI\OverhaulAPI.csproj">

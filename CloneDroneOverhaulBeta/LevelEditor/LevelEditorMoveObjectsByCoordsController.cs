@@ -19,15 +19,15 @@ namespace CDOverhaul.LevelEditor
                 s_ToolEnabled = value;
                 if (value)
                 {
-                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode enabled",
-                    "Now you can move several objects using coordinates panel in inspector window.",
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Advanced objects posing mode enabled",
+                    "Now you can move several objects using coordinates panel in inspector window",
                     500, 175,
                     OverhaulFullscreenDialogueWindow.IconType.None);
                 }
                 else
                 {
-                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Object movement by coords mode disabled",
-                    "The usual way of object movement is back.",
+                    OverhaulFullscreenDialogueWindow.ShowOkWindow("Advanced objects posing mode disabled",
+                    string.Empty,
                     500, 175,
                     OverhaulFullscreenDialogueWindow.IconType.None);
                 }

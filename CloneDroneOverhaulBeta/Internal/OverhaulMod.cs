@@ -1,5 +1,4 @@
 ﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Gameplay.Overmodes;
 using InternalModBot;
 using ModLibrary;
 using ModLibrary.YieldInstructions;
@@ -99,22 +98,6 @@ namespace CDOverhaul
             // An event that is usually called before FPM full initialization
             OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitializationAndDispatchEvent(firstPersonMover));
-        }
-
-        public override Object OnResourcesLoad(string path)
-        {
-            if (OvermodesController.IsOvermode() && path.Contains("Overmodes/"))
-            {
-                path = path.Replace("Data/LevelEditorLevels/", string.Empty);
-                List<LevelDescription> list = OvermodesController.Instance.CurrentOvermode.GetLevelDescriptions();
-                foreach (LevelDescription description in list)
-                {
-                    if (description.PrefabName == path)
-                        return new TextAsset(OverhaulCore.ReadText(description.PrefabName));
-                }
-            }
-
-            return null;
         }
 
         /// <summary>

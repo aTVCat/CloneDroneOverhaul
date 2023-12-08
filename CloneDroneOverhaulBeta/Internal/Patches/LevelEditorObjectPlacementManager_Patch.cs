@@ -52,9 +52,6 @@ namespace CDOverhaul.Patches
             __result.LevelObjectEntry = objectPlacedLevelObjectEntry;
             __result.Initialize(levelRoot);
 
-            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsGpuInstancingEnabled)
-                _ = __result.gameObject.AddComponent<OverhaulGPUInstanceObjectBehaviour>();
-
             __instance.registerObjectInAllObjectList(__result);
             return false;
         }

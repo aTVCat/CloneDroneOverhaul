@@ -38,8 +38,8 @@ namespace CDOverhaul.Graphics
         [OverhaulSetting("Graphics.Camera.Lock rotation by Z", false, false, null, "Graphics.Camera.Rolling")]
         public static bool LockZ;
 
-        [OverhaulSettingSliderParameters(false, 0.7f, 1.2f)]
-        [OverhaulSetting("Graphics.Camera.Tilt multiplier", 1f, false, null, "Graphics.Camera.Rolling")]
+        [OverhaulSettingSliderParameters(false, 0.2f, 1.2f)]
+        [OverhaulSetting("Graphics.Camera.Tilt multiplier", 0.4f, false, null, "Graphics.Camera.Rolling")]
         public static float TiltMultiplier;
 
         private FirstPersonMover m_Owner;

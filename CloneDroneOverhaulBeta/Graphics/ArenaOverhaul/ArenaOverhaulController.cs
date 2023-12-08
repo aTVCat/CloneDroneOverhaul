@@ -66,6 +66,9 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             if (!OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsArenaOverhaulEnabled || !IsArenaOverhaulEnabled)
                 return;
 
+            if (PlayerPrefs.GetInt("OCM.OldArenaStyle", 0) == 1)
+                return;
+
             m_WorldRootTransform = WorldRoot.Instance.transform;
 
             m_ArenaFinalTransform = m_WorldRootTransform.FindChildRecursive("ArenaFinal");

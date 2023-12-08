@@ -1,8 +1,6 @@
-﻿using CDOverhaul.Gameplay.Overmodes;
-using HarmonyLib;
-
-namespace CDOverhaul.Patches
+﻿namespace CDOverhaul.Patches
 {
+    /*
     [HarmonyPatch(typeof(UpgradeStation))]
     internal static class UpgradeStation_Patch
     {
@@ -15,5 +13,5 @@ namespace CDOverhaul.Patches
                 __result = !OvermodesController.GetOvermode().AllowUpgradeBots();
             }
         }
-    }
+    }*/
 }

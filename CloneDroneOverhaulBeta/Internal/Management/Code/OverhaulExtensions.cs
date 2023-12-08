@@ -250,26 +250,6 @@ namespace CDOverhaul
             return firstPersonMover && (!firstPersonMover.IsPlayer() || firstPersonMover.IsDebugBuildUser() || firstPersonMover.IsOverhaulDeveloper());
         }
 
-        public static bool IsMultiplayerSandboxPlayer(this FirstPersonMover firstPersonMover)
-        {
-            if (!firstPersonMover || !OverhaulGamemodeManager.IsMultiplayerSandbox())
-                return false;
-
-            //PlayerSync sync = firstPersonMover.GetComponent<PlayerSync>();
-            //return sync;
-            return false;
-        }
-
-        public static bool IsMultiplayerSandboxHost(this FirstPersonMover firstPersonMover)
-        {
-            if (!firstPersonMover || !OverhaulGamemodeManager.IsMultiplayerSandbox())
-                return false;
-
-            //PlayerSync sync = firstPersonMover.GetComponent<PlayerSync>();
-            //return sync && sync.OwnerSteamID.IsMultiplayerSandboxHost();
-            return false;
-        }
-
         public static bool IsFireWeapon(this FirstPersonMover firstPersonMover, WeaponType type)
         {
             if (!firstPersonMover || !firstPersonMover.IsAlive())
@@ -365,20 +345,6 @@ namespace CDOverhaul
 
             foreach (PersonalizationItemsWearer itemsWearer in firstPersonMover.GetComponents<PersonalizationItemsWearer>())
                 itemsWearer.RefreshItems();
-        }
-
-        #endregion
-
-        #region CSteamID
-
-        public static bool IsMultiplayerSandboxHost(this CSteamID steamId)
-        {
-            return OverhaulGamemodeManager.IsMultiplayerSandbox() && steamId != CSteamID.Nil && OverhaulMultiplayerController.Lobby.OwnerUserID == steamId;
-        }
-
-        public static bool IsNil(this CSteamID steamID)
-        {
-            return steamID == CSteamID.Nil;
         }
 
         #endregion

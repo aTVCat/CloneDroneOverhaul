@@ -40,15 +40,6 @@ namespace CDOverhaul.Patches
             }
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch("onCharacterKilled")]
-        private static bool onCharacterKilled_Prefix(Character character)
-        {
-            character.DisableInput();
-
-            return !OverhaulGamemodeManager.IsMultiplayerSandbox() || !(character is FirstPersonMover);
-        }
-
         /*
         [HarmonyPrefix]
         [HarmonyPatch("ShowTitleScreen")]

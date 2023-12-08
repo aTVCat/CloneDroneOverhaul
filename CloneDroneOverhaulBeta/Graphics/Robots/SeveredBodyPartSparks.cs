@@ -41,9 +41,9 @@ namespace CDOverhaul.Graphics.Robots
 
             Stopwatch stopwatch = OverhaulProfiler.StartTimer();
             Vector3 vector3 = base.transform.position;
-            vector3.x += UnityEngine.Random.Range(-1f, 1f);
-            vector3.y += UnityEngine.Random.Range(-1f, 1f);
-            vector3.z += UnityEngine.Random.Range(-1f, 1f);
+            vector3.x += UnityEngine.Random.Range(-0.5f, 0.5f);
+            vector3.y += UnityEngine.Random.Range(-0.5f, 0.5f);
+            vector3.z += UnityEngine.Random.Range(-0.5f, 0.5f);
 
             _ = PooledPrefabController.SpawnEntry<WeaponSkinCustomVFXInstance>(OverhaulGraphicsController.GenericSparksVFX, vector3, Vector3.zero);
             stopwatch.StopTimer("SeveredBodyPartSparks.spark");

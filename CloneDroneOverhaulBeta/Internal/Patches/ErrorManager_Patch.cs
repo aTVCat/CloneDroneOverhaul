@@ -1,5 +1,6 @@
 ﻿using CDOverhaul.HUD;
 using HarmonyLib;
+using InternalModBot;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -13,6 +14,9 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
+            if (IgnoreCrashesManager.GetIsIgnoringCrashes())
+                return false;
+
             if (type == LogType.Error || type == LogType.Exception)
             {
                 string report = "```" + logString + " " + stackTrace;

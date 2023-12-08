@@ -25,6 +25,7 @@ namespace CDOverhaul
 
         public static void AssignNullToAllVars(object @object)
         {
+            /*
             foreach (FieldInfo field in @object.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 Type fieldType = field.FieldType;
@@ -32,7 +33,7 @@ namespace CDOverhaul
                 {
                     field.SetValue(@object, null);
                 }
-            }
+            }*/
         }
     }
 }

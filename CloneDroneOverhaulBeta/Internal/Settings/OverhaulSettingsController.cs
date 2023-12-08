@@ -22,7 +22,7 @@ namespace CDOverhaul
         /// </summary>
         public const long SettingEventDispatcherFlag = 10000000000000L;
 
-        [OverhaulSetting("Player.Settings.Version", 1, true)]
+        [OverhaulSetting("Player.Settings.Version", 2, true)]
         public static int SettingsVersion;
 
         /// <summary>
@@ -177,6 +177,11 @@ namespace CDOverhaul
             {
                 OverhaulGraphicsController.AOIntensity = 0.65f;
                 SetSettingValue("Graphics.Amplify Occlusion.Intensity", 0.65f);
+            }
+            if (currentVersion < 2)
+            {
+                CameraRollingBehaviour.TiltMultiplier = 0.4f;
+                SetSettingValue("Graphics.Camera.Tilt multiplier", 0.4f);
             }
             ResetSettingValue("Player.Settings.Version");
         }
