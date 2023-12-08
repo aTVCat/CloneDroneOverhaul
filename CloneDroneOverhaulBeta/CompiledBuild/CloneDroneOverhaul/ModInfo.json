@@ -3,7 +3,7 @@
 	"UniqueID": "rAnDomPaTcHeS1",
 	"MainDLLFileName": "OverhaulMod.dll",
 	"Author": "A Human on TV",
-	"Version": 17,
+	"Version": 19,
 	"ImageFileName": "ModPreview.png",
 	"Description": "The mod currently features:\n - Over 90 weapon skins to equip\n - Many graphical improvements\n - Arena updates\n - First person mode\n - Ability to revert player upgrades\n - UI fixes and redesigns\n - QoL things like tag disabler\n...and more.",
 	"ModDependencies": [],
