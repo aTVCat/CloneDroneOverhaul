@@ -74,12 +74,12 @@ namespace CDOverhaul.Gameplay
 
             Camera mainCamera = Camera.main;
             if (!Equals(mainCamera, m_MainCamera))
-                OverhaulEventsController.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
+                OverhaulEvents.DispatchEvent(MainCameraSwitchedEventString, mainCamera);
             m_MainCamera = mainCamera;
 
             Camera currentCamera = Camera.current;
             if (!Equals(currentCamera, m_CurrentCamera))
-                OverhaulEventsController.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
+                OverhaulEvents.DispatchEvent(CurrentCameraSwitchedEventString, currentCamera);
             m_CurrentCamera = currentCamera;
 
             CameraRollingBehaviour.UpdateViewBobbing();
@@ -93,7 +93,7 @@ namespace CDOverhaul.Gameplay
             if (IsDisposedOrDestroyed())
                 return;
 
-            OverhaulEventsController.DispatchEvent(GamemodeChangedEventString);
+            OverhaulEvents.DispatchEvent(GamemodeChangedEventString);
         }
     }
 }

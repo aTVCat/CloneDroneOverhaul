@@ -13,24 +13,25 @@ namespace CDOverhaul.Patches
         public static float Diffusion = 100f;
         public static float Density = 100f;
 
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch("Initialize")]
-        private static void Initialize_Postfix(WorldAudioSource __instance)
+        private static void Initialize_Prefix(WorldAudioSource __instance)
         {
-            if (!OverhaulMod.IsModInitialized || !OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsAudioReverbFilterEnabled || __instance.gameObject.name.Contains("Global"))
-                return;
-
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();
-            if (!filter)
+            if (!OverhaulMod.IsModInitialized || !EnableReverbFilter || __instance.gameObject.name.Contains("Global"))
             {
-                filter = __instance.gameObject.AddComponent<AudioReverbFilter>();
+                if (filter)
+                    Object.Destroy(filter);
+
+                return;
             }
+
+            if (!filter)
+                filter = __instance.gameObject.AddComponent<AudioReverbFilter>();
 
             filter.diffusion = Diffusion;
             filter.density = Density;
-            filter.decayTime = EnableReverbFilter && Physics.Raycast(__instance.transform.position, Vector3.up, 50f, PhysicsManager.GetEnvironmentLayerMask())
-                ? DecayTime
-                : 0f;
+            filter.decayTime = Physics.Raycast(__instance.transform.position, Vector3.up, 50f, PhysicsManager.GetEnvironmentLayerMask()) ? DecayTime : 0f;
         }
     }
 }

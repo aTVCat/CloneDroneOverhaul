@@ -15,19 +15,15 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-
             Character character = __instance.GetCharacter();
             if (!character)
             {
-                stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
                 return true;
             }
 
             int instanceId = character.GetInstanceID();
             if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
             {
-                stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
                 return true;
             }
 
@@ -39,12 +35,10 @@ namespace CDOverhaul.Patches
                     b.OnPreAIUpdate(__instance, out bool continueEx);
                     if (!continueEx)
                     {
-                        stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
                         return false;
                     }
                 }
             }
-            stopwatch.StopTimer("AI_SC_FixedUpdate_Pre");
             return true;
         }
 
@@ -55,19 +49,15 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            Stopwatch stopwatch = OverhaulProfiler.StartTimer();
-
             Character character = __instance.GetCharacter();
             if (!character)
             {
-                stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
                 return;
             }
 
             int instanceId = character.GetInstanceID();
             if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
             {
-                stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
                 return;
             }
 
@@ -77,7 +67,6 @@ namespace CDOverhaul.Patches
                 if (b)
                     b.OnPostAIUpdate(__instance);
             }
-            stopwatch.StopTimer("AI_SC_FixedUpdate_Post");
         }
     }
 }

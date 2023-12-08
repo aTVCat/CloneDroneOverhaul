@@ -107,8 +107,8 @@ namespace CDOverhaul.Graphics
                 PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
-            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchAllCameras);
+            OverhaulEvents.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
+            OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchAllCameras);
 
             if (!s_ChromaMaterial)
             {
@@ -126,7 +126,6 @@ namespace CDOverhaul.Graphics
             }
 
             PatchAllCameras();
-            RefreshLightsCount();
 
             if (!m_ConfiguredEventButtons)
             {
@@ -445,30 +444,6 @@ namespace CDOverhaul.Graphics
                     break;
                 default:
                     Application.targetFrameRate = -1;
-                    break;
-            }
-        }
-
-        public static void RefreshLightsCount()
-        {
-            if (DelegateScheduler.Instance == null)
-                return;
-
-            DelegateScheduler.Instance.Schedule(refreshLightsCount, 0.2f);
-        }
-
-        private static void refreshLightsCount()
-        {
-            switch (QualitySettings.GetQualityLevel())
-            {
-                case 2:
-                    QualitySettings.pixelLightCount = 18;
-                    break;
-                case 1:
-                    QualitySettings.pixelLightCount = 6;
-                    break;
-                default:
-                    QualitySettings.pixelLightCount = 2;
                     break;
             }
         }

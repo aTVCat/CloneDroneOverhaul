@@ -83,13 +83,13 @@ namespace CDOverhaul.HUD
         {
             ToggleReference.OnDeselect(null);
             SettingReference.Field.SetValue(null, value);
-            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+            OverhaulEvents.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void SetSliderVisible(bool value)
         {
             SliderReference.gameObject.SetActive(value);
-            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+            OverhaulEvents.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void PopulateSlider(bool settingIsNumber, bool isFloat)
@@ -120,7 +120,7 @@ namespace CDOverhaul.HUD
             else
                 SettingReference.Field.SetValue(null, (int)value);
             OverhaulGraphicsController.PatchAllCameras();
-            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+            OverhaulEvents.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
     }
 }

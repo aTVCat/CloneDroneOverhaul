@@ -1,5 +1,4 @@
-﻿using CDOverhaul.CustomMultiplayer;
-using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
 using ModLibrary;

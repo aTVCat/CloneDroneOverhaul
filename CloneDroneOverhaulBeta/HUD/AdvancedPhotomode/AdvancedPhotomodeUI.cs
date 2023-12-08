@@ -63,7 +63,7 @@ namespace CDOverhaul.HUD
                 m_HasPopulatedSettings = true;
             }
             OverhaulGraphicsController.PatchAllCameras();
-            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+            OverhaulEvents.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
         }
 
         public void Hide()
@@ -75,7 +75,7 @@ namespace CDOverhaul.HUD
                 return;
 
             OverhaulGraphicsController.PatchAllCameras();
-            OverhaulEventsController.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
+            OverhaulEvents.DispatchEvent(AdvancedPhotomodeController.PhotoModeSettingUpdateEvent);
 
             if (AdvancedPhotomodeController.HasEverEnteredPhotoMode)
                 AdvancedPhotomodeSettings.RestoreSettings();

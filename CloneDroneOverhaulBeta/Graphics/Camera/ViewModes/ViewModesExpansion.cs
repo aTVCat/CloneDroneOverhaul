@@ -95,8 +95,8 @@ namespace CDOverhaul.Graphics
 
             RefreshView();
 
-            _ = OverhaulEventsController.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.AddEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEvents.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDisposed()
@@ -104,8 +104,8 @@ namespace CDOverhaul.Graphics
             base.OnDisposed();
             SetHeadRenderersActive(true);
 
-            OverhaulEventsController.RemoveEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
-            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.RemoveEventListener(OverhaulGameplayCoreController.PlayerSetAsCharacter, RefreshView);
+            OverhaulEvents.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDeath()

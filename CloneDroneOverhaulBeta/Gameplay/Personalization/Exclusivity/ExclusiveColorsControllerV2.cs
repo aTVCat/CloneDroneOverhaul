@@ -19,7 +19,7 @@ namespace CDOverhaul
             new ExclusiveColor (ELECTRIFIED_CYBERKICK_ID, 16, "#76ff7a", 0.13f),
         });
 
-        public static void FindAndApplyExclusiveColor(FirstPersonMover firstPersonMover, Color currentColor, out Color newColor)
+        public static void FindThenApplyExclusiveColor(FirstPersonMover firstPersonMover, Color currentColor, out Color newColor)
         {
             newColor = currentColor;
             foreach (ExclusiveColor exclusiveColor in s_Colors)

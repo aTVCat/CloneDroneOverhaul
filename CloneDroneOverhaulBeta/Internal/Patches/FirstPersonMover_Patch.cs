@@ -36,7 +36,7 @@ namespace CDOverhaul.Patches
             return !OverhaulMod.IsModInitialized || __instance.HasCharacterModel();
         }
 
-        // Another attempt to fix invis weapons in multiplayer
+        // Another attempt to fix invincible weapons in multiplayer
         [HarmonyPostfix]
         [HarmonyPatch("OnSwordSwingStarted")]
         private static void OnSwordSwingStarted_Postfix(FirstPersonMover __instance)

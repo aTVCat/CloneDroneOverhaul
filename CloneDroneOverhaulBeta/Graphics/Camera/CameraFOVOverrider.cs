@@ -43,12 +43,12 @@ namespace CDOverhaul.Graphics
             m_TimeManager = TimeManager.Instance;
             m_Owner = newOwner;
 
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         private void LateUpdate()

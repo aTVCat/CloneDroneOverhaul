@@ -275,7 +275,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     Destroy(image1);
             }
 
-            /*
+            
             RectTransform toolbar = levelEditorUI.TopToolbar;
             OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
             GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");
@@ -294,7 +294,7 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
             {
                 LevelEditorMoveObjectsByCoordsController.ToolEnabled = value;
-            });*/
+            });
         }
 
         public void AddUIs()

@@ -208,13 +208,13 @@ namespace CDOverhaul.Gameplay
             PlayerInformation = OverhaulPlayerInfo.GetOverhaulPlayerInfo(Owner);
 
             SpawnSkins();
-            _ = OverhaulEventsController.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+            OverhaulEvents.AddEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            OverhaulEventsController.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
+            OverhaulEvents.RemoveEventListener<Hashtable>(OverhaulPlayerInfo.InfoReceivedEventString, onGetPlayerInfo);
         }
 
         protected override void OnRefresh() => SpawnSkins();

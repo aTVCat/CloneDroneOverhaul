@@ -39,21 +39,5 @@ namespace CDOverhaul.Patches
                 Object.Destroy(an);
             }
         }
-
-        /*
-        [HarmonyPrefix]
-        [HarmonyPatch("ShowTitleScreen")]
-        private static bool ShowTitleScreen_Prefix(GameFlowManager __instance)
-        {
-            if (FirstUseSetupUI.HasSetTheModUp)
-                return true;
-
-            LevelManager.Instance.SpawnCurrentLevel(false, "U6Bronze2", null).MoveNext();
-            __instance.StartCoroutine(__instance.CallPrivateMethod<IEnumerator>("waitThenShowTitleScreenCamera", null));
-
-            GameUIRoot.Instance.TitleScreenUI.Show();
-            GameUIRoot.Instance.RefreshCursorEnabled();
-            return false;
-        }*/
     }
 }

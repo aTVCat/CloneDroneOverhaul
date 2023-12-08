@@ -1,6 +1,5 @@
 ﻿using Bolt;
 using CDOverhaul.BuiltIn.AdditionalContent;
-using CDOverhaul.CustomMultiplayer;
 using CDOverhaul.Device;
 using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
@@ -102,7 +101,7 @@ namespace CDOverhaul
             //OverhaulObjectStateModder.Reset();
             EnableCursorController.Reset();
 
-            OverhaulEventsController.Initialize();
+            OverhaulEvents.Initialize();
             OverhaulSettingsController.Initialize();
             OverhaulController.InitializeStatic(controllers);
 

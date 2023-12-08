@@ -64,8 +64,8 @@ namespace CDOverhaul.Graphics
             m_PlayerCamera = null;
             m_PlayerCameraTransform = null;
             m_SettingsManager = null;
-            OverhaulEventsController.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
-            OverhaulEventsController.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.RemoveEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
+            OverhaulEvents.RemoveEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         public void Initialize(FirstPersonMover firstPersonMover)
@@ -76,8 +76,8 @@ namespace CDOverhaul.Graphics
             m_PlayerCameraTransform = playerCamera.transform;
             m_SettingsManager = SettingsManager.Instance;
 
-            _ = OverhaulEventsController.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
-            _ = OverhaulEventsController.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
+            OverhaulEvents.AddEventListener<Character>(GlobalEvents.CharacterKilled, onDied, true);
+            OverhaulEvents.AddEventListener<LevelEditorCinematicCamera>(GlobalEvents.CinematicCameraTurnedOn, OnCinematicCameraTurnedOn, true);
         }
 
         private void onDied(Character character)

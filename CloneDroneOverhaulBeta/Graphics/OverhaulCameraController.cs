@@ -14,12 +14,12 @@ namespace CDOverhaul.Graphics
 
         public override void Initialize()
         {
-            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
+            OverhaulEvents.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
+            OverhaulEvents.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
             m_AllCameras = null;
             m_MainCamera = null;
         }

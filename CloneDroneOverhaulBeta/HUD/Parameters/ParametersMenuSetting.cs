@@ -98,14 +98,14 @@ namespace CDOverhaul.HUD
             configInputField(moddedObject);
 
             if (!notFirstInit)
-                _ = OverhaulEventsController.AddEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
+                OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
 
             refresh();
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
+            OverhaulEvents.RemoveEventListener(OverhaulSettingsController.SettingChangedEventString, refresh);
             _ = _spawnedBehaviours.Remove(this);
 
             OverhaulDisposable.AssignNullToAllVars(this);

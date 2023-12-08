@@ -111,8 +111,8 @@ namespace CDOverhaul.Gameplay.Multiplayer
                 if (m_PlayerInfoState.state.PlayFabID == eventData.SenderPlayFabID)
                 {
                     Hashtable = eventData.Hashtable;
-                    OverhaulEventsController.DispatchEvent(InfoReceivedEventString, Hashtable);
-                    OverhaulEventsController.DispatchEvent(PlayerDataUpdateEventString, m_PlayerInfoState.state.PlayFabID);
+                    OverhaulEvents.DispatchEvent(InfoReceivedEventString, Hashtable);
+                    OverhaulEvents.DispatchEvent(PlayerDataUpdateEventString, m_PlayerInfoState.state.PlayFabID);
                     return;
                 }
             }

@@ -189,7 +189,7 @@ namespace CDOverhaul.Patches
                 m_ButtonsTransform.localPosition = new Vector3(0, -160f, 0);
             }
 
-            _ = OverhaulEventsController.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
             localizeTexts();
             SuccessfullyPatched = true;
         }
@@ -301,7 +301,7 @@ namespace CDOverhaul.Patches
             base.Cancel();
             if (SuccessfullyPatched)
             {
-                OverhaulEventsController.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
+                OverhaulEvents.RemoveEventListener(GlobalEvents.UILanguageChanged, localizeTexts, true);
                 m_ButtonsTransform.localScale = Vector3.one;
                 m_ButtonsTransform.localPosition = new Vector3(0, -195.5f, 0);
                 m_MultiplayerNEWButtonTransform.localPosition = new Vector3(0, -87.8241f, 0);

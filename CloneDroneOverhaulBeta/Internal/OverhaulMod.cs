@@ -96,7 +96,7 @@ namespace CDOverhaul
                 return;
 
             // An event that is usually called before FPM full initialization
-            OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
+            OverhaulEvents.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawnedEventString, firstPersonMover);
             _ = StaticCoroutineRunner.StartStaticCoroutine(waitForRobotInitializationAndDispatchEvent(firstPersonMover));
         }
 
@@ -130,7 +130,7 @@ namespace CDOverhaul
             if (!IsModInitialized)
                 return;
 
-            OverhaulEventsController.DispatchEvent(ModDeactivatedEventString);
+            OverhaulEvents.DispatchEvent(ModDeactivatedEventString);
             GameObject.Destroy(Core.gameObject);
             Core = null;
         }
@@ -145,7 +145,7 @@ namespace CDOverhaul
             yield return new WaitForCharacterModelAndUpgradeInitialization(firstPersonMover);
             yield return new WaitForSecondsRealtime(0.1f);
             if (firstPersonMover && firstPersonMover.HasCharacterModel())
-                OverhaulEventsController.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
+                OverhaulEvents.DispatchEvent(OverhaulGameplayCoreController.FirstPersonMoverSpawned_DelayEventString, firstPersonMover);
         }
 
         public static bool IsModEnabled(string modID)

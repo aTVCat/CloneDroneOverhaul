@@ -104,11 +104,6 @@ namespace CDOverhaul.Patches
             RectTransform additionalCostBGTransform = __instance.transform.FindRectChildRecursive("AdditionalCostBG");
             if (additionalCostBGTransform && OverhaulAssetsContainer.TriggeringFanFaresFont)
             {
-                Canvas canvas = additionalCostBGTransform.gameObject.AddComponent<Canvas>();
-                CanvasParametersUpdater updater = canvas.gameObject.AddComponent<CanvasParametersUpdater>();
-                updater.OverrideSorting = true;
-                updater.SortingOrder = 100;
-
                 additionalCostBGTransform.SetSiblingIndex(additionalCostBGTransform.GetSiblingIndex() + 1);
                 additionalCostBGTransform.sizeDelta = Vector2.one * 15f;
                 additionalCostBGTransform.localPosition = Vector3.one * 13.5f;

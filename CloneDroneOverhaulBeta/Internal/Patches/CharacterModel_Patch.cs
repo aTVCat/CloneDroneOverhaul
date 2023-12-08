@@ -13,7 +13,7 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            ExclusiveColorsControllerV2.FindAndApplyExclusiveColor(__instance.GetOwner(), newColor, out Color toReplace);
+            ExclusiveColorsControllerV2.FindThenApplyExclusiveColor(__instance.GetOwner(), newColor, out Color toReplace);
             newColor = toReplace;
         }
 
@@ -36,7 +36,6 @@ namespace CDOverhaul.Patches
                 _ = AudioManager.Instance.PlayClipAtPosition(OverhaulAudioLibrary.HeavyRobotFootsteps, __instance.transform.position, 0f, false, lowPitch ? 0.35f : 0.16f, lowPitch ? 0.85f : 0.98f, 0f);
                 return false;
             }
-
             return true;
         }
     }

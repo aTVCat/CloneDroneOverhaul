@@ -1,5 +1,4 @@
-﻿using CDOverhaul.CustomMultiplayer;
-
+﻿
 namespace CDOverhaul
 {
     public static class OverhaulGamemodeManager

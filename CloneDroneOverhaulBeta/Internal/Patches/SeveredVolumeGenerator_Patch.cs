@@ -11,7 +11,7 @@ namespace CDOverhaul.Patches
         [HarmonyPatch("CreateVolumeCopy")]
         private static void CreateVolumeCopy_Postfix(SeveredBodyPart __result)
         {
-            if (Random.Range(0, 10) < 7)
+            if (Random.Range(0, 10) < 5)
             {
                 _ = __result.gameObject.AddComponent<SeveredBodyPartSparks>();
             }

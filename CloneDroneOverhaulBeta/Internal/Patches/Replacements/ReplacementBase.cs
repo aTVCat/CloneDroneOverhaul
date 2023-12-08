@@ -63,7 +63,6 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<OptimizeOnStart>();
             _ = NewReplacement<BaseFixes>();
             _ = NewReplacement<EnergyUIReplacement>();
-            _ = NewReplacement<OptimizeRuntime>();
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
             _ = NewReplacement<CrosshairsUIReplacement>();
