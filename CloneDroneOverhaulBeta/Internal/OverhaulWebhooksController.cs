@@ -47,6 +47,9 @@ namespace CDOverhaul
             "AudioManager",
             "ReleaseControlInternal",
             "ThrowIfDisposedAndClosed",
+            "GetCurrentAnimatorStateInfo",
+            "MoreSkinsMod",
+            "GunMod"
         };
 
         private static bool s_HasExecutedCrashReportsWebhook = false;

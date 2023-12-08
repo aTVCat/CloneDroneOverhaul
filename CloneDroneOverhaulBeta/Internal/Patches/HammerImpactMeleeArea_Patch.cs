@@ -16,7 +16,7 @@ namespace CDOverhaul.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.Owner || !__instance.IsDamageActive())
                 return;
 
-            HammerImpactMeleeArea otherComponent = otherCollider.transform.GetComponent<HammerImpactMeleeArea>();
+            HammerImpactMeleeArea otherComponent = otherCollider.transform?.GetComponent<HammerImpactMeleeArea>();
             if (otherComponent && otherComponent.DamageSourceType == DamageSourceType.Hammer)
             {
                 Vector3 midPos = (otherComponent.transform.position + __instance.transform.position) / 2f;
@@ -24,10 +24,11 @@ namespace CDOverhaul.Patches
                 _ = AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.HammerImpacts, midPos, 0f, false, 1f, Random.Range(1.300f, 1.450f));
 
                 __instance.Owner.OnWeaponCollidedWithEnvironment();
-                if (otherComponent.Owner) otherComponent.Owner.OnWeaponCollidedWithEnvironment();
+                if (otherComponent.Owner) 
+                    otherComponent.Owner.OnWeaponCollidedWithEnvironment();
             }
 
-            SwordBlockArea swordBlockArea = otherCollider.transform.GetComponent<SwordBlockArea>();
+            SwordBlockArea swordBlockArea = otherCollider?.transform?.GetComponent<SwordBlockArea>();
             if (swordBlockArea)
             {
                 FirstPersonMover owner = swordBlockArea.GetOwner();
