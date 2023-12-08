@@ -113,11 +113,18 @@ namespace OverhaulMod
         public T Get<T>(string assetBundle, string assetKey) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
-            if(m_InstantiatedUIs.TryGetValue(fullName, out GameObject gameObject))
+            return m_InstantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
+        }
+
+        public bool Hide(string assetBundle, string assetKey)
+        {
+            OverhaulUIBehaviour overhaulUIBehaviour = Get<OverhaulUIBehaviour>(assetBundle, assetKey);
+            if (overhaulUIBehaviour && overhaulUIBehaviour.visible)
             {
-                return gameObject?.GetComponent<T>();
+                overhaulUIBehaviour.Hide();
+                return true;
             }
-            return null;
+            return false;
         }
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)

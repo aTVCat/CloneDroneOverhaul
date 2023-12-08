@@ -3,7 +3,7 @@ using ModLibrary;
 using OverhaulMod.Combat.Weapons;
 using System.Linq;
 
-namespace OverhaulMod.Patches
+namespace OverhaulMod.Patches.Harmony
 {
     [HarmonyPatch(typeof(WeaponAITuningManager))]
     internal static class WeaponAITuningManager_Patch

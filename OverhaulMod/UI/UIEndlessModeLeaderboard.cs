@@ -41,15 +41,6 @@ namespace OverhaulMod.UI
             Clear();
         }
 
-        public override void Update()
-        {
-            base.Update();
-            if (ModActionUtils.IsGoBackKeyDown())
-            {
-                Hide();
-            }
-        }
-
         public override void OnDisable()
         {
             base.OnDisable();

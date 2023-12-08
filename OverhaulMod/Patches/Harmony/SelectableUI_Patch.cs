@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace OverhaulMod.Patches
+namespace OverhaulMod.Patches.Harmony
 {
     [HarmonyPatch(typeof(SelectableUI))]
     internal static class SelectableUI_Patch
@@ -23,6 +23,27 @@ namespace OverhaulMod.Patches
             {
                 __instance.GameThemeData = ModCache.gameUIThemeData;
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("onStateEnter")]
+        private static bool onStateEnter_Prefix(SelectableUI __instance, UISelectionState stateEntering)
+        {
+            __instance.updateColorsToState(stateEntering);
+            switch (stateEntering)
+            {
+                case UISelectionState.Selected:
+                    if (!__instance.SkipSelectionArrows && __instance.GameThemeData?.SelectionCornerPrefab)
+                    {
+                        Animator animator = __instance.getEnabledCornersAnimator();
+                        if (animator)
+                        {
+                            animator.Play("ButtonSelected");
+                        }
+                    }
+                    break;
+            }
+            return false;
         }
     }
 }

@@ -1002,6 +1002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2741878321517478540}
   - component: {fileID: 2156105924821518807}
+  - component: {fileID: 5563561694039917222}
   m_Layer: 5
   m_Name: UI_EndlessModeLeaderboard
   m_TagString: Untagged
@@ -1050,6 +1051,21 @@ MonoBehaviour:
   - {fileID: 6210786086278414070}
   - {fileID: 5085050507912041854}
   - {fileID: 6927732045722826698}
+--- !u!114 &5563561694039917222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6188623426651564419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53eb41b92da994d46af9d6a0de93ce6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultSelectObject: {fileID: 5085050507912041854}
+  SelectPreviousOnHide: 1
+  DelaySelectionBy: 0
 --- !u!1 &8224553344328255202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1451,7 @@ GameObject:
   - component: {fileID: 594973307399120481}
   - component: {fileID: 5557444719972278126}
   - component: {fileID: 4521161249507451819}
-  - component: {fileID: 350775213392540136}
+  - component: {fileID: 3139291963377833493}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -1552,7 +1568,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &350775213392540136
+--- !u!114 &3139291963377833493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1561,22 +1577,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9086781449609651536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2259363822e56264ea56d402cb6e4c34, type: 3}
+  m_Script: {fileID: 11500000, guid: a384533a9704d5b4e95ba2e992b3b538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipSelectionArrows: 1
-  GameThemeData: {fileID: 0}
-  OutlineToColor: {fileID: 0}
-  TextToColor: {fileID: 0}
-  ImageToColor: {fileID: 0}
-  SliderHandle: {fileID: 0}
-  SliderFill: {fileID: 0}
-  SliderSlideArea: {fileID: 0}
-  CheckboxBackground: {fileID: 0}
-  CheckboxLabel: {fileID: 0}
-  AlternativeCheckboxLabel: {fileID: 0}
-  DropdownItemBackground: {fileID: 0}
-  DropdownItemText: {fileID: 0}
+  ShowOnMode: 0
 --- !u!1001 &2189639727911561117
 PrefabInstance:
   m_ObjectHideFlags: 0

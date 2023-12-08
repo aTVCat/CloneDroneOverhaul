@@ -64,15 +64,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ColorForState.cs" />
-    <Compile Include="Assets\GameUIThemeData.cs" />
-    <Compile Include="Assets\ModdedObject.cs" />
     <Compile Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
     <Compile Include="Assets\ModStuff\Shaders\ShaderOnCamera.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotCanvas.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotFilter.cs" />
     <Compile Include="Assets\ModStuff\SnapshotShaders\Scripts\SnapshotMode.cs" />
-    <Compile Include="Assets\SelectableUI.cs" />
+    <Compile Include="Assets\Scripts\ColorForState.cs" />
+    <Compile Include="Assets\Scripts\GameUIThemeData.cs" />
+    <Compile Include="Assets\Scripts\InterfaceInputMode.cs" />
+    <Compile Include="Assets\Scripts\ModdedObject.cs" />
+    <Compile Include="Assets\Scripts\SelectableUI.cs" />
+    <Compile Include="Assets\Scripts\SelectOnShow.cs" />
+    <Compile Include="Assets\Scripts\ShowIfKeyboardOrController.cs" />
+    <Compile Include="Assets\Scripts\UISelectionState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -106,7 +110,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
-    <Compile Include="Assets\UISelectionState.cs" />
     <None Include="Assets\ModStuff\Shaders\AmplifyOcclusion\ApplyPostEffect.cginc" />
     <None Include="Assets\ModStuff\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\ModStuff\SnapshotShaders\PixelNES.shader" />

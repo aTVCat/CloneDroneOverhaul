@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -9,6 +10,11 @@ namespace OverhaulMod
         {
             base.Awake();
             _ = base.gameObject.AddComponent<UIDeveloperMenu>();
+        }
+
+        private void Start()
+        {
+            UIConstants.ShowTitleScreenRework();
         }
 
         public void DispatchModLoadedEvent()

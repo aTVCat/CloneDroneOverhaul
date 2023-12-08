@@ -29,15 +29,6 @@ namespace OverhaulMod.UI
             ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
         }
 
-        public override void Update()
-        {
-            base.Update();
-            if (ModActionUtils.IsGoBackKeyDown())
-            {
-                Hide();
-            }
-        }
-
         public void OnExitButtonClicked()
         {
             Hide();

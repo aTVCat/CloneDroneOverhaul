@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 4646885626707284033}
   - component: {fileID: 7671749792878779051}
   - component: {fileID: 6886688601836671457}
-  - component: {fileID: 7995208142521499799}
+  - component: {fileID: 7214850215792640238}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7995208142521499799
+--- !u!114 &7214850215792640238
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -326,22 +326,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4948118419013197513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2259363822e56264ea56d402cb6e4c34, type: 3}
+  m_Script: {fileID: 11500000, guid: a384533a9704d5b4e95ba2e992b3b538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipSelectionArrows: 1
-  GameThemeData: {fileID: 0}
-  OutlineToColor: {fileID: 0}
-  TextToColor: {fileID: 0}
-  ImageToColor: {fileID: 0}
-  SliderHandle: {fileID: 0}
-  SliderFill: {fileID: 0}
-  SliderSlideArea: {fileID: 0}
-  CheckboxBackground: {fileID: 0}
-  CheckboxLabel: {fileID: 0}
-  AlternativeCheckboxLabel: {fileID: 0}
-  DropdownItemBackground: {fileID: 0}
-  DropdownItemText: {fileID: 0}
+  ShowOnMode: 0
 --- !u!1 &5392706082302607184
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +412,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2741878321517478540}
   - component: {fileID: 2156105924821518807}
+  - component: {fileID: 2904824557302898208}
   m_Layer: 5
   m_Name: UI_EndlessModeMenu
   m_TagString: Untagged
@@ -469,6 +458,21 @@ MonoBehaviour:
   - {fileID: 2187909575571056922}
   - {fileID: 3925464945425126242}
   - {fileID: 0}
+--- !u!114 &2904824557302898208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6188623426651564419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53eb41b92da994d46af9d6a0de93ce6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultSelectObject: {fileID: 2187909575571056922}
+  SelectPreviousOnHide: 1
+  DelaySelectionBy: 0
 --- !u!1 &7122203340043105883
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@
 using ModLibrary;
 using OverhaulMod.Combat.Weapons;
 
-namespace OverhaulMod.Patches
+namespace OverhaulMod.Patches.Harmony
 {
     [HarmonyPatch(typeof(FirstPersonMover))]
     internal static class FirstPersonMover_Patch

@@ -1387,7 +1387,7 @@ GameObject:
   - component: {fileID: 4646885626707284033}
   - component: {fileID: 7671749792878779051}
   - component: {fileID: 6886688601836671457}
-  - component: {fileID: 7995208142521499799}
+  - component: {fileID: 7701711174822269211}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7995208142521499799
+--- !u!114 &7701711174822269211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1513,22 +1513,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4948118419013197513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2259363822e56264ea56d402cb6e4c34, type: 3}
+  m_Script: {fileID: 11500000, guid: a384533a9704d5b4e95ba2e992b3b538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipSelectionArrows: 1
-  GameThemeData: {fileID: 0}
-  OutlineToColor: {fileID: 0}
-  TextToColor: {fileID: 0}
-  ImageToColor: {fileID: 0}
-  SliderHandle: {fileID: 0}
-  SliderFill: {fileID: 0}
-  SliderSlideArea: {fileID: 0}
-  CheckboxBackground: {fileID: 0}
-  CheckboxLabel: {fileID: 0}
-  AlternativeCheckboxLabel: {fileID: 0}
-  DropdownItemBackground: {fileID: 0}
-  DropdownItemText: {fileID: 0}
+  ShowOnMode: 0
 --- !u!1 &5392706082302607184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,6 +1799,7 @@ MonoBehaviour:
   - {fileID: 4880107390683667429}
   - {fileID: 1927942970861505594}
   - {fileID: 1970067022114694729}
+  - {fileID: 4561349558938175562}
 --- !u!1 &6471355426579100368
 GameObject:
   m_ObjectHideFlags: 0
@@ -2840,6 +2829,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2416797632307620155}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4561349558938175562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2217772015947243889, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+    type: 3}
+  m_PrefabInstance: {fileID: 2416797632307620155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8380523060368344297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3021,15 +3016,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 117e260d9e6a31e4cb26e42d3139dd98, type: 3}
---- !u!224 &774417902229027745 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 9147604316640116552, guid: 117e260d9e6a31e4cb26e42d3139dd98,
-    type: 3}
-  m_PrefabInstance: {fileID: 8380523060368344297}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1252361167766289389 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7290446583408787204, guid: 117e260d9e6a31e4cb26e42d3139dd98,
+    type: 3}
+  m_PrefabInstance: {fileID: 8380523060368344297}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &774417902229027745 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 9147604316640116552, guid: 117e260d9e6a31e4cb26e42d3139dd98,
     type: 3}
   m_PrefabInstance: {fileID: 8380523060368344297}
   m_PrefabAsset: {fileID: 0}

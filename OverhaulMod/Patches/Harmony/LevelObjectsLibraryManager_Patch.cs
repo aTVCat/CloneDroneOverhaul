@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Patches
+namespace OverhaulMod.Patches.Harmony
 {
     [HarmonyPatch(typeof(LevelObjectsLibraryManager))]
     internal static class LevelObjectsLibraryManager_Patch

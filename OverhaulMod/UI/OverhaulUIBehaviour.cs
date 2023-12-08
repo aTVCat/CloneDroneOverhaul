@@ -20,8 +20,10 @@ namespace OverhaulMod.UI
 
         public bool visible
         {
-            get;
-            private set;
+            get
+            {
+                return base.gameObject.activeSelf;
+            }
         }
 
         public void Initialize()
@@ -116,16 +118,6 @@ namespace OverhaulMod.UI
                 return;
             }
             ModCache.titleScreenUI.setLogoAndRootButtonsVisible(value);
-        }
-
-        public override void OnEnable()
-        {
-            visible = true;
-        }
-
-        public override void OnDisable()
-        {
-            visible = false;
         }
     }
 }

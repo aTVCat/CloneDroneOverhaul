@@ -5,7 +5,7 @@ namespace OverhaulMod.UI
     public class UIOtherMods : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
-        [UIElement("ExitButton")]
+        [UIElement("CloseButton")]
         private readonly Button m_ExitButton;
 
         public override void Show()

@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace OverhaulMod.Patches
+namespace OverhaulMod.Patches.Harmony
 {
     [HarmonyPatch(typeof(LevelEditorObjectPlacementManager))]
     internal static class LevelEditorObjectPlacementManager_Patch
