@@ -6,7 +6,7 @@ namespace OverhaulMod.UI
 {
     public class OverhaulUIBehaviour : OverhaulBehaviour
     {
-        internal string fullName
+        internal string name
         {
             get;
             set;
@@ -22,14 +22,39 @@ namespace OverhaulMod.UI
         {
             get
             {
-                return base.gameObject.activeSelf;
+                return gameObject.activeSelf;
             }
         }
 
-        public void Initialize()
+        public bool isElement
+        {
+            get;
+            set;
+        }
+
+        public void InitializeUI()
         {
             if (initialized)
                 return;
+
+            UIAttribute uiAttribute = base.GetType().GetCustomAttribute<UIAttribute>();
+            if (uiAttribute != null && uiAttribute.FixOutlines)
+            {
+                /*
+                foreach (Outline component in base.GetComponentsInChildren<Outline>())
+                {
+                    GameObject gameObject = component.gameObject;
+                    Color effectColor = component.effectColor;
+                    Vector2 effectDist = component.effectDistance;
+                    bool useGraphicAlpha = component.useGraphicAlpha;
+                    Destroy(component);
+
+                    ToJOutline betterOutline = gameObject.AddComponent<ToJOutline>();
+                    betterOutline.effectColor = effectColor;
+                    betterOutline.effectDistance = effectDist;
+                    betterOutline.useGraphicAlpha = useGraphicAlpha;
+                }*/
+            }
 
             FieldInfo[] fields = base.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (FieldInfo fieldInfo in fields)
@@ -91,6 +116,12 @@ namespace OverhaulMod.UI
             initialized = true;
         }
 
+        public void InitializeElement()
+        {
+            isElement = true;
+            InitializeUI();
+        }
+
         protected virtual void OnInitialized()
         {
 
@@ -98,7 +129,10 @@ namespace OverhaulMod.UI
 
         public override void OnDestroy()
         {
-            ModUIManager.Instance.RemoveFromList(this);
+            if (!isElement)
+            {
+                ModUIManager.Instance.RemoveFromList(this);
+            }
         }
 
         public virtual void Show()
@@ -113,11 +147,7 @@ namespace OverhaulMod.UI
 
         public void SetTitleScreenButtonActive(bool value)
         {
-            if (!GameModeManager.IsOnTitleScreen())
-            {
-                return;
-            }
-            ModCache.titleScreenUI.setLogoAndRootButtonsVisible(value);
+            ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && value);
         }
     }
 }

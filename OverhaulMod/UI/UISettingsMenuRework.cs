@@ -10,7 +10,7 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_CloseButton;
+        private readonly Button m_closeButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]

@@ -7,15 +7,15 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_ExitButton;
+        private readonly Button m_exitButton;
 
         [UIElementAction(nameof(OnPlayButtonClicked))]
         [UIElement("PlayButton")]
-        private readonly Button m_PlayButton;
+        private readonly Button m_playButton;
 
         [UIElementAction(nameof(OnLeaderboardButtonClicked))]
         [UIElement("ViewLeaderBoardButton")]
-        private readonly Button m_LeaderboardButton;
+        private readonly Button m_leaderboardButton;
 
         public override void Show()
         {

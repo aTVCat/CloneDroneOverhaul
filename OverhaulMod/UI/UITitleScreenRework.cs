@@ -8,56 +8,64 @@ namespace OverhaulMod.UI
     public class UITitleScreenRework : OverhaulUIBehaviour
     {
         [UIElement("ButtonsBG")]
-        private readonly GameObject m_Container;
+        private readonly GameObject m_container;
 
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
-        private readonly Button m_PlaySinglePlayerButton;
+        private readonly Button m_playSinglePlayerButton;
 
         [UIElementAction(nameof(OnPlayMultiPlayerButtonClicked))]
         [UIElement("PlayMultiplayerButton")]
-        private readonly Button m_PlayMultiPlayerButton;
+        private readonly Button m_playMultiPlayerButton;
 
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
-        private readonly Button m_ModsButton;
+        private readonly Button m_modsButton;
 
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
-        private readonly Button m_OptionsButton;
+        private readonly Button m_optionsButton;
 
-        private TitleScreenUI m_TitleScreenUI;
-        private CanvasGroup m_CanvasGroup;
-        private GameObject m_LegacyContainer;
+        [UIElementAction(nameof(OnAdvancementsButtonClicked))]
+        [UIElement("AchievementsButton")]
+        private readonly Button m_advancementsButton;
+
+        [UIElementAction(nameof(OnExitButtonClicked))]
+        [UIElement("ExitButton")]
+        private readonly Button m_quitButton;
+
+        private TitleScreenUI m_titleScreenUI;
+        private CanvasGroup m_canvasGroup;
+        private GameObject m_legacyContainer;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            TitleScreenUI titleScreenUI = GameUIRoot.Instance?.TitleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
                 CanvasGroup group = titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
                 group.alpha = 0f;
                 group.interactable = false;
-                m_CanvasGroup = group;
-                m_LegacyContainer = group.gameObject;
-                m_TitleScreenUI = titleScreenUI;
+                m_canvasGroup = group;
+                m_legacyContainer = group.gameObject;
+                m_titleScreenUI = titleScreenUI;
             }
         }
 
         public override void Update()
         {
-            m_Container.SetActive(m_LegacyContainer.activeInHierarchy);
+            m_container.SetActive(m_legacyContainer.activeInHierarchy);
         }
 
         public void OnPlaySinglePlayerButtonClicked()
         {
-            m_TitleScreenUI.OnPlaySingleplayerButtonClicked();
+            m_titleScreenUI.OnPlaySingleplayerButtonClicked();
         }
 
         public void OnPlayMultiPlayerButtonClicked()
         {
-            m_TitleScreenUI.OnMultiplayerButtonClicked();
+            m_titleScreenUI.OnMultiplayerButtonClicked();
         }
 
         public void OnModsButtonClicked()
@@ -65,9 +73,19 @@ namespace OverhaulMod.UI
             ModsPanelManager.Instance.openModsMenu();
         }
 
+        public void OnAdvancementsButtonClicked()
+        {
+            UIConstants.ShowAdvancementsMenuRework();
+        }
+
         public void OnOptionsButtonClicked()
         {
             UIConstants.ShowSettingsMenuRework();
+        }
+
+        public void OnExitButtonClicked()
+        {
+            Application.Quit();
         }
     }
 }

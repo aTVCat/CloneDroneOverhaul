@@ -44,6 +44,8 @@ namespace OverhaulMod.Patches.Harmony
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
+                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ADVANCEMENTS_MENU))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ENDLESS_MODE_LEADERBOARD))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ENDLESS_MODE))

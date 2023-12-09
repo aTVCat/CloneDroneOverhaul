@@ -7,35 +7,22 @@ namespace OverhaulMod.UI
     public class UIVersionLabel : OverhaulUIBehaviour
     {
         [UIElement("NewVesionLabel_TitleScreen")]
-        private readonly GameObject m_Watermark;
+        private readonly GameObject m_watermark;
 
         [UIElement("DebugLabel_TitleScreen")]
-        private readonly GameObject m_DebugIcon;
+        private readonly GameObject m_debugIcon;
 
         [UIElement("Watermark_TitleScreen")]
-        private readonly Text m_VersionText;
-
+        private readonly Text m_versionText;
 
         [UIElement("NewVesionLabel_Gameplay")]
-        private readonly GameObject m_GameplayWatermark;
+        private readonly GameObject m_gameplayWatermark;
 
         [UIElement("DebugLabel_Gameplay")]
-        private readonly GameObject m_GameplayDebugIcon;
+        private readonly GameObject m_gameplayDebugIcon;
 
         [UIElement("Watermark_Gameplay")]
-        private readonly Text m_GameplayVersionText;
-
-
-        [UIElement("TopButtons")]
-        private readonly GameObject m_TopButtons;
-
-        [UIElementAction(nameof(OnPatchNotesButtonClicked))]
-        [UIElement("PatchNotesButton")]
-        private readonly Button m_PatchNotesButton;
-
-        [UIElementAction(nameof(OnOtherModsButtonClicked))]
-        [UIElement("OtherModsButton")]
-        private readonly Button m_OtherModsButton;
+        private readonly Text m_gameplayVersionText;
 
         public bool showWatermark
         {
@@ -56,10 +43,10 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             string versionString = ModBuildInfo.fullVersionString;
-            m_VersionText.text = "overhaul mod " + versionString;
-            m_DebugIcon.SetActive(ModBuildInfo.debug);
-            m_GameplayVersionText.text = "overhaul " + versionString;
-            m_GameplayDebugIcon.SetActive(ModBuildInfo.debug);
+            m_versionText.text = "overhaul mod " + versionString;
+            m_debugIcon.SetActive(ModBuildInfo.debug);
+            m_gameplayVersionText.text = "overhaul " + versionString;
+            m_gameplayDebugIcon.SetActive(ModBuildInfo.debug);
 
             ModCache.gameUIRoot.TitleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
@@ -70,17 +57,11 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = showWatermark;
-            bool showTop = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
+            _ = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
             bool titleScreen = showFullWatermark;
 
-            m_Watermark.SetActive(show && titleScreen);
-            m_GameplayWatermark.SetActive(show && !titleScreen);
-            m_TopButtons.SetActive(titleScreen && showTop);
-        }
-
-        public void OnPatchNotesButtonClicked()
-        {
-
+            m_watermark.SetActive(show && titleScreen);
+            m_gameplayWatermark.SetActive(show && !titleScreen);
         }
 
         public void OnOtherModsButtonClicked()

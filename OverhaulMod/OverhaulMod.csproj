@@ -377,11 +377,17 @@
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\Harmony\GameUIRoot_Patch.cs" />
+    <Compile Include="Patches\Harmony\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\Harmony\SelectableUI_Patch.cs" />
     <Compile Include="Patches\RobotAddon.cs" />
     <Compile Include="TransformInfo.cs" />
+    <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
+    <Compile Include="UI\UIAdvancementProgress.cs" />
+    <Compile Include="UI\UIAdvancementsMenu.cs" />
+    <Compile Include="UI\UIAttribute.cs" />
     <Compile Include="UI\UISettingsMenuRework.cs" />
     <Compile Include="UI\UITitleScreenRework.cs" />
+    <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />
     <Compile Include="Utils\AssetBundleConstants.cs" />
@@ -401,7 +407,7 @@
     <Compile Include="Patches\Harmony\LevelObjectsLibraryManager_Patch.cs" />
     <Compile Include="Patches\Harmony\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\Harmony\FirstPersonMover_Patch.cs" />
-    <Compile Include="Patches\Replacements\GameModeSelectMenusSimplePatch.cs" />
+    <Compile Include="Patches\Replacements\GameModeSelectMenusReplacement.cs" />
     <Compile Include="Patches\Replacements\ModReplacement.cs" />
     <Compile Include="PrefabStorage.cs" />
     <Compile Include="UI\UIEndlessModeLeaderboard.cs" />
@@ -429,7 +435,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
-    <Folder Include="Personalization\" />
   </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>

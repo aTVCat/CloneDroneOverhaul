@@ -5,29 +5,29 @@ namespace OverhaulMod.Patches.Replacements
 {
     internal class ModReplacement : MonoBehaviour
     {
-        private static GameObject s_GameObject;
-        private static ModReplacement[] s_Patches;
+        private static GameObject s_gameObject;
+        private static ModReplacement[] s_patches;
 
         public static void Load()
         {
-            if (!s_GameObject)
+            if (!s_gameObject)
             {
-                GameObject gameObject = new GameObject("Simple patches");
+                GameObject gameObject = new GameObject("Replacements");
                 gameObject.transform.SetParent(ModManagers.Instance.transform);
-                s_GameObject = gameObject;
+                s_gameObject = gameObject;
             }
 
-            if (s_Patches != null)
+            if (s_patches != null)
             {
-                foreach (ModReplacement patch in s_Patches)
+                foreach (ModReplacement patch in s_patches)
                     Destroy(patch);
 
-                s_Patches = Array.Empty<ModReplacement>();
+                s_patches = Array.Empty<ModReplacement>();
             }
 
-            _ = s_GameObject.AddComponent<GameModeSelectMenusSimplePatch>();
+            _ = s_gameObject.AddComponent<GameModeSelectMenusReplacement>();
 
-            s_Patches = s_GameObject.GetComponents<ModReplacement>();
+            s_patches = s_gameObject.GetComponents<ModReplacement>();
         }
 
         private void Start()

@@ -6,7 +6,7 @@ namespace OverhaulMod
     public class OverhaulBehaviour : MonoBehaviour
     {
         private ModdedObject m_moddedObject;
-        public ModdedObject moddedObject
+        public ModdedObject moddedObjectReference
         {
             get
             {
@@ -20,21 +20,21 @@ namespace OverhaulMod
 
         public T GetObject<T>(int index) where T : UnityEngine.Object
         {
-            return moddedObject.GetObject<T>(index);
+            return moddedObjectReference.GetObject<T>(index);
         }
         public UnityEngine.Object GetObject(int index, Type type)
         {
-            return moddedObject.GetObject(type, index);
+            return moddedObjectReference.GetObject(type, index);
         }
 
         public T GetObject<T>(string name) where T : UnityEngine.Object
         {
-            return moddedObject.GetObject<T>(name);
+            return moddedObjectReference.GetObject<T>(name);
         }
 
         public UnityEngine.Object GetObject(string name, Type type)
         {
-            return moddedObject.GetObject(type, name);
+            return moddedObjectReference.GetObject(type, name);
         }
 
         public virtual void Awake()

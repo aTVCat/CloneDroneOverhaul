@@ -80,8 +80,8 @@ namespace OverhaulMod
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 T result1 = gameObject.AddComponent<T>();
-                result1.fullName = fullName;
-                result1.Initialize();
+                result1.name = fullName;
+                result1.InitializeUI();
                 result1.Show();
                 RectTransform transform = gameObject.transform as RectTransform;
                 transform.SetSiblingIndex(GetSiblingIndex(layer));
@@ -129,7 +129,7 @@ namespace OverhaulMod
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
-            _ = m_InstantiatedUIs.Remove(uIBehaviour.fullName);
+            _ = m_InstantiatedUIs.Remove(uIBehaviour.name);
         }
 
         public enum EUILayer

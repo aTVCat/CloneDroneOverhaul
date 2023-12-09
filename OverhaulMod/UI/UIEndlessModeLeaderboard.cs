@@ -10,26 +10,26 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_ExitButton;
+        private readonly Button m_exitButton;
 
         [UIElementAction(nameof(OnExportButtonClicked))]
         [UIElement("ExportButton")]
-        private readonly Button m_ExportButton;
+        private readonly Button m_exportButton;
 
         [UIElementAction(nameof(OnSavesFolderButtonClicked))]
         [UIElement("SavesFolderButton")]
-        private readonly Button m_SavesFolderButton;
+        private readonly Button m_savesFolderButton;
 
         [UIElement("LeaderboardEntryDisplayPrefab")]
-        private readonly ModdedObject m_LeaderboardEntry;
+        private readonly ModdedObject m_leaderboardEntry;
         [UIElement("Content")]
-        private readonly Transform m_Content;
+        private readonly Transform m_content;
 
         public override void Show()
         {
             base.Show();
 
-            m_LeaderboardEntry.gameObject.SetActive(false);
+            m_leaderboardEntry.gameObject.SetActive(false);
 
             Populate();
         }
@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
             List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
             foreach (HighScoreData data in list)
             {
-                ModdedObject moddedObject = Instantiate(m_LeaderboardEntry, m_Content);
+                ModdedObject moddedObject = Instantiate(m_leaderboardEntry, m_content);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = data.HumanFacts.GetFullName();
                 moddedObject.GetObject<Text>(1).text = position.ToString() + ".";
@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
 
         public void Clear()
         {
-            TransformUtils.DestroyAllChildren(m_Content);
+            TransformUtils.DestroyAllChildren(m_content);
         }
 
         public void OnExitButtonClicked()

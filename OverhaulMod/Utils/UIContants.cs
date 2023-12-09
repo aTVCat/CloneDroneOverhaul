@@ -10,6 +10,8 @@ namespace OverhaulMod.Utils
         public const string UI_ENDLESS_MODE_LEADERBOARD = "UI_EndlessModeLeaderboard";
         public const string UI_SETTINGS_MENU = "UI_SettingsMenuRework";
         public const string UI_TITLE_SCREEN = "UI_TitleScreenRework";
+        public const string UI_ADVANCEMENT_PROGRESS = "UI_AdvancementProgress";
+        public const string UI_ADVANCEMENTS_MENU = "UI_AdvancementsMenuRework";
 
         public static void ShowOtherModsMenu()
         {
@@ -34,6 +36,20 @@ namespace OverhaulMod.Utils
         public static void ShowTitleScreenRework()
         {
             _ = ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowAdvancementProgress(GameplayAchievement gameplayAchievement)
+        {
+            UIAdvancementProgress panel = ModUIManager.Instance.Show<UIAdvancementProgress>(AssetBundleConstants.UI, UI_ADVANCEMENT_PROGRESS, ModUIManager.EUILayer.AfterTitleScreen);
+            if (panel)
+            {
+                panel.ShowProgress(gameplayAchievement);
+            }
+        }
+
+        public static void ShowAdvancementsMenuRework()
+        {
+            _ = ModUIManager.Instance.Show<UIAdvancementsMenu>(AssetBundleConstants.UI, UI_ADVANCEMENTS_MENU, ModUIManager.EUILayer.AfterTitleScreen);
         }
     }
 }

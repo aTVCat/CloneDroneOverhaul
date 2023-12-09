@@ -4,9 +4,9 @@ namespace OverhaulMod.UI
 {
     public class UIOtherMods : OverhaulUIBehaviour
     {
-        [UIElementAction(nameof(OnExitButtonClicked))]
+        [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_ExitButton;
+        private readonly Button m_exitButton;
 
         public override void Show()
         {
@@ -18,11 +18,6 @@ namespace OverhaulMod.UI
         {
             base.Hide();
             SetTitleScreenButtonActive(true);
-        }
-
-        public void OnExitButtonClicked()
-        {
-            Hide();
         }
     }
 }
