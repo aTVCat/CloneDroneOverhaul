@@ -38,5 +38,13 @@ namespace OverhaulMod.Utils
         {
             MessagePopup(header, description, height, MessageMenu.ButtonLayout.OkButton, buttonText, null, null, buttonAction);
         }
+
+        public static void ShowVanillaEscMenu()
+        {
+            UIPauseMenu.disableOverhauledVersion = true;
+            ModCache.gameUIRoot.EscMenu.Show();
+            ModCache.gameUIRoot.RefreshCursorEnabled();
+            UIPauseMenu.disableOverhauledVersion = false;
+        }
     }
 }

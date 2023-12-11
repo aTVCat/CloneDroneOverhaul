@@ -97,6 +97,7 @@ namespace OverhaulMod
 
             T result = m_InstantiatedUIs[fullName].GetComponent<T>();
             result.Show();
+            ModCache.gameUIRoot.RefreshCursorEnabled();
             return result;
         }
 
@@ -123,6 +124,20 @@ namespace OverhaulMod
             {
                 overhaulUIBehaviour.Hide();
                 return true;
+            }
+            return false;
+        }
+
+        public bool ShouldEnableCursor()
+        {
+            foreach(GameObject gameObject in m_InstantiatedUIs.Values)
+            {
+                if (!gameObject || !gameObject.activeInHierarchy)
+                    continue;
+
+                OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
+                if (behaviour && !behaviour.isElement && behaviour.enableCursorIfVisible)
+                    return true;
             }
             return false;
         }

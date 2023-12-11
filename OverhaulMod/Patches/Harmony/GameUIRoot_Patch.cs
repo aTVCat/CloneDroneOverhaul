@@ -17,6 +17,13 @@ namespace OverhaulMod.Patches.Harmony
                 InputManager.Instance.SetCursorEnabled(false);
                 return false;
             }
+
+            ModUIManager manager = ModUIManager.Instance;
+            if(manager && manager.ShouldEnableCursor())
+            {
+                InputManager.Instance.SetCursorEnabled(true);
+                return false;
+            }
             return true;
         }
 
@@ -44,6 +51,8 @@ namespace OverhaulMod.Patches.Harmony
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
+                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_PAUSE_MENU))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_COMMUNITY_HUB))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_FEEDBACK_UI))

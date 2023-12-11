@@ -32,6 +32,14 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public virtual bool enableCursorIfVisible
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public void InitializeUI()
         {
             if (initialized)
@@ -143,6 +151,8 @@ namespace OverhaulMod.UI
         public virtual void Hide()
         {
             base.gameObject.SetActive(false);
+            if (!isElement)
+                ModCache.gameUIRoot.RefreshCursorEnabled();
         }
 
         public void SetTitleScreenButtonActive(bool value)

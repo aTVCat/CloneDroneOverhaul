@@ -16,6 +16,7 @@ namespace OverhaulMod.Utils
         public const string UI_MESSAGE_POPUP = "UI_MessagePopup";
         public const string UI_FEEDBACK_UI = "UI_FeedbackUIRework";
         public const string UI_COMMUNITY_HUB = "UI_CommunityHub";
+        public const string UI_PAUSE_MENU = "UI_PauseMenuRework";
 
         public static void ShowOtherModsMenu()
         {
@@ -74,6 +75,11 @@ namespace OverhaulMod.Utils
         public static void ShowCommunityHub()
         {
             _ = ModUIManager.Instance.Show<UICommunityHub>(AssetBundleConstants.UI, UI_COMMUNITY_HUB, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowPauseMenuRework()
+        {
+            _ = ModUIManager.Instance.Show<UIPauseMenu>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.EUILayer.AfterEscMenu);
         }
     }
 }

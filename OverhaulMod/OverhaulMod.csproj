@@ -376,6 +376,7 @@
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="ModDebug.cs" />
+    <Compile Include="Patches\Harmony\EscMenu_Patch.cs" />
     <Compile Include="Patches\Harmony\GameUIRoot_Patch.cs" />
     <Compile Include="Patches\Harmony\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\Harmony\SelectableUI_Patch.cs" />
@@ -385,6 +386,7 @@
     <Compile Include="UI\UIAdvancementProgress.cs" />
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIAttribute.cs" />
+    <Compile Include="UI\UIPauseMenu.cs" />
     <Compile Include="UI\UICommunityHub.cs" />
     <Compile Include="UI\UIFeedbackMenu.cs" />
     <Compile Include="UI\UISettingsMenuRework.cs" />
