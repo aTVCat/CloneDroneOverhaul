@@ -385,9 +385,14 @@
     <Compile Include="UI\UIAdvancementProgress.cs" />
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIAttribute.cs" />
+    <Compile Include="UI\UICommunityHub.cs" />
+    <Compile Include="UI\UIFeedbackMenu.cs" />
     <Compile Include="UI\UISettingsMenuRework.cs" />
     <Compile Include="UI\UITitleScreenRework.cs" />
+    <Compile Include="UI\UIMessagePopup.cs" />
+    <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
+    <Compile Include="Utils\ModUIUtility.cs" />
     <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />
     <Compile Include="Utils\AssetBundleConstants.cs" />
@@ -415,7 +420,7 @@
     <Compile Include="UI\OverhaulUIBehaviour.cs" />
     <Compile Include="OverhaulBehaviour.cs" />
     <Compile Include="UI\UIOtherMods.cs" />
-    <Compile Include="Utils\UIContants.cs" />
+    <Compile Include="Utils\ModUIContants.cs" />
     <Compile Include="UI\UIElementActionAttribute.cs" />
     <Compile Include="UI\UIElementAttribute.cs" />
     <Compile Include="UI\UIVersionLabel.cs" />

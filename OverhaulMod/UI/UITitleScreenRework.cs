@@ -22,6 +22,18 @@ namespace OverhaulMod.UI
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
 
+        [UIElementAction(nameof(OnInfoButtonClicked))]
+        [UIElement("InfoButton")]
+        private readonly Button m_infoButton;
+
+        [UIElementAction(nameof(OnFeedbackButtonClicked))]
+        [UIElement("FeedbackButton")]
+        private readonly Button m_feedbackButton;
+
+        [UIElementAction(nameof(OnChangelogButtonClicked))]
+        [UIElement("PatchNotesButton")]
+        private readonly Button m_changelogButton;
+
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
         private readonly Button m_optionsButton;
@@ -29,6 +41,22 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnAdvancementsButtonClicked))]
         [UIElement("AchievementsButton")]
         private readonly Button m_advancementsButton;
+
+        [UIElementAction(nameof(OnWorkshopBrowserButtonClicked))]
+        [UIElement("WorkshopBrowserButton")]
+        private readonly Button m_workshopBrowserButton;
+
+        [UIElementAction(nameof(OnHubButtonClicked))]
+        [UIElement("HubButton")]
+        private readonly Button m_hubButton;
+
+        [UIElementAction(nameof(OnLevelEditorButtonClicked))]
+        [UIElement("LevelEditorButton")]
+        private readonly Button m_levelEditorButton;
+
+        [UIElementAction(nameof(OnCreditsButtonClicked))]
+        [UIElement("CreditsButton")]
+        private readonly Button m_creditsButton;
 
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("ExitButton")]
@@ -73,14 +101,49 @@ namespace OverhaulMod.UI
             ModsPanelManager.Instance.openModsMenu();
         }
 
+        public void OnInfoButtonClicked()
+        {
+            ModUIUtility.MessagePopupOK("This button doesn't work now!", "Wait for an update which will add functionality to this button...");
+        }
+
+        public void OnChangelogButtonClicked()
+        {
+            ModUIUtility.MessagePopupOK("This button doesn't work now!", "Wait for an update which will add functionality to this button...");
+        }
+
+        public void OnFeedbackButtonClicked()
+        {
+            UIConstants.ShowFeedbackUIRework();
+        }
+
+        public void OnHubButtonClicked()
+        {
+            UIConstants.ShowCommunityHub();
+        }
+
         public void OnAdvancementsButtonClicked()
         {
             UIConstants.ShowAdvancementsMenuRework();
         }
 
+        public void OnWorkshopBrowserButtonClicked()
+        {
+            UIConstants.ShowWorkshopBrowserRework();
+        }
+
+        public void OnLevelEditorButtonClicked()
+        {
+            m_titleScreenUI.OnLevelEditorButtonClicked();
+        }
+
         public void OnOptionsButtonClicked()
         {
             UIConstants.ShowSettingsMenuRework();
+        }
+
+        public void OnCreditsButtonClicked()
+        {
+            m_titleScreenUI.OnCreditsButtonClicked();
         }
 
         public void OnExitButtonClicked()

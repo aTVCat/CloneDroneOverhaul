@@ -39,7 +39,7 @@ namespace OverhaulMod.UI
             int progress = GameplayAchievementManager.Instance.GetProgress(gameplayAchievement.AchievementID);
             int targetProgress = gameplayAchievement.TargetProgress;
 
-            if(progress >= targetProgress)
+            if(progress >= targetProgress || progress % 20 != 0)
                 return;
 
             m_achievementImage.sprite = gameplayAchievement.GetImageSprite();

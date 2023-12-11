@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\GameUIThemeData.cs" />
     <Compile Include="Assets\Scripts\InterfaceInputMode.cs" />
     <Compile Include="Assets\Scripts\ModdedObject.cs" />
+    <Compile Include="Assets\Scripts\Rotator.cs" />
     <Compile Include="Assets\Scripts\SelectableUI.cs" />
     <Compile Include="Assets\Scripts\SelectOnShow.cs" />
     <Compile Include="Assets\Scripts\ShowIfKeyboardOrController.cs" />

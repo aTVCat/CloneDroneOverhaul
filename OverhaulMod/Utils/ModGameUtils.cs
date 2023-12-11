@@ -21,11 +21,15 @@ namespace OverhaulMod.Utils
             {
                 SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete);
 
-                int progress = isComplete ? achievement.TargetProgress : 0;
-                if(progress != gameplayAchievementManager.GetProgress(achievement.AchievementID))
+                int currentProgress = gameplayAchievementManager.GetProgress(achievement.AchievementID);
+                int targetProgress = isComplete ? achievement.TargetProgress : 0;
+                if(targetProgress != currentProgress)
                     result = true;
 
-                gameplayAchievementManager.SetAchievementProgress(achievement, progress, true);
+                if (isComplete)
+                    gameplayAchievementManager.SetAchievementProgress(achievement, targetProgress, true);
+                else
+                    gameplayAchievementManager.SetAchievementProgress(achievement, 0, true);
             }
             return result;
         }
