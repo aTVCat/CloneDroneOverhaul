@@ -9,11 +9,14 @@ namespace OverhaulMod.Patches.Replacements
         {
             if (ModFeatures.IsEnabled(ModFeatures.EModFeature.EndlessModeMenu))
             {
-                UnityEvent unityEvent = new UnityEvent();
-                unityEvent.AddListener(UIConstants.ShowEndlessModeMenu);
+                UnityEvent endlessModeEvent = new UnityEvent();
+                endlessModeEvent.AddListener(ModUIConstants.ShowEndlessModeMenu);
+                UnityEvent storyModeEvent = new UnityEvent();
+                storyModeEvent.AddListener(ModUIConstants.ShowChapterSelectMenu);
 
-                GameModeCardData data = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData[1];
-                data.ClickedCallback = unityEvent;
+                GameModeCardData[] datas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
+                datas[0].ClickedCallback = storyModeEvent;
+                datas[1].ClickedCallback = endlessModeEvent;
             }
         }
     }

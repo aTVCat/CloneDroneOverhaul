@@ -9,7 +9,7 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        internal const string EXTRA_INFO_FILE_PATH = "assets/buildInfo.json";
+        internal const string EXTRA_INFO_FILE_PATH = "assets/data/buildInfo.json";
 
         private static bool s_loaded;
 

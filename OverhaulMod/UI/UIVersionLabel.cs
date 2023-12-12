@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
 
         public void OnOtherModsButtonClicked()
         {
-            UIConstants.ShowOtherModsMenu();
+            ModUIConstants.ShowOtherModsMenu();
         }
     }
 }

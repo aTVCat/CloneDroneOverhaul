@@ -19,7 +19,7 @@ namespace OverhaulMod.Patches.Harmony
             }
 
             ModUIManager manager = ModUIManager.Instance;
-            if(manager && manager.ShouldEnableCursor())
+            if (manager && manager.ShouldEnableCursor())
             {
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;
@@ -51,23 +51,27 @@ namespace OverhaulMod.Patches.Harmony
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_PAUSE_MENU))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_LEVEL_SELECT_MENU))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_COMMUNITY_HUB))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_SELECT_MENU))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_FEEDBACK_UI))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_WORKSHOP_BROWSER))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_COMMUNITY_HUB))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ADVANCEMENTS_MENU))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_FEEDBACK_UI))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ENDLESS_MODE_LEADERBOARD))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_WORKSHOP_BROWSER))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_ENDLESS_MODE))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADVANCEMENTS_MENU))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_SETTINGS_MENU))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE_LEADERBOARD))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, UIConstants.UI_OTHER_MODS))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OTHER_MODS))
                     return false;
             }
             return true;

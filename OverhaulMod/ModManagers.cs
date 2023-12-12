@@ -14,7 +14,7 @@ namespace OverhaulMod
 
         private void Start()
         {
-            UIConstants.ShowTitleScreenRework();
+            ModUIConstants.ShowTitleScreenRework();
         }
 
         public void DispatchModLoadedEvent()

@@ -113,22 +113,22 @@ namespace OverhaulMod.UI
 
         public void OnFeedbackButtonClicked()
         {
-            UIConstants.ShowFeedbackUIRework();
+            ModUIConstants.ShowFeedbackUIRework();
         }
 
         public void OnHubButtonClicked()
         {
-            UIConstants.ShowCommunityHub();
+            ModUIConstants.ShowCommunityHub();
         }
 
         public void OnAdvancementsButtonClicked()
         {
-            UIConstants.ShowAdvancementsMenuRework();
+            ModUIConstants.ShowAdvancementsMenuRework();
         }
 
         public void OnWorkshopBrowserButtonClicked()
         {
-            UIConstants.ShowWorkshopBrowserRework();
+            ModUIConstants.ShowWorkshopBrowserRework();
         }
 
         public void OnLevelEditorButtonClicked()
@@ -138,7 +138,7 @@ namespace OverhaulMod.UI
 
         public void OnOptionsButtonClicked()
         {
-            UIConstants.ShowSettingsMenuRework();
+            ModUIConstants.ShowSettingsMenuRework();
         }
 
         public void OnCreditsButtonClicked()

@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
 
         public void OnLeaderboardButtonClicked()
         {
-            UIConstants.ShowLeaderboard(base.transform);
+            ModUIConstants.ShowLeaderboard(base.transform);
         }
     }
 }

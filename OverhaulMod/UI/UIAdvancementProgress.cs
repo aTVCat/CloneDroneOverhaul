@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.SocialPlatforms.Impl;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIAdvancementProgress : OverhaulUIBehaviour 
+    public class UIAdvancementProgress : OverhaulUIBehaviour
     {
         [UIElement("Panel")]
-        private CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup m_canvasGroup;
 
         [UIElement("Image")]
-        private Image m_achievementImage;
+        private readonly Image m_achievementImage;
         [UIElement("ProgressText")]
-        private Text m_achievementProgressText;
+        private readonly Text m_achievementProgressText;
         [UIElement("ProgressFill")]
-        private Image m_achievementProgressBarFill;
+        private readonly Image m_achievementProgressBarFill;
 
         public float ShowUntil;
 
@@ -39,7 +32,7 @@ namespace OverhaulMod.UI
             int progress = GameplayAchievementManager.Instance.GetProgress(gameplayAchievement.AchievementID);
             int targetProgress = gameplayAchievement.TargetProgress;
 
-            if(progress >= targetProgress || progress % 20 != 0)
+            if (progress >= targetProgress || progress % 20 != 0)
                 return;
 
             m_achievementImage.sprite = gameplayAchievement.GetImageSprite();

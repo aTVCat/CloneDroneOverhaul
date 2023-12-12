@@ -1,10 +1,4 @@
 ﻿using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -17,13 +11,13 @@ namespace OverhaulMod.Utils
                 return false;
 
             bool result = false;
-            foreach(var achievement in gameplayAchievementManager.Achievements)
+            foreach (GameplayAchievement achievement in gameplayAchievementManager.Achievements)
             {
-                SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete);
+                _ = SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete);
 
                 int currentProgress = gameplayAchievementManager.GetProgress(achievement.AchievementID);
                 int targetProgress = isComplete ? achievement.TargetProgress : 0;
-                if(targetProgress != currentProgress)
+                if (targetProgress != currentProgress)
                     result = true;
 
                 if (isComplete)

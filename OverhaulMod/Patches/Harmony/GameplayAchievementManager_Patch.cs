@@ -15,7 +15,7 @@ namespace OverhaulMod.Patches.Harmony
 
             if (achievement && !silentCompletion)
             {
-                UIConstants.ShowAdvancementProgress(achievement);
+                ModUIConstants.ShowAdvancementProgress(achievement);
             }
         }
     }

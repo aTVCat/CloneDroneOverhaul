@@ -1,9 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,15 +16,15 @@ namespace OverhaulMod.UI
         private readonly Button m_syncWithSteamButton;
 
         [UIElement("Content")]
-        private Transform m_pageContentsTransform;
+        private readonly Transform m_pageContentsTransform;
 
         [UIElement("ProgressText")]
-        private Text m_progressText;
+        private readonly Text m_progressText;
         [UIElement("ProgressFill")]
-        private Image m_progressBarFill;
+        private readonly Image m_progressBarFill;
 
         [UIElement("AdvancementPrefab", false)]
-        private ModdedObject m_displayPrefab;
+        private readonly ModdedObject m_displayPrefab;
 
         public override void Show()
         {
@@ -54,7 +49,7 @@ namespace OverhaulMod.UI
         {
             ClearPageContents();
 
-            var manager = GameplayAchievementManager.Instance;
+            GameplayAchievementManager manager = GameplayAchievementManager.Instance;
             if (!manager)
                 return;
 
@@ -62,7 +57,7 @@ namespace OverhaulMod.UI
             m_progressBarFill.fillAmount = fractionOfAchievementsCompleted;
             m_progressText.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "%";
 
-            foreach (var achievement in manager.Achievements)
+            foreach (GameplayAchievement achievement in manager.Achievements)
             {
                 ModdedObject moddedObject = Instantiate(m_displayPrefab, m_pageContentsTransform);
                 moddedObject.gameObject.SetActive(true);

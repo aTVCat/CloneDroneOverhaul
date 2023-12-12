@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
-    public static class UIConstants
+    public static class ModUIConstants
     {
         public const string UI_OTHER_MODS = "UI_OtherMods";
         public const string UI_ENDLESS_MODE = "UI_EndlessModeMenu";
@@ -17,6 +17,9 @@ namespace OverhaulMod.Utils
         public const string UI_FEEDBACK_UI = "UI_FeedbackUIRework";
         public const string UI_COMMUNITY_HUB = "UI_CommunityHub";
         public const string UI_PAUSE_MENU = "UI_PauseMenuRework";
+        public const string UI_CHAPTER_SELECT_MENU = "UI_ChapterSelectionMenu";
+        public const string UI_CHAPTER_LEVEL_SELECT_MENU = "UI_ChapterLevelSelectionMenu";
+        public const string UI_LOADING_SCREEN = "UI_LoadingScreen";
 
         public static void ShowOtherModsMenu()
         {
@@ -80,6 +83,27 @@ namespace OverhaulMod.Utils
         public static void ShowPauseMenuRework()
         {
             _ = ModUIManager.Instance.Show<UIPauseMenu>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.EUILayer.AfterEscMenu);
+        }
+
+        public static void ShowChapterSelectMenu()
+        {
+            _ = ModUIManager.Instance.Show<UIChapterSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
+        {
+            UIChapterLevelSelectMenu chapterLevelSelectMenu = ModUIManager.Instance.Show<UIChapterLevelSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_LEVEL_SELECT_MENU, parent);
+            chapterLevelSelectMenu.PopulateChapter(chapterIndex);
+        }
+
+        public static void ShowLoadingScreen()
+        {
+            _ = ModUIManager.Instance.Show<UILoadingScreen>(AssetBundleConstants.UI, UI_LOADING_SCREEN, ModUIManager.EUILayer.Last);
+        }
+
+        public static void HideLoadingScreen()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_LOADING_SCREEN);
         }
     }
 }

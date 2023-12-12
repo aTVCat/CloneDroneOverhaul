@@ -1,10 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -27,18 +21,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        private static bool s_disableOverhauledVersion;
-        public static bool disableOverhauledVersion
-        {
-            get
-            {
-                return s_disableOverhauledVersion;
-            }
-            set
-            {
-                s_disableOverhauledVersion = value;
-            }
-        }
+        public static bool disableOverhauledVersion { get; set; }
 
         public override void Show()
         {

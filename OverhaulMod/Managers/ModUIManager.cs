@@ -38,7 +38,14 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
-            m_InstantiatedUIs.Clear();
+            List<string> keysToRemove = new List<string>();
+            foreach (KeyValuePair<string, GameObject> keyValue in m_InstantiatedUIs)
+            {
+                if (!keyValue.Value)
+                    keysToRemove.Add(keyValue.Key);
+            }
+            foreach (string key in keysToRemove)
+                _ = m_InstantiatedUIs.Remove(key);
 
             _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", EUILayer.BeforeCrashScreen);
         }
@@ -79,6 +86,7 @@ namespace OverhaulMod
                 GameObject prefab = ModResources.GetResource<GameObject>(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
+                m_InstantiatedUIs.Add(fullName, gameObject);
                 T result1 = gameObject.AddComponent<T>();
                 result1.name = fullName;
                 result1.InitializeUI();
@@ -91,7 +99,6 @@ namespace OverhaulMod
                 transform.anchoredPosition = Vector2.zero;
                 transform.localScale = Vector3.one;
 
-                m_InstantiatedUIs.Add(fullName, gameObject);
                 return result1;
             }
 
@@ -130,7 +137,7 @@ namespace OverhaulMod
 
         public bool ShouldEnableCursor()
         {
-            foreach(GameObject gameObject in m_InstantiatedUIs.Values)
+            foreach (GameObject gameObject in m_InstantiatedUIs.Values)
             {
                 if (!gameObject || !gameObject.activeInHierarchy)
                     continue;

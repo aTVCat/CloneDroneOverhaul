@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,26 +7,26 @@ namespace OverhaulMod.UI
     public class UIElementAdvancementDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         [UIElement("Name")]
-        private Text m_advancementName;
+        private readonly Text m_advancementName;
         [UIElement("Description")]
-        private Text m_advancementDescription;
+        private readonly Text m_advancementDescription;
         [UIElement("Image")]
-        private Image m_advancementImage;
+        private readonly Image m_advancementImage;
 
         [UIElement("ProgressText")]
-        private Text m_progressText;
+        private readonly Text m_progressText;
         [UIElement("BarBG")]
-        private GameObject m_progressBar;
+        private readonly GameObject m_progressBar;
         [UIElement("ProgressFill")]
-        private Image m_progressBarFill;
+        private readonly Image m_progressBarFill;
 
         [UIElement("RewardInfo", false)]
-        private GameObject m_rewardDisplayObject;
+        private readonly GameObject m_rewardDisplayObject;
         [UIElement("RewardText")]
-        private Text m_rewardText;
+        private readonly Text m_rewardText;
 
         [UIElement("CompletedIndicator", false)]
-        private GameObject m_completedIndicator;
+        private readonly GameObject m_completedIndicator;
 
         public GameplayAchievement gameplayAchievement
         {

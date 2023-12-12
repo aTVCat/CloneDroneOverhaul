@@ -1,11 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Patches.Harmony
 {
@@ -19,7 +14,7 @@ namespace OverhaulMod.Patches.Harmony
             if (UIPauseMenu.disableOverhauledVersion)
                 return true;
 
-            UIConstants.ShowPauseMenuRework();
+            ModUIConstants.ShowPauseMenuRework();
             return false;
         }
     }
