@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches.Replacements
     {
         public override void Patch()
         {
-            if (ModFeatures.IsEnabled(ModFeatures.EModFeature.EndlessModeMenu))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EndlessModeMenu))
             {
                 UnityEvent endlessModeEvent = new UnityEvent();
                 endlessModeEvent.AddListener(ModUIConstants.ShowEndlessModeMenu);

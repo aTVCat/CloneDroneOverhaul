@@ -1,22 +1,22 @@
 ﻿namespace OverhaulMod
 {
-    internal static class ModFeatures
+    public static class ModFeatures
     {
-        public static bool IsEnabled(EModFeature feature)
+        public static bool IsEnabled(FeatureType feature)
         {
             switch (feature)
             {
-                case EModFeature.EndlessModeMenu:
+                case FeatureType.EndlessModeMenu:
                     return true;
-                case EModFeature.NewWeapons:
+                case FeatureType.NewWeapons:
                     return true;
-                case EModFeature.WeaponBag:
+                case FeatureType.WeaponBag:
                     return true;
             }
             throw new System.Exception(string.Format("Unknown Overhaul feature: {0}", feature));
         }
 
-        public enum EModFeature
+        public enum FeatureType
         {
             EndlessModeMenu,
             NewWeapons,

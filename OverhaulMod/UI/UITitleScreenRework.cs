@@ -34,6 +34,10 @@ namespace OverhaulMod.UI
         [UIElement("PatchNotesButton")]
         private readonly Button m_changelogButton;
 
+        [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
+        [UIElement("ExclusiveContentMenuButton")]
+        private readonly Button m_excContentMenuButton;
+
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
         private readonly Button m_optionsButton;
@@ -119,6 +123,11 @@ namespace OverhaulMod.UI
         public void OnHubButtonClicked()
         {
             ModUIConstants.ShowCommunityHub();
+        }
+
+        public void OnExcContentMenuButtonClicked()
+        {
+            ModUIConstants.ShowExclusiveContentMenu();
         }
 
         public void OnAdvancementsButtonClicked()

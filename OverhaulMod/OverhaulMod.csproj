@@ -374,7 +374,17 @@
     <Compile Include="Combat\AIBehaviours\RandomSprintAIBehaviour.cs" />
     <Compile Include="Combat\AIBehaviours\RandomDashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentBase.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentColorOverride.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentEditor.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentFeatureUnlock.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentInfo.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentInfoList.cs" />
+    <Compile Include="Content\Exclusive\ExclusiveContentType.cs" />
     <Compile Include="IModLoadListener.cs" />
+    <Compile Include="Managers\ModContentRepositoryManager.cs" />
+    <Compile Include="Managers\ModExclusiveContentManager.cs" />
+    <Compile Include="Managers\ModUserDataManager.cs" />
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\Harmony\LoadingScreen_Patch.cs" />
     <Compile Include="Patches\Harmony\ChapterLoadingScreen_Patch.cs" />
@@ -391,6 +401,7 @@
     <Compile Include="UI\UIChapterLevelSelectMenu.cs" />
     <Compile Include="UI\UILoadingScreen.cs" />
     <Compile Include="UI\UIChapterSelectMenu.cs" />
+    <Compile Include="UI\UIExclusiveContentMenu.cs" />
     <Compile Include="UI\UIPauseMenu.cs" />
     <Compile Include="UI\UICommunityHub.cs" />
     <Compile Include="UI\UIFeedbackMenu.cs" />

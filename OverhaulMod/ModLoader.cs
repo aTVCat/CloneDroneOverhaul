@@ -27,12 +27,15 @@ namespace OverhaulMod
 
         private static void addManagers()
         {
+            _ = ModManagers.New<ModUserDataManager>();
             _ = ModManagers.New<ModResources>();
             _ = ModManagers.New<ModUIManager>();
             _ = ModManagers.New<ModWeaponsManager>();
             _ = ModManagers.New<ModUpgradesManager>();
             _ = ModManagers.New<ModEnemiesManager>();
             _ = ModManagers.New<ModLevelEditorManager>();
+            _ = ModManagers.New<ModContentRepositoryManager>();
+            _ = ModManagers.New<ModExclusiveContentManager>();
         }
 
         private static void loadAssemblies()

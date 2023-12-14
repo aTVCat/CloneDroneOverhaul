@@ -33,6 +33,19 @@ namespace OverhaulMod
             }
         }
 
+        private static DataRepository s_dataRepository;
+        public static DataRepository dataRepository
+        {
+            get
+            {
+                if (!s_dataRepository)
+                {
+                    s_dataRepository = DataRepository.Instance;
+                }
+                return s_dataRepository;
+            }
+        }
+
         private static JsonSerializerSettings s_jsonSerializerSettings;
         public static JsonSerializerSettings jsonSerializerSettings
         {
@@ -40,7 +53,7 @@ namespace OverhaulMod
             {
                 if (s_jsonSerializerSettings == null)
                 {
-                    s_jsonSerializerSettings = (JsonSerializerSettings)DataRepository.Instance.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettings = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
                 }
                 return s_jsonSerializerSettings;
             }
@@ -53,7 +66,7 @@ namespace OverhaulMod
             {
                 if (s_jsonSerializerSettingsFormatted == null)
                 {
-                    s_jsonSerializerSettingsFormatted = (JsonSerializerSettings)DataRepository.Instance.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettingsFormatted = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
                     s_jsonSerializerSettingsFormatted.Formatting = Formatting.Indented;
                 }
                 return s_jsonSerializerSettingsFormatted;

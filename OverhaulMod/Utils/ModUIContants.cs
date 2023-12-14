@@ -20,6 +20,7 @@ namespace OverhaulMod.Utils
         public const string UI_CHAPTER_SELECT_MENU = "UI_ChapterSelectionMenu";
         public const string UI_CHAPTER_LEVEL_SELECT_MENU = "UI_ChapterLevelSelectionMenu";
         public const string UI_LOADING_SCREEN = "UI_LoadingScreen";
+        public const string UI_EXCLUSIVE_CONTENT_MENU = "UI_ExclusiveContentMenu";
 
         public static void ShowOtherModsMenu()
         {
@@ -104,6 +105,11 @@ namespace OverhaulMod.Utils
         public static void HideLoadingScreen()
         {
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_LOADING_SCREEN);
+        }
+
+        public static void ShowExclusiveContentMenu()
+        {
+            _ = ModUIManager.Instance.Show<UIExclusiveContentMenu>(AssetBundleConstants.UI, UI_EXCLUSIVE_CONTENT_MENU, ModUIManager.EUILayer.AfterTitleScreen);
         }
     }
 }
