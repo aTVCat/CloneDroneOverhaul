@@ -2,5 +2,6 @@
 {
     public class ExclusiveContentBase
     {
+        public bool ForceUnlock;
     }
 }

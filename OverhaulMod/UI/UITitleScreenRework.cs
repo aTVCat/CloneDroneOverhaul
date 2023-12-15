@@ -88,6 +88,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             m_container.SetActive(m_legacyContainer.activeInHierarchy);
+            m_excContentMenuButton.interactable = ModExclusiveContentManager.Instance.hasRetrievedDataOnStart;
         }
 
         public void OnPlaySinglePlayerButtonClicked()

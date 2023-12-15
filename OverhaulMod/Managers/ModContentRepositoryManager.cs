@@ -7,7 +7,7 @@ namespace OverhaulMod
 {
     public class ModContentRepositoryManager : Singleton<ModContentRepositoryManager>
     {
-        private const string TOKEN = "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";
+        private const string TOKEN = "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";
 
         private const string LINK = "https://api.github.com/repos/aTVCat/Overhaul-Mod-Content/contents/";
 
@@ -36,15 +36,16 @@ namespace OverhaulMod
         }
 #endif
 
-        public void GetTextFileContent(string path, Action<string> doneCallback, Action<string> errorCallback)
+        public void GetTextFileContent(string path, Action<string> doneCallback, Action<string> errorCallback, int timeOut = 15)
         {
-            _ = ModActionUtils.RunCoroutine(getTextFileContentCoroutine(LINK + path, doneCallback, errorCallback));
+            _ = ModActionUtils.RunCoroutine(getTextFileContentCoroutine(LINK + path, doneCallback, errorCallback, timeOut));
         }
 
-        private IEnumerator getTextFileContentCoroutine(string link, Action<string> doneCallback, Action<string> errorCallback)
+        private IEnumerator getTextFileContentCoroutine(string link, Action<string> doneCallback, Action<string> errorCallback, int timeOut = 15)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(link))
             {
+                webRequest.timeout = timeOut;
                 webRequest.SetRequestHeader("Authorization", "token " + TOKEN);
                 webRequest.SetRequestHeader("Accept", "application/vnd.github.v3.raw");
                 yield return webRequest.SendWebRequest();

@@ -1,4 +1,4 @@
-﻿namespace OverhaulMod.Content.Exclusive
+﻿namespace OverhaulMod.Content
 {
     public class ExclusiveContentFeatureUnlock : ExclusiveContentBase
     {

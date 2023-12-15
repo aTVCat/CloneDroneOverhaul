@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace OverhaulMod.Content.Exclusive
+namespace OverhaulMod.Content
 {
     public static class ExclusiveContentEditor
     {
@@ -37,15 +37,7 @@ namespace OverhaulMod.Content.Exclusive
                 PlayFabID = playFabId
             };
 
-            switch (contentType)
-            {
-                case ExclusiveContentType.ColorOverride:
-                    newInfo.Content = new ExclusiveContentColorOverride();
-                    break;
-                case ExclusiveContentType.FeatureUnlock:
-                    newInfo.Content = new ExclusiveContentFeatureUnlock();
-                    break;
-            }
+            verifyContentBase(newInfo);
 
             ExclusiveContentInfoList cList = contentList;
             if (cList.List == null)
@@ -56,7 +48,25 @@ namespace OverhaulMod.Content.Exclusive
 
         public static void EditInfo(int index)
         {
-            editingContentInfo = contentList.List[index];
+            var info = contentList.List[index];
+            verifyContentBase(info);
+            editingContentInfo = info;
+        }
+
+        private static void verifyContentBase(ExclusiveContentInfo newInfo)
+        {
+            if (newInfo.Content != null)
+                return;
+
+            switch (newInfo.ContentType)
+            {
+                case ExclusiveContentType.ColorOverride:
+                    newInfo.Content = new ExclusiveContentColorOverride();
+                    break;
+                case ExclusiveContentType.FeatureUnlock:
+                    newInfo.Content = new ExclusiveContentFeatureUnlock();
+                    break;
+            }
         }
 
         public static void Save()

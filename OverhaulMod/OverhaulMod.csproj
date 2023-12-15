@@ -395,10 +395,14 @@
     <Compile Include="Patches\RobotAddon.cs" />
     <Compile Include="TransformInfo.cs" />
     <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentColorPropertyDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentCustomPropertyDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentIntPropertyDisplay.cs" />
     <Compile Include="UI\UIAdvancementProgress.cs" />
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIAttribute.cs" />
     <Compile Include="UI\UIChapterLevelSelectMenu.cs" />
+    <Compile Include="UI\UIExclusiveContentEditor.cs" />
     <Compile Include="UI\UILoadingScreen.cs" />
     <Compile Include="UI\UIChapterSelectMenu.cs" />
     <Compile Include="UI\UIExclusiveContentMenu.cs" />
@@ -410,6 +414,7 @@
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
+    <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModUIUtility.cs" />
     <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />

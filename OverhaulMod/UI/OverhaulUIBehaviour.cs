@@ -114,6 +114,18 @@ namespace OverhaulMod.UI
                                 });
                             }
                         }
+                        else if (fieldInfo.FieldType == typeof(Dropdown))
+                        {
+                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(int) });
+                            if (methodInfo != null)
+                            {
+                                Dropdown dropdown = unityObject as Dropdown;
+                                dropdown.onValueChanged.AddListener(delegate (int index)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] {index});
+                                });
+                            }
+                        }
                     }
 
                     fieldInfo.SetValue(this, unityObject);

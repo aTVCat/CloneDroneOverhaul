@@ -12,6 +12,8 @@ namespace OverhaulMod.Content
 
         public ExclusiveContentBase Content;
 
+        public string Name;
+
         public bool HasSteamID()
         {
             return SteamID != default;
@@ -24,8 +26,11 @@ namespace OverhaulMod.Content
 
         public bool IsAvailableToLocalUser()
         {
-            return (HasSteamID() && SteamManager.Instance.Initialized && SteamID == (ulong)SteamUser.GetSteamID())
-|| (HasPlayFabID() && MultiplayerLoginManager.Instance.GetLocalPlayFabID() == PlayFabID);
+            if(Content != null && Content.ForceUnlock)
+            {
+                return true;
+            }
+            return (HasSteamID() && SteamManager.Instance.Initialized && SteamID == (ulong)SteamUser.GetSteamID()) || (HasPlayFabID() && MultiplayerLoginManager.Instance.GetLocalPlayFabID() == PlayFabID);
         }
     }
 }

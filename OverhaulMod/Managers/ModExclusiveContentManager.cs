@@ -23,26 +23,62 @@ namespace OverhaulMod
             private set;
         }
 
+        public bool hasRetrievedDataOnStart
+        {
+            get;
+            private set;
+        }
+
         public override void Awake()
         {
             base.Awake();
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
         }
 
+        public List<ExclusiveContentInfo> GetUnlockedContent()
+        {
+            var list = new List<ExclusiveContentInfo>();
+            if(contentInfoList != null && contentInfoList.List != null && contentInfoList.List.Count != 0)
+                foreach (var info in contentInfoList.List)
+                    if (info.IsAvailableToLocalUser())
+                        list.Add(info);
+
+            return list;
+        }
+
+        public List<ExclusiveContentInfo> GetContentOfType<T>() where T : ExclusiveContentBase
+        {
+            var list = new List<ExclusiveContentInfo>();
+            if (contentInfoList != null && contentInfoList.List != null && contentInfoList.List.Count != 0)
+                foreach (var info in contentInfoList.List)
+                    if (info.Content != null && info.Content.GetType() == typeof(T))
+                        list.Add(info);
+
+            return list;
+        }
+
         private IEnumerator retrieveDataOnStartCoroutine()
         {
+            yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
             yield return new WaitForSecondsRealtime(2f);
-            RetrieveDataFromRepository(null, null);
+            RetrieveDataFromRepository(delegate
+            {
+                hasRetrievedDataOnStart = true;
+            }, delegate (string error)
+            {
+                hasRetrievedDataOnStart = true;
+                this.error = error;
+            }, true);
             yield break;
         }
 
-        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback)
+        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback, bool skipFileCheck = false)
         {
             contentInfoList = null;
             error = null;
 
             ModUserDataManager dataManager = ModUserDataManager.Instance;
-            if (dataManager.HasFile(REPOSITORY_FILE, false))
+            if (!skipFileCheck && dataManager.HasFile(REPOSITORY_FILE, false))
             {
                 ExclusiveContentInfoList contentInfoList = null;
                 try
@@ -89,7 +125,7 @@ namespace OverhaulMod
             {
                 this.error = error;
                 errorCallback?.Invoke(error);
-            });
+            }, 10);
         }
     }
 }
