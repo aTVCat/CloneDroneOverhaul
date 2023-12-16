@@ -10,10 +10,10 @@ namespace OverhaulMod.Visuals
 
         public static readonly Dictionary<WeaponType, TransformInfo> WeaponToPosition = new Dictionary<WeaponType, TransformInfo>()
         {
-            { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.75f), new Vector3(60f, 260f, 260f))},
+            { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.8f), new Vector3(60f, 260f, 260f))},
             { WeaponType.Bow, new TransformInfo(new Vector3(-0.15f, 0.35f, -0.6f), new Vector3(0f, 0f, 35f))},
-            { WeaponType.Hammer, new TransformInfo(new Vector3(-0.85f, 2f, -1.25f), new Vector3(0f, 0f, 190f), Vector3.one * 0.75f)},
-            { WeaponType.Spear, new TransformInfo(new Vector3(0f, 0.8f, -0.6f), new Vector3(270f, 0f, 0f))},
+            { WeaponType.Hammer, new TransformInfo(new Vector3(-0.85f, 2f, -0.95f), new Vector3(4f, 0f, 193f), Vector3.one * 0.75f)},
+            { WeaponType.Spear, new TransformInfo(new Vector3(0f, 0.6f, -0.6f), new Vector3(283f, 46f, 120f), Vector3.one * 0.85f)},
         };
 
         public Dictionary<WeaponType, GameObject> WeaponToRenderer;
@@ -27,6 +27,8 @@ namespace OverhaulMod.Visuals
             WeaponToRenderer = new Dictionary<WeaponType, GameObject>();
             CreateContainers();
             RefreshRenderers();
+
+            //firstPersonMoverReference.AddDeathListener(DestroySelf);
         }
 
         public override void Update()
@@ -40,6 +42,15 @@ namespace OverhaulMod.Visuals
                 RefreshRenderers();
                 m_lastEquippedWeapon = currentWeapon;
             }
+        }
+
+        public void DestroySelf()
+        {
+            if (bag)
+            {
+                Destroy(bag.gameObject);
+            }
+            Destroy(this);
         }
 
         public void CreateContainers()
@@ -65,16 +76,15 @@ namespace OverhaulMod.Visuals
         {
             if (!firstPersonMoverReference || !firstPersonMoverReference.IsAttachedAndAlive())
             {
-                if (bag)
-                {
-                    Destroy(bag.gameObject);
-                }
-                Destroy(this);
+                DestroySelf();
                 return;
             }
 
             List<WeaponType> equippedWeapons = firstPersonMoverReference._equippedWeapons;
-            WeaponModel[] equippedWeaponModels = firstPersonMoverReference.GetCharacterModel().WeaponModels;
+            WeaponModel[] equippedWeaponModels = firstPersonMoverReference.GetCharacterModel()?.WeaponModels;
+            if (equippedWeaponModels == null)
+                return;
+
             foreach (WeaponType weaponType in equippedWeapons)
             {
                 AddRenderer(weaponType, ref equippedWeapons, ref equippedWeaponModels);
@@ -82,6 +92,9 @@ namespace OverhaulMod.Visuals
 
             foreach (KeyValuePair<WeaponType, GameObject> keyValue in WeaponToRenderer)
             {
+                if (!keyValue.Value)
+                    continue;
+
                 bool isEquipped = firstPersonMoverReference.GetEquippedWeaponType() == keyValue.Key;
                 bool shouldDisplay = !isEquipped;
                 WeaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
@@ -130,6 +143,7 @@ namespace OverhaulMod.Visuals
 
             Transform renderer = Instantiate(transform, bag, false);
             renderer.SetLocalTransform(transformInfo);
+            renderer.RandomizeLocalTransform(0.950f, 1.050f, false, true, false);
             return renderer.gameObject;
         }
     }

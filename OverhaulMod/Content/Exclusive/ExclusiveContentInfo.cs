@@ -14,6 +14,14 @@ namespace OverhaulMod.Content
 
         public string Name;
 
+        public void VerifyFields()
+        {
+            if (Content != null && Content.InfoReference == null)
+            {
+                Content.InfoReference = this;
+            }
+        }
+
         public bool HasSteamID()
         {
             return SteamID != default;

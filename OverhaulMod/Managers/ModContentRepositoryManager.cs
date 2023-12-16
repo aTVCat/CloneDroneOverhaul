@@ -7,7 +7,7 @@ namespace OverhaulMod
 {
     public class ModContentRepositoryManager : Singleton<ModContentRepositoryManager>
     {
-        private const string TOKEN = "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";
+        private const string TOKEN = "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";
 
         private const string LINK = "https://api.github.com/repos/aTVCat/Overhaul-Mod-Content/contents/";
 
@@ -46,6 +46,7 @@ namespace OverhaulMod
             using (UnityWebRequest webRequest = UnityWebRequest.Get(link))
             {
                 webRequest.timeout = timeOut;
+                webRequest.SetRequestHeader("Content-Type", "application/json");
                 webRequest.SetRequestHeader("Authorization", "token " + TOKEN);
                 webRequest.SetRequestHeader("Accept", "application/vnd.github.v3.raw");
                 yield return webRequest.SendWebRequest();

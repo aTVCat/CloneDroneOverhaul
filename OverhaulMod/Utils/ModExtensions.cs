@@ -81,6 +81,11 @@ namespace OverhaulMod
             transform.SetLocalTransform(transformInfo.Position, transformInfo.EulerAngles, transformInfo.LocalScale);
         }
 
+        public static void RandomizeLocalTransform(this Transform transform, float min, float max, bool rPos, bool rRot, bool rLS)
+        {
+            transform.SetLocalTransform(transform.localPosition * (rPos ? Random.Range(min, max) : 1f), transform.localEulerAngles * (rRot ? Random.Range(min, max) : 1f), transform.localScale * (rLS ? Random.Range(min, max) : 1f));
+        }
+
         public static List<ModWeaponModel> GetModWeaponModels(this FirstPersonMover firstPersonMover)
         {
             if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())

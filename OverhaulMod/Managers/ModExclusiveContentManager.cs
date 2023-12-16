@@ -37,9 +37,9 @@ namespace OverhaulMod
 
         public List<ExclusiveContentInfo> GetUnlockedContent()
         {
-            var list = new List<ExclusiveContentInfo>();
-            if(contentInfoList != null && contentInfoList.List != null && contentInfoList.List.Count != 0)
-                foreach (var info in contentInfoList.List)
+            List<ExclusiveContentInfo> list = new List<ExclusiveContentInfo>();
+            if (contentInfoList != null && contentInfoList.List != null && contentInfoList.List.Count != 0)
+                foreach (ExclusiveContentInfo info in contentInfoList.List)
                     if (info.IsAvailableToLocalUser())
                         list.Add(info);
 
@@ -48,9 +48,9 @@ namespace OverhaulMod
 
         public List<ExclusiveContentInfo> GetContentOfType<T>() where T : ExclusiveContentBase
         {
-            var list = new List<ExclusiveContentInfo>();
+            List<ExclusiveContentInfo> list = new List<ExclusiveContentInfo>();
             if (contentInfoList != null && contentInfoList.List != null && contentInfoList.List.Count != 0)
-                foreach (var info in contentInfoList.List)
+                foreach (ExclusiveContentInfo info in contentInfoList.List)
                     if (info.Content != null && info.Content.GetType() == typeof(T))
                         list.Add(info);
 
@@ -126,6 +126,17 @@ namespace OverhaulMod
                 this.error = error;
                 errorCallback?.Invoke(error);
             }, 10);
+        }
+
+        public void GetOverrideRobotColor(FirstPersonMover firstPersonMover, Color currentColor, out Color newColor)
+        {
+            newColor = currentColor;
+            foreach (ExclusiveContentInfo exclusiveContentInfo in GetContentOfType<ExclusiveContentColorOverride>())
+            {
+                exclusiveContentInfo.VerifyFields();
+                if (exclusiveContentInfo.Content is ExclusiveContentColorOverride colorOv && colorOv.GetOverrideRobotColor(firstPersonMover, currentColor, out newColor))
+                    return;
+            }
         }
     }
 }

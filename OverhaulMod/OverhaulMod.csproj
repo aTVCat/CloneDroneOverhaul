@@ -386,6 +386,7 @@
     <Compile Include="Managers\ModExclusiveContentManager.cs" />
     <Compile Include="Managers\ModUserDataManager.cs" />
     <Compile Include="ModDebug.cs" />
+    <Compile Include="Patches\Harmony\CharacterModel_Patch.cs" />
     <Compile Include="Patches\Harmony\LoadingScreen_Patch.cs" />
     <Compile Include="Patches\Harmony\ChapterLoadingScreen_Patch.cs" />
     <Compile Include="Patches\Harmony\EscMenu_Patch.cs" />
