@@ -94,7 +94,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
         {
-            UIChapterLevelSelectMenu chapterLevelSelectMenu = ModUIManager.Instance.Show<UIChapterLevelSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_LEVEL_SELECT_MENU, parent);
+            UIChapterSectionSelectMenu chapterLevelSelectMenu = ModUIManager.Instance.Show<UIChapterSectionSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_LEVEL_SELECT_MENU, parent);
             chapterLevelSelectMenu.PopulateChapter(chapterIndex);
         }
 

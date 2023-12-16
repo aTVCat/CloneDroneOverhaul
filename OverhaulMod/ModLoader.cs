@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using OverhaulMod.Combat.Levels;
 
 namespace OverhaulMod
 {
@@ -30,6 +31,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ModUserDataManager>();
             _ = ModManagers.New<ModResources>();
             _ = ModManagers.New<ModUIManager>();
+            _ = ModManagers.New<ModLevelManager>();
             _ = ModManagers.New<ModWeaponsManager>();
             _ = ModManagers.New<ModUpgradesManager>();
             _ = ModManagers.New<ModEnemiesManager>();

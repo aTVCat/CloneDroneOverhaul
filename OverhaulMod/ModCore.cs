@@ -62,6 +62,19 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_dataFolder;
+        public static string dataFolder
+        {
+            get
+            {
+                if (s_dataFolder == null)
+                {
+                    s_dataFolder = assetsFolder + "data/";
+                }
+                return s_dataFolder;
+            }
+        }
+
         private bool m_hasAddedListeners;
 
         public override void OnModEnabled()

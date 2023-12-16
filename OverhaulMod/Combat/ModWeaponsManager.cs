@@ -45,11 +45,11 @@ namespace OverhaulMod
 
         public void AddWeaponsToRobot(FirstPersonMover firstPersonMover)
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.NewWeapons) || GameModeManager.IsMultiplayer())
+            if (!firstPersonMover || firstPersonMover._equippedWeapons == null || !ModFeatures.IsEnabled(ModFeatures.FeatureType.NewWeapons) || GameModeManager.IsMultiplayer())
                 return;
 
-            CharacterModel characterModel = firstPersonMover?.GetCharacterModel();
-            if (!characterModel)
+            CharacterModel characterModel = firstPersonMover.GetCharacterModel();
+            if (!characterModel || characterModel.WeaponModels == null)
                 return;
 
             Transform handR = TransformUtils.FindChildRecursive(characterModel.transform, "HandR");

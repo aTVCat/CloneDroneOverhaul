@@ -80,19 +80,23 @@ namespace OverhaulMod.Visuals
                 return;
             }
 
+            if (firstPersonMoverReference._equippedWeapons == null)
+                return;
+
             List<WeaponType> equippedWeapons = firstPersonMoverReference._equippedWeapons;
+            if (equippedWeapons == null)
+                return;
+
             WeaponModel[] equippedWeaponModels = firstPersonMoverReference.GetCharacterModel()?.WeaponModels;
             if (equippedWeaponModels == null)
                 return;
 
             foreach (WeaponType weaponType in equippedWeapons)
-            {
-                AddRenderer(weaponType, ref equippedWeapons, ref equippedWeaponModels);
-            }
+                AddRenderer(weaponType, equippedWeapons, equippedWeaponModels);
 
             foreach (KeyValuePair<WeaponType, GameObject> keyValue in WeaponToRenderer)
             {
-                if (!keyValue.Value)
+                if (!keyValue.Value || keyValue.Key == WeaponType.None)
                     continue;
 
                 bool isEquipped = firstPersonMoverReference.GetEquippedWeaponType() == keyValue.Key;
@@ -101,8 +105,11 @@ namespace OverhaulMod.Visuals
             }
         }
 
-        public void AddRenderer(WeaponType weaponType, ref List<WeaponType> equippedWeapons, ref WeaponModel[] equippedWeaponModels)
+        public void AddRenderer(WeaponType weaponType, List<WeaponType> equippedWeapons, WeaponModel[] equippedWeaponModels)
         {
+            if (weaponType == WeaponType.None || equippedWeapons == null || equippedWeaponModels == null)
+                return;
+
             WeaponModel weaponModel = null;
             bool hasModel = false;
             foreach (WeaponModel model in equippedWeaponModels)
