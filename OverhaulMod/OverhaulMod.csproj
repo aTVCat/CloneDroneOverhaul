@@ -416,6 +416,7 @@
     <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
+    <Compile Include="Utils\ModUGCUtils.cs" />
     <Compile Include="Utils\ModUIUtility.cs" />
     <Compile Include="Visuals\WeaponBag\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />
