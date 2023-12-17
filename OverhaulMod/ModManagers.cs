@@ -9,10 +9,18 @@ namespace OverhaulMod
         public override void Awake()
         {
             base.Awake();
+
+            ModCore.GameInitialized += onGameInitialized;
+
             _ = base.gameObject.AddComponent<UIDeveloperMenu>();
         }
 
-        private void Start()
+        private void OnDestroy()
+        {
+            ModCore.GameInitialized -= onGameInitialized;
+        }
+
+        private void onGameInitialized()
         {
             ModUIConstants.ShowTitleScreenRework();
         }

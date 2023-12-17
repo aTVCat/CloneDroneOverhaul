@@ -74,9 +74,9 @@ namespace OverhaulMod.Combat.Levels
             }
 
             List<string> fakeLevelIds = new List<string>();
-            if(chapterSectionInfo.ChapterIndex == 1 || chapterSectionInfo.ChapterIndex == 2)
+            if (chapterSectionInfo.ChapterIndex == 1 || chapterSectionInfo.ChapterIndex == 2)
             {
-                for(int i = 0; i < chapterSectionInfo.Order; i++)
+                for (int i = 0; i < chapterSectionInfo.Order; i++)
                 {
                     fakeLevelIds.Add("FakeLevelID_" + i);
                 }
@@ -94,8 +94,21 @@ namespace OverhaulMod.Combat.Levels
                 PlayerUpgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades(),
                 AvailableSkillPoints = chapterSectionInfo.Order,
                 LevelIDsBeatenThisPlaythrough = fakeLevelIds,
+                HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
                 _isDirty = true
             };
+
+            MetagameProgressManager.Instance._data.FirstEscapedHumansData = new EscapedHumanData
+            {
+                HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
+                Upgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades()
+            };
+            MetagameProgressManager.Instance._data.SecondEscapedHumansData = new EscapedHumanData
+            {
+                HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
+                Upgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades()
+            };
+
             ModGameUtils.overrideActiveSections = chapterSectionInfo.EnabledSections;
             ModGameUtils.overrideCurrentLevelId = chapterSectionInfo.LevelID;
             return true;
@@ -164,7 +177,7 @@ namespace OverhaulMod.Combat.Levels
         public MetagameProgress GetMetagameProgress(int levelIndex, int chapterIndex)
         {
             MetagameProgress metagameProgress = MetagameProgress.P0_None;
-            if(chapterIndex == 1)
+            if (chapterIndex == 1)
             {
                 if (levelIndex >= 6)
                     metagameProgress = MetagameProgress.P1_EmperorArrived;
