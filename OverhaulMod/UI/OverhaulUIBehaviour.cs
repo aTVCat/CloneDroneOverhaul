@@ -122,7 +122,19 @@ namespace OverhaulMod.UI
                                 Dropdown dropdown = unityObject as Dropdown;
                                 dropdown.onValueChanged.AddListener(delegate (int index)
                                 {
-                                    _ = methodInfo.Invoke(this, new object[] {index});
+                                    _ = methodInfo.Invoke(this, new object[] { index });
+                                });
+                            }
+                        }
+                        else if (fieldInfo.FieldType == typeof(Toggle))
+                        {
+                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(bool) });
+                            if (methodInfo != null)
+                            {
+                                Toggle toggle = unityObject as Toggle;
+                                toggle.onValueChanged.AddListener(delegate (bool value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
                                 });
                             }
                         }

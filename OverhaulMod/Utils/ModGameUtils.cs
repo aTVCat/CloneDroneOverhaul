@@ -14,7 +14,7 @@ namespace OverhaulMod.Utils
         {
             get
             {
-                var list = s_overrideActiveSections;
+                List<string> list = s_overrideActiveSections;
                 s_overrideActiveSections = null;
                 return list;
             }
@@ -29,7 +29,7 @@ namespace OverhaulMod.Utils
         {
             get
             {
-                var list = s_overrideCurrentLevelId;
+                string list = s_overrideCurrentLevelId;
                 s_overrideCurrentLevelId = null;
                 return list;
             }
@@ -69,7 +69,7 @@ namespace OverhaulMod.Utils
                 return;
 
             List<string> sections = new List<string>();
-            if (GameModeManager.IsStoryModeAfterChapter3())
+            if (GameModeManager.IsStoryChapter4() || GameModeManager.IsStoryChapter5())
             {
                 StoryCheckpoint[] checkpoints = UnityEngine.Object.FindObjectsOfType<StoryCheckpoint>();
                 foreach (StoryCheckpoint storyCheckpoint in checkpoints)
@@ -85,21 +85,9 @@ namespace OverhaulMod.Utils
                     break;
                 }
             }
-            else if (GameModeManager.IsStoryChapter3())
+            else
             {
-                OutsideArenaSpawnPoint[] checkpoints = UnityEngine.Object.FindObjectsOfType<OutsideArenaSpawnPoint>();
-                foreach (OutsideArenaSpawnPoint outsideArenaSpawnPoint in checkpoints)
-                {
-                    if (!outsideArenaSpawnPoint || !outsideArenaSpawnPoint.gameObject.activeInHierarchy)
-                        continue;
-
-                    SectionMember sectionMember = outsideArenaSpawnPoint?.GetComponent<SectionMember>();
-                    if (sectionMember)
-                    {
-                        sections.AddRange(sectionMember.GetSectionGUIDs());
-                    }
-                    break;
-                }
+                sections.AddRange(LevelSectionManager.Instance._showingSections.ToList());
             }
 
             string content = ModJsonUtils.Serialize(new ChapterSectionInfo
@@ -115,9 +103,18 @@ namespace OverhaulMod.Utils
             _ = ModIOUtils.OpenFileExplorer(ModUserDataManager.Instance.savesFolder);
         }
 
-        public static ChapterSectionInfo[] GetChapterSections(string directory)
+        public static ChapterSectionInfo[] GetChapterSections(string directory, int chapterIndex)
         {
-            if(!Directory.Exists(directory))
+            if (chapterIndex == 1)
+                return ModLevelManager.Instance.GenerateChapter1Sections();
+            if (chapterIndex == 2)
+                return ModLevelManager.Instance.GenerateChapter2Sections();
+
+            directory += chapterIndex;
+            if (ModAdvancedCache.Has(directory))
+                return ModAdvancedCache.Get<ChapterSectionInfo[]>(directory);
+
+            if (!Directory.Exists(directory))
                 return Array.Empty<ChapterSectionInfo>();
 
             string[] files = Directory.GetFiles(directory, "*.json");
@@ -141,6 +138,7 @@ namespace OverhaulMod.Utils
                 index++;
             }
             sections = sections.ToList().OrderBy(t => t.Order).ToArray();
+            ModAdvancedCache.Add(directory, sections);
             return sections;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using ModLibrary;
 using ModLibrary.YieldInstructions;
+using OverhaulMod.Combat;
 using OverhaulMod.Patches.Replacements;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;

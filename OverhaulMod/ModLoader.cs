@@ -1,6 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Combat.Enemies;
 using OverhaulMod.Combat.Levels;
+using OverhaulMod.Combat.Upgrades;
+using System;
+using UnityEngine;
 
 namespace OverhaulMod
 {
@@ -35,6 +38,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ModWeaponsManager>();
             _ = ModManagers.New<ModUpgradesManager>();
             _ = ModManagers.New<ModEnemiesManager>();
+            _ = ModManagers.New<ModGameModifiersManager>();
             _ = ModManagers.New<ModLevelEditorManager>();
             _ = ModManagers.New<ModContentRepositoryManager>();
             _ = ModManagers.New<ModExclusiveContentManager>();

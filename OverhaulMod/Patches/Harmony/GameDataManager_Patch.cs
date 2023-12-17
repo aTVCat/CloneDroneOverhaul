@@ -13,8 +13,8 @@ namespace OverhaulMod.Patches.Harmony
         {
             if (GameModeManager.Is(GameMode.Story))
             {
-                var list = ModGameUtils.overrideActiveSections;
-                if(list != null)
+                List<string> list = ModGameUtils.overrideActiveSections;
+                if (list != null)
                     __result = list;
             }
         }
@@ -25,7 +25,7 @@ namespace OverhaulMod.Patches.Harmony
         {
             if (GameModeManager.Is(GameMode.Story))
             {
-                var list = ModGameUtils.overrideCurrentLevelId;
+                string list = ModGameUtils.overrideCurrentLevelId;
                 if (list != null)
                     __result = list;
             }

@@ -48,7 +48,7 @@ namespace OverhaulMod.Content
 
         public static void EditInfo(int index)
         {
-            var info = contentList.List[index];
+            ExclusiveContentInfo info = contentList.List[index];
             verifyContentBase(info);
             editingContentInfo = info;
         }

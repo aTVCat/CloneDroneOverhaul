@@ -374,6 +374,7 @@
     <Compile Include="Combat\AIBehaviours\RandomSprintAIBehaviour.cs" />
     <Compile Include="Combat\AIBehaviours\RandomDashAIBehaviour.cs" />
     <Compile Include="Combat\Levels\ChapterSectionInfo.cs" />
+    <Compile Include="Combat\ModGameModifiersManager.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
     <Compile Include="Content\Exclusive\ExclusiveContentBase.cs" />
     <Compile Include="Content\Exclusive\ExclusiveContentColorOverride.cs" />
@@ -385,10 +386,13 @@
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="Managers\ModContentRepositoryManager.cs" />
     <Compile Include="Managers\ModExclusiveContentManager.cs" />
-    <Compile Include="Combat\Levels\ModLevelManager.cs" />
+    <Compile Include="Combat\ModLevelManager.cs" />
     <Compile Include="Managers\ModUserDataManager.cs" />
+    <Compile Include="ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\Harmony\CharacterModel_Patch.cs" />
+    <Compile Include="Patches\Harmony\GameModeManager_Patch.cs" />
+    <Compile Include="Patches\Harmony\MetagameLevelTrigger_Patch.cs" />
     <Compile Include="Patches\Harmony\GameDataManager_Patch.cs" />
     <Compile Include="Patches\Harmony\LoadingScreen_Patch.cs" />
     <Compile Include="Patches\Harmony\ChapterLoadingScreen_Patch.cs" />
@@ -396,6 +400,7 @@
     <Compile Include="Patches\Harmony\GameUIRoot_Patch.cs" />
     <Compile Include="Patches\Harmony\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\Harmony\SelectableUI_Patch.cs" />
+    <Compile Include="Patches\Harmony\Story3_IntroCutScene_Patch.cs" />
     <Compile Include="Patches\RobotAddon.cs" />
     <Compile Include="TransformInfo.cs" />
     <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
@@ -406,6 +411,7 @@
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIAttribute.cs" />
     <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
+    <Compile Include="UI\UIMultiplayerConnectScreen.cs" />
     <Compile Include="UI\UIExclusiveContentEditor.cs" />
     <Compile Include="UI\UILoadingScreen.cs" />
     <Compile Include="UI\UIChapterSelectMenu.cs" />

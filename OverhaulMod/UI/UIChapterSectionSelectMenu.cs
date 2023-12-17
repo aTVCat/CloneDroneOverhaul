@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
 
             Debug.LogFormat("Only levels: {0}, Only sections: {1}, Both: {2}", new object[] { hasOnlyLevels, hasOnlySection, hasBoth });
 
-            ChapterSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story" + chapterIndex);
+            ChapterSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
             if (sections == null || sections.Length == 0)
                 return;
 
@@ -86,6 +86,7 @@ namespace OverhaulMod.UI
 
                     _ = ModLevelManager.Instance.SetStoryModeLevelProgress(chapterSection);
                     GameFlowManager.Instance.StartStoryModeGame(false);
+                    GameDataManager.Instance.SetCurrentLevelID(chapterSection.LevelID);
                 });
             }
         }

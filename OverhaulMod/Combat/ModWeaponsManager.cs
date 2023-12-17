@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace OverhaulMod
+namespace OverhaulMod.Combat
 {
     public class ModWeaponsManager : Singleton<ModWeaponsManager>
     {

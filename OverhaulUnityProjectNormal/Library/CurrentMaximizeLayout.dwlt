@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 583, y: 498}
   m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
-  controlID: 7743
+  controlID: 9736
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 498}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
-  controlID: 7744
+  controlID: 9737
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
-  controlID: 7745
+  controlID: 9738
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -210,23 +210,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: deb40000
-      m_LastClickedID: 46302
-      m_ExpandedIDs: 14a3ffff70a9ffffa8aaffff10b400001eb400002eb4000078b40000f2b4000012b500001eb5000022b5000050b50000
+      m_SelectedIDs: 6ae10000
+      m_LastClickedID: 57706
+      m_ExpandedIDs: 9843ffff62e100006ae10000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Sawblade
+        m_OriginalName: Sawblade
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -48378
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -294,9 +294,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 289.1597, y: 333.6084, z: 12.0625}
+    m_Target: {x: 366.68555, y: 278.06348, z: 10.722913}
     speed: 2
-    m_Value: {x: 289.1597, y: 333.6084, z: 12.0625}
+    m_Value: {x: 366.68555, y: 278.06348, z: 10.722913}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -304,12 +304,12 @@ MonoBehaviour:
     section: Shading Mode
   m_ValidateTrueMetals: 0
   m_SceneViewState:
-    showFog: 0
-    showMaterialUpdate: 0
+    showFog: 1
+    showMaterialUpdate: 1
     showSkybox: 0
-    showFlares: 0
-    showImageEffects: 0
-    showParticleSystems: 0
+    showFlares: 1
+    showImageEffects: 1
+    showParticleSystems: 1
   grid:
     xGrid:
       m_Target: 0
@@ -328,9 +328,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: -1}
   m_Size:
-    m_Target: 442.90338
+    m_Target: 571.31494
     speed: 2
-    m_Value: 442.90338
+    m_Value: 571.31494
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -407,19 +407,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/ModStuff/UI/Panels/Elements
+    - Assets/ModStuff/UI/Panels
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/ModStuff/UI/Panels/Elements
+  - Assets/ModStuff/UI/Panels
   m_LastFoldersGridSize: 16
   m_LastProjectPath: U:\OverhaulSource\CloneDroneOverhaul\OverhaulUnityProjectNormal
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 2894}
-    m_SelectedIDs: 1e110000
-    m_LastClickedID: 4382
+    m_SelectedIDs: 9c1d0000
+    m_LastClickedID: 7580
     m_ExpandedIDs: 00000000780e0000cc0e0000060f0000840f000064110000b0110000b21100005c120000aa1200002213000080140000ac140000de140000ea15000004160000321600005a1600006016000086160000b6160000d816000050180000d018000080190000741a0000da1b0000f01b0000201d00009c1d0000001e0000da1e0000bc1f0000da1f0000fc1f0000662000004021000016220000d222000040230000a0230000c4230000f2230000ae240000c2250000762600007a260000b4260000068b0000088b00000a8b00000c8b00000e8b0000108b0000128b0000148b0000168b0000188b00001a8b00001c8b00001e8b0000208b0000228b0000248b0000268b0000288b00002a8b00002c8b00002e8b0000308b0000328b0000348b0000368b0000388b00003a8b00003c8b00003e8b0000408b0000428b0000448b0000468b0000488b00004a8b00004c8b00004e8b0000508b0000528b0000548b0000568b0000588b00005a8b00005c8b00005e8b0000608b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -473,8 +473,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: deb40000
-    m_LastClickedInstanceID: 46302
+    m_SelectedInstanceIDs: 6ae10000
+    m_LastClickedInstanceID: 57706
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000b8320000803800004e0a0000260a00002e0b0000680a00005c0a00006a8a0800cc0500005c0d0000da0c0000be0d0000b8432600941000007211000028cd3e0064a1080006120000be0a0000c60d0000aa0d0000d00e0000e80e0000820f0000ea0f000066fd0300fc120000e60f00003c0600004a170000b0120000460600004a060000860e0000e20b00001435000012570000c072040032c00400ea7d0000928d05000027000064cf0900f2830000cc350500fe35050036f70500368a0000c0ad00002674000054500300ea7600005c910000eefb0200d6fb0200d8370000e0370000b03c00001c070000b21f000030400000982e0000923f0000d82600009e30000002a504005e3500002a07000006260100360700000035000012250000581c000030070000408900008c220000f8150000a4190000202600002007000000000000
     m_RenameOverlay:

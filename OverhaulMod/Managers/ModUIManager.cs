@@ -75,6 +75,10 @@ namespace OverhaulMod
                     return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex();
                 case EUILayer.AfterCrashScreen:
                     return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex() + 1;
+                case EUILayer.BeforeMultiplayerConnectScreen:
+                    return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex();
+                case EUILayer.AfterMultiplayerConnectScreen:
+                    return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex() + 1;
             }
         }
 
@@ -160,6 +164,9 @@ namespace OverhaulMod
 
             BeforeTitleScreen,
             AfterTitleScreen,
+
+            BeforeMultiplayerConnectScreen,
+            AfterMultiplayerConnectScreen,
 
             BeforeEscMenu,
             AfterEscMenu,

@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            foreach(var contentInfo in ModExclusiveContentManager.Instance.GetUnlockedContent())
+            foreach (Content.ExclusiveContentInfo contentInfo in ModExclusiveContentManager.Instance.GetUnlockedContent())
             {
                 ModdedObject moddedObject = Instantiate(m_unlockedItemDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);

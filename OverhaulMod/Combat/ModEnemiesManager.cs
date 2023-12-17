@@ -2,7 +2,7 @@
 using OverhaulMod.Combat.Weapons;
 using System.Collections.Generic;
 
-namespace OverhaulMod
+namespace OverhaulMod.Combat.Enemies
 {
     public class ModEnemiesManager : Singleton<ModEnemiesManager>, IModLoadListener
     {

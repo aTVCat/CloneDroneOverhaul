@@ -16,6 +16,9 @@ namespace OverhaulMod.Combat.Levels
         public int ChapterIndex;
 
         [NonSerialized]
+        public MetagameProgress MetaGameProgress;
+
+        [NonSerialized]
         public bool DeserializationError;
     }
 }

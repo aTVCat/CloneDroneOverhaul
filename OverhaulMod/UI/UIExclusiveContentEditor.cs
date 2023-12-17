@@ -67,8 +67,8 @@ namespace OverhaulMod.UI
         {
             m_instantiatedPropertyDisplays = new List<UIElementContentCustomPropertyDisplay>();
 
-            var contentTypeOptions = new List<Dropdown.OptionData>();
-            foreach(var str in typeof(ExclusiveContentType).GetEnumNames())
+            List<Dropdown.OptionData> contentTypeOptions = new List<Dropdown.OptionData>();
+            foreach (string str in typeof(ExclusiveContentType).GetEnumNames())
             {
                 contentTypeOptions.Add(new Dropdown.OptionData() { text = str });
             }
@@ -110,8 +110,8 @@ namespace OverhaulMod.UI
 
         public void PopulateDropdown(bool setLastIndex = false)
         {
-            var contentEntryOptions = new List<Dropdown.OptionData>();
-            foreach (var entry in ExclusiveContentEditor.contentList.List)
+            List<Dropdown.OptionData> contentEntryOptions = new List<Dropdown.OptionData>();
+            foreach (ExclusiveContentInfo entry in ExclusiveContentEditor.contentList.List)
             {
                 contentEntryOptions.Add(new Dropdown.OptionData() { text = entry.Name });
             }
@@ -122,7 +122,7 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            var contentInfo = ExclusiveContentEditor.editingContentInfo;
+            ExclusiveContentInfo contentInfo = ExclusiveContentEditor.editingContentInfo;
             if (contentInfo == null)
                 return;
 
@@ -134,11 +134,11 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            foreach(var field in ExclusiveContentEditor.GetContentFields())
+            foreach (System.Reflection.FieldInfo field in ExclusiveContentEditor.GetContentFields())
             {
                 Type type = field.FieldType;
                 UIElementContentCustomPropertyDisplay customPropertyDisplay = null;
-                if(type == typeof(Color))
+                if (type == typeof(Color))
                 {
                     ModdedObject moddedObject = Instantiate(m_colorFieldPrefab, m_container);
                     customPropertyDisplay = moddedObject.gameObject.AddComponent<UIElementContentColorPropertyDisplay>();
@@ -161,21 +161,21 @@ namespace OverhaulMod.UI
 
         public void OnDataFolderButtonClicked()
         {
-            ModIOUtils.OpenFileExplorer(ModCache.dataRepository.GetRootDataPath(false));
+            _ = ModIOUtils.OpenFileExplorer(ModCache.dataRepository.GetRootDataPath(false));
         }
 
         public void OnSaveButtonClicked()
         {
-            var contentInfo = ExclusiveContentEditor.editingContentInfo;
+            ExclusiveContentInfo contentInfo = ExclusiveContentEditor.editingContentInfo;
             contentInfo.Name = m_contentNameInputField.text;
             contentInfo.SteamID = ModParseUtils.TryParseToULong(m_steamIdInputField.text, 0);
             contentInfo.PlayFabID = m_playFabIdInputField.text;
 
-            foreach(var display in m_instantiatedPropertyDisplays)
+            foreach (UIElementContentCustomPropertyDisplay display in m_instantiatedPropertyDisplays)
             {
                 object obj = display.contentReference;
                 object value = display.GetValue();
-                var fieldRef = display.fieldReference;
+                System.Reflection.FieldInfo fieldRef = display.fieldReference;
                 fieldRef.SetValue(obj, value);
             }
 
