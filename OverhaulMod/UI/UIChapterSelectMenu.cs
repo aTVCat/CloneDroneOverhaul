@@ -32,15 +32,15 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
-        private Button m_legacyUIButton;
+        private readonly Button m_legacyUIButton;
 
         [UIElementAction(nameof(OnDifficultyDropdownEdit))]
         [UIElement("DifficultyDropdown")]
-        private Dropdown m_difficultyDropdown;
+        private readonly Dropdown m_difficultyDropdown;
 
         [UIElementAction(nameof(OnEnableGreatSwordsToggleEdit))]
         [UIElement("EnableGreatswordsToggle")]
-        private Toggle m_enableGreatSwordsToggle;
+        private readonly Toggle m_enableGreatSwordsToggle;
 
         public override void Show()
         {
@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if(!ModCache.titleScreenUI.ChapterSelectUI.gameObject.activeInHierarchy)
+            if (!ModCache.titleScreenUI.ChapterSelectUI.gameObject.activeInHierarchy)
                 ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
         }
 

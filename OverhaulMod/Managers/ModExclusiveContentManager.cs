@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,6 +28,14 @@ namespace OverhaulMod
         {
             get;
             private set;
+        }
+
+        public ulong localSteamId
+        {
+            get
+            {
+                return contentInfoList == null ? 0 : contentInfoList.LocalSteamID;
+            }
         }
 
         public override void Awake()
@@ -59,6 +68,8 @@ namespace OverhaulMod
 
         private IEnumerator retrieveDataOnStartCoroutine()
         {
+            yield return new WaitForEndOfFrame();
+            RetrieveDataFromRepository(null, null, true);
             yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
             yield return new WaitForSecondsRealtime(2f);
             RetrieveDataFromRepository(delegate
@@ -68,17 +79,17 @@ namespace OverhaulMod
             {
                 hasRetrievedDataOnStart = true;
                 this.error = error;
-            }, true);
+            }, false);
             yield break;
         }
 
-        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback, bool skipFileCheck = false)
+        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback, bool forceFileCheck = false)
         {
             contentInfoList = null;
             error = null;
 
             ModUserDataManager dataManager = ModUserDataManager.Instance;
-            if (!skipFileCheck && dataManager.HasFile(REPOSITORY_FILE, false))
+            if (forceFileCheck && dataManager.HasFile(REPOSITORY_FILE, false))
             {
                 ExclusiveContentInfoList contentInfoList = null;
                 try
@@ -111,6 +122,8 @@ namespace OverhaulMod
                 try
                 {
                     contentInfoList = ModJsonUtils.Deserialize<ExclusiveContentInfoList>(contents);
+                    contentInfoList.LocalSteamID = (ulong)SteamUser.GetSteamID();
+                    ExclusiveContentEditor.Save(contents);
                 }
                 catch (Exception exc)
                 {

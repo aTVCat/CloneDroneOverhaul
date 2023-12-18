@@ -87,7 +87,7 @@ namespace OverhaulMod
             string fullName = assetBundle + "." + assetKey;
             if (!HasInstantiatedUI(fullName))
             {
-                GameObject prefab = ModResources.GetResource<GameObject>(assetBundle, assetKey);
+                GameObject prefab = ModResources.Load<GameObject>(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 m_InstantiatedUIs.Add(fullName, gameObject);

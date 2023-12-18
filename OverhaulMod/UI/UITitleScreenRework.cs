@@ -10,6 +10,9 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsBG")]
         private readonly GameObject m_container;
 
+        [UIElement("NewsWarnIcon", false)]
+        private readonly GameObject m_newsWarnIcon;
+
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
         private readonly Button m_playSinglePlayerButton;
@@ -30,9 +33,9 @@ namespace OverhaulMod.UI
         [UIElement("FeedbackButton")]
         private readonly Button m_feedbackButton;
 
-        [UIElementAction(nameof(OnChangelogButtonClicked))]
-        [UIElement("PatchNotesButton")]
-        private readonly Button m_changelogButton;
+        [UIElementAction(nameof(OnNewsButtonClicked))]
+        [UIElement("NewsButton")]
+        private readonly Button m_newsButton;
 
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("ExclusiveContentMenuButton")]
@@ -111,9 +114,9 @@ namespace OverhaulMod.UI
             ModUIUtility.MessagePopupOK("This button doesn't work now!", "Wait for an update which will add functionality to this button...");
         }
 
-        public void OnChangelogButtonClicked()
+        public void OnNewsButtonClicked()
         {
-            ModUIUtility.MessagePopupOK("This button doesn't work now!", "Wait for an update which will add functionality to this button...");
+            ModUIConstants.ShowNewsPanel();
         }
 
         public void OnFeedbackButtonClicked()

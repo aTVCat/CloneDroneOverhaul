@@ -23,6 +23,7 @@ namespace OverhaulMod.Utils
         public const string UI_EXCLUSIVE_CONTENT_MENU = "UI_ExclusiveContentMenu";
         public const string UI_EXCLUSIVE_CONTENT_EDITOR = "UI_ExclusiveContentEditor";
         public const string UI_CONNECT_SCREEN = "UI_ConnectScreen";
+        public const string UI_NEWS_PANEL = "UI_NewsPanel";
 
         public static void ShowOtherModsMenu()
         {
@@ -122,6 +123,11 @@ namespace OverhaulMod.Utils
         public static void ShowMultiplayerConnectScreen()
         {
             _ = ModUIManager.Instance.Show<UIMultiplayerConnectScreen>(AssetBundleConstants.UI, UI_CONNECT_SCREEN, ModUIManager.EUILayer.AfterMultiplayerConnectScreen);
+        }
+
+        public static void ShowNewsPanel()
+        {
+            _ = ModUIManager.Instance.Show<UINewsPanel>(AssetBundleConstants.UI, UI_NEWS_PANEL, ModUIManager.EUILayer.AfterTitleScreen);
         }
     }
 }

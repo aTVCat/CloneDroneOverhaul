@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System.Collections;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -22,7 +23,16 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
-            ModUIConstants.ShowTitleScreenRework();
+            _ = ModActionUtils.RunCoroutine(showUIDelay());
+        }
+
+        private IEnumerator showUIDelay()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
+                ModUIConstants.ShowTitleScreenRework();
+            yield break;
         }
 
         public void DispatchModLoadedEvent()

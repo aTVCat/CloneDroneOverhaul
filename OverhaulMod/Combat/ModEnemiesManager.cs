@@ -163,29 +163,29 @@ namespace OverhaulMod.Combat.Enemies
             return PrefabStorage.GetObject<AttackAIBehaviour>("AttackRight_Zombie");
         }
 
-        public RandomDashAIBehaviour GetRandomDashAIBehaviour()
+        public DashAIBehaviour GetRandomDashAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<RandomDashAIBehaviour>("RandomDash");
+            return PrefabStorage.GetOrCreateGameObjectWithComponent<DashAIBehaviour>("RandomDash");
         }
 
-        public RandomSprintAIBehaviour GetRandomSprintAIBehaviour(bool insane)
+        public SprintAIBehaviour GetRandomSprintAIBehaviour(bool insane)
         {
-            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneRandomSprintAIBehaviour>("InsaneRandomSprint") : PrefabStorage.GetOrCreateGameObjectWithComponent<RandomSprintAIBehaviour>("RandomSprint");
+            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneSprintAIBehaviour>("InsaneRandomSprint") : PrefabStorage.GetOrCreateGameObjectWithComponent<SprintAIBehaviour>("RandomSprint");
         }
 
-        public InsaneLongRandomSprintAIBehaviour GetLongRandomSprintAIBehaviour()
+        public InsaneLongSprintAIBehaviour GetLongRandomSprintAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneLongRandomSprintAIBehaviour>("InsaneLongRandomSprint");
+            return PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneLongSprintAIBehaviour>("InsaneLongRandomSprint");
         }
 
-        public BackDashAIBehaviour GetBackDashAIBehaviour(bool insane)
+        public BackwardDashAIBehaviour GetBackDashAIBehaviour(bool insane)
         {
-            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneBackDashAIBehaviour>("InsaneBackDash") : PrefabStorage.GetOrCreateGameObjectWithComponent<BackDashAIBehaviour>("BackDash");
+            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneBackwardDashAIBehaviour>("InsaneBackDash") : PrefabStorage.GetOrCreateGameObjectWithComponent<BackwardDashAIBehaviour>("BackDash");
         }
 
-        public KickWhenRequiredAIBehaviour GetKickWhenRequiredAIBehaviour()
+        public UseKickAIBehaviour GetKickWhenRequiredAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<KickWhenRequiredAIBehaviour>("KickWhenRequired");
+            return PrefabStorage.GetOrCreateGameObjectWithComponent<UseKickAIBehaviour>("KickWhenRequired");
         }
     }
 }

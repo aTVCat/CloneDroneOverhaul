@@ -1,7 +1,7 @@
 ﻿using ModLibrary;
 using ModLibrary.YieldInstructions;
 using OverhaulMod.Combat;
-using OverhaulMod.Patches.Replacements;
+using OverhaulMod.Patches.Addons;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using System;
@@ -90,7 +90,7 @@ namespace OverhaulMod
             instance = this;
 
             ModLoader.Load();
-            ModReplacement.Load();
+            GameAddon.Load();
 
             addEventListeners();
         }
@@ -140,7 +140,8 @@ namespace OverhaulMod
 
                 if (firstPersonMover.IsAttachedAndAlive())
                 {
-                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+                        _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
                 }
             }
             yield break;

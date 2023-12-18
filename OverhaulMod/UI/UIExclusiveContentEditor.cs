@@ -60,6 +60,9 @@ namespace OverhaulMod.UI
         [UIElement("InputFieldPrefab", false)]
         private readonly ModdedObject m_inputFieldPrefab;
 
+        [UIElement("DropdownPrefab", false)]
+        private readonly ModdedObject m_dropdownPrefab;
+
         [UIElement("Content")]
         private readonly Transform m_container;
 
@@ -147,6 +150,11 @@ namespace OverhaulMod.UI
                 {
                     ModdedObject moddedObject = Instantiate(m_inputFieldPrefab, m_container);
                     customPropertyDisplay = moddedObject.gameObject.AddComponent<UIElementContentIntPropertyDisplay>();
+                }
+                else if (type.IsEnum)
+                {
+                    ModdedObject moddedObject = Instantiate(m_dropdownPrefab, m_container);
+                    customPropertyDisplay = moddedObject.gameObject.AddComponent<UIElementContentEnumPropertyDisplay>();
                 }
 
                 if (customPropertyDisplay)

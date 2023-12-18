@@ -30,7 +30,7 @@ namespace OverhaulMod.Combat
             {
                 return;
             }
-            m_Weapons.Add(weaponType, (ModResources.GetResource<GameObject>(assetBundle, assetName), typeof(T)));
+            m_Weapons.Add(weaponType, (ModResources.Load<GameObject>(assetBundle, assetName), typeof(T)));
 
             if (melee)
             {

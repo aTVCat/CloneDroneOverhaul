@@ -124,7 +124,7 @@ namespace OverhaulMod
             return $"ModResources, cached ABs: {cachedAsseBundleCount}, cached objects: {cachedObjectCount}";
         }
 
-        public static T GetResource<T>(string assetBundle, string objectName) where T : UnityEngine.Object
+        public static T Load<T>(string assetBundle, string objectName) where T : UnityEngine.Object
         {
             return Instance.GetObject<T>(assetBundle, objectName);
         }

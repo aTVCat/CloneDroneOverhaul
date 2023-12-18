@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Utils;
-using System.Collections.Generic;
 
 namespace OverhaulMod.Patches.Harmony
 {
@@ -11,10 +9,7 @@ namespace OverhaulMod.Patches.Harmony
         [HarmonyPatch("OnTriggerEnter")]
         private static bool OnTriggerEnter_Prefix()
         {
-            if (GameModeManager.IsStoryChapter3())
-                return false;
-
-            return true;
+            return !GameModeManager.IsStoryChapter3();
         }
     }
 }

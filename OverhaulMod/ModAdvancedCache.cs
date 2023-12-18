@@ -22,10 +22,7 @@ namespace OverhaulMod
 
         public static T Get<T>(object key)
         {
-            if (s_items.TryGetValue(key, out object obj))
-                return (T)obj;
-
-            return default;
+            return s_items.TryGetValue(key, out object obj) ? (T)obj : default;
         }
 
         public static bool TryGet<T>(object key, out T item)

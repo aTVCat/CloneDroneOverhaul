@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
             {
                 m_retrieveDataButton.interactable = true;
                 m_statusBarText.text = "Error: " + error;
-            }, true);
+            }, false);
         }
 
         public void OnRefreshButtonClicked()

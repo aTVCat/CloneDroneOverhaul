@@ -11,6 +11,9 @@ namespace OverhaulMod.Patches.Harmony
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuRework))
+                return true;
+
             if (UIPauseMenu.disableOverhauledVersion)
                 return true;
 
