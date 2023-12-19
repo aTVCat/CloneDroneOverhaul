@@ -2,7 +2,6 @@
 using CDOverhaul.HUD;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
 {

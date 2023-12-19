@@ -1,7 +1,5 @@
-﻿using CDOverhaul.DevTools;
-using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Gameplay;
 using HarmonyLib;
-using System.Diagnostics;
 
 namespace CDOverhaul.Patches
 {

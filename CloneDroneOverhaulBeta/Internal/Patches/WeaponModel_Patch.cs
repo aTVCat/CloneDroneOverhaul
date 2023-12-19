@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using UnityEngine;
-using System.Collections;
-using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Multiplayer;
+using HarmonyLib;
+using System.Collections;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -25,14 +25,12 @@ namespace CDOverhaul.Patches
                 return true;
 
             Hashtable t = GameModeManager.IsMultiplayer() ? info.Hashtable : OverhaulPlayerInfo.CreateNewHashtable();
-            if (t != null &&
-                t.Contains("Skin." + __instance.WeaponType) &&
-                !Equals(t["Skin." + __instance.WeaponType], "Default") &&
-                ((!owner.IsPlayer() &&
-                WeaponSkinsController.AllowEnemiesWearSkins) ||
-                owner.IsPlayer()))
-                return false;
-            return true;
+            return t == null ||
+!t.Contains("Skin." + __instance.WeaponType) ||
+                Equals(t["Skin." + __instance.WeaponType], "Default") ||
+                ((owner.IsPlayer() ||
+!WeaponSkinsController.AllowEnemiesWearSkins) &&
+!owner.IsPlayer());
         }
     }
 }

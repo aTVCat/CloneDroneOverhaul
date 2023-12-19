@@ -16,7 +16,7 @@ namespace CDOverhaul.Graphics
 
         public override void Initialize()
         {
-            if(!s_HasInitialized)
+            if (!s_HasInitialized)
             {
                 s_SwordBlockVFX = OverhaulAssetsController.GetAsset("VFX_SwordBlock", OverhaulAssetPart.Part2).transform;
                 s_SwordBlockVFX.gameObject.AddComponent<DestroyAfterWait>().SetWaitTime(1f);

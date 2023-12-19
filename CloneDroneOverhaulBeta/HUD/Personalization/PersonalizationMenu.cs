@@ -36,13 +36,13 @@ namespace CDOverhaul.HUD
         }
 
         private IWeaponSkinItemDefinition[] m_Items;
-        private List<OutfitItem> m_AccessoryItems;
+        private readonly List<OutfitItem> m_AccessoryItems;
         private WeaponSkinsController m_Controller;
 
         private Hashtable m_HashtableTest;
         private Text m_TextPrefab;
 
-        private Text m_Description;
+        private readonly Text m_Description;
         private WeaponType m_SelectedWeapon;
         private Button m_DefaultSkinButton;
         private Button m_RefreshDatabaseButton;
@@ -59,12 +59,12 @@ namespace CDOverhaul.HUD
         private Text m_FileVersionText;
 
         private Button m_EditSkinButton;
-        private Transform m_SkinEditorTranform;
-        private Button m_SkinEditorExitButton;
+        private readonly Transform m_SkinEditorTranform;
+        private readonly Button m_SkinEditorExitButton;
 
-        private Button m_UpdateSkinsButton;
-        private Text m_UpdateSkinsText;
-        private Image m_SkinsUpdateRefreshButtonCooldownFill;
+        private readonly Button m_UpdateSkinsButton;
+        private readonly Text m_UpdateSkinsText;
+        private readonly Image m_SkinsUpdateRefreshButtonCooldownFill;
         public void SetUpdateButtonInteractableState(bool value)
         {
             m_UpdateSkinsButton.interactable = value;

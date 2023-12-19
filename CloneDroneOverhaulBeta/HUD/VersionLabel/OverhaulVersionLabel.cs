@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Gameplay;
-using CDOverhaul.Workshop;
+﻿using CDOverhaul.Workshop;
 using UnityEngine;
 using UnityEngine.UI;
 

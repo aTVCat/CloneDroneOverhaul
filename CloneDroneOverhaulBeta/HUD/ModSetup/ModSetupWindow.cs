@@ -85,7 +85,7 @@ namespace CDOverhaul.HUD
         {
             base.gameObject.SetActive(false);
 
-            if(GameModeManager.IsOnTitleScreen())
+            if (GameModeManager.IsOnTitleScreen())
                 GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
         }
 

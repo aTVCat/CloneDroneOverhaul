@@ -2,7 +2,6 @@
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
 using ModLibrary;
-using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -24,7 +23,7 @@ namespace CDOverhaul.Patches
                 float amount = m_EnergyUI._lastAmount;
                 float maxAmount = m_EnergyUI._lastRenderedMaxEnergy;
                 float deltaTime = (amount >= maxAmount ? -1f : 1f) * 2.5f * Time.deltaTime;
-                float targetAlpha = HideEnergyUIWhenFull && EnergyUIReplacement.PatchHUD ? m_CanvasGroup.alpha = Mathf.Clamp(m_CanvasGroup.alpha + (deltaTime), 0.1f, 1f) : 1f;
+                float targetAlpha = HideEnergyUIWhenFull && EnergyUIReplacement.PatchHUD ? m_CanvasGroup.alpha = Mathf.Clamp(m_CanvasGroup.alpha + deltaTime, 0.1f, 1f) : 1f;
                 m_CanvasGroup.alpha = targetAlpha;
             }
         }

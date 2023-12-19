@@ -1,7 +1,5 @@
-﻿using CDOverhaul.DevTools;
-using CDOverhaul.HUD.Tooltips;
+﻿using CDOverhaul.HUD.Tooltips;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 namespace CDOverhaul.Gameplay.Combat

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ namespace CDOverhaul
                 }
 
                 UnityEngine.Object @object = OverhaulAssetsController.GetAsset<UnityEngine.Object>(asset.AssetName, asset.AssetBundle, asset.FixMaterials);
-                if(@object is Texture2D && asset.FieldReference.FieldType == typeof(Sprite))
+                if (@object is Texture2D && asset.FieldReference.FieldType == typeof(Sprite))
                 {
                     @object = (@object as Texture2D).ToSprite();
                 }

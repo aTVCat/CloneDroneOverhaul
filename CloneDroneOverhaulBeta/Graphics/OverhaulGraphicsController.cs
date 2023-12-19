@@ -103,7 +103,7 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            if(!PooledPrefabController.HasCreatedEntry(GenericSparksVFX))
+            if (!PooledPrefabController.HasCreatedEntry(GenericSparksVFX))
                 PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
 
             CameraController = OverhaulController.AddController<OverhaulCameraController>();
@@ -202,7 +202,7 @@ namespace CDOverhaul.Graphics
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
 
-            if (!bloom.gameObject.name.Equals("ArenaCamera")) 
+            if (!bloom.gameObject.name.Equals("ArenaCamera"))
                 bloom.enabled = BloomEnabled;
 
             if (!m_BloomEffects.Contains(bloom))

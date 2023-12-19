@@ -85,7 +85,7 @@ namespace CDOverhaul.Graphics.ArenaOverhaul
             m_CommentatorBoxTransform.localPosition = new Vector3(-83.8f, 26.4f, 1.95f);
             m_CommentatorBoxTransform.localScale = Vector3.one * 1.3f;
             m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecursive("Commentatron");
-            if(!m_CommentatronTransform)
+            if (!m_CommentatronTransform)
                 m_CommentatronTransform = m_CommentatorBoxTransform.FindChildRecursive("Commentatron_Xmas(Clone)");
             m_CommentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);
             m_AnalysisBotTransform = m_CommentatorBoxTransform.FindChildRecursive("AnalysisBot");

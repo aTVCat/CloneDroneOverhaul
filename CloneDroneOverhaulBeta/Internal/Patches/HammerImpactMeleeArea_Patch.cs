@@ -24,7 +24,7 @@ namespace CDOverhaul.Patches
                 _ = AudioManager.Instance.PlayClipAtPosition(AudioLibrary.Instance.HammerImpacts, midPos, 0f, false, 1f, Random.Range(1.300f, 1.450f));
 
                 __instance.Owner.OnWeaponCollidedWithEnvironment();
-                if (otherComponent.Owner) 
+                if (otherComponent.Owner)
                     otherComponent.Owner.OnWeaponCollidedWithEnvironment();
             }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.Patches
@@ -38,7 +33,15 @@ namespace CDOverhaul.Patches
             if (!m_button || !manager)
                 return;
 
-            m_button.interactable = manager.Initialized;
+            bool initialized = manager.Initialized;
+            m_button.interactable = initialized;
+            Image image = m_button.image;
+            if (image)
+            {
+                Color color = image.color;
+                color.a = initialized ? 1f : 0.5f;
+                image.color = color;
+            }
         }
     }
 }

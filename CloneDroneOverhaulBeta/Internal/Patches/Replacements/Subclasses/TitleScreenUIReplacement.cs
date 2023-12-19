@@ -10,8 +10,8 @@ namespace CDOverhaul.Patches
         private Transform m_ButtonsTransform;
         private Transform m_SpawnedPanel;
 
-        private RectTransform m_SingleplayerButtonTransform;
-        private RectTransform m_MultiplayerNEWButtonTransform;
+        private readonly RectTransform m_SingleplayerButtonTransform;
+        private readonly RectTransform m_MultiplayerNEWButtonTransform;
 
         private Text m_SettingsText;
         private Text m_BugReportText;
@@ -20,7 +20,7 @@ namespace CDOverhaul.Patches
         private Vector3 m_OriginalAchievementsNewHintPosition;
         private Transform m_AchievementsNewHint;
 
-        private Transform m_MessagePanel;
+        private readonly Transform m_MessagePanel;
 
         public override void Replace()
         {
@@ -137,7 +137,7 @@ namespace CDOverhaul.Patches
                         GameUIRoot.Instance.TitleScreenUI.OnWorkshopBrowserButtonClicked();
                     }
                 });
-                button.gameObject.AddComponent<WorkshopBrowserButtonBehaviour>();
+                _ = button.gameObject.AddComponent<WorkshopBrowserButtonBehaviour>();
             }
 
             RectTransform multiplayerErrorGroup = target.transform.FindRectChildRecursive("MultiplayerErrorGroup");
@@ -293,7 +293,7 @@ namespace CDOverhaul.Patches
                 m_BugReportText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_BugReport");
             if (m_SettingsText)
                 m_SettingsText.text = OverhaulLocalizationController.Localization.GetTranslation("TitleScreen_Settings");
-            if(m_AboutOverhaulText)
+            if (m_AboutOverhaulText)
                 m_AboutOverhaulText.text = OverhaulLocalizationController.Localization.GetTranslation("About Overhaul");
         }
 

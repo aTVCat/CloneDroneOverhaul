@@ -15,38 +15,38 @@ namespace CDOverhaul.HUD
         public static OverhaulCrashScreen Instance => OverhaulMod.IsHUDInitialized && OverhaulMod.IsModInitialized ? s_Instance : null;
 
         [ObjectReference("ErrorMessage")]
-        private Text m_ErrorText;
+        private readonly Text m_ErrorText;
         [ObjectReference("stacktraceText")]
-        private Text m_StackTraceText;
+        private readonly Text m_StackTraceText;
 
         [ActionReference(nameof(IgnoreCrash))]
         [ObjectReference("IgnoreCrash")]
-        private Button m_IgnoreCrash;
+        private readonly Button m_IgnoreCrash;
         [ActionReference(nameof(GoToMainMenu))]
         [ObjectReference("MainMenu")]
-        private Button m_MainMenu;
+        private readonly Button m_MainMenu;
         [ActionReference(nameof(ExitGame))]
         [ObjectReference("ExitGame")]
-        private Button m_ExitGame;
+        private readonly Button m_ExitGame;
 
         [ActionReference(nameof(OpenStackTrace))]
         [ObjectReference("ViewStacktrace")]
-        private Button m_ViewStackTrace;
+        private readonly Button m_ViewStackTrace;
         [ActionReference(nameof(TriggerScreenshot))]
         [ObjectReference("Screenshot")]
-        private Button m_MakeScreenshot;
+        private readonly Button m_MakeScreenshot;
 
         [ActionReference(nameof(SendReport))]
         [ObjectReference("SendReport")]
-        private Button m_SendReport;
+        private readonly Button m_SendReport;
         [ObjectReference("SendReport")]
-        private CanvasGroup m_SendReportCanvasGroup;
+        private readonly CanvasGroup m_SendReportCanvasGroup;
 
         [ObjectReference("StackTrace")]
-        private GameObject m_StackTraceWindow;
+        private readonly GameObject m_StackTraceWindow;
         [ActionReference(nameof(CloseStackTrace))]
         [ObjectReference("CloseStackTraceButton")]
-        private Button m_CloseStackTrace;
+        private readonly Button m_CloseStackTrace;
 
         private bool m_IsScreenshotting;
 

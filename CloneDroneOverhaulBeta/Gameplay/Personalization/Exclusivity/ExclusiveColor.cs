@@ -30,26 +30,27 @@ namespace CDOverhaul
         {
             applied = false;
             color = currentColor;
-            if (!firstPersonMover || !firstPersonMover.IsPlayer())
-                return;
-            string playFabID = GameModeManager.IsSinglePlayer() ? OverhaulPlayerIdentifier.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
-
-            if (string.IsNullOrEmpty(playFabID) || !RelatedPlayFabId.Contains(playFabID))
-                return;
-
-            int index = 0;
-            foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
+            if (firstPersonMover && (firstPersonMover.IsPlayer() || firstPersonMover.IsClone()))
             {
-                if (favColor == null)
-                    continue;
+                string playFabID = GameModeManager.IsSinglePlayer() ? OverhaulPlayerIdentifier.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
 
-                if (favColor.ColorValue.Equals(currentColor) && index == ColorIndexToReplace)
-                {
-                    applied = true;
-                    color = NewColor;
+                if (string.IsNullOrEmpty(playFabID) || !RelatedPlayFabId.Contains(playFabID))
                     return;
+
+                int index = 0;
+                foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
+                {
+                    if (favColor == null)
+                        continue;
+
+                    if (favColor.ColorValue.Equals(currentColor) && index == ColorIndexToReplace)
+                    {
+                        applied = true;
+                        color = NewColor;
+                        return;
+                    }
+                    index++;
                 }
-                index++;
             }
         }
     }

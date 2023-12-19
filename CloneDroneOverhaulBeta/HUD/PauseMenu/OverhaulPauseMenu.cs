@@ -93,7 +93,7 @@ namespace CDOverhaul.HUD
         private Text m_WorkshopLevelDescriptionText;
         private Button m_WorkshopLevelUpVote;
         private Button m_WorkshopLevelDownVote;
-        private Button m_WorkshopLevelDetails;
+        private readonly Button m_WorkshopLevelDetails;
 
         private GameObject m_PlayerActionsMenu;
         private GameObject m_PlayerActionsSelectPanel;

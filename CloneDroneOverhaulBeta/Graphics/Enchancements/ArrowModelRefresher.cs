@@ -57,7 +57,7 @@ namespace CDOverhaul.Graphics
 
         public override void OnEnable()
         {
-            StaticCoroutineRunner.StartStaticCoroutine(waitThenRefreshAllVisuals());
+            _ = StaticCoroutineRunner.StartStaticCoroutine(waitThenRefreshAllVisuals());
         }
 
         public void RefreshAllVisuals()

@@ -52,7 +52,7 @@ namespace CDOverhaul
                 return;
 
             string[] split = moddedEvent.EventData.Split('@');
-            if(split == null || split.Length != 3)
+            if (split == null || split.Length != 3)
                 return;
 
             if (split[1] != OverhaulPlayerInfoController.PlayerInfoVersion)
@@ -203,9 +203,9 @@ namespace CDOverhaul
                 yield return null;
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsNewWeaponSkinsSystemEnabled)
-                OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
+                _ = OverhaulController.AddController<Gameplay.WeaponSkins.WeaponSkinsController>();
             else
-                OverhaulController.AddController<WeaponSkinsController>();
+                _ = OverhaulController.AddController<WeaponSkinsController>();
 
             if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.AreNewPersonalizationCategoriesEnabled)
             {

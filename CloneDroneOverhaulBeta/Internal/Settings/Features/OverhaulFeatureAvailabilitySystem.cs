@@ -238,9 +238,7 @@ namespace CDOverhaul
             private static readonly bool IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED = true;
             public static bool IsGameModeSelectScreenRedesignEnabled => IS_GAMEMODESELECTSCREEN_REDESIGN_ENABLED;
 
-
-            private static readonly bool IS_ARENA_OVERHAUL_ENABLED = true;
-            public static bool IsArenaOverhaulEnabled => IS_ARENA_OVERHAUL_ENABLED;
+            public static bool IsArenaOverhaulEnabled { get; } = true;
 
             /// <summary>
             /// 
