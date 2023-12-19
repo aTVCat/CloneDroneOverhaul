@@ -4,7 +4,6 @@ using CDOverhaul.Device;
 using CDOverhaul.DevTools;
 using CDOverhaul.Gameplay;
 using CDOverhaul.Gameplay.Editors.Personalization;
-using CDOverhaul.Gameplay.Mindspace;
 using CDOverhaul.Gameplay.Multiplayer;
 using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.Graphics;
@@ -52,10 +51,17 @@ namespace CDOverhaul
             if (moddedEvent == null || string.IsNullOrEmpty(moddedEvent.EventData) || !moddedEvent.EventData.StartsWith(OverhaulPlayerInfoController.PlayerInfoEventPrefix))
                 return;
 
+            string[] split = moddedEvent.EventData.Split('@');
+            if(split == null || split.Length != 3)
+                return;
+
+            if (split[1] != OverhaulPlayerInfoController.PlayerInfoVersion)
+                return;
+
             OverhaulPlayerInfoRefreshEventData eventData;
             try
             {
-                eventData = moddedEvent.BinaryData.DeserializeObject<OverhaulPlayerInfoRefreshEventData>();
+                eventData = ModJsonUtils.Deserialize<OverhaulPlayerInfoRefreshEventData>(split[2]);
             }
             catch
             {
@@ -63,7 +69,7 @@ namespace CDOverhaul
             }
 
             // Exceptions
-            if (eventData == default || (eventData.IsRequest && eventData.IsAnswer))
+            if (eventData == null || eventData == default || (eventData.IsRequest && eventData.IsAnswer))
                 return;
 
             if (eventData.ReceiverPlayFabID == OverhaulPlayerIdentifier.GetLocalPlayFabID() || eventData.ReceiverPlayFabID == OverhaulPlayerInfoRefreshEventData.RECEIVER_EVERYONE)
@@ -185,10 +191,8 @@ namespace CDOverhaul
 
             _ = OverhaulController.AddController<HUD.Tooltips.OverhaulTooltipsController>();
             _ = OverhaulController.AddController<UpgradeModesController>();
-            _ = OverhaulController.AddController<AdvancedPhotomodeController>();
             _ = OverhaulController.AddController<ArenaOverhaulController>();
 
-            _ = OverhaulController.AddController<MindspaceOverhaulController>();
             _ = OverhaulController.AddController<OverhaulVFXController>();
             if (waitForEndOfFrame)
                 yield return null;

@@ -430,6 +430,7 @@
     <Compile Include="Gameplay\Robots\Control\RobotCameraZoomExpansion.cs" />
     <Compile Include="Gameplay\Robots\Control\RobotControlsExpansion.cs" />
     <Compile Include="Gameplay\VanillaMultiplayer\PlayerInfo\OverhaulPlayerInfoRefreshEventData.cs" />
+    <Compile Include="Graphics\Enchancements\ArrowModelRefresher.cs" />
     <Compile Include="Graphics\Enchancements\VFX\OverhaulVFXController.cs" />
     <Compile Include="HUD\Gamemodes\Bases\LastBotStandingPlayUI.cs" />
     <Compile Include="HUD\Gamemodes\Pages\CoopChallengeCodeEnterPage.cs" />
@@ -572,7 +573,6 @@
     <Compile Include="HUD\OverhaulUISelectionOutline.cs" />
     <Compile Include="HUD\PatchNotes\Changelogs.cs" />
     <Compile Include="HUD\PatchNotes\ChangelogUI.cs" />
-    <Compile Include="Graphics\Enchancements\Mindspace\MindspaceOverhaulController.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinsControllerV2.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\Base\IWeaponSkinItemDefinition.cs" />
     <Compile Include="Gameplay\Personalization\WeaponSkins_Old\WeaponSkinItemDefinitionV2.cs" />
@@ -611,6 +611,7 @@
     <Compile Include="Internal\Management\DevTools\OverhaulProfiler.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\OverhaulJsonObject.cs" />
     <Compile Include="Internal\Management\DevTools\Sub\OverhaulJsonObjectPreset.cs" />
+    <Compile Include="Internal\Management\ModJsonUtils.cs" />
     <Compile Include="Internal\Management\OverhaulDisposable.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditor.cs" />
     <Compile Include="Internal\Localization\Editor\OverhaulLocalizationEditorTranslationField.cs" />
@@ -640,6 +641,7 @@
     <Compile Include="Internal\Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\BaseFixes.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\Components\GameModeSelectPanelBehaviourFix.cs" />
+    <Compile Include="Internal\Patches\Replacements\Subclasses\Components\WorkshopBrowserButtonBehaviour.cs" />
     <Compile Include="Internal\Patches\Replacements\Subclasses\CrosshairsUIReplacement.cs" />
     <Compile Include="Internal\Patches\SceneTransitionManager_Patch.cs" />
     <Compile Include="Internal\Patches\PlayerCameraMover_Patch.cs" />

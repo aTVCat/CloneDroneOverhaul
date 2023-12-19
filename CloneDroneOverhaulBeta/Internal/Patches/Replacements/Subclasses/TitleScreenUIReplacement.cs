@@ -136,7 +136,8 @@ namespace CDOverhaul.Patches
                     {
                         GameUIRoot.Instance.TitleScreenUI.OnWorkshopBrowserButtonClicked();
                     }
-                }); 
+                });
+                button.gameObject.AddComponent<WorkshopBrowserButtonBehaviour>();
             }
 
             RectTransform multiplayerErrorGroup = target.transform.FindRectChildRecursive("MultiplayerErrorGroup");

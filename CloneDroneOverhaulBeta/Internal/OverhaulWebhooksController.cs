@@ -49,7 +49,10 @@ namespace CDOverhaul
             "ThrowIfDisposedAndClosed",
             "GetCurrentAnimatorStateInfo",
             "MoreSkinsMod",
-            "GunMod"
+            "GunMod",
+            "ChangeToNotSelectedVisuals",
+            "HammerImpactMeleeArea",
+            "StartConstructionSequence"
         };
 
         private static bool s_HasExecutedCrashReportsWebhook = false;

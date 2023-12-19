@@ -32,6 +32,9 @@ namespace OverhaulAPI
 
         public static T SpawnEntry<T>(in string id, in Vector3 position, in Vector3 eulerAngles) where T : PooledPrefabInstanceBase
         {
+            if (!s_Entries.ContainsKey(id))
+                return null;
+
             PooledPrefabContainer container = s_Entries[id];
             T result = container.SpawnPooledPrefab<T>(position, eulerAngles);
             return result;

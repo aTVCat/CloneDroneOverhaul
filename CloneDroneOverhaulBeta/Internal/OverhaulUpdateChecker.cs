@@ -114,9 +114,9 @@ namespace CDOverhaul
             GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
             OverhaulFullscreenDialogueWindow window = OverhaulFullscreenDialogueWindow.Instance;
             window.ResetContents();
-            window.SetTitle("New update available!");
-            window.SetDescription("Changelog:\n" + DownloadedDescription);
-            window.SetWindowSize(600f, 450f);
+            window.SetTitle("New Overhaul mod update available!");
+            window.SetDescription("");
+            window.SetWindowSize(350f, 100f);
             window.AddButton("Ignore", delegate
             {
                 if (GameModeManager.IsOnTitleScreen())

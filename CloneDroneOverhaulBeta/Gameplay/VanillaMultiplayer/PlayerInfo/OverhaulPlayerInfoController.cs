@@ -5,7 +5,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
 {
     public class OverhaulPlayerInfoController : OverhaulGameplayController
     {
-        public const string PlayerInfoVersion = "V2";
+        public const string PlayerInfoVersion = "V3";
         public const string PlayerInfoEventPrefix = "[OverhaulPlayerInfoEvent]@";
 
         public static readonly List<Tuple<Func<bool>, string>> UserFlags = new List<Tuple<Func<bool>, string>>();

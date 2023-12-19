@@ -1,4 +1,5 @@
 ﻿using Bolt;
+using CDOverhaul.Graphics;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -72,6 +73,18 @@ namespace CDOverhaul.Patches
                 audioConfiguration.dspBufferSize = 1024;
                 _ = AudioSettings.Reset(audioConfiguration);
             }*/
+
+            ProjectileManager projectileManager = ProjectileManager.Instance;
+            if (projectileManager)
+            {
+                UnityEngine.Transform prefab = projectileManager.ArrowPool.Prefab;
+                if (!prefab.GetComponent<ArrowModelRefresher>())
+                {
+                    _ = prefab.gameObject.AddComponent<ArrowModelRefresher>();
+                }
+            }
+
+            SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
 
             if (!s_OgUIFont)
                 s_OgUIFont = LocalizationManager.Instance.SupportedLanguages[0].UIFont;

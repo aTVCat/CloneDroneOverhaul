@@ -68,8 +68,7 @@ namespace CDOverhaul.Gameplay.Multiplayer
             data.SenderPlayFabID = OverhaulPlayerIdentifier.GetLocalPlayFabID();
 
             GenericStringForModdingEvent newEvent = GenericStringForModdingEvent.Create(GlobalTargets.AllClients, ReliabilityModes.ReliableOrdered);
-            newEvent.EventData = OverhaulPlayerInfoController.PlayerInfoEventPrefix + OverhaulPlayerInfoController.PlayerInfoVersion;
-            newEvent.BinaryData = data.SerializeObject();
+            newEvent.EventData = OverhaulPlayerInfoController.PlayerInfoEventPrefix + OverhaulPlayerInfoController.PlayerInfoVersion + "@" + ModJsonUtils.Serialize(data);
             newEvent.Send();
         }
 
