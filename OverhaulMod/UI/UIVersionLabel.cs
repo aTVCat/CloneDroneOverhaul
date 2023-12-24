@@ -43,6 +43,11 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             string versionString = ModBuildInfo.fullVersionString;
+            if (string.IsNullOrEmpty(versionString))
+                return;
+
+            versionString = versionString.Replace('/', '.');
+
             m_versionText.text = "overhaul mod " + versionString;
             m_debugIcon.SetActive(ModBuildInfo.debug);
             m_gameplayVersionText.text = "overhaul " + versionString;

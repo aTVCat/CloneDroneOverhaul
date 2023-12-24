@@ -32,6 +32,7 @@ namespace OverhaulMod
         private static void addManagers()
         {
             ModUserDataManager._instance = ModManagers.New<ModUserDataManager>();
+            _ = ModManagers.New<ModContentRepositoryManager>();
             _ = ModManagers.New<ModExclusiveContentManager>();
             _ = ModManagers.New<ModResources>();
             _ = ModManagers.New<ModUIManager>();
@@ -41,7 +42,10 @@ namespace OverhaulMod
             _ = ModManagers.New<ModEnemiesManager>();
             _ = ModManagers.New<ModGameModifiersManager>();
             _ = ModManagers.New<ModLevelEditorManager>();
-            _ = ModManagers.New<ModContentRepositoryManager>();
+
+            _ = ModManagers.New<ModExclusiveContentManager>();
+            _ = ModManagers.New<ModContentManager>();
+            _ = ModManagers.New<ModUpdateManager>();
         }
 
         private static void loadAssemblies()

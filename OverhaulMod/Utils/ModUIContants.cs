@@ -24,6 +24,9 @@ namespace OverhaulMod.Utils
         public const string UI_EXCLUSIVE_CONTENT_EDITOR = "UI_ExclusiveContentEditor";
         public const string UI_CONNECT_SCREEN = "UI_ConnectScreen";
         public const string UI_NEWS_PANEL = "UI_NewsPanel";
+        public const string UI_CONTENT_DOWNLOAD_WINDOW = "UI_ContentDownloadWindow";
+        public const string UI_UPDATES_WINDOW = "UI_UpdatesWindow";
+        public const string UI_PERSONALIZATION_ITEMS_BROWSER = "UI_PersonalizationItemsBrowser";
 
         public static void ShowOtherModsMenu()
         {
@@ -128,6 +131,21 @@ namespace OverhaulMod.Utils
         public static void ShowNewsPanel()
         {
             _ = ModUIManager.Instance.Show<UINewsPanel>(AssetBundleConstants.UI, UI_NEWS_PANEL, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowContentDownloadWindow()
+        {
+            _ = ModUIManager.Instance.Show<UIContentDownloadWindow>(AssetBundleConstants.UI, UI_CONTENT_DOWNLOAD_WINDOW, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowUpdatesWindow()
+        {
+            _ = ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.EUILayer.AfterTitleScreen);
+        }
+
+        public static void ShowPersonalizationItemsBrowser()
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.EUILayer.BeforeEscMenu);
         }
     }
 }

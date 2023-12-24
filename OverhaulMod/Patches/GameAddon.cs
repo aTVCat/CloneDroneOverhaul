@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches.Addons
                 s_patches = Array.Empty<GameAddon>();
             }
 
-            _ = gameObject.AddComponent<GameModeSelectAddon>();
+            _ = gameObject.AddComponent<GameModeCardsAddon>();
             _ = gameObject.AddComponent<ProjectileAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
