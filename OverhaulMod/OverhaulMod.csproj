@@ -68,6 +68,9 @@
     <Reference Include="Klattersynth">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Klattersynth.dll</HintPath>
     </Reference>
+    <Reference Include="LevelEditorPatch">
+      <HintPath>.\LevelEditorPatch.dll</HintPath>
+    </Reference>
     <Reference Include="ModBotAPI">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul\ModBotAPI.dll</HintPath>
     </Reference>
@@ -446,7 +449,6 @@
     <Compile Include="UI\UIDeveloperMenu.cs" />
     <Compile Include="Utils\AssetBundleConstants.cs" />
     <Compile Include="Combat\ModEnemiesManager.cs" />
-    <Compile Include="ModLevelEditorManager.cs" />
     <Compile Include="ModUIManager.cs" />
     <Compile Include="Combat\ModUpgradesManager.cs" />
     <Compile Include="Combat\ModWeaponsManager.cs" />
@@ -489,6 +491,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LevelEditorPatch.dll" />
   </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>

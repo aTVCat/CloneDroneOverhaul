@@ -102,16 +102,7 @@ namespace OverhaulMod
 
         public override UnityEngine.Object OnResourcesLoad(string path)
         {
-            ModLevelEditorManager manager = ModLevelEditorManager.Instance;
-            if (manager)
-            {
-                if (manager.HasTexture(path))
-                    return manager.GetTexture(path);
-
-                if (manager.HasTransform(path))
-                    return manager.GetTransform(path);
-            }
-            return null;
+            return LevelEditorPatch.Patch.GetResourceObject(path);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)

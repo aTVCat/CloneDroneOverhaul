@@ -2,6 +2,7 @@
 
 namespace OverhaulMod.Patches.Harmony
 {
+    /*
     [HarmonyPatch(typeof(LevelEditorObjectPlacementManager))]
     internal static class LevelEditorObjectPlacementManager_Patch
     {
@@ -14,5 +15,5 @@ namespace OverhaulMod.Patches.Harmony
 
             __result.gameObject.SetActive(true);
         }
-    }
+    }*/
 }

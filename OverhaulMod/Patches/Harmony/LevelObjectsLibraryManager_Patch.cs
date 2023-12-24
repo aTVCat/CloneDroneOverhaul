@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Patches.Harmony
 {
+    /*
     [HarmonyPatch(typeof(LevelObjectsLibraryManager))]
     internal static class LevelObjectsLibraryManager_Patch
     {
@@ -37,5 +38,5 @@ namespace OverhaulMod.Patches.Harmony
             __instance._levelObjects = list;
             __instance._visibleLevelObjects = list;
         }
-    }
+    }*/
 }

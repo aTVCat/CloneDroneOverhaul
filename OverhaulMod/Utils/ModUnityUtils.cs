@@ -25,7 +25,8 @@ namespace OverhaulMod.Utils
             toInstantiate.SetActive(true);
 
             LevelEnemySpawner levelEnemySpawner = gameObject.GetComponent<LevelEnemySpawner>();
-            levelEnemySpawner.EnemyPrefab = EnemyFactory.Instance.GetEnemyPrefab(enemyType).transform;
+            if(levelEnemySpawner)
+                levelEnemySpawner.EnemyPrefab = EnemyFactory.Instance.GetEnemyPrefab(enemyType).transform;
             return gameObject.transform;
         }
 
