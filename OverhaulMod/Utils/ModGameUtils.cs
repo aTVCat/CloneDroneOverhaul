@@ -39,6 +39,19 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static Dictionary<string, string> s_currentLevelMetaData;
+        public static Dictionary<string, string> currentLevelMetaData
+        {
+            get
+            {
+                return s_currentLevelMetaData;
+            }
+            set
+            {
+                s_currentLevelMetaData = value;
+            }
+        }
+
         public static bool SyncSteamAchievements()
         {
             GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OverhaulMod
 {
-    public class ModUIManager : Singleton<ModUIManager>
+    public class ModUIManager : Singleton<ModUIManager>, IGameLoadListener
     {
         private Transform m_gameUIRootTransform;
         public Transform GameUIRootTransform
@@ -27,13 +27,11 @@ namespace OverhaulMod
             base.Awake();
 
             m_InstantiatedUIs = new Dictionary<string, GameObject>();
-
-            ModCore.GameInitialized += onGameInitialized;
         }
 
-        private void OnDestroy()
+        public void OnGameLoaded()
         {
-            ModCore.GameInitialized -= onGameInitialized;
+            onGameInitialized();
         }
 
         private void onGameInitialized()

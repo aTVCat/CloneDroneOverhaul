@@ -36,6 +36,8 @@ namespace OverhaulMod
                     return false;
                 case FeatureType.ArrowModelRefresh:
                     return true;
+                case FeatureType.WeatherSystem:
+                    return true;
             }
             throw new System.Exception($"Unknown Overhaul feature: {feature}");
         }
@@ -49,7 +51,8 @@ namespace OverhaulMod
             TitleScreenRework,
             ArrowModelRefresh,
             NewWeapons,
-            WeaponBag
+            WeaponBag,
+            WeatherSystem,
         }
     }
 }

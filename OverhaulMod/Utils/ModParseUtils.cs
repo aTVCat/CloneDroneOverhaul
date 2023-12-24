@@ -12,7 +12,7 @@ namespace OverhaulMod.Utils
 
         public static float TryParseToFloat(string @string, float defaultValue)
         {
-            return !float.TryParse(@string.Replace('.', ','), out float result) ? defaultValue : result;
+            return string.IsNullOrEmpty(@string) || !float.TryParse(@string.Replace('.', ','), out float result) ? defaultValue : result;
         }
 
         public static bool TryParseToBool(string @string, bool defaultValue)

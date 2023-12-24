@@ -23,6 +23,7 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
+            DispatchGameLoadedEvent();
             _ = ModActionUtils.RunCoroutine(showUIDelay());
         }
 
@@ -41,6 +42,15 @@ namespace OverhaulMod
             {
                 if (behaviour is IModLoadListener modLoadListener)
                     modLoadListener.OnModLoaded();
+            }
+        }
+
+        public void DispatchGameLoadedEvent()
+        {
+            foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
+            {
+                if (behaviour is IGameLoadListener gameLoadListener)
+                    gameLoadListener.OnGameLoaded();
             }
         }
 

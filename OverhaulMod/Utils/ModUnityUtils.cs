@@ -28,5 +28,14 @@ namespace OverhaulMod.Utils
             levelEnemySpawner.EnemyPrefab = EnemyFactory.Instance.GetEnemyPrefab(enemyType).transform;
             return gameObject.transform;
         }
+
+        public static void SetEmissionEnabled(this ParticleSystem particleSystem, bool enabled)
+        {
+            if (!particleSystem)
+                return;
+
+            ParticleSystem.EmissionModule em = particleSystem.emission;
+            em.enabled = enabled;
+        }
     }
 }

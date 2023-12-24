@@ -2,6 +2,7 @@
 using OverhaulMod.Combat.Enemies;
 using OverhaulMod.Combat.Levels;
 using OverhaulMod.Combat.Upgrades;
+using OverhaulMod.Visuals.Environment;
 using System;
 using UnityEngine;
 
@@ -46,6 +47,8 @@ namespace OverhaulMod
             _ = ModManagers.New<ModExclusiveContentManager>();
             _ = ModManagers.New<ModContentManager>();
             _ = ModManagers.New<ModUpdateManager>();
+
+            _ = ModManagers.New<WeatherManager>();
         }
 
         private static void loadAssemblies()
