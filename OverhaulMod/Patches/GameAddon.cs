@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Patches.Addons
 {
-    internal class GameAddon : OverhaulBehaviour
+    public class GameAddon : OverhaulBehaviour
     {
         private static GameObject s_gameObject;
         private static GameAddon[] s_patches;
@@ -29,6 +29,7 @@ namespace OverhaulMod.Patches.Addons
 
             _ = gameObject.AddComponent<GameModeCardsAddon>();
             _ = gameObject.AddComponent<ProjectileAddon>();
+            _ = gameObject.AddComponent<SkyboxesAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
         }

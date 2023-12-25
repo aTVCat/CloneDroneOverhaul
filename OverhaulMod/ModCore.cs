@@ -76,6 +76,20 @@ namespace OverhaulMod
             }
         }
 
+
+        private static string s_contentFolder;
+        public static string contentFolder
+        {
+            get
+            {
+                if (s_contentFolder == null)
+                {
+                    s_contentFolder = assetsFolder + "content/";
+                }
+                return s_contentFolder;
+            }
+        }
+
         private bool m_hasAddedListeners;
 
         public override void OnModEnabled()

@@ -50,6 +50,16 @@ namespace OverhaulMod
             _ = ModActionUtils.RunCoroutine(getTextFileContentCoroutine(LINK_PRIVATE + path, doneCallback, errorCallback, timeOut));
         }
 
+        public void GetFileContent(string path, Action<byte[]> doneCallback, Action<string> errorCallback, int timeOut = 15)
+        {
+            if (!USE_METHOD_FOR_PRIVATE)
+            {
+                _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(LINK + path, doneCallback, errorCallback, timeOut));
+                return;
+            }
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(LINK_PRIVATE + path, doneCallback, errorCallback, timeOut));
+        }
+
         private IEnumerator getTextFileContentCoroutine(string link, Action<string> doneCallback, Action<string> errorCallback, int timeOut = 15)
         {
             using (UnityWebRequest webRequest = UnityWebRequest.Get(link))
@@ -65,6 +75,27 @@ namespace OverhaulMod
 
                 if (!webRequest.isNetworkError && !webRequest.isHttpError)
                     doneCallback?.Invoke(webRequest.downloadHandler.text);
+                else
+                    errorCallback?.Invoke(webRequest.error);
+            }
+            yield break;
+        }
+
+        private IEnumerator getFileContentCoroutine(string link, Action<byte[]> doneCallback, Action<string> errorCallback, int timeOut = 15)
+        {
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(link))
+            {
+                webRequest.timeout = timeOut;
+                if (USE_METHOD_FOR_PRIVATE)
+                {
+                    webRequest.SetRequestHeader("Content-Type", "application/json");
+                    webRequest.SetRequestHeader("Authorization", "token " + TOKEN);
+                    webRequest.SetRequestHeader("Accept", "application/vnd.github.v3.raw");
+                }
+                yield return webRequest.SendWebRequest();
+
+                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                    doneCallback?.Invoke(webRequest.downloadHandler.data);
                 else
                     errorCallback?.Invoke(webRequest.error);
             }

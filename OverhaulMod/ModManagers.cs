@@ -45,6 +45,15 @@ namespace OverhaulMod
             }
         }
 
+        public void DispatchModContentLoadedEvent()
+        {
+            foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
+            {
+                if (behaviour is IModContentLoadListener contentLoadListener)
+                    contentLoadListener.OnModContentLoaded();
+            }
+        }
+
         public void DispatchGameLoadedEvent()
         {
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())

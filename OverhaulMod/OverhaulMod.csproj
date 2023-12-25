@@ -387,6 +387,7 @@
     <Compile Include="Content\ExclusiveContentInfoList.cs" />
     <Compile Include="Content\ExclusiveContentType.cs" />
     <Compile Include="IGameLoadListener.cs" />
+    <Compile Include="IModContentLoadListener.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="ModUpdateManager.cs" />
     <Compile Include="ModContentManager.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\GameAddons\ProjectileAddon.cs" />
+    <Compile Include="Patches\GameAddons\SkyboxesAddon.cs" />
     <Compile Include="Patches\Harmony\CharacterModel_Patch.cs" />
     <Compile Include="Patches\Harmony\GameModeManager_Patch.cs" />
     <Compile Include="Patches\Harmony\LevelEditorDataManager_Patch.cs" />
@@ -408,7 +410,9 @@
     <Compile Include="Patches\Harmony\EscMenu_Patch.cs" />
     <Compile Include="Patches\Harmony\GameUIRoot_Patch.cs" />
     <Compile Include="Patches\Harmony\GameplayAchievementManager_Patch.cs" />
+    <Compile Include="Patches\Harmony\PlanetCollider_Patch.cs" />
     <Compile Include="Patches\Harmony\SelectableUI_Patch.cs" />
+    <Compile Include="Patches\Harmony\SkyBoxManager_Patch.cs" />
     <Compile Include="Patches\Harmony\Story3_IntroCutScene_Patch.cs" />
     <Compile Include="Patches\RobotAddon.cs" />
     <Compile Include="TransformInfo.cs" />

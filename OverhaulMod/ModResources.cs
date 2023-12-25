@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -7,26 +10,28 @@ namespace OverhaulMod
     {
         internal const string ASSET_BUNDLES_FOLDER = "assets/assetBundles/";
 
-        private Dictionary<string, Dictionary<string, UnityEngine.Object>> m_Objects;
+        private Dictionary<string, Dictionary<string, UnityEngine.Object>> m_assets;
 
-        private Dictionary<string, AssetBundle> m_AssetBundles;
+        private Dictionary<string, AssetBundle> m_bundles;
 
-        public int cachedAsseBundleCount
+        private List<string> m_loadingBundles;
+
+        public int loadedAssetBundlesCount
         {
             get
             {
-                return m_Objects.Count;
+                return m_assets.Count;
             }
         }
 
-        public int cachedObjectCount
+        public int loadedAssetsCount
         {
             get
             {
                 int count = 0;
-                foreach (string key in m_Objects.Keys)
+                foreach (string key in m_assets.Keys)
                 {
-                    count += m_Objects[key].Count;
+                    count += m_assets[key].Count;
                 }
                 return count;
             }
@@ -36,8 +41,9 @@ namespace OverhaulMod
         {
             base.Awake();
 
-            m_Objects = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
-            m_AssetBundles = new Dictionary<string, AssetBundle>();
+            m_assets = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+            m_bundles = new Dictionary<string, AssetBundle>();
+            m_loadingBundles = new List<string>();
         }
 
         /// <summary>
@@ -45,9 +51,9 @@ namespace OverhaulMod
         /// </summary>
         /// <param name="assetBundle"></param>
         /// <returns></returns>
-        public bool HasCachedAssetBundle(string assetBundle)
+        public bool IsBundleLoaded(string assetBundle)
         {
-            return m_Objects.ContainsKey(assetBundle);
+            return m_assets.ContainsKey(assetBundle);
         }
 
         /// <summary>
@@ -56,77 +62,189 @@ namespace OverhaulMod
         /// <param name="assetBundle"></param>
         /// <param name="objectName"></param>
         /// <returns></returns>
-        public bool HasCachedObject(string assetBundle, string objectName)
+        public bool IsAssetLoaded(string assetBundle, string objectName)
         {
-            return HasCachedAssetBundle(assetBundle) && m_Objects[assetBundle].ContainsKey(objectName);
+            return IsBundleLoaded(assetBundle) && m_assets[assetBundle].ContainsKey(objectName);
         }
 
-        public AssetBundle GetAssetBundle(string assetBundle)
+        public AssetBundle GetBundle(string assetBundle)
         {
-            return !HasCachedAssetBundle(assetBundle) ? null : m_AssetBundles[assetBundle];
+            return !IsBundleLoaded(assetBundle) ? null : m_bundles[assetBundle];
         }
 
-        public T GetObject<T>(string assetBundle, string objectName) where T : UnityEngine.Object
+        public T LoadAsset<T>(string assetBundle, string objectName, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
         {
-            if (!HasCachedAssetBundle(assetBundle))
+            if (!IsBundleLoaded(assetBundle))
             {
-                cacheAssetBundle(assetBundle, AssetBundle.LoadFromFile(ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle));
+                cacheAssetBundle(assetBundle, AssetBundle.LoadFromFile(ModCore.folder + startPath + assetBundle));
             }
 
-            if (!HasCachedObject(assetBundle, objectName))
+            if (!IsAssetLoaded(assetBundle, objectName))
             {
-                cacheObject(assetBundle, objectName, GetAssetBundle(assetBundle).LoadAsset<T>(objectName));
+                cacheObject(assetBundle, objectName, GetBundle(assetBundle).LoadAsset<T>(objectName));
             }
-            return (T)m_Objects[assetBundle][objectName];
+            return (T)m_assets[assetBundle][objectName];
+        }
+
+        public void LoadAssetAsync<T>(string assetBundle, string objectName, Action<T> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
+        {
+            if (IsAssetLoaded(assetBundle, objectName))
+            {
+                callback?.Invoke((T)m_assets[assetBundle][objectName]);
+                return;
+            }
+
+            ModActionUtils.RunCoroutine(loadAssetAsyncCoroutine(assetBundle, objectName, typeof(T), delegate (UnityEngine.Object obj)
+            {
+                callback?.Invoke((T)obj);
+            }, errorCallback, startPath));
+        }
+
+        private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)
+        {
+            string errorString = null;
+            if (!IsBundleLoaded(assetBundle))
+            {
+                string bundleName = ModCore.folder + startPath + assetBundle;
+                bool bundleLoadDone = false;
+                AssetBundle bundle = null;
+
+                if (m_loadingBundles.Contains(bundleName))
+                {
+                    yield return new WaitUntil(() => !m_loadingBundles.Contains(bundleName));
+                    bundleLoadDone = true;
+                    bundle = GetBundle(assetBundle);
+                    if (!bundle)
+                    {
+                        errorCallback?.Invoke("Bundle load failed.");
+                        yield break;
+                    }
+                }
+                else
+                {
+                    ModActionUtils.RunCoroutine(loadBundleCoroutine(bundleName, delegate (AssetBundle b)
+                    {
+                        bundle = b;
+                        bundleLoadDone = true;
+                    }, delegate (string error)
+                    {
+                        errorString = error;
+                        bundleLoadDone = true;
+                    }));
+                }
+
+                while (!bundleLoadDone)
+                    yield return null;
+
+                if (!string.IsNullOrEmpty(errorString))
+                {
+                    errorCallback?.Invoke(errorString);
+                    yield break;
+                }
+            }
+
+            bool assetLoadDone = false;
+            UnityEngine.Object asset = null;
+            ModActionUtils.RunCoroutine(loadAssetCoroutine(objectName, assetBundle, assetType, delegate(UnityEngine.Object obj)
+            {
+                asset = obj;
+                assetLoadDone = true;
+            }, delegate(string error)
+            {
+                errorString = error;
+                assetLoadDone = true;
+            }));
+
+            while (!assetLoadDone)
+                yield return null;
+
+            if (!string.IsNullOrEmpty(errorString))
+            {
+                errorCallback?.Invoke(errorString);
+                yield break;
+            }
+            callback?.Invoke(asset);
+            yield break;
+        }
+
+        private IEnumerator loadBundleCoroutine(string bundlePath, Action<AssetBundle> callback, Action<string> errorCallback)
+        {
+            m_loadingBundles.Add(bundlePath);
+            AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(bundlePath);
+            yield return request;
+            if (!request.assetBundle)
+            {
+                m_loadingBundles.Remove(bundlePath);
+                errorCallback?.Invoke("Asset bundle load failed.");
+                yield break;
+            }
+            cacheAssetBundle(bundlePath.Substring(bundlePath.LastIndexOf('/') + 1), request.assetBundle);
+            callback?.Invoke(request.assetBundle);
+            m_loadingBundles.Remove(bundlePath);
+            yield break;
+        }
+
+        private IEnumerator loadAssetCoroutine(string assetPath, string assetBundle, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback)
+        {
+            var request = GetBundle(assetBundle).LoadAssetAsync(assetPath, assetType);
+            yield return request;
+            if(!request.asset)
+            {
+                errorCallback?.Invoke("Asset load failed.");
+                yield break;
+            }
+            cacheObject(assetBundle, assetPath, request.asset);
+            callback?.Invoke(request.asset);
+            yield break;
         }
 
         private void cacheAssetBundle(string assetBundle, AssetBundle bundle)
         {
-            if (HasCachedAssetBundle(assetBundle))
+            if (IsBundleLoaded(assetBundle))
             {
                 return;
             }
-            m_Objects.Add(assetBundle, new Dictionary<string, UnityEngine.Object>());
-            m_AssetBundles.Add(assetBundle, bundle);
+            m_assets.Add(assetBundle, new Dictionary<string, UnityEngine.Object>());
+            m_bundles.Add(assetBundle, bundle);
         }
 
         private void cacheObject(string assetBundle, string objectName, UnityEngine.Object @object)
         {
-            if (!HasCachedAssetBundle(assetBundle))
+            if (!IsBundleLoaded(assetBundle))
             {
                 return;
             }
 
-            if (HasCachedObject(assetBundle, objectName))
+            if (IsAssetLoaded(assetBundle, objectName))
             {
                 return;
             }
 
-            m_Objects[assetBundle].Add(objectName, @object);
+            m_assets[assetBundle].Add(objectName, @object);
         }
 
         public void UnloadAssetBundle(string assetBundle)
         {
-            if (!HasCachedAssetBundle(assetBundle))
+            if (!IsBundleLoaded(assetBundle))
             {
                 return;
             }
 
-            AssetBundle bundle = m_AssetBundles[assetBundle];
+            AssetBundle bundle = m_bundles[assetBundle];
             bundle.Unload(true);
 
-            _ = m_Objects.Remove(assetBundle);
-            _ = m_AssetBundles.Remove(assetBundle);
+            _ = m_assets.Remove(assetBundle);
+            _ = m_bundles.Remove(assetBundle);
         }
 
         public override string ToString()
         {
-            return $"ModResources, cached ABs: {cachedAsseBundleCount}, cached objects: {cachedObjectCount}";
+            return $"ModResources, loaded bundles/assets: {loadedAssetBundlesCount}/{loadedAssetsCount}";
         }
 
-        public static T Load<T>(string assetBundle, string objectName) where T : UnityEngine.Object
+        public static T Load<T>(string assetBundle, string objectName, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
         {
-            return Instance.GetObject<T>(assetBundle, objectName);
+            return Instance.LoadAsset<T>(assetBundle, objectName, startPath);
         }
     }
 }
