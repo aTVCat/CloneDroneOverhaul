@@ -57,6 +57,10 @@ namespace OverhaulMod.UI
         [UIElement("HubButton")]
         private readonly Button m_hubButton;
 
+        [UIElementAction(nameof(OnContentButtonClicked))]
+        [UIElement("ContentButton")]
+        private readonly Button m_contentButton;
+
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
         [UIElement("LevelEditorButton")]
         private readonly Button m_levelEditorButton;
@@ -91,7 +95,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             m_container.SetActive(m_legacyContainer.activeInHierarchy);
-            m_excContentMenuButton.interactable = ModExclusiveContentManager.Instance.hasRetrievedDataOnStart;
+            m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.hasRetrievedDataOnStart;
         }
 
         public void OnPlaySinglePlayerButtonClicked()
@@ -132,6 +136,11 @@ namespace OverhaulMod.UI
         public void OnExcContentMenuButtonClicked()
         {
             ModUIConstants.ShowExclusiveContentMenu();
+        }
+
+        public void OnContentButtonClicked()
+        {
+            ModUIConstants.ShowContentDownloadWindow();
         }
 
         public void OnAdvancementsButtonClicked()

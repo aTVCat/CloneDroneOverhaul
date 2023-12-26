@@ -6,7 +6,7 @@ namespace OverhaulMod
     {
         public static bool IsEnabled(FeatureType feature)
         {
-            ModExclusiveContentManager modExclusiveContentManager = ModExclusiveContentManager.Instance;
+            ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
             if (modExclusiveContentManager)
                 foreach (ExclusiveContentInfo content in modExclusiveContentManager.GetContentOfType<ExclusiveContentFeatureUnlock>())
                     if (content.Content is ExclusiveContentFeatureUnlock featureUnlock && featureUnlock.Feature == feature)

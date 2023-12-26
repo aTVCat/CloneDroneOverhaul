@@ -39,18 +39,7 @@ namespace OverhaulMod.Utils
             }
         }
 
-        private static Dictionary<string, string> s_currentLevelMetaData;
-        public static Dictionary<string, string> currentLevelMetaData
-        {
-            get
-            {
-                return s_currentLevelMetaData;
-            }
-            set
-            {
-                s_currentLevelMetaData = value;
-            }
-        }
+        public static Dictionary<string, string> currentLevelMetaData { get; set; }
 
         public static bool SyncSteamAchievements()
         {

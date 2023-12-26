@@ -34,7 +34,7 @@ namespace OverhaulMod.Content
 
         public bool IsAvailableToLocalUser()
         {
-            return (Content != null && Content.ForceUnlock) || (HasSteamID() && SteamManager.Instance.Initialized ? SteamID == (ulong)SteamUser.GetSteamID() : SteamID == ModExclusiveContentManager.Instance.localSteamId) || (HasPlayFabID() && MultiplayerLoginManager.Instance.GetLocalPlayFabID() == PlayFabID);
+            return (Content != null && Content.ForceUnlock) || (HasSteamID() && SteamManager.Instance.Initialized ? SteamID == (ulong)SteamUser.GetSteamID() : SteamID == ExclusiveContentManager.Instance.localSteamId) || (HasPlayFabID() && MultiplayerLoginManager.Instance.GetLocalPlayFabID() == PlayFabID);
         }
     }
 }

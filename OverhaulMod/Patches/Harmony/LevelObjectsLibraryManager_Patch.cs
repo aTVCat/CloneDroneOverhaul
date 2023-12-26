@@ -1,9 +1,4 @@
-﻿using HarmonyLib;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace OverhaulMod.Patches.Harmony
+﻿namespace OverhaulMod.Patches.Harmony
 {
     /*
     [HarmonyPatch(typeof(LevelObjectsLibraryManager))]

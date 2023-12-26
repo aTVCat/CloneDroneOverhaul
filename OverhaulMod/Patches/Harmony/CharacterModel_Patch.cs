@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Harmony
             if (!firstPersonMover)
                 return;
 
-            ModExclusiveContentManager.Instance.GetOverrideRobotColor(firstPersonMover, newColor, out Color toReplace);
+            ExclusiveContentManager.Instance.GetOverrideRobotColor(firstPersonMover, newColor, out Color toReplace);
             newColor = toReplace;
         }
     }

@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            foreach (Content.ExclusiveContentInfo contentInfo in ModExclusiveContentManager.Instance.GetUnlockedContent())
+            foreach (Content.ExclusiveContentInfo contentInfo in ExclusiveContentManager.Instance.GetUnlockedContent())
             {
                 ModdedObject moddedObject = Instantiate(m_unlockedItemDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
         {
             m_statusBarText.text = "Retrieving data...";
             m_retrieveDataButton.interactable = false;
-            ModExclusiveContentManager.Instance.RetrieveDataFromRepository(delegate
+            ExclusiveContentManager.Instance.RetrieveDataFromRepository(delegate
             {
                 m_retrieveDataButton.interactable = true;
                 m_statusBarText.text = "Successfully retrieved data!";

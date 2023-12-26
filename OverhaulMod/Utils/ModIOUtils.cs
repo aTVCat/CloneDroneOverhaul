@@ -16,6 +16,15 @@ namespace OverhaulMod.Utils
             }
         }
 
+        public static void WriteBytes(byte[] bytes, string path)
+        {
+            FileMode fileMode = File.Exists(path) ? FileMode.OpenOrCreate | FileMode.Truncate : FileMode.Create;
+            using (FileStream fileStream = new FileStream(path, fileMode, FileAccess.Write))
+            {
+                fileStream.Write(bytes, 0, bytes.Length);
+            }
+        }
+
         public static string ReadText(string path)
         {
             using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -23,6 +32,16 @@ namespace OverhaulMod.Utils
                 byte[] bytes = new byte[fileStream.Length];
                 _ = fileStream.Read(bytes, 0, bytes.Length);
                 return GetString(bytes);
+            }
+        }
+
+        public static byte[] ReadBytes(string path)
+        {
+            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bytes = new byte[fileStream.Length];
+                _ = fileStream.Read(bytes, 0, bytes.Length);
+                return bytes;
             }
         }
 

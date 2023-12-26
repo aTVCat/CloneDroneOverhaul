@@ -10,7 +10,7 @@ namespace OverhaulMod.Content
         {
             get
             {
-                return ModExclusiveContentManager.Instance.contentInfoList;
+                return ExclusiveContentManager.Instance.contentInfoList;
             }
         }
 
@@ -71,12 +71,12 @@ namespace OverhaulMod.Content
 
         public static void Save()
         {
-            ModUserDataManager.Instance.WriteFile(ModExclusiveContentManager.REPOSITORY_FILE, ModJsonUtils.Serialize(contentList), false);
+            ModUserDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, ModJsonUtils.Serialize(contentList), false);
         }
 
         public static void Save(string contents)
         {
-            ModUserDataManager.Instance.WriteFile(ModExclusiveContentManager.REPOSITORY_FILE, contents, false);
+            ModUserDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, contents, false);
         }
 
         public static FieldInfo[] GetContentFields() => editingContentBase.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);

@@ -14,6 +14,7 @@ namespace OverhaulMod
     public class ModCore : Mod
     {
         public static event Action GameInitialized;
+        public static event Action ContentDownloaded;
 
         public static ModCore instance { get; private set; }
 
@@ -167,6 +168,11 @@ namespace OverhaulMod
         {
             Debug.LogWarning("GAME INITIALIZED");
             GameInitialized?.Invoke();
+        }
+
+        public static void DispatchContentLoadedEvent()
+        {
+            ContentDownloaded?.Invoke();
         }
     }
 }

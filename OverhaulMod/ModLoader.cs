@@ -1,10 +1,10 @@
-﻿using OverhaulMod.Combat;
+﻿using LevelEditorPatch;
+using OverhaulMod.Combat;
 using OverhaulMod.Combat.Enemies;
 using OverhaulMod.Combat.Levels;
 using OverhaulMod.Combat.Upgrades;
 using OverhaulMod.Visuals.Environment;
 using System;
-using LevelEditorPatch;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -35,8 +35,8 @@ namespace OverhaulMod
         private static void addManagers()
         {
             ModUserDataManager._instance = ModManagers.New<ModUserDataManager>();
-            _ = ModManagers.New<ModContentRepositoryManager>();
-            _ = ModManagers.New<ModExclusiveContentManager>();
+            _ = ModManagers.New<ContentRepositoryManager>();
+            _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ModResources>();
             _ = ModManagers.New<ModUIManager>();
             _ = ModManagers.New<ModLevelManager>();
@@ -45,8 +45,8 @@ namespace OverhaulMod
             _ = ModManagers.New<ModEnemiesManager>();
             _ = ModManagers.New<ModGameModifiersManager>();
 
-            _ = ModManagers.New<ModExclusiveContentManager>();
-            _ = ModManagers.New<ModContentManager>();
+            _ = ModManagers.New<ExclusiveContentManager>();
+            _ = ModManagers.New<ContentManager>();
             _ = ModManagers.New<ModUpdateManager>();
 
             _ = ModManagers.New<WeatherManager>();

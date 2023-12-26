@@ -46,13 +46,11 @@ namespace OverhaulMod.Visuals.Environment
                 if (transform)
                 {
                     Camera target = Camera.main;
-                    if (target)
-                        if (Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, Mathf.Infinity, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal))
-                            transform.position = hitInfo.transform.position + vectorOffset;
-                        else
-                            transform.position = target.transform.position + vectorOffset;
-                    else
-                        transform.position = vectorOffset;
+                    transform.position = target
+                        ? Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, Mathf.Infinity, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal)
+                            ? hitInfo.transform.position + vectorOffset
+                            : target.transform.position + vectorOffset
+                        : vectorOffset;
                 }
             }
         }

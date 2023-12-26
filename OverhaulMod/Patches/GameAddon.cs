@@ -49,7 +49,7 @@ namespace OverhaulMod.Patches.Addons
 
         }
 
-        public sealed override void OnDestroy()
+        public override void OnDestroy()
         {
             Debug.Log($"Destroyed addon: {base.GetType()}");
         }

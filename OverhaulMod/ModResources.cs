@@ -94,7 +94,7 @@ namespace OverhaulMod
                 return;
             }
 
-            ModActionUtils.RunCoroutine(loadAssetAsyncCoroutine(assetBundle, objectName, typeof(T), delegate (UnityEngine.Object obj)
+            _ = ModActionUtils.RunCoroutine(loadAssetAsyncCoroutine(assetBundle, objectName, typeof(T), delegate (UnityEngine.Object obj)
             {
                 callback?.Invoke((T)obj);
             }, errorCallback, startPath));
@@ -122,7 +122,7 @@ namespace OverhaulMod
                 }
                 else
                 {
-                    ModActionUtils.RunCoroutine(loadBundleCoroutine(bundleName, delegate (AssetBundle b)
+                    _ = ModActionUtils.RunCoroutine(loadBundleCoroutine(bundleName, delegate (AssetBundle b)
                     {
                         bundle = b;
                         bundleLoadDone = true;
@@ -145,11 +145,11 @@ namespace OverhaulMod
 
             bool assetLoadDone = false;
             UnityEngine.Object asset = null;
-            ModActionUtils.RunCoroutine(loadAssetCoroutine(objectName, assetBundle, assetType, delegate(UnityEngine.Object obj)
+            _ = ModActionUtils.RunCoroutine(loadAssetCoroutine(objectName, assetBundle, assetType, delegate (UnityEngine.Object obj)
             {
                 asset = obj;
                 assetLoadDone = true;
-            }, delegate(string error)
+            }, delegate (string error)
             {
                 errorString = error;
                 assetLoadDone = true;
@@ -174,21 +174,21 @@ namespace OverhaulMod
             yield return request;
             if (!request.assetBundle)
             {
-                m_loadingBundles.Remove(bundlePath);
+                _ = m_loadingBundles.Remove(bundlePath);
                 errorCallback?.Invoke("Asset bundle load failed.");
                 yield break;
             }
             cacheAssetBundle(bundlePath.Substring(bundlePath.LastIndexOf('/') + 1), request.assetBundle);
             callback?.Invoke(request.assetBundle);
-            m_loadingBundles.Remove(bundlePath);
+            _ = m_loadingBundles.Remove(bundlePath);
             yield break;
         }
 
         private IEnumerator loadAssetCoroutine(string assetPath, string assetBundle, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback)
         {
-            var request = GetBundle(assetBundle).LoadAssetAsync(assetPath, assetType);
+            AssetBundleRequest request = GetBundle(assetBundle).LoadAssetAsync(assetPath, assetType);
             yield return request;
-            if(!request.asset)
+            if (!request.asset)
             {
                 errorCallback?.Invoke("Asset load failed.");
                 yield break;

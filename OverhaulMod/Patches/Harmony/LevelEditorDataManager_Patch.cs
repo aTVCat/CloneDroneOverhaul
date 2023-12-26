@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Utils;
-using Steamworks;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Harmony
