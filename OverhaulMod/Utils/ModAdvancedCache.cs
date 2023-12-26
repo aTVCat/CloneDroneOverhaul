@@ -32,6 +32,9 @@ namespace OverhaulMod.Utils
             if (!result)
                 return false;
 
+            if (!(obj is T))
+                return false;
+
             item = (T)obj;
             return true;
         }

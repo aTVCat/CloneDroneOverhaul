@@ -12,7 +12,7 @@ namespace OverhaulMod
         {
             if (HasFolder("default"))
             {
-                Directory.Delete(ModCore.contentFolder + "default/");
+                Directory.Delete(ModCore.contentFolder + "default/", true);
             }
 
             ContentRepositoryManager.Instance.GetFileContent("content/default.zip", delegate (byte[] bytes)

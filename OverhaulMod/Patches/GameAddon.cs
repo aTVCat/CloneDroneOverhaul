@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches.Addons
             s_patches = gameObject.GetComponents<GameAddon>();
         }
 
-        private void Start()
+        public override void Start()
         {
             Patch();
         }

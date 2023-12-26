@@ -11,7 +11,7 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton", true)]
         private readonly Button m_exitButton;
 
-        [UIElementAction(nameof(Hide))]
+        [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("CloseButtonALT", false)]
         private readonly Button m_altExitButton;
 
@@ -66,6 +66,11 @@ namespace OverhaulMod.UI
             m_progressBarFill.fillAmount = 0f;
 
             ContentManager.Instance.DownloadDefaultContent(out m_webRequest, onDownloadSuccess, onDownloadFail);
+        }
+
+        public void OnDoneButtonClicked()
+        {
+            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
         private void onDownloadFail(string error)
