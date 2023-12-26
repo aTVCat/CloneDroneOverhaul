@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OverhaulMod.Combat.Levels
+namespace OverhaulMod.Engine
 {
-    public class ChapterSectionInfo
+    public class ModLevelSectionInfo
     {
         public List<string> EnabledSections;
 

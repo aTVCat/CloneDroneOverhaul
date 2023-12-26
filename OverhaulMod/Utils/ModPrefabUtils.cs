@@ -1,10 +1,9 @@
-﻿using OverhaulMod.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod
+namespace OverhaulMod.Utils
 {
-    public static class PrefabStorage
+    public static class ModPrefabUtils
     {
         internal static Dictionary<string, Component> Storage = new Dictionary<string, Component>();
 

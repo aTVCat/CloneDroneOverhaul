@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 
 namespace OverhaulMod.Combat.Weapons

@@ -1,4 +1,4 @@
-﻿namespace OverhaulMod.Combat.Upgrades
+﻿namespace OverhaulMod.Combat
 {
     public class ModUpgradesManager : Singleton<ModUpgradesManager>
     {

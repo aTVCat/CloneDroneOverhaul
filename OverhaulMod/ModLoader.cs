@@ -1,8 +1,8 @@
 ﻿using LevelEditorPatch;
 using OverhaulMod.Combat;
-using OverhaulMod.Combat.Enemies;
-using OverhaulMod.Combat.Levels;
-using OverhaulMod.Combat.Upgrades;
+using OverhaulMod.Content;
+using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using OverhaulMod.Visuals.Environment;
 using System;
 using UnityEngine;
@@ -47,7 +47,7 @@ namespace OverhaulMod
 
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ContentManager>();
-            _ = ModManagers.New<ModUpdateManager>();
+            _ = ModManagers.New<UpdateManager>();
 
             _ = ModManagers.New<WeatherManager>();
         }
@@ -62,21 +62,21 @@ namespace OverhaulMod
         {
             Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, null, null);
 
-            Patch.AddObject("Axe1", "OverhaulMod", "Enemies", PrefabStorage.axe1Spawner, null, null);
-            Patch.AddObject("Axe2", "OverhaulMod", "Enemies", PrefabStorage.axe2Spawner, null, null);
-            Patch.AddObject("Axe3", "OverhaulMod", "Enemies", PrefabStorage.axe3Spawner, null, null);
-            Patch.AddObject("Axe4", "OverhaulMod", "Enemies", PrefabStorage.axe4Spawner, null, null);
+            Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, null);
+            Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, null);
+            Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, null);
+            Patch.AddObject("Axe4", "OverhaulMod", "Enemies", ModPrefabUtils.axe4Spawner, null, null);
 
-            Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", PrefabStorage.scythe1Spawner, null, null);
-            Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", PrefabStorage.scythe2Spawner, null, null);
-            Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", PrefabStorage.scythe3Spawner, null, null);
-            Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", PrefabStorage.scythe4Spawner, null, null);
-            Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", PrefabStorage.scytheSprinter1Spawner, null, null);
-            Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", PrefabStorage.scytheSprinter2Spawner, null, null);
+            Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, null);
+            Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, null);
+            Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, null);
+            Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, null);
+            Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, null);
+            Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, null);
 
-            Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", PrefabStorage.halberd1Spawner, null, null);
-            Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", PrefabStorage.halberd2Spawner, null, null);
-            Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", PrefabStorage.halberd3Spawner, null, null);
+            Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, null);
+            Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, null);
+            Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, null);
         }
 
         public static bool HasToLoad()

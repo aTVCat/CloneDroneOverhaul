@@ -1,4 +1,4 @@
-﻿namespace OverhaulMod.Combat.AIBehaviours
+﻿namespace OverhaulMod.Combat.Enemies
 {
     public class InsaneLongSprintAIBehaviour : SprintAIBehaviour
     {

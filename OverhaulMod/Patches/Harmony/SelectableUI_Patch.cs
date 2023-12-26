@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches.Harmony
             switch (stateEntering)
             {
                 case UISelectionState.Selected:
-                    if (!__instance.SkipSelectionArrows && __instance.GameThemeData?.SelectionCornerPrefab)
+                    if (!__instance.SkipSelectionArrows && __instance.GameThemeData && __instance.GameThemeData.SelectionCornerPrefab)
                     {
                         Animator animator = __instance.getEnabledCornersAnimator();
                         if (animator)

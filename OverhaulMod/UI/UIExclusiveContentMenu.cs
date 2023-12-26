@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

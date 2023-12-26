@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine.Networking;
 
-namespace OverhaulMod
+namespace OverhaulMod.Content
 {
     public class ContentRepositoryManager : Singleton<ContentRepositoryManager>
     {

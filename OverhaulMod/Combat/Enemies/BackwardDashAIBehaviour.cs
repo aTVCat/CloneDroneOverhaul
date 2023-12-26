@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OverhaulMod.Combat.AIBehaviours
+namespace OverhaulMod.Combat.Enemies
 {
     public class BackwardDashAIBehaviour : ComposableFirstPersonMoverBehaviour
     {

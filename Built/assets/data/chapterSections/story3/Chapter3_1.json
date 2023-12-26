@@ -1,1 +1,1 @@
-{"$type":"OverhaulMod.Combat.Levels.ChapterSectionInfo, OverhaulMod","EnabledSections":{"$type":"System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib","$values":["848f2d81-8a4a-4049-a151-94d863f189bf"]},"LevelID":"Story21","DisplayName":"Entrance","Order":0,"ChapterIndex":3}
+{"$type":"OverhaulMod.Engine.ModLevelSectionInfo, OverhaulMod","EnabledSections":{"$type":"System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib","$values":["848f2d81-8a4a-4049-a151-94d863f189bf"]},"LevelID":"Story21","DisplayName":"Entrance","Order":0,"ChapterIndex":3}

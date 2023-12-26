@@ -1,7 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 
-namespace OverhaulMod.Combat.Levels
+namespace OverhaulMod.Engine
 {
     public class ModLevelManager : Singleton<ModLevelManager>
     {
@@ -23,7 +23,7 @@ namespace OverhaulMod.Combat.Levels
             }
         }
 
-        public bool SetStoryModeLevelProgress(ChapterSectionInfo chapterSectionInfo)
+        public bool SetStoryModeLevelProgress(ModLevelSectionInfo chapterSectionInfo)
         {
             if (chapterSectionInfo.DeserializationError)
                 return false;
@@ -114,20 +114,20 @@ namespace OverhaulMod.Combat.Levels
             return true;
         }
 
-        public ChapterSectionInfo[] GenerateChapter1Sections()
+        public ModLevelSectionInfo[] GenerateChapter1Sections()
         {
-            if (ModAdvancedCache.TryGet(CHAPTER_1_SECTIONS_CACHE_KEY, out ChapterSectionInfo[] sections))
+            if (ModAdvancedCache.TryGet(CHAPTER_1_SECTIONS_CACHE_KEY, out ModLevelSectionInfo[] sections))
                 return sections;
 
             int index = 1;
-            List<ChapterSectionInfo> list = new List<ChapterSectionInfo>();
+            List<ModLevelSectionInfo> list = new List<ModLevelSectionInfo>();
             foreach (LevelDescription level in LevelManager.Instance._storyModeLevels)
             {
                 string levelId = level.LevelID.Replace("Story", string.Empty);
                 int parsedInt = ModParseUtils.TryParseToInt(levelId, -1);
                 if (parsedInt >= 1 && parsedInt <= 10)
                 {
-                    list.Add(new ChapterSectionInfo()
+                    list.Add(new ModLevelSectionInfo()
                     {
                         LevelID = level.LevelID,
                         EnabledSections = new List<string>(),
@@ -144,20 +144,20 @@ namespace OverhaulMod.Combat.Levels
             return sections;
         }
 
-        public ChapterSectionInfo[] GenerateChapter2Sections()
+        public ModLevelSectionInfo[] GenerateChapter2Sections()
         {
-            if (ModAdvancedCache.TryGet(CHAPTER_2_SECTIONS_CACHE_KEY, out ChapterSectionInfo[] sections))
+            if (ModAdvancedCache.TryGet(CHAPTER_2_SECTIONS_CACHE_KEY, out ModLevelSectionInfo[] sections))
                 return sections;
 
             int index = 0;
-            List<ChapterSectionInfo> list = new List<ChapterSectionInfo>();
+            List<ModLevelSectionInfo> list = new List<ModLevelSectionInfo>();
             foreach (LevelDescription level in LevelManager.Instance._storyModeLevels)
             {
                 string levelId = level.LevelID.Replace("Story", string.Empty);
                 int parsedInt = ModParseUtils.TryParseToInt(levelId, -1);
                 if (parsedInt >= 11 && parsedInt <= 20)
                 {
-                    list.Add(new ChapterSectionInfo()
+                    list.Add(new ModLevelSectionInfo()
                     {
                         LevelID = level.LevelID,
                         EnabledSections = new List<string>(),

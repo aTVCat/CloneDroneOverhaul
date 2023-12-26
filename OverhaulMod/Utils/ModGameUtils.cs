@@ -1,4 +1,4 @@
-﻿using OverhaulMod.Combat.Levels;
+﻿using OverhaulMod.Engine;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -92,7 +92,7 @@ namespace OverhaulMod.Utils
                 sections.AddRange(LevelSectionManager.Instance._showingSections.ToList());
             }
 
-            string content = ModJsonUtils.Serialize(new ChapterSectionInfo
+            string content = ModJsonUtils.Serialize(new ModLevelSectionInfo
             {
                 LevelID = LevelManager.Instance.GetCurrentLevelID(),
                 EnabledSections = sections,
@@ -105,7 +105,7 @@ namespace OverhaulMod.Utils
             _ = ModIOUtils.OpenFileExplorer(ModUserDataManager.Instance.savesFolder);
         }
 
-        public static ChapterSectionInfo[] GetChapterSections(string directory, int chapterIndex)
+        public static ModLevelSectionInfo[] GetChapterSections(string directory, int chapterIndex)
         {
             if (chapterIndex == 1)
                 return ModLevelManager.Instance.GenerateChapter1Sections();
@@ -114,27 +114,27 @@ namespace OverhaulMod.Utils
 
             directory += chapterIndex;
             if (ModAdvancedCache.Has(directory))
-                return ModAdvancedCache.Get<ChapterSectionInfo[]>(directory);
+                return ModAdvancedCache.Get<ModLevelSectionInfo[]>(directory);
 
             if (!Directory.Exists(directory))
-                return Array.Empty<ChapterSectionInfo>();
+                return Array.Empty<ModLevelSectionInfo>();
 
             string[] files = Directory.GetFiles(directory, "*.json");
             if (files == null || files.Length == 0)
-                return Array.Empty<ChapterSectionInfo>();
+                return Array.Empty<ModLevelSectionInfo>();
 
             int index = 0;
-            ChapterSectionInfo[] sections = new ChapterSectionInfo[files.Length];
+            ModLevelSectionInfo[] sections = new ModLevelSectionInfo[files.Length];
             foreach (string file in files)
             {
-                ChapterSectionInfo chapterSectionInfo = null;
+                ModLevelSectionInfo chapterSectionInfo = null;
                 try
                 {
-                    chapterSectionInfo = ModJsonUtils.DeserializeStream<ChapterSectionInfo>(file);
+                    chapterSectionInfo = ModJsonUtils.DeserializeStream<ModLevelSectionInfo>(file);
                 }
                 catch
                 {
-                    chapterSectionInfo = new ChapterSectionInfo() { DeserializationError = true };
+                    chapterSectionInfo = new ModLevelSectionInfo() { DeserializationError = true };
                 }
                 sections[index] = chapterSectionInfo;
                 index++;

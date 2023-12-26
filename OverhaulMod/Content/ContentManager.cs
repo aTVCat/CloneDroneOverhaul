@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using UnityEngine.Networking;
 
-namespace OverhaulMod
+namespace OverhaulMod.Content
 {
     public class ContentManager : Singleton<ContentManager>
     {

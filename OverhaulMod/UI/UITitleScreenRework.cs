@@ -1,4 +1,5 @@
 ﻿using InternalModBot;
+using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,6 +61,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
+
+        [UIElementAction(nameof(OnUpdatesButtonClicked))]
+        [UIElement("UpdatesButton")]
+        private readonly Button m_updatesButton;
 
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
         [UIElement("LevelEditorButton")]
@@ -141,6 +146,11 @@ namespace OverhaulMod.UI
         public void OnContentButtonClicked()
         {
             ModUIConstants.ShowContentDownloadWindow();
+        }
+
+        public void OnUpdatesButtonClicked()
+        {
+            ModUIConstants.ShowUpdatesWindow();
         }
 
         public void OnAdvancementsButtonClicked()

@@ -30,6 +30,12 @@ namespace OverhaulMod.Visuals.Environment
 
         private void Start()
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WeatherSystem))
+            {
+                base.enabled = false;
+                return;
+            }
+
             createWeatherInfos();
             createHolderIfNull();
             populateHolder();

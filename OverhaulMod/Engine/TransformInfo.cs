@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OverhaulMod
+namespace OverhaulMod.Engine
 {
     public class TransformInfo
     {

@@ -1,4 +1,4 @@
-﻿using OverhaulMod.Combat.Levels;
+﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.Reflection;
@@ -62,11 +62,11 @@ namespace OverhaulMod.UI
 
             Debug.LogFormat("Only levels: {0}, Only sections: {1}, Both: {2}", new object[] { hasOnlyLevels, hasOnlySection, hasBoth });
 
-            ChapterSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
+            ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
             if (sections == null || sections.Length == 0)
                 return;
 
-            foreach (ChapterSectionInfo chapterSection in sections)
+            foreach (ModLevelSectionInfo chapterSection in sections)
             {
                 if (chapterSection.DeserializationError)
                     continue;

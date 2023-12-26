@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace OverhaulMod.Patches.Addons
 
         private void patch()
         {
-            ModActionUtils.RunCoroutine(patchCoroutine());
+            _ = ModActionUtils.RunCoroutine(patchCoroutine());
         }
 
         private IEnumerator patchCoroutine()

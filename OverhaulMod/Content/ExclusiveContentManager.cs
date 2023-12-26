@@ -1,12 +1,11 @@
-﻿using OverhaulMod.Content;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod
+namespace OverhaulMod.Content
 {
     public class ExclusiveContentManager : Singleton<ExclusiveContentManager>
     {

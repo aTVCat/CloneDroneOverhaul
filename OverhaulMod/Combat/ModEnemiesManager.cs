@@ -1,8 +1,9 @@
-﻿using OverhaulMod.Combat.AIBehaviours;
+﻿using OverhaulMod.Combat.Enemies;
 using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 
-namespace OverhaulMod.Combat.Enemies
+namespace OverhaulMod.Combat
 {
     public class ModEnemiesManager : Singleton<ModEnemiesManager>, IModLoadListener
     {
@@ -150,42 +151,42 @@ namespace OverhaulMod.Combat.Enemies
 
         public AttackAIBehaviour GetAttackForwardAIBehaviour()
         {
-            return PrefabStorage.GetObject<AttackAIBehaviour>("AttackForward_Zombie");
+            return ModPrefabUtils.GetObject<AttackAIBehaviour>("AttackForward_Zombie");
         }
 
         public AttackAIBehaviour GetAttackLeftAIBehaviour()
         {
-            return PrefabStorage.GetObject<AttackAIBehaviour>("AttackLeft_Zombie");
+            return ModPrefabUtils.GetObject<AttackAIBehaviour>("AttackLeft_Zombie");
         }
 
         public AttackAIBehaviour GetAttackRightAIBehaviour()
         {
-            return PrefabStorage.GetObject<AttackAIBehaviour>("AttackRight_Zombie");
+            return ModPrefabUtils.GetObject<AttackAIBehaviour>("AttackRight_Zombie");
         }
 
         public DashAIBehaviour GetRandomDashAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<DashAIBehaviour>("RandomDash");
+            return ModPrefabUtils.GetOrCreateGameObjectWithComponent<DashAIBehaviour>("RandomDash");
         }
 
         public SprintAIBehaviour GetRandomSprintAIBehaviour(bool insane)
         {
-            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneSprintAIBehaviour>("InsaneRandomSprint") : PrefabStorage.GetOrCreateGameObjectWithComponent<SprintAIBehaviour>("RandomSprint");
+            return insane ? ModPrefabUtils.GetOrCreateGameObjectWithComponent<InsaneSprintAIBehaviour>("InsaneRandomSprint") : ModPrefabUtils.GetOrCreateGameObjectWithComponent<SprintAIBehaviour>("RandomSprint");
         }
 
         public InsaneLongSprintAIBehaviour GetLongRandomSprintAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneLongSprintAIBehaviour>("InsaneLongRandomSprint");
+            return ModPrefabUtils.GetOrCreateGameObjectWithComponent<InsaneLongSprintAIBehaviour>("InsaneLongRandomSprint");
         }
 
         public BackwardDashAIBehaviour GetBackDashAIBehaviour(bool insane)
         {
-            return insane ? PrefabStorage.GetOrCreateGameObjectWithComponent<InsaneBackwardDashAIBehaviour>("InsaneBackDash") : PrefabStorage.GetOrCreateGameObjectWithComponent<BackwardDashAIBehaviour>("BackDash");
+            return insane ? ModPrefabUtils.GetOrCreateGameObjectWithComponent<InsaneBackwardDashAIBehaviour>("InsaneBackDash") : ModPrefabUtils.GetOrCreateGameObjectWithComponent<BackwardDashAIBehaviour>("BackDash");
         }
 
         public UseKickAIBehaviour GetKickWhenRequiredAIBehaviour()
         {
-            return PrefabStorage.GetOrCreateGameObjectWithComponent<UseKickAIBehaviour>("KickWhenRequired");
+            return ModPrefabUtils.GetOrCreateGameObjectWithComponent<UseKickAIBehaviour>("KickWhenRequired");
         }
     }
 }

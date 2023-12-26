@@ -47,6 +47,19 @@ namespace OverhaulMod
             private set;
         }
 
+        private static Version s_version;
+        public static Version version
+        {
+            get
+            {
+                if (s_version == null)
+                {
+                    s_version = new Version(versionMajor, versionMinor, versionBuild, versionRevision);
+                }
+                return s_version;
+            }
+        }
+
         private static string s_versionString;
         public static string versionString
         {

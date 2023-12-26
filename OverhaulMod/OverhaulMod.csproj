@@ -369,14 +369,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Combat\AIBehaviours\BackwardDashAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\InsaneBackwardDashAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\InsaneLongSprintAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\UseKickAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\InsaneSprintAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\SprintAIBehaviour.cs" />
-    <Compile Include="Combat\AIBehaviours\DashAIBehaviour.cs" />
-    <Compile Include="Combat\Levels\ChapterSectionInfo.cs" />
+    <Compile Include="Combat\Enemies\BackwardDashAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneBackwardDashAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneLongSprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\UseKickAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
     <Compile Include="Content\ExclusiveContentBase.cs" />
@@ -386,15 +386,19 @@
     <Compile Include="Content\ExclusiveContentInfo.cs" />
     <Compile Include="Content\ExclusiveContentInfoList.cs" />
     <Compile Include="Content\ExclusiveContentType.cs" />
+    <Compile Include="Content\NewsInfo.cs" />
+    <Compile Include="Engine\OverhaulAnimator.cs" />
+    <Compile Include="Content\UpdateInfoList.cs" />
+    <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModContentLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
-    <Compile Include="ModUpdateManager.cs" />
+    <Compile Include="Content\UpdateManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Content\ContentRepositoryManager.cs" />
     <Compile Include="Content\ExclusiveContentManager.cs" />
-    <Compile Include="Combat\ModLevelManager.cs" />
-    <Compile Include="ModNewsManager.cs" />
+    <Compile Include="Engine\ModLevelManager.cs" />
+    <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModUserDataManager.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />
@@ -415,7 +419,7 @@
     <Compile Include="Patches\Harmony\SkyBoxManager_Patch.cs" />
     <Compile Include="Patches\Harmony\Story3_IntroCutScene_Patch.cs" />
     <Compile Include="Patches\RobotAddon.cs" />
-    <Compile Include="TransformInfo.cs" />
+    <Compile Include="Engine\TransformInfo.cs" />
     <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
     <Compile Include="UI\Elements\UIElementContentColorPropertyDisplay.cs" />
     <Compile Include="UI\Elements\UIElementContentCustomPropertyDisplay.cs" />
@@ -469,7 +473,7 @@
     <Compile Include="Patches\Harmony\FirstPersonMover_Patch.cs" />
     <Compile Include="Patches\GameAddons\GameModeCardsAddon.cs" />
     <Compile Include="Patches\GameAddon.cs" />
-    <Compile Include="PrefabStorage.cs" />
+    <Compile Include="Utils\ModPrefabUtils.cs" />
     <Compile Include="UI\UIEndlessModeLeaderboard.cs" />
     <Compile Include="UI\UIEndlessModeMenu.cs" />
     <Compile Include="UI\OverhaulUIBehaviour.cs" />

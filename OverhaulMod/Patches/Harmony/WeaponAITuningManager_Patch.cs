@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using ModLibrary;
 using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Utils;
 using System.Linq;
 
 namespace OverhaulMod.Patches.Harmony

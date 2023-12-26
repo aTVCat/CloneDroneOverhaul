@@ -1,8 +1,9 @@
 ﻿using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Engine;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod
+namespace OverhaulMod.Utils
 {
     internal static class ModExtensions
     {
