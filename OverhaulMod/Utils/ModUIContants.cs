@@ -27,6 +27,7 @@ namespace OverhaulMod.Utils
         public const string UI_CONTENT_DOWNLOAD_WINDOW = "UI_ContentDownloadWindow";
         public const string UI_UPDATES_WINDOW = "UI_UpdatesWindow";
         public const string UI_PERSONALIZATION_ITEMS_BROWSER = "UI_PersonalizationItemsBrowser";
+        public const string UI_UPDATE_INFO_EDITOR = "UI_UpdateInfoEditor";
 
         public static void ShowOtherModsMenu()
         {
@@ -146,6 +147,11 @@ namespace OverhaulMod.Utils
         public static void ShowPersonalizationItemsBrowser()
         {
             _ = ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.EUILayer.BeforeEscMenu);
+        }
+
+        public static void ShowUpdateInfoEditor(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIUpdateInfoEditor>(AssetBundleConstants.UI, UI_UPDATE_INFO_EDITOR, parent);
         }
     }
 }

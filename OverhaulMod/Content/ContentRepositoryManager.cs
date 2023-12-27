@@ -40,21 +40,30 @@ namespace OverhaulMod.Content
         }
 #endif
 
-        public void GetTextFileContent(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 15)
+        public void GetTextFileContent(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(LINK + path);
-            _ = ModActionUtils.RunCoroutine(getTextFileContentCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut));
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, true, delegate(object obj)
+            {
+                doneCallback?.Invoke((string)obj);
+            }, errorCallback, timeOut));
         }
 
-        public void GetFileContent(string path, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 15)
+        public void GetFileContent(string path, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(LINK + path);
-            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut));
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, false, delegate(object obj)
+            {
+                doneCallback?.Invoke((byte[])obj);
+            }, errorCallback, timeOut));
         }
 
-        private IEnumerator getTextFileContentCoroutine(UnityWebRequest webRequest, Action<string> doneCallback, Action<string> errorCallback, int timeOut = 15)
+
+        private IEnumerator getFileContentCoroutine(UnityWebRequest webRequest, bool returnText, Action<object> doneCallback, Action<string> errorCallback, int timeOut)
         {
-            webRequest.timeout = timeOut;
+            if(timeOut != -1)
+                webRequest.timeout = timeOut;
+
             if (USE_METHOD_FOR_PRIVATE)
             {
                 webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -64,29 +73,16 @@ namespace OverhaulMod.Content
             yield return webRequest.SendWebRequest();
 
             if (!webRequest.isNetworkError && !webRequest.isHttpError)
-                doneCallback?.Invoke(webRequest.downloadHandler.text);
-            else
-                errorCallback?.Invoke(webRequest.error);
-
-            webRequest.Dispose();
-            yield break;
-        }
-
-        private IEnumerator getFileContentCoroutine(UnityWebRequest webRequest, Action<byte[]> doneCallback, Action<string> errorCallback, int timeOut = 15)
-        {
-            webRequest.timeout = timeOut;
-            if (USE_METHOD_FOR_PRIVATE)
             {
-                webRequest.SetRequestHeader("Content-Type", "application/json");
-                webRequest.SetRequestHeader("Authorization", "token " + TOKEN);
-                webRequest.SetRequestHeader("Accept", "application/vnd.github.v3.raw");
+                if (returnText)
+                    doneCallback?.Invoke(webRequest.downloadHandler.text);
+                else
+                    doneCallback?.Invoke(webRequest.downloadHandler.data);
             }
-            yield return webRequest.SendWebRequest();
-
-            if (!webRequest.isNetworkError && !webRequest.isHttpError)
-                doneCallback?.Invoke(webRequest.downloadHandler.data);
             else
+            {
                 errorCallback?.Invoke(webRequest.error);
+            }
 
             webRequest.Dispose();
             yield break;
