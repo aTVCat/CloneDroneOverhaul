@@ -50,6 +50,7 @@ namespace OverhaulMod
             _ = ModManagers.New<UpdateManager>();
 
             _ = ModManagers.New<WeatherManager>();
+            _ = ModManagers.New<FloatingDustManager>();
         }
 
         private static void loadAssemblies()

@@ -33,6 +33,8 @@ namespace OverhaulMod.Patches.Addons
         {
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
+
+            SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
             if (ContentManager.Instance.HasFolder("default"))
             {
                 if (ModAdvancedCache.TryGet("Chapter4Skybox_Rework", out Material material1))

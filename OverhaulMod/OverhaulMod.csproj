@@ -451,6 +451,7 @@
     <Compile Include="Utils\ModUGCUtils.cs" />
     <Compile Include="Utils\ModUIUtility.cs" />
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
+    <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
     <Compile Include="Visuals\Environment\WeatherManager.cs" />
     <Compile Include="Visuals\RobotWeaponBag.cs" />
