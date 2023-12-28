@@ -58,6 +58,23 @@ namespace OverhaulMod.Content
             }, errorCallback, timeOut));
         }
 
+        public void CustomGetTextFileContent(string link, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
+        {
+            unityWebRequest = UnityWebRequest.Get(link);
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, true, delegate (object obj)
+            {
+                doneCallback?.Invoke((string)obj);
+            }, errorCallback, timeOut));
+        }
+
+        public void CustomGetFileContent(string link, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
+        {
+            unityWebRequest = UnityWebRequest.Get(link);
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, false, delegate (object obj)
+            {
+                doneCallback?.Invoke((byte[])obj);
+            }, errorCallback, timeOut));
+        }
 
         private IEnumerator getFileContentCoroutine(UnityWebRequest webRequest, bool returnText, Action<object> doneCallback, Action<string> errorCallback, int timeOut)
         {
