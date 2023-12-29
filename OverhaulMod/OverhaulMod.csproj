@@ -401,8 +401,10 @@
     <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModUserDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
     <Compile Include="UI\UINewsDetailsPanel.cs" />
+    <Compile Include="UI\UIInformationSelectWindow.cs" />
     <Compile Include="UI\UIRestartRequiredScreen.cs" />
     <Compile Include="UI\UIUpdateInfoEditor.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />

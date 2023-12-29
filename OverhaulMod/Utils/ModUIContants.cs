@@ -32,6 +32,8 @@ namespace OverhaulMod.Utils
         public const string UI_NEWS_INFO_EDITOR = "UI_NewsInfoEditor";
         public const string UI_RESTART_REQUIRED_SCREEN = "UI_RestartRequiredScreen";
         public const string UI_NEWS_DETAILS_PANEL = "UI_NewsDetailsPanel";
+        public const string UI_INFORMATION_SELECT_WINDOW = "UI_InformationSelectWindow";
+        public const string UI_OVERHAUL_MOD_INFO_WINDOW = "UI_OverhaulModInfoWindow";
 
         public static void ShowOtherModsMenu()
         {
@@ -173,6 +175,16 @@ namespace OverhaulMod.Utils
         {
             UINewsDetailsPanel panel = ModUIManager.Instance.Show<UINewsDetailsPanel>(AssetBundleConstants.UI, UI_NEWS_DETAILS_PANEL, parent);
             panel.Populate(newsInfo);
+        }
+
+        public static void ShowInformationSelectMenu()
+        {
+            _ = ModUIManager.Instance.Show<UIInformationSelectWindow>(AssetBundleConstants.UI, UI_INFORMATION_SELECT_WINDOW, ModUIManager.EUILayer.BeforeCrashScreen);
+        }
+
+        public static void ShowOverhaulModInfoMenu(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIOverhaulInfoWindow>(AssetBundleConstants.UI, UI_OVERHAUL_MOD_INFO_WINDOW, parent);
         }
     }
 }

@@ -175,7 +175,7 @@ namespace OverhaulMod.UI
 
         public void OnCreditsButtonClicked()
         {
-            m_titleScreenUI.OnCreditsButtonClicked();
+            ModUIConstants.ShowInformationSelectMenu();
         }
 
         public void OnExitButtonClicked()

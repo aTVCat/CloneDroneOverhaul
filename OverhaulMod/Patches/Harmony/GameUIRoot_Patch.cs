@@ -51,6 +51,10 @@ namespace OverhaulMod.Patches.Harmony
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_MOD_INFO_WINDOW))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_INFORMATION_SELECT_WINDOW))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_NEWS_DETAILS_PANEL))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_UPDATE_INFO_EDITOR))
