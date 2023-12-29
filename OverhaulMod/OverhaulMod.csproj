@@ -400,6 +400,9 @@
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModUserDataManager.cs" />
+    <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="UI\UINewsInfoEditor.cs" />
+    <Compile Include="UI\UIRestartRequiredScreen.cs" />
     <Compile Include="UI\UIUpdateInfoEditor.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />

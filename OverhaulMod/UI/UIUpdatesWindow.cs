@@ -117,7 +117,7 @@ namespace OverhaulMod.UI
             }
             m_directoryName = "OverhaulMod_V" + updateInfo.ModVersion;
             m_downloadSource = updateInfo.DownloadLink;
-            m_changelogText.text = $"Update available: {updateInfo.ModVersion}\nChangelog:\n{updateInfo.Changelog}";
+            m_changelogText.text = $"Update available: {updateInfo.ModVersion} ({updateInfo.ModBotVersion})\nChangelog:\n{updateInfo.Changelog}";
             m_directUpdateButton.interactable = true;
         }
 
@@ -130,7 +130,7 @@ namespace OverhaulMod.UI
         private void onInstalledNewBuild()
         {
             m_progressBar.SetActive(false);
-            Application.Quit();
+            ModUIConstants.ShowRestartRequiredScreen(false);
         }
 
         private void onFailedToInstallNewBuild(string error)

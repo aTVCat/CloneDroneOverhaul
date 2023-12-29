@@ -28,6 +28,8 @@ namespace OverhaulMod.Utils
         public const string UI_UPDATES_WINDOW = "UI_UpdatesWindow";
         public const string UI_PERSONALIZATION_ITEMS_BROWSER = "UI_PersonalizationItemsBrowser";
         public const string UI_UPDATE_INFO_EDITOR = "UI_UpdateInfoEditor";
+        public const string UI_NEWS_INFO_EDITOR = "UI_NewsInfoEditor";
+        public const string UI_RESTART_REQUIRED_SCREEN = "UI_RestartRequiredScreen";
 
         public static void ShowOtherModsMenu()
         {
@@ -152,6 +154,17 @@ namespace OverhaulMod.Utils
         public static void ShowUpdateInfoEditor(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIUpdateInfoEditor>(AssetBundleConstants.UI, UI_UPDATE_INFO_EDITOR, parent);
+        }
+
+        public static void ShowNewsInfoEditor(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UINewsInfoEditor>(AssetBundleConstants.UI, UI_NEWS_INFO_EDITOR, parent);
+        }
+
+        public static void ShowRestartRequiredScreen(bool allowIgnoring)
+        {
+            UIRestartRequiredScreen screen = ModUIManager.Instance.Show<UIRestartRequiredScreen>(AssetBundleConstants.UI, UI_RESTART_REQUIRED_SCREEN, ModUIManager.EUILayer.AfterCrashScreen);
+            screen.SetAllowIgnoring(allowIgnoring);
         }
     }
 }
