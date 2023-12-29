@@ -48,6 +48,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ContentManager>();
             _ = ModManagers.New<UpdateManager>();
+            _ = ModManagers.New<NewsManager>();
 
             _ = ModManagers.New<WeatherManager>();
             _ = ModManagers.New<FloatingDustManager>();

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Content;
+using OverhaulMod.UI;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
@@ -30,6 +31,7 @@ namespace OverhaulMod.Utils
         public const string UI_UPDATE_INFO_EDITOR = "UI_UpdateInfoEditor";
         public const string UI_NEWS_INFO_EDITOR = "UI_NewsInfoEditor";
         public const string UI_RESTART_REQUIRED_SCREEN = "UI_RestartRequiredScreen";
+        public const string UI_NEWS_DETAILS_PANEL = "UI_NewsDetailsPanel";
 
         public static void ShowOtherModsMenu()
         {
@@ -165,6 +167,12 @@ namespace OverhaulMod.Utils
         {
             UIRestartRequiredScreen screen = ModUIManager.Instance.Show<UIRestartRequiredScreen>(AssetBundleConstants.UI, UI_RESTART_REQUIRED_SCREEN, ModUIManager.EUILayer.AfterCrashScreen);
             screen.SetAllowIgnoring(allowIgnoring);
+        }
+
+        public static void ShowNewsDetailsPanel(Transform parent, NewsInfo newsInfo)
+        {
+            UINewsDetailsPanel panel = ModUIManager.Instance.Show<UINewsDetailsPanel>(AssetBundleConstants.UI, UI_NEWS_DETAILS_PANEL, parent);
+            panel.Populate(newsInfo);
         }
     }
 }

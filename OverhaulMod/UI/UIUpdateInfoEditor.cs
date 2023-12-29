@@ -122,12 +122,15 @@ namespace OverhaulMod.UI
 
         public void OnRetrieveButtonClicked()
         {
+            m_retrieveButton.interactable = false;
             UpdateManager.Instance.DownloadUpdateInfoFile(delegate (UpdateInfoList updateInfoList)
             {
+                m_retrieveButton.interactable = true;
                 m_editingInfoList = updateInfoList;
                 OnBranchDropdownEdited(0);
             }, delegate(string error)
             {
+                m_retrieveButton.interactable = true;
                 ModUIUtility.MessagePopupOK("Error", error);
             });
         }
