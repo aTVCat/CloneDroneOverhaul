@@ -60,8 +60,6 @@ namespace OverhaulMod.UI
             bool hasOnlySection = chapterIndex == 3;
             bool hasBoth = chapterIndex == 4 || chapterIndex == 5;
 
-            Debug.LogFormat("Only levels: {0}, Only sections: {1}, Both: {2}", new object[] { hasOnlyLevels, hasOnlySection, hasBoth });
-
             ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
             if (sections == null || sections.Length == 0)
                 return;
@@ -74,6 +72,7 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_sectionDisplayPrefab, m_sectionsContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = chapterSection.DisplayName;
+                moddedObject.GetObject<Text>(1).text = $"{chapterSection.Order + 1}.";
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {

@@ -16,6 +16,10 @@ namespace OverhaulMod.UI
         [UIElement("ExportButton")]
         private readonly Button m_exportButton;
 
+        [UIElementAction(nameof(OnClearButtonClicked))]
+        [UIElement("ClearButton")]
+        private readonly Button m_clearButton;
+
         [UIElementAction(nameof(OnSavesFolderButtonClicked))]
         [UIElement("SavesFolderButton")]
         private readonly Button m_savesFolderButton;
@@ -37,8 +41,7 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-
-            Clear();
+            clearList();
         }
 
         public override void OnDisable()
@@ -50,7 +53,7 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            Clear();
+            clearList();
 
             int position = 1;
             EndlessModeManager endlessModeManager = EndlessModeManager.Instance;
@@ -69,9 +72,10 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void Clear()
+        private void clearList()
         {
-            TransformUtils.DestroyAllChildren(m_content);
+            if(m_content.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_content);
         }
 
         public void OnExitButtonClicked()
@@ -89,7 +93,10 @@ namespace OverhaulMod.UI
                 _ = stringBuilder.Append(string.Format("{0}. {1} - {2}\r\n", new object[] { position, data.HumanFacts.GetFullName(), data.LevelReached }));
                 position++;
             }
-            ModIOUtils.WriteText(stringBuilder.ToString(), ModCore.savesFolder + "LeaderboardExport.txt");
+
+            string file = ModCore.savesFolder + "LeaderboardExport.txt";
+            ModIOUtils.WriteText(stringBuilder.ToString(), file);
+            ModIOUtils.OpenFile(file);
 
             _ = stringBuilder.Clear();
         }
@@ -97,6 +104,18 @@ namespace OverhaulMod.UI
         public void OnSavesFolderButtonClicked()
         {
             _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+        }
+
+        public void OnClearButtonClicked()
+        {
+            ModUIUtility.MessagePopup("Confirm clearing leaderboard data?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
+            {
+                var list = GameDataManager.Instance._endlessHighScores;
+                list.Clear();
+                DataRepository.Instance.Save(list, "EndlessHighScores", false, true);
+
+                Populate();
+            });
         }
     }
 }

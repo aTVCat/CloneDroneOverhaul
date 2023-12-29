@@ -78,6 +78,16 @@ namespace OverhaulMod.Utils
             return true;
         }
 
+        public static bool OpenFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+            _ = Process.Start(path);
+            return true;
+        }
+
         public static byte[] GetBytes(string @string)
         {
             return ModCache.utf8Encoding.GetBytes(@string);
