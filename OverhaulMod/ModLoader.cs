@@ -54,6 +54,8 @@ namespace OverhaulMod
             _ = ModManagers.New<WeatherManager>();
             _ = ModManagers.New<FloatingDustManager>();
             _ = ModManagers.New<FadingVoxelManager>();
+
+            _ = ModManagers.New<AdvancedPhotoModeManager>();
         }
 
         private static void loadAssemblies()
