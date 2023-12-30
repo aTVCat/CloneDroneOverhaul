@@ -16,6 +16,17 @@ namespace OverhaulMod
             _ = base.gameObject.AddComponent<UIDeveloperMenu>();
         }
 
+        private void FixedUpdate()
+        {
+            ModTime.hasFixedUpdated = true;
+            ModTime.fixedFrameCount++;
+        }
+
+        private void LateUpdate()
+        {
+            ModTime.hasFixedUpdated = false;
+        }
+
         private void OnDestroy()
         {
             ModCore.GameInitialized -= onGameInitialized;

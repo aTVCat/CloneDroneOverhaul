@@ -32,25 +32,28 @@ namespace OverhaulMod.Patches.Harmony
         private static bool CloseCurrentMenu_Prefix(bool uiCancelDown, bool pauseDown, bool force = false)
         {
             bool flag = false;
-            GameObject nativeControllerSelectTarget = Singleton<InputManager>.Instance.GetNativeControllerSelectTarget();
-            if (nativeControllerSelectTarget != null)
+            GameObject nativeControllerSelectTarget = InputManager.Instance.GetNativeControllerSelectTarget();
+            if (nativeControllerSelectTarget)
             {
-                Dropdown component = nativeControllerSelectTarget.GetComponent<Dropdown>();
-                ControllerDropdownItem component2 = nativeControllerSelectTarget.GetComponent<ControllerDropdownItem>();
-                if (component != null)
+                Dropdown dropdownComponent = nativeControllerSelectTarget.GetComponent<Dropdown>();
+                ControllerDropdownItem controllerDropdownItem = nativeControllerSelectTarget.GetComponent<ControllerDropdownItem>();
+                if (dropdownComponent != null)
                 {
-                    if (component.transform.Find("Dropdown List") != null)
+                    if (dropdownComponent.transform.Find("Dropdown List"))
                         flag = true;
                 }
-                else if (component2 != null)
+                else if (controllerDropdownItem)
                 {
-                    component2.CloseParentDropdown();
+                    controllerDropdownItem.CloseParentDropdown();
                     flag = true;
                 }
             }
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
+                if (!modUIManager)
+                    return true;
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_MOD_INFO_WINDOW))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_INFORMATION_SELECT_WINDOW))

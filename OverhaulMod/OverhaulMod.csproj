@@ -376,6 +376,7 @@
     <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
@@ -390,6 +391,7 @@
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
+    <Compile Include="Engine\FadingVoxelManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModContentLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
@@ -399,8 +401,11 @@
     <Compile Include="Content\ExclusiveContentManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
+    <Compile Include="ModTime.cs" />
     <Compile Include="ModUserDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
+    <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
     <Compile Include="UI\UINewsDetailsPanel.cs" />

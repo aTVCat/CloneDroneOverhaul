@@ -30,6 +30,7 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<GameModeCardsAddon>();
             _ = gameObject.AddComponent<ProjectileAddon>();
             _ = gameObject.AddComponent<SkyboxesAddon>();
+            _ = gameObject.AddComponent<ColorsAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
         }
