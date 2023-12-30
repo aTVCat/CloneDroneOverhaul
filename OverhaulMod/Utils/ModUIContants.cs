@@ -34,6 +34,7 @@ namespace OverhaulMod.Utils
         public const string UI_NEWS_DETAILS_PANEL = "UI_NewsDetailsPanel";
         public const string UI_INFORMATION_SELECT_WINDOW = "UI_InformationSelectWindow";
         public const string UI_OVERHAUL_MOD_INFO_WINDOW = "UI_OverhaulModInfoWindow";
+        public const string UI_WORKSHOP_ITEM_PAGE_WINDOW = "UI_WorkshopItemPageWindow";
 
         public static void ShowOtherModsMenu()
         {
@@ -185,6 +186,11 @@ namespace OverhaulMod.Utils
         public static void ShowOverhaulModInfoMenu(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIOverhaulInfoWindow>(AssetBundleConstants.UI, UI_OVERHAUL_MOD_INFO_WINDOW, parent);
+        }
+
+        public static void ShowWorkshopItemPageWindow(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_WINDOW, parent);
         }
     }
 }

@@ -152,6 +152,14 @@ namespace OverhaulMod
             }
         }
 
+        public static string naming
+        {
+            get
+            {
+                return "Technical Demo 1";
+            }
+        }
+
         internal static void Load()
         {
             if (s_loaded)

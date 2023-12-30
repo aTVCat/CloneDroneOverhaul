@@ -1,4 +1,6 @@
-﻿using UnityEngine.UI;
+﻿using OverhaulMod.Utils;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
@@ -22,6 +24,14 @@ namespace OverhaulMod.UI
         {
             base.Hide();
             SetTitleScreenButtonActive(true);
+        }
+
+        public override void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                ModUIConstants.ShowWorkshopItemPageWindow(base.transform);
+            }
         }
 
         public void OnLegacyUIButtonClicked()

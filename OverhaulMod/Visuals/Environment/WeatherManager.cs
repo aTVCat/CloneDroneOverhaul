@@ -151,7 +151,7 @@ namespace OverhaulMod.Visuals.Environment
             float rate = 75f;
             float intensity = 1f;
             string weatherValue = string.Empty;
-            bool isVanillaLevel = (!levelEditorWeatherSettingsOverride && !NowPlayingWorkshopManager.Instance.IsCurrentlyPlayingWorkshopItem() && !WorkshopLevelManager.Instance.IsPlaytestActive() && !WorkshopChallengeManager.Instance.IsWorkshopChallenge()) || GameModeManager.IsOnTitleScreen();
+            bool isVanillaLevel = !levelEditorWeatherSettingsOverride && (!LevelManager.Instance.IsCurrentLevelHidingTheArena() || GameModeManager.IsBattleRoyale());
             if (isVanillaLevel)
             {
                 DateTime now = DateTime.Now;

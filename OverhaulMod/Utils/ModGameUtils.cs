@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -142,6 +143,11 @@ namespace OverhaulMod.Utils
             sections = sections.ToList().OrderBy(t => t.Order).ToArray();
             ModAdvancedCache.Add(directory, sections);
             return sections;
+        }
+
+        public static string GetSpeakerNameText(SpeakerNames speakerName)
+        {
+            return (speakerName.ToString() + ":").AddColor(Color.white);
         }
     }
 }

@@ -406,6 +406,7 @@
     <Compile Include="ModUserDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
+    <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
@@ -413,6 +414,7 @@
     <Compile Include="UI\UIInformationSelectWindow.cs" />
     <Compile Include="UI\UIRestartRequiredScreen.cs" />
     <Compile Include="UI\UIUpdateInfoEditor.cs" />
+    <Compile Include="UI\UIWorkshopItemPageWindow.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\GameAddons\ProjectileAddon.cs" />
