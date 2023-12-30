@@ -38,5 +38,19 @@ namespace OverhaulMod.Utils
             ParticleSystem.EmissionModule em = particleSystem.emission;
             em.enabled = enabled;
         }
+
+        public static void DisableRendererAndCollider(GameObject gameObject)
+        {
+            if (!gameObject)
+                return;
+
+            Renderer renderer = gameObject.GetComponent<Renderer>();
+            if (renderer)
+                renderer.enabled = false;
+
+            Collider collider = gameObject.GetComponent<Collider>();
+            if (collider)
+                collider.enabled = false;
+        }
     }
 }

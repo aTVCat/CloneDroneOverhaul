@@ -376,6 +376,7 @@
     <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.LevelEditor;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace OverhaulMod.Visuals.Environment
         {
             get
             {
-                return Vector3.up * 125f;
+                return Vector3.up * 180f;
             }
         }
 
@@ -26,6 +27,12 @@ namespace OverhaulMod.Visuals.Environment
         {
             get;
             private set;
+        }
+
+        public LevelEditorWeatherSettingsOverride weatherOverrideObject
+        {
+            get;
+            set;
         }
 
         private void Start()
@@ -53,12 +60,17 @@ namespace OverhaulMod.Visuals.Environment
                 {
                     Camera target = Camera.main;
                     transform.position = target
-                        ? Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, Mathf.Infinity, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal)
+                        ? Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, 1000f, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal)
                             ? hitInfo.transform.position + vectorOffset
                             : target.transform.position + vectorOffset
                         : vectorOffset;
                 }
             }
+        }
+
+        public void RefreshWeather()
+        {
+            refreshWeatherBasedOnLevel();
         }
 
         private void createWeatherInfos()
@@ -132,42 +144,40 @@ namespace OverhaulMod.Visuals.Environment
         private void refreshWeatherBasedOnLevel()
         {
             DeactivateAllParticles();
-            string weatherValue = GameModeManager.IsInLevelEditor()
-                ? ModLevelUtils.GetEditingLevelMetaDataValue(ModLevelUtils.WEATHER_METADATA_KEY)
-                : ModLevelUtils.GetCurrentLevelMetaDataValue(ModLevelUtils.WEATHER_METADATA_KEY);
-            string weatherIntensityValue = GameModeManager.IsInLevelEditor()
-                ? ModLevelUtils.GetEditingLevelMetaDataValue(ModLevelUtils.WEATHER_INTENSITY_METADATA_KEY)
-                : ModLevelUtils.GetCurrentLevelMetaDataValue(ModLevelUtils.WEATHER_INTENSITY_METADATA_KEY);
-            bool isEmpty = string.IsNullOrEmpty(weatherValue);
 
-            bool isNotAWorkshopLevel = (!NowPlayingWorkshopManager.Instance.IsCurrentlyPlayingWorkshopItem() && !WorkshopLevelManager.Instance.IsPlaytestActive() && !WorkshopChallengeManager.Instance.IsWorkshopChallenge() && !GameModeManager.Is(GameMode.Story)) || GameModeManager.IsOnTitleScreen();
-            if (isNotAWorkshopLevel)
+            LevelEditorWeatherSettingsOverride levelEditorWeatherSettingsOverride = weatherOverrideObject;
+
+            int max = 250;
+            float rate = 75f;
+            float intensity = 1f;
+            string weatherValue = string.Empty;
+            bool isVanillaLevel = (!levelEditorWeatherSettingsOverride && !NowPlayingWorkshopManager.Instance.IsCurrentlyPlayingWorkshopItem() && !WorkshopLevelManager.Instance.IsPlaytestActive() && !WorkshopChallengeManager.Instance.IsWorkshopChallenge()) || GameModeManager.IsOnTitleScreen();
+            if (isVanillaLevel)
             {
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, 11, 25);
                 DateTime end = new DateTime(now.Year, 1, 25);
                 bool shouldBeSnowy = end < start ? (now >= start || now <= end) : (now <= end && now >= start);
-                if (shouldBeSnowy && isEmpty)
+                if (shouldBeSnowy)
                 {
                     weatherValue = "Snowy";
-                    isEmpty = false;
                 }
             }
 
-            if (isEmpty)
-                return;
-
-            float rate = 75f;
+            if (levelEditorWeatherSettingsOverride)
+            {
+                weatherValue = levelEditorWeatherSettingsOverride.WeatherType;
+                intensity = levelEditorWeatherSettingsOverride.Intensity;
+                max = levelEditorWeatherSettingsOverride.MaxParticles;
+            }
 
             WeatherInfo weatherInfo = GetWeatherInfo(weatherValue);
             if (weatherInfo != null)
             {
-                float emRate = weatherInfo.EmissionRate;
-                float intensity = ModParseUtils.TryParseToFloat(weatherIntensityValue, 1f);
-                rate = emRate * intensity;
+                rate = weatherInfo.EmissionRate * intensity;
             }
 
-            ActivateParticles(weatherValue, rate);
+            ActivateParticles(weatherValue, rate, max);
         }
 
         public WeatherInfo GetWeatherInfo(string name)
@@ -191,7 +201,7 @@ namespace OverhaulMod.Visuals.Environment
             }
         }
 
-        public void ActivateParticles(string name, float emissionRate)
+        public void ActivateParticles(string name, float emissionRate, int maxParticles = 250)
         {
             if (m_nameToVFX != null && m_nameToVFX.ContainsKey(name))
             {
@@ -201,6 +211,8 @@ namespace OverhaulMod.Visuals.Environment
                     ParticleSystem.EmissionModule emission = ps.emission;
                     emission.rateOverTime = new ParticleSystem.MinMaxCurve(emissionRate);
                     emission.enabled = true;
+                    ParticleSystem.MainModule main = ps.main;
+                    main.maxParticles = Mathf.Clamp(maxParticles, 1, 2000);
                 }
             }
         }

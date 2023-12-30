@@ -1,6 +1,7 @@
 ﻿using LevelEditorPatch;
 using OverhaulMod.Combat;
 using OverhaulMod.Content;
+using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals.Environment;
@@ -63,7 +64,7 @@ namespace OverhaulMod
 
         private static void addLevelEditorObjects()
         {
-            Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, null, null);
+            Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride)}, null);
 
             Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, null);
             Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, null);
