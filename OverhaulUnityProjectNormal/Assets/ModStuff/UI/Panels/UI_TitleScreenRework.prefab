@@ -4726,6 +4726,21 @@ PrefabInstance:
       propertyPath: OutlineToColor
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7417579545293204313, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0.29803923
+      objectReference: {fileID: 0}
+    - target: {fileID: 7417579545293204313, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0.14517103
+      objectReference: {fileID: 0}
+    - target: {fileID: 7417579545293204313, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0.062745094
+      objectReference: {fileID: 0}
     - target: {fileID: 8662506359587349457, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
       propertyPath: m_Sprite

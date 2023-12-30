@@ -82,11 +82,15 @@ namespace OverhaulMod.Visuals
                 return;
             }
 
-            if (firstPersonMoverReference._equippedWeapons == null)
+            if (firstPersonMoverReference._equippedWeapons == null || firstPersonMoverReference.IsMindSpaceCharacter)
                 return;
 
             List<WeaponType> equippedWeapons = firstPersonMoverReference._equippedWeapons;
             if (equippedWeapons == null)
+                return;
+
+            List<WeaponType> droppedWeapons = firstPersonMoverReference._droppedWeapons;
+            if (droppedWeapons == null)
                 return;
 
             WeaponModel[] equippedWeaponModels = firstPersonMoverReference.GetCharacterModel()?.WeaponModels;
@@ -102,7 +106,7 @@ namespace OverhaulMod.Visuals
                     continue;
 
                 bool isEquipped = firstPersonMoverReference.GetEquippedWeaponType() == keyValue.Key;
-                bool shouldDisplay = !isEquipped;
+                bool shouldDisplay = !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 WeaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }
         }

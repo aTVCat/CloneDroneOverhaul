@@ -152,7 +152,7 @@ namespace OverhaulMod
             }
         }
 
-        public static string naming
+        public static string milestoneNaming
         {
             get
             {

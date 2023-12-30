@@ -56,6 +56,7 @@ namespace OverhaulMod
             _ = ModManagers.New<FadingVoxelManager>();
 
             _ = ModManagers.New<AdvancedPhotoModeManager>();
+            _ = ModManagers.New<WebhookManager>();
         }
 
         private static void loadAssemblies()
