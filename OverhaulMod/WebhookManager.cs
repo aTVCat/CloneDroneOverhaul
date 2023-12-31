@@ -127,6 +127,15 @@ namespace OverhaulMod
             ExecuteFileWebhook(filePath, SurveysWebhookUri);
         }
 
+        public void ExecuteCustomWebhook(string content, string url)
+        {
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = content
+            };
+            ExecuteWebhook(obj1, new Uri(url));
+        }
+
         public async void ExecuteWebhook(WebhookObject webhookObject, Uri uri)
         {
             try

@@ -12,13 +12,19 @@ namespace OverhaulMod.Engine
         {
             get;
             set;
-        } = 0.8f;
+        } = 0.94f;
 
         public float timeToDestroyOffset
         {
             get;
             set;
-        } = 1f;
+        } = 1.5f;
+
+        public int fadingVoxelsLimit
+        {
+            get;
+            set;
+        } = 1250;
 
         private void Start()
         {
@@ -35,7 +41,7 @@ namespace OverhaulMod.Engine
 
         public void AddFadingVoxel(PicaVoxelPoint picaVoxelPoint, MechBodyPart mechBodyPart, float timeToDestroy)
         {
-            if (m_voxelsToFade.Count > 750)
+            if (m_voxelsToFade.Count > fadingVoxelsLimit)
                 return;
 
             FadingVoxel fadingVoxel = new FadingVoxel()

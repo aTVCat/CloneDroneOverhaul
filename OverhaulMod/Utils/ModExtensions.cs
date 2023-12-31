@@ -87,6 +87,11 @@ namespace OverhaulMod.Utils
             transform.SetLocalTransform(transform.localPosition * (rPos ? Random.Range(min, max) : 1f), transform.localEulerAngles * (rRot ? Random.Range(min, max) : 1f), transform.localScale * (rLS ? Random.Range(min, max) : 1f));
         }
 
+        public static Transform FindChildRecursive(this Transform transform, string name)
+        {
+            return TransformUtils.FindChildRecursive(transform, name);
+        }
+
         public static List<ModWeaponModel> GetModWeaponModels(this FirstPersonMover firstPersonMover)
         {
             if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())

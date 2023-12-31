@@ -24,6 +24,7 @@ namespace OverhaulMod.Patches.Harmony
             }
         }
 
+        /*
         [HarmonyPrefix]
         [HarmonyPatch("destroyVoxelAtPositionFromCut")]
         private static bool destroyVoxelAtPositionFromCut_Prefix(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
@@ -46,6 +47,6 @@ namespace OverhaulMod.Patches.Harmony
             });
             __instance.DestroyVoxelAfterWait(picaVoxelPoint, fireSpreadDefinition);
             return false;
-        }
+        }*/
     }
 }
