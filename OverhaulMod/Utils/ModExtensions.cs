@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,10 @@ namespace OverhaulMod.Utils
 {
     internal static class ModExtensions
     {
+        public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
+        public static bool IsNullOrEmpty(this System.Array array) => array == null || array.Length == 0;
+        public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
+
         public static T GetObject<T>(this ModdedObject moddedObject, int index) where T : Object
         {
             if (!moddedObject)
@@ -134,5 +139,97 @@ namespace OverhaulMod.Utils
         {
             return weaponModel as ModWeaponModel;
         }
+
+        public static bool RevertUpgrade(this UpgradeManager upgradeManager, UpgradeDescription upgradeDescription)
+        {
+            if (!upgradeDescription || !upgradeManager)
+                return false;
+
+            UpgradeType upgradeToRevert = upgradeDescription.UpgradeType;
+            int upgradeLevelToRevert = upgradeDescription.Level;
+
+            Dictionary<UpgradeType, int> dictionary = GameDataManager.Instance.GetPlayerUpgradeDictionary();
+            if (!upgradeDescription.CanBeReverted())
+                return false;
+
+            if (upgradeLevelToRevert > 1)
+                GameDataManager.Instance.SetUpgradeLevel(upgradeToRevert, upgradeLevelToRevert - 1);
+            else
+                _ = dictionary.Remove(upgradeToRevert);
+
+            upgradeManager.SetAvailableSkillPoints(upgradeManager.GetAvailableSkillPoints() + upgradeDescription.GetSkillPointCost());
+            GlobalEventManager.Instance.Dispatch("UpgradeCompleted", upgradeDescription);
+            return true;
+        }
+
+        public static List<UpgradeDescription> GetUpgradesRequiringUpgrade(this UpgradeManager upgradeManager, UpgradeDescription upgradeDescription)
+        {
+            List<UpgradeDescription> result = new List<UpgradeDescription>();
+            if (!upgradeDescription || !upgradeManager)
+                return result;
+
+            foreach (UpgradeDescription description in upgradeManager.UpgradeDescriptions)
+            {
+                if (!description || description.IsTheSameUpgrade(upgradeDescription))
+                    continue;
+
+                if (description.Requirement == upgradeDescription || description.Requirement2 == upgradeDescription)
+                    result.Add(description);
+            }
+            return result;
+        }
+
+        public static bool IsUpgraded(this UpgradeDescription upgradeDescription)
+        {
+            if (!CharacterTracker.Instance)
+                return false;
+
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            if (!firstPersonMover)
+                return false;
+
+            List<UpgradeTypeAndLevel> upgrades = firstPersonMover.GetUpgradeTypesAndLevels();
+            if (upgrades.IsNullOrEmpty())
+                return false;
+
+            foreach (UpgradeTypeAndLevel upgradeTypeAndLevel in upgrades)
+            {
+                if (upgradeTypeAndLevel.IsTheSameUpgrade(upgradeDescription))
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool CanBeReverted(this UpgradeDescription upgradeDescription)
+        {
+            if (!CharacterTracker.Instance)
+                return false;
+
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            if (!firstPersonMover)
+                return false;
+
+            Dictionary<UpgradeType, int> dictionary = GameDataManager.Instance.GetPlayerUpgradeDictionary();
+            if (UpgradeModeManager.IsUnrevertableUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeDescription.UpgradeType))
+                return false;
+
+            int playerLevel = dictionary[upgradeDescription.UpgradeType];
+            if (playerLevel != upgradeDescription.Level)
+                return false;
+
+            List<UpgradeDescription> otherUpgrades = UpgradeManager.Instance.GetUpgradesRequiringUpgrade(upgradeDescription);
+            if (!otherUpgrades.IsNullOrEmpty())
+            {
+                foreach (UpgradeDescription upgrade in otherUpgrades)
+                {
+                    if (upgrade.IsUpgraded())
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool IsTheSameUpgrade(this UpgradeTypeAndLevel upgradeTypeAndLevel, UpgradeDescription other) => (upgradeTypeAndLevel.UpgradeType, upgradeTypeAndLevel.Level) == (other.UpgradeType, other.Level);
+        public static bool IsTheSameUpgrade(this UpgradeDescription upgradeDescription, UpgradeDescription other) => (upgradeDescription.UpgradeType, upgradeDescription.Level) == (other.UpgradeType, other.Level);
     }
 }

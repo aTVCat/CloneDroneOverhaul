@@ -60,6 +60,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ArenaRemodelManager>();
             _ = ModManagers.New<AdvancedPhotoModeManager>();
             _ = ModManagers.New<WebhookManager>();
+            _ = ModManagers.New<UpgradeModeManager>();
         }
 
         private static void loadAssemblies()

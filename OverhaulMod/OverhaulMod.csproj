@@ -410,6 +410,8 @@
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\UpgradeMode.cs" />
+    <Compile Include="Engine\UpgradeModeManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModContentLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
@@ -425,6 +427,7 @@
     <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
     <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
+    <Compile Include="Patches\Harmony\UpgradeUIIcon_Patch.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
     <Compile Include="UI\UINewsDetailsPanel.cs" />
