@@ -1,6 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using OverhaulMod.Visuals;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Patches.Addons
 {

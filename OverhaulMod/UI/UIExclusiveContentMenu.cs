@@ -42,6 +42,16 @@ namespace OverhaulMod.UI
             base.Show();
             SetTitleScreenButtonActive(false);
             Populate();
+
+            string error = ExclusiveContentManager.Instance.error;
+            if (error != null)
+            {
+                m_statusBarText.text = "Error";
+                ModUIUtility.MessagePopup("Could not get data. Retry?", error, 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Retry", "No", null, delegate
+                {
+                    OnRetrieveButtonClicked();
+                }, null);
+            }
         }
 
         public override void Hide()
@@ -50,12 +60,17 @@ namespace OverhaulMod.UI
             SetTitleScreenButtonActive(true);
         }
 
+        public override void Update()
+        {
+            m_retrieveDataButton.interactable = !ExclusiveContentManager.Instance.isRetrievingData;
+        }
+
         public void Populate()
         {
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            foreach (Content.ExclusiveContentInfo contentInfo in ExclusiveContentManager.Instance.GetUnlockedContent())
+            foreach (Content.ExclusiveContentInfo contentInfo in ExclusiveContentManager.Instance.GetAllUnlockedContent())
             {
                 ModdedObject moddedObject = Instantiate(m_unlockedItemDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -70,16 +85,14 @@ namespace OverhaulMod.UI
 
         public void OnRetrieveButtonClicked()
         {
-            m_statusBarText.text = "Retrieving data...";
             m_retrieveDataButton.interactable = false;
+            m_statusBarText.text = "Retrieving data...";
             ExclusiveContentManager.Instance.RetrieveDataFromRepository(delegate
             {
-                m_retrieveDataButton.interactable = true;
                 m_statusBarText.text = "Successfully retrieved data!";
                 Populate();
             }, delegate (string error)
             {
-                m_retrieveDataButton.interactable = true;
                 m_statusBarText.text = "Error: " + error;
             }, false);
         }

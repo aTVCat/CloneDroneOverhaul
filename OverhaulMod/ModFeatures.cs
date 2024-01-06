@@ -6,52 +6,98 @@ namespace OverhaulMod
     {
         public static bool IsEnabled(FeatureType feature)
         {
-            ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
-            if (modExclusiveContentManager)
-                foreach (ExclusiveContentInfo content in modExclusiveContentManager.GetContentOfType<ExclusiveContentFeatureUnlock>())
-                    if (content.Content is ExclusiveContentFeatureUnlock featureUnlock && featureUnlock.Feature == feature)
-                    {
-                        if (content.IsAvailableToLocalUser())
-                        {
-                            return true;
-                        }
-                        break;
-                    }
-
+            bool unknownFeature = false;
+            bool result;
             switch (feature)
             {
                 case FeatureType.EndlessModeMenu:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.NewWeapons:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.WeaponBag:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.ChapterSelectMenuRework:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.LoadingScreenRework:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.PauseMenuRework:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.TitleScreenRework:
-                    return false;
+                    result = true;
+                    break;
                 case FeatureType.ArrowModelRefresh:
-                    return true;
+                    result = true;
+                    break;
                 case FeatureType.WeatherSystem:
-                    return true;
+                    result = true;
+                    break;
+                default:
+                    result = false;
+                    unknownFeature = true;
+                    break;
             }
-            throw new System.Exception($"Unknown Overhaul feature: {feature}");
+
+            if (!unknownFeature && !result)
+            {
+                ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
+                if (modExclusiveContentManager && modExclusiveContentManager.IsFeatureUnlocked(feature))
+                    result = true;
+            }
+
+            return result;
         }
 
         public enum FeatureType
         {
+            /// <summary>
+            /// <see cref="UI.UIEndlessModeMenu"/>
+            /// </summary>
             EndlessModeMenu,
+
+            /// <summary>
+            /// <see cref="UI.UIChapterSelectMenuRework"/>
+            /// </summary>
             ChapterSelectMenuRework,
+
+            /// <summary>
+            /// <see cref="UI.UILoadingScreenRework"/>
+            /// </summary>
             LoadingScreenRework,
+
+            /// <summary>
+            /// <see cref="UI.UIPauseMenuRework"/>
+            /// </summary>
             PauseMenuRework,
+
+            /// <summary>
+            /// <see cref="UI.UITitleScreenRework"/>
+            /// </summary>
             TitleScreenRework,
+
+            /// <summary>
+            /// <see cref="Visuals.ArrowModelRefresher"/>
+            /// </summary>
             ArrowModelRefresh,
+
+            /// <summary>
+            /// <see cref="Combat.ModWeaponsManager"/>
+            /// </summary>
             NewWeapons,
+
+            /// <summary>
+            /// <see cref="Visuals.RobotWeaponBag"/>
+            /// </summary>
             WeaponBag,
+
+            /// <summary>
+            /// <see cref="Visuals.Environment.WeatherManager"/>
+            /// </summary>
             WeatherSystem,
         }
     }

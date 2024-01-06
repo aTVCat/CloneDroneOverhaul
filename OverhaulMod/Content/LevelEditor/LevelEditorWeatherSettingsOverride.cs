@@ -1,11 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using OverhaulMod.Visuals.Environment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace OverhaulMod.Content.LevelEditor
 {

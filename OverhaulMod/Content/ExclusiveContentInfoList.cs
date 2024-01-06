@@ -7,5 +7,7 @@ namespace OverhaulMod.Content
         public List<ExclusiveContentInfo> List;
 
         public ulong LocalSteamID;
+
+        public string LocalPlayFabID;
     }
 }

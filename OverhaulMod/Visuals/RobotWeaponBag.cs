@@ -113,7 +113,7 @@ namespace OverhaulMod.Visuals
 
         public void AddRenderer(WeaponType weaponType, List<WeaponType> equippedWeapons, WeaponModel[] equippedWeaponModels)
         {
-            if (weaponType == WeaponType.None || equippedWeapons == null || equippedWeaponModels == null)
+            if (!WeaponToPosition.ContainsKey(weaponType) || equippedWeapons == null || equippedWeaponModels == null)
                 return;
 
             WeaponModel weaponModel = null;

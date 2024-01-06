@@ -14,7 +14,13 @@ namespace OverhaulMod.Content
             if (InfoReference == null || !firstPersonMover || !firstPersonMover.IsPlayer())
                 return false;
 
-            string playFabID = GameModeManager.IsSinglePlayer() ? MultiplayerLoginManager.Instance.GetLocalPlayFabID() : firstPersonMover.GetPlayFabID();
+            string playFabID = firstPersonMover.GetPlayFabID();
+            if (GameModeManager.IsSinglePlayer())
+            {
+                ExclusiveContentManager exclusiveContentManager = ExclusiveContentManager.Instance;
+                MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
+                playFabID = (multiplayerLoginManager && multiplayerLoginManager.IsLoggedIntoPlayfab() && !multiplayerLoginManager.IsBanned()) ? multiplayerLoginManager.GetLocalPlayFabID() : exclusiveContentManager?.localPlayFabId;
+            }
 
             if (string.IsNullOrEmpty(playFabID) || InfoReference.PlayFabID != playFabID)
                 return false;

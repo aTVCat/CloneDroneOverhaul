@@ -102,16 +102,16 @@ namespace OverhaulMod.Utils
                 ChapterIndex = chapterIndex,
             });
 
-            ModUserDataManager.Instance.WriteFile(fileName + ".json", content, true);
-            _ = ModIOUtils.OpenFileExplorer(ModUserDataManager.Instance.savesFolder);
+            ModDataManager.Instance.WriteFile(fileName + ".json", content, true);
+            _ = ModIOUtils.OpenFileExplorer(ModDataManager.Instance.savesFolder);
         }
 
         public static ModLevelSectionInfo[] GetChapterSections(string directory, int chapterIndex)
         {
             if (chapterIndex == 1)
-                return ModLevelManager.Instance.GenerateChapter1Sections();
+                return ModLevelManager.Instance.GenerateChapterSections(false);
             if (chapterIndex == 2)
-                return ModLevelManager.Instance.GenerateChapter2Sections();
+                return ModLevelManager.Instance.GenerateChapterSections(true);
 
             directory += chapterIndex;
             if (ModAdvancedCache.Has(directory))

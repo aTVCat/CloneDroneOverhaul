@@ -34,7 +34,7 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
-            DispatchGameLoadedEvent();
+            TriggerGameLoadedEvent();
             _ = ModActionUtils.RunCoroutine(showUIDelay());
         }
 
@@ -47,7 +47,7 @@ namespace OverhaulMod
             yield break;
         }
 
-        public void DispatchModLoadedEvent()
+        public void TriggerModLoadedEvent()
         {
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
             {
@@ -56,7 +56,7 @@ namespace OverhaulMod
             }
         }
 
-        public void DispatchModContentLoadedEvent()
+        public void TriggerModContentLoadedEvent()
         {
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
             {
@@ -65,9 +65,9 @@ namespace OverhaulMod
             }
         }
 
-        public void DispatchGameLoadedEvent()
+        public void TriggerGameLoadedEvent()
         {
-            ModCore.DispatchContentLoadedEvent();
+            ModCore.TriggerContentLoadedEvent();
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
             {
                 if (behaviour is IGameLoadListener gameLoadListener)

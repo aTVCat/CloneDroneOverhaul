@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
 
         private void clearList()
         {
-            if(m_content.childCount != 0)
+            if (m_content.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_content);
         }
 
@@ -96,7 +96,7 @@ namespace OverhaulMod.UI
 
             string file = ModCore.savesFolder + "LeaderboardExport.txt";
             ModIOUtils.WriteText(stringBuilder.ToString(), file);
-            ModIOUtils.OpenFile(file);
+            _ = ModIOUtils.OpenFile(file);
 
             _ = stringBuilder.Clear();
         }
@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtility.MessagePopup("Confirm clearing leaderboard data?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
-                var list = GameDataManager.Instance._endlessHighScores;
+                List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
                 list.Clear();
                 DataRepository.Instance.Save(list, "EndlessHighScores", false, true);
 

@@ -93,7 +93,7 @@ namespace OverhaulMod.UI
 
         public void OnAuthorButtonClicked()
         {
-            if(SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
+            if (SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
             {
                 SteamFriends.ActivateGameOverlayToWebPage("https://steamcommunity.com/profiles/76561199028311109");
             }

@@ -9,7 +9,11 @@ namespace OverhaulMod.Utils
         {
             string result;
 
-            result = JsonConvert.SerializeObject(@object, ModCache.jsonSerializerSettings);
+            using (StringWriter sr = new StringWriter())
+            {
+                JsonSerializer.Create(ModCache.jsonSerializerSettings).Serialize(sr, @object);
+                result = sr.ToString();
+            }
 
             return result;
         }
@@ -18,7 +22,11 @@ namespace OverhaulMod.Utils
         {
             T result;
 
-            result = JsonConvert.DeserializeObject<T>(@string, ModCache.jsonSerializerSettings);
+            using (StringReader sr = new StringReader(@string))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                result = JsonSerializer.Create(ModCache.jsonSerializerSettings).Deserialize<T>(reader);
+            }
 
             return result;
         }

@@ -20,7 +20,7 @@ namespace OverhaulMod.Patches.Harmony
                 gameUIThemeData.ButtonTextOutline[1].Color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
                 ModCache.gameUIThemeData = __instance.GameThemeData;
             }
-            if (!gameUIThemeData && ModCache.gameUIThemeData)
+            else if (!gameUIThemeData && ModCache.gameUIThemeData)
             {
                 __instance.GameThemeData = ModCache.gameUIThemeData;
             }
@@ -40,6 +40,26 @@ namespace OverhaulMod.Patches.Harmony
                         if (animator)
                         {
                             animator.Play("ButtonSelected");
+                        }
+                    }
+                    break;
+            }
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("onStateExit")]
+        private static bool onStateExit_Prefix(SelectableUI __instance, UISelectionState stateExiting)
+        {
+            switch (stateExiting)
+            {
+                case UISelectionState.Selected:
+                    if (!__instance.SkipSelectionArrows && __instance.GameThemeData && __instance.GameThemeData.SelectionCornerPrefab)
+                    {
+                        Animator animator = __instance.getEnabledCornersAnimator();
+                        if (animator)
+                        {
+                            animator.Play("ButtonDeselected");
                         }
                     }
                     break;

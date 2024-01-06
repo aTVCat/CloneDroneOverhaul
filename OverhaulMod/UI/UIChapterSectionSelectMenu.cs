@@ -56,9 +56,6 @@ namespace OverhaulMod.UI
                 TransformUtils.DestroyAllChildren(m_sectionsContainer);
 
             this.chapterIndex = chapterIndex;
-            bool hasOnlyLevels = chapterIndex == 1 || chapterIndex == 2;
-            bool hasOnlySection = chapterIndex == 3;
-            bool hasBoth = chapterIndex == 4 || chapterIndex == 5;
 
             ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
             if (sections == null || sections.Length == 0)
@@ -94,7 +91,10 @@ namespace OverhaulMod.UI
         {
             StoryModeChapterSelect legacyUI = ModCache.titleScreenUI.ChapterSelectUI;
             if (!legacyUI)
+            {
+                ModUIUtility.MessagePopupOK("Error", "Legacy UI reference is NULL");
                 return;
+            }
 
             string methodName = string.Format("OnChapter{0}Clicked", chapterIndex);
             MethodInfo methodInfo = typeof(StoryModeChapterSelect).GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                Debug.LogWarningFormat("[ChaptersMenu} Could not find method called {0}", methodName);
+                ModUIUtility.MessagePopupOK("Error", $"Could not find method called {methodName}");
             }
         }
     }

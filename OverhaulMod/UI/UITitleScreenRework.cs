@@ -82,6 +82,14 @@ namespace OverhaulMod.UI
         private CanvasGroup m_canvasGroup;
         private GameObject m_legacyContainer;
 
+        private bool m_hasAddedEventListeners;
+
+        public bool enableRework
+        {
+            get;
+            set;
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -89,18 +97,58 @@ namespace OverhaulMod.UI
             if (titleScreenUI)
             {
                 CanvasGroup group = titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
-                group.alpha = 0f;
-                group.interactable = false;
                 m_canvasGroup = group;
                 m_legacyContainer = group.gameObject;
                 m_titleScreenUI = titleScreenUI;
+                HideLegacyUI();
+
+                ModCore.ModStateChanged += onModStateChanged;
+                m_hasAddedEventListeners = true;
             }
         }
 
         public override void Update()
         {
-            m_container.SetActive(m_legacyContainer.activeInHierarchy);
-            m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.hasRetrievedDataOnStart;
+            m_container.SetActive(enableRework && m_legacyContainer.activeInHierarchy);
+            m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
+        }
+
+        public override void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
+                ModCore.ModStateChanged -= onModStateChanged;
+        }
+
+        private void onModStateChanged(bool enabled)
+        {
+            if (enabled)
+                HideLegacyUI();
+            else
+                ShowLegacyUI();
+        }
+
+        public void HideLegacyUI()
+        {
+            CanvasGroup group = m_canvasGroup;
+            if (group)
+            {
+                group.alpha = 0f;
+                group.interactable = false;
+                group.blocksRaycasts = false;
+                enableRework = true;
+            }
+        }
+
+        public void ShowLegacyUI()
+        {
+            CanvasGroup group = m_canvasGroup;
+            if (group)
+            {
+                group.alpha = 1f;
+                group.interactable = true;
+                group.blocksRaycasts = true;
+                enableRework = false;
+            }
         }
 
         public void OnPlaySinglePlayerButtonClicked()

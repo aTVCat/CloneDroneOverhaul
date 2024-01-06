@@ -170,7 +170,7 @@ namespace OverhaulMod.Engine
             m_commentatorTargetTransform.localPosition = new Vector3(-62.55f, 38f, 0f);
             m_commentatorTargetTransform.localEulerAngles = new Vector3(8f, 270f, 0f);
 
-            if(m_analysisBotTransform)
+            if (m_analysisBotTransform)
                 m_analysisBotTransform.localPosition = new Vector3(5.2f, 4.7f, 0.52f);
             if (m_commentatronTransform)
                 m_commentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);

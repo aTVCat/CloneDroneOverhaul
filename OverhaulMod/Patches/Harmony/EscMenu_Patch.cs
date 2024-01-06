@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Harmony
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuRework))
                 return true;
 
-            if (UIPauseMenu.disableOverhauledVersion)
+            if (UIPauseMenuRework.disableOverhauledVersion)
                 return true;
 
             ModUIConstants.ShowPauseMenuRework();

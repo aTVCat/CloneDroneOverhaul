@@ -97,12 +97,12 @@ namespace OverhaulMod.Utils
 
         public static void ShowPauseMenuRework()
         {
-            _ = ModUIManager.Instance.Show<UIPauseMenu>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.EUILayer.AfterEscMenu);
+            _ = ModUIManager.Instance.Show<UIPauseMenuRework>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.EUILayer.AfterEscMenu);
         }
 
         public static void ShowChapterSelectMenu()
         {
-            _ = ModUIManager.Instance.Show<UIChapterSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, ModUIManager.EUILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIChapterSelectMenuRework>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, ModUIManager.EUILayer.AfterTitleScreen);
         }
 
         public static void ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
@@ -113,7 +113,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowLoadingScreen()
         {
-            _ = ModUIManager.Instance.Show<UILoadingScreen>(AssetBundleConstants.UI, UI_LOADING_SCREEN, ModUIManager.EUILayer.Last);
+            _ = ModUIManager.Instance.Show<UILoadingScreenRework>(AssetBundleConstants.UI, UI_LOADING_SCREEN, ModUIManager.EUILayer.Last);
         }
 
         public static void HideLoadingScreen()

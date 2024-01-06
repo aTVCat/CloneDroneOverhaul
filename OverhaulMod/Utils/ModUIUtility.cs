@@ -37,10 +37,10 @@ namespace OverhaulMod.Utils
 
         public static void ShowVanillaEscMenu()
         {
-            UIPauseMenu.disableOverhauledVersion = true;
+            UIPauseMenuRework.disableOverhauledVersion = true;
             ModCache.gameUIRoot.EscMenu.Show();
             ModCache.gameUIRoot.RefreshCursorEnabled();
-            UIPauseMenu.disableOverhauledVersion = false;
+            UIPauseMenuRework.disableOverhauledVersion = false;
         }
     }
 }

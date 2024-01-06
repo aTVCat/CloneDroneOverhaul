@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
         }
-        
+
         public void PopulateFields()
         {
             if (m_editingInfo == null)
@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
             if (m_editingInfoList == null)
                 m_editingInfoList = new UpdateInfoList();
 
-            Version parsedModVersion = null;
+            Version parsedModVersion;
             try
             {
                 parsedModVersion = Version.Parse(m_modVersionField.text);
@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            int parsedModBotVersion = -1;
+            int parsedModBotVersion;
             try
             {
                 parsedModBotVersion = int.Parse(m_modBotVersionField.text);
@@ -117,7 +117,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            ModUserDataManager.Instance.WriteFile(UpdateManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
+            ModDataManager.Instance.WriteFile(UpdateManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
         }
 
         public void OnRetrieveButtonClicked()
@@ -128,7 +128,7 @@ namespace OverhaulMod.UI
                 m_retrieveButton.interactable = true;
                 m_editingInfoList = updateInfoList;
                 OnBranchDropdownEdited(0);
-            }, delegate(string error)
+            }, delegate (string error)
             {
                 m_retrieveButton.interactable = true;
                 ModUIUtility.MessagePopupOK("Error", error);
@@ -153,7 +153,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            if(m_editingInfo == null)
+            if (m_editingInfo == null)
                 m_editingInfo = new UpdateInfo();
 
             PopulateFields();

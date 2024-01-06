@@ -114,63 +114,35 @@ namespace OverhaulMod.Engine
             return true;
         }
 
-        public ModLevelSectionInfo[] GenerateChapter1Sections()
+        public ModLevelSectionInfo[] GenerateChapterSections(bool isSecondChapter)
         {
-            if (ModAdvancedCache.TryGet(CHAPTER_1_SECTIONS_CACHE_KEY, out ModLevelSectionInfo[] sections))
+            string cacheKey = isSecondChapter ? CHAPTER_2_SECTIONS_CACHE_KEY : CHAPTER_1_SECTIONS_CACHE_KEY;
+            if (ModAdvancedCache.TryGet(cacheKey, out ModLevelSectionInfo[] sections))
                 return sections;
 
-            int index = 1;
+            int chapterIndex = isSecondChapter ? 2 : 1;
             List<ModLevelSectionInfo> list = new List<ModLevelSectionInfo>();
             foreach (LevelDescription level in LevelManager.Instance._storyModeLevels)
             {
-                string levelId = level.LevelID.Replace("Story", string.Empty);
-                int parsedInt = ModParseUtils.TryParseToInt(levelId, -1);
-                if (parsedInt >= 1 && parsedInt <= 10)
+                if (level == null || string.IsNullOrEmpty(level.LevelID))
+                    continue;
+
+                int chapterLevel = ModParseUtils.TryParseToInt(level.LevelID.Replace("Story", string.Empty), -1) - (isSecondChapter ? 10 : 0);
+                if (chapterLevel >= 1 && chapterLevel <= 10)
                 {
                     list.Add(new ModLevelSectionInfo()
                     {
                         LevelID = level.LevelID,
                         EnabledSections = new List<string>(),
-                        DisplayName = "Level " + parsedInt,
-                        Order = parsedInt - 1,
-                        ChapterIndex = 1,
-                        MetaGameProgress = GetMetagameProgress(parsedInt, 1),
+                        DisplayName = $"Level {chapterLevel} {GetChapterLevelEventName(chapterLevel, chapterIndex, true)}",
+                        Order = chapterLevel - 1,
+                        ChapterIndex = chapterIndex,
+                        MetaGameProgress = GetMetagameProgress(chapterLevel, chapterIndex),
                     });
                 }
-                index++;
             }
             sections = list.ToArray();
-            ModAdvancedCache.Add(CHAPTER_1_SECTIONS_CACHE_KEY, sections);
-            return sections;
-        }
-
-        public ModLevelSectionInfo[] GenerateChapter2Sections()
-        {
-            if (ModAdvancedCache.TryGet(CHAPTER_2_SECTIONS_CACHE_KEY, out ModLevelSectionInfo[] sections))
-                return sections;
-
-            int index = 0;
-            List<ModLevelSectionInfo> list = new List<ModLevelSectionInfo>();
-            foreach (LevelDescription level in LevelManager.Instance._storyModeLevels)
-            {
-                string levelId = level.LevelID.Replace("Story", string.Empty);
-                int parsedInt = ModParseUtils.TryParseToInt(levelId, -1);
-                if (parsedInt >= 11 && parsedInt <= 20)
-                {
-                    list.Add(new ModLevelSectionInfo()
-                    {
-                        LevelID = level.LevelID,
-                        EnabledSections = new List<string>(),
-                        DisplayName = "Level " + (parsedInt - 10),
-                        Order = parsedInt - 11,
-                        ChapterIndex = 1,
-                        MetaGameProgress = GetMetagameProgress(parsedInt - 10, 2),
-                    });
-                }
-                index++;
-            }
-            sections = list.ToArray();
-            ModAdvancedCache.Add(CHAPTER_2_SECTIONS_CACHE_KEY, sections);
+            ModAdvancedCache.Add(cacheKey, sections);
             return sections;
         }
 
@@ -188,10 +160,28 @@ namespace OverhaulMod.Engine
                     metagameProgress = MetagameProgress.P2_FirstHumanEscaped;
                 else if (levelIndex == 5)
                     metagameProgress = MetagameProgress.P3_ReachedAlphaCentauri;
-                else if (levelIndex >= 6)
+                else if (levelIndex > 5)
                     metagameProgress = MetagameProgress.P4_HarvestStarted;
             }
             return metagameProgress;
+        }
+
+        public string GetChapterLevelEventName(int levelIndex, int chapterIndex, bool addBrackets)
+        {
+            string result = string.Empty;
+            if (chapterIndex == 1)
+            {
+                if (levelIndex == 5)
+                    result = "Emperor arrival";
+            }
+            else if (chapterIndex == 2)
+            {
+                if (levelIndex == 5)
+                    result = "Alpha Centauri";
+                if (levelIndex == 6)
+                    result = "Harvest start";
+            }
+            return addBrackets && result != string.Empty ? $"({result})" : result;
         }
     }
 }

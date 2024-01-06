@@ -26,6 +26,12 @@ namespace OverhaulMod.Engine
             set;
         } = 1250;
 
+        public float randomFadeMultiplierMin
+        {
+            get;
+            set;
+        } = 0.95f;
+
         private void Start()
         {
             m_voxelsToFade = new List<FadingVoxel>();
@@ -33,7 +39,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if(ModTime.hasFixedUpdated && ModTime.fixedFrameCount % 10 == 0)
+            if (ModTime.hasFixedUpdated && ModTime.fixedFrameCount % 10 == 0)
             {
                 UpdateFading();
             }
@@ -62,7 +68,7 @@ namespace OverhaulMod.Engine
             List<int> indicesToRemove = new List<int>();
             foreach (FadingVoxel fadingVoxel in m_voxelsToFade)
             {
-                if(fadingVoxel.TimeToDestroy <= Time.time)
+                if (fadingVoxel.TimeToDestroy <= Time.time)
                 {
                     indicesToRemove.Add(index);
                     index++;
@@ -76,13 +82,13 @@ namespace OverhaulMod.Engine
                     if (frame)
                     {
                         Voxel? voxelAtArrayPosition = frame.GetVoxelAtArrayPosition(fadingVoxel.Point);
-                        if(voxelAtArrayPosition != null)
+                        if (voxelAtArrayPosition != null)
                         {
                             Voxel voxel = voxelAtArrayPosition.Value;
                             if (voxel.Active)
                             {
                                 Color color = voxel.Color;
-                                color *= multiplier;
+                                color *= multiplier * Random.Range(randomFadeMultiplierMin, 1f);
                                 voxel.Color = color;
                                 frame.SetVoxelAtArrayPosition(fadingVoxel.Point, voxel);
                             }
@@ -92,9 +98,9 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            if(indicesToRemove.Count != 0)
+            if (indicesToRemove.Count != 0)
             {
-                int i = indicesToRemove.Count-1;
+                int i = indicesToRemove.Count - 1;
                 do
                 {
                     m_voxelsToFade.RemoveAt(indicesToRemove[i]);

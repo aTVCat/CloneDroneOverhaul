@@ -18,7 +18,7 @@ namespace OverhaulMod.Utils
 
         public static void WriteBytes(byte[] bytes, string path)
         {
-            FileMode fileMode = File.Exists(path) ? FileMode.OpenOrCreate | FileMode.Truncate : FileMode.Create;
+            FileMode fileMode = File.Exists(path) ? FileMode.Truncate : FileMode.Create;
             using (FileStream fileStream = new FileStream(path, fileMode, FileAccess.Write))
             {
                 fileStream.Write(bytes, 0, bytes.Length);

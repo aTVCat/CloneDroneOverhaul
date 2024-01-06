@@ -1,13 +1,8 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
-using UnityEngine;
 using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Patches.Harmony
 {

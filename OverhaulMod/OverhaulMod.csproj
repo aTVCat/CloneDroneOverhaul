@@ -387,6 +387,8 @@
     <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\FistWeaponModel.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationItem.cs" />
@@ -406,6 +408,7 @@
     <Compile Include="Content\ExclusiveContentInfoList.cs" />
     <Compile Include="Content\ExclusiveContentType.cs" />
     <Compile Include="Content\NewsInfo.cs" />
+    <Compile Include="Engine\ModLocalizationManager.cs" />
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
@@ -422,7 +425,7 @@
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModTime.cs" />
-    <Compile Include="ModUserDataManager.cs" />
+    <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
     <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
@@ -470,21 +473,21 @@
     <Compile Include="UI\UINewsPanel.cs" />
     <Compile Include="UI\UIMultiplayerConnectScreen.cs" />
     <Compile Include="UI\UIExclusiveContentEditor.cs" />
-    <Compile Include="UI\UILoadingScreen.cs" />
-    <Compile Include="UI\UIChapterSelectMenu.cs" />
+    <Compile Include="UI\UILoadingScreenRework.cs" />
+    <Compile Include="UI\UIChapterSelectMenuRework.cs" />
     <Compile Include="UI\UIExclusiveContentMenu.cs" />
-    <Compile Include="UI\UIPauseMenu.cs" />
+    <Compile Include="UI\UIPauseMenuRework.cs" />
     <Compile Include="UI\UICommunityHub.cs" />
     <Compile Include="UI\UIFeedbackMenu.cs" />
     <Compile Include="UI\UISettingsMenuRework.cs" />
     <Compile Include="UI\UITitleScreenRework.cs" />
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
-    <Compile Include="Utils\ModLevelUtils.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModUGCUtils.cs" />
     <Compile Include="Utils\ModUIUtility.cs" />
+    <Compile Include="Utils\SpecialUtils.cs" />
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
@@ -536,9 +539,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LevelEditorPatch.dll" />
   </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>

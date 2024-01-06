@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
                 return;
 
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            foreach(var news in m_editingInfoList.News)
+            foreach (NewsInfo news in m_editingInfoList.News)
             {
                 list.Add(new Dropdown.OptionData() { text = news.Title });
             }
@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
             m_editingInfo.Title = m_headerField.text;
             m_editingInfo.Description = m_descriptionField.text;
 
-            ModUserDataManager.Instance.WriteFile(NewsManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
+            ModDataManager.Instance.WriteFile(NewsManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
         }
 
         public void OnRetrieveButtonClicked()
@@ -99,7 +99,7 @@ namespace OverhaulMod.UI
             if (m_editingInfoList == null)
                 return;
 
-            var newsInfo = new NewsInfo()
+            NewsInfo newsInfo = new NewsInfo()
             {
                 Title = "Some news",
             };

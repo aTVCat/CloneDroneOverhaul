@@ -22,20 +22,23 @@ namespace OverhaulMod.Combat
             AddWeapon<BattleAxeWeaponModel>((WeaponType)50, true, AssetBundleConstants.WEAPONS, "OverhaulBAxe");
             AddWeapon<ScytheWeaponModel>((WeaponType)51, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
             AddWeapon<HalberdWeaponModel>((WeaponType)52, true, AssetBundleConstants.WEAPONS, "OverhaulHalberd");
+            AddWeapon<FistWeaponModel>((WeaponType)54, true, null, null);
+            AddWeapon<ClawsWeaponModel>((WeaponType)55, true, null, null);
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel
         {
             if (m_Weapons.ContainsKey(weaponType))
-            {
                 return;
-            }
-            m_Weapons.Add(weaponType, (ModResources.Load<GameObject>(assetBundle, assetName), typeof(T)));
+
+            GameObject model = null;
+            if (!string.IsNullOrEmpty(assetBundle) && !string.IsNullOrEmpty(assetName))
+                model = ModResources.Load<GameObject>(assetBundle, assetName);
+
+            m_Weapons.Add(weaponType, (model, typeof(T)));
 
             if (melee)
-            {
                 m_MeleeWeapons.Add(weaponType);
-            }
         }
 
         public bool IsMeleeWeapon(WeaponType weaponType)
@@ -60,7 +63,17 @@ namespace OverhaulMod.Combat
             {
                 (GameObject, Type) tuple = m_Weapons[weaponType];
 
-                GameObject gameObject = Instantiate(tuple.Item1, handR, false);
+                GameObject model = tuple.Item1;
+                GameObject gameObject;
+                if (model)
+                {
+                    gameObject = Instantiate(model, handR, false);
+                }
+                else
+                {
+                    gameObject = new GameObject(weaponType.ToString());
+                    gameObject.transform.SetParent(handR, false);
+                }
                 ModWeaponModel modWeaponModel = (ModWeaponModel)gameObject.AddComponent(tuple.Item2);
                 modWeaponModel.WeaponType = weaponType;
                 modWeaponModel.SetOwner(firstPersonMover);

@@ -36,7 +36,7 @@ namespace OverhaulMod.Content
                 UnityWebRequest.ClearCookieCache();
             }
 
-            if(m_downloadedUpdateInfoList != null)
+            if (m_downloadedUpdateInfoList != null)
             {
                 callback?.Invoke(m_downloadedUpdateInfoList);
                 return;
@@ -49,7 +49,7 @@ namespace OverhaulMod.Content
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     errorCallback?.Invoke(exc.ToString());
                     return;
@@ -68,7 +68,7 @@ namespace OverhaulMod.Content
                 {
                     Directory.Delete(directoryPath, true);
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     errorCallback?.Invoke(exc.ToString());
                     return;

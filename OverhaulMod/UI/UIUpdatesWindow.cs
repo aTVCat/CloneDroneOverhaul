@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            if(updateInfo == null || updateInfo.IsCurrentBuild() || updateInfo.IsOldBuild())
+            if (updateInfo == null || updateInfo.IsCurrentBuild() || updateInfo.IsOldBuild())
             {
                 m_changelogText.text = "No updates found.";
                 return;

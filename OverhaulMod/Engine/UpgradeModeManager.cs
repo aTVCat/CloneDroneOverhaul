@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 

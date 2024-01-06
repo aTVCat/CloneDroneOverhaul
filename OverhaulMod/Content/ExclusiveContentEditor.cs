@@ -71,12 +71,12 @@ namespace OverhaulMod.Content
 
         public static void Save()
         {
-            ModUserDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, ModJsonUtils.Serialize(contentList), false);
+            ModDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, ModJsonUtils.Serialize(contentList), false);
         }
 
         public static void Save(string contents)
         {
-            ModUserDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, contents, false);
+            ModDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, contents, false);
         }
 
         public static FieldInfo[] GetContentFields() => editingContentBase.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);

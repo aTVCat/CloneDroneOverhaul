@@ -43,7 +43,7 @@ namespace OverhaulMod.Content
         public void GetTextFileContent(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(LINK + path);
-            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, true, delegate(object obj)
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, true, delegate (object obj)
             {
                 doneCallback?.Invoke((string)obj);
             }, errorCallback, timeOut));
@@ -52,7 +52,7 @@ namespace OverhaulMod.Content
         public void GetFileContent(string path, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(LINK + path);
-            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, false, delegate(object obj)
+            _ = ModActionUtils.RunCoroutine(getFileContentCoroutine(unityWebRequest, false, delegate (object obj)
             {
                 doneCallback?.Invoke((byte[])obj);
             }, errorCallback, timeOut));
@@ -78,7 +78,7 @@ namespace OverhaulMod.Content
 
         private IEnumerator getFileContentCoroutine(UnityWebRequest webRequest, bool returnText, Action<object> doneCallback, Action<string> errorCallback, int timeOut)
         {
-            if(timeOut != -1)
+            if (timeOut != -1)
                 webRequest.timeout = timeOut;
 
             if (USE_METHOD_FOR_PRIVATE)

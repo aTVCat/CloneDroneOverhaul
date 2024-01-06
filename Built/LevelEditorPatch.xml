@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LevelEditorPatch</name>
+    </assembly>
+    <members>
+        <member name="T:LevelEditorPatch.CustomObjectsList">
+            <summary>
+            This is where custom objects are stored
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.JsonUtils">
+            <summary>
+            Better optimized json functions (probably)
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.Extensions">
+            <summary>
+            Some extensions related to level editor
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.ObjectManager">
+            <summary>
+            Add new objects here
+            </summary>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.Apply">
+            <summary>
+            Call this method in <see cref="M:ModLibrary.Mod.OnModLoaded"/> or <see cref="M:ModLibrary.Mod.OnModEnabled"/>
+            </summary>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.AddObject(System.String,System.String,System.String,UnityEngine.Transform,System.Type[],UnityEngine.Texture2D)">
+            <summary>
+            Add an object to level editor
+            </summary>
+            <param name="name"></param>
+            <param name="modName"></param>
+            <param name="folder"></param>
+            <param name="transform"></param>
+            <param name="previewImage"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.AddObjectAlt(System.String,System.String,System.String,UnityEngine.Transform,System.Type[],System.String)">
+            <summary>
+            Add an object to level editor
+            </summary>
+            <param name="name"></param>
+            <param name="modName"></param>
+            <param name="folder"></param>
+            <param name="transform"></param>
+            <param name="previewImage"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.AddObjectPathOverride(System.String,System.String,System.String,System.String)">
+            <summary>
+            Rename path parameter value of <see cref="M:UnityEngine.Resources.Load(System.String)"/>
+            </summary>
+            <param name="pathToRename"></param>
+            <param name="name"></param>
+            <param name="modName"></param>
+            <param name="folder"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.AddObjectPathOverrideV1(System.String,System.String,System.String)">
+            <summary>
+            Use <see cref="M:LevelEditorPatch.Patch.AddObjectPathOverride(System.String,System.String,System.String,System.String)"/> instead
+            </summary>
+            <param name="name"></param>
+            <param name="modName"></param>
+            <param name="folder"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.GetResourceObject(System.String)">
+            <summary>
+            Must be called in <see cref="M:ModLibrary.Mod.OnResourcesLoad(System.String)"/> to make your custom objects actually work
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

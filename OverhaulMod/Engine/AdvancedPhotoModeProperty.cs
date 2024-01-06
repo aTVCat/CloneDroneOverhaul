@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
         {
             get
             {
-                if(m_propertyReference == null)
+                if (m_propertyReference == null)
                 {
                     m_propertyReference = m_classType.GetProperty(m_classMemberName, BindingFlags.Public | BindingFlags.Static);
                 }

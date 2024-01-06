@@ -18,9 +18,9 @@ namespace OverhaulMod.Engine
 
         public void SaveEnvironmentSettings()
         {
-            foreach(var property in m_properties)
+            foreach (AdvancedPhotoModeProperty property in m_properties)
             {
-                if(!property.disallowSavingValue)
+                if (!property.disallowSavingValue)
                     property.SaveValue();
             }
         }
@@ -28,7 +28,7 @@ namespace OverhaulMod.Engine
         public void RecoverEnvironmentSettings()
         {
             LevelEditorLightManager.Instance.RefreshLightInScene();
-            foreach (var property in m_properties)
+            foreach (AdvancedPhotoModeProperty property in m_properties)
             {
                 if (!property.disallowSavingValue)
                     property.RestoreValue();

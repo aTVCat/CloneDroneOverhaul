@@ -1,12 +1,9 @@
 ﻿using DiscordWebhook;
 using Newtonsoft.Json;
-using OverhaulMod.Utils;
-using Pathfinding;
 using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -153,7 +150,7 @@ namespace OverhaulMod
         {
             using (WebClient webClient = new WebClient())
             {
-                webClient.UploadFile(uri, "POST", filePath);
+                _ = webClient.UploadFile(uri, "POST", filePath);
             }
         }
     }

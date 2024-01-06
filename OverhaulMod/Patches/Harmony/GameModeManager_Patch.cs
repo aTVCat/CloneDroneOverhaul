@@ -15,5 +15,15 @@ namespace OverhaulMod.Patches.Harmony
                 __result = ModGameModifiersManager.Instance.forceEnableGreatSwords && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5";
             }
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("CanLevelsModifyTimeScale")]
+        private static void CanLevelsModifyTimeScale_Postfix(ref bool __result)
+        {
+            if (!__result && GameModeManager.IsLevelPlaytest())
+            {
+                __result = true;
+            }
+        }
     }
 }

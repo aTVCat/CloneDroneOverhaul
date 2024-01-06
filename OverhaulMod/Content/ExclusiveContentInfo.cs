@@ -32,9 +32,29 @@ namespace OverhaulMod.Content
             return !string.IsNullOrEmpty(PlayFabID);
         }
 
-        public bool IsAvailableToLocalUser()
+        public bool IsAvailable()
         {
-            return (Content != null && Content.ForceUnlock) || (HasSteamID() && SteamManager.Instance.Initialized ? SteamID == (ulong)SteamUser.GetSteamID() : SteamID == ExclusiveContentManager.Instance.localSteamId) || (HasPlayFabID() && MultiplayerLoginManager.Instance.GetLocalPlayFabID() == PlayFabID);
+            ExclusiveContentManager exclusiveContentManager = ExclusiveContentManager.Instance;
+            if (!exclusiveContentManager)
+                return !HasPlayFabID() && !HasSteamID();
+
+            bool hasSteamId = HasSteamID();
+            if (hasSteamId)
+            {
+                SteamManager steamManager = SteamManager.Instance;
+                if ((steamManager && steamManager.Initialized) ? SteamID == (ulong)SteamUser.GetSteamID() : SteamID == exclusiveContentManager.localSteamId)
+                    return true;
+            }
+
+            bool hasPlayFabId = HasPlayFabID();
+            if (hasPlayFabId)
+            {
+                MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
+                if ((multiplayerLoginManager && multiplayerLoginManager.IsLoggedIntoPlayfab() && !multiplayerLoginManager.IsBanned()) ? multiplayerLoginManager.GetLocalPlayFabID() == PlayFabID : exclusiveContentManager.localPlayFabId == PlayFabID)
+                    return true;
+            }
+
+            return !hasSteamId && !hasPlayFabId;
         }
     }
 }

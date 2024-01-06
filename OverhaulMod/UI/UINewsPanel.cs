@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
                 m_hasEverSuccessfullyPopulatedList = true;
                 setIsPopulating(false);
                 populateList(newsInfoList);
-            }, delegate(string error)
+            }, delegate (string error)
             {
                 ModUIUtility.MessagePopupOK("Error", error, 200f);
                 setIsPopulating(false);
@@ -75,12 +75,12 @@ namespace OverhaulMod.UI
         private void populateList(NewsInfoList newsInfoList)
         {
             int index = 0;
-            foreach(var news in newsInfoList.News)
+            foreach (NewsInfo news in newsInfoList.News)
             {
                 ModdedObject moddedObject = Instantiate(m_newsDisplay, m_newsContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = news.Title;
-                if(index == 0)
+                if (index == 0)
                 {
                     RectTransform rectTransform = moddedObject.transform as RectTransform;
                     Vector2 vector = rectTransform.sizeDelta;

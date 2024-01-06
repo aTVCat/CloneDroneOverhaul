@@ -24,7 +24,7 @@ namespace OverhaulMod.Content
                 fastZip.ExtractZip(tempFile, ModCore.contentFolder, null);
                 if (File.Exists(tempFile))
                     File.Delete(tempFile);
-                ModManagers.Instance.DispatchModContentLoadedEvent();
+                ModManagers.Instance.TriggerModContentLoadedEvent();
                 callback?.Invoke();
             }, errorCallback, out unityWebRequest, 200);
         }

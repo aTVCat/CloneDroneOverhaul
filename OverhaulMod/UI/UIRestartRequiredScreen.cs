@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_canvasGroup.alpha += Time.unscaledDeltaTime * 10f;
+            m_canvasGroup.alpha += Time.unscaledDeltaTime * 5f;
         }
 
         public void SetAllowIgnoring(bool value)
@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         public void OnRestartButtonClicked()
         {
-            Process.Start("steam://rungameid/" + 597170U.ToString());
+            _ = Process.Start("steam://rungameid/" + 597170U.ToString());
             Application.Quit();
         }
     }
