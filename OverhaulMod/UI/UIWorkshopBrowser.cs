@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = GameUIRoot.Instance?.TitleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
                 Hide();

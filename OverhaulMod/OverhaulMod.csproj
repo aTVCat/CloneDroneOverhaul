@@ -430,6 +430,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
     <Compile Include="Patches\GameAddons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\Harmony\SettingsManager_Patch.cs" />
     <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\Harmony\UpgradeUIIcon_Patch.cs" />

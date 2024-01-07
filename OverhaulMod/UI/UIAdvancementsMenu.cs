@@ -34,6 +34,10 @@ namespace OverhaulMod.UI
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
         private TabManager m_tabs;
 
+        [UIElementAction(nameof(OnLegacyUIButtonClicked))]
+        [UIElement("OldUIButton")]
+        private Button m_legacyUIButton;
+
         protected override void OnInitialized()
         {
             m_tabs.AddTab(m_localAdvancementsTab, "local advancements");
@@ -86,10 +90,21 @@ namespace OverhaulMod.UI
             }
         }
 
+        public void OnLegacyUIButtonClicked()
+        {
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            if (titleScreenUI)
+            {
+                Hide();
+                titleScreenUI.OnAchievementsButtonClicked();
+            }
+        }
+
         public void OnSyncWthSteamButtonClicked()
         {
             if (ModGameUtils.SyncSteamAchievements())
             {
+                ClearPageContents();
                 PopulateLocalAchievements();
             }
         }

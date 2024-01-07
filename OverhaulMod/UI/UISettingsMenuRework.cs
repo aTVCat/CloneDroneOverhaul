@@ -151,6 +151,8 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header1("Graphics");
                 _ = pageBuilder.Header3("Window");
                 _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
+                _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
+                _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
                 _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
                 _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
@@ -232,8 +234,30 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header1("Multiplayer settings");
                 _ = pageBuilder.Header3("Preferred region");
                 _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
-                _ = pageBuilder.Header3("Player skin");
+                _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
+                _ = pageBuilder.Button("Manage muted players", delegate
+                {
+                    GameUIRoot.Instance.BlockListSettingsUI.Show();
+                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
+                    {
+                        GameUIRoot.Instance.BlockListSettingsUI.Hide();
+                    });
+                });
+
+                _ = pageBuilder.Header1("Player");
+                _ = pageBuilder.Header3("Skin");
                 _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
+                _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
+                _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
+                _ = pageBuilder.Button("Select emotes", delegate
+                {
+                    GameUIRoot.Instance.EmoteSettingsUI.Show();
+                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
+                    {
+                        GameUIRoot.Instance.EmoteSettingsUI.Hide();
+                    });
+                });
+                _ = pageBuilder.Button("Personalize", null);
             }
         }
 
@@ -250,6 +274,14 @@ namespace OverhaulMod.UI
                         GameUIRoot.Instance.ControlMapper.Close(true);
                     });
                 });
+
+                _ = pageBuilder.Header3("Mouse");
+                _ = pageBuilder.Slider(settingsMenu.MouseSensitivitySlider.minValue, settingsMenu.MouseSensitivitySlider.maxValue, false, settingsMenu.MouseSensitivitySlider.value, OnMouseSensitivityChanged);
+                _ = pageBuilder.Toggle(settingsMenu.InvertMouseToggle.isOn, OnInvertMouseToggleChanged, "Invert mouse");
+                _ = pageBuilder.Header3("Controller");
+                _ = pageBuilder.Slider(settingsMenu.ControllerSensitivitySlider.minValue, settingsMenu.ControllerSensitivitySlider.maxValue, false, settingsMenu.ControllerSensitivitySlider.value, OnControllerSensitivityChanged);
+                _ = pageBuilder.Toggle(settingsMenu.InvertControllerToggle.isOn, OnInvertControllerToggleChanged, "Invert controller");
+                _ = pageBuilder.Toggle(settingsMenu.EqualLookRatioToggle.isOn, OnEqualLookRatioToggleChanged, "1:1 look ratio");
             }
         }
 
@@ -270,6 +302,24 @@ namespace OverhaulMod.UI
             {
                 Hide();
                 titleScreenUI.OnOptionsButtonClicked();
+            }
+        }
+
+        public void OnQualityDropdownChanged(int value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.QualityDropDown.value = value;
+            }
+        }
+
+        public void OnAntiAliasingDropdownChanged(int value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.AntiAliasingDropdown.value = value;
             }
         }
 
@@ -315,6 +365,15 @@ namespace OverhaulMod.UI
             if (settingsMenu)
             {
                 settingsMenu.MultiplayerCharacterModelDropdown.value = value;
+            }
+        }
+
+        public void OnMultiplayerFavoriteColorDropdownChanged(int value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.MultiplayerFavoriteColorDropdown.value = value;
             }
         }
 
@@ -414,6 +473,69 @@ namespace OverhaulMod.UI
             if (settingsMenu)
             {
                 settingsMenu.CommentatorsVolume.value = value;
+            }
+        }
+
+        public void OnMouseSensitivityChanged(float value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.MouseSensitivitySlider.value = value;
+            }
+        }
+
+        public void OnInvertMouseToggleChanged(bool value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.InvertMouseToggle.isOn = !value;
+            }
+        }
+
+        public void OnControllerSensitivityChanged(float value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.ControllerSensitivitySlider.value = value;
+            }
+        }
+
+        public void OnInvertControllerToggleChanged(bool value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.InvertControllerToggle.isOn = !value;
+            }
+        }
+
+        public void OnEqualLookRatioToggleChanged(bool value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.EqualLookRatioToggle.isOn = !value;
+            }
+        }
+
+        public void OnUseSkinInSinglePlayerToggleChanged(bool value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.UseSkinInSinglePlayer.isOn = value;
+            }
+        }
+
+        public void OnRelayToggleChanged(bool value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.RelayToggle.isOn = value;
             }
         }
 
