@@ -48,11 +48,15 @@ namespace OverhaulMod.Patches.Harmony
                     flag = true;
                 }
             }
+
             if (!uiCancelDown || !flag)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
-                if (!modUIManager)
+                if (!modUIManager || modUIManager.skipHidingCustomUIs)
                     return true;
+
+                if (modUIManager.TryInvokeAction())
+                    return false;
 
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_WORKSHOP_ITEM_PAGE_WINDOW))
                     return false;

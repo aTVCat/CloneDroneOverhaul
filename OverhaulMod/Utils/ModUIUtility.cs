@@ -35,6 +35,11 @@ namespace OverhaulMod.Utils
             MessagePopup(header, description, height, MessageMenu.ButtonLayout.OkButton, buttonText, null, null, buttonAction);
         }
 
+        public static void MessagePopupNotImplemented()
+        {
+            MessagePopupOK("This doesn't work now!", "Functionality will be added in later updates...");
+        }
+
         public static void ShowVanillaEscMenu()
         {
             UIPauseMenuRework.disableOverhauledVersion = true;

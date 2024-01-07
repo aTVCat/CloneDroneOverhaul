@@ -429,9 +429,11 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="Patches\GameAddons\ColorsAddon.cs" />
+    <Compile Include="Patches\GameAddons\MinorUIChangesAddon.cs" />
     <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\Harmony\UpgradeUIIcon_Patch.cs" />
+    <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Components\TabManagerAttribute.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />

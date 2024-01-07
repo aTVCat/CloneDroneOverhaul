@@ -37,6 +37,9 @@ namespace OverhaulMod
                 case FeatureType.WeatherSystem:
                     result = true;
                     break;
+                case FeatureType.WorkshopBrowserRework:
+                    result = false;
+                    break;
                 default:
                     result = false;
                     unknownFeature = true;
@@ -99,6 +102,11 @@ namespace OverhaulMod
             /// <see cref="Visuals.Environment.WeatherManager"/>
             /// </summary>
             WeatherSystem,
+
+            /// <summary>
+            /// <see cref="UI.UIWorkshopBrowser"/>
+            /// </summary>
+            WorkshopBrowserRework,
         }
     }
 }

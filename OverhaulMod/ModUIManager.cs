@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +20,18 @@ namespace OverhaulMod
                 }
                 return m_gameUIRootTransform;
             }
+        }
+
+        public bool skipHidingCustomUIs
+        {
+            get;
+            private set;
+        }
+
+        public Action actionToInvoke
+        {
+            get;
+            private set;
         }
 
         private Dictionary<string, GameObject> m_InstantiatedUIs;
@@ -135,6 +149,37 @@ namespace OverhaulMod
                 return true;
             }
             return false;
+        }
+
+        public void HideLegacyMenuInsteadOfCustom(GameObject objectToTrack)
+        {
+            skipHidingCustomUIs = true;
+            ModActionUtils.RunCoroutine(letOriginalUIHideNextTime(objectToTrack));
+        }
+
+        public void InvokeActionInsteadOfHidingCustomUI(Action action)
+        {
+            actionToInvoke = action; 
+        }
+
+        public bool TryInvokeAction()
+        {
+            if(actionToInvoke != null)
+            {
+                actionToInvoke.Invoke();
+                actionToInvoke = null;
+                return true;
+            }
+            return false;
+        }
+
+        private IEnumerator letOriginalUIHideNextTime(GameObject objectToTrack)
+        {
+            while (objectToTrack && objectToTrack.activeInHierarchy)
+                yield return null;
+
+            skipHidingCustomUIs = false;
+            yield break;
         }
 
         public bool ShouldEnableCursor()

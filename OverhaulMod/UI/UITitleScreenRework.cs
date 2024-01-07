@@ -97,6 +97,7 @@ namespace OverhaulMod.UI
             if (titleScreenUI)
             {
                 CanvasGroup group = titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
+                group.blocksRaycasts = true;
                 m_canvasGroup = group;
                 m_legacyContainer = group.gameObject;
                 m_titleScreenUI = titleScreenUI;
@@ -134,7 +135,6 @@ namespace OverhaulMod.UI
             {
                 group.alpha = 0f;
                 group.interactable = false;
-                group.blocksRaycasts = false;
                 enableRework = true;
             }
         }
@@ -146,7 +146,6 @@ namespace OverhaulMod.UI
             {
                 group.alpha = 1f;
                 group.interactable = true;
-                group.blocksRaycasts = true;
                 enableRework = false;
             }
         }
@@ -168,7 +167,7 @@ namespace OverhaulMod.UI
 
         public void OnInfoButtonClicked()
         {
-            ModUIUtility.MessagePopupOK("This button doesn't work now!", "Wait for an update which will add functionality to this button...");
+            ModUIUtility.MessagePopupNotImplemented();
         }
 
         public void OnNewsButtonClicked()
@@ -208,6 +207,11 @@ namespace OverhaulMod.UI
 
         public void OnWorkshopBrowserButtonClicked()
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
+            {
+                ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
+                return;
+            }
             ModUIConstants.ShowWorkshopBrowserRework();
         }
 
