@@ -38,14 +38,21 @@ namespace OverhaulMod.UI
         [UIElement("TogglePrefab", false)]
         public ModdedObject TogglePrefab;
 
+        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Test", "Gameplay", "Sounds", "Multiplayer", "Mod-Bot" })]
+        private TabManager m_tabs;
+        [UIElement("TabPrefab", false)]
+        private ModdedObject m_tabPrefab;
+        [UIElement("TabsContainer")]
+        private Transform m_tabContainer;
+
         protected override void OnInitialized()
         {
+            m_tabs.SelectTab("Gameplay");
         }
 
         public override void Show()
         {
             base.Show();
-            PopulatePage();
             SetTitleScreenButtonActive(false);
         }
 
@@ -55,13 +62,22 @@ namespace OverhaulMod.UI
             SetTitleScreenButtonActive(true);
         }
 
+        public void OnTabSelected(UIElementTab elementTab)
+        {
+            PopulatePage(elementTab.tabId);
+        }
+
+        public void OnTabCreated(UIElementTab elementTab)
+        {
+        }
+
         public void ClearPageContents()
         {
             if (PageContentsTransform && PageContentsTransform.childCount > 0)
                 TransformUtils.DestroyAllChildren(PageContentsTransform);
         }
 
-        public void PopulatePage()
+        public void PopulatePage(string id)
         {
             ClearPageContents();
 
@@ -71,6 +87,22 @@ namespace OverhaulMod.UI
             else
                 return;
 
+            switch (id)
+            {
+                case "Test":
+                    populateTestPage(settingsMenu);
+                    break;
+                case "Gameplay":
+                    populateGameplayPage(settingsMenu);
+                    break;
+                default:
+                    populateDefaultPage(settingsMenu);
+                    break;
+            }
+        }
+
+        private void populateTestPage(SettingsMenu settingsMenu)
+        {
             using (PageBuilder pageBuilder = new PageBuilder(this))
             {
                 _ = pageBuilder.Header1("Graphics test");
@@ -87,9 +119,28 @@ namespace OverhaulMod.UI
             }
         }
 
+        private void populateGameplayPage(SettingsMenu settingsMenu)
+        {
+            using (PageBuilder pageBuilder = new PageBuilder(this))
+            {
+                _ = pageBuilder.Header1("Gameplay settings");
+                _ = pageBuilder.Header3("Difficulty");
+                _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
+            }
+        }
+
+        private void populateDefaultPage(SettingsMenu settingsMenu)
+        {
+            using (PageBuilder pageBuilder = new PageBuilder(this))
+            {
+                _ = pageBuilder.Header1("Page not implemented.");
+                _ = pageBuilder.Header2("This might get fixed in future");
+            }
+        }
+
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = GameUIRoot.Instance?.TitleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
                 Hide();
@@ -99,7 +150,7 @@ namespace OverhaulMod.UI
 
         public void OnScreenResolutionChanged(int value)
         {
-            SettingsMenu settingsMenu = GameUIRoot.Instance?.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.ScreenResolutionDropDown.value = value;
@@ -108,7 +159,7 @@ namespace OverhaulMod.UI
 
         public void OnFullScreenChanged(bool value)
         {
-            SettingsMenu settingsMenu = GameUIRoot.Instance?.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.FullScreenToggle.isOn = value;
@@ -117,7 +168,7 @@ namespace OverhaulMod.UI
 
         public void OnVSyncChanged(bool value)
         {
-            SettingsMenu settingsMenu = GameUIRoot.Instance?.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.VsyncOnToggle.isOn = value;
@@ -126,7 +177,7 @@ namespace OverhaulMod.UI
 
         public void OnRegionChanged(int value)
         {
-            SettingsMenu settingsMenu = GameUIRoot.Instance?.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.RegionDropdown.value = value;
@@ -135,10 +186,19 @@ namespace OverhaulMod.UI
 
         public void OnCharacterModelChanged(int value)
         {
-            SettingsMenu settingsMenu = GameUIRoot.Instance?.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.MultiplayerCharacterModelDropdown.value = value;
+            }
+        }
+
+        public void OnStoryDifficultyIndexChanged(int value)
+        {
+            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            if (settingsMenu)
+            {
+                settingsMenu.StoryModeDifficultyDropDown.value = value;
             }
         }
 

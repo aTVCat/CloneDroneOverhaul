@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace OverhaulMod.Utils
 {
-    public static class SpecialUtils
+    public static class ModSpecialUtils
     {
         private static class InnerSpecialUtils
         {
@@ -14,21 +14,41 @@ namespace OverhaulMod.Utils
 
             private static string s_previousTitleBarText;
 
+            /// <summary>
+            /// Find a window with name
+            /// </summary>
+            /// <param name="className"></param>
+            /// <param name="windowName"></param>
+            /// <returns></returns>
             [DllImport("user32.dll", EntryPoint = "FindWindow")]
             private static extern System.IntPtr FindWindow(string className, string windowName);
 
+            /// <summary>
+            /// Set property value of window
+            /// </summary>
+            /// <param name="hwnd"></param>
+            /// <param name="attr"></param>
+            /// <param name="attrValue"></param>
+            /// <param name="attrSize"></param>
+            /// <returns></returns>
             [DllImport("dwmapi.dll")]
             private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
+            /// <summary>
+            /// Set title bar text
+            /// </summary>
+            /// <param name="hwnd"></param>
+            /// <param name="lpString"></param>
+            /// <returns></returns>
             [DllImport("user32.dll", EntryPoint = "SetWindowText")]
             private static extern bool SetWindowText(System.IntPtr hwnd, string lpString);
 
             private static bool useImmersiveDarkMode(IntPtr handle, bool enabled)
             {
-                if (isWindows10OrGreater(17763))
+                if (isCurrentBuildOrGreater(17763))
                 {
                     int attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
-                    if (isWindows10OrGreater(18985))
+                    if (isCurrentBuildOrGreater(18985))
                     {
                         attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
                     }
@@ -39,9 +59,9 @@ namespace OverhaulMod.Utils
                 return false;
             }
 
-            private static bool isWindows10OrGreater(int build = -1)
+            private static bool isCurrentBuildOrGreater(int build)
             {
-                return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
+                return Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Build >= build;
             }
 
             public static void SetTitleBarDarkModeEnabled(bool enabled)
@@ -74,7 +94,7 @@ namespace OverhaulMod.Utils
         public static void SetOverhauledTitleBarState()
         {
             SetTitleBarDarkModeEnabled(true);
-            SetTitleBarText("Clone Drone (Overhaul Mod)");
+            SetTitleBarText("Clone Drone with Overhaul mod");
         }
 
         public static void RestoreInitialTitleBarState()

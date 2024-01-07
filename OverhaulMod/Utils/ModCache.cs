@@ -40,7 +40,7 @@ namespace OverhaulMod.Utils
             {
                 if (s_modAssemblyName == null)
                 {
-                    s_modAssemblyName = modAssembly.GetName();
+                    s_modAssemblyName = modAssembly?.GetName();
                 }
                 return s_modAssemblyName;
             }
@@ -119,9 +119,22 @@ namespace OverhaulMod.Utils
             {
                 if (!s_titleScreenUI)
                 {
-                    s_titleScreenUI = gameUIRoot.TitleScreenUI;
+                    s_titleScreenUI = gameUIRoot?.TitleScreenUI;
                 }
                 return s_titleScreenUI;
+            }
+        }
+
+        private static SettingsMenu s_settingsMenu;
+        public static SettingsMenu settingsMenu
+        {
+            get
+            {
+                if (!s_settingsMenu)
+                {
+                    s_settingsMenu = gameUIRoot?.SettingsMenu;
+                }
+                return s_settingsMenu;
             }
         }
 
@@ -132,7 +145,7 @@ namespace OverhaulMod.Utils
             {
                 if (!s_titleScreenRootButtonsBG)
                 {
-                    s_titleScreenRootButtonsBG = titleScreenUI.RootButtonsContainerBG;
+                    s_titleScreenRootButtonsBG = titleScreenUI?.RootButtonsContainerBG;
                 }
                 return s_titleScreenRootButtonsBG;
             }

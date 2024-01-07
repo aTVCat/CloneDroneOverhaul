@@ -123,7 +123,7 @@ namespace OverhaulMod
             addEventListeners();
             TriggerModStateChangedEvent(true);
 
-            SpecialUtils.SetOverhauledTitleBarState();
+            ModSpecialUtils.SetOverhauledTitleBarState();
         }
 
         public override void OnModLoaded()
@@ -143,7 +143,7 @@ namespace OverhaulMod
 
             TriggerModStateChangedEvent(false);
 
-            SpecialUtils.RestoreInitialTitleBarState();
+            ModSpecialUtils.RestoreInitialTitleBarState();
         }
 
         public override UnityEngine.Object OnResourcesLoad(string path)

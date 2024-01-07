@@ -33,6 +33,9 @@ namespace OverhaulMod.UI
         [UIElement("ChangelogText")]
         private readonly Text m_changelogText;
 
+        [UIElement("VersionText")]
+        private readonly Text m_versionText;
+
         [UIElement("ProgressBar", false)]
         private readonly GameObject m_progressBar;
 
@@ -51,8 +54,9 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_directUpdateButton.interactable = false;
-            m_changelogText.text = string.Empty;
-            m_branchDropdown.value = 0;
+            m_branchDropdown.value = ModBuildInfo.internalRelease ? 2 : 0;
+
+            ClearVersionAndChangelogTexts();
         }
 
         public override void Show()
@@ -112,18 +116,19 @@ namespace OverhaulMod.UI
 
             if (updateInfo == null || updateInfo.IsCurrentBuild() || updateInfo.IsOldBuild())
             {
-                m_changelogText.text = "No updates found.";
+                m_versionText.text = "No updates found.";
                 return;
             }
             m_directoryName = "OverhaulMod_V" + updateInfo.ModVersion;
             m_downloadSource = updateInfo.DownloadLink;
-            m_changelogText.text = $"Update available: {updateInfo.ModVersion} ({updateInfo.ModBotVersion})\nChangelog:\n{updateInfo.Changelog}";
             m_directUpdateButton.interactable = true;
+
+            SetVersionAndChangelogTexts($"<color=#5f9ded>></color>  Update available: {updateInfo.ModVersion} ({updateInfo.ModBotVersion})", $"Changelog:\n{updateInfo.Changelog}");
         }
 
         private void onFailedToCheckUpdates(string error)
         {
-            m_changelogText.text = $"Error.\n{error}".AddColor(Color.red);
+            SetVersionAndChangelogTexts("Error:".AddColor(Color.yellow), $"{error}".AddColor(Color.yellow));
             SetUIInteractable(true);
         }
 
@@ -143,11 +148,22 @@ namespace OverhaulMod.UI
             ModUIUtility.MessagePopupOK("Installation error", error, 250f);
         }
 
+        public void SetVersionAndChangelogTexts(string version, string changelog)
+        {
+            m_changelogText.text = changelog;
+            m_versionText.text = version;
+        }
+
+        public void ClearVersionAndChangelogTexts()
+        {
+            SetVersionAndChangelogTexts(string.Empty, string.Empty);
+        }
+
         public void OnCheckForUpdatesButtonClicked()
         {
             m_directUpdateButton.interactable = false;
-            m_changelogText.text = string.Empty;
             SetUIInteractable(false);
+            ClearVersionAndChangelogTexts();
 
             UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedUpdates, onFailedToCheckUpdates, true);
         }
@@ -156,10 +172,10 @@ namespace OverhaulMod.UI
         {
             disallowClosing = true;
             m_exitButton.interactable = false;
-            m_changelogText.text = string.Empty;
             m_directUpdateButton.interactable = false;
             m_progressBar.SetActive(true);
             SetUIInteractable(false);
+            ClearVersionAndChangelogTexts();
 
             UpdateManager.Instance.DownloadBuildFromSource(m_downloadSource, m_directoryName, onInstalledNewBuild, onFailedToInstallNewBuild, out m_webRequest);
         }

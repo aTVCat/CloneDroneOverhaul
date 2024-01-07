@@ -424,6 +424,7 @@
     <Compile Include="Content\ExclusiveContentManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
+    <Compile Include="ModLoader.cs" />
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
@@ -431,6 +432,10 @@
     <Compile Include="Patches\Harmony\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\Harmony\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\Harmony\UpgradeUIIcon_Patch.cs" />
+    <Compile Include="UI\Components\TabManagerAttribute.cs" />
+    <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
+    <Compile Include="UI\Elements\UIElementTab.cs" />
+    <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
     <Compile Include="UI\UINewsDetailsPanel.cs" />
@@ -487,7 +492,7 @@
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModUGCUtils.cs" />
     <Compile Include="Utils\ModUIUtility.cs" />
-    <Compile Include="Utils\SpecialUtils.cs" />
+    <Compile Include="Utils\ModSpecialUtils.cs" />
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
@@ -503,7 +508,6 @@
     <Compile Include="Utils\ModCache.cs" />
     <Compile Include="ModCore.cs" />
     <Compile Include="ModFeatures.cs" />
-    <Compile Include="ModLoader.cs" />
     <Compile Include="ModManagers.cs" />
     <Compile Include="ModResources.cs" />
     <Compile Include="Patches\Harmony\LevelEditorObjectPlacementManager_Patch.cs" />

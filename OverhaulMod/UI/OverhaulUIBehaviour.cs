@@ -1,4 +1,7 @@
 ﻿using OverhaulMod.Utils;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,9 +68,20 @@ namespace OverhaulMod.UI
                 }*/
             }
 
-            FieldInfo[] fields = base.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            List<(FieldInfo, TabManagerAttribute)> tabManagers = new List<(FieldInfo, TabManagerAttribute)>();
+
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            Type localType = base.GetType();
+            FieldInfo[] fields = localType.GetFields(bindingFlags);
             foreach (FieldInfo fieldInfo in fields)
             {
+                TabManagerAttribute tabManagerAttribute = fieldInfo.GetCustomAttribute<TabManagerAttribute>();
+                if(tabManagerAttribute != null)
+                {
+                    tabManagers.Add((fieldInfo, tabManagerAttribute));
+                    continue;
+                }
+
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
@@ -143,6 +157,51 @@ namespace OverhaulMod.UI
 
                     fieldInfo.SetValue(this, unityObject);
                 }
+            }
+            
+            foreach((FieldInfo, TabManagerAttribute) tm in tabManagers)
+            {
+                TabManager tabManager = new TabManager();
+                FieldInfo fi = tm.Item1;
+                TabManagerAttribute tma = tm.Item2;
+
+                ModdedObject prefab = null;
+                Transform container = null;
+                if (tma.PrefabFieldName != null || tma.ContainerFieldName != null)
+                {
+                    FieldInfo prefabField = localType.GetField(tma.PrefabFieldName, bindingFlags);
+                    if (prefabField == null)
+                        throw new Exception($"[TabManager] Could not find tab prefab (Field, {tma.PrefabFieldName})");
+                    prefab = prefabField.GetValue(this) as ModdedObject;
+                    if (!prefab)
+                        throw new Exception($"[TabManager] Could not find ModdedObject (Prefab, {tma.PrefabFieldName})");
+
+                    FieldInfo containerField = localType.GetField(tma.ContainerFieldName, bindingFlags);
+                    if (containerField == null)
+                        throw new Exception($"[TabManager] Could not find tab container (Field, {tma.ContainerFieldName})");
+                    container = containerField.GetValue(this) as Transform;
+                    if (!container)
+                        throw new Exception($"[TabManager] Could not find Transform (Prefab, {tma.ContainerFieldName})");
+                }
+
+                MethodInfo onTabCreatedMethod = localType.GetMethod(tma.OnTabCreatedCallbackMethodName, new System.Type[] { typeof(UIElementTab) });
+                MethodInfo onTabSelectedMethod = localType.GetMethod(tma.OnTabSelectedCallbackMethodName, new System.Type[] { typeof(UIElementTab) });
+
+                tabManager.Config(prefab, container, tma.ComponentType, delegate (UIElementTab tab)
+                {
+                    if (onTabCreatedMethod != null)
+                        onTabCreatedMethod.Invoke(this, new object[] { tab });
+                }, delegate (UIElementTab tab)
+                {
+                    if (onTabSelectedMethod != null)
+                        onTabSelectedMethod.Invoke(this, new object[] { tab });
+                });
+
+                if (!tma.Tabs.IsNullOrEmpty())
+                    foreach (string tab in tma.Tabs)
+                        tabManager.AddTab(tab);
+
+                fi.SetValue(this, tabManager);
             }
 
             OnInitialized();

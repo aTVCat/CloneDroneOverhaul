@@ -26,11 +26,25 @@ namespace OverhaulMod.UI
         [UIElement("AdvancementPrefab", false)]
         private readonly ModdedObject m_displayPrefab;
 
+        [UIElement("MyAchTabButton")]
+        private readonly ModdedObject m_localAdvancementsTab;
+        [UIElement("GlbAchTabButton")]
+        private readonly ModdedObject m_globalAdvancementsTab;
+
+        [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
+        private TabManager m_tabs;
+
+        protected override void OnInitialized()
+        {
+            m_tabs.AddTab(m_localAdvancementsTab, "local advancements");
+            m_tabs.AddTab(m_globalAdvancementsTab, "global advancements");
+            m_tabs.SelectTab("local advancements");
+        }
+
         public override void Show()
         {
             base.Show();
             SetTitleScreenButtonActive(false);
-            Populate();
         }
 
         public override void Hide()
@@ -39,16 +53,22 @@ namespace OverhaulMod.UI
             SetTitleScreenButtonActive(true);
         }
 
+        public void OnTabSelected(UIElementTab elementTab)
+        {
+            ClearPageContents();
+
+            if (elementTab.tabId == "local advancements")
+                PopulateLocalAchievements();
+        }
+
         public void ClearPageContents()
         {
             if (m_pageContentsTransform && m_pageContentsTransform.childCount > 0)
                 TransformUtils.DestroyAllChildren(m_pageContentsTransform);
         }
 
-        public void Populate()
+        public void PopulateLocalAchievements()
         {
-            ClearPageContents();
-
             GameplayAchievementManager manager = GameplayAchievementManager.Instance;
             if (!manager)
                 return;
@@ -70,7 +90,7 @@ namespace OverhaulMod.UI
         {
             if (ModGameUtils.SyncSteamAchievements())
             {
-                Populate();
+                PopulateLocalAchievements();
             }
         }
     }
