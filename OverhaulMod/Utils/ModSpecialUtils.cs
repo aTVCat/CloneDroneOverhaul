@@ -5,7 +5,7 @@ namespace OverhaulMod.Utils
 {
     public static class ModSpecialUtils
     {
-        private static class InnerSpecialUtils
+        private static class InnerModSpecialUtils
         {
             private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
             private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
@@ -89,8 +89,6 @@ namespace OverhaulMod.Utils
             }
         }
 
-        public const string INITIAL_TITLE_BAR_TEXT = "Clone Drone in the Danger Zone";
-
         public static void SetOverhauledTitleBarState()
         {
             SetTitleBarDarkModeEnabled(true);
@@ -100,14 +98,14 @@ namespace OverhaulMod.Utils
         public static void RestoreInitialTitleBarState()
         {
             SetTitleBarDarkModeEnabled(false);
-            SetTitleBarText(INITIAL_TITLE_BAR_TEXT);
+            SetTitleBarText(InnerModSpecialUtils.INITIAL_TITLE_BAR_TEXT);
         }
 
         public static void SetTitleBarDarkModeEnabled(bool enabled)
         {
             try
             {
-                InnerSpecialUtils.SetTitleBarDarkModeEnabled(enabled);
+                InnerModSpecialUtils.SetTitleBarDarkModeEnabled(enabled);
             }
             catch
             {
@@ -119,7 +117,7 @@ namespace OverhaulMod.Utils
         {
             try
             {
-                InnerSpecialUtils.SetTitleBarText(text);
+                InnerModSpecialUtils.SetTitleBarText(text);
             }
             catch
             {

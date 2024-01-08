@@ -1,5 +1,5 @@
 ﻿using OverhaulMod.Engine;
-using OverhaulMod.Patches;
+using OverhaulMod.Patches.Addons;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;

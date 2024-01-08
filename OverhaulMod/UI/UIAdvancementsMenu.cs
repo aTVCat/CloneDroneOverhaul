@@ -1,5 +1,8 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -15,9 +18,23 @@ namespace OverhaulMod.UI
         [UIElement("SyncWithSteamButton")]
         private readonly Button m_syncWithSteamButton;
 
-        [UIElement("Content")]
-        private readonly Transform m_pageContentsTransform;
+        [UIElementAction(nameof(OnLegacyUIButtonClicked))]
+        [UIElement("OldUIButton")]
+        private readonly Button m_legacyUIButton;
 
+        [UIElementAction(nameof(OnLegacyUIButtonClicked))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
+
+        [UIElement("ScrollRect")]
+        private readonly ScrollRect m_scrollRect;
+        [UIElement("GridContent")]
+        private readonly Transform m_pageGridContentsTransform;
+        [UIElement("VerticalContent")]
+        private readonly Transform m_pageVerticalContentsTransform;
+
+        [UIElement("LoadingIndicator", false)]
+        private readonly GameObject m_loadingIndicator;
         [UIElement("ProgressText")]
         private readonly Text m_progressText;
         [UIElement("ProgressFill")]
@@ -25,6 +42,8 @@ namespace OverhaulMod.UI
 
         [UIElement("AdvancementPrefab", false)]
         private readonly ModdedObject m_displayPrefab;
+        [UIElement("GlobalAdvancementPrefab", false)]
+        private readonly ModdedObject m_globalDisplayPrefab;
 
         [UIElement("MyAchTabButton")]
         private readonly ModdedObject m_localAdvancementsTab;
@@ -32,17 +51,16 @@ namespace OverhaulMod.UI
         private readonly ModdedObject m_globalAdvancementsTab;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
-        private TabManager m_tabs;
-
-        [UIElementAction(nameof(OnLegacyUIButtonClicked))]
-        [UIElement("OldUIButton")]
-        private Button m_legacyUIButton;
+        private readonly TabManager m_tabs;
 
         protected override void OnInitialized()
         {
             m_tabs.AddTab(m_localAdvancementsTab, "local advancements");
             m_tabs.AddTab(m_globalAdvancementsTab, "global advancements");
             m_tabs.SelectTab("local advancements");
+
+            ClearPageContents();
+            PopulateLocalAchievements();
         }
 
         public override void Show()
@@ -59,23 +77,35 @@ namespace OverhaulMod.UI
 
         public void OnTabSelected(UIElementTab elementTab)
         {
-            ClearPageContents();
+            bool local = elementTab.tabId == "local advancements";
 
-            if (elementTab.tabId == "local advancements")
+            ClearPageContents();
+            SetContentLayout(local);
+            if (local)
                 PopulateLocalAchievements();
+            else
+                PopulateGlobalAchievments();
+
+            m_syncWithSteamButton.interactable = local;
         }
 
         public void ClearPageContents()
         {
-            if (m_pageContentsTransform && m_pageContentsTransform.childCount > 0)
-                TransformUtils.DestroyAllChildren(m_pageContentsTransform);
+            if (m_pageGridContentsTransform && m_pageGridContentsTransform.childCount > 0)
+                TransformUtils.DestroyAllChildren(m_pageGridContentsTransform);
+
+            if (m_pageVerticalContentsTransform && m_pageVerticalContentsTransform.childCount > 0)
+                TransformUtils.DestroyAllChildren(m_pageVerticalContentsTransform);
         }
 
         public void PopulateLocalAchievements()
         {
             GameplayAchievementManager manager = GameplayAchievementManager.Instance;
             if (!manager)
+            {
+                ModUIUtility.MessagePopupOK("Achievements get error", "why and how");
                 return;
+            }
 
             float fractionOfAchievementsCompleted = manager.GetFractionOfAchievementsCompleted();
             m_progressBarFill.fillAmount = fractionOfAchievementsCompleted;
@@ -83,11 +113,69 @@ namespace OverhaulMod.UI
 
             foreach (GameplayAchievement achievement in manager.Achievements)
             {
-                ModdedObject moddedObject = Instantiate(m_displayPrefab, m_pageContentsTransform);
+                ModdedObject moddedObject = Instantiate(m_displayPrefab, m_pageGridContentsTransform);
                 moddedObject.gameObject.SetActive(true);
                 UIElementAdvancementDisplay elementAdvancementDisplay = moddedObject.gameObject.AddComponent<UIElementAdvancementDisplay>();
                 elementAdvancementDisplay.Populate(achievement, manager);
             }
+        }
+
+        public void PopulateGlobalAchievments()
+        {
+            GameplayAchievementManager manager = GameplayAchievementManager.Instance;
+            if (!manager)
+            {
+                ModUIUtility.MessagePopupOK("Achievements get error", "why and how");
+                return;
+            }
+
+            m_tabs.interactable = false;
+            m_loadingIndicator.SetActive(true);
+            ModSteamUserStatsUtils.RefreshAllStats(delegate (bool result)
+            {
+                m_tabs.interactable = true;
+                m_loadingIndicator.SetActive(false);
+                if (!result)
+                {
+                    ModUIUtility.MessagePopupOK("Error", "Something went wrong while getting user statistics.", true);
+                    return;
+                }
+
+                List<(GameplayAchievement, float)> list = new List<(GameplayAchievement, float)>();
+                foreach (GameplayAchievement achievement in manager.Achievements)
+                {
+                    if (!achievement || (achievement.IsHidden && !achievement.IsComplete()) || !ModSteamUserStatsUtils.GetAchievementAchievedPercent(achievement.SteamAchievementID, out float percent))
+                        continue;
+
+                    list.Add((achievement, percent));
+                }
+                list = list.OrderBy(f => -f.Item2).ToList();
+
+                if (list.IsNullOrEmpty())
+                {
+                    ModUIUtility.MessagePopupOK("Error", "Something went wrong while preparing statistics", true);
+                    return;
+                }
+
+                foreach(var tuple in list)
+                {
+                    ModdedObject moddedObject = Instantiate(m_globalDisplayPrefab, m_pageVerticalContentsTransform);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(tuple.Item1.Name);
+                    moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(tuple.Item1.Description);
+                    moddedObject.GetObject<Image>(2).sprite = tuple.Item1.GetImageSprite();
+                    moddedObject.GetObject<Image>(3).fillAmount = tuple.Item2 / 100f;
+                    moddedObject.GetObject<Text>(4).text = $"{Mathf.Round(tuple.Item2)}%";
+                    moddedObject.GetObject<GameObject>(5).SetActive(tuple.Item1.IsComplete());
+                }
+            });
+        }
+
+        public void SetContentLayout(bool grid)
+        {
+            m_pageGridContentsTransform.gameObject.SetActive(grid);
+            m_pageVerticalContentsTransform.gameObject.SetActive(!grid);
+            m_scrollRect.content = (grid ? m_pageGridContentsTransform : m_pageVerticalContentsTransform) as RectTransform;
         }
 
         public void OnLegacyUIButtonClicked()
@@ -102,11 +190,14 @@ namespace OverhaulMod.UI
 
         public void OnSyncWthSteamButtonClicked()
         {
-            if (ModGameUtils.SyncSteamAchievements())
+            ModUIUtility.MessagePopup(true, "Synchronize Steam achievements with game?", "Use this feature to set achievement progress based on your Steam account statistics.\nThis action cannot be undone.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
-                ClearPageContents();
-                PopulateLocalAchievements();
-            }
+                if (ModGameUtils.SyncSteamAchievements())
+                {
+                    ClearPageContents();
+                    PopulateLocalAchievements();
+                }
+            });
         }
     }
 }

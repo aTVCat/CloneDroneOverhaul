@@ -166,7 +166,10 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
                 _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
                 _ = pageBuilder.Toggle(true, null, "Show watermark");
-                _ = pageBuilder.Button("Configure Overhaul UIs", null);
+                _ = pageBuilder.Button("Configure Overhaul UIs", delegate
+                {
+                    ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+                });
 
                 _ = pageBuilder.Header1("Garbage");
                 _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);

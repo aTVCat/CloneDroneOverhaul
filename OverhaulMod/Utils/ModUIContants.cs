@@ -35,6 +35,8 @@ namespace OverhaulMod.Utils
         public const string UI_INFORMATION_SELECT_WINDOW = "UI_InformationSelectWindow";
         public const string UI_OVERHAUL_MOD_INFO_WINDOW = "UI_OverhaulModInfoWindow";
         public const string UI_WORKSHOP_ITEM_PAGE_WINDOW = "UI_WorkshopItemPageWindow";
+        public const string UI_MESSAGE_POPUP_FULL_SCREEN = "UI_MessagePopupFullScreen";
+        public const string UI_OVERHAUL_UI_MANAGEMENT_PANEL = "UI_OverhaulUIsManagementPanel";
 
         public static void ShowOtherModsMenu()
         {
@@ -83,6 +85,11 @@ namespace OverhaulMod.Utils
         public static UIMessagePopup ShowMessagePopup()
         {
             return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP, ModUIManager.EUILayer.Last);
+        }
+
+        public static UIMessagePopup ShowFullScreenMessagePopup()
+        {
+            return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP_FULL_SCREEN, ModUIManager.EUILayer.Last);
         }
 
         public static void ShowFeedbackUIRework()
@@ -191,6 +198,11 @@ namespace OverhaulMod.Utils
         public static void ShowWorkshopItemPageWindow(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_WINDOW, parent);
+        }
+
+        public static void ShowOverhaulUIManagementPanel(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIOverhaulUIManagementPanel>(AssetBundleConstants.UI, UI_OVERHAUL_UI_MANAGEMENT_PANEL, parent);
         }
     }
 }

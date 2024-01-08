@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,19 @@ namespace OverhaulMod.UI
             private set;
         }
 
+        private bool m_interactable;
+        public bool interactable
+        {
+            get
+            {
+                return m_interactable;
+            }
+            set
+            {
+                m_interactable = value;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -44,6 +58,7 @@ namespace OverhaulMod.UI
             m_onTabCreate = onTabCreate;
             m_onTabSelect = onTabSelect;
             m_type = type;
+            m_interactable = true;
 
             m_instantiatedTabs = new Dictionary<string, UIElementTab>();
         }
@@ -77,18 +92,18 @@ namespace OverhaulMod.UI
             tab.tabId = tabId;
             tab.InitializeElement();
             Button button = tab.GetButton();
-            button.interactable = true;
+            button.interactable = interactable;
             button.onClick.AddListener(delegate
             {
                 UIElementTab oldTab = selectedTab;
-                if (oldTab == tab)
+                if (!interactable || oldTab == tab)
                     return;
 
                 selectedTab = tab;
                 if (oldTab)
                 {
                     oldTab.OnTabDeselected();
-                    oldTab.GetButton().interactable = true;
+                    oldTab.GetButton().interactable = interactable;
                 }
 
                 tab.OnTabSelected();

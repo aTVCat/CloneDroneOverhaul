@@ -108,7 +108,7 @@ namespace OverhaulMod.UI
 
         public void OnClearButtonClicked()
         {
-            ModUIUtility.MessagePopup("Confirm clearing leaderboard data?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
+            ModUIUtility.MessagePopup(true, "Confirm clearing leaderboard data?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
                 List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
                 list.Clear();
