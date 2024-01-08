@@ -62,6 +62,7 @@ namespace OverhaulMod
             _ = ModManagers.New<AdvancedPhotoModeManager>();
             _ = ModManagers.New<WebhookManager>();
             _ = ModManagers.New<UpgradeModeManager>();
+            _ = ModManagers.New<TransitionManager>();
         }
 
         private static void loadAssemblies()

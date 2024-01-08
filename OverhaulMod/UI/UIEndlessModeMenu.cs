@@ -1,4 +1,7 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -36,13 +39,23 @@ namespace OverhaulMod.UI
 
         public void OnPlayButtonClicked()
         {
-            Hide();
-            ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+            TransitionManager.Instance.DoNonSceneTransition(transitionCoroutine());
         }
 
         public void OnLeaderboardButtonClicked()
         {
             ModUIConstants.ShowLeaderboard(base.transform);
+        }
+
+        private IEnumerator transitionCoroutine()
+        {
+            yield return new WaitForSecondsRealtime(0.25f);
+            Hide();
+            ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+            yield return new WaitUntil(() => CharacterTracker.Instance._player);
+            yield return new WaitForSecondsRealtime(0.1f);
+            TransitionManager.Instance.EndTransition();
+            yield break;
         }
     }
 }

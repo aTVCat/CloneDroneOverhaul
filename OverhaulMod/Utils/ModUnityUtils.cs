@@ -52,5 +52,33 @@ namespace OverhaulMod.Utils
             if (collider)
                 collider.enabled = false;
         }
+
+        public static Vector3 LerpVector3(Vector3 a, Vector3 b, float deltaTime)
+        {
+            Vector3 vector = a;
+            vector.x = Mathf.Lerp(a.x, b.x, deltaTime);
+            vector.y = Mathf.Lerp(a.y, b.y, deltaTime);
+            vector.z = Mathf.Lerp(a.z, b.z, deltaTime);
+            return vector;
+        }
+
+        public static Color LerpRGB(Color a, Color b, float deltaTime)
+        {
+            Color color = a;
+            color.r = Mathf.Lerp(a.r, b.r, deltaTime);
+            color.g = Mathf.Lerp(a.g, b.g, deltaTime);
+            color.b = Mathf.Lerp(a.b, b.b, deltaTime);
+            return color;
+        }
+
+        public static Color LerpRGBA(Color a, Color b, float deltaTime)
+        {
+            Color color = a;
+            color.r = Mathf.Lerp(a.r, b.r, deltaTime);
+            color.g = Mathf.Lerp(a.g, b.g, deltaTime);
+            color.b = Mathf.Lerp(a.b, b.b, deltaTime);
+            color.a = Mathf.Lerp(a.a, b.a, deltaTime);
+            return color;
+        }
     }
 }

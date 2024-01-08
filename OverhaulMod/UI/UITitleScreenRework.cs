@@ -1,6 +1,8 @@
 ﻿using InternalModBot;
 using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,6 +152,15 @@ namespace OverhaulMod.UI
             }
         }
 
+        private IEnumerator levelEditorTransitionCoroutine()
+        {
+            yield return new WaitForSecondsRealtime(0.25f);
+            m_titleScreenUI.OnLevelEditorButtonClicked();
+            yield return new WaitForSecondsRealtime(1f);
+            TransitionManager.Instance.EndTransition();
+            yield break;
+        }
+
         public void OnPlaySinglePlayerButtonClicked()
         {
             m_titleScreenUI.OnPlaySingleplayerButtonClicked();
@@ -217,7 +228,7 @@ namespace OverhaulMod.UI
 
         public void OnLevelEditorButtonClicked()
         {
-            m_titleScreenUI.OnLevelEditorButtonClicked();
+            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
         }
 
         public void OnOptionsButtonClicked()

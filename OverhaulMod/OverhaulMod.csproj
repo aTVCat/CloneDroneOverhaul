@@ -413,6 +413,8 @@
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\TransitionBehaviour.cs" />
+    <Compile Include="Engine\TransitionManager.cs" />
     <Compile Include="Engine\UpgradeMode.cs" />
     <Compile Include="Engine\UpgradeModeManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
@@ -441,6 +443,7 @@
     <Compile Include="Patches\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\MetagameLevelTrigger_Patch.cs" />
     <Compile Include="Patches\PlanetCollider_Patch.cs" />
+    <Compile Include="Patches\SceneTransitionManager_Patch.cs" />
     <Compile Include="Patches\SelectableUI_Patch.cs" />
     <Compile Include="Patches\SettingsManager_Patch.cs" />
     <Compile Include="Patches\SkyBoxManager_Patch.cs" />

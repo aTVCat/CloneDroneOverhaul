@@ -15,9 +15,13 @@ namespace OverhaulMod
     [MainModClass]
     public class ModCore : Mod
     {
+        public static event Action SceneReloaded;
         public static event Action GameInitialized;
         public static event Action ContentDownloaded;
         public static event Action<bool> ModStateChanged;
+
+        private static bool s_hasEverLoadedTheMod;
+        private static GameObject s_gameObject;
 
         public static ModCore instance { get; private set; }
 
@@ -124,6 +128,9 @@ namespace OverhaulMod
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetOverhauledTitleBarState();
+
+            checkIfTheSceneWasReloaded();
+            s_hasEverLoadedTheMod = true;
         }
 
         public override void OnModLoaded()
@@ -134,6 +141,9 @@ namespace OverhaulMod
             GameAddon.Load();
 
             addEventListeners();
+
+            checkIfTheSceneWasReloaded();
+            s_hasEverLoadedTheMod = true;
         }
 
         public override void OnModDeactivated()
@@ -209,8 +219,27 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
-            Debug.Log("GAME INITIALIZED");
             TriggerGameInitializedEvent();
+        }
+
+        private void checkIfTheSceneWasReloaded()
+        {
+            if (!s_hasEverLoadedTheMod)
+            {
+                s_gameObject = new GameObject();
+                return;
+            }
+
+            if(s_hasEverLoadedTheMod && !s_gameObject)
+            {
+                TriggerSceneReloadedEvent();
+                s_gameObject = new GameObject();
+            }
+        }
+
+        public static void TriggerSceneReloadedEvent()
+        {
+            SceneReloaded?.Invoke();
         }
 
         public static void TriggerContentLoadedEvent()
