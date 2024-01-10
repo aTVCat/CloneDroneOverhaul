@@ -2,9 +2,11 @@
 using InternalModBot;
 using OverhaulMod.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Content
 {
@@ -12,6 +14,19 @@ namespace OverhaulMod.Content
     {
         public const string REPOSITORY_FILE = "UpdateInfo.json";
         public const string PLAYER_PREF_KEY = "Overhaul.PreviousVersionPath";
+
+        public static readonly List<Dropdown.OptionData> BranchesForTestersDropdownOptions = new List<Dropdown.OptionData>()
+        {
+            new Dropdown.OptionData() { text = "Release" },
+            new Dropdown.OptionData() { text = "Testing" },
+            new Dropdown.OptionData() { text = "Canary" },
+        };
+
+        public static readonly List<Dropdown.OptionData> BranchesDropdownOptions = new List<Dropdown.OptionData>()
+        {
+            new Dropdown.OptionData() { text = "Release" },
+            new Dropdown.OptionData() { text = "Testing" },
+        };
 
         private UpdateInfoList m_downloadedUpdateInfoList;
 
@@ -97,6 +112,29 @@ namespace OverhaulMod.Content
 
                 callback?.Invoke();
             }, errorCallback, out unityWebRequest, -1);
+        }
+
+        public string GetBranchDescription(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return "Recommended. Get stable builds.";
+                case 1:
+                    return "Get latest test builds.";
+                case 2:
+                    return "Only available to testers. Some features may not work.";
+            }
+            return "This branch doesn't have description.";
+        }
+
+        public List<Dropdown.OptionData> GetAvailableBranches()
+        {
+            if (ExclusiveContentManager.Instance.IsLocalUserTheTester())
+            {
+                return BranchesForTestersDropdownOptions;
+            }
+            return BranchesDropdownOptions;
         }
 
         private void prepareBuildForAnUpdate()

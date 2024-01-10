@@ -5,5 +5,6 @@
         ColorOverride = 1,
         PersonalizationItem = 2,
         FeatureUnlock = 3,
+        TesterRole = 4,
     }
 }

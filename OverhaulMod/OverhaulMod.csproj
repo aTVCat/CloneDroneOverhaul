@@ -389,6 +389,7 @@
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\FistWeaponModel.cs" />
+    <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationItem.cs" />

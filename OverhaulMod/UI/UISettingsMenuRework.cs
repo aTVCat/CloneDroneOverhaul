@@ -439,7 +439,7 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
-                settingsMenu.PlayerPushesGarbageToggle.isOn = !value;
+                settingsMenu.PlayerPushesGarbageToggle.isOn = value;
             }
         }
 
@@ -448,7 +448,7 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
-                settingsMenu.SubtitlesToggle.isOn = !value;
+                settingsMenu.SubtitlesToggle.isOn = value;
             }
         }
 
@@ -493,7 +493,7 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
-                settingsMenu.InvertMouseToggle.isOn = !value;
+                settingsMenu.InvertMouseToggle.isOn = value;
             }
         }
 
@@ -511,7 +511,7 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
-                settingsMenu.InvertControllerToggle.isOn = !value;
+                settingsMenu.InvertControllerToggle.isOn = value;
             }
         }
 
@@ -520,7 +520,7 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
-                settingsMenu.EqualLookRatioToggle.isOn = !value;
+                settingsMenu.EqualLookRatioToggle.isOn = value;
             }
         }
 

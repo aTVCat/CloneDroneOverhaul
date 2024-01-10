@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static OverhaulMod.ModFeatures;
 
 namespace OverhaulMod.Content
 {
@@ -192,10 +193,14 @@ namespace OverhaulMod.Content
         {
             foreach (ExclusiveContentInfo content in GetAllUnlockedContentOfType<ExclusiveContentFeatureUnlock>())
                 if ((content.Content as ExclusiveContentFeatureUnlock).Feature == featureType)
-                    if (content.IsAvailable())
-                        return true;
+                    return true;
 
             return false;
+        }
+
+        public bool IsLocalUserTheTester()
+        {
+            return !GetAllUnlockedContentOfType<ExclusiveContentTesterRole>().IsNullOrEmpty();
         }
     }
 }

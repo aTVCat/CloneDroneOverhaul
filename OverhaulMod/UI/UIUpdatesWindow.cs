@@ -24,8 +24,12 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButton")]
         private readonly Button m_directUpdateButton;
 
+        [UIElementAction(nameof(OnBranchChanged))]
         [UIElement("BranchDropdown")]
         private readonly Dropdown m_branchDropdown;
+
+        [UIElement("CheckForUpdateOnStartupToggle")]
+        private readonly Toggle m_checkForUpdatesOnStartupToggle;
 
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
@@ -35,6 +39,9 @@ namespace OverhaulMod.UI
 
         [UIElement("VersionText")]
         private readonly Text m_versionText;
+
+        [UIElement("BranchDescription")]
+        private readonly Text m_branchDescription;
 
         [UIElement("ProgressBar", false)]
         private readonly GameObject m_progressBar;
@@ -53,9 +60,13 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_directUpdateButton.interactable = false;
-            m_branchDropdown.value = ModBuildInfo.internalRelease ? 2 : 0;
+            int branch = (ModBuildInfo.internalRelease || ExclusiveContentManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
 
+            m_directUpdateButton.interactable = false;
+            m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
+            m_branchDropdown.value = branch;
+
+            OnBranchChanged(branch);
             ClearVersionAndChangelogTexts();
         }
 
@@ -63,6 +74,8 @@ namespace OverhaulMod.UI
         {
             base.Show();
             SetTitleScreenButtonActive(false);
+
+            m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
         }
 
         public override void Hide()
@@ -145,7 +158,7 @@ namespace OverhaulMod.UI
             m_progressBar.SetActive(false);
             SetUIInteractable(true);
 
-            ModUIUtility.MessagePopupOK("Installation error", error, 250f);
+            ModUIUtility.MessagePopupOK("Installation error", error, 200f, true);
         }
 
         public void SetVersionAndChangelogTexts(string version, string changelog)
@@ -168,7 +181,17 @@ namespace OverhaulMod.UI
             UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedUpdates, onFailedToCheckUpdates, true);
         }
 
+        public void OnBranchChanged(int index)
+        {
+            m_branchDescription.text = $"Selected branch: \"{m_branchDropdown.options[index].text}\". {UpdateManager.Instance.GetBranchDescription(index)}";
+        }
+
         public void OnDirectUpdateButtonClicked()
+        {
+            ModUIUtility.MessagePopup(true, "Update the mod in-game?", "You won't be able to exit this menu while downloading a new build.\n\nNOTE: This feature is in testing phase so it might break the game.\nUse this with caution.", 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Update mod", "Cancel", null, onConfirmedToDoDirectUpdate); ;
+        }
+
+        private void onConfirmedToDoDirectUpdate()
         {
             disallowClosing = true;
             m_exitButton.interactable = false;

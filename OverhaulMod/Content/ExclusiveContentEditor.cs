@@ -66,6 +66,9 @@ namespace OverhaulMod.Content
                 case ExclusiveContentType.FeatureUnlock:
                     newInfo.Content = new ExclusiveContentFeatureUnlock();
                     break;
+                case ExclusiveContentType.TesterRole:
+                    newInfo.Content = new ExclusiveContentTesterRole();
+                    break;
             }
         }
 

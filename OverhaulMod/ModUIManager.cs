@@ -60,6 +60,13 @@ namespace OverhaulMod
                 _ = m_InstantiatedUIs.Remove(key);
 
             _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", EUILayer.BeforeCrashScreen);
+
+            /*
+            Canvas canvas = ModCache.gameUIRoot?.GetComponent<Canvas>();
+            if (canvas)
+            {
+                canvas.pixelPerfect = true;
+            }*/
         }
 
         public bool HasInstantiatedUI(string assetKey)
