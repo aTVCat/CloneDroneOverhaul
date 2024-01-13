@@ -70,7 +70,7 @@ namespace OverhaulMod.Utils
 
         public static bool OpenFileExplorer(string path)
         {
-            if (!Directory.Exists(path))
+            if (path.IsNullOrEmpty() || !Directory.Exists(path))
             {
                 return false;
             }
@@ -80,7 +80,7 @@ namespace OverhaulMod.Utils
 
         public static bool OpenFile(string path)
         {
-            if (!File.Exists(path))
+            if (path.IsNullOrEmpty() || !File.Exists(path))
             {
                 return false;
             }

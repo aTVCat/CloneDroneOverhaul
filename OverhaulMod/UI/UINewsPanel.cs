@@ -60,7 +60,7 @@ namespace OverhaulMod.UI
                 populateList(newsInfoList);
             }, delegate (string error)
             {
-                ModUIUtility.MessagePopupOK("Error", error, 200f);
+                ModUIUtils.MessagePopupOK("Error", error, 200f);
                 setIsPopulating(false);
             }, true);
         }

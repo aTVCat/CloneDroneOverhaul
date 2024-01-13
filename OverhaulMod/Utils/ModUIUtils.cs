@@ -3,7 +3,7 @@ using System;
 
 namespace OverhaulMod.Utils
 {
-    public static class ModUIUtility
+    public static class ModUIUtils
     {
         public static void MessagePopup(bool fullScreen, string header, string description, float height = 125f, MessageMenu.ButtonLayout buttonLayout = MessageMenu.ButtonLayout.OkButton, string okText = null, string yesText = null, string noText = null, Action okAction = null, Action yesAction = null, Action noAction = null)
         {

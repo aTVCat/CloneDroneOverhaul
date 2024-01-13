@@ -60,6 +60,10 @@ namespace OverhaulMod.UI
         [UIElement("HubButton")]
         private readonly Button m_hubButton;
 
+        [UIElementAction(nameof(OnLevelDescriptionsEditorButtonClicked))]
+        [UIElement("LevelDescriptionsEditorButton")]
+        private readonly Button m_levelDescriptionsEditorButton;
+
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
@@ -178,7 +182,7 @@ namespace OverhaulMod.UI
 
         public void OnInfoButtonClicked()
         {
-            ModUIUtility.MessagePopupNotImplemented();
+            ModUIUtils.MessagePopupNotImplemented();
         }
 
         public void OnNewsButtonClicked()
@@ -194,6 +198,11 @@ namespace OverhaulMod.UI
         public void OnHubButtonClicked()
         {
             ModUIConstants.ShowCommunityHub();
+        }
+
+        public void OnLevelDescriptionsEditorButtonClicked()
+        {
+            ModUIConstants.ShowLevelDescriptionListEditor();
         }
 
         public void OnExcContentMenuButtonClicked()

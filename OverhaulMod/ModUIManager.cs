@@ -59,7 +59,7 @@ namespace OverhaulMod
             foreach (string key in keysToRemove)
                 _ = m_InstantiatedUIs.Remove(key);
 
-            _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", EUILayer.BeforeCrashScreen);
+            _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", UILayer.BeforeCrashScreen);
 
             /*
             Canvas canvas = ModCache.gameUIRoot?.GetComponent<Canvas>();
@@ -74,34 +74,34 @@ namespace OverhaulMod
             return m_InstantiatedUIs.ContainsKey(assetKey);
         }
 
-        public int GetSiblingIndex(EUILayer layer)
+        public int GetSiblingIndex(UILayer layer)
         {
             switch (layer)
             {
                 default:
                     return 0;
-                case EUILayer.Last:
+                case UILayer.Last:
                     return GameUIRootTransform.childCount;
-                case EUILayer.BeforeTitleScreen:
+                case UILayer.BeforeTitleScreen:
                     return ModCache.titleScreenUI.transform.GetSiblingIndex();
-                case EUILayer.AfterTitleScreen:
+                case UILayer.AfterTitleScreen:
                     return ModCache.titleScreenUI.transform.GetSiblingIndex() + 1;
-                case EUILayer.BeforeEscMenu:
+                case UILayer.BeforeEscMenu:
                     return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex();
-                case EUILayer.AfterEscMenu:
+                case UILayer.AfterEscMenu:
                     return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex() + 1;
-                case EUILayer.BeforeCrashScreen:
+                case UILayer.BeforeCrashScreen:
                     return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex();
-                case EUILayer.AfterCrashScreen:
+                case UILayer.AfterCrashScreen:
                     return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex() + 1;
-                case EUILayer.BeforeMultiplayerConnectScreen:
+                case UILayer.BeforeMultiplayerConnectScreen:
                     return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex();
-                case EUILayer.AfterMultiplayerConnectScreen:
+                case UILayer.AfterMultiplayerConnectScreen:
                     return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex() + 1;
             }
         }
 
-        public T Show<T>(string assetBundle, string assetKey, EUILayer layer = EUILayer.Last) where T : OverhaulUIBehaviour
+        public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
             if (!HasInstantiatedUI(fullName))
@@ -133,7 +133,7 @@ namespace OverhaulMod
 
         public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : OverhaulUIBehaviour
         {
-            T result = Show<T>(assetBundle, assetKey, EUILayer.Last);
+            T result = Show<T>(assetBundle, assetKey, UILayer.Last);
             if (parent)
             {
                 result.transform.SetParent(parent);
@@ -208,7 +208,7 @@ namespace OverhaulMod
             _ = m_InstantiatedUIs.Remove(uIBehaviour.name);
         }
 
-        public enum EUILayer
+        public enum UILayer
         {
             First,
 

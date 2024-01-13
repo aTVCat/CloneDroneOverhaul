@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
         {
             if (fieldReference == null || contentReference == null)
             {
-                ModUIUtility.MessagePopupOK("Field/Content reference is NULL!", "that's weird");
+                ModUIUtils.MessagePopupOK("Field/Content reference is NULL!", "that's weird");
                 return;
             }
 

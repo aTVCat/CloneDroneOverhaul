@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
             StoryModeChapterSelect legacyUI = ModCache.titleScreenUI.ChapterSelectUI;
             if (!legacyUI)
             {
-                ModUIUtility.MessagePopupOK("Error", "Legacy UI reference is NULL");
+                ModUIUtils.MessagePopupOK("Error", "Legacy UI reference is NULL");
                 return;
             }
 
@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                ModUIUtility.MessagePopupOK("Error", $"Could not find method called {methodName}");
+                ModUIUtils.MessagePopupOK("Error", $"Could not find method called {methodName}");
             }
         }
     }

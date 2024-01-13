@@ -90,7 +90,7 @@ namespace OverhaulMod.UI
             }, delegate (string error)
             {
                 m_retrieveButton.interactable = true;
-                ModUIUtility.MessagePopupOK("Error", error);
+                ModUIUtils.MessagePopupOK("Error", error);
             });
         }
 

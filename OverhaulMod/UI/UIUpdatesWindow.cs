@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
             m_progressBar.SetActive(false);
             SetUIInteractable(true);
 
-            ModUIUtility.MessagePopupOK("Installation error", error, 200f, true);
+            ModUIUtils.MessagePopupOK("Installation error", error, 200f, true);
         }
 
         public void SetVersionAndChangelogTexts(string version, string changelog)
@@ -188,7 +188,7 @@ namespace OverhaulMod.UI
 
         public void OnDirectUpdateButtonClicked()
         {
-            ModUIUtility.MessagePopup(true, "Update the mod in-game?", "You won't be able to exit this menu while downloading a new build.\n\nNOTE: This feature is in testing phase so it might break the game.\nUse this with caution.", 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Update mod", "Cancel", null, onConfirmedToDoDirectUpdate); ;
+            ModUIUtils.MessagePopup(true, "Update the mod in-game?", "You won't be able to exit this menu while downloading a new build.\n\nNOTE: This feature is in testing phase so it might break the game.\nUse this with caution.", 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Update mod", "Cancel", null, onConfirmedToDoDirectUpdate); ;
         }
 
         private void onConfirmedToDoDirectUpdate()

@@ -576,7 +576,7 @@ namespace OverhaulMod.UI
             private Dropdown instantiateDropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Dropdown prefab)
             {
                 if (callback == null)
-                    callback = delegate { ModUIUtility.MessagePopupNotImplemented(); };
+                    callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
 
                 if (list == null)
                     list = new List<Dropdown.OptionData>();
@@ -639,7 +639,7 @@ namespace OverhaulMod.UI
             public Toggle Toggle(bool isOn, UnityAction<bool> callback, string text, string localizationId = null)
             {
                 if (callback == null)
-                    callback = delegate { ModUIUtility.MessagePopupNotImplemented(); };
+                    callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
 
                 ModdedObject moddedObject = Instantiate(SettingsMenu.TogglePrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
@@ -656,7 +656,7 @@ namespace OverhaulMod.UI
             public Button Button(string text, Action onClicked)
             {
                 if (onClicked == null)
-                    onClicked = ModUIUtility.MessagePopupNotImplemented;
+                    onClicked = ModUIUtils.MessagePopupNotImplemented;
 
                 ModdedObject moddedObject = Instantiate(SettingsMenu.ButtonPrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);

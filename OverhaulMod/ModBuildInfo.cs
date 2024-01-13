@@ -9,7 +9,7 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        internal const string EXTRA_INFO_FILE_PATH = "assets/data/buildInfo.json";
+        internal const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
         private static bool s_loaded;
 
@@ -160,6 +160,14 @@ namespace OverhaulMod
             }
         }
 
+        public static bool enableV5
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         internal static void Load()
         {
             if (s_loaded)
@@ -190,7 +198,7 @@ namespace OverhaulMod
             extraInfo = null;
             try
             {
-                string filePath = ModCore.folder + EXTRA_INFO_FILE_PATH;
+                string filePath = ModCore.dataFolder + EXTRA_INFO_FILE_PATH;
 
                 ExtraInfo loadedExtraInfo = ModJsonUtils.Deserialize<ExtraInfo>(ModIOUtils.ReadText(filePath));
                 extraInfo = loadedExtraInfo;
@@ -200,7 +208,7 @@ namespace OverhaulMod
 
         public static void GenerateExtraInfo()
         {
-            string filePath = ModCore.folder + EXTRA_INFO_FILE_PATH;
+            string filePath = ModCore.dataFolder + EXTRA_INFO_FILE_PATH;
             string content = ModJsonUtils.Serialize(new ExtraInfo()
             {
                 CompileTime = DateTime.Now

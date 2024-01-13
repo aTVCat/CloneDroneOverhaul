@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
 
         private void onDownloadFail(string error)
         {
-            ModUIUtility.MessagePopupOK("Mod content download error", error);
+            ModUIUtils.MessagePopupOK("Mod content download error", error);
             m_downloadButton.gameObject.SetActive(true);
             m_exitButton.gameObject.SetActive(true);
             m_progressBar.SetActive(false);
@@ -84,7 +84,7 @@ namespace OverhaulMod.UI
 
         private void onDownloadSuccess()
         {
-            ModUIUtility.MessagePopupOK("Mod content download complete", "Press that \"Done!\" button");
+            ModUIUtils.MessagePopupOK("Mod content download complete", "Press that \"Done!\" button");
             m_altExitButton.gameObject.SetActive(true);
             m_downloadButton.gameObject.SetActive(false);
             m_exitButton.gameObject.SetActive(false);

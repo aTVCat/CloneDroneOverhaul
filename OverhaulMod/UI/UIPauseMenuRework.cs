@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
         public void OnLegacyUIButtonClicked()
         {
             Hide();
-            ModUIUtility.ShowVanillaEscMenu();
+            ModUIUtils.ShowVanillaEscMenu();
         }
     }
 }

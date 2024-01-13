@@ -1,10 +1,13 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OverhaulMod.Engine
 {
-    public class ModLevelManager : Singleton<ModLevelManager>
+    public class ModLevelManager : Singleton<ModLevelManager>, IGameLoadListener
     {
+        public const string LEVEL_DESCRIPTIONS_FILE = "LevelDescriptions.json";
+        public const string LEVELS_FOLDER = "levels/";
         public const string CHAPTER_SECTIONS_FOLDER = "chapterSections/";
 
         public const string CHAPTER_1_SECTIONS_CACHE_KEY = "StoryC1_Sections";
@@ -20,6 +23,87 @@ namespace OverhaulMod.Engine
                     m_chapterSectionsFolder = ModCore.dataFolder + CHAPTER_SECTIONS_FOLDER;
                 }
                 return m_chapterSectionsFolder;
+            }
+        }
+
+        private string m_levelsFolder;
+        public string levelsFolder
+        {
+            get
+            {
+                if (m_levelsFolder == null)
+                {
+                    m_levelsFolder = ModCore.dataFolder + LEVELS_FOLDER;
+                }
+                return m_levelsFolder;
+            }
+        }
+
+        public ModLevelDescriptionList modLevelDescriptions
+        {
+            get;
+            private set;
+        }
+
+        public System.Exception modLevelDescriptionsLoadError
+        {
+            get;
+            private set;
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+            LoadLevelDescriptions();
+        }
+
+        public void OnGameLoaded()
+        {
+            AddEndlessModeLevels();
+        }
+
+        public void LoadLevelDescriptions()
+        {
+            modLevelDescriptionsLoadError = null;
+            try
+            {
+                modLevelDescriptions = ModJsonUtils.DeserializeStream<ModLevelDescriptionList>(levelsFolder + LEVEL_DESCRIPTIONS_FILE);
+
+                if(modLevelDescriptions == null)
+                    modLevelDescriptions = new ModLevelDescriptionList()
+                    {
+                        LevelDescriptions = new List<LevelDescription>(),
+                    };
+
+                if (modLevelDescriptions.LevelDescriptions == null)
+                    modLevelDescriptions.LevelDescriptions = new List<LevelDescription>();
+            }
+            catch (System.Exception exc)
+            {
+                modLevelDescriptionsLoadError = exc;
+                modLevelDescriptions = new ModLevelDescriptionList()
+                {
+                    LevelDescriptions = new List<LevelDescription>(),
+                };
+            }
+        }
+
+        public void AddEndlessModeLevels()
+        {
+            var moddedLevelsList = modLevelDescriptions;
+            if (moddedLevelsList == null)
+                return;
+
+            var fixedLevelDescriptions = moddedLevelsList.GetFixedLevelDescriptions();
+            if (fixedLevelDescriptions.IsNullOrEmpty())
+                return;
+
+            foreach(var levelDescription in fixedLevelDescriptions)
+            {
+                if (!File.Exists(levelDescription.LevelJSONPath))
+                    continue;
+
+                LevelManager.Instance._endlessLevels.Add(levelDescription);
             }
         }
 
@@ -182,6 +266,11 @@ namespace OverhaulMod.Engine
                     result = "Harvest start";
             }
             return addBrackets && result != string.Empty ? $"({result})" : result;
+        }
+
+        public void AddEndlessLevel(LevelDescription levelDescription)
+        {
+            LevelManager.Instance._endlessLevels.Add(levelDescription);
         }
     }
 }

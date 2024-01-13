@@ -12,7 +12,7 @@ namespace OverhaulMod.Utils
 
             public const string INITIAL_TITLE_BAR_TEXT = "Clone Drone in the Danger Zone";
 
-            private static string s_previousTitleBarText;
+            private static string s_titleBarText;
 
             /// <summary>
             /// Find a window with name
@@ -66,7 +66,7 @@ namespace OverhaulMod.Utils
 
             public static void SetTitleBarDarkModeEnabled(bool enabled)
             {
-                IntPtr intPtr = FindWindow(null, string.IsNullOrEmpty(s_previousTitleBarText) ? INITIAL_TITLE_BAR_TEXT : s_previousTitleBarText);
+                IntPtr intPtr = FindWindow(null, string.IsNullOrEmpty(s_titleBarText) ? INITIAL_TITLE_BAR_TEXT : s_titleBarText);
                 if (intPtr != null)
                 {
                     _ = useImmersiveDarkMode(intPtr, enabled);
@@ -78,13 +78,13 @@ namespace OverhaulMod.Utils
                 if (string.IsNullOrEmpty(text))
                     return;
 
-                string windowTitle = string.IsNullOrEmpty(s_previousTitleBarText) ? INITIAL_TITLE_BAR_TEXT : s_previousTitleBarText;
+                string windowTitle = string.IsNullOrEmpty(s_titleBarText) ? INITIAL_TITLE_BAR_TEXT : s_titleBarText;
 
                 IntPtr intPtr = FindWindow(null, windowTitle);
                 if (intPtr != null)
                 {
                     _ = SetWindowText(intPtr, text);
-                    s_previousTitleBarText = text;
+                    s_titleBarText = text;
                 }
             }
         }

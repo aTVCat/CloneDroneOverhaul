@@ -8,6 +8,9 @@ namespace OverhaulMod.Engine
         public void PopulateTranslationDictionary(ref Dictionary<string, string> keyValuePairs, string langId)
         {
             Debug.Log($"Language changed: {langId}");
+
+            keyValuePairs.Add("Nightmarium", "Nightmarium");
+            keyValuePairs.Add("nightmarium", "Nightmarium");
         }
     }
 }

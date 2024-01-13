@@ -189,7 +189,7 @@ namespace OverhaulMod.UI
 
             ExclusiveContentEditor.Save();
 
-            ModUIUtility.MessagePopupOK("Content file saved!", string.Empty);
+            ModUIUtils.MessagePopupOK("Content file saved!", string.Empty);
         }
 
         public void OnNewButtonClicked()

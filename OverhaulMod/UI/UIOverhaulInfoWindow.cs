@@ -53,27 +53,26 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_content;
 
-        private bool m_hasPopulatedInfo;
         private int m_keyValueCount;
+
+        protected override void OnInitialized()
+        {
+            AddKeyValueDisplay("Mod version", ModBuildInfo.version.ToString());
+            if (!ModBuildInfo.extraInfoError)
+            {
+                AddKeyValueDisplay("Compilation date", ModBuildInfo.extraInfo.CompileTime.ToShortDateString());
+            }
+            AddKeyValueDisplay("Milestone", ModBuildInfo.milestoneNaming);
+            AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
+            AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
+            AddKeyValueDisplay("Is internal release?", ModBuildInfo.internalRelease.ToString());
+            AddKeyValueDisplay("Has V5 features?", ModBuildInfo.enableV5.ToString());
+            AddKeyValueDisplay("Debug mode?", ModBuildInfo.debug.ToString());
+        }
 
         public override void Show()
         {
             base.Show();
-
-            if (!m_hasPopulatedInfo)
-            {
-                AddKeyValueDisplay("Mod version", ModBuildInfo.version.ToString());
-                if (!ModBuildInfo.extraInfoError)
-                {
-                    AddKeyValueDisplay("Compilation date", ModBuildInfo.extraInfo.CompileTime.ToShortDateString());
-                }
-                AddKeyValueDisplay("Milestone", ModBuildInfo.milestoneNaming);
-                AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
-                AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
-                AddKeyValueDisplay("Is internal release?", ModBuildInfo.internalRelease.ToString());
-                AddKeyValueDisplay("Debug mode?", ModBuildInfo.debug.ToString());
-                m_hasPopulatedInfo = true;
-            }
         }
 
         public override void Hide()

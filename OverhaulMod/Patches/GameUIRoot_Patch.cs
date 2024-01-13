@@ -60,6 +60,8 @@ namespace OverhaulMod.Patches
 
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_MESSAGE_POPUP_FULL_SCREEN))
                     return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_LEVEL_DESCRIPTION_LIST_EDITOR))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_WORKSHOP_ITEM_PAGE_WINDOW))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_MOD_INFO_WINDOW))

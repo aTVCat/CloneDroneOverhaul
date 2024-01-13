@@ -36,7 +36,8 @@ namespace OverhaulMod
 
         private static void addManagers()
         {
-            ModDataManager._instance = ModManagers.New<ModDataManager>();
+            _ = ModManagers.New<ModSettingsManager>();
+            _ = ModManagers.New<ModDataManager>();
             _ = ModManagers.New<ContentRepositoryManager>();
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ModLocalizationManager>();
@@ -63,6 +64,8 @@ namespace OverhaulMod
             _ = ModManagers.New<WebhookManager>();
             _ = ModManagers.New<UpgradeModeManager>();
             _ = ModManagers.New<TransitionManager>();
+
+            _ = ModManagers.New<DifficultyTierManager>();
         }
 
         private static void loadAssemblies()

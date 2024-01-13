@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    [UI(true)]
     public class UIAdvancementsMenu : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
@@ -103,7 +102,7 @@ namespace OverhaulMod.UI
             GameplayAchievementManager manager = GameplayAchievementManager.Instance;
             if (!manager)
             {
-                ModUIUtility.MessagePopupOK("Achievements get error", "why and how");
+                ModUIUtils.MessagePopupOK("Achievements get error", "why and how");
                 return;
             }
 
@@ -125,7 +124,7 @@ namespace OverhaulMod.UI
             GameplayAchievementManager manager = GameplayAchievementManager.Instance;
             if (!manager)
             {
-                ModUIUtility.MessagePopupOK("Achievements get error", "why and how");
+                ModUIUtils.MessagePopupOK("Achievements get error", "why and how");
                 return;
             }
 
@@ -137,7 +136,7 @@ namespace OverhaulMod.UI
                 m_loadingIndicator.SetActive(false);
                 if (!result)
                 {
-                    ModUIUtility.MessagePopupOK("Error", "Something went wrong while getting user statistics.", true);
+                    ModUIUtils.MessagePopupOK("Error", "Something went wrong while getting user statistics.", true);
                     return;
                 }
 
@@ -153,7 +152,7 @@ namespace OverhaulMod.UI
 
                 if (list.IsNullOrEmpty())
                 {
-                    ModUIUtility.MessagePopupOK("Error", "Something went wrong while preparing statistics", true);
+                    ModUIUtils.MessagePopupOK("Error", "Something went wrong while preparing statistics", true);
                     return;
                 }
 
@@ -190,7 +189,7 @@ namespace OverhaulMod.UI
 
         public void OnSyncWthSteamButtonClicked()
         {
-            ModUIUtility.MessagePopup(true, "Synchronize Steam achievements with game?", "Use this feature to set achievement progress based on your Steam account statistics.\nThis action cannot be undone.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, "Synchronize Steam achievements with game?", "Use this feature to set achievement progress based on your Steam account statistics.\nThis action cannot be undone.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
                 if (ModGameUtils.SyncSteamAchievements())
                 {

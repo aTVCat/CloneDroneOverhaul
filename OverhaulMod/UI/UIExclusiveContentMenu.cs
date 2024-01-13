@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
             if (error != null)
             {
                 m_statusBarText.text = "Error";
-                ModUIUtility.MessagePopup(true, "Could not get data. Retry?", error, 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Retry", "No", null, delegate
+                ModUIUtils.MessagePopup(true, "Could not get data. Retry?", error, 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Retry", "No", null, delegate
                 {
                     OnRetrieveButtonClicked();
                 }, null);

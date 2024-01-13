@@ -27,7 +27,7 @@ namespace OverhaulMod.Content.LevelEditor
         };
 
         [IncludeInLevelEditor(false, false)]
-        public string WeatherType = "None";
+        public string WeatherType;
 
         [IncludeInLevelEditor(false, false)]
         public float Intensity = 1.5f;
@@ -72,12 +72,12 @@ namespace OverhaulMod.Content.LevelEditor
 
         public bool ShouldShowDropdownOptions(string fieldName)
         {
-            return fieldName == nameof(WeatherType);
+            return false;
         }
 
         public bool HasDropDownForValue(string fieldName)
         {
-            return fieldName == nameof(WeatherType);
+            return false;
         }
     }
 }

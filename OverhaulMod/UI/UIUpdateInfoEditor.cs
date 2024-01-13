@@ -83,7 +83,7 @@ namespace OverhaulMod.UI
             }
             catch (Exception exc)
             {
-                ModUIUtility.MessagePopupOK("Error - Mod ver", exc.ToString(), 300f);
+                ModUIUtils.MessagePopupOK("Error - Mod ver", exc.ToString(), 300f);
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace OverhaulMod.UI
             }
             catch (Exception exc)
             {
-                ModUIUtility.MessagePopupOK("Error - ModBot ver", exc.ToString(), 300f);
+                ModUIUtils.MessagePopupOK("Error - ModBot ver", exc.ToString(), 300f);
                 return;
             }
 
@@ -131,7 +131,7 @@ namespace OverhaulMod.UI
             }, delegate (string error)
             {
                 m_retrieveButton.interactable = true;
-                ModUIUtility.MessagePopupOK("Error", error);
+                ModUIUtils.MessagePopupOK("Error", error);
             });
         }
 

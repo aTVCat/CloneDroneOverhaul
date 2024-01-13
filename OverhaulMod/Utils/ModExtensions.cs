@@ -12,6 +12,18 @@ namespace OverhaulMod.Utils
         public static bool IsNullOrEmpty(this System.Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
 
+        public static bool IsModdedEnumValue(this System.Enum enumValue)
+        {
+            string enumName = enumValue.ToString();
+            string[] enumNames = enumValue.GetType().GetEnumNames();
+            foreach (string name in enumNames)
+            {
+                if (name == enumName)
+                    return false;
+            }
+            return true;
+        }
+
         public static T GetObject<T>(this ModdedObject moddedObject, int index) where T : Object
         {
             if (!moddedObject)

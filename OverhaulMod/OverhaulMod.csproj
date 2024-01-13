@@ -397,7 +397,9 @@
     <Compile Include="Engine\AdvancedPhotoModeManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeProperty.cs" />
     <Compile Include="Engine\ArenaRemodelManager.cs" />
+    <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
+    <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />
     <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
@@ -410,6 +412,8 @@
     <Compile Include="Content\ExclusiveContentType.cs" />
     <Compile Include="Content\NewsInfo.cs" />
     <Compile Include="Engine\ModLocalizationManager.cs" />
+    <Compile Include="Engine\ModSetting.cs" />
+    <Compile Include="Engine\ModSettingsManager.cs" />
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
@@ -436,6 +440,7 @@
     <Compile Include="Patches\EscMenu_Patch.cs" />
     <Compile Include="Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Patches\GameDataManager_Patch.cs" />
+    <Compile Include="Patches\EndlessModeManager_Patch.cs" />
     <Compile Include="Patches\GameModeManager_Patch.cs" />
     <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\GameUIRoot_Patch.cs" />
@@ -463,6 +468,7 @@
     <Compile Include="UI\UINewsDetailsPanel.cs" />
     <Compile Include="UI\UIInformationSelectWindow.cs" />
     <Compile Include="UI\UIRestartRequiredScreen.cs" />
+    <Compile Include="UI\UILevelDescriptionListEditor.cs" />
     <Compile Include="UI\UIUpdateInfoEditor.cs" />
     <Compile Include="UI\UIWorkshopItemPageWindow.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />
@@ -502,7 +508,7 @@
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModSteamUGCUtils.cs" />
     <Compile Include="Utils\ModSteamUserStatsUtils.cs" />
-    <Compile Include="Utils\ModUIUtility.cs" />
+    <Compile Include="Utils\ModUIUtils.cs" />
     <Compile Include="Utils\ModSpecialUtils.cs" />
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />

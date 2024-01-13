@@ -40,6 +40,9 @@ namespace OverhaulMod
                 case FeatureType.WorkshopBrowserRework:
                     result = false;
                     break;
+                case FeatureType.NewDifficultyTiers:
+                    result = ModBuildInfo.enableV5;
+                    break;
                 default:
                     result = false;
                     unknownFeature = true;
@@ -107,6 +110,11 @@ namespace OverhaulMod
             /// <see cref="UI.UIWorkshopBrowser"/>
             /// </summary>
             WorkshopBrowserRework,
+
+            /// <summary>
+            /// <see cref="Engine.DifficultyTierManager"/>
+            /// </summary>
+            NewDifficultyTiers,
         }
     }
 }
