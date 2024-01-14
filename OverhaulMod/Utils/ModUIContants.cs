@@ -38,6 +38,7 @@ namespace OverhaulMod.Utils
         public const string UI_MESSAGE_POPUP_FULL_SCREEN = "UI_MessagePopupFullScreen";
         public const string UI_OVERHAUL_UI_MANAGEMENT_PANEL = "UI_OverhaulUIsManagementPanel";
         public const string UI_LEVEL_DESCRIPTION_LIST_EDITOR = "UI_LevelDescriptionListEditor";
+        public const string UI_PERSONALIZATION_EDITOR = "UI_PersonalizationEditor";
 
         public static void ShowOtherModsMenu()
         {
@@ -209,6 +210,11 @@ namespace OverhaulMod.Utils
         public static void ShowLevelDescriptionListEditor()
         {
             _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.BeforeCrashScreen);
+        }
+
+        public static void ShowPersonalizationEditorUI()
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
         }
     }
 }

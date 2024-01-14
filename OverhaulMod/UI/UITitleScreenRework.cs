@@ -1,5 +1,6 @@
 ﻿using InternalModBot;
 using OverhaulMod.Content;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
@@ -63,6 +64,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnLevelDescriptionsEditorButtonClicked))]
         [UIElement("LevelDescriptionsEditorButton")]
         private readonly Button m_levelDescriptionsEditorButton;
+
+        [UIElementAction(nameof(OnPersonalizationEditorButtonClicked))]
+        [UIElement("PersonalizationEditorButton")]
+        private readonly Button m_personalizationEditorButton;
 
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
@@ -203,6 +208,11 @@ namespace OverhaulMod.UI
         public void OnLevelDescriptionsEditorButtonClicked()
         {
             ModUIConstants.ShowLevelDescriptionListEditor();
+        }
+
+        public void OnPersonalizationEditorButtonClicked()
+        {
+            PersonalizationEditorManager.Instance.StartEditorGameMode();
         }
 
         public void OnExcContentMenuButtonClicked()

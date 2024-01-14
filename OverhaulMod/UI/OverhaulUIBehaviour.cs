@@ -230,6 +230,8 @@ namespace OverhaulMod.UI
         public virtual void Show()
         {
             base.gameObject.SetActive(true);
+            if (!isElement)
+                ModCache.gameUIRoot.RefreshCursorEnabled();
         }
 
         public virtual void Hide()

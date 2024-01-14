@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.UI;
 using System;
+using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -46,6 +47,11 @@ namespace OverhaulMod.Utils
             ModCache.gameUIRoot.EscMenu.Show();
             ModCache.gameUIRoot.RefreshCursorEnabled();
             UIPauseMenuRework.disableOverhauledVersion = false;
+        }
+
+        public static bool IsEscKeyDown()
+        {
+            return Input.GetKeyDown(KeyCode.Escape);
         }
     }
 }

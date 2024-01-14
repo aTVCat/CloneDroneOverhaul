@@ -392,6 +392,7 @@
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItem.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeManager.cs" />
@@ -464,6 +465,7 @@
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />

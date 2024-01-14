@@ -32,6 +32,9 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        [UIElement("NothingIndicator")]
+        private readonly GameObject m_nothingIndicator;
+
         protected override void OnInitialized()
         {
             m_statusBarText.text = "Idle";
@@ -70,11 +73,20 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            foreach (Content.ExclusiveContentInfo contentInfo in ExclusiveContentManager.Instance.GetAllUnlockedContent())
+            System.Collections.Generic.List<ExclusiveContentInfo> list = ExclusiveContentManager.Instance.GetAllUnlockedContent();
+            if (list.IsNullOrEmpty())
             {
-                ModdedObject moddedObject = Instantiate(m_unlockedItemDisplayPrefab, m_container);
-                moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = contentInfo.Name;
+                m_nothingIndicator.SetActive(true);
+            }
+            else
+            {
+                m_nothingIndicator.SetActive(false);
+                foreach (Content.ExclusiveContentInfo contentInfo in list)
+                {
+                    ModdedObject moddedObject = Instantiate(m_unlockedItemDisplayPrefab, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = contentInfo.Name;
+                }
             }
         }
 
