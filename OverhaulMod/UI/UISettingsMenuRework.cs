@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -174,6 +175,22 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header1("Garbage");
                 _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
                 _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
+
+                _ = pageBuilder.Header1("Environment");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL, value, true);
+                }, "Arena remodel");
+                _ = pageBuilder.Header4("Made by @water2977");
+
+                _ = pageBuilder.Header1("Voxels");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FADING), delegate(bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FADING, value, true);
+                }, "Better fire spreading");
+                _ = pageBuilder.Toggle(true, delegate (bool value)
+                {
+                }, "Force burn");
             }
         }
 

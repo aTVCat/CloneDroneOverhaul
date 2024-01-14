@@ -6,6 +6,10 @@ namespace OverhaulMod.Engine
 {
     public class ArenaRemodelManager : Singleton<ArenaRemodelManager>, IGameLoadListener
     {
+        [ModSettingRequireRestart]
+        [ModSetting(ModSettingConstants.ENABLE_ARENA_REMODEL, true)]
+        public static bool EnableRemodel;
+
         public readonly string[] IgnoredParts = new string[]
         {
             "ARENA_THRONE_END_PARTS-3"
@@ -71,7 +75,7 @@ namespace OverhaulMod.Engine
 
         public void RefreshArenaLook()
         {
-            if (m_newArenaObject)
+            if (!EnableRemodel || m_newArenaObject)
                 return;
 
             m_worldRootTransform = WorldRoot.Instance.transform;

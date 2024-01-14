@@ -1,4 +1,5 @@
-﻿using PicaVoxel;
+﻿using OverhaulMod.Utils;
+using PicaVoxel;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace OverhaulMod.Engine
 {
     public class FadingVoxelManager : Singleton<FadingVoxelManager>
     {
+        [ModSetting(ModSettingConstants.ENABLE_FADING, true)]
+        public static bool EnableFading;
+
         private List<FadingVoxel> m_voxelsToFade;
 
         public float multiplier

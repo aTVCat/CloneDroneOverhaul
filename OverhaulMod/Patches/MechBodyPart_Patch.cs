@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("createNewVoxelBeingDestroyed", new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
         private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
-            if (fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
+            if (FadingVoxelManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
             {
                 FadingVoxelManager manager = FadingVoxelManager.Instance;
                 if (manager)

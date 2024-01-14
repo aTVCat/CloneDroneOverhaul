@@ -413,6 +413,8 @@
     <Compile Include="Content\NewsInfo.cs" />
     <Compile Include="Engine\ModLocalizationManager.cs" />
     <Compile Include="Engine\ModSetting.cs" />
+    <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
+    <Compile Include="Engine\ModSettingAttribute.cs" />
     <Compile Include="Engine\ModSettingsManager.cs" />
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
@@ -506,6 +508,7 @@
     <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
+    <Compile Include="Utils\ModSettingConstants.cs" />
     <Compile Include="Utils\ModSteamUGCUtils.cs" />
     <Compile Include="Utils\ModSteamUserStatsUtils.cs" />
     <Compile Include="Utils\ModUIUtils.cs" />
