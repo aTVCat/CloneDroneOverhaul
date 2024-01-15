@@ -39,6 +39,7 @@ namespace OverhaulMod.Utils
         public const string UI_OVERHAUL_UI_MANAGEMENT_PANEL = "UI_OverhaulUIsManagementPanel";
         public const string UI_LEVEL_DESCRIPTION_LIST_EDITOR = "UI_LevelDescriptionListEditor";
         public const string UI_PERSONALIZATION_EDITOR = "UI_PersonalizationEditor";
+        public const string UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN = "UI_MPSelectScreen";
 
         public static void ShowOtherModsMenu()
         {
@@ -215,6 +216,11 @@ namespace OverhaulMod.Utils
         public static void ShowPersonalizationEditorUI()
         {
             _ = ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static void ShowMultiplayerGameModeSelectScreen()
+        {
+            _ = ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
         }
     }
 }

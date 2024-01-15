@@ -32,5 +32,24 @@ namespace OverhaulMod.Content.Personalization
                 ModUIConstants.ShowPersonalizationEditorUI();
             });
         }
+
+        public void CreateItem(string name, PersonalizationCategory personalizationCategory)
+        {
+
+        }
+
+        public static string GetContentDirectoryForCategory(PersonalizationCategory personalizationCategory)
+        {
+            switch (personalizationCategory)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    return "skins";
+                case PersonalizationCategory.Accessories:
+                    return "accessories";
+                case PersonalizationCategory.Mounts:
+                    return "mounts";
+            }
+            return "other_p";
+        }
     }
 }

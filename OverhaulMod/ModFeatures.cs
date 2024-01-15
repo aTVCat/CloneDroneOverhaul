@@ -43,6 +43,9 @@ namespace OverhaulMod
                 case FeatureType.NewDifficultyTiers:
                     result = ModBuildInfo.enableV5;
                     break;
+                case FeatureType.GameModeSelectionScreensRework:
+                    result = true;
+                    break;
                 default:
                     result = false;
                     unknownFeature = true;
@@ -115,6 +118,11 @@ namespace OverhaulMod
             /// <see cref="Engine.DifficultyTierManager"/>
             /// </summary>
             NewDifficultyTiers,
+
+            /// <summary>
+            /// <see cref="Patches.Addons.GameModeSelectScreensAddon"/>
+            /// </summary>
+            GameModeSelectionScreensRework,
         }
     }
 }

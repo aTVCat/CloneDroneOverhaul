@@ -30,6 +30,14 @@ namespace OverhaulMod.UI
             }
         }
 
+        public virtual bool forceCancelHide
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public bool isElement
         {
             get;

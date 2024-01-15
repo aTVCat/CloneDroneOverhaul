@@ -32,7 +32,7 @@ namespace OverhaulMod.Content
                 return;
             }
 
-            ContentRepositoryManager.Instance.GetTextFileContent(REPOSITORY_FILE, delegate (string content)
+            ContentRepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 NewsInfoList newsInfoList = null;
                 try

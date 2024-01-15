@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
             m_progressBar.SetActive(true);
             m_progressBarFill.fillAmount = 0f;
 
-            ContentManager.Instance.DownloadDefaultContent(out m_webRequest, onDownloadSuccess, onDownloadFail);
+            ContentManager.Instance.DownloadContent("default", out m_webRequest, onDownloadSuccess, onDownloadFail);
         }
 
         public void OnDoneButtonClicked()

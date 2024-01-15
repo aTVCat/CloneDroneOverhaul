@@ -104,6 +104,7 @@ namespace OverhaulMod
             }
         }
 
+        
         private static string s_textureFolder;
         public static string texturesFolder
         {
@@ -114,6 +115,19 @@ namespace OverhaulMod
                     s_textureFolder = assetsFolder + "textures/";
                 }
                 return s_textureFolder;
+            }
+        }
+
+        private static string s_editorTexturesFolder;
+        public static string editorTexturesFolder
+        {
+            get
+            {
+                if (s_editorTexturesFolder == null)
+                {
+                    s_editorTexturesFolder = texturesFolder + "editor/";
+                }
+                return s_editorTexturesFolder;
             }
         }
 

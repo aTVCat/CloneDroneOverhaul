@@ -32,6 +32,7 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<SkyboxesAddon>();
             _ = gameObject.AddComponent<ColorsAddon>();
             _ = gameObject.AddComponent<MinorUIChangesAddon>();
+            _ = gameObject.AddComponent<GameModeSelectScreensAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
         }

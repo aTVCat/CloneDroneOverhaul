@@ -28,6 +28,12 @@ namespace OverhaulMod.Content
             new Dropdown.OptionData() { text = "Testing" },
         };
 
+        public static float timeToToClearCache
+        {
+            get;
+            set;
+        }
+
         private UpdateInfoList m_downloadedUpdateInfoList;
 
         private void Start()
@@ -46,23 +52,24 @@ namespace OverhaulMod.Content
         public void DownloadUpdateInfoFile(Action<UpdateInfoList> callback, Action<string> errorCallback, bool clearCache = false)
         {
             if (clearCache)
-            {
                 m_downloadedUpdateInfoList = null;
-                UnityWebRequest.ClearCookieCache();
-            }
 
             if (m_downloadedUpdateInfoList != null)
             {
-                callback?.Invoke(m_downloadedUpdateInfoList);
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    callback?.Invoke(m_downloadedUpdateInfoList);
+                }, 1f);
                 return;
             }
 
-            ContentRepositoryManager.Instance.GetTextFileContent(REPOSITORY_FILE, delegate (string content)
+            ContentRepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 UpdateInfoList updateInfoList = null;
                 try
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
+                    m_downloadedUpdateInfoList = updateInfoList;
                 }
                 catch (Exception exc)
                 {
@@ -90,7 +97,7 @@ namespace OverhaulMod.Content
                 }
             }
 
-            ContentRepositoryManager.Instance.CustomGetFileContent(source, delegate (byte[] bytes)
+            ContentRepositoryManager.Instance.GetCustomFile(source, delegate (byte[] bytes)
             {
                 string tempFile = Path.GetTempFileName();
                 ModIOUtils.WriteBytes(bytes, tempFile);

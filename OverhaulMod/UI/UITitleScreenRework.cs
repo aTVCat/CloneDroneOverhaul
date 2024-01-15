@@ -177,6 +177,11 @@ namespace OverhaulMod.UI
 
         public void OnPlayMultiPlayerButtonClicked()
         {
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.GameModeSelectionScreensRework))
+            {
+                ModUIConstants.ShowMultiplayerGameModeSelectScreen();
+                return;
+            }
             m_titleScreenUI.OnMultiplayerButtonClicked();
         }
 

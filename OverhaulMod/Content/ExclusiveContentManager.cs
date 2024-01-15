@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static OverhaulMod.ModFeatures;
 
 namespace OverhaulMod.Content
 {
@@ -102,7 +101,7 @@ namespace OverhaulMod.Content
             }
 
             ContentRepositoryManager repositoryManager = ContentRepositoryManager.Instance;
-            repositoryManager.GetTextFileContent(REPOSITORY_FILE, delegate (string contents)
+            repositoryManager.GetTextFile(REPOSITORY_FILE, delegate (string contents)
             {
                 ExclusiveContentInfoList contentInfoList = null;
                 try

@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
         {
             get;
             set;
-        } = 0.95f;
+        } = 0.98f;
 
         private void Start()
         {

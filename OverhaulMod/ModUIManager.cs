@@ -150,7 +150,7 @@ namespace OverhaulMod
         public bool Hide(string assetBundle, string assetKey)
         {
             OverhaulUIBehaviour overhaulUIBehaviour = Get<OverhaulUIBehaviour>(assetBundle, assetKey);
-            if (overhaulUIBehaviour && overhaulUIBehaviour.visible)
+            if (overhaulUIBehaviour && overhaulUIBehaviour.visible && !overhaulUIBehaviour.forceCancelHide)
             {
                 overhaulUIBehaviour.Hide();
                 return true;

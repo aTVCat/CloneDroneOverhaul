@@ -10,6 +10,9 @@ namespace OverhaulMod
 {
     public class WebhookManager : Singleton<WebhookManager>
     {
+        private const string START_ENABLED_EMOJI = "<:star_enabled:1196444610751373434>";
+        private const string START_DISABLED_EMOJI = "<:star_disabled:1196444266772316182>";
+
         public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
         public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);
 
@@ -52,13 +55,25 @@ namespace OverhaulMod
 
         public void ExecuteSurveysWebhook(int rank, string improveText, string likedText)
         {
-            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [Profile](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
+            rank = Mathf.Clamp(rank, 1, 5);
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
             string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
+            string rankText = string.Empty;
+            for(int i = 0; i < rank; i++)
+            {
+                rankText += START_ENABLED_EMOJI;
+                rankText += " ";
+            }
+            for (int i = 0; i < (5 - rank); i++)
+            {
+                rankText += START_DISABLED_EMOJI;
+                rankText += " ";
+            }
 
-            int color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber);
+            int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __Feedback. v{ModBuildInfo.version} (Rank: {rank})__",
+                content = $"## __Feedback. v{ModBuildInfo.version}__ {rankText}",
                 embeds = new Embed[]
                 {
                     new Embed()

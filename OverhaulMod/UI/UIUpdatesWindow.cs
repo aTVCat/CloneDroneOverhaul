@@ -178,7 +178,12 @@ namespace OverhaulMod.UI
             SetUIInteractable(false);
             ClearVersionAndChangelogTexts();
 
-            UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedUpdates, onFailedToCheckUpdates, true);
+            float time = Time.unscaledTime;
+            bool clearCache = time >= UpdateManager.timeToToClearCache;
+            if (clearCache)
+                UpdateManager.timeToToClearCache = time + 60f;
+
+            UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedUpdates, onFailedToCheckUpdates, clearCache);
         }
 
         public void OnBranchChanged(int index)

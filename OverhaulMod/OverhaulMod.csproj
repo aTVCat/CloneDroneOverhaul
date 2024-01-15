@@ -439,7 +439,9 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
+    <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\EscMenu_Patch.cs" />
     <Compile Include="Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Patches\GameDataManager_Patch.cs" />
@@ -460,11 +462,13 @@
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
+    <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
     <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
