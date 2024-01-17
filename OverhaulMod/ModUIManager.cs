@@ -111,7 +111,7 @@ namespace OverhaulMod
                 gameObject.SetActive(true);
                 m_InstantiatedUIs.Add(fullName, gameObject);
                 T result1 = gameObject.AddComponent<T>();
-                result1.name = fullName;
+                result1.uiName = fullName;
                 result1.InitializeUI();
                 result1.Show();
                 RectTransform transform = gameObject.transform as RectTransform;
@@ -205,7 +205,7 @@ namespace OverhaulMod
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
-            _ = m_InstantiatedUIs.Remove(uIBehaviour.name);
+            _ = m_InstantiatedUIs.Remove(uIBehaviour.uiName);
         }
 
         public enum UILayer

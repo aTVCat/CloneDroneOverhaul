@@ -25,6 +25,14 @@ namespace OverhaulMod.UI
         [UIElement("PlayMultiplayerButton")]
         private readonly Button m_playMultiPlayerButton;
 
+        [UIElementAction(nameof(OnPlayExpMultiPlayerButtonClicked))]
+        [UIElement("ExpPlayMultiplayerButton")]
+        private readonly Button m_playExpMultiPlayerButton;
+
+        [UIElementAction(nameof(OnViewMultiplayerErrorButtonClicked))]
+        [UIElement("ViewMultiplayerErrorButton")]
+        private readonly Button m_viewMultiplayerErrorButton;
+
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
@@ -88,6 +96,12 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("ExitButton")]
         private readonly Button m_quitButton;
+
+        [UIElement("ErrorMessage", typeof(UIElementMultiplayerMessageBox), false)]
+        public UIElementMultiplayerMessageBox ErrorMessage;
+
+        [UIElement("ViewMultiplayerErrorButton", typeof(UIElementMultiplayerMessageButton))]
+        public UIElementMultiplayerMessageButton ErrorMessageButton;
 
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
@@ -177,12 +191,18 @@ namespace OverhaulMod.UI
 
         public void OnPlayMultiPlayerButtonClicked()
         {
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.GameModeSelectionScreensRework))
-            {
-                ModUIConstants.ShowMultiplayerGameModeSelectScreen();
-                return;
-            }
             m_titleScreenUI.OnMultiplayerButtonClicked();
+            m_titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
+        }
+
+        public void OnPlayExpMultiPlayerButtonClicked()
+        {
+            ModUIConstants.ShowMultiplayerGameModeSelectScreen();
+        }
+
+        public void OnViewMultiplayerErrorButtonClicked()
+        {
+            ErrorMessage.Toggle();
         }
 
         public void OnModsButtonClicked()

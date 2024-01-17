@@ -441,6 +441,7 @@
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\EscMenu_Patch.cs" />
     <Compile Include="Patches\FirstPersonMover_Patch.cs" />
@@ -465,6 +466,8 @@
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
+    <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
+    <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />

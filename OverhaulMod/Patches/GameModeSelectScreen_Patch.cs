@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches
             else
             {
                 UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
-                if(multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visible)
+                if(multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visibleInHierarchy)
                 {
                     multiplayerGameModeSelectScreen.SetMainScreenVisible(visible);
                     __instance.MainScreenBox.gameObject.SetActive(false);

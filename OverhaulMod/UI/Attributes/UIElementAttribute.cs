@@ -11,6 +11,8 @@ namespace OverhaulMod.UI
 
         public bool? DefaultActiveState;
 
+        public Type ComponentToAdd;
+
         public bool HasIndex() => Index != -1;
 
         public UIElementAttribute(string name, bool enable)
@@ -22,6 +24,19 @@ namespace OverhaulMod.UI
         public UIElementAttribute(string name)
         {
             Name = name;
+        }
+
+        public UIElementAttribute(string name, Type componentType)
+        {
+            Name = name;
+            ComponentToAdd = componentType;
+        }
+
+        public UIElementAttribute(string name, Type componentType, bool enable)
+        {
+            Name = name;
+            ComponentToAdd = componentType;
+            DefaultActiveState = enable;
         }
 
         public UIElementAttribute(int index, bool enable)

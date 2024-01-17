@@ -10,7 +10,7 @@ namespace OverhaulMod.UI
 {
     public class OverhaulUIBehaviour : OverhaulBehaviour
     {
-        internal string name
+        internal string uiName
         {
             get;
             set;
@@ -27,6 +27,14 @@ namespace OverhaulMod.UI
             get
             {
                 return gameObject.activeSelf;
+            }
+        }
+
+        public bool visibleInHierarchy
+        {
+            get
+            {
+                return gameObject.activeInHierarchy;
             }
         }
 
@@ -50,6 +58,18 @@ namespace OverhaulMod.UI
             {
                 return false;
             }
+        }
+
+        public bool hasEverShowed
+        {
+            get;
+            protected set;
+        }
+
+        public bool showedFromCode
+        {
+            get;
+            set;
         }
 
         public void InitializeUI()
@@ -93,9 +113,19 @@ namespace OverhaulMod.UI
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
-                    UnityEngine.Object unityObject = elementAttribute.HasIndex()
+                    UnityEngine.Object unityObject = null;
+                    if(elementAttribute.ComponentToAdd != null)
+                    {
+                        unityObject = GetObject<GameObject>(elementAttribute.Name).AddComponent(elementAttribute.ComponentToAdd);
+                        if(unityObject is OverhaulUIBehaviour uib)
+                            uib.InitializeElement();
+                    }
+                    else
+                    {
+                        unityObject = elementAttribute.HasIndex()
                         ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
                         : GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                    }
 
                     if (!unityObject)
                     {
@@ -240,6 +270,8 @@ namespace OverhaulMod.UI
             base.gameObject.SetActive(true);
             if (!isElement)
                 ModCache.gameUIRoot.RefreshCursorEnabled();
+
+            hasEverShowed = true;
         }
 
         public virtual void Hide()
@@ -247,6 +279,14 @@ namespace OverhaulMod.UI
             base.gameObject.SetActive(false);
             if (!isElement)
                 ModCache.gameUIRoot.RefreshCursorEnabled();
+        }
+
+        public virtual void Toggle()
+        {
+            if (visible)
+                Hide();
+            else
+                Show();
         }
 
         public void SetTitleScreenButtonActive(bool value)
