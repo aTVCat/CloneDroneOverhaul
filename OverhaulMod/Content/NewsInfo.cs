@@ -2,6 +2,6 @@
 {
     public class NewsInfo
     {
-        public string Title, Description;
+        public string Title, Description, Survey;
     }
 }

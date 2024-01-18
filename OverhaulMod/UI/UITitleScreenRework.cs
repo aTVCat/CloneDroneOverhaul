@@ -253,7 +253,7 @@ namespace OverhaulMod.UI
 
         public void OnContentButtonClicked()
         {
-            ModUIConstants.ShowContentDownloadWindow();
+            ModUIConstants.ShowAddonsMenu();
         }
 
         public void OnUpdatesButtonClicked()

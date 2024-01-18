@@ -40,7 +40,10 @@ namespace OverhaulMod.Utils
         public const string UI_LEVEL_DESCRIPTION_LIST_EDITOR = "UI_LevelDescriptionListEditor";
         public const string UI_PERSONALIZATION_EDITOR = "UI_PersonalizationEditor";
         public const string UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN = "UI_MPSelectScreen";
-        public const string UI_ALL_CREDITS_MENU = "UI_CreditsMenu";
+        public const string UI_CREDITS_MENU = "UI_CreditsMenu";
+        public const string UI_ADDONS_MENU = "UI_AddonsMenu";
+        public const string UI_ADDONS_EDITOR = "UI_AddonsEditor";
+        public const string UI_CHALLENGES_MENU_REWORK = "UI_ChallengesMenuRework";
 
         public static void ShowOtherModsMenu()
         {
@@ -224,9 +227,24 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowAllCreditsMenu(Transform parent)
+        public static void ShowCreditsMenu(Transform parent)
         {
-            _ = ModUIManager.Instance.Show<UIAllCreditsMenu>(AssetBundleConstants.UI, UI_ALL_CREDITS_MENU, parent);
+            _ = ModUIManager.Instance.Show<UIAllCreditsMenu>(AssetBundleConstants.UI, UI_CREDITS_MENU, parent);
+        }
+
+        public static void ShowAddonsMenu()
+        {
+            _ = ModUIManager.Instance.Show<UIAddonsMenu>(AssetBundleConstants.UI, UI_ADDONS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static void ShowAddonsEditor(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIAddonsEditor>(AssetBundleConstants.UI, UI_ADDONS_EDITOR, parent);
+        }
+
+        public static void ShowChallengesMenuRework()
+        {
+            _ = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
         }
     }
 }

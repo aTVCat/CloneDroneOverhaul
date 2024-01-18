@@ -471,8 +471,11 @@
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
     <Compile Include="UI\UIAllCreditsMenu.cs" />
+    <Compile Include="UI\UIAddonsMenu.cs" />
+    <Compile Include="UI\UIChallengesMenuRework.cs" />
     <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />

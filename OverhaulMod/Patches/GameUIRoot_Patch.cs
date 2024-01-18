@@ -66,7 +66,7 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_WORKSHOP_ITEM_PAGE_WINDOW))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ALL_CREDITS_MENU))
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CREDITS_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_MOD_INFO_WINDOW))
                     return false;
@@ -80,11 +80,17 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_UPDATES_WINDOW))
                     return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADDONS_EDITOR))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADDONS_MENU))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_NEWS_PANEL))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_EXCLUSIVE_CONTENT_EDITOR))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_EXCLUSIVE_CONTENT_MENU))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHALLENGES_MENU_REWORK))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_LEVEL_SELECT_MENU))
                     return false;

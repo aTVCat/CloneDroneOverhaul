@@ -37,6 +37,9 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionIF")]
         private readonly InputField m_descriptionField;
 
+        [UIElement("SurveyIF")]
+        private readonly InputField m_surveyField;
+
         private NewsInfo m_editingInfo;
         private NewsInfoList m_editingInfoList;
 
@@ -75,6 +78,7 @@ namespace OverhaulMod.UI
 
             m_editingInfo.Title = m_headerField.text;
             m_editingInfo.Description = m_descriptionField.text;
+            m_editingInfo.Survey = m_surveyField.text;
 
             ModDataManager.Instance.WriteFile(NewsManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
         }
@@ -116,6 +120,7 @@ namespace OverhaulMod.UI
             m_editingInfo = m_editingInfoList.News[value];
             m_headerField.text = m_editingInfo.Title;
             m_descriptionField.text = m_editingInfo.Description;
+            m_surveyField.text = m_editingInfo.Survey;
             m_newsDropdown.value = value;
         }
     }

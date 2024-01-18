@@ -24,6 +24,10 @@ namespace OverhaulMod.Patches.Addons
                 singleplayerDatas[1].ClickedCallback = endlessModeEvent;
             }
 
+            UnityEvent spChallengesEvent = new UnityEvent();
+            spChallengesEvent.AddListener(ModUIConstants.ShowChallengesMenuRework);
+            singleplayerDatas[2].ClickedCallback = spChallengesEvent;
+
             ReplaceSprite(singleplayerDatas, 1, "Endless");
             ReplaceSprite(singleplayerDatas, 2, "Bot");
             ReplaceSprite(multiplayerDatas, 0, "Humans");

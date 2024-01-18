@@ -16,11 +16,14 @@ namespace OverhaulMod
         public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
         public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);
 
-        public const string SurveysWebhook = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
-        public static readonly Uri SurveysWebhookUri = new Uri(SurveysWebhook);
+        public const string FeedbacksWebhook = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
+        public static readonly Uri FeedbacksWebhookUri = new Uri(FeedbacksWebhook);
 
         public const string ErrorsWebhook = "https://discord.com/api/webhooks/1129035917324189745/FGpPRyvgI9YxyrCutXPoWrIGjJ0Z0KueFs4_pqU2wSLUsmYfVYm_qR9yTt-XST40ntSp";
         public static readonly Uri ErrorsWebhookUri = new Uri(ErrorsWebhook);
+
+        public const string SurveysWebhook = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
+        public static readonly Uri SurveysWebhookUri = new Uri(SurveysWebhook);
 
         private bool s_HasExecutedCrashReportsWebhook = false;
 
@@ -53,7 +56,7 @@ namespace OverhaulMod
             ExecuteWebhook(obj1, CrashReportsWebhookUri);
         }
 
-        public void ExecuteSurveysWebhook(int rank, string improveText, string likedText)
+        public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText)
         {
             rank = Mathf.Clamp(rank, 1, 5);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
@@ -98,6 +101,25 @@ namespace OverhaulMod
                     },
                 },
             };
+            ExecuteWebhook(obj1, FeedbacksWebhookUri);
+        }
+
+        public void ExecuteSurveysWebhook(string selectedVariant, string newsTitle)
+        {
+            int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = $"## __Survey answer. v{ModBuildInfo.version}__ {newsTitle}",
+                embeds = new Embed[]
+                {
+                    new Embed()
+                    {
+                        title = "**Selected answer**",
+                        description = selectedVariant,
+                        color = color,
+                    }
+                },
+            };
             ExecuteWebhook(obj1, SurveysWebhookUri);
         }
 
@@ -136,7 +158,7 @@ namespace OverhaulMod
 
         public void ExecuteTestUploadWebhook(string filePath)
         {
-            ExecuteFileWebhook(filePath, SurveysWebhookUri);
+            ExecuteFileWebhook(filePath, FeedbacksWebhookUri);
         }
 
         public void ExecuteCustomWebhook(string content, string url)
