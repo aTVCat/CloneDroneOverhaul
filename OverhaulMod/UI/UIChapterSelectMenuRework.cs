@@ -52,6 +52,8 @@ namespace OverhaulMod.UI
         [UIElement("ContinueText")]
         private readonly Text m_continueButtonText;
 
+        public override bool dontRefreshUI => true;
+
         public override void Show()
         {
             base.Show();

@@ -13,7 +13,7 @@ namespace OverhaulMod.UI
         [UIElement("LegacyUIButton")]
         private readonly Button m_legacyUIButton;
 
-        public override bool enableCursorIfVisible
+        public override bool enableCursor
         {
             get
             {

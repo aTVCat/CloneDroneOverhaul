@@ -31,19 +31,13 @@ namespace OverhaulMod.UI
         private bool m_isPopulating;
         private bool m_hasEverSuccessfullyPopulatedList;
 
+        public override bool hideTitleScreen => true;
+
         public override void Show()
         {
             base.Show();
-            SetTitleScreenButtonActive(false);
-
             if (!m_hasEverSuccessfullyPopulatedList)
                 Populate();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public void Populate()

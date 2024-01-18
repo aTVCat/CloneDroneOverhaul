@@ -52,6 +52,8 @@ namespace OverhaulMod.UI
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
         private readonly TabManager m_tabs;
 
+        public override bool hideTitleScreen => true;
+
         protected override void OnInitialized()
         {
             m_tabs.AddTab(m_localAdvancementsTab, "local advancements");
@@ -60,18 +62,6 @@ namespace OverhaulMod.UI
 
             ClearPageContents();
             PopulateLocalAchievements();
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            SetTitleScreenButtonActive(false);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public void OnTabSelected(UIElementTab elementTab)

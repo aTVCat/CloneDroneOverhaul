@@ -50,6 +50,8 @@ namespace OverhaulMod.UI
 
         private LevelDescription m_editingLevelDescription;
 
+        public override bool hideTitleScreen => true;
+
         protected override void OnInitialized()
         {
             var list = new List<Dropdown.OptionData>();
@@ -61,18 +63,6 @@ namespace OverhaulMod.UI
             m_difficultyDropdown.options = list;
             RefreshDisplays();
             OnLevelsDropdownEdited(0);
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            SetTitleScreenButtonActive(false);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public void RefreshDisplays()

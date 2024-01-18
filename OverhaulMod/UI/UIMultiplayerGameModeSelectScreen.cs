@@ -19,6 +19,8 @@ namespace OverhaulMod.UI
         [UIElement("ScrollRect")]
         private readonly ScrollRect m_scrollRect;
 
+        public override bool hideTitleScreen => true;
+
         public override bool forceCancelHide
         {
             get
@@ -38,7 +40,6 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            SetTitleScreenButtonActive(false);
 
             ModCache.titleScreenUI.MultiplayerModeSelectScreen.Show();
             ModCache.titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
@@ -49,7 +50,6 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            SetTitleScreenButtonActive(true);
 
             ModCache.titleScreenUI.MultiplayerModeSelectScreen.Hide();
         }

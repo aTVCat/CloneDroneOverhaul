@@ -16,6 +16,8 @@ namespace OverhaulMod.UI
 
         private CanvasGroup m_canvasGroup;
 
+        public override bool hideTitleScreen => true;
+
         protected override void OnInitialized()
         {
             m_canvasGroup = base.GetComponent<CanvasGroup>();
@@ -24,14 +26,7 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            SetTitleScreenButtonActive(false);
             m_canvasGroup.alpha = 0f;
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public override void Update()

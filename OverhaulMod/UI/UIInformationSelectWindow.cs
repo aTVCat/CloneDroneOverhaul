@@ -22,6 +22,8 @@ namespace OverhaulMod.UI
         [UIElement("CloneDroneInfoButton")]
         private readonly Button m_cloneDroneInfoButton;
 
+        public override bool hideTitleScreen => true;
+
         public override void Show()
         {
             base.Show();

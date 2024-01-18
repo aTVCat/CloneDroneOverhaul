@@ -175,6 +175,12 @@ namespace OverhaulMod.UI
             }
         }
 
+        public void SetMultiplayerButtonActive(bool value)
+        {
+            m_playMultiPlayerButton.interactable = value;
+            m_playExpMultiPlayerButton.interactable = value;
+        }
+
         private IEnumerator levelEditorTransitionCoroutine()
         {
             yield return new WaitForSecondsRealtime(0.25f);

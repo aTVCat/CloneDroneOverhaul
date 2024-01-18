@@ -47,6 +47,10 @@ namespace OverhaulMod.UI
         [UIElement("person1Button")]
         private readonly Button m_person1Button;
 
+        [UIElementAction(nameof(OnCreditsButtonClicked))]
+        [UIElement("CreditsButton")]
+        private readonly Button m_creditsButton;
+
         [UIElement("KeyValueDisplay", false)]
         private readonly ModdedObject m_keyValuePrefab;
 
@@ -172,6 +176,11 @@ namespace OverhaulMod.UI
             {
                 Application.OpenURL("https://steamcommunity.com/profiles/76561199014733748");
             }
+        }
+
+        public void OnCreditsButtonClicked()
+        {
+            ModUIConstants.ShowAllCreditsMenu(base.transform);
         }
 
         public void OnModBotPageButtonClicked()

@@ -52,6 +52,8 @@ namespace OverhaulMod.UI
         private UnityWebRequest m_webRequest;
         private string m_downloadSource, m_directoryName;
 
+        public override bool hideTitleScreen => true;
+
         public bool disallowClosing
         {
             get;
@@ -73,8 +75,6 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            SetTitleScreenButtonActive(false);
-
             m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
         }
 
@@ -84,7 +84,6 @@ namespace OverhaulMod.UI
                 return;
 
             base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public override void Update()

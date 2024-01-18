@@ -8,16 +8,6 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
-        public override void Show()
-        {
-            base.Show();
-            SetTitleScreenButtonActive(false);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
-        }
+        public override bool hideTitleScreen => true;
     }
 }

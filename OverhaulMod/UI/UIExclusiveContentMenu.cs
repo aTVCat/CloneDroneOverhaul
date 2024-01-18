@@ -35,6 +35,8 @@ namespace OverhaulMod.UI
         [UIElement("NothingIndicator")]
         private readonly GameObject m_nothingIndicator;
 
+        public override bool hideTitleScreen => true;
+
         protected override void OnInitialized()
         {
             m_statusBarText.text = "Idle";
@@ -43,7 +45,6 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            SetTitleScreenButtonActive(false);
             Populate();
 
             string error = ExclusiveContentManager.Instance.error;
@@ -55,12 +56,6 @@ namespace OverhaulMod.UI
                     OnRetrieveButtonClicked();
                 }, null);
             }
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public override void Update()

@@ -156,7 +156,7 @@ namespace OverhaulMod
         {
             get
             {
-                return "Technical Demo 1";
+                return "Milestone 2";
             }
         }
 

@@ -29,6 +29,8 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_content;
 
+        public override bool dontRefreshUI => true;
+
         public override void Show()
         {
             base.Show();

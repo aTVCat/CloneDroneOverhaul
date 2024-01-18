@@ -9,6 +9,8 @@ namespace OverhaulMod
 {
     public class ModUIManager : Singleton<ModUIManager>, IGameLoadListener
     {
+        private Dictionary<string, GameObject> m_instantiatedUIs;
+
         private Transform m_gameUIRootTransform;
         public Transform GameUIRootTransform
         {
@@ -34,13 +36,11 @@ namespace OverhaulMod
             private set;
         }
 
-        private Dictionary<string, GameObject> m_InstantiatedUIs;
-
         public override void Awake()
         {
             base.Awake();
 
-            m_InstantiatedUIs = new Dictionary<string, GameObject>();
+            m_instantiatedUIs = new Dictionary<string, GameObject>();
         }
 
         public void OnGameLoaded()
@@ -51,13 +51,13 @@ namespace OverhaulMod
         private void onGameInitialized()
         {
             List<string> keysToRemove = new List<string>();
-            foreach (KeyValuePair<string, GameObject> keyValue in m_InstantiatedUIs)
+            foreach (KeyValuePair<string, GameObject> keyValue in m_instantiatedUIs)
             {
                 if (!keyValue.Value)
                     keysToRemove.Add(keyValue.Key);
             }
             foreach (string key in keysToRemove)
-                _ = m_InstantiatedUIs.Remove(key);
+                _ = m_instantiatedUIs.Remove(key);
 
             _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", UILayer.BeforeCrashScreen);
 
@@ -71,7 +71,7 @@ namespace OverhaulMod
 
         public bool HasInstantiatedUI(string assetKey)
         {
-            return m_InstantiatedUIs.ContainsKey(assetKey);
+            return m_instantiatedUIs.ContainsKey(assetKey);
         }
 
         public int GetSiblingIndex(UILayer layer)
@@ -109,7 +109,7 @@ namespace OverhaulMod
                 GameObject prefab = ModResources.Load<GameObject>(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
-                m_InstantiatedUIs.Add(fullName, gameObject);
+                m_instantiatedUIs.Add(fullName, gameObject);
                 T result1 = gameObject.AddComponent<T>();
                 result1.uiName = fullName;
                 result1.InitializeUI();
@@ -125,9 +125,8 @@ namespace OverhaulMod
                 return result1;
             }
 
-            T result = m_InstantiatedUIs[fullName].GetComponent<T>();
+            T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
-            ModCache.gameUIRoot.RefreshCursorEnabled();
             return result;
         }
 
@@ -144,7 +143,7 @@ namespace OverhaulMod
         public T Get<T>(string assetBundle, string assetKey) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
-            return m_InstantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
+            return m_instantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
         }
 
         public bool Hide(string assetBundle, string assetKey)
@@ -156,6 +155,16 @@ namespace OverhaulMod
                 return true;
             }
             return false;
+        }
+
+        public void RefreshUI(bool dontRefreshUI)
+        {
+            ModCache.gameUIRoot.RefreshCursorEnabled();
+            if (!dontRefreshUI)
+            {
+                ModCache.gameUIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
+                ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());
+            }
         }
 
         public void HideLegacyMenuInsteadOfCustom(GameObject objectToTrack)
@@ -191,13 +200,41 @@ namespace OverhaulMod
 
         public bool ShouldEnableCursor()
         {
-            foreach (GameObject gameObject in m_InstantiatedUIs.Values)
+            foreach (GameObject gameObject in m_instantiatedUIs.Values)
             {
                 if (!gameObject || !gameObject.activeInHierarchy)
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.isElement && behaviour.enableCursorIfVisible)
+                if (behaviour && !behaviour.isElement && behaviour.enableCursor)
+                    return true;
+            }
+            return false;
+        }
+
+        public bool ShouldEnableUIOverLogoMode()
+        {
+            foreach (GameObject gameObject in m_instantiatedUIs.Values)
+            {
+                if (!gameObject || !gameObject.activeInHierarchy)
+                    continue;
+
+                OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
+                if (behaviour && !behaviour.isElement && behaviour.enableUIOverLogoMode)
+                    return true;
+            }
+            return false;
+        }
+
+        public bool ShouldHideTitleScreen()
+        {
+            foreach (GameObject gameObject in m_instantiatedUIs.Values)
+            {
+                if (!gameObject || !gameObject.activeInHierarchy)
+                    continue;
+
+                OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
+                if (behaviour && !behaviour.isElement && behaviour.hideTitleScreen)
                     return true;
             }
             return false;
@@ -205,7 +242,7 @@ namespace OverhaulMod
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
-            _ = m_InstantiatedUIs.Remove(uIBehaviour.uiName);
+            _ = m_instantiatedUIs.Remove(uIBehaviour.uiName);
         }
 
         public enum UILayer

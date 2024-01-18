@@ -9,7 +9,7 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
-        public override bool enableCursorIfVisible => true;
+        public override bool enableCursor => true;
 
         public override void Show()
         {

@@ -52,7 +52,32 @@ namespace OverhaulMod.UI
             set;
         }
 
-        public virtual bool enableCursorIfVisible
+        public virtual bool enableCursor
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+
+        public virtual bool enableUIOverLogoMode
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public virtual bool hideTitleScreen
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public virtual bool dontRefreshUI
         {
             get
             {
@@ -269,7 +294,7 @@ namespace OverhaulMod.UI
         {
             base.gameObject.SetActive(true);
             if (!isElement)
-                ModCache.gameUIRoot.RefreshCursorEnabled();
+                ModUIManager.Instance.RefreshUI(dontRefreshUI);
 
             hasEverShowed = true;
         }
@@ -278,7 +303,7 @@ namespace OverhaulMod.UI
         {
             base.gameObject.SetActive(false);
             if (!isElement)
-                ModCache.gameUIRoot.RefreshCursorEnabled();
+                ModUIManager.Instance.RefreshUI(dontRefreshUI);
         }
 
         public virtual void Toggle()
@@ -287,11 +312,6 @@ namespace OverhaulMod.UI
                 Hide();
             else
                 Show();
-        }
-
-        public void SetTitleScreenButtonActive(bool value)
-        {
-            ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && value);
         }
     }
 }

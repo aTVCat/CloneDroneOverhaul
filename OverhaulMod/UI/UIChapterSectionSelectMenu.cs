@@ -34,6 +34,8 @@ namespace OverhaulMod.UI
             private set;
         }
 
+        public override bool dontRefreshUI => true;
+
         protected override void OnInitialized()
         {
             m_levelIdToSiblingIndex = new Dictionary<string, int>();

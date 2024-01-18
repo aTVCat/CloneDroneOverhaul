@@ -51,6 +51,8 @@ namespace OverhaulMod.UI
         [UIElement("TabsContainer")]
         private Transform m_tabContainer;
 
+        public override bool hideTitleScreen => true;
+
         protected override void OnInitialized()
         {
             SettingsMenu settingsMenu = ModCache.settingsMenu;
@@ -62,18 +64,6 @@ namespace OverhaulMod.UI
                 m_tabs.AddTab("Debug");
             }
             m_tabs.SelectTab("Gameplay");
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            SetTitleScreenButtonActive(false);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
         }
 
         public void OnTabSelected(UIElementTab elementTab)

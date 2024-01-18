@@ -243,5 +243,31 @@ namespace OverhaulMod.Utils
 
         public static bool IsTheSameUpgrade(this UpgradeTypeAndLevel upgradeTypeAndLevel, UpgradeDescription other) => (upgradeTypeAndLevel.UpgradeType, upgradeTypeAndLevel.Level) == (other.UpgradeType, other.Level);
         public static bool IsTheSameUpgrade(this UpgradeDescription upgradeDescription, UpgradeDescription other) => (upgradeDescription.UpgradeType, upgradeDescription.Level) == (other.UpgradeType, other.Level);
+
+        public static void SetUIOverLogoModeEnabled(this GameUIRoot gameUIRoot, bool enabled)
+        {
+            if (!gameUIRoot)
+                return;
+
+            Canvas canvas = gameUIRoot.GetComponent<Canvas>();
+            if (canvas)
+            {
+                Camera camera = canvas.worldCamera;
+                if (camera)
+                {
+                    camera.depth = enabled ? 100f : 1f;
+                }
+            }
+
+            TitleScreenUI titleScreenUI = gameUIRoot.TitleScreenUI;
+            if (titleScreenUI)
+            {
+                Transform transform = titleScreenUI.transform.FindChildRecursive("LeftFadeBG");
+                if (transform)
+                {
+                    transform.gameObject.SetActive(!enabled);
+                }
+            }
+        }
     }
 }

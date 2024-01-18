@@ -28,17 +28,7 @@ namespace OverhaulMod.UI
 
         private UnityWebRequest m_webRequest;
 
-        public override void Show()
-        {
-            base.Show();
-            SetTitleScreenButtonActive(false);
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            SetTitleScreenButtonActive(true);
-        }
+        public override bool hideTitleScreen => true;
 
         public override void Update()
         {
