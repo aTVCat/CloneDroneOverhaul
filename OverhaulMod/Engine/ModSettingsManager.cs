@@ -23,9 +23,9 @@ namespace OverhaulMod.Engine
 
         private void loadSettings()
         {
-            foreach(var type in ModCache.modAssembly.GetTypes())
+            foreach (System.Type type in ModCache.modAssembly.GetTypes())
             {
-                foreach(FieldInfo fieldInfo in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {
                     ModSetting modSetting = CreateSettingFromField(fieldInfo);
                     if (modSetting == null)
@@ -44,10 +44,7 @@ namespace OverhaulMod.Engine
 
         public ModSetting GetSetting(string name)
         {
-            if(m_nameToSetting.TryGetValue(name, out ModSetting modSetting))
-                return modSetting;
-
-            return null;
+            return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
         public ModSetting CreateSettingFromField(FieldInfo field, bool setFieldValue = true)

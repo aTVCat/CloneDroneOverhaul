@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using OverhaulMod.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ namespace OverhaulMod.Patches.Addons
     {
         public override void Patch()
         {
-            var gameUIRoot = ModCache.gameUIRoot;
+            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
             if (gameUIRoot)
             {
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;

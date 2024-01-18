@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -146,7 +145,7 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-                foreach(var tuple in list)
+                foreach ((GameplayAchievement, float) tuple in list)
                 {
                     ModdedObject moddedObject = Instantiate(m_globalDisplayPrefab, m_pageVerticalContentsTransform);
                     moddedObject.gameObject.SetActive(true);

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using OverhaulMod.Utils;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -25,6 +27,11 @@ namespace OverhaulMod.UI
             }
         }
 
+        protected override void OnInitialized()
+        {
+            m_canvasGroup.alpha = 0f;
+        }
+
         public void ShowProgress(GameplayAchievement gameplayAchievement)
         {
             Show();
@@ -38,15 +45,15 @@ namespace OverhaulMod.UI
             m_achievementImage.sprite = gameplayAchievement.GetImageSprite();
             m_achievementProgressBarFill.fillAmount = progress / (float)targetProgress;
             m_achievementProgressText.text = $"{progress}/{targetProgress}";
-            ShowUntil = Time.unscaledTime + 5f;
+            _ = ModActionUtils.RunCoroutine(waitThenHide());
         }
 
-        public override void Update()
+        private IEnumerator waitThenHide()
         {
-            base.Update();
-
-            float deltaTime = Time.unscaledDeltaTime * 10f;
-            m_canvasGroup.alpha = Mathf.Lerp(m_canvasGroup.alpha, shouldBeVisible ? 0.6f : 0f, deltaTime);
+            m_canvasGroup.alpha = 0.6f;
+            yield return new WaitForSecondsRealtime(5f);
+            m_canvasGroup.alpha = 0f;
+            yield break;
         }
     }
 }

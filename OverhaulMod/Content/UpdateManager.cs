@@ -137,11 +137,7 @@ namespace OverhaulMod.Content
 
         public List<Dropdown.OptionData> GetAvailableBranches()
         {
-            if (ExclusiveContentManager.Instance.IsLocalUserTheTester())
-            {
-                return BranchesForTestersDropdownOptions;
-            }
-            return BranchesDropdownOptions;
+            return ExclusiveContentManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
         }
 
         private void prepareBuildForAnUpdate()

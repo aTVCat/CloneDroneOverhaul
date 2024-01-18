@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -129,7 +128,7 @@ namespace OverhaulMod.UI
             foreach (FieldInfo fieldInfo in fields)
             {
                 TabManagerAttribute tabManagerAttribute = fieldInfo.GetCustomAttribute<TabManagerAttribute>();
-                if(tabManagerAttribute != null)
+                if (tabManagerAttribute != null)
                 {
                     tabManagers.Add((fieldInfo, tabManagerAttribute));
                     continue;
@@ -139,10 +138,10 @@ namespace OverhaulMod.UI
                 if (elementAttribute != null)
                 {
                     UnityEngine.Object unityObject = null;
-                    if(elementAttribute.ComponentToAdd != null)
+                    if (elementAttribute.ComponentToAdd != null)
                     {
                         unityObject = GetObject<GameObject>(elementAttribute.Name).AddComponent(elementAttribute.ComponentToAdd);
-                        if(unityObject is OverhaulUIBehaviour uib)
+                        if (unityObject is OverhaulUIBehaviour uib)
                             uib.InitializeElement();
                     }
                     else
@@ -221,8 +220,8 @@ namespace OverhaulMod.UI
                     fieldInfo.SetValue(this, unityObject);
                 }
             }
-            
-            foreach((FieldInfo, TabManagerAttribute) tm in tabManagers)
+
+            foreach ((FieldInfo, TabManagerAttribute) tm in tabManagers)
             {
                 TabManager tabManager = new TabManager();
                 FieldInfo fi = tm.Item1;
@@ -252,12 +251,10 @@ namespace OverhaulMod.UI
 
                 tabManager.Config(prefab, container, tma.ComponentType, delegate (UIElementTab tab)
                 {
-                    if (onTabCreatedMethod != null)
-                        onTabCreatedMethod.Invoke(this, new object[] { tab });
+                    _ = (onTabCreatedMethod?.Invoke(this, new object[] { tab }));
                 }, delegate (UIElementTab tab)
                 {
-                    if (onTabSelectedMethod != null)
-                        onTabSelectedMethod.Invoke(this, new object[] { tab });
+                    _ = (onTabSelectedMethod?.Invoke(this, new object[] { tab }));
                 });
 
                 if (!tma.Tabs.IsNullOrEmpty())

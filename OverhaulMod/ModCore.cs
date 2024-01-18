@@ -104,7 +104,7 @@ namespace OverhaulMod
             }
         }
 
-        
+
         private static string s_textureFolder;
         public static string texturesFolder
         {
@@ -244,7 +244,7 @@ namespace OverhaulMod
                 return;
             }
 
-            if(s_hasEverLoadedTheMod && !s_gameObject)
+            if (s_hasEverLoadedTheMod && !s_gameObject)
             {
                 TriggerSceneReloadedEvent();
                 s_gameObject = new GameObject();

@@ -1,5 +1,4 @@
-﻿using Jint;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System.Reflection;
 using UnityEngine;
 
@@ -78,10 +77,7 @@ namespace OverhaulMod.Engine
         public object GetFieldValue()
         {
             FieldInfo fieldInfo = this.fieldInfo;
-            if (fieldInfo == null)
-                return null;
-
-            return fieldInfo.GetValue(null);
+            return fieldInfo == null ? null : fieldInfo.GetValue(null);
         }
 
         public void SetValue(object value)

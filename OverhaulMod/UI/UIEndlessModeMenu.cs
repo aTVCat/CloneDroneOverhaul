@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
-using System.Data.SqlClient;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,10 +28,10 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             GameData gameData = GameDataManager.Instance?._endlessModeData;
-            if(gameData != null)
+            if (gameData != null)
             {
-                var tierDesc = EndlessModeManager.Instance?.GetNextLevelDifficultyTierDescription(gameData.LevelIDsBeatenThisPlaythrough.Count);
-                if(tierDesc == null)
+                EndlessTierDescription tierDesc = EndlessModeManager.Instance?.GetNextLevelDifficultyTierDescription(gameData.LevelIDsBeatenThisPlaythrough.Count);
+                if (tierDesc == null)
                 {
                     m_progressText.text = "Error: difficulty";
                 }

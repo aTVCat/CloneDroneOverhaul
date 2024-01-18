@@ -25,7 +25,7 @@ namespace OverhaulMod.Visuals.Environment
         private void Update()
         {
             m_timeToUpdate -= Time.deltaTime;
-            if (m_timeToUpdate < 0f)
+            if (m_timeToUpdate <= 0f)
             {
                 m_timeToUpdate = 1f;
                 RefreshVFX();

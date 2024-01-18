@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
-using RootMotion;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +20,7 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         public GameObject m_iconLoadingIndicator;
 
-        private Button m_playMultiplayerButton;
+        private readonly Button m_playMultiplayerButton;
 
         private (Color, Color)[] m_colors;
 
@@ -43,7 +42,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             m_timeLeftForAnUpdate -= Time.deltaTime;
-            if(m_timeLeftForAnUpdate <= 0f)
+            if (m_timeLeftForAnUpdate <= 0f)
             {
                 Refresh();
             }
@@ -57,9 +56,9 @@ namespace OverhaulMod.UI
             int curState = m_prevState;
             bool userLoggedIn = MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab();
             BanOrWarningMessage banOrWarningMessage = PlayFabPlayerDataManager.Instance.GetBanOrWarningMessage();
-            if(!userLoggedIn || MultiplayerLoginManager.Instance.IsBanned())
+            if (!userLoggedIn || MultiplayerLoginManager.Instance.IsBanned())
             {
-                if(banOrWarningMessage != null && banOrWarningMessage.IsWarning)
+                if (banOrWarningMessage != null && banOrWarningMessage.IsWarning)
                 {
                     m_prevState = 1;
                     SetIcon(true);
@@ -85,7 +84,7 @@ namespace OverhaulMod.UI
                 shouldActivateMultiplayerButton = true;
             }
 
-            if(curState != m_prevState)
+            if (curState != m_prevState)
             {
                 UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
                 if (titleScreenRework && titleScreenRework.visibleInHierarchy)

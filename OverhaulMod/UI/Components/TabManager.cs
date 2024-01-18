@@ -1,9 +1,5 @@
-﻿using OverhaulMod.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,19 +23,7 @@ namespace OverhaulMod.UI
             get;
             private set;
         }
-
-        private bool m_interactable;
-        public bool interactable
-        {
-            get
-            {
-                return m_interactable;
-            }
-            set
-            {
-                m_interactable = value;
-            }
-        }
+        public bool interactable { get; set; }
 
         /// <summary>
         /// 
@@ -50,7 +34,7 @@ namespace OverhaulMod.UI
         /// <param name="onTabSelect">Called when user selects a tab</param>
         public void Config(ModdedObject prefab, Transform container, Type type, Action<UIElementTab> onTabCreate, Action<UIElementTab> onTabSelect)
         {
-            if(prefab)
+            if (prefab)
                 prefab.gameObject.SetActive(false);
 
             m_prefab = prefab;
@@ -58,7 +42,7 @@ namespace OverhaulMod.UI
             m_onTabCreate = onTabCreate;
             m_onTabSelect = onTabSelect;
             m_type = type;
-            m_interactable = true;
+            interactable = true;
 
             m_instantiatedTabs = new Dictionary<string, UIElementTab>();
         }

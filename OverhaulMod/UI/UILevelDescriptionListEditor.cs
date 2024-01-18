@@ -2,7 +2,6 @@
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -54,7 +53,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            var list = new List<Dropdown.OptionData>();
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
             foreach (string name in typeof(DifficultyTier).GetEnumNames())
                 list.Add(new Dropdown.OptionData(name));
 
@@ -140,7 +139,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.MessagePopup(true, "Create new file?", "ig you're not supposed to do this", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                var streamWriter = File.CreateText(ModLevelManager.Instance.levelsFolder + ModLevelManager.LEVEL_DESCRIPTIONS_FILE);
+                StreamWriter streamWriter = File.CreateText(ModLevelManager.Instance.levelsFolder + ModLevelManager.LEVEL_DESCRIPTIONS_FILE);
                 streamWriter.Close();
                 ModLevelManager.Instance.LoadLevelDescriptions();
                 RefreshDisplays();

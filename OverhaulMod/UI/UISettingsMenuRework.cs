@@ -45,11 +45,11 @@ namespace OverhaulMod.UI
         public ModdedObject ButtonPrefab;
 
         [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Language", "Mod-Bot" })]
-        private TabManager m_tabs;
+        private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
-        private ModdedObject m_tabPrefab;
+        private readonly ModdedObject m_tabPrefab;
         [UIElement("TabsContainer")]
-        private Transform m_tabContainer;
+        private readonly Transform m_tabContainer;
 
         public override bool hideTitleScreen => true;
 
@@ -174,7 +174,7 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header4("Made by @water2977");
 
                 _ = pageBuilder.Header1("Voxels");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FADING), delegate(bool value)
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FADING), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FADING, value, true);
                 }, "Better fire spreading");
@@ -281,7 +281,7 @@ namespace OverhaulMod.UI
                     GameUIRoot.Instance.ControlMapper.Open();
                     ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                     {
-                        GameUIRoot.Instance.ControlMapper.Close(true);
+                        _ = GameUIRoot.Instance.ControlMapper.Close(true);
                     });
                 });
 
@@ -638,7 +638,7 @@ namespace OverhaulMod.UI
                 if (callback != null)
                     slider.onValueChanged.AddListener(callback);
 
-                slider.gameObject.AddComponent<BetterSliderCallback>();
+                _ = slider.gameObject.AddComponent<BetterSliderCallback>();
 
                 return slider;
             }

@@ -27,7 +27,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if(m_isWaitingMouseButtonGetUp && !Input.GetMouseButton(0))
+            if (m_isWaitingMouseButtonGetUp && !Input.GetMouseButton(0))
             {
                 m_isWaitingMouseButtonGetUp = false;
                 m_sliderEvent.Invoke(m_valueToSet);

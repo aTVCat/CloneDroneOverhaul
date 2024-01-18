@@ -69,7 +69,7 @@ namespace OverhaulMod.Engine
             {
                 modLevelDescriptions = ModJsonUtils.DeserializeStream<ModLevelDescriptionList>(levelsFolder + LEVEL_DESCRIPTIONS_FILE);
 
-                if(modLevelDescriptions == null)
+                if (modLevelDescriptions == null)
                     modLevelDescriptions = new ModLevelDescriptionList()
                     {
                         LevelDescriptions = new List<LevelDescription>(),
@@ -90,15 +90,15 @@ namespace OverhaulMod.Engine
 
         public void AddEndlessModeLevels()
         {
-            var moddedLevelsList = modLevelDescriptions;
+            ModLevelDescriptionList moddedLevelsList = modLevelDescriptions;
             if (moddedLevelsList == null)
                 return;
 
-            var fixedLevelDescriptions = moddedLevelsList.GetFixedLevelDescriptions();
+            List<LevelDescription> fixedLevelDescriptions = moddedLevelsList.GetFixedLevelDescriptions();
             if (fixedLevelDescriptions.IsNullOrEmpty())
                 return;
 
-            foreach(var levelDescription in fixedLevelDescriptions)
+            foreach (LevelDescription levelDescription in fixedLevelDescriptions)
             {
                 if (!File.Exists(levelDescription.LevelJSONPath))
                     continue;

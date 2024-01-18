@@ -1,14 +1,7 @@
-﻿using Jint.Native.Boolean;
-using OverhaulMod.Utils;
-using System;
+﻿using OverhaulMod.Utils;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using static a;
 
 namespace OverhaulMod.Engine
 {
@@ -62,7 +55,7 @@ namespace OverhaulMod.Engine
             m_canvasGroup.alpha = alpha;
             m_canvasGroup.blocksRaycasts = alpha >= 0.9f;
 
-            if(fo && alpha <= 0.05f)
+            if (fo && alpha <= 0.05f)
             {
                 Destroy(base.gameObject);
             }
@@ -83,7 +76,7 @@ namespace OverhaulMod.Engine
             if (enumerator == null)
                 return;
 
-            ModActionUtils.RunCoroutine(enumerator);
+            _ = ModActionUtils.RunCoroutine(enumerator);
         }
 
         public void Refresh()

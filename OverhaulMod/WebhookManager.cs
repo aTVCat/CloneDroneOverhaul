@@ -59,7 +59,7 @@ namespace OverhaulMod
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
             string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
             string rankText = string.Empty;
-            for(int i = 0; i < rank; i++)
+            for (int i = 0; i < rank; i++)
             {
                 rankText += START_ENABLED_EMOJI;
                 rankText += " ";

@@ -1,9 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -27,7 +23,7 @@ namespace OverhaulMod.Content.Personalization
                 GameUIRoot.Instance.LoadingScreen.Hide();
                 GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
 
-                new GameObject("Camera", new Type[] { typeof(Camera) });
+                _ = new GameObject("Camera", new Type[] { typeof(Camera) });
 
                 ModUIConstants.ShowPersonalizationEditorUI();
             });

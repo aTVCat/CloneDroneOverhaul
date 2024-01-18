@@ -71,8 +71,8 @@ namespace OverhaulMod.UI
         public void SetMainScreenVisible(bool value)
         {
             m_box.SetActive(value);
-            
-            if(value)
+
+            if (value)
                 Populate();
         }
     }

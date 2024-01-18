@@ -97,8 +97,8 @@ namespace OverhaulMod.UI
         {
             m_bgGraphic.color = firstColor;
             m_frameGraphic.color = secondColor;
-            m_headerOutline.effectColor = secondColor;
-            m_descriptionOutline.effectColor = secondColor;
+            m_headerOutline.effectColor = Color.black;
+            m_descriptionOutline.effectColor = Color.black;
             m_rulesButton.image.color = buttonColor;
         }
 

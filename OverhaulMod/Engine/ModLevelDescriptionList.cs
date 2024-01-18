@@ -1,9 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Engine
 {
@@ -23,7 +20,7 @@ namespace OverhaulMod.Engine
                 return new List<LevelDescription>();
 
             List<LevelDescription> fixedLevelDescriptions = new List<LevelDescription>();
-            foreach (var level in LevelDescriptions)
+            foreach (LevelDescription level in LevelDescriptions)
             {
                 LevelDescription levelDescription = new LevelDescription()
                 {
