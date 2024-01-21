@@ -25,7 +25,7 @@ namespace CDOverhaul.HUD.Vanilla
 
         public class OverhauledMessagePanel : OverhaulBehaviour
         {
-            public static bool Show = true;
+            public static bool Show;
 
             public TitleScreenUIImprovements UIImprovements;
             public TitleScreenMessagePanel MessagePanel;
@@ -89,6 +89,7 @@ namespace CDOverhaul.HUD.Vanilla
 
             private void onGetTitleScreenMessageData()
             {
+                Show = PlayfabLevelDownloadManager.Instance._titleScreenMessageData != null;
                 PopulateTitleScreenMessage();
             }
 

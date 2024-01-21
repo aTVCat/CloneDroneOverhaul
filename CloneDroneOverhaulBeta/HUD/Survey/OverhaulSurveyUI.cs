@@ -126,14 +126,9 @@ namespace CDOverhaul.HUD
                 OverhaulDialogues.CreateDialogue("Error", "You forgot to rate the modded experience...", 0f, new Vector2(315, 160), null);
                 return false;
             }
-            if (string.IsNullOrEmpty(m_ImproveText.text) && SelectedRankIndex < 3)
+            if (string.IsNullOrEmpty(m_ImproveText.text) && string.IsNullOrEmpty(m_LikedText.text))
             {
-                OverhaulDialogues.CreateDialogue("Error", "You didn't enjoy the mod and didn't tell ME what thing(s) should to be improved?\nHuh..", 0f, new Vector2(315, 160), null);
-                return false;
-            }
-            if (string.IsNullOrEmpty(m_LikedText.text) && SelectedRankIndex > 3)
-            {
-                OverhaulDialogues.CreateDialogue("Error", "It doesn't seem that you don't have any favorite thing in the mod...", 0f, new Vector2(315, 160), null);
+                OverhaulDialogues.CreateDialogue("Error", "You didn't write anything..", 0f, new Vector2(315, 160), null);
                 return false;
             }
             return true;
@@ -151,7 +146,7 @@ namespace CDOverhaul.HUD
 
         private IEnumerator executeFeedbackWebhookCoroutine()
         {
-            OverhaulWebhooksController.ExecuteSurveysWebhook(SelectedRankIndex, m_ImproveText.text, m_LikedText.text, m_IncludeGameLogs.isOn, m_IncludeDeviceLogs.isOn);
+            OverhaulWebhooksController.ExecuteSurveysWebhook(SelectedRankIndex, m_ImproveText.text, m_LikedText.text);
             yield return new WaitForSecondsRealtime(2f);
             m_SendingLabelTransform.gameObject.SetActive(false);
             m_ExitGame.interactable = true;

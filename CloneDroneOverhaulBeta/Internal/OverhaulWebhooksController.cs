@@ -10,6 +10,9 @@ namespace CDOverhaul
 {
     public static class OverhaulWebhooksController
     {
+        private const string START_ENABLED_EMOJI = "<:star_enabled:1196444610751373434>";
+        private const string START_DISABLED_EMOJI = "<:star_disabled:1196444266772316182>";
+
         public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
         public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);
 
@@ -81,71 +84,47 @@ namespace CDOverhaul
             ExecuteWebhook(obj1, CrashReportsWebhookUri);
         }
 
-        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText, bool includeUserInfo, bool includeDeviceInfo)
+        public static void ExecuteSurveysWebhook(int rank, string improveText, string likedText)
         {
-            string rankContent = "n/a";
-            switch (rank)
+            rank = Mathf.Clamp(rank, 1, 5);
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
+            string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
+            string rankText = string.Empty;
+            for (int i = 0; i < rank; i++)
             {
-                case 1:
-                    rankContent = "Bad";
-                    break;
-                case 2:
-                    rankContent = "Meh";
-                    break;
-                case 3:
-                    rankContent = "Good";
-                    break;
-                case 4:
-                    rankContent = "Fine";
-                    break;
-                case 5:
-                    rankContent = "Excellent";
-                    break;
+                rankText += START_ENABLED_EMOJI;
+                rankText += " ";
             }
-            string improveContent = improveText;
-            string likedContent = likedText;
-            string userInfo = SteamUser.GetSteamID() + ", " + SteamFriends.GetPersonaName();
-            string deviceInfo = includeDeviceInfo ?
-                string.Format("- **OS:** {0}\n- **CPU:** {1}\n Processors: {2}\n Frequency: {3}\n- **GPU:** {4}\n- **Memory:** {5} MBs\n- **GPU Memory:** {6}", new object[] { SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.processorFrequency, SystemInfo.graphicsDeviceName, SystemInfo.systemMemorySize, SystemInfo.graphicsMemorySize }) : "**NOT INCLUDED**";
+            for (int i = 0; i < (5 - rank); i++)
+            {
+                rankText += START_DISABLED_EMOJI;
+                rankText += " ";
+            }
 
-            int color = int.Parse("f5ec42", System.Globalization.NumberStyles.HexNumber);
+            int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
             {
-                content = "__Feedback sent! Version: " + OverhaulVersion.ModVersion + "__",
+                content = $"## __Feedback. v{OverhaulVersion.ModVersion}__ {rankText}",
                 embeds = new Embed[]
                 {
                     new Embed()
                     {
-                        title = "**Rank: " + rankContent + "**",
-                        description = string.Empty,
-                        color = color,
-                    },
-
-                    new Embed()
-                    {
                         title = "**Improve**",
-                        description = improveContent,
+                        description = improveText,
                         color = color,
                     },
 
                     new Embed()
                     {
                         title = "**Favorite**",
-                        description = likedContent,
+                        description = likedText,
                         color = color,
                     },
 
                     new Embed()
                     {
-                        title = "**User information**",
-                        description = userInfo,
-                        color = color,
-                    },
-
-                    new Embed()
-                    {
-                        title = "**Device information**",
-                        description = deviceInfo,
+                        title = "**Details**",
+                        description = $"{userInfo}\n{deviceInfo}",
                         color = color,
                     },
                 },

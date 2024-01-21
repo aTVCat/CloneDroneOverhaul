@@ -128,8 +128,11 @@ namespace CDOverhaul.Patches
 
             LevelEditorInspector levelEditorInspector = GameUIRoot.Instance.LevelEditorUI.InspectorTransform.GetComponent<LevelEditorInspector>();
             UpdateSprites(levelEditorInspector.CustomFieldContainer, false, -2, (FontStyle)(-1), false, true);
-            UpdateSprites(levelEditorInspector.CustomInspectorDescriptionBoxPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+            UpdateSprites(levelEditorInspector.CustomInspectorDescriptionBoxPrefab.transform, true, 0, (FontStyle)(-1), false, true);
             UpdateSprites(levelEditorInspector.CustomInspectorPropertyGroupPrefab.transform, false, -2, (FontStyle)(-1), false, true);
+
+            levelEditorInspector.CustomInspectorDescriptionBoxPrefab.DescriptionLabel.fontSize = 10;
+            levelEditorInspector.CustomInspectorDescriptionBoxPrefab.DescriptionLabel.color = new Color(0.15f, 0.7f, 0.94f, 1f);
 
             CustomInspectorPropertyGroup propertyGroup = levelEditorInspector.CustomInspectorPropertyGroupPrefab;
             UpdateSprites(propertyGroup.CustomFieldCheckBoxPrefab.transform, false, -2, (FontStyle)(-1), false, true);

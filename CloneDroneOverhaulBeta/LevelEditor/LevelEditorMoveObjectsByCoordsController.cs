@@ -5,10 +5,11 @@ namespace CDOverhaul.LevelEditor
 {
     public class LevelEditorMoveObjectsByCoordsController : OverhaulController
     {
-        private readonly Dictionary<ObjectPlacedInLevel, Vector3> m_ObjectsAndOffsets = new Dictionary<ObjectPlacedInLevel, Vector3>();
+        private Dictionary<ObjectPlacedInLevel, Vector3> m_ObjectsAndOffsets;
+
         private ObjectPlacedInLevel m_MainObject;
-        public bool HasSelectedMainObject => m_MainObject;
-        public bool HasDoneEverythingToMove => GameModeManager.IsInLevelEditor() && HasSelectedMainObject && m_ObjectsAndOffsets.Count > 1;
+
+        public bool HasDoneEverythingToMove => GameModeManager.IsInLevelEditor() && m_MainObject && m_ObjectsAndOffsets != null && m_ObjectsAndOffsets.Count >= 2;
 
         private static bool s_ToolEnabled;
         public static bool ToolEnabled
@@ -38,38 +39,43 @@ namespace CDOverhaul.LevelEditor
 
         public override void Initialize()
         {
-            OverhaulEvents.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, scheduleOnSelectionChanged, true);
+            OverhaulEvents.AddEventListener(GlobalEvents.LevelEditorSelectionChanged, onSelectionChanged, true);
         }
 
-        private void scheduleOnSelectionChanged()
-        {
-            if (!ToolEnabled || m_IgnoreSelections)
-                return;
-
-            DelegateScheduler.Instance.Schedule(onSelectionChanged, 0.1f);
-        }
         private void onSelectionChanged()
         {
             if (!ToolEnabled || m_IgnoreSelections)
                 return;
 
-            List<ObjectPlacedInLevel> selectedSceneObjects = LevelEditorObjectPlacementManager.Instance.GetSelectedSceneObjects();
-            if (selectedSceneObjects.Count == 0)
+            if (m_ObjectsAndOffsets == null)
+                m_ObjectsAndOffsets = new Dictionary<ObjectPlacedInLevel, Vector3>();
+
+            List<ObjectPlacedInLevel> selectedSceneObjects = LevelEditorObjectPlacementManager.Instance?.GetSelectedSceneObjects();
+            if (selectedSceneObjects == null || selectedSceneObjects.Count < 2)
             {
                 m_ObjectsAndOffsets.Clear();
                 m_MainObject = null;
-            }
-            if (selectedSceneObjects.Count < 2)
                 return;
+            }
 
             ObjectPlacedInLevel mainObject = selectedSceneObjects[0];
+            if (!mainObject)
+                return;
+
             m_MainObject = mainObject;
 
             m_ObjectsAndOffsets.Clear();
             int index = 1;
             do
             {
-                m_ObjectsAndOffsets.Add(selectedSceneObjects[index], mainObject.transform.position - selectedSceneObjects[index].transform.position);
+                var anObj = selectedSceneObjects[index];
+                if (!anObj)
+                {
+                    index++;
+                    continue;
+                }
+
+                m_ObjectsAndOffsets.Add(anObj, mainObject.transform.position - anObj.transform.position);
                 index++;
             } while (index < selectedSceneObjects.Count);
 
@@ -79,14 +85,19 @@ namespace CDOverhaul.LevelEditor
             m_IgnoreSelections = false;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (!GameModeManager.IsInLevelEditor())
                 return;
 
             if (HasDoneEverythingToMove)
                 foreach (ObjectPlacedInLevel obj in m_ObjectsAndOffsets.Keys)
+                {
+                    if (!obj)
+                        continue;
+
                     obj.transform.position = m_MainObject.transform.position - m_ObjectsAndOffsets[obj];
+                }
         }
     }
 }

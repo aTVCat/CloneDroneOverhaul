@@ -10,8 +10,9 @@ namespace CDOverhaul.Patches
         [OverhaulSetting("Shortcuts.Personalization.Skins", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
         public static OverhaulSettingWithEvent OpenSkinsMenuFromSettings = new OverhaulSettingWithEvent();
 
+        /*
         [OverhaulSetting("Shortcuts.Personalization.Outfits", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
-        public static OverhaulSettingWithEvent OpenOutfitsMenuFromSettings = new OverhaulSettingWithEvent();
+        public static OverhaulSettingWithEvent OpenOutfitsMenuFromSettings = new OverhaulSettingWithEvent();*/
 
         public const string OpenSkinsFromSettingsEventString = "Settings.OpenSkins";
         public const string OpenOutfitsFromSettingsEventString = "Settings.OpenOutfits";
@@ -38,8 +39,9 @@ namespace CDOverhaul.Patches
 
             m_SetUpButtons = true;
 
+            /*
             OpenOutfitsMenuFromSettings.CanBeShown = shouldShowPersonalizationOutfits;
-            OpenOutfitsMenuFromSettings.EventString = OpenOutfitsFromSettingsEventString;
+            OpenOutfitsMenuFromSettings.EventString = OpenOutfitsFromSettingsEventString;*/
             OpenSkinsMenuFromSettings.CanBeShown = shouldShowPersonalization;
             OpenSkinsMenuFromSettings.EventString = OpenSkinsFromSettingsEventString;
         }

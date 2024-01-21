@@ -80,7 +80,7 @@ namespace CDOverhaul
                 DownloadedVersionNumber = (int)(long)jsonObject["Version"];
                 DownloadedVersionString = DownloadedVersionNumber.ToString();
                 DownloadedDescription = (string)jsonObject["Description"];
-                if (!GameModeManager.IsOnTitleScreen() || !OverhaulCompatibilityChecker.CurrentBuildRunsOnSupportedVersion() || !HasNewUpdate())
+                if (!GameModeManager.IsOnTitleScreen() || !HasNewUpdate())
                     return;
 
                 showModBotWindow();
@@ -100,7 +100,7 @@ namespace CDOverhaul
 
                 DownloadedVersionString = Regex.Replace(downloadInfo.DownloadedText, @"\r\n?|\n", string.Empty).Replace("a", string.Empty);
                 DownloadedVersion = new Version(DownloadedVersionString);
-                if (!GameModeManager.IsOnTitleScreen() || !OverhaulCompatibilityChecker.CurrentBuildRunsOnSupportedVersion() || !HasNewUpdate())
+                if (!GameModeManager.IsOnTitleScreen() || !HasNewUpdate())
                     return;
 
                 showGitHubWindow();
