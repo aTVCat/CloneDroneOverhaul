@@ -38,6 +38,9 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Accessibility" />
+    <Reference Include="AdvancedAPI">
+      <HintPath>.\AdvancedAPI.dll</HintPath>
+    </Reference>
     <Reference Include="AmplifyColor">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\AmplifyColor.dll</HintPath>
     </Reference>
@@ -73,9 +76,6 @@
     </Reference>
     <Reference Include="LevelEditorPatch">
       <HintPath>.\LevelEditorPatch.dll</HintPath>
-    </Reference>
-    <Reference Include="ModBotAPI">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul\ModBotAPI.dll</HintPath>
     </Reference>
     <Reference Include="ModBotWebsiteAPI">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModBotWebsiteAPI.dll</HintPath>

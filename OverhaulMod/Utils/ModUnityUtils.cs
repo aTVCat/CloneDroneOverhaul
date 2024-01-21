@@ -1,22 +1,19 @@
-﻿using UnityEngine;
+﻿using Jint;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
     internal static class ModUnityUtils
     {
-        public static Transform CloneLevelEnemySpawner(string name)
-        {
-            GameObject toInstantiate = Resources.Load<GameObject>("Prefabs/LevelObjects/EnemySpawns/Bow1");
-            toInstantiate.SetActive(false);
-            GameObject gameObject = UnityEngine.Object.Instantiate(toInstantiate);
-            gameObject.name = name;
-            UnityEngine.Object.DontDestroyOnLoad(gameObject);
-            toInstantiate.SetActive(true);
-            return gameObject.transform;
-        }
+        private static Dictionary<string, Transform> s_clonedObjects = new Dictionary<string, Transform>();
 
         public static Transform CloneAndSetLevelEnemySpawnerUp(string name, EnemyType enemyType)
         {
+            string key = name + "_es";
+            if (s_clonedObjects.TryGetValue(key, out Transform transform))
+                return transform;
+
             GameObject toInstantiate = Resources.Load<GameObject>("Prefabs/LevelObjects/EnemySpawns/Bow1");
             toInstantiate.SetActive(false);
             GameObject gameObject = UnityEngine.Object.Instantiate(toInstantiate);
@@ -27,6 +24,7 @@ namespace OverhaulMod.Utils
             LevelEnemySpawner levelEnemySpawner = gameObject.GetComponent<LevelEnemySpawner>();
             if (levelEnemySpawner)
                 levelEnemySpawner.EnemyPrefab = EnemyFactory.Instance.GetEnemyPrefab(enemyType).transform;
+            s_clonedObjects.Add(key, gameObject.transform);
             return gameObject.transform;
         }
 
