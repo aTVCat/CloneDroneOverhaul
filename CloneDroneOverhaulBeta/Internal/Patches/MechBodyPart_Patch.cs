@@ -25,8 +25,70 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            __result = __instance.transform.parent != null && armorPiecePrefab != null;
+            try
+            {
+                __result = __instance.transform.parent && armorPiecePrefab;
+            }
+            catch
+            {
+                __result = false;
+            }
             return __result;
         }
+
+        /*
+        [HarmonyPrefix]
+        [HarmonyPatch("tryBurnColorAt")]
+        private static bool tryBurnColorAt_Prefix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, int offsetX, int offsetY, int offsetZ, float colorMultiplier = -1f)
+        {
+            if (!OverhaulMod.IsModInitialized)
+                return true;
+
+            
+            PicaVoxelPoint point = new PicaVoxelPoint(voxelPosition.X + offsetX, voxelPosition.Y + offsetY, voxelPosition.Z + offsetZ);
+            if (__instance.IsVoxelWaitingToBeDestroyed(point))
+                return false;
+
+            VRVoxelBurnEffectController.SetPointOnFire(currentFrame, point);
+            return false;
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MechBodyPart), "tryAddingVoxelToFireSpreadList", new System.Type[] { typeof(Frame), typeof(PicaVoxelPoint), typeof(List<VoxelBeingDestroyed>), typeof(int), typeof(int), typeof(int), typeof(FireSpreadDefinition) })]
+        private static void tryAddingVoxelToFireSpreadList_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, List<VoxelBeingDestroyed> pointsSetOnFire, int offsetX, int offsetY, int offsetZ, FireSpreadDefinition fireSpreadDefinition)
+        {
+            PicaVoxelPoint point = new PicaVoxelPoint(voxelPosition.X + offsetX, voxelPosition.Y + offsetY, voxelPosition.Z + offsetZ);
+            VRVoxelBurnEffectController.SetPointOnFire(currentFrame, point);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MechBodyPart), "tryAddingVoxelToFireSpreadList", new System.Type[] { typeof(Frame), typeof(PicaVoxelPoint), typeof(List<VoxelBeingDestroyed>), typeof(int), typeof(int), typeof(int), typeof(VoxelBeingDestroyed) })]
+        private static void tryAddingVoxelToFireSpreadList2_Postfix(MechBodyPart __instance, Frame currentFrame, PicaVoxelPoint voxelPosition, List<VoxelBeingDestroyed> pointsSetOnFire, int offsetX, int offsetY, int offsetZ, VoxelBeingDestroyed voxelBeingDestroyed)
+        {
+            PicaVoxelPoint point = new PicaVoxelPoint(voxelPosition.X + offsetX, voxelPosition.Y + offsetY, voxelPosition.Z + offsetZ);
+            VRVoxelBurnEffectController.SetPointOnFire(currentFrame, point);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MechBodyPart), "TrackVoxelToBeDestroyed")]
+        public static void TrackVoxelToBeDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed voxelBeingDestroyed)
+        {
+            if (voxelBeingDestroyed.FireSpreadDefinition != null)
+            {
+                voxelBeingDestroyed.TimeToDestroy = Time.time + 0.85f;
+                //VRVoxelBurnEffectController.SetPointOnFire(__instance.GetPrivateField<Frame>("_currentFrame"), voxelBeingDestroyed.VoxelPoint);
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("UpdateMe")]
+        private static void UpdateMe_Prefix(MechBodyPart __instance)
+        {
+            if (OverhaulMod.IsModInitialized)
+            {
+                //VRVoxelBurnEffectController.UpdateFrame(__instance.GetPrivateField<Frame>("_currentFrame"));
+            }
+        }*/
     }
 }

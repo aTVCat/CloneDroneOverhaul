@@ -1,6 +1,7 @@
 ﻿using CDOverhaul.HUD;
+using CDOverhaul.LevelEditor;
+using OverhaulAPI.SharedMonoBehaviours;
 using System.Collections.Generic;
-using System.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,15 +10,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
     public class LevelEditorFixes : OverhaulController
     {
         public static LevelEditorSelectionSettingsPanel SelectionSettingsPanel { get; private set; }
+        public static Toggle MoveObjectByCoords { get; private set; }
 
         public override void Initialize()
         {
-            addUIs();
-            fixValues();
-            fixUI();
-
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            DelegateScheduler.Instance.Schedule(LevelEditorSelectionSettingsPanel.RefreshSliders, 1f);
         }
 
         private void assignAnimationClip(AnimationClip clip, List<string> toAssignTo)
@@ -72,6 +68,8 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             LevelEditorLibraryUI libraryUI = levelEditorUI.LibraryUI;
             if (inspector == null && libraryUI != null)
                 return;
+
+            _ = inspector.gameObject.AddComponent<OverhaulDraggablePanel>();
 
             CustomInspectorPropertyGroup group = inspector.CustomInspectorPropertyGroupPrefab;
             if (group == null)
@@ -135,20 +133,20 @@ namespace CDOverhaul.Gameplay.QualityOfLife
                     rectT.sizeDelta = new Vector2(3f, 13f);
                     rectT.anchoredPosition = new Vector2(6, 0);
 
-                    Image image = rectT.GetComponent<Image>();
-                    if (image != null)
+                    Image imagec = rectT.GetComponent<Image>();
+                    if (imagec != null)
                     {
-                        image.sprite = null;
-                        image.color = new Color(0f, 0f, 0f, 0.75f);
+                        imagec.sprite = null;
+                        imagec.color = new Color(0f, 0f, 0f, 0.75f);
                     }
                 }
 
                 Transform background = TransformUtils.FindChildRecursive(dropdownTransform, "Item Background");
                 if (background != null)
                 {
-                    Image image = background.GetComponent<Image>();
-                    if (image != null)
-                        image.color = Color.clear;
+                    Image imageb = background.GetComponent<Image>();
+                    if (imageb != null)
+                        imageb.color = Color.clear;
                 }
             }
 
@@ -186,52 +184,121 @@ namespace CDOverhaul.Gameplay.QualityOfLife
 
             // Library
             Mask mask2 = libraryUI.ScrollViewViewPort.GetComponent<Mask>();
-            if (mask2 != null)
+            if (mask2)
                 Destroy(mask2);
 
             RectMask2D rectMask2D = libraryUI.ScrollViewViewPort.GetComponent<RectMask2D>();
-            if (rectMask2D == null)
+            if (!rectMask2D)
                 rectMask2D = libraryUI.ScrollViewViewPort.gameObject.AddComponent<RectMask2D>();
 
-            if (!OverhaulFeatureAvailabilitySystem.BuildImplements.IsSelectionOutLineEnabled)
-                return;
+            Image image = libraryUI.ScrollViewViewPort.GetComponent<Image>();
+            if (image)
+                Destroy(image);
 
-            RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
-            searchFieldRectT.pivot = new Vector2(0f, 0.5f);
-            searchFieldRectT.anchorMax = new Vector2(1f, 1f);
-            searchFieldRectT.anchorMin = new Vector2(0f, 0f);
-            searchFieldRectT.offsetMax = new Vector2(-27f, -2f);
-            searchFieldRectT.offsetMin = new Vector2(2f, 2f);
-            searchFieldRectT.anchoredPosition = new Vector2(2f, 0f);
-            searchFieldRectT.sizeDelta = new Vector2(-29f, -4f);
-
-            RectTransform overhaulLVLEditorSettingsButtonTransform = new GameObject("OverhaulLevelEditorSettingsButton").AddComponent<RectTransform>();
-            overhaulLVLEditorSettingsButtonTransform.SetParent(searchFieldRectT.parent, false);
-            overhaulLVLEditorSettingsButtonTransform.localPosition = Vector3.zero;
-            overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
-            overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
-            overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
-            overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 1f);
-            overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(0f, 0f);
-            overhaulLVLEditorSettingsButtonTransform.offsetMax = new Vector2(-2f, -2f);
-            overhaulLVLEditorSettingsButtonTransform.offsetMin = new Vector2(114f, 2f);
-            overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-2f, 0f);
-            Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
-            settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
-            settingsButtonImage.type = Image.Type.Sliced;
-
-            if (SelectionSettingsPanel == null)
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsSelectionOutLineEnabled)
             {
-                overhaulLVLEditorSettingsButtonTransform.gameObject.SetActive(false);
-                return;
+                RectTransform searchFieldRectT = libraryUI.SearchInput.transform as RectTransform;
+                searchFieldRectT.pivot = new Vector2(0f, 0.5f);
+                searchFieldRectT.anchorMax = new Vector2(1f, 1f);
+                searchFieldRectT.anchorMin = new Vector2(0f, 0f);
+                searchFieldRectT.offsetMax = new Vector2(-27f, -2f);
+                searchFieldRectT.offsetMin = new Vector2(2f, 2f);
+                searchFieldRectT.anchoredPosition = new Vector2(2f, 0f);
+                searchFieldRectT.sizeDelta = new Vector2(-29f, -4f);
+
+                RectTransform overhaulLVLEditorSettingsButtonTransform = new GameObject("OverhaulLevelEditorSettingsButton").AddComponent<RectTransform>();
+                overhaulLVLEditorSettingsButtonTransform.SetParent(searchFieldRectT.parent, false);
+                overhaulLVLEditorSettingsButtonTransform.localPosition = Vector3.zero;
+                overhaulLVLEditorSettingsButtonTransform.localScale = Vector3.one;
+                overhaulLVLEditorSettingsButtonTransform.eulerAngles = Vector3.zero;
+                overhaulLVLEditorSettingsButtonTransform.pivot = new Vector2(1f, 0.5f);
+                overhaulLVLEditorSettingsButtonTransform.anchorMax = new Vector2(1f, 0.5f);
+                overhaulLVLEditorSettingsButtonTransform.anchorMin = new Vector2(1f, 0.5f);/*
+                overhaulLVLEditorSettingsButtonTransform.offsetMax = new Vector2(-2f, -2f);
+                overhaulLVLEditorSettingsButtonTransform.offsetMin = new Vector2(118f, 2f);*/
+                overhaulLVLEditorSettingsButtonTransform.anchoredPosition = new Vector2(-3.5f, 0f);
+                overhaulLVLEditorSettingsButtonTransform.sizeDelta = new Vector2(20f, 18f);
+                Image settingsButtonImage = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Image>();
+                settingsButtonImage.sprite = (libraryUI.SearchInput.targetGraphic as Image).sprite;
+                settingsButtonImage.type = Image.Type.Sliced;
+                GameObject iconObject = new GameObject("Icon");
+                iconObject.transform.SetParent(overhaulLVLEditorSettingsButtonTransform);
+                iconObject.transform.localPosition = Vector3.zero;
+                iconObject.transform.localEulerAngles = Vector3.zero;
+                iconObject.transform.localScale = Vector3.one;
+                Image iconImage = iconObject.AddComponent<Image>();
+                iconImage.sprite = OverhaulAssetsController.GetAsset<Sprite>("OutlineSettings-16x16", OverhaulAssetPart.Part1);
+                (iconObject.transform as RectTransform).sizeDelta = new Vector2(15, 15);
+
+                if (SelectionSettingsPanel == null)
+                {
+                    overhaulLVLEditorSettingsButtonTransform.gameObject.SetActive(false);
+                    return;
+                }
+                Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
+                settingsButton.onClick.AddListener(SelectionSettingsPanel.ToggleVisibility);
             }
-            Button settingsButton = overhaulLVLEditorSettingsButtonTransform.gameObject.AddComponent<Button>();
-            settingsButton.onClick.AddListener(SelectionSettingsPanel.ToggleVisibility);
+
+
+            RectTransform layoutContainer = libraryUI.ItemContainer;
+            if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsVanillaLevelEditorUIOverhaulEnabled)
+            {
+                VerticalLayoutGroup verticalLayoutGroup = layoutContainer.GetComponent<VerticalLayoutGroup>();
+                verticalLayoutGroup.spacing = -2;
+                verticalLayoutGroup.padding.bottom = 15;
+                verticalLayoutGroup.padding.top = 5;
+            }
+
+            LevelEditorLevelFilesUI levelEditorLevelFilesUI = levelEditorUI.FilesUI;
+            if (levelEditorLevelFilesUI)
+            {
+                RectTransform layoutContainer1 = levelEditorLevelFilesUI.ItemContainer;
+                if (OverhaulFeatureAvailabilitySystem.ImplementedInBuild.IsVanillaLevelEditorUIOverhaulEnabled)
+                {
+                    VerticalLayoutGroup verticalLayoutGroup1 = layoutContainer1.GetComponent<VerticalLayoutGroup>();
+                    verticalLayoutGroup1.spacing = -2;
+                    verticalLayoutGroup1.padding.bottom = 5;
+                    verticalLayoutGroup1.padding.top = 5;
+                }
+
+                Mask mask = layoutContainer1.GetComponent<Mask>();
+                if (mask)
+                    Destroy(mask);
+
+                RectMask2D rectMask2D1 = layoutContainer1.GetComponent<RectMask2D>();
+                if (!rectMask2D1)
+                    rectMask2D1 = layoutContainer1.gameObject.AddComponent<RectMask2D>();
+
+                Image image1 = layoutContainer1.GetComponent<Image>();
+                if (image1)
+                    Destroy(image1);
+            }
+
+
+            RectTransform toolbar = levelEditorUI.TopToolbar;
+            OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
+            GameObject prefabToInstantiate = controller.GetHUDPrefab("LevelEditorUI_MoveObjectsByCoords");
+            if (prefabToInstantiate == null)
+                return;
+
+            RectTransform coordsToggle = Instantiate(prefabToInstantiate, toolbar).transform as RectTransform;
+            coordsToggle.localPosition = Vector3.zero;
+            coordsToggle.eulerAngles = Vector3.zero;
+            coordsToggle.localScale = Vector3.one;
+            coordsToggle.anchoredPosition = new Vector2(160f, 0f);
+            coordsToggle.gameObject.SetActive(true);
+            ModdedObject coordsToggleMO = coordsToggle.GetComponent<ModdedObject>();
+            Toggle coordsToggleComponent = coordsToggleMO.GetObject<Toggle>(0);
+            coordsToggleComponent.isOn = LevelEditorMoveObjectsByCoordsController.ToolEnabled;
+            coordsToggleComponent.onValueChanged.AddListener(delegate (bool value)
+            {
+                LevelEditorMoveObjectsByCoordsController.ToolEnabled = value;
+            });
         }
 
-        private void addUIs()
+        public void AddUIs()
         {
-            if (OverhaulVersion.IsUpdate2Hotfix || GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
+            if (GameUIRoot.Instance == null || GameUIRoot.Instance.LevelEditorUI == null)
                 return;
 
             OverhaulCanvasController controller = OverhaulMod.Core.CanvasController;
@@ -248,9 +315,10 @@ namespace CDOverhaul.Gameplay.QualityOfLife
             panel.anchorMin = new Vector2(0f, 0.5f);
             panel.anchoredPosition = new Vector2(150f, -50f);
             SelectionSettingsPanel = panel.gameObject.AddComponent<LevelEditorSelectionSettingsPanel>();
-        }
 
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
+            //fixValues();
+            fixUI();
+            DelegateScheduler.Instance.Schedule(LevelEditorSelectionSettingsPanel.RefreshSliders, 1f);
+        }
     }
 }

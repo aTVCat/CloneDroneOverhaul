@@ -2,13 +2,22 @@
 
 namespace OverhaulAPI
 {
-    public class PooledPrefabContainer : MonoBehaviour
+    internal class PooledPrefabContainer : MonoBehaviour
     {
-        public string ContainerName { get; set; }
-        public bool HasPopulatedTransform { get; set; }
+        public string ID
+        {
+            get;
+            set;
+        }
 
-        private PooledPrefabInstanceBase[] _prefabs;
-        private bool[] _activatedPrefabs;
+        public bool HasInitialized
+        {
+            get;
+            set;
+        }
+
+        private PooledPrefabInstanceBase[] m_Prefabs;
+        private bool[] m_PrefabStates;
 
         /// <summary>
         /// Populate recently created pooled prefab
@@ -17,40 +26,35 @@ namespace OverhaulAPI
         /// <param name="count"></param>
         public void Populate<T>(in Transform @object, in int count) where T : PooledPrefabInstanceBase
         {
-            _prefabs = new PooledPrefabInstanceBase[count];
-            _activatedPrefabs = new bool[count];
+            m_Prefabs = new PooledPrefabInstanceBase[count];
+            m_PrefabStates = new bool[count];
             for (int i = 0; i < count; i++)
             {
-                T newObject = Instantiate<Transform>(@object, base.transform).gameObject.AddComponent<T>();
+                T newObject = Instantiate(@object, base.transform).gameObject.AddComponent<T>();
                 newObject.gameObject.SetActive(false);
-                newObject.gameObject.name = "PooledPrefab(" + i + ")_" + newObject.gameObject.name;
-                newObject.transform.position = Vector3.zero;
-                newObject.transform.eulerAngles = Vector3.zero;
+                newObject.gameObject.name = "PooledPrefab, " + newObject.gameObject.name + " [" + i + "]";
                 newObject.PrefabContainer = this;
-                newObject.PreparePrefab();
-                _prefabs[i] = newObject;
+                newObject.OnInitialize();
+                m_Prefabs[i] = newObject;
             }
-            HasPopulatedTransform = true;
+            HasInitialized = true;
         }
 
         /// <summary>
         /// Get unused pooled prefab
         /// </summary>
         /// <returns></returns>
-        private PooledPrefabInstanceBase getAvailablePooledPrefab(in bool markAsUsed = false)
+        private PooledPrefabInstanceBase getAvailablePooledPrefab()
         {
             PooledPrefabInstanceBase result = null;
-            for (int i = 0; i < _activatedPrefabs.Length; i++)
+            for (int i = 0; i < m_PrefabStates.Length; i++)
             {
-                bool val = _activatedPrefabs[i];
+                bool val = m_PrefabStates[i];
                 if (!val)
                 {
-                    result = _prefabs[i];
+                    result = m_Prefabs[i];
                     result.MyIndex = i;
-                    if (markAsUsed)
-                    {
-                        SetPrefabState(i, true);
-                    }
+                    SetPrefabActiveState(i, true);
 
                     break;
                 }
@@ -62,9 +66,9 @@ namespace OverhaulAPI
         /// Mark gameobject as used or not
         /// </summary>
         /// <param name="value"></param>
-        public void SetPrefabState(in int index, in bool value)
+        public void SetPrefabActiveState(in int index, in bool value)
         {
-            _activatedPrefabs[index] = value;
+            m_PrefabStates[index] = value;
         }
 
         /// <summary>
@@ -75,14 +79,11 @@ namespace OverhaulAPI
         /// <returns></returns>
         public T SpawnPooledPrefab<T>(in Vector3 position, in Vector3 rotation) where T : PooledPrefabInstanceBase
         {
-            T result = (T)getAvailablePooledPrefab(true);
-
-            if (result != null)
-            {
+            T result = (T)getAvailablePooledPrefab();
+            if (result)
                 result.UsePrefab(position, rotation);
-            }
 
-            return result;
+            return null;
         }
     }
 }

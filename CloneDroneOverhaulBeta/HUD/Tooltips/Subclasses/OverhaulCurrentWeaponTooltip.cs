@@ -1,79 +1,77 @@
-﻿using CDOverhaul.Gameplay;
-using System;
+﻿using CDOverhaul.NetworkAssets;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CDOverhaul.HUD.Tooltips
 {
-    public class OverhaulCurrentWeaponTooltip : OverhaulTooltipWithPlayerData
+    public class OverhaulCurrentWeaponTooltip : OverhaulTooltip
     {
-        public const string LASER_COLOR = "#D9EAFF";
-        public const string FIRE_COLOR = "#FFDAC0";
+        public const string LASER_COLOR = "#AAD7FF";
+        public const string FIRE_COLOR = "#FFB47D";
 
-        private FirstPersonMover m_Player;
-        private WeaponType m_PlayerEquippedWeaponType;
+        public static string IconsDirectory => OverhaulMod.Core.ModDirectory + "Assets/Tooltips/Weapons/";
+        private static readonly Dictionary<string, Texture> s_CachedIcons = new Dictionary<string, Texture>();
 
-        public override GameObject GetTooltipPrefab() => TooltipsController.TooltipsUI.GetDefaultPrefab();
+        private RawImage m_Icon;
+        private Text m_Text;
 
-        private void Update()
+        private bool m_IsLoadingIcon;
+
+        public override void Initialize()
         {
-            RefreshPlayer(delegate
+            m_Icon = MyModdedObject.GetObject<RawImage>(0);
+            m_Text = MyModdedObject.GetObject<Text>(1);
+        }
+
+        private void tryLoadIcon(string fileName)
+        {
+            if (m_IsLoadingIcon)
+                return;
+
+            if (s_CachedIcons.ContainsKey(fileName))
             {
-                if (!SpawnedTooltipModdedObject)
+                m_Icon.texture = s_CachedIcons[fileName];
+                return;
+            }
+
+            m_IsLoadingIcon = true;
+            OverhaulDownloadInfo downloadInfo = new OverhaulDownloadInfo();
+            downloadInfo.DoneAction = delegate
+            {
+                m_IsLoadingIcon = false;
+                if (downloadInfo.Error)
+                {
+                    m_Icon.texture = null;
                     return;
+                }
 
-                showTooltips(true);
-            });
+                m_Icon.texture = downloadInfo.DownloadedTexture;
+                if (!s_CachedIcons.ContainsKey(fileName))
+                    s_CachedIcons.Add(fileName, downloadInfo.DownloadedTexture);
+            };
+            OverhaulNetworkAssetsController.DownloadTexture("file://" + IconsDirectory + fileName, downloadInfo);
+        }
 
-            if (!Player || !SpawnedTooltipModdedObject)
+        public void ShowTooltip(WeaponType weaponType, bool isFire)
+        {
+            if (!MyModdedObject)
                 return;
 
             Color color = Color.white;
-            WeaponSkinsWearer weaponSkins = Player.GetComponent<WeaponSkinsWearer>();
-            if (weaponSkins)
+            string weaponString = weaponType.ToString() + ".png";
+            string text = weaponType.ToString();
+            if (weaponType != WeaponType.None)
             {
-                WeaponType weaponType = Player.GetEquippedWeaponType();
-                if (WeaponSkinsController.IsWeaponSupported(weaponType))
-                {
-                    bool isFire = weaponSkins.IsFireVariant(weaponType);
-                    if (isFire)
-                        color = FIRE_COLOR.ConvertHexToColor();
-                    else
-                        color = LASER_COLOR.ConvertHexToColor();
-                }
+                color = isFire ? FIRE_COLOR.ToColor() : LASER_COLOR.ToColor();
+                weaponString = weaponType.ToString() + (isFire ? "-Fire" : string.Empty) + ".png";
+                text = LocalizationManager.Instance.GetTranslatedString(weaponType.ToString());
             }
-            SpawnedTooltipModdedObject.GetObject<Text>(1).color = color;
 
-            refreshData(true);
-        }
-        private void refreshData(bool showTooltipsIfNeeded)
-        {
-            if (!Player)
-                return;
-
-            WeaponType newWeaponType = Player.GetEquippedWeaponType();
-            if (m_PlayerEquippedWeaponType != newWeaponType)
-            {
-                m_PlayerEquippedWeaponType = newWeaponType;
-                if (showTooltipsIfNeeded)
-                    showTooltips(false);
-            }
-        }
-
-        private void showTooltips(bool refreshDataIfNeeded)
-        {
-            if (!SpawnedTooltipModdedObject)
-                return;
-
-            if (refreshDataIfNeeded)
-                refreshData(false);
-
-            SpawnedTooltipModdedObject.GetObject<Text>(1).text = m_PlayerEquippedWeaponType.ToString();
-            ShowTooltipsContainer();
+            m_Text.color = color;
+            m_Text.text = text;
+            tryLoadIcon(weaponString);
+            Show();
         }
     }
 }

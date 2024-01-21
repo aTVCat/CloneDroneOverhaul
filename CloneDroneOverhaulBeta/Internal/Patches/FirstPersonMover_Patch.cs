@@ -1,6 +1,8 @@
 ﻿using Bolt;
 using CDOverhaul.Gameplay;
+using CDOverhaul.Graphics;
 using HarmonyLib;
+using UnityEngine;
 
 namespace CDOverhaul.Patches
 {
@@ -14,8 +16,12 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPreCommandExecute((FPMoveCommand)command);
@@ -30,6 +36,15 @@ namespace CDOverhaul.Patches
             return !OverhaulMod.IsModInitialized || __instance.HasCharacterModel();
         }
 
+        // Another attempt to fix invincible weapons in multiplayer
+        [HarmonyPostfix]
+        [HarmonyPatch("OnSwordSwingStarted")]
+        private static void OnSwordSwingStarted_Postfix(FirstPersonMover __instance)
+        {
+            if (__instance._currentWeaponModel)
+                __instance._currentWeaponModel.gameObject.SetActive(true);
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch("ExecuteCommand")]
         private static void ExecuteCommand_Postfix(FirstPersonMover __instance, Command command, bool resetState)
@@ -37,8 +52,12 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPostCommandExecute((FPMoveCommand)command);
@@ -88,12 +107,45 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnEvent(fallingEvent);
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("RefreshUpgrades")]
+        private static void RefreshUpgrades_Postfix(FirstPersonMover __instance)
+        {
+            if (!OverhaulMod.IsModInitialized)
+                return;
+
+            int instanceId = __instance.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+                return;
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
+            {
+                if (b)
+                    b.OnUpgradesRefresh(__instance);
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("ReleaseNockedArrow")]
+        private static void ReleaseNockedArrow_Prefix(FirstPersonMover __instance, int serverFrame, ref Vector3 startPosition, Vector3 startFlyDirection, float rotationZ)
+        {
+            if (!OverhaulMod.IsModInitialized || !ViewModesController.IsFirstPersonModeEnabled || !__instance.IsMainPlayer())
+                return;
+
+            startPosition = __instance.GetCharacterModel().ArrowHolder.position;
         }
     }
 }

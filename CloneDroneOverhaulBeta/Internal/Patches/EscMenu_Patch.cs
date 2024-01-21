@@ -3,22 +3,14 @@ using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
-    [HarmonyPatch(typeof(EscMenu))]
-    internal static class EscMenu_Patch
+    [HarmonyPatch(typeof(ErrorWindow))]
+    internal static class ErrorWindow_Patch
     {
         [HarmonyPrefix]
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            if (!OverhaulMod.IsModInitialized)
-                return true;
-
-            if (OverhaulPauseMenu.UseThisMenu && !OverhaulPauseMenu.ForceUseOldMenu)
-            {
-                OverhaulPauseMenu.ToggleMenu();
-                return false;
-            }
-            return true;
+            return !OverhaulCrashScreen.Instance;
         }
     }
 }

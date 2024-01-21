@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.HUD;
+using HarmonyLib;
+using InternalModBot;
 using UnityEngine;
 
 namespace CDOverhaul.Patches
@@ -6,15 +8,35 @@ namespace CDOverhaul.Patches
     [HarmonyPatch(typeof(ErrorManager))]
     internal static class ErrorManager_Patch
     {
+        public static string Report;
+
         [HarmonyPrefix]
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(string logString, string stackTrace, LogType type)
         {
+            if (IgnoreCrashesManager.GetIsIgnoringCrashes())
+                return false;
+
             if (type == LogType.Error || type == LogType.Exception)
             {
-                string report = "**" + logString + "**\n" + stackTrace;
-                if (OverhaulWebhooksController.HasExcludedError(report))
+                string report = "```" + logString + " " + stackTrace;
+                if (report.Contains("_data is null;"))
+                    OverhaulCrashPreventionController.dataIsNUllError = true;
+
+                if (!OverhaulCrashPreventionController.couldntAllocateError && report.Contains("Could not allocate memory"))
+                {
+                    OverhaulCrashPreventionController.couldntAllocateError = true;
+                    OverhaulWebhooksController.ExecuteErrorsWebhook(report.Replace("```", string.Empty));
+                }
+
+                if (OverhaulCrashPreventionController.TryPreventCrash(report) || OverhaulWebhooksController.HasExcludedError(report))
                     return false;
+
+                OverhaulCrashScreen crashScreen = OverhaulCrashScreen.Instance;
+                if (crashScreen)
+                {
+                    crashScreen.Show(logString, stackTrace);
+                }
 
                 string gamemode = string.Empty;
                 string gameVer = string.Empty;
@@ -34,9 +56,7 @@ namespace CDOverhaul.Patches
                 if (report.Length > 1400)
                     report = report.Remove(1400);
 
-                report += string.Format("\n**GM: {0}, LevelID: {1}, GameVer: {2}, LangID: {3}, GameTime: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
-
-                OverhaulWebhooksController.ExecuteCrashReportsWebhook(report);
+                Report = report + string.Format("```\r\n**GM: {0}, LvlID: {1}, Ver: {2}, LangID: {3}, Time: {4}**", new object[] { gamemode, levelID, gameVer, langID, Mathf.RoundToInt(Time.timeSinceLevelLoad) });
             }
             return true;
         }

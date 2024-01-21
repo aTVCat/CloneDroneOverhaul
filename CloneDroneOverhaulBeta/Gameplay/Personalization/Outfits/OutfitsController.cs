@@ -1,44 +1,40 @@
-﻿using OverhaulAPI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CDOverhaul.Gameplay.Outfits
 {
-    public class OutfitsController : OverhaulGameplayController
+    public class OutfitsController : PersonalizationItemsController
     {
-        #region Save data
+        public const char SEPARATOR = ',';
 
         [OverhaulSetting("Player.Outfits.Equipped", "", !OverhaulVersion.IsDebugBuild)]
         public static string EquippedAccessories;
 
-        public const char Separator = ',';
-
-        public static void SavePreferences()
-        {
-            SettingInfo info = SettingsController.GetSetting("Player.Outfits.Equipped", true);
-            if (info == null)
-                return;
-
-            SettingInfo.SavePref(info, EquippedAccessories);
-        }
-
-        #endregion
-
-        public static List<AccessoryItem> AllAccessories { get; } = new List<AccessoryItem>();
-
-        public static AccessoryItem EditingItem;
-        public static string EditingCharacterModel;
-        public static ModelOffset CopiedModelOffset;
+        [OverhaulSetting("Player.Outfits.EnemiesUseOutfits", false, !OverhaulVersion.IsDebugBuild)]
+        public static bool AllowEnemiesWearAccesories;
 
         public override void Initialize()
         {
             base.Initialize();
-
-            if (!OverhaulSessionController.GetKey<bool>("HasAddedAccessories"))
-            {
-                OverhaulSessionController.SetKey("HasAddedAccessories", true);
-                addAccessories();
-            }
         }
+
+        /*
+        AddOutfitItemQuick("Igrok's hat", "P_Acc_Head_Igrok's hat", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.ATVCatDiscord);
+
+        AddOutfitItemQuick("Halo", "P_Acc_Head_ImpostorHalo", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.ATVCatDiscord);
+
+        AddOutfitItemQuick("Puss Hat", "P_Acc_Head_PussHat", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.TabiDiscord);
+
+        AddOutfitItemQuick("Cone", "P_Acc_Head_ImpostorCone", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.ATVCatDiscord);
+
+        AddOutfitItemQuick("Deal with It", "P_Acc_DealWithIt", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.CaptainMeowDiscord);
+
+        AddOutfitItemQuick("Horns", "P_Horns", "Head");
+        SetOutfitItemAuthorQuick(WeaponSkinsController.ZoloRDiscord);*/
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
@@ -48,129 +44,46 @@ namespace CDOverhaul.Gameplay.Outfits
             _ = firstPersonMover.gameObject.AddComponent<OutfitsWearer>();
         }
 
-        private void addAccessories() // Todo: Make an editor like weapon skins one
+        public override string GetRepositoryFolder() => "Outfits";
+
+        public List<PersonalizationItem> GetOutfitItemsOfBodyPart(string bodyPart)
         {
-            AddAccessory<DefaultAccessoryItem>("Igrok's hat", "P_Acc_Head_Igrok's hat", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.ATVCatDiscord);
-
-            AddAccessory<DefaultAccessoryItem>("Halo", "P_Acc_Head_ImpostorHalo", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.ATVCatDiscord);
-
-            AddAccessory<DefaultAccessoryItem>("Puss Hat", "P_Acc_Head_PussHat", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.TabiDiscord);
-
-            AddAccessory<DefaultAccessoryItem>("Cone", "P_Acc_Head_ImpostorCone", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.ATVCatDiscord);
-
-            AddAccessory<DefaultAccessoryItem>("Deal with It", "P_Acc_DealWithIt", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.CaptainMeowDiscord);
-
-            AddAccessory<DefaultAccessoryItem>("Horns", "P_Horns", AccessoryType.Attached, MechBodyPartType.Head);
-            SetAuthor(WeaponSkinsController.ZoloRDiscord);
-        }
-
-        /// <summary>
-        /// Register an accessory
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="accessoryName"></param>
-        /// <param name="assetName"></param>
-        /// <param name="accessoryType"></param>
-        /// <param name="accessoryBodyPart"></param>
-        /// <param name="descriptionFile"></param>
-        public static void AddAccessory<T>(string accessoryName,
-            string assetName,
-            AccessoryType accessoryType,
-            MechBodyPartType accessoryBodyPart) where T : AccessoryItem
-        {
-            string desc = null;
-
-            AccessoryItem item = AccessoryItem.NewAccessory<T>(accessoryName, desc, accessoryType, accessoryBodyPart);
-            if (!string.IsNullOrEmpty(assetName)) item.Prefab = OverhaulAssetsController.GetAsset(assetName, OverhaulAssetPart.Accessories);
-            item.SetUpOffsets();
-            AllAccessories.Add(item);
-        }
-
-        public void SetAuthor(string author)
-        {
-            if (AllAccessories.IsNullOrEmpty())
-                return;
-
-            AccessoryItem item = AllAccessories[AllAccessories.Count - 1];
-            if (item != null)
-                item.Author = author;
-        }
-
-        /// <summary>
-        /// Get accessory by name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="returnNullIfLocked"></param>
-        /// <returns></returns>
-        public static AccessoryItem GetAccessoryItem(string name, bool returnNullIfLocked = true)
-        {
-            bool canSearchThrough = !AllAccessories.IsNullOrEmpty() && !string.IsNullOrEmpty(name);
-            if (!canSearchThrough)
-                return null;
-
-            AccessoryItem result = null;
-            int i = 0;
-            do
-            {
-                AccessoryItem item = AllAccessories[i];
-                if (name.Equals(item.Name))
-                {
-                    if (!item.IsUnlocked() && returnNullIfLocked)
-                        return null;
-
-                    result = item;
-                    break;
-                }
-                i++;
-            } while (i < AllAccessories.Count);
-
-            return result;
-        }
-
-        public static List<AccessoryItem> GetAccessories(string itemsString)
-        {
-            List<AccessoryItem> result = new List<AccessoryItem>();
-            bool shouldSearchEquipped = !string.IsNullOrEmpty(itemsString) && itemsString.Contains(Separator.ToString()) && !AllAccessories.IsNullOrEmpty();
-            if (!shouldSearchEquipped)
+            List<PersonalizationItem> result = new List<PersonalizationItem>();
+            List<PersonalizationItem> items = Items;
+            if (items.IsNullOrEmpty())
                 return result;
 
-            foreach (AccessoryItem item in AllAccessories)
+            foreach (PersonalizationItem item in items)
             {
-                if (itemsString.Contains(item.Name))
-                {
-                    AccessoryItem aItem = GetAccessoryItem(item.Name, false);
-                    if (aItem == null)
-                        continue;
-
-                    result.Add(aItem);
-                }
+                if (item is OutfitItem outfitItem && outfitItem.BodyPart == bodyPart)
+                    result.Add(item);
             }
             return result;
         }
 
-        public static List<AccessoryItem> GetEquippedAccessories() => GetAccessories(EquippedAccessories);
+        #region Save data
 
-        public static void SetAccessoryEquipped(AccessoryItem item, bool equip)
+        public static void SetAccessoryEquipped(PersonalizationItem item, bool equip, bool refreshPlayer = false)
         {
             if (item == null || (!item.IsUnlocked() && equip))
                 return;
 
-            string accessorySaveString = item.Name + Separator;
+            string accessorySaveString = item.GetID() + SEPARATOR;
             bool isEquipped = EquippedAccessories.Contains(accessorySaveString);
+
             if (isEquipped && !equip)
                 EquippedAccessories = EquippedAccessories.Replace(accessorySaveString, string.Empty);
-
             else if (!isEquipped && equip)
                 EquippedAccessories += accessorySaveString;
 
             SavePreferences();
+            if (refreshPlayer)
+                CharacterTracker.Instance.GetPlayerRobot().RefreshPersonalizationItems();
+
         }
 
-        public static void SetAccessoryEquipped(string item, bool equip) => SetAccessoryEquipped(GetAccessoryItem(item, equip), equip);
+        public void SetAccessoryEquipped(string item, bool equip) => SetAccessoryEquipped(GetItem(item), equip);
+
+        #endregion
     }
 }

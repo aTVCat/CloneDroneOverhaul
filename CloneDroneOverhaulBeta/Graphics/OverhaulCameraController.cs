@@ -8,18 +8,18 @@ namespace CDOverhaul.Graphics
         private Camera[] m_AllCameras;
         private Camera m_MainCamera;
 
-        public bool IsMainCameraNull => !IsDisposedOrDestroyed() && m_MainCamera != null;
+        public bool IsMainCameraNull => !m_MainCamera;
         public static Camera MechCameraPrefab => PlayerCameraManager.Instance.MechCameraTransformPrefab.GetComponentInChildren<Camera>();
         public static Camera BattleCruiserCameraPrefab => PlayerCameraManager.Instance.BattleCruiserCameraPrefab.GetComponentInChildren<Camera>();
 
         public override void Initialize()
         {
-            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
+            OverhaulEvents.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
         }
 
         protected override void OnDisposed()
         {
-            OverhaulEventsController.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
+            OverhaulEvents.RemoveEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, RefreshVisibleCameras);
             m_AllCameras = null;
             m_MainCamera = null;
         }
@@ -38,8 +38,5 @@ namespace CDOverhaul.Graphics
             return m_AllCameras;
         }
         public Camera GetMainCamera() => m_MainCamera;
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

@@ -4,10 +4,25 @@ namespace OverhaulAPI
 {
     public class PooledPrefabInstanceBase : MonoBehaviour
     {
-        public PooledPrefabContainer PrefabContainer { get; internal set; }
-        public int MyIndex { get; set; }
-        public float TimeLeft { get; private set; }
-        public bool IsActivated { get; private set; }
+        internal PooledPrefabContainer PrefabContainer { get; set; }
+
+        internal int MyIndex
+        {
+            get;
+            set;
+        }
+
+        public float TimeLeft
+        {
+            get;
+            private set;
+        }
+
+        public bool IsActivated
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Enable object and set position and rotation up
@@ -16,12 +31,14 @@ namespace OverhaulAPI
         /// <param name="rot"></param>
         internal void UsePrefab(in Vector3 pos, in Vector3 rot)
         {
-            base.gameObject.SetActive(true);
+            TimeLeft = GetLifeTime();
+            IsActivated = true;
+
             base.transform.position = pos;
             base.transform.eulerAngles = rot;
-            TimeLeft = LifeTime();
-            IsActivated = true;
-            OnPrefabUsed();
+            base.gameObject.SetActive(true);
+
+            OnSpawn();
         }
 
         /// <summary>
@@ -30,46 +47,34 @@ namespace OverhaulAPI
         protected void ReturnToPool()
         {
             IsActivated = false;
-            TimeLeft = 0;
-            PrefabContainer.SetPrefabState(MyIndex, false);
+            PrefabContainer.SetPrefabActiveState(MyIndex, false);
             base.gameObject.SetActive(false);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-            if (IsActivated)
-            {
-                TimeLeft -= Time.fixedDeltaTime;
-                if (TimeLeft <= 0)
-                {
-                    ReturnToPool();
-                }
-            }
+            if (!IsActivated)
+                return;
+
+            TimeLeft -= Time.deltaTime;
+            if (TimeLeft <= 0)
+                ReturnToPool();
         }
 
         /// <summary>
         /// Get required references if there's need
         /// </summary>
-        public virtual void PreparePrefab()
-        {
-
-        }
+        public virtual void OnInitialize() { }
 
         /// <summary>
         /// Override this method to expand prefab functionality when it is used
         /// </summary>
-        protected virtual void OnPrefabUsed()
-        {
-
-        }
+        protected virtual void OnSpawn() { }
 
         /// <summary>
         /// Get time to wait to return the object to pool
         /// </summary>
         /// <returns></returns>
-        protected virtual float LifeTime()
-        {
-            return 1f;
-        }
+        protected virtual float GetLifeTime() => 1f;
     }
 }

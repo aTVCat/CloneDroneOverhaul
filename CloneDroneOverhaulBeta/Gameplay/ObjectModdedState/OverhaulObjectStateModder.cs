@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CDOverhaul.Patches
 {
@@ -39,16 +35,13 @@ namespace CDOverhaul.Patches
                 return default;
 
             Dictionary<string, object> dictionary = m_ObjectStates[instanceID];
-            if (!dictionary.ContainsKey(paramName))
-                return default;
-
-            return (T)dictionary[paramName];
+            return !dictionary.ContainsKey(paramName) ? default : (T)dictionary[paramName];
         }
 
-        public static void ClearDestroyedObjects()
+        public static void Reset()
         {
             List<int> ids = new List<int>();
-            foreach(int id in m_CachedObjects.Keys)
+            foreach (int id in m_CachedObjects.Keys)
             {
                 UnityEngine.Object obj = m_CachedObjects[id];
                 if (!obj)
@@ -63,8 +56,8 @@ namespace CDOverhaul.Patches
             int i = 0;
             do
             {
-                m_CachedObjects.Remove(ids[i]);
-                m_ObjectStates.Remove(ids[i]);
+                _ = m_CachedObjects.Remove(ids[i]);
+                _ = m_ObjectStates.Remove(ids[i]);
                 i++;
             } while (i < ids.Count);
         }

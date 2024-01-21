@@ -5,37 +5,38 @@ namespace OverhaulAPI
 {
     public static class PooledPrefabController
     {
-        private static readonly Dictionary<string, PooledPrefabContainer> _containers = new Dictionary<string, PooledPrefabContainer>();
-
-        public static void Reset()
-        {
-            _containers.Clear();
-        }
+        private static readonly Dictionary<string, PooledPrefabContainer> s_Entries = new Dictionary<string, PooledPrefabContainer>();
 
         /// <summary>
         /// Dublicates one object
         /// </summary>
-        /// <param name="object"></param>
-        /// <param name="count"></param>
-        public static void TurnObjectIntoPooledPrefab<T>(in Transform @object, in int count, in string name) where T : PooledPrefabInstanceBase
+        /// <param name="prefab"></param>
+        /// <param name="premadeCount"></param>
+        public static void CreateNewEntry<T>(in Transform prefab, in int premadeCount, in string id) where T : PooledPrefabInstanceBase
         {
-            if (_containers.ContainsKey(name))
-            {
+            if (s_Entries.ContainsKey(id))
                 return;
-            }
 
-            GameObject newGO = new GameObject("PooledPrefab_" + @object.gameObject.name);
-            PooledPrefabContainer container = newGO.AddComponent<PooledPrefabContainer>();
-            container.ContainerName = name;
-            container.Populate<T>(@object, count);
-            _containers.Add(name, container);
+            GameObject newPooledPrefabObject = new GameObject("PooledPrefab_" + prefab.gameObject.name);
+            PooledPrefabContainer container = newPooledPrefabObject.AddComponent<PooledPrefabContainer>();
+            container.ID = id;
+            container.Populate<T>(prefab, premadeCount);
+            s_Entries.Add(id, container);
             Object.DontDestroyOnLoad(container.gameObject);
         }
 
-        public static T SpawnObject<T>(in string containerName, in Vector3 position, in Vector3 rotation) where T : PooledPrefabInstanceBase
+        public static bool HasCreatedEntry(in string id)
         {
-            PooledPrefabContainer container = _containers[containerName];
-            T result = container.SpawnPooledPrefab<T>(position, rotation);
+            return s_Entries.ContainsKey(id);
+        }
+
+        public static T SpawnEntry<T>(in string id, in Vector3 position, in Vector3 eulerAngles) where T : PooledPrefabInstanceBase
+        {
+            if (!s_Entries.ContainsKey(id))
+                return null;
+
+            PooledPrefabContainer container = s_Entries[id];
+            T result = container.SpawnPooledPrefab<T>(position, eulerAngles);
             return result;
         }
     }

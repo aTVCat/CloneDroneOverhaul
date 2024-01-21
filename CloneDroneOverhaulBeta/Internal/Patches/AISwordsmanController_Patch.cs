@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CDOverhaul.Gameplay;
+using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -12,20 +13,30 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return true;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            Character character = __instance.GetCharacter();
+            if (!character)
+            {
+                return true;
+            }
+
+            int instanceId = character.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+            {
+                return true;
+            }
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                 {
                     b.OnPreAIUpdate(__instance, out bool continueEx);
                     if (!continueEx)
                     {
-                        expansionBases = null;
                         return false;
                     }
                 }
             }
-
             return true;
         }
 
@@ -36,8 +47,20 @@ namespace CDOverhaul.Patches
             if (!OverhaulMod.IsModInitialized)
                 return;
 
-            OverhaulCharacterExpansion[] expansionBases = __instance.GetComponents<OverhaulCharacterExpansion>();
-            foreach (OverhaulCharacterExpansion b in expansionBases)
+            Character character = __instance.GetCharacter();
+            if (!character)
+            {
+                return;
+            }
+
+            int instanceId = character.GetInstanceID();
+            if (!CharacterExpansionContainer.CachedContainers.ContainsKey(instanceId))
+            {
+                return;
+            }
+
+            CharacterExpansionContainer expansionContainer = CharacterExpansionContainer.CachedContainers[instanceId];
+            foreach (OverhaulCharacterExpansion b in expansionContainer.Expansions)
             {
                 if (b)
                     b.OnPostAIUpdate(__instance);

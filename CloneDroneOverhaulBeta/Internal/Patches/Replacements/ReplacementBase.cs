@@ -10,8 +10,6 @@ namespace CDOverhaul.Patches
     {
         internal static readonly List<ReplacementBase> Replacements = new List<ReplacementBase>();
 
-        private readonly bool _hasAddedListeners;
-
         /// <summary>
         /// Check if replacement is working
         /// </summary>
@@ -65,9 +63,9 @@ namespace CDOverhaul.Patches
             _ = NewReplacement<OptimizeOnStart>();
             _ = NewReplacement<BaseFixes>();
             _ = NewReplacement<EnergyUIReplacement>();
-            _ = NewReplacement<OptimizeRuntime>();
             _ = NewReplacement<EscMenuReplacement>();
             _ = NewReplacement<SettingsMenuReplacement>();
+            _ = NewReplacement<CrosshairsUIReplacement>();
         }
 
         internal static void CancelEverything()

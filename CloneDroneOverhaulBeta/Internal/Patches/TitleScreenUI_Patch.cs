@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Workshop;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -14,13 +13,6 @@ namespace CDOverhaul.Patches
                 return;
 
             __instance.transform.GetChild(1).gameObject.SetActive(visible);
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch("OnWorkshopBrowserButtonClicked")]
-        private static bool OnWorkshopBrowserButtonClicked_Prefix(TitleScreenUI __instance)
-        {
-            return !OverhaulMod.IsModInitialized || OverhaulWorkshopBrowserUI.BrowserIsNull || !OverhaulWorkshopBrowserUI.Instance.TryShow();
         }
     }
 }

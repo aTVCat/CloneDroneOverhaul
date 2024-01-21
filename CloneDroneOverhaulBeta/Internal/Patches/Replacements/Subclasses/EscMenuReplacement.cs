@@ -7,11 +7,12 @@ namespace CDOverhaul.Patches
 {
     public class EscMenuReplacement : ReplacementBase
     {
-        [OverhaulSetting("Shortcuts.Personalization.Skins", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher OpenSkinsMenuFromSettings = new SettingEventDispatcher();
+        [OverhaulSetting("Shortcuts.Personalization.Skins", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent OpenSkinsMenuFromSettings = new OverhaulSettingWithEvent();
 
-        [OverhaulSetting("Shortcuts.Personalization.Outfits", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher OpenOutfitsMenuFromSettings = new SettingEventDispatcher();
+        /*
+        [OverhaulSetting("Shortcuts.Personalization.Outfits", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent OpenOutfitsMenuFromSettings = new OverhaulSettingWithEvent();*/
 
         public const string OpenSkinsFromSettingsEventString = "Settings.OpenSkins";
         public const string OpenOutfitsFromSettingsEventString = "Settings.OpenOutfits";
@@ -38,8 +39,9 @@ namespace CDOverhaul.Patches
 
             m_SetUpButtons = true;
 
+            /*
             OpenOutfitsMenuFromSettings.CanBeShown = shouldShowPersonalizationOutfits;
-            OpenOutfitsMenuFromSettings.EventString = OpenOutfitsFromSettingsEventString;
+            OpenOutfitsMenuFromSettings.EventString = OpenOutfitsFromSettingsEventString;*/
             OpenSkinsMenuFromSettings.CanBeShown = shouldShowPersonalization;
             OpenSkinsMenuFromSettings.EventString = OpenSkinsFromSettingsEventString;
         }
@@ -162,10 +164,10 @@ namespace CDOverhaul.Patches
 
         private void showParametersMenu()
         {
-            OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+            ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
             if (menu != null)
             {
-                OverhaulParametersMenu.ShouldSelectShortcuts = true;
+                ParametersMenu.ShouldSelectShortcuts = true;
                 menu.Show();
             }
         }

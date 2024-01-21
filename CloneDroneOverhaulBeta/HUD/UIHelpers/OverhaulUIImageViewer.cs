@@ -5,15 +5,18 @@ namespace CDOverhaul.HUD
 {
     public class OverhaulUIImageViewer : OverhaulUI
     {
-        private static OverhaulUIImageViewer m_Viewer;
-        public static bool IsNull => m_Viewer == null || m_Viewer.IsDisposedOrDestroyed();
-        public static bool IsActive => !IsNull && m_Viewer.gameObject.activeInHierarchy;
+        private static OverhaulUIImageViewer s_Viewer;
+        public static bool IsNull => s_Viewer == null || s_Viewer.IsDisposedOrDestroyed();
+        public static bool IsActive => !IsNull && s_Viewer.gameObject.activeInHierarchy;
 
         public RawImage Image;
 
+        private float m_TimeToReceiveInput;
+        private bool m_WasTitleScreenLogoShown;
+
         public override void Initialize()
         {
-            m_Viewer = this;
+            s_Viewer = this;
             Image = MyModdedObject.GetObject<RawImage>(0);
             SetActive(false, null);
         }
@@ -21,22 +24,40 @@ namespace CDOverhaul.HUD
         protected override void OnDisposed()
         {
             base.OnDisposed();
-            m_Viewer = null;
+            s_Viewer = null;
         }
 
         public static void SetActive(bool value, Texture texture)
         {
-            m_Viewer.gameObject.SetActive(false);
-            if (IsNull || texture == null)
+            if (IsNull)
                 return;
 
-            m_Viewer.gameObject.SetActive(value);
-            m_Viewer.Image.texture = texture;
+            if (!value && GameModeManager.Is(GameMode.None) && s_Viewer.m_WasTitleScreenLogoShown)
+            {
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(true);
+            }
+
+            s_Viewer.gameObject.SetActive(false);
+            if (!value || !texture)
+                return;
+
+            s_Viewer.gameObject.SetActive(value);
+            s_Viewer.Image.texture = texture;
+            s_Viewer.m_TimeToReceiveInput = Time.unscaledTime + 0.1f;
+            s_Viewer.m_WasTitleScreenLogoShown = GameUIRoot.Instance.TitleScreenUI.RootButtonsContainerBG.activeSelf;
+
+            if (GameModeManager.Is(GameMode.None))
+            {
+                GameUIRoot.Instance.TitleScreenUI.SetLogoAndRootButtonsVisible(false);
+            }
+
+            float num = texture.width / (float)texture.height;
+            s_Viewer.Image.rectTransform.sizeDelta = new Vector2(s_Viewer.Image.rectTransform.rect.height * num, s_Viewer.Image.rectTransform.sizeDelta.y);
         }
 
-        private void LateUpdate()
+        private void Update()
         {
-            if (Input.anyKeyDown)
+            if (Time.unscaledTime >= m_TimeToReceiveInput && Input.anyKeyDown)
                 SetActive(false, null);
         }
     }

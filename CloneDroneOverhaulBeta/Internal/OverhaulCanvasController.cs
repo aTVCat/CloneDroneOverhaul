@@ -1,5 +1,7 @@
 ﻿using CDOverhaul.HUD.Gamemodes;
-using CDOverhaul.Localization;
+using CDOverhaul.HUD.Overlays;
+using CDOverhaul.HUD.Tutorial;
+using CDOverhaul.HUD.Vanilla;
 using CDOverhaul.Workshop;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,6 +43,8 @@ namespace CDOverhaul.HUD
             ParentTransformToGameUIRoot(HUDModdedObject.transform);
             SetCanvasPixelPerfect(true);
 
+            GameUIRoot.Instance.ErrorWindow.transform.SetAsLastSibling();
+
             ModdedObject prefabsModdedObject = moddedObject.GetObject<ModdedObject>(1);
             HUDPrefabsArray = new GameObject[prefabsModdedObject.objects.Count];
             int index = 0;
@@ -52,19 +56,26 @@ namespace CDOverhaul.HUD
             prefabsModdedObject.gameObject.SetActive(false);
 
             _ = AddHUD<OverhaulVersionLabel>(HUDModdedObject.GetObject<ModdedObject>(0));
+            _ = AddHUD<ParametersMenu>(HUDModdedObject.GetObject<ModdedObject>(3));
             _ = AddHUD<OverhaulPauseMenu>(HUDModdedObject.GetObject<ModdedObject>(6));
-            _ = AddHUD<Overlays.OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
-            _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(8));
-            _ = AddHUD<WeaponSkinsMenu>(HUDModdedObject.GetObject<ModdedObject>(5)).IsOutfitSelection = true;
+            _ = AddHUD<OverhaulOverlays>(HUDModdedObject.GetObject<ModdedObject>(7));
+            _ = AddHUD<PersonalizationMenu>(HUDModdedObject.GetObject<ModdedObject>(8)).Category = Gameplay.PersonalizationCategory.WeaponSkins;
             _ = AddHUD<OverhaulDialogues>(HUDModdedObject.GetObject<ModdedObject>(9));
-            _ = AddHUD<OverhaulPatchNotesUI>(HUDModdedObject.GetObject<ModdedObject>(10));
+            _ = AddHUD<ChangelogUI>(HUDModdedObject.GetObject<ModdedObject>(10));
             _ = AddHUD<OverhaulLocalizationEditor>(HUDModdedObject.GetObject<ModdedObject>(4));
             _ = AddHUD<OverhaulLoadingScreen>(HUDModdedObject.GetObject<ModdedObject>(12));
             _ = AddHUD<OverhaulWorkshopBrowserUI>(HUDModdedObject.GetObject<ModdedObject>(13));
             _ = AddHUD<OverhaulUIDescriptionTooltip>(HUDModdedObject.GetObject<ModdedObject>(15));
             _ = AddHUD<OverhaulUIImageViewer>(HUDModdedObject.GetObject<ModdedObject>(17));
-            _ = AddHUD<FirstUseSetupUI>(HUDModdedObject.GetObject<ModdedObject>(16));
+            _ = AddHUD<ModSetupWindow>(HUDModdedObject.GetObject<ModdedObject>(16));
             _ = AddHUD<OverhaulGamemodesUI>(HUDModdedObject.GetObject<ModdedObject>(19));
+            _ = AddHUD<VanillaUIImprovements>(HUDModdedObject.GetObject<ModdedObject>(1));
+            _ = AddHUD<AboutOverhaulMenu>(HUDModdedObject.GetObject<ModdedObject>(2));
+            _ = AddHUD<OverhaulSurveyUI>(HUDModdedObject.GetObject<ModdedObject>(14));
+            _ = AddHUD<OverhaulFullscreenDialogueWindow>(HUDModdedObject.GetObject<ModdedObject>(22));
+            _ = AddHUD<OverhaulTutorialUI>(HUDModdedObject.GetObject<ModdedObject>(23));
+            _ = AddHUD<AdvancedPhotomodeUI>(HUDModdedObject.GetObject<ModdedObject>(24));
+            _ = AddHUD<OverhaulCrashScreen>(HUDModdedObject.GetObject<ModdedObject>(25));
 
             m_CanvasFromPrefab.GetComponent<Canvas>().enabled = false;
             m_CanvasFromPrefab.GetComponent<CanvasScaler>().enabled = false;
@@ -145,8 +156,5 @@ namespace CDOverhaul.HUD
             Destroy(HUDModdedObject.gameObject);
             Destroy(m_CanvasFromPrefab);
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

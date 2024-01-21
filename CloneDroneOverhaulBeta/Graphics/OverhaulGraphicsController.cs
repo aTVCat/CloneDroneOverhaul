@@ -1,5 +1,8 @@
-﻿using CDOverhaul.Gameplay;
+﻿using CDOverhaul.Device;
+using CDOverhaul.Gameplay;
+using CDOverhaul.Gameplay.QualityOfLife;
 using CDOverhaul.HUD;
+using OverhaulAPI;
 using OverhaulAPI.SharedMonoBehaviours;
 using System;
 using System.Collections.Generic;
@@ -11,62 +14,62 @@ namespace CDOverhaul.Graphics
 {
     public static class OverhaulGraphicsController
     {
+        public const string GenericSparksVFX = "GenericSparks";
+
         #region Settings
 
-        [OverhaulSettingAttribute("Graphics.Rendering.Deferred rendering", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
-        public static bool DefferedRenderer;
+        [OverhaulSettingAttribute("Graphics.Rendering.Deferred renderingV2", false, false, "Improve lightning\n(Many effects work incorrectly when this setting is enabled)")]
+        public static bool DeferredRenderer;
 
-        [OverhaulSetting("Graphics.Post effects.Set vanilla settings", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher SetBloomVanilla = new SettingEventDispatcher();
+        [OverhaulSetting("Graphics.Post effects.Set vanilla settings", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent SetBloomVanilla = new OverhaulSettingWithEvent();
         [OverhaulSettingAttribute("Graphics.Post effects.Enable bloom", true, false, "Make every light shine better", "Bloom.png")]
         public static bool BloomEnabled;
-        [SettingSliderParameters(true, 1, 10)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", null, null, "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingSliderParameters(true, 1, 10)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom iterations", 10, false, "How many times bloom effect should be applied?\n(Very low performance impact)", "Graphics.Post effects.Enable bloom")]
         public static int BloomIterations;
-        [SettingSliderParameters(false, 0.1f, 2f)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, null, null, "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingSliderParameters(false, 0.1f, 2f)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom intensity", 0.7f, false, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomIntensity;
-        [SettingSliderParameters(false, 0.85f, 2f)]
-        [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, null, null, "Graphics.Post effects.Enable bloom")]
+        [OverhaulSettingSliderParameters(false, 0.85f, 2f)]
+        [OverhaulSettingAttribute("Graphics.Post effects.Bloom Threshold", 1.25f, false, null, "Graphics.Post effects.Enable bloom")]
         public static float BloomThreshold;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Vignette", true, false, "Shade screen edges")]
         public static bool VignetteEnabled;
-        [SettingSliderParameters(false, -0.2f, 0.3f)]
-        [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, null, null, "Graphics.Shaders.Vignette")]
+        [OverhaulSettingSliderParameters(false, -0.2f, 0.3f)]
+        [OverhaulSettingAttribute("Graphics.Shaders.Vignette Intensity", 0.05f, false, null, "Graphics.Shaders.Vignette")]
         public static float VignetteIntensity;
         [OverhaulSettingAttribute("Graphics.Shaders.Blur edges", false, false, "I don't really like it, but you may turn this setting on for fun, I guess")]
         public static bool BlurEdgesEnabled;
 
         [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration", false, false, "Give things colored edges..?", "Chromatic Aberration.png")]
         public static bool ChromaticAberrationEnabled;
-        [SettingSliderParameters(false, 0f, 0.001f)]
-        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, null, null, "Graphics.Shaders.Chromatic Aberration")]
+        [OverhaulSettingSliderParameters(false, 0f, 0.001f)]
+        [OverhaulSettingAttribute("Graphics.Shaders.Chromatic Aberration intensity", 0.0002f, false, null, "Graphics.Shaders.Chromatic Aberration")]
         public static float ChromaticAberrationIntensity;
 
         [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Enable", true, false, "Add shadows to everything", "AmbientOcc.png")]
         public static bool AOEnabled;
-        [SettingSliderParameters(false, 0.7f, 1.3f)]
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.95f, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        [OverhaulSettingSliderParameters(false, 0.6f, 1.3f)]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Intensity", 0.65f, false, null, "Graphics.Amplify Occlusion.Enable")]
         public static float AOIntensity;
-        [SettingDropdownParameters("Low@Medium@High@Very high")]
-        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, null, null, "Graphics.Amplify Occlusion.Enable")]
+        [OverhaulSettingDropdownParameters("Low@Medium@High@Very high")]
+        [OverhaulSettingAttribute("Graphics.Amplify Occlusion.Sample Count", 1, false, null, "Graphics.Amplify Occlusion.Enable")]
         public static int AOSampleCount;
 
-        [OverhaulSetting("Graphics.Amplify color.Apply \"Film bright\" preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher ApplyAmplifyColorPreset1 = new SettingEventDispatcher();
-        [OverhaulSetting("Graphics.Amplify color.Apply \"Film dark\" preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher ApplyAmplifyColorPreset2 = new SettingEventDispatcher();
-        [OverhaulSetting("Graphics.Amplify color.Apply default preset", SettingsController.SettingEventDispatcherFlag, false, null, null, null, null)]
-        public static SettingEventDispatcher ApplyAmplifyColorPresetDefault = new SettingEventDispatcher();
-        [SettingDropdownParameters("Default@More Blend@More Exposure@More B+E@Less Blend@Less Exposure@Less B+E@+B -E@-B +E")]
-        [OverhaulSettingAttribute("Graphics.Amplify color.Amplify color preset", 0, false)]
+        [OverhaulSetting("Graphics.Amplify color.Apply \"Film bright\" preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent ApplyAmplifyColorPreset1 = new OverhaulSettingWithEvent();
+        [OverhaulSetting("Graphics.Amplify color.Apply \"Film dark\" preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent ApplyAmplifyColorPreset2 = new OverhaulSettingWithEvent();
+        [OverhaulSetting("Graphics.Amplify color.Apply default preset", OverhaulSettingsController.SettingEventDispatcherFlag, false, null, null)]
+        public static OverhaulSettingWithEvent ApplyAmplifyColorPresetDefault = new OverhaulSettingWithEvent();
+        [OverhaulSettingDropdownParameters("Default@More Blend@More Exposure@More B+E@Less Blend@Less Exposure@Less B+E@+B -E@-B +E")]
+        [OverhaulSettingAttribute("Graphics.Amplify color.Amplify color presetV2", 5, false)]
         public static int AmplifyColorMode;
-        [SettingDropdownParameters("Disabled@Photographic@FilmicACES")]
-        [OverhaulSettingAttribute("Graphics.Amplify color.Tonemapper", 0, false)]
+        [OverhaulSettingDropdownParameters("Disabled@Photographic@FilmicACES")]
+        [OverhaulSettingAttribute("Graphics.Amplify color.TonemapperV2", 2, false)]
         public static int AmplifyColorTonemapper;
-        [OverhaulSettingAttribute("Graphics.Amplify color.Enable depth mask usage", false, false)]
-        public static bool AmplifyColorUseDepthMask;
 
         #endregion
 
@@ -75,17 +78,15 @@ namespace CDOverhaul.Graphics
         private static readonly List<Bloom> m_BloomEffects = new List<Bloom>();
         private static readonly List<AmplifyOcclusionEffect> m_AOEffects = new List<AmplifyOcclusionEffect>();
 
-        private static Material m_VignetteMaterial;
-        private static Material m_ChromaMaterial;
-        private static Material m_EdgeBlur;
+        private static Material s_VignetteMaterial;
+        private static Material s_ChromaMaterial;
+        private static Material s_EdgeBlur;
 
         private static readonly Func<bool> m_EnableVignetteFunc = new System.Func<bool>(() => VignetteEnabled);
         private static readonly Func<bool> m_EnableCAFunc = new System.Func<bool>(() => ChromaticAberrationEnabled);
         private static readonly Func<bool> m_EnableBEFunc = new System.Func<bool>(() => BlurEdgesEnabled);
 
         private static bool m_ConfiguredEventButtons;
-
-        public static bool DisallowChangeFPSLimit;
 
         public static OverhaulCameraController CameraController { get; private set; }
 
@@ -102,16 +103,29 @@ namespace CDOverhaul.Graphics
 
         public static void Initialize()
         {
-            CameraController = OverhaulController.AddController<OverhaulCameraController>();
-            _ = OverhaulEventsController.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
-            _ = OverhaulEventsController.AddEventListener(SettingsController.SettingChangedEventString, patchAllCameras);
+            if (!PooledPrefabController.HasCreatedEntry(GenericSparksVFX))
+                PooledPrefabController.CreateNewEntry<WeaponSkinCustomVFXInstance>(OverhaulAssetsController.GetAsset("VFX_Sparks", OverhaulAssetPart.Part2).transform, 10, GenericSparksVFX);
 
-            m_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
-            m_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
-            m_VignetteMaterial.SetFloat("_CenterY", -0.14f);
-            m_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
-            patchAllCameras();
-            RefreshLightsCount();
+            CameraController = OverhaulController.AddController<OverhaulCameraController>();
+            OverhaulEvents.AddEventListener<Camera>(OverhaulGameplayCoreController.MainCameraSwitchedEventString, PatchCamera);
+            OverhaulEvents.AddEventListener(OverhaulSettingsController.SettingChangedEventString, PatchAllCameras);
+
+            if (!s_ChromaMaterial)
+            {
+                s_ChromaMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_ChromaticAb", OverhaulAssetPart.Part2);
+            }
+            if (!s_VignetteMaterial)
+            {
+                s_VignetteMaterial = OverhaulAssetsController.GetAsset<Material>("M_IE_Spotlight", OverhaulAssetPart.Part2);
+                s_VignetteMaterial.SetFloat("_CenterY", -0.14f);
+            }
+            if (!s_EdgeBlur)
+            {
+                s_EdgeBlur = OverhaulAssetsController.GetAsset<Material>("M_SnapshotTest", OverhaulAssetPart.Part2);
+
+            }
+
+            PatchAllCameras();
 
             if (!m_ConfiguredEventButtons)
             {
@@ -119,48 +133,45 @@ namespace CDOverhaul.Graphics
                 SetBloomVanilla.EventAction = delegate
                 {
                     BloomEnabled = true;
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Enable bloom", true), true);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Enable bloom", true), true);
                     BloomIterations = 2;
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom iterations", true), 2);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom iterations", true), 2);
                     BloomIntensity = 0.5f;
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom intensity", true), 0.5f);
                     BloomThreshold = 0.9f;
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Post effects.Bloom Threshold", true), 0.9f);
 
-                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
                         menu.PopulateCategory(menu.SelectedCategory, true);
                 };
 
                 ApplyAmplifyColorPreset1.EventAction = delegate
                 {
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 5);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 2);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 5);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 2);
 
-                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
                         menu.PopulateCategory(menu.SelectedCategory, true);
                 };
 
                 ApplyAmplifyColorPreset2.EventAction = delegate
                 {
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 2);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 1);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), true);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 2);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 1);
 
-                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
                         menu.PopulateCategory(menu.SelectedCategory, true);
                 };
 
                 ApplyAmplifyColorPresetDefault.EventAction = delegate
                 {
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Amplify color preset", true), 0);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Tonemapper", true), 0);
-                    SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Amplify color.Enable depth mask usage", true), false);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.Amplify color presetV2", true), 0);
+                    SettingInfo.SavePref(OverhaulSettingsController.GetSetting("Graphics.Amplify color.TonemapperV2", true), 0);
 
-                    OverhaulParametersMenu menu = OverhaulController.GetController<OverhaulParametersMenu>();
+                    ParametersMenu menu = OverhaulController.GetController<ParametersMenu>();
                     if (menu != null && menu.gameObject.activeSelf)
                         menu.PopulateCategory(menu.SelectedCategory, true);
                 };
@@ -169,38 +180,40 @@ namespace CDOverhaul.Graphics
 
         public static void PatchCamera(Camera camera)
         {
-            if (camera == null || camera.orthographic)
+            if (!camera || camera.orthographic)
                 return;
 
             if (!camera.name.Equals("TitleScreenLogoCamera"))
-                camera.renderingPath = !DefferedRenderer ? RenderingPath.UsePlayerSettings : RenderingPath.DeferredShading;
+                camera.renderingPath = RenderingPath.UsePlayerSettings;
 
             PatchBloom(camera.GetComponent<Bloom>());
             PatchAmplifyColor(camera.GetComponent<AmplifyColorBase>());
             refreshAmplifyOcclusionOnCamera(camera);
-            addShaderPassesToCamera(camera);
+            addImageEffectsToCamera(camera);
             refreshShaderMaterials();
         }
 
         public static void PatchBloom(Bloom bloom)
         {
-            if (bloom == null)
+            if (!bloom)
                 return;
 
             bloom.bloomBlurIterations = BloomIterations;
             bloom.bloomIntensity = BloomIntensity;
             bloom.bloomThreshold = BloomThreshold;
 
-            if (!bloom.gameObject.name.Equals("ArenaCamera")) bloom.enabled = BloomEnabled;
-            if (!m_BloomEffects.Contains(bloom)) m_BloomEffects.Add(bloom);
+            if (!bloom.gameObject.name.Equals("ArenaCamera"))
+                bloom.enabled = BloomEnabled;
+
+            if (!m_BloomEffects.Contains(bloom))
+                m_BloomEffects.Add(bloom);
         }
 
         public static void PatchAmplifyColor(AmplifyColorBase effect)
         {
-            if (effect == null)
+            if (!effect)
                 return;
 
-            effect.UseDepthMask = AmplifyColorUseDepthMask;
             switch (AmplifyColorTonemapper)
             {
                 case 0:
@@ -284,19 +297,19 @@ namespace CDOverhaul.Graphics
             }
         }
 
-        private static void addShaderPassesToCamera(Camera camera)
+        private static void addImageEffectsToCamera(Camera camera)
         {
-            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulPostProcessBehaviour>() != null)
+            if (IgnoreCamera(camera) || camera.GetComponent<OverhaulImageEffect>() != null)
                 return;
 
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_EdgeBlur, m_EnableBEFunc);
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_ChromaMaterial, m_EnableCAFunc);
-            OverhaulPostProcessBehaviour.AddPostProcessEffect(camera, m_VignetteMaterial, m_EnableVignetteFunc);
+            OverhaulImageEffect.AddEffect(camera, s_EdgeBlur, m_EnableBEFunc);
+            OverhaulImageEffect.AddEffect(camera, s_ChromaMaterial, m_EnableCAFunc);
+            OverhaulImageEffect.AddEffect(camera, s_VignetteMaterial, m_EnableVignetteFunc);
         }
 
         private static void refreshAmplifyOcclusionOnCamera(Camera camera, bool updateList = true)
         {
-            if (IgnoreCamera(camera) || camera != Camera.main)
+            if (IgnoreCamera(camera) || camera != Camera.main || Recommendations.GetSSAORecommendation() == RecommendationLevel.Unsupported)
                 return;
 
             AmplifyOcclusionEffect effect = camera.GetComponent<AmplifyOcclusionEffect>();
@@ -310,14 +323,17 @@ namespace CDOverhaul.Graphics
 
         private static void refreshAmplifyOcclusion(AmplifyOcclusionEffect effect, bool updateList = true)
         {
+            bool dontOverrideSettings = !AdvancedPhotomodeSettings.IsOverridingSettings;
+
+            effect.PerPixelNormals = AmplifyOcclusionEffect.PerPixelNormalSource.None;
             effect.Bias = 0f;
             effect.BlurSharpness = 4f;
             effect.FilterResponse = 0.7f;
             effect.Bias = 0.2f;
-            effect.SampleCount = (AmplifyOcclusion.SampleCountLevel)AOSampleCount;
-            effect.Intensity = AOIntensity;
-            effect.ApplyMethod = DefferedRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
-            effect.enabled = AOEnabled;
+            effect.SampleCount = dontOverrideSettings ? (AmplifyOcclusion.SampleCountLevel)AOSampleCount : (AmplifyOcclusion.SampleCountLevel)AdvancedPhotomodeSettings.SSAOSampleCount;
+            effect.Intensity = dontOverrideSettings ? AOIntensity : AdvancedPhotomodeSettings.SSAOIntensity;
+            effect.ApplyMethod = DeferredRenderer ? AmplifyOcclusionEffect.ApplicationMethod.Deferred : AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
+            effect.enabled = dontOverrideSettings ? AOEnabled : AdvancedPhotomodeSettings.SSAOEnable;
 
             // Remove destroyed instances
             if (!updateList || m_AOEffects.IsNullOrEmpty())
@@ -338,9 +354,13 @@ namespace CDOverhaul.Graphics
         }
 
 
-        private static void patchAllCameras()
+        public static void PatchAllCameras()
         {
             refreshApplicationTargetFramerate();
+
+            if (!CameraController)
+                return;
+
             foreach (Camera cam in CameraController.GetAllCameras())
             {
                 PatchCamera(cam);
@@ -377,14 +397,14 @@ namespace CDOverhaul.Graphics
                     PatchBloom(b);
                 }
             }
-            if (m_VignetteMaterial != null)
+            if (s_VignetteMaterial != null)
             {
-                m_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
+                s_VignetteMaterial.SetFloat("_Radius", Mathf.Clamp(0.35f - (VignetteIntensity * 0.1f), 0.01f, 0.5f));
             }
-            if (m_ChromaMaterial != null)
+            if (s_ChromaMaterial != null)
             {
-                m_ChromaMaterial.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
-                m_ChromaMaterial.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);
+                s_ChromaMaterial.SetFloat("_RedX", -0.0007f - ChromaticAberrationIntensity);
+                s_ChromaMaterial.SetFloat("_BlueX", 0.0007f + ChromaticAberrationIntensity);
             }
         }
 
@@ -392,9 +412,7 @@ namespace CDOverhaul.Graphics
         {
             try
             {
-                DisallowChangeFPSLimit = true;
-                SettingsManager.Instance.SetVsyncOn(false);
-                DisallowChangeFPSLimit = false;
+                SettingsManager.Instance.SetVsyncOn(CameraRollingBehaviour.VSyncEnabled);
             }
             catch { }
 
@@ -405,13 +423,6 @@ namespace CDOverhaul.Graphics
                     break;
                 case 2:
                     Application.targetFrameRate = 60;
-                    try
-                    {
-                        DisallowChangeFPSLimit = true;
-                        SettingsManager.Instance.SetVsyncOn(true);
-                        DisallowChangeFPSLimit = false;
-                    }
-                    catch { }
                     break;
                 case 3:
                     Application.targetFrameRate = 75;
@@ -426,34 +437,13 @@ namespace CDOverhaul.Graphics
                     Application.targetFrameRate = 144;
                     break;
                 case 7:
+                    Application.targetFrameRate = 165;
+                    break;
+                case 8:
                     Application.targetFrameRate = 240;
                     break;
                 default:
                     Application.targetFrameRate = -1;
-                    break;
-            }
-        }
-
-        public static void RefreshLightsCount()
-        {
-            if (DelegateScheduler.Instance == null)
-                return;
-
-            DelegateScheduler.Instance.Schedule(refreshLightsCount, 0.2f);
-        }
-
-        private static void refreshLightsCount()
-        {
-            switch (QualitySettings.GetQualityLevel())
-            {
-                case 2:
-                    QualitySettings.pixelLightCount = 18;
-                    break;
-                case 1:
-                    QualitySettings.pixelLightCount = 6;
-                    break;
-                default:
-                    QualitySettings.pixelLightCount = 2;
                     break;
             }
         }

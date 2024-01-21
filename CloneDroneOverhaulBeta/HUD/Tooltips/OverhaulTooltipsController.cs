@@ -1,62 +1,62 @@
-﻿using System;
+﻿using CDOverhaul.Gameplay.Combat;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CDOverhaul.HUD.Tooltips
 {
     public class OverhaulTooltipsController : OverhaulGameplayController
     {
-        private List<OverhaulTooltip> m_Tooltips;
+        public List<OverhaulTooltip> Tooltips
+        {
+            get;
+            private set;
+        } = new List<OverhaulTooltip>();
 
         public OverhaulTooltipsUI TooltipsUI;
-
-        private GameObject m_TooltipsContainerGameObject;
 
         public override void Initialize()
         {
             base.Initialize();
 
-            m_Tooltips = new List<OverhaulTooltip>();
-
-            OverhaulCanvasController canvasController = GetController<OverhaulCanvasController>();
-            if (canvasController == null)
+            OverhaulCanvasController canvasController = OverhaulMod.Core.CanvasController;
+            if (!canvasController)
                 return;
 
             TooltipsUI = canvasController.AddHUD<OverhaulTooltipsUI>(canvasController.HUDModdedObject.GetObject<ModdedObject>(18));
-            TooltipsUI.TooltipsController = this;
 
-            m_TooltipsContainerGameObject = new GameObject("TooltipScripts");
-            m_TooltipsContainerGameObject.transform.SetParent(base.transform.parent);
-
-            AddTooltip<OverhaulCurrentWeaponTooltip>();
+            AddTooltip<OverhaulCurrentWeaponTooltip>(TooltipsUI.MyModdedObject.GetObject<Transform>(1).gameObject);
+            AddTooltip<OverhaulClosestPlayerTooltip>(TooltipsUI.MyModdedObject.GetObject<Transform>(2).gameObject);
         }
 
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover, bool hasInitializedModel)
         {
             if (!hasInitializedModel)
                 return;
+
+            _ = firstPersonMover.gameObject.AddComponent<PlayerTooltipsBehaviour>();
         }
 
-        public void AddTooltip<T>() where T : OverhaulTooltip
+        public void AddTooltip<T>(GameObject gameObject) where T : OverhaulTooltip
         {
-            T component = m_TooltipsContainerGameObject.GetComponent<T>();
-            if (component)
-                throw new Exception("A tooltip with the same type is already added! Type: " + typeof(T).ToString());
-
-            component = m_TooltipsContainerGameObject.AddComponent<T>();
-            component.TooltipsController = this;
+            T component = gameObject.AddComponent<T>();
             component.Initialize();
+            component.gameObject.SetActive(false);
+            component.transform.SetParent(TooltipsUI.MyModdedObject.GetObject<Transform>(0));
+            OverhaulUIPanelScaler scaler = component.gameObject.AddComponent<OverhaulUIPanelScaler>();
+            scaler.StartScale = Vector3.zero;
+            scaler.TargetScale = Vector3.one;
+            scaler.Multiplier = 15f;
 
-            m_Tooltips.Add(component);
-            TooltipsUI.HaveToPopulateTooltips = true;
+            Tooltips.Add(component);
         }
 
-        public List<OverhaulTooltip> GetTooltips() => m_Tooltips;
+        public T GetTooltip<T>() where T : OverhaulTooltip
+        {
+            foreach (OverhaulTooltip tooltip in Tooltips)
+                if (tooltip is T)
+                    return (T)tooltip;
 
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
+            return null;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CDOverhaul.Graphics;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CDOverhaul.Patches
 {
@@ -7,27 +6,10 @@ namespace CDOverhaul.Patches
     internal static class SettingsManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("SetQuality")]
-        private static void SetQuality_Postfix()
+        [HarmonyPatch("GetForceRelayConnection")]
+        private static void GetForceRelayConnection_Postfix(ref bool __result)
         {
-            OverhaulGraphicsController.RefreshLightsCount();
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch("SetVsyncOn")]
-        private static void SetVsyncOn_Prefix(bool value)
-        {
-            if (OverhaulGraphicsController.DisallowChangeFPSLimit)
-                return;
-
-            if (value)
-            {
-                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 2, false);
-            }
-            else
-            {
-                SettingInfo.SavePref(SettingsController.GetSetting("Graphics.Settings.Target framerate", true), 0, false);
-            }
+            __result = OverhaulCore.IsRelayConnectionEnabled;
         }
     }
 }

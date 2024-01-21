@@ -1,4 +1,5 @@
-﻿using PicaVoxel;
+﻿using OverhaulAPI;
+using PicaVoxel;
 using UnityEngine;
 
 namespace CDOverhaul
@@ -23,29 +24,46 @@ namespace CDOverhaul
 
         public static void OnVoxelDestroy(MechBodyPart bodyPart, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
-            if (!MakeLaserBurnVoxels)
-                return;
-
-            foreach (PicaVoxelPoint p in GetSurroundingPoints(picaVoxelPoint))
+            bool hasFire = fireSpreadDefinition != null;
+            if (!hasFire)
             {
-                if (bodyPart.IsVoxelWaitingToBeDestroyed(p))
-                    continue;
+                if (Random.Range(0, 10) < 2)
+                {
+                    Vector3 position = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
+                    _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Graphics.OverhaulVFXController.LASER_CUT_VFX, position, Vector3.zero);
+                }
 
-                Voxel? vox = currentFrame.GetVoxelAtArrayPosition(p);
-                if (vox == null)
-                    continue;
+                if (MakeLaserBurnVoxels)
+                {
+                    foreach (PicaVoxelPoint p in GetSurroundingPoints(picaVoxelPoint))
+                    {
+                        if (bodyPart.IsVoxelWaitingToBeDestroyed(p))
+                            continue;
 
-                Color32 oldColor = vox.Value.Color;
-                Voxel theVox = vox.Value;
-                theVox.Color = new Color32(getColor(oldColor.r, m_OgFireBurnColorMultiplier),
-                    getColor(oldColor.g, m_OgFireBurnColorMultiplier),
-                    getColor(oldColor.b, m_OgFireBurnColorMultiplier),
-                    oldColor.a);
-                currentFrame.SetVoxelAtArrayPosition(p, theVox);
+                        Voxel? vox = currentFrame.GetVoxelAtArrayPosition(p);
+                        if (vox == null)
+                            continue;
+
+                        Color32 oldColor = vox.Value.Color;
+                        Voxel theVox = vox.Value;
+                        theVox.Color = new Color32(getColor(oldColor.r),
+                            getColor(oldColor.g),
+                            getColor(oldColor.b),
+                            oldColor.a);
+                        currentFrame.SetVoxelAtArrayPosition(p, theVox);
+                    }
+                }
+                return;
+            }
+
+            if (Random.Range(0, 10) < 2)
+            {
+                Vector3 position = currentFrame.GetVoxelWorldPosition(picaVoxelPoint);
+                _ = PooledPrefabController.SpawnEntry<PooledPrefabInstanceBase>(Graphics.OverhaulVFXController.FIRE_CUT_VFX, position, Vector3.zero);
             }
         }
 
-        private static byte getColor(byte color, float multiplier) => (byte)Mathf.RoundToInt(color * m_OgFireBurnColorMultiplier);
+        private static byte getColor(byte color) => (byte)Mathf.RoundToInt(color * m_OgFireBurnColorMultiplier);
 
         public static PicaVoxelPoint GetOffsetPoint(in PicaVoxelPoint picaVoxelPoint, in int OffX, in int OffY, in int OffZ) => new PicaVoxelPoint(picaVoxelPoint.X + OffX, picaVoxelPoint.Y + OffY, picaVoxelPoint.Z + OffZ);
         public static PicaVoxelPoint[] GetSurroundingPoints(in PicaVoxelPoint picaVoxelPoint)
@@ -58,8 +76,5 @@ namespace CDOverhaul
             PicaVoxelPoint z2 = GetOffsetPoint(picaVoxelPoint, 0, 0, -1);
             return new PicaVoxelPoint[6] { x1, x2, y1, y2, z1, z2 };
         }
-
-        public override string[] Commands() => null;
-        public override string OnCommandRan(string[] command) => null;
     }
 }

@@ -1,55 +1,70 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace CDOverhaul
 {
     public static class OverhaulVersion
     {
-        /// <summary>
-        /// The version of the mod
-        /// </summary>
-        private static readonly Version m_ModVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        private static readonly Version m_ModVersionUpdateFour = new Version("0.4.0.0"); //0.2.10.66
-        private static readonly Version m_ModVersionUpdateTwo = new Version("0.2.11.0");
+        public const string ModID = "rAnDomPaTcHeS1";
+        public const bool IsModBotBuild = false;
 
-        public static Version ModVersion => (IsUpdate4 ? m_ModVersionUpdateFour : (IsUpdate2Hotfix ? m_ModVersionUpdateTwo : m_ModVersion));
+        private static readonly Version s_AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        private static readonly Version s_ModVersionUpdate2 = new Version("0.2.13.6");
+        private static readonly Version s_ModVersionUpdate4 = new Version("0.4.0.2");
 
-        /// <summary>
-        /// The version of game mod will definitely work 
-        /// </summary>
-        public const string GameTargetVersion = "1.5.0.16";
+        private static readonly Updates s_CurrentUpdate = Updates.VER_3;
 
-        /// <summary>
-        /// The full name of the mod
-        /// </summary>
-        public static readonly string ModFullName = "Clone Drone Overhaul " + buildString;
-        /// <summary>
-        /// The shortened name of the mod
-        /// </summary>
-        public static readonly string ModShortName = "Overhaul " + buildString;
-        private static string buildString => getVersionPrefixChar() + ModVersion.ToString() + DebugString;
+        public static bool IsUpdate(Updates update) => s_CurrentUpdate >= update;
+        public static bool IsVersionUnder3 => !IsUpdate(Updates.VER_3);
+        public static bool IsVersion3 => IsUpdate(Updates.VER_3);
+        public static bool IsVersion3Update => IsUpdate(Updates.VER_3_Update);
+        public static bool IsVersion4 => IsUpdate(Updates.VER_4);
 
-        /// <summary>
-        /// Are we still on 0.2?
-        /// </summary>
-        public const bool IsUpdate2Hotfix = true;
+        public static Version ModVersion
+        {
+            get
+            {
+                switch (s_CurrentUpdate)
+                {
+                    case Updates.VER_2:
+                        return s_ModVersionUpdate2;
+                    case Updates.VER_4:
+                        return s_ModVersionUpdate4;
+                }
+                return s_AssemblyVersion;
+            }
+        }
+        public static string GetBuildString() => 'v' + ModVersion.ToString();
 
-        /// <summary>
-        /// WIP
-        /// </summary>
-        public const bool IsUpdate4 = false;
+        public const string TargetGameVersion = "1.6.0.34";
+
+        public static readonly string Watermark = "Overhaul Mod Alpha Build " + GetBuildString();
+        public static readonly string ShortenedWatermark = "Overhaul " + GetBuildString();
 
 #if DEBUG
         public const bool IsDebugBuild = true;
-        public const string DebugString = " (Debug)";
+        public const bool IsTestMode = true;
 #else
         public const bool IsDebugBuild = false;
-        public const string DebugString = "";
+        public const bool IsTestMode = false;
 #endif
 
-        private static char getVersionPrefixChar()
+        private static readonly string[] s_BlacklistedVersions = new string[]
         {
-            return 'v';
+            "0.3.0.199" // A debug build was released to public by mistake xd
+        };
+        public static bool IsBlacklistedVersion(string versionString) => s_BlacklistedVersions.Contains(versionString);
+
+        public enum Updates
+        {
+            VER_2 = 0,
+
+            VER_3 = 1,
+
+            VER_3_Update = 2,
+
+            VER_4 = 3,
         }
     }
 }

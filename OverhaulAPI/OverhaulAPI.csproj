@@ -266,14 +266,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API.cs" />
-    <Compile Include="Audio\AudioAPI.cs" />
+    <Compile Include="OverhaulAPICore.cs" />
+    <Compile Include="Utils\AudioUtils.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabContainer.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabController.cs" />
     <Compile Include="PooledPrefabs\PooledPrefabInstanceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SharedMonoBehaviours\OverhaulDraggableUI.cs" />
-    <Compile Include="SharedMonoBehaviours\OverhaulPostProcessBehaviour.cs" />
+    <Compile Include="Behaviours\OverhaulDraggablePanel.cs" />
+    <Compile Include="Behaviours\OverhaulImageEffect.cs" />
     <Compile Include="UnsortedClasses\IOverhaulItemDefinition.cs" />
     <Compile Include="UnsortedClasses\ModelOffset.cs" />
   </ItemGroup>
