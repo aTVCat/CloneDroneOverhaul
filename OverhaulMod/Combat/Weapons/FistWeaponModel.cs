@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InjectionClasses;
+using System;
 using UnityEngine;
 
 namespace OverhaulMod.Combat.Weapons
@@ -15,12 +16,16 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public override void Configure(FirstPersonMover owner)
+        public override void OnInstantiated(FirstPersonMover owner)
         {
             _ = createImpactArea(true, base.transform, owner);
             Transform handL = TransformUtils.FindChildRecursive(owner.transform, "HandL");
             if (handL)
                 m_secondaryImpactArea = createImpactArea(false, handL, owner);
+
+            base.BodyPartsToDrop = Array.Empty<MindSpaceBodyPart>();
+            base.PartsToDrop = Array.Empty<Transform>();
+            base.PartsToHideInsteadOfRoot = Array.Empty<GameObject>();
         }
 
         public override void SetWeaponDamageActive(bool value)

@@ -2,6 +2,7 @@
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulMod.Combat
 {
@@ -130,7 +131,7 @@ namespace OverhaulMod.Combat
 
             // Sprinter Scythe 2
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Swordsman3, EnemyType.Sprinter1, 510, out hasAdded);
-            if (hasAdded)
+            if (!hasAdded)
             {
                 ConfigureAIController(ModBotAPI.EnemyAPI.SetEnemyAIController<AIComposableBehaviourController>((EnemyType)710), 0.5f, 5f, 0.1f, new List<AIBehaviour>()
             {
@@ -153,6 +154,20 @@ namespace OverhaulMod.Combat
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear2, 511, out _);
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear3, 512, out _);
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear4, 513, out _);
+
+            EnemyConfiguration guardBotConfig = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.ImperialRepairBot, EnemyType.ImperialRepairBot, 514, out hasAdded);
+            if (!hasAdded)
+            {
+                Transform transform = guardBotConfig.EnemyPrefab;
+                transform.localScale = Vector3.one * 4f;
+            }
+
+            EnemyConfiguration chibiMk2SwordConfig = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Swordsman2, EnemyType.Swordsman2, 515, out hasAdded);
+            if (!hasAdded)
+            {
+                Transform transform = chibiMk2SwordConfig.EnemyPrefab;
+                transform.localScale = Vector3.one * 0.75f;
+            }
         }
 
         public void ConfigureAIController(AIController aiController, float constantTurnSpeed = 0.3f, float distanceToMoveTowardsOpponent = 5f, float nearTurnSpeed = 0.05f, List<AIBehaviour> aiBehaviours = null)

@@ -21,7 +21,7 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public override void Configure(FirstPersonMover owner)
+        public override void OnInstantiated(FirstPersonMover owner)
         {
             base.MeleeImpactArea = null;
             base.BodyPartsToDrop = Array.Empty<MindSpaceBodyPart>();

@@ -19,15 +19,20 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("tryRenderAttack")]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)
         {
-            WeaponModel weaponModel = __instance.GetEquippedWeaponModel();
-            if (!(weaponModel is ModWeaponModel))
-                return;
-
-            ModWeaponModel modWeaponModel = (ModWeaponModel)weaponModel;
-            if (modWeaponModel)
+            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
             {
                 if (!modWeaponModel.attackDirections.HasFlag(attackDirection))
                     attackDirection = modWeaponModel.defaultAttackDirection;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("executeAttackCommands")]
+        private static void executeAttackCommands_Postfix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isImmobile, bool isFirstExecution, bool isOwner)
+        {
+            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            {
+                modWeaponModel.OnExecuteAttackCommands(__instance, moveCommand.Input);
             }
         }
 
@@ -36,21 +41,14 @@ namespace OverhaulMod.Patches
         private static void HasMeleeWeaponEquipped_Postfix(FirstPersonMover __instance, ref bool __result)
         {
             if (!__result)
-            {
                 __result = ModWeaponsManager.Instance.IsMeleeWeapon(__instance._currentWeapon);
-            }
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("getWeaponDisabledTimeAfterCut")]
         private static void getWeaponDisabledTimeAfterCut_Postfix(FirstPersonMover __instance, ref float __result)
         {
-            WeaponModel weaponModel = __instance.GetEquippedWeaponModel();
-            if (!(weaponModel is ModWeaponModel))
-                return;
-
-            ModWeaponModel modWeaponModel = (ModWeaponModel)weaponModel;
-            if (modWeaponModel)
+            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
             {
                 __result = modWeaponModel.disableAttacksForSeconds;
             }
@@ -60,12 +58,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshWeaponAnimatorProperties")]
         private static void RefreshWeaponAnimatorProperties_Postfix(FirstPersonMover __instance)
         {
-            WeaponModel weaponModel = __instance.GetEquippedWeaponModel();
-            if (!(weaponModel is ModWeaponModel))
-                return;
-
-            ModWeaponModel modWeaponModel = (ModWeaponModel)weaponModel;
-            if (modWeaponModel)
+            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
             {
                 if (modWeaponModel.animatorControllerOverride)
                 {
@@ -80,16 +73,9 @@ namespace OverhaulMod.Patches
         private static void GetAttackSpeed_Postfix(FirstPersonMover __instance, ref float __result)
         {
             if (GameModeManager.UsesMultiplayerSpeedMultiplier())
-            {
-                return;
-            }
-
-            WeaponModel weaponModel = __instance.GetEquippedWeaponModel();
-            if (!(weaponModel is ModWeaponModel))
                 return;
 
-            ModWeaponModel modWeaponModel = (ModWeaponModel)weaponModel;
-            if (modWeaponModel)
+            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
             {
                 __result = modWeaponModel.attackSpeed;
             }

@@ -388,7 +388,9 @@
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\DualKnifesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\FistWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
@@ -585,4 +587,7 @@
     <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets'))" />
   </Target>
   <Import Project="..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) "C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -24,14 +24,6 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public override bool equipIfEnemy
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public override RuntimeAnimatorController animatorControllerOverride
         {
             get
@@ -40,7 +32,7 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public override void Configure(FirstPersonMover owner)
+        public override void OnInstantiated(FirstPersonMover owner)
         {
             MeleeWeaponAITuning meleeWeaponTuning = (MeleeWeaponAITuning)WeaponAITuningManager.Instance.SwordAITuning.MemberwiseClone();
             meleeWeaponTuning.MaxRangeToAttack = 12f;

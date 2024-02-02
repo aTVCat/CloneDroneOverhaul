@@ -1,12 +1,11 @@
-﻿using Jint;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
     internal static class ModUnityUtils
     {
-        private static Dictionary<string, Transform> s_clonedObjects = new Dictionary<string, Transform>();
+        private static readonly Dictionary<string, Transform> s_clonedObjects = new Dictionary<string, Transform>();
 
         public static Transform CloneAndSetLevelEnemySpawnerUp(string name, EnemyType enemyType)
         {

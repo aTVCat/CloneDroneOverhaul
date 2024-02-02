@@ -22,14 +22,6 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public virtual bool equipIfEnemy
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public virtual AttackDirection attackDirections
         {
             get
@@ -54,8 +46,13 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
-        public virtual void Configure(FirstPersonMover owner)
+        public virtual void OnInstantiated(FirstPersonMover owner)
         {
+        }
+
+        public virtual void OnExecuteAttackCommands(FirstPersonMover owner, IFPMoveCommandInput input)
+        {
+
         }
 
         public virtual void OnRefreshWeaponAnimatorProperties(FirstPersonMover owner)

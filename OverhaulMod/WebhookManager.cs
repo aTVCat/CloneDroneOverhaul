@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Steamworks;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
@@ -13,50 +12,10 @@ namespace OverhaulMod
         private const string START_ENABLED_EMOJI = "<:star_enabled:1196444610751373434>";
         private const string START_DISABLED_EMOJI = "<:star_disabled:1196444266772316182>";
 
-        public const string CrashReportsWebhook = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
-        public static readonly Uri CrashReportsWebhookUri = new Uri(CrashReportsWebhook);
+        public const string FeedbacksWebhookURL = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
+        public const string SurveysWebhookURL = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
 
-        public const string FeedbacksWebhook = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
-        public static readonly Uri FeedbacksWebhookUri = new Uri(FeedbacksWebhook);
-
-        public const string ErrorsWebhook = "https://discord.com/api/webhooks/1129035917324189745/FGpPRyvgI9YxyrCutXPoWrIGjJ0Z0KueFs4_pqU2wSLUsmYfVYm_qR9yTt-XST40ntSp";
-        public static readonly Uri ErrorsWebhookUri = new Uri(ErrorsWebhook);
-
-        public const string SurveysWebhook = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
-        public static readonly Uri SurveysWebhookUri = new Uri(SurveysWebhook);
-
-        private bool s_HasExecutedCrashReportsWebhook = false;
-
-        private List<string> m_caughtErrors;
-
-        private void Start()
-        {
-            m_caughtErrors = new List<string>();
-        }
-
-        public void ExecuteCrashReportsWebhook(string content, bool forceSend = false)
-        {
-            if (s_HasExecutedCrashReportsWebhook && !forceSend)
-                return;
-            s_HasExecutedCrashReportsWebhook = true;
-
-            WebhookObject obj1 = new WebhookObject()
-            {
-                content = (ModBuildInfo.debug ? "<@779372500521320469>\n" : string.Empty) + $"## __Game crashed. v{ModBuildInfo.version}__",
-                embeds = new Embed[]
-                {
-                    new Embed()
-                    {
-                        title = "**Stack Trace**",
-                        description = $"```{content}```",
-                        color = int.Parse("E84A3F", System.Globalization.NumberStyles.HexNumber),
-                    },
-                },
-            };
-            ExecuteWebhook(obj1, CrashReportsWebhookUri);
-        }
-
-        public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText)
+        public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
         {
             rank = Mathf.Clamp(rank, 1, 5);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
@@ -101,10 +60,10 @@ namespace OverhaulMod
                     },
                 },
             };
-            ExecuteWebhook(obj1, FeedbacksWebhookUri);
+            UploadMessageWithWebhook(obj1, FeedbacksWebhookURL, successCallback, errorCallback);
         }
 
-        public void ExecuteSurveysWebhook(string selectedVariant, string newsTitle)
+        public void ExecuteSurveysWebhook(string selectedVariant, string newsTitle, Action successCallback, Action<string> errorCallback)
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
@@ -120,74 +79,64 @@ namespace OverhaulMod
                     }
                 },
             };
-            ExecuteWebhook(obj1, SurveysWebhookUri);
+            UploadMessageWithWebhook(obj1, SurveysWebhookURL, successCallback, errorCallback);
         }
 
-        public void ExecuteErrorsWebhook(string errorString, bool forceSend = false)
+        public void ExecuteTestUploadWebhook(string filePath, Action successCallback, Action<string> errorCallback)
         {
-            if (m_caughtErrors.Contains(errorString) && !forceSend)
-                return;
-            m_caughtErrors.Add(errorString);
-
-            WebhookObject obj1 = new WebhookObject()
-            {
-                content = $"## __Error. v{ModBuildInfo.version}__",
-                embeds = new Embed[]
-                {
-                    new Embed()
-                    {
-                        title = "**Contents**",
-                        description = $"```{errorString}```",
-                        color = int.Parse("eb7d34", System.Globalization.NumberStyles.HexNumber),
-                    },
-                },
-            };
-            _ = new WebhookObject()
-            {
-                embeds = new Embed[]
-                {
-                    new Embed()
-                    {
-
-                    },
-                },
-                payload_json = "{\"embeds\":[{\"image\":{\"url\":\"attachment://test.jpg\"}}]}",
-            };
-            ExecuteWebhook(obj1, ErrorsWebhookUri);
+            UploadFileWithWebhook(filePath, FeedbacksWebhookURL, successCallback, errorCallback);
         }
 
-        public void ExecuteTestUploadWebhook(string filePath)
-        {
-            ExecuteFileWebhook(filePath, FeedbacksWebhookUri);
-        }
-
-        public void ExecuteCustomWebhook(string content, string url)
-        {
-            WebhookObject obj1 = new WebhookObject()
-            {
-                content = content
-            };
-            ExecuteWebhook(obj1, new Uri(url));
-        }
-
-        public async void ExecuteWebhook(WebhookObject webhookObject, Uri uri)
+        public async void UploadMessageWithWebhook(WebhookObject webhookObject, string url, Action successCallback, Action<string> errorCallback)
         {
             try
             {
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    _ = await webClient.UploadStringTaskAsync(uri, "POST", JsonConvert.SerializeObject(webhookObject));
+                    System.Threading.Tasks.Task<string> task = webClient.UploadStringTaskAsync(new Uri(url), "POST", JsonConvert.SerializeObject(webhookObject));
+                    _ = await task;
+                    if (task.Exception != null)
+                    {
+                        Debug.Log(task.Exception);
+                        errorCallback?.Invoke(task.Exception.ToString());
+                    }
+                    else
+                    {
+                        successCallback?.Invoke();
+                    }
                 }
             }
-            catch { }
+            catch (Exception exc)
+            {
+                Debug.Log(exc);
+                errorCallback?.Invoke(exc.ToString());
+            }
         }
 
-        public async void ExecuteFileWebhook(string filePath, Uri uri)
+        public async void UploadFileWithWebhook(string filePath, string url, Action successCallback, Action<string> errorCallback)
         {
-            using (WebClient webClient = new WebClient())
+            try
             {
-                _ = webClient.UploadFile(uri, "POST", filePath);
+                using (WebClient webClient = new WebClient())
+                {
+                    System.Threading.Tasks.Task<byte[]> task = webClient.UploadFileTaskAsync(new Uri(url), "POST", filePath);
+                    _ = await task;
+                    if (task.Exception != null)
+                    {
+                        Debug.Log(task.Exception);
+                        errorCallback?.Invoke(task.Exception.ToString());
+                    }
+                    else
+                    {
+                        successCallback?.Invoke();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Debug.Log(exc);
+                errorCallback?.Invoke(exc.ToString());
             }
         }
     }

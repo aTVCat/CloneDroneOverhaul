@@ -98,6 +98,10 @@ namespace OverhaulMod
                 Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
                 Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
                 Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
+
+                Patch.AddObject("GuardBot", "OverhaulMod", "Enemies", ModPrefabUtils.guardBotSpawner, null, null);
+
+                Patch.AddObject("ChibiSword2", "OverhaulMod", "Enemies", ModPrefabUtils.chibiSword2Spawner, null, null);
                 s_hasAddedObjects = true;
             }
         }

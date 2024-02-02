@@ -230,7 +230,7 @@ namespace OverhaulMod.Utils
             {
                 if (!s_halberd2Spawner)
                 {
-                    s_halberd2Spawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("Halberd2", (EnemyType)711);
+                    s_halberd2Spawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("Halberd2", (EnemyType)712);
                 }
                 return s_halberd2Spawner;
             }
@@ -243,9 +243,35 @@ namespace OverhaulMod.Utils
             {
                 if (!s_halberd3Spawner)
                 {
-                    s_halberd3Spawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("Halberd3", (EnemyType)712);
+                    s_halberd3Spawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("Halberd3", (EnemyType)713);
                 }
                 return s_halberd3Spawner;
+            }
+        }
+
+        private static Transform s_guardBotSpawner;
+        public static Transform guardBotSpawner
+        {
+            get
+            {
+                if (!s_guardBotSpawner)
+                {
+                    s_guardBotSpawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("GuardBot", (EnemyType)714);
+                }
+                return s_guardBotSpawner;
+            }
+        }
+
+        private static Transform s_chibiSword2Spawner;
+        public static Transform chibiSword2Spawner
+        {
+            get
+            {
+                if (!s_chibiSword2Spawner)
+                {
+                    s_chibiSword2Spawner = ModUnityUtils.CloneAndSetLevelEnemySpawnerUp("ChibiSword2", (EnemyType)715);
+                }
+                return s_chibiSword2Spawner;
             }
         }
     }
