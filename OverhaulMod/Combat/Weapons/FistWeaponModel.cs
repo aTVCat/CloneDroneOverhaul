@@ -1,5 +1,4 @@
-﻿using InjectionClasses;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace OverhaulMod.Combat.Weapons

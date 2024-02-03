@@ -149,10 +149,6 @@
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -414,6 +410,7 @@
     <Compile Include="Content\ExclusiveContentInfoList.cs" />
     <Compile Include="Content\ExclusiveContentType.cs" />
     <Compile Include="Content\NewsInfo.cs" />
+    <Compile Include="Engine\ModLocalizationInfo.cs" />
     <Compile Include="Engine\ModLocalizationManager.cs" />
     <Compile Include="Engine\ModSetting.cs" />
     <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
@@ -473,7 +470,9 @@
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
+    <Compile Include="UI\UIGenericInputFieldWindow.cs" />
     <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
     <Compile Include="UI\UIAllCreditsMenu.cs" />
     <Compile Include="UI\UIAddonsMenu.cs" />

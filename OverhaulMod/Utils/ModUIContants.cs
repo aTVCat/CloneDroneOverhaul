@@ -44,6 +44,8 @@ namespace OverhaulMod.Utils
         public const string UI_ADDONS_MENU = "UI_AddonsMenu";
         public const string UI_ADDONS_EDITOR = "UI_AddonsEditor";
         public const string UI_CHALLENGES_MENU_REWORK = "UI_ChallengesMenuRework";
+        public const string UI_LOCALIZATION_EDITOR = "UI_LocalizationEditor";
+        public const string UI_GENERIC_INPUT_FIELD_WINDOW = "UI_GenericInputWindow";
 
         public static void ShowOtherModsMenu()
         {
@@ -214,7 +216,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowLevelDescriptionListEditor()
         {
-            _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.BeforeCrashScreen);
+            _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
         }
 
         public static void ShowPersonalizationEditorUI()
@@ -245,6 +247,16 @@ namespace OverhaulMod.Utils
         public static void ShowChallengesMenuRework()
         {
             _ = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static void ShowLocalizationEditor()
+        {
+            _ = ModUIManager.Instance.Show<UILocalizationEditor>(AssetBundleConstants.UI, UI_LOCALIZATION_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static UIGenericInputFieldWindow ShowGenericInputFieldWindow()
+        {
+            return ModUIManager.Instance.Show<UIGenericInputFieldWindow>(AssetBundleConstants.UI, UI_GENERIC_INPUT_FIELD_WINDOW, ModUIManager.UILayer.Last);
         }
     }
 }

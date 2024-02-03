@@ -25,7 +25,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             m_progressBarObject.SetActive(false);
-            m_stateText.text = "Please wait...";
+            m_stateText.text = "Please wait";
             m_objectProgressText.text = string.Empty;
             m_progressBarFill.fillAmount = 0f;
             m_chapterLoadingScreen = ModCache.gameUIRoot.ChapterLoadingScreen;
@@ -37,20 +37,20 @@ namespace OverhaulMod.UI
             switch (chapterLoadingScreenState)
             {
                 case ChapterLoadingScreenState.NOT_STARTED:
-                    return "About to start loading...";
+                    return "Please wait";
                 case ChapterLoadingScreenState.LOADING_LEVEL:
-                    return "Loading level data...";
+                    return "Loading level data";
                 case ChapterLoadingScreenState.LOADING_OBJECTS:
-                    return "Spawning objects...";
+                    return "Spawning objects";
                 case ChapterLoadingScreenState.STARTING_OBJECTS:
-                    return "Starting objects...";
+                    return "Starting objects";
                 case ChapterLoadingScreenState.DONE:
                     return "Complete!";
             }
             return chapterLoadingScreenState.ToString();
         }
 
-        private void Update()
+        public override void Update()
         {
             ErrorManager errorManager = ErrorManager.Instance;
             if (errorManager && errorManager.HasCrashed())

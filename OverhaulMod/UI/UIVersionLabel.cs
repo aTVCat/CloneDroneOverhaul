@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
             ModCache.gameUIRoot.TitleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
 
-        private void Update()
+        public override void Update()
         {
             if (Time.frameCount % 15 != 0)
                 return;

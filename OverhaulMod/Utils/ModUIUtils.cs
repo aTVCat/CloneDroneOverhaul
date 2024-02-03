@@ -6,6 +6,14 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void InputFieldWindow(string header, string description, float height = 125f, Action<string> doneAction = null)
+        {
+            UIGenericInputFieldWindow genericInputFieldWindow = ModUIConstants.ShowGenericInputFieldWindow();
+            genericInputFieldWindow.SetTexts(header, description);
+            genericInputFieldWindow.SetHeight(height);
+            genericInputFieldWindow.doneAction = doneAction;
+        }
+
         public static void MessagePopup(bool fullScreen, string header, string description, float height = 125f, MessageMenu.ButtonLayout buttonLayout = MessageMenu.ButtonLayout.OkButton, string okText = null, string yesText = null, string noText = null, Action okAction = null, Action yesAction = null, Action noAction = null)
         {
             UIMessagePopup messagePopup = fullScreen ? ModUIConstants.ShowFullScreenMessagePopup() : ModUIConstants.ShowMessagePopup();

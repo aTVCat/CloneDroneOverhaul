@@ -110,10 +110,6 @@ namespace OverhaulMod
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
-                T result1 = gameObject.AddComponent<T>();
-                result1.uiName = fullName;
-                result1.InitializeUI();
-                result1.Show();
                 RectTransform transform = gameObject.transform as RectTransform;
                 transform.SetSiblingIndex(GetSiblingIndex(layer));
                 transform.anchorMin = Vector2.zero;
@@ -121,6 +117,11 @@ namespace OverhaulMod
                 transform.sizeDelta = Vector2.zero;
                 transform.anchoredPosition = Vector2.zero;
                 transform.localScale = Vector3.one;
+
+                T result1 = gameObject.AddComponent<T>();
+                result1.uiName = fullName;
+                result1.InitializeUI();
+                result1.Show();
 
                 return result1;
             }

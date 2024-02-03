@@ -77,6 +77,10 @@ namespace OverhaulMod.UI
         [UIElement("PersonalizationEditorButton")]
         private readonly Button m_personalizationEditorButton;
 
+        [UIElementAction(nameof(OnLocalizationEditorButtonClicked))]
+        [UIElement("LocalizationEditorButton")]
+        private readonly Button m_localizationEditorButton;
+
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
@@ -244,6 +248,11 @@ namespace OverhaulMod.UI
         public void OnPersonalizationEditorButtonClicked()
         {
             PersonalizationEditorManager.Instance.StartEditorGameMode();
+        }
+
+        public void OnLocalizationEditorButtonClicked()
+        {
+            ModUIConstants.ShowLocalizationEditor();
         }
 
         public void OnExcContentMenuButtonClicked()

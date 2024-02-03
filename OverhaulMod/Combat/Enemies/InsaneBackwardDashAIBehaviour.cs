@@ -2,7 +2,7 @@
 {
     public class InsaneBackwardDashAIBehaviour : BackwardDashAIBehaviour
     {
-        public virtual float dashMultiplier
+        public override float dashMultiplier
         {
             get
             {
