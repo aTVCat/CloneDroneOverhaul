@@ -104,6 +104,18 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_addonsFolder;
+        public static string addonsFolder
+        {
+            get
+            {
+                if (s_addonsFolder == null)
+                {
+                    s_addonsFolder = assetsFolder + "addons/";
+                }
+                return s_addonsFolder;
+            }
+        }
 
         private static string s_textureFolder;
         public static string texturesFolder

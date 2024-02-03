@@ -35,7 +35,7 @@ namespace OverhaulMod.Patches.Addons
             yield return new WaitForEndOfFrame();
 
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
-            if (ContentManager.Instance.HasContent("default"))
+            if (ContentManager.Instance.HasContent(ContentManager.EXTRAS_CONTENT_FOLDER_NAME))
             {
                 if (ModAdvancedCache.TryGet("Chapter4Skybox_Rework", out Material material1))
                 {
@@ -47,7 +47,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter4Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 2);
-                    }, null, "assets/content/default/");
+                    }, null, $"assets/content/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
 
                 if (ModAdvancedCache.TryGet("Chapter5Skybox_Rework", out Material material2))
@@ -60,7 +60,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter5Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 7);
-                    }, null, "assets/content/default/");
+                    }, null, $"assets/content/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
             }
             yield break;

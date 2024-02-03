@@ -45,10 +45,10 @@ namespace OverhaulMod.Utils
 
             private static bool useImmersiveDarkMode(IntPtr handle, bool enabled)
             {
-                if (isCurrentBuildOrGreater(17763))
+                if (IsWinNTCurrentBuildOrGreater(17763))
                 {
                     int attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
-                    if (isCurrentBuildOrGreater(18985))
+                    if (IsWinNTCurrentBuildOrGreater(18985))
                     {
                         attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
                     }
@@ -59,7 +59,7 @@ namespace OverhaulMod.Utils
                 return false;
             }
 
-            private static bool isCurrentBuildOrGreater(int build)
+            public static bool IsWinNTCurrentBuildOrGreater(int build)
             {
                 return Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Build >= build;
             }
@@ -87,6 +87,20 @@ namespace OverhaulMod.Utils
                     s_titleBarText = text;
                 }
             }
+        }
+
+        public static bool SupportsTitleBarOverhaul()
+        {
+            bool result;
+            try
+            {
+                result = InnerModSpecialUtils.IsWinNTCurrentBuildOrGreater(17763);
+            }
+            catch
+            {
+                result = false;
+            }
+            return result;
         }
 
         public static void SetOverhauledTitleBarState()

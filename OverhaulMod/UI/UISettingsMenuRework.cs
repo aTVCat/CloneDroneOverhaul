@@ -34,6 +34,8 @@ namespace OverhaulMod.UI
         public Dropdown DropdownPrefab;
         [UIElement("DropdownImagePrefab", false)]
         public Dropdown DropdownWithImagePrefab;
+        [UIElement("DropdownImage169Prefab", false)]
+        public Dropdown DropdownWithImage169Prefab;
 
         [UIElement("SliderPrefab", false)]
         public Slider SliderPrefab;
@@ -44,7 +46,7 @@ namespace OverhaulMod.UI
         [UIElement("ButtonPrefab", false)]
         public ModdedObject ButtonPrefab;
 
-        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Language", "Mod-Bot" })]
+        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -84,6 +86,23 @@ namespace OverhaulMod.UI
         public void PopulatePage(string id)
         {
             ClearPageContents();
+
+            UIElementTab oldTab = m_tabs.prevSelectedTab;
+            UIElementTab newTab = m_tabs.selectedTab;
+            if (oldTab)
+            {
+                RectTransform rt = oldTab.transform as RectTransform;
+                Vector2 vector = rt.sizeDelta;
+                vector.y = 25f;
+                rt.sizeDelta = vector;
+            }
+            if (newTab)
+            {
+                RectTransform rt = newTab.transform as RectTransform;
+                Vector2 vector = rt.sizeDelta;
+                vector.y = 30f;
+                rt.sizeDelta = vector;
+            }
 
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (!settingsMenu)
@@ -142,18 +161,16 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header1("Graphics");
                 _ = pageBuilder.Header3("Window");
                 _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
-                _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
-                _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
                 _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
                 _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
-                _ = pageBuilder.Header3("Title bar");
-                _ = pageBuilder.Toggle(true, null, "Dark mode");
-                _ = pageBuilder.Toggle(true, null, "Custom text");
-                _ = pageBuilder.Header4("Works on Windows 10 v1809 or above");
-                _ = pageBuilder.Header4("todo: implement custom settings");
+                _ = pageBuilder.Header3("Render");
+                _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
+                _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
                 _ = pageBuilder.Header1("User interface");
+                _ = pageBuilder.Header3("Language");
+                _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
                 _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
                 _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
                 _ = pageBuilder.Toggle(true, null, "Show watermark");
@@ -161,6 +178,13 @@ namespace OverhaulMod.UI
                 {
                     ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
                 });
+
+                if (ModSpecialUtils.SupportsTitleBarOverhaul())
+                {
+                    _ = pageBuilder.Header3("Title bar");
+                    _ = pageBuilder.Toggle(true, null, "Dark mode");
+                    _ = pageBuilder.Toggle(true, null, "Custom text");
+                }
 
                 _ = pageBuilder.Header1("Garbage");
                 _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
@@ -305,6 +329,25 @@ namespace OverhaulMod.UI
             }
         }
 
+        private int getCurrentLanguageIndex()
+        {
+            SettingsManager settingsManager = SettingsManager.Instance;
+            if (settingsManager && settingsManager._data != null)
+            {
+                string langId = settingsManager.GetCurrentLanguageID();
+
+                int index = 0;
+                foreach (LanguageDefinition lang in LocalizationManager.Instance.SupportedLanguages)
+                {
+                    if (lang.LanguageCode == langId)
+                        return index;
+
+                    index++;
+                }
+            }
+            return -1;
+        }
+
         public void OnLegacyUIButtonClicked()
         {
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
@@ -330,6 +373,15 @@ namespace OverhaulMod.UI
             if (settingsMenu)
             {
                 settingsMenu.AntiAliasingDropdown.value = value;
+            }
+        }
+
+        public void OnLanguageDropdownChanged(int value)
+        {
+            LocalizationManager localizationManager = LocalizationManager.Instance;
+            if (localizationManager)
+            {
+                localizationManager.SetCurrentLanguage(localizationManager.SupportedLanguages[value].LanguageCode);
             }
         }
 
@@ -625,6 +677,11 @@ namespace OverhaulMod.UI
             public Dropdown DropdownWithImage(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
             {
                 return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImagePrefab);
+            }
+
+            public Dropdown DropdownWithImage169(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
+            {
+                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab);
             }
 
             public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback)

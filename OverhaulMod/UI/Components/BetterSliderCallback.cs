@@ -31,8 +31,6 @@ namespace OverhaulMod.UI
             {
                 m_isWaitingMouseButtonGetUp = false;
                 m_sliderEvent.Invoke(m_valueToSet);
-
-                Debug.Log($"Better slider moment {m_valueToSet}");
             }
         }
 

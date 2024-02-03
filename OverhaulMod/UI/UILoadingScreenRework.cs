@@ -68,17 +68,11 @@ namespace OverhaulMod.UI
                         m_stateText.text = GetStateString(chapterLoadingScreen._screenState);
                         m_progressBarObject.SetActive(chapterLoadingScreen.gameObject.activeInHierarchy);
                         m_objectProgressText.enabled = true;
-                        m_objectProgressText.text = string.Format("Instantiated: {0}/{1}\r\nStarted: {2}/{3}", new object[]
-                        {
-                        chapterLoadingScreen._objectsToInstantiateTotal - chapterLoadingScreen._objectsToInstantiateRemaining,
-                        chapterLoadingScreen._objectsToInstantiateTotal,
-                        chapterLoadingScreen._objectsToAwakenTotal - chapterLoadingScreen._objectstoAwakenRemaining,
-                        chapterLoadingScreen._objectsToAwakenTotal
-                        });
+                        m_objectProgressText.text = $"Instantiated: {chapterLoadingScreen._objectsToInstantiateTotal - chapterLoadingScreen._objectsToInstantiateRemaining}/{chapterLoadingScreen._objectsToInstantiateTotal}\nStarted: {chapterLoadingScreen._objectsToAwakenTotal - chapterLoadingScreen._objectstoAwakenRemaining}/{chapterLoadingScreen._objectsToAwakenTotal}";
                     }
                     else
                     {
-                        m_stateText.text = "Please wait...";
+                        m_stateText.text = "Please wait";
                         m_objectProgressText.enabled = false;
                         m_progressBarObject.SetActive(false);
                     }

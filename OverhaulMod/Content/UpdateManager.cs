@@ -63,7 +63,7 @@ namespace OverhaulMod.Content
                 return;
             }
 
-            ContentRepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
+            RepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 UpdateInfoList updateInfoList = null;
                 try
@@ -97,7 +97,7 @@ namespace OverhaulMod.Content
                 }
             }
 
-            ContentRepositoryManager.Instance.GetCustomFile(source, delegate (byte[] bytes)
+            RepositoryManager.Instance.GetCustomFile(source, delegate (byte[] bytes)
             {
                 string tempFile = Path.GetTempFileName();
                 ModIOUtils.WriteBytes(bytes, tempFile);

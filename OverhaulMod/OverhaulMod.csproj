@@ -387,6 +387,9 @@
     <Compile Include="Combat\Weapons\DualKnifesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\FistWeaponModel.cs" />
     <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
+    <Compile Include="Content\ContentDownloadInfo.cs" />
+    <Compile Include="Content\ContentInfo.cs" />
+    <Compile Include="Content\ContentListInfo.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
@@ -429,7 +432,7 @@
     <Compile Include="Interfaces\IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
-    <Compile Include="Content\ContentRepositoryManager.cs" />
+    <Compile Include="Content\RepositoryManager.cs" />
     <Compile Include="Content\ExclusiveContentManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
@@ -437,6 +440,7 @@
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="Patches\Addons\LocalizationAddon.cs" />
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
@@ -470,6 +474,7 @@
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIGenericInputFieldWindow.cs" />

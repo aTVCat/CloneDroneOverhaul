@@ -12,7 +12,11 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("tryKick")]
         private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
-            return !__instance._characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
+            CharacterModel characterModel = __instance._characterModel;
+            if (!characterModel)
+                return true;
+
+            return !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
         }
 
         [HarmonyPrefix]
@@ -62,7 +66,11 @@ namespace OverhaulMod.Patches
             {
                 if (modWeaponModel.animatorControllerOverride)
                 {
-                    __instance._characterModel.SetUpperAnimator(modWeaponModel.animatorControllerOverride);
+                    CharacterModel characterModel = __instance._characterModel;
+                    if (characterModel)
+                    {
+                        characterModel.SetUpperAnimator(modWeaponModel.animatorControllerOverride);
+                    }
                 }
                 modWeaponModel.OnRefreshWeaponAnimatorProperties(__instance);
             }

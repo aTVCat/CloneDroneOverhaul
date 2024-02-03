@@ -114,7 +114,7 @@ namespace OverhaulMod.UI
             {
                 if (!ModAdvancedCache.TryGet(STATE_BAD_CACHE_KEY, out texture))
                 {
-                    ContentRepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Warn.png", delegate (Texture2D textureFine)
+                    RepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Warn.png", delegate (Texture2D textureFine)
                     {
                         textureFine.filterMode = FilterMode.Point;
                         if (ModAdvancedCache.Has(STATE_BAD_CACHE_KEY))
@@ -132,7 +132,7 @@ namespace OverhaulMod.UI
             {
                 if (!ModAdvancedCache.TryGet(STATE_FINE_CACHE_KEY, out texture))
                 {
-                    ContentRepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Fine.png", delegate (Texture2D textureFine)
+                    RepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Fine.png", delegate (Texture2D textureFine)
                     {
                         textureFine.filterMode = FilterMode.Point;
                         if (ModAdvancedCache.Has(STATE_FINE_CACHE_KEY))

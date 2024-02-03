@@ -18,6 +18,12 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, UIElementTab> m_instantiatedTabs;
 
+        public UIElementTab prevSelectedTab
+        {
+            get;
+            private set;
+        }
+
         public UIElementTab selectedTab
         {
             get;
@@ -83,6 +89,7 @@ namespace OverhaulMod.UI
                 if (!interactable || oldTab == tab)
                     return;
 
+                prevSelectedTab = oldTab;
                 selectedTab = tab;
                 if (oldTab)
                 {

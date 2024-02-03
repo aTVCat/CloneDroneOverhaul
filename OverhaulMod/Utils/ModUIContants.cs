@@ -46,6 +46,7 @@ namespace OverhaulMod.Utils
         public const string UI_CHALLENGES_MENU_REWORK = "UI_ChallengesMenuRework";
         public const string UI_LOCALIZATION_EDITOR = "UI_LocalizationEditor";
         public const string UI_GENERIC_INPUT_FIELD_WINDOW = "UI_GenericInputWindow";
+        public const string UI_ADDONS_DOWNLOAD_EDITOR = "UI_AddonsDownloadEditor";
 
         public static void ShowOtherModsMenu()
         {
@@ -257,6 +258,11 @@ namespace OverhaulMod.Utils
         public static UIGenericInputFieldWindow ShowGenericInputFieldWindow()
         {
             return ModUIManager.Instance.Show<UIGenericInputFieldWindow>(AssetBundleConstants.UI, UI_GENERIC_INPUT_FIELD_WINDOW, ModUIManager.UILayer.Last);
+        }
+
+        public static void ShowAddonsDownloadEditor(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIAddonsDownloadEditor>(AssetBundleConstants.UI, UI_ADDONS_DOWNLOAD_EDITOR, parent);
         }
     }
 }

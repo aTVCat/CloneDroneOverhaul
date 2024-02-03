@@ -25,9 +25,9 @@ namespace OverhaulMod.Patches
         {
             if (GameModeManager.Is(GameMode.Story))
             {
-                string list = ModGameUtils.overrideCurrentLevelId;
-                if (list != null)
-                    __result = list;
+                string str = ModGameUtils.overrideCurrentLevelId;
+                if (str != null)
+                    __result = str;
             }
         }
     }

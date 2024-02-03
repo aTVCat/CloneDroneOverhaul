@@ -6,6 +6,20 @@ namespace OverhaulMod.Utils
 {
     internal static class ModIOUtils
     {
+        public static long GetDirectorySize(DirectoryInfo d)
+        {
+            long size = 0;
+            FileInfo[] files = d.GetFiles();
+            foreach (FileInfo file in files)
+                size += file.Length;
+
+            DirectoryInfo[] directories = d.GetDirectories();
+            foreach (DirectoryInfo directory in directories)
+                size += GetDirectorySize(directory);
+
+            return size;
+        }
+
         public static void WriteText(string @string, string path)
         {
             FileMode fileMode = File.Exists(path) ? FileMode.Truncate : FileMode.Create;

@@ -147,7 +147,7 @@ namespace OverhaulMod.Utils
 
         public static string GetSpeakerNameText(SpeakerNames speakerName)
         {
-            return (speakerName.ToString() + ":").AddColor(Color.white);
+            return (LocalizationManager.Instance.GetTranslatedString("enum_" + speakerName.ToString()) + ":").AddColor(Color.white);
         }
     }
 }

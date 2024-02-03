@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches
             bool isSinglePlayer = __instance.gameObject.name.StartsWith("Singleplayer");
             if (isSinglePlayer)
                 return true;
-            else
+            else if (ModUIManager.Instance)
             {
                 UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
                 if (multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visibleInHierarchy)

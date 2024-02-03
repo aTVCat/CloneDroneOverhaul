@@ -11,6 +11,12 @@ namespace OverhaulMod.Utils
         /// <param name="callback"></param><b>True</b> if data was successfully refreshed, otherwise <b>False</b></param>
         public static void RefreshLocalStats(Action<bool> callback)
         {
+            if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
             Callback<UserStatsReceived_t> cb = null;
             cb = Callback<UserStatsReceived_t>.Create(delegate (UserStatsReceived_t userStatsReceived)
             {
@@ -37,6 +43,12 @@ namespace OverhaulMod.Utils
         /// <param name="callback"></param><b>True</b> if data was successfully refreshed, otherwise <b>False</b></param>
         public static void RefreshGlobalAchievementPercentages(Action<bool> callback)
         {
+            if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
             CallResult<GlobalAchievementPercentagesReady_t>.Create(null).Set(SteamUserStats.RequestGlobalAchievementPercentages(), delegate (GlobalAchievementPercentagesReady_t c, bool io)
             {
                 if (c.m_eResult != EResult.k_EResultOK || io)
@@ -54,6 +66,12 @@ namespace OverhaulMod.Utils
         /// <param name="callback"></param>
         public static void RefreshAllStats(Action<bool> callback)
         {
+            if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
+            {
+                callback?.Invoke(false);
+                return;
+            }
+
             RefreshLocalStats(delegate (bool result)
             {
                 if (!result)

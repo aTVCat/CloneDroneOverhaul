@@ -40,7 +40,7 @@ namespace OverhaulMod
         {
             _ = ModManagers.New<ModSettingsManager>();
             _ = ModManagers.New<ModDataManager>();
-            _ = ModManagers.New<ContentRepositoryManager>();
+            _ = ModManagers.New<RepositoryManager>();
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ModLocalizationManager>();
             _ = ModManagers.New<ModResources>();

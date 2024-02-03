@@ -67,6 +67,23 @@ namespace OverhaulMod.UI
         {
             bool local = elementTab.tabId == "local advancements";
 
+            UIElementTab oldTab = m_tabs.prevSelectedTab;
+            UIElementTab newTab = m_tabs.selectedTab;
+            if (oldTab)
+            {
+                RectTransform rt = oldTab.transform as RectTransform;
+                Vector2 vector = rt.sizeDelta;
+                vector.y = 25f;
+                rt.sizeDelta = vector;
+            }
+            if (newTab)
+            {
+                RectTransform rt = newTab.transform as RectTransform;
+                Vector2 vector = rt.sizeDelta;
+                vector.y = 30f;
+                rt.sizeDelta = vector;
+            }
+
             ClearPageContents();
             SetContentLayout(local);
             if (local)
@@ -126,6 +143,7 @@ namespace OverhaulMod.UI
                 if (!result)
                 {
                     ModUIUtils.MessagePopupOK("Error", "Something went wrong while getting user statistics.", true);
+                    m_tabs.SelectTab("local advancements");
                     return;
                 }
 
@@ -153,7 +171,7 @@ namespace OverhaulMod.UI
                     moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(tuple.Item1.Description);
                     moddedObject.GetObject<Image>(2).sprite = tuple.Item1.GetImageSprite();
                     moddedObject.GetObject<Image>(3).fillAmount = tuple.Item2 / 100f;
-                    moddedObject.GetObject<Text>(4).text = $"{Mathf.Round(tuple.Item2)}%";
+                    moddedObject.GetObject<Text>(4).text = $"{Mathf.Round(tuple.Item2 * 10f) / 10f}%";
                     moddedObject.GetObject<GameObject>(5).SetActive(tuple.Item1.IsComplete());
                 }
             });

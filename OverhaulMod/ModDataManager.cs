@@ -40,7 +40,7 @@ namespace OverhaulMod
 
         public void SerializeToFile(string name, object obj, bool useSavesFolder)
         {
-            ModIOUtils.WriteText(JsonUtils.Serialize(obj), (useSavesFolder ? savesFolder : userDataFolder) + name);
+            ModJsonUtils.WriteStream((useSavesFolder ? savesFolder : userDataFolder) + name, obj);
         }
 
         public string ReadFile(string name, bool useSavesFolder)

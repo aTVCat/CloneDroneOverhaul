@@ -11,6 +11,8 @@ namespace OverhaulMod.Content
     {
         public const string REPOSITORY_FILE = "ContentInfoList.json";
 
+        public const string CONTENT_REFRESHED_EVENT = "ExclusiveContentRefreshed";
+
         public ExclusiveContentInfoList contentInfoList
         {
             get;
@@ -95,12 +97,13 @@ namespace OverhaulMod.Content
                     isRetrievingData = false;
                     this.contentInfoList = contentInfoList;
                     doneCallback?.Invoke();
+                    GlobalEventManager.Instance.Dispatch(CONTENT_REFRESHED_EVENT);
                 }
                 isRetrievingData = false;
                 return;
             }
 
-            ContentRepositoryManager repositoryManager = ContentRepositoryManager.Instance;
+            RepositoryManager repositoryManager = RepositoryManager.Instance;
             repositoryManager.GetTextFile(REPOSITORY_FILE, delegate (string contents)
             {
                 ExclusiveContentInfoList contentInfoList = null;
