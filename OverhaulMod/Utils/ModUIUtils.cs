@@ -1,11 +1,21 @@
 ﻿using OverhaulMod.UI;
 using System;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void LevelDescriptionBrowser(List<LevelDescription> levelDescriptions, Action<List<LevelDescription>> callback, bool allowMultiSelection)
+        {
+            UILevelDescriptionBrowser levelDescriptionBrowser = ModUIConstants.ShowLevelDescriptionBrowser();
+            levelDescriptionBrowser.allowMultiSelection = allowMultiSelection;
+            levelDescriptionBrowser.callback = callback;
+            levelDescriptionBrowser.Populate(levelDescriptions);
+        }
+
         public static void InputFieldWindow(string header, string description, float height = 125f, Action<string> doneAction = null)
         {
             UIGenericInputFieldWindow genericInputFieldWindow = ModUIConstants.ShowGenericInputFieldWindow();

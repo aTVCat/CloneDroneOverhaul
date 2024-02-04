@@ -151,7 +151,7 @@ namespace OverhaulMod.Visuals.Environment
             float rate = 75f;
             float intensity = 1f;
             string weatherValue = string.Empty;
-            bool isVanillaLevel = !levelEditorWeatherSettingsOverride && (!LevelManager.Instance.IsCurrentLevelHidingTheArena() || GameModeManager.IsBattleRoyale());
+            bool isVanillaLevel = !levelEditorWeatherSettingsOverride && (!LevelManager.Instance || !LevelManager.Instance.IsCurrentLevelHidingTheArena() || GameModeManager.IsBattleRoyale());
             if (isVanillaLevel)
             {
                 DateTime now = DateTime.Now;
@@ -182,8 +182,11 @@ namespace OverhaulMod.Visuals.Environment
 
         public WeatherInfo GetWeatherInfo(string name)
         {
+            if (WeatherInfos.IsNullOrEmpty())
+                return null;
+
             foreach (WeatherInfo info in WeatherInfos)
-                if (info.Name == name)
+                if (info != null && info.Name == name)
                     return info;
 
             return null;

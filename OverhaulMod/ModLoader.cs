@@ -50,6 +50,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ModUpgradesManager>();
             _ = ModManagers.New<ModEnemiesManager>();
             _ = ModManagers.New<ModGameModifiersManager>();
+            _ = ModManagers.New<TitleScreenCustomizationManager>();
 
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ContentManager>();

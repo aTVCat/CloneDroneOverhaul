@@ -101,6 +101,13 @@ namespace OverhaulMod.UI
         [UIElement("ExitButton")]
         private readonly Button m_quitButton;
 
+        [UIElementAction(nameof(OnCustomizeButtonClicked))]
+        [UIElement("CustomizeButton")]
+        private readonly Button m_customizeButton;
+
+        [UIElement("OtherLayers")]
+        private readonly GameObject m_otherLayersObject;
+
         [UIElement("ErrorMessage", typeof(UIElementMultiplayerMessageBox), false)]
         public UIElementMultiplayerMessageBox ErrorMessage;
 
@@ -110,6 +117,12 @@ namespace OverhaulMod.UI
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
         private GameObject m_legacyContainer;
+
+        private RectTransform m_socialButtonContainer;
+        private RectTransform m_socialButtonPopouts;
+
+        private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
+        private Vector2 m_initialSocialButtonPopoutsPosition, m_newSocialButtonPopoutsPosition;
 
         private bool m_hasAddedEventListeners;
 
@@ -130,6 +143,20 @@ namespace OverhaulMod.UI
                 m_canvasGroup = group;
                 m_legacyContainer = group.gameObject;
                 m_titleScreenUI = titleScreenUI;
+
+                Transform socialButtons = titleScreenUI.SocialButtonPanel.transform;
+                RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
+                RectTransform socialButtonPopouts = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
+                if(socialButtonContainer && socialButtonPopouts)
+                {
+                    m_socialButtonContainer = socialButtonContainer;
+                    m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
+                    m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 30f);
+                    m_socialButtonPopouts = socialButtonPopouts;
+                    m_initialSocialButtonPopoutsPosition = socialButtonPopouts.anchoredPosition;
+                    m_newSocialButtonPopoutsPosition = socialButtonPopouts.anchoredPosition + (Vector2.up * 30f);
+                }
+
                 HideLegacyUI();
 
                 ModCore.ModStateChanged += onModStateChanged;
@@ -139,7 +166,9 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_container.SetActive(enableRework && m_legacyContainer.activeInHierarchy);
+            bool shouldBeActive = enableRework && m_legacyContainer.activeInHierarchy;
+            m_container.SetActive(shouldBeActive);
+            m_otherLayersObject.SetActive(shouldBeActive);
             m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
         }
 
@@ -166,6 +195,12 @@ namespace OverhaulMod.UI
                 group.interactable = false;
                 enableRework = true;
             }
+
+            if(m_socialButtonContainer && m_socialButtonPopouts)
+            {
+                m_socialButtonContainer.anchoredPosition = m_newSocialButtonContainerPosition;
+                m_socialButtonPopouts.anchoredPosition = m_newSocialButtonPopoutsPosition;
+            }
         }
 
         public void ShowLegacyUI()
@@ -176,6 +211,12 @@ namespace OverhaulMod.UI
                 group.alpha = 1f;
                 group.interactable = true;
                 enableRework = false;
+            }
+
+            if (m_socialButtonContainer && m_socialButtonPopouts)
+            {
+                m_socialButtonContainer.anchoredPosition = m_initialSocialButtonContainerPosition;
+                m_socialButtonPopouts.anchoredPosition = m_initialSocialButtonPopoutsPosition;
             }
         }
 
@@ -303,6 +344,11 @@ namespace OverhaulMod.UI
         public void OnExitButtonClicked()
         {
             Application.Quit();
+        }
+
+        public void OnCustomizeButtonClicked()
+        {
+            ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
         }
     }
 }

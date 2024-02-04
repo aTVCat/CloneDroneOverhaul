@@ -47,6 +47,8 @@ namespace OverhaulMod.Utils
         public const string UI_LOCALIZATION_EDITOR = "UI_LocalizationEditor";
         public const string UI_GENERIC_INPUT_FIELD_WINDOW = "UI_GenericInputWindow";
         public const string UI_ADDONS_DOWNLOAD_EDITOR = "UI_AddonsDownloadEditor";
+        public const string UI_TITLE_SCREEN_CUSTOMIZATION_PANEL = "UI_TitleScreenCustomizationPanel";
+        public const string UI_LEVEL_DESCRIPTION_BROWSER = "UI_LevelDescriptionBrowser";
 
         public static void ShowOtherModsMenu()
         {
@@ -263,6 +265,16 @@ namespace OverhaulMod.Utils
         public static void ShowAddonsDownloadEditor(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIAddonsDownloadEditor>(AssetBundleConstants.UI, UI_ADDONS_DOWNLOAD_EDITOR, parent);
+        }
+
+        public static void ShowTitleScreenCustomizationPanel(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UITitleScreenCustomizationPanel>(AssetBundleConstants.UI, UI_TITLE_SCREEN_CUSTOMIZATION_PANEL, parent);
+        }
+
+        public static UILevelDescriptionBrowser ShowLevelDescriptionBrowser()
+        {
+            return ModUIManager.Instance.Show<UILevelDescriptionBrowser>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_BROWSER, ModUIManager.UILayer.Last);
         }
     }
 }

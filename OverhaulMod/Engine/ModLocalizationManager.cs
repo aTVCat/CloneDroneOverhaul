@@ -7,7 +7,7 @@ namespace OverhaulMod.Engine
     public class ModLocalizationManager : Singleton<ModLocalizationManager>, IGameLoadListener
     {
         public const string FILE_NAME = "localization.json";
-        public const string LANGUAGE_OPTIONS_CACHE_KEY = "LangOptions.returnCode=";
+        public const string LANGUAGE_OPTIONS_CACHE_KEY = "LangOptions_";
 
         private ModLocalizationInfo m_localizationInfo;
 
@@ -117,7 +117,8 @@ namespace OverhaulMod.Engine
 
         public List<Dropdown.OptionData> GetLanguageOptions(bool returnLangCode)
         {
-            return ModAdvancedCache.GetOrCreate(LANGUAGE_OPTIONS_CACHE_KEY + returnLangCode, () =>
+            string postfix = returnLangCode ? "codes" : LocalizationManager.Instance.GetCurrentLanguageCode();
+            return ModAdvancedCache.GetOrCreate($"{LANGUAGE_OPTIONS_CACHE_KEY}{postfix}", () =>
             {
                 List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
                 foreach (LanguageDefinition lang in LocalizationManager.Instance.SupportedLanguages)

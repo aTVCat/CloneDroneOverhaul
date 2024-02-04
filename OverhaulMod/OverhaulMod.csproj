@@ -423,6 +423,9 @@
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
+    <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
+    <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
     <Compile Include="Engine\TransitionBehaviour.cs" />
     <Compile Include="Engine\TransitionManager.cs" />
     <Compile Include="Engine\UpgradeMode.cs" />
@@ -444,6 +447,7 @@
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\LevelManager_Patch.cs" />
     <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
@@ -473,6 +477,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
@@ -483,6 +488,8 @@
     <Compile Include="UI\UIAllCreditsMenu.cs" />
     <Compile Include="UI\UIAddonsMenu.cs" />
     <Compile Include="UI\UIChallengesMenuRework.cs" />
+    <Compile Include="UI\UILevelDescriptionBrowser.cs" />
+    <Compile Include="UI\UITitleScreenCustomizationPanel.cs" />
     <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />

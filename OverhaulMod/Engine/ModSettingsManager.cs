@@ -59,7 +59,7 @@ namespace OverhaulMod.Engine
             ModSetting.ValueType valueType;
             if (field.FieldType == typeof(bool))
                 valueType = ModSetting.ValueType.Bool;
-            else if (field.FieldType == typeof(int))
+            else if (field.FieldType == typeof(int) || field.FieldType.IsEnum)
                 valueType = ModSetting.ValueType.Int;
             else if (field.FieldType == typeof(float))
                 valueType = ModSetting.ValueType.Float;
