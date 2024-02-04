@@ -70,6 +70,24 @@ namespace OverhaulMod.Engine
             }
         }
 
+        public void ChangeTranslation(string oldName, string newName)
+        {
+            ModLocalizationInfo info = m_localizationInfo;
+            if (info != null)
+            {
+                info.ChangeTranslation(oldName, newName);
+            }
+        }
+
+        public void DeleteTranslation(string key)
+        {
+            ModLocalizationInfo info = m_localizationInfo;
+            if (info != null)
+            {
+                info.DeleteTranslation(key);
+            }
+        }
+
         public string GetTranslation(string langId, string key)
         {
             ModLocalizationInfo info = m_localizationInfo;
@@ -139,7 +157,7 @@ namespace OverhaulMod.Engine
                     foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
                     {
                         if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
-                            keyValuePairs.Add(translationKeyValue.Key, translationKeyValue.Value);
+                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.key);
                     }
             }
         }

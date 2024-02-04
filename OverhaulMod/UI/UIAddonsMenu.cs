@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,14 @@ namespace OverhaulMod.UI
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
         private readonly TabManager m_tabs;
+
+        [UIElement("LocalContentDisplay", false)]
+        private readonly ModdedObject m_localContentDisplay;
+        [UIElement("NetworkContentDisplay", false)]
+        private readonly ModdedObject m_networkContentDisplay;
+
+        [UIElement("Content")]
+        private readonly Transform m_container;
 
         public override bool hideTitleScreen => true;
 
@@ -56,7 +65,52 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            Debug.Log(local);
+            if (local)
+                populateLocalContent();
+            else
+                populateNetworkContent();
+        }
+
+        private void populateLocalContent()
+        {
+            if (m_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_container);
+
+            System.Collections.Generic.List<ContentInfo> list = ContentManager.Instance.GetContent();
+            if (list.IsNullOrEmpty())
+                return;
+
+            foreach(var content in list)
+            {
+                ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
+                moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Text>(0).text = content.DisplayName;
+            }
+        }
+
+        private void populateNetworkContent()
+        {
+            if (m_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_container);
+
+            m_tabs.interactable = false;
+            ContentManager.Instance.DownloadContentList(out _, delegate (ContentListInfo contentListInfo)
+            {
+                foreach(var content in contentListInfo.ContentToDownload)
+                {
+                    ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = content.DisplayName;
+                }
+
+                m_tabs.interactable = true;
+            }, delegate(string error)
+            {
+                ModUIUtils.MessagePopupOK("Error", error, true);
+
+                m_tabs.interactable = true;
+                m_tabs.SelectTab("local addons");
+            });
         }
 
         public void OnLocalAddonsEditorButtonClicked()

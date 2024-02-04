@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using Jint;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,10 +33,18 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicatorObject;
 
+        [UIElementAction(nameof(OnChangedTranslationKeyField))]
         [UIElement("EditingKeyText")]
-        private readonly Text m_translationKeyLabel;
+        private readonly InputField m_translationKeyLabel;
         [UIElement("EditingValueInputField")]
         private readonly InputField m_translationValueInputField;
+
+        [UIElementAction(nameof(OnToLowerButtonClicked))]
+        [UIElement("ToLowerButton")]
+        private readonly Button m_toLowerButton;
+        [UIElementAction(nameof(OnDeleteTranslationButtonClicked))]
+        [UIElement("DeleteButton")]
+        private readonly Button m_deleteButton;
 
         [UIElement("ArialRText")]
         private readonly Text m_arialRFontPreviewText;
@@ -70,6 +79,12 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public int siblingIndexOfTranslationKey
+        {
+            get;
+            set;
+        }
+
         protected override void OnInitialized()
         {
             m_languagesDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(true);
@@ -95,13 +110,49 @@ namespace OverhaulMod.UI
             m_loadingIndicatorObject.SetActive(false);
         }
 
-        public void EditTranslationKey(string key)
+        public void EditTranslation(string key)
         {
             editingTranslationKey = key;
 
             m_translationKeyLabel.text = key;
             m_translationValueInputField.text = ModLocalizationManager.Instance.GetTranslation(editingLangId, editingTranslationKey);
             RefreshPreview();
+        }
+
+        public void ChangeTranslation(string oldName, string newName)
+        {
+            editingTranslationKey = newName;
+
+            ModLocalizationManager.Instance.ChangeTranslation(oldName, newName);
+            try
+            {
+                ModdedObject translationKey = m_translationKeysContainer.GetChild(siblingIndexOfTranslationKey)?.GetComponent<ModdedObject>();
+                if (translationKey)
+                {
+                    translationKey.GetObject<Text>(0).text = newName;
+                }
+            }
+            catch { }
+        }
+
+        public void DeleteTranslation(string key)
+        {
+            editingTranslationKey = string.Empty;
+
+            ModLocalizationManager.Instance.DeleteTranslation(key);
+
+            m_translationKeyLabel.text = string.Empty;
+            m_translationValueInputField.text = string.Empty;
+
+            try
+            {
+                Transform translationKey = m_translationKeysContainer.GetChild(siblingIndexOfTranslationKey);
+                if (translationKey)
+                {
+                    Destroy(translationKey.gameObject);
+                }
+            }
+            catch { }
         }
 
         public void RefreshPreview()
@@ -125,7 +176,8 @@ namespace OverhaulMod.UI
             Button button = translationKey.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                EditTranslationKey(key);
+                EditTranslation(key);
+                siblingIndexOfTranslationKey = translationKey.transform.GetSiblingIndex();
             });
             return translationKey;
         }
@@ -188,7 +240,7 @@ namespace OverhaulMod.UI
             PopulateTranslations();
             if (!string.IsNullOrEmpty(editingTranslationKey))
             {
-                EditTranslationKey(editingTranslationKey);
+                EditTranslation(editingTranslationKey);
             }
         }
 
@@ -205,14 +257,32 @@ namespace OverhaulMod.UI
                 ModLocalizationManager.Instance.AddTranslation(value);
                 ModdedObject moddedObject = InstantiateTranslationKeyDisplay(value);
                 moddedObject.transform.SetSiblingIndex(m_translationKeysContainer.childCount - 2);
-                EditTranslationKey(value);
+                EditTranslation(value);
             });
         }
 
         public void OnSaveButtonClicked()
         {
             ModLocalizationManager.Instance.SaveInfo();
-            GlobalEventManager.Instance.Dispatch(GlobalEvents.UILanguageChanged);
+            LocalizationManager.Instance.SetCurrentLanguage(SettingsManager.Instance.GetCurrentLanguageID());
+        }
+
+        public void OnChangedTranslationKeyField(string text)
+        {
+            ChangeTranslation(editingTranslationKey, text);
+        }
+
+        public void OnToLowerButtonClicked()
+        {
+            ChangeTranslation(editingTranslationKey, editingTranslationKey.ToLower());
+        }
+
+        public void OnDeleteTranslationButtonClicked()
+        {
+            ModUIUtils.MessagePopup(true, "Delete translation?", $"\"{editingTranslationKey}\" will be deleted.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, delete", "No", null, delegate
+            {
+                DeleteTranslation(editingTranslationKey);
+            });
         }
     }
 }

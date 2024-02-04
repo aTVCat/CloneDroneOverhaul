@@ -25,13 +25,47 @@ namespace OverhaulMod.Engine
             AddKey("ru", key);
         }
 
+        public void ChangeTranslation(string oldName, string newName)
+        {
+            ChangeKey("en", oldName, newName);
+            ChangeKey("ru", oldName, newName);
+        }
+
+        public void DeleteTranslation(string key)
+        {
+            DeleteKey("en", key);
+            DeleteKey("ru", key);
+        }
+
         public void AddKey(string langId, string key)
         {
             Dictionary<string, string> d = GetDictionary(langId);
             if (d == null || d.ContainsKey(key))
                 return;
 
-            d.Add(key, $"Translation {langId}");
+            d.Add(key, string.Empty);
+        }
+
+        public void ChangeKey(string langId, string oldName, string newName)
+        {
+            Dictionary<string, string> d = GetDictionary(langId);
+            if (d == null || !d.ContainsKey(oldName))
+                return;
+
+            string value = d[oldName];
+            if (d.Remove(oldName))
+            {
+                d.Add(newName, value);
+            }
+        }
+
+        public void DeleteKey(string langId, string key)
+        {
+            Dictionary<string, string> d = GetDictionary(langId);
+            if (d == null || !d.ContainsKey(key))
+                return;
+
+            d.Remove(key);
         }
 
         public void FixValues()
@@ -41,21 +75,6 @@ namespace OverhaulMod.Engine
 
             if (Translations_ru == null)
                 Translations_ru = new Dictionary<string, string>();
-        }
-
-        public void Clear()
-        {
-            if (Translations_en != null)
-            {
-                Translations_en.Clear();
-                Translations_en = null;
-            }
-
-            if (Translations_ru != null)
-            {
-                Translations_ru.Clear();
-                Translations_ru = null;
-            }
         }
     }
 }

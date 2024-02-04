@@ -187,6 +187,7 @@ namespace OverhaulMod.UI
 
         public void OnBranchChanged(int index)
         {
+            index = Mathf.Clamp(index, 0, m_branchDropdown.options.Count - 1);
             m_branchDescription.text = $"Selected branch: \"{m_branchDropdown.options[index].text}\". {UpdateManager.Instance.GetBranchDescription(index)}";
         }
 

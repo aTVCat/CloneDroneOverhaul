@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c2c871b4dea5304db7992945f66f852, type: 3}
+  m_Name: GameUITheme
+  m_EditorClassIdentifier: 
+  SelectionCornerPrefab: {fileID: 1967730701674614, guid: 9720904b56442e7428f08efd5bc5e596,
+    type: 3}
+  ButtonBackground:
+  - Color: {r: 0.1882353, g: 0.36862746, b: 0.8784314, a: 1}
+    State: 0
+  - Color: {r: 0.29803923, g: 0.5019608, b: 1, a: 1}
+    State: 1
+  - Color: {r: 0.15686275, g: 0.5921569, b: 0.9607843, a: 1}
+    State: 0
+  ButtonTextOutline: []
+  ButtonTextColor:
+  - Color: {r: 0.9843137, g: 0.9882353, b: 0.9843137, a: 1}
+    State: 0
+  SliderHandle: []
+  SliderFill: []
+  SliderSlideArea: []
+  CheckboxBackground: []
+  CheckboxLabel: []
+  DropdownItemBackground: []
+  DropdownItemText: []
