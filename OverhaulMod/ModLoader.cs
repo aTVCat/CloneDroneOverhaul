@@ -64,6 +64,7 @@ namespace OverhaulMod
             _ = ModManagers.New<FadingVoxelManager>();
 
             _ = ModManagers.New<ArenaRemodelManager>();
+            _ = ModManagers.New<ArenaAudienceManager>();
             _ = ModManagers.New<AdvancedPhotoModeManager>();
             _ = ModManagers.New<WebhookManager>();
             _ = ModManagers.New<UpgradeModeManager>();
@@ -83,6 +84,7 @@ namespace OverhaulMod
             if (!s_hasAddedObjects)
             {
                 Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, ModCore.editorTexturesFolder + "WeatherSettingsOverride.png");
+                Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
 
                 Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
                 Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");

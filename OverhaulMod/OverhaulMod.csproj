@@ -398,6 +398,10 @@
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeProperty.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePoint.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePointInfo.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePointInfoList.cs" />
+    <Compile Include="Engine\ArenaAudienceManager.cs" />
     <Compile Include="Engine\ArenaRemodelManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
@@ -447,6 +451,7 @@
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\LevelManager_Patch.cs" />
     <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
