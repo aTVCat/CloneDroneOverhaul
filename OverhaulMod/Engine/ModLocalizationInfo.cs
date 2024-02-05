@@ -65,7 +65,7 @@ namespace OverhaulMod.Engine
             if (d == null || !d.ContainsKey(key))
                 return;
 
-            d.Remove(key);
+            _ = d.Remove(key);
         }
 
         public void FixValues()

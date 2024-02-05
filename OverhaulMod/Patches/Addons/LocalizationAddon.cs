@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace OverhaulMod.Patches.Addons
+﻿namespace OverhaulMod.Patches.Addons
 {
     internal class LocalizationAddon : GameAddon
     {

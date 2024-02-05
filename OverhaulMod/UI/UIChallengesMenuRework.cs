@@ -1,7 +1,5 @@
 ﻿using OverhaulMod.Utils;
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -70,7 +68,7 @@ namespace OverhaulMod.UI
             {
                 bool hasCompleted = ChallengeManager.Instance.HasCompletedChallenge(challengeDefinition.ChallengeID);
 
-                UnityAction action = delegate
+                void action()
                 {
                     if (isCoop)
                     {
@@ -83,7 +81,7 @@ namespace OverhaulMod.UI
                         ChallengeManager.Instance.StartChallenge(challengeDefinition, false);
 
                     Hide();
-                };
+                }
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
                 Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.ImageSprite : challengeDefinition.ImageSprite;
@@ -96,19 +94,12 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    EmoteDefinition emoteUnlockedByChallenge = this.getEmoteUnlockedByChallenge(challengeDefinition.ChallengeID);
-                    if (characterModelCustomizationEntry != null)
-                    {
-                        rewardText = LocalizationManager.Instance.GetTranslatedString(characterModelCustomizationEntry.Name) + " " + LocalizationManager.Instance.GetTranslatedString("skin");
-                    }
-                    else if (emoteUnlockedByChallenge != null)
-                    {
-                        rewardText = LocalizationManager.Instance.GetTranslatedString("Emote:") + " " + LocalizationManager.Instance.GetTranslatedString(emoteUnlockedByChallenge.EmoteID, -1);
-                    }
-                    else
-                    {
-                        rewardText = LocalizationManager.Instance.GetTranslatedString("A nice trophy!", -1);
-                    }
+                    EmoteDefinition emoteUnlockedByChallenge = getEmoteUnlockedByChallenge(challengeDefinition.ChallengeID);
+                    rewardText = characterModelCustomizationEntry != null
+                        ? LocalizationManager.Instance.GetTranslatedString(characterModelCustomizationEntry.Name) + " " + LocalizationManager.Instance.GetTranslatedString("skin")
+                        : emoteUnlockedByChallenge != null
+                            ? LocalizationManager.Instance.GetTranslatedString("Emote:") + " " + LocalizationManager.Instance.GetTranslatedString(emoteUnlockedByChallenge.EmoteID, -1)
+                            : LocalizationManager.Instance.GetTranslatedString("A nice trophy!", -1);
                 }
 
                 ModdedObject moddedObject = Instantiate(m_challengeDisplayPrefab, m_challengesContainer);
@@ -134,11 +125,9 @@ namespace OverhaulMod.UI
         private EmoteDefinition getEmoteUnlockedByChallenge(string challengeID)
         {
             CompleteChallengeAchievement completeChallengeAchievement = GameplayAchievementManager.Instance.GetCompleteChallengeAchievement(challengeID);
-            if (completeChallengeAchievement)
-            {
-                return EmoteManager.Instance.GetEmoteUnlockedByAchievement(completeChallengeAchievement.AchievementID);
-            }
-            return null;
+            return completeChallengeAchievement
+                ? EmoteManager.Instance.GetEmoteUnlockedByAchievement(completeChallengeAchievement.AchievementID)
+                : null;
         }
 
         public void OnLegacyUIButtonClicked()

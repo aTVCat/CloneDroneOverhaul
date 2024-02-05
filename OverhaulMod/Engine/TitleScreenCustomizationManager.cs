@@ -19,6 +19,12 @@ namespace OverhaulMod.Engine
             private set;
         }
 
+        public bool disallowUserFromClickingLogo
+        {
+            get;
+            set;
+        }
+
         public override void Awake()
         {
             base.Awake();
@@ -28,6 +34,17 @@ namespace OverhaulMod.Engine
         public void OnGameLoaded()
         {
             RefreshMusicTrack();
+
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted);
+        }
+
+        private void onLevelEditorStarted()
+        {
+            AudioManager.Instance.FadeOutMusic(1f);
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                AudioManager.Instance.StopMusic();
+            }, 1.25f);
         }
 
         public void LoadCustomizationInfo()
@@ -94,6 +111,7 @@ namespace OverhaulMod.Engine
             if (titleScreenCustomizationInfo == null)
                 return;
 
+            titleScreenCustomizationInfo.FixValues();
             GameFlowManager.Instance.SwapOutTitleScreenLevel();
             /*
             LevelManager levelManager = LevelManager.Instance;

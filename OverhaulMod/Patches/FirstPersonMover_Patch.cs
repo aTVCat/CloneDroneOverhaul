@@ -13,10 +13,7 @@ namespace OverhaulMod.Patches
         private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
             CharacterModel characterModel = __instance._characterModel;
-            if (!characterModel)
-                return true;
-
-            return !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
+            return !characterModel || !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
         }
 
         [HarmonyPrefix]

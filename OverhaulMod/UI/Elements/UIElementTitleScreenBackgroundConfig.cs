@@ -29,7 +29,7 @@ namespace OverhaulMod.UI
                     m_label.text = m_backgroundInfo.Level == null ? "None" : m_backgroundInfo.Level.LevelID;
             }
         }
-        
+
         public bool refreshWhenEdited
         {
             get;

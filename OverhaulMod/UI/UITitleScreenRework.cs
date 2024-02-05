@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
                 Transform socialButtons = titleScreenUI.SocialButtonPanel.transform;
                 RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
                 RectTransform socialButtonPopouts = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
-                if(socialButtonContainer && socialButtonPopouts)
+                if (socialButtonContainer && socialButtonPopouts)
                 {
                     m_socialButtonContainer = socialButtonContainer;
                     m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
@@ -196,7 +196,7 @@ namespace OverhaulMod.UI
                 enableRework = true;
             }
 
-            if(m_socialButtonContainer && m_socialButtonPopouts)
+            if (m_socialButtonContainer && m_socialButtonPopouts)
             {
                 m_socialButtonContainer.anchoredPosition = m_newSocialButtonContainerPosition;
                 m_socialButtonPopouts.anchoredPosition = m_newSocialButtonPopoutsPosition;

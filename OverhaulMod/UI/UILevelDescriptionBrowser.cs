@@ -72,7 +72,7 @@ namespace OverhaulMod.UI
             string levelWord = levels.Count == 1 ? "level" : "levels";
             m_levelsLabel.text = $"{levels.Count} {levelWord} to pick";
 
-            foreach(var levelDescription in levels)
+            foreach (LevelDescription levelDescription in levels)
             {
                 ModdedObject moddedObject = Instantiate(m_levelDescriptionDisplayPrefab, m_levelDescriptionDisplayContainer);
                 moddedObject.gameObject.SetActive(true);

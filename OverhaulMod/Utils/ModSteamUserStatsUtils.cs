@@ -18,6 +18,15 @@ namespace OverhaulMod.Utils
             }
 
             Callback<UserStatsReceived_t> cb = null;
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (cb != null && !cb.m_bDisposed)
+                {
+                    cb.Dispose();
+                    callback?.Invoke(false);
+                }
+            }, 10f);
+
             cb = Callback<UserStatsReceived_t>.Create(delegate (UserStatsReceived_t userStatsReceived)
             {
                 if (cb != null)
@@ -49,7 +58,18 @@ namespace OverhaulMod.Utils
                 return;
             }
 
-            CallResult<GlobalAchievementPercentagesReady_t>.Create(null).Set(SteamUserStats.RequestGlobalAchievementPercentages(), delegate (GlobalAchievementPercentagesReady_t c, bool io)
+            CallResult<GlobalAchievementPercentagesReady_t> cr = null;
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (cr != null && !cr.m_bDisposed)
+                {
+                    cr.Dispose();
+                    callback?.Invoke(false);
+                }
+            }, 10f);
+
+            cr = CallResult<GlobalAchievementPercentagesReady_t>.Create(null);
+            cr.Set(SteamUserStats.RequestGlobalAchievementPercentages(), delegate (GlobalAchievementPercentagesReady_t c, bool io)
             {
                 if (c.m_eResult != EResult.k_EResultOK || io)
                 {

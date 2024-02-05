@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
             if (list.IsNullOrEmpty())
                 return;
 
-            foreach(var content in list)
+            foreach (ContentInfo content in list)
             {
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -96,7 +96,7 @@ namespace OverhaulMod.UI
             m_tabs.interactable = false;
             ContentManager.Instance.DownloadContentList(out _, delegate (ContentListInfo contentListInfo)
             {
-                foreach(var content in contentListInfo.ContentToDownload)
+                foreach (ContentDownloadInfo content in contentListInfo.ContentToDownload)
                 {
                     ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
                 }
 
                 m_tabs.interactable = true;
-            }, delegate(string error)
+            }, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 

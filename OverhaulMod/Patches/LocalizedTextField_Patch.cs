@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {
@@ -14,7 +13,7 @@ namespace OverhaulMod.Patches
                 return;
 
             LocalizationManager localizationManager = LocalizationManager.Instance;
-            if(localizationManager && localizationManager.GetCurrentLanguageCode() == "ru")
+            if (localizationManager && localizationManager.GetCurrentLanguageCode() == "ru")
                 __instance._textLabel.resizeTextMaxSize = __instance._originalMaxFontSize;
         }
     }

@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 
 namespace OverhaulMod.Patches
@@ -14,7 +13,7 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsOnTitleScreen())
             {
                 TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
-                if(titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
+                if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
                 {
                     __result = titleScreenCustomizationManager.overrideLevelDescription;
                     return false;

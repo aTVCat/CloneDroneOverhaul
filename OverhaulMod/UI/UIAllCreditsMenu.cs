@@ -54,6 +54,7 @@ namespace OverhaulMod.UI
                 else
                     Application.OpenURL(steamLink);
             });
+            moddedObject.GetObject<GameObject>(2).SetActive(false);
             moddedObject.GetObject<GameObject>(3).SetActive(true/*m_spawnedUserDisplaysCount % 2 == 0*/);
             moddedObject.gameObject.SetActive(true);
             m_spawnedUserDisplaysCount++;

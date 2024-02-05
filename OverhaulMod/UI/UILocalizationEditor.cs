@@ -1,5 +1,4 @@
-﻿using Jint;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;

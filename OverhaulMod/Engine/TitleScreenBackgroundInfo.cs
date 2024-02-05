@@ -1,8 +1,4 @@
-﻿using OverhaulMod.Utils;
-using System.Collections.Generic;
-using System.IO;
-
-namespace OverhaulMod.Engine
+﻿namespace OverhaulMod.Engine
 {
     public class TitleScreenBackgroundInfo
     {

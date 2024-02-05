@@ -1,5 +1,4 @@
-﻿using LevelEditorPatch;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System.IO;
 
 namespace OverhaulMod

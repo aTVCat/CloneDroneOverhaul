@@ -123,7 +123,6 @@ namespace OverhaulMod.Engine
                 case 2:
                     metagameProgressManager._data.CurrentProgress = chapterSectionInfo.MetaGameProgress;
                     metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
-                    metagameProgressManager.saveData();
                     break;
                 case 3:
                     metagameProgressManager.ResetToChapter3();
@@ -136,7 +135,6 @@ namespace OverhaulMod.Engine
 
                         metagameProgressManager._data.CurrentProgress = MetagameProgress.P6_EnteredFleetBeacon;
                         metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
-                        metagameProgressManager.saveData();
                     }
                     break;
                 case 4:
@@ -149,7 +147,6 @@ namespace OverhaulMod.Engine
 
                         metagameProgressManager._data.CurrentProgress = MetagameProgress.P8_SpawnedInBattleCruiser;
                         metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
-                        metagameProgressManager.saveData();
                     }
                     break;
                 case 5:
@@ -182,16 +179,17 @@ namespace OverhaulMod.Engine
                 _isDirty = true
             };
 
-            MetagameProgressManager.Instance._data.FirstEscapedHumansData = new EscapedHumanData
+            metagameProgressManager._data.FirstEscapedHumansData = new EscapedHumanData
             {
                 HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
                 Upgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades()
             };
-            MetagameProgressManager.Instance._data.SecondEscapedHumansData = new EscapedHumanData
+            metagameProgressManager._data.SecondEscapedHumansData = new EscapedHumanData
             {
                 HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
                 Upgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades()
             };
+            metagameProgressManager.saveData();
 
             ModGameUtils.overrideActiveSections = chapterSectionInfo.EnabledSections;
             ModGameUtils.overrideCurrentLevelId = chapterSectionInfo.LevelID;
