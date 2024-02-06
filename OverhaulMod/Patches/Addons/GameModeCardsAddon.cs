@@ -18,18 +18,42 @@ namespace OverhaulMod.Patches.Addons
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ChapterSelectMenuRework))
             {
                 UnityEvent storyModeEvent = new UnityEvent();
-                storyModeEvent.AddListener(ModUIConstants.ShowChapterSelectMenu);
+                storyModeEvent.AddListener(delegate
+                {
+                    if (!ModUIManager.ShowChapterSelectionMenuRework)
+                    {
+                        ModCache.titleScreenUI.OnPlayStoryButtonClicked();
+                        return;
+                    }
+                    ModUIConstants.ShowChapterSelectMenu();
+                });
                 singleplayerDatas[0].ClickedCallback = storyModeEvent;
             }
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EndlessModeMenu))
             {
                 UnityEvent endlessModeEvent = new UnityEvent();
-                endlessModeEvent.AddListener(ModUIConstants.ShowEndlessModeMenu);
+                endlessModeEvent.AddListener(delegate
+                {
+                    if (!ModUIManager.ShowEndlessModeMenu)
+                    {
+                        ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+                        return;
+                    }
+                    ModUIConstants.ShowEndlessModeMenu();
+                });
                 singleplayerDatas[1].ClickedCallback = endlessModeEvent;
             }
 
             UnityEvent spChallengesEvent = new UnityEvent();
-            spChallengesEvent.AddListener(ModUIConstants.ShowChallengesMenuRework);
+            spChallengesEvent.AddListener(delegate
+            {
+                if (!ModUIManager.ShowChallengesMenuRework)
+                {
+                    ModCache.titleScreenUI.OnChallengeButtonClicked();
+                    return;
+                }
+                ModUIConstants.ShowChallengesMenuRework();
+            });
             singleplayerDatas[2].ClickedCallback = spChallengesEvent;
 
             ReplaceSprite(singleplayerDatas, 1, "Endless");

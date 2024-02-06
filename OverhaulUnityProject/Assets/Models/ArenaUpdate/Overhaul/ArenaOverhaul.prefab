@@ -3782,7 +3782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3677634098873006365
 Transform:
   m_ObjectHideFlags: 0
@@ -4692,7 +4692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4666015562091402413
 Transform:
   m_ObjectHideFlags: 0
@@ -11280,7 +11280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8446191190884465145}
   m_Layer: 0
-  m_Name: ArenaVoxelGates-5
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

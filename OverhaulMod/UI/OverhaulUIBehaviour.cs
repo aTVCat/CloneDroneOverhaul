@@ -303,7 +303,7 @@ namespace OverhaulMod.UI
                 ModUIManager.Instance.RefreshUI(dontRefreshUI);
         }
 
-        public virtual void Toggle()
+        public virtual void ToggleVisibility()
         {
             if (visible)
                 Hide();

@@ -253,7 +253,7 @@ namespace OverhaulMod.UI
 
         public void OnViewMultiplayerErrorButtonClicked()
         {
-            ErrorMessage.Toggle();
+            ErrorMessage.ToggleVisibility();
         }
 
         public void OnModsButtonClicked()

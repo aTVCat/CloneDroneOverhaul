@@ -211,24 +211,20 @@ namespace OverhaulMod
 
         private IEnumerator waitUntilCharacterModelInitialization(FirstPersonMover firstPersonMover)
         {
-            yield return new WaitForCharacterModelInitialization(firstPersonMover);
-            yield return new WaitUntil(() => !firstPersonMover || firstPersonMover.gameObject.activeInHierarchy);
-            yield return new WaitForEndOfFrame();
-            if (firstPersonMover && firstPersonMover.IsAlive())
-            {
-                ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);
-            }
-            yield return new WaitForEndOfFrame();
-            if (firstPersonMover && firstPersonMover.IsAlive())
-            {
-                firstPersonMover.RefreshModWeaponModels();
+            yield return new WaitUntil(() => (!firstPersonMover || firstPersonMover.gameObject.activeInHierarchy) && firstPersonMover.HasCharacterModel());
+            for (int i = 0; i < 3; i++)
+                yield return null;
 
-                if (firstPersonMover.IsAttachedAndAlive())
-                {
-                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
-                        _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
-                }
+            if(!firstPersonMover || !firstPersonMover.IsAlive())
+                yield break;
+
+            ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);
+            if (firstPersonMover.IsAttachedAndAlive())
+            {
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
             }
+
             yield break;
         }
 

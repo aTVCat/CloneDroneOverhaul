@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E96B598C-7745-299D-B9A6-4445FDC68D72}</ProjectGuid>
+    <ProjectGuid>{CFF615BD-A085-C035-BE43-D2016B28B218}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -170,31 +170,31 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Shaders\ImageEffects\ECAB.shader" />
     <Reference Include="UnityEngine.Purchasing">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -398,7 +398,7 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
@@ -9,6 +10,15 @@ namespace OverhaulMod
 {
     public class ModUIManager : Singleton<ModUIManager>, IGameLoadListener
     {
+        [ModSetting(ModSettingConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowChapterSelectionMenuRework;
+
+        [ModSetting(ModSettingConstants.SHOW_ENDLESS_MODE_MENU, true, ModSetting.Tag.UISetting)]
+        public static bool ShowEndlessModeMenu;
+
+        [ModSetting(ModSettingConstants.SHOW_CHALLENGES_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowChallengesMenuRework;
+
         private Dictionary<string, GameObject> m_instantiatedUIs;
 
         private Transform m_gameUIRootTransform;

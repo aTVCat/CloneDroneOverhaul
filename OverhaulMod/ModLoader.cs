@@ -65,6 +65,7 @@ namespace OverhaulMod
 
             _ = ModManagers.New<ArenaRemodelManager>();
             _ = ModManagers.New<ArenaAudienceManager>();
+            _ = ModManagers.New<LightningTransitionManager>();
             _ = ModManagers.New<AdvancedPhotoModeManager>();
             _ = ModManagers.New<WebhookManager>();
             _ = ModManagers.New<UpgradeModeManager>();

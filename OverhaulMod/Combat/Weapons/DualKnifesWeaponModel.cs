@@ -46,9 +46,13 @@ namespace OverhaulMod.Combat.Weapons
         public override void OnInstantiated(FirstPersonMover owner)
         {
             _ = createImpactArea(true, base.transform, owner);
+
             Transform handL = TransformUtils.FindChildRecursive(owner.transform, "HandL");
             if (handL)
+            {
                 m_secondaryImpactArea = createImpactArea(false, handL, owner);
+                m_secondaryImpactArea.gameObject.SetActive(false);
+            }
 
             base.BodyPartsToDrop = Array.Empty<MindSpaceBodyPart>();
             base.PartsToDrop = Array.Empty<Transform>();

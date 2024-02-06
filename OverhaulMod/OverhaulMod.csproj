@@ -405,6 +405,9 @@
     <Compile Include="Engine\ArenaRemodelManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
+    <Compile Include="Engine\LightningInfo.cs" />
+    <Compile Include="Engine\LightningTransitionInfo.cs" />
+    <Compile Include="Engine\LightningTransitionManager.cs" />
     <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />
@@ -452,6 +455,7 @@
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Patches\LevelManager_Patch.cs" />
@@ -594,8 +598,15 @@
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

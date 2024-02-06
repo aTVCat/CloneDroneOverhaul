@@ -50,12 +50,20 @@ namespace OverhaulMod.Combat
 
         public void AddWeaponsToRobot(FirstPersonMover firstPersonMover)
         {
-            if (!firstPersonMover || firstPersonMover._equippedWeapons == null || !ModFeatures.IsEnabled(ModFeatures.FeatureType.NewWeapons) || GameModeManager.IsMultiplayer())
+            if (GameModeManager.IsMultiplayer() || !firstPersonMover || !ModFeatures.IsEnabled(ModFeatures.FeatureType.NewWeapons))
                 return;
 
+            if (firstPersonMover._equippedWeapons == null)
+                firstPersonMover._equippedWeapons = new List<WeaponType>();
+            if (firstPersonMover._droppedWeapons == null)
+                firstPersonMover._droppedWeapons = new List<WeaponType>();
+
             CharacterModel characterModel = firstPersonMover.GetCharacterModel();
-            if (!characterModel || characterModel.WeaponModels == null)
+            if (!characterModel)
                 return;
+
+            if(characterModel.WeaponModels == null)
+                characterModel.WeaponModels = new WeaponModel[] { };
 
             Transform targetTransform = TransformUtils.FindChildRecursive(characterModel.transform, "HandR");
             if (!targetTransform)
@@ -145,6 +153,8 @@ namespace OverhaulMod.Combat
 
                 gameObject.SetActive(firstPersonMover.GetEquippedWeaponType() == weaponType);
             }
+
+            firstPersonMover.RefreshModWeaponModels();
         }
     }
 }
