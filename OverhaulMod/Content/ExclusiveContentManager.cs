@@ -84,7 +84,7 @@ namespace OverhaulMod.Content
                     ExclusiveContentInfoList contentInfoList = null;
                     try
                     {
-                        contentInfoList = dataManager.DeserializeFromFile<ExclusiveContentInfoList>(REPOSITORY_FILE, false);
+                        contentInfoList = dataManager.DeserializeFile<ExclusiveContentInfoList>(REPOSITORY_FILE, false);
                     }
                     catch (Exception exc)
                     {

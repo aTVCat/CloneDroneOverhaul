@@ -22,8 +22,11 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
 
-        [UIElement("NewsDisplay", false)]
-        private readonly ModdedObject m_newsDisplay;
+        [UIElement("NewsDisplayBig", false)]
+        private readonly ModdedObject m_newsDisplayBig;
+
+        [UIElement("NewsDisplaySmall", false)]
+        private readonly ModdedObject m_newsDisplaySmall;
 
         [UIElement("Content")]
         private readonly Transform m_newsContainer;
@@ -71,16 +74,21 @@ namespace OverhaulMod.UI
             int index = 0;
             foreach (NewsInfo news in newsInfoList.News)
             {
-                ModdedObject moddedObject = Instantiate(m_newsDisplay, m_newsContainer);
+                ModdedObject moddedObject = Instantiate(index == 0 ? m_newsDisplayBig : m_newsDisplaySmall, m_newsContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = news.Title;
-                if (index == 0)
+
+                Text descriptionLabel = moddedObject.GetObject<Text>(1);
+                if (descriptionLabel)
                 {
-                    RectTransform rectTransform = moddedObject.transform as RectTransform;
-                    Vector2 vector = rectTransform.sizeDelta;
-                    vector.y += 7.5f;
-                    rectTransform.sizeDelta = vector;
+                    string shortDescription = news.Description;
+                    if (shortDescription.Length > 64)
+                    {
+                        shortDescription = shortDescription.Remove(128) + "...";
+                    }
+                    descriptionLabel.text = shortDescription;
                 }
+
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {

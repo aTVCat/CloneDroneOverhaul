@@ -52,7 +52,7 @@ namespace OverhaulMod.Engine
             TitleScreenCustomizationInfo titleScreenCustomizationInfo;
             try
             {
-                titleScreenCustomizationInfo = ModDataManager.Instance.DeserializeFromFile<TitleScreenCustomizationInfo>(CUSTOMIZATION_INFO_FILE, false);
+                titleScreenCustomizationInfo = ModDataManager.Instance.DeserializeFile<TitleScreenCustomizationInfo>(CUSTOMIZATION_INFO_FILE, false);
                 titleScreenCustomizationInfo.FixValues();
             }
             catch

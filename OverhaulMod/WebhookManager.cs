@@ -66,6 +66,7 @@ namespace OverhaulMod
         public void ExecuteSurveysWebhook(string selectedVariant, string newsTitle, Action successCallback, Action<string> errorCallback)
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
             WebhookObject obj1 = new WebhookObject()
             {
                 content = $"## __Survey answer. v{ModBuildInfo.version}__ {newsTitle}",
@@ -76,7 +77,14 @@ namespace OverhaulMod
                         title = "**Selected answer**",
                         description = selectedVariant,
                         color = color,
-                    }
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Details**",
+                        description = $"{userInfo}",
+                        color = color,
+                    },
                 },
             };
             UploadMessageWithWebhook(obj1, SurveysWebhookURL, successCallback, errorCallback);

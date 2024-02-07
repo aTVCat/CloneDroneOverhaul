@@ -70,6 +70,7 @@ namespace OverhaulMod
                 _ = m_instantiatedUIs.Remove(key);
 
             _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", UILayer.BeforeCrashScreen);
+            ModUIConstants.ShowTooltips();
 
             /*
             Canvas canvas = ModCache.gameUIRoot?.GetComponent<Canvas>();

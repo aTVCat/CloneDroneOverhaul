@@ -392,6 +392,7 @@
     <Compile Include="Content\ContentListInfo.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
+    <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItem.cs" />
@@ -500,6 +501,7 @@
     <Compile Include="UI\UIAddonsMenu.cs" />
     <Compile Include="UI\UIChallengesMenuRework.cs" />
     <Compile Include="UI\UILevelDescriptionBrowser.cs" />
+    <Compile Include="UI\UITooltips.cs" />
     <Compile Include="UI\UITitleScreenCustomizationPanel.cs" />
     <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />

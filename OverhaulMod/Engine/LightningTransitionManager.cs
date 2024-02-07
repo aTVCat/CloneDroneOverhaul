@@ -14,7 +14,7 @@ namespace OverhaulMod.Engine
         {
             get
             {
-                return GameModeManager.IsOnTitleScreen() ? 0.5f : 4f;
+                return GameModeManager.IsOnTitleScreen() ? 0.85f : 4f;
             }
         }
 

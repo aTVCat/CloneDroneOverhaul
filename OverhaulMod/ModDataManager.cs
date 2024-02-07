@@ -47,7 +47,7 @@ namespace OverhaulMod
             return ModIOUtils.ReadText((useSavesFolder ? savesFolder : userDataFolder) + name);
         }
 
-        public T DeserializeFromFile<T>(string name, bool useSavesFolder)
+        public T DeserializeFile<T>(string name, bool useSavesFolder)
         {
             return ModJsonUtils.DeserializeStream<T>((useSavesFolder ? savesFolder : userDataFolder) + name);
         }
