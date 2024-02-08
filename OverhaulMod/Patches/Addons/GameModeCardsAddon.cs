@@ -52,7 +52,7 @@ namespace OverhaulMod.Patches.Addons
                     ModCache.titleScreenUI.OnChallengeButtonClicked();
                     return;
                 }
-                ModUIConstants.ShowChallengesMenuRework();
+                ModUIConstants.ShowChallengesMenuRework(false, false);
             });
             singleplayerDatas[2].ClickedCallback = spChallengesEvent;
 

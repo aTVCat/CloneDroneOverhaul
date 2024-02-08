@@ -61,10 +61,6 @@ namespace OverhaulMod.UI
             if (settingsMenu)
                 settingsMenu.populateSettings();
 
-            if (ModBuildInfo.debug)
-            {
-                m_tabs.AddTab("Debug");
-            }
             m_tabs.SelectTab("Gameplay");
         }
 

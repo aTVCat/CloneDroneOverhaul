@@ -103,8 +103,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -105}
-  m_SizeDelta: {x: -30, y: -320}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: -30, y: -310}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6405997181434674743
 MonoBehaviour:
@@ -1625,7 +1625,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 15, y: -215}
-  m_SizeDelta: {x: -30, y: 50}
+  m_SizeDelta: {x: -30, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1310049738310730975
 CanvasRenderer:
@@ -1654,13 +1654,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 37d0b45f58921e5459bd4471e7c7bb12, type: 3}
-    m_FontSize: 13
+    m_Font: {fileID: 12800000, guid: 477a989ae8371c84eab1a5d3e2de38fa, type: 3}
+    m_FontSize: 11
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1833,7 +1833,7 @@ PrefabInstance:
     - target: {fileID: 1117528166163649060, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
       propertyPath: m_Text
-      value: In-game update (Test)
+      value: In-game update
       objectReference: {fileID: 0}
     - target: {fileID: 2217772015947243889, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}

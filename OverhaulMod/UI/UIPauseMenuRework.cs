@@ -1,14 +1,11 @@
 ﻿using OverhaulMod.Utils;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
     public class UIPauseMenuRework : OverhaulUIBehaviour
     {
-        [UIElementAction(nameof(Hide))]
-        [UIElement("ResumeButton")]
-        private readonly Button m_resumeButton;
-
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("LegacyUIButton")]
         private readonly Button m_legacyUIButton;
@@ -34,6 +31,15 @@ namespace OverhaulMod.UI
             base.Hide();
             TimeManager.Instance.OnGameUnPaused();
         }
+
+        /*
+        public override void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Hide();
+            }
+        }*/
 
         public void OnLegacyUIButtonClicked()
         {

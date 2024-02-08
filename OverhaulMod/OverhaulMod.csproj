@@ -494,6 +494,7 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UIImageEffects.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIGenericInputFieldWindow.cs" />

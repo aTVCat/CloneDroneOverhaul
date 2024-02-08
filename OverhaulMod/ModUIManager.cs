@@ -71,6 +71,7 @@ namespace OverhaulMod
 
             _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", UILayer.BeforeCrashScreen);
             ModUIConstants.ShowTooltips();
+            ModUIConstants.ShowImageEffects();
 
             /*
             Canvas canvas = ModCache.gameUIRoot?.GetComponent<Canvas>();

@@ -2240,7 +2240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53eb41b92da994d46af9d6a0de93ce6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultSelectObject: {fileID: 0}
+  DefaultSelectObject: {fileID: 2185152800373923436}
   SelectPreviousOnHide: 1
   DelaySelectionBy: 0
 --- !u!1 &6490579175250800826
@@ -2467,9 +2467,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 105, y: -5}
+  m_AnchoredPosition: {x: 105, y: 5}
   m_SizeDelta: {x: 50, y: 20}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &2573022517830343037
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2655,9 +2655,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5, y: -5}
+  m_AnchoredPosition: {x: 5, y: 5}
   m_SizeDelta: {x: 50, y: 20}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &7398515722017164577
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3025,9 +3025,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 55, y: -5}
+  m_AnchoredPosition: {x: 55, y: 5}
   m_SizeDelta: {x: 50, y: 20}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &8273735487144809491
 CanvasRenderer:
   m_ObjectHideFlags: 0

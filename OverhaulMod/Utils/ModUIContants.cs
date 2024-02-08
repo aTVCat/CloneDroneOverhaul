@@ -50,6 +50,7 @@ namespace OverhaulMod.Utils
         public const string UI_TITLE_SCREEN_CUSTOMIZATION_PANEL = "UI_TitleScreenCustomizationPanel";
         public const string UI_LEVEL_DESCRIPTION_BROWSER = "UI_LevelDescriptionBrowser";
         public const string UI_TOOLTIPS = "UI_Tooltips";
+        public const string UI_IMAGE_EFFECTS = "UI_ImageEffects";
 
         public static void ShowOtherModsMenu()
         {
@@ -248,9 +249,10 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIAddonsEditor>(AssetBundleConstants.UI, UI_ADDONS_EDITOR, parent);
         }
 
-        public static void ShowChallengesMenuRework()
+        public static void ShowChallengesMenuRework(bool coop, bool privateMatches)
         {
-            _ = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+            UIChallengesMenuRework challengesMenuRework = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+            challengesMenuRework.Populate(coop, privateMatches);
         }
 
         public static void ShowLocalizationEditor()
@@ -281,6 +283,11 @@ namespace OverhaulMod.Utils
         public static void ShowTooltips()
         {
             _ = ModUIManager.Instance.Show<UITooltips>(AssetBundleConstants.UI, UI_TOOLTIPS, ModUIManager.UILayer.First);
+        }
+
+        public static void ShowImageEffects()
+        {
+            _ = ModUIManager.Instance.Show<UIImageEffects>(AssetBundleConstants.UI, UI_IMAGE_EFFECTS, ModUIManager.UILayer.First);
         }
     }
 }
