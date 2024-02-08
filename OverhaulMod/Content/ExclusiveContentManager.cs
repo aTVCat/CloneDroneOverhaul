@@ -9,7 +9,7 @@ namespace OverhaulMod.Content
 {
     public class ExclusiveContentManager : Singleton<ExclusiveContentManager>
     {
-        public const string REPOSITORY_FILE = "ContentInfoList.json";
+        public const string REPOSITORY_FILE = "ExclusiveContentInfoList.json";
 
         public const string CONTENT_REFRESHED_EVENT = "ExclusiveContentRefreshed";
 

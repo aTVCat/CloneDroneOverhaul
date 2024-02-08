@@ -32,6 +32,8 @@ namespace OverhaulMod.UI
         private readonly InputField m_contentNameField;
         [UIElement("AddonSizeInputField")]
         private readonly InputField m_contentSizeField;
+        [UIElement("AddonFilePathInputField")]
+        private readonly InputField m_contentPathField;
 
         [UIElement("FileDisplay", false)]
         private readonly ModdedObject m_fileDisplayPrefab;
@@ -83,6 +85,7 @@ namespace OverhaulMod.UI
 
             m_contentNameField.text = contentDownloadInfo.DisplayName;
             m_contentSizeField.text = contentDownloadInfo.Size.ToString();
+            m_contentPathField.text = contentDownloadInfo.File;
         }
 
         private void readFileFromDisk()
@@ -124,6 +127,7 @@ namespace OverhaulMod.UI
             {
                 contentDownloadInfo.DisplayName = m_contentNameField.text;
                 contentDownloadInfo.Size = long.Parse(m_contentSizeField.text);
+                contentDownloadInfo.File = m_contentPathField.text;
             }
 
             ContentListInfo contentListInfo = editingContentList;

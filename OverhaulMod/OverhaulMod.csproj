@@ -488,6 +488,7 @@
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
+    <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
@@ -599,9 +600,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\Upgrades\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icon.ico" />
   </ItemGroup>
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>

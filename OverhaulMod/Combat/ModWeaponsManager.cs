@@ -62,7 +62,7 @@ namespace OverhaulMod.Combat
             if (!characterModel)
                 return;
 
-            if(characterModel.WeaponModels == null)
+            if (characterModel.WeaponModels == null)
                 characterModel.WeaponModels = new WeaponModel[] { };
 
             Transform targetTransform = TransformUtils.FindChildRecursive(characterModel.transform, "HandR");

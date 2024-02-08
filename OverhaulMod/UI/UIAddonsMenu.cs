@@ -35,6 +35,8 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        private bool m_shouldSuggestGameRestart;
+
         public override bool hideTitleScreen => true;
 
         protected override void OnInitialized()
@@ -42,6 +44,30 @@ namespace OverhaulMod.UI
             m_tabs.AddTab(m_localAddonsTab, "local addons");
             m_tabs.AddTab(m_networkAddonsTab, "network addons");
             m_tabs.SelectTab("local addons");
+
+            GlobalEventManager.Instance.AddEventListener<string>(ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, onContentDownloaded);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            if (m_shouldSuggestGameRestart)
+            {
+                ModUIConstants.ShowRestartRequiredScreen(true);
+                m_shouldSuggestGameRestart = false;
+            }
+        }
+
+        private void onContentDownloaded(string error)
+        {
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModUIUtils.MessagePopupOK("Content download error", "Details:\n" + error, 350f, true);
+            }
+            else
+            {
+                m_shouldSuggestGameRestart = true;
+            }
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -98,9 +124,17 @@ namespace OverhaulMod.UI
             {
                 foreach (ContentDownloadInfo content in contentListInfo.ContentToDownload)
                 {
+                    if (content == null || content.File.IsNullOrEmpty() || content.DisplayName.IsNullOrEmpty())
+                        continue;
+
                     ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = content.DisplayName;
+                    moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
+
+                    UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
+                    networkAddonDisplay.contentFile = content.File;
+                    networkAddonDisplay.InitializeElement();
                 }
 
                 m_tabs.interactable = true;

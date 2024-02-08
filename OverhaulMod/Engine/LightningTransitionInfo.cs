@@ -132,9 +132,7 @@ namespace OverhaulMod.Engine
             gradientSkybox.SetFloat("_Exponent2", skyBottomExponent);
             gradientSkybox.SetFloat("_Intensity", skyIntensity);
 
-            if (index == 1)
-                material = customSkybox;
-            else material = index == 3 ? gradientSkybox : skyBoxManager.LevelConfigurableSkyboxes[index];
+            material = index == 1 ? customSkybox : index == 3 ? gradientSkybox : skyBoxManager.LevelConfigurableSkyboxes[index];
 
             if (material != skyBoxManager._currentSkybox)
             {

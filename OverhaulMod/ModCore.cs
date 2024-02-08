@@ -1,5 +1,4 @@
 ﻿using ModLibrary;
-using ModLibrary.YieldInstructions;
 using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Addons;
@@ -215,7 +214,7 @@ namespace OverhaulMod
             for (int i = 0; i < 3; i++)
                 yield return null;
 
-            if(!firstPersonMover || !firstPersonMover.IsAlive())
+            if (!firstPersonMover || !firstPersonMover.IsAlive())
                 yield break;
 
             ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);

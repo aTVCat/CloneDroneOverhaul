@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.Networking;
@@ -15,23 +16,72 @@ namespace OverhaulMod.Content
 
         public const string EXTRAS_CONTENT_FOLDER_NAME = "Extras";
 
-        public void DownloadContent(string name, out UnityWebRequest unityWebRequest, Action callback, Action<string> errorCallback)
+        public const string CONTENT_DOWNLOAD_DONE_EVENT = "OverhaulContentDownloadDone";
+
+        private Dictionary<string, UnityWebRequest> m_downloadingFiles;
+
+        private List<ContentInfo> m_installedContent;
+
+        private void Start()
         {
-            RepositoryManager.Instance.GetFile($"content/{name}.zip", delegate (byte[] bytes)
+            m_downloadingFiles = new Dictionary<string, UnityWebRequest>();
+            RefreshContent();
+        }
+
+        public void RefreshContent(bool force = false)
+        {
+            if (force)
+                m_installedContent = null;
+
+            _ = GetContent();
+        }
+
+        public bool DownloadContent(string name, Action callback, Action<string> errorCallback)
+        {
+            if (m_downloadingFiles.ContainsKey(name))
+            {
+                _ = base.StartCoroutine(waitUntilContentIsDownloaded(name, callback, errorCallback));
+                return false;
+            }
+
+            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/{name}.zip", delegate (byte[] bytes)
             {
                 RemoveContent(name);
+                _ = m_downloadingFiles.Remove(name);
 
-                string tempFile = Path.GetTempFileName();
-                ModIOUtils.WriteBytes(bytes, tempFile);
+                try
+                {
+                    string tempFile = Path.GetTempFileName();
+                    ModIOUtils.WriteBytes(bytes, tempFile);
 
-                FastZip fastZip = new FastZip();
-                fastZip.ExtractZip(tempFile, ModCore.contentFolder, null);
-                if (File.Exists(tempFile))
-                    File.Delete(tempFile);
+                    string directory = ModCore.contentFolder + name.Replace(" ", string.Empty) + "/";
+                    if (!Directory.Exists(directory))
+                        _ = Directory.CreateDirectory(directory);
 
-                ModManagers.Instance.TriggerModContentLoadedEvent();
+                    FastZip fastZip = new FastZip();
+                    fastZip.ExtractZip(tempFile, directory, null);
+                    if (File.Exists(tempFile))
+                        File.Delete(tempFile);
+                }
+                catch (Exception exc)
+                {
+                    ModManagers.Instance.TriggerModContentLoadedEvent(exc.ToString());
+                    return;
+                }
+
+                ModManagers.Instance.TriggerModContentLoadedEvent(null);
                 callback?.Invoke();
-            }, errorCallback, out unityWebRequest, 200);
+
+                RefreshContent(true);
+            }, delegate (string error)
+            {
+                _ = m_downloadingFiles.Remove(name);
+                ModManagers.Instance.TriggerModContentLoadedEvent(error);
+            }, out UnityWebRequest unityWebRequest, -1);
+
+            m_downloadingFiles.Add(name, unityWebRequest);
+
+            return true;
         }
 
         public void DownloadContentList(out UnityWebRequest unityWebRequest, Action<ContentListInfo> callback, Action<string> errorCallback)
@@ -54,14 +104,60 @@ namespace OverhaulMod.Content
             }, errorCallback, out unityWebRequest, 200);
         }
 
+        private IEnumerator waitUntilContentIsDownloaded(string name, Action callback, Action<string> errorCallback)
+        {
+            GlobalEventManager.Instance.AddEventListenerOnce(CONTENT_DOWNLOAD_DONE_EVENT, delegate (string error)
+            {
+                if (string.IsNullOrEmpty(error))
+                {
+                    callback?.Invoke();
+                }
+                else
+                {
+                    errorCallback.Invoke(error);
+                }
+            });
+            yield break;
+        }
+
+        public bool IsDownloading(string name)
+        {
+            return m_downloadingFiles.ContainsKey(name);
+        }
+
+        public float GetDownloadProgress(string name)
+        {
+            if (m_downloadingFiles.TryGetValue(name, out UnityWebRequest unityWebRequest))
+            {
+                try
+                {
+                    return unityWebRequest.isDone ? 1f : unityWebRequest.downloadProgress;
+                }
+                catch
+                {
+                    return -1f;
+                }
+            }
+            return -1f;
+        }
+
         public void RemoveContent(string name)
         {
             if (HasContent(name))
                 Directory.Delete($"{ModCore.contentFolder}{name}/", true);
         }
 
-        public bool HasContent(string contentName)
+        public bool HasContent(string contentName, bool quick = false)
         {
+            if (quick)
+            {
+                if (m_installedContent.IsNullOrEmpty())
+                    return false;
+
+                foreach (ContentInfo c in m_installedContent)
+                    if (c.DisplayName == contentName)
+                        return true;
+            }
             return Directory.Exists($"{ModCore.contentFolder}{contentName}/");
         }
 
@@ -78,6 +174,9 @@ namespace OverhaulMod.Content
 
         public List<ContentInfo> GetContent()
         {
+            if (m_installedContent != null)
+                return m_installedContent;
+
             string[] folders = Directory.GetDirectories(ModCore.contentFolder);
             if (folders.IsNullOrEmpty())
                 return null;
@@ -100,6 +199,7 @@ namespace OverhaulMod.Content
                     continue;
                 }
             }
+            m_installedContent = list;
             return list;
         }
     }

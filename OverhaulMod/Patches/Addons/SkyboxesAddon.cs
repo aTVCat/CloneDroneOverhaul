@@ -31,8 +31,8 @@ namespace OverhaulMod.Patches.Addons
 
         private IEnumerator patchCoroutine()
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return null;
+            yield return null;
 
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
             if (ContentManager.Instance.HasContent(ContentManager.EXTRAS_CONTENT_FOLDER_NAME))
@@ -74,6 +74,7 @@ namespace OverhaulMod.Patches.Addons
             {
                 RenderSettings.skybox = material;
             }
+            material.name = og.name;
             array[index] = material;
         }
 

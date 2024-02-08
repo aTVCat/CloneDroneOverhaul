@@ -7,6 +7,8 @@ namespace OverhaulMod.Content
         public string DisplayName;
         public long Size;
 
+        public string File;
+
         public List<string> Files;
 
         public void FixValues()

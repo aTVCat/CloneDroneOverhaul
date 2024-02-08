@@ -56,13 +56,9 @@ namespace OverhaulMod
             }
         }
 
-        public void TriggerModContentLoadedEvent()
+        public void TriggerModContentLoadedEvent(string errorString)
         {
-            foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
-            {
-                if (behaviour is IModContentLoadListener contentLoadListener)
-                    contentLoadListener.OnModContentLoaded();
-            }
+            GlobalEventManager.Instance.Dispatch(Content.ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, errorString);
         }
 
         public void TriggerGameLoadedEvent()
