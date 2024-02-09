@@ -1782,7 +1782,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Configure Overhaul UI<size=16>s</size>
+  m_Text: Configure Overhaul mod UI<size=16>s</size>
 --- !u!114 &750675154562128241
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ namespace OverhaulMod.Engine
 {
     public class FadingVoxelManager : Singleton<FadingVoxelManager>
     {
-        [ModSetting(ModSettingConstants.ENABLE_FADING, true)]
+        [ModSetting(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING, true)]
         public static bool EnableFading;
 
         private List<FadingVoxel> m_voxelsToFade;

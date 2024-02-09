@@ -115,6 +115,14 @@ namespace OverhaulMod.Utils
             SetTitleBarText(InnerModSpecialUtils.INITIAL_TITLE_BAR_TEXT);
         }
 
+        public static void SetTitleBarStateDependingOnSettings()
+        {
+            if (ModCore.EnableTitleBarOverhaul && ModCore.isEnabled)
+                SetOverhauledTitleBarState();
+            else
+                RestoreInitialTitleBarState();
+        }
+
         public static void SetTitleBarDarkModeEnabled(bool enabled)
         {
             try

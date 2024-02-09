@@ -1,4 +1,6 @@
 ﻿using OverhaulMod.Utils;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -40,6 +42,25 @@ namespace OverhaulMod.Engine
         {
             get;
             set;
+        }
+
+        private List<Action<object>> m_valueChangedListeners;
+        public event Action<object> valueChangedEvent
+        {
+            add
+            {
+                if (m_valueChangedListeners == null)
+                    m_valueChangedListeners = new List<Action<object>>();
+
+                m_valueChangedListeners.Add(value);
+            }
+            remove
+            {
+                if (m_valueChangedListeners == null)
+                    m_valueChangedListeners = new List<Action<object>>();
+
+                _ = m_valueChangedListeners.Remove(value);
+            }
         }
 
         public bool ShouldNotNotifyPlayerAboutRestart;
@@ -88,6 +109,18 @@ namespace OverhaulMod.Engine
                 fieldInfo.SetValue(null, value);
 
                 GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT, value);
+
+                if (!m_valueChangedListeners.IsNullOrEmpty())
+                {
+                    foreach (Action<object> a in m_valueChangedListeners)
+                    {
+                        try
+                        {
+                            a?.Invoke(value);
+                        }
+                        catch { }
+                    }
+                }
             }
 
             string key = GetPlayerPrefKey();

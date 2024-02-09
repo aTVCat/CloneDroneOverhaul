@@ -9,7 +9,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Engine.FadingVoxelManager"/>
         /// </summary>
-        public const string ENABLE_FADING = "EnableFading";
+        public const string ENABLE_VOXEL_FIRE_FADING = "EnableVoxelFireFading";
 
         /// <summary>
         /// <see cref="Engine.ArenaRemodelManager"/>
@@ -40,5 +40,20 @@ namespace OverhaulMod.Utils
         /// <see cref="ModUIManager"/>
         /// </summary>
         public const string SHOW_CHALLENGES_MENU_REWORK = UI_PREFIX + nameof(UIChallengesMenuRework);
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string ENABLE_REVERB_FILTER = "SoundReverbFilterEnabled";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string REVERB_FILTER_INTENSITY = "SoundReverbFilterIntensity";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string ENABLE_TITLE_BAR_OVERHAUL = "TitleBarOverhaul";
     }
 }

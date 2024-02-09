@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Engine;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -21,8 +22,8 @@ namespace OverhaulMod.Patches
 
             filter.diffusion = 100f;
             filter.density = 100f;
-            filter.decayTime = true && Physics.Raycast(__instance.transform.position, Vector3.up, 75f, PhysicsManager.GetEnvironmentLayerMask())
-                ? 0.375f
+            filter.decayTime = ModAudioManager.EnableReverbFilter && Physics.Raycast(__instance.transform.position, Vector3.up, 75f, PhysicsManager.GetEnvironmentLayerMask())
+                ? 0.375f * ModAudioManager.ReverbIntensity
                 : 0f;
         }
     }

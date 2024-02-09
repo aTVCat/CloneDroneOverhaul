@@ -409,6 +409,7 @@
     <Compile Include="Engine\LightningInfo.cs" />
     <Compile Include="Engine\LightningTransitionInfo.cs" />
     <Compile Include="Engine\LightningTransitionManager.cs" />
+    <Compile Include="Engine\ModAudioManager.cs" />
     <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />

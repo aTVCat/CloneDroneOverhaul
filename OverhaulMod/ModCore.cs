@@ -14,6 +14,9 @@ namespace OverhaulMod
     [MainModClass]
     public class ModCore : Mod
     {
+        [ModSetting(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
+        public static bool EnableTitleBarOverhaul;
+
         public static event Action SceneReloaded;
         public static event Action GameInitialized;
         public static event Action ContentDownloaded;
@@ -152,7 +155,7 @@ namespace OverhaulMod
             addEventListeners();
             TriggerModStateChangedEvent(true);
 
-            ModSpecialUtils.SetOverhauledTitleBarState();
+            ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
             checkIfTheSceneWasReloaded();
             s_hasEverLoadedTheMod = true;
@@ -178,7 +181,7 @@ namespace OverhaulMod
 
             TriggerModStateChangedEvent(false);
 
-            ModSpecialUtils.RestoreInitialTitleBarState();
+            ModSpecialUtils.SetTitleBarStateDependingOnSettings();
         }
 
         public override UnityEngine.Object OnResourcesLoad(string path)

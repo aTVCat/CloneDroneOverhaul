@@ -34,6 +34,7 @@ namespace OverhaulMod
             ModManagers.Instance.TriggerModLoadedEvent();
 
             addLevelEditorObjects();
+            addListeners();
         }
 
         private static void addManagers()
@@ -43,6 +44,7 @@ namespace OverhaulMod
             _ = ModManagers.New<RepositoryManager>();
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ModLocalizationManager>();
+            _ = ModManagers.New<ModAudioManager>();
             _ = ModManagers.New<ModResources>();
             _ = ModManagers.New<ModUIManager>();
             _ = ModManagers.New<ModLevelManager>();
@@ -108,6 +110,15 @@ namespace OverhaulMod
                 Patch.AddObject("ChibiSword2", "OverhaulMod", "Enemies", ModPrefabUtils.chibiSword2Spawner, null, null);
                 s_hasAddedObjects = true;
             }
+        }
+
+        private static void addListeners()
+        {
+            ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                ModSpecialUtils.SetTitleBarStateDependingOnSettings();
+            }, ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL);
         }
 
         public static bool HasToLoad()

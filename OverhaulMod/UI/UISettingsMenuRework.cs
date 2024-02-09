@@ -124,6 +124,9 @@ namespace OverhaulMod.UI
                 case "Multiplayer":
                     populateMultiplayerPage(settingsMenu);
                     break;
+                case "Mod-Bot":
+                    populateModBotPage(settingsMenu);
+                    break;
                 default:
                     populateDefaultPage(settingsMenu);
                     break;
@@ -160,31 +163,28 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
                 _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
+                if (ModSpecialUtils.SupportsTitleBarOverhaul())
+                {
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, value, true);
+                    }, "Enable title bar changes");
+                }
+
                 _ = pageBuilder.Header3("Render");
                 _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
                 _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
-                _ = pageBuilder.Header1("User interface");
+                _ = pageBuilder.Header1("Game interface");
                 _ = pageBuilder.Header3("Language");
                 _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
                 _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
                 _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
-                _ = pageBuilder.Toggle(true, null, "Show watermark");
-                _ = pageBuilder.Button("Configure Overhaul UIs", delegate
+                _ = pageBuilder.Toggle(true, null, "Show overhaul mod watermark");
+                _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
                 {
                     ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
                 });
-
-                if (ModSpecialUtils.SupportsTitleBarOverhaul())
-                {
-                    _ = pageBuilder.Header3("Title bar");
-                    _ = pageBuilder.Toggle(true, null, "Dark mode");
-                    _ = pageBuilder.Toggle(true, null, "Custom text");
-                }
-
-                _ = pageBuilder.Header1("Garbage");
-                _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
-                _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
 
                 _ = pageBuilder.Header1("Environment");
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
@@ -193,14 +193,18 @@ namespace OverhaulMod.UI
                 }, "Arena remodel");
                 _ = pageBuilder.Header4("Made by @water2977");
 
-                _ = pageBuilder.Header1("Voxels");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FADING), delegate (bool value)
+                _ = pageBuilder.Header1("Voxel engine");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING), delegate (bool value)
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FADING, value, true);
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING, value, true);
                 }, "Better fire spreading");
                 _ = pageBuilder.Toggle(true, delegate (bool value)
                 {
                 }, "Force burn");
+
+                _ = pageBuilder.Header1("Garbage");
+                _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
+                _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
             }
         }
 
@@ -250,10 +254,16 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Header3("Commentator");
                 _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.CommentatorsVolume.value, OnCommentatorVolumeChanged);
 
-                _ = pageBuilder.Header1("Effects");
-                _ = pageBuilder.Toggle(true, null, "Enable reverb");
+                _ = pageBuilder.Header1("Filters");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER, value, true);
+                }, "Reverb");
                 _ = pageBuilder.Header3("Reverb intensity");
-                _ = pageBuilder.Slider(0f, 1f, false, 0.5f, null);
+                _ = pageBuilder.Slider(0.1f, 1.5f, false, ModSettingsManager.GetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY), delegate (float value)
+                {
+                    ModSettingsManager.SetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY, value, true);
+                });
             }
         }
 
@@ -279,6 +289,8 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
                 _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
                 _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
+
+                _ = pageBuilder.Header3("Personalization");
                 _ = pageBuilder.Button("Select emotes", delegate
                 {
                     GameUIRoot.Instance.EmoteSettingsUI.Show();
@@ -312,6 +324,13 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Slider(settingsMenu.ControllerSensitivitySlider.minValue, settingsMenu.ControllerSensitivitySlider.maxValue, false, settingsMenu.ControllerSensitivitySlider.value, OnControllerSensitivityChanged);
                 _ = pageBuilder.Toggle(settingsMenu.InvertControllerToggle.isOn, OnInvertControllerToggleChanged, "Invert controller");
                 _ = pageBuilder.Toggle(settingsMenu.EqualLookRatioToggle.isOn, OnEqualLookRatioToggleChanged, "1:1 look ratio");
+            }
+        }
+
+        private void populateModBotPage(SettingsMenu settingsMenu)
+        {
+            using (PageBuilder pageBuilder = new PageBuilder(this))
+            {
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -45,6 +46,19 @@ namespace OverhaulMod.Engine
         public ModSetting GetSetting(string name)
         {
             return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
+        }
+
+        public void AddSettingValueChangedListener(Action<object> action, string settingId)
+        {
+            ModSetting setting = GetSetting(settingId);
+            action.Invoke(setting.GetFieldValue());
+            setting.valueChangedEvent += action;
+        }
+
+        public void RemoveSettingValueChangedListener(Action<object> action, string settingId)
+        {
+            ModSetting setting = GetSetting(settingId);
+            setting.valueChangedEvent -= action;
         }
 
         public ModSetting CreateSettingFromField(FieldInfo field, bool setFieldValue = true)
