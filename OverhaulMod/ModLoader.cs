@@ -72,6 +72,7 @@ namespace OverhaulMod
             _ = ModManagers.New<WebhookManager>();
             _ = ModManagers.New<UpgradeModeManager>();
             _ = ModManagers.New<TransitionManager>();
+            _ = ModManagers.New<CameraModeManager>();
 
             _ = ModManagers.New<DifficultyTierManager>();
         }

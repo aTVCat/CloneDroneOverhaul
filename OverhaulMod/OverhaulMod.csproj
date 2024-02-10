@@ -404,6 +404,8 @@
     <Compile Include="Engine\ArenaAudienceLinePointInfoList.cs" />
     <Compile Include="Engine\ArenaAudienceManager.cs" />
     <Compile Include="Engine\ArenaRemodelManager.cs" />
+    <Compile Include="Engine\CameraModeController.cs" />
+    <Compile Include="Engine\CameraModeManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\LightningInfo.cs" />
@@ -457,6 +459,7 @@
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorChangesAddon.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\Character_Patch.cs" />
     <Compile Include="Patches\FlyingCameraController_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
@@ -489,6 +492,7 @@
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
+    <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />

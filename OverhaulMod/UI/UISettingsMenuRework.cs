@@ -217,6 +217,12 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
                 _ = pageBuilder.Header4("Change what enemies spawn");
 
+                _ = pageBuilder.Header3("Fun");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE, value, true);
+                }, "First person mode");
+
                 _ = pageBuilder.Header3("Endless levels");
                 _ = pageBuilder.Dropdown(settingsMenu.WorkshopLevelPolicyDropdown.options, settingsMenu.WorkshopLevelPolicyDropdown.value, OnWorkshopEndlessLevelPolicyIndexChanged);
                 _ = pageBuilder.Button("Get more levels", delegate

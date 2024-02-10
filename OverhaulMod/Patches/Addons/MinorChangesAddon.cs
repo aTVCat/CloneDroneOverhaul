@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,16 @@ namespace OverhaulMod.Patches.Addons
             GameUIRoot gameUIRoot = ModCache.gameUIRoot;
             if (gameUIRoot)
             {
+                CrosshairsUI crosshairsUI = gameUIRoot.CrosshairsUI;
+                if (crosshairsUI && crosshairsUI.Child)
+                {
+                    CrosshairOffsetController crosshairOffsetController = crosshairsUI.Child.GetComponent<CrosshairOffsetController>();
+                    if (!crosshairOffsetController)
+                    {
+                        crosshairsUI.Child.AddComponent<CrosshairOffsetController>();
+                    }
+                }
+
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;
                 if (emoteSelectionUIObject)
                 {

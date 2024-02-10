@@ -55,5 +55,15 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore"/>
         /// </summary>
         public const string ENABLE_TITLE_BAR_OVERHAUL = "TitleBarOverhaul";
+
+        /// <summary>
+        /// <see cref="Engine.CameraModeManager"/>
+        /// </summary>
+        public const string ENABLE_FIRST_PERSON_MODE = "EnableFirstPersonMode";
+
+        /// <summary>
+        /// <see cref="Engine.CameraModeManager"/>
+        /// </summary>
+        public const string CAMERA_MODE_TOGGLE_KEYBIND = "CameraModeToggleKeybind";
     }
 }
