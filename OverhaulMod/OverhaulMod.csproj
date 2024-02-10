@@ -65,20 +65,8 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="InjectionClasses">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\InjectionClasses.dll</HintPath>
-    </Reference>
-    <Reference Include="Jint">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Jint.dll</HintPath>
-    </Reference>
-    <Reference Include="Klattersynth">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Klattersynth.dll</HintPath>
-    </Reference>
     <Reference Include="LevelEditorPatch">
       <HintPath>.\LevelEditorPatch.dll</HintPath>
-    </Reference>
-    <Reference Include="ModBotWebsiteAPI">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModBotWebsiteAPI.dll</HintPath>
     </Reference>
     <Reference Include="ModLibrary">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
@@ -116,18 +104,6 @@
     <Reference Include="Pathfinding.Poly2Tri">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.Poly2Tri.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Photon3Unity3D.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonBolt">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PhotonBolt.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonRealtime">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PhotonRealtime.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonWebSocket">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PhotonWebSocket.dll</HintPath>
-    </Reference>
     <Reference Include="PlayFab">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PlayFab.dll</HintPath>
     </Reference>
@@ -155,21 +131,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="udpkit">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\udpkit.dll</HintPath>
-    </Reference>
-    <Reference Include="udpkit.common">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\udpkit.common.dll</HintPath>
-    </Reference>
-    <Reference Include="udpkit.platform.dotnet">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\udpkit.platform.dotnet.dll</HintPath>
-    </Reference>
-    <Reference Include="udpkit.platform.null">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\udpkit.platform.null.dll</HintPath>
-    </Reference>
-    <Reference Include="udpkit.platform.photon">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\udpkit.platform.photon.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
@@ -397,6 +358,13 @@
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItem.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
+    <Compile Include="Discord\ActivityManager.cs" />
+    <Compile Include="Discord\Constants.cs" />
+    <Compile Include="Discord\Core.cs" />
+    <Compile Include="Discord\ImageManager.cs" />
+    <Compile Include="Discord\LobbyManager.cs" />
+    <Compile Include="Discord\StorageManager.cs" />
+    <Compile Include="Discord\StoreManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeManager.cs" />
     <Compile Include="Engine\AdvancedPhotoModeProperty.cs" />
     <Compile Include="Engine\ArenaAudienceLinePoint.cs" />
@@ -435,6 +403,9 @@
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\RichPresenceBase.cs" />
+    <Compile Include="Engine\RichPresenceDiscord.cs" />
+    <Compile Include="Engine\RichPresenceManager.cs" />
     <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
@@ -502,6 +473,7 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIPhotoModeUIRework.cs" />
     <Compile Include="UI\UIImageEffects.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />

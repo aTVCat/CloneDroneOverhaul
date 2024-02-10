@@ -73,6 +73,7 @@ namespace OverhaulMod
             _ = ModManagers.New<UpgradeModeManager>();
             _ = ModManagers.New<TransitionManager>();
             _ = ModManagers.New<CameraManager>();
+            _ = ModManagers.New<RichPresenceManager>();
 
             _ = ModManagers.New<DifficultyTierManager>();
         }

@@ -3,7 +3,6 @@ using ModLibrary;
 using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
-using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -87,7 +86,7 @@ namespace OverhaulMod.Patches
                 __result = modWeaponModel.attackSpeed;
             }
         }
-        
+
         [HarmonyPostfix]
         [HarmonyPatch("CreateArrowAndDrawBow")]
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)

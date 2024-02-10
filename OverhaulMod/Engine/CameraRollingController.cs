@@ -10,7 +10,6 @@ namespace OverhaulMod.Engine
         public const float ONE_LEG_TILT = 2.6f;
 
         public float AdditionalXOffset, AdditionalZOffset;
-        public float AdditionalOffsetMultiplier;
 
         private Transform m_playerCameraTransform;
         private SettingsManager m_settingsManager;
@@ -24,7 +23,7 @@ namespace OverhaulMod.Engine
             get
             {
                 FirstPersonMover owner = m_owner;
-                return !Cursor.visible && owner && owner.IsPlayerCameraActive() && m_settingsManager && !PhotoManager.Instance.IsInPhotoMode();
+                return owner && owner.IsPlayerCameraActive() && m_settingsManager && !PhotoManager.Instance.IsInPhotoMode();
             }
         }
 
@@ -33,7 +32,7 @@ namespace OverhaulMod.Engine
             get
             {
                 FirstPersonMover owner = m_owner;
-                return !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled();
+                return Cursor.visible || !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled();
             }
         }
 
@@ -74,51 +73,49 @@ namespace OverhaulMod.Engine
 
         public void UpdateRotation(FirstPersonMover firstPersonMover, float targetX, float targetY, float targetZ)
         {
-            if (enableControl)
+            bool forceZero = forceInitialRotation;
+            if (forceZero)
             {
-                bool forceZero = forceInitialRotation;
-                if (forceZero)
-                {
-                    targetX = 0f;
-                    targetY = 0f;
-                    targetZ = 0f;
-                }
-
-                float deltaTime = Time.deltaTime;
-                float deltaTimeMultiplied = deltaTime * 20f;
-                float multiply = MULTIPLIER * deltaTime * 20f;
-
-                Player player = ReInput.players.GetPlayer(0);
-                if (player != null)
-                {
-                    float cursorX = forceZero ? 0f : player.GetAxis(7) * multiply;
-                    float cursorY = forceZero ? 0f : player.GetAxis(6) * (m_settingsManager.GetInvertMouse() ? 1f : -1f) * multiply;
-
-                    m_cursorMovementVelocityX = Mathf.Lerp(m_cursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
-                    m_cursorMovementVelocityY = Mathf.Lerp(m_cursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
-                }
-                else
-                {
-                    m_cursorMovementVelocityX = 0f;
-                    m_cursorMovementVelocityY = 0f;
-                }
-
-                bool isOnFloorFirstPersonMode = CameraManager.EnableFirstPersonMode && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick();
-                float limit = isOnFloorFirstPersonMode ? 90f : 10f;
-
-                Vector3 newTargetRotation = m_rotation;
-                newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, isOnFloorFirstPersonMode ? -60f : targetX, multiply) + m_cursorMovementVelocityY, -limit, limit);
-                newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_cursorMovementVelocityX, -limit, limit);
-                newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -limit, limit);
-                m_rotation = newTargetRotation;
-                m_playerCameraTransform.localEulerAngles = newTargetRotation;
+                targetX = 0f;
+                targetY = 0f;
+                targetZ = 0f;
             }
+
+            float deltaTime = Time.deltaTime;
+            float deltaTimeMultiplied = deltaTime * 20f;
+            float multiply = MULTIPLIER * deltaTime * 20f;
+
+            Player player = ReInput.players.GetPlayer(0);
+            if (player != null)
+            {
+                float cursorX = forceZero ? 0f : player.GetAxis(7) * multiply;
+                float cursorY = forceZero ? 0f : player.GetAxis(6) * (m_settingsManager.GetInvertMouse() ? 1f : -1f) * multiply;
+
+                m_cursorMovementVelocityX = Mathf.Lerp(m_cursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied);
+                m_cursorMovementVelocityY = Mathf.Lerp(m_cursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied);
+            }
+            else
+            {
+                m_cursorMovementVelocityX = 0f;
+                m_cursorMovementVelocityY = 0f;
+            }
+
+            bool isOnFloorFirstPersonMode = CameraManager.EnableFirstPersonMode && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick();
+            float limit = isOnFloorFirstPersonMode ? 90f : 10f;
+
+            Vector3 newTargetRotation = m_rotation;
+            newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, isOnFloorFirstPersonMode ? -60f : targetX, multiply) + m_cursorMovementVelocityY, -limit, limit);
+            newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_cursorMovementVelocityX, -limit, limit);
+            newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -limit, limit);
+            m_rotation = newTargetRotation;
+
+            m_playerCameraTransform.localEulerAngles = newTargetRotation;
         }
 
         public void UpdateViewBobbing()
         {
-            FirstPersonMover player = m_owner;
-            if (!player)
+            FirstPersonMover owner = m_owner;
+            if (!owner)
             {
                 AdditionalXOffset = 0f;
                 AdditionalZOffset = 0f;
@@ -128,11 +125,12 @@ namespace OverhaulMod.Engine
             bool firstPerson = CameraManager.EnableFirstPersonMode;
             float time = Time.time;
 
-            AdditionalOffsetMultiplier = player && (player._isMovingForward || player._isMovingRight || player._isMovingLeft || player._isMovingBack) ? (firstPerson ? 8f : 1.75f) : (firstPerson ? 4f : 0.5f);
+            float multiplier = owner._isMovingForward || owner._isMovingRight || owner._isMovingLeft || owner._isMovingBack ? (firstPerson ? 8f : 1.75f) : (firstPerson ? 4f : 0.5f);
             if (firstPerson)
             {
-                AdditionalXOffset = Mathf.Sin(time * AdditionalOffsetMultiplier) * 0.6f;
-                AdditionalZOffset = Mathf.Sin(time * AdditionalOffsetMultiplier * 1.2f) * 0.3f;
+                float sin = Mathf.Sin(time * multiplier);
+                AdditionalXOffset = sin * 0.65f;
+                AdditionalZOffset = sin * 0.3f;
             }
             else
             {

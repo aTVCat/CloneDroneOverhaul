@@ -22,6 +22,10 @@ namespace OverhaulMod.UI
         [UIElement("CloneDroneInfoButton")]
         private readonly Button m_cloneDroneInfoButton;
 
+        [UIElementAction(nameof(OnGalleryButtonClicked))]
+        [UIElement("GalleryButton")]
+        private readonly Button m_galleryButton;
+
         public override bool hideTitleScreen => true;
 
         public override void Show()
@@ -48,6 +52,11 @@ namespace OverhaulMod.UI
         {
             Hide();
             ModCache.titleScreenUI.OnCreditsButtonClicked();
+        }
+
+        public void OnGalleryButtonClicked()
+        {
+            ModUIConstants.ShowDevelopmentGallery(base.transform);
         }
     }
 }

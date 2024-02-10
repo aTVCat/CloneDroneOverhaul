@@ -52,6 +52,7 @@ namespace OverhaulMod.Utils
         public const string UI_TOOLTIPS = "UI_Tooltips";
         public const string UI_IMAGE_EFFECTS = "UI_ImageEffects";
         public const string UI_PHOTO_MODE_UI_REWORK = "UI_PhotoModeUIRework";
+        public const string UI_DEVELOPMENT_GALLERY = "UI_DevelopmentGallery";
 
         public static void ShowOtherModsMenu()
         {
@@ -299,6 +300,11 @@ namespace OverhaulMod.Utils
         public static void HidePhotoModeUIRework()
         {
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_PHOTO_MODE_UI_REWORK);
+        }
+
+        public static void ShowDevelopmentGallery(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIDevelopmentGallery>(AssetBundleConstants.UI, UI_DEVELOPMENT_GALLERY, parent);
         }
     }
 }

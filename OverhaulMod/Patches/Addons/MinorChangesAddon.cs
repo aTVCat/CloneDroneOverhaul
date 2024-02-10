@@ -18,7 +18,7 @@ namespace OverhaulMod.Patches.Addons
                     CrosshairOffsetController crosshairOffsetController = crosshairsUI.Child.GetComponent<CrosshairOffsetController>();
                     if (!crosshairOffsetController)
                     {
-                        crosshairsUI.Child.AddComponent<CrosshairOffsetController>();
+                        _ = crosshairsUI.Child.AddComponent<CrosshairOffsetController>();
                     }
                 }
 
