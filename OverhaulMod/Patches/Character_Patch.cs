@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches
             if (!(__instance is FirstPersonMover firstPersonMover))
                 return;
 
-            CameraModeManager.Instance.AddController(firstPersonMover._playerCamera, firstPersonMover);
+            CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
         }
     }
 }

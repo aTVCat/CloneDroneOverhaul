@@ -87,22 +87,21 @@ namespace OverhaulMod.Patches
                 __result = modWeaponModel.attackSpeed;
             }
         }
-
-        /*
+        
         [HarmonyPostfix]
         [HarmonyPatch("CreateArrowAndDrawBow")]
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
         {
             if (__instance.IsPlayerCameraActive())
-                __instance._cameraHolderAnimator.SetBool("HasNockedArrow", !CameraModeManager.EnableFirstPersonMode);
-        }*/
+                __instance._cameraHolderAnimator.SetBool("HasNockedArrow", !CameraManager.EnableFirstPersonMode);
+        }
 
         /*
         [HarmonyPrefix]
         [HarmonyPatch("ReleaseNockedArrow")]
         private static void ReleaseNockedArrow_Prefix(FirstPersonMover __instance, int serverFrame, ref Vector3 startPosition, Vector3 startFlyDirection, float rotationZ)
         {
-            if (CameraModeManager.EnableFirstPersonMode && __instance.IsPlayerCameraActive())
+            if (CameraManager.EnableFirstPersonMode && __instance.IsPlayerCameraActive())
             {
                 //startPosition = __instance._characterModel.ArrowHolder.position;
             }

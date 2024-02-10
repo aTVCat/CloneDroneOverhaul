@@ -405,7 +405,8 @@
     <Compile Include="Engine\ArenaAudienceManager.cs" />
     <Compile Include="Engine\ArenaRemodelManager.cs" />
     <Compile Include="Engine\CameraModeController.cs" />
-    <Compile Include="Engine\CameraModeManager.cs" />
+    <Compile Include="Engine\CameraManager.cs" />
+    <Compile Include="Engine\CameraRollingController.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\LightningInfo.cs" />

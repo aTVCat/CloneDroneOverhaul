@@ -84,10 +84,10 @@ namespace OverhaulMod.Engine
             PlayerCameraMover mover = m_cameraMover;
             if (mover)
             {
-                CameraModeManager manager = CameraModeManager.Instance;
+                CameraManager manager = CameraManager.Instance;
                 FirstPersonMover firstPersonMover = m_owner;
 
-                if (CameraModeManager.EnableFirstPersonMode)
+                if (CameraManager.EnableFirstPersonMode)
                 {
                     mover._hasCollidedWithEnvironment = false;
                 }
@@ -107,7 +107,7 @@ namespace OverhaulMod.Engine
                 hasToRefreshFields = false;
             }
 
-            if (!CameraModeManager.EnableFirstPersonMode || IsMindTransferInProgress() || !m_owner || !m_owner.IsAlive() || !m_owner.HasCharacterModel())
+            if (!CameraManager.EnableFirstPersonMode || IsMindTransferInProgress() || !m_owner || !m_owner.IsAlive() || !m_owner.HasCharacterModel())
                 return;
 
             if (!m_transformToFollow || (m_cameraAnimator && !m_cameraAnimator.enabled))

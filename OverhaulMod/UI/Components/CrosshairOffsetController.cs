@@ -14,7 +14,7 @@ namespace OverhaulMod.UI
 
         private void Update()
         {
-            base.transform.localPosition = CameraModeManager.EnableFirstPersonMode ? m_offset : Vector3.zero;
+            base.transform.localPosition = CameraManager.EnableFirstPersonMode ? m_offset : Vector3.zero;
         }
     }
 }
