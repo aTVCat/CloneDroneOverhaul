@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HarmonyLib;
+using Newtonsoft.Json;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
@@ -161,6 +162,32 @@ namespace OverhaulMod.Utils
                     s_photoManager = PhotoManager.Instance;
                 }
                 return s_photoManager;
+            }
+        }
+
+        private static MethodInfo s_unityTimeFixedUnscaledDeltaTimePropertyGetter;
+        public static MethodInfo unityTimeFixedUnscaledDeltaTimePropertyGetter
+        {
+            get
+            {
+                if (s_unityTimeFixedUnscaledDeltaTimePropertyGetter == null)
+                {
+                    s_unityTimeFixedUnscaledDeltaTimePropertyGetter = AccessTools.DeclaredPropertyGetter(typeof(Time), nameof(Time.fixedUnscaledDeltaTime));
+                }
+                return s_unityTimeFixedUnscaledDeltaTimePropertyGetter;
+            }
+        }
+
+        private static MethodInfo s_unityTimeUnscaledDeltaTimePropertyGetter;
+        public static MethodInfo unityTimeUnscaledDeltaTimePropertyGetter
+        {
+            get
+            {
+                if (s_unityTimeUnscaledDeltaTimePropertyGetter == null)
+                {
+                    s_unityTimeUnscaledDeltaTimePropertyGetter = AccessTools.DeclaredPropertyGetter(typeof(Time), nameof(Time.unscaledDeltaTime));
+                }
+                return s_unityTimeUnscaledDeltaTimePropertyGetter;
             }
         }
 

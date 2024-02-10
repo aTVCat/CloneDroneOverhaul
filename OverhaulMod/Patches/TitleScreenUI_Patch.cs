@@ -14,16 +14,16 @@ namespace OverhaulMod.Patches
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
             if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
             {
-                if (!titleScreenCustomizationManager.disallowUserFromClickingLogo)
+                if (!titleScreenCustomizationManager.disallowClickingLogo)
                 {
                     GlobalEventManager.Instance.Dispatch("SimpleAchivementEvent", SimpleAchievementEvent.ClickedCloneDroneLogo);
                     ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play("RobotClicked", 0, 0f);
                     _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.DogVoteUpZap, 0f, false, 1f, 0f);
-                    titleScreenCustomizationManager.disallowUserFromClickingLogo = true;
+                    titleScreenCustomizationManager.disallowClickingLogo = true;
                     DelegateScheduler.Instance.Schedule(delegate
                     {
                         if (titleScreenCustomizationManager)
-                            titleScreenCustomizationManager.disallowUserFromClickingLogo = false;
+                            titleScreenCustomizationManager.disallowClickingLogo = false;
                     }, 0.7f);
                 }
                 return false;

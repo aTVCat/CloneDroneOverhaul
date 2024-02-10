@@ -51,6 +51,7 @@ namespace OverhaulMod.Utils
         public const string UI_LEVEL_DESCRIPTION_BROWSER = "UI_LevelDescriptionBrowser";
         public const string UI_TOOLTIPS = "UI_Tooltips";
         public const string UI_IMAGE_EFFECTS = "UI_ImageEffects";
+        public const string UI_PHOTO_MODE_UI_REWORK = "UI_PhotoModeUIRework";
 
         public static void ShowOtherModsMenu()
         {
@@ -288,6 +289,16 @@ namespace OverhaulMod.Utils
         public static void ShowImageEffects()
         {
             _ = ModUIManager.Instance.Show<UIImageEffects>(AssetBundleConstants.UI, UI_IMAGE_EFFECTS, ModUIManager.UILayer.First);
+        }
+
+        public static void ShowPhotoModeUIRework()
+        {
+            _ = ModUIManager.Instance.Show<UIPhotoModeUIRework>(AssetBundleConstants.UI, UI_PHOTO_MODE_UI_REWORK, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static void HidePhotoModeUIRework()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_PHOTO_MODE_UI_REWORK);
         }
     }
 }

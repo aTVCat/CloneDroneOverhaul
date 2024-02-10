@@ -19,7 +19,7 @@ namespace OverhaulMod.Engine
             private set;
         }
 
-        public bool disallowUserFromClickingLogo
+        public bool disallowClickingLogo
         {
             get;
             set;

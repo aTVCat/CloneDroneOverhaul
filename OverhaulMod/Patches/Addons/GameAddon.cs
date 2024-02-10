@@ -31,7 +31,7 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<ProjectileAddon>();
             _ = gameObject.AddComponent<SkyboxesAddon>();
             _ = gameObject.AddComponent<ColorsAddon>();
-            _ = gameObject.AddComponent<MinorUIChangesAddon>();
+            _ = gameObject.AddComponent<MinorChangesAddon>();
             _ = gameObject.AddComponent<LocalizationAddon>();
             _ = gameObject.AddComponent<GameModeSelectScreensAddon>();
 

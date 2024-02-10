@@ -455,8 +455,10 @@
     <Compile Include="Patches\Addons\LocalizationAddon.cs" />
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
-    <Compile Include="Patches\Addons\MinorUIChangesAddon.cs" />
+    <Compile Include="Patches\Addons\MinorChangesAddon.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\FlyingCameraController_Patch.cs" />
+    <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\GameFlowManager_Patch.cs" />
@@ -495,6 +497,7 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UIPhotoModeUIRework.cs" />
     <Compile Include="UI\UIImageEffects.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
