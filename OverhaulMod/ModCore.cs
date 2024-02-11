@@ -1,5 +1,6 @@
 ﻿using ModLibrary;
 using OverhaulMod.Combat;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Addons;
 using OverhaulMod.Utils;
@@ -17,13 +18,8 @@ namespace OverhaulMod
         [ModSetting(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
         public static bool EnableTitleBarOverhaul;
 
-        public static event Action SceneReloaded;
         public static event Action GameInitialized;
-        public static event Action ContentDownloaded;
         public static event Action<bool> ModStateChanged;
-
-        private static bool s_hasEverLoadedTheMod;
-        private static GameObject s_gameObject;
 
         public static ModCore instance { get; private set; }
 
@@ -92,7 +88,6 @@ namespace OverhaulMod
             }
         }
 
-
         private static string s_contentFolder;
         public static string contentFolder
         {
@@ -113,9 +108,22 @@ namespace OverhaulMod
             {
                 if (s_addonsFolder == null)
                 {
-                    s_addonsFolder = assetsFolder + "addons/";
+                    s_addonsFolder = contentFolder + "addons/";
                 }
                 return s_addonsFolder;
+            }
+        }
+
+        private static string s_customizationFolder;
+        public static string customizationFolder
+        {
+            get
+            {
+                if (s_customizationFolder == null)
+                {
+                    s_customizationFolder = contentFolder + "customization/";
+                }
+                return s_customizationFolder;
             }
         }
 
@@ -156,9 +164,6 @@ namespace OverhaulMod
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
-
-            checkIfTheSceneWasReloaded();
-            s_hasEverLoadedTheMod = true;
         }
 
         public override void OnModLoaded()
@@ -169,9 +174,6 @@ namespace OverhaulMod
             GameAddon.Load();
 
             addEventListeners();
-
-            checkIfTheSceneWasReloaded();
-            s_hasEverLoadedTheMod = true;
         }
 
         public override void OnModDeactivated()
@@ -221,6 +223,7 @@ namespace OverhaulMod
                 yield break;
 
             ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);
+            PersonalizationManager.Instance.ConfigureFirstPersonMover(firstPersonMover);
             if (firstPersonMover.IsAttachedAndAlive())
             {
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
@@ -244,31 +247,6 @@ namespace OverhaulMod
         private void onGameInitialized()
         {
             TriggerGameInitializedEvent();
-        }
-
-        private void checkIfTheSceneWasReloaded()
-        {
-            if (!s_hasEverLoadedTheMod)
-            {
-                s_gameObject = new GameObject();
-                return;
-            }
-
-            if (s_hasEverLoadedTheMod && !s_gameObject)
-            {
-                TriggerSceneReloadedEvent();
-                s_gameObject = new GameObject();
-            }
-        }
-
-        public static void TriggerSceneReloadedEvent()
-        {
-            SceneReloaded?.Invoke();
-        }
-
-        public static void TriggerContentLoadedEvent()
-        {
-            ContentDownloaded?.Invoke();
         }
 
         public static void TriggerGameInitializedEvent()

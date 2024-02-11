@@ -7,24 +7,7 @@ namespace OverhaulMod.Patches.Addons
 {
     internal class SkyboxesAddon : GameAddon
     {
-        public override void Start()
-        {
-            base.Start();
-            ModCore.ContentDownloaded += onContentDownloaded;
-        }
-
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            ModCore.ContentDownloaded -= onContentDownloaded;
-        }
-
         public override void Patch()
-        {
-            patch();
-        }
-
-        private void patch()
         {
             _ = ModActionUtils.RunCoroutine(patchCoroutine());
         }
@@ -47,7 +30,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter4Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 2);
-                    }, null, $"assets/content/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, $"assets/content/addons/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
 
                 if (ModAdvancedCache.TryGet("Chapter5Skybox_Rework", out Material material2))
@@ -60,7 +43,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter5Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 7);
-                    }, null, $"assets/content/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, $"assets/content/addons/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
             }
             yield break;
@@ -76,11 +59,6 @@ namespace OverhaulMod.Patches.Addons
             }
             material.name = og.name;
             array[index] = material;
-        }
-
-        private void onContentDownloaded()
-        {
-            patch();
         }
     }
 }

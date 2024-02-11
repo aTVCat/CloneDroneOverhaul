@@ -63,7 +63,6 @@ namespace OverhaulMod
 
         public void TriggerGameLoadedEvent()
         {
-            ModCore.TriggerContentLoadedEvent();
             foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
             {
                 if (behaviour is IGameLoadListener gameLoadListener)

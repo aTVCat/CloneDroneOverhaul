@@ -355,8 +355,11 @@
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
+    <Compile Include="Content\Personalization\PersonalizationController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
-    <Compile Include="Content\Personalization\PersonalizationItem.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Discord\ActivityManager.cs" />
     <Compile Include="Discord\Constants.cs" />

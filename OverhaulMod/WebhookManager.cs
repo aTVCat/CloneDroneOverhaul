@@ -1,5 +1,6 @@
 ﻿using DiscordWebhook;
 using Newtonsoft.Json;
+using OverhaulMod.Content.Personalization;
 using Steamworks;
 using System;
 using System.Net;
@@ -14,6 +15,7 @@ namespace OverhaulMod
 
         public const string FeedbacksWebhookURL = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
         public const string SurveysWebhookURL = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
+        public const string VerificationRequestsWebhookURL = "https://discord.com/api/webhooks/1206265503836930098/XhMcbjEETktOqZlbW1CHY7kQWscJzG-Nk65Q8bvghHfnMFMk7A2_KZWx7CiTG554YsSG";
 
         public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
         {
@@ -88,6 +90,39 @@ namespace OverhaulMod
                 },
             };
             UploadMessageWithWebhook(obj1, SurveysWebhookURL, successCallback, errorCallback);
+        }
+
+        public void ExecuteVerificationRequestWebhook(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
+        {
+            int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.Author}\n- **Type:** {personalizationItem.Category}\n- **Description:** {personalizationItem.Description}";
+
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = $"## __New item to verify. v{ModBuildInfo.version}__",
+                embeds = new Embed[]
+                {
+                    new Embed()
+                    {
+                        title = "**Information**",
+                        description = itemInfo,
+                        color = color,
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Details**",
+                        description = $"{userInfo}",
+                        color = color,
+                    },
+                },
+            };
+
+            UploadMessageWithWebhook(obj1, VerificationRequestsWebhookURL, delegate
+            {
+                UploadFileWithWebhook(zipPath, VerificationRequestsWebhookURL, successCallback, errorCallback);
+            }, errorCallback);
         }
 
         public void ExecuteTestUploadWebhook(string filePath, Action successCallback, Action<string> errorCallback)

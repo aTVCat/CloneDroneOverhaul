@@ -753,6 +753,9 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.KeyBinder(name, defaultKey, delegate (KeyCode kc)
                     {
+                        if (kc == KeyCode.None)
+                            return;
+
                         onChanged?.Invoke(kc);
                         text.text = kc.ToString().Replace("Alpha", string.Empty);
                     }, SettingsMenu.transform);

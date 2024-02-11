@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -8,6 +9,14 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
+
+        [UIElementAction(nameof(OnSelectItemButtonClicked))]
+        [UIElement("SelectItemButton")]
+        private readonly Button m_selectItemButton;
+
+        [UIElementAction(nameof(OnSaveButtonClicked))]
+        [UIElement("SaveButton")]
+        private readonly Button m_saveButton;
 
         public override bool enableCursor => true;
 
@@ -30,6 +39,16 @@ namespace OverhaulMod.UI
         public void OnExitButtonClicked()
         {
             ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
+        }
+
+        public void OnSelectItemButtonClicked()
+        {
+            ModUIConstants.ShowPersonalizationItemsBrowser(base.transform);
+        }
+
+        public void OnSaveButtonClicked()
+        {
+            PersonalizationEditorManager.Instance.SaveItem();
         }
     }
 }

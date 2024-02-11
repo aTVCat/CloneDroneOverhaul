@@ -108,7 +108,7 @@ namespace OverhaulMod.UI
             ModUIUtils.InputFieldWindow("Create new content folder", "Name it", 125f, delegate (string value)
             {
                 string folderName = value.Replace(" ", string.Empty);
-                string folderPath = ModCore.contentFolder + folderName + "/";
+                string folderPath = ModCore.addonsFolder + folderName + "/";
                 string contentInfoFilePath = folderPath + ContentManager.CONTENT_INFO_FILE;
 
                 _ = Directory.CreateDirectory(folderPath);

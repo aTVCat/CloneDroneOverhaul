@@ -54,7 +54,7 @@ namespace OverhaulMod.Content
                     string tempFile = Path.GetTempFileName();
                     ModIOUtils.WriteBytes(bytes, tempFile);
 
-                    string directory = ModCore.contentFolder + name.Replace(" ", string.Empty) + "/";
+                    string directory = ModCore.addonsFolder + name.Replace(" ", string.Empty) + "/";
                     if (!Directory.Exists(directory))
                         _ = Directory.CreateDirectory(directory);
 
@@ -144,7 +144,7 @@ namespace OverhaulMod.Content
         public void RemoveContent(string name)
         {
             if (HasContent(name))
-                Directory.Delete($"{ModCore.contentFolder}{name}/", true);
+                Directory.Delete($"{ModCore.addonsFolder}{name}/", true);
         }
 
         public bool HasContent(string contentName, bool quick = false)
@@ -158,7 +158,7 @@ namespace OverhaulMod.Content
                     if (c.DisplayName == contentName)
                         return true;
             }
-            return Directory.Exists($"{ModCore.contentFolder}{contentName}/");
+            return Directory.Exists($"{ModCore.addonsFolder}{contentName}/");
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace OverhaulMod.Content
         /// <returns></returns>
         public string GetContentPath(string contentName)
         {
-            string path = $"{ModCore.contentFolder}{contentName}/";
+            string path = $"{ModCore.addonsFolder}{contentName}/";
             return !Directory.Exists(path) ? null : path;
         }
 
@@ -177,7 +177,7 @@ namespace OverhaulMod.Content
             if (m_installedContent != null)
                 return m_installedContent;
 
-            string[] folders = Directory.GetDirectories(ModCore.contentFolder);
+            string[] folders = Directory.GetDirectories(ModCore.addonsFolder);
             if (folders.IsNullOrEmpty())
                 return null;
 
