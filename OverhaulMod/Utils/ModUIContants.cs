@@ -53,6 +53,7 @@ namespace OverhaulMod.Utils
         public const string UI_IMAGE_EFFECTS = "UI_ImageEffects";
         public const string UI_PHOTO_MODE_UI_REWORK = "UI_PhotoModeUIRework";
         public const string UI_DEVELOPMENT_GALLERY = "UI_DevelopmentGallery";
+        public const string UI_SET_KEY_BIND_WINDOW = "UI_SetKeyBindWindow";
 
         public static void ShowOtherModsMenu()
         {
@@ -305,6 +306,11 @@ namespace OverhaulMod.Utils
         public static void ShowDevelopmentGallery(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIDevelopmentGallery>(AssetBundleConstants.UI, UI_DEVELOPMENT_GALLERY, parent);
+        }
+
+        public static UISetKeyBindWindow ShowSetKeyBindWindow(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UISetKeyBindWindow>(AssetBundleConstants.UI, UI_SET_KEY_BIND_WINDOW, parent);
         }
     }
 }

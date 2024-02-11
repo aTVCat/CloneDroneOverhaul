@@ -474,6 +474,7 @@
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
+    <Compile Include="UI\UISetKeyBindWindow.cs" />
     <Compile Include="UI\UIPhotoModeUIRework.cs" />
     <Compile Include="UI\UIImageEffects.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />

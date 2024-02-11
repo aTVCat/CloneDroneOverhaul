@@ -46,6 +46,9 @@ namespace OverhaulMod.UI
         [UIElement("ButtonPrefab", false)]
         public ModdedObject ButtonPrefab;
 
+        [UIElement("KeyBindPrefab", false)]
+        public ModdedObject KeyBindPrefab;
+
         [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
@@ -135,219 +138,206 @@ namespace OverhaulMod.UI
 
         private void populateDebugPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
-            {
-                _ = pageBuilder.Slider(0f, 1f, false, 0.5f, null);
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Slider(0f, 1f, false, 0.5f, null);
 
-                _ = pageBuilder.Header1("Graphics test");
-                _ = pageBuilder.Header3("Window settings");
-                _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
-                _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
-                _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
+            _ = pageBuilder.Header1("Graphics test");
+            _ = pageBuilder.Header3("Window settings");
+            _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
+            _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
+            _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
-                _ = pageBuilder.Header1("Multiplayer test");
-                _ = pageBuilder.Header3("Preferred region");
-                _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
-                _ = pageBuilder.Header3("Player skin");
-                _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
-            }
+            _ = pageBuilder.Header1("Multiplayer test");
+            _ = pageBuilder.Header3("Preferred region");
+            _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
+            _ = pageBuilder.Header3("Player skin");
+            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Graphics");
+            _ = pageBuilder.Header3("Window");
+            _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
+            _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
+            _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
+
+            if (ModSpecialUtils.SupportsTitleBarOverhaul())
             {
-                _ = pageBuilder.Header1("Graphics");
-                _ = pageBuilder.Header3("Window");
-                _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
-                _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
-                _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
-
-                if (ModSpecialUtils.SupportsTitleBarOverhaul())
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL), delegate (bool value)
                 {
-                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL), delegate (bool value)
-                    {
-                        ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, value, true);
-                    }, "Enable title bar changes");
-                }
-
-                _ = pageBuilder.Header3("Render");
-                _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
-                _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
-
-                _ = pageBuilder.Header1("Game interface");
-                _ = pageBuilder.Header3("Language");
-                _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
-                _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
-                _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
-                _ = pageBuilder.Toggle(true, null, "Show overhaul mod watermark");
-                _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
-                {
-                    ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
-                });
-
-                _ = pageBuilder.Header1("Environment");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL, value, true);
-                }, "Arena remodel");
-                _ = pageBuilder.Header4("Made by @water2977");
-
-                _ = pageBuilder.Header1("Voxel engine");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING, value, true);
-                }, "Better fire spreading");
-                _ = pageBuilder.Toggle(true, delegate (bool value)
-                {
-                }, "Force burn");
-
-                _ = pageBuilder.Header1("Garbage");
-                _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
-                _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
+                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, value, true);
+                }, "Enable title bar changes");
             }
+
+            _ = pageBuilder.Header3("Render");
+            _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
+            _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
+
+            _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Header3("Language");
+            _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
+            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
+            _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
+            _ = pageBuilder.Toggle(true, null, "Show overhaul mod watermark");
+            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            {
+                ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+            });
+
+            _ = pageBuilder.Header1("Environment");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_ARENA_REMODEL, value, true);
+            }, "Arena remodel");
+            _ = pageBuilder.Header4("Made by @water2977");
+
+            _ = pageBuilder.Header1("Voxel engine");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_VOXEL_FIRE_FADING, value, true);
+            }, "Better fire spreading");
+            _ = pageBuilder.Toggle(true, delegate (bool value)
+            {
+            }, "Force burn");
+
+            _ = pageBuilder.Header1("Garbage");
+            _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
+            _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
         }
 
         private void populateGameplayPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Gameplay settings");
+            _ = pageBuilder.Header3("Difficulty");
+            _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
+            _ = pageBuilder.Header4("Change what enemies spawn");
+
+            _ = pageBuilder.Header3("Fun");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
             {
-                _ = pageBuilder.Header1("Gameplay settings");
-                _ = pageBuilder.Header3("Difficulty");
-                _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
-                _ = pageBuilder.Header4("Change what enemies spawn");
+                ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE, value, true);
+            }, "First person mode");
+            _ = pageBuilder.KeyBind("Camera mode toggle", (KeyCode)ModSettingsManager.GetIntValue(ModSettingConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
+            });
 
-                _ = pageBuilder.Header3("Fun");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE, value, true);
-                }, "First person mode");
+            _ = pageBuilder.Header3("Endless levels");
+            _ = pageBuilder.Dropdown(settingsMenu.WorkshopLevelPolicyDropdown.options, settingsMenu.WorkshopLevelPolicyDropdown.value, OnWorkshopEndlessLevelPolicyIndexChanged);
+            _ = pageBuilder.Button("Get more levels", delegate
+            {
+                Hide();
+                if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
+                    ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
+                else
+                    ModUIConstants.ShowWorkshopBrowserRework();
+            });
 
-                _ = pageBuilder.Header3("Endless levels");
-                _ = pageBuilder.Dropdown(settingsMenu.WorkshopLevelPolicyDropdown.options, settingsMenu.WorkshopLevelPolicyDropdown.value, OnWorkshopEndlessLevelPolicyIndexChanged);
-                _ = pageBuilder.Button("Get more levels", delegate
+            _ = pageBuilder.Header1("Twitch");
+            _ = pageBuilder.Button("Enemy spawn settings", delegate
+            {
+                settingsMenu.OnTwitchEnemyLimitButtonClicked();
+                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    Hide();
-                    if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
-                        ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
-                    else
-                        ModUIConstants.ShowWorkshopBrowserRework();
+                    GameUIRoot.Instance.TwitchEnemySettingsMenu.Hide();
                 });
-
-                _ = pageBuilder.Header1("Twitch");
-                _ = pageBuilder.Button("Enemy spawn settings", delegate
-                {
-                    settingsMenu.OnTwitchEnemyLimitButtonClicked();
-                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                    {
-                        GameUIRoot.Instance.TwitchEnemySettingsMenu.Hide();
-                    });
-                });
-                _ = pageBuilder.Toggle(settingsMenu.MuteEmotesToggle.isOn, OnMuteEmotesToggleChanged, "Mute twitch emotes");
-                _ = pageBuilder.Toggle(settingsMenu.DevIsLiveEnabledToggle.isOn, OnDevIsLiveToggleChanged, "Dev stream notifications");
-            }
+            });
+            _ = pageBuilder.Toggle(settingsMenu.MuteEmotesToggle.isOn, OnMuteEmotesToggleChanged, "Mute twitch emotes");
+            _ = pageBuilder.Toggle(settingsMenu.DevIsLiveEnabledToggle.isOn, OnDevIsLiveToggleChanged, "Dev stream notifications");
         }
 
         private void populateSoundsPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
-            {
-                _ = pageBuilder.Header1("Volume");
-                _ = pageBuilder.Header3("Global");
-                _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.SoundVolume.value, OnGlobalVolumeChanged);
-                _ = pageBuilder.Header3("Music");
-                _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.MusicVolume.value, OnMusicVolumeChanged);
-                _ = pageBuilder.Header3("Commentator");
-                _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.CommentatorsVolume.value, OnCommentatorVolumeChanged);
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Volume");
+            _ = pageBuilder.Header3("Global");
+            _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.SoundVolume.value, OnGlobalVolumeChanged);
+            _ = pageBuilder.Header3("Music");
+            _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.MusicVolume.value, OnMusicVolumeChanged);
+            _ = pageBuilder.Header3("Commentator");
+            _ = pageBuilder.Slider(0f, 1f, false, settingsMenu.CommentatorsVolume.value, OnCommentatorVolumeChanged);
 
-                _ = pageBuilder.Header1("Filters");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER, value, true);
-                }, "Reverb");
-                _ = pageBuilder.Header3("Reverb intensity");
-                _ = pageBuilder.Slider(0.1f, 1.5f, false, ModSettingsManager.GetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY), delegate (float value)
-                {
-                    ModSettingsManager.SetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY, value, true);
-                });
-            }
+            _ = pageBuilder.Header1("Filters");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_REVERB_FILTER, value, true);
+            }, "Reverb");
+            _ = pageBuilder.Header3("Reverb intensity");
+            _ = pageBuilder.Slider(0.1f, 1.5f, false, ModSettingsManager.GetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingConstants.REVERB_FILTER_INTENSITY, value, true);
+            });
         }
 
         private void populateMultiplayerPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Multiplayer settings");
+            _ = pageBuilder.Header3("Preferred region");
+            _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
+            _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
+            _ = pageBuilder.Button("Manage muted players", delegate
             {
-                _ = pageBuilder.Header1("Multiplayer settings");
-                _ = pageBuilder.Header3("Preferred region");
-                _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
-                _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
-                _ = pageBuilder.Button("Manage muted players", delegate
+                GameUIRoot.Instance.BlockListSettingsUI.Show();
+                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.BlockListSettingsUI.Show();
-                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                    {
-                        GameUIRoot.Instance.BlockListSettingsUI.Hide();
-                    });
+                    GameUIRoot.Instance.BlockListSettingsUI.Hide();
                 });
+            });
 
-                _ = pageBuilder.Header1("Player");
-                _ = pageBuilder.Header3("Skin");
-                _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
-                _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
-                _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
+            _ = pageBuilder.Header1("Player");
+            _ = pageBuilder.Header3("Skin");
+            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
+            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
+            _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
 
-                _ = pageBuilder.Header3("Personalization");
-                _ = pageBuilder.Button("Select emotes", delegate
+            _ = pageBuilder.Header3("Personalization");
+            _ = pageBuilder.Button("Select emotes", delegate
+            {
+                GameUIRoot.Instance.EmoteSettingsUI.Show();
+                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.EmoteSettingsUI.Show();
-                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                    {
-                        GameUIRoot.Instance.EmoteSettingsUI.Hide();
-                    });
+                    GameUIRoot.Instance.EmoteSettingsUI.Hide();
                 });
-                _ = pageBuilder.Button("Personalize", null);
-            }
+            });
+            _ = pageBuilder.Button("Personalize", null);
         }
 
         private void populateControlsPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Controls settings");
+            _ = pageBuilder.Button("Edit controls", delegate
             {
-                _ = pageBuilder.Header1("Controls settings");
-                _ = pageBuilder.Button("Edit controls", delegate
+                GameUIRoot.Instance.ControlMapper.Open();
+                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.ControlMapper.Open();
-                    ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                    {
-                        _ = GameUIRoot.Instance.ControlMapper.Close(true);
-                    });
+                    _ = GameUIRoot.Instance.ControlMapper.Close(true);
                 });
+            });
 
-                _ = pageBuilder.Header3("Mouse");
-                _ = pageBuilder.Slider(settingsMenu.MouseSensitivitySlider.minValue, settingsMenu.MouseSensitivitySlider.maxValue, false, settingsMenu.MouseSensitivitySlider.value, OnMouseSensitivityChanged);
-                _ = pageBuilder.Toggle(settingsMenu.InvertMouseToggle.isOn, OnInvertMouseToggleChanged, "Invert mouse");
-                _ = pageBuilder.Header3("Controller");
-                _ = pageBuilder.Slider(settingsMenu.ControllerSensitivitySlider.minValue, settingsMenu.ControllerSensitivitySlider.maxValue, false, settingsMenu.ControllerSensitivitySlider.value, OnControllerSensitivityChanged);
-                _ = pageBuilder.Toggle(settingsMenu.InvertControllerToggle.isOn, OnInvertControllerToggleChanged, "Invert controller");
-                _ = pageBuilder.Toggle(settingsMenu.EqualLookRatioToggle.isOn, OnEqualLookRatioToggleChanged, "1:1 look ratio");
-            }
+            _ = pageBuilder.Header3("Mouse");
+            _ = pageBuilder.Slider(settingsMenu.MouseSensitivitySlider.minValue, settingsMenu.MouseSensitivitySlider.maxValue, false, settingsMenu.MouseSensitivitySlider.value, OnMouseSensitivityChanged);
+            _ = pageBuilder.Toggle(settingsMenu.InvertMouseToggle.isOn, OnInvertMouseToggleChanged, "Invert mouse");
+            _ = pageBuilder.Header3("Controller");
+            _ = pageBuilder.Slider(settingsMenu.ControllerSensitivitySlider.minValue, settingsMenu.ControllerSensitivitySlider.maxValue, false, settingsMenu.ControllerSensitivitySlider.value, OnControllerSensitivityChanged);
+            _ = pageBuilder.Toggle(settingsMenu.InvertControllerToggle.isOn, OnInvertControllerToggleChanged, "Invert controller");
+            _ = pageBuilder.Toggle(settingsMenu.EqualLookRatioToggle.isOn, OnEqualLookRatioToggleChanged, "1:1 look ratio");
         }
 
         private void populateModBotPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
-            {
-            }
         }
 
         private void populateDefaultPage(SettingsMenu settingsMenu)
         {
-            using (PageBuilder pageBuilder = new PageBuilder(this))
-            {
-                _ = pageBuilder.Header1("Page not implemented.");
-                _ = pageBuilder.Header2("Try using original menu");
-                _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
-            }
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Page not implemented.");
+            _ = pageBuilder.Header2("Try using original menu");
+            _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
         }
 
         private int getCurrentLanguageIndex()
@@ -622,7 +612,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public class PageBuilder : IDisposable
+        public class PageBuilder
         {
             public UISettingsMenuRework SettingsMenu;
 
@@ -749,6 +739,32 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(new UnityAction(onClicked));
                 return button;
+            }
+
+            public ModdedObject KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
+            {
+                ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+
+                Text text = moddedObject.GetObject<Text>(0);
+                text.text = keyCode.ToString().Replace("Alpha", string.Empty);
+                Button setBindButton = moddedObject.GetObject<Button>(1);
+                setBindButton.onClick.AddListener(delegate
+                {
+                    ModUIUtils.KeyBinder(name, defaultKey, delegate (KeyCode kc)
+                    {
+                        onChanged?.Invoke(kc);
+                        text.text = kc.ToString().Replace("Alpha", string.Empty);
+                    }, SettingsMenu.transform);
+                });
+                Button setDefaultBindButton = moddedObject.GetObject<Button>(2);
+                setDefaultBindButton.onClick.AddListener(delegate
+                {
+                    onChanged?.Invoke(defaultKey);
+                    text.text = defaultKey.ToString().Replace("Alpha", string.Empty);
+                });
+
+                return moddedObject;
             }
 
             public void Dispose()

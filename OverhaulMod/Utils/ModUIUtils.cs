@@ -7,6 +7,13 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void KeyBinder(string name, KeyCode defaultKey, Action<KeyCode> callback, Transform parent)
+        {
+            UISetKeyBindWindow setKeyBindWindow = ModUIConstants.ShowSetKeyBindWindow(parent);
+            setKeyBindWindow.callBack = callback;
+            setKeyBindWindow.SetContents(name, defaultKey);
+        }
+
         public static void LevelDescriptionBrowser(List<LevelDescription> levelDescriptions, Action<List<LevelDescription>> callback, bool allowMultiSelection)
         {
             UILevelDescriptionBrowser levelDescriptionBrowser = ModUIConstants.ShowLevelDescriptionBrowser();
