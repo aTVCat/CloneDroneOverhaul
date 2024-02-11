@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -17,6 +18,16 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
         private readonly Button m_saveButton;
+
+        [UIElementAction(nameof(OnSendToVerificationButtonClicked))]
+        [UIElement("SendToVerificationButton")]
+        private readonly Button m_sendToVerificationButton;
+
+        [UIElement("ToolBar")]
+        public RectTransform ToolBarTransform;
+
+        [UIElement("LeftPanel")]
+        public RectTransform LeftPanelTransform;
 
         public override bool enableCursor => true;
 
@@ -43,12 +54,17 @@ namespace OverhaulMod.UI
 
         public void OnSelectItemButtonClicked()
         {
-            ModUIConstants.ShowPersonalizationItemsBrowser(base.transform);
+            ModUIConstants.ShowPersonalizationEditorItemsBrowser(base.transform);
         }
 
         public void OnSaveButtonClicked()
         {
             PersonalizationEditorManager.Instance.SaveItem();
+        }
+
+        public void OnSendToVerificationButtonClicked()
+        {
+            ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
     }
 }

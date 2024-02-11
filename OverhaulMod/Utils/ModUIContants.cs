@@ -55,6 +55,7 @@ namespace OverhaulMod.Utils
         public const string UI_DEVELOPMENT_GALLERY = "UI_DevelopmentGallery";
         public const string UI_SET_KEY_BIND_WINDOW = "UI_SetKeyBindWindow";
         public const string UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER = "UI_PersonalizationEditorItemsBrowser";
+        public const string UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU = "UI_PersonalizationEditorVerificationMenu";
 
         public static void ShowOtherModsMenu()
         {
@@ -228,9 +229,9 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowPersonalizationEditorUI()
+        public static UIPersonalizationEditor ShowPersonalizationEditorUI()
         {
-            _ = ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
+            return ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
         }
 
         public static void ShowMultiplayerGameModeSelectScreen()
@@ -314,9 +315,14 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UISetKeyBindWindow>(AssetBundleConstants.UI, UI_SET_KEY_BIND_WINDOW, parent);
         }
 
-        public static void ShowPersonalizationItemsBrowser(Transform parent)
+        public static void ShowPersonalizationEditorItemsBrowser(Transform parent)
         {
-            _ = ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
+            _ = ModUIManager.Instance.Show<UIPersonalizationEditorItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
+        }
+
+        public static void ShowPersonalizationEditorVerificationMenu(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationEditorVerificationMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU, parent);
         }
     }
 }

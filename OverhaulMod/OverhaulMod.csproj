@@ -360,6 +360,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Discord\ActivityManager.cs" />
     <Compile Include="Discord\Constants.cs" />
@@ -477,6 +478,8 @@
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
+    <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />
     <Compile Include="UI\UIPhotoModeUIRework.cs" />
     <Compile Include="UI\UIImageEffects.cs" />
@@ -517,7 +520,7 @@
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIAttribute.cs" />
     <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
-    <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorItemsBrowser.cs" />
     <Compile Include="UI\UIUpdatesWindow.cs" />
     <Compile Include="UI\UIContentDownloadWindow.cs" />
     <Compile Include="UI\UINewsPanel.cs" />

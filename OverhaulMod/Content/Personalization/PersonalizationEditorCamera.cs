@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorCamera : MonoBehaviour
     {
+        public RectTransform LeftPanelTransform, ToolBarTransform;
+
+        private Camera m_camera;
+
+        private void Start()
+        {
+            m_camera = base.GetComponent<Camera>();
+        }
+
         private void LateUpdate()
         {
+            RefreshCameraRect();
             if (UIManager.Instance.IsMouseOverUIElement())
                 return;
 
@@ -28,7 +33,7 @@ namespace OverhaulMod.Content.Personalization
             bool right = Input.GetKey(KeyCode.D);
             bool left = Input.GetKey(KeyCode.A);
             bool up = Input.GetKey(KeyCode.Space);
-            bool down= Input.GetKey(KeyCode.LeftControl);
+            bool down = Input.GetKey(KeyCode.LeftControl);
 
             float y = Input.GetAxis("Mouse X");
             float x = -Input.GetAxis("Mouse Y");
@@ -64,6 +69,26 @@ namespace OverhaulMod.Content.Personalization
 
             base.transform.position += vector * deltaTime;
             base.transform.eulerAngles = new Vector3(newX, newY, 0f);
+        }
+
+        public void RefreshCameraRect()
+        {
+            float width = Screen.width;
+            float height = Screen.height;
+            float minX = 0f;
+
+            if (LeftPanelTransform && ToolBarTransform)
+            {
+                height -= ToolBarTransform.rect.height + 5f;
+                width -= LeftPanelTransform.rect.width + 5f;
+                minX = LeftPanelTransform.rect.width + 5f;
+            }
+
+            Rect rect = m_camera.pixelRect;
+            rect.xMin = minX;
+            rect.height = height;
+            rect.width = width;
+            m_camera.pixelRect = rect;
         }
     }
 }

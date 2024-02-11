@@ -16,6 +16,8 @@ namespace OverhaulMod.Content.Personalization
 
         public string EditorID;
 
+        public int Version;
+
         [NonSerialized]
         public string FolderPath;
 

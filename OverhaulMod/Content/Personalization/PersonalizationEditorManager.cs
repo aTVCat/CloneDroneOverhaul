@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections;
@@ -62,7 +63,6 @@ namespace OverhaulMod.Content.Personalization
         public void StartEditorGameMode()
         {
             GameFlowManager.Instance._gameMode = (GameMode)2500;
-            LevelManager.Instance._currentLevelHidesTheArena = false;
 
             LevelManager.Instance.CleanUpLevelThisFrame();
             GameFlowManager.Instance.HideTitleScreen(false);
@@ -73,17 +73,30 @@ namespace OverhaulMod.Content.Personalization
             CacheManager.Instance.CreateOrClearInstance();
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
+                UIPersonalizationEditor editorUi = ModUIConstants.ShowPersonalizationEditorUI();
+
                 GameUIRoot.Instance.LoadingScreen.Hide();
                 GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
 
                 GameObject cameraObject = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab.gameObject);
-                _ = cameraObject.AddComponent<PersonalizationEditorCamera>();
                 cameraObject.tag = "MainCamera";
-                cameraObject.transform.position = (Vector3.up * 3f) + (Vector3.forward * 3f);
+                cameraObject.transform.position = new Vector3(-2.5f, 3f, 3f);
+                cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
+                PersonalizationEditorCamera personalizationEditorCamera = cameraObject.AddComponent<PersonalizationEditorCamera>();
+                personalizationEditorCamera.ToolBarTransform = editorUi.ToolBarTransform;
+                personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;
 
-                ModUIConstants.ShowPersonalizationEditorUI();
+                LevelEditorLevelData levelEditorLevelData = null;
+                try
+                {
+                    levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(ModCore.dataFolder + "levels/personalizationEditorLevel.json");
+                }
+                catch
+                {
+                    LevelManager.Instance._currentLevelHidesTheArena = false;
+                }
 
-                SpawnBot();
+                base.StartCoroutine(spawnLevelCoroutine(levelEditorLevelData));
             });
         }
 
@@ -125,6 +138,7 @@ namespace OverhaulMod.Content.Personalization
 
             float timeOut = Time.unscaledTime + 5f;
             FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true);
+            bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
@@ -136,6 +150,23 @@ namespace OverhaulMod.Content.Personalization
 
             personalizationController = bot.GetComponent<PersonalizationController>();
             editingPersonalizationController = personalizationController;
+            yield break;
+        }
+
+        private IEnumerator spawnLevelCoroutine(LevelEditorLevelData levelEditorLevelData)
+        {
+            if (levelEditorLevelData != null)
+            {
+                GameObject level = new GameObject();
+                LevelManager.Instance._currentLevelHidesTheArena = true;
+                yield return base.StartCoroutine(LevelEditorDataManager.Instance.DeserializeInto(level.transform, levelEditorLevelData));
+            }
+            else
+            {
+                LevelManager.Instance._currentLevelHidesTheArena = false;
+            }
+            GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
+            SpawnBot();
             yield break;
         }
     }
