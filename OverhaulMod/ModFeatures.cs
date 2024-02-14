@@ -38,7 +38,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WorkshopBrowserRework:
-                    result = false;
+                    result = true;
                     break;
                 case FeatureType.NewDifficultyTiers:
                     result = ModBuildInfo.enableV5;

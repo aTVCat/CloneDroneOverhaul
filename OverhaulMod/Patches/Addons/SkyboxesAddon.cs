@@ -12,6 +12,13 @@ namespace OverhaulMod.Patches.Addons
             _ = ModActionUtils.RunCoroutine(patchCoroutine());
         }
 
+        public override void UnPatch()
+        {
+            ModResources.Instance.UnloadAssetBundle("overhaul_default_skyboxes");
+            ModAdvancedCache.Remove("Chapter4Skybox_Rework");
+            ModAdvancedCache.Remove("Chapter5Skybox_Rework");
+        }
+
         private IEnumerator patchCoroutine()
         {
             yield return null;

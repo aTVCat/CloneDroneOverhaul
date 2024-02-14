@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OverhaulMod.Content
 {
@@ -6,6 +7,7 @@ namespace OverhaulMod.Content
     {
         public string DisplayName;
         public long Size;
+        public Version MinModVersion;
 
         public string File;
 
@@ -15,6 +17,11 @@ namespace OverhaulMod.Content
         {
             if (Files == null)
                 Files = new List<string>();
+        }
+
+        public bool IsSupported()
+        {
+            return MinModVersion != null && ModBuildInfo.version >= MinModVersion;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace OverhaulMod
 
         private List<string> m_loadingBundles;
 
+        private List<string> m_loadingAssets;
+
         public int loadedAssetBundlesCount
         {
             get
@@ -44,6 +46,7 @@ namespace OverhaulMod
             m_assets = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
             m_bundles = new Dictionary<string, AssetBundle>();
             m_loadingBundles = new List<string>();
+            m_loadingAssets = new List<string>();
         }
 
         /// <summary>
@@ -98,6 +101,38 @@ namespace OverhaulMod
             {
                 callback?.Invoke((T)obj);
             }, errorCallback, startPath));
+        }
+
+        public AssetBundle LoadBundle(string assetBundle, string startPath = ASSET_BUNDLES_FOLDER)
+        {
+            AssetBundle bundle = AssetBundle.LoadFromFile(ModCore.folder + startPath + assetBundle);
+            if (!IsBundleLoaded(assetBundle))
+                cacheAssetBundle(assetBundle, bundle);
+            return bundle;
+        }
+
+        public void LoadBundleAsync(string assetBundle, Action<AssetBundle> successCallback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)
+        {
+            string bundlePath = ModCore.folder + startPath + assetBundle;
+            if (IsBundleLoaded(assetBundle))
+            {
+                successCallback?.Invoke(GetBundle(assetBundle));
+                return;
+            }
+
+            if (m_loadingBundles.Contains(bundlePath))
+            {
+                _ = ModActionUtils.RunCoroutine(waitUntilBundleIsLoadedCoroutine(bundlePath, delegate (AssetBundle b)
+                {
+                    successCallback?.Invoke(b);
+                }, errorCallback));
+                return;
+            }
+
+            _ = ModActionUtils.RunCoroutine(loadBundleCoroutine(bundlePath, delegate (AssetBundle b)
+            {
+                successCallback?.Invoke(b);
+            }, errorCallback));
         }
 
         private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)
@@ -186,15 +221,34 @@ namespace OverhaulMod
 
         private IEnumerator loadAssetCoroutine(string assetPath, string assetBundle, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback)
         {
+            string value = $"{assetBundle}.{assetPath}";
+            m_loadingAssets.Add(value);
             AssetBundleRequest request = GetBundle(assetBundle).LoadAssetAsync(assetPath, assetType);
             yield return request;
             if (!request.asset)
             {
+                _ = m_loadingAssets.Remove(value);
                 errorCallback?.Invoke("Asset load failed.");
                 yield break;
             }
             cacheObject(assetBundle, assetPath, request.asset);
             callback?.Invoke(request.asset);
+            _ = m_loadingAssets.Remove(value);
+            yield break;
+        }
+
+        private IEnumerator waitUntilBundleIsLoadedCoroutine(string bundlePath, Action<AssetBundle> callback, Action<string> errorCallback)
+        {
+            string sub = bundlePath.Substring(bundlePath.LastIndexOf('/') + 1);
+            yield return new WaitUntil(() => !m_loadingBundles.Contains(bundlePath));
+            if (m_bundles.ContainsKey(sub))
+            {
+                callback?.Invoke(m_bundles[sub]);
+            }
+            else
+            {
+                errorCallback?.Invoke("Could not load asset bundle");
+            }
             yield break;
         }
 

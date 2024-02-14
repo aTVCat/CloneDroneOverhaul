@@ -15,6 +15,11 @@ namespace OverhaulMod.Utils
                 s_items.Add(key, item);
         }
 
+        public static void Remove(object key)
+        {
+            s_items.Remove(key);
+        }
+
         public static bool Has(object key)
         {
             return s_items.ContainsKey(key);

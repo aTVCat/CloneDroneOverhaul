@@ -114,6 +114,9 @@ namespace OverhaulMod.UI
         [UIElement("ViewMultiplayerErrorButton", typeof(UIElementMultiplayerMessageButton))]
         public UIElementMultiplayerMessageButton ErrorMessageButton;
 
+        [UIElement("ContentButton", typeof(UIElementTitleScreenContentButton))]
+        public UIElementTitleScreenContentButton ContentButtonController;
+
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
         private GameObject m_legacyContainer;

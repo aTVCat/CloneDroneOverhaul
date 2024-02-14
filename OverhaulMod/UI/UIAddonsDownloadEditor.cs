@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,8 @@ namespace OverhaulMod.UI
         private readonly InputField m_contentSizeField;
         [UIElement("AddonFilePathInputField")]
         private readonly InputField m_contentPathField;
+        [UIElement("AddonMinModVersionInputField")]
+        private readonly InputField m_contentMinModVersionField;
 
         [UIElement("FileDisplay", false)]
         private readonly ModdedObject m_fileDisplayPrefab;
@@ -86,6 +89,7 @@ namespace OverhaulMod.UI
             m_contentNameField.text = contentDownloadInfo.DisplayName;
             m_contentSizeField.text = contentDownloadInfo.Size.ToString();
             m_contentPathField.text = contentDownloadInfo.File;
+            m_contentMinModVersionField.text = contentDownloadInfo.MinModVersion?.ToString();
         }
 
         private void readFileFromDisk()
@@ -122,12 +126,19 @@ namespace OverhaulMod.UI
 
         public void OnSaveButtonClicked()
         {
+            if(!Version.TryParse(m_contentMinModVersionField.text, out Version version))
+            {
+                ModUIUtils.MessagePopupOK("Could not parse version", "check if version is typed correctly", false);
+                return;
+            }
+
             ContentDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
             if (contentDownloadInfo != null)
             {
                 contentDownloadInfo.DisplayName = m_contentNameField.text;
                 contentDownloadInfo.Size = long.Parse(m_contentSizeField.text);
                 contentDownloadInfo.File = m_contentPathField.text;
+                contentDownloadInfo.MinModVersion = version;
             }
 
             ContentListInfo contentListInfo = editingContentList;

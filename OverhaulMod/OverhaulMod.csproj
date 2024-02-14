@@ -434,6 +434,7 @@
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
     <Compile Include="Patches\Addons\MinorChangesAddon.cs" />
+    <Compile Include="Patches\Addons\RealisticSkyboxesAddon.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Character_Patch.cs" />
     <Compile Include="Patches\FlyingCameraController_Patch.cs" />
@@ -476,6 +477,7 @@
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />

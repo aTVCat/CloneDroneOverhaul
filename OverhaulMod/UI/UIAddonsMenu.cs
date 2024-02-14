@@ -35,6 +35,9 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        [UIElement("LoadingIndicator", false)]
+        private readonly GameObject m_loadingIndicator;
+
         private bool m_shouldSuggestGameRestart;
 
         public override bool hideTitleScreen => true;
@@ -119,6 +122,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
+            m_loadingIndicator.SetActive(true);
             m_tabs.interactable = false;
             ContentManager.Instance.DownloadContentList(out _, delegate (ContentListInfo contentListInfo)
             {
@@ -134,14 +138,18 @@ namespace OverhaulMod.UI
 
                     UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
                     networkAddonDisplay.contentFile = content.File;
+                    networkAddonDisplay.isSupported = content.IsSupported();
+                    networkAddonDisplay.minModVersion = content.MinModVersion;
                     networkAddonDisplay.InitializeElement();
                 }
 
+                m_loadingIndicator.SetActive(false);
                 m_tabs.interactable = true;
             }, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 
+                m_loadingIndicator.SetActive(false);
                 m_tabs.interactable = true;
                 m_tabs.SelectTab("local addons");
             });

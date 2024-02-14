@@ -16,15 +16,28 @@ namespace OverhaulMod.Content
 
         public const string EXTRAS_CONTENT_FOLDER_NAME = "Extras";
 
+        public const string REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME = "RealisticSkyboxes";
+
         public const string CONTENT_DOWNLOAD_DONE_EVENT = "OverhaulContentDownloadDone";
 
         private Dictionary<string, UnityWebRequest> m_downloadingFiles;
 
         private List<ContentInfo> m_installedContent;
 
+        private List<object> m_loadingAddons;
+
+        public bool isLoadingAnyContent
+        {
+            get
+            {
+                return m_loadingAddons != null && m_loadingAddons.Count != 0;
+            }
+        }
+
         private void Start()
         {
             m_downloadingFiles = new Dictionary<string, UnityWebRequest>();
+            m_loadingAddons = new List<object>();
             RefreshContent();
         }
 
@@ -101,7 +114,7 @@ namespace OverhaulMod.Content
                 }
 
                 callback?.Invoke(contentInfo);
-            }, errorCallback, out unityWebRequest, 200);
+            }, errorCallback, out unityWebRequest, 15);
         }
 
         private IEnumerator waitUntilContentIsDownloaded(string name, Action callback, Action<string> errorCallback)
@@ -159,6 +172,17 @@ namespace OverhaulMod.Content
                         return true;
             }
             return Directory.Exists($"{ModCore.addonsFolder}{contentName}/");
+        }
+
+        public void SetContentIsLoading(object obj, bool value)
+        {
+            if (obj == null)
+                return;
+
+            if (value && !m_loadingAddons.Contains(obj))
+                m_loadingAddons.Add(obj);
+            else if (!value)
+                m_loadingAddons.Remove(obj);
         }
 
         /// <summary>

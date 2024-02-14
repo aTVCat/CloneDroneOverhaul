@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,12 @@ namespace OverhaulMod.UI
         [UIElement("ProgressBar")]
         private readonly GameObject m_progressBar;
 
+        [UIElement("NotSupportedText", false)]
+        private readonly GameObject m_notSupportedText;
+
+        [UIElement("MinVersionText")]
+        private readonly Text m_minVersionText;
+
         [UIElement("Fill")]
         private readonly Image m_progressBarFill;
 
@@ -27,9 +34,28 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public bool isSupported
+        {
+            get;
+            set;
+        }
+
+        public Version minModVersion
+        {
+            get;
+            set;
+        }
+
         protected override void OnInitialized()
         {
             m_contentManager = ContentManager.Instance;
+
+            string versionString = "N/A";
+            if (minModVersion != null)
+                versionString = minModVersion.ToString();
+
+            m_minVersionText.enabled = !isSupported;
+            m_minVersionText.text = $"Newer version required: {versionString}";
         }
 
         public override void Update()
@@ -42,7 +68,7 @@ namespace OverhaulMod.UI
 
             m_progressBar.SetActive(isDownloadingContent);
             m_contentSizeText.SetActive(!isDownloadingContent);
-            m_downloadButton.gameObject.SetActive(!isDownloadingContent);
+            m_downloadButton.gameObject.SetActive(!isDownloadingContent && isSupported);
             m_downloadButton.interactable = !hasDownloaded;
 
             if (isDownloadingContent)
