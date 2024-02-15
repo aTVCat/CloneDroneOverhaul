@@ -28,6 +28,11 @@ namespace OverhaulMod.UI
 
             m_staticBgConfig.refreshWhenEdited = true;
             m_staticBgConfig.backgroundInfo = TitleScreenCustomizationManager.Instance.GetStaticBackgroundInfo();
+
+            if (TitleScreenCustomizationManager.IntroduceCustomization)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
+            }
         }
 
         private void onMusicTrackDropdownChanged(int index)

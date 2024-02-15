@@ -215,6 +215,18 @@ namespace OverhaulMod.UI
                                 });
                             }
                         }
+                        else if (fieldInfo.FieldType == typeof(InputField))
+                        {
+                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(string) });
+                            if (methodInfo != null)
+                            {
+                                InputField inputField = unityObject as InputField;
+                                inputField.onValueChanged.AddListener(delegate (string value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
+                                });
+                            }
+                        }
                     }
 
                     fieldInfo.SetValue(this, unityObject);

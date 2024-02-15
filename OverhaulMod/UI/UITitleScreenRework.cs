@@ -14,9 +14,6 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsBG")]
         private readonly GameObject m_container;
 
-        [UIElement("NewsWarnIcon", false)]
-        private readonly GameObject m_newsWarnIcon;
-
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
         private readonly Button m_playSinglePlayerButton;
@@ -108,6 +105,9 @@ namespace OverhaulMod.UI
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
+        [UIElement("TutorialLayer", false)]
+        private readonly GameObject m_tutorialLayerObject;
+
         [UIElement("ErrorMessage", typeof(UIElementMultiplayerMessageBox), false)]
         public UIElementMultiplayerMessageBox ErrorMessage;
 
@@ -116,6 +116,12 @@ namespace OverhaulMod.UI
 
         [UIElement("ContentButton", typeof(UIElementTitleScreenContentButton))]
         public UIElementTitleScreenContentButton ContentButtonController;
+
+        [UIElement("NewsButton", typeof(UIElementTitleScreenButtonWithWarn))]
+        public UIElementTitleScreenButtonWithWarn NewsButtonWarnController;
+
+        [UIElement("UpdatesButton", typeof(UIElementTitleScreenButtonWithWarn))]
+        public UIElementTitleScreenButtonWithWarn UpdatesButtonWarnController;
 
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
@@ -138,6 +144,9 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             base.OnInitialized();
+            NewsButtonWarnController.isNewsButton = true;
+            UpdatesButtonWarnController.isUpdatesButton = true;
+
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
@@ -173,6 +182,7 @@ namespace OverhaulMod.UI
             m_container.SetActive(shouldBeActive);
             m_otherLayersObject.SetActive(shouldBeActive);
             m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
+            m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
         }
 
         public override void OnDestroy()

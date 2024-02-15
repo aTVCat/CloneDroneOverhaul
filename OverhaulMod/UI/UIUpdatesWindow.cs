@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -28,6 +29,8 @@ namespace OverhaulMod.UI
         [UIElement("BranchDropdown")]
         private readonly Dropdown m_branchDropdown;
 
+
+        [UIElementAction(nameof(OnCheckForUpdatesOnStartupToggleChanged))]
         [UIElement("CheckForUpdateOnStartupToggle")]
         private readonly Toggle m_checkForUpdatesOnStartupToggle;
 
@@ -64,6 +67,7 @@ namespace OverhaulMod.UI
         {
             int branch = (ModBuildInfo.internalRelease || ExclusiveContentManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
 
+            m_checkForUpdatesOnStartupToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingConstants.CHECK_FOR_UPDATES_ON_STARTUP);
             m_directUpdateButton.interactable = false;
             m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
             m_branchDropdown.value = branch;
@@ -211,6 +215,11 @@ namespace OverhaulMod.UI
         public void OnEditorButtonClicked()
         {
             ModUIConstants.ShowUpdateInfoEditor(base.transform);
+        }
+
+        public void OnCheckForUpdatesOnStartupToggleChanged(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
         }
     }
 }

@@ -27,6 +27,10 @@ namespace OverhaulMod
 
             ModBuildInfo.Load();
 
+            QualitySettings.asyncUploadTimeSlice = 4;
+            QualitySettings.asyncUploadBufferSize = 16;
+            QualitySettings.asyncUploadPersistentBuffer = true;
+
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
 
@@ -79,7 +83,7 @@ namespace OverhaulMod
             _ = ModManagers.New<LightningTransitionManager>();
             _ = ModManagers.New<AdvancedPhotoModeManager>();
             _ = ModManagers.New<WebhookManager>();
-            _ = ModManagers.New<UpgradeModeManager>();
+            _ = ModManagers.New<UpgradeModesManager>();
             _ = ModManagers.New<TransitionManager>();
             _ = ModManagers.New<CameraManager>();
             _ = ModManagers.New<RichPresenceManager>();

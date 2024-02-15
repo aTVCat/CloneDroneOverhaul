@@ -107,9 +107,9 @@ namespace OverhaulMod.UI
             {
                 Title = "Some news",
             };
-            m_editingInfoList.News.Add(newsInfo);
+            m_editingInfoList.News.Insert(0, newsInfo);
             RefreshDropdown();
-            OnEditedNewsDropdown(m_editingInfoList.News.Count - 1);
+            OnEditedNewsDropdown(0);
         }
 
         public void OnEditedNewsDropdown(int value)

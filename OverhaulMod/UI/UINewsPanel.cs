@@ -50,16 +50,24 @@ namespace OverhaulMod.UI
 
             clearList();
             setIsPopulating(true);
+
+
+            float time = Time.unscaledTime;
+            bool clearCache = time >= NewsManager.timeToToClearCache;
+            if (clearCache)
+                NewsManager.timeToToClearCache = time + 60f;
+
             NewsManager.Instance.DownloadNewsInfoFile(delegate (NewsInfoList newsInfoList)
             {
                 m_hasEverSuccessfullyPopulatedList = true;
                 setIsPopulating(false);
                 populateList(newsInfoList);
+                NewsManager.Instance.SetHasSeenNews();
             }, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, 200f);
                 setIsPopulating(false);
-            }, true);
+            }, clearCache);
         }
 
         private void setIsPopulating(bool value)

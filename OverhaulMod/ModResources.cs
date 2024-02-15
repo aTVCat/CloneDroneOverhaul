@@ -18,6 +18,8 @@ namespace OverhaulMod
 
         private List<string> m_loadingAssets;
 
+        private bool m_shouldStopAsyncOperations;
+
         public int loadedAssetBundlesCount
         {
             get
@@ -47,6 +49,16 @@ namespace OverhaulMod
             m_bundles = new Dictionary<string, AssetBundle>();
             m_loadingBundles = new List<string>();
             m_loadingAssets = new List<string>();
+        }
+
+        private void OnDestroy()
+        {
+            m_shouldStopAsyncOperations = true;
+        }
+
+        private void OnApplicationQuit()
+        {
+            m_shouldStopAsyncOperations = true;
         }
 
         /// <summary>
@@ -99,8 +111,15 @@ namespace OverhaulMod
 
             _ = ModActionUtils.RunCoroutine(loadAssetAsyncCoroutine(assetBundle, objectName, typeof(T), delegate (UnityEngine.Object obj)
             {
-                callback?.Invoke((T)obj);
-            }, errorCallback, startPath));
+                try
+                {
+                    callback?.Invoke((T)obj);
+                }
+                catch
+                {
+
+                }
+            }, errorCallback, startPath), true);
         }
 
         public AssetBundle LoadBundle(string assetBundle, string startPath = ASSET_BUNDLES_FOLDER)
@@ -124,15 +143,29 @@ namespace OverhaulMod
             {
                 _ = ModActionUtils.RunCoroutine(waitUntilBundleIsLoadedCoroutine(bundlePath, delegate (AssetBundle b)
                 {
-                    successCallback?.Invoke(b);
-                }, errorCallback));
+                    try
+                    {
+                        successCallback?.Invoke(b);
+                    }
+                    catch
+                    {
+
+                    }
+                }, errorCallback), true);
                 return;
             }
 
             _ = ModActionUtils.RunCoroutine(loadBundleCoroutine(bundlePath, delegate (AssetBundle b)
             {
-                successCallback?.Invoke(b);
-            }, errorCallback));
+                try
+                {
+                    successCallback?.Invoke(b);
+                }
+                catch
+                {
+
+                }
+            }, errorCallback), true);
         }
 
         private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)

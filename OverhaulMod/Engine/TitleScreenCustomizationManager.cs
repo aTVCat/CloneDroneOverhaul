@@ -11,6 +11,9 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 
+        [ModSetting(ModSettingConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, true)]
+        public static bool IntroduceCustomization;
+
         private TitleScreenCustomizationInfo m_customizationInfo;
 
         public LevelDescription overrideLevelDescription

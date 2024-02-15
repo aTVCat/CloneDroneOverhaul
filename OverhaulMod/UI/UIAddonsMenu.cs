@@ -122,6 +122,7 @@ namespace OverhaulMod.UI
                         if(moddedObject && moddedObject.gameObject)
                         {
                             Directory.Delete(content.FolderPath, true);
+                            ContentManager.Instance.RefreshContent(true);
                             Destroy(moddedObject.gameObject);
                         }
                     });

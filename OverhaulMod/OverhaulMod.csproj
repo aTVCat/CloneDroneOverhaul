@@ -68,6 +68,9 @@
     <Reference Include="LevelEditorPatch">
       <HintPath>.\LevelEditorPatch.dll</HintPath>
     </Reference>
+    <Reference Include="ModBotWebsiteAPI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModBotWebsiteAPI.dll</HintPath>
+    </Reference>
     <Reference Include="ModLibrary">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
     </Reference>
@@ -415,8 +418,8 @@
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
     <Compile Include="Engine\TransitionBehaviour.cs" />
     <Compile Include="Engine\TransitionManager.cs" />
-    <Compile Include="Engine\UpgradeMode.cs" />
-    <Compile Include="Engine\UpgradeModeManager.cs" />
+    <Compile Include="Engine\UpgradeModes.cs" />
+    <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModContentLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
@@ -476,6 +479,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
@@ -484,6 +488,7 @@
     <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIDebugMenu.cs" />
+    <Compile Include="UI\UIDamageIndicator.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />

@@ -58,6 +58,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU = "UI_PersonalizationEditorVerificationMenu";
         public const string UI_DEBUG_MENU = "UI_DebugMenu";
         public const string UI_CRASH_SCREEN = "UI_CrashScreen";
+        public const string UI_DAMAGE_INDICATOR = "UI_DamageIndicator";
 
         public static void ShowOtherModsMenu()
         {
@@ -346,6 +347,11 @@ namespace OverhaulMod.Utils
         public static void HideCrashScreen()
         {
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_CRASH_SCREEN);
+        }
+
+        public static void ShowDamageIndicator()
+        {
+            _ = ModUIManager.Instance.Show<UIDamageIndicator>(AssetBundleConstants.UI, UI_DAMAGE_INDICATOR, ModUIManager.UILayer.BeforeEscMenu);
         }
     }
 }

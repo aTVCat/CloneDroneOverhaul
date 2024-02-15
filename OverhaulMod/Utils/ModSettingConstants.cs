@@ -65,5 +65,15 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.CameraManager"/>
         /// </summary>
         public const string CAMERA_MODE_TOGGLE_KEYBIND = "CameraModeToggleKeybind";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string CHECK_FOR_UPDATES_ON_STARTUP = "CheckForUpdatesOnStartup";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string INTRODUCE_TITLE_SCREEN_CUSTOMIZATION = "IntroduceTitleScreenCustomization";
     }
 }

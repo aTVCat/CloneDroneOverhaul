@@ -6,9 +6,11 @@ namespace OverhaulMod.Utils
 {
     internal static class ModActionUtils
     {
-        public static Coroutine RunCoroutine(IEnumerator enumerator)
+        public static Coroutine RunCoroutine(IEnumerator enumerator, bool dontDestroyOnLoad = false)
         {
             GameObject gameObject = new GameObject("OverhaulCoroutine");
+            if(dontDestroyOnLoad)
+                GameObject.DontDestroyOnLoad(gameObject);
             return gameObject.AddComponent<CoroutineRunner>().RunCoroutine(enumerator);
         }
 
