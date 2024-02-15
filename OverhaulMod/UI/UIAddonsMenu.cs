@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -114,6 +115,17 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = content.DisplayName;
+                moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, $"Delete {content.DisplayName}?", "This action cannot be undone.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    {
+                        if(moddedObject && moddedObject.gameObject)
+                        {
+                            Directory.Delete(content.FolderPath, true);
+                            Destroy(moddedObject.gameObject);
+                        }
+                    });
+                });
             }
         }
 

@@ -56,6 +56,8 @@ namespace OverhaulMod.Utils
         public const string UI_SET_KEY_BIND_WINDOW = "UI_SetKeyBindWindow";
         public const string UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER = "UI_PersonalizationEditorItemsBrowser";
         public const string UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU = "UI_PersonalizationEditorVerificationMenu";
+        public const string UI_DEBUG_MENU = "UI_DebugMenu";
+        public const string UI_CRASH_SCREEN = "UI_CrashScreen";
 
         public static void ShowOtherModsMenu()
         {
@@ -323,6 +325,27 @@ namespace OverhaulMod.Utils
         public static void ShowPersonalizationEditorVerificationMenu(Transform parent)
         {
             _ = ModUIManager.Instance.Show<UIPersonalizationEditorVerificationMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU, parent);
+        }
+
+        public static void ShowDebugMenu()
+        {
+            _ = ModUIManager.Instance.Show<UIDebugMenu>(AssetBundleConstants.UI, UI_DEBUG_MENU, ModUIManager.UILayer.Last);
+        }
+
+        public static void HideDebugMenu()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_DEBUG_MENU);
+        }
+
+        public static void ShowCrashScreen(string errorMessage)
+        {
+            UICrashScreen crashScreen = ModUIManager.Instance.Show<UICrashScreen>(AssetBundleConstants.UI, UI_CRASH_SCREEN, ModUIManager.UILayer.AfterCrashScreen);
+            crashScreen.SetStackTraceText(errorMessage);
+        }
+
+        public static void HideCrashScreen()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_CRASH_SCREEN);
         }
     }
 }

@@ -58,6 +58,8 @@ namespace OverhaulMod.Patches
                 if (modUIManager.TryInvokeAction())
                     return false;
 
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN_CUSTOMIZATION_PANEL))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_ITEMS_BROWSER))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER))
@@ -85,6 +87,10 @@ namespace OverhaulMod.Patches
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_NEWS_INFO_EDITOR))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_UPDATES_WINDOW))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_LOCALIZATION_EDITOR))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADDONS_DOWNLOAD_EDITOR))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADDONS_EDITOR))
                     return false;

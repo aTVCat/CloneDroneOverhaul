@@ -37,6 +37,14 @@ namespace OverhaulMod
             addListeners();
         }
 
+        public static void Unload()
+        {
+            if (ModManagers.Instance)
+            {
+                UnityEngine.Object.Destroy(ModManagers.Instance.gameObject);
+            }
+        }
+
         private static void addManagers()
         {
             _ = ModManagers.New<ModSettingsManager>();

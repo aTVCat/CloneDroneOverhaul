@@ -18,14 +18,7 @@ namespace OverhaulMod.Patches.Addons
                 s_gameObject = gameObject;
             }
 
-            GameAddon[] patches = s_patches;
-            if (patches != null)
-            {
-                foreach (GameAddon patch in patches)
-                    Destroy(patch);
-
-                s_patches = Array.Empty<GameAddon>();
-            }
+            Unload();
 
             _ = gameObject.AddComponent<GameModeCardsAddon>();
             _ = gameObject.AddComponent<ProjectileAddon>();
@@ -37,6 +30,18 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<RealisticSkyboxesAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
+        }
+
+        public static void Unload()
+        {
+            GameAddon[] patches = s_patches;
+            if (patches != null)
+            {
+                foreach (GameAddon patch in patches)
+                    Destroy(patch);
+
+                s_patches = Array.Empty<GameAddon>();
+            }
         }
 
         public override void Start()

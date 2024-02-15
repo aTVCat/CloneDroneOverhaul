@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -19,18 +20,7 @@ namespace OverhaulMod.UI
 #if DEBUG
         public void OnGUI()
         {
-            if (!Enabled)
-                return;
-
             GUILayout.BeginArea(new Rect(10f, 100f, 200f, 200f));
-            if (GameModeManager.IsOnTitleScreen())
-            {
-                if (GUILayout.Button("Update build compile date"))
-                    ModBuildInfo.GenerateExtraInfo();
-            }
-
-            ModDebug.forceDisableCursor = GUILayout.Toggle(ModDebug.forceDisableCursor, "Force disable cursor [Ctrl+I]");
-
             if (s_debugValues == null || s_debugValues.Count == 0)
             {
                 GUILayout.EndArea();
@@ -52,20 +42,24 @@ namespace OverhaulMod.UI
             _ = GUILayout.TextArea(m_stringBuilder.ToString());
             GUILayout.EndArea();
         }
+#endif
 
         public override void Update()
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D))
+            if ((ModBuildInfo.internalRelease || ModBuildInfo.debug) && Input.GetKeyDown(KeyCode.Alpha7) && !GameModeManager.IsInLevelEditor())
             {
-                Enabled = !Enabled;
-            }
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.I))
-            {
-                ModDebug.forceDisableCursor = false;
-                GameUIRoot.Instance.RefreshCursorEnabled();
+                bool value = !Enabled;
+                Enabled = value;
+                if (value)
+                {
+                    ModUIConstants.ShowDebugMenu();
+                }
+                else
+                {
+                    ModUIConstants.HideDebugMenu();
+                }
             }
         }
-#endif
 
         public static void SetKeyValue(string key, string value)
         {

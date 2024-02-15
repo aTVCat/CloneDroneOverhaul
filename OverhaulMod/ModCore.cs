@@ -160,6 +160,9 @@ namespace OverhaulMod
             instance = this;
             isEnabled = true;
 
+            ModLoader.Load();
+            GameAddon.Load();
+
             addEventListeners();
             TriggerModStateChangedEvent(true);
 
@@ -171,7 +174,6 @@ namespace OverhaulMod
             instance = this;
 
             ModLoader.Load();
-            GameAddon.Load();
 
             addEventListeners();
         }
@@ -184,6 +186,9 @@ namespace OverhaulMod
             TriggerModStateChangedEvent(false);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
+
+            GameAddon.Unload();
+            ModLoader.Unload();
         }
 
         public override UnityEngine.Object OnResourcesLoad(string path)

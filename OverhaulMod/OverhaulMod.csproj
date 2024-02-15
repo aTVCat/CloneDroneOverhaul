@@ -437,7 +437,9 @@
     <Compile Include="Patches\Addons\RealisticSkyboxesAddon.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Character_Patch.cs" />
+    <Compile Include="Patches\ErrorManager_Patch.cs" />
     <Compile Include="Patches\FlyingCameraController_Patch.cs" />
+    <Compile Include="Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
@@ -479,7 +481,9 @@
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
+    <Compile Include="UI\UIDebugMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />
