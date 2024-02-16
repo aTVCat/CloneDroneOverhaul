@@ -20,11 +20,14 @@ namespace OverhaulMod.Patches
             if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
                 return true;
 
+            ModUIManager modUIManager = ModUIManager.Instance;
             Player player = ReInput.players.GetPlayer(0);
             if (player != null)
             {
-                bool rmbHeld = player.GetButton(3);
-                InputManager.Instance.SetCursorEnabled(!rmbHeld);
+                bool rmbHeld = player.GetButton(3) || (modUIManager && !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK));
+
+                InputManager inputManager = InputManager.Instance;
+                inputManager.SetCursorEnabled(!rmbHeld);
             }
             return true;
         }

@@ -67,6 +67,11 @@ namespace OverhaulMod.Engine
 
         public LightningInfo(LevelLightSettings levelLightSettings)
         {
+            SetValues(levelLightSettings);
+        }
+
+        public void SetValues(LevelLightSettings levelLightSettings)
+        {
             EnableDirectionalLight = levelLightSettings.EnableDirectionalLight;
             DirectionalRotationX = levelLightSettings.DirectionalRotationX;
             DirectionalRotationY = levelLightSettings.DirectionalRotationY;
@@ -95,6 +100,75 @@ namespace OverhaulMod.Engine
             CameraColorGrading = levelLightSettings.CameraColorGrading;
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
+        }
+
+        public void SetValuesUsingEnvironmentSettings()
+        {
+            EnableDirectionalLight = DirectionalLightManager.Instance.DirectionalLight.gameObject.activeInHierarchy;
+            DirectionalRotationX = DirectionalLightManager.Instance.DirectionalLight.transform.eulerAngles.x;
+            DirectionalRotationY = DirectionalLightManager.Instance.DirectionalLight.transform.eulerAngles.y;
+            DirectionalColor = DirectionalLightManager.Instance.DirectionalLight.color;
+            DirectionalIntensity = DirectionalLightManager.Instance.DirectionalLight.intensity;
+            DirectionalShadowStrength = DirectionalLightManager.Instance.DirectionalLight.shadowStrength;
+            AmbientUsesSkybox = RenderSettings.ambientMode == UnityEngine.Rendering.AmbientMode.Skybox;
+            AmbientColor = RenderSettings.ambientLight;
+            FogEnabled = RenderSettings.fog;
+            FogColor = RenderSettings.fogColor;
+            FogStartDistance = RenderSettings.fogStartDistance;
+            FogEndDistance = RenderSettings.fogEndDistance;
+
+            LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance?.GetActiveLightSettings();
+            if (!levelLightSettings)
+                return;
+
+            SkyboxIndex = levelLightSettings.SkyboxIndex;
+            SunSize = levelLightSettings.SunSize;
+            SunSizeConvergence = levelLightSettings.SunSizeConvergence;
+            AtmosphereThickness = levelLightSettings.AtmosphereThickness;
+            SkyTint = levelLightSettings.SkyTint;
+            GroundTint = levelLightSettings.GroundTint;
+            SkyExposure = levelLightSettings.SkyExposure;
+            SkyColor = levelLightSettings.SkyColor;
+            HorizonColor = levelLightSettings.HorizonColor;
+            GroundColor = levelLightSettings.GroundColor;
+            SkyTopExponent = levelLightSettings.SkyTopExponent;
+            SkyBottomExponent = levelLightSettings.SkyBottomExponent;
+            SkyIntensity = levelLightSettings.SkyIntensity;
+            CameraColorGrading = levelLightSettings.CameraColorGrading;
+            CameraColorBlend = levelLightSettings.CameraColorBlend;
+            CameraExposure = levelLightSettings.CameraExposure;
+        }
+
+        public void ApplyValues(LevelLightSettings levelLightSettings)
+        {
+            levelLightSettings.EnableDirectionalLight = EnableDirectionalLight;
+            levelLightSettings.DirectionalRotationX = DirectionalRotationX;
+            levelLightSettings.DirectionalRotationY = DirectionalRotationY;
+            levelLightSettings.DirectionalColor = DirectionalColor;
+            levelLightSettings.DirectionalIntensity = DirectionalIntensity;
+            levelLightSettings.DirectionalShadowStrength = DirectionalShadowStrength;
+            levelLightSettings.AmbientUsesSkybox = AmbientUsesSkybox;
+            levelLightSettings.AmbientColor = AmbientColor;
+            levelLightSettings.SkyboxIndex = SkyboxIndex;
+            levelLightSettings.SunSize = SunSize;
+            levelLightSettings.SunSizeConvergence = SunSizeConvergence;
+            levelLightSettings.AtmosphereThickness = AtmosphereThickness;
+            levelLightSettings.SkyTint = SkyTint;
+            levelLightSettings.GroundTint = GroundTint;
+            levelLightSettings.SkyExposure = SkyExposure;
+            levelLightSettings.SkyColor = SkyColor;
+            levelLightSettings.HorizonColor = HorizonColor;
+            levelLightSettings.GroundColor = GroundColor;
+            levelLightSettings.SkyTopExponent = SkyTopExponent;
+            levelLightSettings.SkyBottomExponent = SkyBottomExponent;
+            levelLightSettings.SkyIntensity = SkyIntensity;
+            levelLightSettings.FogEnabled = FogEnabled;
+            levelLightSettings.FogColor = FogColor;
+            levelLightSettings.FogStartDistance = FogStartDistance;
+            levelLightSettings.FogEndDistance = FogEndDistance;
+            levelLightSettings.CameraColorGrading = CameraColorGrading;
+            levelLightSettings.CameraColorBlend = CameraColorBlend;
+            levelLightSettings.CameraExposure = CameraExposure;
         }
     }
 }

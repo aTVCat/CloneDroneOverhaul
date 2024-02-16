@@ -40,6 +40,13 @@ namespace OverhaulMod.Patches
             return true;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch("RefreshLightInScene")]
+        private static void RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
+        {
+            RealisticLightningManager.Instance.PatchLightning(false);
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch("RefreshLightInScene")]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)

@@ -26,7 +26,7 @@ namespace OverhaulMod.Utils
 
         private static IEnumerator doNextFrameCoroutine(Action action)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
             action?.Invoke();
             yield break;
         }

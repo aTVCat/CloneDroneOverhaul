@@ -63,6 +63,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ModWeaponsManager>();
             _ = ModManagers.New<ModUpgradesManager>();
             _ = ModManagers.New<ModEnemiesManager>();
+            _ = ModManagers.New<DifficultyTierManager>();
             _ = ModManagers.New<ModGameModifiersManager>();
             _ = ModManagers.New<TitleScreenCustomizationManager>();
 
@@ -88,7 +89,7 @@ namespace OverhaulMod
             _ = ModManagers.New<CameraManager>();
             _ = ModManagers.New<RichPresenceManager>();
 
-            _ = ModManagers.New<DifficultyTierManager>();
+            _ = ModManagers.New<RealisticLightningManager>();
         }
 
         private static void loadAssemblies()

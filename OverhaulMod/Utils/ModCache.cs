@@ -191,6 +191,32 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static MethodInfo s_unityInputGetMouseButtonMethod;
+        public static MethodInfo unityInputGetMouseButtonMethod
+        {
+            get
+            {
+                if (s_unityInputGetMouseButtonMethod == null)
+                {
+                    s_unityInputGetMouseButtonMethod = AccessTools.DeclaredMethod(typeof(Input), nameof(Input.GetMouseButton));
+                }
+                return s_unityInputGetMouseButtonMethod;
+            }
+        }
+
+        private static MethodInfo s_unityInputGetMouseButtonDownMethod;
+        public static MethodInfo unityInputGetMouseButtonDownMethod
+        {
+            get
+            {
+                if (s_unityInputGetMouseButtonDownMethod == null)
+                {
+                    s_unityInputGetMouseButtonDownMethod = AccessTools.DeclaredMethod(typeof(Input), nameof(Input.GetMouseButtonDown));
+                }
+                return s_unityInputGetMouseButtonDownMethod;
+            }
+        }
+
         public static GameUIThemeData gameUIThemeData { get; set; }
     }
 }

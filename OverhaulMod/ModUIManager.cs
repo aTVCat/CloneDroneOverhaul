@@ -86,6 +86,15 @@ namespace OverhaulMod
             return m_instantiatedUIs.ContainsKey(assetKey);
         }
 
+        public bool IsUIVisible(string assetBundle, string assetKey)
+        {
+            string fullName = assetBundle + "." + assetKey;
+            if (!HasInstantiatedUI(fullName))
+                return false;
+
+            return m_instantiatedUIs[fullName].activeInHierarchy;
+        }
+
         public int GetSiblingIndex(UILayer layer)
         {
             switch (layer)

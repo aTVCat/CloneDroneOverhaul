@@ -27,7 +27,6 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<MinorChangesAddon>();
             _ = gameObject.AddComponent<LocalizationAddon>();
             _ = gameObject.AddComponent<GameModeSelectScreensAddon>();
-            _ = gameObject.AddComponent<RealisticSkyboxesAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
         }

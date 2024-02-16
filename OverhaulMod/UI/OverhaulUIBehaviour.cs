@@ -227,6 +227,18 @@ namespace OverhaulMod.UI
                                 });
                             }
                         }
+                        else if (fieldInfo.FieldType == typeof(Slider))
+                        {
+                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(float) });
+                            if (methodInfo != null)
+                            {
+                                Slider slider = unityObject as Slider;
+                                slider.onValueChanged.AddListener(delegate (float value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
+                                });
+                            }
+                        }
                     }
 
                     fieldInfo.SetValue(this, unityObject);

@@ -5,29 +5,9 @@ namespace OverhaulMod.Engine
 {
     public class AdvancedPhotoModeProperty
     {
-        private object m_ogValue;
-        private bool m_hasEverSavedValue;
+        public Type classType { get; }
 
-        private readonly Type m_classType;
-        private readonly string m_classMemberName;
-
-        public string displayName
-        {
-            get;
-            private set;
-        }
-
-        public string categoryName
-        {
-            get;
-            private set;
-        }
-
-        public bool disallowSavingValue
-        {
-            get;
-            private set;
-        }
+        public string classMemberName { get; }
 
         private PropertyInfo m_propertyReference;
         public PropertyInfo propertyReference
@@ -36,7 +16,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_propertyReference == null)
                 {
-                    m_propertyReference = m_classType.GetProperty(m_classMemberName, BindingFlags.Public | BindingFlags.Static);
+                    m_propertyReference = classType.GetProperty(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
                 }
                 return m_propertyReference;
             }
@@ -49,7 +29,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_fieldReference == null)
                 {
-                    m_fieldReference = m_classType.GetField(m_classMemberName, BindingFlags.Public | BindingFlags.Static);
+                    m_fieldReference = classType.GetField(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
                 }
                 return m_fieldReference;
             }
@@ -80,28 +60,44 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public AdvancedPhotoModeProperty(string displayName, string categoryName, bool disallowSavingValue, Type classType, string classMemberName)
+        public Func<object> objectInstanceFunction { get; set; }
+
+        public object objectInstance
         {
-            m_classType = classType;
-            m_classMemberName = classMemberName;
-            this.displayName = displayName;
-            this.categoryName = categoryName;
-            this.disallowSavingValue = disallowSavingValue;
+            get
+            {
+                Func<object> f = objectInstanceFunction;
+                return f == null ? null : f();
+            }
+        }
+
+        public object moddedValue
+        {
+            get;
+            set;
+        }
+
+        public AdvancedPhotoModeProperty(Type classType, string classMemberName, Func<object> instanceFunction = null)
+        {
+            this.classType = classType;
+            this.classMemberName = classMemberName;
+            objectInstanceFunction = instanceFunction;
         }
 
         public void SetValue(object value)
         {
+            moddedValue = value;
             FieldInfo fieldInfo = fieldReference;
             if (fieldInfo != null)
             {
-                fieldInfo.SetValue(null, value);
+                fieldInfo.SetValue(objectInstance, value);
             }
             else
             {
                 PropertyInfo propertyInfo = propertyReference;
                 if (propertyInfo != null)
                 {
-                    propertyInfo.SetValue(null, value);
+                    propertyInfo.SetValue(objectInstance, value);
                 }
             }
         }
@@ -111,34 +107,22 @@ namespace OverhaulMod.Engine
             FieldInfo fieldInfo = fieldReference;
             if (fieldInfo != null)
             {
-                return fieldInfo.GetValue(null);
+                return fieldInfo.GetValue(objectInstance);
             }
             else
             {
                 PropertyInfo propertyInfo = propertyReference;
                 if (propertyInfo != null)
                 {
-                    return propertyInfo.GetValue(null);
+                    return propertyInfo.GetValue(objectInstance);
                 }
             }
             return null;
         }
 
-        public void SaveValue()
+        public void SetModdedValue()
         {
-            if (disallowSavingValue)
-                return;
-
-            m_ogValue = GetValue();
-            m_hasEverSavedValue = true;
-        }
-
-        public void RestoreValue()
-        {
-            if (disallowSavingValue || !m_hasEverSavedValue)
-                return;
-
-            SetValue(m_ogValue);
+            SetValue(moddedValue);
         }
     }
 }
