@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
-using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -36,7 +35,7 @@ namespace OverhaulMod.Content.Personalization
                 if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
                     return null;
 
-                if(m_editorId == null)
+                if (m_editorId == null)
                 {
                     m_editorId = SteamUser.GetSteamID().ToString();
                 }
@@ -96,7 +95,7 @@ namespace OverhaulMod.Content.Personalization
                     LevelManager.Instance._currentLevelHidesTheArena = false;
                 }
 
-                base.StartCoroutine(spawnLevelCoroutine(levelEditorLevelData));
+                _ = base.StartCoroutine(spawnLevelCoroutine(levelEditorLevelData));
             });
         }
 
@@ -116,14 +115,14 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
+                _ = Directory.CreateDirectory(folder);
 
             ModJsonUtils.WriteStream(folder + PersonalizationManager.ITEM_INFO_FILE, editingItemInfo);
         }
 
         public void SpawnBot()
         {
-            base.StartCoroutine(spawnBotCoroutine());
+            _ = base.StartCoroutine(spawnBotCoroutine());
         }
 
         private IEnumerator spawnBotCoroutine()

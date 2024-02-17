@@ -9,7 +9,7 @@ namespace OverhaulMod.Utils
         public static Coroutine RunCoroutine(IEnumerator enumerator, bool dontDestroyOnLoad = false)
         {
             GameObject gameObject = new GameObject("OverhaulCoroutine");
-            if(dontDestroyOnLoad)
+            if (dontDestroyOnLoad)
                 GameObject.DontDestroyOnLoad(gameObject);
             return gameObject.AddComponent<CoroutineRunner>().RunCoroutine(enumerator);
         }

@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Utils;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
@@ -26,7 +25,7 @@ namespace OverhaulMod.UI
             if (ErrorManager.Instance)
                 ErrorManager.Instance._hasCrashed = false;
 
-            if(TimeManager.Instance)
+            if (TimeManager.Instance)
                 TimeManager.Instance.OnGameUnPaused();
         }
     }

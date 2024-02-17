@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Experimental;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -86,7 +85,7 @@ namespace OverhaulMod.Content
                 if (DateTime.Now < timeToRefreshData)
                     yield break;
 
-                yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
+            yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
             yield return new WaitForSecondsRealtime(2f);
 
             DownloadUpdateInfoFile(delegate
@@ -125,7 +124,7 @@ namespace OverhaulMod.Content
                     if (ExclusiveContentManager.Instance.IsLocalUserTheTester())
                         if (updateInfoList.InternalRelease != null && updateInfoList.InternalRelease.ModVersion != null)
                             PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, updateInfoList.InternalRelease.ModVersion.ToString());
-                    else
+                        else
                         if (updateInfoList.ModBotRelease != null && updateInfoList.ModBotRelease.ModVersion != null)
                             PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, updateInfoList.ModBotRelease.ModVersion.ToString());
                 }

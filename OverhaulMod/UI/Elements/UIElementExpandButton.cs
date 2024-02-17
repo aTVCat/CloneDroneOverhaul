@@ -11,6 +11,8 @@ namespace OverhaulMod.UI
         [UIElement("CollapseImage", false)]
         public GameObject m_collapseImageObject;
 
+        private Button m_button;
+
         public RectTransform rectTransform
         {
             get;
@@ -49,11 +51,13 @@ namespace OverhaulMod.UI
         {
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(ToggleExpand);
+            m_button = button;
         }
 
         public void ToggleExpand()
         {
             expanded = !expanded;
+            m_button.OnDeselect(null);
         }
     }
 }

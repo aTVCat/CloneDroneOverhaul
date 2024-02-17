@@ -1,12 +1,8 @@
 ﻿using InternalModBot;
-using Newtonsoft.Json.Bson;
+using ModBotWebsiteAPI;
 using OverhaulMod.Utils;
-using System.Security.Cryptography;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
-using ModBotWebsiteAPI;
-using BestHTTP.SocketIO;
 
 namespace OverhaulMod.UI
 {
@@ -121,7 +117,7 @@ namespace OverhaulMod.UI
                 m_isSendingFeedback = false;
                 refreshElements();
                 ModUIUtils.MessagePopupOK("Successfully sent the feedback!", "Thanks!", true);
-            }, delegate(string error)
+            }, delegate (string error)
             {
                 m_isSendingFeedback = false;
                 refreshElements();

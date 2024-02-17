@@ -1,17 +1,13 @@
 ﻿using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationItemList
     {
         public List<PersonalizationItemInfo> Items;
-        
+
         public void Load()
         {
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
@@ -20,7 +16,7 @@ namespace OverhaulMod.Content.Personalization
             string[] directories = Directory.GetDirectories(ModCore.customizationFolder);
             if (!directories.IsNullOrEmpty())
             {
-                foreach(string directory in directories)
+                foreach (string directory in directories)
                 {
                     string d = directory + "/";
                     string infoFile = d + PersonalizationManager.ITEM_INFO_FILE;

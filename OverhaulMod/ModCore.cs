@@ -263,5 +263,25 @@ namespace OverhaulMod
         {
             ModStateChanged?.Invoke(enabled);
         }
+
+        public static IEnumerator PushDownIfAboveGroundCoroutine_Patch(FirstPersonMover firstPersonMover)
+        {
+            while (firstPersonMover && !firstPersonMover.gameObject.activeInHierarchy)
+                yield return null;
+
+            yield return new WaitForSeconds(0.05f);
+            if (!firstPersonMover || !firstPersonMover._characterController || firstPersonMover.IsRidingOtherCharacter() || GameFlowManager.Instance.IsInEditorMode())
+                yield break;
+
+            if (Physics.SphereCast(new Ray(firstPersonMover.transform.position + firstPersonMover.CenterOfCharacterOffset, -Vector3.up), firstPersonMover.CollisionRadius, out RaycastHit raycastHit, 20f, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.Ignore))
+            {
+                float num = firstPersonMover.transform.position.y - raycastHit.point.y;
+                if (num > 0f)
+                {
+                    firstPersonMover.transform.position += new Vector3(0f, -num, 0f);
+                }
+            }
+            yield break;
+        }
     }
 }

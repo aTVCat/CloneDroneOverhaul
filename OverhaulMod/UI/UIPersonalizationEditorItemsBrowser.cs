@@ -45,9 +45,9 @@ namespace OverhaulMod.UI
             bool getAll = m_viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
 
             List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
-            foreach(var item in PersonalizationManager.Instance.itemList.Items)
+            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
             {
-                if(item.CanBeEdited() || getAll)
+                if (item.CanBeEdited() || getAll)
                 {
                     list.Add(item);
                 }
@@ -63,7 +63,7 @@ namespace OverhaulMod.UI
             if (list.IsNullOrEmpty())
                 return;
 
-            foreach(var item in list)
+            foreach (PersonalizationItemInfo item in list)
             {
                 ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -92,14 +92,14 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            ModIOUtils.OpenFileExplorer(ModCore.customizationFolder);
+            _ = ModIOUtils.OpenFileExplorer(ModCore.customizationFolder);
         }
 
         public void OnCreateNewButtonClicked()
         {
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
-                if(PersonalizationManager.Instance.CreateItem(str, out PersonalizationItemInfo personalizationItem))
+                if (PersonalizationManager.Instance.CreateItem(str, out PersonalizationItemInfo personalizationItem))
                 {
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                     Hide();

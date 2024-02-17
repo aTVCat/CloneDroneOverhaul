@@ -126,7 +126,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveButtonClicked()
         {
-            if(!Version.TryParse(m_contentMinModVersionField.text, out Version version))
+            if (!Version.TryParse(m_contentMinModVersionField.text, out Version version))
             {
                 ModUIUtils.MessagePopupOK("Could not parse version", "check if version is typed correctly", false);
                 return;

@@ -134,6 +134,12 @@ namespace OverhaulMod.Engine
 
             material = index == 1 ? customSkybox : index == 3 ? gradientSkybox : skyBoxManager.LevelConfigurableSkyboxes[index];
 
+            if (ModLevelManager.Instance.currentRealisticSkyBoxIndex != -1)
+            {
+                RealisticLightningManager.Instance.SetSkybox(ModLevelManager.Instance.currentRealisticSkyBoxIndex);
+                return;
+            }
+
             if (material != skyBoxManager._currentSkybox)
             {
                 skyBoxManager._currentSkybox = material;

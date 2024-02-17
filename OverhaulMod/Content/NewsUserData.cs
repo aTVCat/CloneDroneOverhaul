@@ -22,11 +22,9 @@ namespace OverhaulMod.Content
 
         public bool ShouldHighlightNewsButton(NewsInfoList newsInfoList)
         {
-            if(newsInfoList == null || newsInfoList.News.IsNullOrEmpty())
-            {
-                return NewsManager.downloadedNewsCount > NumOfNewsSeen;
-            }
-            return newsInfoList.News.Count > NumOfNewsSeen;
+            return newsInfoList == null || newsInfoList.News.IsNullOrEmpty()
+                ? NewsManager.downloadedNewsCount > NumOfNewsSeen
+                : newsInfoList.News.Count > NumOfNewsSeen;
         }
     }
 }

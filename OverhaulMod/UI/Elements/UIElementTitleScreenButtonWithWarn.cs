@@ -1,13 +1,12 @@
 ﻿using OverhaulMod.Content;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
     public class UIElementTitleScreenButtonWithWarn : OverhaulUIBehaviour
     {
         [UIElement("WarnIndicator", false)]
-        private GameObject m_indicator;
+        private readonly GameObject m_indicator;
 
         private Animator m_animator;
 
@@ -35,7 +34,7 @@ namespace OverhaulMod.UI
         {
             float d = Time.unscaledDeltaTime;
             m_timeToUpdate -= d;
-            if(m_timeToUpdate < 0f)
+            if (m_timeToUpdate < 0f)
             {
                 m_timeToUpdate = 3f;
                 SetWarnActive((isNewsButton && NewsManager.Instance.ShouldHighlightNewsButton()) || (isUpdatesButton && UpdateManager.Instance.ShouldHighlightUpdatesButton()));

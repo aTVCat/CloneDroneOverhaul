@@ -59,6 +59,7 @@ namespace OverhaulMod.Utils
         public const string UI_DEBUG_MENU = "UI_DebugMenu";
         public const string UI_CRASH_SCREEN = "UI_CrashScreen";
         public const string UI_DAMAGE_INDICATOR = "UI_DamageIndicator";
+        public const string UI_GENERIC_COLOR_PICKER = "UI_GenericColorPicker";
 
         public static void ShowOtherModsMenu()
         {
@@ -352,6 +353,11 @@ namespace OverhaulMod.Utils
         public static void ShowDamageIndicator()
         {
             _ = ModUIManager.Instance.Show<UIDamageIndicator>(AssetBundleConstants.UI, UI_DAMAGE_INDICATOR, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static UIGenericColorPicker ShowGenericColorPicker(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UIGenericColorPicker>(AssetBundleConstants.UI, UI_GENERIC_COLOR_PICKER, parent);
         }
     }
 }

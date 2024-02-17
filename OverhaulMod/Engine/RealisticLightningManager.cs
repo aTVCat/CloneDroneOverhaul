@@ -105,11 +105,11 @@ namespace OverhaulMod.Engine
 
         public string GetLevelPrefabName(LevelDescription levelDescription)
         {
-            if(levelDescription == null)
+            if (levelDescription == null)
             {
                 try
                 {
-                    levelDescription = LevelManager.Instance.GetCurrentLevelDescription();
+                    levelDescription = LevelManager.Instance?.GetCurrentLevelDescription();
                 }
                 catch
                 {
@@ -117,17 +117,20 @@ namespace OverhaulMod.Engine
                 }
             }
 
-            string name = levelDescription.PrefabName;
-            if (name.IsNullOrEmpty())
+            if (levelDescription == null)
                 return null;
 
-            return name.Substring(name.LastIndexOf("/") + 1);
+            string name = levelDescription.PrefabName;
+            return name.IsNullOrEmpty() ? null : name.Substring(name.LastIndexOf("/") + 1);
         }
 
-        public void SetSkybox(int index)
+        public void SetSkybox(int index, bool refreshSkyBox = true)
         {
             if (index < 0 || s_skyboxes.IsNullOrEmpty())
             {
+                if (!refreshSkyBox)
+                    return;
+
                 LevelLightSettings lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
                 if (lightSettings)
                 {
@@ -135,38 +138,48 @@ namespace OverhaulMod.Engine
                 }
                 return;
             }
-            RenderSettings.skybox = s_skyboxes[index];
+
+            Material material = s_skyboxes[index];
+            SkyBoxManager.Instance._currentSkybox = material;
+            RenderSettings.skybox = material;
         }
 
-        public void PatchLightning(bool refresh)
+        public void PatchLightning(bool refresh, LevelLightSettings lightSettings = null)
         {
+            AdvancedPhotoModeManager.useRealisticSkyBoxes = false;
+            AdvancedPhotoModeManager.realisticSkyBoxIndex = -1;
+            ModLevelManager.Instance.currentRealisticSkyBoxIndex = -1;
+
+            if (!lightSettings)
+                lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
+
             RealisticLightningInfoList realisticLightningInfoList = m_lightningInfoList;
-            if (realisticLightningInfoList == null || realisticLightningInfoList.LightningInfos.IsNullOrEmpty())
-                return;
-
-            string prefabName = GetLevelPrefabName(null);
-            if (prefabName == null)
-                return;
-
-            RealisticLightningInfo realisticLightningInfo = null;
-            foreach (var l in realisticLightningInfoList.LightningInfos)
-                if (l.LevelPrefabName == prefabName)
-                {
-                    realisticLightningInfo = l;
-                    break;
-                }
-
-            if (realisticLightningInfo == null)
-                return;
-
-            SetSkybox(realisticLightningInfo.SkyboxIndex);
-            LevelLightSettings lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-            if (lightSettings)
+            if (realisticLightningInfoList != null && !realisticLightningInfoList.LightningInfos.IsNullOrEmpty())
             {
-                realisticLightningInfo.Lightning.ApplyValues(lightSettings);
-                if (refresh)
-                    LevelEditorLightManager.Instance.RefreshLightInScene();
+                string prefabName = GetLevelPrefabName(null);
+                if (prefabName != null)
+                {
+                    RealisticLightningInfo realisticLightningInfo = null;
+                    foreach (RealisticLightningInfo l in realisticLightningInfoList.LightningInfos)
+                        if (l.LevelPrefabName == prefabName)
+                        {
+                            realisticLightningInfo = l;
+                            break;
+                        }
+
+                    if (realisticLightningInfo != null)
+                    {
+                        realisticLightningInfo.Lightning.ApplyValues(lightSettings);
+                        SetSkybox(realisticLightningInfo.SkyboxIndex);
+                        AdvancedPhotoModeManager.realisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
+                        AdvancedPhotoModeManager.useRealisticSkyBoxes = true;
+                        ModLevelManager.Instance.currentRealisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
+                    }
+                }
             }
+
+            if (lightSettings && refresh)
+                LevelEditorLightManager.Instance.RefreshLightInScene();
         }
     }
 }

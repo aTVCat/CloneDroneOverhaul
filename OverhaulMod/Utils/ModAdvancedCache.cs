@@ -17,7 +17,7 @@ namespace OverhaulMod.Utils
 
         public static void Remove(object key)
         {
-            s_items.Remove(key);
+            _ = s_items.Remove(key);
         }
 
         public static bool Has(object key)

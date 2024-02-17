@@ -2,8 +2,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
-using static Mono.Security.X509.X520;
 
 namespace OverhaulMod.Content
 {

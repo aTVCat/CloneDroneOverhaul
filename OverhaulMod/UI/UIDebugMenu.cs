@@ -39,7 +39,7 @@ namespace OverhaulMod.UI
                 return;
 
             GameData currentGameData = GameDataManager.Instance._endlessModeData;
-            for(int i = 0; i < levelsToBeat; i++)
+            for (int i = 0; i < levelsToBeat; i++)
             {
                 LevelManager.Instance.PickNextLevel();
                 currentGameData.LevelIDsBeatenThisPlaythrough.Add(currentGameData.CurentLevelID);

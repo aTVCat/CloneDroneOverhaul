@@ -23,6 +23,7 @@ namespace OverhaulMod.Engine
             if (!b || m_oldLightningInfo == null)
                 return;
 
+            RealisticLightningManager.Instance.PatchLightning(false, b);
             LightningTransitionInfo lightningTransitionInfo = new LightningTransitionInfo
             {
                 LightningA = m_oldLightningInfo,
@@ -63,6 +64,7 @@ namespace OverhaulMod.Engine
                 m_currentTransition = null;
                 m_oldLightningInfo = null;
                 LevelEditorLightManager.Instance.RefreshLightInScene();
+                RealisticLightningManager.Instance.PatchLightning(false);
             }
         }
     }

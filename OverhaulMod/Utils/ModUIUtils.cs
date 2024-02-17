@@ -7,6 +7,12 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void ColorPicker(Color currentColor, bool showAlphaChannel, Action<Color> callback, Transform parent)
+        {
+            UIGenericColorPicker genericColorPicker = ModUIConstants.ShowGenericColorPicker(parent);
+            genericColorPicker.Populate(currentColor, showAlphaChannel, callback);
+        }
+
         public static void KeyBinder(string name, KeyCode defaultKey, Action<KeyCode> callback, Transform parent)
         {
             UISetKeyBindWindow setKeyBindWindow = ModUIConstants.ShowSetKeyBindWindow(parent);

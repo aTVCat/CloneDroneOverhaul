@@ -22,7 +22,7 @@ namespace OverhaulMod.UI
         public void OnSendButtonClicked()
         {
             PersonalizationEditorManager personalizationEditorManager = PersonalizationEditorManager.Instance;
-            if(personalizationEditorManager && Directory.Exists(personalizationEditorManager.editingFolder) && personalizationEditorManager.editingItemInfo != null)
+            if (personalizationEditorManager && Directory.Exists(personalizationEditorManager.editingFolder) && personalizationEditorManager.editingItemInfo != null)
             {
                 m_sendButton.interactable = false;
                 m_loadingIndicator.SetActive(true);

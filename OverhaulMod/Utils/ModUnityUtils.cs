@@ -16,7 +16,7 @@ namespace OverhaulMod.Utils
             GameObject toInstantiate = Resources.Load<GameObject>("Prefabs/LevelObjects/EnemySpawns/Bow1");
             toInstantiate.SetActive(false);
             GameObject gameObject = UnityEngine.Object.Instantiate(toInstantiate);
-            gameObject.name = name;
+            gameObject.name = name.Replace("(Clone)", string.Empty);
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
             toInstantiate.SetActive(true);
 

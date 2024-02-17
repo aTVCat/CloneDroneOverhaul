@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using Rewired;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -42,10 +41,7 @@ namespace OverhaulMod.Patches
                 return false;
 
             GameUIRoot gameUIRoot = ModCache.gameUIRoot;
-            if (gameUIRoot && gameUIRoot.EscMenu && gameUIRoot.EscMenu.gameObject.activeInHierarchy)
-                return false;
-
-            return true;
+            return !gameUIRoot || !gameUIRoot.EscMenu || !gameUIRoot.EscMenu.gameObject.activeInHierarchy;
         }
 
         [HarmonyTranspiler]

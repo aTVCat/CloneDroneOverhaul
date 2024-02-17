@@ -28,14 +28,14 @@ namespace OverhaulMod.Content.Personalization
             if (!firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            firstPersonMover.gameObject.AddComponent<PersonalizationController>();
+            _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
         }
 
         public bool CreateItem(string name, out PersonalizationItemInfo personalizationItem)
         {
             personalizationItem = null;
             if (name.IsNullOrEmpty())
-                return false;           
+                return false;
 
             string directoryName = name.Replace(" ", string.Empty);
             string directoryPath = ModCore.customizationFolder + directoryName + "/";
@@ -43,7 +43,7 @@ namespace OverhaulMod.Content.Personalization
             if (Directory.Exists(directoryPath))
                 return false;
 
-            Directory.CreateDirectory(directoryPath);
+            _ = Directory.CreateDirectory(directoryPath);
             personalizationItem = new PersonalizationItemInfo()
             {
                 Name = "New item",
@@ -63,18 +63,12 @@ namespace OverhaulMod.Content.Personalization
 
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
         {
-            if (weaponType == WeaponType.None)
-                return false;
-
-            if(weaponType == WeaponType.Sword
+            return weaponType != WeaponType.None
+&& (weaponType == WeaponType.Sword
                 || weaponType == WeaponType.Bow
                 || weaponType == WeaponType.Hammer
                 || weaponType == WeaponType.Spear
-                || weaponType == WeaponType.Shield)
-            {
-                return true;
-            }
-            return false;
+                || weaponType == WeaponType.Shield);
         }
     }
 }

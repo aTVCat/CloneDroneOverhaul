@@ -89,10 +89,7 @@ namespace OverhaulMod
         public bool IsUIVisible(string assetBundle, string assetKey)
         {
             string fullName = assetBundle + "." + assetKey;
-            if (!HasInstantiatedUI(fullName))
-                return false;
-
-            return m_instantiatedUIs[fullName].activeInHierarchy;
+            return HasInstantiatedUI(fullName) && m_instantiatedUIs[fullName].activeInHierarchy;
         }
 
         public int GetSiblingIndex(UILayer layer)
@@ -158,6 +155,7 @@ namespace OverhaulMod
             if (parent)
             {
                 result.transform.SetParent(parent);
+                result.transform.SetAsLastSibling();
             }
             return result;
         }

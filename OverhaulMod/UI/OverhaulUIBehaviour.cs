@@ -134,15 +134,30 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
+                ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
+
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
                     UnityEngine.Object unityObject = null;
                     if (elementAttribute.ComponentToAdd != null)
                     {
-                        unityObject = GetObject<GameObject>(elementAttribute.Name).AddComponent(elementAttribute.ComponentToAdd);
-                        if (unityObject is OverhaulUIBehaviour uib)
+                        UnityEngine.Object obj = GetObject<GameObject>(elementAttribute.Name).AddComponent(elementAttribute.ComponentToAdd);
+                        if (obj is OverhaulUIBehaviour uib)
                             uib.InitializeElement();
+
+                        unityObject = obj.GetType() == fieldInfo.FieldType
+                            ? obj
+                            : elementAttribute.HasIndex()
+                        ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
+                        : GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                    }
+                    else if (colorPickerAttribute != null)
+                    {
+                        unityObject = GetObject<GameObject>(elementAttribute.Name).AddComponent<UIElementColorPickerButton>();
+                        UIElementColorPickerButton colorPickerButton = unityObject as UIElementColorPickerButton;
+                        colorPickerButton.InitializeElement();
+                        colorPickerButton.useAlpha = colorPickerAttribute.UseAlpha;
                     }
                     else
                     {
@@ -234,6 +249,18 @@ namespace OverhaulMod.UI
                             {
                                 Slider slider = unityObject as Slider;
                                 slider.onValueChanged.AddListener(delegate (float value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
+                                });
+                            }
+                        }
+                        else if (fieldInfo.FieldType == typeof(UIElementColorPickerButton))
+                        {
+                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(Color) });
+                            if (methodInfo != null)
+                            {
+                                UIElementColorPickerButton colorPickerButton = unityObject as UIElementColorPickerButton;
+                                colorPickerButton.onValueChanged.AddListener(delegate (Color value)
                                 {
                                     _ = methodInfo.Invoke(this, new object[] { value });
                                 });

@@ -3,6 +3,7 @@ using ModLibrary;
 using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {
@@ -15,6 +16,14 @@ namespace OverhaulMod.Patches
         {
             CharacterModel characterModel = __instance._characterModel;
             return !characterModel || !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("PushDownIfAboveGround")]
+        private static bool PushDownIfAboveGround_Prefix(FirstPersonMover __instance)
+        {
+            _ = ModActionUtils.RunCoroutine(ModCore.PushDownIfAboveGroundCoroutine_Patch(__instance));
+            return false;
         }
 
         [HarmonyPrefix]

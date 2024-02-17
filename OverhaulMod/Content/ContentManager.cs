@@ -182,7 +182,7 @@ namespace OverhaulMod.Content
             if (value && !m_loadingAddons.Contains(obj))
                 m_loadingAddons.Add(obj);
             else if (!value)
-                m_loadingAddons.Remove(obj);
+                _ = m_loadingAddons.Remove(obj);
         }
 
         /// <summary>

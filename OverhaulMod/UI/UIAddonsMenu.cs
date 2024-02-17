@@ -119,7 +119,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, $"Delete {content.DisplayName}?", "This action cannot be undone.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
-                        if(moddedObject && moddedObject.gameObject)
+                        if (moddedObject && moddedObject.gameObject)
                         {
                             Directory.Delete(content.FolderPath, true);
                             ContentManager.Instance.RefreshContent(true);

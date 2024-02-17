@@ -475,9 +475,11 @@
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
+    <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
+    <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
@@ -494,6 +496,7 @@
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIDebugMenu.cs" />
     <Compile Include="UI\UIDamageIndicator.cs" />
+    <Compile Include="UI\UIGenericColorPicker.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />

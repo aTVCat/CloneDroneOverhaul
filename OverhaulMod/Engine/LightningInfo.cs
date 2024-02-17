@@ -117,23 +117,36 @@ namespace OverhaulMod.Engine
             FogStartDistance = RenderSettings.fogStartDistance;
             FogEndDistance = RenderSettings.fogEndDistance;
 
+            SkyBoxManager skyBoxManager = SkyBoxManager.Instance;
+            Material material = skyBoxManager._customSkybox;
+            if (material)
+            {
+                SunSize = material.GetFloat("_SunSize");
+                SunSizeConvergence = material.GetFloat("_SunSizeConvergence");
+                AtmosphereThickness = material.GetFloat("_AtmosphereThickness");
+                SkyTint = material.GetColor("_SkyTint");
+                GroundTint = material.GetColor("_GroundColor");
+                SkyExposure = material.GetFloat("_Exposure");
+            }
+
+            Material material2 = skyBoxManager._gradientSkybox;
+            if (material2)
+            {
+                SkyColor = material2.GetColor("_Color1");
+                HorizonColor = material2.GetColor("_Color2");
+                GroundColor = material2.GetColor("_Color3");
+                SkyTopExponent = material2.GetFloat("_Exponent1");
+                SkyBottomExponent = material2.GetFloat("_Exponent2");
+                SkyIntensity = material2.GetFloat("_Intensity");
+            }
+
+            ModLevelManager modLevelManager = ModLevelManager.Instance;
+            SkyboxIndex = modLevelManager.currentSkyBoxIndex;
+
             LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance?.GetActiveLightSettings();
             if (!levelLightSettings)
                 return;
 
-            SkyboxIndex = levelLightSettings.SkyboxIndex;
-            SunSize = levelLightSettings.SunSize;
-            SunSizeConvergence = levelLightSettings.SunSizeConvergence;
-            AtmosphereThickness = levelLightSettings.AtmosphereThickness;
-            SkyTint = levelLightSettings.SkyTint;
-            GroundTint = levelLightSettings.GroundTint;
-            SkyExposure = levelLightSettings.SkyExposure;
-            SkyColor = levelLightSettings.SkyColor;
-            HorizonColor = levelLightSettings.HorizonColor;
-            GroundColor = levelLightSettings.GroundColor;
-            SkyTopExponent = levelLightSettings.SkyTopExponent;
-            SkyBottomExponent = levelLightSettings.SkyBottomExponent;
-            SkyIntensity = levelLightSettings.SkyIntensity;
             CameraColorGrading = levelLightSettings.CameraColorGrading;
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
@@ -141,6 +154,9 @@ namespace OverhaulMod.Engine
 
         public void ApplyValues(LevelLightSettings levelLightSettings)
         {
+            if (!levelLightSettings)
+                return;
+
             levelLightSettings.EnableDirectionalLight = EnableDirectionalLight;
             levelLightSettings.DirectionalRotationX = DirectionalRotationX;
             levelLightSettings.DirectionalRotationY = DirectionalRotationY;
