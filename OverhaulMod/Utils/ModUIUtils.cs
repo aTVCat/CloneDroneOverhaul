@@ -7,6 +7,12 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void ImageViewer(Texture2D texture, Transform parent)
+        {
+            UIGenericImageViewer genericImageViewer = ModUIConstants.ShowGenericImageViewer(parent);
+            genericImageViewer.Populate(texture);
+        }
+
         public static void ColorPicker(Color currentColor, bool showAlphaChannel, Action<Color> callback, Transform parent)
         {
             UIGenericColorPicker genericColorPicker = ModUIConstants.ShowGenericColorPicker(parent);

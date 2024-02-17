@@ -481,6 +481,7 @@
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
+    <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
@@ -493,6 +494,7 @@
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
+    <Compile Include="UI\UIGenericImageViewer.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIDebugMenu.cs" />
     <Compile Include="UI\UIDamageIndicator.cs" />

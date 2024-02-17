@@ -18,6 +18,8 @@ namespace OverhaulMod.Content
 
         public const string REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME = "RealisticSkyboxes";
 
+        public const string GALLERY_CONTENT_FOLDER_NAME = "Gallery";
+
         public const string CONTENT_DOWNLOAD_DONE_EVENT = "OverhaulContentDownloadDone";
 
         private Dictionary<string, UnityWebRequest> m_downloadingFiles;
