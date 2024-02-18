@@ -129,8 +129,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_tabs.AddTab(m_rgbSettingsTab, "rgb");
-            m_tabs.AddTab(m_hsvSettingsTab, "hsv");
+            m_tabs.AddTab(m_rgbSettingsTab.gameObject, "rgb");
+            m_tabs.AddTab(m_hsvSettingsTab.gameObject, "hsv");
             m_tabs.SelectTab("rgb");
         }
 

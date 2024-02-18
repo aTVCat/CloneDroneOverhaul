@@ -1,6 +1,7 @@
 ﻿using Steamworks;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -52,7 +53,7 @@ namespace OverhaulMod.Utils
             Debug_LastQueryIsCached = false;
             Debug_LastQueryResults = -1;
             Debug_LastQueryMatchingResults = -1;
-            _ = GetWorkshopUserItems(steamId, page, userList, itemsType, sortOrder, Debug_RequestParameters, delegate (List<SteamWorkshopItem> list)
+            _ = GetWorkshopUserItemList(steamId, page, userList, itemsType, sortOrder, Debug_RequestParameters, delegate (List<SteamWorkshopItem> list)
             {
                 Debug_Items = list;
             }, delegate (string error)
@@ -78,33 +79,35 @@ namespace OverhaulMod.Utils
         /// <param name="debugCallback"></param>
         public static bool GetAllWorkshopItems(EUGCQuery rankBy, EUGCMatchingUGCType itemsType, int page, RequestParameters requestParameters, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
-            if (page < 1 || requestParameters == null)
+            page = Mathf.Max(1, page);
+            if (requestParameters == null)
                 return false;
 
             UGCQueryHandle_t queryHandle = createAllWorkshopItemsRequest(rankBy, itemsType, page);
             requestParameters.ConfigureQuery(queryHandle);
-            doRequestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
+            requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
-                onQueryCallback_ManyItems(queryResult, io, callback, errorCallback, debugCallback);
-            });
+                onQueryCallback(queryResult, io, callback, errorCallback, debugCallback);
+            }, errorCallback);
             return true;
         }
 
-        public static bool GetWorkshopUserItems(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        public static bool GetWorkshopUserItemList(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
-            if (page < 1 || requestParameters == null || steamId == default)
+            page = Mathf.Max(1, page);
+            if (requestParameters == null || steamId == default)
                 return false;
 
-            UGCQueryHandle_t queryHandle = createWorkshopUserItemsRequest(steamId, page, userList, itemsType, sortOrder);
+            UGCQueryHandle_t queryHandle = createWorkshopItemsByUserRequest(steamId, page, userList, itemsType, sortOrder);
             requestParameters.ConfigureQuery(queryHandle);
-            doRequestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
+            requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
-                onQueryCallback_ManyItems(queryResult, io, callback, errorCallback, debugCallback);
-            });
+                onQueryCallback(queryResult, io, callback, errorCallback, debugCallback);
+            }, errorCallback);
             return true;
         }
 
-        private static void onQueryCallback_ManyItems(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
+        private static void onQueryCallback(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
         {
             if (!checkQueryResultForErrors(queryResult, ioError, errorCallback))
             {
@@ -115,22 +118,6 @@ namespace OverhaulMod.Utils
             setPageAmount(queryResult.m_unTotalMatchingResults);
             callback?.Invoke(getQueryItems(queryResult));
             debugInfo?.Invoke(queryResult.m_bCachedData, (int)queryResult.m_unNumResultsReturned, (int)queryResult.m_unTotalMatchingResults);
-            releaseQueryHandle(queryResult.m_handle);
-        }
-
-        private static void onQueryCallback_OneItem(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<SteamWorkshopItem> callback, Action<string> errorCallback)
-        {
-            if (!checkQueryResultForErrors(queryResult, ioError, errorCallback))
-            {
-                releaseQueryHandle(queryResult.m_handle);
-                return;
-            }
-
-            List<SteamWorkshopItem> list = getQueryItems(queryResult);
-            if (list == null && list.Count != 0 && list[0] != null)
-                callback?.Invoke(list[0]);
-            else
-                errorCallback?.Invoke("Item reference error.");
             releaseQueryHandle(queryResult.m_handle);
         }
 
@@ -171,18 +158,36 @@ namespace OverhaulMod.Utils
             return SteamUGC.CreateQueryAllUGCRequest(rankBy, itemsType, appId, appId, (uint)page);
         }
 
-        private static UGCQueryHandle_t createWorkshopUserItemsRequest(CSteamID accountId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder)
+        private static UGCQueryHandle_t createWorkshopItemsByUserRequest(CSteamID accountId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder)
         {
             AppId_t appId = SteamUtils.GetAppID();
             return SteamUGC.CreateQueryUserUGCRequest(accountId.GetAccountID(), userList, itemsType, sortOrder, appId, appId, (uint)page);
         }
 
-        private static void doRequestWorkshopItems(UGCQueryHandle_t queryHandle, Action<SteamUGCQueryCompleted_t, bool> callback)
+        private static UGCQueryHandle_t createWorkshopItemRequest(PublishedFileId_t itemId)
         {
-            CallResult<SteamUGCQueryCompleted_t>.Create(null).Set(SteamUGC.SendQueryUGCRequest(queryHandle), delegate (SteamUGCQueryCompleted_t c, bool io)
+            return SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[] { itemId }, 1);
+        }
+
+        private static void requestWorkshopItems(UGCQueryHandle_t queryHandle, Action<SteamUGCQueryCompleted_t, bool> callback, Action<string> errorCallback)
+        {
+            bool done = false;
+            CallResult<SteamUGCQueryCompleted_t> callResult = CallResult<SteamUGCQueryCompleted_t>.Create(null);
+            callResult.Set(SteamUGC.SendQueryUGCRequest(queryHandle), delegate (SteamUGCQueryCompleted_t c, bool io)
             {
+                done = true;
                 callback?.Invoke(c, io);
+                callResult?.Dispose();
             });
+
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (callResult != null && !callResult.m_bDisposed)
+                    callResult.Dispose();
+
+                if (!done)
+                    errorCallback?.Invoke("Request timeout.");
+            }, 20f);
         }
 
         private static void releaseQueryHandle(UGCQueryHandle_t queryHandle)

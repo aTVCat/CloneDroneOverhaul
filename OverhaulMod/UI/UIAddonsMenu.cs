@@ -45,8 +45,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_tabs.AddTab(m_localAddonsTab, "local addons");
-            m_tabs.AddTab(m_networkAddonsTab, "network addons");
+            m_tabs.AddTab(m_localAddonsTab.gameObject, "local addons");
+            m_tabs.AddTab(m_networkAddonsTab.gameObject, "network addons");
             m_tabs.SelectTab("local addons");
 
             GlobalEventManager.Instance.AddEventListener<string>(ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, onContentDownloaded);

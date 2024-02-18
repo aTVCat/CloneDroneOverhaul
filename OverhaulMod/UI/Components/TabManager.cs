@@ -10,7 +10,7 @@ namespace OverhaulMod.UI
     /// </summary>
     public class TabManager
     {
-        private ModdedObject m_prefab;
+        private GameObject m_prefab;
         private Transform m_container;
         private Type m_type;
         private Action<UIElementTab> m_onTabCreate;
@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
         /// <param name="container"></param>
         /// <param name="onTabCreate">Called when tab was instantiated</param>
         /// <param name="onTabSelect">Called when user selects a tab</param>
-        public void Config(ModdedObject prefab, Transform container, Type type, Action<UIElementTab> onTabCreate, Action<UIElementTab> onTabSelect)
+        public void Config(GameObject prefab, Transform container, Type type, Action<UIElementTab> onTabCreate, Action<UIElementTab> onTabSelect)
         {
             if (prefab)
                 prefab.gameObject.SetActive(false);
@@ -72,13 +72,13 @@ namespace OverhaulMod.UI
             AddTab(UnityEngine.Object.Instantiate(m_prefab, m_container), tabId);
         }
 
-        public void AddTab(ModdedObject moddedObject, string tabId)
+        public void AddTab(GameObject moddedObject, string tabId)
         {
             if (m_instantiatedTabs.ContainsKey(tabId))
                 return;
 
-            moddedObject.gameObject.SetActive(true);
-            UIElementTab tab = (UIElementTab)moddedObject.gameObject.AddComponent(m_type);
+            moddedObject.SetActive(true);
+            UIElementTab tab = (UIElementTab)moddedObject.AddComponent(m_type);
             tab.tabId = tabId;
             tab.InitializeElement();
             Button button = tab.GetButton();

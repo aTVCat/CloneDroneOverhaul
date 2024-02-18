@@ -55,8 +55,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_tabs.AddTab(m_localAdvancementsTab, "local advancements");
-            m_tabs.AddTab(m_globalAdvancementsTab, "global advancements");
+            m_tabs.AddTab(m_localAdvancementsTab.gameObject, "local advancements");
+            m_tabs.AddTab(m_globalAdvancementsTab.gameObject, "global advancements");
             m_tabs.SelectTab("local advancements");
 
             ClearPageContents();

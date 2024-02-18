@@ -492,6 +492,8 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIGenericImageViewer.cs" />

@@ -278,16 +278,20 @@ namespace OverhaulMod.UI
                 FieldInfo fi = tm.Item1;
                 TabManagerAttribute tma = tm.Item2;
 
-                ModdedObject prefab = null;
+                GameObject prefab = null;
                 Transform container = null;
                 if (tma.PrefabFieldName != null || tma.ContainerFieldName != null)
                 {
                     FieldInfo prefabField = localType.GetField(tma.PrefabFieldName, bindingFlags);
                     if (prefabField == null)
                         throw new Exception($"[TabManager] Could not find tab prefab (Field, {tma.PrefabFieldName})");
-                    prefab = prefabField.GetValue(this) as ModdedObject;
+                    prefab = prefabField.GetValue(this) as GameObject;
                     if (!prefab)
-                        throw new Exception($"[TabManager] Could not find ModdedObject (Prefab, {tma.PrefabFieldName})");
+                    {
+                        prefab = (prefabField.GetValue(this) as Component).gameObject;
+                        if (!prefab)
+                            throw new Exception($"[TabManager] Could not find ModdedObject (Prefab, {tma.PrefabFieldName})");
+                    }
 
                     FieldInfo containerField = localType.GetField(tma.ContainerFieldName, bindingFlags);
                     if (containerField == null)
