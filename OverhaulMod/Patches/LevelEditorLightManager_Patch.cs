@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("AddLightSettingInScene")]
         private static bool AddLightSettingInScene_Prefix(LevelEditorLightManager __instance, LevelLightSettings lightSettings)
         {
+            RealisticLightningManager.Instance.PatchLightning(false, lightSettings, false);
+
             LightningTransitionManager manager = LightningTransitionManager.Instance;
             if (manager && manager.IsDoingTransition())
             {
@@ -50,14 +52,13 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshLightInScene")]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
-            LightningTransitionManager manager = LightningTransitionManager.Instance;
-            if (manager && manager.ShouldDoTransition())
+            LevelLightSettings levelLightSettings = __instance.GetActiveLightSettings();
+            if (levelLightSettings)
             {
-                LevelLightSettings levelLightSettings = __instance.GetActiveLightSettings();
-                if (levelLightSettings)
-                {
+                RealisticLightningManager.Instance.PatchLightning(false, levelLightSettings);
+                LightningTransitionManager manager = LightningTransitionManager.Instance;
+                if (manager && manager.ShouldDoTransition())
                     LightningTransitionManager.Instance.DoTransition(levelLightSettings);
-                }
             }
         }
     }

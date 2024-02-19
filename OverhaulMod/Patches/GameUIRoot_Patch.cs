@@ -112,6 +112,10 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_SELECT_MENU))
                     return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU))
+                    return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADVANCEMENTS_MENU))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_COMMUNITY_HUB))
@@ -120,15 +124,11 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_WORKSHOP_BROWSER))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADVANCEMENTS_MENU))
-                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE_LEADERBOARD))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_UI_MANAGEMENT_PANEL))
-                    return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OTHER_MODS))
                     return false;

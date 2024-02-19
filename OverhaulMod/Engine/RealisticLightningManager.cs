@@ -144,7 +144,7 @@ namespace OverhaulMod.Engine
             RenderSettings.skybox = material;
         }
 
-        public void PatchLightning(bool refresh, LevelLightSettings lightSettings = null)
+        public void PatchLightning(bool refresh, LevelLightSettings lightSettings = null, bool refreshRLightning = true)
         {
             AdvancedPhotoModeManager.useRealisticSkyBoxes = false;
             AdvancedPhotoModeManager.realisticSkyBoxIndex = -1;
@@ -170,10 +170,13 @@ namespace OverhaulMod.Engine
                     if (realisticLightningInfo != null)
                     {
                         realisticLightningInfo.Lightning.ApplyValues(lightSettings);
-                        SetSkybox(realisticLightningInfo.SkyboxIndex);
-                        AdvancedPhotoModeManager.realisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
-                        AdvancedPhotoModeManager.useRealisticSkyBoxes = true;
-                        ModLevelManager.Instance.currentRealisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
+                        if (refreshRLightning)
+                        {
+                            SetSkybox(realisticLightningInfo.SkyboxIndex);
+                            AdvancedPhotoModeManager.realisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
+                            AdvancedPhotoModeManager.useRealisticSkyBoxes = true;
+                            ModLevelManager.Instance.currentRealisticSkyBoxIndex = realisticLightningInfo.SkyboxIndex;
+                        }
                     }
                 }
             }

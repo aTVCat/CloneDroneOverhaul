@@ -23,7 +23,6 @@ namespace OverhaulMod.Engine
             if (!b || m_oldLightningInfo == null)
                 return;
 
-            RealisticLightningManager.Instance.PatchLightning(false, b);
             LightningTransitionInfo lightningTransitionInfo = new LightningTransitionInfo
             {
                 LightningA = m_oldLightningInfo,
