@@ -79,9 +79,9 @@ namespace OverhaulMod.Content.Personalization
 
             if (LeftPanelTransform && ToolBarTransform)
             {
-                height -= ToolBarTransform.rect.height + 5f;
-                width -= LeftPanelTransform.rect.width + 5f;
-                minX = LeftPanelTransform.rect.width + 5f;
+                height -= ToolBarTransform.rect.height + 2f;
+                width -= LeftPanelTransform.rect.width + 2f;
+                minX = LeftPanelTransform.rect.width + 2f;
             }
 
             Rect rect = m_camera.pixelRect;

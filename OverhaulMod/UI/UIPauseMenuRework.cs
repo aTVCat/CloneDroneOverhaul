@@ -111,6 +111,15 @@ namespace OverhaulMod.UI
             m_logoJa.SetActive(langId == "ja");
         }
 
+        private void refreshButtons()
+        {
+            m_unscaledTimeToHideExitDialogue = -1f;
+            m_exitDialogue.SetActive(false);
+            m_exitButton.gameObject.SetActive(true);
+
+            m_customizationButton.interactable = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
+        }
+
         public void OnResumeButtonClicked()
         {
             Hide();
@@ -155,11 +164,21 @@ namespace OverhaulMod.UI
 
         public void OnMainMenuButtonClicked()
         {
+            if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
+            {
+                ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
+                return;
+            }
             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
         public void OnDesktopButtonClicked()
         {
+            if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
+            {
+                ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, Application.Quit, null);
+                return;
+            }
             Application.Quit();
         }
 

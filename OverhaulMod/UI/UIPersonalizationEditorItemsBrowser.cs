@@ -24,6 +24,10 @@ namespace OverhaulMod.UI
         [UIElement("CreateNewButton")]
         private readonly Button m_createNewButton;
 
+        [UIElementAction(nameof(OnFolderButtonClicked))]
+        [UIElement("ImportButton")]
+        private readonly Button m_importButton;
+
         [UIElementAction(nameof(OnViewAllItemsToggleChanged))]
         [UIElement("ViewAllItemsToggle")]
         private readonly Toggle m_viewAllItemsToggle;

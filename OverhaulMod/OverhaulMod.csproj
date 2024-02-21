@@ -485,6 +485,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
@@ -493,6 +494,8 @@
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
@@ -501,6 +504,7 @@
     <Compile Include="UI\UIDebugMenu.cs" />
     <Compile Include="UI\UIDamageIndicator.cs" />
     <Compile Include="UI\UIGenericColorPicker.cs" />
+    <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />

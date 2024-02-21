@@ -26,6 +26,7 @@ namespace OverhaulMod.Content.Personalization
                         {
                             PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(infoFile);
                             personalizationItemInfo.FolderPath = d;
+                            personalizationItemInfo.FixValues();
                             list.Add(personalizationItemInfo);
                         }
                         catch

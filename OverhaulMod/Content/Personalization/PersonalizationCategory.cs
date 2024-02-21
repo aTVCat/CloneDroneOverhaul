@@ -6,6 +6,6 @@
 
         WeaponSkins,
         Accessories,
-        Mounts
+        Pets
     }
 }

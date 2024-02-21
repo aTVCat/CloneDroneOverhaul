@@ -61,6 +61,7 @@ namespace OverhaulMod.Utils
         public const string UI_DAMAGE_INDICATOR = "UI_DamageIndicator";
         public const string UI_GENERIC_COLOR_PICKER = "UI_GenericColorPicker";
         public const string UI_GENERIC_IMAGE_VIEWER = "UI_GenericImageViewer";
+        public const string UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU = "UI_PersonalizationEditorAuthorsEditMenu";
 
         public static void ShowOtherModsMenu()
         {
@@ -364,6 +365,11 @@ namespace OverhaulMod.Utils
         public static UIGenericImageViewer ShowGenericImageViewer(Transform parent)
         {
             return ModUIManager.Instance.Show<UIGenericImageViewer>(AssetBundleConstants.UI, UI_GENERIC_IMAGE_VIEWER, parent);
+        }
+
+        public static UIPersonalizationEditorAuthorsEditMenu ShowPersonalizationEditorAuthorsEditMenu(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorAuthorsEditMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU, parent);
         }
     }
 }

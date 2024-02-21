@@ -47,14 +47,14 @@ namespace OverhaulMod.Content.Personalization
             personalizationItem = new PersonalizationItemInfo()
             {
                 Name = "New item",
-                Author = SteamFriends.GetPersonaName(),
                 Description = "No description provided.",
                 IsVerified = PersonalizationEditorManager.Instance.canVerifyItems,
-                ExclusiveFor = new System.Collections.Generic.List<string>(),
                 Category = PersonalizationCategory.WeaponSkins,
                 EditorID = PersonalizationEditorManager.Instance.editorId,
                 FolderPath = directoryPath
             };
+            personalizationItem.FixValues();
+            personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             itemList.Items.Add(personalizationItem);
 
             ModJsonUtils.WriteStream(directoryPath + ITEM_INFO_FILE, personalizationItem);

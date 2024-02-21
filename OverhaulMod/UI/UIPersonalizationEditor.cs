@@ -29,7 +29,30 @@ namespace OverhaulMod.UI
         [UIElement("LeftPanel")]
         public RectTransform LeftPanelTransform;
 
+        [UIElement("Inspector", typeof(UIElementPersonalizationEditorInspector))]
+        public readonly UIElementPersonalizationEditorInspector Inspector;
+
+        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
+        public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
+
         public override bool enableCursor => true;
+
+        public static UIPersonalizationEditor instance
+        {
+            get;
+            private set;
+        }
+
+        protected override void OnInitialized()
+        {
+            instance = this;
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            instance = null;
+        }
 
         public override void Show()
         {
@@ -39,12 +62,6 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-        }
-
-        public override void Update()
-        {
-            if (ModUIUtils.IsEscKeyDown())
-                OnExitButtonClicked();
         }
 
         public void OnExitButtonClicked()
@@ -59,6 +76,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveButtonClicked()
         {
+            Inspector.ApplyValues();
             PersonalizationEditorManager.Instance.SaveItem();
         }
 

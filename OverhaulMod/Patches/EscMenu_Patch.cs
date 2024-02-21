@@ -11,9 +11,6 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix()
         {
-            if (GameModeManager.Is((GameMode)2500))
-                return false;
-
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuRework))
                 return true;
 

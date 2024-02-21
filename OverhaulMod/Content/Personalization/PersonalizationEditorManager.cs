@@ -103,6 +103,7 @@ namespace OverhaulMod.Content.Personalization
         {
             editingItemInfo = personalizationItemInfo;
             editingFolder = folder;
+            UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
         }
 
         public void SaveItem()
