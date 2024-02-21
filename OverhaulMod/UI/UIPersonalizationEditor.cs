@@ -64,6 +64,11 @@ namespace OverhaulMod.UI
             base.Hide();
         }
 
+        public void ShowSaveErrorMessage(string message)
+        {
+            ModUIUtils.MessagePopupOK("Item save error", message, 150f, true);
+        }
+
         public void OnExitButtonClicked()
         {
             ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
@@ -76,8 +81,10 @@ namespace OverhaulMod.UI
 
         public void OnSaveButtonClicked()
         {
-            Inspector.ApplyValues();
-            PersonalizationEditorManager.Instance.SaveItem();
+            if (!PersonalizationEditorManager.Instance.SaveItem(out string error))
+                ShowSaveErrorMessage(error);
+            else
+                ModUIUtils.MessagePopupOK("Successfully saved the item", string.Empty, 125f, false);
         }
 
         public void OnSendToVerificationButtonClicked()

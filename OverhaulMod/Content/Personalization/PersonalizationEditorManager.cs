@@ -1,6 +1,8 @@
-﻿using OverhaulMod.UI;
+﻿using ModLibrary;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -19,6 +21,19 @@ namespace OverhaulMod.Content.Personalization
         {
             get;
             set;
+        }
+
+        private PersonalizationEditorObjectBehaviour m_editingRoot;
+        public PersonalizationEditorObjectBehaviour editingRoot
+        {
+            get
+            {
+                return m_editingRoot;
+            }
+            set
+            {
+                m_editingRoot = value;
+            }
         }
 
         public string editingFolder
@@ -104,21 +119,40 @@ namespace OverhaulMod.Content.Personalization
             editingItemInfo = personalizationItemInfo;
             editingFolder = folder;
             UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
+            SpawnRootObject();
         }
 
-        public void SaveItem()
+        public bool SaveItem(out string error)
         {
             if (editingItemInfo == null)
-                return;
+            {
+                error = "Editing item is NULL";
+                return false;
+            }
 
             string folder = editingFolder;
             if (folder.IsNullOrEmpty())
-                return;
+            {
+                error = "Could not find folder";
+                return false;
+            }
 
             if (!Directory.Exists(folder))
                 _ = Directory.CreateDirectory(folder);
 
-            ModJsonUtils.WriteStream(folder + PersonalizationManager.ITEM_INFO_FILE, editingItemInfo);
+            UIPersonalizationEditor.instance.Inspector.ApplyValues();
+            editingItemInfo.RootObject = editingRoot.Serialize();
+            try
+            {
+                ModJsonUtils.WriteStream(folder + PersonalizationManager.ITEM_INFO_FILE, editingItemInfo);
+            }
+            catch (Exception exc)
+            {
+                error = exc.ToString();
+                return false;
+            }
+            error = null;
+            return true;
         }
 
         public void SpawnBot()
@@ -149,7 +183,7 @@ namespace OverhaulMod.Content.Personalization
                 yield break;
 
             personalizationController = bot.GetComponent<PersonalizationController>();
-            editingPersonalizationController = personalizationController;
+            editingPersonalizationController = personalizationController;            
             yield break;
         }
 
@@ -168,6 +202,37 @@ namespace OverhaulMod.Content.Personalization
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
             SpawnBot();
             yield break;
+        }
+
+        public void SpawnRootObject()
+        {
+            PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = editingRoot;
+            if (personalizationEditorObjectBehaviour)
+                Destroy(personalizationEditorObjectBehaviour.gameObject);
+
+            PersonalizationEditorObjectInfo rootInfo = editingItemInfo?.RootObject;
+            if (rootInfo == null)
+                return;
+
+            Transform transform = getParentForRoot();
+            if (!transform)
+                return;
+
+            personalizationEditorObjectBehaviour = rootInfo.Deserialize(transform);
+            editingRoot = personalizationEditorObjectBehaviour;
+        }
+
+        private Transform getParentForRoot()
+        {
+            PersonalizationController personalizationController = editingPersonalizationController;
+            if (!personalizationController)
+                return null ;
+
+            PersonalizationItemInfo personalizationItemInfo = editingItemInfo;
+            if (personalizationItemInfo == null)
+                return null;
+
+            return personalizationController.GetParentForItem(personalizationItemInfo);
         }
     }
 }

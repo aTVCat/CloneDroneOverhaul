@@ -81,6 +81,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             refreshLogo();
+            refreshButtons();
             TimeManager.Instance.OnGamePaused();
             AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
         }
@@ -113,11 +114,13 @@ namespace OverhaulMod.UI
 
         private void refreshButtons()
         {
+            bool customizationSupported = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
+
             m_unscaledTimeToHideExitDialogue = -1f;
             m_exitDialogue.SetActive(false);
             m_exitButton.gameObject.SetActive(true);
 
-            m_customizationButton.interactable = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
+            m_customizationButton.interactable = customizationSupported;
         }
 
         public void OnResumeButtonClicked()

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -29,20 +30,7 @@ namespace OverhaulMod.UI.Elements
 
         private void refreshText()
         {
-            List<string> list = referenceList;
-            if (list.IsNullOrEmpty())
-            {
-                m_text.text = "N/A";
-                return;
-            }
-
-            string text = list[0];
-
-            if(list.Count > 1)
-                for (int i = 1; i < list.Count; i++)
-                    text += $", {list[i]}";
-
-            m_text.text = text;
+            m_text.text = PersonalizationEditorManager.Instance?.editingItemInfo?.GetAuthorsString();
         }
 
         public void OnEditButtonClicked()

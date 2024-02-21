@@ -24,10 +24,15 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager personalizationEditorManager = PersonalizationEditorManager.Instance;
             if (personalizationEditorManager && Directory.Exists(personalizationEditorManager.editingFolder) && personalizationEditorManager.editingItemInfo != null)
             {
+                if (!personalizationEditorManager.SaveItem(out string error2))
+                {
+                    UIPersonalizationEditor.instance.ShowSaveErrorMessage(error2);
+                    return;
+                }
+
                 m_sendButton.interactable = false;
                 m_loadingIndicator.SetActive(true);
 
-                personalizationEditorManager.SaveItem();
                 PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationEditorManager.editingFolder, personalizationEditorManager.editingItemInfo, delegate
                 {
                     m_sendButton.interactable = true;

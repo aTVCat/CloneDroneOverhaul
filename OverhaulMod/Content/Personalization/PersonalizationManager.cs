@@ -39,14 +39,18 @@ namespace OverhaulMod.Content.Personalization
 
             string directoryName = name.Replace(" ", string.Empty);
             string directoryPath = ModCore.customizationFolder + directoryName + "/";
+            string voxDirectoryPath = directoryPath + "vox/";
 
             if (Directory.Exists(directoryPath))
                 return false;
 
+            if(!Directory.Exists(voxDirectoryPath))
+                _ = Directory.CreateDirectory(voxDirectoryPath);
+
             _ = Directory.CreateDirectory(directoryPath);
             personalizationItem = new PersonalizationItemInfo()
             {
-                Name = "New item",
+                Name = name,
                 Description = "No description provided.",
                 IsVerified = PersonalizationEditorManager.Instance.canVerifyItems,
                 Category = PersonalizationCategory.WeaponSkins,

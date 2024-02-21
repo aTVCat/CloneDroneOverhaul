@@ -107,5 +107,22 @@ namespace OverhaulMod.Content.Personalization
             Initialize();
             yield break;
         }
+
+        public Transform GetParentForItem(PersonalizationItemInfo personalizationItemInfo)
+        {
+            if (personalizationItemInfo.Category == PersonalizationCategory.Pets)
+            {
+                return base.transform.transform;
+            }
+            else if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
+            {
+                TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
+            }
+            else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            {
+                return ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
+            }
+            return null;
+        }
     }
 }

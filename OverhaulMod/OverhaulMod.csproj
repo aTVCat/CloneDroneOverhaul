@@ -356,11 +356,19 @@
     <Compile Include="Content\ContentListInfo.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
+    <Compile Include="Content\MagicaVoxelImporter.cs" />
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
@@ -486,6 +494,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />

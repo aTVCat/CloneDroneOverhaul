@@ -2,6 +2,7 @@
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -9,7 +10,9 @@ namespace OverhaulMod.Content.Personalization
     {
         public string Name, Description;
 
-        public bool IsVerified; // is it custom?
+        public bool IsVerified;
+
+        public string EditorID;
 
         public List<string> Authors;
 
@@ -17,9 +20,13 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationCategory Category;
 
-        public string EditorID;
+        public WeaponType Weapon;
+
+        public string BodyPartName;
 
         public int Version;
+
+        public PersonalizationEditorObjectInfo RootObject;
 
         [NonSerialized]
         public string FolderPath;
@@ -31,6 +38,23 @@ namespace OverhaulMod.Content.Personalization
 
             if (ExclusiveFor == null)
                 ExclusiveFor = new List<string>();
+
+            if(RootObject == null)
+            {
+                RootObject = new PersonalizationEditorObjectInfo()
+                {
+                    Name = "Root",
+                    Path = "Empty",
+                    Children = new List<PersonalizationEditorObjectInfo>(),
+                    PropertyValues = new Dictionary<string, object>()
+                };
+                RootObject.SetPosition(Vector3.zero);
+                RootObject.SetEulerAngles(Vector3.zero);
+                RootObject.SetScale(Vector3.one);
+            }
+
+            if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon))
+                Weapon = WeaponType.Sword;
         }
 
         public void SetAuthor(string name)
