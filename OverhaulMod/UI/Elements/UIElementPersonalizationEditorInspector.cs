@@ -1,10 +1,4 @@
 ﻿using OverhaulMod.Content.Personalization;
-using OverhaulMod.UI.Elements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -19,6 +13,9 @@ namespace OverhaulMod.UI
 
         [UIElement("EditorIdField")]
         private readonly InputField m_editorIdField;
+
+        [UIElement("ItemIdField")]
+        private readonly InputField m_itemIdField;
 
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
@@ -49,6 +46,7 @@ namespace OverhaulMod.UI
             m_authorField.referenceList = personalizationItemInfo.Authors;
             m_typeDropdown.value = (int)personalizationItemInfo.Category - 1;
             m_verifyButton.interactable = !personalizationItemInfo.IsVerified;
+            m_itemIdField.text = personalizationItemInfo.ItemID;
         }
 
         public void ApplyValues()
@@ -63,6 +61,7 @@ namespace OverhaulMod.UI
             personalizationItemInfo.EditorID = m_editorIdField.text;
             personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.value + 1);
             personalizationItemInfo.IsVerified = !m_verifyButton.interactable;
+            personalizationItemInfo.ItemID = m_itemIdField.text;
         }
 
         public void OnVerifyButtonClicked()

@@ -3,13 +3,16 @@
 
 using OverhaulMod.Utils;
 using System;
-using System.Reflection;
 
 namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
         internal const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
+
+        public const bool OVERRIDE_VERSION = false;
+
+        public static readonly Version OverrideVersion = new Version(0, 4, 1, 0);
 
         private static bool s_loaded;
 
@@ -180,8 +183,7 @@ namespace OverhaulMod
 
         private static void loadVersion()
         {
-            AssemblyName assemblyName = ModCache.modAssemblyName;
-            Version version = assemblyName.Version;
+            Version version = OVERRIDE_VERSION ? OverrideVersion : ModCache.modAssemblyName.Version;
             int major = version.Major;
             int minor = version.Minor;
             int build = version.Build;

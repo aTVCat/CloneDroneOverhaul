@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
             if (images.IsNullOrEmpty())
                 return;
 
-            foreach(string imageFilePath in images)
+            foreach (string imageFilePath in images)
             {
                 ModdedObject moddedObject = Instantiate(m_imageDisplay, m_imageDisplaysContainer);
                 moddedObject.gameObject.SetActive(true);

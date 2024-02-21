@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Visuals
 {
-    public class ArrowModelRefresher : OverhaulBehaviour
+    public class ArrowModelRefresher : ModBehaviour
     {
         private ArrowProjectile m_arrowProjectile;
 
@@ -159,9 +159,9 @@ namespace OverhaulMod.Visuals
         {
             if (!m_hasStarted)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
             RefreshAllVisuals();
             yield break;
         }

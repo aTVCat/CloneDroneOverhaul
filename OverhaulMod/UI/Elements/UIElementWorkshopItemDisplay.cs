@@ -70,7 +70,7 @@ namespace OverhaulMod.UI
             {
                 if (!workshopItemDisplay)
                 {
-                    if(texture)
+                    if (texture)
                         Destroy(texture);
 
                     return;

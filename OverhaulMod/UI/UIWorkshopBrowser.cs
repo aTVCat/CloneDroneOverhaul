@@ -267,12 +267,9 @@ namespace OverhaulMod.UI
             requestParameters.EnableCaching();
             requestParameters.RequireTags(new List<string>() { searchLevelType });
 
-            bool success = false;
-            if (sourceType == 0)
-                success = ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, 1, requestParameters, onGotItems, onError, null);
-            else
-                success = ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, 1, searchUserList, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
-
+            bool success = sourceType == 0
+                ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, 1, requestParameters, onGotItems, onError, null)
+                : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, 1, searchUserList, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
             if (!success)
             {
                 onError("Internal error.");

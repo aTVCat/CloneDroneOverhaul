@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using OverhaulMod.Engine;
 
 namespace OverhaulMod.Patches
@@ -16,4 +16,4 @@ namespace OverhaulMod.Patches
             CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
         }
     }
-}
+}*/

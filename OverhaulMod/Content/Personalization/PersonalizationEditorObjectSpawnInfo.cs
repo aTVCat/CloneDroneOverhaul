@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
         public void AddProperty<T>(string name)
         {
             List<PersonalizationEditorObjectPropertyInfo> list = Properties;
-            if(list == null)
+            if (list == null)
             {
                 list = new List<PersonalizationEditorObjectPropertyInfo>();
                 Properties = list;

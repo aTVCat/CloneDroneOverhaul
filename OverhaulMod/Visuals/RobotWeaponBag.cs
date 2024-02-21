@@ -31,6 +31,7 @@ namespace OverhaulMod.Visuals
             RefreshRenderers();
 
             //firstPersonMoverReference.AddDeathListener(DestroySelf);
+            GlobalEventManager.Instance.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
         }
 
         public override void Update()
@@ -44,6 +45,20 @@ namespace OverhaulMod.Visuals
                 RefreshRenderers();
                 m_lastEquippedWeapon = currentWeapon;
             }
+        }
+
+        public override void OnDestroy()
+        {
+            GlobalEventManager.Instance.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
+        }
+
+        private void onFirstPersonMoverUpgraded(FirstPersonMover firstPersonMover)
+        {
+            ModActionUtils.DoNextFrame(delegate
+            {
+                if (firstPersonMover && firstPersonMover == firstPersonMoverReference)
+                    RespawnRenderers();
+            });
         }
 
         public void DestroySelf()
@@ -74,26 +89,41 @@ namespace OverhaulMod.Visuals
             IsSupported = true;
         }
 
+        public void RespawnRenderers()
+        {
+            Dictionary<WeaponType, GameObject> keyValues = WeaponToRenderer;
+            if (keyValues == null)
+                return;
+
+            foreach (var obj in keyValues.Values)
+                if (obj)
+                    Destroy(obj);
+
+            keyValues.Clear();
+            RefreshRenderers();
+        }
+
         public void RefreshRenderers()
         {
-            if (!firstPersonMoverReference || !firstPersonMoverReference.IsAttachedAndAlive())
+            FirstPersonMover firstPersonMover = firstPersonMoverReference;
+            if (!firstPersonMover)
             {
                 DestroySelf();
                 return;
             }
 
-            if (firstPersonMoverReference._equippedWeapons == null || firstPersonMoverReference.IsMindSpaceCharacter)
+            if (firstPersonMover.IsMindSpaceCharacter)
                 return;
 
-            List<WeaponType> equippedWeapons = firstPersonMoverReference._equippedWeapons;
+            List<WeaponType> equippedWeapons = firstPersonMover._equippedWeapons;
             if (equippedWeapons == null)
                 return;
 
-            List<WeaponType> droppedWeapons = firstPersonMoverReference._droppedWeapons;
+            List<WeaponType> droppedWeapons = firstPersonMover._droppedWeapons;
             if (droppedWeapons == null)
                 return;
 
-            WeaponModel[] equippedWeaponModels = firstPersonMoverReference.GetCharacterModel()?.WeaponModels;
+            WeaponModel[] equippedWeaponModels = firstPersonMover.GetCharacterModel()?.WeaponModels;
             if (equippedWeaponModels == null)
                 return;
 
@@ -105,7 +135,7 @@ namespace OverhaulMod.Visuals
                 if (!keyValue.Value || keyValue.Key == WeaponType.None)
                     continue;
 
-                bool isEquipped = firstPersonMoverReference.GetEquippedWeaponType() == keyValue.Key;
+                bool isEquipped = firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
                 bool shouldDisplay = !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 WeaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }

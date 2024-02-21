@@ -1,10 +1,7 @@
-﻿using OverhaulMod.Content.Personalization;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,7 +63,7 @@ namespace OverhaulMod.UI
                 return;
 
             int index = 0;
-            foreach(string author in list)
+            foreach (string author in list)
             {
                 int i = index;
                 ModdedObject moddedObject = Instantiate(m_authorDisplayPrefab, m_container);

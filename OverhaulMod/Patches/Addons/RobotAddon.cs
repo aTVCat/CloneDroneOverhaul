@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.Patches.Addons
 {
-    public class RobotAddon : OverhaulBehaviour
+    public class RobotAddon : ModBehaviour
     {
         private Character m_characterReference;
         public Character characterReference

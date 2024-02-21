@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class BetterSliderCallback : OverhaulBehaviour
+    public class BetterSliderCallback : ModBehaviour
     {
         private bool m_isWaitingMouseButtonGetUp;
         private float m_valueToSet;

@@ -12,7 +12,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsVerified;
 
-        public string EditorID;
+        public string ItemID, EditorID;
 
         public List<string> Authors;
 
@@ -39,12 +39,13 @@ namespace OverhaulMod.Content.Personalization
             if (ExclusiveFor == null)
                 ExclusiveFor = new List<string>();
 
-            if(RootObject == null)
+            if (RootObject == null)
             {
                 RootObject = new PersonalizationEditorObjectInfo()
                 {
                     Name = "Root",
                     Path = "Empty",
+                    IsRoot = true,
                     Children = new List<PersonalizationEditorObjectInfo>(),
                     PropertyValues = new Dictionary<string, object>()
                 };
@@ -69,9 +70,9 @@ namespace OverhaulMod.Content.Personalization
                 return "n/a";
 
             string result = Authors[0];
-            if(Authors.Count != 1)
+            if (Authors.Count != 1)
             {
-                for(int i = 1; i < Authors.Count; i++)
+                for (int i = 1; i < Authors.Count; i++)
                     result += $", {Authors[i]}";
             }
             return result;

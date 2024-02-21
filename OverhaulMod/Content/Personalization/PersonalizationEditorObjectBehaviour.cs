@@ -6,6 +6,9 @@ namespace OverhaulMod.Content.Personalization
     public class PersonalizationEditorObjectBehaviour : MonoBehaviour
     {
         public string Name, Path;
+
+        public bool IsRoot;
+
         public Dictionary<string, object> PropertyValues;
 
         private List<PersonalizationEditorObjectBehaviour> m_children;
@@ -67,6 +70,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 Name = Name,
                 Path = Path,
+                IsRoot = IsRoot,
                 PropertyValues = PropertyValues ?? new Dictionary<string, object>(),
                 Children = new List<PersonalizationEditorObjectInfo>()
             };

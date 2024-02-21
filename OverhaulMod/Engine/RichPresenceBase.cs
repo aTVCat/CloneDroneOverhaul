@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
-    public class RichPresenceBase : OverhaulBehaviour
+    public class RichPresenceBase : ModBehaviour
     {
         private float m_TimeToRefresh;
 

@@ -79,6 +79,8 @@ namespace OverhaulMod.Combat.Weapons
         public override void OnUpgradesRefresh(FirstPersonMover owner)
         {
             RefreshRenderer();
+
+            MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(ModUpgradesManager.AXE_FIRE_UPGRADE) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
         }
 
         public override void SetWeaponDamageActive(bool value)

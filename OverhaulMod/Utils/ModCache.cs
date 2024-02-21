@@ -8,19 +8,6 @@ namespace OverhaulMod.Utils
 {
     public static class ModCache
     {
-        private static ModCore s_modCoreInstance;
-        public static ModCore modCoreInstance
-        {
-            get
-            {
-                if (s_modCoreInstance == null)
-                {
-                    s_modCoreInstance = ModCore.instance;
-                }
-                return s_modCoreInstance;
-            }
-        }
-
         private static Assembly s_modAssembly;
         public static Assembly modAssembly
         {

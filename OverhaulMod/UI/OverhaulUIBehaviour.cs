@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class OverhaulUIBehaviour : OverhaulBehaviour
+    public class OverhaulUIBehaviour : ModBehaviour
     {
         internal string uiName
         {

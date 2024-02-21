@@ -40,8 +40,8 @@ namespace OverhaulMod
 
         private IEnumerator showUIDelay()
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return null;
+            yield return null;
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
                 ModUIConstants.ShowTitleScreenRework();
             yield break;

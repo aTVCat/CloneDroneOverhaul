@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using OverhaulMod.UI;
+﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
@@ -22,19 +21,7 @@ namespace OverhaulMod.Content.Personalization
             get;
             set;
         }
-
-        private PersonalizationEditorObjectBehaviour m_editingRoot;
-        public PersonalizationEditorObjectBehaviour editingRoot
-        {
-            get
-            {
-                return m_editingRoot;
-            }
-            set
-            {
-                m_editingRoot = value;
-            }
-        }
+        public PersonalizationEditorObjectBehaviour editingRoot { get; set; }
 
         public string editingFolder
         {
@@ -85,6 +72,8 @@ namespace OverhaulMod.Content.Personalization
 
             GameDataManager.Instance.SaveHighScoreDataWithoutModifyingIt();
             CacheManager.Instance.CreateOrClearInstance();
+            GarbageManager.Instance.DestroyAllGarbage();
+
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 UIPersonalizationEditor editorUi = ModUIConstants.ShowPersonalizationEditorUI();
@@ -183,7 +172,7 @@ namespace OverhaulMod.Content.Personalization
                 yield break;
 
             personalizationController = bot.GetComponent<PersonalizationController>();
-            editingPersonalizationController = personalizationController;            
+            editingPersonalizationController = personalizationController;
             yield break;
         }
 
@@ -226,13 +215,10 @@ namespace OverhaulMod.Content.Personalization
         {
             PersonalizationController personalizationController = editingPersonalizationController;
             if (!personalizationController)
-                return null ;
-
-            PersonalizationItemInfo personalizationItemInfo = editingItemInfo;
-            if (personalizationItemInfo == null)
                 return null;
 
-            return personalizationController.GetParentForItem(personalizationItemInfo);
+            PersonalizationItemInfo personalizationItemInfo = editingItemInfo;
+            return personalizationItemInfo == null ? null : personalizationController.GetParentForItem(personalizationItemInfo);
         }
     }
 }

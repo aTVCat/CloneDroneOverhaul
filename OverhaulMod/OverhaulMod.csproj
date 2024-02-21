@@ -348,8 +348,8 @@
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
-    <Compile Include="Combat\Weapons\DualKnifesWeaponModel.cs" />
-    <Compile Include="Combat\Weapons\FistWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\HandsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
@@ -414,6 +414,7 @@
     <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
     <Compile Include="Engine\ModSettingAttribute.cs" />
     <Compile Include="Engine\ModSettingsManager.cs" />
+    <Compile Include="Engine\OverhaulAnimationInfo.cs" />
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
@@ -432,7 +433,6 @@
     <Compile Include="Engine\UpgradeModes.cs" />
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
-    <Compile Include="Interfaces\IModContentLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
@@ -602,7 +602,7 @@
     <Compile Include="UI\UIEndlessModeLeaderboard.cs" />
     <Compile Include="UI\UIEndlessModeMenu.cs" />
     <Compile Include="UI\OverhaulUIBehaviour.cs" />
-    <Compile Include="OverhaulBehaviour.cs" />
+    <Compile Include="ModBehaviour.cs" />
     <Compile Include="UI\UIOtherMods.cs" />
     <Compile Include="Utils\ModUIContants.cs" />
     <Compile Include="UI\Attributes\UIElementActionAttribute.cs" />
@@ -618,7 +618,7 @@
     <Compile Include="Combat\Weapons\BattleAxeWeaponModel.cs" />
     <Compile Include="Combat\Weapons\ModDividedSwordHitArea.cs" />
     <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
-    <Compile Include="WebhookManager.cs" />
+    <Compile Include="ModWebhookManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -3,7 +3,7 @@ using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-namespace OverhaulMod.UI.Elements
+namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationAuthorsField : OverhaulUIBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OverhaulMod.UI
 {
-    public class UIDeveloperMenu : OverhaulBehaviour
+    public class UIDeveloperMenu : ModBehaviour
     {
         private static readonly Dictionary<string, string> s_debugValues = new Dictionary<string, string>();
         private StringBuilder m_stringBuilder;

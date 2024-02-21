@@ -6,8 +6,6 @@ namespace OverhaulMod.Combat.Weapons
 {
     public class ScytheWeaponModel : ModWeaponModel
     {
-        public static readonly UpgradeType FireUnlockUpgradeType = (UpgradeType)511;
-
         public override float attackSpeed
         {
             get
@@ -82,7 +80,7 @@ namespace OverhaulMod.Combat.Weapons
         {
             RefreshRenderer();
 
-            MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(FireUnlockUpgradeType) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
+            MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
         }
 
         public void RefreshRenderer()
@@ -91,7 +89,7 @@ namespace OverhaulMod.Combat.Weapons
             if (!moddedObject)
                 return;
 
-            bool fire = GetOwner().HasUpgrade(FireUnlockUpgradeType);
+            bool fire = GetOwner().HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {

@@ -83,19 +83,19 @@ namespace OverhaulMod.UI
             refreshLogo();
             refreshButtons();
             TimeManager.Instance.OnGamePaused();
-            AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
         }
 
         public override void Hide()
         {
             base.Hide();
             TimeManager.Instance.OnGameUnPaused();
-            AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
         }
 
         public override void Update()
         {
-            if(m_unscaledTimeToHideExitDialogue != -1f && m_unscaledTimeToHideExitDialogue <= Time.unscaledTime)
+            if (m_unscaledTimeToHideExitDialogue != -1f && m_unscaledTimeToHideExitDialogue <= Time.unscaledTime)
             {
                 m_unscaledTimeToHideExitDialogue = -1f;
                 m_exitDialogue.SetActive(false);

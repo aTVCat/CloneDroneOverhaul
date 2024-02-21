@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
             Rotator rotator = __instance.GetComponent<Rotator>();
             if (rotator)
             {
-                rotator.enabled = true;
+                rotator.enabled = !GameModeManager.IsInLevelEditor();
                 rotator.SetRotationSpeed(new Vector3(0f, 0.25f, 0f));
             }
 

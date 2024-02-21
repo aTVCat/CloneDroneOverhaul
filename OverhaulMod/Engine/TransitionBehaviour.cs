@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.Engine
 {
-    public class TransitionBehaviour : OverhaulBehaviour
+    public class TransitionBehaviour : ModBehaviour
     {
         private Image m_image;
         private CanvasGroup m_canvasGroup;

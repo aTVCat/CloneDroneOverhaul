@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
             FastZip fastZip = new FastZip();
             fastZip.CreateZip(file, folder, true, null);
 
-            WebhookManager.Instance.ExecuteVerificationRequestWebhook(file, personalizationItemInfo, successCallback, errorCallback);
+            ModWebhookManager.Instance.ExecuteVerificationRequestWebhook(file, personalizationItemInfo, successCallback, errorCallback);
         }
     }
 }

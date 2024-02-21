@@ -57,7 +57,7 @@ namespace OverhaulMod.Content
 
         private IEnumerator retrieveDataOnStartCoroutine()
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
             RetrieveDataFromRepository(null, null, true); // load local file
 
             if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))

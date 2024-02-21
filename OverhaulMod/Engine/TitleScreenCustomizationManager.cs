@@ -92,14 +92,13 @@ namespace OverhaulMod.Engine
             return bgInfo;
         }
 
-        public void SetStaticLevel(LevelDescription level, DifficultyTier difficulty, bool refresh = true)
+        public void SetStaticLevel(LevelDescription level, bool refresh = true)
         {
             TitleScreenBackgroundInfo bgInfo = GetStaticBackgroundInfo();
             if (bgInfo == null)
                 return;
 
             bgInfo.Level = level;
-            bgInfo.Tier = difficulty;
 
             if (refresh)
             {

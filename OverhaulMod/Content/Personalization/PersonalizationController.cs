@@ -116,7 +116,7 @@ namespace OverhaulMod.Content.Personalization
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
             {
-                TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
+                _ = TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {

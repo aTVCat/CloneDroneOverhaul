@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -23,14 +24,6 @@ namespace OverhaulMod.Patches
             return false;
         }
 
-        /*
-        [HarmonyPostfix]
-        [HarmonyPatch("SetScaleToMouseOver")]
-        private static void SetScaleToMouseOver_Postfix(UpgradeUIIcon __instance)
-        {
-            __instance.transform.localScale = Vector3.one;
-        }*/
-
         [HarmonyPostfix]
         [HarmonyPatch("refreshDisplay")]
         private static void refreshDisplay_Postfix(UpgradeUIIcon __instance)
@@ -42,17 +35,20 @@ namespace OverhaulMod.Patches
             bool isUpgradeMode = UpgradeModesManager.Mode == UpgradeModes.Upgrade;
             canvasGroup.alpha = !isUpgradeMode && !__instance.GetDescription().CanBeReverted() ? 0.3f : 1f;
 
-            if (!__instance._upgradeDescription || !__instance._upgradeDescription.Icon)
+            RectTransform content = __instance.transform.FindChildRecursive("Content") as RectTransform;
+            if (content)
             {
-                RectTransform content = __instance.transform.FindChildRecursive("Content") as RectTransform;
-                if (content)
+                UpgradeDescription upgradeDescription = __instance._upgradeDescription;
+                if (!upgradeDescription || !upgradeDescription.Icon)
                 {
                     Image image = content.GetComponent<Image>();
                     if (image)
                     {
-                        //image.sprite = OverhaulAssetsContainer.HQQuestionSprite;
+                        image.sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, "NA-HQ-128x128");
                     }
                 }
+
+                content.sizeDelta = ModUpgradesManager.Instance.GetOverrideSizeDeltaForUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level);
             }
         }
 
@@ -60,12 +56,6 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Awake")]
         private static void Awake_Postfix(UpgradeUIIcon __instance)
         {
-            SelectableUI selectableUI = __instance.GetComponent<SelectableUI>();
-            if (selectableUI)
-            {
-                selectableUI.enabled = false;
-            }
-
             Transform selectableFrame = __instance.transform.FindChildRecursive("SelectableFrame");
             if (selectableFrame)
             {
@@ -83,48 +73,9 @@ namespace OverhaulMod.Patches
                 }
             }
 
-            /*
-            Transform repetitionsLabelTransform = __instance.transform.FindChildRecursive("repetitionsLabel");
-            if (repetitionsLabelTransform && OverhaulAssetsContainer.TriggeringFanFaresFont)
-            {
-                Text repetitionsLabel = repetitionsLabelTransform.GetComponent<Text>();
-                if (repetitionsLabel)
-                {
-                    repetitionsLabel.font = OverhaulAssetsContainer.TriggeringFanFaresFont;
-                    repetitionsLabel.fontSize = 13;
-                }
-            }*/
-
-            /*
-            RectTransform additionalCostBGTransform = __instance.transform.FindRectChildRecursive("AdditionalCostBG");
-            if (additionalCostBGTransform && OverhaulAssetsContainer.TriggeringFanFaresFont)
-            {
-                Canvas canvas = additionalCostBGTransform.gameObject.AddComponent<Canvas>();
-                CanvasParametersUpdater updater = canvas.gameObject.AddComponent<CanvasParametersUpdater>();
-                updater.OverrideSorting = true;
-                updater.SortingOrder = 100;
-
-                additionalCostBGTransform.SetSiblingIndex(additionalCostBGTransform.GetSiblingIndex() + 1);
-                additionalCostBGTransform.sizeDelta = Vector2.one * 15f;
-                additionalCostBGTransform.localPosition = Vector3.one * 13.5f;
-
-                RectTransform label = additionalCostBGTransform.FindRectChildRecursive("CostIconLabel");
-                if (label)
-                {
-                    label.anchorMax = new Vector2(1f, 1f);
-                    label.anchorMin = new Vector2(0.15f, 0f);
-                    label.sizeDelta = Vector2.zero;
-
-                    label.GetComponent<Text>().font = OverhaulAssetsContainer.TriggeringFanFaresFont;
-                    _ = label.gameObject.AddComponent<BetterOutline>();
-                }
-            }*/
-
             RectTransform content = __instance.transform.FindChildRecursive("Content") as RectTransform;
             if (content)
             {
-                content.sizeDelta = Vector2.one * -16f;
-
                 UIColorSwapper contentColors = content.GetComponent<UIColorSwapper>();
                 if (contentColors)
                 {

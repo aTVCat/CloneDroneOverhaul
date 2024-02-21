@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +9,8 @@ namespace OverhaulMod.Content.Personalization
         public float[] PositionArray, EulerAnglesArray, ScaleArray;
 
         public string Name, Path;
+
+        public bool IsRoot;
 
         public List<PersonalizationEditorObjectInfo> Children;
 
@@ -53,7 +54,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo()
         {
-            if(PositionArray == null)
+            if (PositionArray == null)
                 PositionArray = new float[3];
 
             if (EulerAnglesArray == null)
@@ -72,6 +73,7 @@ namespace OverhaulMod.Content.Personalization
             }
 
             PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.PlaceObject(Path, parent, false);
+            behaviour.IsRoot = IsRoot;
             Transform transform = behaviour.transform;
             transform.localPosition = GetPosition();
             transform.localEulerAngles = GetEulerAngles();

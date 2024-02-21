@@ -1,11 +1,7 @@
-﻿using InternalModBot.Scripting;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using PicaVoxel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -41,13 +37,13 @@ namespace OverhaulMod.Content.Personalization
 
         public void AddInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
-            if(!m_instantiatedObjects.Contains(behaviour))
+            if (!m_instantiatedObjects.Contains(behaviour))
                 m_instantiatedObjects.Add(behaviour);
         }
 
         public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
-            m_instantiatedObjects.Remove(behaviour);
+            _ = m_instantiatedObjects.Remove(behaviour);
         }
 
         private Material getVolumeMaterial()
@@ -56,8 +52,8 @@ namespace OverhaulMod.Content.Personalization
             if (material)
                 return material;
 
-            foreach(var m in Resources.FindObjectsOfTypeAll<Material>())
-                if(m && m.shader && m.name == "PicaVoxel PBR OneMinus Alpha Emissive" && m.shader.name == "PicaVoxel/PicaVoxel PBR OneMinus Alpha Emissive")
+            foreach (Material m in Resources.FindObjectsOfTypeAll<Material>())
+                if (m && m.shader && m.name == "PicaVoxel PBR OneMinus Alpha Emissive" && m.shader.name == "PicaVoxel/PicaVoxel PBR OneMinus Alpha Emissive")
                 {
                     material = m;
                     break;
@@ -75,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
             MechBodyPart bodyPart = Instantiate(prefab, parent);
             prefab.enabled = true;
             GameObject gameObject = bodyPart.gameObject;
-            gameObject.AddComponent<PersonalizationEditorObjectVolume>();
+            _ = gameObject.AddComponent<PersonalizationEditorObjectVolume>();
             Volume volume = gameObject.GetComponent<Volume>();
             volume.Material = getVolumeMaterial();
             Destroy(bodyPart);
@@ -91,7 +87,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectSpawnInfo GetObjectInfo(string path)
         {
-            foreach (var info in m_objectInfos)
+            foreach (PersonalizationEditorObjectSpawnInfo info in m_objectInfos)
                 if (info.Path == path)
                     return info;
 
@@ -114,7 +110,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationEditorObject.Name = objectInfo.Name;
                 personalizationEditorObject.PropertyValues = new Dictionary<string, object>();
                 if (!objectInfo.Properties.IsNullOrEmpty())
-                    foreach (var p in objectInfo.Properties)
+                    foreach (PersonalizationEditorObjectPropertyInfo p in objectInfo.Properties)
                         personalizationEditorObject.PropertyValues.Add(p.PropertyName, default);
             }
 

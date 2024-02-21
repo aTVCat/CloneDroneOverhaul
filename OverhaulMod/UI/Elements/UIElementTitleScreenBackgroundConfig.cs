@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
                 if (list1 == null)
                 {
                     backgroundInfo.Level = null;
-                    titleScreenCustomizationManager.SetStaticLevel(null, DifficultyTier.None, refreshWhenEdited);
+                    titleScreenCustomizationManager.SetStaticLevel(null, refreshWhenEdited);
                     titleScreenCustomizationManager.SaveCustomizationInfo();
                     m_label.text = "None";
                 }
@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
                     LevelDescription levelDescription = list1[0];
 
                     backgroundInfo.Level = levelDescription;
-                    titleScreenCustomizationManager.SetStaticLevel(levelDescription, DifficultyTier.None, refreshWhenEdited);
+                    titleScreenCustomizationManager.SetStaticLevel(levelDescription, refreshWhenEdited);
                     titleScreenCustomizationManager.SaveCustomizationInfo();
                     m_label.text = levelDescription.LevelID;
                 }

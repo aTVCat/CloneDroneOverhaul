@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Patches.Addons
 {
-    public class GameAddon : OverhaulBehaviour
+    public class GameAddon : ModBehaviour
     {
         private static GameObject s_gameObject;
         private static GameAddon[] s_patches;

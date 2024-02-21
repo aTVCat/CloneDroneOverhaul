@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.Engine
 {
-    public class OverhaulAnimator : OverhaulBehaviour
+    public class OverhaulAnimator : ModBehaviour
     {
         public string animationPath
         {

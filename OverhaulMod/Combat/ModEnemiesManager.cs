@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Combat.Enemies;
-using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,14 +14,68 @@ namespace OverhaulMod.Combat
 
         public void AddsBots()
         {
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer1, 500, out _);
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer2, 501, out _);
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer3, 502, out _);
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer2, EnemyType.Hammer3, 503, out _);
+
+            // Axe 1
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer1, 500, out bool hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)700, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.AXE_UNLOCK_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)700, new UnityEngine.Color(1f, 0.1f, 0f, 0.95f));
+            }
+
+            // Axe 2
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer2, 501, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)701, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.AXE_UNLOCK_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)701, new UnityEngine.Color(0f, 0.3f, 1f, 0.9f));
+            }
+
+            // Axe 3
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer3, 502, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)702, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.AXE_UNLOCK_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)702, new UnityEngine.Color(1f, 0.25f, 0.05f, 0.8f));
+            }
+
+            // Axe 4
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer2, EnemyType.Hammer3, 503, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)703, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.AXE_UNLOCK_UPGRADE, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.AXE_FIRE_UPGRADE, Level = 1}
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)703, new UnityEngine.Color(1f, 0.35f, 0.05f, 0.7f));
+            }
+
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer2, EnemyType.Hammer5, 504, out _);
 
             // Scythe 1
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Swordsman3, EnemyType.Swordsman3, 505, out bool hasAdded);
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Swordsman3, EnemyType.Swordsman3, 505, out hasAdded);
             if (!hasAdded)
             {
                 ConfigureAIController(ModBotAPI.EnemyAPI.SetEnemyAIController<AIComposableBehaviourController>((EnemyType)705), 0.35f, 6f, 0.07f, new List<AIBehaviour>()
@@ -35,7 +88,8 @@ namespace OverhaulMod.Combat
                 ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)705, new UpgradeTypeAndLevel[]
                 {
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
-                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 }
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)705, new UnityEngine.Color(1f, 0.1f, 0f, 0.95f));
             }
@@ -58,6 +112,7 @@ namespace OverhaulMod.Combat
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)706, new UnityEngine.Color(0f, 0.3f, 1f, 0.9f));
             }
@@ -80,7 +135,8 @@ namespace OverhaulMod.Combat
                 {
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
-                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1}
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)707, new UnityEngine.Color(1f, 0.25f, 0.05f, 0.8f));
             }
@@ -104,7 +160,8 @@ namespace OverhaulMod.Combat
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
-                new UpgradeTypeAndLevel() { UpgradeType = ScytheWeaponModel.FireUnlockUpgradeType, Level = 1}
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_FIRE_UPGRADE, Level = 1}
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)708, new UnityEngine.Color(1f, 0.35f, 0.05f, 0.7f));
             }
@@ -125,6 +182,7 @@ namespace OverhaulMod.Combat
                 {
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)709, new UnityEngine.Color(1f, 0.6f, 0f, 0.9f));
             }
@@ -145,15 +203,52 @@ namespace OverhaulMod.Combat
                 {
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
                 new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
-                new UpgradeTypeAndLevel() { UpgradeType = ScytheWeaponModel.FireUnlockUpgradeType, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.SCYTHE_FIRE_UPGRADE, Level = 1},
                 });
                 ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)710, new UnityEngine.Color(1f, 0.75f, 0f, 0.85f));
             }
 
             // Halberd 1
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear2, 511, out _);
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear3, 512, out _);
-            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear4, 513, out _);
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear2, 511, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)711, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.HALBERD_UNLOCK_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)711, new UnityEngine.Color(1f, 0.1f, 0f, 0.95f));
+            }
+
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear3, 512, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)712, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.HALBERD_UNLOCK_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)712, new UnityEngine.Color(0f, 0.3f, 1f, 0.9f));
+            }
+
+            _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Spear4, 513, out hasAdded);
+            if (!hasAdded)
+            {
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)713, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.HALBERD_UNLOCK_UPGRADE, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.HALBERD_FIRE_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)713, new UnityEngine.Color(1f, 0.35f, 0.05f, 0.7f));
+            }
 
             EnemyConfiguration guardBotConfig = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.ImperialRepairBot, EnemyType.ImperialRepairBot, 514, out hasAdded);
             if (!hasAdded)
@@ -167,6 +262,16 @@ namespace OverhaulMod.Combat
             {
                 Transform transform = chibiMk2SwordConfig.EnemyPrefab;
                 transform.localScale = Vector3.one * 0.75f;
+
+                ModBotAPI.EnemyAPI.SetEnemyUpgrades((EnemyType)715, new UpgradeTypeAndLevel[]
+                {
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.Dash, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.EnergyCapacity, Level = 3 },
+                new UpgradeTypeAndLevel() { UpgradeType = UpgradeType.KickUnlock, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.DUAL_KNIVES_UNLOCK_UPGRADE, Level = 1},
+                new UpgradeTypeAndLevel() { UpgradeType = ModUpgradesManager.HALBERD_FIRE_UPGRADE, Level = 1},
+                });
+                ModBotAPI.EnemyAPI.ForceOverrideEnemyColor((EnemyType)715, new UnityEngine.Color(1f, 0.1f, 0f, 0.95f));
             }
         }
 

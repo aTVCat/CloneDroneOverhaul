@@ -203,6 +203,13 @@ namespace OverhaulMod
 
         public override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
         {
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.AXE_UNLOCK_UPGRADE, ModWeaponsManager.BATTLE_AXE_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.HALBERD_UNLOCK_UPGRADE, ModWeaponsManager.HALBERD_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.DUAL_KNIVES_UNLOCK_UPGRADE, ModWeaponsManager.DUAL_KNIVES_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.HANDS_UNLOCK_UPGRADE, ModWeaponsManager.HANDS_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.CLAWS_UNLOCK_UPGRADE, ModWeaponsManager.CLAWS_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.LASER_BLASTER_UPGRADE, ModWeaponsManager.PRIM_LASER_BLASTER_TYPE);
             owner.RefreshModWeaponModels();
         }
 
@@ -227,13 +234,16 @@ namespace OverhaulMod
             if (!firstPersonMover || !firstPersonMover.IsAlive())
                 yield break;
 
-            ModWeaponsManager.Instance.AddWeaponsToRobot(firstPersonMover);
             PersonalizationManager.Instance.ConfigureFirstPersonMover(firstPersonMover);
             if (firstPersonMover.IsAttachedAndAlive())
             {
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
             }
+
+            yield return new WaitUntil(() => (!firstPersonMover || firstPersonMover._playerCamera));
+            if(firstPersonMover)
+                CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 
             yield break;
         }

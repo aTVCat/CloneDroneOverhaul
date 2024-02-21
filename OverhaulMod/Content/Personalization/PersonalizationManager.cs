@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using Steamworks;
+using System;
 using System.IO;
 
 namespace OverhaulMod.Content.Personalization
@@ -44,7 +45,7 @@ namespace OverhaulMod.Content.Personalization
             if (Directory.Exists(directoryPath))
                 return false;
 
-            if(!Directory.Exists(voxDirectoryPath))
+            if (!Directory.Exists(voxDirectoryPath))
                 _ = Directory.CreateDirectory(voxDirectoryPath);
 
             _ = Directory.CreateDirectory(directoryPath);
@@ -55,6 +56,7 @@ namespace OverhaulMod.Content.Personalization
                 IsVerified = PersonalizationEditorManager.Instance.canVerifyItems,
                 Category = PersonalizationCategory.WeaponSkins,
                 EditorID = PersonalizationEditorManager.Instance.editorId,
+                ItemID = Guid.NewGuid().ToString(),
                 FolderPath = directoryPath
             };
             personalizationItem.FixValues();
