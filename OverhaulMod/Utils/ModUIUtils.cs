@@ -26,10 +26,9 @@ namespace OverhaulMod.Utils
             setKeyBindWindow.SetContents(name, defaultKey);
         }
 
-        public static void LevelDescriptionBrowser(List<LevelDescription> levelDescriptions, Action<List<LevelDescription>> callback, bool allowMultiSelection)
+        public static void LevelDescriptionBrowser(List<LevelDescription> levelDescriptions, Action<LevelDescription> callback)
         {
             UILevelDescriptionBrowser levelDescriptionBrowser = ModUIConstants.ShowLevelDescriptionBrowser();
-            levelDescriptionBrowser.allowMultiSelection = allowMultiSelection;
             levelDescriptionBrowser.callback = callback;
             levelDescriptionBrowser.Populate(levelDescriptions);
         }

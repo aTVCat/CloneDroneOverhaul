@@ -349,6 +349,7 @@
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
     <Compile Include="Combat\Weapons\HandsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
     <Compile Include="Content\ContentDownloadInfo.cs" />
@@ -415,10 +416,16 @@
     <Compile Include="Engine\ModSettingAttribute.cs" />
     <Compile Include="Engine\ModSettingsManager.cs" />
     <Compile Include="Engine\OverhaulAnimationInfo.cs" />
+    <Compile Include="Engine\OverhaulAnimationKeyframe.cs" />
+    <Compile Include="Engine\OverhaulAnimationListInfo.cs" />
+    <Compile Include="Engine\OverhaulAnimationTrack.cs" />
     <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\PooledPrefabBehaviour.cs" />
+    <Compile Include="Engine\PooledPrefabInfo.cs" />
+    <Compile Include="Engine\PooledPrefabManager.cs" />
     <Compile Include="Engine\RealisticLightningInfo.cs" />
     <Compile Include="Engine\RealisticLightningInfoList.cs" />
     <Compile Include="Engine\RealisticLightningManager.cs" />

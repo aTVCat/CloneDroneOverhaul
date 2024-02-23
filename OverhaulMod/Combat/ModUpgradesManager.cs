@@ -26,6 +26,11 @@ namespace OverhaulMod.Combat
 
         public const UpgradeType LASER_BLASTER_UPGRADE = (UpgradeType)560;
 
+        public const UpgradeType BOOMERANG_UNLOCK_UPGRADE = (UpgradeType)570;
+        public const UpgradeType BOOMERANG_FIRE_UPGRADE = (UpgradeType)571;
+
+        public const UpgradeType DOUBLE_JUMP_UPGRADE = (UpgradeType)580;
+
         private List<UpgradeDescription> m_upgrades;
 
         private Dictionary<(UpgradeType, int), Vector2> m_sizeDeltaOverrides;
@@ -115,7 +120,7 @@ namespace OverhaulMod.Combat
                 1,
                 AssetBundleConstants.UPGRADES,
                 "Claws-128x128");
-            CreateUpgrade<UpgradeDescription>("Fire claws",
+            _ = CreateUpgrade<UpgradeDescription>("Fire claws",
                   "hmm",
                   CLAWS_FIRE_UPGRADE,
                   1,
@@ -137,6 +142,24 @@ namespace OverhaulMod.Combat
                 AssetBundleConstants.UPGRADES,
                 "Hands-128x128");
 
+            _ = CreateUpgrade<UpgradeDescription>("Boomerang unlock",
+                "An unique weapon",
+                BOOMERANG_UNLOCK_UPGRADE,
+                1,
+                AssetBundleConstants.UPGRADES,
+                "Boomerang-128x128",
+                CreateUpgrade<UpgradeDescription>("Fire boomerang",
+                  "hmm",
+                  BOOMERANG_FIRE_UPGRADE,
+                  1,
+                  AssetBundleConstants.UPGRADES,
+                  "FireBoomerang-128x128"));
+
+            _ = CreateUpgrade<UpgradeDescription>("Double jump",
+                "Do second jump",
+                DOUBLE_JUMP_UPGRADE,
+                1);
+
             OverrideSizeDeltaForUpgrade(SCYTHE_UNLOCK_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(SCYTHE_FIRE_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(AXE_UNLOCK_UPGRADE, 1, Vector2.zero);
@@ -149,6 +172,8 @@ namespace OverhaulMod.Combat
             OverrideSizeDeltaForUpgrade(CLAWS_FIRE_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(LASER_BLASTER_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(HANDS_UNLOCK_UPGRADE, 1, Vector2.zero);
+            OverrideSizeDeltaForUpgrade(BOOMERANG_UNLOCK_UPGRADE, 1, Vector2.zero);
+            OverrideSizeDeltaForUpgrade(BOOMERANG_FIRE_UPGRADE, 1, Vector2.zero);
         }
 
         private void addUpgrades()
@@ -184,7 +209,7 @@ namespace OverhaulMod.Combat
 
         public Vector2 GetOverrideSizeDeltaForUpgrade(UpgradeType upgradeType, int level)
         {
-            foreach (var keyValue in m_sizeDeltaOverrides)
+            foreach (KeyValuePair<(UpgradeType, int), Vector2> keyValue in m_sizeDeltaOverrides)
                 if (keyValue.Key.Item1 == upgradeType && keyValue.Key.Item2 == level)
                     return keyValue.Value;
 

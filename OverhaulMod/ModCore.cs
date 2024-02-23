@@ -210,6 +210,7 @@ namespace OverhaulMod
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.HANDS_UNLOCK_UPGRADE, ModWeaponsManager.HANDS_TYPE);
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.CLAWS_UNLOCK_UPGRADE, ModWeaponsManager.CLAWS_TYPE);
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.LASER_BLASTER_UPGRADE, ModWeaponsManager.PRIM_LASER_BLASTER_TYPE);
+            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.BOOMERANG_FIRE_UPGRADE, ModWeaponsManager.BOOMERANG_TYPE);
             owner.RefreshModWeaponModels();
         }
 

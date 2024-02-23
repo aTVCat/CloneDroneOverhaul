@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
                 else
                 {
                     string name = gameData.HumanFacts?.GetFullName();
-                    string difficultyText = $" <color={tierDesc.TextColor.ToHex()}>{GetTierString(tierDesc.Tier)}</color>";
+                    string difficultyText = $" <color={tierDesc.TextColor.ToHex()}>{tierDesc.Tier.GetTierString()}</color>";
                     m_progressText.text = $"{name} - Level {gameData.LevelIDsBeatenThisPlaythrough.Count + 1}{difficultyText}";
                 }
             }
@@ -46,16 +46,6 @@ namespace OverhaulMod.UI
             {
                 m_progressText.text = "N/A";
             }
-        }
-
-        public string GetTierString(DifficultyTier difficultyTier)
-        {
-            switch (difficultyTier)
-            {
-                case (DifficultyTier)9:
-                    return "Nightmarium";
-            }
-            return difficultyTier.ToString();
         }
 
         public override void Show()

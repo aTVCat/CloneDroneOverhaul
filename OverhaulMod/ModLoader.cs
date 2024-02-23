@@ -67,6 +67,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ModGameModifiersManager>();
             _ = ModManagers.New<TitleScreenCustomizationManager>();
 
+            _ = ModManagers.New<ModWebhookManager>();
             _ = ModManagers.New<ExclusiveContentManager>();
             _ = ModManagers.New<ContentManager>();
             _ = ModManagers.New<UpdateManager>();
@@ -84,12 +85,11 @@ namespace OverhaulMod
             _ = ModManagers.New<ArenaAudienceManager>();
             _ = ModManagers.New<LightningTransitionManager>();
             _ = ModManagers.New<AdvancedPhotoModeManager>();
-            _ = ModManagers.New<ModWebhookManager>();
             _ = ModManagers.New<UpgradeModesManager>();
             _ = ModManagers.New<TransitionManager>();
             _ = ModManagers.New<CameraManager>();
             _ = ModManagers.New<RichPresenceManager>();
-
+            _ = ModManagers.New<PooledPrefabManager>();
             _ = ModManagers.New<RealisticLightningManager>();
         }
 

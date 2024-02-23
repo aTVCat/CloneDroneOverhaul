@@ -109,6 +109,16 @@ namespace OverhaulMod.Patches
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);
+
+            CharacterModel characterModel = __instance._characterModel;
+            if (characterModel)
+            {
+                if (characterModel.UpperAnimator)
+                    characterModel.UpperAnimator.gameObject.AddComponent<OverhaulAnimator>();
+
+                if (characterModel.LegsAnimator)
+                    characterModel.LegsAnimator.gameObject.AddComponent<OverhaulAnimator>();
+            }
         }
 
         /*

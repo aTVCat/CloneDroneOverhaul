@@ -269,5 +269,24 @@ namespace OverhaulMod.Utils
                 }
             }
         }
+
+        public static string GetLevelSource(this LevelDescription levelDescription)
+        {
+            if (levelDescription.PrefabName.IsNullOrEmpty())
+            {
+                return levelDescription.LevelJSONPath;
+            }
+            return levelDescription.PrefabName;
+        }
+
+        public static string GetTierString(this DifficultyTier difficultyTier)
+        {
+            switch (difficultyTier)
+            {
+                case (DifficultyTier)9:
+                    return "Nightmarium";
+            }
+            return difficultyTier.ToString();
+        }
     }
 }

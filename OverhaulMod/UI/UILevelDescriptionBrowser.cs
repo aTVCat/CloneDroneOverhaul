@@ -32,15 +32,28 @@ namespace OverhaulMod.UI
         [UIElement("LevelsLabel")]
         private readonly Text m_levelsLabel;
 
-        private List<LevelDescription> m_selectedLevels;
+        [UIElement("DifficultySelectWindow", false)]
+        private readonly GameObject m_levelDifficultySelectWindow;
 
-        public Action<List<LevelDescription>> callback
-        {
-            get;
-            set;
-        }
+        [UIElementAction(nameof(OnDifficultyCloseButtonClicked))]
+        [UIElement("DifficultyCloseButton")]
+        private readonly Button m_difficultyExitButton;
 
-        public bool allowMultiSelection
+        [UIElementAction(nameof(OnDifficultyDoneButtonClicked))]
+        [UIElement("DifficultyDoneButton")]
+        private readonly Button m_difficultyDoneButton;
+
+        [UIElement("LevelDifficultyDisplay", false)]
+        private readonly ModdedObject m_levelDifficultyDisplayPrefab;
+
+        [UIElement("DifficultyContent")]
+        private readonly Transform m_levelDifficultyDisplayContainer;
+
+        private LevelDescription m_selectedLevel;
+
+        private Graphic m_prevGraphic;
+
+        public Action<LevelDescription> callback
         {
             get;
             set;
@@ -48,14 +61,10 @@ namespace OverhaulMod.UI
 
         public override bool hideTitleScreen => true;
 
-        protected override void OnInitialized()
-        {
-            m_selectedLevels = new List<LevelDescription>();
-        }
-
         public override void Update()
         {
-            m_doneButton.interactable = !m_selectedLevels.IsNullOrEmpty();
+            m_doneButton.interactable = m_selectedLevel != null;
+            m_difficultyDoneButton.interactable = m_selectedLevel != null;
         }
 
         public void Populate(List<LevelDescription> levels)
@@ -69,14 +78,32 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            string levelWord = levels.Count == 1 ? "level" : "levels";
-            m_levelsLabel.text = $"{levels.Count} {levelWord} to pick";
-
+            Dictionary<string, List<LevelDescription>> levelLists = new Dictionary<string, List<LevelDescription>>();
             foreach (LevelDescription levelDescription in levels)
             {
+                string source = levelDescription.GetLevelSource();
+
+                if (!levelLists.ContainsKey(source))
+                {
+                    levelLists.Add(source, new List<LevelDescription>() { levelDescription });
+                }
+                else
+                {
+                    levelLists[source].Add(levelDescription);
+                }
+            }
+
+            string levelWord = levelLists.Count == 1 ? "level" : "levels";
+            m_levelsLabel.text = $"{levelLists.Count} {levelWord} to pick";
+
+            foreach (KeyValuePair<string, List<LevelDescription>> keyValue in levelLists)
+            {
+                SteamWorkshopItem steamWorkshopItem = keyValue.Value[0].WorkshopItem;
+                bool isWorkshop = steamWorkshopItem != null;
+
                 ModdedObject moddedObject = Instantiate(m_levelDescriptionDisplayPrefab, m_levelDescriptionDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = levelDescription.LevelID;
+                moddedObject.GetObject<Text>(0).text = isWorkshop ? steamWorkshopItem.Title : StringUtils.AddSpacesToCamelCasedString(keyValue.Key.Substring(keyValue.Key.LastIndexOf("/") + 1).Replace(".json", string.Empty));
 
                 Graphic graphic = moddedObject.GetComponent<Graphic>();
                 graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
@@ -84,31 +111,59 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    if (!m_selectedLevels.Contains(levelDescription))
-                    {
-                        if (!allowMultiSelection && m_selectedLevels.Count > 0)
-                            return;
-
-                        m_selectedLevels.Add(levelDescription);
-                        graphic.color = ModParseUtils.TryParseToColor(SELECTED_COLOR, Color.cyan);
-                    }
-                    else
-                    {
-                        if (m_selectedLevels.Remove(levelDescription))
-                            graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
-                    }
+                    ShowDifficultySelection(keyValue.Value);
                 });
             }
+        }
+
+        public void ShowDifficultySelection(List<LevelDescription> list)
+        {
+            m_selectedLevel = null;
+            if (m_levelDifficultyDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_levelDifficultyDisplayContainer);
+
+            m_levelDifficultySelectWindow.SetActive(true);
+            foreach (LevelDescription level in list)
+            {
+                ModdedObject moddedObject = Instantiate(m_levelDifficultyDisplayPrefab, m_levelDifficultyDisplayContainer);
+                moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Text>(0).text = level.DifficultyTier.GetTierString();
+
+                Graphic graphic = moddedObject.GetComponent<Graphic>();
+                graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+
+                Button button = moddedObject.GetComponent<Button>();
+                button.onClick.AddListener(delegate
+                {
+                    if (m_prevGraphic && m_prevGraphic != graphic)
+                    {
+                        m_prevGraphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+                    }
+                    graphic.color = ModParseUtils.TryParseToColor(SELECTED_COLOR, Color.cyan);
+                    m_prevGraphic = graphic;
+
+                    m_selectedLevel = level;
+                });
+            }
+        }
+
+        public void OnDifficultyCloseButtonClicked()
+        {
+            m_selectedLevel = null;
+            m_levelDifficultySelectWindow.SetActive(false);
+        }
+
+        public void OnDifficultyDoneButtonClicked()
+        {
+            m_levelDifficultySelectWindow.SetActive(false);
+            OnDoneButtonClicked();
         }
 
         public void OnDoneButtonClicked()
         {
             Hide();
-            callback?.Invoke(m_selectedLevels.IsNullOrEmpty() ? null : m_selectedLevels);
+            callback?.Invoke(m_selectedLevel);
             callback = null;
-
-            if (m_selectedLevels != null)
-                m_selectedLevels.Clear();
         }
 
         public void OnCancelButtonClicked()
@@ -116,9 +171,6 @@ namespace OverhaulMod.UI
             Hide();
             callback?.Invoke(null);
             callback = null;
-
-            if (m_selectedLevels != null)
-                m_selectedLevels.Clear();
         }
     }
 }

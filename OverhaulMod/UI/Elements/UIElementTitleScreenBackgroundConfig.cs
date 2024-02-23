@@ -42,10 +42,10 @@ namespace OverhaulMod.UI
             list.AddRange(WorkshopLevelManager.Instance.GetAllWorkShopEndlessLevels());
             list.AddRange(LevelManager.Instance._endlessLevels);
 
-            ModUIUtils.LevelDescriptionBrowser(list, delegate (List<LevelDescription> list1)
+            ModUIUtils.LevelDescriptionBrowser(list, delegate (LevelDescription level)
             {
                 TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
-                if (list1 == null)
+                if (level == null)
                 {
                     backgroundInfo.Level = null;
                     titleScreenCustomizationManager.SetStaticLevel(null, refreshWhenEdited);
@@ -54,14 +54,12 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    LevelDescription levelDescription = list1[0];
-
-                    backgroundInfo.Level = levelDescription;
-                    titleScreenCustomizationManager.SetStaticLevel(levelDescription, refreshWhenEdited);
+                    backgroundInfo.Level = level;
+                    titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);
                     titleScreenCustomizationManager.SaveCustomizationInfo();
-                    m_label.text = levelDescription.LevelID;
+                    m_label.text = level.LevelID;
                 }
-            }, false);
+            });
         }
     }
 }

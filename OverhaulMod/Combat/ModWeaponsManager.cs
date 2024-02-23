@@ -16,6 +16,7 @@ namespace OverhaulMod.Combat
         public const WeaponType CLAWS_TYPE = (WeaponType)54;
         public const WeaponType PRIM_LASER_BLASTER_TYPE = (WeaponType)55;
         public const WeaponType DUAL_KNIVES_TYPE = (WeaponType)56;
+        public const WeaponType BOOMERANG_TYPE = (WeaponType)57;
 
         private Dictionary<WeaponType, (GameObject, Type)> m_Weapons;
         private List<WeaponType> m_MeleeWeapons;
@@ -34,6 +35,7 @@ namespace OverhaulMod.Combat
             AddWeapon<ClawsWeaponModel>(CLAWS_TYPE, true, null, null);
             AddWeapon<PrimitiveLaserBlasterWeaponModel>(PRIM_LASER_BLASTER_TYPE, false, null, null);
             AddWeapon<DualKnivesWeaponModel>(DUAL_KNIVES_TYPE, true, null, null);
+            AddWeapon<BoomerangWeaponModel>(BOOMERANG_TYPE, true, null, null);
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel
