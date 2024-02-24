@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -28,7 +23,7 @@ namespace OverhaulMod.Engine
             float d = Time.deltaTime;
             float v = m_timeToDeactivate - d;
             m_timeToDeactivate = v;
-            if(v <= 0f)
+            if (v <= 0f)
             {
                 objectReference.SetActive(false);
             }

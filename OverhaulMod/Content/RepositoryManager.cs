@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 

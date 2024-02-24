@@ -5,11 +5,17 @@ namespace OverhaulMod.Engine
 {
     public class CameraManager : Singleton<CameraManager>
     {
-        [ModSetting(ModSettingConstants.ENABLE_FIRST_PERSON_MODE, false)]
+        [ModSetting(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, false)]
         public static bool EnableFirstPersonMode;
 
-        [ModSetting(ModSettingConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
+        [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
+
+        public Camera mainCamera
+        {
+            get;
+            private set;
+        }
 
         public bool refreshCameraMoverNextFrame
         {
@@ -39,12 +45,20 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
+            Camera oldCamera = mainCamera;
+            Camera camera = Camera.main;
+            if (camera != oldCamera)
+            {
+                mainCamera = camera;
+                ModCore.TriggerOnCameraSwitchedEvent(oldCamera, camera);
+            }
+
             bool isKeyDown = Input.GetKeyDown(CameraModeToggleKeyBind);
             if (!isKeyDown)
                 return;
 
             bool value = !EnableFirstPersonMode;
-            ModSettingsManager.SetBoolValue(ModSettingConstants.ENABLE_FIRST_PERSON_MODE, value);
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value);
 
             EnergyUI energyUI = ModCache.gameUIRoot?.EnergyUI;
             if (energyUI)

@@ -95,7 +95,7 @@ namespace OverhaulMod.Visuals
             if (keyValues == null)
                 return;
 
-            foreach (var obj in keyValues.Values)
+            foreach (GameObject obj in keyValues.Values)
                 if (obj)
                     Destroy(obj);
 

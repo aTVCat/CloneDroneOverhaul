@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
         {
             int branch = (ModBuildInfo.internalRelease || ExclusiveContentManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
 
-            m_checkForUpdatesOnStartupToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingConstants.CHECK_FOR_UPDATES_ON_STARTUP);
+            m_checkForUpdatesOnStartupToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP);
             m_directUpdateButton.interactable = false;
             m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
             m_branchDropdown.value = branch;
@@ -219,7 +219,7 @@ namespace OverhaulMod.UI
 
         public void OnCheckForUpdatesOnStartupToggleChanged(bool value)
         {
-            ModSettingsManager.SetBoolValue(ModSettingConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
         }
     }
 }

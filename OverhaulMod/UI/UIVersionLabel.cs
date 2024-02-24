@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,10 @@ namespace OverhaulMod.UI
 {
     public class UIVersionLabel : OverhaulUIBehaviour
     {
-        [UIElement("NewVesionLabel_TitleScreen")]
+        [ModSetting(ModSettingsConstants.SHOW_VERSION_LABEL, true)]
+        public static bool ShowLabel;
+
+        [UIElement("NewVersionLabel_TitleScreen")]
         private readonly GameObject m_watermark;
 
         [UIElement("DebugLabel_TitleScreen")]
@@ -15,7 +19,7 @@ namespace OverhaulMod.UI
         [UIElement("Watermark_TitleScreen")]
         private readonly Text m_versionText;
 
-        [UIElement("NewVesionLabel_Gameplay")]
+        [UIElement("NewVersionLabel_Gameplay")]
         private readonly GameObject m_gameplayWatermark;
 
         [UIElement("DebugLabel_Gameplay")]
@@ -28,7 +32,7 @@ namespace OverhaulMod.UI
         {
             get
             {
-                return !ModCache.photoManager.IsInPhotoMode();
+                return ShowLabel && !ModCache.photoManager.IsInPhotoMode();
             }
         }
 
@@ -62,9 +66,7 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = showWatermark;
-            _ = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
             bool titleScreen = showFullWatermark;
-
             m_watermark.SetActive(show && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);
         }

@@ -15,11 +15,12 @@ namespace OverhaulMod
     [MainModClass]
     public class ModCore : Mod
     {
-        [ModSetting(ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
+        [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
         public static bool EnableTitleBarOverhaul;
 
         public static event Action GameInitialized;
         public static event Action<bool> ModStateChanged;
+        public static event Action<Camera, Camera> OnCameraSwitched;
 
         public static ModCore instance { get; private set; }
 
@@ -242,8 +243,8 @@ namespace OverhaulMod
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
             }
 
-            yield return new WaitUntil(() => (!firstPersonMover || firstPersonMover._playerCamera));
-            if(firstPersonMover)
+            yield return new WaitUntil(() => !firstPersonMover || firstPersonMover._playerCamera);
+            if (firstPersonMover)
                 CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 
             yield break;
@@ -273,6 +274,11 @@ namespace OverhaulMod
         public static void TriggerModStateChangedEvent(bool enabled)
         {
             ModStateChanged?.Invoke(enabled);
+        }
+
+        public static void TriggerOnCameraSwitchedEvent(Camera oldCamera, Camera newCamera)
+        {
+            OnCameraSwitched?.Invoke(oldCamera, newCamera);
         }
 
         public static IEnumerator PushDownIfAboveGroundCoroutine_Patch(FirstPersonMover firstPersonMover)

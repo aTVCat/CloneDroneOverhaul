@@ -10,14 +10,23 @@ namespace OverhaulMod
 {
     public class ModUIManager : Singleton<ModUIManager>, IGameLoadListener
     {
-        [ModSetting(ModSettingConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK, true, ModSetting.Tag.UISetting)]
         public static bool ShowChapterSelectionMenuRework;
 
-        [ModSetting(ModSettingConstants.SHOW_ENDLESS_MODE_MENU, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_ENDLESS_MODE_MENU, true, ModSetting.Tag.UISetting)]
         public static bool ShowEndlessModeMenu;
 
-        [ModSetting(ModSettingConstants.SHOW_CHALLENGES_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_CHALLENGES_MENU_REWORK, true, ModSetting.Tag.UISetting)]
         public static bool ShowChallengesMenuRework;
+
+        [ModSetting(ModSettingsConstants.SHOW_WORKSHOP_BROWSER_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowWorkshopBrowserRework;
+
+        [ModSetting(ModSettingsConstants.SHOW_ADVANCEMENTS_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowAdvancementsMenuRework;
+
+        [ModSetting(ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowSettingsMenuRework;
 
         private Dictionary<string, GameObject> m_instantiatedUIs;
 

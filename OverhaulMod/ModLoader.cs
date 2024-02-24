@@ -5,6 +5,7 @@ using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
 using UnityEngine;
@@ -91,6 +92,8 @@ namespace OverhaulMod
             _ = ModManagers.New<RichPresenceManager>();
             _ = ModManagers.New<PooledPrefabManager>();
             _ = ModManagers.New<RealisticLightningManager>();
+            _ = ModManagers.New<ParticleManager>();
+            _ = ModManagers.New<PostEffectsManager>();
         }
 
         private static void loadAssemblies()
@@ -135,7 +138,12 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 ModSpecialUtils.SetTitleBarStateDependingOnSettings();
-            }, ModSettingConstants.ENABLE_TITLE_BAR_OVERHAUL);
+            }, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                PostEffectsManager.Instance.RefreshCameraPostEffects();
+            }, ModSettingsConstants.ENABLE_SSAO);
         }
 
         public static bool HasToLoad()

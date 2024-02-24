@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementAdvancementDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    public class UIElementAdvancementDisplay : OverhaulUIBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         [UIElement("Name")]
         private readonly Text m_advancementName;
@@ -34,12 +34,6 @@ namespace OverhaulMod.UI
             private set;
         }
 
-        public bool mouseIn
-        {
-            get;
-            private set;
-        }
-
         public void Populate(GameplayAchievement gameplayAchievement, GameplayAchievementManager gameplayAchievementManager)
         {
             InitializeElement();
@@ -55,7 +49,6 @@ namespace OverhaulMod.UI
             SetProgressDisplays(currentProgress, targetProgress, isComplete);
 
             this.gameplayAchievement = gameplayAchievement;
-            mouseIn = false;
         }
 
         public void SetProgressDisplays(int currentProgress, int targetProgress, bool isComplete)
@@ -76,21 +69,28 @@ namespace OverhaulMod.UI
             m_progressBarFill.fillAmount = currentProgress / (float)targetProgress;
         }
 
+        public void OnSelect(BaseEventData eventData)
+        {
+            m_rewardDisplayObject.SetActive(true);
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            m_rewardDisplayObject.SetActive(false);
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            mouseIn = true;
             m_rewardDisplayObject.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            mouseIn = false;
             m_rewardDisplayObject.SetActive(false);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            mouseIn = false;
             m_rewardDisplayObject.SetActive(false);
         }
     }

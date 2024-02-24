@@ -272,11 +272,7 @@ namespace OverhaulMod.Utils
 
         public static string GetLevelSource(this LevelDescription levelDescription)
         {
-            if (levelDescription.PrefabName.IsNullOrEmpty())
-            {
-                return levelDescription.LevelJSONPath;
-            }
-            return levelDescription.PrefabName;
+            return levelDescription.PrefabName.IsNullOrEmpty() ? levelDescription.LevelJSONPath : levelDescription.PrefabName;
         }
 
         public static string GetTierString(this DifficultyTier difficultyTier)

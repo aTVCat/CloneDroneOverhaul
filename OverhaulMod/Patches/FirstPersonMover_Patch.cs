@@ -114,10 +114,10 @@ namespace OverhaulMod.Patches
             if (characterModel)
             {
                 if (characterModel.UpperAnimator)
-                    characterModel.UpperAnimator.gameObject.AddComponent<OverhaulAnimator>();
+                    _ = characterModel.UpperAnimator.gameObject.AddComponent<OverhaulAnimator>();
 
                 if (characterModel.LegsAnimator)
-                    characterModel.LegsAnimator.gameObject.AddComponent<OverhaulAnimator>();
+                    _ = characterModel.LegsAnimator.gameObject.AddComponent<OverhaulAnimator>();
             }
         }
 

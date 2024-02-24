@@ -326,12 +326,17 @@ namespace OverhaulMod.UI
 
         public void OnAdvancementsButtonClicked()
         {
+            if (!ModUIManager.ShowAdvancementsMenuRework)
+            {
+                ModCache.titleScreenUI.OnAchievementsButtonClicked();
+                return;
+            }
             ModUIConstants.ShowAdvancementsMenuRework();
         }
 
         public void OnWorkshopBrowserButtonClicked()
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework) || !ModUIManager.ShowWorkshopBrowserRework)
             {
                 ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
                 return;
@@ -346,6 +351,11 @@ namespace OverhaulMod.UI
 
         public void OnOptionsButtonClicked()
         {
+            if (!ModUIManager.ShowSettingsMenuRework)
+            {
+                ModCache.titleScreenUI.OnOptionsButtonClicked();
+                return;
+            }
             ModUIConstants.ShowSettingsMenuRework();
         }
 

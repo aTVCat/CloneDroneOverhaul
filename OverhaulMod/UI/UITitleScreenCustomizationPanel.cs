@@ -31,13 +31,13 @@ namespace OverhaulMod.UI
 
             if (TitleScreenCustomizationManager.IntroduceCustomization)
             {
-                ModSettingsManager.SetBoolValue(ModSettingConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
             }
         }
 
         private void onMusicTrackDropdownChanged(int index)
         {
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
             TitleScreenCustomizationManager.Instance.RefreshMusicTrack();
         }
     }

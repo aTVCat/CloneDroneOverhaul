@@ -5,7 +5,7 @@ namespace OverhaulMod.Engine
 {
     public class PooledPrefabInfo
     {
-        private readonly List<PooledPrefabBehaviour> m_instantiatedObjects;
+        private List<PooledPrefabBehaviour> m_instantiatedObjects;
 
         public GameObject prefab
         {
@@ -17,17 +17,23 @@ namespace OverhaulMod.Engine
         {
             get;
             set;
-        } = -1;
+        }
 
         public float lifeTime
         {
             get;
             set;
-        } = 3f;
+        }
 
         private PooledPrefabBehaviour getInstantiatedNonActiveObject()
         {
             List<PooledPrefabBehaviour> list = m_instantiatedObjects;
+            if (list == null)
+            {
+                list = new List<PooledPrefabBehaviour>();
+                m_instantiatedObjects = list;
+            }
+
             if (list.Count == 0)
                 return null;
 

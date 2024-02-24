@@ -22,7 +22,7 @@ namespace OverhaulMod.Content
 
         public const string PLAYER_PREF_KEY = "Overhaul.PreviousVersionPath";
 
-        [ModSetting(ModSettingConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
+        [ModSetting(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
         public static bool CheckForUpdatesOnStartup;
 
         public static readonly List<Dropdown.OptionData> BranchesForTestersDropdownOptions = new List<Dropdown.OptionData>()

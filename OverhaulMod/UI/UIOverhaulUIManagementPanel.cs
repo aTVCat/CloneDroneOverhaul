@@ -46,9 +46,12 @@ namespace OverhaulMod.UI
 
         private void instantiateToggles()
         {
-            InstantiateToggle("A menu with chapter section selection feature", ModSettingConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK);
-            InstantiateToggle("A menu with leaderboard and your current progress", ModSettingConstants.SHOW_ENDLESS_MODE_MENU);
-            InstantiateToggle("TBA", ModSettingConstants.SHOW_CHALLENGES_MENU_REWORK);
+            InstantiateToggle("A menu with chapter section selection feature", ModSettingsConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK);
+            InstantiateToggle("A menu with leaderboard and your current progress", ModSettingsConstants.SHOW_ENDLESS_MODE_MENU);
+            InstantiateToggle("TBA", ModSettingsConstants.SHOW_CHALLENGES_MENU_REWORK);
+            InstantiateToggle("TBA", ModSettingsConstants.SHOW_WORKSHOP_BROWSER_REWORK);
+            InstantiateToggle("TBA", ModSettingsConstants.SHOW_ADVANCEMENTS_MENU_REWORK);
+            InstantiateToggle("TBA", ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK);
         }
 
         public void InstantiateToggle(string description, string settingId)

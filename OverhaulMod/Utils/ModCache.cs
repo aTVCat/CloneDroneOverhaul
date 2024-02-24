@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
+using OverhaulMod.Engine;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
@@ -123,6 +124,32 @@ namespace OverhaulMod.Utils
                     s_settingsMenu = gameUIRoot?.SettingsMenu;
                 }
                 return s_settingsMenu;
+            }
+        }
+
+        private static AttackManager s_attackManager;
+        public static AttackManager attackManager
+        {
+            get
+            {
+                if (!s_attackManager)
+                {
+                    s_attackManager = AttackManager.Instance;
+                }
+                return s_attackManager;
+            }
+        }
+
+        private static FadingVoxelManager s_fadingVoxelManager;
+        public static FadingVoxelManager fadingVoxelManager
+        {
+            get
+            {
+                if (!s_fadingVoxelManager)
+                {
+                    s_fadingVoxelManager = FadingVoxelManager.Instance;
+                }
+                return s_fadingVoxelManager;
             }
         }
 

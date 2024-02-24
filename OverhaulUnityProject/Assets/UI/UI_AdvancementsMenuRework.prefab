@@ -400,6 +400,7 @@ GameObject:
   - component: {fileID: 6914634007140912489}
   - component: {fileID: 3781103649759837406}
   - component: {fileID: 5316832713324110504}
+  - component: {fileID: 8542291749713080104}
   m_Layer: 5
   m_Name: AdvancementPrefab
   m_TagString: Untagged
@@ -507,6 +508,31 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: -2}
   m_UseGraphicAlpha: 1
+--- !u!114 &8542291749713080104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276349636891199067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2259363822e56264ea56d402cb6e4c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkipSelectionArrows: 0
+  GameThemeData: {fileID: 0}
+  OutlineToColor: {fileID: 0}
+  TextToColor: {fileID: 0}
+  ImageToColor: {fileID: 0}
+  SliderHandle: {fileID: 0}
+  SliderFill: {fileID: 0}
+  SliderSlideArea: {fileID: 0}
+  CheckboxBackground: {fileID: 0}
+  CheckboxLabel: {fileID: 0}
+  AlternativeCheckboxLabel: {fileID: 0}
+  DropdownItemBackground: {fileID: 0}
+  DropdownItemText: {fileID: 0}
 --- !u!1 &2048241272510587028
 GameObject:
   m_ObjectHideFlags: 0

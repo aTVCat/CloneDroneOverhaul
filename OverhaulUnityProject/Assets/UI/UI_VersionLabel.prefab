@@ -483,12 +483,12 @@ GameObject:
   - component: {fileID: 1064326122226817907}
   - component: {fileID: 7844799503321521836}
   m_Layer: 0
-  m_Name: NewVesionLabel_Gameplay
+  m_Name: NewVersionLabel_Gameplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1064326122226817907
 RectTransform:
   m_ObjectHideFlags: 0
@@ -882,7 +882,7 @@ GameObject:
   - component: {fileID: 2974773507130827372}
   - component: {fileID: 6014190113037933005}
   m_Layer: 0
-  m_Name: NewVesionLabel_TitleScreen
+  m_Name: NewVersionLabel_TitleScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

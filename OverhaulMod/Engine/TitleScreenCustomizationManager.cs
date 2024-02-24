@@ -8,10 +8,10 @@ namespace OverhaulMod.Engine
     {
         public const string CUSTOMIZATION_INFO_FILE = "TitleScreenCustomizationInfo.json";
 
-        [ModSetting(ModSettingConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 
-        [ModSetting(ModSettingConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, true)]
+        [ModSetting(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, true)]
         public static bool IntroduceCustomization;
 
         private TitleScreenCustomizationInfo m_customizationInfo;
