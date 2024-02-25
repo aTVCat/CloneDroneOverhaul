@@ -19,6 +19,11 @@ namespace OverhaulMod.Utils
             _ = RunCoroutine(doNextFrameCoroutine(action));
         }
 
+        public static void DoAfterFrames(Action action, int frameCount)
+        {
+            _ = RunCoroutine(doNextFrameCoroutine(action, frameCount));
+        }
+
         public static bool IsGoBackKeyDown()
         {
             return Input.GetKeyDown(KeyCode.Escape);
@@ -27,6 +32,15 @@ namespace OverhaulMod.Utils
         private static IEnumerator doNextFrameCoroutine(Action action)
         {
             yield return null;
+            action?.Invoke();
+            yield break;
+        }
+
+        private static IEnumerator doNextFrameCoroutine(Action action, int frameCount)
+        {
+            for(int i = 0; i < frameCount; i++)
+                yield return null;
+
             action?.Invoke();
             yield break;
         }

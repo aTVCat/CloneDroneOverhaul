@@ -154,8 +154,6 @@ namespace OverhaulMod
             }
         }
 
-        private bool m_hasAddedListeners;
-
         public override void OnModEnabled()
         {
             instance = this;
@@ -164,7 +162,7 @@ namespace OverhaulMod
             ModLoader.Load();
             GameAddon.Load();
 
-            addEventListeners();
+            TriggerGameInitializedEvent();
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
@@ -175,14 +173,27 @@ namespace OverhaulMod
             instance = this;
 
             ModLoader.Load();
-
-            addEventListeners();
         }
 
         public override void OnModDeactivated()
         {
             instance = null;
             isEnabled = false;
+
+            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+            if (gameUIRoot)
+            {
+                ModUIManager modUIManager = ModUIManager.Instance;
+                if (modUIManager)
+                {
+                    if (modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
+                    {
+                        modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU);
+                        if (gameUIRoot.EscMenu)
+                            gameUIRoot.EscMenu.Show();
+                    }
+                }
+            }
 
             TriggerModStateChangedEvent(false);
 
@@ -213,6 +224,12 @@ namespace OverhaulMod
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.LASER_BLASTER_UPGRADE, ModWeaponsManager.PRIM_LASER_BLASTER_TYPE);
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.BOOMERANG_FIRE_UPGRADE, ModWeaponsManager.BOOMERANG_TYPE);
             owner.RefreshModWeaponModels();
+
+            RobotInventory robotInventory = owner.GetComponent<RobotInventory>();
+            if (robotInventory)
+            {
+                robotInventory.OnUpgradesRefreshed(upgrades);
+            }
         }
 
         public override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
@@ -241,6 +258,8 @@ namespace OverhaulMod
             {
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+
+                RobotInventory robotInventory = firstPersonMover.gameObject.AddComponent<RobotInventory>();
             }
 
             yield return new WaitUntil(() => !firstPersonMover || firstPersonMover._playerCamera);
@@ -248,22 +267,6 @@ namespace OverhaulMod
                 CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 
             yield break;
-        }
-
-        private void addEventListeners()
-        {
-            if (m_hasAddedListeners)
-            {
-                return;
-            }
-            m_hasAddedListeners = true;
-
-            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
-        }
-
-        private void onGameInitialized()
-        {
-            TriggerGameInitializedEvent();
         }
 
         public static void TriggerGameInitializedEvent()

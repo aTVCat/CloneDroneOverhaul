@@ -19,6 +19,7 @@ namespace OverhaulMod.Visuals
         private void OnDestroy()
         {
             ModCore.OnCameraSwitched -= onCameraSwitched;
+            RemovePostEffectsFromCamera(Camera.main);
         }
 
         private void onCameraSwitched(Camera a, Camera b)

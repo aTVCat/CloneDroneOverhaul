@@ -24,42 +24,43 @@ namespace OverhaulMod.UI
         [UIElement("SavesFolderButton")]
         private readonly Button m_savesFolderButton;
 
-        [UIElement("LeaderboardEntryDisplayPrefab")]
+        [UIElement("LeaderboardEntryDisplayPrefab", false)]
         private readonly ModdedObject m_leaderboardEntry;
         [UIElement("Content")]
         private readonly Transform m_content;
 
+        [UIElement("NoRecordsIndicator")]
+        private readonly GameObject m_noRecordsIndicatorObject;
+
         public override bool dontRefreshUI => true;
 
-        public override void Show()
+        public List<HighScoreData> displayingList
         {
-            base.Show();
-
-            m_leaderboardEntry.gameObject.SetActive(false);
-
-            Populate();
+            get;
+            private set;
         }
 
-        public override void Hide()
+        public string fileName
         {
-            base.Hide();
+            get;
+            private set;
+        }
+
+        public void Populate(List<HighScoreData> list, string file)
+        {
+            displayingList = list;
+            fileName = file;
             clearList();
-        }
 
-        public override void OnDisable()
-        {
-            base.OnDisable();
-            if (base.gameObject.activeSelf)
-                Hide();
-        }
+            bool nullOrEmpty = list.IsNullOrEmpty();
+            m_exportButton.interactable = !nullOrEmpty;
+            m_clearButton.interactable = !nullOrEmpty;
+            m_noRecordsIndicatorObject.SetActive(nullOrEmpty);
 
-        public void Populate()
-        {
-            clearList();
+            if (nullOrEmpty)
+                return;
 
             int position = 1;
-            EndlessModeManager endlessModeManager = EndlessModeManager.Instance;
-            List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
             foreach (HighScoreData data in list)
             {
                 ModdedObject moddedObject = Instantiate(m_leaderboardEntry, m_content);
@@ -67,7 +68,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(0).text = data.HumanFacts.GetFullName();
                 moddedObject.GetObject<Text>(1).text = position.ToString() + ".";
                 moddedObject.GetObject<Text>(2).text = data.LevelReached.ToString();
-                moddedObject.GetObject<Text>(2).color = endlessModeManager.GetNextLevelDifficultyTierDescription(data.LevelReached - 1).TextColor;
+                moddedObject.GetObject<Text>(2).color = EndlessModeManager.Instance.GetNextLevelDifficultyTierDescription(data.LevelReached - 1).TextColor;
                 moddedObject.GetObject<GameObject>(3).SetActive(position % 2 == 0);
 
                 position++;
@@ -88,7 +89,7 @@ namespace OverhaulMod.UI
         public void OnExportButtonClicked()
         {
             int position = 1;
-            List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
+            List<HighScoreData> list = displayingList;
             StringBuilder stringBuilder = new StringBuilder();
             foreach (HighScoreData data in list)
             {
@@ -112,11 +113,11 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.MessagePopup(true, "Confirm clearing leaderboard data?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
-                List<HighScoreData> list = GameDataManager.Instance._endlessHighScores;
+                List<HighScoreData> list = displayingList;
                 list.Clear();
-                DataRepository.Instance.Save(list, "EndlessHighScores", false, true);
+                ModDataManager.Instance.SerializeToFile(fileName, list, false);
 
-                Populate();
+                Populate(list, fileName);
             });
         }
     }

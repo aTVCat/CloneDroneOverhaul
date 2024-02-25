@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -112,8 +113,19 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_SELECT_MENU))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU))
+
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_UI_MANAGEMENT_PANEL))
                     return false;
+
+                UISettingsMenuRework settingsMenuRework = modUIManager.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
+                if (settingsMenuRework && settingsMenuRework.visibleInHierarchy)
+                {
+                    if (!settingsMenuRework.disallowUsingKey)
+                        settingsMenuRework.Hide();
+
+                    return false;
+                }
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ADVANCEMENTS_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
@@ -127,8 +139,6 @@ namespace OverhaulMod.Patches
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE_LEADERBOARD))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_ENDLESS_MODE))
-                    return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OVERHAUL_UI_MANAGEMENT_PANEL))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_OTHER_MODS))
                     return false;

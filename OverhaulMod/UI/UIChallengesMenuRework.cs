@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,6 +84,21 @@ namespace OverhaulMod.UI
                     Hide();
                 }
 
+                void leaderboardAction()
+                {
+                    string fileName = $"{GameDataManager.Instance.getChallengeHighScoreSavePath(challengeDefinition.ChallengeID)}.json";
+                    List<HighScoreData> highScores = null;
+                    try
+                    {
+                        highScores = ModDataManager.Instance.DeserializeFile<List<HighScoreData>>(fileName, false);
+                    }
+                    catch
+                    {
+                        highScores = new List<HighScoreData>();
+                    }
+                    ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
+                }
+
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
                 Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.ImageSprite : challengeDefinition.ImageSprite;
 
@@ -111,6 +127,8 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Button>(4).onClick.AddListener(action);
                 moddedObject.GetObject<GameObject>(5).SetActive(hasCompleted);
                 moddedObject.GetObject<GameObject>(6).SetActive(!hasCompleted);
+                moddedObject.GetObject<Button>(7).onClick.AddListener(leaderboardAction);
+                moddedObject.GetObject<Button>(7).interactable = challengeDefinition.UseEndlessLevels;
             }
         }
 

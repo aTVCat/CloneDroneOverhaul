@@ -94,6 +94,7 @@ namespace OverhaulMod
             _ = ModManagers.New<RealisticLightningManager>();
             _ = ModManagers.New<ParticleManager>();
             _ = ModManagers.New<PostEffectsManager>();
+            _ = ModManagers.New<SoftGameRestartManager>();
         }
 
         private static void loadAssemblies()

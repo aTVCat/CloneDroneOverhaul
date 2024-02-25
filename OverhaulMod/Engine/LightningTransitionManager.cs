@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -8,15 +9,16 @@ namespace OverhaulMod.Engine
 
         private LightningInfo m_oldLightningInfo;
 
-        private float m_timeLeft;
-
         public float transitionTime
         {
             get
             {
-                return GameModeManager.IsOnTitleScreen() ? 0.85f : 4f;
+                return GameModeManager.IsOnTitleScreen() ? 2f : 3f;
             }
         }
+
+        private float m_timeLeft;
+        private float m_timeToAllowTransitionUpdates;
 
         public void DoTransition(LevelLightSettings b)
         {
@@ -30,6 +32,7 @@ namespace OverhaulMod.Engine
                 completion = 0f
             };
             m_timeLeft = transitionTime;
+            m_timeToAllowTransitionUpdates = Time.time + 0.5f;
             m_currentTransition = lightningTransitionInfo;
         }
 
@@ -50,14 +53,13 @@ namespace OverhaulMod.Engine
 
         private void FixedUpdate()
         {
-            if (m_currentTransition == null)
+            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null)
                 return;
 
-            float d = Time.fixedDeltaTime;
-            m_timeLeft -= d;
-            m_currentTransition.completion = Mathf.Clamp01(1f - (m_timeLeft / transitionTime));
+            float v = m_timeLeft - Time.fixedDeltaTime;
+            m_timeLeft = v;
 
-            if (m_timeLeft <= 0f)
+            if (v <= 0f)
             {
                 m_currentTransition.completion = 1f;
                 m_currentTransition = null;
@@ -65,6 +67,16 @@ namespace OverhaulMod.Engine
                 LevelEditorLightManager.Instance.RefreshLightInScene();
                 RealisticLightningManager.Instance.PatchLightning(false);
             }
+            else
+            {
+                m_currentTransition.completion = 1f - ParametricBlend(Mathf.Clamp01(v / transitionTime));
+            }
+        }
+
+        private float ParametricBlend(float t)
+        {
+            float sqr = t * t;
+            return sqr / (2.0f * (sqr - t) + 1.0f);
         }
     }
 }

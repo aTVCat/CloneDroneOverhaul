@@ -17,6 +17,8 @@ namespace OverhaulMod
         public const string SurveysWebhookURL = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
         public const string VerificationRequestsWebhookURL = "https://discord.com/api/webhooks/1206265503836930098/XhMcbjEETktOqZlbW1CHY7kQWscJzG-Nk65Q8bvghHfnMFMk7A2_KZWx7CiTG554YsSG";
 
+        public static string ErrorReportText;
+
         public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
         {
             rank = Mathf.Clamp(rank, 1, 5);

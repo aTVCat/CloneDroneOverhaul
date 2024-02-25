@@ -141,7 +141,7 @@ namespace OverhaulMod.UI
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowSettingsMenuRework();
+            ModUIConstants.ShowSettingsMenuRework(false);
         }
 
         public void OnModsButtonClicked()

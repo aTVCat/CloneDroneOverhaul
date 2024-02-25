@@ -62,6 +62,18 @@ namespace OverhaulMod
             m_instantiatedUIs = new Dictionary<string, GameObject>();
         }
 
+        private void OnDestroy()
+        {
+            Dictionary<string, GameObject> dictionary = m_instantiatedUIs;
+            if (!dictionary.IsNullOrEmpty())
+            {
+                foreach (GameObject panel in dictionary.Values)
+                    if (panel)
+                        Destroy(panel);
+            }
+            dictionary.Clear();
+        }
+
         public void OnGameLoaded()
         {
             onGameInitialized();

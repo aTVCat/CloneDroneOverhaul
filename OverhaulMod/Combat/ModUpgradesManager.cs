@@ -51,9 +51,24 @@ namespace OverhaulMod.Combat
             createUpgrades();
         }
 
+        private void OnDestroy()
+        {
+            if (!m_upgrades.IsNullOrEmpty())
+                foreach (UpgradeDescription upgradeDescription in m_upgrades)
+                    if (upgradeDescription)
+                    {
+                        UpgradeManager.Instance.UpgradeDescriptions.Remove(upgradeDescription);
+
+                        if(upgradeDescription.Icon)
+                            Destroy(upgradeDescription.Icon);
+
+                        Destroy(upgradeDescription);
+                    }
+        }
+
         public void OnGameLoaded()
         {
-            addUpgrades();
+            AddUpgrades();
         }
 
         private void createUpgrades()
@@ -176,11 +191,13 @@ namespace OverhaulMod.Combat
             OverrideSizeDeltaForUpgrade(BOOMERANG_FIRE_UPGRADE, 1, Vector2.zero);
         }
 
-        private void addUpgrades()
+        public void AddUpgrades()
         {
             Mod mod = ModCore.instance;
+            UpgradeManager upgradeManager = UpgradeManager.Instance;
             foreach (UpgradeDescription upgradeDescription in m_upgrades)
-                UpgradeManager.Instance.AddUpgrade(upgradeDescription, mod);
+                if(!upgradeManager.HasUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level))
+                    UpgradeManager.Instance.AddUpgrade(upgradeDescription, mod);
         }
 
         public T CreateUpgrade<T>(string displayName, string description, UpgradeType upgradeType, int level = 1, string iconBundle = null, string iconAsset = null, UpgradeDescription r1 = null, UpgradeDescription r2 = null) where T : UpgradeDescription

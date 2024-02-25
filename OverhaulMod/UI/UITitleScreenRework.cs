@@ -78,6 +78,10 @@ namespace OverhaulMod.UI
         [UIElement("LocalizationEditorButton")]
         private readonly Button m_localizationEditorButton;
 
+        [UIElementAction(nameof(OnSetupButtonClicked))]
+        [UIElement("SetupScreenButton")]
+        private readonly Button m_setupButton;
+
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
@@ -128,10 +132,10 @@ namespace OverhaulMod.UI
         private GameObject m_legacyContainer;
 
         private RectTransform m_socialButtonContainer;
-        private RectTransform m_socialButtonPopouts;
+        private RectTransform m_socialButtonPopoutHolder;
 
         private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
-        private Vector2 m_initialSocialButtonPopoutsPosition, m_newSocialButtonPopoutsPosition;
+        private Vector2 m_initialSocialButtonPopoutHolderPosition, m_newSocialButtonPopoutHolderPosition;
 
         private bool m_hasAddedEventListeners;
 
@@ -150,23 +154,29 @@ namespace OverhaulMod.UI
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
-                CanvasGroup group = titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
-                group.blocksRaycasts = true;
-                m_canvasGroup = group;
-                m_legacyContainer = group.gameObject;
                 m_titleScreenUI = titleScreenUI;
-
-                Transform socialButtons = titleScreenUI.SocialButtonPanel.transform;
-                RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
-                RectTransform socialButtonPopouts = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
-                if (socialButtonContainer && socialButtonPopouts)
+                if (titleScreenUI.RootButtonsContainerBG)
                 {
-                    m_socialButtonContainer = socialButtonContainer;
-                    m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
-                    m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 30f);
-                    m_socialButtonPopouts = socialButtonPopouts;
-                    m_initialSocialButtonPopoutsPosition = socialButtonPopouts.anchoredPosition;
-                    m_newSocialButtonPopoutsPosition = socialButtonPopouts.anchoredPosition + (Vector2.up * 30f);
+                    CanvasGroup group = titleScreenUI.RootButtonsContainerBG.GetComponent<CanvasGroup>() ?? titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
+                    group.blocksRaycasts = true;
+                    m_canvasGroup = group;
+                    m_legacyContainer = group.gameObject;
+                }
+
+                Transform socialButtons = titleScreenUI.SocialButtonPanel?.transform;
+                if (socialButtons)
+                {
+                    RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
+                    RectTransform socialButtonPopoutHolder = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
+                    if (socialButtonContainer && socialButtonPopoutHolder)
+                    {
+                        m_socialButtonContainer = socialButtonContainer;
+                        m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
+                        m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 30f);
+                        m_socialButtonPopoutHolder = socialButtonPopoutHolder;
+                        m_initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
+                        m_newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 30f);
+                    }
                 }
 
                 HideLegacyUI();
@@ -209,10 +219,10 @@ namespace OverhaulMod.UI
                 enableRework = true;
             }
 
-            if (m_socialButtonContainer && m_socialButtonPopouts)
+            if (m_socialButtonContainer && m_socialButtonPopoutHolder)
             {
                 m_socialButtonContainer.anchoredPosition = m_newSocialButtonContainerPosition;
-                m_socialButtonPopouts.anchoredPosition = m_newSocialButtonPopoutsPosition;
+                m_socialButtonPopoutHolder.anchoredPosition = m_newSocialButtonPopoutHolderPosition;
             }
         }
 
@@ -226,10 +236,10 @@ namespace OverhaulMod.UI
                 enableRework = false;
             }
 
-            if (m_socialButtonContainer && m_socialButtonPopouts)
+            if (m_socialButtonContainer && m_socialButtonPopoutHolder)
             {
                 m_socialButtonContainer.anchoredPosition = m_initialSocialButtonContainerPosition;
-                m_socialButtonPopouts.anchoredPosition = m_initialSocialButtonPopoutsPosition;
+                m_socialButtonPopoutHolder.anchoredPosition = m_initialSocialButtonPopoutHolderPosition;
             }
         }
 
@@ -356,7 +366,7 @@ namespace OverhaulMod.UI
                 ModCache.titleScreenUI.OnOptionsButtonClicked();
                 return;
             }
-            ModUIConstants.ShowSettingsMenuRework();
+            ModUIConstants.ShowSettingsMenuRework(false);
         }
 
         public void OnCreditsButtonClicked()
@@ -372,6 +382,11 @@ namespace OverhaulMod.UI
         public void OnCustomizeButtonClicked()
         {
             ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
+        }
+
+        public void OnSetupButtonClicked()
+        {
+            ModUIConstants.ShowSettingsMenuRework(true);
         }
     }
 }

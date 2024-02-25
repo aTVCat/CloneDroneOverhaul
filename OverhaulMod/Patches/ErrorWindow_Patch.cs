@@ -10,6 +10,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Show")]
         private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
         {
+            ModWebhookManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
             {
                 ModUIConstants.ShowCrashScreen(errorMessage);

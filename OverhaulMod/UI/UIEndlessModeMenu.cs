@@ -72,7 +72,7 @@ namespace OverhaulMod.UI
 
         public void OnLeaderboardButtonClicked()
         {
-            ModUIConstants.ShowLeaderboard(base.transform);
+            ModUIConstants.ShowLeaderboard(base.transform, GameDataManager.Instance._endlessHighScores, "EndlessHighScores.json");
         }
 
         private IEnumerator transitionCoroutine()

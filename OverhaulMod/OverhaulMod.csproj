@@ -347,6 +347,7 @@
     <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Combat\RobotInventory.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
@@ -393,6 +394,7 @@
     <Compile Include="Engine\CameraRollingController.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
+    <Compile Include="Engine\LevelEditorObjectAdvancedBehaviour.cs" />
     <Compile Include="Engine\LightningInfo.cs" />
     <Compile Include="Engine\LightningTransitionInfo.cs" />
     <Compile Include="Engine\LightningTransitionManager.cs" />
@@ -432,6 +434,7 @@
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />
     <Compile Include="Engine\RichPresenceManager.cs" />
+    <Compile Include="Engine\SoftGameRestartManager.cs" />
     <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
@@ -457,6 +460,9 @@
     <Compile Include="Patches\Addons\MinorChangesAddon.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
+    <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
+    <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\Character_Patch.cs" />
     <Compile Include="Patches\ErrorManager_Patch.cs" />
@@ -465,6 +471,7 @@
     <Compile Include="Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
+    <Compile Include="Patches\SettingsMenu_Patch.cs" />
     <Compile Include="Patches\SeveredVolumeGenerator_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\GameFlowManager_Patch.cs" />
@@ -518,11 +525,13 @@
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
+    <Compile Include="UI\UIEndlessGameLossWindow.cs" />
     <Compile Include="UI\UIGenericImageViewer.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIDebugMenu.cs" />
     <Compile Include="UI\UIDamageIndicator.cs" />
     <Compile Include="UI\UIGenericColorPicker.cs" />
+    <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />

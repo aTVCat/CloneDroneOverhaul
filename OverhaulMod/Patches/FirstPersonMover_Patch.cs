@@ -4,6 +4,8 @@ using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using UnityEngine;
+using static BoltAssets;
 
 namespace OverhaulMod.Patches
 {
@@ -34,6 +36,38 @@ namespace OverhaulMod.Patches
             {
                 if (!modWeaponModel.attackDirections.HasFlag(attackDirection))
                     attackDirection = modWeaponModel.defaultAttackDirection;
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("tryEnableJump")]
+        private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
+        {
+            if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer())
+                return;
+
+            RobotInventory robotInventory = __instance.GetComponent<RobotInventory>();
+            if (robotInventory)
+            {
+                if (__instance._isOnGroundServer)
+                {
+                    robotInventory.IsNotAbleToDoubleJump = false;
+                }
+
+                if (!robotInventory.IsNotAbleToDoubleJump && robotInventory.hasDoubleJumpAbility && __instance._isJumping && moveCommand.Input.Jump)
+                {
+                    EnergySource energySource = __instance._energySource;
+                    if (!energySource || !energySource.CanConsume(0.5f))
+                    {
+                        ModCache.gameUIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
+                        return;
+                    }
+                    energySource.Consume(0.5f);
+
+                    __instance.AddVelocity(__instance.JumpVelocity);
+                    robotInventory.IsNotAbleToDoubleJump = true;
+                    AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(__instance.transform.position + Vector3.up);
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
@@ -7,6 +8,9 @@ namespace OverhaulMod
 {
     public class ModManagers : Singleton<ModManagers>
     {
+        [ModSetting(ModSettingsConstants.SHOW_MOD_SETUP_SCREEN_ON_START, true)]
+        public static bool ShowModSetupScreenOnStart;
+
         public override void Awake()
         {
             base.Awake();
@@ -35,15 +39,26 @@ namespace OverhaulMod
         private void onGameInitialized()
         {
             TriggerGameLoadedEvent();
-            _ = ModActionUtils.RunCoroutine(showUIDelay());
+            ShowUI();
         }
 
-        private IEnumerator showUIDelay()
+        public void ShowUI()
+        {
+            _ = ModActionUtils.RunCoroutine(showUICoroutine());
+        }
+
+        private IEnumerator showUICoroutine()
         {
             yield return null;
             yield return null;
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
-                ModUIConstants.ShowTitleScreenRework();
+            if (GameModeManager.IsOnTitleScreen())
+            {
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
+                    ModUIConstants.ShowTitleScreenRework();
+
+                if(ShowModSetupScreenOnStart)
+                    ModUIConstants.ShowSettingsMenuRework(true);
+            }
             yield break;
         }
 

@@ -56,26 +56,58 @@ namespace OverhaulMod.UI
         [UIElement("TabsContainer")]
         private readonly Transform m_tabContainer;
 
+        [UIElement("PanelNew")]
+        private RectTransform m_panelTransform;
+
+        [UIElement("Shading")]
+        private GameObject m_shadingObject;
+
+        [UIElement("BG")]
+        private GameObject m_normalBgObject;
+
+        [UIElement("BGSetup")]
+        private GameObject m_setupBgObject;
+
+        private bool m_hasSelectedTab;
+
         public override bool hideTitleScreen => true;
+
+        public bool disallowUsingKey
+        {
+            get;
+            private set;
+        }
 
         protected override void OnInitialized()
         {
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
                 settingsMenu.populateSettings();
-
-            m_tabs.SelectTab("Quick setup");
-            ShowRegularElements();
         }
 
         public void ShowRegularElements()
         {
+            disallowUsingKey = false;
+            m_panelTransform.sizeDelta = new Vector2(650f, 500f);
+            m_shadingObject.SetActive(true);
+            m_normalBgObject.SetActive(true);
+            m_setupBgObject.SetActive(false);
 
+            if (!m_hasSelectedTab)
+            {
+                m_tabs.SelectTab("Quick setup");
+                m_hasSelectedTab = true;
+            }
         }
 
-        public void ShowFirstSetupElements()
+        public void ShowSetupElements()
         {
-
+            disallowUsingKey = true;
+            m_panelTransform.sizeDelta = new Vector2(325f, 450f);
+            m_shadingObject.SetActive(false);
+            m_normalBgObject.SetActive(false);
+            m_setupBgObject.SetActive(true);
+            PopulatePage("setup");
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -120,6 +152,9 @@ namespace OverhaulMod.UI
 
             switch (id)
             {
+                case "setup":
+                    populateSetupPage(settingsMenu);
+                    break;
                 case "Quick setup":
                     populateQuickSetupPage(settingsMenu);
                     break;
@@ -145,6 +180,63 @@ namespace OverhaulMod.UI
                     populateDefaultPage(settingsMenu);
                     break;
             }
+        }
+
+        private void populateSetupPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+
+            _ = pageBuilder.Header1("Graphics");
+            _ = pageBuilder.Header3("Post effects");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
+            }, "Ambient occlusion");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
+            }, "Dithering");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
+            }, "Vignette");
+
+            _ = pageBuilder.Header3("Particles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES, value, true);
+            }, "Enable particles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, value, true);
+            }, "Enable sparks");
+
+            _ = pageBuilder.Header1("Gameplay");
+            _ = pageBuilder.Header3("Fun");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
+            }, "First person mode");
+            _ = pageBuilder.KeyBind("Camera mode toggle", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
+            });
+
+            _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
+            }, "Show Overhaul mod version");
+            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            {
+                ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+            });
+
+            pageBuilder.Button("Done", delegate
+            {
+                Hide();
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_MOD_SETUP_SCREEN_ON_START, false);
+            });
         }
 
         private void populateQuickSetupPage(SettingsMenu settingsMenu)

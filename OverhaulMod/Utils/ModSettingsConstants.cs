@@ -97,6 +97,11 @@ namespace OverhaulMod.Utils
         public const string INTRODUCE_TITLE_SCREEN_CUSTOMIZATION = "IntroduceTitleScreenCustomization";
 
         /// <summary>
+        /// <see cref="ModManagers"/>
+        /// </summary>
+        public const string SHOW_MOD_SETUP_SCREEN_ON_START = "ShowModSetupScreenOnStart";
+
+        /// <summary>
         /// <see cref="UI.UIVersionLabel"/>
         /// </summary>
         public const string SHOW_VERSION_LABEL = "ShowModVersionLabel";

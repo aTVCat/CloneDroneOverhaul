@@ -20,8 +20,6 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         public GameObject m_iconLoadingIndicator;
 
-        private readonly Button m_playMultiplayerButton;
-
         private (Color, Color)[] m_colors;
 
         private float m_timeLeftForAnUpdate;
@@ -52,11 +50,20 @@ namespace OverhaulMod.UI
         {
             m_timeLeftForAnUpdate = 0.5f;
 
+            PlayFabPlayerDataManager playFabPlayerDataManager = PlayFabPlayerDataManager.Instance;
+            if (!playFabPlayerDataManager)
+                return;
+
+            MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
+            if (!multiplayerLoginManager)
+                return;
+
             bool shouldActivateMultiplayerButton = false;
             int curState = m_prevState;
-            bool userLoggedIn = MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab();
-            BanOrWarningMessage banOrWarningMessage = PlayFabPlayerDataManager.Instance.GetBanOrWarningMessage();
-            if (!userLoggedIn || MultiplayerLoginManager.Instance.IsBanned())
+            bool userLoggedIn = multiplayerLoginManager.IsLoggedIntoPlayfab();
+
+            BanOrWarningMessage banOrWarningMessage = playFabPlayerDataManager.GetBanOrWarningMessage();
+            if (!userLoggedIn || multiplayerLoginManager.IsBanned())
             {
                 if (banOrWarningMessage != null && banOrWarningMessage.IsWarning)
                 {
@@ -84,10 +91,13 @@ namespace OverhaulMod.UI
                 shouldActivateMultiplayerButton = true;
             }
 
+            UITitleScreenRework titleScreenRework = ModUIManager.Instance?.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+            if (!titleScreenRework)
+                return;
+
             if (curState != m_prevState)
             {
-                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
-                if (titleScreenRework && titleScreenRework.visibleInHierarchy)
+                if (titleScreenRework.ErrorMessage && titleScreenRework.visibleInHierarchy)
                 {
                     titleScreenRework.ErrorMessage.Refresh();
                     if (m_prevState == 0)
@@ -97,7 +107,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN).SetMultiplayerButtonActive(shouldActivateMultiplayerButton);
+            titleScreenRework.SetMultiplayerButtonActive(shouldActivateMultiplayerButton);
         }
 
         public void SetColor(Color firstColor, Color secondColor)

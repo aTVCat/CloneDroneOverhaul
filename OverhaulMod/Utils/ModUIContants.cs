@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
@@ -62,6 +63,8 @@ namespace OverhaulMod.Utils
         public const string UI_GENERIC_COLOR_PICKER = "UI_GenericColorPicker";
         public const string UI_GENERIC_IMAGE_VIEWER = "UI_GenericImageViewer";
         public const string UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU = "UI_PersonalizationEditorAuthorsEditMenu";
+        public const string UI_GAME_LOSS_WINDOW = "UI_GameLossWindow";
+        public const string UI_ENDLESS_GAME_LOSS_WINDOW = "UI_EndlessGameLossWindow";
 
         public static void ShowOtherModsMenu()
         {
@@ -73,14 +76,19 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIEndlessModeMenu>(AssetBundleConstants.UI, UI_ENDLESS_MODE, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowLeaderboard(Transform parent)
+        public static void ShowLeaderboard(Transform parent, List<HighScoreData> list, string fileName)
         {
-            _ = ModUIManager.Instance.Show<UIEndlessModeLeaderboard>(AssetBundleConstants.UI, UI_ENDLESS_MODE_LEADERBOARD, parent);
+            UIEndlessModeLeaderboard leaderboard = ModUIManager.Instance.Show<UIEndlessModeLeaderboard>(AssetBundleConstants.UI, UI_ENDLESS_MODE_LEADERBOARD, parent);
+            leaderboard.Populate(list, fileName);
         }
 
-        public static void ShowSettingsMenuRework()
+        public static void ShowSettingsMenuRework(bool setup)
         {
-            _ = ModUIManager.Instance.Show<UISettingsMenuRework>(AssetBundleConstants.UI, UI_SETTINGS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Show<UISettingsMenuRework>(AssetBundleConstants.UI, UI_SETTINGS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            if (setup)
+                settingsMenuRework.ShowSetupElements();
+            else
+                settingsMenuRework.ShowRegularElements();
         }
 
         public static void ShowTitleScreenRework()
@@ -370,6 +378,16 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorAuthorsEditMenu ShowPersonalizationEditorAuthorsEditMenu(Transform parent)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorAuthorsEditMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU, parent);
+        }
+
+        public static void ShowGameLossWindow()
+        {
+            _ = ModUIManager.Instance.Show<UIGameLossWindow>(AssetBundleConstants.UI, UI_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static void ShowEndlessGameLossWindow()
+        {
+            _ = ModUIManager.Instance.Show<UIEndlessGameLossWindow>(AssetBundleConstants.UI, UI_ENDLESS_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
         }
     }
 }

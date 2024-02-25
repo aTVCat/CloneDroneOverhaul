@@ -66,11 +66,19 @@ namespace OverhaulMod.Engine
                 Mathf.Lerp(a.FogStartDistance, b.FogStartDistance, d),
                 ModUnityUtils.LerpRGB(a.FogColor, b.FogColor, d));
 
+            /*
             refreshDirectionalLight(d < 0.5f ? a.EnableDirectionalLight : b.EnableDirectionalLight,
                 ModUnityUtils.LerpRGB(a.DirectionalColor, b.DirectionalColor, d),
                 d < 0.5f ? Mathf.Lerp(a.DirectionalIntensity, 0f, d * 2f) : Mathf.Lerp(0f, b.DirectionalIntensity, (d * 2f) - 1f),
                 d < 0.5f ? a.DirectionalRotationX : b.DirectionalRotationX,
                 d < 0.5f ? a.DirectionalRotationY : b.DirectionalRotationY,
+                Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));*/
+
+            refreshDirectionalLight(d < 0.985f ? true : b.EnableDirectionalLight,
+                ModUnityUtils.LerpRGB(a.DirectionalColor, b.DirectionalColor, d),
+                Mathf.Lerp(a.EnableDirectionalLight ? a.DirectionalIntensity : 0f, b.EnableDirectionalLight ? b.DirectionalIntensity : 0f, d),
+                Mathf.Lerp(a.DirectionalRotationX, b.DirectionalRotationX, d),
+                Mathf.Lerp(a.DirectionalRotationY, b.DirectionalRotationY, d),
                 Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));
 
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
