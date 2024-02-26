@@ -8,6 +8,7 @@ using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -28,6 +29,7 @@ namespace OverhaulMod
 
             ModBuildInfo.Load();
 
+            Physics.reuseCollisionCallbacks = true;
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadBufferSize = 16;
             QualitySettings.asyncUploadPersistentBuffer = true;
@@ -35,6 +37,7 @@ namespace OverhaulMod
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
 
+            createDirectories();
             addManagers();
             ModManagers.Instance.TriggerModLoadedEvent();
 
@@ -94,7 +97,7 @@ namespace OverhaulMod
             _ = ModManagers.New<RealisticLightningManager>();
             _ = ModManagers.New<ParticleManager>();
             _ = ModManagers.New<PostEffectsManager>();
-            _ = ModManagers.New<SoftGameRestartManager>();
+            _ = ModManagers.New<QuickResetManager>();
         }
 
         private static void loadAssemblies()
@@ -131,6 +134,24 @@ namespace OverhaulMod
                 Patch.AddObject("ChibiSword2", "OverhaulMod", "Enemies", ModPrefabUtils.chibiSword2Spawner, null, null);
                 s_hasAddedObjects = true;
             }
+        }
+
+        private static void createDirectories()
+        {
+            if (!Directory.Exists(ModCore.modFolder))
+                Directory.CreateDirectory(ModCore.modFolder);
+
+            if (!Directory.Exists(ModCore.contentFolder))
+                Directory.CreateDirectory(ModCore.contentFolder);
+
+            if (!Directory.Exists(ModCore.savesFolder))
+                Directory.CreateDirectory(ModCore.savesFolder);
+
+            if (!Directory.Exists(ModCore.addonsFolder))
+                Directory.CreateDirectory(ModCore.addonsFolder);
+
+            if (!Directory.Exists(ModCore.customizationFolder))
+                Directory.CreateDirectory(ModCore.customizationFolder);
         }
 
         private static void addListeners()

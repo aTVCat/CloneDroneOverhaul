@@ -21,7 +21,7 @@ namespace OverhaulMod.Engine
                 ModResources.Instance.LoadBundleAsync("overhaulassets_skyboxes", delegate (AssetBundle bundle)
                 {
                     _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine(bundle));
-                }, null, $"assets/content/addons/{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/");
+                }, null, $"{ModCore.addonsFolder}{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/");
 
                 RealisticLightningInfoList realisticLightningInfoList = null;
                 try

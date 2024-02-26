@@ -37,7 +37,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter4Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 2);
-                    }, null, $"assets/content/addons/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, $"{ModCore.addonsFolder}{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
 
                 if (ModAdvancedCache.TryGet("Chapter5Skybox_Rework", out Material material2))
@@ -50,7 +50,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         ModAdvancedCache.Add("Chapter5Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 7);
-                    }, null, $"assets/content/addons/{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, $"{ModCore.addonsFolder}{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
                 }
             }
             yield break;

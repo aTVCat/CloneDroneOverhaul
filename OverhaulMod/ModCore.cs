@@ -56,9 +56,8 @@ namespace OverhaulMod
             {
                 if (s_savesFolder == null)
                 {
-                    s_savesFolder = folder + "saves/";
+                    s_savesFolder = modFolder + "saves/";
                 }
-                ModIOUtils.CreateFolderIfNotCreated(s_savesFolder);
                 return s_savesFolder;
             }
         }
@@ -89,6 +88,19 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_modFolder;
+        public static string modFolder
+        {
+            get
+            {
+                if (s_modFolder == null)
+                {
+                    s_modFolder = Application.persistentDataPath + "/OverhaulMod/";
+                }
+                return s_modFolder;
+            }
+        }
+
         private static string s_contentFolder;
         public static string contentFolder
         {
@@ -96,7 +108,7 @@ namespace OverhaulMod
             {
                 if (s_contentFolder == null)
                 {
-                    s_contentFolder = assetsFolder + "content/";
+                    s_contentFolder = modFolder + "content/";
                 }
                 return s_contentFolder;
             }

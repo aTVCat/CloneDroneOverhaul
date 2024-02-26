@@ -25,16 +25,13 @@ namespace OverhaulMod.UI
         public void OnRestartButtonClicked()
         {
             Hide();
-            if (GameModeManager.ShowLoadingScreen())
-                GameUIRoot.Instance.LoadingScreen.Show();
-
-            ModActionUtils.RunCoroutine(waitThenResetGame());
+            TransitionManager.Instance.DoNonSceneTransition(resetGameCoroutine());
         }
 
         public void OnSoftRestartButtonClicked()
         {
             Hide();
-            SoftGameRestartManager.Instance.RestartGame();
+            QuickResetManager.Instance.RestartGame();
         }
 
         public void OnMainMenuClicked()
@@ -43,12 +40,16 @@ namespace OverhaulMod.UI
             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
-        private IEnumerator waitThenResetGame()
+        private IEnumerator resetGameCoroutine()
         {
-            yield return null;
-            yield return null;
-            yield return null;
-            GameFlowManager.Instance.ResetGameAndSpawnHuman(true);
+            yield return new WaitForSecondsRealtime(0.25f);
+            GameFlowManager gameFlowManager = GameFlowManager.Instance;
+            gameFlowManager.ResetGameAndSpawnHuman(true);
+            while (gameFlowManager._isAsyncLoadingInProgress)
+                yield return null;
+
+            yield return new WaitForSecondsRealtime(0.1f);
+            TransitionManager.Instance.EndTransition();
             yield break;
         }
     }

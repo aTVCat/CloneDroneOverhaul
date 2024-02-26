@@ -434,7 +434,7 @@
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />
     <Compile Include="Engine\RichPresenceManager.cs" />
-    <Compile Include="Engine\SoftGameRestartManager.cs" />
+    <Compile Include="Engine\QuickResetManager.cs" />
     <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
@@ -457,7 +457,7 @@
     <Compile Include="Patches\Addons\LocalizationAddon.cs" />
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
-    <Compile Include="Patches\Addons\MinorChangesAddon.cs" />
+    <Compile Include="Patches\Addons\MinorAddon.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />

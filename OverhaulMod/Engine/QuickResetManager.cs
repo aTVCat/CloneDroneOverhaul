@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
-    public class SoftGameRestartManager : Singleton<SoftGameRestartManager>
+    public class QuickResetManager : Singleton<QuickResetManager>
     {
         public void RestartGame()
         {
@@ -59,6 +59,11 @@ namespace OverhaulMod.Engine
                 else if (levelEditorBaseTrigger is NobodyInsideTrigger trigger2)
                 {
                     trigger2._allCharactersInsideArea.Clear();
+                }
+                else if (levelEditorBaseTrigger is LevelEditorUseButtonTrigger trigger3)
+                {
+                    trigger3._lastActivationTime = 0f;
+                    trigger3._timeToRefreshHint = 0f;
                 }
             }
 

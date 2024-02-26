@@ -100,11 +100,12 @@ namespace OverhaulMod
             return !IsBundleLoaded(assetBundle) ? null : s_bundles[assetBundle];
         }
 
-        public T LoadAsset<T>(string assetBundle, string objectName, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
+        public T LoadAsset<T>(string assetBundle, string objectName, string startPath = null) where T : UnityEngine.Object
         {
             if (!IsBundleLoaded(assetBundle))
             {
-                cacheAssetBundle(assetBundle, AssetBundle.LoadFromFile(ModCore.folder + startPath + assetBundle));
+                string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+                cacheAssetBundle(assetBundle, AssetBundle.LoadFromFile(bundleName));
             }
 
             if (!IsAssetLoaded(assetBundle, objectName))
@@ -114,7 +115,7 @@ namespace OverhaulMod
             return (T)s_assets[assetBundle][objectName];
         }
 
-        public void LoadAssetAsync<T>(string assetBundle, string objectName, Action<T> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
+        public void LoadAssetAsync<T>(string assetBundle, string objectName, Action<T> callback, Action<string> errorCallback, string startPath = null) where T : UnityEngine.Object
         {
             if (IsAssetLoaded(assetBundle, objectName))
             {
@@ -135,17 +136,18 @@ namespace OverhaulMod
             }, errorCallback, startPath), true);
         }
 
-        public AssetBundle LoadBundle(string assetBundle, string startPath = ASSET_BUNDLES_FOLDER)
+        public AssetBundle LoadBundle(string assetBundle, string startPath = null)
         {
-            AssetBundle bundle = AssetBundle.LoadFromFile(ModCore.folder + startPath + assetBundle);
+            string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+            AssetBundle bundle = AssetBundle.LoadFromFile(bundleName);
             if (!IsBundleLoaded(assetBundle))
                 cacheAssetBundle(assetBundle, bundle);
             return bundle;
         }
 
-        public void LoadBundleAsync(string assetBundle, Action<AssetBundle> successCallback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)
+        public void LoadBundleAsync(string assetBundle, Action<AssetBundle> successCallback, Action<string> errorCallback, string startPath = null)
         {
-            string bundlePath = ModCore.folder + startPath + assetBundle;
+            string bundlePath = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
             if (IsBundleLoaded(assetBundle))
             {
                 successCallback?.Invoke(GetBundle(assetBundle));
@@ -181,10 +183,10 @@ namespace OverhaulMod
             }, errorCallback), true);
         }
 
-        private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = ASSET_BUNDLES_FOLDER)
+        private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = null)
         {
             string errorString = null;
-            string bundleName = ModCore.folder + startPath + assetBundle;
+            string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
             bool bundleLoadDone = false;
             AssetBundle bundle = null;
 
@@ -339,7 +341,7 @@ namespace OverhaulMod
             return $"ModResources, loaded bundles/assets: {loadedAssetBundlesCount}/{loadedAssetsCount}";
         }
 
-        public static T Load<T>(string assetBundle, string objectName, string startPath = ASSET_BUNDLES_FOLDER) where T : UnityEngine.Object
+        public static T Load<T>(string assetBundle, string objectName, string startPath = null) where T : UnityEngine.Object
         {
             return Instance.LoadAsset<T>(assetBundle, objectName, startPath);
         }

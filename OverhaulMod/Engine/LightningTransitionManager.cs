@@ -32,7 +32,7 @@ namespace OverhaulMod.Engine
                 completion = 0f
             };
             m_timeLeft = transitionTime;
-            m_timeToAllowTransitionUpdates = Time.time + 0.5f;
+            m_timeToAllowTransitionUpdates = Time.time + 0.3f;
             m_currentTransition = lightningTransitionInfo;
         }
 
@@ -59,7 +59,12 @@ namespace OverhaulMod.Engine
             float v = m_timeLeft - Time.fixedDeltaTime;
             m_timeLeft = v;
 
-            if (v <= 0f)
+            bool levelHidesArena = false;
+            LevelManager levelManager = LevelManager.Instance;
+            if (levelManager && levelManager._currentLevelHidesTheArena)
+                levelHidesArena = true;
+
+            if (v <= 0f || levelHidesArena)
             {
                 m_currentTransition.completion = 1f;
                 m_currentTransition = null;
@@ -69,11 +74,11 @@ namespace OverhaulMod.Engine
             }
             else
             {
-                m_currentTransition.completion = 1f - ParametricBlend(Mathf.Clamp01(v / transitionTime));
+                m_currentTransition.completion = 1f - parametricBlend(Mathf.Clamp01(v / transitionTime));
             }
         }
 
-        private float ParametricBlend(float t)
+        private float parametricBlend(float t)
         {
             float sqr = t * t;
             return sqr / (2.0f * (sqr - t) + 1.0f);

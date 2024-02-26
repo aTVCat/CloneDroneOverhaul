@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.Patches.Addons
 {
-    internal class MinorChangesAddon : GameAddon
+    internal class MinorAddon : GameAddon
     {
         public override void Patch()
         {
@@ -56,6 +56,17 @@ namespace OverhaulMod.Patches.Addons
                 if (flyingCameraController)
                 {
                     flyingCameraController.FieldOfViewMultiplier = -1000f;
+                }
+            }
+
+            DirectionalLightManager directionalLightManager = DirectionalLightManager.Instance;
+            if (directionalLightManager)
+            {
+                Light light = directionalLightManager.DirectionalLight;
+                if (light)
+                {
+                    light.shadowNormalBias = 1.1f;
+                    light.shadowBias = 1f;
                 }
             }
         }
