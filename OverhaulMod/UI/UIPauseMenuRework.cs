@@ -33,10 +33,6 @@ namespace OverhaulMod.UI
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
 
-        [UIElementAction(nameof(OnExitButtonClicked))]
-        [UIElement("ExitButton")]
-        private readonly Button m_exitButton;
-
         [UIElement("LogoEn")]
         private readonly GameObject m_logoEn;
 
@@ -60,8 +56,6 @@ namespace OverhaulMod.UI
         [UIElement("MainMenuButton")]
         private readonly Button m_mainMenuButton;
 
-        private float m_unscaledTimeToHideExitDialogue;
-
         public override bool enableCursor
         {
             get
@@ -71,11 +65,6 @@ namespace OverhaulMod.UI
         }
 
         public static bool disableOverhauledVersion { get; set; }
-
-        protected override void OnInitialized()
-        {
-            m_unscaledTimeToHideExitDialogue = -1f;
-        }
 
         public override void Show()
         {
@@ -93,16 +82,6 @@ namespace OverhaulMod.UI
             _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
         }
 
-        public override void Update()
-        {
-            if (m_unscaledTimeToHideExitDialogue != -1f && m_unscaledTimeToHideExitDialogue <= Time.unscaledTime)
-            {
-                m_unscaledTimeToHideExitDialogue = -1f;
-                m_exitDialogue.SetActive(false);
-                m_exitButton.gameObject.SetActive(true);
-            }
-        }
-
         private void refreshLogo()
         {
             string langId = LocalizationManager.Instance.GetCurrentLanguageCode();
@@ -115,11 +94,6 @@ namespace OverhaulMod.UI
         private void refreshButtons()
         {
             bool customizationSupported = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
-
-            m_unscaledTimeToHideExitDialogue = -1f;
-            m_exitDialogue.SetActive(false);
-            m_exitButton.gameObject.SetActive(true);
-
             m_customizationButton.interactable = customizationSupported;
         }
 
@@ -147,22 +121,6 @@ namespace OverhaulMod.UI
         public void OnModsButtonClicked()
         {
             ModsPanelManager.Instance.openModsMenu();
-        }
-
-        public void OnExitButtonClicked()
-        {
-            if (!UseMessagePopup)
-            {
-                m_exitDialogue.SetActive(true);
-                m_exitButton.gameObject.SetActive(false);
-                m_unscaledTimeToHideExitDialogue = Time.unscaledTime + 5f;
-                return;
-            }
-
-            ModUIUtils.MessagePopup(true, "Exit to...", "Select action", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "To desktop", "Main menu", null, delegate
-            {
-                Application.Quit();
-            }, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu);
         }
 
         public void OnMainMenuButtonClicked()

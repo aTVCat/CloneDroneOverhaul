@@ -13,6 +13,10 @@ namespace OverhaulMod.UI
         [UIElement("MusicDropdown")]
         private readonly Dropdown m_musicDropdown;
 
+        [UIElementAction(nameof(OnVolumeSliderChanged), true)]
+        [UIElement("VolumeSlider")]
+        private readonly Slider m_volumeSlider;
+
         [UIElement("StaticBackgroundConfig", typeof(UIElementTitleScreenBackgroundConfig))]
         private readonly UIElementTitleScreenBackgroundConfig m_staticBgConfig;
 
@@ -35,10 +39,21 @@ namespace OverhaulMod.UI
             }
         }
 
+        public override void Show()
+        {
+            base.Show();
+            m_volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
+        }
+
         private void onMusicTrackDropdownChanged(int index)
         {
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
             TitleScreenCustomizationManager.Instance.RefreshMusicTrack();
+        }
+
+        public void OnVolumeSliderChanged(float value)
+        {
+            SettingsManager.Instance.SetMusicVolume(value);
         }
     }
 }

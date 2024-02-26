@@ -27,6 +27,7 @@ namespace OverhaulMod.Patches.Addons
             _ = gameObject.AddComponent<MinorAddon>();
             _ = gameObject.AddComponent<LocalizationAddon>();
             _ = gameObject.AddComponent<GameModeSelectScreensAddon>();
+            _ = gameObject.AddComponent<EnergyUIAddon>();
 
             s_patches = gameObject.GetComponents<GameAddon>();
         }

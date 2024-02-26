@@ -454,6 +454,7 @@
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="Patches\Addons\EnergyUIAddon.cs" />
     <Compile Include="Patches\Addons\LocalizationAddon.cs" />
     <Compile Include="Patches\Addons\ColorsAddon.cs" />
     <Compile Include="Patches\Addons\GameModeSelectScreensAddon.cs" />
@@ -505,6 +506,7 @@
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
+    <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />

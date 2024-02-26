@@ -14,6 +14,9 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsBG")]
         private readonly GameObject m_container;
 
+        [UIElement("DebugButtons", false)]
+        private readonly GameObject m_debugButtonsObject;
+
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
         private readonly Button m_playSinglePlayerButton;
@@ -106,11 +109,18 @@ namespace OverhaulMod.UI
         [UIElement("CustomizeButton")]
         private readonly Button m_customizeButton;
 
+        [UIElementAction(nameof(OnModBotLogInButtonClicked))]
+        [UIElement("ModBotLogInButton", false)]
+        private readonly Button m_modBotLogInButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
         [UIElement("TutorialLayer", false)]
         private readonly GameObject m_tutorialLayerObject;
+
+        [UIElement("ModBotLogonText")]
+        private readonly Text m_modBotLogonText;
 
         [UIElement("ErrorMessage", typeof(UIElementMultiplayerMessageBox), false)]
         public UIElementMultiplayerMessageBox ErrorMessage;
@@ -148,8 +158,11 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            m_modBotLogonText.text = "Not logged in";
             NewsButtonWarnController.isNewsButton = true;
             UpdatesButtonWarnController.isUpdatesButton = true;
+            m_debugButtonsObject.SetActive(ModBuildInfo.debug);
 
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
@@ -193,6 +206,19 @@ namespace OverhaulMod.UI
             m_otherLayersObject.SetActive(shouldBeActive);
             m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
             m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
+
+            if(Time.frameCount % 30 == 0)
+            {
+                string userName = ModBotSignInUI._userName;
+                if (!userName.IsNullOrEmpty())
+                {
+                    m_modBotLogonText.text = $"Logged as: {userName.AddColor(Color.white)}";
+                }
+                else
+                {
+                    m_modBotLogonText.text = "Not logged in.\nTry logging in through settings menu";
+                }
+            }
         }
 
         public override void OnDestroy()
@@ -272,6 +298,11 @@ namespace OverhaulMod.UI
         public void OnPlayExpMultiPlayerButtonClicked()
         {
             ModUIConstants.ShowMultiplayerGameModeSelectScreen();
+        }
+
+        public void OnModBotLogInButtonClicked()
+        {
+            ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
         }
 
         public void OnViewMultiplayerErrorButtonClicked()

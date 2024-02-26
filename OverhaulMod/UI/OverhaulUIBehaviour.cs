@@ -252,6 +252,9 @@ namespace OverhaulMod.UI
                                 {
                                     _ = methodInfo.Invoke(this, new object[] { value });
                                 });
+
+                                if(actionAttribute.UsePatch)
+                                    slider.gameObject.AddComponent<BetterSliderCallback>();
                             }
                         }
                         else if (fieldInfo.FieldType == typeof(UIElementColorPickerButton))

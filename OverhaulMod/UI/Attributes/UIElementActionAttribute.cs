@@ -7,9 +7,12 @@ namespace OverhaulMod.UI
     {
         public string Name;
 
-        public UIElementActionAttribute(string name)
+        public bool UsePatch;
+
+        public UIElementActionAttribute(string name, bool usePatch = false)
         {
             Name = name;
+            UsePatch = usePatch;
         }
     }
 }

@@ -46,16 +46,13 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            string versionString = ModBuildInfo.fullVersionString;
-            if (string.IsNullOrEmpty(versionString))
-                return;
+            bool debug = ModBuildInfo.debug;
+            string versionString = debug ? ModBuildInfo.fullVersionString.Replace('/', '.') : ModBuildInfo.versionString;
 
-            versionString = versionString.Replace('/', '.');
-
-            m_versionText.text = "overhaul mod " + versionString;
-            m_debugIcon.SetActive(ModBuildInfo.debug);
-            m_gameplayVersionText.text = "overhaul " + versionString;
-            m_gameplayDebugIcon.SetActive(ModBuildInfo.debug);
+            m_versionText.text = "overhaul mod v" + versionString;
+            m_debugIcon.SetActive(debug);
+            m_gameplayVersionText.text = "overhaul v" + versionString;
+            m_gameplayDebugIcon.SetActive(debug);
 
             ModCache.gameUIRoot.TitleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
