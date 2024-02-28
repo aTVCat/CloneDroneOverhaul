@@ -28,14 +28,17 @@ namespace OverhaulMod.Combat
             m_Weapons = new Dictionary<WeaponType, (GameObject, Type)>();
             m_MeleeWeapons = new List<WeaponType>();
 
-            AddWeapon<BattleAxeWeaponModel>(BATTLE_AXE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulBAxe");
             AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
-            AddWeapon<HalberdWeaponModel>(HALBERD_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulHalberd");
-            AddWeapon<HandsWeaponModel>(HANDS_TYPE, true, null, null);
-            AddWeapon<ClawsWeaponModel>(CLAWS_TYPE, true, null, null);
-            AddWeapon<PrimitiveLaserBlasterWeaponModel>(PRIM_LASER_BLASTER_TYPE, false, null, null);
-            AddWeapon<DualKnivesWeaponModel>(DUAL_KNIVES_TYPE, true, null, null);
-            AddWeapon<BoomerangWeaponModel>(BOOMERANG_TYPE, true, null, null);
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AllGameplayContent))
+            {
+                AddWeapon<BattleAxeWeaponModel>(BATTLE_AXE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulBAxe");
+                AddWeapon<HalberdWeaponModel>(HALBERD_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulHalberd");
+                AddWeapon<HandsWeaponModel>(HANDS_TYPE, true, null, null);
+                AddWeapon<ClawsWeaponModel>(CLAWS_TYPE, true, null, null);
+                AddWeapon<PrimitiveLaserBlasterWeaponModel>(PRIM_LASER_BLASTER_TYPE, false, null, null);
+                AddWeapon<DualKnivesWeaponModel>(DUAL_KNIVES_TYPE, true, null, null);
+                AddWeapon<BoomerangWeaponModel>(BOOMERANG_TYPE, true, null, null);
+            }
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel

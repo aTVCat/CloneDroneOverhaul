@@ -1,4 +1,5 @@
-﻿using Rewired;
+﻿using OverhaulMod.Utils;
+using Rewired;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -8,6 +9,12 @@ namespace OverhaulMod.Engine
         public const float MULTIPLIER = 0.125f;
         public const float HORIZONTAL_TILT = 1.8f;
         public const float ONE_LEG_TILT = 2.6f;
+
+        [ModSetting(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true)]
+        public static bool EnableBobbing;
+
+        [ModSetting(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true)]
+        public static bool EnableRolling;
 
         public float AdditionalXOffset, AdditionalZOffset;
 
@@ -31,6 +38,9 @@ namespace OverhaulMod.Engine
         {
             get
             {
+                if (!EnableRolling)
+                    return true;
+
                 FirstPersonMover owner = m_owner;
                 return Cursor.visible || !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled();
             }
@@ -48,39 +58,39 @@ namespace OverhaulMod.Engine
             if (!enableControl)
                 return;
 
+            bool forceZero = forceInitialRotation;
+
             FirstPersonMover firstPersonMover = m_owner;
             float z = 0f;
-            bool moveLeft = firstPersonMover._isMovingLeft;
-            bool rightLegDamaged = firstPersonMover.IsDamaged(MechBodyPartType.RightLeg);
-            bool moveRight = firstPersonMover._isMovingRight;
-            bool leftLegDamaged = firstPersonMover.IsDamaged(MechBodyPartType.LeftLeg);
-            if (getBool(moveLeft, moveRight))
-                z = moveLeft ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
-            if (getBool(leftLegDamaged, rightLegDamaged))
-                z += leftLegDamaged ? ONE_LEG_TILT : -ONE_LEG_TILT;
-
-            float x = 0f;
-            bool moveForward = firstPersonMover._isMovingForward;
-            bool moveBackward = firstPersonMover._isMovingBack;
-            if (getBool(moveForward, moveBackward))
-                x = moveForward ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
-            if (firstPersonMover.IsJumping() || firstPersonMover.IsFreeFallingWithNoGroundInSight())
-                x += 1f;
-
-            UpdateViewBobbing();
-            UpdateRotation(firstPersonMover, x + AdditionalXOffset, 0f, z + AdditionalZOffset);
-        }
-
-        public void UpdateRotation(FirstPersonMover firstPersonMover, float targetX, float targetY, float targetZ)
-        {
-            bool forceZero = forceInitialRotation;
-            if (forceZero)
+            if (!forceZero)
             {
-                targetX = 0f;
-                targetY = 0f;
-                targetZ = 0f;
+                bool moveLeft = firstPersonMover._isMovingLeft;
+                bool rightLegDamaged = firstPersonMover.IsDamaged(MechBodyPartType.RightLeg);
+                bool moveRight = firstPersonMover._isMovingRight;
+                bool leftLegDamaged = firstPersonMover.IsDamaged(MechBodyPartType.LeftLeg);
+                if (getBool(moveLeft, moveRight))
+                    z = moveLeft ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
+                if (getBool(leftLegDamaged, rightLegDamaged))
+                    z += leftLegDamaged ? ONE_LEG_TILT : -ONE_LEG_TILT;
             }
 
+            float x = 0f;
+            if (!forceZero)
+            {
+                bool moveForward = firstPersonMover._isMovingForward;
+                bool moveBackward = firstPersonMover._isMovingBack;
+                if (getBool(moveForward, moveBackward))
+                    x = moveForward ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
+                if (firstPersonMover.IsJumping() || firstPersonMover.IsFreeFallingWithNoGroundInSight())
+                    x += 1f;
+            }
+
+            UpdateViewBobbing();
+            UpdateRotation(firstPersonMover, forceZero, x + AdditionalXOffset, 0f, z + AdditionalZOffset);
+        }
+
+        public void UpdateRotation(FirstPersonMover firstPersonMover, bool forceZero, float targetX, float targetY, float targetZ)
+        {
             float deltaTime = Time.deltaTime;
             float deltaTimeMultiplied = deltaTime * 20f;
             float multiply = MULTIPLIER * deltaTime * 20f;
@@ -114,6 +124,13 @@ namespace OverhaulMod.Engine
 
         public void UpdateViewBobbing()
         {
+            if (!EnableBobbing)
+            {
+                AdditionalXOffset = 0f;
+                AdditionalZOffset = 0f;
+                return;
+            }
+
             FirstPersonMover owner = m_owner;
             if (!owner)
             {

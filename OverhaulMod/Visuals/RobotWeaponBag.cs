@@ -54,7 +54,7 @@ namespace OverhaulMod.Visuals
 
         private void onFirstPersonMoverUpgraded(FirstPersonMover firstPersonMover)
         {
-            ModActionUtils.DoNextFrame(delegate
+            ModActionUtils.DoInFrame(delegate
             {
                 if (firstPersonMover && firstPersonMover == firstPersonMoverReference)
                     RespawnRenderers();

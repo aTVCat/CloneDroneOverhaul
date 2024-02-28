@@ -40,10 +40,19 @@ namespace OverhaulMod
                 case FeatureType.WorkshopBrowserRework:
                     result = true;
                     break;
-                case FeatureType.NewDifficultyTiers:
+                case FeatureType.NightmariumDifficultyTier:
                     result = ModBuildInfo.enableV5;
                     break;
                 case FeatureType.GameModeSelectionScreensRework:
+                    result = true;
+                    break;
+                case FeatureType.AllGameplayContent:
+                    result = ModBuildInfo.enableV5;
+                    break;
+                case FeatureType.AllNewEnemies:
+                    result = ModBuildInfo.enableV5;
+                    break;
+                case FeatureType.DuelInviteMenuRework:
                     result = true;
                     break;
                 default:
@@ -64,65 +73,35 @@ namespace OverhaulMod
 
         public enum FeatureType
         {
-            /// <summary>
-            /// <see cref="UI.UIEndlessModeMenu"/>
-            /// </summary>
             EndlessModeMenu,
 
-            /// <summary>
-            /// <see cref="UI.UIChapterSelectMenuRework"/>
-            /// </summary>
             ChapterSelectMenuRework,
 
-            /// <summary>
-            /// <see cref="UI.UILoadingScreenRework"/>
-            /// </summary>
             LoadingScreenRework,
 
-            /// <summary>
-            /// <see cref="UI.UIPauseMenuRework"/>
-            /// </summary>
             PauseMenuRework,
 
-            /// <summary>
-            /// <see cref="UI.UITitleScreenRework"/>
-            /// </summary>
             TitleScreenRework,
 
-            /// <summary>
-            /// <see cref="Visuals.ArrowModelRefresher"/>
-            /// </summary>
             ArrowModelRefresh,
 
-            /// <summary>
-            /// <see cref="Combat.ModWeaponsManager"/>
-            /// </summary>
             NewWeapons,
 
-            /// <summary>
-            /// <see cref="Visuals.RobotWeaponBag"/>
-            /// </summary>
             WeaponBag,
 
-            /// <summary>
-            /// <see cref="Visuals.Environment.WeatherManager"/>
-            /// </summary>
             WeatherSystem,
 
-            /// <summary>
-            /// <see cref="UI.UIWorkshopBrowser"/>
-            /// </summary>
             WorkshopBrowserRework,
 
-            /// <summary>
-            /// <see cref="Engine.DifficultyTierManager"/>
-            /// </summary>
-            NewDifficultyTiers,
+            NightmariumDifficultyTier,
 
-            /// <summary>
-            /// <see cref="Patches.Addons.GameModeSelectScreensAddon"/>
-            /// </summary>
             GameModeSelectionScreensRework,
+
+            AllGameplayContent,
+
+            AllNewEnemies,
+
+            DuelInviteMenuRework,
         }
     }
 }

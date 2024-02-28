@@ -25,13 +25,20 @@ namespace OverhaulMod.UI
         [UIElement("DebugPrivCoopButton")]
         private readonly Button m_debugPrivateCoopChallengesButton;
 
+        [UIElementAction(nameof(OnPlayRandomButtonClicked))]
+        [UIElement("RandomSoloChallengeButton")]
+        private readonly Button m_playRandomButton;
+        [UIElementAction(nameof(OnPlayUndefeatedButtonClicked))]
+        [UIElement("UndefeatedSoloChallengeButton")]
+        private readonly Button m_playUndefeatedButton;
+
         [UIElementAction(nameof(OnGetMoreChallengesButtonClicked))]
         [UIElement("WorkshopChallengesButton")]
         private readonly Button m_getMoreChallengesButton;
 
-        [UIElement("SoloButtons")]
+        [UIElement("SoloButtons", true)]
         private readonly GameObject m_soloButtonsContainerObject;
-        [UIElement("CoopButtons")]
+        [UIElement("CoopButtons", false)]
         private readonly GameObject m_coopButtonsContainerObject;
 
         [UIElement("ChallengeDisplay", false)]
@@ -41,23 +48,57 @@ namespace OverhaulMod.UI
 
         public override bool dontRefreshUI => true;
 
+        public List<ChallengeDefinition> displayingChallenges
+        {
+            get;
+            private set;
+        }
+
+        public bool showsCoopChallenges
+        {
+            get;
+            private set;
+        }
+
+        public bool startPrivateMatch
+        {
+            get;
+            private set;
+        }
+
+        protected override void OnInitialized()
+        {
+            displayingChallenges = new List<ChallengeDefinition>();
+        }
+
         public override void Show()
         {
             base.Show();
-            ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
+
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            if (titleScreenUI.SingleplayerModeSelectScreen.gameObject.activeInHierarchy)
+                titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
+            else if (titleScreenUI.MultiplayerModeSelectScreen.gameObject.activeInHierarchy)
+                titleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
         }
 
         public override void Hide()
         {
             base.Hide();
-            ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
+
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            if (titleScreenUI.SingleplayerModeSelectScreen.gameObject.activeInHierarchy)
+                titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
+            else if (titleScreenUI.MultiplayerModeSelectScreen.gameObject.activeInHierarchy)
+                titleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
         }
 
         public void Populate(bool isCoop, bool isPrivate)
         {
-            m_coopButtonsContainerObject.SetActive(isCoop);
-            m_soloButtonsContainerObject.SetActive(!isCoop);
+            showsCoopChallenges = isCoop;
+            startPrivateMatch = isPrivate;
 
+            displayingChallenges.Clear();
             if (m_challengesContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_challengesContainer);
 
@@ -67,21 +108,12 @@ namespace OverhaulMod.UI
 
             foreach (ChallengeDefinition challengeDefinition in challenges)
             {
+                displayingChallenges.Add(challengeDefinition);
                 bool hasCompleted = ChallengeManager.Instance.HasCompletedChallenge(challengeDefinition.ChallengeID);
 
                 void action()
                 {
-                    if (isCoop)
-                    {
-                        if (isPrivate)
-                            ChallengeManager.Instance.CreatePrivateCoopChallenge(challengeDefinition.ChallengeID);
-                        else
-                            ChallengeManager.Instance.JoinPublicCoopChallenge(challengeDefinition.ChallengeID);
-                    }
-                    else
-                        ChallengeManager.Instance.StartChallenge(challengeDefinition, false);
-
-                    Hide();
+                    OnChallengeClicked(challengeDefinition);
                 }
 
                 void leaderboardAction()
@@ -128,7 +160,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<GameObject>(5).SetActive(hasCompleted);
                 moddedObject.GetObject<GameObject>(6).SetActive(!hasCompleted);
                 moddedObject.GetObject<Button>(7).onClick.AddListener(leaderboardAction);
-                moddedObject.GetObject<Button>(7).interactable = challengeDefinition.UseEndlessLevels;
+                moddedObject.GetObject<Button>(7).interactable = challengeDefinition.UseEndlessLevels && !isCoop;
             }
         }
 
@@ -146,6 +178,24 @@ namespace OverhaulMod.UI
             return completeChallengeAchievement
                 ? EmoteManager.Instance.GetEmoteUnlockedByAchievement(completeChallengeAchievement.AchievementID)
                 : null;
+        }
+
+        public void OnChallengeClicked(ChallengeDefinition challengeDefinition)
+        {
+            Hide();
+            if (showsCoopChallenges)
+            {
+                ModUIManager modUIManager = ModUIManager.Instance;
+                if (modUIManager)
+                    modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DUEL_INVITE_MENU_REWORK);
+
+                if (startPrivateMatch)
+                    ChallengeManager.Instance.CreatePrivateCoopChallenge(challengeDefinition.ChallengeID);
+                else
+                    ChallengeManager.Instance.JoinPublicCoopChallenge(challengeDefinition.ChallengeID);
+            }
+            else
+                ChallengeManager.Instance.StartChallenge(challengeDefinition, false);
         }
 
         public void OnLegacyUIButtonClicked()
@@ -193,6 +243,47 @@ namespace OverhaulMod.UI
         public void OnDebugPrivateCoopChallengesButtonClicked()
         {
             Populate(true, true);
+        }
+
+        public void OnPlayRandomButtonClicked()
+        {
+            var list = displayingChallenges;
+            if (list.IsNullOrEmpty())
+                return;
+
+            ChallengeDefinition challengeDefinition = list[UnityEngine.Random.Range(0, list.Count)];
+            if (challengeDefinition == null)
+                return;
+
+            OnChallengeClicked(challengeDefinition);
+        }
+
+        public void OnPlayUndefeatedButtonClicked()
+        {
+            var list = displayingChallenges;
+            if (list.IsNullOrEmpty())
+                return;
+
+            ChallengeDefinition challengeDefinition = null;
+            foreach(var cd in list)
+            {
+                if (!ChallengeManager.Instance.HasCompletedChallenge(cd.ChallengeID))
+                {
+                    challengeDefinition = cd;
+                    break;
+                }
+            }
+
+            if (challengeDefinition == null)
+            {
+                ModUIUtils.MessagePopupOK("You have all challenges defeated", "Well done", true);
+                return;
+            }
+
+            ModUIUtils.MessagePopup(true, $"Play {LocalizationManager.Instance.GetTranslatedString(challengeDefinition.ChallengeName)}?", "You haven't beaten it yet", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                OnChallengeClicked(challengeDefinition);
+            });
         }
     }
 }

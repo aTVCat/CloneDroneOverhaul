@@ -130,5 +130,15 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.Environment.SeveredBodyPartSparks"/>
         /// </summary>
         public const string ENABLE_GARBAGE_PARTICLES = "EnableGarbageParticles";
+
+        /// <summary>
+        /// <see cref="Engine.CameraRollingController"/>
+        /// </summary>
+        public const string ENABLE_CAMERA_ROLLING = "EnableCameraRolling";
+
+        /// <summary>
+        /// <see cref="Engine.CameraRollingController"/>
+        /// </summary>
+        public const string ENABLE_CAMERA_BOBBING = "EnableCameraBobbing";
     }
 }

@@ -104,7 +104,7 @@ namespace OverhaulMod.Engine
                 levelEnemySpawner.Start();
             }
 
-            ModActionUtils.DoNextFrame(delegate
+            ModActionUtils.DoInFrame(delegate
             {
                 GameFlowManager gameFlowManager = GameFlowManager.Instance;
                 GlobalEventManager.Instance.Dispatch("LevelSpawned");

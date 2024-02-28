@@ -10,8 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Show")]
         private static bool showShowLoss_Prefix(EndlessResultScreen __instance)
         {
-            ModUIConstants.ShowEndlessGameLossWindow();
-            return false;
+            //ModUIConstants.ShowEndlessGameLossWindow();
+            return true;
         }
     }
 }

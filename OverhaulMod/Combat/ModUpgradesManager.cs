@@ -57,9 +57,9 @@ namespace OverhaulMod.Combat
                 foreach (UpgradeDescription upgradeDescription in m_upgrades)
                     if (upgradeDescription)
                     {
-                        UpgradeManager.Instance.UpgradeDescriptions.Remove(upgradeDescription);
+                        _ = UpgradeManager.Instance.UpgradeDescriptions.Remove(upgradeDescription);
 
-                        if(upgradeDescription.Icon)
+                        if (upgradeDescription.Icon)
                             Destroy(upgradeDescription.Icon);
 
                         Destroy(upgradeDescription);
@@ -80,100 +80,103 @@ namespace OverhaulMod.Combat
                 AssetBundleConstants.UPGRADES,
                 "Scythe-128x128");
             _ = CreateUpgrade<UpgradeDescription>("Fire scythe",
-                  "Your scythe gets fire!",
+                  "Your scythe is ON FIRE!",
                   SCYTHE_FIRE_UPGRADE,
                   1,
                   AssetBundleConstants.UPGRADES,
                   "Scythe-128x128",
                   scythe);
 
-            UpgradeDescription battleAxe = CreateUpgrade<UpgradeDescription>("Battle axe unlock",
-                "You get a battle axe!",
-                AXE_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "Axe-128x128");
-            _ = CreateUpgrade<UpgradeDescription>("Fire battle axe",
-                  "Your battle axe gets fire!",
-                  AXE_FIRE_UPGRADE,
-                  1,
-                  AssetBundleConstants.UPGRADES,
-                  "Axe-128x128",
-                  battleAxe);
-
-            UpgradeDescription halberd = CreateUpgrade<UpgradeDescription>("Halberd unlock",
-                "You get a halberd!",
-                HALBERD_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "Halberd-128x128");
-            _ = CreateUpgrade<UpgradeDescription>("Fire halberd",
-                  "Your halberd gets fire!",
-                  HALBERD_FIRE_UPGRADE,
-                  1,
-                  AssetBundleConstants.UPGRADES,
-                  "Halberd-128x128",
-                  halberd);
-
-            UpgradeDescription dualKnifes = CreateUpgrade<UpgradeDescription>("Dual knifes unlock",
-                "Made for chibi sword robot",
-                DUAL_KNIVES_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "DKnives-128x128");
-            _ = CreateUpgrade<UpgradeDescription>("Fire dual knives",
-                  "Made for chibi sword robot",
-                  DUAL_KNIVES_FIRE_UPGRADE,
-                  1,
-                  AssetBundleConstants.UPGRADES,
-                  "DKnives-128x128",
-                  dualKnifes);
-
-            UpgradeDescription claws = CreateUpgrade<UpgradeDescription>("Claws unlock",
-                "you are not a zombie",
-                CLAWS_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "Claws-128x128");
-            _ = CreateUpgrade<UpgradeDescription>("Fire claws",
-                  "hmm",
-                  CLAWS_FIRE_UPGRADE,
-                  1,
-                  AssetBundleConstants.UPGRADES,
-                  "Claws-128x128",
-                  claws);
-
-            _ = CreateUpgrade<UpgradeDescription>("Mounted laser blaster",
-                "pew pew",
-                LASER_BLASTER_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "MBlaster-128x128");
-
-            _ = CreateUpgrade<UpgradeDescription>("Hands unlock",
-                "Literally hands",
-                HANDS_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "Hands-128x128");
-
-            _ = CreateUpgrade<UpgradeDescription>("Boomerang unlock",
-                "An unique weapon",
-                BOOMERANG_UNLOCK_UPGRADE,
-                1,
-                AssetBundleConstants.UPGRADES,
-                "Boomerang-128x128",
-                CreateUpgrade<UpgradeDescription>("Fire boomerang",
-                  "hmm",
-                  BOOMERANG_FIRE_UPGRADE,
-                  1,
-                  AssetBundleConstants.UPGRADES,
-                  "FireBoomerang-128x128"));
-
             _ = CreateUpgrade<UpgradeDescription>("Double jump",
                 "Do second jump",
                 DOUBLE_JUMP_UPGRADE,
                 1);
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AllGameplayContent))
+            {
+                UpgradeDescription battleAxe = CreateUpgrade<UpgradeDescription>("Battle axe unlock",
+                    "You get a battle axe!",
+                    AXE_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "Axe-128x128");
+                _ = CreateUpgrade<UpgradeDescription>("Fire battle axe",
+                      "Your battle axe gets fire!",
+                      AXE_FIRE_UPGRADE,
+                      1,
+                      AssetBundleConstants.UPGRADES,
+                      "Axe-128x128",
+                      battleAxe);
+
+                UpgradeDescription halberd = CreateUpgrade<UpgradeDescription>("Halberd unlock",
+                    "You get a halberd!",
+                    HALBERD_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "Halberd-128x128");
+                _ = CreateUpgrade<UpgradeDescription>("Fire halberd",
+                      "Your halberd gets fire!",
+                      HALBERD_FIRE_UPGRADE,
+                      1,
+                      AssetBundleConstants.UPGRADES,
+                      "Halberd-128x128",
+                      halberd);
+
+                UpgradeDescription dualKnifes = CreateUpgrade<UpgradeDescription>("Dual knifes unlock",
+                    "Made for chibi sword robot",
+                    DUAL_KNIVES_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "DKnives-128x128");
+                _ = CreateUpgrade<UpgradeDescription>("Fire dual knives",
+                      "Made for chibi sword robot",
+                      DUAL_KNIVES_FIRE_UPGRADE,
+                      1,
+                      AssetBundleConstants.UPGRADES,
+                      "DKnives-128x128",
+                      dualKnifes);
+
+                UpgradeDescription claws = CreateUpgrade<UpgradeDescription>("Claws unlock",
+                    "you are not a zombie",
+                    CLAWS_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "Claws-128x128");
+                _ = CreateUpgrade<UpgradeDescription>("Fire claws",
+                      "hmm",
+                      CLAWS_FIRE_UPGRADE,
+                      1,
+                      AssetBundleConstants.UPGRADES,
+                      "Claws-128x128",
+                      claws);
+
+                _ = CreateUpgrade<UpgradeDescription>("Mounted laser blaster",
+                    "pew pew",
+                    LASER_BLASTER_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "MBlaster-128x128");
+
+                _ = CreateUpgrade<UpgradeDescription>("Hands unlock",
+                    "Literally hands",
+                    HANDS_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "Hands-128x128");
+
+                _ = CreateUpgrade<UpgradeDescription>("Boomerang unlock",
+                    "An unique weapon",
+                    BOOMERANG_UNLOCK_UPGRADE,
+                    1,
+                    AssetBundleConstants.UPGRADES,
+                    "Boomerang-128x128",
+                    CreateUpgrade<UpgradeDescription>("Fire boomerang",
+                      "hmm",
+                      BOOMERANG_FIRE_UPGRADE,
+                      1,
+                      AssetBundleConstants.UPGRADES,
+                      "FireBoomerang-128x128"));
+            }
 
             OverrideSizeDeltaForUpgrade(SCYTHE_UNLOCK_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(SCYTHE_FIRE_UPGRADE, 1, Vector2.zero);
@@ -196,7 +199,7 @@ namespace OverhaulMod.Combat
             Mod mod = ModCore.instance;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             foreach (UpgradeDescription upgradeDescription in m_upgrades)
-                if(!upgradeManager.HasUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level))
+                if (!upgradeManager.HasUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level))
                     UpgradeManager.Instance.AddUpgrade(upgradeDescription, mod);
         }
 

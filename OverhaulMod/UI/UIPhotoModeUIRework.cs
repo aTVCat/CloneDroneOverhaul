@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            ModActionUtils.DoNextFrame(setFieldsValues);
+            ModActionUtils.DoInFrame(setFieldsValues);
         }
 
         private void setFieldsValues()

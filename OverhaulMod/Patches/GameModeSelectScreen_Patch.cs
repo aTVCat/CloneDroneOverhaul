@@ -16,11 +16,13 @@ namespace OverhaulMod.Patches
                 return true;
             else if (ModUIManager.Instance)
             {
-                UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
+                UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance?.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
                 if (multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visibleInHierarchy)
                 {
                     multiplayerGameModeSelectScreen.SetMainScreenVisible(visible);
-                    __instance.MainScreenBox.gameObject.SetActive(false);
+
+                    if(__instance.MainScreenBox)
+                        __instance.MainScreenBox.gameObject.SetActive(false);
                     return false;
                 }
             }

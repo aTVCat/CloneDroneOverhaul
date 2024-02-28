@@ -14,12 +14,12 @@ namespace OverhaulMod.Utils
             return gameObject.AddComponent<CoroutineRunner>().RunCoroutine(enumerator);
         }
 
-        public static void DoNextFrame(Action action)
+        public static void DoInFrame(Action action)
         {
             _ = RunCoroutine(doNextFrameCoroutine(action));
         }
 
-        public static void DoAfterFrames(Action action, int frameCount)
+        public static void DoInFrames(Action action, int frameCount)
         {
             _ = RunCoroutine(doNextFrameCoroutine(action, frameCount));
         }

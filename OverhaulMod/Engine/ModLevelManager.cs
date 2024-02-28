@@ -112,7 +112,7 @@ namespace OverhaulMod.Engine
 
             foreach (LevelDescription levelDescription in fixedLevelDescriptions)
             {
-                if (!File.Exists(levelDescription.LevelJSONPath))
+                if (!File.Exists(levelDescription.LevelJSONPath) || (levelDescription.DifficultyTier == (DifficultyTier)9 && !ModFeatures.IsEnabled(ModFeatures.FeatureType.NightmariumDifficultyTier)))
                     continue;
 
                 LevelManager.Instance._endlessLevels.Add(levelDescription);

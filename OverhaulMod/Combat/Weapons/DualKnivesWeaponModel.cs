@@ -107,7 +107,7 @@ namespace OverhaulMod.Combat.Weapons
                 base.PartsToHideInsteadOfRoot = Array.Empty<GameObject>();
             }
 
-            ModActionUtils.DoNextFrame(delegate
+            ModActionUtils.DoInFrame(delegate
             {
                 if (owner && owner._deathListeners != null)
                 {

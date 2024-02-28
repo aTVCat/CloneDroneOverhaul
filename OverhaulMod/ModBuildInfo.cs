@@ -159,7 +159,7 @@ namespace OverhaulMod
         {
             get
             {
-                return "Milestone 2";
+                return "Update pre-release";
             }
         }
 

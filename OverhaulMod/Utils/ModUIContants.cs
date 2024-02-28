@@ -65,6 +65,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU = "UI_PersonalizationEditorAuthorsEditMenu";
         public const string UI_GAME_LOSS_WINDOW = "UI_GameLossWindow";
         public const string UI_ENDLESS_GAME_LOSS_WINDOW = "UI_EndlessGameLossWindow";
+        public const string UI_DUEL_INVITE_MENU_REWORK = "UI_DuelInviteMenuRework";
 
         public static void ShowOtherModsMenu()
         {
@@ -388,6 +389,12 @@ namespace OverhaulMod.Utils
         public static void ShowEndlessGameLossWindow()
         {
             _ = ModUIManager.Instance.Show<UIEndlessGameLossWindow>(AssetBundleConstants.UI, UI_ENDLESS_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static void ShowDuelInviteMenuRework(GameMode gameMode)
+        {
+            UIDuelInviteMenuRework duelInviteMenuRework = ModUIManager.Instance.Show<UIDuelInviteMenuRework>(AssetBundleConstants.UI, UI_DUEL_INVITE_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+            duelInviteMenuRework.Populate(gameMode);
         }
     }
 }

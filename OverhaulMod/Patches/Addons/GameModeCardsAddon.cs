@@ -44,6 +44,37 @@ namespace OverhaulMod.Patches.Addons
                 singleplayerDatas[1].ClickedCallback = endlessModeEvent;
             }
 
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.DuelInviteMenuRework))
+            {
+                UnityEvent coopEndlessModeEvent = new UnityEvent();
+                coopEndlessModeEvent.AddListener(delegate
+                {
+                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
+                });
+                multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
+
+                UnityEvent coopChallengesModeEvent = new UnityEvent();
+                coopChallengesModeEvent.AddListener(delegate
+                {
+                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
+                });
+                multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
+
+                UnityEvent battleRoyaleModeEvent = new UnityEvent();
+                battleRoyaleModeEvent.AddListener(delegate
+                {
+                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
+                });
+                multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
+
+                UnityEvent duelModeEvent = new UnityEvent();
+                duelModeEvent.AddListener(delegate
+                {
+                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
+                });
+                multiplayerDatas[3].ClickedCallback = duelModeEvent;
+            }
+
             UnityEvent spChallengesEvent = new UnityEvent();
             spChallengesEvent.AddListener(delegate
             {

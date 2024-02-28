@@ -184,11 +184,11 @@ namespace OverhaulMod.Content
             switch (index)
             {
                 case 0:
-                    return "Recommended. Get stable builds.";
+                    return "Get only stable builds.";
                 case 1:
-                    return "Get latest test builds.";
+                    return "Get latest public test builds.";
                 case 2:
-                    return "Only available to testers. Some features may not work.";
+                    return "Get development/debug builds.";
             }
             return "This branch doesn't have description.";
         }

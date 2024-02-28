@@ -9,7 +9,7 @@ namespace OverhaulMod.Engine
     {
         public void OnModLoaded()
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.NewDifficultyTiers))
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.NightmariumDifficultyTier))
                 return;
 
             AddDifficultyTier(new EndlessTierDescription()

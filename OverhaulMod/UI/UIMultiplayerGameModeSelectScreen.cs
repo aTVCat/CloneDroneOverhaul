@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            ModActionUtils.DoNextFrame(delegate
+            ModActionUtils.DoInFrame(delegate
             {
                 m_scrollRect.verticalNormalizedPosition = 0.5f;
             });
