@@ -7,6 +7,12 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void Tooltip(string text, float duration = 2f)
+        {
+            UIScreenTooltips screenTooltips = UIScreenTooltips.instance ?? ModUIConstants.ShowScreenTooltips();
+            screenTooltips.ShowText(text, duration);
+        }
+
         public static void ImageViewer(Texture2D texture, Transform parent)
         {
             UIGenericImageViewer genericImageViewer = ModUIConstants.ShowGenericImageViewer(parent);

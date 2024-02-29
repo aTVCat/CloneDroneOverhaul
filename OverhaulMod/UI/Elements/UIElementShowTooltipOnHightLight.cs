@@ -1,0 +1,58 @@
+﻿using OverhaulMod.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine.EventSystems;
+
+namespace OverhaulMod.UI.Elements
+{
+    public class UIElementShowTooltipOnHightLight : OverhaulUIBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    {
+        private bool m_isMouseIn;
+
+        public string tooltipText
+        {
+            get;
+            set;
+        }
+
+        public float tooltipShowDuration
+        {
+            get;
+            set;
+        } = 2f;
+
+        public override void Update()
+        {
+            if(m_isMouseIn)
+                ModUIUtils.Tooltip(tooltipText, tooltipShowDuration);
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            m_isMouseIn = false;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            m_isMouseIn = true;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            m_isMouseIn = false;
+        }
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            m_isMouseIn = true;
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            m_isMouseIn = false;
+        }
+    }
+}

@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI.Attributes;
+using OverhaulMod.UI.Elements;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -135,6 +137,7 @@ namespace OverhaulMod.UI
                 }
 
                 ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
+                ShowTooltipHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipHighLightAttribute>();
 
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
@@ -164,6 +167,20 @@ namespace OverhaulMod.UI
                         unityObject = elementAttribute.HasIndex()
                         ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
                         : GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                    }
+
+                    if(showTooltipHighLightAttribute != null)
+                    {
+                        GameObject gameObject = null;
+                        if (unityObject is GameObject go)
+                            gameObject = go;
+                        else if (unityObject is Component c)
+                            gameObject = c.gameObject;
+
+                        UIElementShowTooltipOnHightLight showTooltipOnHightLight = gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
+                        showTooltipOnHightLight.InitializeElement();
+                        showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
+                        showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
                     }
 
                     if (!unityObject)

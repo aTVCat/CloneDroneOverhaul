@@ -30,13 +30,13 @@ namespace OverhaulMod.UI
             AddUser("A TVCat", "hi", "https://steamcommunity.com/profiles/76561199028311109");
 
             AddSection("Playtested by:", "FFECD9");
-            AddUser("Sonic Gleb", "The first playtester", "https://steamcommunity.com/id/sonicgleb");
+            AddUser("SonicGleb", "The first playtester", "https://steamcommunity.com/id/sonicgleb");
             AddUser("Electrified_CyberKick", "", "https://steamcommunity.com/id/Lexium-Rosewarne");
             AddUser("ッizanami", "", "https://steamcommunity.com/profiles/76561198258900316");
             AddUser("bow1__", "", "https://steamcommunity.com/id/EggRolly");
 
             AddSection("Special thanks:", "D9E0FF");
-            AddUser("Sonic Gleb", "Made some UI icons and voxel models", "https://steamcommunity.com/id/sonicgleb");
+            AddUser("SonicGleb", "Made some UI icons and voxel models", "https://steamcommunity.com/id/sonicgleb");
             AddUser("Igrok_x_xp", "Made some voxel models", "https://steamcommunity.com/profiles/76561199014733748");
             AddUser("Pharawill-MK2 (Water)", "Made overhauled arena model", "https://steamcommunity.com/profiles/76561198995153570");
         }

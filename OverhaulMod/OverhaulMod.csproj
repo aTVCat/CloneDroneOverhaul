@@ -502,6 +502,7 @@
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
+    <Compile Include="UI\Attributes\ShowTooltipHighLightAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
@@ -517,6 +518,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
+    <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
@@ -536,6 +538,7 @@
     <Compile Include="UI\UIGenericColorPicker.cs" />
     <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
+    <Compile Include="UI\UIScreenTooltips.cs" />
     <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
@@ -596,6 +599,7 @@
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
+    <Compile Include="Utils\ModITweenUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModSettingsConstants.cs" />
     <Compile Include="Utils\ModSteamUGCUtils.cs" />

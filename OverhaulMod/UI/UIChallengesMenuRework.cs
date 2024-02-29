@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI.Elements;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -161,6 +162,10 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<GameObject>(6).SetActive(!hasCompleted);
                 moddedObject.GetObject<Button>(7).onClick.AddListener(leaderboardAction);
                 moddedObject.GetObject<Button>(7).interactable = challengeDefinition.UseEndlessLevels && !isCoop;
+                UIElementShowTooltipOnHightLight showTooltipOnHightLight = moddedObject.GetObject<Button>(7).gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
+                showTooltipOnHightLight.InitializeElement();
+                showTooltipOnHightLight.tooltipText = "Leaderboard";
+                showTooltipOnHightLight.tooltipShowDuration = 1f;
             }
         }
 

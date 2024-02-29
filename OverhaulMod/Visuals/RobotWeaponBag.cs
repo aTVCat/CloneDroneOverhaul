@@ -54,11 +54,11 @@ namespace OverhaulMod.Visuals
 
         private void onFirstPersonMoverUpgraded(FirstPersonMover firstPersonMover)
         {
-            ModActionUtils.DoInFrame(delegate
+            ModActionUtils.DoInFrames(delegate
             {
                 if (firstPersonMover && firstPersonMover == firstPersonMoverReference)
                     RespawnRenderers();
-            });
+            }, 10);
         }
 
         public void DestroySelf()

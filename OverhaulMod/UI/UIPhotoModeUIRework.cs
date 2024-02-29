@@ -83,6 +83,8 @@ namespace OverhaulMod.UI
             expandButton.rectTransform = lightningPanel;
             expandButton.collapsedSize = lightningPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 300f);
+
+            m_saveRLightInfoButton.gameObject.SetActive(ModBuildInfo.debug);
         }
 
         public override void Show()

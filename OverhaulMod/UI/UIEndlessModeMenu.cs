@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.UI.Attributes;
 using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
@@ -20,12 +21,22 @@ namespace OverhaulMod.UI
         [UIElement("ViewLeaderBoardButton")]
         private readonly Button m_leaderboardButton;
 
+        [ShowTooltipHighLight("Erase progress", 1.5f)]
+        [UIElementAction(nameof(OnResetProgressButtonClicked))]
+        [UIElement("DeleteProgressButton")]
+        private readonly Button m_resetProgressButton;
+
         [UIElement("CurrentGameplayProgress")]
         private readonly Text m_progressText;
 
         public override bool dontRefreshUI => true;
 
         protected override void OnInitialized()
+        {
+            RefreshProgressDisplays();
+        }
+
+        public void RefreshProgressDisplays()
         {
             GameData gameData = GameDataManager.Instance?._endlessModeData;
             if (gameData != null)
@@ -73,6 +84,20 @@ namespace OverhaulMod.UI
         public void OnLeaderboardButtonClicked()
         {
             ModUIConstants.ShowLeaderboard(base.transform, GameDataManager.Instance._endlessHighScores, "EndlessHighScores.json");
+        }
+
+        public void OnResetProgressButtonClicked()
+        {
+            ModUIUtils.MessagePopup(true, "Do you want to erase the progress?", "This action will reset your current progress in endless mode leaving the leaderboard untouched.\nThis action cannot be undone.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                GameData gameData = new GameData();
+                gameData.HumanFacts = HumanFactsManager.Instance.GetRandomFactSet();
+                gameData.RepairAnyMissingFields(true);
+                gameData.SetDirty(true);
+                GameDataManager.Instance._endlessModeData = gameData;
+
+                RefreshProgressDisplays();
+            });
         }
 
         private IEnumerator transitionCoroutine()

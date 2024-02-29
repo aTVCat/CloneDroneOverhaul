@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -74,14 +75,8 @@ namespace OverhaulMod.Engine
             }
             else
             {
-                m_currentTransition.completion = 1f - parametricBlend(Mathf.Clamp01(v / transitionTime));
+                m_currentTransition.completion = 1f - ModITweenUtils.ParametricBlend(Mathf.Clamp01(v / transitionTime));
             }
-        }
-
-        private float parametricBlend(float t)
-        {
-            float sqr = t * t;
-            return sqr / (2.0f * (sqr - t) + 1.0f);
         }
     }
 }

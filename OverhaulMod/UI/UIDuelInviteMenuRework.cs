@@ -117,9 +117,19 @@ namespace OverhaulMod.UI
 
             string inviteCodeToJoin = m_codeField.text.ToUpper().Trim();
 
-            GameRequestType gameType = displayingGameMode == GameMode.BattleRoyale
-                ? GameRequestType.BattleRoyaleInviteCodeJoin
-                : displayingGameMode == GameMode.Endless ? GameRequestType.CoopChallengeInviteJoin : GameRequestType.DuelInviteCodeJoin;
+            GameRequestType gameType = GameRequestType.DuelInviteCodeJoin;
+            switch (displayingGameMode)
+            {
+                case GameMode.BattleRoyale:
+                    gameType = GameRequestType.BattleRoyaleInviteCodeJoin;
+                    break;
+                case GameMode.EndlessCoop:
+                    gameType = GameRequestType.CoopInviteCodeJoin;
+                    break;
+                case GameMode.CoopChallenge:
+                    gameType = GameRequestType.CoopChallengeInviteJoin;
+                    break;
+            }
 
             DuelInviteMenu._currentCallbackID++;
 
@@ -181,9 +191,19 @@ namespace OverhaulMod.UI
                 MultiplayerMatchmakingManager.Instance.Matchmaking20Private.StopSearching(false);
 
             Hide();
-            GameRequestType gameType = displayingGameMode == GameMode.BattleRoyale
-                ? GameRequestType.RandomBattleRoyale
-                : displayingGameMode == GameMode.Endless ? GameRequestType.RandomEndlessCoop : GameRequestType.RandomDuel;
+            GameRequestType gameType = GameRequestType.RandomDuel;
+            switch (displayingGameMode)
+            {
+                case GameMode.BattleRoyale:
+                    gameType = GameRequestType.RandomBattleRoyale;
+                    break;
+                case GameMode.EndlessCoop:
+                    gameType = GameRequestType.RandomEndlessCoop;
+                    break;
+                case GameMode.CoopChallenge:
+                    gameType = GameRequestType.RandomCoopChallenge;
+                    break;
+            }
 
             MultiplayerMatchmakingManager.Instance.FindAndJoinMatch(new GameRequest
             {
@@ -204,9 +224,19 @@ namespace OverhaulMod.UI
                 MultiplayerMatchmakingManager.Instance.Matchmaking20Private.StopSearching(false);
 
             Hide();
-            GameRequestType gameType = displayingGameMode == GameMode.BattleRoyale
-                ? GameRequestType.BattleRoyaleInviteCodeCreate
-                : displayingGameMode == GameMode.Endless ? GameRequestType.CoopInviteCodeCreate : GameRequestType.DuelInviteCodeCreate;
+            GameRequestType gameType = GameRequestType.DuelInviteCodeCreate;
+            switch (displayingGameMode)
+            {
+                case GameMode.BattleRoyale:
+                    gameType = GameRequestType.BattleRoyaleInviteCodeCreate;
+                    break;
+                case GameMode.EndlessCoop:
+                    gameType = GameRequestType.CoopInviteCodeCreate;
+                    break;
+                case GameMode.CoopChallenge:
+                    gameType = GameRequestType.CoopChallengeInviteCreate;
+                    break;
+            }
 
             MultiplayerMatchmakingManager.Instance.FindAndJoinMatch(new GameRequest
             {

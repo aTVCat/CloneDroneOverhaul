@@ -54,17 +54,17 @@ namespace OverhaulMod.UI
             m_gameplayVersionText.text = "overhaul v" + versionString;
             m_gameplayDebugIcon.SetActive(debug);
 
-            ModCache.gameUIRoot.TitleScreenUI.VersionLabel.gameObject.SetActive(false);
+            ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
 
         public override void Update()
         {
-            if (Time.frameCount % 15 != 0)
+            if (Time.frameCount % 10 != 0)
                 return;
 
             bool show = showWatermark;
             bool titleScreen = showFullWatermark;
-            m_watermark.SetActive(show && titleScreen);
+            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);
         }
 
