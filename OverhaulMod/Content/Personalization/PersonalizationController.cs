@@ -35,8 +35,13 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<WeaponType, Transform[]> m_weaponTypeToParts;
 
+        private Dictionary<string, PersonalizationEditorObjectBehaviour> m_spawnedItems;
+
         private void Start()
         {
+            m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
+            m_spawnedItems = new Dictionary<string, PersonalizationEditorObjectBehaviour>();
+
             FirstPersonMover firstPersonMover = owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
@@ -69,17 +74,43 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
+        {
+            if (personalizationItemInfo == null || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
+                return null;
+
+            Transform transform = GetParentForItem(personalizationItemInfo);
+            PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform);
+            m_spawnedItems.Add(personalizationItemInfo.ItemID, behaviour);
+
+            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+                SetWeaponPartsVisible(personalizationItemInfo.Weapon, false);
+
+            return behaviour;
+        }
+
+        public void DestroyItem(PersonalizationItemInfo personalizationItemInfo)
+        {
+            if (personalizationItemInfo == null || !HasSpawnedItem(personalizationItemInfo))
+                return;
+
+            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+                SetWeaponPartsVisible(personalizationItemInfo.Weapon, true);
+        }
+
+        public bool HasSpawnedItem(PersonalizationItemInfo personalizationItemInfo)
+        {
+            return HasSpawnedItem(personalizationItemInfo.ItemID);
+        }
+
+        public bool HasSpawnedItem(string id)
+        {
+            return m_spawnedItems.ContainsKey(id);
+        }
+
         private void getWeaponRenderers()
         {
-            if (m_weaponTypeToParts == null)
-            {
-                m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
-            }
-            else
-            {
-                m_weaponTypeToParts.Clear();
-            }
-
+            m_weaponTypeToParts.Clear();
             CharacterModel characterModel = ownerModel;
             if (!characterModel || characterModel.WeaponModels.IsNullOrEmpty())
                 return;

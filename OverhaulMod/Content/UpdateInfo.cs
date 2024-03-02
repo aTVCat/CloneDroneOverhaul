@@ -17,17 +17,17 @@ namespace OverhaulMod.Content
 
         public bool IsCurrentBuild()
         {
-            return ModBuildInfo.version == ModVersion && ModCore.instance.ModInfo.Version == ModBotVersion;
+            return ModBuildInfo.version == ModVersion;
         }
 
         public bool IsNewBuild()
         {
-            return ModBuildInfo.version < ModVersion || ModCore.instance.ModInfo.Version < ModBotVersion;
+            return ModBuildInfo.version < ModVersion;
         }
 
         public bool IsOldBuild()
         {
-            return ModBuildInfo.version > ModVersion || ModCore.instance.ModInfo.Version > ModBotVersion;
+            return ModBuildInfo.version > ModVersion;
         }
     }
 }

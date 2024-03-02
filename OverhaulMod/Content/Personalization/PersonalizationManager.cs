@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace OverhaulMod.Content.Personalization
@@ -8,6 +9,12 @@ namespace OverhaulMod.Content.Personalization
     public class PersonalizationManager : Singleton<PersonalizationManager>
     {
         public const string ITEM_INFO_FILE = "itemInfo.json";
+
+        public static readonly string[] SupportedBodyParts = new string[]
+        {
+            "Head",
+            "Arm"
+        };
 
         public PersonalizationItemList itemList
         {

@@ -1,12 +1,26 @@
 ﻿using OverhaulMod.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null)
+        {
+            UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
+
+            if (!Directory.Exists(initialFolder))
+                fileExplorer.OnDownloadsFolderButtonClicked();
+            else
+                fileExplorer.currentFolder = initialFolder;
+
+            fileExplorer.searchPattern = searchPattern;
+            fileExplorer.callback = callback;
+        }
+
         public static void Tooltip(string text, float duration = 2f)
         {
             UIScreenTooltips screenTooltips = UIScreenTooltips.instance ?? ModUIConstants.ShowScreenTooltips();

@@ -19,11 +19,16 @@ namespace OverhaulMod.Patches
             return true;
         }
 
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch("Hide")]
-        private static void Hide_Postfix(ErrorWindow __instance)
+        private static bool Hide_Prefix(ErrorWindow __instance)
         {
+            ErrorManager errorManager = ErrorManager.Instance;
+            if (!errorManager || errorManager.HasCrashed())
+                return false;
+
             ModUIConstants.HideCrashScreen();
+            return true;
         }
     }
 }

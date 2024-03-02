@@ -2,6 +2,7 @@
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Visuals
 {
@@ -53,6 +54,14 @@ namespace OverhaulMod.Visuals
             amplifyOcclusionEffect.Intensity = 0.75f;
             amplifyOcclusionEffect.ApplyMethod = AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
             amplifyOcclusionEffect.enabled = EnableSSAO;
+
+            Bloom bloom = camera.GetComponent<Bloom>();
+            if (bloom)
+            {
+                bloom.bloomBlurIterations = 4;
+                bloom.bloomIntensity = 0.5f;
+                bloom.bloomThreshold = 1f;
+            }
         }
 
         public void RemovePostEffectsFromCamera(Camera camera)
@@ -64,6 +73,14 @@ namespace OverhaulMod.Visuals
             if (amplifyOcclusionEffect)
             {
                 Destroy(amplifyOcclusionEffect);
+            }
+
+            Bloom bloom = camera.GetComponent<Bloom>();
+            if (bloom)
+            {
+                bloom.bloomBlurIterations = 2;
+                bloom.bloomIntensity = 0.5f;
+                bloom.bloomThreshold = 0.9f;
             }
         }
     }

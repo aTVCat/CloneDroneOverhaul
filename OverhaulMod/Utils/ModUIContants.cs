@@ -67,6 +67,8 @@ namespace OverhaulMod.Utils
         public const string UI_ENDLESS_GAME_LOSS_WINDOW = "UI_EndlessGameLossWindow";
         public const string UI_DUEL_INVITE_MENU_REWORK = "UI_DuelInviteMenuRework";
         public const string UI_SCREEN_TOOLTIPS = "UI_ScreenTooltips";
+        public const string UI_PERSONALIZATION_EDITOR_HELP_MENU = "UI_PersonalizationEditorHelpMenu";
+        public const string UI_FILE_EXPLORER = "UI_FileExplorer";
 
         public static void ShowOtherModsMenu()
         {
@@ -129,7 +131,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowFeedbackUIRework()
         {
-            _ = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.AfterEscMenu, 1);
         }
 
         public static void ShowCommunityHub()
@@ -401,6 +403,16 @@ namespace OverhaulMod.Utils
         public static UIScreenTooltips ShowScreenTooltips()
         {
             return ModUIManager.Instance.Show<UIScreenTooltips>(AssetBundleConstants.UI, UI_SCREEN_TOOLTIPS, ModUIManager.UILayer.Last);
+        }
+
+        public static void ShowPersonalizationEditorHelpMenu(Transform parent)
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationEditorHelpMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_HELP_MENU, parent);
+        }
+
+        public static UIFileExplorer ShowFileExplorer(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UIFileExplorer>(AssetBundleConstants.UI, UI_FILE_EXPLORER, parent);
         }
     }
 }

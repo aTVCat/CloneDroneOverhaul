@@ -27,6 +27,12 @@ namespace OverhaulMod.UI
         [UIElement("AuthorField", typeof(UIElementPersonalizationAuthorsField))]
         private readonly UIElementPersonalizationAuthorsField m_authorField;
 
+        [UIElement("HierarchyGroup", typeof(UIElementPersonalizationEditorHierarchyPanel))]
+        private readonly UIElementPersonalizationEditorHierarchyPanel m_hierarchyField;
+
+        [UIElement("ImportedFilesGroup", typeof(UIElementPersonalizationEditorFileImportPanel))]
+        private readonly UIElementPersonalizationEditorFileImportPanel m_filesField;
+
         public PersonalizationItemInfo itemInfo
         {
             get;

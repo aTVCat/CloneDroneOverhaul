@@ -130,7 +130,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            if (updateInfo == null || updateInfo.IsCurrentBuild() || updateInfo.IsOldBuild())
+            if (updateInfo == null || !updateInfo.IsNewBuild())
             {
                 m_versionText.text = "No updates found.";
                 return;

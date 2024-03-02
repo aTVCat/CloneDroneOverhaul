@@ -502,7 +502,8 @@
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
-    <Compile Include="UI\Attributes\ShowTooltipHighLightAttribute.cs" />
+    <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
+    <Compile Include="UI\Attributes\UIElementCallbackAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
@@ -515,6 +516,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
@@ -528,6 +530,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
+    <Compile Include="UI\Elements\UIFileExplorerItemDisplay.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIEndlessGameLossWindow.cs" />
@@ -538,6 +541,8 @@
     <Compile Include="UI\UIGenericColorPicker.cs" />
     <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
+    <Compile Include="UI\UIFileExplorer.cs" />
+    <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />
     <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.EventSystems;
 
-namespace OverhaulMod.UI.Elements
+namespace OverhaulMod.UI
 {
     public class UIElementShowTooltipOnHightLight : OverhaulUIBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {

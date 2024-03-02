@@ -33,6 +33,10 @@ namespace OverhaulMod.UI
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
 
+        [UIElementAction(nameof(OnGiveFeedbackButtonClicked))]
+        [UIElement("FeedbackButton")]
+        private readonly Button m_feedbackButton;
+
         [UIElement("LogoEn")]
         private readonly GameObject m_logoEn;
 
@@ -121,6 +125,11 @@ namespace OverhaulMod.UI
         public void OnModsButtonClicked()
         {
             ModsPanelManager.Instance.openModsMenu();
+        }
+
+        public void OnGiveFeedbackButtonClicked()
+        {
+            ModUIConstants.ShowFeedbackUIRework();
         }
 
         public void OnMainMenuButtonClicked()

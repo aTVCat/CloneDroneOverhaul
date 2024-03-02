@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.UI.Attributes;
-using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -137,7 +136,8 @@ namespace OverhaulMod.UI
                 }
 
                 ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
-                ShowTooltipHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipHighLightAttribute>();
+                ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
+                UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
 
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
@@ -253,10 +253,20 @@ namespace OverhaulMod.UI
                             if (methodInfo != null)
                             {
                                 InputField inputField = unityObject as InputField;
-                                inputField.onValueChanged.AddListener(delegate (string value)
+                                if(elementCallbackAttribute != null && elementCallbackAttribute.CallOnEndEdit)
                                 {
-                                    _ = methodInfo.Invoke(this, new object[] { value });
-                                });
+                                    inputField.onEndEdit.AddListener(delegate (string value)
+                                    {
+                                        _ = methodInfo.Invoke(this, new object[] { value });
+                                    });
+                                }
+                                else
+                                {
+                                    inputField.onValueChanged.AddListener(delegate (string value)
+                                    {
+                                        _ = methodInfo.Invoke(this, new object[] { value });
+                                    });
+                                }
                             }
                         }
                         else if (fieldInfo.FieldType == typeof(Slider))

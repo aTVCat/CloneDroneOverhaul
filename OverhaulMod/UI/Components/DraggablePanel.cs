@@ -9,6 +9,8 @@ namespace OverhaulMod.UI
 
         private Vector2 m_DragOffset;
 
+        private float m_width, m_height;
+
         private UIManager m_UIManager;
         private UIManager UIManagerReference
         {
@@ -31,7 +33,10 @@ namespace OverhaulMod.UI
 
         private void Start()
         {
-            m_RectTransform = base.GetComponent<RectTransform>();
+            RectTransform rectTransform = base.GetComponent<RectTransform>();
+            m_RectTransform = rectTransform;
+            m_width = rectTransform.rect.width;
+            m_height = rectTransform.rect.height;
         }
 
         private void Update()

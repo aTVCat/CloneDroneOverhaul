@@ -28,6 +28,8 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo RootObject;
 
+        public List<string> ImportedFiles;
+
         [NonSerialized]
         public string FolderPath;
 
@@ -38,6 +40,9 @@ namespace OverhaulMod.Content.Personalization
 
             if (ExclusiveFor == null)
                 ExclusiveFor = new List<string>();
+
+            if (ImportedFiles == null)
+                ImportedFiles = new List<string>();
 
             if (RootObject == null)
             {

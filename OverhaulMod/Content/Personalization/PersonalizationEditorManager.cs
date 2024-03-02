@@ -203,22 +203,12 @@ namespace OverhaulMod.Content.Personalization
             if (rootInfo == null)
                 return;
 
-            Transform transform = getParentForRoot();
-            if (!transform)
-                return;
-
-            personalizationEditorObjectBehaviour = rootInfo.Deserialize(transform);
-            editingRoot = personalizationEditorObjectBehaviour;
-        }
-
-        private Transform getParentForRoot()
-        {
             PersonalizationController personalizationController = editingPersonalizationController;
             if (!personalizationController)
-                return null;
+                return;
 
-            PersonalizationItemInfo personalizationItemInfo = editingItemInfo;
-            return personalizationItemInfo == null ? null : personalizationController.GetParentForItem(personalizationItemInfo);
+            personalizationEditorObjectBehaviour = personalizationController.SpawnItem(editingItemInfo);
+            editingRoot = personalizationEditorObjectBehaviour;
         }
     }
 }

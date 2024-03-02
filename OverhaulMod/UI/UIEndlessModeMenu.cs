@@ -21,7 +21,7 @@ namespace OverhaulMod.UI
         [UIElement("ViewLeaderBoardButton")]
         private readonly Button m_leaderboardButton;
 
-        [ShowTooltipHighLight("Erase progress", 1.5f)]
+        [ShowTooltipOnHighLight("Erase progress", 1.5f)]
         [UIElementAction(nameof(OnResetProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
         private readonly Button m_resetProgressButton;

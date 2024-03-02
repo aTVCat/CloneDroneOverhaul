@@ -1,5 +1,4 @@
-﻿using OverhaulMod.UI.Elements;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

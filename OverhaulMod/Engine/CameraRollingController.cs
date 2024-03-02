@@ -98,7 +98,7 @@ namespace OverhaulMod.Engine
             Player player = ReInput.players.GetPlayer(0);
             if (player != null)
             {
-                float ts = Time.timeScale;
+                float ts = Mathf.Min(1f, Time.timeScale);
                 float cursorX = forceZero ? 0f : player.GetAxis(7) * multiply;
                 float cursorY = forceZero ? 0f : player.GetAxis(6) * (m_settingsManager.GetInvertMouse() ? 1f : -1f) * multiply;
 

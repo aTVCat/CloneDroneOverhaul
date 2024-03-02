@@ -140,7 +140,7 @@ namespace OverhaulMod
             }
         }
 
-        public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last) where T : OverhaulUIBehaviour
+        public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last, int offset = 0) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
             if (!HasInstantiatedUI(fullName))
@@ -150,7 +150,7 @@ namespace OverhaulMod
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
                 RectTransform transform = gameObject.transform as RectTransform;
-                transform.SetSiblingIndex(GetSiblingIndex(layer));
+                transform.SetSiblingIndex(GetSiblingIndex(layer) + offset);
                 transform.anchorMin = Vector2.zero;
                 transform.anchorMax = Vector2.one;
                 transform.sizeDelta = Vector2.zero;
@@ -176,8 +176,8 @@ namespace OverhaulMod
             if (parent)
             {
                 result.transform.SetParent(parent);
-                result.transform.SetAsLastSibling();
             }
+            result.transform.SetAsLastSibling();
             return result;
         }
 
