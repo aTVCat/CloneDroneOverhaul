@@ -21,7 +21,7 @@ namespace OverhaulMod.Patches
                 {
                     multiplayerGameModeSelectScreen.SetMainScreenVisible(visible);
 
-                    if(__instance.MainScreenBox)
+                    if (__instance.MainScreenBox)
                         __instance.MainScreenBox.gameObject.SetActive(false);
                     return false;
                 }

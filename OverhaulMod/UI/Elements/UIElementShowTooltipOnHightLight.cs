@@ -1,9 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.EventSystems;
 
 namespace OverhaulMod.UI
@@ -26,7 +21,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if(m_isMouseIn)
+            if (m_isMouseIn)
                 ModUIUtils.Tooltip(tooltipText, tooltipShowDuration);
         }
 

@@ -1,9 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -11,13 +6,13 @@ namespace OverhaulMod.UI
     public class UIElementBattleRoyaleStatsBox : OverhaulUIBehaviour
     {
         [UIElement("WinCountText")]
-        private Text m_winCountText;
+        private readonly Text m_winCountText;
 
         [UIElement("NextGarbageBotWinsText")]
-        private Text m_nextGarbageBotWinsText;
+        private readonly Text m_nextGarbageBotWinsText;
 
         [UIElement("NextGarbageBotImage", false)]
-        private Image m_nextGarbageBotImage;        
+        private readonly Image m_nextGarbageBotImage;
 
         public override void OnEnable()
         {

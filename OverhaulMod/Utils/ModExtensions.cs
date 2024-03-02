@@ -287,7 +287,7 @@ namespace OverhaulMod.Utils
 
         public static bool HasUpgrade(this UpgradeManager upgradeManager, UpgradeType upgradeType, int level)
         {
-            foreach (var ud in upgradeManager.UpgradeDescriptions)
+            foreach (UpgradeDescription ud in upgradeManager.UpgradeDescriptions)
                 if (ud && ud.UpgradeType == upgradeType && ud.Level == level)
                     return true;
 

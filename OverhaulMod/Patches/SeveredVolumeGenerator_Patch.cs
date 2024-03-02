@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using UnityEngine;
 

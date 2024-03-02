@@ -509,6 +509,7 @@
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
+    <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
@@ -518,6 +519,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
@@ -542,6 +544,7 @@
     <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
     <Compile Include="UI\UIFileExplorer.cs" />
+    <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />
     <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />

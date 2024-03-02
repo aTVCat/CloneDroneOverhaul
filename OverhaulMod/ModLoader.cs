@@ -112,7 +112,7 @@ namespace OverhaulMod
             {
                 Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, ModCore.editorTexturesFolder + "WeatherSettingsOverride.png");
 
-                if(ModBuildInfo.debug)
+                if (ModBuildInfo.debug)
                     Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
 
                 Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
@@ -144,19 +144,19 @@ namespace OverhaulMod
         private static void createDirectories()
         {
             if (!Directory.Exists(ModCore.modFolder))
-                Directory.CreateDirectory(ModCore.modFolder);
+                _ = Directory.CreateDirectory(ModCore.modFolder);
 
             if (!Directory.Exists(ModCore.contentFolder))
-                Directory.CreateDirectory(ModCore.contentFolder);
+                _ = Directory.CreateDirectory(ModCore.contentFolder);
 
             if (!Directory.Exists(ModCore.savesFolder))
-                Directory.CreateDirectory(ModCore.savesFolder);
+                _ = Directory.CreateDirectory(ModCore.savesFolder);
 
             if (!Directory.Exists(ModCore.addonsFolder))
-                Directory.CreateDirectory(ModCore.addonsFolder);
+                _ = Directory.CreateDirectory(ModCore.addonsFolder);
 
             if (!Directory.Exists(ModCore.customizationFolder))
-                Directory.CreateDirectory(ModCore.customizationFolder);
+                _ = Directory.CreateDirectory(ModCore.customizationFolder);
         }
 
         private static void addListeners()

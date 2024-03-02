@@ -169,7 +169,7 @@ namespace OverhaulMod.UI
                         : GetObject(elementAttribute.Name, fieldInfo.FieldType);
                     }
 
-                    if(showTooltipHighLightAttribute != null)
+                    if (showTooltipHighLightAttribute != null)
                     {
                         GameObject gameObject = null;
                         if (unityObject is GameObject go)
@@ -253,7 +253,7 @@ namespace OverhaulMod.UI
                             if (methodInfo != null)
                             {
                                 InputField inputField = unityObject as InputField;
-                                if(elementCallbackAttribute != null && elementCallbackAttribute.CallOnEndEdit)
+                                if (elementCallbackAttribute != null && elementCallbackAttribute.CallOnEndEdit)
                                 {
                                     inputField.onEndEdit.AddListener(delegate (string value)
                                     {
@@ -280,8 +280,8 @@ namespace OverhaulMod.UI
                                     _ = methodInfo.Invoke(this, new object[] { value });
                                 });
 
-                                if(actionAttribute.UsePatch)
-                                    slider.gameObject.AddComponent<BetterSliderCallback>();
+                                if (actionAttribute.UsePatch)
+                                    _ = slider.gameObject.AddComponent<BetterSliderCallback>();
                             }
                         }
                         else if (fieldInfo.FieldType == typeof(UIElementColorPickerButton))

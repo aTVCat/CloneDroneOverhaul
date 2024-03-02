@@ -12,13 +12,15 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("refreshResolutionOptions")]
         private static void refreshResolutionOptions_Postfix(SettingsMenu __instance)
         {
-            Resolution resolution = new Resolution();
-            resolution.width = Screen.width;
-            resolution.height = Screen.height;
-            resolution.refreshRate = -1;
+            Resolution resolution = new Resolution
+            {
+                width = Screen.width,
+                height = Screen.height,
+                refreshRate = -1
+            };
 
-            var list = __instance._uniqueResolutionOptions;
-            foreach (var r in list)
+            List<SettingsResolution> list = __instance._uniqueResolutionOptions;
+            foreach (SettingsResolution r in list)
                 if (r.Resolution.width == resolution.width && r.Resolution.height == resolution.height)
                     return;
 

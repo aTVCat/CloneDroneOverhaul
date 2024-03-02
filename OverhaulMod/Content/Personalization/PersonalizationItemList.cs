@@ -27,6 +27,12 @@ namespace OverhaulMod.Content.Personalization
                             PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(infoFile);
                             personalizationItemInfo.FolderPath = d;
                             personalizationItemInfo.FixValues();
+
+                            List<string> ifList = personalizationItemInfo.ImportedFiles;
+                            ifList.Clear();
+                            foreach (string f in Directory.GetFiles(personalizationItemInfo.importedFilesFolder))
+                                ifList.Add(Path.GetFileName(f));
+
                             list.Add(personalizationItemInfo);
                         }
                         catch

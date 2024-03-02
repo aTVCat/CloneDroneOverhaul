@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,33 +12,45 @@ namespace OverhaulMod.UI
         private readonly Button m_createButton;
 
         [UIElement("ObjectDisplayPrefab", false)]
-        private readonly ModdedObject m_showWeaponToggle;
+        private readonly ModdedObject m_objectDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_enableAnimationToggle;
+        private readonly Transform m_objectDisplayContainer;
 
-        private PersonalizationEditorObjectBehaviour m_objectBehaviour;
-        public PersonalizationEditorObjectBehaviour objectBehaviour
+        private PersonalizationItemInfo m_itemInfo;
+        public PersonalizationItemInfo itemInfo
         {
             get
             {
-                return m_objectBehaviour;
+                return m_itemInfo;
             }
             set
             {
-                m_objectBehaviour = value;
+                m_itemInfo = value;
                 Populate();
             }
         }
 
         public void Populate()
         {
+            if (m_objectDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_objectDisplayContainer);
 
+            foreach (var obj in itemInfo.RootObject.Children)
+            {
+                ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_objectDisplayContainer);
+                moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Text>(1).text = obj.Name;
+            }
         }
 
         public void OnCreateButtonClicked()
         {
-
+            var ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.instance.transform);
+            ob.callback = delegate
+            {
+                Populate();
+            };
         }
     }
 }

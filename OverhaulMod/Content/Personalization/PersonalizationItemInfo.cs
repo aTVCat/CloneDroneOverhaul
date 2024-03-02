@@ -2,6 +2,7 @@
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -32,6 +33,30 @@ namespace OverhaulMod.Content.Personalization
 
         [NonSerialized]
         public string FolderPath;
+
+        public string importedFilesFolder
+        {
+            get
+            {
+                return FolderPath + "files/";
+            }
+        }
+
+        public string folderName
+        {
+            get
+            {
+                return Path.GetDirectoryName(FolderPath);
+            }
+        }
+
+        public string folderNameWithSlash
+        {
+            get
+            {
+                return $"{Path.GetDirectoryName(FolderPath)}/";
+            }
+        }
 
         public void FixValues()
         {
@@ -91,11 +116,6 @@ namespace OverhaulMod.Content.Personalization
         public bool CanBeEdited()
         {
             return string.IsNullOrEmpty(EditorID) || EditorID == SteamUser.GetSteamID().ToString();
-        }
-
-        public static PersonalizationItemInfo Create()
-        {
-            return new PersonalizationItemInfo();
         }
     }
 }

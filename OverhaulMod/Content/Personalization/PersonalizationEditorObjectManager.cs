@@ -35,6 +35,11 @@ namespace OverhaulMod.Content.Personalization
             m_objectInfos.Add(personalizationEditorObjectInfo);
         }
 
+        public List<PersonalizationEditorObjectSpawnInfo> GetObjectInfos()
+        {
+            return m_objectInfos;
+        }
+
         public void AddInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
             if (!m_instantiatedObjects.Contains(behaviour))

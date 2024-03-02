@@ -172,7 +172,6 @@ namespace PicaVoxel
         public static void ImportModel(GameObject obj, string fileName, string volumeName, float voxelSize, bool centerPivot)
         {
             obj.name = volumeName;
-            obj.GetComponent<Volume>().GenerateBasic(FillMode.None);
             using (BinaryReader stream = new BinaryReader(new FileStream(fileName, FileMode.Open)))
             {
                 FromMagica(stream, obj, voxelSize, centerPivot);

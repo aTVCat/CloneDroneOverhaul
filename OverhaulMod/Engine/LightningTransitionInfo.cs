@@ -74,7 +74,7 @@ namespace OverhaulMod.Engine
                 d < 0.5f ? a.DirectionalRotationY : b.DirectionalRotationY,
                 Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));*/
 
-            refreshDirectionalLight(d < 0.985f ? true : b.EnableDirectionalLight,
+            refreshDirectionalLight(d < 0.985f || b.EnableDirectionalLight,
                 ModUnityUtils.LerpRGB(a.DirectionalColor, b.DirectionalColor, d),
                 Mathf.Lerp(a.EnableDirectionalLight ? a.DirectionalIntensity : 0f, b.EnableDirectionalLight ? b.DirectionalIntensity : 0f, d),
                 Mathf.Lerp(a.DirectionalRotationX, b.DirectionalRotationX, d),

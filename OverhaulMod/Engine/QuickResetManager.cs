@@ -1,11 +1,5 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -34,7 +28,7 @@ namespace OverhaulMod.Engine
             Character[] characters = FindObjectsOfType<Character>();
             foreach (Character character in characters)
             {
-                if(character is BattleCruiserController controller)
+                if (character is BattleCruiserController controller)
                 {
                     controller.destroyLocationMarker();
                 }
@@ -49,7 +43,7 @@ namespace OverhaulMod.Engine
             {
                 levelEditorBaseTrigger._hasTriggered = false;
 
-                if(levelEditorBaseTrigger is EnableAITrigger trigger)
+                if (levelEditorBaseTrigger is EnableAITrigger trigger)
                 {
                     trigger._seenClones.Clear();
                     trigger._allCharactersTouched.Clear();
@@ -68,7 +62,7 @@ namespace OverhaulMod.Engine
             }
 
             LevelEditorDestructibleBlock[] levelEditorDestructibleBlocks = FindObjectsOfType<LevelEditorDestructibleBlock>();
-            foreach(LevelEditorDestructibleBlock levelEditorDestructibleBlock in levelEditorDestructibleBlocks)
+            foreach (LevelEditorDestructibleBlock levelEditorDestructibleBlock in levelEditorDestructibleBlocks)
             {
                 if (!levelEditorDestructibleBlock._isBodyPartDestroyed)
                     continue;
@@ -85,7 +79,7 @@ namespace OverhaulMod.Engine
             List<LevelEditorAnimation> levelEditorAnimations = LevelEditorAnimationManager.Instance.GetAnimationsInLevel();
             if (!levelEditorAnimations.IsNullOrEmpty())
             {
-                foreach (var animation in levelEditorAnimations)
+                foreach (LevelEditorAnimation animation in levelEditorAnimations)
                 {
                     if (!animation)
                         continue;

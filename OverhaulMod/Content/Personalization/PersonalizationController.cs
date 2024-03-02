@@ -35,12 +35,12 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<WeaponType, Transform[]> m_weaponTypeToParts;
 
-        private Dictionary<string, PersonalizationEditorObjectBehaviour> m_spawnedItems;
+        private Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> m_spawnedItems;
 
         private void Start()
         {
             m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
-            m_spawnedItems = new Dictionary<string, PersonalizationEditorObjectBehaviour>();
+            m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
 
             FirstPersonMover firstPersonMover = owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
@@ -81,7 +81,7 @@ namespace OverhaulMod.Content.Personalization
 
             Transform transform = GetParentForItem(personalizationItemInfo);
             PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform);
-            m_spawnedItems.Add(personalizationItemInfo.ItemID, behaviour);
+            m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 SetWeaponPartsVisible(personalizationItemInfo.Weapon, false);
@@ -89,23 +89,42 @@ namespace OverhaulMod.Content.Personalization
             return behaviour;
         }
 
-        public void DestroyItem(PersonalizationItemInfo personalizationItemInfo)
+        public void DestroyItem(PersonalizationItemInfo personalizationItemInfo, bool editCollection = true)
         {
             if (personalizationItemInfo == null || !HasSpawnedItem(personalizationItemInfo))
                 return;
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 SetWeaponPartsVisible(personalizationItemInfo.Weapon, true);
+
+            var b = m_spawnedItems[personalizationItemInfo];
+            if (b)
+                Destroy(b.gameObject);
+
+            if (editCollection)
+                m_spawnedItems.Remove(personalizationItemInfo);
+        }
+
+        public void DestroyAllItems()
+        {
+            foreach(var kv in m_spawnedItems)
+                DestroyItem(kv.Key, false);
+
+            m_spawnedItems.Clear();
         }
 
         public bool HasSpawnedItem(PersonalizationItemInfo personalizationItemInfo)
         {
-            return HasSpawnedItem(personalizationItemInfo.ItemID);
+            return m_spawnedItems.ContainsKey(personalizationItemInfo);
         }
 
         public bool HasSpawnedItem(string id)
         {
-            return m_spawnedItems.ContainsKey(id);
+            foreach (var info in m_spawnedItems)
+                if (info.Key.ItemID == id)
+                    return true;
+
+            return false;
         }
 
         private void getWeaponRenderers()

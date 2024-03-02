@@ -57,16 +57,16 @@ namespace OverhaulMod.UI
         private readonly Transform m_tabContainer;
 
         [UIElement("PanelNew")]
-        private RectTransform m_panelTransform;
+        private readonly RectTransform m_panelTransform;
 
         [UIElement("Shading")]
-        private GameObject m_shadingObject;
+        private readonly GameObject m_shadingObject;
 
         [UIElement("BG")]
-        private GameObject m_normalBgObject;
+        private readonly GameObject m_normalBgObject;
 
         [UIElement("BGSetup")]
-        private GameObject m_setupBgObject;
+        private readonly GameObject m_setupBgObject;
 
         private bool m_hasSelectedTab;
 
@@ -242,7 +242,7 @@ namespace OverhaulMod.UI
                 ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
 
-            pageBuilder.Button("Done", delegate
+            _ = pageBuilder.Button("Done", delegate
             {
                 Hide();
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_MOD_SETUP_SCREEN_ON_START, false);

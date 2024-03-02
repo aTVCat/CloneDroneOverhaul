@@ -1,8 +1,7 @@
 ﻿using OverhaulMod.Engine;
-using OverhaulMod.Utils;
-using UnityEngine.UI;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {

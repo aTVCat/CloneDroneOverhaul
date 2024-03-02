@@ -432,7 +432,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Find files
+  m_Text: Browse files on your computer
 --- !u!114 &867911203685019391
 MonoBehaviour:
   m_ObjectHideFlags: 0

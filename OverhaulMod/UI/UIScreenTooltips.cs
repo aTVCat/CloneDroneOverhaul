@@ -13,10 +13,10 @@ namespace OverhaulMod.UI
         }
 
         [UIElement("Panel")]
-        private CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup m_canvasGroup;
 
         [UIElement("Text")]
-        private Text m_text;
+        private readonly Text m_text;
 
         private float m_alpha;
 
@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
             m_alpha = Mathf.Lerp(m_alpha, m_timeLeft > 0f ? 1f : 0f, d * 10f);
             m_canvasGroup.alpha = ModITweenUtils.ParametricBlend(m_alpha);
 
-            if(m_timeLeft > 0f)
+            if (m_timeLeft > 0f)
                 m_timeLeft -= d;
         }
 

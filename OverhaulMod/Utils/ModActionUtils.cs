@@ -38,7 +38,7 @@ namespace OverhaulMod.Utils
 
         private static IEnumerator doNextFrameCoroutine(Action action, int frameCount)
         {
-            for(int i = 0; i < frameCount; i++)
+            for (int i = 0; i < frameCount; i++)
                 yield return null;
 
             action?.Invoke();

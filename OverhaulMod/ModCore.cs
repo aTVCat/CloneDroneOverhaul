@@ -200,7 +200,7 @@ namespace OverhaulMod
                 {
                     if (modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
                     {
-                        modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU);
+                        _ = modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU);
                         if (gameUIRoot.EscMenu)
                             gameUIRoot.EscMenu.Show();
                     }

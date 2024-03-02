@@ -10,10 +10,16 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
+        private PersonalizationController m_editingPersonalizationController;
         public PersonalizationController editingPersonalizationController
         {
-            get;
-            set;
+            get
+            {
+                if (!m_editingPersonalizationController)
+                    m_editingPersonalizationController = CharacterTracker.Instance?.GetPlayer()?.GetComponent<PersonalizationController>();
+
+                return m_editingPersonalizationController;
+            }
         }
 
         public PersonalizationItemInfo editingItemInfo
@@ -115,6 +121,12 @@ namespace OverhaulMod.Content.Personalization
         {
             if (editingItemInfo == null)
             {
+                error = "Editing item info is NULL";
+                return false;
+            }
+
+            if (!editingRoot)
+            {
                 error = "Editing item is NULL";
                 return false;
             }
@@ -130,7 +142,7 @@ namespace OverhaulMod.Content.Personalization
                 _ = Directory.CreateDirectory(folder);
 
             UIPersonalizationEditor.instance.Inspector.ApplyValues();
-            editingItemInfo.RootObject = editingRoot.Serialize();
+            SerializeRoot();
             try
             {
                 ModJsonUtils.WriteStream(folder + PersonalizationManager.ITEM_INFO_FILE, editingItemInfo);
@@ -142,6 +154,11 @@ namespace OverhaulMod.Content.Personalization
             }
             error = null;
             return true;
+        }
+
+        public void SerializeRoot()
+        {
+            editingItemInfo.RootObject = editingRoot.Serialize();
         }
 
         public void SpawnBot()
@@ -159,20 +176,21 @@ namespace OverhaulMod.Content.Personalization
 
             GameObject spawnPoint = new GameObject();
 
-            float timeOut = Time.unscaledTime + 5f;
             FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true);
             bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
+                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Hammer, 3);
+                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
+                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.ShieldSize, 1);
+                bot.RefreshUpgrades();
+            }, 0.5f);
+
             Destroy(spawnPoint);
-
-            yield return new WaitUntil(() => !bot || bot.GetComponent<PersonalizationController>() || Time.unscaledTime >= timeOut);
-            if (!bot || Time.unscaledTime >= timeOut)
-                yield break;
-
-            personalizationController = bot.GetComponent<PersonalizationController>();
-            editingPersonalizationController = personalizationController;
             yield break;
         }
 
@@ -195,10 +213,6 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnRootObject()
         {
-            PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = editingRoot;
-            if (personalizationEditorObjectBehaviour)
-                Destroy(personalizationEditorObjectBehaviour.gameObject);
-
             PersonalizationEditorObjectInfo rootInfo = editingItemInfo?.RootObject;
             if (rootInfo == null)
                 return;
@@ -207,8 +221,8 @@ namespace OverhaulMod.Content.Personalization
             if (!personalizationController)
                 return;
 
-            personalizationEditorObjectBehaviour = personalizationController.SpawnItem(editingItemInfo);
-            editingRoot = personalizationEditorObjectBehaviour;
+            personalizationController.DestroyAllItems();
+            editingRoot = personalizationController.SpawnItem(editingItemInfo);
         }
     }
 }

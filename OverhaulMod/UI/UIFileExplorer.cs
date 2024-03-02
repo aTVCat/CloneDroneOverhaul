@@ -92,6 +92,9 @@ namespace OverhaulMod.UI
                     currentFolderInfo = new DirectoryInfo(value);
                 }
 
+                m_populateNextFrame = true;
+                m_pathField.text = currentFolderInfo.FullName;
+
                 string rootName = currentFolderInfo.Root.Name;
                 for (int i = 0; i < m_driveDropdown.options.Count; i++)
                 {
@@ -101,9 +104,6 @@ namespace OverhaulMod.UI
                         break;
                     }
                 }
-
-                m_populateNextFrame = true;
-                m_pathField.text = currentFolderInfo.FullName;
             }
         }
 

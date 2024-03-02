@@ -69,6 +69,7 @@ namespace OverhaulMod.Utils
         public const string UI_SCREEN_TOOLTIPS = "UI_ScreenTooltips";
         public const string UI_PERSONALIZATION_EDITOR_HELP_MENU = "UI_PersonalizationEditorHelpMenu";
         public const string UI_FILE_EXPLORER = "UI_FileExplorer";
+        public const string UI_PERSONALIZATION_EDITOR_OBJECT_BROWSER = "UI_PersonalizationEditorObjectBrowser";
 
         public static void ShowOtherModsMenu()
         {
@@ -413,6 +414,11 @@ namespace OverhaulMod.Utils
         public static UIFileExplorer ShowFileExplorer(Transform parent)
         {
             return ModUIManager.Instance.Show<UIFileExplorer>(AssetBundleConstants.UI, UI_FILE_EXPLORER, parent);
+        }
+
+        public static UIPersonalizationEditorObjectBrowser ShowPersonalizationEditorObjectBrowser(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorObjectBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_OBJECT_BROWSER, parent);
         }
     }
 }

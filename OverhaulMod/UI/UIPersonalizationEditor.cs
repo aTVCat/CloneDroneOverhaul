@@ -35,6 +35,9 @@ namespace OverhaulMod.UI
         [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
+        [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel))]
+        public readonly UIElementPersonalizationEditorPropertiesPanel PropertiesPanel;
+
         public override bool enableCursor => true;
 
         public static UIPersonalizationEditor instance

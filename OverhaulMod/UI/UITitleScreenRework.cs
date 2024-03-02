@@ -207,7 +207,7 @@ namespace OverhaulMod.UI
             m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
             m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
 
-            if(Time.frameCount % 30 == 0)
+            if (Time.frameCount % 30 == 0)
             {
                 string userName = ModBotSignInUI._userName;
                 if (!userName.IsNullOrEmpty())

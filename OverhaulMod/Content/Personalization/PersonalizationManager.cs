@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using Steamworks;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace OverhaulMod.Content.Personalization
@@ -47,13 +46,13 @@ namespace OverhaulMod.Content.Personalization
 
             string directoryName = name.Replace(" ", string.Empty);
             string directoryPath = ModCore.customizationFolder + directoryName + "/";
-            string voxDirectoryPath = directoryPath + "vox/";
+            string filesDirectoryPath = directoryPath + "files/";
 
             if (Directory.Exists(directoryPath))
                 return false;
 
-            if (!Directory.Exists(voxDirectoryPath))
-                _ = Directory.CreateDirectory(voxDirectoryPath);
+            if (!Directory.Exists(filesDirectoryPath))
+                _ = Directory.CreateDirectory(filesDirectoryPath);
 
             _ = Directory.CreateDirectory(directoryPath);
             personalizationItem = new PersonalizationItemInfo()

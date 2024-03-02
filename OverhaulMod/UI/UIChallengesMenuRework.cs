@@ -191,7 +191,7 @@ namespace OverhaulMod.UI
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
                 if (modUIManager)
-                    modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DUEL_INVITE_MENU_REWORK);
+                    _ = modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DUEL_INVITE_MENU_REWORK);
 
                 if (startPrivateMatch)
                     ChallengeManager.Instance.CreatePrivateCoopChallenge(challengeDefinition.ChallengeID);
@@ -251,7 +251,7 @@ namespace OverhaulMod.UI
 
         public void OnPlayRandomButtonClicked()
         {
-            var list = displayingChallenges;
+            List<ChallengeDefinition> list = displayingChallenges;
             if (list.IsNullOrEmpty())
                 return;
 
@@ -264,12 +264,12 @@ namespace OverhaulMod.UI
 
         public void OnPlayUndefeatedButtonClicked()
         {
-            var list = displayingChallenges;
+            List<ChallengeDefinition> list = displayingChallenges;
             if (list.IsNullOrEmpty())
                 return;
 
             ChallengeDefinition challengeDefinition = null;
-            foreach(var cd in list)
+            foreach (ChallengeDefinition cd in list)
             {
                 if (!ChallengeManager.Instance.HasCompletedChallenge(cd.ChallengeID))
                 {

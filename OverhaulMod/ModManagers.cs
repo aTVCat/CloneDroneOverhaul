@@ -56,7 +56,7 @@ namespace OverhaulMod
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
                     ModUIConstants.ShowTitleScreenRework();
 
-                if(ShowModSetupScreenOnStart)
+                if (ShowModSetupScreenOnStart)
                     ModUIConstants.ShowSettingsMenuRework(true);
             }
             yield break;

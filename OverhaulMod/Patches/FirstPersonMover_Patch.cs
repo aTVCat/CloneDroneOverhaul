@@ -5,7 +5,6 @@ using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
-using static BoltAssets;
 
 namespace OverhaulMod.Patches
 {

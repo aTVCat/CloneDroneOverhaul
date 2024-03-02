@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
-using OverhaulMod.Utils;
-using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -15,7 +13,7 @@ namespace OverhaulMod.Patches
             if (objectPlacedInLevel)
             {
                 LevelEditorObjectAdvancedBehaviour objectAdvancedBehaviour = objectPlacedInLevel.GetComponent<LevelEditorObjectAdvancedBehaviour>();
-                if(!objectAdvancedBehaviour)
+                if (!objectAdvancedBehaviour)
                     objectAdvancedBehaviour = objectPlacedInLevel.gameObject.AddComponent<LevelEditorObjectAdvancedBehaviour>();
 
                 objectAdvancedBehaviour.SerializedObject = __instance;
