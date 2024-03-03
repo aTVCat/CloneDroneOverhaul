@@ -40,6 +40,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshLightInScene")]
         private static bool RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
+            if (!LightningTransitionManager.TransitionsEnabled)
+                return true;
+
             LevelLightSettings oldLevelLightSettings = __instance._selectedLightSettings;
             LevelLightSettings levelLightSettings = __instance.refreshActiveLightSettings();
             if (!levelLightSettings)
@@ -66,19 +69,19 @@ namespace OverhaulMod.Patches
             return false;
         }
 
-        /*
+        
         [HarmonyPostfix]
         [HarmonyPatch("RefreshLightInScene")]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
+            if (LightningTransitionManager.TransitionsEnabled)
+                return;
+
             LevelLightSettings levelLightSettings = __instance.GetActiveLightSettings();
             if (levelLightSettings && !levelLightSettings.IsOverrideSettings)
             {
                 RealisticLightningManager.Instance.PatchLightning(false, levelLightSettings);
-                LightningTransitionManager manager = LightningTransitionManager.Instance;
-                if (manager)
-                    manager.DoTransition(levelLightSettings);
             }
-        }*/
+        }
     }
 }

@@ -52,13 +52,27 @@ namespace OverhaulMod.UI
         [UIElement("ExitDialogue", false)]
         private readonly GameObject m_exitDialogue;
 
-        [UIElementAction(nameof(OnDesktopButtonClicked))]
-        [UIElement("DesktopButton")]
-        private readonly Button m_desktopButton;
+        [UIElementAction(nameof(OnExitGameButtonClicked), true)]
+        [UIElement("ExitGameButton")]
+        private readonly Button m_exitGameButton;
 
-        [UIElementAction(nameof(OnMainMenuButtonClicked))]
+        [UIElementAction(nameof(OnMainMenuButtonClicked), true)]
         [UIElement("MainMenuButton")]
         private readonly Button m_mainMenuButton;
+
+        [UIElementAction(nameof(OnConfirmExitGameButtonClicked), false)]
+        [UIElement("ConfirmExitGameButton")]
+        private readonly Button m_confirmExitGameButton;
+
+        [UIElementAction(nameof(OnConfirmMainMenuButtonClicked), false)]
+        [UIElement("ConfirmMainMenuButton")]
+        private readonly Button m_confirmMainMenuButton;
+
+        [UIElement("ConfirmExitGameText", false)]
+        private readonly GameObject m_confirmExitGameTextObject;
+
+        [UIElement("ConfirmMainMenuText", false)]
+        private readonly GameObject m_confirmMainMenuTextObject;
 
         public override bool enableCursor
         {
@@ -99,6 +113,13 @@ namespace OverhaulMod.UI
         {
             bool customizationSupported = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
             m_customizationButton.interactable = customizationSupported;
+
+            m_confirmExitGameTextObject.SetActive(false);
+            m_confirmMainMenuTextObject.SetActive(false);
+            m_confirmExitGameButton.gameObject.SetActive(false);
+            m_confirmMainMenuButton.gameObject.SetActive(false);
+            m_exitGameButton.gameObject.SetActive(true);
+            m_mainMenuButton.gameObject.SetActive(true);
         }
 
         public void OnResumeButtonClicked()
@@ -139,16 +160,38 @@ namespace OverhaulMod.UI
                 ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
                 return;
             }
+
+            m_confirmExitGameTextObject.SetActive(false);
+            m_confirmMainMenuTextObject.SetActive(true);
+            m_confirmExitGameButton.gameObject.SetActive(false);
+            m_confirmMainMenuButton.gameObject.SetActive(true);
+            m_mainMenuButton.gameObject.SetActive(false);
+            m_exitGameButton.gameObject.SetActive(true);
+        }
+
+        public void OnConfirmMainMenuButtonClicked()
+        {
             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
-        public void OnDesktopButtonClicked()
+        public void OnExitGameButtonClicked()
         {
             if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
             {
                 ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, Application.Quit, null);
                 return;
             }
+
+            m_confirmExitGameTextObject.SetActive(true);
+            m_confirmMainMenuTextObject.SetActive(false);
+            m_confirmExitGameButton.gameObject.SetActive(true);
+            m_confirmMainMenuButton.gameObject.SetActive(false);
+            m_mainMenuButton.gameObject.SetActive(true);
+            m_exitGameButton.gameObject.SetActive(false);
+        }
+
+        public void OnConfirmExitGameButtonClicked()
+        {
             Application.Quit();
         }
 

@@ -5,6 +5,9 @@ namespace OverhaulMod.Engine
 {
     public class LightningTransitionManager : Singleton<LightningTransitionManager>
     {
+        [ModSetting(ModSettingsConstants.ENABLE_LIGHTNING_TRANSITION, true)]
+        public static bool TransitionsEnabled;
+
         private LightningTransitionInfo m_currentTransition;
 
         private LightningInfo m_oldLevelLightInfo;

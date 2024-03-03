@@ -153,6 +153,7 @@ namespace OverhaulMod.UI
                     networkAddonDisplay.contentFile = content.File;
                     networkAddonDisplay.isSupported = content.IsSupported();
                     networkAddonDisplay.minModVersion = content.MinModVersion;
+                    networkAddonDisplay.isLarge = content.Size > 52428800L;
                     networkAddonDisplay.InitializeElement();
                 }
 

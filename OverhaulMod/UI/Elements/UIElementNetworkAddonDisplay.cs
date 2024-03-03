@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +37,12 @@ namespace OverhaulMod.UI
         }
 
         public bool isSupported
+        {
+            get;
+            set;
+        }
+
+        public bool isLarge
         {
             get;
             set;
@@ -77,6 +85,14 @@ namespace OverhaulMod.UI
 
         public void OnDownloadButtonClicked()
         {
+            if (isLarge)
+            {
+                ModUIUtils.MessagePopup(true, $"This add-on is large", "The download can take a while. Continue?", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                {
+                    _ = m_contentManager.DownloadContent(contentFile, null, null);
+                });
+                return;
+            }
             _ = m_contentManager.DownloadContent(contentFile, null, null);
         }
     }

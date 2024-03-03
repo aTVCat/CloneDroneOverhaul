@@ -16,8 +16,76 @@ namespace OverhaulMod
         public const string FeedbacksWebhookURL = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
         public const string SurveysWebhookURL = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
         public const string VerificationRequestsWebhookURL = "https://discord.com/api/webhooks/1206265503836930098/XhMcbjEETktOqZlbW1CHY7kQWscJzG-Nk65Q8bvghHfnMFMk7A2_KZWx7CiTG554YsSG";
+        public const string CrashReportsWebhookURL = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
 
         public static string ErrorReportText;
+
+        public void ExecuteCrashReportsWebhook(string text, Action successCallback, Action<string> errorCallback)
+        {
+            int color = int.Parse("d63a51", System.Globalization.NumberStyles.HexNumber);
+            string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
+            string gameMode = "N/A";
+            try
+            {
+                gameMode = GameFlowManager.Instance._gameMode.ToString();
+            }
+            catch { }
+
+            string levelId = "N/A";
+            try
+            {
+                levelId = LevelManager.Instance.GetCurrentLevelID();
+            }
+            catch { }
+
+            string gameVer = "N/A";
+            try
+            {
+                gameVer = VersionNumberManager.Instance.GetVersionString();
+            }
+            catch { }
+
+            string lang = "N/A";
+            try
+            {
+                lang = LocalizationManager.Instance.GetCurrentLanguageCode();
+            }
+            catch { }
+
+            string time = "N/A";
+            try
+            {
+                time = Time.unscaledTime.ToString();
+            }
+            catch { }
+
+            if (text.Length > 1490)
+                text = text.Remove(1490);
+
+            text = $"```{text}```";
+
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = $"## __Game crashed. v{ModBuildInfo.version}__",
+                embeds = new Embed[]
+                {
+                    new Embed()
+                    {
+                        title = "**Stack trace**",
+                        description = text,
+                        color = color,
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Details**",
+                        description = $"{gameMode}, {levelId}, {gameVer}, {lang}, {time}\n{deviceInfo}",
+                        color = color,
+                    },
+                },
+            };
+            UploadMessageWithWebhook(obj1, CrashReportsWebhookURL, successCallback, errorCallback);
+        }
 
         public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
         {

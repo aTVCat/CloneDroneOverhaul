@@ -37,7 +37,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WorkshopBrowserRework:
-                    result = true;
+                    result = false;
                     break;
                 case FeatureType.NightmariumDifficultyTier:
                     result = ModBuildInfo.enableV5;

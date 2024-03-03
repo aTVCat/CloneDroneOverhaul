@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if ((ModBuildInfo.internalRelease || ModBuildInfo.debug) && Input.GetKeyDown(KeyCode.Alpha7) && !GameModeManager.IsInLevelEditor())
+            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && !GameModeManager.IsInLevelEditor())
             {
                 bool value = !Enabled;
                 Enabled = value;

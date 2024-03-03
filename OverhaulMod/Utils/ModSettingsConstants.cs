@@ -145,5 +145,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string ENABLE_BLOOM = "EnableBloom";
+
+        /// <summary>
+        /// <see cref="Engine.LightningTransitionManager"/>
+        /// </summary>
+        public const string ENABLE_LIGHTNING_TRANSITION = "EnableLightningTransition";
     }
 }
