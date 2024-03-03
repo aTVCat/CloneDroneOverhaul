@@ -441,6 +441,7 @@
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
     <Compile Include="Engine\TransitionBehaviour.cs" />
     <Compile Include="Engine\TransitionManager.cs" />
+    <Compile Include="Engine\UpgradeModeButtonController.cs" />
     <Compile Include="Engine\UpgradeModes.cs" />
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
@@ -664,9 +665,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Combat\Upgrades\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <PublicizeAll>true</PublicizeAll>
   </PropertyGroup>

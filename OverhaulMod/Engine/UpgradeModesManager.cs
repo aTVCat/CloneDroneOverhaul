@@ -32,7 +32,7 @@ namespace OverhaulMod.Engine
             private set;
         }
 
-        private Image m_ButtonGraphic;
+        private UpgradeModeButtonController m_buttonController;
 
         public void OnGameLoaded()
         {
@@ -41,7 +41,7 @@ namespace OverhaulMod.Engine
 
         public void PlaceButton()
         {
-            if (!m_ButtonGraphic)
+            if (!m_buttonController)
             {
                 RectTransform upgradeUITransform = GameUIRoot.Instance.UpgradeUI.transform as RectTransform;
                 RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
@@ -55,7 +55,9 @@ namespace OverhaulMod.Engine
 
                 Button button = spawnedButton.GetComponent<Button>();
                 button.onClick.AddListener(ToggleMode);
-                m_ButtonGraphic = spawnedButton.GetComponent<Image>();
+                UpgradeModeButtonController upgradeModeButtonController = spawnedButton.gameObject.AddComponent<UpgradeModeButtonController>();
+                upgradeModeButtonController.InitializeElement();
+                m_buttonController = upgradeModeButtonController;
             }
             SetMode(UpgradeModes.Upgrade);
         }
@@ -72,15 +74,18 @@ namespace OverhaulMod.Engine
             if (GameUIRoot.Instance && GameUIRoot.Instance.UpgradeUI && GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf)
                 GameUIRoot.Instance.UpgradeUI.PopulateIcons();
 
-            if (!m_ButtonGraphic)
+            UpgradeModeButtonController controller = m_buttonController;
+            if (!controller)
                 return;
 
             if (upgradeMode == UpgradeModes.Upgrade)
             {
-                m_ButtonGraphic.sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, "RevertUpgradesButton");
+                controller.SetText(false);
+                controller.SetSprite(ModResources.Load<Sprite>(AssetBundleConstants.UI, "RevertUpgradesButton"));
                 return;
             }
-            m_ButtonGraphic.sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, "GetUpgradesButton");
+            controller.SetText(true);
+            controller.SetSprite(ModResources.Load<Sprite>(AssetBundleConstants.UI, "GetUpgradesButton"));
         }
     }
 }
