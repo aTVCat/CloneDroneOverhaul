@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Content;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,23 +6,47 @@ namespace OverhaulMod.UI
 {
     public class UIElementMultiplayerMessageButton : OverhaulUIBehaviour
     {
-        public const string STATE_FINE_CACHE_KEY = "TitleScreenMButtonStateIcon_Fine";
-        public const string STATE_BAD_CACHE_KEY = "TitleScreenMButtonStateIcon_Bad";
-
         [UIElement("ViewMultiplayerErrorButton")]
-        public Graphic m_bgGraphic;
-        [UIElement("Icon")]
-        public RawImage m_icon;
-        [UIElement("Icon")]
-        public Outline m_iconOutline;
+        private readonly Graphic m_bgGraphic;
 
-        [UIElement("LoadingIndicator", false)]
-        public GameObject m_iconLoadingIndicator;
+        [UIElement("FineIcon", false)]
+        private readonly GameObject m_fineIconObject;
+        [UIElement("FineIcon")]
+        private readonly Outline m_fineIconOutline;
+
+        [UIElement("WarnIcon", true)]
+        private readonly GameObject m_warnIconObject;
+        [UIElement("WarnIcon")]
+        private readonly Outline m_warnIconOutline;
 
         private (Color, Color)[] m_colors;
 
         private float m_timeLeftForAnUpdate;
         private int m_prevState;
+
+        private PlayFabPlayerDataManager m_playFabPlayerDataManager;
+        public PlayFabPlayerDataManager playFabPlayerDataManager
+        {
+            get
+            {
+                if (!m_playFabPlayerDataManager)
+                    m_playFabPlayerDataManager = PlayFabPlayerDataManager.Instance;
+
+                return m_playFabPlayerDataManager;
+            }
+        }
+
+        private MultiplayerLoginManager m_multiplayerLoginManager;
+        public MultiplayerLoginManager multiplayerLoginManager
+        {
+            get
+            {
+                if (!m_multiplayerLoginManager)
+                    m_multiplayerLoginManager = MultiplayerLoginManager.Instance;
+
+                return m_multiplayerLoginManager;
+            }
+        }
 
         protected override void OnInitialized()
         {
@@ -50,42 +73,35 @@ namespace OverhaulMod.UI
         {
             m_timeLeftForAnUpdate = 0.5f;
 
-            PlayFabPlayerDataManager playFabPlayerDataManager = PlayFabPlayerDataManager.Instance;
-            if (!playFabPlayerDataManager)
+            MultiplayerLoginManager loginManager = multiplayerLoginManager;
+            PlayFabPlayerDataManager playerDataManager = playFabPlayerDataManager;
+            if (!playerDataManager || !loginManager)
                 return;
 
-            MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
-            if (!multiplayerLoginManager)
-                return;
+            BanOrWarningMessage banOrWarningMessage = playerDataManager.GetBanOrWarningMessage();
+            bool userLoggedIn = loginManager.IsLoggedIntoPlayfab();
+            bool userBanned = loginManager.IsBanned();
+            bool userWarned = banOrWarningMessage != null && banOrWarningMessage.IsWarning;
 
-            bool shouldActivateMultiplayerButton = false;
-            int curState = m_prevState;
-            bool userLoggedIn = multiplayerLoginManager.IsLoggedIntoPlayfab();
-
-            BanOrWarningMessage banOrWarningMessage = playFabPlayerDataManager.GetBanOrWarningMessage();
-            if (!userLoggedIn || multiplayerLoginManager.IsBanned())
+            int curState;
+            bool shouldActivateMultiplayerButton;
+            if (!userLoggedIn || userBanned)
             {
-                if (banOrWarningMessage != null && banOrWarningMessage.IsWarning)
-                {
-                    m_prevState = 1;
-                    SetIcon(true);
-                    SetColor(m_colors[1].Item1, m_colors[1].Item2);
-                    return;
-                }
-                m_prevState = 2;
+                curState = 0;
                 SetIcon(true);
                 SetColor(m_colors[0].Item1, m_colors[0].Item2);
+                shouldActivateMultiplayerButton = false;
             }
-            else if (banOrWarningMessage != null)
+            else if (userWarned)
             {
-                m_prevState = 3;
+                curState = 1;
                 SetIcon(true);
-                SetColor(banOrWarningMessage.IsWarning ? m_colors[1].Item1 : m_colors[0].Item1, banOrWarningMessage.IsWarning ? m_colors[1].Item2 : m_colors[0].Item2);
-                shouldActivateMultiplayerButton = banOrWarningMessage.IsWarning;
+                SetColor(m_colors[1].Item1, m_colors[1].Item2);
+                shouldActivateMultiplayerButton = true;
             }
             else
             {
-                m_prevState = 0;
+                curState = 2;
                 SetIcon(false);
                 SetColor(m_colors[2].Item1, m_colors[2].Item2);
                 shouldActivateMultiplayerButton = true;
@@ -97,14 +113,13 @@ namespace OverhaulMod.UI
 
             if (curState != m_prevState)
             {
-                if (titleScreenRework.ErrorMessage && titleScreenRework.visibleInHierarchy)
+                if (titleScreenRework.ErrorMessage)
                 {
                     titleScreenRework.ErrorMessage.Refresh();
-                    if (m_prevState == 0)
-                    {
+                    if (curState == 2)
                         titleScreenRework.ErrorMessage.Hide();
-                    }
                 }
+                m_prevState = curState;
             }
 
             titleScreenRework.SetMultiplayerButtonActive(shouldActivateMultiplayerButton);
@@ -113,51 +128,14 @@ namespace OverhaulMod.UI
         public void SetColor(Color firstColor, Color secondColor)
         {
             m_bgGraphic.color = firstColor;
-            m_iconOutline.effectColor = secondColor;
+            m_fineIconOutline.effectColor = secondColor;
+            m_warnIconOutline.effectColor = secondColor;
         }
 
         public void SetIcon(bool warn)
         {
-            Texture2D texture = null;
-
-            if (warn)
-            {
-                if (!ModAdvancedCache.TryGet(STATE_BAD_CACHE_KEY, out texture))
-                {
-                    RepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Warn.png", delegate (Texture2D textureFine)
-                    {
-                        textureFine.filterMode = FilterMode.Point;
-                        if (ModAdvancedCache.Has(STATE_BAD_CACHE_KEY))
-                        {
-                            Destroy(ModAdvancedCache.Get<Texture2D>(STATE_BAD_CACHE_KEY));
-                            return;
-                        }
-                        ModAdvancedCache.Add(STATE_BAD_CACHE_KEY, textureFine);
-                        m_icon.texture = textureFine;
-                    }, null, out _);
-                    return;
-                }
-            }
-            else
-            {
-                if (!ModAdvancedCache.TryGet(STATE_FINE_CACHE_KEY, out texture))
-                {
-                    RepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + "ui/M_Fine.png", delegate (Texture2D textureFine)
-                    {
-                        textureFine.filterMode = FilterMode.Point;
-                        if (ModAdvancedCache.Has(STATE_FINE_CACHE_KEY))
-                        {
-                            Destroy(ModAdvancedCache.Get<Texture2D>(STATE_FINE_CACHE_KEY));
-                            return;
-                        }
-                        ModAdvancedCache.Add(STATE_FINE_CACHE_KEY, textureFine);
-                        m_icon.texture = textureFine;
-                    }, null, out _);
-                    return;
-                }
-            }
-
-            m_icon.texture = texture;
+            m_fineIconObject.SetActive(!warn);
+            m_warnIconObject.SetActive(warn);
         }
     }
 }

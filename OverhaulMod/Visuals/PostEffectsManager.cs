@@ -11,6 +11,9 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_SSAO, true)]
         public static bool EnableSSAO;
 
+        [ModSetting(ModSettingsConstants.ENABLE_BLOOM, true)]
+        public static bool EnableBloom;
+
         public override void Awake()
         {
             base.Awake();
@@ -61,6 +64,7 @@ namespace OverhaulMod.Visuals
                 bloom.bloomBlurIterations = 4;
                 bloom.bloomIntensity = 0.5f;
                 bloom.bloomThreshold = 1f;
+                bloom.enabled = EnableBloom;
             }
         }
 
@@ -81,6 +85,7 @@ namespace OverhaulMod.Visuals
                 bloom.bloomBlurIterations = 2;
                 bloom.bloomIntensity = 0.5f;
                 bloom.bloomThreshold = 0.9f;
+                bloom.enabled = true;
             }
         }
     }

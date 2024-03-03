@@ -329,6 +329,10 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
+            }, "Bloom");
 
             _ = pageBuilder.Header3("Camera effects");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
@@ -529,10 +533,22 @@ namespace OverhaulMod.UI
         public void OnLegacyUIButtonClicked()
         {
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
-            if (titleScreenUI)
+            if(titleScreenUI && GameModeManager.IsOnTitleScreen())
             {
                 Hide();
                 titleScreenUI.OnOptionsButtonClicked();
+                return;
+            }
+
+            SettingsMenu settingsMenu = ModCache.gameUIRoot.SettingsMenu;
+            if (settingsMenu)
+            {
+                Hide();
+
+                ModActionUtils.DoInFrame(delegate
+                {
+                    settingsMenu.Show();
+                });
             }
         }
 

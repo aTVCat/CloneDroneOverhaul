@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
             if (m_fileDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_fileDisplayContainer);
 
-            foreach (var file in itemInfo.ImportedFiles)
+            foreach (var file in itemInfo.importedFiles)
             {
                 ModdedObject moddedObject = Instantiate(m_fileDisplayPrefab, m_fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -77,9 +77,6 @@ namespace OverhaulMod.UI
                 {
                     File.Copy(path, dest);
                 }
-
-                if (!item.ImportedFiles.Contains(fn))
-                    item.ImportedFiles.Add(fn);
 
                 Populate();
             }, InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");

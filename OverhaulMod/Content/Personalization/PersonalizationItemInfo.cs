@@ -29,10 +29,32 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo RootObject;
 
-        public List<string> ImportedFiles;
-
         [NonSerialized]
         public string FolderPath;
+
+        private List<string> m_importedFiles;
+        public List<string> importedFiles
+        {
+            get
+            {
+                List<string> list;
+                if (m_importedFiles != null)
+                {
+                    list = m_importedFiles;
+                    list.Clear();
+                }
+                else
+                {
+                    list = new List<string>();
+                    m_importedFiles = list;
+                }
+
+                foreach (string f in Directory.GetFiles(importedFilesFolder))
+                    list.Add(Path.GetFileName(f));
+
+                return list;
+            }
+        }
 
         public string importedFilesFolder
         {
@@ -65,9 +87,6 @@ namespace OverhaulMod.Content.Personalization
 
             if (ExclusiveFor == null)
                 ExclusiveFor = new List<string>();
-
-            if (ImportedFiles == null)
-                ImportedFiles = new List<string>();
 
             if (RootObject == null)
             {

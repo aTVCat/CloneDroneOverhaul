@@ -113,6 +113,14 @@ namespace OverhaulMod.UI
         [UIElement("ModBotLogInButton", false)]
         private readonly Button m_modBotLogInButton;
 
+        [UIElementAction(nameof(OnOldUIButtonClicked))]
+        [UIElement("OldUIButton")]
+        private readonly Button m_oldUIButton;
+
+        [UIElementAction(nameof(OnNewUIButtonClicked))]
+        [UIElement("NewUIButton")]
+        private readonly Button m_newUIButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
@@ -147,12 +155,30 @@ namespace OverhaulMod.UI
         private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
         private Vector2 m_initialSocialButtonPopoutHolderPosition, m_newSocialButtonPopoutHolderPosition;
 
-        private bool m_hasAddedEventListeners;
-
+        private bool m_enableRework;
         public bool enableRework
         {
-            get;
-            set;
+            get
+            {
+                return m_enableRework;
+            }
+            set
+            {
+                m_enableRework = value;
+
+                CanvasGroup group = m_canvasGroup;
+                if (group)
+                {
+                    group.alpha = value ? 0f : 1f;
+                    group.interactable = !value;
+                }
+
+                if (m_socialButtonContainer && m_socialButtonPopoutHolder)
+                {
+                    m_socialButtonContainer.anchoredPosition = value ? m_newSocialButtonContainerPosition : m_initialSocialButtonContainerPosition;
+                    m_socialButtonPopoutHolder.anchoredPosition = value ? m_newSocialButtonPopoutHolderPosition : m_initialSocialButtonPopoutHolderPosition;
+                }
+            }
         }
 
         protected override void OnInitialized()
@@ -191,82 +217,46 @@ namespace OverhaulMod.UI
                         m_newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 30f);
                     }
                 }
-
-                HideLegacyUI();
-
-                ModCore.ModStateChanged += onModStateChanged;
-                m_hasAddedEventListeners = true;
             }
+
+            enableRework = true;
         }
 
         public override void Update()
         {
-            bool shouldBeActive = enableRework && m_legacyContainer.activeInHierarchy;
-            m_container.SetActive(shouldBeActive);
-            m_otherLayersObject.SetActive(shouldBeActive);
-            m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
-            m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
+            bool reworkEnabled = enableRework;
+            bool shouldBeActive = m_legacyContainer.activeInHierarchy;
+            bool flag = reworkEnabled && shouldBeActive;
+            m_container.SetActive(flag);
+            m_otherLayersObject.SetActive(flag);
 
-            if (Time.frameCount % 30 == 0)
+            if (Time.frameCount % 20 == 0)
             {
+                m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
+                m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
+
                 string userName = ModBotSignInUI._userName;
                 if (!userName.IsNullOrEmpty())
                 {
                     m_modBotLogonText.text = $"Logged as: {userName.AddColor(Color.white)}";
+                    m_modBotLogonText.enabled = true;
+                    m_modBotLogInButton.gameObject.SetActive(false);
                 }
                 else
                 {
-                    m_modBotLogonText.text = "Not logged in.\nTry logging in through settings menu";
+                    m_modBotLogonText.enabled = false;
+                    m_modBotLogInButton.gameObject.SetActive(true);
                 }
             }
+
+            m_oldUIButton.gameObject.SetActive(flag);
+            m_newUIButton.gameObject.SetActive(!reworkEnabled && shouldBeActive);
         }
 
         public override void OnDestroy()
         {
-            if (m_hasAddedEventListeners)
-                ModCore.ModStateChanged -= onModStateChanged;
-        }
-
-        private void onModStateChanged(bool enabled)
-        {
-            if (enabled)
-                HideLegacyUI();
-            else
-                ShowLegacyUI();
-        }
-
-        public void HideLegacyUI()
-        {
-            CanvasGroup group = m_canvasGroup;
-            if (group)
-            {
-                group.alpha = 0f;
-                group.interactable = false;
-                enableRework = true;
-            }
-
-            if (m_socialButtonContainer && m_socialButtonPopoutHolder)
-            {
-                m_socialButtonContainer.anchoredPosition = m_newSocialButtonContainerPosition;
-                m_socialButtonPopoutHolder.anchoredPosition = m_newSocialButtonPopoutHolderPosition;
-            }
-        }
-
-        public void ShowLegacyUI()
-        {
-            CanvasGroup group = m_canvasGroup;
-            if (group)
-            {
-                group.alpha = 1f;
-                group.interactable = true;
-                enableRework = false;
-            }
-
-            if (m_socialButtonContainer && m_socialButtonPopoutHolder)
-            {
-                m_socialButtonContainer.anchoredPosition = m_initialSocialButtonContainerPosition;
-                m_socialButtonPopoutHolder.anchoredPosition = m_initialSocialButtonPopoutHolderPosition;
-            }
+            base.OnDestroy();
+            enableRework = false;
         }
 
         public void SetMultiplayerButtonActive(bool value)
@@ -418,6 +408,16 @@ namespace OverhaulMod.UI
         public void OnSetupButtonClicked()
         {
             ModUIConstants.ShowSettingsMenuRework(true);
+        }
+
+        public void OnOldUIButtonClicked()
+        {
+            enableRework = false;
+        }
+
+        public void OnNewUIButtonClicked()
+        {
+            enableRework = true;
         }
     }
 }

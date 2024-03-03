@@ -153,7 +153,7 @@ namespace OverhaulMod.Engine
             ModLocalizationInfo modLocalizationInfo = m_localizationInfo;
             if (modLocalizationInfo != null)
             {
-                Dictionary<string, string> modTranslations = modLocalizationInfo.GetDictionary(langId);
+                Dictionary<string, string> modTranslations = langId == "ru" ? modLocalizationInfo.GetDictionary("ru") : modLocalizationInfo.GetDictionary("en");
                 if (modTranslations != null && modTranslations.Count != 0)
                     foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
                     {

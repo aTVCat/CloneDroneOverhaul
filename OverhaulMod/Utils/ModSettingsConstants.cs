@@ -140,5 +140,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.CameraRollingController"/>
         /// </summary>
         public const string ENABLE_CAMERA_BOBBING = "EnableCameraBobbing";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_BLOOM = "EnableBloom";
     }
 }

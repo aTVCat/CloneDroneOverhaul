@@ -1,13 +1,14 @@
 ﻿using OverhaulMod.Engine;
-using OverhaulMod.Patches.Addons;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Visuals
 {
-    public class RobotWeaponBag : RobotAddon
+    public class RobotWeaponBag : MonoBehaviour
     {
+        private FirstPersonMover m_firstPersonMover;
+
         private WeaponType m_lastEquippedWeapon;
 
         public static readonly Dictionary<WeaponType, TransformInfo> WeaponToPosition = new Dictionary<WeaponType, TransformInfo>()
@@ -24,22 +25,23 @@ namespace OverhaulMod.Visuals
 
         public bool IsSupported;
 
-        public override void Start()
+        private void Start()
         {
+            m_firstPersonMover = base.GetComponent<FirstPersonMover>();
+
             WeaponToRenderer = new Dictionary<WeaponType, GameObject>();
             CreateContainers();
             RefreshRenderers();
 
-            //firstPersonMoverReference.AddDeathListener(DestroySelf);
             GlobalEventManager.Instance.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
         }
 
-        public override void Update()
+        private void Update()
         {
             if (!IsSupported)
                 return;
 
-            WeaponType currentWeapon = firstPersonMoverReference._currentWeapon;
+            WeaponType currentWeapon = m_firstPersonMover._currentWeapon;
             if (currentWeapon != m_lastEquippedWeapon)
             {
                 RefreshRenderers();
@@ -47,7 +49,7 @@ namespace OverhaulMod.Visuals
             }
         }
 
-        public override void OnDestroy()
+        private void OnDestroy()
         {
             GlobalEventManager.Instance.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
         }
@@ -56,7 +58,7 @@ namespace OverhaulMod.Visuals
         {
             ModActionUtils.DoInFrames(delegate
             {
-                if (firstPersonMover && firstPersonMover == firstPersonMoverReference)
+                if (firstPersonMover && firstPersonMover == m_firstPersonMover)
                     RespawnRenderers();
             }, 10);
         }
@@ -105,7 +107,7 @@ namespace OverhaulMod.Visuals
 
         public void RefreshRenderers()
         {
-            FirstPersonMover firstPersonMover = firstPersonMoverReference;
+            FirstPersonMover firstPersonMover = m_firstPersonMover;
             if (!firstPersonMover)
             {
                 DestroySelf();

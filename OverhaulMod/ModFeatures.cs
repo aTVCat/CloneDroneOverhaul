@@ -6,7 +6,6 @@ namespace OverhaulMod
     {
         public static bool IsEnabled(FeatureType feature)
         {
-            bool unknownFeature = false;
             bool result;
             switch (feature)
             {
@@ -56,18 +55,15 @@ namespace OverhaulMod
                     result = true;
                     break;
                 default:
-                    result = false;
-                    unknownFeature = true;
-                    break;
+                    return false;
             }
 
-            if (!unknownFeature && !result)
+            if (!result)
             {
                 ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
                 if (modExclusiveContentManager && modExclusiveContentManager.IsFeatureUnlocked(feature))
                     result = true;
             }
-
             return result;
         }
 

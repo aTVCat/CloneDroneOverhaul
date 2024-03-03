@@ -171,6 +171,11 @@ namespace OverhaulMod
             {
                 PostEffectsManager.Instance.RefreshCameraPostEffects();
             }, ModSettingsConstants.ENABLE_SSAO);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                PostEffectsManager.Instance.RefreshCameraPostEffects();
+            }, ModSettingsConstants.ENABLE_BLOOM);
         }
 
         public static bool HasToLoad()

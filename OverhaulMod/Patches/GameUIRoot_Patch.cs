@@ -134,6 +134,14 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_FEEDBACK_UI))
                     return false;
+
+                SettingsMenu settingsMenu = ModCache.gameUIRoot?.SettingsMenu;
+                if (settingsMenu && settingsMenu.gameObject.activeInHierarchy)
+                {
+                    settingsMenu.Hide();
+                    return false;
+                }
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_COMMUNITY_HUB))

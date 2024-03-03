@@ -172,7 +172,7 @@ namespace OverhaulMod
             isEnabled = true;
 
             ModLoader.Load();
-            GameAddon.Load();
+            GamePatchBehaviour.Load();
 
             TriggerGameInitializedEvent();
             TriggerModStateChangedEvent(true);
@@ -211,7 +211,7 @@ namespace OverhaulMod
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
-            GameAddon.Unload();
+            GamePatchBehaviour.Unload();
             ModLoader.Unload();
         }
 
