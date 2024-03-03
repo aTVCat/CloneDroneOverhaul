@@ -7,23 +7,14 @@ namespace OverhaulMod.Patches.Addons
 {
     internal class EnergyUIPatchBehaviour : GamePatchBehaviour
     {
-        private (Vector3, Vector3) m_positions;
-
-        private Transform m_bg;
-
-        private Image m_barBG;
-        private Color m_barBGInitColor;
-        private readonly Color m_barBGPatchedColor = new Color(0, 0, 0.2f, 0.25f);
-        private (Vector3, Vector3) m_barBGPositions;
-        private (Vector3, Vector3) m_barBGScale = (new Vector3(1, 1, 1), new Vector3(1.04f, 1.3f, 1));
-
-        private Image m_glow;
-        private Color m_glowColor;
-        private readonly Color m_glowPatchedColor = new Color(0.1f, 0.4f, 1f, 0.9f);
-        private (Vector3, Vector3) m_glowScale = (new Vector3(1, 1, 1), new Vector3(1.05f, 1, 1));
-
+        private GameObject m_bg;
         private Transform m_cantJumpBG;
-        private (Vector3, Vector3) m_cantJumpBGScale = (Vector3.one, Vector3.zero);
+
+        private Image m_barBGImage;
+        private Color m_barBGVanillaColor;
+
+        private Image m_glowImage;
+        private Color m_glowVanillaColor;
 
         private EnergyUI m_energyUI;
         public EnergyUI energyUI
@@ -32,7 +23,7 @@ namespace OverhaulMod.Patches.Addons
             {
                 if (!m_energyUI)
                 {
-                    m_energyUI = ModCache.gameUIRoot.EnergyUI;
+                    m_energyUI = ModCache.gameUIRoot?.EnergyUI;
                 }
                 return m_energyUI;
             }
@@ -40,18 +31,14 @@ namespace OverhaulMod.Patches.Addons
 
         public override void Patch()
         {
-            RectTransform transform = energyUI.transform as RectTransform;
-            m_positions.Item1 = transform.anchoredPosition;
-            m_positions.Item2 = Vector2.up * 10f;
-
-            m_bg = transform.Find("FrameBG");
-            m_barBG = transform.Find("BarBG").GetComponent<Image>();
-            m_barBGInitColor = m_barBG.color;
-            m_barBGPositions.Item1 = m_barBG.transform.localPosition;
-            m_barBGPositions.Item2 = new Vector3(0, 9, 0);
-            m_glow = transform.Find("GlowFill").GetComponent<Image>();
-            m_glowColor = m_glow.color;
-            m_cantJumpBG = transform.Find("CantJumpBG");
+            EnergyUI eui = energyUI;
+            Transform transform = eui.transform;
+            m_bg = transform.FindChildRecursive("FrameBG").gameObject;
+            m_barBGImage = transform.FindChildRecursive("BarBG").GetComponent<Image>();
+            m_barBGVanillaColor = m_barBGImage.color;
+            m_glowImage = transform.FindChildRecursive("GlowFill").GetComponent<Image>();
+            m_glowVanillaColor = m_glowImage.color;
+            m_cantJumpBG = transform.FindChildRecursive("CantJumpBG");
 
             if (!transform.GetComponent<EnergyUIBehaviour>())
                 _ = transform.gameObject.AddComponent<EnergyUIBehaviour>();
@@ -67,6 +54,9 @@ namespace OverhaulMod.Patches.Addons
         public void PatchEnergyUI(bool vanilla)
         {
             EnergyUI component = energyUI;
+            if (!component)
+                return;
+
             GameObject errorText = component.InsufficientEnergyText?.gameObject;
             if (errorText)
             {
@@ -80,14 +70,27 @@ namespace OverhaulMod.Patches.Addons
                 }
             }
 
-            (component.transform as RectTransform).anchoredPosition = vanilla ? m_positions.Item1 : m_positions.Item2;
-            m_bg.gameObject.SetActive(vanilla);
-            m_barBG.color = vanilla ? m_barBGInitColor : m_barBGPatchedColor;
-            m_barBG.transform.localPosition = vanilla ? m_barBGPositions.Item1 : m_barBGPositions.Item2;
-            m_barBG.transform.localScale = vanilla ? m_barBGScale.Item1 : m_barBGScale.Item2;
-            m_glow.color = vanilla ? m_glowColor : m_glowPatchedColor;
-            m_glow.transform.localScale = vanilla ? m_glowScale.Item1 : m_glowScale.Item2;
-            m_cantJumpBG.localScale = vanilla ? m_cantJumpBGScale.Item1 : m_cantJumpBGScale.Item2;
+            if(component.transform is RectTransform rt)
+                rt.anchoredPosition = vanilla ? Vector3.zero : Vector3.up * 10f;
+
+            if (m_bg)
+                m_bg.SetActive(vanilla);
+
+            Image image = m_barBGImage;
+            if (image)
+            {
+                image.color = vanilla ? m_barBGVanillaColor : new Color(0, 0, 0.2f, 0.25f);
+
+                Transform transform = image.transform;
+                if (transform)
+                    transform.localScale = vanilla ? Vector3.one : new Vector3(1.04f, 1.3f, 1f);
+            }
+
+            if (m_glowImage)
+                m_glowImage.color = vanilla ? m_glowVanillaColor : new Color(0.1f, 0.4f, 1f, 0.9f);
+
+            if (m_cantJumpBG)
+                m_cantJumpBG.localScale = vanilla ? Vector3.one : Vector3.zero;
         }
     }
 }

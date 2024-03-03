@@ -27,6 +27,18 @@ namespace OverhaulMod.UI
 
         private (Color, Color, Color)[] m_colors;
 
+        public bool showedFromCode
+        {
+            get;
+            set;
+        }
+
+        public bool hasEverShowed
+        {
+            get;
+            protected set;
+        }
+
         protected override void OnInitialized()
         {
             m_colors = new (Color, Color, Color)[]

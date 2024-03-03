@@ -413,6 +413,7 @@
     <Compile Include="Content\NewsInfo.cs" />
     <Compile Include="Engine\ModLocalizationInfo.cs" />
     <Compile Include="Engine\ModLocalizationManager.cs" />
+    <Compile Include="Engine\ModPhysicsManager.cs" />
     <Compile Include="Engine\ModSetting.cs" />
     <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
     <Compile Include="Engine\ModSettingAttribute.cs" />
@@ -462,6 +463,7 @@
     <Compile Include="Patches\Behaviours\MinorPatchBehaviour.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\EnergyUI_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
@@ -588,7 +590,6 @@
     <Compile Include="UI\Elements\UIElementContentIntPropertyDisplay.cs" />
     <Compile Include="UI\UIAdvancementProgress.cs" />
     <Compile Include="UI\UIAdvancementsMenu.cs" />
-    <Compile Include="UI\UIAttribute.cs" />
     <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemsBrowser.cs" />
     <Compile Include="UI\UIUpdatesWindow.cs" />

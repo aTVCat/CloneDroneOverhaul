@@ -76,6 +76,27 @@ namespace OverhaulMod.Patches.Addons
                     light.shadowBias = 1f;
                 }
             }
+
+            AudioManager audioManager = AudioManager.Instance;
+            if (audioManager)
+            {
+                PooledPrefab pooledPrefab = audioManager.WorldAudioSourcePool;
+                if (pooledPrefab != null)
+                {
+                    Transform prefab = pooledPrefab.Prefab;
+                    if (prefab)
+                    {
+                        AudioReverbFilter audioReverbFilter = prefab.GetComponent<AudioReverbFilter>();
+                        if (!audioReverbFilter)
+                        {
+                            audioReverbFilter = prefab.gameObject.AddComponent<AudioReverbFilter>();
+                            audioReverbFilter.diffusion = 100f;
+                            audioReverbFilter.density = 100f;
+                            audioReverbFilter.decayTime = 0f;
+                        }
+                    }
+                }
+            }
         }
     }
 }

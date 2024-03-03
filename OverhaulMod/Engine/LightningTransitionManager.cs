@@ -7,7 +7,7 @@ namespace OverhaulMod.Engine
     {
         private LightningTransitionInfo m_currentTransition;
 
-        private LightningInfo m_oldLightningInfo;
+        private LightningInfo m_oldLevelLightInfo;
 
         public float transitionTime
         {
@@ -22,28 +22,26 @@ namespace OverhaulMod.Engine
 
         public void DoTransition(LevelLightSettings b)
         {
-            if (!b || m_oldLightningInfo == null)
+            if (!b)
+                return;
+
+            LightningInfo aInfo = m_oldLevelLightInfo;
+            LightningInfo bInfo = new LightningInfo(b);
+            m_oldLevelLightInfo = bInfo;
+
+            if (aInfo == null || aInfo.Equals(bInfo))
                 return;
 
             LightningTransitionInfo lightningTransitionInfo = new LightningTransitionInfo
             {
-                LightningA = m_oldLightningInfo,
-                LightningB = new LightningInfo(b),
+                LightningA = aInfo,
+                LightningB = bInfo,
                 completion = 0f
             };
+            lightningTransitionInfo.completion = 0f;
             m_timeLeft = transitionTime;
             m_timeToAllowTransitionUpdates = Time.time + 0.3f;
             m_currentTransition = lightningTransitionInfo;
-        }
-
-        public void SetOldLightningInfo(LevelLightSettings levelLightSettings)
-        {
-            m_oldLightningInfo = new LightningInfo(levelLightSettings);
-        }
-
-        public bool ShouldDoTransition()
-        {
-            return m_oldLightningInfo != null;
         }
 
         public bool IsDoingTransition()
@@ -68,7 +66,6 @@ namespace OverhaulMod.Engine
             {
                 m_currentTransition.completion = 1f;
                 m_currentTransition = null;
-                m_oldLightningInfo = null;
                 LevelEditorLightManager.Instance.RefreshLightInScene();
                 RealisticLightningManager.Instance.PatchLightning(false);
             }

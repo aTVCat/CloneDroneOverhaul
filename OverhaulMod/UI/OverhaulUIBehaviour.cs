@@ -10,13 +10,13 @@ namespace OverhaulMod.UI
 {
     public class OverhaulUIBehaviour : ModBehaviour
     {
-        internal string uiName
+        public string uiName
         {
             get;
             set;
         }
 
-        protected bool initialized
+        public bool isElement
         {
             get;
             private set;
@@ -44,12 +44,6 @@ namespace OverhaulMod.UI
             {
                 return false;
             }
-        }
-
-        public bool isElement
-        {
-            get;
-            set;
         }
 
         public virtual bool enableCursor
@@ -85,42 +79,8 @@ namespace OverhaulMod.UI
             }
         }
 
-        public bool hasEverShowed
-        {
-            get;
-            protected set;
-        }
-
-        public bool showedFromCode
-        {
-            get;
-            set;
-        }
-
         public void InitializeUI()
         {
-            if (initialized)
-                return;
-
-            UIAttribute uiAttribute = base.GetType().GetCustomAttribute<UIAttribute>();
-            if (uiAttribute != null && uiAttribute.FixOutlines)
-            {
-                /*
-                foreach (Outline component in base.GetComponentsInChildren<Outline>())
-                {
-                    GameObject gameObject = component.gameObject;
-                    Color effectColor = component.effectColor;
-                    Vector2 effectDist = component.effectDistance;
-                    bool useGraphicAlpha = component.useGraphicAlpha;
-                    Destroy(component);
-
-                    ToJOutline betterOutline = gameObject.AddComponent<ToJOutline>();
-                    betterOutline.effectColor = effectColor;
-                    betterOutline.effectDistance = effectDist;
-                    betterOutline.useGraphicAlpha = useGraphicAlpha;
-                }*/
-            }
-
             List<(FieldInfo, TabManagerAttribute)> tabManagers = new List<(FieldInfo, TabManagerAttribute)>();
 
             BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -135,85 +95,87 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
-                ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
-                ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
-                UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
-
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
+                    ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
+                    ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
+                    UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
+
+                    GameObject gameObject = null;
                     UnityEngine.Object unityObject = null;
                     if (elementAttribute.ComponentToAdd != null)
                     {
-                        UnityEngine.Object obj = GetObject<GameObject>(elementAttribute.Name).AddComponent(elementAttribute.ComponentToAdd);
-                        if (obj is OverhaulUIBehaviour uib)
+                        gameObject = GetObject<GameObject>(elementAttribute.Name);
+                        if (!gameObject)
+                        {
+                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                            return;
+                        }
+
+                        UnityEngine.Object component = gameObject.AddComponent(elementAttribute.ComponentToAdd);
+                        if (component is OverhaulUIBehaviour uib)
                             uib.InitializeElement();
 
-                        unityObject = obj.GetType() == fieldInfo.FieldType
-                            ? obj
-                            : elementAttribute.HasIndex()
-                        ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
-                        : GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                        if (component.GetType() == fieldInfo.FieldType)
+                            unityObject = component;
                     }
                     else if (colorPickerAttribute != null)
                     {
-                        unityObject = GetObject<GameObject>(elementAttribute.Name).AddComponent<UIElementColorPickerButton>();
-                        UIElementColorPickerButton colorPickerButton = unityObject as UIElementColorPickerButton;
+                        gameObject = GetObject<GameObject>(elementAttribute.Name);
+                        if (!gameObject)
+                        {
+                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                            return;
+                        }
+
+                        UIElementColorPickerButton colorPickerButton = gameObject.AddComponent<UIElementColorPickerButton>();
                         colorPickerButton.InitializeElement();
                         colorPickerButton.useAlpha = colorPickerAttribute.UseAlpha;
-                    }
-                    else
-                    {
-                        unityObject = elementAttribute.HasIndex()
-                        ? GetObject(elementAttribute.Index, fieldInfo.FieldType)
-                        : GetObject(elementAttribute.Name, fieldInfo.FieldType);
-                    }
-
-                    if (showTooltipHighLightAttribute != null)
-                    {
-                        GameObject gameObject = null;
-                        if (unityObject is GameObject go)
-                            gameObject = go;
-                        else if (unityObject is Component c)
-                            gameObject = c.gameObject;
-
-                        UIElementShowTooltipOnHightLight showTooltipOnHightLight = gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
-                        showTooltipOnHightLight.InitializeElement();
-                        showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
-                        showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
+                        unityObject = colorPickerButton;
                     }
 
                     if (!unityObject)
                     {
-                        Debug.LogError(string.Format("{0}: Could not find object with name/index {1}/{2}", new object[]
+                        unityObject = elementAttribute.HasIndex() ? GetObject(elementAttribute.Index, fieldInfo.FieldType) : GetObject(elementAttribute.Name, fieldInfo.FieldType);
+                        if (!unityObject)
                         {
-                            GetType(),
-                            elementAttribute.Name,
-                            elementAttribute.Index
-                        }));
-                        continue;
+                            Debug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                            return;
+                        }
                     }
 
-                    if (elementAttribute.DefaultActiveState != null)
+                    if (gameObject == null)
                     {
-                        bool value = elementAttribute.DefaultActiveState.Value;
-                        GameObject gameObject = null;
-
                         if (unityObject.GetType() == typeof(GameObject))
                             gameObject = unityObject as GameObject;
                         else if (unityObject is Behaviour)
                             gameObject = (unityObject as Behaviour).gameObject;
+                    }
 
-                        if (gameObject)
-                            gameObject.SetActive(value);
+                    if (gameObject)
+                    {
+                        if (elementAttribute.DefaultActiveState != null)
+                        {
+                            gameObject.SetActive(elementAttribute.DefaultActiveState.Value);
+                        }
+
+                        if (showTooltipHighLightAttribute != null)
+                        {
+                            UIElementShowTooltipOnHightLight showTooltipOnHightLight = gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
+                            showTooltipOnHightLight.InitializeElement();
+                            showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
+                            showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
+                        }
                     }
 
                     UIElementActionAttribute actionAttribute = fieldInfo.GetCustomAttribute<UIElementActionAttribute>();
                     if (actionAttribute != null)
                     {
+                        MethodInfo methodInfo = null;
                         if (fieldInfo.FieldType == typeof(Button))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                            methodInfo = localType.GetMethod(actionAttribute.Name, bindingFlags);
                             if (methodInfo != null)
                             {
                                 Button button = unityObject as Button;
@@ -225,7 +187,7 @@ namespace OverhaulMod.UI
                         }
                         else if (fieldInfo.FieldType == typeof(Dropdown))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(int) });
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(int) });
                             if (methodInfo != null)
                             {
                                 Dropdown dropdown = unityObject as Dropdown;
@@ -237,7 +199,7 @@ namespace OverhaulMod.UI
                         }
                         else if (fieldInfo.FieldType == typeof(Toggle))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(bool) });
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(bool) });
                             if (methodInfo != null)
                             {
                                 Toggle toggle = unityObject as Toggle;
@@ -249,7 +211,7 @@ namespace OverhaulMod.UI
                         }
                         else if (fieldInfo.FieldType == typeof(InputField))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(string) });
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(string) });
                             if (methodInfo != null)
                             {
                                 InputField inputField = unityObject as InputField;
@@ -271,7 +233,7 @@ namespace OverhaulMod.UI
                         }
                         else if (fieldInfo.FieldType == typeof(Slider))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(float) });
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(float) });
                             if (methodInfo != null)
                             {
                                 Slider slider = unityObject as Slider;
@@ -286,7 +248,7 @@ namespace OverhaulMod.UI
                         }
                         else if (fieldInfo.FieldType == typeof(UIElementColorPickerButton))
                         {
-                            MethodInfo methodInfo = base.GetType().GetMethod(actionAttribute.Name, new System.Type[] { typeof(Color) });
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(Color) });
                             if (methodInfo != null)
                             {
                                 UIElementColorPickerButton colorPickerButton = unityObject as UIElementColorPickerButton;
@@ -350,7 +312,6 @@ namespace OverhaulMod.UI
             }
 
             OnInitialized();
-            initialized = true;
         }
 
         public void InitializeElement()
@@ -367,9 +328,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             if (!isElement)
-            {
                 ModUIManager.Instance.RemoveFromList(this);
-            }
         }
 
         public virtual void Show()
@@ -377,8 +336,6 @@ namespace OverhaulMod.UI
             base.gameObject.SetActive(true);
             if (!isElement)
                 ModUIManager.Instance.RefreshUI(dontRefreshUI);
-
-            hasEverShowed = true;
         }
 
         public virtual void Hide()

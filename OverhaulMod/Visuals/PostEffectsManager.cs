@@ -56,6 +56,9 @@ namespace OverhaulMod.Visuals
             amplifyOcclusionEffect.SampleCount = SampleCountLevel.Medium;
             amplifyOcclusionEffect.Intensity = 0.75f;
             amplifyOcclusionEffect.ApplyMethod = AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
+            amplifyOcclusionEffect.FadeEnabled = true;
+            amplifyOcclusionEffect.FadeStart = 0f;
+            amplifyOcclusionEffect.FadeLength = Mathf.Min(500f, RenderSettings.fogEndDistance);
             amplifyOcclusionEffect.enabled = EnableSSAO;
 
             Bloom bloom = camera.GetComponent<Bloom>();

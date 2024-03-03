@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Addons
@@ -6,43 +7,43 @@ namespace OverhaulMod.Patches.Addons
     public class GamePatchBehaviour : ModBehaviour
     {
         private static GameObject s_gameObject;
-        private static GamePatchBehaviour[] s_patches;
 
         public static void Load()
         {
-            GameObject gameObject = s_gameObject;
-            if (!gameObject)
-            {
-                gameObject = new GameObject("PatchBehaviours");
-                gameObject.transform.SetParent(ModManagers.Instance.transform);
-                s_gameObject = gameObject;
-            }
-
             Unload();
 
-            _ = gameObject.AddComponent<GameModeCardsPatchBehaviour>();
-            _ = gameObject.AddComponent<ProjectilePatchBehaviour>();
-            _ = gameObject.AddComponent<SkyboxesPatchBehaviour>();
-            _ = gameObject.AddComponent<ColorsPatchBehaviour>();
-            _ = gameObject.AddComponent<MinorPatchBehaviour>();
-            _ = gameObject.AddComponent<LocalizationPatchBehaviour>();
-            _ = gameObject.AddComponent<GameModeSelectScreensPatchBehaviour>();
-            _ = gameObject.AddComponent<EnergyUIPatchBehaviour>();
-            _ = gameObject.AddComponent<MenuButtonsPatchBehaviour>();
-
-            s_patches = gameObject.GetComponents<GamePatchBehaviour>();
+            GameObject gameObject = new GameObject("PatchBehaviours", new Type[]
+            {
+                typeof(GameModeCardsPatchBehaviour),
+                typeof(ProjectilePatchBehaviour),
+                typeof(SkyboxesPatchBehaviour),
+                typeof(ColorsPatchBehaviour),
+                typeof(MinorPatchBehaviour),
+                typeof(LocalizationPatchBehaviour),
+                typeof(GameModeSelectScreensPatchBehaviour),
+                typeof(EnergyUIPatchBehaviour),
+                typeof(MenuButtonsPatchBehaviour),
+            });
+            gameObject.transform.SetParent(ModManagers.Instance.transform);
+            s_gameObject = gameObject;
         }
 
         public static void Unload()
         {
-            GamePatchBehaviour[] patches = s_patches;
-            if (patches != null)
-            {
-                foreach (GamePatchBehaviour patch in patches)
-                    Destroy(patch);
+            GameObject gameObject = s_gameObject;
+            if (gameObject)
+                Destroy(gameObject);
 
-                s_patches = Array.Empty<GamePatchBehaviour>();
-            }
+            s_gameObject = null;
+        }
+
+        public static T GetBehaviour<T>() where T : GamePatchBehaviour
+        {
+            GameObject gameObject = s_gameObject;
+            if (!gameObject)
+                return null;
+
+            return gameObject.GetComponent<T>();
         }
 
         public override void Start()

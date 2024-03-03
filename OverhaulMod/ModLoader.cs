@@ -33,6 +33,7 @@ namespace OverhaulMod
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadBufferSize = 16;
             QualitySettings.asyncUploadPersistentBuffer = true;
+            QualitySettings.softParticles = true;
 
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
@@ -98,6 +99,8 @@ namespace OverhaulMod
             _ = ModManagers.New<ParticleManager>();
             _ = ModManagers.New<PostEffectsManager>();
             _ = ModManagers.New<QuickResetManager>();
+
+            _ = ModManagers.New<ModPhysicsManager>();
         }
 
         private static void loadAssemblies()

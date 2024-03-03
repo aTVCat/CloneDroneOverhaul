@@ -4,6 +4,7 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -117,8 +118,6 @@ namespace OverhaulMod
         {
             switch (layer)
             {
-                default:
-                    return 0;
                 case UILayer.Last:
                     return GameUIRootTransform.childCount;
                 case UILayer.BeforeTitleScreen:
@@ -138,9 +137,10 @@ namespace OverhaulMod
                 case UILayer.AfterMultiplayerConnectScreen:
                     return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex() + 1;
             }
+            return 0;
         }
 
-        public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last, int offset = 0) where T : OverhaulUIBehaviour
+        public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last, int siblingIndexOffset = 0) where T : OverhaulUIBehaviour
         {
             string fullName = assetBundle + "." + assetKey;
             if (!HasInstantiatedUI(fullName))
@@ -150,7 +150,7 @@ namespace OverhaulMod
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
                 RectTransform transform = gameObject.transform as RectTransform;
-                transform.SetSiblingIndex(GetSiblingIndex(layer) + offset);
+                transform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
                 transform.anchorMin = Vector2.zero;
                 transform.anchorMax = Vector2.one;
                 transform.sizeDelta = Vector2.zero;
@@ -159,7 +159,15 @@ namespace OverhaulMod
 
                 T result1 = gameObject.AddComponent<T>();
                 result1.uiName = fullName;
+
+#if DEBUG
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 result1.InitializeUI();
+                stopwatch.Stop();
+                UnityEngine.Debug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
+#else
+          result1.InitializeUI();
+#endif
                 result1.Show();
 
                 return result1;

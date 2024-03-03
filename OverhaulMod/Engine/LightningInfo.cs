@@ -186,5 +186,76 @@ namespace OverhaulMod.Engine
             levelLightSettings.CameraColorBlend = CameraColorBlend;
             levelLightSettings.CameraExposure = CameraExposure;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (!(obj is LightningInfo lightningInfo))
+                return false;
+
+            if (EnableDirectionalLight != lightningInfo.EnableDirectionalLight)
+                return false;
+            if (DirectionalRotationX != lightningInfo.DirectionalRotationX)
+                return false;
+            if (DirectionalRotationY != lightningInfo.DirectionalRotationY)
+                return false;
+            if (DirectionalColor != lightningInfo.DirectionalColor)
+                return false;
+            if (DirectionalIntensity != lightningInfo.DirectionalIntensity)
+                return false;
+            if (DirectionalShadowStrength != lightningInfo.DirectionalShadowStrength)
+                return false;
+            if (AmbientUsesSkybox != lightningInfo.AmbientUsesSkybox)
+                return false;
+            if (AmbientColor != lightningInfo.AmbientColor)
+                return false;
+            if (SkyboxIndex != lightningInfo.SkyboxIndex)
+                return false;
+            if (SunSize != lightningInfo.SunSize)
+                return false;
+            if (SunSizeConvergence != lightningInfo.SunSizeConvergence)
+                return false;
+            if (AtmosphereThickness != lightningInfo.AtmosphereThickness)
+                return false;
+            if (SkyTint != lightningInfo.SkyTint)
+                return false;
+            if (GroundTint != lightningInfo.GroundTint)
+                return false;
+            if (SkyExposure != lightningInfo.SkyExposure)
+                return false;
+            if (SkyColor != lightningInfo.SkyColor)
+                return false;
+            if (HorizonColor != lightningInfo.HorizonColor)
+                return false;
+            if (GroundColor != lightningInfo.GroundColor)
+                return false;
+            if (SkyTopExponent != lightningInfo.SkyTopExponent)
+                return false;
+            if (SkyBottomExponent != lightningInfo.SkyBottomExponent)
+                return false;
+            if (SkyIntensity != lightningInfo.SkyIntensity)
+                return false;
+            if (FogEnabled != lightningInfo.FogEnabled)
+                return false;
+            if (FogColor != lightningInfo.FogColor)
+                return false;
+            if (FogStartDistance != lightningInfo.FogStartDistance)
+                return false;
+            if (FogEndDistance != lightningInfo.FogEndDistance)
+                return false;
+            if (CameraColorGrading != lightningInfo.CameraColorGrading)
+                return false;
+            if (CameraColorBlend != lightningInfo.CameraColorBlend)
+                return false;
+            if (CameraExposure != lightningInfo.CameraExposure)
+                return false;
+
+            return true;
+        }
     }
 }
