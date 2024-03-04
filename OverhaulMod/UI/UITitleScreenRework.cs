@@ -268,6 +268,10 @@ namespace OverhaulMod.UI
         private IEnumerator levelEditorTransitionCoroutine()
         {
             yield return new WaitForSecondsRealtime(0.25f);
+            while(LevelManager.Instance.IsSpawningCurrentLevel())
+                yield return null;
+
+            yield return null;
             m_titleScreenUI.OnLevelEditorButtonClicked();
             yield return new WaitForSecondsRealtime(1f);
             TransitionManager.Instance.EndTransition();

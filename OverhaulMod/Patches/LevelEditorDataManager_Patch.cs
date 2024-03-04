@@ -13,5 +13,17 @@ namespace OverhaulMod.Patches
         {
             ModGameUtils.currentLevelMetaData = currentLevelData?.ModdedMetadata;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("LevelHasAtLeastOneEnemyForDifficulty")]
+        private static bool LevelHasAtLeastOneEnemyForDifficulty_Prefix(ref bool __result, Transform currentLevelTransform, int currentWorkshopLevelDifficultyIndex)
+        {
+            if (GameModeManager.IsOnTitleScreen())
+            {
+                __result = true;
+                return false;
+            }
+            return true;
+        }
     }
 }

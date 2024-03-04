@@ -99,6 +99,11 @@ namespace OverhaulMod.Engine
                 m_analysisBotTransform = m_commentatorBoxTransform.FindChildRecursive("AnalysisBot_Xmas(Clone)");
 
             m_arenaCameraAnimatorTransform = m_arenaFinalTransform.FindChildRecursive("ArenaCameraAnimator");
+            if (!m_arenaCameraAnimatorTransform)
+            {
+                m_arenaCameraAnimatorTransform = m_worldRootTransform.FindChildRecursive("ArenaCameraAnimator");
+            }
+
             m_commentatorTargetTransform = m_arenaCameraAnimatorTransform.FindChildRecursive("CommentatorTarget");
 
             m_tvsTransform = m_arenaFinalTransform.FindChildRecursive("ArenaSideTVs");

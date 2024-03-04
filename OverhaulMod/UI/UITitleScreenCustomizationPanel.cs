@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -20,6 +21,9 @@ namespace OverhaulMod.UI
         [UIElement("StaticBackgroundConfig", typeof(UIElementTitleScreenBackgroundConfig))]
         private readonly UIElementTitleScreenBackgroundConfig m_staticBgConfig;
 
+        [UIElement("LoadingLevelBG", false)]
+        private readonly GameObject m_loadingLevelBg;
+
         public override bool hideTitleScreen => true;
 
         public override bool enableUIOverLogoMode => true;
@@ -32,6 +36,7 @@ namespace OverhaulMod.UI
 
             m_staticBgConfig.refreshWhenEdited = true;
             m_staticBgConfig.backgroundInfo = TitleScreenCustomizationManager.Instance.GetStaticBackgroundInfo();
+            m_staticBgConfig.levelIsLoadingBG = m_loadingLevelBg;
 
             if (TitleScreenCustomizationManager.IntroduceCustomization)
             {

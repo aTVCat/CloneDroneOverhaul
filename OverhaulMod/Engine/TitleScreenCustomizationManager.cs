@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.Engine
@@ -15,6 +17,8 @@ namespace OverhaulMod.Engine
         public static bool IntroduceCustomization;
 
         private TitleScreenCustomizationInfo m_customizationInfo;
+
+        private GameObject m_levelIsLoadingBg;
 
         public LevelDescription overrideLevelDescription
         {
@@ -39,6 +43,10 @@ namespace OverhaulMod.Engine
             RefreshMusicTrack();
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted);
+
+            Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
+            if (transform)
+                transform.SetParent(WorldRoot.Instance?.transform);
         }
 
         private void onLevelEditorStarted()
@@ -114,16 +122,12 @@ namespace OverhaulMod.Engine
                 return;
 
             titleScreenCustomizationInfo.FixValues();
-            GameFlowManager.Instance.SwapOutTitleScreenLevel();
-            /*
-            LevelManager levelManager = LevelManager.Instance;
-            if (!levelManager || levelManager.IsSpawningCurrentLevel() || levelManager.IsCurrentlySwappingInLevel())
-                return;
+            _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
+        }
 
-            levelManager.CleanUpLevelRootsWaitingForDestruction();
-            levelManager.CleanUpLevelThisFrame();
-            base.StartCoroutine(levelManager.SpawnCurrentLevel(true));
-            ArenaCameraManager.Instance.WaitForPreviewCameraToSpawnThenPanToIt();*/
+        public void SetLevelIsLoadingBG(GameObject gameObject)
+        {
+            m_levelIsLoadingBg = gameObject;
         }
 
         public List<Dropdown.OptionData> GetMusicTracks()
@@ -154,6 +158,49 @@ namespace OverhaulMod.Engine
                 AudioManager.Instance.PlayMusicClip(audioClip, true, true);
                 AudioManager.Instance.FadeInMusic(2f);
             }
+        }
+
+        public Transform LoadLevel(string levelJSONPath, LevelManager levelManager)
+        {
+            LevelEditorLevelData levelEditorLevelData;
+            try
+            {
+                levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(levelJSONPath);
+            }
+            catch
+            {
+                levelEditorLevelData = new LevelEditorLevelData()
+                {
+                    RootLevelObject = new LevelEditorLevelObject(),
+                    DifficultyConfigurations = new List<LevelEditorDifficultyData>(),
+                    ModdedMetadata = new Dictionary<string, string>()
+                };
+                levelEditorLevelData.AssignNewGeneratedUniqueID();
+            }
+
+            levelManager._currentWorkshopLevelDifficultyIndex = 0;
+            levelManager._currentLevelHidesTheArena = levelEditorLevelData.ArenaIsHidden || levelEditorLevelData.LevelType == LevelType.Adventure;
+            _ = levelManager.CreateLevelTransformFromLevelEditorData(levelEditorLevelData, false).MoveNext();
+            return levelManager._currentLevelTransform;
+        }
+
+        private IEnumerator spawnStaticBackgroundCoroutine()
+        {
+            if (m_levelIsLoadingBg)
+                m_levelIsLoadingBg.SetActive(true);
+
+            yield return null;
+            GameFlowManager.Instance.SwapOutTitleScreenLevel();
+            yield return null;
+
+            LevelManager levelManager = LevelManager.Instance;
+            while (levelManager.IsCurrentlySwappingInLevel() || levelManager.IsSpawningCurrentLevel())
+                yield return null;
+
+            if (m_levelIsLoadingBg)
+                m_levelIsLoadingBg.SetActive(false);
+
+            yield break;
         }
     }
 }

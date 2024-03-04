@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -10,9 +12,17 @@ namespace OverhaulMod.UI
         [UIElement("Label")]
         private readonly Text m_label;
 
-        [UIElementAction(nameof(OnEditButtonClicked))]
-        [UIElement("EditStaticBGButton")]
-        private readonly Button m_editButton;
+        [UIElementAction(nameof(OnSetInGameLevelButtonClicked))]
+        [UIElement("SetInGameLevelButton")]
+        private readonly Button m_setInGameLevelButton;
+
+        [UIElementAction(nameof(OnSetWorkshopLevelButtonClicked))]
+        [UIElement("SetWorkshopLevelButton")]
+        private readonly Button m_setWorkshopLevelButton;
+
+        [UIElementAction(nameof(OnSetCustomLevelButtonClicked))]
+        [UIElement("SetCustomLevelButton")]
+        private readonly Button m_setCustomLevelButton;
 
         private TitleScreenBackgroundInfo m_backgroundInfo;
         public TitleScreenBackgroundInfo backgroundInfo
@@ -30,36 +40,89 @@ namespace OverhaulMod.UI
             }
         }
 
+        public GameObject levelIsLoadingBG
+        {
+            get;
+            set;
+        }
+
         public bool refreshWhenEdited
         {
             get;
             set;
         }
 
-        public void OnEditButtonClicked()
+        protected override void OnInitialized()
         {
-            List<LevelDescription> list = new List<LevelDescription>();
-            list.AddRange(WorkshopLevelManager.Instance.GetAllWorkShopEndlessLevels());
-            list.AddRange(LevelManager.Instance._endlessLevels);
+            refreshLabel();
+        }
 
-            ModUIUtils.LevelDescriptionBrowser(list, delegate (LevelDescription level)
+        public void OnSetInGameLevelButtonClicked()
+        {
+            ModUIUtils.LevelDescriptionBrowser(LevelManager.Instance._endlessLevels, onSetLevel);
+        }
+
+        public void OnSetWorkshopLevelButtonClicked()
+        {
+            ModUIUtils.LevelDescriptionBrowser(WorkshopLevelManager.Instance.GetAllWorkShopEndlessLevels(), onSetLevel);
+        }
+
+        public void OnSetCustomLevelButtonClicked()
+        {
+            ModUIUtils.FileExplorer(null, true, delegate (string levelPath) 
             {
-                TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
-                if (level == null)
+                LevelDescription levelDescription = new LevelDescription()
                 {
-                    backgroundInfo.Level = null;
-                    titleScreenCustomizationManager.SetStaticLevel(null, refreshWhenEdited);
-                    titleScreenCustomizationManager.SaveCustomizationInfo();
-                    m_label.text = "None";
-                }
-                else
-                {
-                    backgroundInfo.Level = level;
-                    titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);
-                    titleScreenCustomizationManager.SaveCustomizationInfo();
-                    m_label.text = level.LevelID;
-                }
-            });
+                    LevelTags = new List<LevelTags>() { },
+                    LevelJSONPath = levelPath,
+                    LevelEditorDifficultyIndex = 0,
+                    LevelID = "customTitleScreenLevel"
+                };
+                LevelManager.Instance._currentWorkshopLevelDifficultyIndex = 0;
+                onSetLevel(levelDescription);
+            }, Application.persistentDataPath + "/LevelEditorLevels/", "*.json");
+        }
+
+        private void onSetLevel(LevelDescription level)
+        {
+            TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
+            titleScreenCustomizationManager.SetLevelIsLoadingBG(levelIsLoadingBG);
+            if (level == null)
+            {
+                backgroundInfo.Level = null;
+                titleScreenCustomizationManager.SetStaticLevel(null, refreshWhenEdited);
+                titleScreenCustomizationManager.SaveCustomizationInfo();
+            }
+            else
+            {
+                backgroundInfo.Level = level;
+                titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);
+                titleScreenCustomizationManager.SaveCustomizationInfo();
+            }
+            refreshLabel();
+        }
+
+        private void refreshLabel()
+        {
+            var info = TitleScreenCustomizationManager.Instance?.GetStaticBackgroundInfo();
+            if(info == null || info.Level == null)
+            {
+                m_label.text = "None";
+                return;
+            }
+
+            if(info.Level.LevelID == "customTitleScreenLevel")
+            {
+                m_label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
+                return;
+            }
+            if (info.Level.WorkshopItem != null)
+            {
+                SteamWorkshopItem steamWorkshopItem = info.Level.WorkshopItem;
+                m_label.text = $"{steamWorkshopItem.Title} (by {steamWorkshopItem.CreatorName})";
+                return;
+            }
+            m_label.text = StringUtils.AddSpacesToCamelCasedString(info.Level.PrefabName.Substring(info.Level.PrefabName.LastIndexOf("/") + 1));
         }
     }
 }

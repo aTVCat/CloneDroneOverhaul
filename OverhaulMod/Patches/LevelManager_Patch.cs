@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
+using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -18,6 +19,18 @@ namespace OverhaulMod.Patches
                     __result = titleScreenCustomizationManager.overrideLevelDescription;
                     return false;
                 }
+            }
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("setCurrentDifficultyIndex")]
+        private static bool setCurrentDifficultyIndex_Prefix(LevelManager __instance, LevelDescription levelDescription, LevelEditorLevelData levelData)
+        {
+            if (levelDescription != null && levelDescription.LevelID == "customTitleScreenLevel")
+            {
+                __instance._currentWorkshopLevelDifficultyIndex = 0;
+                return false;
             }
             return true;
         }
