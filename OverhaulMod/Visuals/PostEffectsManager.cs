@@ -42,6 +42,8 @@ namespace OverhaulMod.Visuals
             if (!camera || camera.orthographic)
                 return;
 
+            bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
+
             GameObject cameraGameObject = camera.gameObject;
 
             AmplifyOcclusionEffect amplifyOcclusionEffect = camera.GetComponent<AmplifyOcclusionEffect>();
@@ -54,12 +56,12 @@ namespace OverhaulMod.Visuals
             amplifyOcclusionEffect.FilterResponse = 0.7f;
             amplifyOcclusionEffect.Bias = 0.2f;
             amplifyOcclusionEffect.SampleCount = SampleCountLevel.Medium;
-            amplifyOcclusionEffect.Intensity = 0.75f;
+            amplifyOcclusionEffect.Intensity = 0.8f;
             amplifyOcclusionEffect.ApplyMethod = AmplifyOcclusionEffect.ApplicationMethod.PostEffect;
             amplifyOcclusionEffect.FadeEnabled = true;
             amplifyOcclusionEffect.FadeStart = 0f;
-            amplifyOcclusionEffect.FadeLength = Mathf.Min(500f, RenderSettings.fogEndDistance);
-            amplifyOcclusionEffect.enabled = EnableSSAO;
+            amplifyOcclusionEffect.FadeLength = Mathf.Min(550f, RenderSettings.fogEndDistance);
+            amplifyOcclusionEffect.enabled = overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : EnableSSAO;
 
             Bloom bloom = camera.GetComponent<Bloom>();
             if (bloom)

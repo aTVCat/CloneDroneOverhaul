@@ -20,9 +20,6 @@ namespace OverhaulMod.Patches
                 if (UIManager.Instance.IsMouseOverUIElement())
                     return false;
 
-                // optimize?
-                if (Input.GetMouseButtonDown(0) && __instance._wasPlayerInputEnabled)
-                    AdvancedPhotoModeManager.Instance.RefreshLightningWithNormalInfo();
                 if (Input.GetMouseButtonUp(0))
                     AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
             }

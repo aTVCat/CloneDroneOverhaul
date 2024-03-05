@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnRestoreDefaultsButtonClicked))]
         [UIElement("RestoreDefaultsButton")]
         private readonly Button m_restoreDefaultsButton;
+
+        [UIElementCallback(true)]
+        [UIElementAction(nameof(OnTimeScaleChanged))]
+        [UIElement("TimeScaleField")]
+        private readonly InputField m_timeScaleField;
 
 
         [UIElementAction(nameof(OnShowPlayerToggled))]
@@ -47,6 +53,22 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnCinematicBordersHeightChanged))]
         [UIElement("CinematicBordersHeightSlider")]
         private readonly Slider m_cinematicBordersHeightSlider;
+
+        [UIElementAction(nameof(OnSSAOToggled))]
+        [UIElement("SSAOToggle")]
+        private readonly Toggle m_ambientOcclusionToggle;
+
+        [UIElementAction(nameof(OnVignetteToggled))]
+        [UIElement("VignetteToggle")]
+        private readonly Toggle m_vignetteToggle;
+
+        [UIElementAction(nameof(OnVignetteIntensityChanged))]
+        [UIElement("VignetteIntensitySlider")]
+        private readonly Slider m_vignetteIntensitySlider;
+
+        [UIElementAction(nameof(OnDitheringToggled))]
+        [UIElement("DitheringToggle")]
+        private readonly Toggle m_ditheringToggle;
 
 
         [UIElementAction(nameof(OnFogToggled))]
@@ -163,6 +185,13 @@ namespace OverhaulMod.UI
                 m_cinematicBordersToggle.isOn = cinematicEffects.borders;
             }
 
+            m_timeScaleField.text = PhotoManager.Instance.OverridePausedTimeScale.ToString().Replace(',', '.');
+
+            m_vignetteToggle.isOn = AdvancedPhotoModeManager.Settings.EnableVignette;
+            m_ditheringToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDithering;
+            m_ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
+            m_vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
+
             m_fogToggle.isOn = lightningInfo.FogEnabled;
             m_fogColor.color = lightningInfo.FogColor;
             m_fogStartSlider.value = lightningInfo.FogStartDistance;
@@ -220,7 +249,27 @@ namespace OverhaulMod.UI
         public void OnRestoreDefaultsButtonClicked()
         {
             AdvancedPhotoModeManager.Instance.RestoreDefaults();
+            UICinematicEffects cinematicEffects = UICinematicEffects.instance;
+            if (cinematicEffects)
+            {
+                cinematicEffects.borders = false;
+                cinematicEffects.bordersHeight = 100f;
+            }
             setFieldsValues();
+        }
+
+        public void OnTimeScaleChanged(string value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            if (!float.TryParse(value.Replace('.', ','), out float ts))
+                ts = 0.1f;
+
+            ts = Mathf.Clamp(ts, 0.01f, 1.0f);
+            m_timeScaleField.text = ts.ToString().Replace(',', '.');
+
+            PhotoManager.Instance.OverridePausedTimeScale = ts;
         }
 
         public void OnShowPlayerToggled(bool value)
@@ -268,6 +317,7 @@ namespace OverhaulMod.UI
 
         public void OnCinematicBordersToggled(bool value)
         {
+            m_cinematicBordersHeightSlider.gameObject.SetActive(value);
             if (m_disallowCallbacks)
                 return;
 
@@ -284,6 +334,40 @@ namespace OverhaulMod.UI
             UICinematicEffects cinematicEffects = UICinematicEffects.instance;
             if (cinematicEffects)
                 cinematicEffects.bordersHeight = value;
+        }
+
+        public void OnSSAOToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableSSAO = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnVignetteToggled(bool value)
+        {
+            m_vignetteIntensitySlider.gameObject.SetActive(value);
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableVignette = value;
+        }
+
+        public void OnVignetteIntensityChanged(float value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.VignetteIntensity = value;
+        }
+
+        public void OnDitheringToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableDithering = value;
         }
 
         public void OnFogToggled(bool value)

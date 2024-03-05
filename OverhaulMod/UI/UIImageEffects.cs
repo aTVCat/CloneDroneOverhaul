@@ -42,6 +42,8 @@ namespace OverhaulMod.UI
         {
             base.Update();
 
+            bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
+
             float v = m_timeLeftToSwitchTexture - Time.unscaledDeltaTime;
             m_timeLeftToSwitchTexture = v;
             if (v > 0f)
@@ -49,8 +51,8 @@ namespace OverhaulMod.UI
             m_timeLeftToSwitchTexture = 0.034f;
 
             bool hasCamera = CameraManager.Instance.mainCamera;
-            bool enableVignette = hasCamera && EnableVignette;
-            bool enableDithering = hasCamera && EnableDithering && ditheringTextures != null;
+            bool enableVignette = hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : EnableVignette);
+            bool enableDithering = hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : EnableDithering) && ditheringTextures != null;
 
             m_vignetteImage.enabled = enableVignette;
             m_ditheringImage.enabled = enableDithering;
@@ -67,6 +69,13 @@ namespace OverhaulMod.UI
                 if (index > 2)
                     index = 0;
                 m_TextureIndex = index;
+            }
+
+            if (enableVignette)
+            {
+                Color color = m_vignetteImage.color;
+                color.a = overrideSettings ? AdvancedPhotoModeManager.Settings.VignetteIntensity : 0.5f;
+                m_vignetteImage.color = color;
             }
         }
 

@@ -1,7 +1,10 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace OverhaulMod.Engine
 {
@@ -9,15 +12,9 @@ namespace OverhaulMod.Engine
     {
         private LightningInfo m_nonEditedLightningInfo, m_editedLightningInfo;
 
-        private bool m_isInPhotoMode;
+        private bool m_isInPhotoMode, m_hasEverEnteredPhotoMode;
 
         public LevelLightSettings editingLevelLightSettings
-        {
-            get;
-            set;
-        }
-
-        public bool hasEditedSettings
         {
             get;
             set;
@@ -72,7 +69,10 @@ namespace OverhaulMod.Engine
         {
             LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
             if (!currentLevelLightSettings)
+            {
+                PostEffectsManager.Instance.RefreshCameraPostEffects();
                 return;
+            }
 
             m_nonEditedLightningInfo.ApplyValues(currentLevelLightSettings);
             LevelEditorLightManager.Instance.RefreshLightInScene();
@@ -80,6 +80,9 @@ namespace OverhaulMod.Engine
 
         public void RestoreDefaults()
         {
+            PhotoManager.Instance.OverridePausedTimeScale = 0.1f;
+            Settings.SetDefaultSettings();
+
             LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
             if (!currentLevelLightSettings)
                 return;
@@ -118,10 +121,12 @@ namespace OverhaulMod.Engine
 
             m_nonEditedLightningInfo.SetValues(levelLightSettings);
 
-            if (!hasEditedSettings)
+            if (!m_hasEverEnteredPhotoMode)
             {
                 m_editedLightningInfo.SetValues(levelLightSettings);
-                hasEditedSettings = true;
+                Settings.SetDefaultSettings();
+
+                m_hasEverEnteredPhotoMode = true;
             }
 
             RefreshLightningWithEditedInfo();
@@ -133,6 +138,30 @@ namespace OverhaulMod.Engine
 
             RealisticLightningManager.Instance.PatchLevelLightSettings();
             RefreshLightningWithNormalInfo();
+        }
+
+        public static class Settings
+        {
+            public static bool overrideSettings
+            {
+                get
+                {
+                    AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
+                    return advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode();
+                }
+            }
+
+            public static bool EnableVignette, EnableDithering, EnableSSAO;
+
+            public static float VignetteIntensity;
+
+            public static void SetDefaultSettings()
+            {
+                VignetteIntensity = 0.5f;
+                EnableVignette = UIImageEffects.EnableVignette;
+                EnableDithering = UIImageEffects.EnableDithering;
+                EnableSSAO = PostEffectsManager.EnableSSAO;
+            }
         }
     }
 }
