@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("AddLightSettingInScene")]
         private static bool AddLightSettingInScene_Prefix(LevelEditorLightManager __instance, LevelLightSettings lightSettings)
         {
-            RealisticLightningManager.Instance.PatchLightning(false, lightSettings, false);
+            RealisticLightningManager.Instance.PatchLevelLightSettings(lightSettings);
 
             LightningTransitionManager manager = LightningTransitionManager.Instance;
             if (manager && manager.IsDoingTransition())
@@ -40,13 +40,22 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshLightInScene")]
         private static bool RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
-            if (!LightningTransitionManager.TransitionsEnabled)
-                return true;
-
             LevelLightSettings oldLevelLightSettings = __instance._selectedLightSettings;
             LevelLightSettings levelLightSettings = __instance.refreshActiveLightSettings();
             if (!levelLightSettings)
                 return false;
+
+            if(oldLevelLightSettings != levelLightSettings)
+            {
+                AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
+                if (advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode())
+                {
+                    advancedPhotoModeManager.OnLevelLightSettingsChanged(levelLightSettings);
+                }
+            }
+
+            if (!LightningTransitionManager.TransitionsEnabled)
+                return true;
 
             levelLightSettings.RestrictLightSettingsVariables();
             __instance._selectedLightSettings = levelLightSettings;
@@ -58,30 +67,20 @@ namespace OverhaulMod.Patches
             }
             else if (oldLevelLightSettings != levelLightSettings)
             {
-                RealisticLightningManager.Instance.PatchLightning(false, levelLightSettings);
                 LightningTransitionManager manager = LightningTransitionManager.Instance;
                 if (manager)
                     manager.DoTransition(levelLightSettings);
             }
 
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
-            PostEffectsManager.Instance.RefreshCameraPostEffects();
             return false;
-        }
-
+        }        
         
         [HarmonyPostfix]
         [HarmonyPatch("RefreshLightInScene")]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
-            if (LightningTransitionManager.TransitionsEnabled)
-                return;
-
-            LevelLightSettings levelLightSettings = __instance.GetActiveLightSettings();
-            if (levelLightSettings && !levelLightSettings.IsOverrideSettings)
-            {
-                RealisticLightningManager.Instance.PatchLightning(false, levelLightSettings);
-            }
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
     }
 }

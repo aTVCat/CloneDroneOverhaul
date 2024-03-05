@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,36 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnSaveRLightInfoButtonClicked))]
         [UIElement("SaveRLightInfoButton")]
         private readonly Button m_saveRLightInfoButton;
+
+        [UIElementAction(nameof(OnRestoreDefaultsButtonClicked))]
+        [UIElement("RestoreDefaultsButton")]
+        private readonly Button m_restoreDefaultsButton;
+
+
+        [UIElementAction(nameof(OnShowPlayerToggled))]
+        [UIElement("ShowPlayerToggle")]
+        private readonly Toggle m_showPlayerToggle;
+
+        [UIElementAction(nameof(OnShowEnemiesToggled))]
+        [UIElement("ShowEnemiesToggle")]
+        private readonly Toggle m_showEnemiesToggle;
+
+        [UIElementAction(nameof(OnShowGarbageToggled))]
+        [UIElement("ShowGarbageToggle")]
+        private readonly Toggle m_showGarbageToggle;
+
+        [UIElementAction(nameof(OnHUDToggled))]
+        [UIElement("ShowHUDToggle")]
+        private readonly Toggle m_showHUDToggle;
+
+
+        [UIElementAction(nameof(OnCinematicBordersToggled))]
+        [UIElement("CinematicBordersToggle")]
+        private readonly Toggle m_cinematicBordersToggle;
+
+        [UIElementAction(nameof(OnCinematicBordersHeightChanged))]
+        [UIElement("CinematicBordersHeightSlider")]
+        private readonly Slider m_cinematicBordersHeightSlider;
 
 
         [UIElementAction(nameof(OnFogToggled))]
@@ -74,6 +105,12 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxSlider")]
         private readonly Slider m_realisticSkyBoxSlider;
 
+        private LightningInfo m_lightningInfo;
+
+        private bool m_disallowCallbacks;
+
+        private List<GarbageTarget> m_garbageTargets;
+
         protected override void OnInitialized()
         {
             RectTransform lightningPanel = m_lightningPanel;
@@ -93,24 +130,86 @@ namespace OverhaulMod.UI
             ModActionUtils.DoInFrame(setFieldsValues);
         }
 
+        public override void Hide()
+        {
+            base.Hide();
+            m_showEnemiesToggle.isOn = true;
+            m_showPlayerToggle.isOn = true;
+            m_showHUDToggle.isOn = true;
+            m_showGarbageToggle.isOn = true;
+        }
+
         private void setFieldsValues()
         {
-            AdvancedPhotoModeManager.Instance.SetDefaultValues();
-            m_fogToggle.isOn = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<bool>(typeof(RenderSettings), nameof(RenderSettings.fog));
-            m_fogColor.color = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<Color>(typeof(RenderSettings), nameof(RenderSettings.fogColor));
-            m_fogStartSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(RenderSettings), nameof(RenderSettings.fogStartDistance));
-            m_fogEndSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(RenderSettings), nameof(RenderSettings.fogEndDistance));
+            LightningInfo lightningInfo = AdvancedPhotoModeManager.Instance.GetEditedLightningInfo();
+            if (lightningInfo == null)
+            {
+                m_lightningInfo = default;
+                return;
+            }
+            m_lightningInfo = lightningInfo;
 
-            m_directionalLightToggle.isOn = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<bool>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLight));
-            m_directionalLightColor.color = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<Color>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightColor));
-            m_directionalLightXSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightX));
-            m_directionalLightYSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightY));
-            m_directionalLightIntensitySlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightIntensity));
-            m_directionalLightShadowsSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<float>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightShadows));
+            m_disallowCallbacks = true;
 
-            m_skyBoxSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<int>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.skyBoxIndex));
-            m_realisticSkyBoxToggle.isOn = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<bool>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.useRealisticSkyBoxes));
-            m_realisticSkyBoxSlider.value = AdvancedPhotoModeManager.Instance.GetPropertyModdedValue<int>(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.realisticSkyBoxIndex));
+            UICinematicEffects cinematicEffects = UICinematicEffects.instance;
+            if (!cinematicEffects)
+            {
+                m_cinematicBordersHeightSlider.value = 100f;
+                m_cinematicBordersToggle.isOn = false;
+            }
+            else
+            {
+                m_cinematicBordersHeightSlider.value = cinematicEffects.bordersHeight;
+                m_cinematicBordersToggle.isOn = cinematicEffects.borders;
+            }
+
+            m_fogToggle.isOn = lightningInfo.FogEnabled;
+            m_fogColor.color = lightningInfo.FogColor;
+            m_fogStartSlider.value = lightningInfo.FogStartDistance;
+            m_fogEndSlider.value = lightningInfo.FogEndDistance;
+
+            m_directionalLightToggle.isOn = lightningInfo.EnableDirectionalLight;
+            m_directionalLightColor.color = lightningInfo.DirectionalColor;
+            m_directionalLightXSlider.value = lightningInfo.DirectionalRotationX;
+            m_directionalLightYSlider.value = lightningInfo.DirectionalRotationY;
+            m_directionalLightIntensitySlider.value = lightningInfo.DirectionalIntensity;
+            m_directionalLightShadowsSlider.value = lightningInfo.DirectionalShadowStrength;
+
+            m_skyBoxSlider.value = lightningInfo.SkyboxIndex;
+
+            RealisticLightningInfo realisticLightningInfo = RealisticLightningManager.Instance.GetCurrentRealisticLightningInfo();
+            if(realisticLightningInfo == null)
+            {
+                m_realisticSkyBoxToggle.isOn = false;
+                m_realisticSkyBoxSlider.value = -1;
+            }
+            else
+            {
+                m_realisticSkyBoxToggle.isOn = realisticLightningInfo.SkyboxIndex != -1;
+                m_realisticSkyBoxSlider.value = realisticLightningInfo.SkyboxIndex;
+            }
+
+            m_disallowCallbacks = false;
+        }
+
+        private void toggleRobot(FirstPersonMover firstPersonMover, bool value)
+        {
+            if (!firstPersonMover)
+                return;
+
+            if (value)
+                firstPersonMover.ShowTemporarilyHiddenWeaponModels();
+            else
+                firstPersonMover.TemporarilyHideWeaponModels();
+
+            CharacterModel characterModel = firstPersonMover.GetCharacterModel();
+            if (characterModel)
+            {
+                if (value)
+                    characterModel.ShowAllHiddenBodyPartsAndArmor();
+                else
+                    characterModel.HideAllBodyPartsandArmor();
+            }
         }
 
         public void OnSaveRLightInfoButtonClicked()
@@ -118,69 +217,190 @@ namespace OverhaulMod.UI
             RealisticLightningManager.Instance.SaveCurrentLightningInfo(Mathf.RoundToInt(m_realisticSkyBoxSlider.value));
         }
 
+        public void OnRestoreDefaultsButtonClicked()
+        {
+            AdvancedPhotoModeManager.Instance.RestoreDefaults();
+            setFieldsValues();
+        }
+
+        public void OnShowPlayerToggled(bool value)
+        {
+            toggleRobot(CharacterTracker.Instance.GetPlayerRobot(), value);
+        }
+
+        public void OnShowEnemiesToggled(bool value)
+        {
+            foreach(var character in CharacterTracker.Instance.GetAllLivingCharacters())
+            {
+                if (!character || character.IsMainPlayer() || !(character is FirstPersonMover firstPersonMover))
+                    continue;
+
+                toggleRobot(firstPersonMover, value);
+            }
+        }
+
+        public void OnShowGarbageToggled(bool value)
+        {
+            var list = value ? m_garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
+            if (list.IsNullOrEmpty())
+                return;
+
+            if (!value)
+            {
+                m_garbageTargets = list;
+
+                foreach (var t in list)
+                    if (t)
+                        t.gameObject.SetActive(false);
+            }
+            else
+            {
+                foreach (var t in list)
+                    if (t)
+                        t.gameObject.SetActive(true);
+            }
+        }
+
+        public void OnHUDToggled(bool value)
+        {
+            GameUIRoot.Instance.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
+        }
+
+        public void OnCinematicBordersToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            UICinematicEffects cinematicEffects = UICinematicEffects.instance;
+            if (cinematicEffects)
+                cinematicEffects.borders = value;
+        }
+
+        public void OnCinematicBordersHeightChanged(float value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            UICinematicEffects cinematicEffects = UICinematicEffects.instance;
+            if (cinematicEffects)
+                cinematicEffects.bordersHeight = value;
+        }
+
         public void OnFogToggled(bool value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(RenderSettings), nameof(RenderSettings.fog), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.FogEnabled = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnFogColored(Color value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(RenderSettings), nameof(RenderSettings.fogColor), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.FogColor = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnFogStartChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(RenderSettings), nameof(RenderSettings.fogStartDistance), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.FogStartDistance = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnFogEndChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(RenderSettings), nameof(RenderSettings.fogEndDistance), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.FogEndDistance = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightToggled(bool value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLight), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.EnableDirectionalLight = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightColored(Color value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightColor), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.DirectionalColor = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightXChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightX), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.DirectionalRotationX = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightYChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightY), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.DirectionalRotationY = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnSkyBoxIndexChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.skyBoxIndex), Mathf.RoundToInt(value));
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.SkyboxIndex = Mathf.RoundToInt(value);
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnUseRealisticSkyBoxesToggled(bool value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.useRealisticSkyBoxes), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.RealisticSkyboxIndex = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnRealisticSkyBoxIndexChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.realisticSkyBoxIndex), Mathf.RoundToInt(value));
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.RealisticSkyboxIndex = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightIntensityChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightIntensity), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.DirectionalIntensity = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
 
         public void OnDirectionalLightShadowsChanged(float value)
         {
-            AdvancedPhotoModeManager.Instance.SetPropertyValue(typeof(AdvancedPhotoModeManager), nameof(AdvancedPhotoModeManager.directionalLightShadows), value);
+            if (m_disallowCallbacks)
+                return;
+
+            m_lightningInfo.DirectionalShadowStrength = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
         }
     }
 }

@@ -59,6 +59,7 @@ namespace OverhaulMod
                 if (ShowModSetupScreenOnStart)
                     ModUIConstants.ShowSettingsMenuRework(true);
             }
+            ModUIConstants.ShowCinematicEffects();
             yield break;
         }
 

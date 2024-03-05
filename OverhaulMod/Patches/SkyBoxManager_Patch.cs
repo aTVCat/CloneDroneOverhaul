@@ -23,9 +23,11 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsStoryChapter4())
                 RenderSettings.skybox = __instance.LevelConfigurableSkyboxes[7];
 
-            ModLevelManager modLevelManager = ModLevelManager.Instance;
-            if (modLevelManager && modLevelManager.currentRealisticSkyBoxIndex != -1)
-                RealisticLightningManager.Instance.SetSkybox(modLevelManager.currentRealisticSkyBoxIndex, false);
+            RealisticLightSettings realisticLightSettings = lightSettings.GetComponent<RealisticLightSettings>();
+            if (!realisticLightSettings)
+                return;
+
+            RealisticLightningManager.Instance.SetSkybox(realisticLightSettings.RealisticSkyBoxIndex);
         }
     }
 }

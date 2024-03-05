@@ -22,9 +22,9 @@ namespace OverhaulMod.Patches
 
                 // optimize?
                 if (Input.GetMouseButtonDown(0) && __instance._wasPlayerInputEnabled)
-                    AdvancedPhotoModeManager.Instance.TemporaryRecoverEnvironmentSettings(true);
+                    AdvancedPhotoModeManager.Instance.RefreshLightningWithNormalInfo();
                 if (Input.GetMouseButtonUp(0))
-                    AdvancedPhotoModeManager.Instance.TemporaryRecoverEnvironmentSettings(false);
+                    AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
             }
             return true;
         }

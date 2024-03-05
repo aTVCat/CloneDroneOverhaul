@@ -70,7 +70,6 @@ namespace OverhaulMod.Engine
                 m_currentTransition.completion = 1f;
                 m_currentTransition = null;
                 LevelEditorLightManager.Instance.RefreshLightInScene();
-                RealisticLightningManager.Instance.PatchLightning(false);
             }
             else
             {

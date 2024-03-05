@@ -22,6 +22,8 @@ namespace OverhaulMod.Engine
 
         public int SkyboxIndex;
 
+        public int RealisticSkyboxIndex;
+
         public float SunSize;
 
         public float SunSizeConvergence;
@@ -100,6 +102,9 @@ namespace OverhaulMod.Engine
             CameraColorGrading = levelLightSettings.CameraColorGrading;
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
+
+            RealisticLightSettings realisticLightSettings = levelLightSettings.GetComponent<RealisticLightSettings>();
+            RealisticSkyboxIndex = realisticLightSettings ? realisticLightSettings.RealisticSkyBoxIndex : -1;
         }
 
         public void SetValuesUsingEnvironmentSettings()
@@ -185,6 +190,10 @@ namespace OverhaulMod.Engine
             levelLightSettings.CameraColorGrading = CameraColorGrading;
             levelLightSettings.CameraColorBlend = CameraColorBlend;
             levelLightSettings.CameraExposure = CameraExposure;
+
+            RealisticLightSettings realisticLightSettings = levelLightSettings.GetComponent<RealisticLightSettings>();
+            if (realisticLightSettings)
+                realisticLightSettings.RealisticSkyBoxIndex = RealisticSkyboxIndex;
         }
 
         public override bool Equals(object obj)

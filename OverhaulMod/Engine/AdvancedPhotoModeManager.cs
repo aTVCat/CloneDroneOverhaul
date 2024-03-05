@@ -7,165 +7,26 @@ namespace OverhaulMod.Engine
 {
     public class AdvancedPhotoModeManager : Singleton<AdvancedPhotoModeManager>, IGameLoadListener
     {
-        private List<AdvancedPhotoModeProperty> m_properties;
+        private LightningInfo m_nonEditedLightningInfo, m_editedLightningInfo;
 
-        public static bool directionalLight
+        private bool m_isInPhotoMode;
+
+        public LevelLightSettings editingLevelLightSettings
         {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.gameObject.activeInHierarchy;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.gameObject.SetActive(value);
-            }
+            get;
+            set;
         }
 
-        public static Color directionalLightColor
+        public bool hasEditedSettings
         {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.color;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.color = value;
-            }
-        }
-
-        public static float directionalLightX
-        {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles.x;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles = new Vector3(value, directionalLightY, 0f);
-            }
-        }
-
-        public static float directionalLightY
-        {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles.y;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.transform.localEulerAngles = new Vector3(directionalLightX, value, 0f);
-            }
-        }
-
-        public static float directionalLightIntensity
-        {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.intensity;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.intensity = value;
-            }
-        }
-
-        public static float directionalLightShadows
-        {
-            get
-            {
-                return DirectionalLightManager.Instance.DirectionalLight.shadowStrength;
-            }
-            set
-            {
-                DirectionalLightManager.Instance.DirectionalLight.shadowStrength = value;
-            }
-        }
-
-        private static int s_skyBoxIndex;
-        public static int skyBoxIndex
-        {
-            get
-            {
-                return s_skyBoxIndex;
-            }
-            set
-            {
-                SkyBoxManager skyBoxManager = SkyBoxManager.Instance;
-                Material material;
-                if (value == 1)
-                {
-                    if (!skyBoxManager._customSkybox)
-                    {
-                        skyBoxManager._customSkybox = new Material(skyBoxManager.LevelConfigurableSkyboxes[1]);
-                    }
-                    material = skyBoxManager._customSkybox;
-                }
-                else if (value == 3)
-                {
-                    if (!skyBoxManager._gradientSkybox)
-                    {
-                        skyBoxManager._gradientSkybox = new Material(skyBoxManager.LevelConfigurableSkyboxes[3]);
-                    }
-                    material = skyBoxManager._gradientSkybox;
-                }
-                else
-                {
-                    material = skyBoxManager.LevelConfigurableSkyboxes[value];
-                }
-                RenderSettings.skybox = material;
-                s_skyBoxIndex = value;
-            }
-        }
-
-        private static bool s_useRealisticSkyBoxes;
-        public static bool useRealisticSkyBoxes
-        {
-            get
-            {
-                return s_useRealisticSkyBoxes;
-            }
-            set
-            {
-                if (value)
-                    RealisticLightningManager.Instance.SetSkybox(realisticSkyBoxIndex);
-
-                s_useRealisticSkyBoxes = value;
-            }
-        }
-
-        private static int s_realisticSkyBoxIndex;
-        public static int realisticSkyBoxIndex
-        {
-            get
-            {
-                return s_realisticSkyBoxIndex;
-            }
-            set
-            {
-                if (useRealisticSkyBoxes)
-                    RealisticLightningManager.Instance.SetSkybox(value);
-                s_realisticSkyBoxIndex = Mathf.Clamp(value, 0, 14);
-            }
+            get;
+            set;
         }
 
         private void Start()
         {
-            m_properties = new List<AdvancedPhotoModeProperty>
-            {
-                new AdvancedPhotoModeProperty(typeof(RenderSettings), nameof(RenderSettings.fogStartDistance)),
-                new AdvancedPhotoModeProperty(typeof(RenderSettings), nameof(RenderSettings.fogEndDistance)),
-                new AdvancedPhotoModeProperty(typeof(RenderSettings), nameof(RenderSettings.fog)),
-                new AdvancedPhotoModeProperty(typeof(RenderSettings), nameof(RenderSettings.fogColor)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLight)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLightColor)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLightX)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLightY)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLightIntensity)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(directionalLightShadows)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(skyBoxIndex)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(useRealisticSkyBoxes)),
-                new AdvancedPhotoModeProperty(typeof(AdvancedPhotoModeManager), nameof(realisticSkyBoxIndex))
-            };
+            m_nonEditedLightningInfo = new LightningInfo();
+            m_editedLightningInfo = new LightningInfo();
         }
 
         public void OnGameLoaded()
@@ -174,63 +35,104 @@ namespace OverhaulMod.Engine
             GlobalEventManager.Instance.AddEventListener("ExitedPhotoMode", onExitedPhotoMode);
         }
 
-        public void SetPropertyValue(Type type, string memberName, object value)
+        private void OnDestroy()
         {
-            if (m_properties.IsNullOrEmpty())
-                return;
-
-            foreach (AdvancedPhotoModeProperty p in m_properties)
-            {
-                if (p.classType == type && p.classMemberName == memberName)
-                {
-                    p.SetValue(value);
-                    return;
-                }
-            }
+            GlobalEventManager.Instance.RemoveEventListener("EnteredPhotoMode", onEnteredPhotoMode);
+            GlobalEventManager.Instance.RemoveEventListener("ExitedPhotoMode", onExitedPhotoMode);
         }
 
-        public T GetPropertyModdedValue<T>(Type type, string memberName)
+        public void OnLevelLightSettingsChanged(LevelLightSettings changedLightSettings)
         {
-            if (m_properties.IsNullOrEmpty())
-                return default;
+            LevelLightSettings currentLightSettings = editingLevelLightSettings;
+            if (currentLightSettings != changedLightSettings)
+            {
+                LevelLightSettings newLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
+                if(newLightSettings != changedLightSettings)
+                    return;
+            }
 
-            foreach (AdvancedPhotoModeProperty p in m_properties)
-                if (p.classType == type && p.classMemberName == memberName)
-                {
-                    return p.moddedValue == null ? (T)p.GetValue() : (T)p.moddedValue;
-                }
+            editingLevelLightSettings = changedLightSettings;
+            m_nonEditedLightningInfo.SetValues(currentLightSettings);
+        }
 
-            return default;
+        public void RefreshLightningWithEditedInfo()
+        {
+            if (!m_isInPhotoMode)
+                return;
+
+            LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
+            if (!currentLevelLightSettings)
+                return;
+
+            m_editedLightningInfo.ApplyValues(currentLevelLightSettings);
+            LevelEditorLightManager.Instance.RefreshLightInScene();
+        }
+
+        public void RefreshLightningWithNormalInfo()
+        {
+            LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
+            if (!currentLevelLightSettings)
+                return;
+
+            m_nonEditedLightningInfo.ApplyValues(currentLevelLightSettings);
+            LevelEditorLightManager.Instance.RefreshLightInScene();
+        }
+
+        public void RestoreDefaults()
+        {
+            LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
+            if (!currentLevelLightSettings)
+                return;
+
+            m_nonEditedLightningInfo.ApplyValues(currentLevelLightSettings);
+            m_editedLightningInfo.SetValues(currentLevelLightSettings);
+            LevelEditorLightManager.Instance.RefreshLightInScene();
+        }
+
+        public LightningInfo GetNormalLightningInfo()
+        {
+            return m_nonEditedLightningInfo;
+        }
+
+        public LightningInfo GetEditedLightningInfo()
+        {
+            return m_editedLightningInfo;
+        }
+
+        public bool IsInPhotoMode()
+        {
+            return m_isInPhotoMode;
         }
 
         private void onEnteredPhotoMode()
         {
+            m_isInPhotoMode = true;
+
+            LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
+            if(!levelLightSettings)
+            {
+                editingLevelLightSettings = null;
+                return;
+            }
+            editingLevelLightSettings = levelLightSettings;
+
+            m_nonEditedLightningInfo.SetValues(levelLightSettings);
+
+            if (!hasEditedSettings)
+            {
+                m_editedLightningInfo.SetValues(levelLightSettings);
+                hasEditedSettings = true;
+            }
+
+            RefreshLightningWithEditedInfo();
         }
 
         private void onExitedPhotoMode()
         {
-            RealisticLightningManager.Instance.PatchLightning(true);
-            RecoverEnvironmentSettings();
-        }
+            m_isInPhotoMode = false;
 
-        public void SetDefaultValues()
-        {
-            foreach (AdvancedPhotoModeProperty property in m_properties)
-                property.moddedValue = property.GetValue();
-        }
-
-        public void RecoverEnvironmentSettings()
-        {
-            LevelEditorLightManager.Instance.RefreshLightInScene();
-        }
-
-        public void TemporaryRecoverEnvironmentSettings(bool value)
-        {
-            if (value)
-                RecoverEnvironmentSettings();
-            else
-                foreach (AdvancedPhotoModeProperty p in m_properties)
-                    p.SetModdedValue();
+            RealisticLightningManager.Instance.PatchLevelLightSettings();
+            RefreshLightningWithNormalInfo();
         }
     }
 }

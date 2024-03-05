@@ -59,7 +59,8 @@ namespace OverhaulMod.Engine
                 ModUnityUtils.LerpRGB(a.GroundColor, b.GroundColor, d),
                 Mathf.Lerp(a.SkyTopExponent, b.SkyTopExponent, d),
                 Mathf.Lerp(a.SkyBottomExponent, b.SkyBottomExponent, d),
-                Mathf.Lerp(a.SkyIntensity, b.SkyIntensity, d));
+                Mathf.Lerp(a.SkyIntensity, b.SkyIntensity, d),
+                b.RealisticSkyboxIndex);
 
             refreshFog(b.FogEnabled,
                 Mathf.Lerp(a.FogEndDistance, b.FogEndDistance, d),
@@ -109,7 +110,8 @@ namespace OverhaulMod.Engine
             Color groundColor,
             float skyTopExponent,
             float skyBottomExponent,
-            float skyIntensity)
+            float skyIntensity,
+            int rIndex)
         {
             SkyBoxManager skyBoxManager = SkyBoxManager.Instance;
             Material material;
@@ -142,9 +144,9 @@ namespace OverhaulMod.Engine
 
             material = index == 1 ? customSkybox : index == 3 ? gradientSkybox : skyBoxManager.LevelConfigurableSkyboxes[index];
 
-            if (ModLevelManager.Instance.currentRealisticSkyBoxIndex != -1)
+            if (rIndex != -1)
             {
-                RealisticLightningManager.Instance.SetSkybox(ModLevelManager.Instance.currentRealisticSkyBoxIndex);
+                RealisticLightningManager.Instance.SetSkybox(rIndex);
                 return;
             }
 

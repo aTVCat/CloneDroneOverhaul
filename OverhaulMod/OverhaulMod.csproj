@@ -432,6 +432,7 @@
     <Compile Include="Engine\RealisticLightningInfo.cs" />
     <Compile Include="Engine\RealisticLightningInfoList.cs" />
     <Compile Include="Engine\RealisticLightningManager.cs" />
+    <Compile Include="Engine\RealisticLightSettings.cs" />
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />
     <Compile Include="Engine\RichPresenceManager.cs" />
@@ -465,6 +466,7 @@
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\EnergyUI_Patch.cs" />
+    <Compile Include="Patches\LevelLightSettings_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
@@ -548,6 +550,7 @@
     <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
     <Compile Include="UI\UIFileExplorer.cs" />
+    <Compile Include="UI\UICinematicEffects.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />

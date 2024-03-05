@@ -51,12 +51,6 @@ namespace OverhaulMod.Engine
             set;
         }
 
-        public int currentRealisticSkyBoxIndex
-        {
-            get;
-            set;
-        }
-
         public System.Exception modLevelDescriptionsLoadError
         {
             get;
