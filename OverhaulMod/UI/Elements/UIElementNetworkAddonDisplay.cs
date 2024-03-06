@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("DownloadButton")]
         private readonly Button m_downloadButton;
+
+        [UIElementAction(nameof(OnImagesButtonClicked))]
+        [UIElement("ImagesButton")]
+        private readonly Button m_imagesButton;
 
         [UIElement("ProgressBar")]
         private readonly GameObject m_progressBar;
@@ -54,6 +59,18 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public List<string> images
+        {
+            get;
+            set;
+        }
+
+        public Transform imageExplorerParentTransform
+        {
+            get;
+            set;
+        }
+
         protected override void OnInitialized()
         {
             m_contentManager = ContentManager.Instance;
@@ -63,7 +80,9 @@ namespace OverhaulMod.UI
                 versionString = minModVersion.ToString();
 
             m_minVersionText.enabled = !isSupported;
-            m_minVersionText.text = $"Newer version required: {versionString}";
+            m_minVersionText.text = $"New mod version is required: {versionString}";
+
+            m_imagesButton.interactable = !images.IsNullOrEmpty();
         }
 
         public override void Update()
@@ -75,9 +94,10 @@ namespace OverhaulMod.UI
             bool hasDownloaded = contentManager.HasContent(file, true);
 
             m_progressBar.SetActive(isDownloadingContent);
-            m_contentSizeText.SetActive(!isDownloadingContent);
+            m_contentSizeText.SetActive(!isDownloadingContent && isSupported);
             m_downloadButton.gameObject.SetActive(!isDownloadingContent && isSupported);
             m_downloadButton.interactable = !hasDownloaded;
+            m_imagesButton.gameObject.SetActive(!isDownloadingContent && isSupported);
 
             if (isDownloadingContent)
                 m_progressBarFill.fillAmount = contentManager.GetDownloadProgress(file);
@@ -94,6 +114,11 @@ namespace OverhaulMod.UI
                 return;
             }
             _ = m_contentManager.DownloadContent(contentFile, null, null);
+        }
+
+        public void OnImagesButtonClicked()
+        {
+            ModUIUtils.ImageExplorer(images, imageExplorerParentTransform);
         }
     }
 }

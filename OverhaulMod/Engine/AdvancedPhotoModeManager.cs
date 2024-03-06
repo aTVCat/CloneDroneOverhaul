@@ -138,6 +138,10 @@ namespace OverhaulMod.Engine
 
             RealisticLightningManager.Instance.PatchLevelLightSettings();
             RefreshLightningWithNormalInfo();
+
+            UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
+            if (photoModeUI)
+                photoModeUI.ResetEnvironmentFields();
         }
 
         public static class Settings

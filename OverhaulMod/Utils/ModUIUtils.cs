@@ -8,6 +8,12 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void ImageExplorer(List<string> imagePaths, Transform parent)
+        {
+            UIImageExplorer imageExplorer = ModUIConstants.ShowImageExplorer(parent);
+            imageExplorer.Populate(imagePaths);
+        }
+
         public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null)
         {
             UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);

@@ -155,6 +155,10 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
+        }
+
+        public void ResetEnvironmentFields()
+        {
             m_showEnemiesToggle.isOn = true;
             m_showPlayerToggle.isOn = true;
             m_showHUDToggle.isOn = true;

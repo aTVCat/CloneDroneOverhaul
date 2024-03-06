@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -147,13 +149,21 @@ namespace OverhaulMod.UI
                     ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = content.DisplayName;
+                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? "No description provided." : content.Description;
                     moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
+
+                    List<string> list = content.GetImages().ToList();
+                    if (!list.IsNullOrEmpty())
+                        for (int i = 0; i < list.Count; i++)
+                            list[i] = RepositoryManager.REPOSITORY_URL + "images/" + list[i];
 
                     UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
                     networkAddonDisplay.contentFile = content.File;
                     networkAddonDisplay.isSupported = content.IsSupported();
                     networkAddonDisplay.minModVersion = content.MinModVersion;
                     networkAddonDisplay.isLarge = content.Size > 52428800L;
+                    networkAddonDisplay.imageExplorerParentTransform = base.transform;
+                    networkAddonDisplay.images = list;
                     networkAddonDisplay.InitializeElement();
                 }
 

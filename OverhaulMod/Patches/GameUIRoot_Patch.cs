@@ -61,6 +61,8 @@ namespace OverhaulMod.Patches
 
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_GENERIC_IMAGE_VIEWER))
                     return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_IMAGE_EXPLORER))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DEVELOPMENT_GALLERY))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN_CUSTOMIZATION_PANEL))

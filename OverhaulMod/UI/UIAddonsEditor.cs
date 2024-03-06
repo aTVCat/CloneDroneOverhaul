@@ -27,6 +27,9 @@ namespace OverhaulMod.UI
         [UIElement("AddonNameInputField")]
         private readonly InputField m_addonNameField;
 
+        [UIElement("AddonVersionField")]
+        private readonly InputField m_addonVersionField;
+
         private List<ContentInfo> m_content;
 
         private bool m_disableDropdownCallbacks;
@@ -86,6 +89,7 @@ namespace OverhaulMod.UI
             editingFile = content.FolderPath + ContentManager.CONTENT_INFO_FILE;
 
             m_addonNameField.text = content.DisplayName;
+            m_addonVersionField.text = content.Version.ToString();
         }
 
         public void OnSaveButtonClicked()
@@ -99,6 +103,7 @@ namespace OverhaulMod.UI
                 return;
 
             contentInfo.DisplayName = m_addonNameField.text;
+            contentInfo.Version = int.Parse(m_addonVersionField.text);
 
             ModJsonUtils.WriteStream(file, contentInfo);
         }
@@ -112,17 +117,18 @@ namespace OverhaulMod.UI
                 string contentInfoFilePath = folderPath + ContentManager.CONTENT_INFO_FILE;
 
                 _ = Directory.CreateDirectory(folderPath);
-                StreamWriter stream = File.CreateText(contentInfoFilePath);
-                stream.Dispose();
+                using (File.CreateText(contentInfoFilePath))
+                {
+                    m_disableDropdownCallbacks = true;
 
-                m_disableDropdownCallbacks = true;
+                    editingContentInfo = new ContentInfo();
+                    editingFile = contentInfoFilePath;
+                    m_addonNameField.text = string.Empty;
+                    m_addonVersionField.text = "0";
+                    populateAddonsDropdown();
 
-                editingContentInfo = new ContentInfo();
-                editingFile = contentInfoFilePath;
-                m_addonNameField.text = string.Empty;
-                populateAddonsDropdown();
-
-                m_disableDropdownCallbacks = false;
+                    m_disableDropdownCallbacks = false;
+                }
             });
         }
     }

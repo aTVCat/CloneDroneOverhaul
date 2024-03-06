@@ -71,6 +71,7 @@ namespace OverhaulMod.Utils
         public const string UI_FILE_EXPLORER = "UI_FileExplorer";
         public const string UI_PERSONALIZATION_EDITOR_OBJECT_BROWSER = "UI_PersonalizationEditorObjectBrowser";
         public const string UI_CINEMATIC_EFFECTS = "UI_CinematicEffects";
+        public const string UI_IMAGE_EXPLORER = "UI_ImageExplorer";
 
         public static void ShowOtherModsMenu()
         {
@@ -425,6 +426,11 @@ namespace OverhaulMod.Utils
         public static void ShowCinematicEffects()
         {
             _ = ModUIManager.Instance.Show<UICinematicEffects>(AssetBundleConstants.UI, UI_CINEMATIC_EFFECTS, ModUIManager.UILayer.AfterEnergyUI);
+        }
+
+        public static UIImageExplorer ShowImageExplorer(Transform parent)
+        {
+            return ModUIManager.Instance.Show<UIImageExplorer>(AssetBundleConstants.UI, UI_IMAGE_EXPLORER, parent);
         }
     }
 }

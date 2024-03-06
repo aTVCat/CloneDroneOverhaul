@@ -519,6 +519,7 @@
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
+    <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
@@ -551,6 +552,7 @@
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
     <Compile Include="UI\UIFileExplorer.cs" />
     <Compile Include="UI\UICinematicEffects.cs" />
+    <Compile Include="UI\UIImageExplorer.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />

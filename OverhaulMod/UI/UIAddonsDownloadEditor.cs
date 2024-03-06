@@ -37,6 +37,12 @@ namespace OverhaulMod.UI
         private readonly InputField m_contentPathField;
         [UIElement("AddonMinModVersionInputField")]
         private readonly InputField m_contentMinModVersionField;
+        [UIElement("AddonDescriptionField")]
+        private readonly InputField m_contentDescriptionField;
+        [UIElement("AddonImagesField")]
+        private readonly InputField m_contentImagesField;
+        [UIElement("AddonVersionField")]
+        private readonly InputField m_contentVersionField;
 
         [UIElement("FileDisplay", false)]
         private readonly ModdedObject m_fileDisplayPrefab;
@@ -90,6 +96,9 @@ namespace OverhaulMod.UI
             m_contentSizeField.text = contentDownloadInfo.Size.ToString();
             m_contentPathField.text = contentDownloadInfo.File;
             m_contentMinModVersionField.text = contentDownloadInfo.MinModVersion?.ToString();
+            m_contentDescriptionField.text = contentDownloadInfo.Description;
+            m_contentImagesField.text = contentDownloadInfo.Images;
+            m_contentVersionField.text = contentDownloadInfo.Version.ToString();
         }
 
         private void readFileFromDisk()
@@ -139,6 +148,9 @@ namespace OverhaulMod.UI
                 contentDownloadInfo.Size = long.Parse(m_contentSizeField.text);
                 contentDownloadInfo.File = m_contentPathField.text;
                 contentDownloadInfo.MinModVersion = version;
+                contentDownloadInfo.Version = int.Parse(m_contentVersionField.text);
+                contentDownloadInfo.Images = m_contentImagesField.text;
+                contentDownloadInfo.Description = m_contentDescriptionField.text;
             }
 
             ContentListInfo contentListInfo = editingContentList;

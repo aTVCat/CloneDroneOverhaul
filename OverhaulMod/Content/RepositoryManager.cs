@@ -8,7 +8,7 @@ namespace OverhaulMod.Content
 {
     public class RepositoryManager : Singleton<RepositoryManager>
     {
-        private const string REPOSITORY_URL = "https://raw.githubusercontent.com/aTVCat/Overhaul-Mod-Content/main/";
+        public const string REPOSITORY_URL = "https://raw.githubusercontent.com/aTVCat/Overhaul-Mod-Content/main/";
 
         public void GetTextFile(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {

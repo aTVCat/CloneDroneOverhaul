@@ -71,6 +71,13 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(null, true, delegate (string levelPath) 
             {
+                if (!File.Exists(levelPath))
+                {
+                    onSetLevel(null);
+                    ModUIUtils.MessagePopupOK("Error", "Could not find the level file you've specified");
+                    return;
+                }
+
                 LevelDescription levelDescription = new LevelDescription()
                 {
                     LevelTags = new List<LevelTags>() { },
@@ -85,20 +92,12 @@ namespace OverhaulMod.UI
 
         private void onSetLevel(LevelDescription level)
         {
+            backgroundInfo.Level = level;
+
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
             titleScreenCustomizationManager.SetLevelIsLoadingBG(levelIsLoadingBG);
-            if (level == null)
-            {
-                backgroundInfo.Level = null;
-                titleScreenCustomizationManager.SetStaticLevel(null, refreshWhenEdited);
-                titleScreenCustomizationManager.SaveCustomizationInfo();
-            }
-            else
-            {
-                backgroundInfo.Level = level;
-                titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);
-                titleScreenCustomizationManager.SaveCustomizationInfo();
-            }
+            titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);
+            titleScreenCustomizationManager.SaveCustomizationInfo();
             refreshLabel();
         }
 

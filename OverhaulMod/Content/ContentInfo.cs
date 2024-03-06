@@ -6,6 +6,8 @@ namespace OverhaulMod.Content
     {
         public string DisplayName;
 
+        public int Version;
+
         [NonSerialized]
         public string FolderPath;
     }
