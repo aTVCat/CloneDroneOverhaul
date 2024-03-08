@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Utils;
+using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -13,7 +14,14 @@ namespace OverhaulMod.Patches
             ModWebhookManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
             {
-                ModUIConstants.ShowCrashScreen(errorMessage);
+                try
+                {
+                    ModUIConstants.ShowCrashScreen(errorMessage);
+                }
+                catch
+                {
+                    return true;
+                }
                 return false;
             }
             return true;
@@ -23,11 +31,17 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Hide")]
         private static bool Hide_Prefix(ErrorWindow __instance)
         {
+            if (Time.timeSinceLevelLoad < 5f)
+                return false;
+            
             ErrorManager errorManager = ErrorManager.Instance;
             if (!errorManager || errorManager.HasCrashed())
                 return false;
 
-            ModUIConstants.HideCrashScreen();
+            try
+            {
+                ModUIConstants.HideCrashScreen();
+            } catch { }
             return true;
         }
     }

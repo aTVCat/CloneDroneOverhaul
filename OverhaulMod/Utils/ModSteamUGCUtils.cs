@@ -1,5 +1,7 @@
-﻿using Steamworks;
+﻿using OverhaulMod.Content;
+using Steamworks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +9,9 @@ namespace OverhaulMod.Utils
 {
     public static class ModSteamUGCUtils
     {
+        public const uint cchURLSize = 4096U;
+        public const uint cchFolderSize = 4096U;
+
         /// <summary>
         /// Amount of pages from last query execution
         /// </summary>
@@ -15,59 +20,6 @@ namespace OverhaulMod.Utils
             get;
             private set;
         }
-#if DEBUG
-
-        public static List<SteamWorkshopItem> Debug_Items;
-        public static SteamWorkshopItem Debug_Item;
-        public static RequestParameters Debug_RequestParameters = new RequestParameters();
-        public static string Debug_Error;
-        public static bool Debug_LastQueryIsCached;
-        public static int Debug_LastQueryResults;
-        public static int Debug_LastQueryMatchingResults;
-
-        public static void Debug_RequestAllWorkshopItems(EUGCQuery rankBy, EUGCMatchingUGCType itemsType, int page)
-        {
-            Debug_Items = null;
-            Debug_Error = null;
-            Debug_LastQueryIsCached = false;
-            Debug_LastQueryResults = -1;
-            Debug_LastQueryMatchingResults = -1;
-            _ = GetAllWorkshopItems(rankBy, itemsType, page, Debug_RequestParameters, delegate (List<SteamWorkshopItem> list)
-            {
-                Debug_Items = list;
-            }, delegate (string error)
-            {
-                Debug_Error = error;
-            }, delegate (bool cached, int results, int matching)
-            {
-                Debug_LastQueryIsCached = cached;
-                Debug_LastQueryResults = results;
-                Debug_LastQueryMatchingResults = matching;
-            });
-        }
-
-        public static void Debug_RequestAllWorkshopItems(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder)
-        {
-            Debug_Items = null;
-            Debug_Error = null;
-            Debug_LastQueryIsCached = false;
-            Debug_LastQueryResults = -1;
-            Debug_LastQueryMatchingResults = -1;
-            _ = GetWorkshopUserItemList(steamId, page, userList, itemsType, sortOrder, Debug_RequestParameters, delegate (List<SteamWorkshopItem> list)
-            {
-                Debug_Items = list;
-            }, delegate (string error)
-            {
-                Debug_Error = error;
-            }, delegate (bool cached, int results, int matching)
-            {
-                Debug_LastQueryIsCached = cached;
-                Debug_LastQueryResults = results;
-                Debug_LastQueryMatchingResults = matching;
-            });
-        }
-#endif
-
 
         /// <summary>
         /// Execute <see cref="SteamUGC.CreateQueryAllUGCRequest(EUGCQuery, EUGCMatchingUGCType, AppId_t, AppId_t, uint)"/>
@@ -77,7 +29,7 @@ namespace OverhaulMod.Utils
         /// <param name="page"></param>
         /// <param name="errorCallback"></param>
         /// <param name="debugCallback"></param>
-        public static bool GetAllWorkshopItems(EUGCQuery rankBy, EUGCMatchingUGCType itemsType, int page, RequestParameters requestParameters, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        public static bool GetAllWorkshopItems(EUGCQuery rankBy, EUGCMatchingUGCType itemsType, int page, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             page = Mathf.Max(1, page);
             if (requestParameters == null)
@@ -92,7 +44,7 @@ namespace OverhaulMod.Utils
             return true;
         }
 
-        public static bool GetWorkshopUserItemList(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        public static bool GetWorkshopUserItemList(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             page = Mathf.Max(1, page);
             if (requestParameters == null || steamId == default)
@@ -107,7 +59,7 @@ namespace OverhaulMod.Utils
             return true;
         }
 
-        private static void onQueryCallback(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<SteamWorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
+        private static void onQueryCallback(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
         {
             if (!checkQueryResultForErrors(queryResult, ioError, errorCallback))
             {
@@ -121,16 +73,95 @@ namespace OverhaulMod.Utils
             releaseQueryHandle(queryResult.m_handle);
         }
 
-        private static List<SteamWorkshopItem> getQueryItems(SteamUGCQueryCompleted_t queryResult)
+        private static List<WorkshopItem> getQueryItems(SteamUGCQueryCompleted_t queryResult)
         {
-            List<SteamWorkshopItem> items = new List<SteamWorkshopItem>();
-            uint num = 0;
-            while (num < (long)(ulong)queryResult.m_unNumResultsReturned)
+            List<WorkshopItem> items = new List<WorkshopItem>();
+            uint index = 0;
+            while (index < (long)(ulong)queryResult.m_unNumResultsReturned)
             {
-                if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, num, out SteamUGCDetails_t ugcDetails) && ugcDetails.m_eResult == EResult.k_EResultOK && !ugcDetails.m_bBanned)
-                    items.Add(SteamWorkshopManager.WorkshopItemFromQueryDetails(queryResult, (int)num, ugcDetails));
+                if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, index, out SteamUGCDetails_t ugcDetails) && ugcDetails.m_eResult == EResult.k_EResultOK && !ugcDetails.m_bBanned)
+                {
+                    UGCQueryHandle_t handle = queryResult.m_handle;
+                    EWorkshopFileType itemType = ugcDetails.m_eFileType;
+                    PublishedFileId_t itemId = ugcDetails.m_nPublishedFileId;
+                    CSteamID itemAuthor = (CSteamID)ugcDetails.m_ulSteamIDOwner;
 
-                num++;
+                    bool shouldRunUserInfoCoroutine = false;
+                    string authorName = string.Empty;
+                    if (SteamFriends.RequestUserInformation(itemAuthor, false))
+                    {
+                        shouldRunUserInfoCoroutine = true;
+                    }
+                    else
+                        authorName = SteamFriends.GetFriendPersonaName(itemAuthor);
+
+                    List<WorkshopItemPreview> additionalPreviews = null;
+                    uint apCount = SteamUGC.GetQueryUGCNumAdditionalPreviews(handle, index);
+                    if (apCount != 0)
+                    {
+                        additionalPreviews = new List<WorkshopItemPreview>();
+                        for (int i = 0; i < apCount; i++)
+                            if (SteamUGC.GetQueryUGCAdditionalPreview(handle, index, (uint)i, out string apUrl, cchURLSize, out _, 4096U, out EItemPreviewType previewType))
+                            {
+                                additionalPreviews.Add(new WorkshopItemPreview(apUrl, previewType));
+                            }
+                    }
+
+                    bool getChildrenError;
+                    PublishedFileId_t[] children = null;
+                    if (itemType == EWorkshopFileType.k_EWorkshopFileTypeCollection)
+                    {
+                        children = new PublishedFileId_t[ugcDetails.m_unNumChildren];
+                        getChildrenError = SteamUGC.GetQueryUGCChildren(handle, index, children, (uint)children.Length);
+                    }
+                    else
+                        getChildrenError = false;
+
+                    if (!SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueWebsiteViews, out ulong viewCount))
+                        viewCount = 0L;
+
+                    if (!SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSubscriptions, out ulong subscriberCount))
+                        subscriberCount = 0L;
+
+                    if (!SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumFavorites, out ulong favoriteCount))
+                        favoriteCount = 0L;
+
+                    bool previewUrlError = !SteamUGC.GetQueryUGCPreviewURL(handle, index, out string previewUrl, cchURLSize);
+                    bool installInfoError = SteamUGC.GetItemInstallInfo(itemId, out _, out string folder, cchFolderSize, out _);
+                    WorkshopItem item = new WorkshopItem()
+                    {
+                        Name = ugcDetails.m_rgchTitle,
+                        Description = ugcDetails.m_rgchDescription,
+                        Author = authorName,
+                        Tags = ugcDetails.m_rgchTags.Split(','),
+                        ItemID = itemId,
+                        AuthorID = itemAuthor,
+                        Votes = (int)(ugcDetails.m_unVotesUp + ugcDetails.m_unVotesDown),
+                        UpVotes = (int)ugcDetails.m_unVotesUp,
+                        DownVotes = (int)ugcDetails.m_unVotesDown,
+                        Views = (long)viewCount,
+                        Subscribers = (long)subscriberCount,
+                        Favorites = (long)favoriteCount,
+                        Rating = ugcDetails.m_flScore,
+                        Children = children,
+                        PreviewURL = previewUrl,
+                        AdditionalPreviews = additionalPreviews,
+                        ItemType = itemType,
+                        Folder = folder,
+                        Size = ugcDetails.m_nFileSize / 1024f / 1024f,
+                        PostDate = DateTimeOffset.FromUnixTimeSeconds(ugcDetails.m_rtimeCreated).DateTime.AddHours(15),
+                        UpdateDate = DateTimeOffset.FromUnixTimeSeconds(ugcDetails.m_rtimeUpdated).DateTime.AddHours(15),
+                        PreviewURLError = previewUrlError,
+                        InstallInfoError = installInfoError,
+                        GetChildrenError = getChildrenError,
+                    };
+
+                    if (shouldRunUserInfoCoroutine)
+                        _ = ModActionUtils.RunCoroutine(requestUserInformationCoroutine(item, itemAuthor));
+
+                    items.Add(item);
+                }
+                index++;
             }
             return items;
         }
@@ -198,6 +229,18 @@ namespace OverhaulMod.Utils
         private static void setPageAmount(uint matchingResults)
         {
             pageCount = (int)((matchingResults / 50U) + 1U);
+        }
+
+        private static IEnumerator requestUserInformationCoroutine(WorkshopItem workshopItem, CSteamID steamId)
+        {
+            float time = Time.unscaledTime + 2f;
+            while (Time.unscaledTime < time)
+                yield return null;
+
+            if (!workshopItem.IsDisposed())
+                workshopItem.Author = SteamFriends.GetFriendPersonaName(steamId);
+
+            yield break;
         }
 
         public class RequestParameters

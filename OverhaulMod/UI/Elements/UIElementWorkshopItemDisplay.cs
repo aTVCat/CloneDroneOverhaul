@@ -26,7 +26,7 @@ namespace OverhaulMod.UI
 
         private UnityWebRequest m_webRequest;
 
-        public SteamWorkshopItem workshopItem
+        public WorkshopItem workshopItem
         {
             get;
             set;
@@ -36,6 +36,25 @@ namespace OverhaulMod.UI
         {
             get;
             set;
+        }
+
+        public Transform itemPageWindowParentTransform
+        {
+            get;
+            set;
+        }
+
+        public UIWorkshopBrowser browserUI
+        {
+            get;
+            set;
+        }
+
+        protected override void OnInitialized()
+        {
+            Button button = base.GetComponent<Button>();
+            button.onClick.AddListener(onClicked);
+
         }
 
         public override void OnDestroy()
@@ -51,17 +70,17 @@ namespace OverhaulMod.UI
             catch { }
         }
 
-        public void Populate(SteamWorkshopItem steamWorkshopItem)
+        public void Populate(WorkshopItem workshopItem)
         {
-            workshopItem = steamWorkshopItem;
+            this.workshopItem = workshopItem;
             GetThumbnail();
 
-            m_completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(steamWorkshopItem.WorkshopItemID.ToString()));
+            m_completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
         }
 
         public void GetThumbnail()
         {
-            SteamWorkshopItem steamWorkshopItem = workshopItem;
+            WorkshopItem steamWorkshopItem = workshopItem;
             if (steamWorkshopItem == null || steamWorkshopItem.PreviewURL.IsNullOrEmpty())
                 return;
 
@@ -87,6 +106,13 @@ namespace OverhaulMod.UI
 
                 m_loadingIndicator.SetActive(false);
             }, out m_webRequest, 60);
+        }
+
+        private void onClicked()
+        {
+            UIWorkshopItemPageWindow window = ModUIConstants.ShowWorkshopItemPageWindow(itemPageWindowParentTransform);
+            window.browserUI = browserUI;
+            window.Populate(workshopItem);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

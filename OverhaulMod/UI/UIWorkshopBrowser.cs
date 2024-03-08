@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -265,6 +266,8 @@ namespace OverhaulMod.UI
 
             ModSteamUGCUtils.RequestParameters requestParameters = new ModSteamUGCUtils.RequestParameters();
             requestParameters.EnableCaching();
+            requestParameters.ReturnLongDescription();
+            requestParameters.ReturnPreviews();
             requestParameters.RequireTags(new List<string>() { searchLevelType });
 
             bool success = sourceType == 0
@@ -276,7 +279,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        private void onGotItems(List<SteamWorkshopItem> list)
+        private void onGotItems(List<WorkshopItem> list)
         {
             m_sourceTabs.interactable = true;
             m_levelTypeTabs.interactable = true;
@@ -286,14 +289,16 @@ namespace OverhaulMod.UI
             if (list.IsNullOrEmpty())
                 return;
 
-            foreach (SteamWorkshopItem steamWorkshopItem in list)
+            foreach (WorkshopItem workshopItem in list)
             {
                 ModdedObject moddedObject = Instantiate(m_workshopItemDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = steamWorkshopItem.Title;
+                moddedObject.GetObject<Text>(0).text = workshopItem.Name;
                 UIElementWorkshopItemDisplay workshopItemDisplay = moddedObject.gameObject.AddComponent<UIElementWorkshopItemDisplay>();
+                workshopItemDisplay.itemPageWindowParentTransform = base.transform;
+                workshopItemDisplay.browserUI = this;
                 workshopItemDisplay.InitializeElement();
-                workshopItemDisplay.Populate(steamWorkshopItem);
+                workshopItemDisplay.Populate(workshopItem);
             }
         }
 

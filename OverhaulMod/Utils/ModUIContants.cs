@@ -235,9 +235,9 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIOverhaulInfoWindow>(AssetBundleConstants.UI, UI_OVERHAUL_MOD_INFO_WINDOW, parent);
         }
 
-        public static void ShowWorkshopItemPageWindow(Transform parent)
+        public static UIWorkshopItemPageWindow ShowWorkshopItemPageWindow(Transform parent)
         {
-            _ = ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_WINDOW, parent);
+            return ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_WINDOW, parent);
         }
 
         public static void ShowOverhaulUIManagementPanel(Transform parent)

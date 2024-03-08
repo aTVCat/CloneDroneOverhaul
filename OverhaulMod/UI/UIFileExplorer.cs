@@ -210,7 +210,7 @@ namespace OverhaulMod.UI
             if (isSelected)
                 m_prevSelectedIndicator = moddedObject.GetObject<GameObject>(3);
 
-            UIFileExplorerItemDisplay itemDisplay = moddedObject.gameObject.AddComponent<UIFileExplorerItemDisplay>();
+            UIElementFileExplorerItemDisplay itemDisplay = moddedObject.gameObject.AddComponent<UIElementFileExplorerItemDisplay>();
             itemDisplay.InitializeElement();
             itemDisplay.isFolder = isFolder;
             itemDisplay.fullName = fileSystemInfo.FullName;
@@ -242,7 +242,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        private void onItemClicked(UIFileExplorerItemDisplay itemDisplay)
+        private void onItemClicked(UIElementFileExplorerItemDisplay itemDisplay)
         {
             if (itemDisplay.isFolder)
                 return;
@@ -255,7 +255,7 @@ namespace OverhaulMod.UI
             m_selectedFile = itemDisplay.fullName;
         }
 
-        private void onItemDoubleClicked(UIFileExplorerItemDisplay itemDisplay)
+        private void onItemDoubleClicked(UIElementFileExplorerItemDisplay itemDisplay)
         {
             if (itemDisplay.isFolder)
             {

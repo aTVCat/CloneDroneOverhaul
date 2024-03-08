@@ -23,7 +23,7 @@ namespace OverhaulMod.Engine
         public LevelDescription overrideLevelDescription
         {
             get;
-            private set;
+            set;
         }
 
         public bool disallowClickingLogo

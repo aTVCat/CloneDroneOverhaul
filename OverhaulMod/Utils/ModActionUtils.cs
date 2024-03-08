@@ -6,11 +6,38 @@ namespace OverhaulMod.Utils
 {
     internal static class ModActionUtils
     {
+        private static GameObject s_dontDestroyOnLoadCoroutinesObject;
+        public static GameObject dontDestroyOnLoadCoroutinesObject
+        {
+            get
+            {
+                if (!s_dontDestroyOnLoadCoroutinesObject)
+                {
+                    GameObject gameObject = new GameObject("OverhaulCoroutineRunner");
+                    GameObject.DontDestroyOnLoad(gameObject);
+                    s_dontDestroyOnLoadCoroutinesObject = gameObject;
+                }
+                return s_dontDestroyOnLoadCoroutinesObject;
+            }
+        }
+
+        private static GameObject s_coroutinesObject;
+        public static GameObject coroutinesObject
+        {
+            get
+            {
+                if (!s_coroutinesObject)
+                {
+                    GameObject gameObject = new GameObject("OverhaulCoroutineRunner");
+                    s_coroutinesObject = gameObject;
+                }
+                return s_coroutinesObject;
+            }
+        }
+
         public static Coroutine RunCoroutine(IEnumerator enumerator, bool dontDestroyOnLoad = false)
         {
-            GameObject gameObject = new GameObject("OverhaulCoroutine");
-            if (dontDestroyOnLoad)
-                GameObject.DontDestroyOnLoad(gameObject);
+            GameObject gameObject = dontDestroyOnLoad ? dontDestroyOnLoadCoroutinesObject : coroutinesObject;
             return gameObject.AddComponent<CoroutineRunner>().RunCoroutine(enumerator);
         }
 
@@ -55,7 +82,7 @@ namespace OverhaulMod.Utils
             private IEnumerator theCoroutine(IEnumerator enumerator)
             {
                 yield return StartCoroutine(enumerator);
-                Destroy(gameObject);
+                Destroy(this);
                 yield break;
             }
         }

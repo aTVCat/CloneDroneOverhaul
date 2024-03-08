@@ -149,5 +149,33 @@ namespace OverhaulMod.Utils
         {
             return (LocalizationManager.Instance.GetTranslatedString("enum_" + speakerName.ToString()) + ":").AddColor(Color.white);
         }
+
+        public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
+        {
+            if (bodyPartType == MechBodyPartType.None)
+            {
+                return Array.Empty<Renderer>();
+            }
+            MechBodyPart bodyPart = firstPersonMover.GetBodyPart(bodyPartType);
+            if (bodyPart == null)
+            {
+                return Array.Empty<Renderer>();
+            }
+            return bodyPart.GetComponentsInChildren<Renderer>();
+        }
+
+        public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
+        {
+            if (string.IsNullOrEmpty(bodyPart))
+            {
+                return Array.Empty<Renderer>();
+            }
+            Transform bodyPartParent = firstPersonMover.GetBodyPartParent(bodyPart);
+            if (bodyPartParent == null)
+            {
+                return Array.Empty<Renderer>();
+            }
+            return bodyPartParent.GetComponentsInChildren<Renderer>();
+        }
     }
 }

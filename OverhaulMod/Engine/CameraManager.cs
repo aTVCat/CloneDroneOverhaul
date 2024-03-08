@@ -17,12 +17,6 @@ namespace OverhaulMod.Engine
             private set;
         }
 
-        public bool refreshCameraMoverNextFrame
-        {
-            get;
-            set;
-        }
-
         public void AddControllers(Camera camera, FirstPersonMover firstPersonMover)
         {
             if (!camera || !firstPersonMover)
@@ -66,8 +60,6 @@ namespace OverhaulMod.Engine
                 string word = value ? "Enabled" : "Disabled";
                 energyUI.SetErrorLabelVisible($"{word} first person mode");
             }
-
-            refreshCameraMoverNextFrame = true;
         }
     }
 }

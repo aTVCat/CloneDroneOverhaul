@@ -375,6 +375,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
+    <Compile Include="Content\WorkshopItemPreview.cs" />
     <Compile Include="Discord\ActivityManager.cs" />
     <Compile Include="Discord\Constants.cs" />
     <Compile Include="Discord\Core.cs" />
@@ -392,6 +393,7 @@
     <Compile Include="Engine\CameraModeController.cs" />
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />
+    <Compile Include="Engine\CrashPreventionManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\LevelEditorObjectAdvancedBehaviour.cs" />
@@ -445,6 +447,7 @@
     <Compile Include="Engine\UpgradeModeButtonController.cs" />
     <Compile Include="Engine\UpgradeModes.cs" />
     <Compile Include="Engine\UpgradeModesManager.cs" />
+    <Compile Include="Content\WorkshopItem.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
@@ -538,8 +541,9 @@
     <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemPreviewDisplay.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
-    <Compile Include="UI\Elements\UIFileExplorerItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementFileExplorerItemDisplay.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIEndlessGameLossWindow.cs" />
