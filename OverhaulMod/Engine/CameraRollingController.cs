@@ -120,6 +120,9 @@ namespace OverhaulMod.Engine
             newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -limit, limit);
             m_rotation = newTargetRotation;
 
+            if (!m_owner._cameraHolderAnimator || !m_owner._cameraHolderAnimator.enabled)
+                return;
+
             m_playerCameraTransform.localEulerAngles = newTargetRotation;
         }
 

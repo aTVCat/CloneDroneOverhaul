@@ -376,6 +376,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Content\WorkshopItemPreview.cs" />
+    <Compile Include="Content\WorkshopItemVote.cs" />
     <Compile Include="Discord\ActivityManager.cs" />
     <Compile Include="Discord\Constants.cs" />
     <Compile Include="Discord\Core.cs" />

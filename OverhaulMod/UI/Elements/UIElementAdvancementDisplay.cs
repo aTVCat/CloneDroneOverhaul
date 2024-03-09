@@ -69,6 +69,11 @@ namespace OverhaulMod.UI
             m_progressBarFill.fillAmount = currentProgress / (float)targetProgress;
         }
 
+        public override void OnDisable()
+        {
+            m_rewardDisplayObject.SetActive(false);
+        }
+
         public void OnSelect(BaseEventData eventData)
         {
             m_rewardDisplayObject.SetActive(true);

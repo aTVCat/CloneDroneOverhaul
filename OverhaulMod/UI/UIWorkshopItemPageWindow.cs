@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using Steamworks;
+using System;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -41,6 +43,59 @@ namespace OverhaulMod.UI
 
         [UIElement("ItemMainPreview")]
         private readonly RawImage m_itemPreviewImage;
+
+        [UIElementAction(nameof(OnPreviewClicked))]
+        [UIElement("ItemMainPreview")]
+        private readonly Button m_itemPreviewButton;
+
+        [UIElementAction(nameof(OnVoteUpButtonClicked))]
+        [UIElement("UpVoteButton")]
+        private readonly Button m_voteUpButton;
+
+        [UIElementAction(nameof(OnVoteDownButtonClicked))]
+        [UIElement("DownVoteButton")]
+        private readonly Button m_voteDownButton;
+
+        [UIElementAction(nameof(OnFavoriteButtonClicked))]
+        [UIElement("AddToFavouritesButton")]
+        private readonly Button m_favoriteButton;
+
+        [UIElementAction(nameof(OnSubscribeButtonClicked))]
+        [UIElement("SubscribeButton")]
+        private readonly Button m_subscribeButton;
+
+        [UIElementAction(nameof(OnUnsubscribeButtonClicked))]
+        [UIElement("UnsubscribeButton")]
+        private readonly Button m_unsubscribeButton;
+
+        [UIElementAction(nameof(OnPlayButtonClicked))]
+        [UIElement("PlayButton")]
+        private readonly Button m_playButton;
+
+        [UIElementAction(nameof(OnEraseProgressButtonClicked))]
+        [UIElement("DeleteProgressButton")]
+        private readonly Button m_eraseProgressButton;
+
+        [UIElementAction(nameof(OnOptionsButtonClicked))]
+        [UIElement("OptionsButton")]
+        private readonly Button m_optionsButton;
+
+        [UIElementAction(nameof(OnSetLevelOnTitleScreenButtonClicked))]
+        [UIElement("SetLevelOnTitleScreenButton")]
+        private readonly Button m_setLevelOnTitleScreenButton;
+
+        [UIElementAction(nameof(OnUpdateButtonClicked))]
+        [UIElement("UpdateButton")]
+        private readonly Button m_updateButton;
+
+        [UIElement("FavouriteGlow", false)]
+        private readonly GameObject m_favoriteButtonGlowObject;
+
+        [UIElement("LoadingIndicator", false)]
+        private readonly GameObject m_loadingIndicatorObject;
+
+        [UIElement("LoadingIndicatorText")]
+        private readonly Text m_loadingIndicatorText;
 
         [UIElement("ItemAuthorAvatar")]
         private readonly RawImage m_authorAvatarImage;
@@ -83,10 +138,58 @@ namespace OverhaulMod.UI
 
         private UnityWebRequest m_webRequest;
 
+        private UIElementShowTooltipOnHightLight m_tooltipOnHightLight;
+
+        private WorkshopItem m_workshopItem;
+
+        private bool m_refreshDisplaysNextFrame;
+
+        private float m_makeButtonsInteractableInTime;
+
+        private float m_timeLeftToRefreshDisplays;
+
         public UIWorkshopBrowser browserUI
         {
             get;
             set;
+        }
+
+        protected override void OnInitialized()
+        {
+            UIElementShowTooltipOnHightLight tooltipOnHightLight = m_itemTitleText.gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
+            tooltipOnHightLight.tooltipShowDuration = 2f;
+            tooltipOnHightLight.InitializeElement();
+            m_tooltipOnHightLight = tooltipOnHightLight;
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            if (m_refreshDisplaysNextFrame)
+            {
+                m_refreshDisplaysNextFrame = false;
+
+                refreshManagementDisplays(m_workshopItem);
+            }
+
+            if (m_makeButtonsInteractableInTime > 0f)
+                m_makeButtonsInteractableInTime -= Time.unscaledDeltaTime;
+
+            if (m_makeButtonsInteractableInTime <= 0f)
+            {
+                m_makeButtonsInteractableInTime = -1f;
+                m_subscribeButton.interactable = true;
+                m_unsubscribeButton.interactable = true;
+                m_updateButton.interactable = true;
+            }
+
+            m_timeLeftToRefreshDisplays -= Time.unscaledDeltaTime;
+            if (m_timeLeftToRefreshDisplays <= 0f)
+            {
+                m_refreshDisplaysNextFrame = true;
+                m_timeLeftToRefreshDisplays = 0.1f;
+            }
         }
 
         public override void OnDisable()
@@ -96,8 +199,14 @@ namespace OverhaulMod.UI
 
         public void Populate(WorkshopItem workshopItem)
         {
+            dispose();
             if (workshopItem == null || workshopItem.IsDisposed())
                 return;
+            m_workshopItem = workshopItem;
+
+            string path = DataRepository.Instance.GetFullPath($"ChallengeData{workshopItem.ItemID}", false);
+            m_playButton.interactable = true;
+            m_eraseProgressButton.interactable = File.Exists(path);
 
             m_itemTitleText.text = workshopItem.Name;
             m_itemDescriptionText.text = workshopItem.Description;
@@ -111,16 +220,25 @@ namespace OverhaulMod.UI
             m_authorProfileLink = $"https://steamcommunity.com/profiles/{workshopItem.AuthorID}";
             m_authorId = workshopItem.AuthorID;
 
+            m_tooltipOnHightLight.tooltipText = workshopItem.Name;
+
             getMainPreview(workshopItem);
             getAuthorAvatar(workshopItem);
             populateDetails(workshopItem);
             populateAdditionalPreviews(workshopItem);
+            refreshManagementDisplays(workshopItem);
+            refreshUserVote(workshopItem);
+        }
+
+        public void SetFavoriteButtonInteractable(bool value)
+        {
+            m_favoriteButton.interactable = value;
+            m_favoriteButtonGlowObject.SetActive(!value);
         }
 
         private void getMainPreview(WorkshopItem workshopItem)
         {
             m_itemPreviewImage.gameObject.SetActive(false);
-            dispose();
 
             string link = workshopItem.PreviewURL;
             m_previewLink = link;
@@ -223,8 +341,61 @@ namespace OverhaulMod.UI
             }
         }
 
+        private void refreshManagementDisplays(WorkshopItem workshopItem)
+        {
+            if (workshopItem == null || workshopItem.IsDisposed())
+                return;
+
+            EItemState itemState = ModSteamUGCUtils.GetItemState(workshopItem.ItemID);
+            bool installed = ModSteamUGCUtils.IsItemInstalled(workshopItem.ItemID);
+            bool subscribed = itemState.HasFlag(EItemState.k_EItemStateSubscribed);
+            bool downloading = itemState.HasFlag(EItemState.k_EItemStateDownloading) || itemState.HasFlag(EItemState.k_EItemStateDownloadPending);
+            bool needsUpdate = itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate);
+
+            m_subscribeButton.gameObject.SetActive(!subscribed && !downloading);
+            m_unsubscribeButton.gameObject.SetActive(subscribed);
+            m_playButton.gameObject.SetActive(installed && subscribed && !downloading);
+            m_updateButton.gameObject.SetActive(installed && subscribed && !downloading && needsUpdate);
+
+            m_loadingIndicatorObject.SetActive(downloading || needsUpdate);
+            if (m_loadingIndicatorObject.activeSelf)
+                m_loadingIndicatorText.text = $"Downloading item...  {(Mathf.RoundToInt(Mathf.Clamp01(ModSteamUGCUtils.GetItemDownloadProgress(workshopItem.ItemID)) * 100f).ToString() + "%").AddColor(Color.white)}";
+        }
+
+        private void refreshUserVote(WorkshopItem workshopItem)
+        {
+            WorkshopItem item = workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            m_voteUpButton.gameObject.SetActive(false);
+            m_voteDownButton.gameObject.SetActive(false);
+            SetFavoriteButtonInteractable(true);
+
+            ModSteamUGCUtils.GetUserVote(item.ItemID, delegate (WorkshopItemVote workshopItemVote)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                m_voteUpButton.gameObject.SetActive(true);
+                m_voteDownButton.gameObject.SetActive(true);
+
+                if (!workshopItemVote.HasVoted)
+                {
+                    m_voteUpButton.interactable = true;
+                    m_voteDownButton.interactable = true;
+                    return;
+                }
+                m_voteUpButton.interactable = !workshopItemVote.VoteValue;
+                m_voteDownButton.interactable = workshopItemVote.VoteValue;
+            });
+        }
+
         private void dispose()
         {
+            m_workshopItem = null;
+
             if (m_webRequest != null)
             {
                 try
@@ -242,6 +413,225 @@ namespace OverhaulMod.UI
             Texture2D aat = m_authorAvatarTexture;
             if (aat)
                 Destroy(aat);
+        }
+
+        public void OnPreviewClicked()
+        {
+            Texture2D texture = m_previewTexture;
+            if (!texture)
+                return;
+
+            ModUIUtils.ImageViewer(texture, base.transform);
+        }
+
+        public void OnVoteUpButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            ModSteamUGCUtils.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                {
+                    m_voteDownButton.interactable = t.m_bVoteUp;
+                    m_voteUpButton.interactable = !t.m_bVoteUp;
+                    return;
+                }
+
+                m_voteUpButton.interactable = true;
+            });
+
+            m_voteUpButton.interactable = false;
+        }
+
+        public void OnVoteDownButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            ModSteamUGCUtils.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                {
+                    m_voteDownButton.interactable = t.m_bVoteUp;
+                    m_voteUpButton.interactable = !t.m_bVoteUp;
+                    return;
+                }
+
+                m_voteDownButton.interactable = true;
+            });
+
+            m_voteDownButton.interactable = false;
+        }
+
+        public void OnFavoriteButtonClicked()
+        {
+            ModUIUtils.MessagePopup(true, "Favorite this item?", string.Empty, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                WorkshopItem item = m_workshopItem;
+                if (item == null || item.IsDisposed())
+                    return;
+
+                ModSteamUGCUtils.AddItemToFavorites(item.ItemID, delegate (UserFavoriteItemsListChanged_t t, bool ioError)
+                {
+                    WorkshopItem item2 = m_workshopItem;
+                    if (item != item2 || item2 == null || item2.IsDisposed())
+                        return;
+
+                    if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    {
+                        ModUIUtils.MessagePopupOK("Mark item as favorite error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    }
+                    else
+                    {
+                        SetFavoriteButtonInteractable(false);
+                        return;
+                    }
+
+                    SetFavoriteButtonInteractable(true);
+                });
+
+                SetFavoriteButtonInteractable(false);
+            });
+        }
+
+        public void OnSubscribeButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            ModSteamUGCUtils.SubscribeItem(item.ItemID, delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Subscription error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                    m_refreshDisplaysNextFrame = true;
+            });
+            m_refreshDisplaysNextFrame = true;
+
+            m_makeButtonsInteractableInTime = 2f;
+            m_subscribeButton.interactable = false;
+        }
+
+        public void OnUnsubscribeButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            ModSteamUGCUtils.UnsubscribeItem(item.ItemID, delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool ioError)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Unsubscription error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                    m_refreshDisplaysNextFrame = true;
+            });
+            m_refreshDisplaysNextFrame = true;
+
+            m_makeButtonsInteractableInTime = 2f;
+            m_unsubscribeButton.interactable = false;
+        }
+
+        public void OnPlayButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            if (SteamUGC.GetItemInstallInfo(item.ItemID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+                item.Folder = folder;
+
+            if (!WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(item.ToSteamWorkshopItem()))
+            {
+                ModUIUtils.MessagePopupOK("Incompatible game version!", "This item was made on newer version of the game.\nTo become able to play this level, update the game.", true);
+                m_playButton.interactable = false;
+            }
+            else
+            {
+                Hide();
+                browserUI.Hide();
+            }
+        }
+
+        public void OnEraseProgressButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            string path = DataRepository.Instance.GetFullPath($"ChallengeData{item.ItemID}", false);
+            ModUIUtils.MessagePopup(true, "Reset progress?", "This action cannot be undone.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                if (File.Exists(path))
+                    try
+                    {
+                        File.Delete(path);
+                        m_eraseProgressButton.interactable = false;
+                    }
+                    catch (Exception exception)
+                    {
+                        ModUIUtils.MessagePopupOK("Error", $"Could not erase save file.\nDetails: {exception}");
+                    }
+            });
+        }
+
+        public void OnOptionsButtonClicked()
+        {
+
+        }
+
+        public void OnSetLevelOnTitleScreenButtonClicked()
+        {
+
+        }
+
+        public void OnUpdateButtonClicked()
+        {
+            WorkshopItem item = m_workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
+            _ = ModSteamUGCUtils.UpdateItem(item.ItemID, delegate (DownloadItemResult_t t)
+            {
+                WorkshopItem item2 = m_workshopItem;
+                if (item != item2 || item2 == null || item2.IsDisposed())
+                    return;
+
+                if (t.m_unAppID == SteamUtils.GetAppID() && t.m_nPublishedFileId == item2.ItemID)
+                {
+                    if (t.m_eResult != EResult.k_EResultOK)
+                        ModUIUtils.MessagePopupOK("Update error", $"Error code:{t.m_eResult}", 150f, true);
+                    else
+                        m_refreshDisplaysNextFrame = true;
+                }
+            });
+            m_refreshDisplaysNextFrame = true;
+
+            m_makeButtonsInteractableInTime = 2f;
+            m_updateButton.interactable = false;
         }
 
         public void OnSteamPageButtonClicked()

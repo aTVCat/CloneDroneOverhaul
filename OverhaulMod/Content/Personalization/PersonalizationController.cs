@@ -136,10 +136,15 @@ namespace OverhaulMod.Content.Personalization
 
             foreach (WeaponModel weaponModel in characterModel.WeaponModels)
             {
-                if (weaponModel && PersonalizationManager.IsWeaponCustomizationSupported(weaponModel.WeaponType))
-                {
-                    m_weaponTypeToParts.Add(weaponModel.WeaponType, weaponModel.PartsToDrop);
-                }
+                if (!weaponModel)
+                    continue;
+
+                WeaponType weaponType = weaponModel.WeaponType;
+                if (PersonalizationManager.IsWeaponCustomizationSupported(weaponType))
+                    if (m_weaponTypeToParts.ContainsKey(weaponType))
+                        m_weaponTypeToParts[weaponType] = weaponModel.PartsToDrop;
+                    else
+                        m_weaponTypeToParts.Add(weaponModel.WeaponType, weaponModel.PartsToDrop);
             }
         }
 

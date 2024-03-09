@@ -134,7 +134,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 5f));
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             PlayerCameraMover playerCameraMover = m_cameraMover;
             if (playerCameraMover)

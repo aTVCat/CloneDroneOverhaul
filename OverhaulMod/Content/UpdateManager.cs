@@ -59,7 +59,14 @@ namespace OverhaulMod.Content
                 string oldBuildPath = PlayerPrefs.GetString(PLAYER_PREF_KEY);
                 if (Directory.Exists(oldBuildPath))
                 {
-                    Directory.Delete(oldBuildPath, true);
+                    try
+                    {
+                        Directory.Delete(oldBuildPath, true);
+                    }
+                    catch (Exception exc)
+                    {
+                        ModUIUtils.MessagePopupOK("Old build cleanup error", exc.ToString(), 200f, true);
+                    }
                 }
                 PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
                 PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, ModBuildInfo.version.ToString());

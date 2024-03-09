@@ -839,7 +839,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Make it look like you want
+  m_Text: It won't take much time
 --- !u!114 &8923630691054294832
 MonoBehaviour:
   m_ObjectHideFlags: 0

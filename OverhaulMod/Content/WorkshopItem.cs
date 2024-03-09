@@ -1,10 +1,7 @@
-﻿using OverhaulMod.Utils;
-using Steamworks;
+﻿using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace OverhaulMod.Content
 {
@@ -47,10 +44,32 @@ namespace OverhaulMod.Content
             return m_disposed;
         }
 
+        public SteamWorkshopItem ToSteamWorkshopItem()
+        {
+            SteamWorkshopItem steamWorkshopItem = new SteamWorkshopItem
+            {
+                Title = Name,
+                Description = Description,
+                CreatorName = Author,
+                WorkshopItemID = ItemID,
+                CreatorID = (ulong)AuthorID,
+                Children = Children,
+                Folder = Folder,
+                PreviewURL = PreviewURL,
+                Rating = Rating,
+                Tags = Tags,
+                UpVotes = UpVotes,
+                Votes = Votes
+            };
+            return steamWorkshopItem;
+        }
+
         public void Dispose()
         {
             if (!m_disposed)
             {
+                Debug.Log("Disposed WorkshopItem");
+
                 if (AdditionalPreviews != null)
                     AdditionalPreviews.Clear();
 

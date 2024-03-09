@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
             AddSection("Special thanks:", "D9E0FF");
             AddUser("SonicGleb", "Made some UI icons and voxel models", "https://steamcommunity.com/id/sonicgleb");
             AddUser("Igrok_x_xp", "Made some voxel models", "https://steamcommunity.com/profiles/76561199014733748");
-            AddUser("Pharawill-MK2 (Water)", "Made overhauled arena model", "https://steamcommunity.com/profiles/76561198995153570");
+            AddUser("Pharawill-MK2 (Water)", "Made overhauled arena model and customization editor level", "https://steamcommunity.com/profiles/76561198995153570");
         }
 
         public void AddUser(string displayName, string description, string steamLink)

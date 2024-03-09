@@ -59,6 +59,13 @@ namespace OverhaulMod.UI
 
         public override void OnDestroy()
         {
+            WorkshopItem item = workshopItem;
+            if(item != null && !item.IsDisposed())
+            {
+                item.Dispose();
+            }
+            workshopItem = null;
+
             Texture2D texture = thumbnailTexture;
             if (texture)
                 Destroy(texture);
@@ -110,9 +117,13 @@ namespace OverhaulMod.UI
 
         private void onClicked()
         {
+            WorkshopItem item = workshopItem;
+            if (item == null || item.IsDisposed())
+                return;
+
             UIWorkshopItemPageWindow window = ModUIConstants.ShowWorkshopItemPageWindow(itemPageWindowParentTransform);
             window.browserUI = browserUI;
-            window.Populate(workshopItem);
+            window.Populate(item);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

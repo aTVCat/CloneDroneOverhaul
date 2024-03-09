@@ -21,6 +21,145 @@ namespace OverhaulMod.Utils
             private set;
         }
 
+        public static float GetItemDownloadProgress(PublishedFileId_t workshopItemId)
+        {
+            if (SteamUGC.GetItemDownloadInfo(workshopItemId, out ulong downloaded, out ulong total))
+            {
+                float a = downloaded;
+                float b = total;
+
+                bool isAIncorrectNumber = float.IsInfinity(a) || float.IsNaN(a);
+                bool isBIncorrectNumber = float.IsInfinity(b) || float.IsNaN(b);
+                if (isAIncorrectNumber && isBIncorrectNumber)
+                    return -1f;
+                else
+                {
+                    if (isAIncorrectNumber)
+                        a = 0f;
+
+                    if (isBIncorrectNumber)
+                        b = 1f;
+                }
+
+                return a / Mathf.Max(0.01f, b);
+            }
+            return -1f;
+        }
+
+        public static bool IsItemInstalled(PublishedFileId_t workshopItemId)
+        {
+            return SteamUGC.GetItemInstallInfo(workshopItemId, out _, out _, cchFolderSize, out _);
+        }
+
+        public static EItemState GetItemState(PublishedFileId_t workshopItemId)
+        {
+            return (EItemState)SteamUGC.GetItemState(workshopItemId);
+        }
+
+        public static void SubscribeItem(PublishedFileId_t workshopItemId, Action<RemoteStorageSubscribePublishedFileResult_t, bool> callback)
+        {
+            CallResult<RemoteStorageSubscribePublishedFileResult_t> callResult = new CallResult<RemoteStorageSubscribePublishedFileResult_t>();
+            callResult.Set(SteamUGC.SubscribeItem(workshopItemId), delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
+            {
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(t, ioError);
+                    }
+                    catch { }
+                }
+                callResult?.Dispose();
+            });
+        }
+
+        public static void UnsubscribeItem(PublishedFileId_t workshopItemId, Action<RemoteStorageUnsubscribePublishedFileResult_t, bool> callback)
+        {
+            CallResult<RemoteStorageUnsubscribePublishedFileResult_t> callResult = new CallResult<RemoteStorageUnsubscribePublishedFileResult_t>();
+            callResult.Set(SteamUGC.UnsubscribeItem(workshopItemId), delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool ioError)
+            {
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(t, ioError);
+                    }
+                    catch { }
+                }
+                callResult?.Dispose();
+            });
+        }
+
+        public static bool UpdateItem(PublishedFileId_t workshopItemId, Action<DownloadItemResult_t> callback)
+        {
+            Callback<DownloadItemResult_t> cb = null;
+            cb = new Callback<DownloadItemResult_t>(delegate (DownloadItemResult_t t)
+            {
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(t);
+                    }
+                    catch { }
+                }
+                cb?.Dispose();
+            }, false);
+            return SteamUGC.DownloadItem(workshopItemId, true);
+        }
+
+        public static void GetUserVote(PublishedFileId_t workshopItemId, Action<WorkshopItemVote> callback)
+        {
+            CallResult<GetUserItemVoteResult_t> callResult = new CallResult<GetUserItemVoteResult_t>();
+            callResult.Set(SteamUGC.GetUserItemVote(workshopItemId), delegate (GetUserItemVoteResult_t t, bool ioError)
+            {
+                WorkshopItemVote workshopItemVote = new WorkshopItemVote(t, ioError);
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(workshopItemVote);
+                    }
+                    catch { }
+                }
+                callResult?.Dispose();
+            });
+        }
+
+        public static void SetUserVote(PublishedFileId_t workshopItemId, bool upVote, Action<SetUserItemVoteResult_t, bool> callback)
+        {
+            CallResult<SetUserItemVoteResult_t> callResult = new CallResult<SetUserItemVoteResult_t>();
+            callResult.Set(SteamUGC.SetUserItemVote(workshopItemId, upVote), delegate (SetUserItemVoteResult_t t, bool ioError)
+            {
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(t, ioError);
+                    }
+                    catch { }
+                }
+                callResult?.Dispose();
+            });
+        }
+
+        public static void AddItemToFavorites(PublishedFileId_t workshopItemId, Action<UserFavoriteItemsListChanged_t, bool> callback)
+        {
+            CallResult<UserFavoriteItemsListChanged_t> callResult = new CallResult<UserFavoriteItemsListChanged_t>();
+            callResult.Set(SteamUGC.AddItemToFavorites(SteamUtils.GetAppID(), workshopItemId), delegate (UserFavoriteItemsListChanged_t t, bool ioError)
+            {
+                if (callback != null)
+                {
+                    try
+                    {
+                        callback?.Invoke(t, ioError);
+                    }
+                    catch { }
+                }
+                callResult?.Dispose();
+            });
+        }
+
         /// <summary>
         /// Execute <see cref="SteamUGC.CreateQueryAllUGCRequest(EUGCQuery, EUGCMatchingUGCType, AppId_t, AppId_t, uint)"/>
         /// </summary>
@@ -193,11 +332,6 @@ namespace OverhaulMod.Utils
         {
             AppId_t appId = SteamUtils.GetAppID();
             return SteamUGC.CreateQueryUserUGCRequest(accountId.GetAccountID(), userList, itemsType, sortOrder, appId, appId, (uint)page);
-        }
-
-        private static UGCQueryHandle_t createWorkshopItemRequest(PublishedFileId_t itemId)
-        {
-            return SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[] { itemId }, 1);
         }
 
         private static void requestWorkshopItems(UGCQueryHandle_t queryHandle, Action<SteamUGCQueryCompleted_t, bool> callback, Action<string> errorCallback)
