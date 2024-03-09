@@ -937,7 +937,7 @@ namespace OverhaulMod.UI
                 UIElementKeyBindSetter elementKeyBind = moddedObject.gameObject.AddComponent<UIElementKeyBindSetter>();
                 elementKeyBind.InitializeElement();
                 elementKeyBind.key = keyCode;
-                elementKeyBind.defaultKey = default;
+                elementKeyBind.defaultKey = defaultKey;
                 elementKeyBind.onValueChanged.AddListener(new UnityAction<KeyCode>(onChanged));
 
                 return elementKeyBind;

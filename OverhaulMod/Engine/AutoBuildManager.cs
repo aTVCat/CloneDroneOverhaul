@@ -45,6 +45,7 @@ namespace OverhaulMod.Engine
             catch
             {
                 autoBuildInfo = new AutoBuildInfo();
+                autoBuildInfo.SkillPoints = 4;
                 autoBuildInfo.FixValues();
             }
             buildInfo = autoBuildInfo;
