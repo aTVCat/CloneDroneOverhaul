@@ -98,6 +98,7 @@ namespace OverhaulMod.UI
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
+                    KeyBindSetterAttribute keyBindSetterAttribute = fieldInfo.GetCustomAttribute<KeyBindSetterAttribute>();
                     ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
                     ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
                     UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
@@ -133,6 +134,21 @@ namespace OverhaulMod.UI
                         colorPickerButton.InitializeElement();
                         colorPickerButton.useAlpha = colorPickerAttribute.UseAlpha;
                         unityObject = colorPickerButton;
+                    }
+                    else if (keyBindSetterAttribute != null)
+                    {
+                        gameObject = GetObject<GameObject>(elementAttribute.Name);
+                        if (!gameObject)
+                        {
+                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                            return;
+                        }
+
+                        UIElementKeyBindSetter keyBindSetter = gameObject.AddComponent<UIElementKeyBindSetter>();
+                        keyBindSetter.InitializeElement();
+                        keyBindSetter.key = keyBindSetterAttribute.DefaultKey;
+                        keyBindSetter.defaultKey = keyBindSetterAttribute.DefaultKey;
+                        unityObject = keyBindSetter;
                     }
 
                     if (!unityObject)
@@ -253,6 +269,18 @@ namespace OverhaulMod.UI
                             {
                                 UIElementColorPickerButton colorPickerButton = unityObject as UIElementColorPickerButton;
                                 colorPickerButton.onValueChanged.AddListener(delegate (Color value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
+                                });
+                            }
+                        }
+                        else if (fieldInfo.FieldType == typeof(UIElementKeyBindSetter))
+                        {
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(KeyCode) });
+                            if (methodInfo != null)
+                            {
+                                UIElementKeyBindSetter keyBindSetter = unityObject as UIElementKeyBindSetter;
+                                keyBindSetter.onValueChanged.AddListener(delegate (KeyCode value)
                                 {
                                     _ = methodInfo.Invoke(this, new object[] { value });
                                 });

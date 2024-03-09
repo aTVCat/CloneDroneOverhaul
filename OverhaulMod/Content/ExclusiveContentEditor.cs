@@ -74,7 +74,7 @@ namespace OverhaulMod.Content
 
         public static void Save()
         {
-            ModDataManager.Instance.WriteFile(ExclusiveContentManager.REPOSITORY_FILE, ModJsonUtils.Serialize(contentList), false);
+            ModDataManager.Instance.SerializeToFile(ExclusiveContentManager.REPOSITORY_FILE, contentList, false);
         }
 
         public static void Save(string contents)

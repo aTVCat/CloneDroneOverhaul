@@ -41,6 +41,10 @@ namespace OverhaulMod.UI
         [UIElement("JoinPrivateMatchButton")]
         private readonly Button m_joinPrivateMatchButton;
 
+        [UIElementAction(nameof(OnAutoBuildConfigButtonClicked))]
+        [UIElement("AutoBuildConfigButton", false)]
+        private readonly Button m_autoBuildConfigButton;
+
         [UIElement("JoinBox", false)]
         private readonly GameObject m_joinBoxObject;
 
@@ -57,6 +61,9 @@ namespace OverhaulMod.UI
 
         [UIElement("LBSStatsBox", typeof(UIElementBattleRoyaleStatsBox))]
         private readonly UIElementBattleRoyaleStatsBox m_battleRoyaleStatsBox;
+
+        [UIElement("Panel")]
+        private readonly GameObject m_panelObject;
 
         public override bool dontRefreshUI => true;
 
@@ -86,6 +93,7 @@ namespace OverhaulMod.UI
             m_battleRoyaleLogoObject.SetActive(gameMode == GameMode.BattleRoyale);
             m_rulesBoxObject.SetActive(gameMode == GameMode.BattleRoyale);
             m_battleRoyaleStatsBox.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
+            m_autoBuildConfigButton.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
             m_joinBoxObject.SetActive(false);
             m_codeField.text = string.Empty;
 
@@ -247,6 +255,14 @@ namespace OverhaulMod.UI
         public void OnJoinMatchButtonClicked()
         {
             m_joinBoxObject.SetActive(true);
+        }
+
+        public void OnAutoBuildConfigButtonClicked()
+        {
+            GameObject gameObject = m_panelObject;
+            gameObject.SetActive(false);
+            UIAutoBuildMenu ui = ModUIConstants.ShowAutoBuildMenu();
+            ui.objectToShow = gameObject;
         }
 
         public void OnCancelJoinButtonClicked()

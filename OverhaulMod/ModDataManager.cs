@@ -15,7 +15,7 @@ namespace OverhaulMod
             {
                 if (m_userDataFolder == null)
                 {
-                    m_userDataFolder = ModCache.dataRepository.GetRootDataPath(false) + "/";
+                    m_userDataFolder = ModCore.modDataFolder;
                 }
                 return m_userDataFolder;
             }

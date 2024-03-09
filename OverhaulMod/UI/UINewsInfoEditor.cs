@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
             m_editingInfo.Description = m_descriptionField.text;
             m_editingInfo.Survey = m_surveyField.text;
 
-            ModDataManager.Instance.WriteFile(NewsManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
+            ModDataManager.Instance.SerializeToFile(NewsManager.REPOSITORY_FILE, m_editingInfoList, true);
         }
 
         public void OnRetrieveButtonClicked()

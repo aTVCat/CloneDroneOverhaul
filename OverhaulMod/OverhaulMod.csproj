@@ -391,6 +391,8 @@
     <Compile Include="Engine\ArenaAudienceLinePointInfoList.cs" />
     <Compile Include="Engine\ArenaAudienceManager.cs" />
     <Compile Include="Engine\ArenaRemodelManager.cs" />
+    <Compile Include="Engine\AutoBuildInfo.cs" />
+    <Compile Include="Engine\AutoBuildManager.cs" />
     <Compile Include="Engine\CameraModeController.cs" />
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />
@@ -473,6 +475,8 @@
     <Compile Include="Patches\LevelLightSettings_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
+    <Compile Include="Patches\UpgradeDescription_Patch.cs" />
+    <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\Character_Patch.cs" />
@@ -511,6 +515,7 @@
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
+    <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
     <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
     <Compile Include="UI\Attributes\UIElementCallbackAttribute.cs" />
@@ -524,6 +529,7 @@
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
@@ -558,6 +564,7 @@
     <Compile Include="UI\UIFileExplorer.cs" />
     <Compile Include="UI\UICinematicEffects.cs" />
     <Compile Include="UI\UIImageExplorer.cs" />
+    <Compile Include="UI\UIAutoBuildMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />

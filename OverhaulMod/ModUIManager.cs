@@ -128,6 +128,10 @@ namespace OverhaulMod
                     return ModCache.gameUIRoot.EnergyUI.transform.GetSiblingIndex();
                 case UILayer.AfterEnergyUI:
                     return ModCache.gameUIRoot.EnergyUI.transform.GetSiblingIndex() + 1;
+                case UILayer.BeforeUpgradeUI:
+                    return ModCache.gameUIRoot.UpgradeUI.transform.GetSiblingIndex();
+                case UILayer.AfterUpgradeUI:
+                    return ModCache.gameUIRoot.UpgradeUI.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeEscMenu:
                     return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex();
                 case UILayer.AfterEscMenu:
@@ -307,6 +311,9 @@ namespace OverhaulMod
 
             BeforeEnergyUI,
             AfterEnergyUI,
+
+            BeforeUpgradeUI,
+            AfterUpgradeUI,
 
             BeforeMultiplayerConnectScreen,
             AfterMultiplayerConnectScreen,

@@ -99,6 +99,7 @@ namespace OverhaulMod
             _ = ModManagers.New<ParticleManager>();
             _ = ModManagers.New<PostEffectsManager>();
             _ = ModManagers.New<QuickResetManager>();
+            _ = ModManagers.New<AutoBuildManager>();
 
             _ = ModManagers.New<ModPhysicsManager>();
         }
@@ -146,8 +147,8 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
-            if (!Directory.Exists(ModCore.modFolder))
-                _ = Directory.CreateDirectory(ModCore.modFolder);
+            if (!Directory.Exists(ModCore.modDataFolder))
+                _ = Directory.CreateDirectory(ModCore.modDataFolder);
 
             if (!Directory.Exists(ModCore.contentFolder))
                 _ = Directory.CreateDirectory(ModCore.contentFolder);

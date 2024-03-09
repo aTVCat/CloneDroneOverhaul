@@ -929,33 +929,18 @@ namespace OverhaulMod.UI
                 return button;
             }
 
-            public ModdedObject KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
+            public UIElementKeyBindSetter KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
             {
                 ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
 
-                Text text = moddedObject.GetObject<Text>(0);
-                text.text = keyCode.ToString().Replace("Alpha", string.Empty);
-                Button setBindButton = moddedObject.GetObject<Button>(1);
-                setBindButton.onClick.AddListener(delegate
-                {
-                    ModUIUtils.KeyBinder(name, defaultKey, delegate (KeyCode kc)
-                    {
-                        if (kc == KeyCode.None)
-                            return;
+                UIElementKeyBindSetter elementKeyBind = moddedObject.gameObject.AddComponent<UIElementKeyBindSetter>();
+                elementKeyBind.InitializeElement();
+                elementKeyBind.key = keyCode;
+                elementKeyBind.defaultKey = default;
+                elementKeyBind.onValueChanged.AddListener(new UnityAction<KeyCode>(onChanged));
 
-                        onChanged?.Invoke(kc);
-                        text.text = kc.ToString().Replace("Alpha", string.Empty);
-                    }, SettingsMenu.transform);
-                });
-                Button setDefaultBindButton = moddedObject.GetObject<Button>(2);
-                setDefaultBindButton.onClick.AddListener(delegate
-                {
-                    onChanged?.Invoke(defaultKey);
-                    text.text = defaultKey.ToString().Replace("Alpha", string.Empty);
-                });
-
-                return moddedObject;
+                return elementKeyBind;
             }
 
             public void Dispose()

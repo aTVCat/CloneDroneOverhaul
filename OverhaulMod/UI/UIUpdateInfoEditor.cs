@@ -117,7 +117,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            ModDataManager.Instance.WriteFile(UpdateManager.REPOSITORY_FILE, ModJsonUtils.Serialize(m_editingInfoList), true);
+            ModDataManager.Instance.SerializeToFile(UpdateManager.REPOSITORY_FILE, m_editingInfoList, true);
         }
 
         public void OnRetrieveButtonClicked()

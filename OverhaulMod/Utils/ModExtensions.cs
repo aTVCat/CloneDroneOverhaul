@@ -293,5 +293,26 @@ namespace OverhaulMod.Utils
 
             return false;
         }
+
+        public static UpgradeUIIcon GetUpgradeUIIcon(this UpgradeUI upgradeUI, UpgradeType upgradeType, int upgradeLevel)
+        {
+            List<UpgradeUIIcon> list = upgradeUI._icons;
+            if (list.IsNullOrEmpty())
+                return null;
+
+            foreach(UpgradeUIIcon icon in list)
+            {
+                if (!icon)
+                    continue;
+
+                UpgradeDescription upgradeDescription = icon._upgradeDescription;
+                if (!upgradeDescription)
+                    continue;
+
+                if (upgradeDescription.UpgradeType == upgradeType && upgradeDescription.Level == upgradeLevel)
+                    return icon;
+            }
+            return null;
+        }
     }
 }

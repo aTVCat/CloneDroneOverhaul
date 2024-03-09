@@ -63,6 +63,19 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_IMAGE_EXPLORER))
                     return false;
+
+                UIAutoBuildMenu autoBuildMenu = modUIManager.Get<UIAutoBuildMenu>(AssetBundleConstants.UI, ModUIConstants.UI_AUTO_BUILD_MENU);
+                if (autoBuildMenu && autoBuildMenu.visibleInHierarchy)
+                {
+                    if (autoBuildMenu.isShowingUpgradeUI)
+                    {
+                        autoBuildMenu.OnCloseUpgradeUIButtonClicked();
+                        return false;
+                    }
+                    autoBuildMenu.Hide();
+                    return false;
+                }
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DEVELOPMENT_GALLERY))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN_CUSTOMIZATION_PANEL))

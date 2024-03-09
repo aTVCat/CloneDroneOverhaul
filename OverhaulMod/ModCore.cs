@@ -56,7 +56,7 @@ namespace OverhaulMod
             {
                 if (s_savesFolder == null)
                 {
-                    s_savesFolder = modFolder + "saves/";
+                    s_savesFolder = modDataFolder + "saves/";
                 }
                 return s_savesFolder;
             }
@@ -89,7 +89,7 @@ namespace OverhaulMod
         }
 
         private static string s_modFolder;
-        public static string modFolder
+        public static string modDataFolder
         {
             get
             {
@@ -108,7 +108,7 @@ namespace OverhaulMod
             {
                 if (s_contentFolder == null)
                 {
-                    s_contentFolder = modFolder + "content/";
+                    s_contentFolder = modDataFolder + "content/";
                 }
                 return s_contentFolder;
             }

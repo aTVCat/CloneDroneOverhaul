@@ -150,5 +150,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.LightningTransitionManager"/>
         /// </summary>
         public const string ENABLE_LIGHTNING_TRANSITION = "EnableLightningTransition";
+
+        /// <summary>
+        /// <see cref="Engine.AutoBuildManager"/>
+        /// </summary>
+        public const string AUTO_BUILD_KEY_BIND = "AutoBuildKeyBind";
     }
 }
