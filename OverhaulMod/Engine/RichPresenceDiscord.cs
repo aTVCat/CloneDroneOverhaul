@@ -110,7 +110,7 @@ namespace OverhaulMod.Engine
                         string gameModeId = split[1];
                         string lobbyCode = split[2];
 
-                        // todo: multiplayer api stuff goes here
+                        ModIntegrationUtils.ModdedMultiplayer.OnInvite(gameModeId, lobbyCode);
                     };
                     activityManager.OnActivityJoinRequest += (ref User user) =>
                     {

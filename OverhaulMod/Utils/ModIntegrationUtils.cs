@@ -35,6 +35,8 @@ namespace OverhaulMod.Utils
 
             private static PropertyInfo s_arrayLengthProperty;
 
+            private static MethodInfo s_apiOnInviteMethod;
+
             public static void Load()
             {
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -47,6 +49,7 @@ namespace OverhaulMod.Utils
                     {
                         s_isInModdedMultiplayerProperty = type.GetProperty("isInModdedMultiplayer", BindingFlags.Static | BindingFlags.Public);
                         s_apiLobbyManagerProperty = type.GetProperty("lobbyManager", BindingFlags.Static | BindingFlags.Public);
+                        s_apiOnInviteMethod = type.GetMethod("OnInvite", BindingFlags.Static | BindingFlags.Public);
                     }
 
                     Type type2 = assembly.GetType("CloneDroneModdedMultiplayerAPI.Gameplay.GameModeInfo");
@@ -181,6 +184,19 @@ namespace OverhaulMod.Utils
                     return null;
 
                 return ((CSteamID)lobbyIdObject).ToString();
+            }
+
+            public static void OnInvite(string gameModeId, string lobbyCode)
+            {
+                MethodInfo method = s_apiOnInviteMethod;
+                if (method == null)
+                    return;
+
+                _ = method.Invoke(null, new object[]
+                {
+                    gameModeId,
+                    lobbyCode
+                });
             }
         }
     }
