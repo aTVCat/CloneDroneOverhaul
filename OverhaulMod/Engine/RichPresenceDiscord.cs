@@ -1,4 +1,6 @@
 ﻿using Discord;
+using OverhaulMod.Utils;
+using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -11,7 +13,10 @@ namespace OverhaulMod.Engine
         public const CreateFlags CREATE_FLAG = CreateFlags.NoRequireDiscord;
 
         private Discord.Discord m_client;
-        private Activity? m_activity;
+        private Activity m_activity;
+        private ActivityParty m_party;
+        private ActivitySecrets m_secrets;
+        private PartySize m_partySize;
         private ActivityManager.UpdateActivityHandler m_activityHandler;
 
         public override void Start()
@@ -45,16 +50,33 @@ namespace OverhaulMod.Engine
         public override void RefreshInformation()
         {
             base.RefreshInformation();
-            if (m_client != null && m_activity != null)
+            if (m_client != null)
             {
                 ActivityManager manager = m_client.GetActivityManager();
                 if (manager == null)
                     return;
 
+                bool isInModdedMultiplayer = ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
+                string id = isInModdedMultiplayer ? $"{ModIntegrationUtils.ModdedMultiplayer.GetCurrentGameModeInfoID()}_{ModIntegrationUtils.ModdedMultiplayer.GetLobbyID()}" : null;
 
-                m_activity.value.Details = $"v{ModBuildInfo.version} · {gameModeString}";
-                m_activity.value.State = !string.IsNullOrEmpty(gameModeDetailsString) ? gameModeDetailsString : string.Empty;
-                manager.UpdateActivity(m_activity.value, m_activityHandler);
+                PartySize partySize = m_partySize;
+                partySize.CurrentSize = isInModdedMultiplayer ? ModIntegrationUtils.ModdedMultiplayer.GetCurrentPlayerCount() : 0;
+                partySize.MaxSize = isInModdedMultiplayer ? ModIntegrationUtils.ModdedMultiplayer.GetMaxPlayerCount() : 0;
+
+                ActivitySecrets activitySecrets = m_secrets;
+                activitySecrets.Join = isInModdedMultiplayer ? $"lobby_{id}" : null;
+
+                ActivityParty party = m_party;
+                party.Id = isInModdedMultiplayer ? $"cdo_{id}" : null;
+                party.Size = partySize;
+
+                Activity activity = m_activity;
+                activity.State = !string.IsNullOrEmpty(gameModeDetailsString) ? gameModeDetailsString : string.Empty;
+                activity.Details = $"v{ModBuildInfo.version} · {gameModeString}";
+                activity.Party = party;
+                activity.Secrets = activitySecrets;
+
+                manager.UpdateActivity(activity, m_activityHandler);
             }
         }
 
@@ -64,22 +86,65 @@ namespace OverhaulMod.Engine
             {
                 try
                 {
-                    m_client = new Discord.Discord(APP_ID, (ulong)CREATE_FLAG);
+                    Discord.Discord client = new Discord.Discord(APP_ID, (ulong)CREATE_FLAG);
+#if DEBUG
+                    client.SetLogHook(LogLevel.Debug, (level, message) =>
+                    {
+                        switch (level)
+                        {
+                            case LogLevel.Error:
+                            case LogLevel.Warn:
+                                Debug.LogWarning($"Discord RPC: {message}");
+                                break;
+                            default:
+                                Debug.Log($"Discord RPC: {message}");
+                                break;
+                        }
+                    });
+#endif
+                    RelationshipManager relationshipManager = client.GetRelationshipManager();
+                    ActivityManager activityManager = client.GetActivityManager();
+                    activityManager.OnActivityJoin += secret =>
+                    {
+                        string[] split = secret.Split('_');
+                        string gameModeId = split[1];
+                        string lobbyCode = split[2];
+
+                        // todo: multiplayer api stuff goes here
+                    };
+                    activityManager.OnActivityJoinRequest += (ref User user) =>
+                    {
+                        var relationship = relationshipManager.Get(user.Id);
+                        ActivityJoinRequestReply reply = ActivityJoinRequestReply.Ignore;
+
+                        switch (relationship.Type)
+                        {
+                            case RelationshipType.Friend:
+                            case RelationshipType.Implicit:
+                            case RelationshipType.PendingOutgoing:
+                                {
+                                    reply = ActivityJoinRequestReply.Yes;
+                                    break;
+                                }
+                        }
+
+                        activityManager.SendRequestReply(user.Id, reply, _ => { });
+                    };
+
+                    m_client = client;
+
+                    Activity activity = new Activity()
+                    {
+                        Assets =
+                        {
+                            LargeImage = "defaultimage",
+                            LargeText = "Overhaul Mod",
+                        },
+                    };
+                    m_activity = activity;
                 }
                 catch { }
             }
-
-            if (m_activity == null)
-                m_activity = new Activity
-                {
-                    Assets = new ActivityAssets
-                    {
-                        LargeImage = "defaultimage"
-                    },
-                    ApplicationId = 1091373211163308073,
-                    Name = "Overhaul Mod",
-                    Type = ActivityType.Playing
-                };
 
             if (m_activityHandler == null)
                 m_activityHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);

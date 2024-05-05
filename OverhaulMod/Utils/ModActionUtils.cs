@@ -35,6 +35,11 @@ namespace OverhaulMod.Utils
             }
         }
 
+        public static Coroutine Run(this IEnumerator enumerator, bool dontDestroyOnLoad = false)
+        {
+            return RunCoroutine(enumerator, dontDestroyOnLoad);
+        }
+
         public static Coroutine RunCoroutine(IEnumerator enumerator, bool dontDestroyOnLoad = false)
         {
             GameObject gameObject = dontDestroyOnLoad ? dontDestroyOnLoadCoroutinesObject : coroutinesObject;

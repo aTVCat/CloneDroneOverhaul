@@ -108,6 +108,7 @@ namespace OverhaulMod
         {
             LevelEditorPatch.Patch.Apply();
             _ = ModBotAPI.ModBotAPI.Initialize();
+            ModIntegrationUtils.Load();
         }
 
         private static void addLevelEditorObjects()

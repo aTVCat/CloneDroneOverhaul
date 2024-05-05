@@ -45,6 +45,11 @@ namespace OverhaulMod.Engine
 
         public static string GetGameModeString(GameMode gameMode)
         {
+            if (ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer())
+            {
+                return "Modded Multiplayer";
+            }
+
             string gameModeString = "SinglePlayer";
             switch (gameMode)
             {
@@ -52,7 +57,7 @@ namespace OverhaulMod.Engine
                     gameModeString = "Adventure";
                     break;
                 case GameMode.BattleRoyale:
-                    gameModeString = "LBS Match";
+                    gameModeString = "Last Bot Standing";
                     break;
                 case GameMode.Challenge:
                     gameModeString = "Challenge";
@@ -98,6 +103,11 @@ namespace OverhaulMod.Engine
             string result = string.Empty;
             if (!GameFlowManager.Instance)
                 return result;
+
+            if (ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer())
+            {
+                return ModIntegrationUtils.ModdedMultiplayer.GetCurrentGameModeInfoDisplayName();
+            }
 
             LevelManager levelManager = LevelManager.Instance;
             EndlessModeManager endlessModeManager = EndlessModeManager.Instance;

@@ -51,6 +51,9 @@ namespace OverhaulMod.Engine
             if (!isKeyDown)
                 return;
 
+            if (ModGameUtils.IsGamePausedOrCursorVisible())
+                return;
+
             bool value = !EnableFirstPersonMode;
             ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value);
 

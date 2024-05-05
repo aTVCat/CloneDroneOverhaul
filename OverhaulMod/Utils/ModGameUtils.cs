@@ -152,7 +152,7 @@ namespace OverhaulMod.Utils
 
         public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
         {
-            if (bodyPartType == MechBodyPartType.None)
+            if (!firstPersonMover || bodyPartType == MechBodyPartType.None)
             {
                 return Array.Empty<Renderer>();
             }
@@ -166,7 +166,7 @@ namespace OverhaulMod.Utils
 
         public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
         {
-            if (string.IsNullOrEmpty(bodyPart))
+            if (!firstPersonMover || string.IsNullOrEmpty(bodyPart))
             {
                 return Array.Empty<Renderer>();
             }
@@ -176,6 +176,16 @@ namespace OverhaulMod.Utils
                 return Array.Empty<Renderer>();
             }
             return bodyPartParent.GetComponentsInChildren<Renderer>();
+        }
+
+        public static bool IsGamePaused()
+        {
+            return TimeManager.Instance.IsGamePaused() && Cursor.visible;
+        }
+
+        public static bool IsGamePausedOrCursorVisible()
+        {
+            return TimeManager.Instance.IsGamePaused() || Cursor.visible;
         }
     }
 }
