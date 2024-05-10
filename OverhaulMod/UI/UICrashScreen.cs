@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,10 @@ namespace OverhaulMod.UI
         [UIElement("SendReportButton")]
         private readonly Button m_sendReportButton;
 
+        [UIElementAction(nameof(OnIgnoreCrashesToggleChanged))]
+        [UIElement("IgnoreCrashesToggle")]
+        private readonly Toggle m_ignoreCrashesToggle;
+
         [UIElement("ExpandButton", typeof(UIElementExpandButton))]
         private readonly UIElementExpandButton m_expandButton;
 
@@ -42,6 +47,7 @@ namespace OverhaulMod.UI
             expandButton.collapsedSize = new Vector2(-50f, 175f);
             expandButton.expandedSize = new Vector2(-50f, 350f);
 
+            m_ignoreCrashesToggle.isOn = CrashPreventionManager.IgnoreCrashes;
             m_sendReportButton.interactable = !HasSentReport;
         }
 
@@ -83,6 +89,11 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopupOK("Report send error", error, true);
             });
+        }
+
+        public void OnIgnoreCrashesToggleChanged(bool value)
+        {
+            CrashPreventionManager.IgnoreCrashes = value;
         }
     }
 }

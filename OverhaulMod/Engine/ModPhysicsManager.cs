@@ -9,7 +9,7 @@ namespace OverhaulMod.Engine
 {
     public class ModPhysicsManager : Singleton<ModPhysicsManager>
     {
-        private static readonly RaycastHit[] m_rayCastHitArray = new RaycastHit[5];
+        private static readonly RaycastHit[] m_rayCastHitArray = new RaycastHit[10];
 
         private static readonly Ray m_ray = new Ray();
 

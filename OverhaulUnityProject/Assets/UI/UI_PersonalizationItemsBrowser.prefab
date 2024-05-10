@@ -618,7 +618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1368301978804270296}
   m_Layer: 5
-  m_Name: PanelNew
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   - {fileID: 6787574032531581766}
   - {fileID: 1411816510658727309}
   - {fileID: 7097081744845050680}
-  - {fileID: 0}
+  - {fileID: 2185720402337003756}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

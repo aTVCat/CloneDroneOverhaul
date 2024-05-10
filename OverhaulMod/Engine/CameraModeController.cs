@@ -53,6 +53,11 @@ namespace OverhaulMod.Engine
             }
         }
 
+        private void Start()
+        {
+            m_lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
+        }
+
         public void SetOwner(FirstPersonMover firstPersonMover)
         {
             m_owner = firstPersonMover;
@@ -118,10 +123,10 @@ namespace OverhaulMod.Engine
             m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.35f), 0f);
         }
 
-        public void RefreshHeadVisibility()
+        public void RefreshHeadVisibility(float lerpValue)
         {
             Animator animator = m_cameraAnimator;
-            SetHeadRenderersActive(m_lerp > 0.1f || !animator || !animator.enabled || !m_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetHeadRenderersActive(lerpValue > 0.1f || !animator || !animator.enabled || !m_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         private void setRenderersActive(Renderer[] array, bool value)
@@ -132,9 +137,25 @@ namespace OverhaulMod.Engine
                         renderer3.enabled = value;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            int fc = Time.frameCount;
+            bool refresh = fc % 15 == 0;
+            if (refresh)
+                RefreshFields();
+
+            FirstPersonMover firstPersonMover = m_owner;
+            if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
+                return;
+
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+
+            if (refresh)
+                RefreshHeadVisibility(m_lerp);
+
+            Animator animator = m_cameraAnimator;
+            if (!m_transformToFollow || !animator || !animator.enabled)
+                return;
 
             PlayerCameraMover playerCameraMover = m_cameraMover;
             if (playerCameraMover)
@@ -143,29 +164,9 @@ namespace OverhaulMod.Engine
                     playerCameraMover._hasCollidedWithEnvironment = true;
                 else if (m_lerp == 0f)
                     playerCameraMover._hasCollidedWithEnvironment = false;
-            }
-        }
 
-        private void LateUpdate()
-        {
-            int fc = Time.frameCount;
-            if (fc % 15 == 0)
-            {
-                RefreshFields();
-                RefreshHeadVisibility();
-            }
-
-            FirstPersonMover firstPersonMover = m_owner;
-            if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
-                return;
-
-            Animator animator = m_cameraAnimator;
-            if (!m_transformToFollow || !animator || !animator.enabled)
-                return;
-
-            PlayerCameraMover playerCameraMover = m_cameraMover;
-            if (playerCameraMover)
                 playerCameraMover.LateUpdate();
+            }
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;

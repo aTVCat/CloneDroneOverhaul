@@ -42,7 +42,7 @@ namespace OverhaulMod.Engine
                     return true;
 
                 FirstPersonMover owner = m_owner;
-                return Cursor.visible || !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled();
+                return Cursor.visible || !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled() || owner._isGrabbedForUpgrade;
             }
         }
 
@@ -85,7 +85,7 @@ namespace OverhaulMod.Engine
                     x += 1f;
             }
 
-            UpdateViewBobbing();
+            UpdateViewBobbing(forceZero);
             UpdateRotation(firstPersonMover, forceZero, x + AdditionalXOffset, 0f, z + AdditionalZOffset);
         }
 
@@ -126,9 +126,9 @@ namespace OverhaulMod.Engine
             m_playerCameraTransform.localEulerAngles = newTargetRotation;
         }
 
-        public void UpdateViewBobbing()
+        public void UpdateViewBobbing(bool forceZero)
         {
-            if (!EnableBobbing)
+            if (!EnableBobbing || forceZero)
             {
                 AdditionalXOffset = 0f;
                 AdditionalZOffset = 0f;

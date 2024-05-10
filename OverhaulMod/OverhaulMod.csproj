@@ -393,6 +393,7 @@
     <Compile Include="Engine\ArenaRemodelManager.cs" />
     <Compile Include="Engine\AutoBuildInfo.cs" />
     <Compile Include="Engine\AutoBuildManager.cs" />
+    <Compile Include="Engine\CameraFOVController.cs" />
     <Compile Include="Engine\CameraModeController.cs" />
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />

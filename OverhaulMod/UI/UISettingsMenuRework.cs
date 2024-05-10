@@ -1,10 +1,14 @@
-﻿using OverhaulMod.Engine;
+﻿using InternalModBot;
+using ModBotWebsiteAPI;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -49,7 +53,7 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindPrefab", false)]
         public ModdedObject KeyBindPrefab;
 
-        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Quick setup", "Gameplay", "Visuals", "Sounds", "Controls", "Multiplayer", "Mod-Bot" })]
+        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Quick setup", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -70,6 +74,8 @@ namespace OverhaulMod.UI
 
         private bool m_hasSelectedTab;
 
+        private string m_selectedTabId;
+
         public override bool hideTitleScreen => true;
 
         public bool disallowUsingKey
@@ -88,7 +94,9 @@ namespace OverhaulMod.UI
         public void ShowRegularElements()
         {
             disallowUsingKey = false;
-            m_panelTransform.sizeDelta = new Vector2(650f, 500f);
+            m_panelTransform.anchorMax = new Vector2(1f, 1f);
+            m_panelTransform.anchorMin = new Vector2(0f, 0f);
+            m_panelTransform.sizeDelta = new Vector2(0f, 0f);
             m_shadingObject.SetActive(true);
             m_normalBgObject.SetActive(true);
             m_setupBgObject.SetActive(false);
@@ -103,6 +111,8 @@ namespace OverhaulMod.UI
         public void ShowSetupElements()
         {
             disallowUsingKey = true;
+            m_panelTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            m_panelTransform.anchorMin = new Vector2(0.5f, 0.5f);
             m_panelTransform.sizeDelta = new Vector2(325f, 450f);
             m_shadingObject.SetActive(false);
             m_normalBgObject.SetActive(false);
@@ -125,8 +135,17 @@ namespace OverhaulMod.UI
                 TransformUtils.DestroyAllChildren(PageContentsTransform);
         }
 
+        public void PopulatePageIfSelected(string id)
+        {
+            if (m_selectedTabId != id)
+                return;
+
+            PopulatePage(id);
+        }
+
         public void PopulatePage(string id)
         {
+            m_selectedTabId = id;
             ClearPageContents();
 
             UIElementTab oldTab = m_tabs.prevSelectedTab;
@@ -161,8 +180,8 @@ namespace OverhaulMod.UI
                 case "Gameplay":
                     populateGameplayPage(settingsMenu);
                     break;
-                case "Visuals":
-                    populateVisualsPage(settingsMenu);
+                case "Graphics":
+                    populateGraphicsPage(settingsMenu);
                     break;
                 case "Sounds":
                     populateSoundsPage(settingsMenu);
@@ -295,7 +314,7 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populateVisualsPage(SettingsMenu settingsMenu)
+        private void populateGraphicsPage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Graphics");
@@ -334,7 +353,13 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
             }, "Bloom");
 
-            _ = pageBuilder.Header3("Camera effects");
+
+            _ = pageBuilder.Header1("Camera");
+            _ = pageBuilder.Header3("Field of view");
+            _ = pageBuilder.Slider(-10f, 25f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
+            }, true);
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
@@ -343,6 +368,14 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
             }, "Camera bobbing");
+            _ = pageBuilder.Button("Reset camera settings", delegate
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, 0f, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true, true);
+                PopulatePage("Graphics");
+            });
+
 
             _ = pageBuilder.Header1("Environment");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTNING_TRANSITION), delegate (bool value)
@@ -506,6 +539,40 @@ namespace OverhaulMod.UI
 
         private void populateModBotPage(SettingsMenu settingsMenu)
         {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Controls");
+            _ = pageBuilder.KeyBind("Open console", ModBotInputManager.GetKeyCode(ModBotInputType.OpenConsole), KeyCode.F1, delegate (KeyCode value)
+            {
+                ModBotInputManager.InputOptions[0].Key = value;
+            });
+            _ = pageBuilder.KeyBind("Toggle FPS label", ModBotInputManager.GetKeyCode(ModBotInputType.ToggleFPSLabel), KeyCode.F3, delegate (KeyCode value)
+            {
+                ModBotInputManager.InputOptions[1].Key = value;
+            });
+
+            _ = pageBuilder.Header1("Website integration");
+            if (API.HasSession)
+            {
+                _ = pageBuilder.Button("Edit tags", delegate
+                {
+                    Application.OpenURL("https://modbot.org/tagBrowsing.html");
+                });
+
+                Button button = null;
+                button = pageBuilder.Button("Sign out", delegate
+                {
+                    button.interactable = false;
+                    API.SignOut(onSignedOut);
+                });
+            }
+            else
+            {
+                _ = pageBuilder.Button("Sign in", delegate
+                {
+                    GameUIRoot.Instance.SettingsMenu.Hide();
+                    ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
+                });
+            }
         }
 
         private void populateDefaultPage(SettingsMenu settingsMenu)
@@ -800,6 +867,16 @@ namespace OverhaulMod.UI
             }
         }
 
+        private static void onSignedOut(JsonObject jsonObject)
+        {
+            ModBotUIRoot.Instance.ModBotSignInUI.SetSession("");
+            VersionLabelManager.Instance.SetLine(2, "Not signed in");
+
+            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
+            if (settingsMenuRework)
+                settingsMenuRework.PopulatePage("Mod-Bot");
+        }
+
         public class PageBuilder
         {
             public UISettingsMenuRework SettingsMenu;
@@ -883,7 +960,7 @@ namespace OverhaulMod.UI
                 return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab);
             }
 
-            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback)
+            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false)
             {
                 Slider slider = Instantiate(SettingsMenu.SliderPrefab, SettingsMenu.PageContentsTransform);
                 slider.gameObject.SetActive(true);
@@ -894,7 +971,8 @@ namespace OverhaulMod.UI
                 if (callback != null)
                     slider.onValueChanged.AddListener(callback);
 
-                _ = slider.gameObject.AddComponent<BetterSliderCallback>();
+                if(!noBetterSlider)
+                    _ = slider.gameObject.AddComponent<BetterSliderCallback>();
 
                 return slider;
             }
@@ -931,6 +1009,8 @@ namespace OverhaulMod.UI
 
             public UIElementKeyBindSetter KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
             {
+                _ = Header3(name);
+
                 ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
 

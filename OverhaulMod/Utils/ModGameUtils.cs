@@ -40,6 +40,24 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static readonly List<Action<IFPMoveCommandInput>> m_playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
+        public static void InvokePlayerInputUpdateAction(IFPMoveCommandInput fpmoveCommand)
+        {
+            List<Action<IFPMoveCommandInput>> list = m_playerInputUpdateActions;
+            if (list == null || list.Count == 0)
+                return;
+
+            foreach (Action<IFPMoveCommandInput> action in list)
+            {
+                try
+                {
+                    action(fpmoveCommand);
+                }
+                catch { }
+            }
+            list.Clear();
+        }
+
         public static Dictionary<string, string> currentLevelMetaData { get; set; }
 
         public static bool SyncSteamAchievements()
@@ -186,6 +204,11 @@ namespace OverhaulMod.Utils
         public static bool IsGamePausedOrCursorVisible()
         {
             return TimeManager.Instance.IsGamePaused() || Cursor.visible;
+        }
+
+        public static void WaitForPlayerInputUpdate(Action<IFPMoveCommandInput> action)
+        {
+            m_playerInputUpdateActions.Add(action);
         }
     }
 }

@@ -11,16 +11,121 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
 
+        public bool enableForceFOVOffset
+        {
+            get;
+            set;
+        }
+
+        public float forceFOVOffset
+        {
+            get;
+            set;
+        }
+
         public Camera mainCamera
         {
             get;
             private set;
         }
 
+        public void ResetCameraRect()
+        {
+            SetCameraRect(new Rect(0f, 0f, Screen.width, Screen.height));
+        }
+
+        public void SetCameraRect(Rect rect)
+        {
+            Camera camera = mainCamera;
+            if (!camera)
+                return;
+
+            camera.rect = rect;
+        }
+
+        public void ResetCameraHolderPosition(FirstPersonMover firstPersonMover = null)
+        {
+            if (!firstPersonMover)
+            {
+                firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                if (!firstPersonMover)
+                    return;
+            }
+
+            SetCameraHolderPosition(firstPersonMover._cameraHolderDefaultPosition, firstPersonMover);
+        }
+
+        public void SetCameraHolderPosition(Vector3 position, FirstPersonMover firstPersonMover = null)
+        {
+            if (!firstPersonMover)
+            {
+                firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                if (!firstPersonMover)
+                    return;
+            }
+
+            Transform transform = firstPersonMover._cameraHolderTransform;
+            if (!transform)
+                return;
+
+            transform.localPosition = position;
+        }
+
+        public void ResetCameraHolderEulerAngles(FirstPersonMover firstPersonMover = null)
+        {
+            if (!firstPersonMover)
+            {
+                firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                if (!firstPersonMover)
+                    return;
+            }
+
+            SetCameraHolderEulerAngles(Vector3.zero, firstPersonMover);
+        }
+
+        public void SetCameraHolderEulerAngles(Vector3 eulerAngles, FirstPersonMover firstPersonMover = null)
+        {
+            if (!firstPersonMover)
+            {
+                firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                if (!firstPersonMover)
+                    return;
+            }
+
+            Transform transform = firstPersonMover._cameraHolderTransform;
+            if (!transform)
+                return;
+
+            transform.localEulerAngles = eulerAngles;
+        }
+
+        public void SetCameraReducedWidth(float value, bool alignToRight)
+        {
+            Camera camera = mainCamera;
+            if (!camera)
+                return;
+
+            value = Mathf.Abs(value);
+            Rect rect = camera.pixelRect;
+            if (alignToRight)
+                rect.xMin = value;
+            else
+                rect.xMin = -value;
+
+            rect.width = Screen.width - value;
+        }
+
         public void AddControllers(Camera camera, FirstPersonMover firstPersonMover)
         {
             if (!camera || !firstPersonMover)
                 return;
+
+            CameraFOVController cameraFovController = camera.GetComponent<CameraFOVController>();
+            if (!cameraFovController)
+            {
+                cameraFovController = camera.gameObject.AddComponent<CameraFOVController>();
+            }
+            cameraFovController.SetOwner(firstPersonMover);
 
             CameraModeController cameraModeController = camera.GetComponent<CameraModeController>();
             if (!cameraModeController)

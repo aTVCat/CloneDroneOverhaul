@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
+using System.Text;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -19,8 +20,21 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("HandleLog")]
         private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, LogType type)
         {
+            if (CrashPreventionManager.IgnoreCrashes)
+                return true;
+
             if (!__instance._hasCrashed && (type == LogType.Error || type == LogType.Exception))
             {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(logString);
+                stringBuilder.Append(' ');
+                stringBuilder.Append(stackTrace);
+                string fullString = stringBuilder.ToString();
+                stringBuilder.Clear();
+
+                if (fullString.Contains("UpdateMe"))
+                    return false;
+
                 return !CrashPreventionManager.OnGameCrashed();
             }
             return true;

@@ -71,6 +71,16 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
+        [HarmonyPatch("SimulateController")]
+        private static void SimulateController_Postfix(FirstPersonMover __instance)
+        {
+            if (!__instance.IsMainPlayer())
+                return;
+
+            ModGameUtils.InvokePlayerInputUpdateAction(__instance._moveCommandInput);
+        }
+
+        [HarmonyPostfix]
         [HarmonyPatch("executeAttackCommands")]
         private static void executeAttackCommands_Postfix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isImmobile, bool isFirstExecution, bool isOwner)
         {

@@ -155,5 +155,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AutoBuildManager"/>
         /// </summary>
         public const string AUTO_BUILD_KEY_BIND = "AutoBuildKeyBind";
+
+        /// <summary>
+        /// <see cref="Engine.CameraFOVController"/>
+        /// </summary>
+        public const string CAMERA_FOV_OFFSET = "CameraFOVOffset";
     }
 }
