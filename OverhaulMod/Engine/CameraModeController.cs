@@ -17,6 +17,8 @@ namespace OverhaulMod.Engine
 
         private float m_lerp;
 
+        public float ForwardVectorMultiplier = 0.25f;
+
         private Renderer[] m_headRenderers;
         public Renderer[] headRenderers
         {
@@ -53,6 +55,18 @@ namespace OverhaulMod.Engine
             }
         }
 
+        private Renderer[] m_torsoRenderers;
+        public Renderer[] torsoRenderers
+        {
+            get
+            {
+                if (m_torsoRenderers.IsNullOrEmpty())
+                    m_torsoRenderers = m_owner.GetRenderersOfBodyPart("Torso");
+
+                return m_torsoRenderers;
+            }
+        }
+
         private void Start()
         {
             m_lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
@@ -68,6 +82,7 @@ namespace OverhaulMod.Engine
             setRenderersActive(headRenderers, value);
             setRenderersActive(jawRenderers, value);
             setRenderersActive(shieldRenderers, value);
+            setRenderersActive(torsoRenderers, value || m_owner._isOnFloorFromKick);
         }
 
         public bool IsMindTransferInProgress()
@@ -90,7 +105,7 @@ namespace OverhaulMod.Engine
             if (m_transformToFollow)
                 return;
 
-            MechBodyPart headPart = m_owner.GetBodyPart(MechBodyPartType.Head);
+            BaseBodyPart headPart = firstPersonMover.IsMindSpaceCharacter ? (BaseBodyPart)firstPersonMover.GetBodyPartParent("Head").GetComponentInChildren<MindSpaceBodyPart>() : firstPersonMover.GetBodyPart(MechBodyPartType.Head);
             if (!headPart)
                 return;
 
@@ -105,6 +120,12 @@ namespace OverhaulMod.Engine
 
         public void RefreshOffset()
         {
+            if (m_owner.IsMindSpaceCharacter)
+            {
+                m_offset = Vector3.up * 0.575f;
+                return;
+            }
+
             Bounds bounds = new Bounds(m_transformToFollow.localPosition, Vector3.one);
             int index = 0;
             foreach (MeshFilter meshFilter in m_transformToFollow.GetComponentsInChildren<MeshFilter>())
@@ -120,7 +141,7 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.35f), 0f);
+            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.45f), 0f);
         }
 
         public void RefreshHeadVisibility(float lerpValue)
@@ -140,7 +161,7 @@ namespace OverhaulMod.Engine
         private void LateUpdate()
         {
             int fc = Time.frameCount;
-            bool refresh = fc % 15 == 0;
+            bool refresh = fc % 5 == 0;
             if (refresh)
                 RefreshFields();
 
@@ -168,9 +189,12 @@ namespace OverhaulMod.Engine
                 playerCameraMover.LateUpdate();
             }
 
+            Vector3 forwardVector = m_transformToFollow.forward * (firstPersonMover._isOnFloorFromKick ? 0f : ForwardVectorMultiplier);
+            Vector3 upVector = m_transformToFollow.forward * (firstPersonMover._isOnFloorFromKick ? 0.35f : 0f);
+
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset, difference, ModITweenUtils.ParametricBlend(m_lerp));
+            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, ModITweenUtils.ParametricBlend(m_lerp));
 
             if (CameraManager.EnableFirstPersonMode)
             {

@@ -15,13 +15,15 @@ namespace OverhaulMod.Patches
             return false;
         }
 
-        [HarmonyPriority(1)]
         [HarmonyPrefix]
         [HarmonyPatch("HandleLog")]
-        private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, LogType type)
+        private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, ref LogType type)
         {
             if (CrashPreventionManager.IgnoreCrashes)
+            {
+                type = LogType.Warning;
                 return true;
+            }
 
             if (!__instance._hasCrashed && (type == LogType.Error || type == LogType.Exception))
             {
@@ -35,7 +37,12 @@ namespace OverhaulMod.Patches
                 if (fullString.Contains("UpdateMe"))
                     return false;
 
-                return !CrashPreventionManager.OnGameCrashed();
+                if (CrashPreventionManager.OnGameCrashed())
+                {
+                    type = LogType.Warning;
+                    return false;
+                }
+                return true;
             }
             return true;
         }

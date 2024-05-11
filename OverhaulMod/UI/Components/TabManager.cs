@@ -111,6 +111,15 @@ namespace OverhaulMod.UI
                 tab.GetButton().Press();
         }
 
+        public void DeselectAllTabs()
+        {
+            prevSelectedTab = null;
+            selectedTab = null;
+            foreach (var tab in m_instantiatedTabs.Values)
+                if (tab)
+                    tab.GetButton().interactable = true;
+        }
+
         private void callOnTabCreateMethod(UIElementTab tab)
         {
             m_onTabCreate?.Invoke(tab);

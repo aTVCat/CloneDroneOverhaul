@@ -50,6 +50,13 @@ namespace OverhaulMod.Utils
                 collider.enabled = false;
         }
 
+        /// <summary>
+        /// <see cref="Vector3.Lerp(Vector3, Vector3, float)"/> ...
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="deltaTime"></param>
+        /// <returns></returns>
         public static Vector3 LerpVector3(Vector3 a, Vector3 b, float deltaTime)
         {
             Vector3 vector = a;

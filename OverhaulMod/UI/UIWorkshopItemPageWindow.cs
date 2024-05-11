@@ -94,6 +94,12 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicatorObject;
 
+        [UIElement("NotEnoughRatingsText", false)]
+        private readonly GameObject m_notEnoughRatingsTextObject;
+
+        [UIElement("Stars", false)]
+        private readonly GameObject m_starsObject;
+
         [UIElement("LoadingIndicatorText")]
         private readonly Text m_loadingIndicatorText;
 
@@ -214,7 +220,7 @@ namespace OverhaulMod.UI
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
                 m_itemAuthorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
             else
-                m_itemAuthorText.text = $"By {"-".AddColor(Color.white)}";
+                m_itemAuthorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
 
             m_itemLink = $"https://steamcommunity.com/sharedfiles/filedetails/?id={workshopItem.ItemID}";
             m_authorProfileLink = $"https://steamcommunity.com/profiles/{workshopItem.AuthorID}";
@@ -309,7 +315,11 @@ namespace OverhaulMod.UI
             string updateTimeText = $"{workshopItem.UpdateDate.ToShortDateString()}, {workshopItem.UpdateDate.ToShortTimeString()}";
             string sizeText = $"{Mathf.Round(workshopItem.Size * 100f) / 100f} MBs";
 
-            m_ratingFillImage.fillAmount = workshopItem.Rating;
+            float rating = Mathf.Ceil(workshopItem.Rating * 5f);
+
+            m_ratingFillImage.fillAmount = rating / 5f;
+            m_notEnoughRatingsTextObject.SetActive(rating < 1f);
+            m_starsObject.SetActive(rating >= 1f);
             m_visitorsText.text = workshopItem.Views.ToString();
             m_subscribersText.text = workshopItem.Subscribers.ToString();
             m_favoritesText.text = workshopItem.Favorites.ToString();
@@ -351,10 +361,11 @@ namespace OverhaulMod.UI
             bool subscribed = itemState.HasFlag(EItemState.k_EItemStateSubscribed);
             bool downloading = itemState.HasFlag(EItemState.k_EItemStateDownloading) || itemState.HasFlag(EItemState.k_EItemStateDownloadPending);
             bool needsUpdate = itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate);
+            bool allowPlayingFromThere = workshopItem.IsChallengeOrAdventure();
 
             m_subscribeButton.gameObject.SetActive(!subscribed && !downloading);
             m_unsubscribeButton.gameObject.SetActive(subscribed);
-            m_playButton.gameObject.SetActive(installed && subscribed && !downloading);
+            m_playButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
             m_updateButton.gameObject.SetActive(installed && subscribed && !downloading && needsUpdate);
 
             m_loadingIndicatorObject.SetActive(downloading || needsUpdate);

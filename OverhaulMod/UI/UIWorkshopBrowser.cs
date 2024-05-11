@@ -14,6 +14,7 @@ namespace OverhaulMod.UI
         public const string CHALLENGE_LEVEL_TYPE_TAB = "Challenge";
         public const string ENDLESS_LEVEL_TYPE_TAB = "Endless Level";
         public const string LBS_LEVEL_TYPE_TAB = "Last Bot Standing Level";
+        public const string COLLECTIONS_TYPE_TAB = "collections";
 
         public const string YOUR_LEVELS_SOURCE_TYPE = "user";
         public const string SUBSCRIPTIONS_SOURCE_TYPE = "subscriptions";
@@ -34,8 +35,13 @@ namespace OverhaulMod.UI
         public GameObject m_yourLevelsTab;
         [UIElement("SubscriptionsTab")]
         public GameObject m_subscriptionsTab;
+        [UIElementAction(nameof(OnBrowseButtonClicked))]
         [UIElement("BrowseTab")]
-        public GameObject m_browseTab;
+        public Button m_browseTab;
+
+        [UIElementAction(nameof(Populate))]
+        [UIElement("ReloadButton")]
+        public Button m_reloadButton;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnQueryTabSelected))]
         private readonly TabManager m_queryTabs;
@@ -66,24 +72,72 @@ namespace OverhaulMod.UI
         public GameObject m_endlessLevelsTab;
         [UIElement("LBSLevelsTab")]
         public GameObject m_lastBotStandingLevelsTab;
+        [UIElement("CollectionsTab")]
+        public GameObject m_collectionsTab;
 
         [UIElement("WorkshopItemDisplay", false)]
         public ModdedObject m_workshopItemDisplay;
+        [UIElement("WorkshopCollectionDisplay", false)]
+        public ModdedObject m_workshopCollectionDisplay;
 
         [UIElement("Content")]
         public Transform m_container;
+        [UIElement("Content")]
+        public GridLayoutGroup m_containerGridLayoutGroup;
 
         [UIElement("LoadingIndicator", false)]
         public GameObject m_loadingIndicator;
+        [UIElement("NothingToDisplayLabel", false)]
+        public GameObject m_nothingToDisplayLabel;
 
         [UIElement("Tabs")]
         public CanvasGroup m_tabsCanvasGroup;
+
+        [UIElement("BrowseItemsOfTypeDropdown", false)]
+        public GameObject m_browseItemsOfTypeDropdownObject;
+
+        [UIElementAction(nameof(OnBrowseLevelsButtonClicked))]
+        [UIElement("BrowseLevelsButton")]
+        public Button m_browseLevelsButton;
+        [UIElement("BrowseLevelsSelectedIndicator", true)]
+        public GameObject m_browseLevelsSelectedIndicatorObject;
+
+        [UIElementAction(nameof(OnBrowseCollectionsButtonClicked))]
+        [UIElement("BrowseCollectionsButton")]
+        public Button m_browseCollectionsButton;
+        [UIElement("BrowseCollectionsSelectedIndicator", false)]
+        public GameObject m_browseCollectionsSelectedIndicatorObject;
+
+        [UIElementAction(nameof(OnPrevPageButtonClicked))]
+        [UIElement("PrevPageButton")]
+        private readonly Button m_prevPageButton;
+        [UIElementAction(nameof(OnNextPageButtonClicked))]
+        [UIElement("NextPageButton")]
+        private readonly Button m_nextPageButton;
+        [UIElementAction(nameof(OnPageButtonClicked))]
+        [UIElement("CurrentPageButton")]
+        private readonly Button m_currentPageButton;
+        [UIElement("CurrentPageText")]
+        private readonly Text m_currentPageText;
+
+        [UIElement("PageDropdown", false)]
+        public GameObject m_pageDropdownObject;
+        [UIElement("PageButton", false)]
+        public ModdedObject m_pageButtonPrefab;
+        [UIElement("PageContainer")]
+        public Transform m_pageContainer;
 
         public override bool hideTitleScreen => true;
 
         private bool m_initializedTabs;
 
         private bool m_getWorkshopItemsNextFrame;
+
+        public bool browseCollections
+        {
+            get;
+            set;
+        }
 
         public int sourceType
         {
@@ -115,6 +169,18 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public int page
+        {
+            get;
+            set;
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            page = 1;
+        }
+
         public override void Show()
         {
             base.Show();
@@ -144,7 +210,6 @@ namespace OverhaulMod.UI
 
                 m_sourceTabs.AddTab(m_yourLevelsTab, YOUR_LEVELS_SOURCE_TYPE);
                 m_sourceTabs.AddTab(m_subscriptionsTab, SUBSCRIPTIONS_SOURCE_TYPE);
-                m_sourceTabs.AddTab(m_browseTab, ALL_SOURCE_TYPE);
                 m_sourceTabs.SelectTab(ALL_SOURCE_TYPE);
                 m_initializedTabs = true;
             }
@@ -168,6 +233,8 @@ namespace OverhaulMod.UI
 
         public void OnLevelTypeTabSelected(UIElementTab elementTab)
         {
+            page = 1;
+
             UIElementTab oldTab = m_levelTypeTabs.prevSelectedTab;
             UIElementTab newTab = m_levelTypeTabs.selectedTab;
             if (oldTab)
@@ -191,6 +258,8 @@ namespace OverhaulMod.UI
 
         public void OnQueryTabSelected(UIElementTab elementTab)
         {
+            page = 1;
+
             UIElementTab oldTab = m_levelTypeTabs.prevSelectedTab;
             UIElementTab newTab = m_levelTypeTabs.selectedTab;
             if (oldTab)
@@ -217,6 +286,8 @@ namespace OverhaulMod.UI
 
         public void OnSourceTabSelected(UIElementTab elementTab)
         {
+            page = 1;
+
             CSteamID steamId = CSteamID.Nil;
             string tabId = elementTab.tabId;
             if (tabId == YOUR_LEVELS_SOURCE_TYPE)
@@ -227,6 +298,8 @@ namespace OverhaulMod.UI
 
                 m_tabsCanvasGroup.alpha = 0.25f;
                 m_tabsCanvasGroup.interactable = false;
+
+                setBrowseItemType(false);
             }
             else if (tabId == SUBSCRIPTIONS_SOURCE_TYPE)
             {
@@ -236,6 +309,8 @@ namespace OverhaulMod.UI
 
                 m_tabsCanvasGroup.alpha = 0.25f;
                 m_tabsCanvasGroup.interactable = false;
+
+                setBrowseItemType(false);
             }
             else
             {
@@ -256,42 +331,49 @@ namespace OverhaulMod.UI
         private void populate()
         {
             m_getWorkshopItemsNextFrame = false;
-            m_sourceTabs.interactable = false;
-            m_levelTypeTabs.interactable = false;
-            m_queryTabs.interactable = false;
-            m_loadingIndicator.SetActive(true);
+            setIsLoading(true);
 
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            ModSteamUGCUtils.RequestParameters requestParameters = new ModSteamUGCUtils.RequestParameters();
-            requestParameters.EnableCaching();
-            requestParameters.ReturnLongDescription();
-            requestParameters.ReturnPreviews();
-            requestParameters.RequireTags(new List<string>() { searchLevelType });
-
-            bool success = sourceType == 0
-                ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, 1, requestParameters, onGotItems, onError, null)
-                : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, 1, searchUserList, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
-            if (!success)
+            if (searchLevelType != COLLECTIONS_TYPE_TAB)
             {
-                onError("Internal error.");
+                bool collections = browseCollections;
+                setGridLayout(collections);
+
+                ModSteamUGCUtils.RequestParameters requestParameters = ModSteamUGCUtils.RequestParameters.Create(collections ? EUGCMatchingUGCType.k_EUGCMatchingUGCType_Collections : EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items);
+                requestParameters.EnableCaching();
+                requestParameters.RequireTags(collections ? null : new List<string>() { searchLevelType });
+                if (!collections)
+                {
+                    requestParameters.ReturnLongDescription();
+                    requestParameters.ReturnPreviews();
+                }
+
+                bool success = sourceType == 0
+                    ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null)
+                    : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
+
+                if (!success)
+                {
+                    onError("Internal error.");
+                    setIsLoading(false);
+                }
             }
         }
 
         private void onGotItems(List<WorkshopItem> list)
         {
-            m_sourceTabs.interactable = true;
-            m_levelTypeTabs.interactable = true;
-            m_queryTabs.interactable = true;
-            m_loadingIndicator.SetActive(false);
+            bool isEmpty = list.IsNullOrEmpty();
+            setIsLoading(false);
+            m_nothingToDisplayLabel.SetActive(isEmpty);
 
-            if (list.IsNullOrEmpty())
+            if (isEmpty)
                 return;
 
             foreach (WorkshopItem workshopItem in list)
             {
-                ModdedObject moddedObject = Instantiate(m_workshopItemDisplay, m_container);
+                ModdedObject moddedObject = Instantiate(browseCollections ? m_workshopCollectionDisplay : m_workshopItemDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = workshopItem.Name;
                 UIElementWorkshopItemDisplay workshopItemDisplay = moddedObject.gameObject.AddComponent<UIElementWorkshopItemDisplay>();
@@ -304,12 +386,127 @@ namespace OverhaulMod.UI
 
         private void onError(string error)
         {
-            m_sourceTabs.interactable = true;
-            m_levelTypeTabs.interactable = true;
-            m_queryTabs.interactable = true;
-            m_loadingIndicator.SetActive(false);
+            setIsLoading(false);
 
             ModUIUtils.MessagePopupOK("Could not get workshop items", error, "ok", Populate, 150f, true);
+        }
+
+        private void setGridLayout(bool collections)
+        {
+            GridLayoutGroup gridLayoutGroup = m_containerGridLayoutGroup;
+            if (collections)
+            {
+                gridLayoutGroup.cellSize = new Vector2(280f, 100f);
+            }
+            else
+            {
+                gridLayoutGroup.cellSize = new Vector2(150f, 108f);
+            }
+        }
+
+        private void setPageButtonsActive(bool value)
+        {
+            m_prevPageButton.interactable = value;
+            m_nextPageButton.interactable = value;
+            m_currentPageButton.interactable = value;
+        }
+
+        private void setIsLoading(bool value)
+        {
+            m_sourceTabs.interactable = !value;
+            m_levelTypeTabs.interactable = !value;
+            m_queryTabs.interactable = !value;
+            m_loadingIndicator.SetActive(value);
+            m_nothingToDisplayLabel.SetActive(false);
+            m_pageDropdownObject.SetActive(false);
+            setPageButtonsActive(!value);
+            refreshPagePageButton();
+        }
+
+        private void refreshPagePageButton()
+        {
+            int p = page;
+            m_prevPageButton.gameObject.SetActive(p > 1);
+            m_nextPageButton.gameObject.SetActive(p < ModSteamUGCUtils.pageCount);
+            m_currentPageText.text = p.ToString();
+        }
+
+        private void setBrowseItemType(bool collections)
+        {
+            browseCollections = collections;
+            m_browseItemsOfTypeDropdownObject.SetActive(false);
+            m_browseCollectionsSelectedIndicatorObject.SetActive(collections);
+            m_browseLevelsSelectedIndicatorObject.SetActive(!collections);
+        }
+
+        public void OnPageButtonClicked()
+        {
+            bool active = !m_pageDropdownObject.activeSelf && ModSteamUGCUtils.pageCount > 1;
+            m_pageDropdownObject.SetActive(active);
+
+            if (m_pageContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_pageContainer);
+
+            if (!active)
+                return;
+
+            for(int i = 1; i < ModSteamUGCUtils.pageCount + 1; i++)
+            {
+                int pageIndex = i;
+                ModdedObject pageObject = Instantiate(m_pageButtonPrefab, m_pageContainer);
+                pageObject.gameObject.SetActive(true);
+                pageObject.GetObject<Text>(0).text = i.ToString();
+                pageObject.GetObject<GameObject>(1).SetActive(i == page);
+                Button button = pageObject.GetComponent<Button>();
+                button.onClick.AddListener(delegate
+                {
+                    page = pageIndex;
+                    Populate();
+                });
+            }
+        }
+
+        public void OnNextPageButtonClicked()
+        {
+            page++;
+            Populate();
+        }
+
+        public void OnPrevPageButtonClicked()
+        {
+            page--;
+            Populate();
+        }
+
+        public void OnBrowseButtonClicked()
+        {
+            m_browseItemsOfTypeDropdownObject.SetActive(!m_browseItemsOfTypeDropdownObject.activeSelf);
+        }
+
+        public void OnBrowseLevelsButtonClicked()
+        {
+            setBrowseItemType(false);
+
+            page = 1;
+            sourceType = 0;
+            m_tabsCanvasGroup.alpha = 1f;
+            m_tabsCanvasGroup.interactable = true;
+            m_sourceTabs.DeselectAllTabs();
+
+            Populate();
+        }
+
+        public void OnBrowseCollectionsButtonClicked()
+        {
+            setBrowseItemType(true);
+
+            page = 1;
+            sourceType = 0;
+            m_tabsCanvasGroup.alpha = 1f;
+            m_tabsCanvasGroup.interactable = true;
+            m_sourceTabs.DeselectAllTabs();
+
+            Populate();
         }
 
         public void OnLegacyUIButtonClicked()

@@ -165,7 +165,7 @@ namespace OverhaulMod.Utils
 
         public static string GetSpeakerNameText(SpeakerNames speakerName)
         {
-            return (LocalizationManager.Instance.GetTranslatedString("enum_" + speakerName.ToString()) + ":").AddColor(Color.white);
+            return $"{LocalizationManager.Instance.GetTranslatedString($"enum_{speakerName}")}:".AddColor(Color.white);
         }
 
         public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
@@ -189,10 +189,20 @@ namespace OverhaulMod.Utils
                 return Array.Empty<Renderer>();
             }
             Transform bodyPartParent = firstPersonMover.GetBodyPartParent(bodyPart);
-            if (bodyPartParent == null)
+            if (bodyPartParent == null || bodyPartParent.childCount == 0)
             {
                 return Array.Empty<Renderer>();
             }
+
+            for(int i = 0; i < bodyPartParent.childCount; i++)
+            {
+                if(bodyPartParent.GetChild(i).name == "model")
+                {
+                    bodyPartParent = bodyPartParent.GetChild(i);
+                    break;
+                }
+            }
+
             return bodyPartParent.GetComponentsInChildren<Renderer>();
         }
 

@@ -39,6 +39,34 @@ namespace OverhaulMod.Content
 
         private bool m_disposed;
 
+        public bool ContainsTag(string tag)
+        {
+            string[] tags = Tags;
+            if (tags == null || tags.Length == 0)
+                return false;
+
+            for (int i = 0; i < tags.Length; i++)
+                if (tags[i] == tag)
+                    return true;
+
+            return false;
+        }
+
+        public bool IsChallengeOrAdventure()
+        {
+            return ContainsTag("Challenge") || ContainsTag("Adventure");
+        }
+
+        public bool IsEndlessLevel()
+        {
+            return ContainsTag("Endless Level");
+        }
+
+        public bool IsLastBotStandingLevel()
+        {
+            return ContainsTag("Last Bot Standing Level");
+        }
+
         public bool IsDisposed()
         {
             return m_disposed;

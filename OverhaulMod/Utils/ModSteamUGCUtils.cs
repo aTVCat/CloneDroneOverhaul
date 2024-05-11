@@ -168,13 +168,13 @@ namespace OverhaulMod.Utils
         /// <param name="page"></param>
         /// <param name="errorCallback"></param>
         /// <param name="debugCallback"></param>
-        public static bool GetAllWorkshopItems(EUGCQuery rankBy, EUGCMatchingUGCType itemsType, int page, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        public static bool GetAllWorkshopItems(EUGCQuery rankBy, int page, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             page = Mathf.Max(1, page);
             if (requestParameters == null)
                 return false;
 
-            UGCQueryHandle_t queryHandle = createAllWorkshopItemsRequest(rankBy, itemsType, page);
+            UGCQueryHandle_t queryHandle = createAllWorkshopItemsRequest(rankBy, requestParameters.GetItemType(), page);
             requestParameters.ConfigureQuery(queryHandle);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
@@ -183,13 +183,13 @@ namespace OverhaulMod.Utils
             return true;
         }
 
-        public static bool GetWorkshopUserItemList(CSteamID steamId, int page, EUserUGCList userList, EUGCMatchingUGCType itemsType, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        public static bool GetWorkshopUserItemList(CSteamID steamId, int page, EUserUGCList userList, EUserUGCListSortOrder sortOrder, RequestParameters requestParameters, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             page = Mathf.Max(1, page);
             if (requestParameters == null || steamId == default)
                 return false;
 
-            UGCQueryHandle_t queryHandle = createWorkshopItemsByUserRequest(steamId, page, userList, itemsType, sortOrder);
+            UGCQueryHandle_t queryHandle = createWorkshopItemsByUserRequest(steamId, page, userList, requestParameters.GetItemType(), sortOrder);
             requestParameters.ConfigureQuery(queryHandle);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
@@ -272,7 +272,7 @@ namespace OverhaulMod.Utils
                         Name = ugcDetails.m_rgchTitle,
                         Description = ugcDetails.m_rgchDescription,
                         Author = authorName,
-                        Tags = ugcDetails.m_rgchTags.Split(','),
+                        Tags = string.IsNullOrEmpty(ugcDetails.m_rgchTags) ? null : ugcDetails.m_rgchTags.Split(','),
                         ItemID = itemId,
                         AuthorID = itemAuthor,
                         Votes = (int)(ugcDetails.m_unVotesUp + ugcDetails.m_unVotesDown),
@@ -391,9 +391,14 @@ namespace OverhaulMod.Utils
 
             private bool m_returnLongDescription;
 
-            public static RequestParameters Create()
+            private EUGCMatchingUGCType m_itemType;
+
+            public static RequestParameters Create(EUGCMatchingUGCType itemType)
             {
-                return new RequestParameters();
+                return new RequestParameters()
+                {
+                    m_itemType = itemType
+                };
             }
 
             public void EnableCaching()
@@ -451,6 +456,11 @@ namespace OverhaulMod.Utils
             public bool IsCachingEnabled()
             {
                 return m_enableCaching;
+            }
+
+            public EUGCMatchingUGCType GetItemType()
+            {
+                return m_itemType;
             }
         }
     }
