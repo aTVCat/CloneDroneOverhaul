@@ -91,16 +91,10 @@ namespace OverhaulMod
             foreach (string key in keysToRemove)
                 _ = m_instantiatedUIs.Remove(key);
 
-            _ = Show<UIVersionLabel>(AssetBundleConstants.UI, "UI_VersionLabel", UILayer.BeforeCrashScreen);
-            ModUIConstants.ShowTooltips();
+            ModUIConstants.ShowVersionLabel();
             ModUIConstants.ShowImageEffects();
-
-            /*
-            Canvas canvas = ModCache.gameUIRoot?.GetComponent<Canvas>();
-            if (canvas)
-            {
-                canvas.pixelPerfect = true;
-            }*/
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
+                ModUIConstants.ShowTooltips();
         }
 
         public bool HasInstantiatedUI(string assetKey)

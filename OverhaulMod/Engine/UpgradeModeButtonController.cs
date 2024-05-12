@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace OverhaulMod.Engine
 
         public override void OnEnable()
         {
-            bool multiplayer = GameModeManager.IsMultiplayer();
+            bool multiplayer = GameModeManager.IsMultiplayer() || ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
             m_button.interactable = !multiplayer;
             m_graphic.enabled = !multiplayer;
             m_getUpgradesTextObject.SetActive(!multiplayer);

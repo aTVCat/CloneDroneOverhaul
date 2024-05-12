@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementWorkshopItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+    public class UIElementWorkshopItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
     {
         [UIElement("Text")]
         private readonly Text m_titleText;
@@ -52,9 +52,10 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            base.OnInitialized();
+
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(onClicked);
-
         }
 
         public override void OnDestroy()
@@ -117,6 +118,9 @@ namespace OverhaulMod.UI
 
         private void onClicked()
         {
+            if (browserUI.HideContextMenuIfShown())
+                return;
+
             WorkshopItem item = workshopItem;
             if (item == null || item.IsDisposed())
                 return;
@@ -139,6 +143,15 @@ namespace OverhaulMod.UI
         public void OnPointerUp(PointerEventData eventData)
         {
             m_selectedFrame.SetActive(false);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            var bui = browserUI;
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                bui.ShowContextMenu(this);
+            }
         }
     }
 }

@@ -127,11 +127,42 @@ namespace OverhaulMod.UI
         [UIElement("PageContainer")]
         public Transform m_pageContainer;
 
+        [UIElementAction(nameof(OnTypedSearchText))]
+        [UIElement("SearchBox")]
+        public InputField m_searchBox;
+        [UIElementAction(nameof(OnSearchButtonClicked))]
+        [UIElement("SearchButton")]
+        public Button m_searchButton;
+        [UIElementAction(nameof(OnClearButtonClicked))]
+        [UIElement("ClearButton")]
+        public Button m_clearButton;
+
+        [UIElement("SearchLevelsByTitleHolder", false)]
+        public GameObject m_searchLevelsByTitleHolderObject;
+        [UIElement("SearchLevelsByTitleText")]
+        public Text m_searchLevelsByTitleText;
+
+        [UIElement("SearchLevelsByUserHolder", false)]
+        public GameObject m_searchLevelsByUserHolderObject;
+        [UIElement("SearchLevelsByUserText")]
+        public Text m_searchLevelsByUserText;
+
+        [UIElementAction(nameof(OnHelpButtonClicked))]
+        [UIElement("HelpButton")]
+        public Button m_controlsButton;
+        [UIElement("ControlsPanel", false)]
+        public GameObject m_controlsPanel;
+
+        [UIElement("ContextMenu", false)]
+        private readonly RectTransform m_contextMenu;
+        [UIElement("ContextMenu", typeof(UIElementMousePositionChecker))]
+        private readonly UIElementMousePositionChecker m_contextMenuMouseChecker;
+
         public override bool hideTitleScreen => true;
 
-        private bool m_initializedTabs;
+        private bool m_initializedTabs, m_getWorkshopItemsNextFrame, m_isLoading;
 
-        private bool m_getWorkshopItemsNextFrame;
+        private float m_timeLeftToPopulate;
 
         public bool browseCollections
         {
@@ -175,10 +206,17 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public string searchText
+        {
+            get;
+            set;
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             page = 1;
+            m_timeLeftToPopulate = -1f;
         }
 
         public override void Show()
@@ -221,6 +259,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
+            m_timeLeftToPopulate = -1f;
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
         }
@@ -229,6 +268,20 @@ namespace OverhaulMod.UI
         {
             if (m_getWorkshopItemsNextFrame)
                 populate();
+
+            if(m_timeLeftToPopulate >= 0f)
+            {
+                m_timeLeftToPopulate -= Time.unscaledDeltaTime;
+                if(m_timeLeftToPopulate <= 0f)
+                {
+                    Populate();
+                }
+            }
+
+            if(Input.GetMouseButtonDown(0) && m_contextMenu.gameObject.activeSelf && !m_contextMenuMouseChecker.isMouseOverElement)
+            {
+                ShowContextMenu(null);
+            }
         }
 
         public void OnLevelTypeTabSelected(UIElementTab elementTab)
@@ -287,6 +340,7 @@ namespace OverhaulMod.UI
         public void OnSourceTabSelected(UIElementTab elementTab)
         {
             page = 1;
+            searchText = null;
 
             CSteamID steamId = CSteamID.Nil;
             string tabId = elementTab.tabId;
@@ -325,7 +379,8 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            m_getWorkshopItemsNextFrame = true;
+            m_timeLeftToPopulate = -1f;
+            m_getWorkshopItemsNextFrame = !m_isLoading;
         }
 
         private void populate()
@@ -348,6 +403,10 @@ namespace OverhaulMod.UI
                 {
                     requestParameters.ReturnLongDescription();
                     requestParameters.ReturnPreviews();
+                }
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    requestParameters.SearchText(searchText);
                 }
 
                 bool success = sourceType == 0
@@ -413,6 +472,24 @@ namespace OverhaulMod.UI
 
         private void setIsLoading(bool value)
         {
+            m_isLoading = value;
+
+            bool searchByUser = sourceType != 0 && searchUserList == EUserUGCList.k_EUserUGCList_Published;
+            m_searchLevelsByUserHolderObject.SetActive(searchByUser);
+            m_searchLevelsByUserText.text = searchByUser ? SteamFriends.GetFriendPersonaName(searchLevelsByUser) : "none";
+
+            bool searchByTitle = !searchText.IsNullOrEmpty();
+            m_searchLevelsByTitleHolderObject.SetActive(!searchByUser && searchByTitle);
+            m_searchLevelsByTitleText.text = searchText;
+            m_clearButton.interactable = !value && searchByTitle;
+
+            if(sourceType != 0)
+            {
+                m_browseCollectionsSelectedIndicatorObject.SetActive(false);
+                m_browseLevelsSelectedIndicatorObject.SetActive(false);
+            }
+
+            m_reloadButton.interactable = !value;
             m_sourceTabs.interactable = !value;
             m_levelTypeTabs.interactable = !value;
             m_queryTabs.interactable = !value;
@@ -437,6 +514,51 @@ namespace OverhaulMod.UI
             m_browseItemsOfTypeDropdownObject.SetActive(false);
             m_browseCollectionsSelectedIndicatorObject.SetActive(collections);
             m_browseLevelsSelectedIndicatorObject.SetActive(!collections);
+        }
+
+        public bool HideContextMenuIfShown()
+        {
+            if (m_contextMenu.gameObject.activeSelf)
+            {
+                ShowContextMenu(null);
+                return true;
+            }
+            return false;
+        }
+
+        public void ShowContextMenu(UIElementWorkshopItemDisplay workshopItemDisplay)
+        {
+            if (!workshopItemDisplay)
+            {
+                m_contextMenu.gameObject.SetActive(false);
+                return;
+            }
+            m_contextMenu.gameObject.SetActive(true);
+            m_contextMenu.position = workshopItemDisplay.transform.position;
+        }
+
+        public void OnHelpButtonClicked()
+        {
+            m_controlsPanel.SetActive(!m_controlsPanel.activeSelf);
+        }
+
+        public void OnTypedSearchText(string text)
+        {
+            searchText = text;
+            m_timeLeftToPopulate = 1f;
+        }
+
+        public void OnSearchButtonClicked()
+        {
+            searchText = m_searchBox.text;
+            Populate();
+        }
+
+        public void OnClearButtonClicked()
+        {
+            m_searchBox.text = string.Empty;
+            searchText = null;
+            Populate();
         }
 
         public void OnPageButtonClicked()

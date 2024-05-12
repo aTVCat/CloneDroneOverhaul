@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -15,10 +16,24 @@ namespace OverhaulMod.UI
         [UIElement("Texture")]
         private readonly RectTransform m_imageRectTransform;
 
+        private Action m_closedCallback;
+
         public override bool enableCursor => true;
 
-        public void Populate(Texture2D texture)
+        public override void Hide()
         {
+            base.Hide();
+            Action action = m_closedCallback;
+            if(action != null)
+            {
+                action();
+                m_closedCallback = null;
+            }
+        }
+
+        public void Populate(Texture2D texture, Action closedCallback)
+        {
+            m_closedCallback = closedCallback;
             m_imageRectTransform.sizeDelta = new Vector2(390f * (texture.width / (float)texture.height), 390f);
             m_image.texture = texture;
         }

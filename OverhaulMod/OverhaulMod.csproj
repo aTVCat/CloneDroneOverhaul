@@ -531,6 +531,7 @@
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
     <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
+    <Compile Include="UI\Elements\UIElementMousePositionChecker.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />

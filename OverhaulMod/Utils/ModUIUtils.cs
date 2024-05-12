@@ -33,10 +33,10 @@ namespace OverhaulMod.Utils
             screenTooltips.ShowText(text, duration);
         }
 
-        public static void ImageViewer(Texture2D texture, Transform parent)
+        public static void ImageViewer(Texture2D texture, Transform parent, Action closedCallback = null)
         {
             UIGenericImageViewer genericImageViewer = ModUIConstants.ShowGenericImageViewer(parent);
-            genericImageViewer.Populate(texture);
+            genericImageViewer.Populate(texture, closedCallback);
         }
 
         public static void ColorPicker(Color currentColor, bool showAlphaChannel, Action<Color> callback, Transform parent)

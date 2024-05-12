@@ -54,6 +54,9 @@ namespace OverhaulMod
                 case FeatureType.DuelInviteMenuRework:
                     result = true;
                     break;
+                case FeatureType.Tooltips:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -98,6 +101,8 @@ namespace OverhaulMod
             AllNewEnemies,
 
             DuelInviteMenuRework,
+
+            Tooltips
         }
     }
 }

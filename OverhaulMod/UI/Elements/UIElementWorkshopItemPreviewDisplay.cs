@@ -3,6 +3,7 @@ using UnityEngine.Networking;
 using UnityEngine;
 using OverhaulMod.Utils;
 using UnityEngine.UI;
+using System;
 
 namespace OverhaulMod.UI
 {
@@ -30,6 +31,18 @@ namespace OverhaulMod.UI
         }
 
         public Transform imageViewerParentTransform
+        {
+            get;
+            set;
+        }
+
+        public Action imageViewerOpenedCallback
+        {
+            get;
+            set;
+        }
+
+        public Action imageViewerClosedCallback
         {
             get;
             set;
@@ -109,7 +122,10 @@ namespace OverhaulMod.UI
                 if (!m_texture)
                     return;
 
-                ModUIUtils.ImageViewer(m_texture, imageViewerParentTransform);
+                if (imageViewerOpenedCallback != null)
+                    imageViewerOpenedCallback();
+
+                ModUIUtils.ImageViewer(m_texture, imageViewerParentTransform, imageViewerClosedCallback);
             }
         }
     }

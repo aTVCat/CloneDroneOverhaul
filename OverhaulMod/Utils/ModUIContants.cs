@@ -2,11 +2,13 @@
 using OverhaulMod.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using static OverhaulMod.ModUIManager;
 
 namespace OverhaulMod.Utils
 {
     public static class ModUIConstants
     {
+        public const string UI_VERSION_LABEL = "UI_VersionLabel";
         public const string UI_OTHER_MODS = "UI_OtherMods";
         public const string UI_ENDLESS_MODE = "UI_EndlessModeMenu";
         public const string UI_ENDLESS_MODE_LEADERBOARD = "UI_EndlessModeLeaderboard";
@@ -73,6 +75,11 @@ namespace OverhaulMod.Utils
         public const string UI_CINEMATIC_EFFECTS = "UI_CinematicEffects";
         public const string UI_IMAGE_EXPLORER = "UI_ImageExplorer";
         public const string UI_AUTO_BUILD_MENU = "UI_AutoBuildMenu";
+
+        public static void ShowVersionLabel()
+        {
+            _ = ModUIManager.Instance.Show<UIVersionLabel>(AssetBundleConstants.UI, UI_VERSION_LABEL, UILayer.BeforeCrashScreen);
+        }
 
         public static void ShowOtherModsMenu()
         {

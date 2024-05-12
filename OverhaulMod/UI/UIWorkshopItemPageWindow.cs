@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.UI.Attributes;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
@@ -72,6 +73,7 @@ namespace OverhaulMod.UI
         [UIElement("PlayButton")]
         private readonly Button m_playButton;
 
+        [ShowTooltipOnHighLight("Erase progress", 1.5f)]
         [UIElementAction(nameof(OnEraseProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
         private readonly Button m_eraseProgressButton;
@@ -136,6 +138,9 @@ namespace OverhaulMod.UI
         [UIElement("ItemImageContainer")]
         private readonly Transform m_additionalPreviewDisplayContainer;
 
+        [UIElement("Panel", typeof(UIElementMousePositionChecker))]
+        private readonly UIElementMousePositionChecker m_panel;
+
         private string m_authorProfileLink, m_itemLink;
         private CSteamID m_authorId;
 
@@ -155,6 +160,12 @@ namespace OverhaulMod.UI
         private float m_timeLeftToRefreshDisplays;
 
         public UIWorkshopBrowser browserUI
+        {
+            get;
+            set;
+        }
+
+        public bool isImageViewerShown
         {
             get;
             set;
@@ -195,6 +206,11 @@ namespace OverhaulMod.UI
             {
                 m_refreshDisplaysNextFrame = true;
                 m_timeLeftToRefreshDisplays = 0.1f;
+            }
+
+            if(Input.GetMouseButtonDown(0) && !m_panel.isMouseOverElement && !isImageViewerShown)
+            {
+                Hide();
             }
         }
 
@@ -347,6 +363,8 @@ namespace OverhaulMod.UI
                 UIElementWorkshopItemPreviewDisplay workshopItemPreviewDisplay = moddedObject.gameObject.AddComponent<UIElementWorkshopItemPreviewDisplay>();
                 workshopItemPreviewDisplay.isVideo = preview.PreviewType != EItemPreviewType.k_EItemPreviewType_Image;
                 workshopItemPreviewDisplay.link = preview.URL;
+                workshopItemPreviewDisplay.imageViewerOpenedCallback = onImageViewerOpened;
+                workshopItemPreviewDisplay.imageViewerClosedCallback = onImageViewerClosed;
                 workshopItemPreviewDisplay.InitializeElement();
             }
         }
@@ -403,6 +421,16 @@ namespace OverhaulMod.UI
             });
         }
 
+        private void onImageViewerOpened()
+        {
+            isImageViewerShown = true;
+        }
+
+        private void onImageViewerClosed()
+        {
+            isImageViewerShown = false;
+        }
+
         private void dispose()
         {
             m_workshopItem = null;
@@ -432,7 +460,8 @@ namespace OverhaulMod.UI
             if (!texture)
                 return;
 
-            ModUIUtils.ImageViewer(texture, base.transform);
+            onImageViewerOpened();
+            ModUIUtils.ImageViewer(texture, base.transform, onImageViewerClosed);
         }
 
         public void OnVoteUpButtonClicked()
@@ -673,6 +702,7 @@ namespace OverhaulMod.UI
         {
             UIWorkshopBrowser bui = browserUI;
             bui.searchLevelsByUser = m_authorId;
+            bui.searchUserList = EUserUGCList.k_EUserUGCList_Published;
             bui.sourceType = 1;
             bui.Populate();
             Hide();
