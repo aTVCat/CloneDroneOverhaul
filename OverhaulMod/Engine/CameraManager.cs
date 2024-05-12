@@ -11,6 +11,12 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
 
+        public bool enableThirdPerson
+        {
+            get;
+            set;
+        }
+
         public bool enableForceFOVOffset
         {
             get;

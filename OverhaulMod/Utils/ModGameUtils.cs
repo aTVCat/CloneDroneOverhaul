@@ -194,9 +194,9 @@ namespace OverhaulMod.Utils
                 return Array.Empty<Renderer>();
             }
 
-            for(int i = 0; i < bodyPartParent.childCount; i++)
+            for (int i = 0; i < bodyPartParent.childCount; i++)
             {
-                if(bodyPartParent.GetChild(i).name == "model")
+                if (bodyPartParent.GetChild(i).name == "model")
                 {
                     bodyPartParent = bodyPartParent.GetChild(i);
                     break;

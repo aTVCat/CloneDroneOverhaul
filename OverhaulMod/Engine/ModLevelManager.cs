@@ -109,7 +109,10 @@ namespace OverhaulMod.Engine
                 if (!File.Exists(levelDescription.LevelJSONPath) || (levelDescription.DifficultyTier == (DifficultyTier)9 && !ModFeatures.IsEnabled(ModFeatures.FeatureType.NightmariumDifficultyTier)))
                     continue;
 
-                LevelManager.Instance._endlessLevels.Add(levelDescription);
+                if(levelDescription.LevelID.Contains("Story"))
+                    LevelManager.Instance._storyModeLevels.Add(levelDescription);
+                else
+                    LevelManager.Instance._endlessLevels.Add(levelDescription);
             }
         }
 

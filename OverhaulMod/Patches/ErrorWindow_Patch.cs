@@ -33,7 +33,7 @@ namespace OverhaulMod.Patches
         {
             if (Time.timeSinceLevelLoad < 5f)
                 return false;
-            
+
             ErrorManager errorManager = ErrorManager.Instance;
             if (!errorManager || errorManager.HasCrashed())
                 return false;
@@ -41,7 +41,8 @@ namespace OverhaulMod.Patches
             try
             {
                 ModUIConstants.HideCrashScreen();
-            } catch { }
+            }
+            catch { }
             return true;
         }
     }

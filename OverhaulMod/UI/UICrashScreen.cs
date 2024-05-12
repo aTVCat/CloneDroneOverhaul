@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            var expandButton = m_expandButton;
+            UIElementExpandButton expandButton = m_expandButton;
             expandButton.rectTransform = m_stackTracePanel;
             expandButton.collapsedSize = new Vector2(-50f, 175f);
             expandButton.expandedSize = new Vector2(-50f, 350f);

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 
 namespace OverhaulMod.Engine
 {
@@ -44,8 +43,10 @@ namespace OverhaulMod.Engine
             }
             catch
             {
-                autoBuildInfo = new AutoBuildInfo();
-                autoBuildInfo.SkillPoints = 4;
+                autoBuildInfo = new AutoBuildInfo
+                {
+                    SkillPoints = 4
+                };
                 autoBuildInfo.FixValues();
             }
             buildInfo = autoBuildInfo;
@@ -62,7 +63,7 @@ namespace OverhaulMod.Engine
             GameData gameData = gameDataManager._tempTitleScreenData;
             gameData.PlayerUpgrades.Clear();
             if (dictionary != null)
-                foreach (var kv in dictionary)
+                foreach (KeyValuePair<UpgradeType, int> kv in dictionary)
                     gameData.PlayerUpgrades.Add(kv.Key, kv.Value);
 
             gameData.AvailableSkillPoints = skillPoints;

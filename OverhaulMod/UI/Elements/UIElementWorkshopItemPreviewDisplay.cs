@@ -1,16 +1,16 @@
 ﻿using OverhaulMod.Content;
-using UnityEngine.Networking;
-using UnityEngine;
 using OverhaulMod.Utils;
-using UnityEngine.UI;
 using System;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
     public class UIElementWorkshopItemPreviewDisplay : OverhaulUIBehaviour
     {
         [UIElement("VideoIcon", false)]
-        private GameObject m_videoIcon;
+        private readonly GameObject m_videoIcon;
 
         private RawImage m_image;
 
@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
                 m_image.rectTransform.sizeDelta = new Vector2(57.5f * (texture.width / (float)texture.height), 57.5f);
             }, delegate
             {
-                if(previewDisplay && isVideo)
+                if (previewDisplay && isVideo)
                 {
                     RepositoryManager.Instance.GetCustomTexture(isVideo ? $"https://img.youtube.com/vi/{link}/0.jpg" : link, delegate (Texture2D texture)
                     {
@@ -122,8 +122,7 @@ namespace OverhaulMod.UI
                 if (!m_texture)
                     return;
 
-                if (imageViewerOpenedCallback != null)
-                    imageViewerOpenedCallback();
+                imageViewerOpenedCallback?.Invoke();
 
                 ModUIUtils.ImageViewer(m_texture, imageViewerParentTransform, imageViewerClosedCallback);
             }

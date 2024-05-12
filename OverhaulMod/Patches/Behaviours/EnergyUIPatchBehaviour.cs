@@ -70,7 +70,7 @@ namespace OverhaulMod.Patches.Addons
                 }
             }
 
-            if(component.transform is RectTransform rt)
+            if (component.transform is RectTransform rt)
                 rt.anchoredPosition = vanilla ? Vector3.zero : Vector3.up * 10f;
 
             if (m_bg)

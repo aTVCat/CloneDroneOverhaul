@@ -68,6 +68,7 @@ namespace OverhaulMod.UI
                 cameraManager.ResetCameraHolderPosition(firstPersonMover);
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
                 cameraManager.enableForceFOVOffset = false;
+                cameraManager.enableThirdPerson = false;
                 return;
             }
 
@@ -75,6 +76,7 @@ namespace OverhaulMod.UI
             cameraManager.SetCameraHolderPosition(Vector3.forward * 0.75f, firstPersonMover);
             cameraManager.SetCameraHolderEulerAngles(Vector3.up * -90f, firstPersonMover);
             cameraManager.enableForceFOVOffset = true;
+            cameraManager.enableThirdPerson = true;
             cameraManager.forceFOVOffset = -5f;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)

@@ -208,7 +208,7 @@ namespace OverhaulMod.UI
                 m_timeLeftToRefreshDisplays = 0.1f;
             }
 
-            if(Input.GetMouseButtonDown(0) && !m_panel.isMouseOverElement && !isImageViewerShown)
+            if (Input.GetMouseButtonDown(0) && !m_panel.isMouseOverElement && !isImageViewerShown)
             {
                 Hide();
             }

@@ -139,13 +139,14 @@ namespace OverhaulMod.Patches
             }
         }
 
+        /*
         [HarmonyPostfix]
         [HarmonyPatch("CreateArrowAndDrawBow")]
         private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
         {
             if (__instance.IsPlayerCameraActive())
                 __instance._cameraHolderAnimator.SetBool("HasNockedArrow", !CameraManager.EnableFirstPersonMode);
-        }
+        }*/
 
         [HarmonyPostfix]
         [HarmonyPatch("CreateCharacterModel")]

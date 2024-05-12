@@ -115,7 +115,7 @@ namespace OverhaulMod.UI
         {
             prevSelectedTab = null;
             selectedTab = null;
-            foreach (var tab in m_instantiatedTabs.Values)
+            foreach (UIElementTab tab in m_instantiatedTabs.Values)
                 if (tab)
                     tab.GetButton().interactable = true;
         }

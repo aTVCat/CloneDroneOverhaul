@@ -69,7 +69,7 @@ namespace OverhaulMod.UI
 
         public void OnSetCustomLevelButtonClicked()
         {
-            ModUIUtils.FileExplorer(null, true, delegate (string levelPath) 
+            ModUIUtils.FileExplorer(null, true, delegate (string levelPath)
             {
                 if (!File.Exists(levelPath))
                 {
@@ -103,14 +103,14 @@ namespace OverhaulMod.UI
 
         private void refreshLabel()
         {
-            var info = TitleScreenCustomizationManager.Instance?.GetStaticBackgroundInfo();
-            if(info == null || info.Level == null)
+            TitleScreenBackgroundInfo info = TitleScreenCustomizationManager.Instance?.GetStaticBackgroundInfo();
+            if (info == null || info.Level == null)
             {
                 m_label.text = "None";
                 return;
             }
 
-            if(info.Level.LevelID == "customTitleScreenLevel")
+            if (info.Level.LevelID == "customTitleScreenLevel")
             {
                 m_label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
                 return;

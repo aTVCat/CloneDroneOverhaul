@@ -1,10 +1,6 @@
 ﻿using HarmonyLib;
 using ModLibrary;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
-using OverhaulMod.Utils;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod.Patches
 {
@@ -16,7 +12,7 @@ namespace OverhaulMod.Patches
         private static void IsUpgradeCurrentlyVisible_Postfix(UpgradeDescription __instance, ref bool __result)
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if(autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
             {
                 __result = __instance.IsAvailableInBattleRoyale && !__instance.IsModdedUpgradeType();
             }

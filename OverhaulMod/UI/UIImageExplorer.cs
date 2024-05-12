@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
             if (imagePaths.IsNullOrEmpty())
                 return;
 
-            foreach(var p in imagePaths)
+            foreach (string p in imagePaths)
             {
                 ModdedObject moddedObject = Instantiate(m_imageDisplayPrefab, m_imageDisplayContainer);
                 moddedObject.gameObject.SetActive(true);

@@ -97,17 +97,17 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 SetWeaponPartsVisible(personalizationItemInfo.Weapon, true);
 
-            var b = m_spawnedItems[personalizationItemInfo];
+            PersonalizationEditorObjectBehaviour b = m_spawnedItems[personalizationItemInfo];
             if (b)
                 Destroy(b.gameObject);
 
             if (editCollection)
-                m_spawnedItems.Remove(personalizationItemInfo);
+                _ = m_spawnedItems.Remove(personalizationItemInfo);
         }
 
         public void DestroyAllItems()
         {
-            foreach(var kv in m_spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
                 DestroyItem(kv.Key, false);
 
             m_spawnedItems.Clear();
@@ -120,7 +120,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool HasSpawnedItem(string id)
         {
-            foreach (var info in m_spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> info in m_spawnedItems)
                 if (info.Key.ItemID == id)
                     return true;
 

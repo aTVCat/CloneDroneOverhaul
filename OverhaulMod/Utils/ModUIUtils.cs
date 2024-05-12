@@ -99,7 +99,7 @@ namespace OverhaulMod.Utils
 
         public static void MessagePopupNotImplemented()
         {
-            MessagePopupOK("This doesn't work now!", "Functionality will be added in later updates...", false);
+            MessagePopupOK("Work in progress!", "Functionality will be added in later builds...", false);
         }
 
         public static void ShowVanillaEscMenu()

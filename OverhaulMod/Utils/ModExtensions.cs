@@ -300,7 +300,7 @@ namespace OverhaulMod.Utils
             if (list.IsNullOrEmpty())
                 return null;
 
-            foreach(UpgradeUIIcon icon in list)
+            foreach (UpgradeUIIcon icon in list)
             {
                 if (!icon)
                     continue;

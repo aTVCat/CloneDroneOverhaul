@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
             if (m_fileDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_fileDisplayContainer);
 
-            foreach (var file in itemInfo.importedFiles)
+            foreach (string file in itemInfo.importedFiles)
             {
                 ModdedObject moddedObject = Instantiate(m_fileDisplayPrefab, m_fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
 
         public void OnImportVoxButtonClicked()
         {
-            var item = itemInfo;
+            PersonalizationItemInfo item = itemInfo;
             ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string path)
             {
                 if (!File.Exists(path))

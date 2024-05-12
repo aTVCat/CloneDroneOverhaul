@@ -1,5 +1,4 @@
 ﻿using InternalModBot;
-using OverhaulMod.Content;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
@@ -120,6 +119,18 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnNewUIButtonClicked))]
         [UIElement("NewUIButton")]
         private readonly Button m_newUIButton;
+
+        [UIElementAction(nameof(OnRobotEditorButtonClicked))]
+        [UIElement("RobotEditorButton")]
+        private readonly Button m_robotEditorButton;
+
+        [UIElementAction(nameof(OnWeaponEditorButtonClicked))]
+        [UIElement("WeaponEditorButton")]
+        private readonly Button m_weaponEditorButton;
+
+        [UIElementAction(nameof(OnStoryReworkButtonClicked))]
+        [UIElement("StoryReworkButton")]
+        private readonly Button m_storyReworkButton;
 
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
@@ -268,7 +279,7 @@ namespace OverhaulMod.UI
         private IEnumerator levelEditorTransitionCoroutine()
         {
             yield return new WaitForSecondsRealtime(0.25f);
-            while(LevelManager.Instance.IsSpawningCurrentLevel())
+            while (LevelManager.Instance.IsSpawningCurrentLevel())
                 yield return null;
 
             yield return null;
@@ -422,6 +433,23 @@ namespace OverhaulMod.UI
         public void OnNewUIButtonClicked()
         {
             enableRework = true;
+        }
+
+        public void OnRobotEditorButtonClicked()
+        {
+            ModUIUtils.MessagePopupNotImplemented();
+        }
+
+        public void OnWeaponEditorButtonClicked()
+        {
+            ModUIUtils.MessagePopupNotImplemented();
+        }
+
+        public void OnStoryReworkButtonClicked()
+        {
+            MetagameProgressManager.Instance.SetProgress(MetagameProgress.P1_EmperorArrived);
+            GameDataManager.Instance._storyModeData.CurentLevelID = "Story10_Rework";
+            GameFlowManager.Instance.StartStoryModeGame(false);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace OverhaulMod.UI
 {
@@ -46,13 +47,14 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && !GameModeManager.IsInLevelEditor())
+            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && (GameModeManager.IsOnTitleScreen() || CharacterTracker.Instance.GetPlayer()))
             {
                 bool value = !Enabled;
                 Enabled = value;
                 if (value)
                 {
-                    ModUIConstants.ShowDebugMenu();
+                    if(!Cursor.visible || GameModeManager.IsOnTitleScreen())
+                        ModUIConstants.ShowDebugMenu();
                 }
                 else
                 {

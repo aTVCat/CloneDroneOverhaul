@@ -68,6 +68,18 @@ namespace OverhaulMod.UI
         [UIElement("ConfirmMainMenuButton")]
         private readonly Button m_confirmMainMenuButton;
 
+        [UIElementAction(nameof(OnReturnToLevelEditorButtonClicked), false)]
+        [UIElement("ReturnToLevelEditorButton")]
+        private readonly Button m_returnToLevelEditorButton;
+
+        [UIElementAction(nameof(OnStartMatchButtonClicked), false)]
+        [UIElement("StartMatchButton")]
+        private readonly Button m_startMatchButton;
+
+        [UIElementAction(nameof(OnSkipLevelButtonClicked), false)]
+        [UIElement("SkipLevelButton")]
+        private readonly Button m_skipLevelButton;
+
         [UIElement("ConfirmExitGameText", false)]
         private readonly GameObject m_confirmExitGameTextObject;
 
@@ -113,6 +125,14 @@ namespace OverhaulMod.UI
         {
             bool customizationSupported = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
             m_customizationButton.interactable = customizationSupported;
+
+            ArenaCoopManager arenaCoopManager = ArenaCoopManager.Instance;
+            BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
+            bool flag1 = battleRoyaleManager && (battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.InWaitingArea) || battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted));
+            bool flag2 = arenaCoopManager && !arenaCoopManager.IsMatchStarted();
+            m_startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (flag1 || flag2));
+            m_skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
+            m_returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
 
             m_confirmExitGameTextObject.SetActive(false);
             m_confirmMainMenuTextObject.SetActive(false);
@@ -193,6 +213,22 @@ namespace OverhaulMod.UI
         public void OnConfirmExitGameButtonClicked()
         {
             Application.Quit();
+        }
+
+        public void OnReturnToLevelEditorButtonClicked()
+        {
+            GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked();
+        }
+
+        public void OnStartMatchButtonClicked()
+        {
+            GameUIRoot.Instance.EscMenu.OnStartBattleRoyaleLevelClicked();
+        }
+
+        public void OnSkipLevelButtonClicked()
+        {
+            Hide();
+            GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
         }
 
         public void OnLegacyUIButtonClicked()

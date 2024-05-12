@@ -211,7 +211,7 @@ namespace OverhaulMod.UI
             m_skyBoxSlider.value = lightningInfo.SkyboxIndex;
 
             RealisticLightningInfo realisticLightningInfo = RealisticLightningManager.Instance.GetCurrentRealisticLightningInfo();
-            if(realisticLightningInfo == null)
+            if (realisticLightningInfo == null)
             {
                 m_realisticSkyBoxToggle.isOn = false;
                 m_realisticSkyBoxSlider.value = -1;
@@ -283,7 +283,7 @@ namespace OverhaulMod.UI
 
         public void OnShowEnemiesToggled(bool value)
         {
-            foreach(var character in CharacterTracker.Instance.GetAllLivingCharacters())
+            foreach (Character character in CharacterTracker.Instance.GetAllLivingCharacters())
             {
                 if (!character || character.IsMainPlayer() || !(character is FirstPersonMover firstPersonMover))
                     continue;
@@ -294,7 +294,7 @@ namespace OverhaulMod.UI
 
         public void OnShowGarbageToggled(bool value)
         {
-            var list = value ? m_garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
+            List<GarbageTarget> list = value ? m_garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
             if (list.IsNullOrEmpty())
                 return;
 
@@ -302,13 +302,13 @@ namespace OverhaulMod.UI
             {
                 m_garbageTargets = list;
 
-                foreach (var t in list)
+                foreach (GarbageTarget t in list)
                     if (t)
                         t.gameObject.SetActive(false);
             }
             else
             {
-                foreach (var t in list)
+                foreach (GarbageTarget t in list)
                     if (t)
                         t.gameObject.SetActive(true);
             }

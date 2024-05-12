@@ -35,7 +35,7 @@ namespace OverhaulMod.Patches
             return true;
         }
 
-        
+
         [HarmonyPrefix]
         [HarmonyPatch("RefreshLightInScene")]
         private static bool RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
@@ -45,7 +45,7 @@ namespace OverhaulMod.Patches
             if (!levelLightSettings)
                 return false;
 
-            if(oldLevelLightSettings != levelLightSettings)
+            if (oldLevelLightSettings != levelLightSettings)
             {
                 AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
                 if (advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode())
@@ -74,8 +74,8 @@ namespace OverhaulMod.Patches
 
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
             return false;
-        }        
-        
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch("RefreshLightInScene")]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)

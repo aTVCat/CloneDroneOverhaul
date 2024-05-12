@@ -1,9 +1,7 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod.Patches
 {
@@ -15,7 +13,7 @@ namespace OverhaulMod.Patches
         private static bool OnResetButtonClicked_Prefix(UpgradeUI __instance)
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if(autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
             {
                 autoBuildManager.ResetUpgrades();
                 return false;
@@ -31,7 +29,7 @@ namespace OverhaulMod.Patches
             if (autoBuildManager)
             {
                 Transform transform = __instance.transform.FindChildRecursive("PreviousPageButton(Clone)");
-                if(!transform)
+                if (!transform)
                     transform = __instance.transform.FindChildRecursive("PreviousPageButton");
 
                 Transform transform2 = __instance.transform.FindChildRecursive("NextPageButton(Clone)");

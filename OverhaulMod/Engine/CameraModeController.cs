@@ -5,6 +5,8 @@ namespace OverhaulMod.Engine
 {
     public class CameraModeController : MonoBehaviour
     {
+        private CameraManager m_cameraManager;
+
         private FirstPersonMover m_owner;
 
         private PlayerCameraMover m_cameraMover;
@@ -70,6 +72,7 @@ namespace OverhaulMod.Engine
         private void Start()
         {
             m_lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
+            m_cameraManager = CameraManager.Instance;
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)
@@ -93,7 +96,7 @@ namespace OverhaulMod.Engine
 
         public void RefreshFields()
         {
-            if(!m_cameraMover)
+            if (!m_cameraMover)
                 m_cameraMover = base.GetComponent<PlayerCameraMover>();
 
             FirstPersonMover firstPersonMover = m_owner;
@@ -169,7 +172,7 @@ namespace OverhaulMod.Engine
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson /*&& !firstPersonMover.IsAimingBow()*/ && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             if (refresh)
                 RefreshHeadVisibility(m_lerp);
@@ -196,12 +199,13 @@ namespace OverhaulMod.Engine
             Vector3 difference = transform.position;
             transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, ModITweenUtils.ParametricBlend(m_lerp));
 
+            /*
             if (CameraManager.EnableFirstPersonMode)
             {
                 CharacterModel characterModel = firstPersonMover.GetCharacterModel();
-                if(characterModel)
+                if (characterModel)
                     characterModel.transform.localPosition = Vector3.zero;
-            }
+            }*/
         }
     }
 }

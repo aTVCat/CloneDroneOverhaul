@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Combat;
-using OverhaulMod.Engine;
-using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {

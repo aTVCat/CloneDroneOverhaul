@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
             m_hierarchyField.itemInfo = personalizationItemInfo;
             m_filesField.itemInfo = personalizationItemInfo;
 
-            for(int i = 0; i < m_weaponDropdown.options.Count; i++)
+            for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
                 if ((m_weaponDropdown.options[i] as DropdownWeaponTypeOptionData).Weapon == personalizationItemInfo.Weapon)
                 {

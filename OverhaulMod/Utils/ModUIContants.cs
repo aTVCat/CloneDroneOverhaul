@@ -142,7 +142,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowFeedbackUIRework()
         {
-            _ = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.AfterEscMenu, 1);
+            _ = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.BeforeCrashScreen);
         }
 
         public static void ShowCommunityHub()

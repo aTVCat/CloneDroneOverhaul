@@ -1,10 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 namespace OverhaulMod.Engine
 {
@@ -44,7 +40,7 @@ namespace OverhaulMod.Engine
             if (currentLightSettings != changedLightSettings)
             {
                 LevelLightSettings newLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-                if(newLightSettings != changedLightSettings)
+                if (newLightSettings != changedLightSettings)
                     return;
             }
 
@@ -112,7 +108,7 @@ namespace OverhaulMod.Engine
             m_isInPhotoMode = true;
 
             LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-            if(!levelLightSettings)
+            if (!levelLightSettings)
             {
                 editingLevelLightSettings = null;
                 return;

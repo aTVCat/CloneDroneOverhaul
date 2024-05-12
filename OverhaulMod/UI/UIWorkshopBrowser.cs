@@ -269,16 +269,16 @@ namespace OverhaulMod.UI
             if (m_getWorkshopItemsNextFrame)
                 populate();
 
-            if(m_timeLeftToPopulate >= 0f)
+            if (m_timeLeftToPopulate >= 0f)
             {
                 m_timeLeftToPopulate -= Time.unscaledDeltaTime;
-                if(m_timeLeftToPopulate <= 0f)
+                if (m_timeLeftToPopulate <= 0f)
                 {
                     Populate();
                 }
             }
 
-            if(Input.GetMouseButtonDown(0) && m_contextMenu.gameObject.activeSelf && !m_contextMenuMouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && m_contextMenu.gameObject.activeSelf && !m_contextMenuMouseChecker.isMouseOverElement)
             {
                 ShowContextMenu(null);
             }
@@ -483,7 +483,7 @@ namespace OverhaulMod.UI
             m_searchLevelsByTitleText.text = searchText;
             m_clearButton.interactable = !value && searchByTitle;
 
-            if(sourceType != 0)
+            if (sourceType != 0)
             {
                 m_browseCollectionsSelectedIndicatorObject.SetActive(false);
                 m_browseLevelsSelectedIndicatorObject.SetActive(false);
@@ -572,7 +572,7 @@ namespace OverhaulMod.UI
             if (!active)
                 return;
 
-            for(int i = 1; i < ModSteamUGCUtils.pageCount + 1; i++)
+            for (int i = 1; i < ModSteamUGCUtils.pageCount + 1; i++)
             {
                 int pageIndex = i;
                 ModdedObject pageObject = Instantiate(m_pageButtonPrefab, m_pageContainer);

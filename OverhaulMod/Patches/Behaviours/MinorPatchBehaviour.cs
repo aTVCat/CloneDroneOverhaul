@@ -19,6 +19,7 @@ namespace OverhaulMod.Patches.Addons
                         break;
                     }
 
+                /*
                 CrosshairsUI crosshairsUI = gameUIRoot.CrosshairsUI;
                 if (crosshairsUI && crosshairsUI.Child)
                 {
@@ -27,7 +28,7 @@ namespace OverhaulMod.Patches.Addons
                     {
                         _ = crosshairsUI.Child.AddComponent<CrosshairOffsetController>();
                     }
-                }
+                }*/
 
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;
                 if (emoteSelectionUIObject)

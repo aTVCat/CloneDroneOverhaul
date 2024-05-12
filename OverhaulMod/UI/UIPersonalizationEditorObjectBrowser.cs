@@ -26,8 +26,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            var list = PersonalizationEditorObjectManager.Instance.GetObjectInfos();
-            foreach(var obj in list)
+            System.Collections.Generic.List<PersonalizationEditorObjectSpawnInfo> list = PersonalizationEditorObjectManager.Instance.GetObjectInfos();
+            foreach (PersonalizationEditorObjectSpawnInfo obj in list)
             {
                 ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -37,7 +37,7 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.editingRoot.transform, true);
+                    _ = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.editingRoot.transform, true);
                     PersonalizationEditorManager.Instance.SerializeRoot();
                     Hide();
 

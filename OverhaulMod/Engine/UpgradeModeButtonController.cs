@@ -1,10 +1,5 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,16 +8,16 @@ namespace OverhaulMod.Engine
     public class UpgradeModeButtonController : OverhaulUIBehaviour
     {
         [UIElement("RevertUpgradesText")]
-        private GameObject m_revertUpgradesTextObject;
+        private readonly GameObject m_revertUpgradesTextObject;
 
         [UIElement("RevertUpgradesText")]
-        private Text m_revertUpgradesText;
+        private readonly Text m_revertUpgradesText;
 
         [UIElement("GetUpgradesText")]
-        private GameObject m_getUpgradesTextObject;
+        private readonly GameObject m_getUpgradesTextObject;
 
         [UIElement("GetUpgradesText")]
-        private Text m_getUpgradesText;
+        private readonly Text m_getUpgradesText;
 
         private Button m_button;
 

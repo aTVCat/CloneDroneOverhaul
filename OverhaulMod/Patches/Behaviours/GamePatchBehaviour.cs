@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Utils;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Addons

@@ -24,7 +24,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
             Action action = m_closedCallback;
-            if(action != null)
+            if (action != null)
             {
                 action();
                 m_closedCallback = null;

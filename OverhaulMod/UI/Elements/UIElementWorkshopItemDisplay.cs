@@ -61,7 +61,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             WorkshopItem item = workshopItem;
-            if(item != null && !item.IsDisposed())
+            if (item != null && !item.IsDisposed())
             {
                 item.Dispose();
             }
@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            var bui = browserUI;
+            UIWorkshopBrowser bui = browserUI;
             if (eventData.button == PointerEventData.InputButton.Right)
             {
                 bui.ShowContextMenu(this);

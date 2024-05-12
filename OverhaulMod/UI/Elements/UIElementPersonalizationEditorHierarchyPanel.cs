@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
             if (m_objectDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_objectDisplayContainer);
 
-            foreach (var obj in itemInfo.RootObject.Children)
+            foreach (PersonalizationEditorObjectInfo obj in itemInfo.RootObject.Children)
             {
                 ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateButtonClicked()
         {
-            var ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.instance.transform);
+            UIPersonalizationEditorObjectBrowser ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.instance.transform);
             ob.callback = delegate
             {
                 Populate();

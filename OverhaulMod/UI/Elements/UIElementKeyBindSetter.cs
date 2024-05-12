@@ -1,9 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -13,15 +9,15 @@ namespace OverhaulMod.UI
     public class UIElementKeyBindSetter : OverhaulUIBehaviour
     {
         [UIElement("Text")]
-        private Text m_keyBindText;
+        private readonly Text m_keyBindText;
 
         [UIElementAction(nameof(OnSetBindButtonClicked))]
         [UIElement("SetBindButton")]
-        private Button m_setBindButton;
+        private readonly Button m_setBindButton;
 
         [UIElementAction(nameof(OnSetDefaultButtonClicked))]
         [UIElement("SetDefaultBindButton")]
-        private Button m_setDefaultBindButton;
+        private readonly Button m_setDefaultBindButton;
 
         private KeyCode m_key;
         public KeyCode key
@@ -38,18 +34,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        private KeyCode m_defaultKey;
-        public KeyCode defaultKey
-        {
-            get
-            {
-                return m_defaultKey;
-            }
-            set
-            {
-                m_defaultKey = value;
-            }
-        }
+        public KeyCode defaultKey { get; set; }
 
         public KeyCodeChangedEvent onValueChanged { get; set; } = new KeyCodeChangedEvent();
 

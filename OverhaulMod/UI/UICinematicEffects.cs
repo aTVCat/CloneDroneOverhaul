@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
@@ -12,30 +11,19 @@ namespace OverhaulMod.UI
         }
 
         [UIElement("Borders", false)]
-        private GameObject m_bordersObject;
+        private readonly GameObject m_bordersObject;
 
         [UIElement("UpperBorder")]
-        private RectTransform m_upperBorder;
+        private readonly RectTransform m_upperBorder;
 
         [UIElement("LowerBorder")]
-        private RectTransform m_lowerBorder;
+        private readonly RectTransform m_lowerBorder;
 
         private PhotoManager m_photoManager;
 
         public override bool dontRefreshUI => true;
 
-        private bool m_borders;
-        public bool borders
-        {
-            get
-            {
-                return m_borders;
-            }
-            set
-            {
-                m_borders = value;
-            }
-        }
+        public bool borders { get; set; }
 
         private float m_bordersHeight;
         public float bordersHeight

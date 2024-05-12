@@ -20,28 +20,20 @@ namespace OverhaulMod.Patches
         private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, ref LogType type)
         {
             if (CrashPreventionManager.IgnoreCrashes)
-            {
-                type = LogType.Warning;
-                return true;
-            }
+                return false;
 
             if (!__instance._hasCrashed && (type == LogType.Error || type == LogType.Exception))
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append(logString);
-                stringBuilder.Append(' ');
-                stringBuilder.Append(stackTrace);
+                _ = stringBuilder.Append(logString);
+                _ = stringBuilder.Append(' ');
+                _ = stringBuilder.Append(stackTrace);
                 string fullString = stringBuilder.ToString();
-                stringBuilder.Clear();
+                _ = stringBuilder.Clear();
 
-                if (fullString.Contains("UpdateMe"))
+                if (CrashPreventionManager.OnGameCrashed() || fullString.Contains("UpdateMe"))
                     return false;
 
-                if (CrashPreventionManager.OnGameCrashed())
-                {
-                    type = LogType.Warning;
-                    return false;
-                }
                 return true;
             }
             return true;

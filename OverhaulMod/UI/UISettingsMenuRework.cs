@@ -4,11 +4,9 @@ using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -605,7 +603,7 @@ namespace OverhaulMod.UI
         public void OnLegacyUIButtonClicked()
         {
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
-            if(titleScreenUI && GameModeManager.IsOnTitleScreen())
+            if (titleScreenUI && GameModeManager.IsOnTitleScreen())
             {
                 Hide();
                 titleScreenUI.OnOptionsButtonClicked();
@@ -971,7 +969,7 @@ namespace OverhaulMod.UI
                 if (callback != null)
                     slider.onValueChanged.AddListener(callback);
 
-                if(!noBetterSlider)
+                if (!noBetterSlider)
                     _ = slider.gameObject.AddComponent<BetterSliderCallback>();
 
                 return slider;

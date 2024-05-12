@@ -114,7 +114,7 @@ namespace OverhaulMod.Engine
                     };
                     activityManager.OnActivityJoinRequest += (ref User user) =>
                     {
-                        var relationship = relationshipManager.Get(user.Id);
+                        Relationship relationship = relationshipManager.Get(user.Id);
                         ActivityJoinRequestReply reply = ActivityJoinRequestReply.Ignore;
 
                         switch (relationship.Type)

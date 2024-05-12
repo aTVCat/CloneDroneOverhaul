@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 
 namespace OverhaulMod.Content

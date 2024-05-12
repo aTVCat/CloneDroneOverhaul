@@ -9,10 +9,10 @@ namespace OverhaulMod.UI
     public class UIElementImageDisplay : OverhaulUIBehaviour
     {
         [UIElement("Image", false)]
-        private RawImage m_rawImage;
+        private readonly RawImage m_rawImage;
 
         [UIElement("LoadingIndicator", true)]
-        private GameObject m_loadingIndicatorObject;
+        private readonly GameObject m_loadingIndicatorObject;
 
         private Texture2D m_loadedTexture;
 
@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
             base.OnDestroy();
 
             UnityWebRequest webRequest = m_webRequest;
-            if(webRequest != null)
+            if (webRequest != null)
             {
                 try
                 {

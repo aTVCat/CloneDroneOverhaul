@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -31,7 +30,7 @@ namespace OverhaulMod.Engine
                 UpgradeType upgradeType = kv.key;
                 int level = kv.Value;
 
-                if(level > 1)
+                if (level > 1)
                     for (int i = 1; i <= level; i++)
                         list.Add(new UpgradeTypeAndLevel() { UpgradeType = upgradeType, Level = i });
                 else
