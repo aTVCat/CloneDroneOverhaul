@@ -76,13 +76,25 @@ namespace OverhaulMod.Content.Personalization
             {
                 Vector3 vector = base.transform.localScale;
                 base.transform.localScale = Vector3.one;
-                string path = ModCore.customizationFolder + voxFilePath;
+                string path = $"{ModCore.customizationFolder}{voxFilePath}";
+                Debug.Log($"PATH: {path}");
+
+                if (volumeComponent.NumFrames > 0)
+                {
+                    System.Collections.Generic.List<Frame> list = volumeComponent.Frames;
+                    for (int i = 0; i < volumeComponent.NumFrames; i++)
+                        Destroy(list[i].gameObject);
+
+                    list.Clear();
+                }
+
                 if (!File.Exists(path))
                 {
-                    volume.GenerateBasic(FillMode.None);
+                    volumeComponent.GenerateBasic(FillMode.None);
                 }
                 else
                 {
+                    volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
                 }
                 base.transform.localScale = vector;

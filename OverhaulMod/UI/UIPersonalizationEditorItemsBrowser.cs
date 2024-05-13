@@ -35,6 +35,9 @@ namespace OverhaulMod.UI
         [UIElement("ItemDisplayPrefab", false)]
         private readonly ModdedObject m_itemDisplayPrefab;
 
+        [UIElement("LoadErrorDisplayPrefab", false)]
+        private readonly ModdedObject m_itemLoadErrorDisplayPrefab;
+
         [UIElement("Content")]
         private readonly Transform m_container;
 
@@ -48,39 +51,50 @@ namespace OverhaulMod.UI
         {
             bool getAll = m_viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
 
+            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+            if (itemList == null || itemList.LoadError != null)
+                return;
+
             List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
-            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
+            foreach (PersonalizationItemInfo item in itemList.Items)
             {
                 if (item.CanBeEdited() || getAll)
                 {
                     list.Add(item);
                 }
             }
-            populate(list);
+            populate(list, itemList.ItemLoadErrors);
         }
 
-        private void populate(List<PersonalizationItemInfo> list)
+        private void populate(List<PersonalizationItemInfo> list, Dictionary<string, System.Exception> exceptions)
         {
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            if (list.IsNullOrEmpty())
-                return;
-
-            foreach (PersonalizationItemInfo item in list)
-            {
-                ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
-                moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = item.Name;
-                moddedObject.GetObject<Text>(1).text = item.Category.ToString();
-
-                Button button = moddedObject.GetComponent<Button>();
-                button.onClick.AddListener(delegate
+            if(list != null)
+                foreach (PersonalizationItemInfo item in list)
                 {
-                    PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
-                    Hide();
-                });
-            }
+                    ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = item.Name;
+                    moddedObject.GetObject<Text>(1).text = PersonalizationItemInfo.GetCategoryString(item.Category);
+
+                    Button button = moddedObject.GetComponent<Button>();
+                    button.onClick.AddListener(delegate
+                    {
+                        PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
+                        Hide();
+                    });
+                }
+
+            if(exceptions != null)
+                foreach (KeyValuePair<string, System.Exception> keyValue in exceptions)
+                {
+                    ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = $"Item load error: {keyValue.Key}";
+                    moddedObject.GetObject<Text>(1).text = keyValue.Value.ToString();
+                }
         }
 
         public void OnViewAllItemsToggleChanged(bool value)

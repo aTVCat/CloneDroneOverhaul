@@ -113,7 +113,6 @@ namespace PicaVoxel
 
                 if (voxelData.Length == 0) return;
 
-
                 if (root != null)
                 {
 

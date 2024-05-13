@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
             if (m_fileDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_fileDisplayContainer);
 
-            foreach (string file in itemInfo.importedFiles)
+            foreach (string file in itemInfo.ImportedFiles)
             {
                 ModdedObject moddedObject = Instantiate(m_fileDisplayPrefab, m_fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -63,21 +63,24 @@ namespace OverhaulMod.UI
                     return;
 
                 string fn = Path.GetFileName(path);
-                string dest = item.importedFilesFolder + fn;
+                string dest = PersonalizationItemInfo.GetImportedFilesFolder(item) + fn;
                 if (File.Exists(dest))
                 {
                     ModUIUtils.MessagePopup(true, "File with the same name is already imported!", "Replace the file?", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Replace", "No", null, delegate
                     {
                         File.Delete(dest);
                         File.Copy(path, dest);
+                        item.LoadImportedFilePaths();
                         Populate();
                     });
+                    return;
                 }
                 else
                 {
                     File.Copy(path, dest);
                 }
 
+                item.LoadImportedFilePaths();
                 Populate();
             }, InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
         }

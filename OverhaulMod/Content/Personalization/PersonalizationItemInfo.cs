@@ -32,52 +32,16 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public string FolderPath;
 
-        private List<string> m_importedFiles;
-        public List<string> importedFiles
+        [NonSerialized]
+        public List<string> ImportedFiles;
+
+        public void LoadImportedFilePaths()
         {
-            get
-            {
-                List<string> list;
-                if (m_importedFiles != null)
-                {
-                    list = m_importedFiles;
-                    list.Clear();
-                }
-                else
-                {
-                    list = new List<string>();
-                    m_importedFiles = list;
-                }
+            List<string> list = new List<string>();
+            foreach (string f in Directory.GetFiles(GetImportedFilesFolder(this)))
+                list.Add(Path.GetFileName(f));
 
-                foreach (string f in Directory.GetFiles(importedFilesFolder))
-                    list.Add(Path.GetFileName(f));
-
-                return list;
-            }
-        }
-
-        public string importedFilesFolder
-        {
-            get
-            {
-                return FolderPath + "files/";
-            }
-        }
-
-        public string folderName
-        {
-            get
-            {
-                return Path.GetDirectoryName(FolderPath);
-            }
-        }
-
-        public string folderNameWithSlash
-        {
-            get
-            {
-                return $"{Path.GetDirectoryName(FolderPath)}/";
-            }
+            ImportedFiles = list;
         }
 
         public void FixValues()
@@ -98,13 +62,16 @@ namespace OverhaulMod.Content.Personalization
                     Children = new List<PersonalizationEditorObjectInfo>(),
                     PropertyValues = new Dictionary<string, object>()
                 };
-                RootObject.SetPosition(Vector3.zero);
-                RootObject.SetEulerAngles(Vector3.zero);
-                RootObject.SetScale(Vector3.one);
             }
+
+            RootObject.SetPosition(Vector3.zero);
+            RootObject.SetEulerAngles(Vector3.zero);
+            RootObject.SetScale(Vector3.one);
 
             if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon))
                 Weapon = WeaponType.Sword;
+
+            LoadImportedFilePaths();
         }
 
         public void SetAuthor(string name)
@@ -135,6 +102,37 @@ namespace OverhaulMod.Content.Personalization
         public bool CanBeEdited()
         {
             return string.IsNullOrEmpty(EditorID) || EditorID == SteamUser.GetSteamID().ToString();
+        }
+
+        public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)
+        {
+            return Path.GetDirectoryName(personalizationItemInfo.FolderPath);
+        }
+
+        public static string GetFolderNameWithSlash(PersonalizationItemInfo personalizationItemInfo)
+        {
+            return $"{Path.GetDirectoryName(personalizationItemInfo.FolderPath)}/";
+        }
+
+        public static string GetImportedFilesFolder(PersonalizationItemInfo personalizationItemInfo)
+        {
+            return $"{personalizationItemInfo.FolderPath}files/";
+        }
+
+        public static string GetCategoryString(PersonalizationCategory personalizationCategory, bool many = false)
+        {
+            switch (personalizationCategory)
+            {
+                case PersonalizationCategory.None:
+                    return "None";
+                case PersonalizationCategory.WeaponSkins:
+                    return many ? "Weapon skins" : "Weapon skin";
+                case PersonalizationCategory.Accessories:
+                    return many ? "Accessories" : "Accessory";
+                case PersonalizationCategory.Pets:
+                    return many ? "Pets" : "Pet";
+            }
+            return personalizationCategory.ToString();
         }
     }
 }

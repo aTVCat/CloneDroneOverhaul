@@ -36,6 +36,8 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public PersonalizationItemInfo ItemInfo;
+
         private void Awake()
         {
             m_children = new List<PersonalizationEditorObjectBehaviour>();
