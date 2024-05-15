@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -178,7 +179,21 @@ namespace OverhaulMod.UI
 
             public void OnEditButtonClicked()
             {
+                ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
+                {
+                    string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.editingItemInfo.FolderPath);
+                    string fileName = Path.GetFileName(filePath);
+                    string path = $"{directoryName}/files/{fileName}";
+                    Debug.Log(directoryName);
+                    Debug.Log(fileName);
+                    Debug.Log(path);
 
+                    if ((string)m_attribute.propertyInfo.GetValue(m_componentBaseObject) == path)
+                        return;
+
+                    m_field.text = path;
+                    m_attribute.propertyInfo.SetValue(m_componentBaseObject, path);
+                }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.editingItemInfo), m_attribute.FileLocationSearchPattern);
             }
         }
     }
