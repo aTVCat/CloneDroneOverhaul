@@ -14,6 +14,8 @@ namespace OverhaulMod.Content.Personalization
 
         private List<PersonalizationEditorObjectBehaviour> m_instantiatedObjects;
 
+        private int m_nextUniqueIndex;
+
         public override void Awake()
         {
             base.Awake();
@@ -49,6 +51,41 @@ namespace OverhaulMod.Content.Personalization
         public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
             _ = m_instantiatedObjects.Remove(behaviour);
+        }
+
+        public PersonalizationEditorObjectBehaviour GetInstantiatedObject(int uniqueIndex)
+        {
+            List<PersonalizationEditorObjectBehaviour> list = m_instantiatedObjects;
+            if (list.IsNullOrEmpty())
+                return null;
+
+            int i = 0;
+            do
+            {
+                PersonalizationEditorObjectBehaviour obj = list[i];
+                if (obj && obj.UniqueIndex == uniqueIndex)
+                    return obj;
+
+                i++;
+            } while (i < list.Count);
+
+            return null;
+        }
+
+        public void SetCurrentRootNextUniqueIndex(int value)
+        {
+            m_nextUniqueIndex = value;
+        }
+
+        public int GetNextUniqueIndex()
+        {
+            m_nextUniqueIndex++;
+            return m_nextUniqueIndex;
+        }
+
+        public int GetCurrentUniqueIndex()
+        {
+            return m_nextUniqueIndex;
         }
 
         private Material getVolumeMaterial()
@@ -115,7 +152,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationEditorObject.Name = objectInfo.Name;
                 personalizationEditorObject.PropertyValues = new Dictionary<string, object>();
                 if (!objectInfo.Properties.IsNullOrEmpty())
-                    foreach (PersonalizationEditorObjectPropertyInfo p in objectInfo.Properties)
+                    foreach (PersonalizationEditorObjectPropertyValueInfo p in objectInfo.Properties)
                         personalizationEditorObject.PropertyValues.Add(p.PropertyName, default);
             }
 

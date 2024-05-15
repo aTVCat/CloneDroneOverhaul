@@ -286,6 +286,18 @@ namespace OverhaulMod.UI
                                 });
                             }
                         }
+                        else if (fieldInfo.FieldType == typeof(UIElementVector3Field))
+                        {
+                            methodInfo = localType.GetMethod(actionAttribute.Name, new System.Type[] { typeof(Vector3) });
+                            if (methodInfo != null)
+                            {
+                                UIElementVector3Field keyBindSetter = unityObject as UIElementVector3Field;
+                                keyBindSetter.onValueChanged.AddListener(delegate (Vector3 value)
+                                {
+                                    _ = methodInfo.Invoke(this, new object[] { value });
+                                });
+                            }
+                        }
                     }
 
                     fieldInfo.SetValue(this, unityObject);

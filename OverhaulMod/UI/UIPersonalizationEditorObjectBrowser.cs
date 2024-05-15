@@ -37,7 +37,8 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    _ = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.editingRoot.transform, true);
+                    PersonalizationEditorObjectBehaviour b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.editingRoot.transform, true);
+                    b.UniqueIndex = PersonalizationEditorObjectManager.Instance.GetNextUniqueIndex();
                     PersonalizationEditorManager.Instance.SerializeRoot();
                     Hide();
 

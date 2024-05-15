@@ -67,6 +67,11 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public static bool IsInEditor()
+        {
+            return GameFlowManager.Instance._gameMode == (GameMode)2500;
+        }
+
         public void StartEditorGameMode()
         {
             GameFlowManager.Instance._gameMode = (GameMode)2500;
@@ -223,6 +228,7 @@ namespace OverhaulMod.Content.Personalization
 
             personalizationController.DestroyAllItems();
             editingRoot = personalizationController.SpawnItem(editingItemInfo);
+            PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
         }
     }
 }

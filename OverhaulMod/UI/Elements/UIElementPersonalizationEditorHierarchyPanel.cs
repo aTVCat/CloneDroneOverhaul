@@ -41,6 +41,10 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(1).text = obj.Name;
+                moddedObject.GetObject<Button>(3).onClick.AddListener(delegate
+                {
+                    UIPersonalizationEditor.instance.PropertiesPanel.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
+                });
             }
         }
 

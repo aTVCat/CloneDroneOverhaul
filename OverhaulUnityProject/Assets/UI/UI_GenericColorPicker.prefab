@@ -77,7 +77,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Color picker
+  m_Text: Set color
 --- !u!114 &667088418497108995
 MonoBehaviour:
   m_ObjectHideFlags: 0

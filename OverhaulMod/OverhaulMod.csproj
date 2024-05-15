@@ -367,7 +367,8 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
@@ -539,6 +540,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
@@ -547,6 +549,7 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
+    <Compile Include="UI\Elements\UIElementVector3Field.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />

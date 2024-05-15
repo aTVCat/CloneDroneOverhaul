@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -8,6 +9,8 @@ namespace OverhaulMod.Content.Personalization
         public string Name, Path;
 
         public bool IsRoot;
+
+        public int UniqueIndex, NextUniqueIndex;
 
         public Dictionary<string, object> PropertyValues;
 
@@ -36,12 +39,36 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public int childrenCount
+        {
+            get
+            {
+                Transform transform = base.transform;
+
+                int result = transform.childCount;
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform child = transform.GetChild(i);
+                    if (child)
+                    {
+                        PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
+                        if (personalizationEditorObjectBehaviour)
+                        {
+                            result += personalizationEditorObjectBehaviour.childrenCount;
+                        }
+                    }
+                }
+                return result;
+            }
+        }
+
         public PersonalizationItemInfo ItemInfo;
 
         private void Awake()
         {
             m_children = new List<PersonalizationEditorObjectBehaviour>();
-            PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(this);
+            if(PersonalizationEditorManager.IsInEditor())
+                PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(this);
         }
 
         private void OnDestroy()
@@ -49,9 +76,15 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorObjectManager.Instance.RemoveInstantiatedObject(this);
         }
 
-        public object GetPropertyValue(string name, object defaultValue)
+        public T GetPropertyValue<T>(string name, T defaultValue)
         {
-            return !PropertyValues.TryGetValue(name, out object obj) ? defaultValue : obj;
+            if (!PropertyValues.TryGetValue(name, out object obj))
+                return defaultValue;
+
+            if (typeof(T) == typeof(float) && obj is double)
+                return (T)(object)Convert.ToSingle(obj);
+
+            return (T)obj;
         }
 
         public void SetPropertyValue(string name, object value)
@@ -68,11 +101,16 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo Serialize()
         {
+            if (IsRoot)
+                NextUniqueIndex = PersonalizationEditorObjectManager.Instance.GetCurrentUniqueIndex();
+
             PersonalizationEditorObjectInfo objectInfo = new PersonalizationEditorObjectInfo()
             {
                 Name = Name,
                 Path = Path,
                 IsRoot = IsRoot,
+                UniqueIndex = UniqueIndex,
+                NextUniqueIndex = NextUniqueIndex,
                 PropertyValues = PropertyValues ?? new Dictionary<string, object>(),
                 Children = new List<PersonalizationEditorObjectInfo>()
             };

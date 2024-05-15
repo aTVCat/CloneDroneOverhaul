@@ -7,6 +7,8 @@ namespace OverhaulMod.Content.Personalization
     public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
     {
         private Volume m_volume;
+
+        [PersonalizationEditorObjectProperty]
         public Volume volume
         {
             get
@@ -19,12 +21,13 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty(true)]
         public string voxFilePath
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (string)ob.GetPropertyValue(nameof(voxFilePath), string.Empty);
+                return ob.GetPropertyValue(nameof(voxFilePath), string.Empty);
             }
             set
             {
@@ -34,12 +37,13 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty(0.001f, 0.1f)]
         public float voxelSize
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (float)ob.GetPropertyValue(nameof(voxelSize), 0.1f);
+                return ob.GetPropertyValue(nameof(voxelSize), 0.1f);
             }
             set
             {
@@ -49,12 +53,13 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty]
         public bool centerPivot
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (bool)ob.GetPropertyValue(nameof(centerPivot), true);
+                return ob.GetPropertyValue(nameof(centerPivot), true);
             }
             set
             {
@@ -96,6 +101,9 @@ namespace OverhaulMod.Content.Personalization
                 {
                     volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
+
+                    foreach (var rvc in volumeComponent.GetComponents<ReplaceVoxelColor>())
+                        Destroy(rvc);
                 }
                 base.transform.localScale = vector;
             }
