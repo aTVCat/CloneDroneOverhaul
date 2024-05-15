@@ -2,6 +2,7 @@
 using PicaVoxel;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -14,12 +15,15 @@ namespace OverhaulMod.Content.Personalization
 
         private List<PersonalizationEditorObjectBehaviour> m_instantiatedObjects;
 
+        private Dictionary<string, List<PersonalizationEditorObjectPropertyAttribute>> m_cachedProperties;
+
         private int m_nextUniqueIndex;
 
         public override void Awake()
         {
             base.Awake();
 
+            m_cachedProperties = new Dictionary<string, List<PersonalizationEditorObjectPropertyAttribute>>();
             m_instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
@@ -86,6 +90,32 @@ namespace OverhaulMod.Content.Personalization
         public int GetCurrentUniqueIndex()
         {
             return m_nextUniqueIndex;
+        }
+
+        public List<PersonalizationEditorObjectPropertyAttribute> GetProperties(PersonalizationEditorObjectBehaviour objectBehaviour)
+        {
+            if (m_cachedProperties.TryGetValue(objectBehaviour.Path, out List<PersonalizationEditorObjectPropertyAttribute> result))
+                return result;
+
+            result = new List<PersonalizationEditorObjectPropertyAttribute>();
+            foreach (PersonalizationEditorObjectComponentBase c in objectBehaviour.GetComponents<PersonalizationEditorObjectComponentBase>())
+            {
+                PropertyInfo[] properties = c.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                if (!properties.IsNullOrEmpty())
+                {
+                    foreach (PropertyInfo property in properties)
+                    {
+                        PersonalizationEditorObjectPropertyAttribute attribute = property.GetCustomAttribute<PersonalizationEditorObjectPropertyAttribute>();
+                        if (attribute != null)
+                        {
+                            attribute.propertyInfo = property;
+                            result.Add(attribute);
+                        }
+                    }
+                }
+            }
+            m_cachedProperties.Add(objectBehaviour.Path, result);
+            return result;
         }
 
         private Material getVolumeMaterial()

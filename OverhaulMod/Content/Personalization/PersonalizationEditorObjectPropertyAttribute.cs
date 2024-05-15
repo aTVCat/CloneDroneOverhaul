@@ -11,6 +11,12 @@ namespace OverhaulMod.Content.Personalization
 
         public float MinFloatValue, MaxFloatValue;
 
+        public System.Reflection.PropertyInfo propertyInfo
+        {
+            get;
+            set;
+        }
+
         public PersonalizationEditorObjectPropertyAttribute()
         {
 

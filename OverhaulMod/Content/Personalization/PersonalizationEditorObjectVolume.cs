@@ -1,4 +1,5 @@
-﻿using PicaVoxel;
+﻿using OverhaulMod.Utils;
+using PicaVoxel;
 using System.IO;
 using UnityEngine;
 
@@ -6,9 +7,9 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
     {
-        private Volume m_volume;
+        private bool m_hasAddedEventListeners;
 
-        [PersonalizationEditorObjectProperty]
+        private Volume m_volume;
         public Volume volume
         {
             get
@@ -69,9 +70,38 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public string colorReplacements
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return ob.GetPropertyValue(nameof(colorReplacements), string.Empty);
+            }
+            set
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(colorReplacements), value);
+                RefreshVolume();
+            }
+        }
+
         private void Start()
         {
             RefreshVolume();
+            if (PersonalizationEditorManager.IsInEditor())
+            {
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
+                m_hasAddedEventListeners = true;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
+            {
+                m_hasAddedEventListeners = false;
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
+            }
         }
 
         public void RefreshVolume()
@@ -102,8 +132,27 @@ namespace OverhaulMod.Content.Personalization
                     volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
 
-                    foreach (var rvc in volumeComponent.GetComponents<ReplaceVoxelColor>())
-                        Destroy(rvc);
+                    string cr = colorReplacements;
+                    if (!cr.IsNullOrEmpty())
+                    {
+                        string[] split = cr.Split('|');
+                        if (!split.IsNullOrEmpty())
+                        {
+                            foreach(var oldAndNewColorsString in split)
+                            {
+                                if (oldAndNewColorsString.IsNullOrEmpty())
+                                    continue;
+
+                                string[] oldAndNewColors = oldAndNewColorsString.Split('-');
+                                if(oldAndNewColors.Length == 2)
+                                {
+                                    Color oldColor = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
+                                    Color newColor = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
+                                    ReplaceVoxelColor.ReplaceColors(volume, oldColor, newColor, true);
+                                }
+                            }
+                        }
+                    }
                 }
                 base.transform.localScale = vector;
             }

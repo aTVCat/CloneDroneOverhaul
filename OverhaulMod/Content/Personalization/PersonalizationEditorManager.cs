@@ -10,6 +10,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
+        public const string OBJECT_EDITED_EVENT = "PersonalizationEditorObjectEdited";
+
         private PersonalizationController m_editingPersonalizationController;
         public PersonalizationController editingPersonalizationController
         {

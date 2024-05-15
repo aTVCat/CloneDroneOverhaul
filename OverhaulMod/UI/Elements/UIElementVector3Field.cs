@@ -8,15 +8,15 @@ namespace OverhaulMod.UI
 {
     public class UIElementVector3Field : OverhaulUIBehaviour
     {
-        [UIElementAction(nameof(onXFieldChanged))]
+        [UIElementAction(nameof(OnXFieldChanged))]
         [UIElement("XField")]
         private readonly InputField m_xField;
 
-        [UIElementAction(nameof(onYFieldChanged))]
+        [UIElementAction(nameof(OnYFieldChanged))]
         [UIElement("YField")]
         private readonly InputField m_yField;
 
-        [UIElementAction(nameof(onZFieldChanged))]
+        [UIElementAction(nameof(OnZFieldChanged))]
         [UIElement("ZField")]
         private readonly InputField m_zField;
 
@@ -33,9 +33,9 @@ namespace OverhaulMod.UI
             {
                 m_vector = value;
                 m_disableCallbacks = true;
-                m_xField.text = value.x.ToString();
-                m_yField.text = value.y.ToString();
-                m_zField.text = value.z.ToString();
+                m_xField.text = value.x.ToString().Replace(',', '.');
+                m_yField.text = value.y.ToString().Replace(',', '.');
+                m_zField.text = value.z.ToString().Replace(',', '.');
                 m_disableCallbacks = false;
 
                 onValueChanged.Invoke(value);
@@ -44,7 +44,7 @@ namespace OverhaulMod.UI
 
         public Vector3ChangedEvent onValueChanged { get; set; } = new Vector3ChangedEvent();
 
-        private void onXFieldChanged(string val)
+        public void OnXFieldChanged(string val)
         {
             if (m_disableCallbacks)
                 return;
@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
             onXChanged(ModParseUtils.TryParseToFloat(val, 0f));
         }
 
-        private void onYFieldChanged(string val)
+        public void OnYFieldChanged(string val)
         {
             if (m_disableCallbacks)
                 return;
@@ -60,7 +60,7 @@ namespace OverhaulMod.UI
             onYChanged(ModParseUtils.TryParseToFloat(val, 0f));
         }
 
-        private void onZFieldChanged(string val)
+        public void OnZFieldChanged(string val)
         {
             if (m_disableCallbacks)
                 return;

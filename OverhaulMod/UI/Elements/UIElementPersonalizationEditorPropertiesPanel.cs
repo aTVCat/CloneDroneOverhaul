@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using OverhaulMod.Content.Personalization;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
@@ -26,6 +27,14 @@ namespace OverhaulMod.UI
         [UIElement("EditVolumeColorsButton")]
         private readonly Button m_editVolumeColorsButton;
 
+        [UIElement("Content")]
+        private readonly Transform m_container;
+
+        [UIElement("FileLocationFieldDisplay", false)]
+        private readonly ModdedObject m_fileLocationFieldDisplay;
+
+        private List<FieldDisplay> m_fieldDisplays;
+
         private UIElementMousePositionChecker m_mousePositionChecker;
 
         private PersonalizationEditorObjectBehaviour m_object;
@@ -34,13 +43,14 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_fieldDisplays = new List<FieldDisplay>();
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMousePositionChecker>();
         }
 
         public override void Update()
         {
             base.Update();
-            if(Input.GetMouseButtonDown(0) && !m_mousePositionChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && !m_mousePositionChecker.isMouseOverElement)
             {
                 EditObject(null);
             }
@@ -57,11 +67,43 @@ namespace OverhaulMod.UI
             m_object = objectBehaviour;
             Show();
 
+            List<FieldDisplay> list = m_fieldDisplays;
+            if (!list.IsNullOrEmpty())
+            {
+                foreach (FieldDisplay fd in list)
+                    Destroy(fd.gameObject);
+
+                list.Clear();
+            }
+
             m_disableCallbacks = true;
             m_positionField.vector = objectBehaviour.transform.localPosition;
             m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
             m_scaleField.vector = objectBehaviour.transform.localScale;
             m_editVolumeColorsButton.gameObject.SetActive(objectBehaviour.Path == "Volume");
+
+            foreach (PersonalizationEditorObjectPropertyAttribute attribute in objectBehaviour.GetProperties())
+            {
+                FieldDisplay fieldDisplay = null;
+                if (attribute.propertyInfo.PropertyType == typeof(string))
+                {
+                    if (attribute.IsFileLocation)
+                    {
+                        fieldDisplay = Instantiate(m_fileLocationFieldDisplay, m_container).gameObject.AddComponent<FileLocationField>();
+                    }
+                }
+
+                if (fieldDisplay)
+                {
+                    fieldDisplay.gameObject.SetActive(true);
+                    fieldDisplay.InitializeElement();
+                    list.Add(fieldDisplay);
+
+                    PersonalizationEditorObjectComponentBase cb = (PersonalizationEditorObjectComponentBase)objectBehaviour.GetComponent(attribute.propertyInfo.DeclaringType);
+                    fieldDisplay.Set(attribute, cb, attribute.propertyInfo.GetValue(cb));
+                }
+            }
+
             m_disableCallbacks = false;
         }
 
@@ -104,6 +146,40 @@ namespace OverhaulMod.UI
                 return;
 
             objectBehaviour.transform.localScale = value;
+        }
+
+        public class FieldDisplay : OverhaulUIBehaviour
+        {
+            protected PersonalizationEditorObjectPropertyAttribute m_attribute;
+
+            protected PersonalizationEditorObjectComponentBase m_componentBaseObject;
+
+            public virtual void Set(PersonalizationEditorObjectPropertyAttribute attribute, PersonalizationEditorObjectComponentBase componentBaseObject, object value)
+            {
+                m_attribute = attribute;
+                m_componentBaseObject = componentBaseObject;
+            }
+        }
+
+        public class FileLocationField : FieldDisplay
+        {
+            [UIElement("InputField")]
+            private readonly InputField m_field;
+
+            [UIElementAction(nameof(OnEditButtonClicked))]
+            [UIElement("EditButton")]
+            private readonly Button m_editButton;
+
+            public override void Set(PersonalizationEditorObjectPropertyAttribute attribute, PersonalizationEditorObjectComponentBase componentBaseObject, object value)
+            {
+                base.Set(attribute, componentBaseObject, value);
+                m_field.text = value?.ToString();
+            }
+
+            public void OnEditButtonClicked()
+            {
+
+            }
         }
     }
 }

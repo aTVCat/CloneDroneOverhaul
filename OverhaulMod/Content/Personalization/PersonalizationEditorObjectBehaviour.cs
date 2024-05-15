@@ -1,5 +1,7 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -67,7 +69,7 @@ namespace OverhaulMod.Content.Personalization
         private void Awake()
         {
             m_children = new List<PersonalizationEditorObjectBehaviour>();
-            if(PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditor())
                 PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(this);
         }
 
@@ -97,6 +99,11 @@ namespace OverhaulMod.Content.Personalization
             {
                 PropertyValues[name] = value;
             }
+        }
+
+        public List<PersonalizationEditorObjectPropertyAttribute> GetProperties()
+        {
+            return PersonalizationEditorObjectManager.Instance.GetProperties(this);
         }
 
         public PersonalizationEditorObjectInfo Serialize()
