@@ -20,9 +20,17 @@ namespace OverhaulMod.UI.Elements
         [UIElement("ColorBGraphicAlphaText")]
         private readonly Text m_colorBAlphaText;
 
-        [UIElementAction(nameof(OnColorBClicked))]
+        [UIElementAction(nameof(OnColorBButtonClicked))]
         [UIElement("ColorBGraphic")]
         private readonly Button m_colorBButton;
+
+        [UIElementAction(nameof(OnResetButtonClicked))]
+        [UIElement("ResetButton")]
+        private readonly Button m_resetButton;
+
+        //[UIElementAction(nameof(OnResetButtonClicked))]
+        [UIElement("PlayerColorButton")]
+        private readonly Button m_playerColorButton;
 
         private bool m_disableCallbacks;
 
@@ -63,7 +71,7 @@ namespace OverhaulMod.UI.Elements
                 Color graphicColor = new Color(value.r, value.g, value.b, 1f);
                 m_colorAGraphic.color = graphicColor;
 
-                m_colorAAlphaText.text = $"{Mathf.Round(value.a * 100f)}%";
+                m_colorAAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
                 m_colorA = value;
 
                 if (!m_disableColorPairUpdates)
@@ -86,7 +94,7 @@ namespace OverhaulMod.UI.Elements
                 Color graphicColor = new Color(value.r, value.g, value.b, 1f);
                 m_colorBGraphic.color = graphicColor;
 
-                m_colorBAlphaText.text = $"{Mathf.Round(value.a * 100f)}%";
+                m_colorBAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
                 m_colorB = value;
 
                 if (!m_disableColorPairUpdates)
@@ -111,9 +119,14 @@ namespace OverhaulMod.UI.Elements
 
         public ColorPairChangedEvent onValueChanged { get; set; } = new ColorPairChangedEvent();
 
-        public void OnColorBClicked()
+        public void OnColorBButtonClicked()
         {
             ModUIUtils.ColorPicker(colorB, true, onColorBChanged, colorPickerTransform);
+        }
+
+        public void OnResetButtonClicked()
+        {
+            colorB = colorA;
         }
 
         private void onColorBChanged(Color color)

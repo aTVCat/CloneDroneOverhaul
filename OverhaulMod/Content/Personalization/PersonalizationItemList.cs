@@ -64,5 +64,23 @@ namespace OverhaulMod.Content.Personalization
             Items = list;
             ItemLoadErrors = errors;
         }
+
+        public List<PersonalizationItemInfo> GetItems()
+        {
+            return Items;
+        }
+
+        public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory)
+        {
+            List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
+            foreach(var item in GetItems())
+            {
+                if(item.Category == personalizationCategory)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
     }
 }
