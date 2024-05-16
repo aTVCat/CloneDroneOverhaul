@@ -1,7 +1,11 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -71,6 +75,54 @@ namespace OverhaulMod.Content.Personalization
 
             ModJsonUtils.WriteStream(directoryPath + ITEM_INFO_FILE, personalizationItem);
             return true;
+        }
+
+        public List<ColorPairFloat> GetColorPairsFromString(string dataString)
+        {
+            if (dataString.IsNullOrEmpty())
+                return null;
+
+            string[] split = dataString.Split('|');
+            if (split.IsNullOrEmpty())
+                return null;
+
+            List<ColorPairFloat> list = new List<ColorPairFloat>();
+            foreach (string oldAndNewColorsString in split)
+            {
+                if (oldAndNewColorsString.IsNullOrEmpty())
+                    continue;
+
+                string[] oldAndNewColors = oldAndNewColorsString.Split('-');
+                if (oldAndNewColors.Length == 2)
+                {
+                    Color a = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
+                    Color b = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
+                    list.Add(new ColorPairFloat(a, b));
+                }
+            }
+            return list;
+        }
+
+        public string GetStringFromColorPairs(List<ColorPairFloat> colorPairs)
+        {
+            if (colorPairs.IsNullOrEmpty())
+                return null;
+
+            int index = 0;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach(var cp in colorPairs)
+            {
+                string colorA = ColorUtility.ToHtmlStringRGBA(cp.ColorA);
+                string colorB = ColorUtility.ToHtmlStringRGBA(cp.ColorB);
+                string colorsString = $"{colorA}-{colorB}".Replace("#", string.Empty);
+                stringBuilder.Append(colorsString);
+                if(index+1 != colorPairs.Count)
+                    stringBuilder.Append('|');
+
+                index++;
+            }
+            return stringBuilder.ToString();
         }
 
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)

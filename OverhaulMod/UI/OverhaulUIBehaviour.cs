@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public virtual bool dontRefreshUI
+        public virtual bool refreshOnlyCursor
         {
             get
             {
@@ -375,14 +375,14 @@ namespace OverhaulMod.UI
         {
             base.gameObject.SetActive(true);
             if (!isElement)
-                ModUIManager.Instance.RefreshUI(dontRefreshUI);
+                ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
         }
 
         public virtual void Hide()
         {
             base.gameObject.SetActive(false);
             if (!isElement)
-                ModUIManager.Instance.RefreshUI(dontRefreshUI);
+                ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
         }
 
         public virtual void ToggleVisibility()

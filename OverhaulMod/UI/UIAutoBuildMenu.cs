@@ -29,7 +29,7 @@ namespace OverhaulMod.UI
 
         private int m_upgradeUISiblingIndex;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public bool isShowingUpgradeUI
         {

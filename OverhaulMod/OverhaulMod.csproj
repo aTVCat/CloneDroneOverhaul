@@ -398,6 +398,7 @@
     <Compile Include="Engine\CameraModeController.cs" />
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />
+    <Compile Include="Engine\ColorPairFloat.cs" />
     <Compile Include="Engine\CrashPreventionManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
@@ -537,6 +538,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />

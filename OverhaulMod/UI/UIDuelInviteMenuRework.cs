@@ -65,7 +65,7 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly GameObject m_panelObject;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public GameMode displayingGameMode
         {

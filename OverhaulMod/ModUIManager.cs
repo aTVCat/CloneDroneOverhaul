@@ -208,10 +208,10 @@ namespace OverhaulMod
             return false;
         }
 
-        public void RefreshUI(bool dontRefreshUI)
+        public void RefreshUI(bool refreshOnlyCursor)
         {
             ModCache.gameUIRoot.RefreshCursorEnabled();
-            if (!dontRefreshUI)
+            if (!refreshOnlyCursor)
             {
                 ModCache.gameUIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
                 ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());

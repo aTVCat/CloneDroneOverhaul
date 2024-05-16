@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
         [UIElement("NoRecordsIndicator")]
         private readonly GameObject m_noRecordsIndicatorObject;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public List<HighScoreData> displayingList
         {

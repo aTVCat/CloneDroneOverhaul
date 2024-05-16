@@ -21,7 +21,7 @@ namespace OverhaulMod.UI
 
         private PhotoManager m_photoManager;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public bool borders { get; set; }
 

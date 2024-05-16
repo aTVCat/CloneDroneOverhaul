@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using PicaVoxel;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationEditorPropertiesPanel : OverhaulUIBehaviour
     {
-        [UIElement("VolumeColorsConfigPanel", typeof(UIElementPersonalizationEditorVolumeColorsSettings))]
+        [UIElement("VolumeColorsConfigPanel", typeof(UIElementPersonalizationEditorVolumeColorsSettings), false)]
         private readonly UIElementPersonalizationEditorVolumeColorsSettings m_volumeColorsSettings;
 
         [UIElementAction(nameof(OnPositionChanged))]
@@ -40,18 +41,21 @@ namespace OverhaulMod.UI
 
         private PersonalizationEditorObjectBehaviour m_object;
 
+        private PersonalizationEditorObjectVolume m_volume;
+
         private bool m_disableCallbacks;
 
         protected override void OnInitialized()
         {
             m_fieldDisplays = new List<FieldDisplay>();
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMousePositionChecker>();
+            m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
         }
 
         public override void Update()
         {
             base.Update();
-            if (Input.GetMouseButtonDown(0) && !m_mousePositionChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && !UIGenericColorPicker.IsOpen() && !m_mousePositionChecker.isMouseOverElement)
             {
                 EditObject(null);
             }
@@ -62,10 +66,12 @@ namespace OverhaulMod.UI
             if (!objectBehaviour)
             {
                 m_object = null;
+                m_volume = null;
                 Hide();
                 return;
             }
             m_object = objectBehaviour;
+            m_volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
             Show();
 
             List<FieldDisplay> list = m_fieldDisplays;
@@ -81,7 +87,7 @@ namespace OverhaulMod.UI
             m_positionField.vector = objectBehaviour.transform.localPosition;
             m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
             m_scaleField.vector = objectBehaviour.transform.localScale;
-            m_editVolumeColorsButton.gameObject.SetActive(objectBehaviour.Path == "Volume");
+            m_editVolumeColorsButton.gameObject.SetActive(m_volume);
 
             foreach (PersonalizationEditorObjectPropertyAttribute attribute in objectBehaviour.GetProperties())
             {
@@ -110,7 +116,19 @@ namespace OverhaulMod.UI
 
         public void OnEditVolumeColorsButtonClicked()
         {
+            var volume = m_volume;
+            if (!volume)
+                return;
+
             m_volumeColorsSettings.Show();
+            m_volumeColorsSettings.Populate(volume.colorReplacements);
+        }
+
+        public void OnVolumeColorReplacementsChanged(string str)
+        {
+            var volume = m_volume;
+            if (volume)
+                volume.colorReplacements = str;
         }
 
         public void OnPositionChanged(Vector3 value)

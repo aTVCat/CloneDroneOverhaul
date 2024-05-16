@@ -1,5 +1,7 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using PicaVoxel;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -8,6 +10,8 @@ namespace OverhaulMod.Content.Personalization
     public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
     {
         private bool m_hasAddedEventListeners;
+
+        private int m_prevFileImportVersion;
 
         private Volume m_volume;
         public Volume volume
@@ -22,6 +26,22 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty]
+        public int fileImportVersion
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return ob.GetPropertyValue(nameof(fileImportVersion), 0);
+            }
+            set
+            {
+                m_prevFileImportVersion = fileImportVersion;
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(fileImportVersion), value);
+            }
+        }
+
         [PersonalizationEditorObjectProperty(true)]
         public string voxFilePath
         {
@@ -32,6 +52,11 @@ namespace OverhaulMod.Content.Personalization
             }
             set
             {
+                if (value != voxFilePath)
+                {
+                    fileImportVersion++;
+                }
+
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
                 ob.SetPropertyValue(nameof(voxFilePath), value);
                 RefreshVolume();
@@ -87,6 +112,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Start()
         {
+            m_prevFileImportVersion = fileImportVersion;
             RefreshVolume();
             if (PersonalizationEditorManager.IsInEditor())
             {
@@ -131,26 +157,41 @@ namespace OverhaulMod.Content.Personalization
                 {
                     volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
-
                     string cr = colorReplacements;
-                    if (!cr.IsNullOrEmpty())
-                    {
-                        string[] split = cr.Split('|');
-                        if (!split.IsNullOrEmpty())
-                        {
-                            foreach(var oldAndNewColorsString in split)
-                            {
-                                if (oldAndNewColorsString.IsNullOrEmpty())
-                                    continue;
 
-                                string[] oldAndNewColors = oldAndNewColorsString.Split('-');
-                                if(oldAndNewColors.Length == 2)
-                                {
-                                    Color oldColor = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
-                                    Color newColor = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
-                                    ReplaceVoxelColor.ReplaceColors(volume, oldColor, newColor, true);
-                                }
+                    int fiv = fileImportVersion;
+
+                    if (cr.IsNullOrEmpty() || m_prevFileImportVersion != fiv)
+                    {
+                        m_prevFileImportVersion = fiv;
+
+                        List<Color32> colors = new List<Color32>();
+                        Frame frame = volumeComponent.GetCurrentFrame();
+                        int i = 0;
+                        do
+                        {
+                            Voxel voxel = frame.Voxels[i];
+                            Color32 color32 = voxel.Color;
+                            if (voxel.Active && !colors.Contains(color32))
+                            {
+                                colors.Add(color32);
                             }
+                            i++;
+                        } while (i < frame.Voxels.Length);
+
+                        List<ColorPairFloat> colorPairs = new List<ColorPairFloat>();
+                        foreach (var color in colors)
+                            colorPairs.Add(new ColorPairFloat(color, color));
+
+                        colorReplacements = PersonalizationManager.Instance.GetStringFromColorPairs(colorPairs);
+                    }
+                    else
+                    {
+                        List<ColorPairFloat> list = PersonalizationManager.Instance.GetColorPairsFromString(cr);
+                        if (!list.IsNullOrEmpty())
+                        {
+                            foreach (ColorPairFloat cp in list)
+                                ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, cp.ColorB, false);
                         }
                     }
                 }
