@@ -258,6 +258,12 @@ namespace OverhaulMod.UI
                     m_modBotLogonText.enabled = false;
                     m_modBotLogInButton.gameObject.SetActive(true);
                 }
+
+                SteamManager steamManager = SteamManager.Instance;
+                bool steamInitialized = steamManager && steamManager.Initialized;
+
+                m_personalizationEditorButton.interactable = steamInitialized;
+                m_workshopBrowserButton.interactable = steamInitialized;
             }
 
             m_oldUIButton.gameObject.SetActive(flag);

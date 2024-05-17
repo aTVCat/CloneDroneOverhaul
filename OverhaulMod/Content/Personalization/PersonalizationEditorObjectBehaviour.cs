@@ -86,6 +86,9 @@ namespace OverhaulMod.Content.Personalization
             if (typeof(T) == typeof(float) && obj is double)
                 return (T)(object)Convert.ToSingle(obj);
 
+            if (typeof(T) == typeof(int) && obj is long)
+                return (T)(object)Convert.ToInt32(obj);
+
             return (T)obj;
         }
 

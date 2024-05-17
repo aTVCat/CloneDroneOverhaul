@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace OverhaulMod.UI.Elements
+namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationEditorColorPairDisplay : OverhaulUIBehaviour
     {

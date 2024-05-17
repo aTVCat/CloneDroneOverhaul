@@ -345,5 +345,10 @@ namespace OverhaulMod
         {
             return Instance.LoadAsset<T>(assetBundle, objectName, startPath);
         }
+
+        public static Sprite Sprite(string objectName)
+        {
+            return Instance.LoadAsset<Sprite>(AssetBundleConstants.UI, objectName);
+        }
     }
 }

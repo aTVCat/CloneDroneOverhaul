@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void LateUpdate()
         {
-            RefreshCameraRect();
+            //RefreshCameraRect();
             if (UIManager.Instance.IsMouseOverUIElement())
                 return;
 

@@ -100,7 +100,7 @@ namespace OverhaulMod.Content.Personalization
                 cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
                 PersonalizationEditorCamera personalizationEditorCamera = cameraObject.AddComponent<PersonalizationEditorCamera>();
                 personalizationEditorCamera.ToolBarTransform = editorUi.ToolBarTransform;
-                personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;
+                /*personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;*/
 
                 LevelEditorLevelData levelEditorLevelData = null;
                 try

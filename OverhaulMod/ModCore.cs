@@ -242,6 +242,12 @@ namespace OverhaulMod
             {
                 robotInventory.OnUpgradesRefreshed(upgrades);
             }
+
+            PersonalizationController personalizationController = owner.GetComponent<PersonalizationController>();
+            if (personalizationController)
+            {
+                personalizationController.SpawnEquippedSkins();
+            }
         }
 
         public override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)

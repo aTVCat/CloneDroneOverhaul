@@ -539,6 +539,7 @@
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorDropdown.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />

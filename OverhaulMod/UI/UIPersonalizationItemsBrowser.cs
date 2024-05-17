@@ -2,7 +2,9 @@
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
+using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -27,10 +29,20 @@ namespace OverhaulMod.UI
 
         [UIElement("ItemDisplay", false)]
         private readonly ModdedObject m_itemDisplay;
+        [UIElement("TextDisplay", false)]
+        private readonly Text m_textDisplay;
         [UIElement("Content")]
         private readonly Transform m_container;
         [UIElement("Content")]
         private readonly CanvasGroup m_containerCanvasGroup;
+
+        [UIElement("DownloadCustomizationBundle")]
+        private readonly GameObject m_downloadCustomizationBundleOverlay;
+        [UIElementAction(nameof(OnDownloadButtonClicked))]
+        [UIElement("DownloadButton")]
+        private readonly Button m_downloadButton;
+        [UIElement("DownloadProgressFill")]
+        private readonly Image m_downloadProgressFill;
 
         private RectTransform m_rectTransform;
 
@@ -39,6 +51,8 @@ namespace OverhaulMod.UI
         private string m_prevTab;
 
         private PersonalizationCategory m_selectedCategory;
+
+        private UnityWebRequest m_webRequest;
 
         public override bool enableCursor => true;
 
@@ -51,6 +65,8 @@ namespace OverhaulMod.UI
             m_tabs.AddTab(m_petsTab.gameObject, "pets");
             m_tabs.SelectTab("weapon skins");
             m_prevTab = "weapon skins";
+
+            ShowDownloadCustomizationFileDialog();
         }
 
         public override void Show()
@@ -60,7 +76,7 @@ namespace OverhaulMod.UI
             m_showContents = true;
             m_tabs.interactable = true;
 
-            if(m_tabs.selectedTab && m_prevTab != m_tabs.selectedTab.tabId)
+            if (m_tabs.selectedTab && m_prevTab != m_tabs.selectedTab.tabId)
             {
                 if (m_container.childCount != 0)
                     TransformUtils.DestroyAllChildren(m_container);
@@ -90,12 +106,30 @@ namespace OverhaulMod.UI
         private void LateUpdate()
         {
             refreshCameraRect();
+
+            UnityWebRequest unityWebRequest = m_webRequest;
+            if (unityWebRequest == null)
+                return;
+
+            try
+            {
+                m_downloadProgressFill.fillAmount = unityWebRequest.downloadProgress;
+            }
+            catch
+            {
+                m_downloadProgressFill.fillAmount = 1f;
+            }
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
             m_isPopulating = false;
+        }
+
+        public void ShowDownloadCustomizationFileDialog()
+        {
+            m_downloadCustomizationBundleOverlay.SetActive(PersonalizationManager.Instance.itemList.Items.Count <= 5);
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -119,7 +153,7 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            if(newTab.tabId == "weapon skins")
+            if (newTab.tabId == "weapon skins")
             {
                 m_selectedCategory = PersonalizationCategory.WeaponSkins;
             }
@@ -144,7 +178,7 @@ namespace OverhaulMod.UI
             if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
                 return;
 
-            base.StartCoroutine(populateCoroutine());
+            _ = base.StartCoroutine(populateCoroutine());
         }
 
         private IEnumerator populateCoroutine()
@@ -159,11 +193,20 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            var list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory);
+            WeaponType weaponType = WeaponType.None;
+            System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
             for (int i = 0; i < list.Count; i++)
             {
-                var item = list[i];
+                PersonalizationItemInfo item = list[i];
                 bool isUnlocked = item.IsUnlocked();
+
+                if(item.Weapon != weaponType)
+                {
+                    Text text = Instantiate(m_textDisplay, m_container);
+                    text.gameObject.SetActive(true);
+                    text.text = item.Weapon.ToString();
+                    weaponType = item.Weapon;
+                }
 
                 ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
@@ -173,7 +216,15 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-
+                    Character character = CharacterTracker.Instance.GetPlayer();
+                    if (character)
+                    {
+                        PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                        if (personalizationController)
+                        {
+                            personalizationController.EquipSkin(item);
+                        }
+                    }
                 });
 
                 if (i % 15 == 0)
@@ -224,6 +275,22 @@ namespace OverhaulMod.UI
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
                 commandInput.IsResetLookKeyDown = true;
+            });
+        }
+
+        public void OnDownloadButtonClicked()
+        {
+            m_downloadButton.gameObject.SetActive(false);
+            PersonalizationManager.Instance.DownloadCustomizationFile(delegate (bool success)
+            {
+                m_downloadButton.gameObject.SetActive(true);
+                m_downloadCustomizationBundleOverlay.SetActive(false);
+                m_downloadProgressFill.fillAmount = 0f;
+                m_webRequest = null;
+                Populate();
+            }, delegate (UnityWebRequest unityWebRequest)
+            {
+                m_webRequest = unityWebRequest;
             });
         }
     }

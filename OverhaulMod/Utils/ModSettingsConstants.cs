@@ -160,5 +160,30 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.CameraFOVController"/>
         /// </summary>
         public const string CAMERA_FOV_OFFSET = "CameraFOVOffset";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SWORD_SKIN = "SwordSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string BOW_SKIN = "BowSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string HAMMER_SKIN = "HammerSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SPEAR_SKIN = "SpearSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SHIELD_SKIN = "ShieldSkin";
     }
 }

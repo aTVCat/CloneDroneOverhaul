@@ -1,11 +1,15 @@
-﻿using OverhaulMod.Engine;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -67,6 +71,39 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemList personalizationItemList = new PersonalizationItemList();
             personalizationItemList.Load();
             itemList = personalizationItemList;
+        }
+
+        public void DownloadCustomizationFile(Action<bool> callback, Action<UnityWebRequest> webRequestCallback = null)
+        {
+            downloadCustomizationFileCoroutine(callback, webRequestCallback).Run();
+        }
+
+        private IEnumerator downloadCustomizationFileCoroutine(Action<bool> callback, Action<UnityWebRequest> webRequestCallback = null)
+        {
+            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/customization.zip", delegate (byte[] bytes)
+            {
+                try
+                {
+                    string tempFile = Path.GetTempFileName();
+                    ModIOUtils.WriteBytes(bytes, tempFile);
+
+                    FastZip fastZip = new FastZip();
+                    fastZip.ExtractZip(tempFile, ModCore.customizationFolder, null);
+                }
+                catch (Exception exc)
+                {
+                    Debug.Log(exc);
+                    callback?.Invoke(false);
+                    return;
+                }
+                itemList.Load();
+                callback?.Invoke(true);
+            }, delegate
+            {
+                callback?.Invoke(false);
+            }, out UnityWebRequest unityWebRequest, -1);
+            webRequestCallback?.Invoke(unityWebRequest);
+            yield break;
         }
 
         public void ConfigureFirstPersonMover(FirstPersonMover firstPersonMover)

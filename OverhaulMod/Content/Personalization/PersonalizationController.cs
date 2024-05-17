@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,21 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationController : MonoBehaviour
     {
+        [ModSetting(ModSettingsConstants.SWORD_SKIN, "")]
+        public static string SwordSkin;
+
+        [ModSetting(ModSettingsConstants.BOW_SKIN, "")]
+        public static string BowSkin;
+
+        [ModSetting(ModSettingsConstants.HAMMER_SKIN, "")]
+        public static string HammerSkin;
+
+        [ModSetting(ModSettingsConstants.SPEAR_SKIN, "")]
+        public static string SpearSkin;
+
+        [ModSetting(ModSettingsConstants.SHIELD_SKIN, "")]
+        public static string ShieldSkin;
+
         private FirstPersonMover m_owner;
         public FirstPersonMover owner
         {
@@ -62,6 +78,7 @@ namespace OverhaulMod.Content.Personalization
         public void Initialize()
         {
             getWeaponRenderers();
+            SpawnEquippedSkins();
         }
 
         public void SetWeaponPartsVisible(WeaponType weaponType, bool value)
@@ -72,6 +89,35 @@ namespace OverhaulMod.Content.Personalization
                     if (transform)
                         transform.gameObject.SetActive(value);
             }
+        }
+
+        public bool HasEquippedSkinOnWeapon(WeaponType weaponType)
+        {
+            if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
+                return false;
+
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    return !SwordSkin.IsNullOrEmpty();
+                case WeaponType.Bow:
+                    return !BowSkin.IsNullOrEmpty();
+                case WeaponType.Hammer:
+                    return !HammerSkin.IsNullOrEmpty();
+                case WeaponType.Spear:
+                    return !SpearSkin.IsNullOrEmpty();
+                case WeaponType.Shield:
+                    return !ShieldSkin.IsNullOrEmpty();
+            }
+            return false;
+        }
+
+        public PersonalizationEditorObjectBehaviour SpawnItem(string itemId)
+        {
+            if (itemId.IsNullOrEmpty())
+                return null;
+
+            return SpawnItem(PersonalizationManager.Instance.itemList.GetItem(itemId));
         }
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
@@ -146,6 +192,60 @@ namespace OverhaulMod.Content.Personalization
                     else
                         m_weaponTypeToParts.Add(weaponModel.WeaponType, weaponModel.PartsToDrop);
             }
+        }
+
+        public void SpawnEquippedSkins()
+        {
+            DestroyAllItems();
+
+            if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
+                return;
+
+            string swordSkin = SwordSkin;
+            string bowSkin = BowSkin;
+            string hammerSkin = HammerSkin;
+            string spearSkin = SpearSkin;
+            string shieldSkin = ShieldSkin;
+
+            _ = SpawnItem(swordSkin);
+            _ = SpawnItem(bowSkin);
+            _ = SpawnItem(hammerSkin);
+            _ = SpawnItem(spearSkin);
+            _ = SpawnItem(shieldSkin);
+        }
+
+        public void EquipSkin(PersonalizationItemInfo itemToEquip)
+        {
+            PersonalizationItemInfo info = null;
+            foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
+                if (key.Weapon == itemToEquip.Weapon)
+                {
+                    info = key;
+                    break;
+                }
+
+            string id = itemToEquip.ItemID;
+            switch (itemToEquip.Weapon)
+            {
+                case WeaponType.Sword:
+                    SwordSkin = id;
+                    break;
+                case WeaponType.Bow:
+                    BowSkin = id;
+                    break;
+                case WeaponType.Hammer:
+                    HammerSkin = id;
+                    break;
+                case WeaponType.Spear:
+                    SpearSkin = id;
+                    break;
+                case WeaponType.Shield:
+                    ShieldSkin = id;
+                    break;
+            }
+
+            DestroyItem(info);
+            _ = SpawnItem(itemToEquip);
         }
 
         private IEnumerator waitThenInitializeCoroutine(FirstPersonMover firstPersonMover)
