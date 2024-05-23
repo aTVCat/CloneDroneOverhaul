@@ -14,14 +14,14 @@ namespace OverhaulMod.UI
         [UIElement("Separator", false)]
         private readonly GameObject m_separatorPrefab;
 
-        private UIElementMousePositionChecker m_mouseChecker;
+        private UIElementMouseEventsComponent m_mouseChecker;
 
         private List<GameObject> m_spawnedEntries;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            m_mouseChecker = base.gameObject.AddComponent<UIElementMousePositionChecker>();
+            m_mouseChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_spawnedEntries = new List<GameObject>();
         }
 

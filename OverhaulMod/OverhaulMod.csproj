@@ -466,6 +466,7 @@
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
@@ -533,7 +534,7 @@
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
     <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
-    <Compile Include="UI\Elements\UIElementMousePositionChecker.cs" />
+    <Compile Include="UI\Elements\UIElementMouseEventsComponent.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />

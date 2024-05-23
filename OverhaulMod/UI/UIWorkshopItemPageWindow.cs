@@ -138,8 +138,8 @@ namespace OverhaulMod.UI
         [UIElement("ItemImageContainer")]
         private readonly Transform m_additionalPreviewDisplayContainer;
 
-        [UIElement("Panel", typeof(UIElementMousePositionChecker))]
-        private readonly UIElementMousePositionChecker m_panel;
+        [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
+        private readonly UIElementMouseEventsComponent m_panel;
 
         private string m_authorProfileLink, m_itemLink;
         private CSteamID m_authorId;

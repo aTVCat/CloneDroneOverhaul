@@ -29,41 +29,6 @@ namespace OverhaulMod.Content.Personalization
             private set;
         }
 
-
-        private CSteamID m_localPlayerSteamID;
-        public CSteamID localPlayerSteamID
-        {
-            get
-            {
-                if (m_localPlayerSteamID == default)
-                {
-                    SteamManager steamManager = SteamManager.Instance;
-                    if (!steamManager || !steamManager.Initialized)
-                        return default;
-
-                    m_localPlayerSteamID = SteamUser.GetSteamID();
-                }
-                return m_localPlayerSteamID;
-            }
-        }
-
-        private string m_localPlayerPlayFabID;
-        public string localPlayerPlayFabID
-        {
-            get
-            {
-                if (m_localPlayerPlayFabID == null)
-                {
-                    MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
-                    if (!multiplayerLoginManager || !multiplayerLoginManager.IsLoggedIntoPlayfab())
-                        return null;
-
-                    m_localPlayerPlayFabID = multiplayerLoginManager.GetLocalPlayFabID();
-                }
-                return m_localPlayerPlayFabID;
-            }
-        }
-
         public override void Awake()
         {
             base.Awake();

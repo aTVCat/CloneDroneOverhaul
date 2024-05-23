@@ -26,6 +26,9 @@ namespace OverhaulMod.UI
         [UIElement("SendToVerificationButton")]
         private readonly Button m_sendToVerificationButton;
 
+        [UIElement("DeveloperPanel", false)]
+        private RectTransform m_developerPanel;
+
         [UIElement("ToolBar")]
         public RectTransform ToolBarTransform;
 
@@ -44,6 +47,8 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnFileButtonClicked))]
         [UIElement("FileButton")]
         private readonly Button m_toolbarFileButton;
+
+        public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
         public override bool enableCursor => true;
 
@@ -86,6 +91,28 @@ namespace OverhaulMod.UI
         public void ShowSaveErrorMessage(string message)
         {
             ModUIUtils.MessagePopupOK("Item save error", message, 150f, true);
+        }
+
+        public void ShowInspectorWindow()
+        {
+            ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
+            if (InspectorWindowID == null)
+                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item", Vector2.one * -1f, Vector2.right * -45f);
+            else
+                windowManager.ShowWindow(InspectorWindowID);
+
+            if(ObjectPropertiesWindowID == null)
+                ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, Vector2.right * -45f);
+            else
+                windowManager.ShowWindow(ObjectPropertiesWindowID);
+
+            if (PersonalizationEditorManager.Instance.canVerifyItems)
+            {
+                if (DeveloperWindowID == null)
+                    DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, (Vector2.up * 45f) + (Vector2.right * 45f));
+                else
+                    windowManager.ShowWindow(DeveloperWindowID);
+            }
         }
 
         public void OnExitButtonClicked()

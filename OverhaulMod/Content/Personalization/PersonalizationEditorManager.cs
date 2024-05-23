@@ -57,7 +57,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return true;
+                return ModUserInfo.isDeveloper;
             }
         }
 
@@ -65,7 +65,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return true;
+                return ModUserInfo.isDeveloper;
             }
         }
 

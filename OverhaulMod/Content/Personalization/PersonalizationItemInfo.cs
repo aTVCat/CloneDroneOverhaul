@@ -112,11 +112,9 @@ namespace OverhaulMod.Content.Personalization
             if (!IsExclusive())
                 return true;
 
-            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
-
             bool isMainPlayer = character.IsMainPlayer();
-            string playFabId = isMainPlayer ? personalizationManager.localPlayerPlayFabID : character.GetPlayFabID();
-            CSteamID steamId = isMainPlayer ? personalizationManager.localPlayerSteamID : default;
+            string playFabId = isMainPlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+            CSteamID steamId = isMainPlayer ? ModUserInfo.localPlayerSteamID : default;
 
             bool result = (!playFabId.IsNullOrEmpty() ? ExclusiveFor.Contains(playFabId) : false) || (steamId != default ? ExclusiveFor.Contains(steamId.ToString()) : false);
 

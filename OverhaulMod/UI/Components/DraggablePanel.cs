@@ -5,11 +5,11 @@ namespace OverhaulMod.UI
 {
     public class DraggablePanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        private RectTransform m_RectTransform;
+        private RectTransform m_rectTransform;
 
         private Vector2 m_DragOffset;
 
-        private float m_width, m_height;
+        private bool m_goToFront;
 
         private UIManager m_UIManager;
         private UIManager UIManagerReference
@@ -23,7 +23,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public bool IsInitialized => UIManagerReference && m_RectTransform;
+        public bool IsInitialized => UIManagerReference && m_rectTransform;
 
         public bool IsDragging
         {
@@ -33,10 +33,8 @@ namespace OverhaulMod.UI
 
         private void Start()
         {
-            RectTransform rectTransform = base.GetComponent<RectTransform>();
-            m_RectTransform = rectTransform;
-            m_width = rectTransform.rect.width;
-            m_height = rectTransform.rect.height;
+            if(!m_rectTransform)
+                m_rectTransform = base.GetComponent<RectTransform>();
         }
 
         private void Update()
@@ -44,13 +42,26 @@ namespace OverhaulMod.UI
             updateDrag();
         }
 
+        public void SetTransform(RectTransform rectTransform)
+        {
+            m_rectTransform = rectTransform;
+        }
+
+        public void SetGoToFront(bool value)
+        {
+            m_goToFront = value;
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
             if (!IsInitialized)
                 return;
 
-            m_DragOffset = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition() - m_RectTransform.anchoredPosition;
+            m_DragOffset = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition() - m_rectTransform.anchoredPosition;
             IsDragging = true;
+
+            if (m_goToFront)
+                m_rectTransform.SetAsLastSibling();
         }
         public void OnPointerUp(PointerEventData eventData) => IsDragging = false;
 
@@ -59,7 +70,7 @@ namespace OverhaulMod.UI
             if (!IsInitialized || !IsDragging)
                 return;
 
-            m_RectTransform.anchoredPosition = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition() - m_DragOffset;
+            m_rectTransform.anchoredPosition = UIManagerReference.GetUIRootAnchoredPositionFromMousePosition() - m_DragOffset;
         }
     }
 }

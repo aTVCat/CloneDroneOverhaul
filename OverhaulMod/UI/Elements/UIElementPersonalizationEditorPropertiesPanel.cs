@@ -32,12 +32,15 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        [UIElement("NothingToEditOverlay", true)]
+        private readonly GameObject m_nothingToEditOverlay;
+
         [UIElement("FileLocationFieldDisplay", false)]
         private readonly ModdedObject m_fileLocationFieldDisplay;
 
         private List<FieldDisplay> m_fieldDisplays;
 
-        private UIElementMousePositionChecker m_mousePositionChecker;
+        private UIElementMouseEventsComponent m_mousePositionChecker;
 
         private PersonalizationEditorObjectBehaviour m_object;
 
@@ -48,31 +51,23 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_fieldDisplays = new List<FieldDisplay>();
-            m_mousePositionChecker = base.gameObject.AddComponent<UIElementMousePositionChecker>();
+            m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            if (Input.GetMouseButtonDown(0) && !UIGenericColorPicker.IsOpen() && !m_mousePositionChecker.isMouseOverElement)
-            {
-                EditObject(null);
-            }
         }
 
         public void EditObject(PersonalizationEditorObjectBehaviour objectBehaviour)
         {
-            if (!objectBehaviour)
+            bool isNotNull = objectBehaviour;
+
+            m_nothingToEditOverlay.SetActive(!isNotNull);
+            if (!isNotNull)
             {
                 m_object = null;
                 m_volume = null;
-                Hide();
                 return;
             }
             m_object = objectBehaviour;
             m_volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
-            Show();
 
             List<FieldDisplay> list = m_fieldDisplays;
             if (!list.IsNullOrEmpty())
