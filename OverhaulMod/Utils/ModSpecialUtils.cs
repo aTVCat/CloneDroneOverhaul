@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InternalModBot;
+using System;
 using System.Runtime.InteropServices;
 
 namespace OverhaulMod.Utils
@@ -145,6 +146,16 @@ namespace OverhaulMod.Utils
             {
 
             }
+        }
+
+        public static bool IsModEnabled(string id)
+        {
+            foreach(var mod in ModsManager.Instance.GetAllLoadedActiveMods())
+            {
+                if (mod != null && mod.ModInfo != null && mod.ModInfo.UniqueID == id && mod.ModInfo.IsModEnabled)
+                    return true;
+            }
+            return false;
         }
     }
 }
