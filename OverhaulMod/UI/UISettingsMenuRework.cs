@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindPrefab", false)]
         public ModdedObject KeyBindPrefab;
 
-        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Quick setup", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot" })]
+        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Quick setup", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot", "Advanced" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -192,6 +192,9 @@ namespace OverhaulMod.UI
                     break;
                 case "Mod-Bot":
                     populateModBotPage(settingsMenu);
+                    break;
+                case "Advanced":
+                    populateAdvancedPage(settingsMenu);
                     break;
                 default:
                     populateDefaultPage(settingsMenu);
@@ -579,6 +582,20 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Page not implemented.");
             _ = pageBuilder.Header2("Try using original menu");
             _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
+        }
+
+        private void populateAdvancedPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Advanced settings");
+            _ = pageBuilder.Button("Switch save data", null);
+            _ = pageBuilder.Button("Reset game settings", null);
+            _ = pageBuilder.Button("Reset Overhaul settings", null);
+            _ = pageBuilder.Button("Reset ALL settings", null);
+            _ = pageBuilder.Header1("First person mode");
+            _ = pageBuilder.Header3("Shield transparency");
+            _ = pageBuilder.Slider(0f, 1f, false, 1f, null);
+            _ = pageBuilder.Toggle(false, null, "Damage indicator");
         }
 
         private int getCurrentLanguageIndex()

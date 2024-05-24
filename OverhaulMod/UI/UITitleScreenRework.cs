@@ -132,6 +132,10 @@ namespace OverhaulMod.UI
         [UIElement("StoryReworkButton")]
         private readonly Button m_storyReworkButton;
 
+        [UIElementAction(nameof(OnBehindTheScenesButtonClicked))]
+        [UIElement("BehindTheScenesButton")]
+        private readonly Button m_behindTheScenesButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
@@ -175,6 +179,9 @@ namespace OverhaulMod.UI
             }
             set
             {
+                if (m_enableRework == value)
+                    return;
+
                 m_enableRework = value;
 
                 CanvasGroup group = m_canvasGroup;
@@ -230,7 +237,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            enableRework = true;
+            enableRework = ModUIManager.ShowTitleScreenRework;
         }
 
         public override void Update()
@@ -456,6 +463,11 @@ namespace OverhaulMod.UI
             MetagameProgressManager.Instance.SetProgress(MetagameProgress.P1_EmperorArrived);
             GameDataManager.Instance._storyModeData.CurentLevelID = "Story10_Rework";
             GameFlowManager.Instance.StartStoryModeGame(false);
+        }
+
+        public void OnBehindTheScenesButtonClicked()
+        {
+            ModUIConstants.ShowDevelopmentGallery(base.transform);
         }
     }
 }

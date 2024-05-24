@@ -1497,7 +1497,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Gallery
+  m_Text: Behind the scenes
 --- !u!114 &750675154562128241
 MonoBehaviour:
   m_ObjectHideFlags: 0

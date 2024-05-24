@@ -48,6 +48,22 @@ namespace OverhaulMod.Engine
             return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
+        public List<ModSetting> GetSettings()
+        {
+            return m_settings;
+        }
+
+        public List<ModSetting> GetSettings(ModSetting.Tag tag)
+        {
+            List<ModSetting> result = new List<ModSetting>();
+            foreach (ModSetting modSetting in m_settings)
+            {
+                if (modSetting.tag == tag)
+                    result.Add(modSetting);
+            }
+            return result;
+        }
+
         public void AddSettingValueChangedListener(Action<object> action, string settingId)
         {
             ModSetting setting = GetSetting(settingId);

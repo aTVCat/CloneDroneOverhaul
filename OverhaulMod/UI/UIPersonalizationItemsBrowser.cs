@@ -121,10 +121,17 @@ namespace OverhaulMod.UI
             }
         }
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            UIVersionLabel.instance.forceHide = true;
+        }
+
         public override void OnDisable()
         {
             base.OnDisable();
             m_isPopulating = false;
+            UIVersionLabel.instance.forceHide = false;
         }
 
         public void ShowDownloadCustomizationFileDialog()
@@ -208,10 +215,17 @@ namespace OverhaulMod.UI
                     weaponType = item.Weapon;
                 }
 
+                string authorsString = item.GetAuthorsString();
+                string prefix;
+                if (authorsString.StartsWith("From ") || authorsString.StartsWith("from "))
+                    prefix = string.Empty;
+                else
+                    prefix = "By ";
+
                 ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = item.Name;
-                moddedObject.GetObject<Text>(1).text = $"By {item.GetAuthorsString()}";
+                moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
                 moddedObject.GetObject<GameObject>(2).SetActive(!isUnlocked);
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate

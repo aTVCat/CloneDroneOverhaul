@@ -100,7 +100,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 Name = name,
                 Description = "No description provided.",
-                IsVerified = PersonalizationEditorManager.Instance.canVerifyItems,
+                IsVerified = false,
                 Category = PersonalizationCategory.WeaponSkins,
                 EditorID = PersonalizationEditorManager.Instance.editorId,
                 ItemID = Guid.NewGuid().ToString(),

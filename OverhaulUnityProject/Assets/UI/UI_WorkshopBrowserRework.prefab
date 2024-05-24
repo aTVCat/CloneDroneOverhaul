@@ -2335,7 +2335,7 @@ MonoBehaviour:
 
     Right click - context menu
 
-    CTRL + Right click - Select many
+    CTRL + Left click - Select many
 
     <size=8>*You can open context menu for many items selected</size>'
 --- !u!114 &271783410458543827
