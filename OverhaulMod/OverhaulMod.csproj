@@ -352,6 +352,7 @@
     <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
     <Compile Include="Combat\Weapons\HandsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
     <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
@@ -518,6 +519,7 @@
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
+    <Compile Include="Patches\CameraShaker_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -634,6 +636,7 @@
     <Compile Include="UI\UITitleScreenRework.cs" />
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
+    <Compile Include="Utils\ModComponentCache.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
     <Compile Include="Utils\ModITweenUtils.cs" />

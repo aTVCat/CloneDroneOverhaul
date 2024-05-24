@@ -140,6 +140,45 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static AudioManager s_audioManager;
+        public static AudioManager audioManager
+        {
+            get
+            {
+                if (!s_audioManager)
+                {
+                    s_audioManager = AudioManager.Instance;
+                }
+                return s_audioManager;
+            }
+        }
+
+        private static AudioLibrary s_audioLibrary;
+        public static AudioLibrary audioLibrary
+        {
+            get
+            {
+                if (!s_audioLibrary)
+                {
+                    s_audioLibrary = AudioLibrary.Instance;
+                }
+                return s_audioLibrary;
+            }
+        }
+
+        private static GlobalFireParticleSystem s_globalFireParticleSystem;
+        public static GlobalFireParticleSystem globalFireParticleSystem
+        {
+            get
+            {
+                if (!s_globalFireParticleSystem)
+                {
+                    s_globalFireParticleSystem = GlobalFireParticleSystem.Instance;
+                }
+                return s_globalFireParticleSystem;
+            }
+        }
+
         private static FadingVoxelManager s_fadingVoxelManager;
         public static FadingVoxelManager fadingVoxelManager
         {

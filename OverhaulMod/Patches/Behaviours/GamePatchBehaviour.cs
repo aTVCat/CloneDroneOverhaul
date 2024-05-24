@@ -63,7 +63,6 @@ namespace OverhaulMod.Patches.Addons
         public override void OnDestroy()
         {
             UnPatch();
-            Debug.Log($"Destroyed addon: {base.GetType()}");
         }
     }
 }
