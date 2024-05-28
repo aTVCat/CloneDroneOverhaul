@@ -30,7 +30,7 @@ namespace OverhaulMod.Patches
 
         [HarmonyPrefix]
         [HarmonyPatch("CloseCurrentMenu")]
-        private static bool CloseCurrentMenu_Prefix(bool uiCancelDown, bool pauseDown, bool force = false)
+        private static bool CloseCurrentMenu_Prefix(GameUIRoot __instance, bool uiCancelDown, bool pauseDown, bool force = false)
         {
             bool flag = false;
             GameObject nativeControllerSelectTarget = InputManager.Instance.GetNativeControllerSelectTarget();
@@ -139,6 +139,19 @@ namespace OverhaulMod.Patches
                 UISettingsMenuRework settingsMenuRework = modUIManager.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
                 if (settingsMenuRework && settingsMenuRework.visibleInHierarchy)
                 {
+                    EmoteSettingsUI menu = __instance.EmoteSettingsUI;
+                    if (menu.EmoteSelectionUI.activeInHierarchy)
+                    {
+                        menu.HideEmoteLibraryUI();
+                        return false;
+                    }
+
+                    if (menu.gameObject.activeInHierarchy)
+                    {
+                        menu.Hide();
+                        return false;
+                    }
+
                     if (!settingsMenuRework.disallowUsingKey)
                         settingsMenuRework.Hide();
 

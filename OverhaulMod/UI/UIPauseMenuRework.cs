@@ -86,6 +86,15 @@ namespace OverhaulMod.UI
         [UIElement("ConfirmMainMenuText", false)]
         private readonly GameObject m_confirmMainMenuTextObject;
 
+        [UIElement("PlayerList", false)]
+        private readonly GameObject m_playerListObject;
+
+        [UIElement("PlayerDisplayPrefab", false)]
+        private readonly ModdedObject m_playerDisplay;
+
+        [UIElement("PlayerDisplayContainer")]
+        private readonly Transform m_playerDisplayContainer;
+
         public override bool enableCursor
         {
             get
@@ -101,6 +110,7 @@ namespace OverhaulMod.UI
             base.Show();
             refreshLogo();
             refreshButtons();
+            refreshPlayers();
             TimeManager.Instance.OnGamePaused();
             _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
         }
@@ -140,6 +150,61 @@ namespace OverhaulMod.UI
             m_confirmMainMenuButton.gameObject.SetActive(false);
             m_exitGameButton.gameObject.SetActive(true);
             m_mainMenuButton.gameObject.SetActive(true);
+        }
+
+        private void refreshPlayers()
+        {
+            bool isInMultiplayer = GameModeManager.IsMultiplayer();
+            m_playerListObject.SetActive(isInMultiplayer);
+            if (!isInMultiplayer)
+                return;
+
+            if (m_playerDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_playerDisplayContainer);
+
+            MultiplayerPlayerInfoManager multiplayerPlayerInfoManager = MultiplayerPlayerInfoManager.Instance;
+            if (!multiplayerPlayerInfoManager)
+                return;
+
+            var infoStates = multiplayerPlayerInfoManager.GetAllPlayerInfoStates();
+            if (infoStates.IsNullOrEmpty())
+                return;
+
+            bool canShowWins = BattleRoyaleManager.Instance;
+
+            int index = -1;
+            foreach(var infoState in infoStates)
+            {
+                index++;
+                if (!infoState || infoState.IsDetached())
+                    continue;
+
+                IPlayerInfoState playerInfoState;
+                try
+                {
+                    playerInfoState = infoState.state;
+                }
+                catch
+                {
+                    continue;
+                }
+
+                ModdedObject playerDisplay = Instantiate(m_playerDisplay, m_playerDisplayContainer);
+                playerDisplay.gameObject.SetActive(true);
+                playerDisplay.GetObject<Text>(0).text = playerInfoState.DisplayName;
+                Text countLabel = playerDisplay.GetObject<Text>(1);
+                if (canShowWins)
+                {
+                    countLabel.color = ModParseUtils.TryParseToColor("BFBFBF", Color.gray);
+                    countLabel.text = playerInfoState.LastBotStandingWins.ToString();
+                }
+                else
+                {
+                    countLabel.color = ModParseUtils.TryParseToColor("F84141", Color.red);
+                    countLabel.text = playerInfoState.Kills.ToString();
+                }
+                playerDisplay.GetObject<GameObject>(3).SetActive(index % 2 == 0);
+            }
         }
 
         public void OnResumeButtonClicked()

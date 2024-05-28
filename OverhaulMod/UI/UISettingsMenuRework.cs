@@ -273,6 +273,7 @@ namespace OverhaulMod.UI
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Header3("Language");
             _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
@@ -508,10 +509,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Button("Select emotes", delegate
             {
                 GameUIRoot.Instance.EmoteSettingsUI.Show();
-                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                {
-                    GameUIRoot.Instance.EmoteSettingsUI.Hide();
-                });
             });
             _ = pageBuilder.Button("Personalize", null);
         }
