@@ -28,6 +28,12 @@ namespace OverhaulMod.UI
         [UIElement("Watermark_Gameplay")]
         private readonly Text m_gameplayVersionText;
 
+        public static UIVersionLabel instance
+        {
+            get;
+            set;
+        }
+
         public bool showWatermark
         {
             get
@@ -43,9 +49,17 @@ namespace OverhaulMod.UI
                 return GameModeManager.IsOnTitleScreen();
             }
         }
+        
+        public bool forceHide
+        {
+            get;
+            set;
+        }
 
         protected override void OnInitialized()
         {
+            instance = this;
+
             bool debug = ModBuildInfo.debug;
             string versionString = debug ? ModBuildInfo.fullVersionString.Replace('/', '.') : ModBuildInfo.versionString;
 
@@ -57,12 +71,18 @@ namespace OverhaulMod.UI
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            instance = null;
+        }
+
         public override void Update()
         {
             if (Time.frameCount % 10 != 0)
                 return;
 
-            bool show = showWatermark;
+            bool show = !forceHide && showWatermark;
             bool titleScreen = showFullWatermark;
             m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);

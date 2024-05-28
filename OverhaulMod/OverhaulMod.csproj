@@ -352,6 +352,7 @@
     <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
     <Compile Include="Combat\Weapons\HandsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
     <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
@@ -367,7 +368,8 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
@@ -397,6 +399,7 @@
     <Compile Include="Engine\CameraModeController.cs" />
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />
+    <Compile Include="Engine\ColorPairFloat.cs" />
     <Compile Include="Engine\CrashPreventionManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
@@ -464,6 +467,7 @@
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
@@ -515,6 +519,7 @@
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
+    <Compile Include="Patches\CameraShaker_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -531,14 +536,17 @@
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
     <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
-    <Compile Include="UI\Elements\UIElementMousePositionChecker.cs" />
+    <Compile Include="UI\Elements\UIElementMouseEventsComponent.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorDropdown.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
@@ -547,6 +555,7 @@
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
+    <Compile Include="UI\Elements\UIElementVector3Field.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
@@ -627,6 +636,7 @@
     <Compile Include="UI\UITitleScreenRework.cs" />
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
+    <Compile Include="Utils\ModComponentCache.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
     <Compile Include="Utils\ModITweenUtils.cs" />

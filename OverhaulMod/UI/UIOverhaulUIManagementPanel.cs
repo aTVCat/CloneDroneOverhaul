@@ -46,15 +46,13 @@ namespace OverhaulMod.UI
 
         private void instantiateToggles()
         {
-            InstantiateToggle("A menu with chapter section selection feature", ModSettingsConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK);
-            InstantiateToggle("A menu with leaderboard and your current progress", ModSettingsConstants.SHOW_ENDLESS_MODE_MENU);
-            InstantiateToggle("TBA", ModSettingsConstants.SHOW_CHALLENGES_MENU_REWORK);
-            InstantiateToggle("TBA", ModSettingsConstants.SHOW_WORKSHOP_BROWSER_REWORK);
-            InstantiateToggle("TBA", ModSettingsConstants.SHOW_ADVANCEMENTS_MENU_REWORK);
-            InstantiateToggle("TBA", ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK);
+            foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings(ModSetting.Tag.UISetting))
+            {
+                InstantiateToggle(setting.name);
+            }
         }
 
-        public void InstantiateToggle(string description, string settingId)
+        public void InstantiateToggle(string settingId)
         {
             ModSetting setting = ModSettingsManager.Instance.GetSetting(settingId);
             if (setting == null || setting.valueType != ModSetting.ValueType.Bool)
@@ -63,7 +61,7 @@ namespace OverhaulMod.UI
             ModdedObject moddedObject = Instantiate(m_uiDisplayPrefab, m_uiDisplayContainer);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.name);
-            moddedObject.GetObject<Text>(1).text = description;
+            moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString($"{setting.name}_desc");
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
                 GUIUtility.systemCopyBuffer = setting.name;

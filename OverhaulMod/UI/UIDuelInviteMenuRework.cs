@@ -65,7 +65,7 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly GameObject m_panelObject;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public GameMode displayingGameMode
         {
@@ -96,6 +96,7 @@ namespace OverhaulMod.UI
             m_autoBuildConfigButton.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
             m_joinBoxObject.SetActive(false);
             m_codeField.text = string.Empty;
+            m_playPublicMatchButton.gameObject.SetActive(gameMode != GameMode.MultiplayerDuel || ModSpecialUtils.IsModEnabled("3cfnb387n78eg"));
 
             switch (gameMode)
             {

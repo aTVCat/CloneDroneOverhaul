@@ -1,7 +1,15 @@
-﻿using OverhaulMod.Utils;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -28,6 +36,39 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemList personalizationItemList = new PersonalizationItemList();
             personalizationItemList.Load();
             itemList = personalizationItemList;
+        }
+
+        public void DownloadCustomizationFile(Action<bool> callback, Action<UnityWebRequest> webRequestCallback = null)
+        {
+            downloadCustomizationFileCoroutine(callback, webRequestCallback).Run();
+        }
+
+        private IEnumerator downloadCustomizationFileCoroutine(Action<bool> callback, Action<UnityWebRequest> webRequestCallback = null)
+        {
+            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/customization.zip", delegate (byte[] bytes)
+            {
+                try
+                {
+                    string tempFile = Path.GetTempFileName();
+                    ModIOUtils.WriteBytes(bytes, tempFile);
+
+                    FastZip fastZip = new FastZip();
+                    fastZip.ExtractZip(tempFile, ModCore.customizationFolder, null);
+                }
+                catch (Exception exc)
+                {
+                    Debug.Log(exc);
+                    callback?.Invoke(false);
+                    return;
+                }
+                itemList.Load();
+                callback?.Invoke(true);
+            }, delegate
+            {
+                callback?.Invoke(false);
+            }, out UnityWebRequest unityWebRequest, -1);
+            webRequestCallback?.Invoke(unityWebRequest);
+            yield break;
         }
 
         public void ConfigureFirstPersonMover(FirstPersonMover firstPersonMover)
@@ -59,7 +100,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 Name = name,
                 Description = "No description provided.",
-                IsVerified = PersonalizationEditorManager.Instance.canVerifyItems,
+                IsVerified = false,
                 Category = PersonalizationCategory.WeaponSkins,
                 EditorID = PersonalizationEditorManager.Instance.editorId,
                 ItemID = Guid.NewGuid().ToString(),
@@ -71,6 +112,54 @@ namespace OverhaulMod.Content.Personalization
 
             ModJsonUtils.WriteStream(directoryPath + ITEM_INFO_FILE, personalizationItem);
             return true;
+        }
+
+        public List<ColorPairFloat> GetColorPairsFromString(string dataString)
+        {
+            if (dataString.IsNullOrEmpty())
+                return null;
+
+            string[] split = dataString.Split('|');
+            if (split.IsNullOrEmpty())
+                return null;
+
+            List<ColorPairFloat> list = new List<ColorPairFloat>();
+            foreach (string oldAndNewColorsString in split)
+            {
+                if (oldAndNewColorsString.IsNullOrEmpty())
+                    continue;
+
+                string[] oldAndNewColors = oldAndNewColorsString.Split('-');
+                if (oldAndNewColors.Length == 2)
+                {
+                    Color a = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
+                    Color b = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
+                    list.Add(new ColorPairFloat(a, b));
+                }
+            }
+            return list;
+        }
+
+        public string GetStringFromColorPairs(List<ColorPairFloat> colorPairs)
+        {
+            if (colorPairs.IsNullOrEmpty())
+                return null;
+
+            int index = 0;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach(var cp in colorPairs)
+            {
+                string colorA = ColorUtility.ToHtmlStringRGBA(cp.ColorA);
+                string colorB = ColorUtility.ToHtmlStringRGBA(cp.ColorB);
+                string colorsString = $"{colorA}-{colorB}".Replace("#", string.Empty);
+                stringBuilder.Append(colorsString);
+                if(index+1 != colorPairs.Count)
+                    stringBuilder.Append('|');
+
+                index++;
+            }
+            return stringBuilder.ToString();
         }
 
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)

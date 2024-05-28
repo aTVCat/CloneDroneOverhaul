@@ -35,7 +35,6 @@ namespace OverhaulMod.UI
 
                 PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationEditorManager.editingFolder, personalizationEditorManager.editingItemInfo, delegate
                 {
-                    m_sendButton.interactable = true;
                     m_loadingIndicator.SetActive(false);
                     ModUIUtils.MessagePopupOK("Success", "Failure", true);
                 }, delegate (string error)

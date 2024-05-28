@@ -34,7 +34,7 @@ namespace OverhaulMod.UI
             private set;
         }
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         protected override void OnInitialized()
         {

@@ -21,6 +21,8 @@ namespace OverhaulMod.Engine
 
         public float ForwardVectorMultiplier = 0.25f;
 
+        public Vector3 ShakePositionOffset, ShakeRotationOffset;
+
         private Renderer[] m_headRenderers;
         public Renderer[] headRenderers
         {
@@ -197,7 +199,7 @@ namespace OverhaulMod.Engine
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, ModITweenUtils.ParametricBlend(m_lerp));
+            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, ModITweenUtils.ParametricBlend(m_lerp)) + ShakePositionOffset;
 
             /*
             if (CameraManager.EnableFirstPersonMode)

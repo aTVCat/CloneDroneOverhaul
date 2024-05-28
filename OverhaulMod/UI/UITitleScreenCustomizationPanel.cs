@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
+
+        [UIElementAction(nameof(OnPreviewButtonClicked))]
+        [UIElement("PreviewButton")]
+        private readonly Button m_previewButton;
 
         [UIElement("MusicDropdown")]
         private readonly Dropdown m_musicDropdown;
@@ -23,6 +28,11 @@ namespace OverhaulMod.UI
 
         [UIElement("LoadingLevelBG", false)]
         private readonly GameObject m_loadingLevelBg;
+
+        [UIElement("Panel", true)]
+        private readonly GameObject m_panel;
+
+        private bool m_isPreviewing;
 
         public override bool hideTitleScreen => true;
 
@@ -44,10 +54,42 @@ namespace OverhaulMod.UI
             }
         }
 
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            stopPreviewing();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            if(m_isPreviewing && Input.anyKey)
+            {
+                stopPreviewing();
+            }
+        }
+
         public override void Show()
         {
             base.Show();
             m_volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
+        }
+
+        private void startPreviewing()
+        {
+            m_isPreviewing = true;
+            m_panel.SetActive(false);
+        }
+
+        private void stopPreviewing()
+        {
+            m_isPreviewing = false;
+            m_panel.SetActive(true);
+        }
+
+        public void OnPreviewButtonClicked()
+        {
+            startPreviewing();
         }
 
         private void onMusicTrackDropdownChanged(int index)

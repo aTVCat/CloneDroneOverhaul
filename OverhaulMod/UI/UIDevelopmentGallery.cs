@@ -18,6 +18,8 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_imageDisplaysContainer;
 
+        public override bool hideTitleScreen => true;
+
         public override void Show()
         {
             base.Show();
@@ -39,7 +41,7 @@ namespace OverhaulMod.UI
             string directory = $"{ModCore.addonsFolder}{ContentManager.GALLERY_CONTENT_FOLDER_NAME}/";
             if (!Directory.Exists(directory))
             {
-                ModUIUtils.MessagePopupOK("Add-on not installed", "Install \"Gallery\" add-on to make this menu work.", true);
+                ModUIUtils.MessagePopupOK("\"Behind The Scenes\" add-on not installed", "Install this add-on to make this menu work.", true);
                 return;
             }
 

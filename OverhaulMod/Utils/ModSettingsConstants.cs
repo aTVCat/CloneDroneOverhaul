@@ -62,6 +62,11 @@ namespace OverhaulMod.Utils
         public const string SHOW_SETTINGS_MENU_REWORK = UI_PREFIX + nameof(UISettingsMenuRework);
 
         /// <summary>
+        /// <see cref="ModUIManager"/>
+        /// </summary>
+        public const string SHOW_TITLE_SCREEN_REWORK = UI_PREFIX + nameof(UITitleScreenRework);
+
+        /// <summary>
         /// <see cref="Engine.ModAudioManager"/>
         /// </summary>
         public const string ENABLE_REVERB_FILTER = "SoundReverbFilterEnabled";
@@ -160,5 +165,30 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.CameraFOVController"/>
         /// </summary>
         public const string CAMERA_FOV_OFFSET = "CameraFOVOffset";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SWORD_SKIN = "SwordSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string BOW_SKIN = "BowSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string HAMMER_SKIN = "HammerSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SPEAR_SKIN = "SpearSkin";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SHIELD_SKIN = "ShieldSkin";
     }
 }

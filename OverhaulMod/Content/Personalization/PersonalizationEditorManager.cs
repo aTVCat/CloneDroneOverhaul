@@ -10,6 +10,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
+        public const string OBJECT_EDITED_EVENT = "PersonalizationEditorObjectEdited";
+
         private PersonalizationController m_editingPersonalizationController;
         public PersonalizationController editingPersonalizationController
         {
@@ -55,7 +57,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return true;
+                return ModUserInfo.isDeveloper;
             }
         }
 
@@ -63,8 +65,13 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return true;
+                return ModUserInfo.isDeveloper;
             }
+        }
+
+        public static bool IsInEditor()
+        {
+            return GameFlowManager.Instance._gameMode == (GameMode)2500;
         }
 
         public void StartEditorGameMode()
@@ -93,7 +100,7 @@ namespace OverhaulMod.Content.Personalization
                 cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
                 PersonalizationEditorCamera personalizationEditorCamera = cameraObject.AddComponent<PersonalizationEditorCamera>();
                 personalizationEditorCamera.ToolBarTransform = editorUi.ToolBarTransform;
-                personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;
+                /*personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;*/
 
                 LevelEditorLevelData levelEditorLevelData = null;
                 try
@@ -223,6 +230,7 @@ namespace OverhaulMod.Content.Personalization
 
             personalizationController.DestroyAllItems();
             editingRoot = personalizationController.SpawnItem(editingItemInfo);
+            PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.IO;
@@ -52,6 +53,11 @@ namespace OverhaulMod.UI
             m_tabs.SelectTab("local addons");
 
             GlobalEventManager.Instance.AddEventListener<string>(ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, onContentDownloaded);
+
+            if (TitleScreenCustomizationManager.IntroduceCustomization)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
+            }
         }
 
         public override void Hide()

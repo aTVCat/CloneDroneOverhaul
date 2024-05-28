@@ -1,0 +1,58 @@
+﻿using OverhaulMod.Engine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace OverhaulMod.Utils
+{
+    public static class ModComponentCache
+    {
+        private static CacheForGetComponent<CameraModeController> s_cacheForCameraModeControllerComponent = new CacheForGetComponent<CameraModeController>();
+
+        public static void ClearCache()
+        {
+            s_cacheForCameraModeControllerComponent.Clear();
+        }
+
+        public static CameraModeController GetCameraModeController(Transform transform)
+        {
+            return s_cacheForCameraModeControllerComponent.GetScript(transform);
+        }
+
+        protected class CacheForGetComponent<T>
+        {
+            private readonly Dictionary<Transform, T> m_transformToObject;
+
+            public CacheForGetComponent()
+            {
+                m_transformToObject = new Dictionary<Transform, T>();
+            }
+
+            public T GetScript(Transform transform)
+            {
+                if (m_transformToObject.ContainsKey(transform))
+                {
+                    T component1 = m_transformToObject[transform];
+                    if (component1 == null)
+                    {
+                        component1 = transform.GetComponent<T>();
+                        m_transformToObject[transform] = component1;
+                    }
+                    return component1;
+                }
+
+                T component = transform.GetComponent<T>();
+                m_transformToObject.Add(transform, component);
+                return component;
+            }
+
+            public void Clear()
+            {
+                m_transformToObject.Clear();
+            }
+        }
+    }
+}

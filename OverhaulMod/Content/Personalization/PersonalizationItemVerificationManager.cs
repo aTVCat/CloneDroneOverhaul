@@ -8,7 +8,7 @@ namespace OverhaulMod.Content.Personalization
     {
         public void SendItemToVerification(string folder, PersonalizationItemInfo personalizationItemInfo, Action successCallback, Action<string> errorCallback)
         {
-            string file = Path.GetTempPath() + "PersonalizationItem.zip";
+            string file = $"{Path.GetTempPath()}PersonalizationItem_{UnityEngine.Random.Range(10000, 100000)}.zip";
             if (File.Exists(file))
                 File.Delete(file);
 

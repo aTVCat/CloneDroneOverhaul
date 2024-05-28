@@ -20,6 +20,12 @@ namespace OverhaulMod.Utils
             return size;
         }
 
+        public static string GetDirectoryName(string path)
+        {
+            string name = Path.GetDirectoryName(path);
+            return name.Substring(name.LastIndexOf('\\') + 1);
+        }
+
         public static void WriteText(string @string, string path)
         {
             FileMode fileMode = File.Exists(path) ? FileMode.Truncate : FileMode.Create;

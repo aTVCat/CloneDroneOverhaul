@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_challengesContainer;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public List<ChallengeDefinition> displayingChallenges
         {

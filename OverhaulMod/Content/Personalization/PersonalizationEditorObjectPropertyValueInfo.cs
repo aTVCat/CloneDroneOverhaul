@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.Content.Personalization
 {
-    public class PersonalizationEditorObjectPropertyInfo
+    public class PersonalizationEditorObjectPropertyValueInfo
     {
         public Type PropertyType;
 

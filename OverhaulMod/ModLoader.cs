@@ -29,7 +29,6 @@ namespace OverhaulMod
 
             ModBuildInfo.Load();
 
-            Physics.reuseCollisionCallbacks = true;
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadBufferSize = 16;
             QualitySettings.asyncUploadPersistentBuffer = true;

@@ -9,6 +9,8 @@ namespace OverhaulMod.Engine
     {
         public const string SETTING_CHANGED_EVENT = "OverhaulSettingChanged";
 
+        public static int ExtraResolutionLength;
+
         private List<ModSetting> m_settings;
         private Dictionary<string, ModSetting> m_nameToSetting;
 
@@ -46,6 +48,22 @@ namespace OverhaulMod.Engine
         public ModSetting GetSetting(string name)
         {
             return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
+        }
+
+        public List<ModSetting> GetSettings()
+        {
+            return m_settings;
+        }
+
+        public List<ModSetting> GetSettings(ModSetting.Tag tag)
+        {
+            List<ModSetting> result = new List<ModSetting>();
+            foreach (ModSetting modSetting in m_settings)
+            {
+                if (modSetting.tag == tag)
+                    result.Add(modSetting);
+            }
+            return result;
         }
 
         public void AddSettingValueChangedListener(Action<object> action, string settingId)

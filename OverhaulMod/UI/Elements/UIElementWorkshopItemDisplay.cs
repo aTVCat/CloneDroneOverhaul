@@ -50,13 +50,14 @@ namespace OverhaulMod.UI
             set;
         }
 
+        /*
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(onClicked);
-        }
+        }*/
 
         public override void OnDestroy()
         {
@@ -151,6 +152,17 @@ namespace OverhaulMod.UI
             if (eventData.button == PointerEventData.InputButton.Right)
             {
                 bui.ShowContextMenu(this);
+            }
+            else if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    // todo: only select
+                }
+                else
+                {
+                    onClicked();
+                }
             }
         }
     }

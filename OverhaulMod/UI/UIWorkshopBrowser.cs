@@ -155,8 +155,8 @@ namespace OverhaulMod.UI
 
         [UIElement("ContextMenu", false)]
         private readonly RectTransform m_contextMenu;
-        [UIElement("ContextMenu", typeof(UIElementMousePositionChecker))]
-        private readonly UIElementMousePositionChecker m_contextMenuMouseChecker;
+        [UIElement("ContextMenu", typeof(UIElementMouseEventsComponent))]
+        private readonly UIElementMouseEventsComponent m_contextMenuMouseChecker;
 
         public override bool hideTitleScreen => true;
 

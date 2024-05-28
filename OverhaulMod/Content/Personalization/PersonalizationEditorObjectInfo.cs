@@ -16,6 +16,8 @@ namespace OverhaulMod.Content.Personalization
 
         public Dictionary<string, object> PropertyValues;
 
+        public int UniqueIndex, NextUniqueIndex;
+
         public Vector3 GetPosition()
         {
             return new Vector3(PositionArray[0], PositionArray[1], PositionArray[2]);
@@ -74,6 +76,7 @@ namespace OverhaulMod.Content.Personalization
 
             PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.PlaceObject(Path, parent, false);
             behaviour.IsRoot = IsRoot;
+            behaviour.UniqueIndex = UniqueIndex;
             Transform transform = behaviour.transform;
             transform.localPosition = GetPosition();
             transform.localEulerAngles = GetEulerAngles();

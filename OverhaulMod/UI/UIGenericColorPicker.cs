@@ -7,6 +7,8 @@ namespace OverhaulMod.UI
 {
     public class UIGenericColorPicker : OverhaulUIBehaviour
     {
+        private static bool s_open;
+
         [UIElement("Panel", typeof(DraggablePanel))]
         private readonly GameObject m_panelObject;
 
@@ -134,10 +136,17 @@ namespace OverhaulMod.UI
             m_tabs.SelectTab("rgb");
         }
 
+        public override void Show()
+        {
+            base.Show();
+            s_open = true;
+        }
+
         public override void Hide()
         {
             base.Hide();
             callback = null;
+            s_open = false;
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -304,6 +313,11 @@ namespace OverhaulMod.UI
             outputAlpha = value;
             InvokeCallback();
             RefreshHexCodeField();
+        }
+
+        public static bool IsOpen()
+        {
+            return s_open;
         }
     }
 }

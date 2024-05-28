@@ -101,17 +101,34 @@ namespace OverhaulMod.Content.Personalization
 
         public bool CanBeEdited()
         {
-            return string.IsNullOrEmpty(EditorID) || EditorID == SteamUser.GetSteamID().ToString();
+            return string.IsNullOrEmpty(EditorID) || EditorID.Contains(SteamUser.GetSteamID().ToString());
+        }
+
+        public bool IsUnlocked(Character character)
+        {
+            if (!character || !character.IsAttachedAndAlive())
+                return false; 
+
+            if (!IsExclusive())
+                return true;
+
+            bool isMainPlayer = character.IsMainPlayer();
+            string playFabId = isMainPlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+            CSteamID steamId = isMainPlayer ? ModUserInfo.localPlayerSteamID : default;
+
+            bool result = (!playFabId.IsNullOrEmpty() ? ExclusiveFor.Contains(playFabId) : false) || (steamId != default ? ExclusiveFor.Contains(steamId.ToString()) : false);
+
+            return character && (result || character.IsClone() || !character.IsMainPlayer());
+        }
+
+        public bool IsUnlocked()
+        {
+            return IsUnlocked(CharacterTracker.Instance.GetPlayer());
         }
 
         public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)
         {
-            return Path.GetDirectoryName(personalizationItemInfo.FolderPath);
-        }
-
-        public static string GetFolderNameWithSlash(PersonalizationItemInfo personalizationItemInfo)
-        {
-            return $"{Path.GetDirectoryName(personalizationItemInfo.FolderPath)}/";
+            return ModIOUtils.GetDirectoryName(personalizationItemInfo.FolderPath);
         }
 
         public static string GetImportedFilesFolder(PersonalizationItemInfo personalizationItemInfo)

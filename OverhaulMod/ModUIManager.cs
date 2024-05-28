@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod
 {
@@ -28,6 +29,9 @@ namespace OverhaulMod
 
         [ModSetting(ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK, true, ModSetting.Tag.UISetting)]
         public static bool ShowSettingsMenuRework;
+
+        [ModSetting(ModSettingsConstants.SHOW_TITLE_SCREEN_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowTitleScreenRework;
 
         private Dictionary<string, GameObject> m_instantiatedUIs;
 
@@ -56,10 +60,16 @@ namespace OverhaulMod
             private set;
         }
 
+        public WindowManager windowManager
+        {
+            get;
+            private set;
+        }
+
         public override void Awake()
         {
             base.Awake();
-
+            windowManager = base.gameObject.AddComponent<WindowManager>();
             m_instantiatedUIs = new Dictionary<string, GameObject>();
         }
 
@@ -208,10 +218,10 @@ namespace OverhaulMod
             return false;
         }
 
-        public void RefreshUI(bool dontRefreshUI)
+        public void RefreshUI(bool refreshOnlyCursor)
         {
             ModCache.gameUIRoot.RefreshCursorEnabled();
-            if (!dontRefreshUI)
+            if (!refreshOnlyCursor)
             {
                 ModCache.gameUIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
                 ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());
@@ -319,6 +329,229 @@ namespace OverhaulMod
             AfterCrashScreen,
 
             Last
+        }
+
+        public class WindowManager : MonoBehaviour
+        {
+            private ModdedObject m_windowPrefab;
+
+            private Dictionary<string, WindowBehaviour> m_windows;
+
+            private void Awake()
+            {
+                m_windows = new Dictionary<string, WindowBehaviour>();
+                m_windowPrefab = ModResources.Load<GameObject>(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
+            }
+
+            public string Window(Transform parent, Transform content, string title, Vector2 size, Vector2 position = default, bool destroyOnClose = false)
+            {
+                string windowId = Guid.NewGuid().ToString();
+                ModdedObject moddedObject = Instantiate(m_windowPrefab, parent);
+                moddedObject.gameObject.SetActive(true);
+                WindowBehaviour windowBehaviour = moddedObject.gameObject.AddComponent<WindowBehaviour>();
+                windowBehaviour.InitializeElement();
+                windowBehaviour.SetSize(size, size == Vector2.one * -1f ? content : null);
+                windowBehaviour.SetTitle(title);
+                windowBehaviour.SetContents(content);
+                windowBehaviour.windowId = windowId;
+                windowBehaviour.destroyOnClose = destroyOnClose;
+                (windowBehaviour.transform as RectTransform).anchoredPosition = position;
+                m_windows.Add(windowId, windowBehaviour);
+                return windowId;
+            }
+
+            public void ShowWindow(string windowId)
+            {
+                if(m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                {
+                    if (windowBehaviour)
+                        windowBehaviour.Show();
+                }
+            }
+
+            public void HideWindow(string windowId)
+            {
+                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                {
+                    if (windowBehaviour)
+                        windowBehaviour.Hide();
+                }
+            }
+
+            public bool IsWindowShown(string windowId)
+            {
+                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                {
+                    if (windowBehaviour)
+                        return windowBehaviour.gameObject.activeInHierarchy;
+                }
+                return false;
+            }
+
+            public WindowBehaviour GetWindow(string windowId)
+            {
+                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                {
+                    if (windowBehaviour)
+                        return windowBehaviour;
+                }
+                return null;
+            }
+
+            public void RemoveWindow(string windowId)
+            {
+                m_windows.Remove(windowId);
+            }
+        }
+
+        public class WindowBehaviour : OverhaulUIBehaviour
+        {
+            [UIElement("TitleBar")]
+            private readonly GameObject m_titleBar;
+
+            [UIElement("TitleBarFrame")]
+            private readonly GameObject m_titleBarFrame;
+
+            [UIElement("TitleText")]
+            private readonly Text m_titleText;
+
+            [UIElementAction(nameof(Close))]
+            [UIElement("CloseButton")]
+            private readonly Button m_closeButton;
+
+            [UIElementAction(nameof(ToggleMinimized))]
+            [UIElement("HideButton")]
+            private readonly Button m_hideButton;
+
+            [UIElement("Content")]
+            private readonly Transform m_content;
+
+            private DraggablePanel m_draggablePanel;
+
+            private UIElementMouseEventsComponent m_mouseEvents;
+
+            private RectTransform m_rectTransform;
+
+            private float m_width, m_height;
+
+            private bool m_minimized;
+            public bool minimized
+            {
+                get
+                {
+                    return m_minimized;
+                }
+                set
+                {
+                    m_minimized = value;
+                    setMinimized(value);
+                }
+            }
+
+            public string windowId
+            {
+                get;
+                set;
+            }
+
+            public bool destroyOnClose
+            {
+                get;
+                set;
+            }
+
+            protected override void OnInitialized()
+            {
+                base.OnInitialized();
+
+                RectTransform rectTransform = base.transform as RectTransform;
+                m_rectTransform = rectTransform;
+
+                DraggablePanel draggablePanel = m_titleBar.AddComponent<DraggablePanel>();
+                draggablePanel.SetTransform(rectTransform);
+                draggablePanel.SetGoToFront(true);
+                m_draggablePanel = draggablePanel;
+
+                UIElementMouseEventsComponent mouseEventsComponent = m_titleBar.AddComponent<UIElementMouseEventsComponent>();
+                mouseEventsComponent.doubleClickAction = ToggleMinimized;
+                m_mouseEvents = mouseEventsComponent;
+            }
+
+            public override void OnDestroy()
+            {
+                base.OnDestroy();
+                Instance.windowManager.RemoveWindow(windowId);
+            }
+
+            private void setMinimized(bool value)
+            {
+                Vector2 size = m_rectTransform.sizeDelta;
+                size.y = value ? 30f : m_height;
+                m_rectTransform.sizeDelta = size;
+                m_titleBarFrame.SetActive(!value);
+                m_content.gameObject.SetActive(!value);
+            }
+
+            public void SetTitle(string text)
+            {
+                m_titleText.text = text;
+            }
+
+            public void SetSize(Vector2 size, Transform content = null)
+            {
+                Vector2 sizeToSet;
+                if (content && content is RectTransform rectTransform)
+                    sizeToSet = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y);
+                else
+                    sizeToSet = new Vector2(size.x, size.y + 30f);
+
+                m_width = sizeToSet.x;
+                m_height = sizeToSet.y;
+                m_rectTransform.sizeDelta = sizeToSet;
+            }
+
+            public void SetContents(Transform transform)
+            {
+                transform.gameObject.SetActive(true);
+                transform.SetParent(m_content);
+                transform.localScale = Vector3.one;
+                transform.localEulerAngles = Vector3.zero;
+                transform.localPosition = Vector3.zero;
+
+                if(transform is RectTransform rectTransform)
+                {
+                    float widthToSet = m_width;
+                    if (widthToSet == -1f)
+                        widthToSet = rectTransform.sizeDelta.x;
+
+                    float hightToSet = m_height;
+                    if (hightToSet == -1f)
+                        hightToSet = rectTransform.sizeDelta.y;
+
+                    rectTransform.anchorMax = Vector2.one;
+                    rectTransform.anchorMin = Vector2.zero;
+                    rectTransform.pivot = Vector2.one * 0.5f;
+                    rectTransform.sizeDelta = Vector2.zero;
+                    rectTransform.anchoredPosition = Vector2.zero;
+
+                    SetSize(new Vector2(widthToSet, hightToSet));
+                }
+            }
+
+            public void ToggleMinimized()
+            {
+                minimized = !minimized;
+            }
+
+            public void Close()
+            {
+                if (!destroyOnClose)
+                {
+                    Hide();
+                    return;
+                }
+                Destroy(base.gameObject);
+            }
         }
     }
 }

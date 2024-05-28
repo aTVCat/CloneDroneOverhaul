@@ -1,4 +1,7 @@
-﻿using PicaVoxel;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using PicaVoxel;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -6,6 +9,10 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
     {
+        private bool m_hasAddedEventListeners;
+
+        private int m_prevFileImportVersion;
+
         private Volume m_volume;
         public Volume volume
         {
@@ -19,27 +26,50 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty]
+        public int fileImportVersion
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return ob.GetPropertyValue(nameof(fileImportVersion), 0);
+            }
+            set
+            {
+                m_prevFileImportVersion = fileImportVersion;
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(fileImportVersion), value);
+            }
+        }
+
+        [PersonalizationEditorObjectProperty(true)]
         public string voxFilePath
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (string)ob.GetPropertyValue(nameof(voxFilePath), string.Empty);
+                return ob.GetPropertyValue(nameof(voxFilePath), string.Empty);
             }
             set
             {
+                if (value != voxFilePath)
+                {
+                    fileImportVersion++;
+                }
+
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
                 ob.SetPropertyValue(nameof(voxFilePath), value);
                 RefreshVolume();
             }
         }
 
+        [PersonalizationEditorObjectProperty(0.001f, 0.1f)]
         public float voxelSize
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (float)ob.GetPropertyValue(nameof(voxelSize), 0.1f);
+                return ob.GetPropertyValue(nameof(voxelSize), 0.1f);
             }
             set
             {
@@ -49,12 +79,13 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty]
         public bool centerPivot
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (bool)ob.GetPropertyValue(nameof(centerPivot), true);
+                return ob.GetPropertyValue(nameof(centerPivot), true);
             }
             set
             {
@@ -64,9 +95,39 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public string colorReplacements
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return ob.GetPropertyValue(nameof(colorReplacements), string.Empty);
+            }
+            set
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(colorReplacements), value);
+                RefreshVolume();
+            }
+        }
+
         private void Start()
         {
+            m_prevFileImportVersion = fileImportVersion;
             RefreshVolume();
+            if (PersonalizationEditorManager.IsInEditor())
+            {
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
+                m_hasAddedEventListeners = true;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
+            {
+                m_hasAddedEventListeners = false;
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
+            }
         }
 
         public void RefreshVolume()
@@ -96,6 +157,43 @@ namespace OverhaulMod.Content.Personalization
                 {
                     volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
+                    string cr = colorReplacements;
+
+                    int fiv = fileImportVersion;
+
+                    if (cr.IsNullOrEmpty() || m_prevFileImportVersion != fiv)
+                    {
+                        m_prevFileImportVersion = fiv;
+
+                        List<Color32> colors = new List<Color32>();
+                        Frame frame = volumeComponent.GetCurrentFrame();
+                        int i = 0;
+                        do
+                        {
+                            Voxel voxel = frame.Voxels[i];
+                            Color32 color32 = voxel.Color;
+                            if (voxel.Active && !colors.Contains(color32))
+                            {
+                                colors.Add(color32);
+                            }
+                            i++;
+                        } while (i < frame.Voxels.Length);
+
+                        List<ColorPairFloat> colorPairs = new List<ColorPairFloat>();
+                        foreach (var color in colors)
+                            colorPairs.Add(new ColorPairFloat(color, color));
+
+                        colorReplacements = PersonalizationManager.Instance.GetStringFromColorPairs(colorPairs);
+                    }
+                    else
+                    {
+                        List<ColorPairFloat> list = PersonalizationManager.Instance.GetColorPairsFromString(cr);
+                        if (!list.IsNullOrEmpty())
+                        {
+                            foreach (ColorPairFloat cp in list)
+                                ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, cp.ColorB, false);
+                        }
+                    }
                 }
                 base.transform.localScale = vector;
             }

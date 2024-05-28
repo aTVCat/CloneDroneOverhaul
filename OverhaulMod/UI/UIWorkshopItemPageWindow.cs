@@ -138,8 +138,9 @@ namespace OverhaulMod.UI
         [UIElement("ItemImageContainer")]
         private readonly Transform m_additionalPreviewDisplayContainer;
 
-        [UIElement("Panel", typeof(UIElementMousePositionChecker))]
-        private readonly UIElementMousePositionChecker m_panel;
+        /*
+        [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
+        private readonly UIElementMouseEventsComponent m_panel;*/
 
         private string m_authorProfileLink, m_itemLink;
         private CSteamID m_authorId;
@@ -207,11 +208,11 @@ namespace OverhaulMod.UI
                 m_refreshDisplaysNextFrame = true;
                 m_timeLeftToRefreshDisplays = 0.1f;
             }
-
+            /*
             if (Input.GetMouseButtonDown(0) && !m_panel.isMouseOverElement && !isImageViewerShown)
             {
                 Hide();
-            }
+            }*/
         }
 
         public override void OnDisable()

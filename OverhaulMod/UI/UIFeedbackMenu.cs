@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            m_likeButton.interactable = ModBotSignInUI.HasSignedIn && !HasLikedTheMod;
+            m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
             refreshElements();
         }
 

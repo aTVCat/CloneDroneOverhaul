@@ -2,6 +2,7 @@
 using PicaVoxel;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -14,10 +15,15 @@ namespace OverhaulMod.Content.Personalization
 
         private List<PersonalizationEditorObjectBehaviour> m_instantiatedObjects;
 
+        private Dictionary<string, List<PersonalizationEditorObjectPropertyAttribute>> m_cachedProperties;
+
+        private int m_nextUniqueIndex;
+
         public override void Awake()
         {
             base.Awake();
 
+            m_cachedProperties = new Dictionary<string, List<PersonalizationEditorObjectPropertyAttribute>>();
             m_instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
@@ -49,6 +55,67 @@ namespace OverhaulMod.Content.Personalization
         public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
             _ = m_instantiatedObjects.Remove(behaviour);
+        }
+
+        public PersonalizationEditorObjectBehaviour GetInstantiatedObject(int uniqueIndex)
+        {
+            List<PersonalizationEditorObjectBehaviour> list = m_instantiatedObjects;
+            if (list.IsNullOrEmpty())
+                return null;
+
+            int i = 0;
+            do
+            {
+                PersonalizationEditorObjectBehaviour obj = list[i];
+                if (obj && obj.UniqueIndex == uniqueIndex)
+                    return obj;
+
+                i++;
+            } while (i < list.Count);
+
+            return null;
+        }
+
+        public void SetCurrentRootNextUniqueIndex(int value)
+        {
+            m_nextUniqueIndex = value;
+        }
+
+        public int GetNextUniqueIndex()
+        {
+            m_nextUniqueIndex++;
+            return m_nextUniqueIndex;
+        }
+
+        public int GetCurrentUniqueIndex()
+        {
+            return m_nextUniqueIndex;
+        }
+
+        public List<PersonalizationEditorObjectPropertyAttribute> GetProperties(PersonalizationEditorObjectBehaviour objectBehaviour)
+        {
+            if (m_cachedProperties.TryGetValue(objectBehaviour.Path, out List<PersonalizationEditorObjectPropertyAttribute> result))
+                return result;
+
+            result = new List<PersonalizationEditorObjectPropertyAttribute>();
+            foreach (PersonalizationEditorObjectComponentBase c in objectBehaviour.GetComponents<PersonalizationEditorObjectComponentBase>())
+            {
+                PropertyInfo[] properties = c.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                if (!properties.IsNullOrEmpty())
+                {
+                    foreach (PropertyInfo property in properties)
+                    {
+                        PersonalizationEditorObjectPropertyAttribute attribute = property.GetCustomAttribute<PersonalizationEditorObjectPropertyAttribute>();
+                        if (attribute != null)
+                        {
+                            attribute.propertyInfo = property;
+                            result.Add(attribute);
+                        }
+                    }
+                }
+            }
+            m_cachedProperties.Add(objectBehaviour.Path, result);
+            return result;
         }
 
         private Material getVolumeMaterial()
@@ -115,7 +182,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationEditorObject.Name = objectInfo.Name;
                 personalizationEditorObject.PropertyValues = new Dictionary<string, object>();
                 if (!objectInfo.Properties.IsNullOrEmpty())
-                    foreach (PersonalizationEditorObjectPropertyInfo p in objectInfo.Properties)
+                    foreach (PersonalizationEditorObjectPropertyValueInfo p in objectInfo.Properties)
                         personalizationEditorObject.PropertyValues.Add(p.PropertyName, default);
             }
 

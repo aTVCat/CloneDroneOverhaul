@@ -54,11 +54,12 @@ namespace OverhaulMod.Combat.Weapons
             hitArea.EdgePoint1 = moddedObject.GetObject<Transform>(1);
             hitArea.EdgePoint2 = moddedObject.GetObject<Transform>(2);
             hitArea.SetOwner(owner);
-            SwordBlockArea swordBlockArea = moddedObject.GetObject<GameObject>(0).AddComponent<SwordBlockArea>();
+            ModSwordBlockArea swordBlockArea = moddedObject.GetObject<GameObject>(0).AddComponent<ModSwordBlockArea>();
             swordBlockArea.BlockHammers = true;
             swordBlockArea.BounceWeaponOnEnvironmentImpact = true;
             swordBlockArea.DestroyProjectilesOnImpact = true;
             swordBlockArea.SwordHitArea = hitArea;
+            swordBlockArea.FireUpgrade = ModUpgradesManager.HALBERD_FIRE_UPGRADE;
             base.MeleeImpactArea = hitArea;
             base.BodyPartsToDrop = Array.Empty<MindSpaceBodyPart>();
             base.PartsToDrop = new Transform[]

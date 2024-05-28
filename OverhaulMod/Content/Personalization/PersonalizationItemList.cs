@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -20,6 +21,46 @@ namespace OverhaulMod.Content.Personalization
             Dictionary<string, Exception> errors = new Dictionary<string, Exception>();
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();
+            list.Add(new PersonalizationItemInfo()
+            {
+                Name = "Default",
+                EditorID = "lol",
+                ItemID = string.Empty,
+                Weapon = WeaponType.Sword,
+                Category = PersonalizationCategory.WeaponSkins
+            });
+            list.Add(new PersonalizationItemInfo()
+            {
+                Name = "Default",
+                EditorID = "lol",
+                ItemID = string.Empty,
+                Weapon = WeaponType.Bow,
+                Category = PersonalizationCategory.WeaponSkins
+            });
+            list.Add(new PersonalizationItemInfo()
+            {
+                Name = "Default",
+                EditorID = "lol",
+                ItemID = string.Empty,
+                Weapon = WeaponType.Hammer,
+                Category = PersonalizationCategory.WeaponSkins
+            });
+            list.Add(new PersonalizationItemInfo()
+            {
+                Name = "Default",
+                EditorID = "lol",
+                ItemID = string.Empty,
+                Weapon = WeaponType.Spear,
+                Category = PersonalizationCategory.WeaponSkins
+            });
+            list.Add(new PersonalizationItemInfo()
+            {
+                Name = "Default",
+                EditorID = "lol",
+                ItemID = string.Empty,
+                Weapon = WeaponType.Shield ,
+                Category = PersonalizationCategory.WeaponSkins
+            });
 
             string[] directories;
             try
@@ -63,6 +104,39 @@ namespace OverhaulMod.Content.Personalization
 
             Items = list;
             ItemLoadErrors = errors;
+        }
+
+        public PersonalizationItemInfo GetItem(string id)
+        {
+            foreach (var item in GetItems())
+            {
+                if (item.ItemID == id)
+                    return item;
+            }
+            return null;
+        }
+
+        public List<PersonalizationItemInfo> GetItems()
+        {
+            return Items;
+        }
+
+        public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory)
+        {
+            List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
+            foreach(var item in GetItems())
+            {
+                if(item.Category == personalizationCategory)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, bool sort)
+        {
+            return sort ? GetItems(personalizationCategory).OrderBy(f => f.Weapon).ToList() : GetItems(personalizationCategory);
         }
     }
 }

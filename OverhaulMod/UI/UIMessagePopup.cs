@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform m_panelTransform;
 
-        public override bool dontRefreshUI => true;
+        public override bool refreshOnlyCursor => true;
 
         public Action okButtonAction
         {
