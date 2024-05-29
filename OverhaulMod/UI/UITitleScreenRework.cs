@@ -345,7 +345,7 @@ namespace OverhaulMod.UI
 
         public void OnFeedbackButtonClicked()
         {
-            ModUIConstants.ShowFeedbackUIRework();
+            ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnHubButtonClicked()
@@ -425,7 +425,7 @@ namespace OverhaulMod.UI
 
         public void OnExitButtonClicked()
         {
-            Application.Quit();
+            ModUIConstants.ShowFeedbackUIRework(true);
         }
 
         public void OnCustomizeButtonClicked()

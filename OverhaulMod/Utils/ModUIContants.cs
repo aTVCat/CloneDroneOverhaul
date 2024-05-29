@@ -140,9 +140,10 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP_FULL_SCREEN, ModUIManager.UILayer.Last);
         }
 
-        public static void ShowFeedbackUIRework()
+        public static void ShowFeedbackUIRework(bool showExitButton)
         {
-            _ = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.BeforeCrashScreen);
+            UIFeedbackMenu feedbackMenu = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.BeforeCrashScreen);
+            feedbackMenu.SetExitButtonVisible(showExitButton);
         }
 
         public static void ShowCommunityHub()

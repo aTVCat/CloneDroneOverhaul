@@ -8,6 +8,8 @@ namespace OverhaulMod.UI
 {
     public class UIFeedbackMenu : OverhaulUIBehaviour
     {
+        public const int CHARACTER_LIMIT = 500;
+
         public static bool HasSentFeedback, HasLikedTheMod;
 
         [UIElementAction(nameof(Hide))]
@@ -42,6 +44,10 @@ namespace OverhaulMod.UI
         [UIElement("LikeButton")]
         private readonly Button m_likeButton;
 
+        [UIElementAction(nameof(OnExitGameButtonClicked))]
+        [UIElement("ExitGameButton")]
+        private readonly Button m_exitGameButton;
+
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
 
@@ -49,9 +55,15 @@ namespace OverhaulMod.UI
         [UIElement("ImproveTextInputField")]
         private readonly InputField m_improveField;
 
-        [UIElementAction(nameof(OnFavouriteFieldChanged))]
+        [UIElementAction(nameof(OnFavoriteFieldChanged))]
         [UIElement("FavouriteTextInputField")]
-        private readonly InputField m_favouriteField;
+        private readonly InputField m_favoriteField;
+
+        [UIElement("charLeftText_Improve")]
+        private readonly Text m_improveFieldCharsLeftText;
+
+        [UIElement("charLeftText_Favorite")]
+        private readonly Text m_favoriteFieldCharsLeftText;
 
         public override bool hideTitleScreen => true;
 
@@ -67,8 +79,14 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
+            m_improveField.characterLimit = CHARACTER_LIMIT;
+            m_favoriteField.characterLimit = CHARACTER_LIMIT;
             m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
+
             refreshElements();
+
+            m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
+            m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
         }
 
         private void refreshElements()
@@ -76,7 +94,7 @@ namespace OverhaulMod.UI
             bool shouldBeInteractable = !HasSentFeedback && !m_isSendingFeedback;
 
             m_improveField.interactable = shouldBeInteractable;
-            m_favouriteField.interactable = shouldBeInteractable;
+            m_favoriteField.interactable = shouldBeInteractable;
             m_1rankButton.interactable = selectedRank != 1 && shouldBeInteractable;
             m_2rankButton.interactable = selectedRank != 2 && shouldBeInteractable;
             m_3rankButton.interactable = selectedRank != 3 && shouldBeInteractable;
@@ -97,14 +115,31 @@ namespace OverhaulMod.UI
             });
         }
 
+        private string getCharLeftTextForField(InputField inputField)
+        {
+            return $"{inputField.characterLimit - inputField.text.Length} characters left";
+        }
+
+        public void SetExitButtonVisible(bool value)
+        {
+            m_exitGameButton.gameObject.SetActive(value);
+        }
+
+        public void OnExitGameButtonClicked()
+        {
+            Application.Quit();
+        }
+
         public void OnImproveFieldChanged(string text)
         {
             refreshElements();
+            m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
         }
 
-        public void OnFavouriteFieldChanged(string text)
+        public void OnFavoriteFieldChanged(string text)
         {
             refreshElements();
+            m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
         }
 
         public void OnSendButtonClicked()
@@ -112,7 +147,7 @@ namespace OverhaulMod.UI
             HasSentFeedback = true;
             m_isSendingFeedback = true;
             refreshElements();
-            ModWebhookManager.Instance.ExecuteFeedbacksWebhook(selectedRank, m_improveField.text, m_favouriteField.text, delegate
+            ModWebhookManager.Instance.ExecuteFeedbacksWebhook(selectedRank, m_improveField.text, m_favoriteField.text, delegate
             {
                 m_isSendingFeedback = false;
                 refreshElements();

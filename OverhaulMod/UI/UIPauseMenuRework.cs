@@ -235,7 +235,7 @@ namespace OverhaulMod.UI
 
         public void OnGiveFeedbackButtonClicked()
         {
-            ModUIConstants.ShowFeedbackUIRework();
+            ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnMainMenuButtonClicked()
