@@ -72,21 +72,23 @@ namespace OverhaulMod.Engine
 
         public object GetValue()
         {
+            ModSettingsDataManager modSettingsDataManager = ModSettingsDataManager.Instance;
+
             string key = GetPlayerPrefKey();
             object result;
             switch (valueType)
             {
                 case ValueType.Bool:
-                    result = PlayerPrefs.GetInt(key, (bool)defaultValue ? 1 : 0) == 1;
+                    result = modSettingsDataManager.GetInt(key, (bool)defaultValue ? 1 : 0) == 1;
                     break;
                 case ValueType.Int:
-                    result = PlayerPrefs.GetInt(key, (int)defaultValue);
+                    result = modSettingsDataManager.GetInt(key, (int)defaultValue);
                     break;
                 case ValueType.Float:
-                    result = PlayerPrefs.GetFloat(key, (float)defaultValue);
+                    result = modSettingsDataManager.GetFloat(key, (float)defaultValue);
                     break;
                 case ValueType.String:
-                    result = PlayerPrefs.GetString(key, (string)defaultValue);
+                    result = modSettingsDataManager.GetString(key, (string)defaultValue);
                     break;
                 default:
                     result = default;
@@ -103,6 +105,8 @@ namespace OverhaulMod.Engine
 
         public void SetValue(object value)
         {
+            ModSettingsDataManager modSettingsDataManager = ModSettingsDataManager.Instance;
+
             FieldInfo fieldInfo = this.fieldInfo;
             if (fieldInfo != null)
             {
@@ -125,19 +129,18 @@ namespace OverhaulMod.Engine
             switch (valueType)
             {
                 case ValueType.Bool:
-                    PlayerPrefs.SetInt(key, (bool)value ? 1 : 0);
+                    modSettingsDataManager.SetInt(key, (bool)value ? 1 : 0);
                     break;
                 case ValueType.Int:
-                    PlayerPrefs.SetInt(key, (int)value);
+                    modSettingsDataManager.SetInt(key, (int)value);
                     break;
                 case ValueType.Float:
-                    PlayerPrefs.SetFloat(key, (float)value);
+                    modSettingsDataManager.SetFloat(key, (float)value);
                     break;
                 case ValueType.String:
-                    PlayerPrefs.SetString(key, (string)value);
+                    modSettingsDataManager.SetString(key, (string)value);
                     break;
             }
-
             GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT);
         }
 

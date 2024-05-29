@@ -1,11 +1,28 @@
 ﻿using OverhaulMod.Content;
+using System.Collections.Generic;
 
 namespace OverhaulMod
 {
     public static class ModFeatures
     {
-        public static bool IsEnabled(FeatureType feature)
+        private static readonly Dictionary<FeatureType, bool> s_cachedValues = new Dictionary<FeatureType, bool>();
+
+        public static void CacheValues()
         {
+            Dictionary<FeatureType, bool> dictionary = s_cachedValues;
+            dictionary.Clear();
+            foreach (object enumName in typeof(FeatureType).GetEnumValues())
+            {
+                FeatureType featureType = (FeatureType)enumName;
+                dictionary.Add(featureType, IsEnabled(featureType, false));
+            }
+        }
+
+        public static bool IsEnabled(FeatureType feature, bool useCaching = true)
+        {
+            if (useCaching && s_cachedValues.ContainsKey(feature))
+                return s_cachedValues[feature];
+
             bool result;
             switch (feature)
             {
@@ -113,6 +130,8 @@ namespace OverhaulMod
             AccessoriesAndPets,
 
             AdvancedSettings,
+
+            WinLoseDialogRework,
         }
     }
 }

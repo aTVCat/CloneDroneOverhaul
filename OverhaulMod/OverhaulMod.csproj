@@ -426,6 +426,8 @@
     <Compile Include="Engine\ModSetting.cs" />
     <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
     <Compile Include="Engine\ModSettingAttribute.cs" />
+    <Compile Include="Engine\ModSettingsDataContainer.cs" />
+    <Compile Include="Engine\ModSettingsDataManager.cs" />
     <Compile Include="Engine\ModSettingsManager.cs" />
     <Compile Include="Engine\OverhaulAnimationInfo.cs" />
     <Compile Include="Engine\OverhaulAnimationKeyframe.cs" />

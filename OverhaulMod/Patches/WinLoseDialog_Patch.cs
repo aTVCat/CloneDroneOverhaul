@@ -10,6 +10,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("showLoss")]
         private static bool showLoss_Prefix(WinLoseDialog __instance)
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WinLoseDialogRework))
+                return true;
+
             ModUIConstants.ShowGameLossWindow();
             return false;
         }

@@ -80,6 +80,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
+            m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Hide()

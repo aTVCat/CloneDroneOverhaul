@@ -41,6 +41,8 @@ namespace OverhaulMod.UI
             base.Show();
             if (!m_hasEverSuccessfullyPopulatedList)
                 Populate();
+
+            m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public void Populate()

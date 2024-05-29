@@ -8,6 +8,7 @@ using OverhaulMod.Visuals;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -59,7 +60,7 @@ namespace OverhaulMod
             {
                 if (s_savesFolder == null)
                 {
-                    s_savesFolder = modDataFolder + "saves/";
+                    s_savesFolder = $"{Path.Combine(modDataFolder, "saves")}/";
                 }
                 return s_savesFolder;
             }
@@ -72,7 +73,7 @@ namespace OverhaulMod
             {
                 if (s_assetsFolder == null)
                 {
-                    s_assetsFolder = folder + "assets/";
+                    s_assetsFolder = $"{Path.Combine(folder, "assets")}/";
                 }
                 return s_assetsFolder;
             }
@@ -85,7 +86,7 @@ namespace OverhaulMod
             {
                 if (s_dataFolder == null)
                 {
-                    s_dataFolder = assetsFolder + "data/";
+                    s_dataFolder = $"{Path.Combine(assetsFolder, "data")}/";
                 }
                 return s_dataFolder;
             }
@@ -98,7 +99,7 @@ namespace OverhaulMod
             {
                 if (s_modFolder == null)
                 {
-                    s_modFolder = Application.persistentDataPath + "/OverhaulMod/";
+                    s_modFolder = $"{Path.Combine(Application.persistentDataPath, "OverhaulMod")}/";
                 }
                 return s_modFolder;
             }
@@ -111,7 +112,7 @@ namespace OverhaulMod
             {
                 if (s_contentFolder == null)
                 {
-                    s_contentFolder = modDataFolder + "content/";
+                    s_contentFolder = $"{Path.Combine(modDataFolder, "content")}/";
                 }
                 return s_contentFolder;
             }
@@ -124,7 +125,7 @@ namespace OverhaulMod
             {
                 if (s_addonsFolder == null)
                 {
-                    s_addonsFolder = contentFolder + "addons/";
+                    s_addonsFolder = $"{Path.Combine(contentFolder, "addons")}/";
                 }
                 return s_addonsFolder;
             }
@@ -137,7 +138,7 @@ namespace OverhaulMod
             {
                 if (s_customizationFolder == null)
                 {
-                    s_customizationFolder = contentFolder + "customization/";
+                    s_customizationFolder = $"{Path.Combine(contentFolder, "customization")}/";
                 }
                 return s_customizationFolder;
             }
@@ -150,7 +151,7 @@ namespace OverhaulMod
             {
                 if (s_textureFolder == null)
                 {
-                    s_textureFolder = assetsFolder + "textures/";
+                    s_textureFolder = $"{Path.Combine(assetsFolder, "textures")}/";
                 }
                 return s_textureFolder;
             }
@@ -163,7 +164,7 @@ namespace OverhaulMod
             {
                 if (s_editorTexturesFolder == null)
                 {
-                    s_editorTexturesFolder = texturesFolder + "editor/";
+                    s_editorTexturesFolder = $"{Path.Combine(texturesFolder, "editor")}/";
                 }
                 return s_editorTexturesFolder;
             }

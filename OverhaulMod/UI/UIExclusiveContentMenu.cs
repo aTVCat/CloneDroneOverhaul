@@ -56,6 +56,8 @@ namespace OverhaulMod.UI
                     OnRetrieveButtonClicked();
                 }, null);
             }
+
+            m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Update()

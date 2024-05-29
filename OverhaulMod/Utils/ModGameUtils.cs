@@ -69,26 +69,25 @@ namespace OverhaulMod.Utils
             bool result = false;
             foreach (GameplayAchievement achievement in gameplayAchievementManager.Achievements)
             {
-                _ = SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete);
+                if(SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete))
+                {
+                    bool isAchievementWithTargetProgressOverThan1 = achievement.TargetProgress > 1;
+                    int inGameProgress = gameplayAchievementManager.GetProgress(achievement.AchievementID);
+                    int steamProgress = isComplete ? achievement.TargetProgress : 0;
+                    if (steamProgress != inGameProgress)
+                        result = true;
 
-                int currentProgress = gameplayAchievementManager.GetProgress(achievement.AchievementID);
-                int targetProgress = isComplete ? achievement.TargetProgress : 0;
-                if (targetProgress != currentProgress)
-                    result = true;
-
-                if (isComplete)
-                    gameplayAchievementManager.SetAchievementProgress(achievement, targetProgress, true);
-                else
-                    gameplayAchievementManager.SetAchievementProgress(achievement, 0, true);
+                    if (isComplete)
+                        gameplayAchievementManager.SetAchievementProgress(achievement, steamProgress, true);
+                    else
+                        gameplayAchievementManager.SetAchievementProgress(achievement, isAchievementWithTargetProgressOverThan1 ? inGameProgress : 0, true);
+                }
             }
             return result;
         }
 
         public static void SaveActiveSections(string fileName, string displayName, int order, int chapterIndex)
         {
-            if (!GameModeManager.Is(GameMode.Story))
-                return;
-
             List<string> sections = new List<string>();
             if (GameModeManager.IsStoryChapter4() || GameModeManager.IsStoryChapter5())
             {

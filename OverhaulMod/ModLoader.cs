@@ -29,6 +29,7 @@ namespace OverhaulMod
             loadGameUIThemeData();
 
             ModBuildInfo.Load();
+            ModFeatures.CacheValues();
 
             QualitySettings.asyncUploadTimeSlice = 4;
             QualitySettings.asyncUploadBufferSize = 16;
@@ -57,6 +58,7 @@ namespace OverhaulMod
 
         private static void addManagers()
         {
+            _ = ModManagers.New<ModSettingsDataManager>();
             _ = ModManagers.New<ModSettingsManager>();
             _ = ModManagers.New<ModDataManager>();
             _ = ModManagers.New<RepositoryManager>();

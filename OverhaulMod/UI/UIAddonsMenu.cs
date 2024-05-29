@@ -60,6 +60,14 @@ namespace OverhaulMod.UI
             }
         }
 
+        public override void Show()
+        {
+            base.Show();
+
+            m_localAddonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            m_networkAddonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+        }
+
         public override void Hide()
         {
             base.Hide();

@@ -140,7 +140,6 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            callback?.Invoke(null);
             callback = null;
         }
 
@@ -305,6 +304,8 @@ namespace OverhaulMod.UI
 
         public void OnCancelButtonClicked()
         {
+            callback?.Invoke(null);
+            callback = null;
             Hide();
         }
     }

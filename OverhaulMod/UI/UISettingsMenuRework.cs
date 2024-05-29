@@ -111,6 +111,8 @@ namespace OverhaulMod.UI
             {
                 subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
             }
+
+            ModSettingsDataManager.Instance.Save();
         }
 
         public void ShowRegularElements()
@@ -315,14 +317,14 @@ namespace OverhaulMod.UI
                 ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
 
+            _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
+            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
             }, "First person mode");
-            _ = pageBuilder.KeyBind("Camera mode toggle", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
-            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
@@ -469,15 +471,14 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
             _ = pageBuilder.Header4("Change what enemies spawn");
 
-            _ = pageBuilder.Header3("Fun");
+            _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
+            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
             }, "First person mode");
-            _ = pageBuilder.KeyBind("Camera mode toggle", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
-            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
@@ -623,7 +624,7 @@ namespace OverhaulMod.UI
         private void populateDefaultPage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
-            _ = pageBuilder.Header1("Page is not implemented yet.");
+            _ = pageBuilder.Header1("This page is not implemented yet.");
             _ = pageBuilder.Header2("Try using original menu");
             _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
         }
@@ -633,7 +634,7 @@ namespace OverhaulMod.UI
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
             {
                 PageBuilder pageBuilder1 = new PageBuilder(this);
-                _ = pageBuilder1.Header1("Page is not implemented yet.");
+                _ = pageBuilder1.Header1("This page is not implemented yet.");
                 return;
             }
 
