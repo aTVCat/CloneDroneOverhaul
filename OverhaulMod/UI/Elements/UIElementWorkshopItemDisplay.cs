@@ -26,6 +26,8 @@ namespace OverhaulMod.UI
 
         private UnityWebRequest m_webRequest;
 
+        private bool m_isMouseIn;
+
         public WorkshopItem workshopItem
         {
             get;
@@ -117,6 +119,11 @@ namespace OverhaulMod.UI
             }, out m_webRequest, 60);
         }
 
+        public void RefreshSelectedFrame()
+        {
+            m_selectedFrame.SetActive(m_isMouseIn || browserUI.IsItemSelected(this));
+        }
+
         private void onClicked()
         {
             if (browserUI.HideContextMenuIfShown())
@@ -133,31 +140,46 @@ namespace OverhaulMod.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_selectedFrame.SetActive(true);
+            m_isMouseIn = true;
+            RefreshSelectedFrame();
+            browserUI.QuickPreview(workshopItem);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_selectedFrame.SetActive(false);
+            m_isMouseIn = false;
+            RefreshSelectedFrame();
+            browserUI.QuickPreview(null);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_selectedFrame.SetActive(false);
+            m_isMouseIn = false;
+            RefreshSelectedFrame();
+            browserUI.QuickPreview(null);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu))
+            {
+                onClicked();
+                return;
+            }
+
             UIWorkshopBrowser bui = browserUI;
             if (eventData.button == PointerEventData.InputButton.Right)
             {
+                bui.SetItemSelected(this, true);
                 bui.ShowContextMenu(this);
+                RefreshSelectedFrame();
             }
             else if (eventData.button == PointerEventData.InputButton.Left)
             {
                 if (Input.GetKey(KeyCode.LeftControl))
                 {
-                    // todo: only select
+                    bui.SetItemSelected(this, !bui.IsItemSelected(this));
+                    RefreshSelectedFrame();
                 }
                 else
                 {

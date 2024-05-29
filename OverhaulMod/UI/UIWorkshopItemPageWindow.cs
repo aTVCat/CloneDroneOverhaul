@@ -78,14 +78,6 @@ namespace OverhaulMod.UI
         [UIElement("DeleteProgressButton")]
         private readonly Button m_eraseProgressButton;
 
-        [UIElementAction(nameof(OnOptionsButtonClicked))]
-        [UIElement("OptionsButton")]
-        private readonly Button m_optionsButton;
-
-        [UIElementAction(nameof(OnSetLevelOnTitleScreenButtonClicked))]
-        [UIElement("SetLevelOnTitleScreenButton")]
-        private readonly Button m_setLevelOnTitleScreenButton;
-
         [UIElementAction(nameof(OnUpdateButtonClicked))]
         [UIElement("UpdateButton")]
         private readonly Button m_updateButton;
@@ -225,11 +217,15 @@ namespace OverhaulMod.UI
             dispose();
             if (workshopItem == null || workshopItem.IsDisposed())
                 return;
+
+            bool isChallengeOrAdventure = workshopItem.IsChallengeOrAdventure();
+            string path = DataRepository.Instance.GetFullPath($"ChallengeData{workshopItem.ItemID}", false);
             m_workshopItem = workshopItem;
 
-            string path = DataRepository.Instance.GetFullPath($"ChallengeData{workshopItem.ItemID}", false);
             m_playButton.interactable = true;
-            m_eraseProgressButton.interactable = File.Exists(path);
+
+            m_eraseProgressButton.gameObject.SetActive(isChallengeOrAdventure);
+            m_eraseProgressButton.interactable = isChallengeOrAdventure && File.Exists(path);
 
             m_itemTitleText.text = workshopItem.Name;
             m_itemDescriptionText.text = workshopItem.Description;

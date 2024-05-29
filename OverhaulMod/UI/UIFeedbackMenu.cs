@@ -1,5 +1,6 @@
 ﻿using InternalModBot;
 using ModBotWebsiteAPI;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,9 @@ namespace OverhaulMod.UI
     public class UIFeedbackMenu : OverhaulUIBehaviour
     {
         public const int CHARACTER_LIMIT = 500;
+
+        [ModSetting(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, false)]
+        public static bool HasEverSentFeedback;
 
         public static bool HasSentFeedback, HasLikedTheMod;
 
@@ -152,6 +156,11 @@ namespace OverhaulMod.UI
                 m_isSendingFeedback = false;
                 refreshElements();
                 ModUIUtils.MessagePopupOK("Successfully sent the feedback!", "Thanks!", true);
+
+                if (!HasEverSentFeedback)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
+                }
             }, delegate (string error)
             {
                 m_isSendingFeedback = false;

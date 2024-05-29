@@ -479,6 +479,7 @@
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Behaviours\SubtitleTextFieldPatchBehaviour.cs" />
     <Compile Include="Patches\EnergyUI_Patch.cs" />
+    <Compile Include="Patches\CacheManager_Patch.cs" />
     <Compile Include="Patches\LevelLightSettings_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
@@ -641,7 +642,6 @@
     <Compile Include="Utils\ModComponentCache.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
-    <Compile Include="Utils\ModITweenUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModSettingsConstants.cs" />
     <Compile Include="Utils\ModSteamUGCUtils.cs" />

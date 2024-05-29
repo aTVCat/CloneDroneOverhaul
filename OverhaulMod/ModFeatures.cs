@@ -80,6 +80,12 @@ namespace OverhaulMod
                 case FeatureType.AdvancedSettings:
                     result = false;
                     break;
+                case FeatureType.WorkshopBrowserContextMenu:
+                    result = false;
+                    break;
+                case FeatureType.StoryModeModifiers:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -132,6 +138,10 @@ namespace OverhaulMod
             AdvancedSettings,
 
             WinLoseDialogRework,
+
+            WorkshopBrowserContextMenu,
+
+            StoryModeModifiers,
         }
     }
 }

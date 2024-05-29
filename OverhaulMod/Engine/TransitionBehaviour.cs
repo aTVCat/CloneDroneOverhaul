@@ -11,6 +11,8 @@ namespace OverhaulMod.Engine
         private CanvasGroup m_canvasGroup;
         private Text m_text;
 
+        private ErrorManager m_errorManager;
+
         private float m_timeToFade;
 
         public bool fadeOut
@@ -42,6 +44,11 @@ namespace OverhaulMod.Engine
             m_image = base.GetComponent<Image>();
             m_canvasGroup = base.GetComponent<CanvasGroup>();
             m_text = moddedObjectReference.GetObject<Text>(0);
+        }
+
+        public override void Start()
+        {
+            m_errorManager = ErrorManager.Instance;
         }
 
         public override void Update()

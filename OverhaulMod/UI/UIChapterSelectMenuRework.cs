@@ -61,6 +61,7 @@ namespace OverhaulMod.UI
             m_difficultyDropdown.options = SettingsManager.Instance.GetDifficultyOptions();
             m_difficultyDropdown.value = SettingsManager.Instance.GetStoryDifficultyIndex();
             m_enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.forceEnableGreatSwords;
+            m_enableGreatSwordsToggle.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.StoryModeModifiers));
             RefreshProgressText();
         }
 

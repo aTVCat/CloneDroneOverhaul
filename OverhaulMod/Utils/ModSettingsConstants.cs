@@ -215,5 +215,10 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore.ShowSpeakerName"/>
         /// </summary>
         public const string SHOW_SPEAKER_NAME = "ShowSpeakerName";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string HAS_EVER_SENT_FEEDBACK = "HasEverSentFeedback";
     }
 }

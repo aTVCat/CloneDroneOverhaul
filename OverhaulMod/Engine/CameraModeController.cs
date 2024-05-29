@@ -75,6 +75,15 @@ namespace OverhaulMod.Engine
         {
             m_lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
             m_cameraManager = CameraManager.Instance;
+
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferStarted, ForceEnableHeadRenderers);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferComplete, ForceEnableHeadRenderers);
+        }
+
+        private void OnDestroy()
+        {
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ConsciousnessTransferStarted, ForceEnableHeadRenderers);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ConsciousnessTransferComplete, ForceEnableHeadRenderers);
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)
@@ -94,6 +103,11 @@ namespace OverhaulMod.Engine
         {
             PlayerCameraMover mover = m_cameraMover;
             return mover && mover._isConsciousnessTransferInProgress;
+        }
+
+        public void ForceEnableHeadRenderers()
+        {
+            SetHeadRenderersActive(true);
         }
 
         public void RefreshFields()
@@ -199,7 +213,7 @@ namespace OverhaulMod.Engine
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, ModITweenUtils.ParametricBlend(m_lerp)) + ShakePositionOffset;
+            transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, m_lerp)) + ShakePositionOffset;
 
             /*
             if (CameraManager.EnableFirstPersonMode)

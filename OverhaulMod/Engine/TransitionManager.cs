@@ -31,6 +31,7 @@ namespace OverhaulMod.Engine
             transform.anchoredPosition = Vector2.zero;
             transform.localEulerAngles = Vector2.zero;
             transform.localScale = Vector2.one;
+            transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.BeforeCrashScreen));
             TransitionBehaviour transitionBehaviour = gameObject.AddComponent<TransitionBehaviour>();
             transitionBehaviour.fadeOut = fadeOut;
             transitionBehaviour.ignoreDeltaTime = ignoreDeltaTime;

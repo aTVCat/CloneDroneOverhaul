@@ -425,6 +425,11 @@ namespace OverhaulMod.UI
 
         public void OnExitButtonClicked()
         {
+            if (UIFeedbackMenu.HasEverSentFeedback)
+            {
+                Application.Quit();
+                return;
+            }
             ModUIConstants.ShowFeedbackUIRework(true);
         }
 

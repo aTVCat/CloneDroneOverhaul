@@ -73,7 +73,7 @@ namespace OverhaulMod.Engine
             }
             else
             {
-                m_currentTransition.completion = 1f - ModITweenUtils.ParametricBlend(Mathf.Clamp01(v / transitionTime));
+                m_currentTransition.completion = 1f - NumberUtils.EaseInOutCubic(0f, 1f, Mathf.Clamp01(v / transitionTime));
             }
         }
     }

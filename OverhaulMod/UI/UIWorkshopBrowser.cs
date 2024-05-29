@@ -158,6 +158,18 @@ namespace OverhaulMod.UI
         [UIElement("ContextMenu", typeof(UIElementMouseEventsComponent))]
         private readonly UIElementMouseEventsComponent m_contextMenuMouseChecker;
 
+        [UIElementAction(nameof(OnContextMenuSubscribeButtonClicked))]
+        [UIElement("ContextMenuSubscribeButton")]
+        public Button m_contextMenuSubscribeButton;
+        [UIElementAction(nameof(OnContextMenuPlayButtonClicked))]
+        [UIElement("ContextMenuPlayButton")]
+        public Button m_contextMenuPlayButton;
+
+        [UIElement("QuickPreview", typeof(UIElementWorkshopItemQuickPreview), false)]
+        private readonly UIElementWorkshopItemQuickPreview m_quickPreview;
+
+        private List<UIElementWorkshopItemDisplay> m_selectedItemDisplays;
+
         public override bool hideTitleScreen => true;
 
         private bool m_initializedTabs, m_getWorkshopItemsNextFrame, m_isLoading;
@@ -217,6 +229,9 @@ namespace OverhaulMod.UI
             base.OnInitialized();
             page = 1;
             m_timeLeftToPopulate = -1f;
+            m_selectedItemDisplays = new List<UIElementWorkshopItemDisplay>();
+
+            m_controlsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu));
         }
 
         public override void Show()
@@ -391,6 +406,8 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
+            m_selectedItemDisplays.Clear();
+
             if (searchLevelType != COLLECTIONS_TYPE_TAB)
             {
                 bool collections = browseCollections;
@@ -520,21 +537,51 @@ namespace OverhaulMod.UI
         {
             if (m_contextMenu.gameObject.activeSelf)
             {
-                ShowContextMenu(null);
+                m_contextMenu.gameObject.SetActive(false);
                 return true;
             }
             return false;
         }
 
-        public void ShowContextMenu(UIElementWorkshopItemDisplay workshopItemDisplay)
+        public void ShowContextMenu(UIElementWorkshopItemDisplay itemDisplay)
         {
-            if (!workshopItemDisplay)
+            bool isNull = !itemDisplay;
+
+            m_contextMenu.gameObject.SetActive(!isNull);
+            if(!isNull)
+                m_contextMenu.position = itemDisplay.transform.position;
+
+            m_contextMenuSubscribeButton.gameObject.SetActive(true);
+            m_contextMenuPlayButton.gameObject.SetActive(m_selectedItemDisplays.Count == 1);
+        }
+
+        public void SetItemSelected(UIElementWorkshopItemDisplay itemDisplay, bool value)
+        {
+            if (value)
             {
-                m_contextMenu.gameObject.SetActive(false);
+                if (!m_selectedItemDisplays.Contains(itemDisplay))
+                    m_selectedItemDisplays.Add(itemDisplay);
+            }
+            else
+            {
+                m_selectedItemDisplays.Remove(itemDisplay);
+            }
+        }
+
+        public bool IsItemSelected(UIElementWorkshopItemDisplay itemDisplay)
+        {
+            return m_selectedItemDisplays.Contains(itemDisplay);
+        }
+
+        public void QuickPreview(WorkshopItem workshopItem)
+        {
+            if(workshopItem == null)
+            {
+                m_quickPreview.gameObject.SetActive(false);
                 return;
             }
-            m_contextMenu.gameObject.SetActive(true);
-            m_contextMenu.position = workshopItemDisplay.transform.position;
+            m_quickPreview.gameObject.SetActive(true);
+            m_quickPreview.Populate(workshopItem);
         }
 
         public void OnHelpButtonClicked()
@@ -629,6 +676,16 @@ namespace OverhaulMod.UI
             m_sourceTabs.DeselectAllTabs();
 
             Populate();
+        }
+
+        public void OnContextMenuSubscribeButtonClicked()
+        {
+
+        }
+
+        public void OnContextMenuPlayButtonClicked()
+        {
+
         }
 
         public void OnLegacyUIButtonClicked()

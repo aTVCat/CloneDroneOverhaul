@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
 
             float d = Time.unscaledDeltaTime;
             m_alpha = Mathf.Lerp(m_alpha, m_timeLeft > 0f ? 1f : 0f, d * 10f);
-            m_canvasGroup.alpha = ModITweenUtils.ParametricBlend(m_alpha);
+            m_canvasGroup.alpha = NumberUtils.EaseInOutCubic(0f, 1f, m_alpha);
 
             if (m_timeLeft > 0f)
                 m_timeLeft -= d;

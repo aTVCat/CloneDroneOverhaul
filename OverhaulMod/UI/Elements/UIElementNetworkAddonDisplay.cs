@@ -34,6 +34,8 @@ namespace OverhaulMod.UI
 
         private ContentManager m_contentManager;
 
+        private bool m_hasImages;
+
         public string contentFile
         {
             get;
@@ -81,7 +83,7 @@ namespace OverhaulMod.UI
             m_minVersionText.enabled = !isSupported;
             m_minVersionText.text = $"New mod version is required: {versionString}";
 
-            m_imagesButton.interactable = !images.IsNullOrEmpty();
+            m_hasImages = !images.IsNullOrEmpty();
         }
 
         public override void Update()
@@ -96,7 +98,7 @@ namespace OverhaulMod.UI
             m_contentSizeText.SetActive(!isDownloadingContent && isSupported);
             m_downloadButton.gameObject.SetActive(!isDownloadingContent && isSupported);
             m_downloadButton.interactable = !hasDownloaded;
-            m_imagesButton.gameObject.SetActive(!isDownloadingContent && isSupported);
+            m_imagesButton.gameObject.SetActive(m_hasImages && !isDownloadingContent && isSupported);
 
             if (isDownloadingContent)
                 m_progressBarFill.fillAmount = contentManager.GetDownloadProgress(file);
