@@ -370,6 +370,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectShowIf.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
@@ -377,6 +378,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
+    <Compile Include="Content\Personalization\ShowPersonalizationEditorObjectIf.cs" />
     <Compile Include="Content\WorkshopItemPreview.cs" />
     <Compile Include="Content\WorkshopItemVote.cs" />
     <Compile Include="Discord\ActivityManager.cs" />

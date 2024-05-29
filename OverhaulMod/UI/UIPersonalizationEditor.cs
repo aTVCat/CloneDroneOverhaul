@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
         [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspector), false)]
         public readonly UIElementPersonalizationEditorInspector Inspector;
 
-        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
+        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
         [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel), false)]

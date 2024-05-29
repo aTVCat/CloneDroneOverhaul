@@ -30,7 +30,7 @@ namespace OverhaulMod.UI
         [UIElement("ItemDisplay", false)]
         private readonly ModdedObject m_itemDisplay;
         [UIElement("TextDisplay", false)]
-        private readonly Text m_textDisplay;
+        private readonly ModdedObject m_textDisplay;
         [UIElement("Content")]
         private readonly Transform m_container;
         [UIElement("Content")]
@@ -211,6 +211,7 @@ namespace OverhaulMod.UI
             {
                 m_notImplementedTextObject.SetActive(false);
 
+                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
                 WeaponType weaponType = WeaponType.None;
                 System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
                 for (int i = 0; i < list.Count; i++)
@@ -220,10 +221,41 @@ namespace OverhaulMod.UI
 
                     if (item.Weapon != weaponType)
                     {
-                        Text text = Instantiate(m_textDisplay, m_container);
-                        text.gameObject.SetActive(true);
+                        WeaponType currentWeaponType = item.Weapon;
+
+                        ModdedObject moddedObject1 = Instantiate(m_textDisplay, m_container);
+                        moddedObject1.gameObject.SetActive(true);
+                        moddedObject1.GetObject<Button>(0).onClick.AddListener(delegate
+                        {
+                            if (firstPersonMover)
+                            {
+                                ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
+                                {
+                                    switch (currentWeaponType)
+                                    {
+                                        case WeaponType.Sword:
+                                            commandInput.Weapon1 = true;
+                                            break;
+                                        case WeaponType.Bow:
+                                            commandInput.Weapon2 = true;
+                                            break;
+                                        case WeaponType.Hammer:
+                                            commandInput.Weapon3 = true;
+                                            break;
+                                        case WeaponType.Shield:
+                                        case WeaponType.Spear:
+                                            commandInput.Weapon4 = true;
+                                            break;
+                                    }
+                                });
+                            }
+                        });
+                        moddedObject1.GetObject<Button>(0).interactable = firstPersonMover && firstPersonMover._equippedWeapons.Contains(currentWeaponType);
+
+                        Text text = moddedObject1.GetComponent<Text>();
                         text.text = item.Weapon.ToString();
-                        weaponType = item.Weapon;
+
+                        weaponType = currentWeaponType;
                     }
 
                     string authorsString = item.GetAuthorsString();

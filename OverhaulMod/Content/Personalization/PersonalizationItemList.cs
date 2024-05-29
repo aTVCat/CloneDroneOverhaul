@@ -27,7 +27,8 @@ namespace OverhaulMod.Content.Personalization
                 EditorID = "lol",
                 ItemID = string.Empty,
                 Weapon = WeaponType.Sword,
-                Category = PersonalizationCategory.WeaponSkins
+                Category = PersonalizationCategory.WeaponSkins,
+                IsVerified = true,
             });
             list.Add(new PersonalizationItemInfo()
             {
@@ -35,7 +36,8 @@ namespace OverhaulMod.Content.Personalization
                 EditorID = "lol",
                 ItemID = string.Empty,
                 Weapon = WeaponType.Bow,
-                Category = PersonalizationCategory.WeaponSkins
+                Category = PersonalizationCategory.WeaponSkins,
+                IsVerified = true,
             });
             list.Add(new PersonalizationItemInfo()
             {
@@ -43,7 +45,8 @@ namespace OverhaulMod.Content.Personalization
                 EditorID = "lol",
                 ItemID = string.Empty,
                 Weapon = WeaponType.Hammer,
-                Category = PersonalizationCategory.WeaponSkins
+                Category = PersonalizationCategory.WeaponSkins,
+                IsVerified = true,
             });
             list.Add(new PersonalizationItemInfo()
             {
@@ -51,7 +54,8 @@ namespace OverhaulMod.Content.Personalization
                 EditorID = "lol",
                 ItemID = string.Empty,
                 Weapon = WeaponType.Spear,
-                Category = PersonalizationCategory.WeaponSkins
+                Category = PersonalizationCategory.WeaponSkins,
+                IsVerified = true,
             });
             list.Add(new PersonalizationItemInfo()
             {
@@ -59,7 +63,8 @@ namespace OverhaulMod.Content.Personalization
                 EditorID = "lol",
                 ItemID = string.Empty,
                 Weapon = WeaponType.Shield ,
-                Category = PersonalizationCategory.WeaponSkins
+                Category = PersonalizationCategory.WeaponSkins,
+                IsVerified = true,
             });
 
             string[] directories;
