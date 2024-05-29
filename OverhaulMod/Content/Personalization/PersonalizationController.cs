@@ -53,11 +53,14 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> m_spawnedItems;
 
-        private void Start()
+        private void Awake()
         {
             m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
             m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
+        }
 
+        private void Start()
+        {
             FirstPersonMover firstPersonMover = owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
@@ -153,10 +156,14 @@ namespace OverhaulMod.Content.Personalization
 
         public void DestroyAllItems()
         {
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
+            Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> dictionary = m_spawnedItems;
+            if (dictionary == null || dictionary.Count == 0)
+                return;
+
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in dictionary)
                 DestroyItem(kv.Key, false);
 
-            m_spawnedItems.Clear();
+            dictionary.Clear();
         }
 
         public bool HasSpawnedItem(PersonalizationItemInfo personalizationItemInfo)

@@ -7,6 +7,9 @@ namespace OverhaulMod.Visuals
 {
     public class RobotWeaponBag : MonoBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
+        public static bool EnableWeaponBag;
+
         private FirstPersonMover m_firstPersonMover;
 
         private WeaponType m_lastEquippedWeapon;
@@ -33,6 +36,7 @@ namespace OverhaulMod.Visuals
             CreateContainers();
             RefreshRenderers();
 
+            GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, RefreshRenderers);
             GlobalEventManager.Instance.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
         }
 
@@ -51,6 +55,7 @@ namespace OverhaulMod.Visuals
 
         private void OnDestroy()
         {
+            GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, RefreshRenderers);
             GlobalEventManager.Instance.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
         }
 
@@ -138,7 +143,7 @@ namespace OverhaulMod.Visuals
                     continue;
 
                 bool isEquipped = firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
-                bool shouldDisplay = !isEquipped && !droppedWeapons.Contains(keyValue.Key);
+                bool shouldDisplay = EnableWeaponBag && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 WeaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }
         }

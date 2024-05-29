@@ -9,19 +9,22 @@ namespace OverhaulMod.Content.LevelEditor
     {
         public static readonly List<Dropdown.OptionData> Options = new List<Dropdown.OptionData>()
         {
-            new Dropdown.OptionData()
+            new DropdownStringOptionData()
             {
-                text = "None"
+                text = "None",
+                StringValue = string.Empty
             },
 
-            new Dropdown.OptionData()
+            new DropdownStringOptionData()
             {
-                text = "Rainy"
+                text = "Rainy",
+                StringValue = "Rainy"
             },
 
-            new Dropdown.OptionData()
+            new DropdownStringOptionData()
             {
-                text = "Snowy"
+                text = "Snowy",
+                StringValue = "Snowy"
             },
         };
 
@@ -71,12 +74,12 @@ namespace OverhaulMod.Content.LevelEditor
 
         public bool ShouldShowDropdownOptions(string fieldName)
         {
-            return false;
+            return fieldName == nameof(WeatherType);
         }
 
         public bool HasDropDownForValue(string fieldName)
         {
-            return false;
+            return fieldName == nameof(WeatherType);
         }
     }
 }

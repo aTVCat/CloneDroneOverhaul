@@ -1,14 +1,31 @@
 ﻿using OverhaulMod.Content.LevelEditor;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Visuals.Environment
 {
     public class WeatherManager : Singleton<WeatherManager>, IGameLoadListener
     {
+        [ModSetting(ModSettingsConstants.ENABLE_WEATHER, true)]
+        public static bool EnableWeather;
+
+        [ModSetting(ModSettingsConstants.FORCE_WEATHER_TYPE, 0)]
+        public static int ForceWeatherType;
+
+        public static readonly List<Dropdown.OptionData> WeatherOptions = new List<Dropdown.OptionData>()
+        {
+            new Dropdown.OptionData("None"),
+            new Dropdown.OptionData("Rainy"),
+            new Dropdown.OptionData("Snowy"),
+        };
+
+        private bool m_hasAddedEventListeners;
+
         private float m_timeToUpdate;
 
         public List<WeatherInfo> WeatherInfos;
@@ -48,17 +65,28 @@ namespace OverhaulMod.Visuals.Environment
             populateHolder();
         }
 
+        private void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
+            {
+                GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
+                GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
+                GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
+                m_hasAddedEventListeners = false;
+            }
+        }
+
         private void Update()
         {
             float deltaTime = Time.deltaTime;
             m_timeToUpdate -= deltaTime;
             if (m_timeToUpdate < 0f)
             {
-                m_timeToUpdate = 2f;
+                m_timeToUpdate = 3f;
                 Transform transform = weatherVFXHolder;
                 if (transform)
                 {
-                    Camera target = Camera.main;
+                    Transform target = GameModeManager.IsInLevelEditor() ? weatherOverrideObject?.transform : Camera.main?.transform;
                     transform.position = target
                         ? Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, 1000f, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal)
                             ? hitInfo.transform.position + vectorOffset
@@ -145,14 +173,19 @@ namespace OverhaulMod.Visuals.Environment
         {
             DeactivateAllParticles();
 
+            if (!EnableWeather)
+                return;
+
             LevelEditorWeatherSettingsOverride levelEditorWeatherSettingsOverride = weatherOverrideObject;
+
+            bool forceWeatherValueEnabled = ForceWeatherType != 0;
 
             int max = 250;
             float rate = 75f;
             float intensity = 1f;
-            string weatherValue = string.Empty;
+            string weatherValue = forceWeatherValueEnabled ? WeatherOptions[Mathf.Clamp(ForceWeatherType, 0, 2)].text : string.Empty;
             bool isVanillaLevel = !levelEditorWeatherSettingsOverride && (!LevelManager.Instance || !LevelManager.Instance.IsCurrentLevelHidingTheArena() || GameModeManager.IsBattleRoyale());
-            if (isVanillaLevel)
+            if (!forceWeatherValueEnabled && isVanillaLevel)
             {
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, 11, 25);
@@ -224,8 +257,13 @@ namespace OverhaulMod.Visuals.Environment
         {
             DeactivateAllParticles();
 
-            GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
-            GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
+            if (!m_hasAddedEventListeners)
+            {
+                GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
+                GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
+                GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
+                m_hasAddedEventListeners = true;
+            }
         }
 
         private void onLevelSpawned()

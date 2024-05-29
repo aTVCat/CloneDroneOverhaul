@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     internal class MenuButtonsPatchBehaviour : GamePatchBehaviour
     {

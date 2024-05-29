@@ -3,7 +3,7 @@ using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     internal class SkyboxesPatchBehaviour : GamePatchBehaviour
     {

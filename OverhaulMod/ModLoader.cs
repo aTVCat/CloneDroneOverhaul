@@ -47,9 +47,10 @@ namespace OverhaulMod
 
         public static void Unload()
         {
-            if (ModManagers.Instance)
+            ModManagers modManagers = ModManagers.Instance;
+            if (modManagers && modManagers.gameObject)
             {
-                UnityEngine.Object.Destroy(ModManagers.Instance.gameObject);
+                UnityEngine.Object.Destroy(modManagers.gameObject);
             }
         }
 
@@ -119,15 +120,15 @@ namespace OverhaulMod
                 if (ModBuildInfo.debug)
                     Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
 
-                Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
-                Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
-
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AllNewEnemies))
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewEnemies))
                 {
+                    Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
+                    Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
+                    Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
+                    Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
+                    Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
+                    Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
+
                     Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
                     Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
                     Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");

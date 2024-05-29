@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     public class GamePatchBehaviour : ModBehaviour
     {
@@ -22,6 +22,7 @@ namespace OverhaulMod.Patches.Addons
                 typeof(GameModeSelectScreensPatchBehaviour),
                 typeof(EnergyUIPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
+                typeof(SubtitleTextFieldPatchBehaviour),
             });
             gameObject.transform.SetParent(ModManagers.Instance.transform);
             s_gameObject = gameObject;

@@ -190,5 +190,30 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
         public const string SHIELD_SKIN = "ShieldSkin";
+
+        /// <summary>
+        /// <see cref="Visuals.RobotWeaponBag"/>
+        /// </summary>
+        public const string ENABLE_WEAPON_BAG = "EnableWeaponBag";
+
+        /// <summary>
+        /// <see cref="Patches.Behaviours.ColorsPatchBehaviour"/>
+        /// </summary>
+        public const string CHANGE_HIT_COLORS = "ChangeHitColors";
+
+        /// <summary>
+        /// <see cref="Visuals.Environment.WeatherManager"/>
+        /// </summary>
+        public const string ENABLE_WEATHER = "EnableWeather";
+
+        /// <summary>
+        /// <see cref="Visuals.Environment.WeatherManager"/>
+        /// </summary>
+        public const string FORCE_WEATHER_TYPE = "ForceWeatherType";
+
+        /// <summary>
+        /// <see cref="ModCore.ShowSpeakerName"/>
+        /// </summary>
+        public const string SHOW_SPEAKER_NAME = "ShowSpeakerName";
     }
 }

@@ -2,7 +2,7 @@
 using OverhaulMod.Combat;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
-using OverhaulMod.Patches.Addons;
+using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using System;
@@ -17,6 +17,9 @@ namespace OverhaulMod
     {
         [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
         public static bool EnableTitleBarOverhaul;
+
+        [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
+        public static bool ShowSpeakerName;
 
         public static event Action GameInitialized;
         public static event Action<bool> ModStateChanged;

@@ -1,4 +1,4 @@
-﻿namespace OverhaulMod.Patches.Addons
+﻿namespace OverhaulMod.Patches.Behaviours
 {
     internal class LocalizationPatchBehaviour : GamePatchBehaviour
     {

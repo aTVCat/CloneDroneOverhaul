@@ -44,6 +44,9 @@ namespace OverhaulMod.UI
         [UIElement("DownloadProgressFill")]
         private readonly Image m_downloadProgressFill;
 
+        [UIElement("NotImplementedText", false)]
+        private readonly GameObject m_notImplementedTextObject;
+
         private RectTransform m_rectTransform;
 
         private bool m_isOpen, m_isPopulating, m_showContents;
@@ -200,49 +203,59 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            WeaponType weaponType = WeaponType.None;
-            System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
-            for (int i = 0; i < list.Count; i++)
+            if(m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
             {
-                PersonalizationItemInfo item = list[i];
-                bool isUnlocked = item.IsUnlocked();
+                m_notImplementedTextObject.SetActive(true);
+            }
+            else
+            {
+                m_notImplementedTextObject.SetActive(false);
 
-                if(item.Weapon != weaponType)
+                WeaponType weaponType = WeaponType.None;
+                System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
+                for (int i = 0; i < list.Count; i++)
                 {
-                    Text text = Instantiate(m_textDisplay, m_container);
-                    text.gameObject.SetActive(true);
-                    text.text = item.Weapon.ToString();
-                    weaponType = item.Weapon;
-                }
+                    PersonalizationItemInfo item = list[i];
+                    bool isUnlocked = item.IsUnlocked();
 
-                string authorsString = item.GetAuthorsString();
-                string prefix;
-                if (authorsString.StartsWith("From ") || authorsString.StartsWith("from "))
-                    prefix = string.Empty;
-                else
-                    prefix = "By ";
-
-                ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
-                moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = item.Name;
-                moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
-                moddedObject.GetObject<GameObject>(2).SetActive(!isUnlocked);
-                Button button = moddedObject.GetComponent<Button>();
-                button.onClick.AddListener(delegate
-                {
-                    Character character = CharacterTracker.Instance.GetPlayer();
-                    if (character)
+                    if (item.Weapon != weaponType)
                     {
-                        PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
-                        if (personalizationController)
-                        {
-                            personalizationController.EquipSkin(item);
-                        }
+                        Text text = Instantiate(m_textDisplay, m_container);
+                        text.gameObject.SetActive(true);
+                        text.text = item.Weapon.ToString();
+                        weaponType = item.Weapon;
                     }
-                });
 
-                if (i % 15 == 0)
-                    yield return null;
+                    string authorsString = item.GetAuthorsString();
+                    string prefix;
+                    if (authorsString.StartsWith("From ") || authorsString.StartsWith("from "))
+                        prefix = string.Empty;
+                    else
+                        prefix = "By ";
+
+                    ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = item.Name;
+                    moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
+                    moddedObject.GetObject<GameObject>(2).SetActive(!isUnlocked);
+                    moddedObject.GetObject<GameObject>(3).SetActive(!item.IsVerified);
+                    Button button = moddedObject.GetComponent<Button>();
+                    button.onClick.AddListener(delegate
+                    {
+                        Character character = CharacterTracker.Instance.GetPlayer();
+                        if (character)
+                        {
+                            PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                            if (personalizationController)
+                            {
+                                personalizationController.EquipSkin(item);
+                            }
+                        }
+                    });
+
+                    if (i % 15 == 0)
+                        yield return null;
+                }
             }
 
             m_prevTab = m_tabs.selectedTab?.tabId;

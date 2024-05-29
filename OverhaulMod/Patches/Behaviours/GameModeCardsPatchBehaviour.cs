@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     internal class GameModeCardsPatchBehaviour : GamePatchBehaviour
     {

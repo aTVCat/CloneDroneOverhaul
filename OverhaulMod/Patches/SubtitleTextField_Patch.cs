@@ -11,11 +11,14 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("onSpeechSentenceStarted")]
         private static bool onSpeechSentenceStarted_Prefix(SubtitleTextField __instance)
         {
+            if (!ModCore.ShowSpeakerName)
+                return true;
+
             if (!SettingsManager.Instance.ShouldShowSubtitles())
                 return false;
 
             __instance.refreshYOffset();
-            SpeechSentence currentSentence = Singleton<SpeechAudioManager>.Instance.GetCurrentSentence();
+            SpeechSentence currentSentence = SpeechAudioManager.Instance.GetCurrentSentence();
             if (currentSentence != null)
             {
                 __instance.TextField.color = SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName);

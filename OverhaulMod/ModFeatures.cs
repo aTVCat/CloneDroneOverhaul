@@ -48,13 +48,19 @@ namespace OverhaulMod
                 case FeatureType.AllGameplayContent:
                     result = ModBuildInfo.enableV5;
                     break;
-                case FeatureType.AllNewEnemies:
+                case FeatureType.NewEnemies:
                     result = ModBuildInfo.enableV5;
                     break;
                 case FeatureType.DuelInviteMenuRework:
                     result = true;
                     break;
                 case FeatureType.Tooltips:
+                    result = false;
+                    break;
+                case FeatureType.AccessoriesAndPets:
+                    result = false;
+                    break;
+                case FeatureType.AdvancedSettings:
                     result = false;
                     break;
                 default:
@@ -98,11 +104,15 @@ namespace OverhaulMod
 
             AllGameplayContent,
 
-            AllNewEnemies,
+            NewEnemies,
 
             DuelInviteMenuRework,
 
-            Tooltips
+            Tooltips,
+
+            AccessoriesAndPets,
+
+            AdvancedSettings,
         }
     }
 }

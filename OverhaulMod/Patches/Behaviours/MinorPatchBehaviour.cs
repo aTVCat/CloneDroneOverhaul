@@ -3,7 +3,7 @@ using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     internal class MinorPatchBehaviour : GamePatchBehaviour
     {

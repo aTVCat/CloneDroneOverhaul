@@ -108,8 +108,6 @@ namespace OverhaulMod.Engine
             {
                 fieldInfo.SetValue(null, value);
 
-                GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT, value);
-
                 if (!m_valueChangedListeners.IsNullOrEmpty())
                 {
                     foreach (Action<object> a in m_valueChangedListeners)
@@ -139,6 +137,8 @@ namespace OverhaulMod.Engine
                     PlayerPrefs.SetString(key, (string)value);
                     break;
             }
+
+            GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT);
         }
 
         public void SetValueFromUI(object value)

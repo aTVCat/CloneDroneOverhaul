@@ -1,7 +1,9 @@
 ﻿using InternalModBot;
 using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
+using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals.Environment;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,6 +89,28 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
                 settingsMenu.populateSettings();
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            SubtitleTextFieldPatchBehaviour subtitleTextFieldPatchBehaviour = GamePatchBehaviour.GetBehaviour<SubtitleTextFieldPatchBehaviour>();
+            if (subtitleTextFieldPatchBehaviour)
+            {
+                subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
+            }
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            SubtitleTextFieldPatchBehaviour subtitleTextFieldPatchBehaviour = GamePatchBehaviour.GetBehaviour<SubtitleTextFieldPatchBehaviour>();
+            if (subtitleTextFieldPatchBehaviour)
+            {
+                subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
+            }
         }
 
         public void ShowRegularElements()
@@ -277,6 +301,11 @@ namespace OverhaulMod.UI
             _ = pageBuilder.DropdownWithImage169(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Display who's speaking");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
@@ -355,6 +384,11 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
             }, "Bloom");
 
+            _ = pageBuilder.Header1("Robots");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
+            }, "Show equipped weapons");
 
             _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.Header3("Field of view");
@@ -390,8 +424,21 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL, value, true);
             }, "Arena remodel");
             _ = pageBuilder.Header4("Made by @water2977");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEATHER), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEATHER, value, true);
+            }, "Enable weather");
+            _ = pageBuilder.Header3("Force weather type");
+            _ = pageBuilder.Dropdown(WeatherManager.WeatherOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE, value, true);
+            });
 
             _ = pageBuilder.Header1("Voxel engine");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_HIT_COLORS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_HIT_COLORS, value, true);
+            }, "Better damage colors");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING, value, true);
@@ -576,13 +623,20 @@ namespace OverhaulMod.UI
         private void populateDefaultPage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
-            _ = pageBuilder.Header1("Page not implemented.");
+            _ = pageBuilder.Header1("Page is not implemented yet.");
             _ = pageBuilder.Header2("Try using original menu");
             _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
         }
 
         private void populateAdvancedPage(SettingsMenu settingsMenu)
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
+            {
+                PageBuilder pageBuilder1 = new PageBuilder(this);
+                _ = pageBuilder1.Header1("Page is not implemented yet.");
+                return;
+            }
+
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Advanced settings");
             _ = pageBuilder.Button("Switch save data", null);

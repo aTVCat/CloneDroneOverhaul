@@ -1,6 +1,6 @@
 ﻿using OverhaulMod.Visuals;
 
-namespace OverhaulMod.Patches.Addons
+namespace OverhaulMod.Patches.Behaviours
 {
     internal class ProjectilePatchBehaviour : GamePatchBehaviour
     {
