@@ -86,14 +86,18 @@ namespace OverhaulMod.Visuals.Environment
                 Transform transform = weatherVFXHolder;
                 if (transform)
                 {
-                    Transform target = GameModeManager.IsInLevelEditor() ? (weatherOverrideObject ? weatherOverrideObject.transform : null) : Camera.main?.transform;
-                    if (Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, 1000f, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal))
+                    Camera camera = Camera.main;
+                    LevelEditorWeatherSettingsOverride levelEditorWeatherSettingsOverride = weatherOverrideObject;
+                    Transform target = GameModeManager.IsInLevelEditor() ? (levelEditorWeatherSettingsOverride ? levelEditorWeatherSettingsOverride.transform : null) : (camera ? camera.transform : null);
+                    bool targetIsNotNull = target;
+
+                    if (targetIsNotNull && Physics.Raycast(target.transform.position, Vector3.up, out RaycastHit hitInfo, 1000f, PhysicsManager.GetEnvironmentLayerMask(), QueryTriggerInteraction.UseGlobal))
                     {
                         transform.position = hitInfo.transform.position + vectorOffset;
                     }
                     else
                     {
-                        transform.position = target ? target.transform.position + vectorOffset : vectorOffset;
+                        transform.position = targetIsNotNull ? target.transform.position + vectorOffset : vectorOffset;
                     }
                 }
             }
