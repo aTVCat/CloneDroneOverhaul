@@ -215,6 +215,13 @@ namespace OverhaulMod.Engine
             Vector3 difference = transform.position;
             transform.position = ModUnityUtils.LerpVector3(m_transformToFollow.position + m_offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, m_lerp)) + ShakePositionOffset;
 
+            if(m_lerp <= 0.1f)
+            {
+                Vector3 localPosition = transform.localPosition;
+                localPosition.x = ShakePositionOffset.x;
+                transform.localPosition = localPosition;
+            }
+
             /*
             if (CameraManager.EnableFirstPersonMode)
             {
