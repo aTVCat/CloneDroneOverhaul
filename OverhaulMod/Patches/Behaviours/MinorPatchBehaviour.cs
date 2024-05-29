@@ -57,6 +57,7 @@ namespace OverhaulMod.Patches.Behaviours
                 }
             }
 
+            /*
             PhotoManager photoManager = PhotoManager.Instance;
             if (photoManager)
             {
@@ -65,7 +66,7 @@ namespace OverhaulMod.Patches.Behaviours
                 {
                     flyingCameraController.FieldOfViewMultiplier = -1000f;
                 }
-            }
+            }*/
 
             DirectionalLightManager directionalLightManager = DirectionalLightManager.Instance;
             if (directionalLightManager)

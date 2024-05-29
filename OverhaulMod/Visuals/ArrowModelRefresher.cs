@@ -58,6 +58,11 @@ namespace OverhaulMod.Visuals
 
         public override void OnEnable()
         {
+            if (!ModCore.isEnabled)
+            {
+                Destroy(this);
+                return;
+            }
             _ = ModActionUtils.RunCoroutine(waitThenRefreshAllVisuals());
         }
 
@@ -66,7 +71,7 @@ namespace OverhaulMod.Visuals
             if (!m_arrowProjectile || !m_hasStarted)
                 return;
 
-            bool featureEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
+            bool featureEnabled = ModCore.isEnabled && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
             if (!featureEnabled)
             {
                 SetDefaultVisuals(true);
@@ -74,17 +79,21 @@ namespace OverhaulMod.Visuals
             }
             SetDefaultVisuals(false);
 
+            Transform newNormalModelTransform = m_newNormalModelTransform;
+            Transform newFireModelTransform = m_newFireModelTransform;
+
             Transform[] transforms = m_arrowProjectile.BladeScaleTransforms;
             if (transforms != null && transforms.Length != 0)
             {
                 Transform transform = transforms[0];
-                if (transform)
+                if (transform && newNormalModelTransform)
                 {
-                    Vector3 vector = m_newNormalModelTransform.localScale;
+                    Vector3 vector = newNormalModelTransform.localScale;
                     vector.x = Mathf.Max(0.4f, transform.localScale.x / 4f);
 
-                    m_newNormalModelTransform.localScale = vector;
-                    m_newFireModelTransform.localScale = vector;
+                    newNormalModelTransform.localScale = vector;
+                    if(newFireModelTransform)
+                        newFireModelTransform.localScale = vector;
                 }
             }
         }
@@ -112,6 +121,10 @@ namespace OverhaulMod.Visuals
 
         public void InstantiateNewModels()
         {
+            bool featureEnabled = ModCore.isEnabled && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
+            if (!featureEnabled)
+                return;
+
             if (!m_newNormalModelTransform)
             {
                 Transform arrowModel = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;

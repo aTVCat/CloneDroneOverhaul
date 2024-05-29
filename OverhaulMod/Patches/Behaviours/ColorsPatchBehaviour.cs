@@ -29,14 +29,20 @@ namespace OverhaulMod.Patches.Behaviours
         public override void UnPatch()
         {
             GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, Refresh);
+            Refresh(false);
         }
 
         public void Refresh()
         {
+            Refresh(null);
+        }
+
+        public void Refresh(bool? forceValue = null)
+        {
             AttackManager attackManager = AttackManager.Instance;
             if (attackManager)
             {
-                bool switchColors = ChangeColors;
+                bool switchColors = forceValue == null ? ChangeColors : forceValue.Value;
 
                 attackManager.HitColor = switchColors ? m_overhaulHitColor : m_originalHitColor;
                 attackManager.BodyOnFireColor = switchColors ? m_overhaulBodyOnFireColor : m_originalBodyOnFireColor;

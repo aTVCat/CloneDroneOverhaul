@@ -18,8 +18,7 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(SkyboxesPatchBehaviour),
                 typeof(ColorsPatchBehaviour),
                 typeof(MinorPatchBehaviour),
-                typeof(LocalizationPatchBehaviour),
-                typeof(GameModeSelectScreensPatchBehaviour),
+                typeof(LocalizationManagerPatchBehaviour),
                 typeof(EnergyUIPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
                 typeof(SubtitleTextFieldPatchBehaviour),
@@ -63,7 +62,8 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void OnDestroy()
         {
-            UnPatch();
+            if(!ModCore.isEnabled)
+                UnPatch();
         }
     }
 }

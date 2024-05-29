@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.Patches.Behaviours
 {
-    internal class LocalizationPatchBehaviour : GamePatchBehaviour
+    internal class LocalizationManagerPatchBehaviour : GamePatchBehaviour
     {
         public override void Patch()
         {

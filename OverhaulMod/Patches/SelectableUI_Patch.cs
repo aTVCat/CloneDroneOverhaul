@@ -11,6 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Start")]
         private static void Start_Prefix(SelectableUI __instance)
         {
+            /*
             GameUIThemeData gameUIThemeData = __instance.GameThemeData;
             if (gameUIThemeData && !ModCache.gameUIThemeData)
             {
@@ -23,6 +24,13 @@ namespace OverhaulMod.Patches
             else if (!gameUIThemeData && ModCache.gameUIThemeData)
             {
                 __instance.GameThemeData = ModCache.gameUIThemeData;
+            }*/
+
+            if (!__instance.GameThemeData)
+            {
+                GameUIThemeData gameUIThemeData = ModCache.gameUIThemeData;
+                if(gameUIThemeData)
+                    __instance.GameThemeData = gameUIThemeData;
             }
         }
 

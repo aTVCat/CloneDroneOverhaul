@@ -9,10 +9,24 @@ namespace OverhaulMod.Patches.Behaviours
             ProjectileManager projectileManager = ProjectileManager.Instance;
             if (projectileManager)
             {
-                UnityEngine.Transform prefab = projectileManager.ArrowPool.Prefab;
+                UnityEngine.Transform prefab = projectileManager.ArrowPool?.Prefab;
                 if (!prefab.GetComponent<ArrowModelRefresher>())
                 {
                     _ = prefab.gameObject.AddComponent<ArrowModelRefresher>();
+                }
+            }
+        }
+
+        public override void UnPatch()
+        {
+            ProjectileManager projectileManager = ProjectileManager.Instance;
+            if (projectileManager)
+            {
+                UnityEngine.Transform prefab = projectileManager.ArrowPool?.Prefab;
+                ArrowModelRefresher arrowModelRefresher = prefab.GetComponent<ArrowModelRefresher>();
+                if (arrowModelRefresher)
+                {
+                    Destroy(arrowModelRefresher);
                 }
             }
         }

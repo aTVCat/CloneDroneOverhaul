@@ -8,6 +8,8 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class GameModeCardsPatchBehaviour : GamePatchBehaviour
     {
+        private UnityEvent m_storyModeEvent, m_endlessModeEvent, m_soloChallengesEvent, m_coopEndlessEvent, m_coopChallengesEvent, m_lastBotStandingEvent, m_duelEvent;
+
         public override void Patch()
         {
             patchGameModeCardPrefab(ModCache.titleScreenUI.MultiplayerModeSelectScreen);
@@ -15,6 +17,15 @@ namespace OverhaulMod.Patches.Behaviours
 
             GameModeCardData[] multiplayerDatas = ModCache.titleScreenUI.MultiplayerModeSelectScreen.GameModeData;
             GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
+
+            m_storyModeEvent = singleplayerDatas[0].ClickedCallback;
+            m_endlessModeEvent = singleplayerDatas[1].ClickedCallback;
+            m_soloChallengesEvent = singleplayerDatas[2].ClickedCallback;
+            m_coopEndlessEvent = multiplayerDatas[0].ClickedCallback;
+            m_coopChallengesEvent = multiplayerDatas[1].ClickedCallback;
+            m_lastBotStandingEvent = multiplayerDatas[2].ClickedCallback;
+            m_duelEvent = multiplayerDatas[3].ClickedCallback;
+
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ChapterSelectMenuRework))
             {
                 UnityEvent storyModeEvent = new UnityEvent();
@@ -93,6 +104,20 @@ namespace OverhaulMod.Patches.Behaviours
             ReplaceSprite(multiplayerDatas, 1, "Bot");
             ReplaceSprite(multiplayerDatas, 2, "Raptor");
             ReplaceSprite(multiplayerDatas, 3, "DuelHumans");
+        }
+
+        public override void UnPatch()
+        {
+            GameModeCardData[] multiplayerDatas = ModCache.titleScreenUI.MultiplayerModeSelectScreen.GameModeData;
+            GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
+
+            singleplayerDatas[0].ClickedCallback = m_storyModeEvent;
+            singleplayerDatas[1].ClickedCallback = m_endlessModeEvent;
+            singleplayerDatas[2].ClickedCallback = m_soloChallengesEvent;
+            multiplayerDatas[0].ClickedCallback = m_coopEndlessEvent;
+            multiplayerDatas[1].ClickedCallback = m_coopChallengesEvent;
+            multiplayerDatas[2].ClickedCallback = m_lastBotStandingEvent;
+            multiplayerDatas[3].ClickedCallback = m_duelEvent;
         }
 
         public void ReplaceSprite(GameModeCardData[] array, int index, string imageName)
