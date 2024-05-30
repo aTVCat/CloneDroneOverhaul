@@ -581,6 +581,7 @@
     <Compile Include="UI\UICinematicEffects.cs" />
     <Compile Include="UI\UIImageExplorer.cs" />
     <Compile Include="UI\UIAutoBuildMenu.cs" />
+    <Compile Include="UI\UIDownloadCustomizationAssetsMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />

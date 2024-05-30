@@ -36,14 +36,6 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly CanvasGroup m_containerCanvasGroup;
 
-        [UIElement("DownloadCustomizationBundle")]
-        private readonly GameObject m_downloadCustomizationBundleOverlay;
-        [UIElementAction(nameof(OnDownloadButtonClicked))]
-        [UIElement("DownloadButton")]
-        private readonly Button m_downloadButton;
-        [UIElement("DownloadProgressFill")]
-        private readonly Image m_downloadProgressFill;
-
         [UIElement("NotImplementedText", false)]
         private readonly GameObject m_notImplementedTextObject;
 
@@ -69,7 +61,7 @@ namespace OverhaulMod.UI
             m_tabs.SelectTab("weapon skins");
             m_prevTab = "weapon skins";
 
-            ShowDownloadCustomizationFileDialog();
+            ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
         }
 
         public override void Show()
@@ -109,19 +101,6 @@ namespace OverhaulMod.UI
         private void LateUpdate()
         {
             refreshCameraRect();
-
-            UnityWebRequest unityWebRequest = m_webRequest;
-            if (unityWebRequest == null)
-                return;
-
-            try
-            {
-                m_downloadProgressFill.fillAmount = unityWebRequest.downloadProgress;
-            }
-            catch
-            {
-                m_downloadProgressFill.fillAmount = 1f;
-            }
         }
 
         public override void OnEnable()
@@ -137,9 +116,10 @@ namespace OverhaulMod.UI
             UIVersionLabel.instance.forceHide = false;
         }
 
-        public void ShowDownloadCustomizationFileDialog()
+        public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
-            m_downloadCustomizationBundleOverlay.SetActive(PersonalizationManager.Instance.itemList.Items.Count <= 5);
+            if (PersonalizationManager.Instance.itemList.Items.Count <= 5)
+                ModUIConstants.ShowDownloadCustomizationAssetsMenu(base.transform);
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -334,22 +314,6 @@ namespace OverhaulMod.UI
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
                 commandInput.IsResetLookKeyDown = true;
-            });
-        }
-
-        public void OnDownloadButtonClicked()
-        {
-            m_downloadButton.gameObject.SetActive(false);
-            PersonalizationManager.Instance.DownloadCustomizationFile(delegate (bool success)
-            {
-                m_downloadButton.gameObject.SetActive(true);
-                m_downloadCustomizationBundleOverlay.SetActive(false);
-                m_downloadProgressFill.fillAmount = 0f;
-                m_webRequest = null;
-                Populate();
-            }, delegate (UnityWebRequest unityWebRequest)
-            {
-                m_webRequest = unityWebRequest;
             });
         }
     }
