@@ -14,9 +14,15 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationManager : Singleton<PersonalizationManager>
     {
+        public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "CustomizationAssetsInfoRefreshDate";
+
         public const string ITEM_INFO_FILE = "itemInfo.json";
 
         public const string ASSETS_VERSION_FILE = "customizationAssetsInfo.json";
+
+        public const string REMOTE_ASSETS_VERSION_FILE = "customizationAssetsInfo_remote.json";
+
+        public const string CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT = "CustomizationAssetsFileDownloaded";
 
         public static readonly string[] SupportedBodyParts = new string[]
         {
@@ -34,6 +40,19 @@ namespace OverhaulMod.Content.Personalization
                     m_assetsVersionFile = Path.Combine(ModCore.customizationFolder, ASSETS_VERSION_FILE);
                 }
                 return m_assetsVersionFile;
+            }
+        }
+
+        private string m_remoteAssetsVersionFile;
+        public string remoteAssetsVersionFile
+        {
+            get
+            {
+                if (m_remoteAssetsVersionFile == null)
+                {
+                    m_remoteAssetsVersionFile = Path.Combine(ModCore.customizationFolder, REMOTE_ASSETS_VERSION_FILE);
+                }
+                return m_remoteAssetsVersionFile;
             }
         }
 
@@ -109,8 +128,10 @@ namespace OverhaulMod.Content.Personalization
                                 ModJsonUtils.WriteStream(assetsVersionFile, remoteAssetsInfo);
                                 localAssetsInfo = remoteAssetsInfo;
                             }
-                        });
+                        }, true);
                     }
+
+                    GlobalEventManager.Instance.Dispatch(CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT);
                 }
                 catch (Exception exc)
                 {
@@ -168,9 +189,35 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void RefreshRemoteCustomizationAssetsVersion(Action<bool> callback)
+        public void RefreshRemoteCustomizationAssetsVersion(Action<bool> callback, bool force = false)
         {
             remoteAssetsInfo = null;
+            if (!force)
+            {
+                if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))
+                    if (DateTime.Now < timeToRefreshData)
+                    {
+                        PersonalizationAssetsInfo personalizationAssetsInfo;
+                        if (File.Exists(remoteAssetsVersionFile))
+                        {
+                            try
+                            {
+                                personalizationAssetsInfo = ModJsonUtils.Deserialize<PersonalizationAssetsInfo>(remoteAssetsVersionFile);
+                                personalizationAssetsInfo.FixValues();
+                            }
+                            catch
+                            {
+                                personalizationAssetsInfo = new PersonalizationAssetsInfo();
+                                personalizationAssetsInfo.FixValues();
+                            }
+
+                            remoteAssetsInfo = personalizationAssetsInfo;
+                            callback?.Invoke(true);
+                            return;
+                        }
+                    }
+            }
+
             RepositoryManager.Instance.GetTextFile($"content/{ASSETS_VERSION_FILE}", delegate (string result)
             {
                 PersonalizationAssetsInfo personalizationAssetsInfo;
@@ -186,6 +233,9 @@ namespace OverhaulMod.Content.Personalization
                 }
 
                 remoteAssetsInfo = personalizationAssetsInfo;
+                ModJsonUtils.WriteStream(remoteAssetsVersionFile, personalizationAssetsInfo);
+                PlayerPrefs.SetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, DateTime.Now.AddDays(5).ToString());
+
                 callback?.Invoke(true);
             }, delegate (string error)
             {
@@ -206,15 +256,22 @@ namespace OverhaulMod.Content.Personalization
             return PersonalizationAssetsState.NeedUpdate;
         }
 
+        public bool IsDownloadingCustomizationFile()
+        {
+            return m_webRequest != null;
+        }
+
         public void SetLocalAssetsVersion(string versionString, Action<bool> callback)
         {
-            if(System.Version.TryParse(versionString, out System.Version version))
+            if (System.Version.TryParse(versionString, out System.Version version))
             {
                 PersonalizationAssetsInfo personalizationAssetsInfo = localAssetsInfo;
-                if(personalizationAssetsInfo == null)
+                if (personalizationAssetsInfo == null)
                 {
-                    personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                    personalizationAssetsInfo.AssetsVersion = version;
+                    personalizationAssetsInfo = new PersonalizationAssetsInfo
+                    {
+                        AssetsVersion = version
+                    };
                     personalizationAssetsInfo.FixValues();
                     localAssetsInfo = personalizationAssetsInfo;
                 }

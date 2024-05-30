@@ -3,6 +3,7 @@ using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -39,6 +40,17 @@ namespace OverhaulMod.UI
         [UIElement("NotImplementedText", false)]
         private readonly GameObject m_notImplementedTextObject;
 
+        [UIElementAction(nameof(OnSettingsButtonClicked))]
+        [UIElement("SettingsButton")]
+        private readonly Button m_settingsButton;
+
+        [UIElementAction(nameof(OnUpdateButtonClicked))]
+        [UIElement("UpdateButton")]
+        private readonly Button m_updateButton;
+
+        [UIElement("UpdateButtonText")]
+        private readonly Text m_updateButtonText;
+
         private RectTransform m_rectTransform;
 
         private bool m_isOpen, m_isPopulating, m_showContents;
@@ -61,7 +73,13 @@ namespace OverhaulMod.UI
             m_tabs.SelectTab("weapon skins");
             m_prevTab = "weapon skins";
 
-            ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
         }
 
         public override void Show()
@@ -80,6 +98,9 @@ namespace OverhaulMod.UI
             }
 
             setCameraZoomedIn(true);
+            ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
+            refreshUpdateButton();
+            Populate();
         }
 
         public override void Hide()
@@ -118,7 +139,7 @@ namespace OverhaulMod.UI
 
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
-            if (PersonalizationManager.Instance.itemList.Items.Count <= 5)
+            if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
                 ModUIConstants.ShowDownloadCustomizationAssetsMenu(base.transform);
         }
 
@@ -168,6 +189,7 @@ namespace OverhaulMod.UI
             if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
                 return;
 
+            m_isPopulating = true;
             _ = base.StartCoroutine(populateCoroutine());
         }
 
@@ -273,7 +295,27 @@ namespace OverhaulMod.UI
             m_prevTab = m_tabs.selectedTab?.tabId;
             m_tabs.interactable = true;
             m_showContents = true;
+            m_isPopulating = false;
             yield break;
+        }
+
+        private void onCustomizationAssetsFileDownloaded()
+        {
+            Populate();
+            refreshUpdateButton();
+        }
+
+        private void refreshUpdateButton()
+        {
+            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
+            if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
+            {
+                m_updateButtonText.text = "Download";
+            }
+            else
+            {
+                m_updateButtonText.text = "Update";
+            }
         }
 
         private void refreshCameraRect()
@@ -315,6 +357,16 @@ namespace OverhaulMod.UI
             {
                 commandInput.IsResetLookKeyDown = true;
             });
+        }
+
+        public void OnSettingsButtonClicked()
+        {
+
+        }
+
+        public void OnUpdateButtonClicked()
+        {
+            ModUIConstants.ShowDownloadCustomizationAssetsMenu(base.transform);
         }
     }
 }

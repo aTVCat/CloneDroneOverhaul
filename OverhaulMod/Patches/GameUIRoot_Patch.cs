@@ -80,6 +80,17 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN_CUSTOMIZATION_PANEL))
                     return false;
+
+                UIDownloadCustomizationAssetsMenu downloadCustomizationAssetsMenu = modUIManager.Get<UIDownloadCustomizationAssetsMenu>(AssetBundleConstants.UI, ModUIConstants.UI_DOWNLOAD_CUSTOMIZATION_ASSETS_MENU);
+                if (downloadCustomizationAssetsMenu && downloadCustomizationAssetsMenu.visibleInHierarchy)
+                {
+                    if (!downloadCustomizationAssetsMenu.CanExit())
+                        return false;
+
+                    downloadCustomizationAssetsMenu.Hide();
+                    return false;
+                }
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_ITEMS_BROWSER))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER))
