@@ -486,7 +486,7 @@ namespace OverhaulMod
             private void setMinimized(bool value)
             {
                 Vector2 size = m_rectTransform.sizeDelta;
-                size.y = value ? 30f : m_height;
+                size.y = value ? 34f : m_height;
                 m_rectTransform.sizeDelta = size;
                 m_titleBarFrame.SetActive(!value);
                 m_content.gameObject.SetActive(!value);
@@ -501,9 +501,9 @@ namespace OverhaulMod
             {
                 Vector2 sizeToSet;
                 if (content && content is RectTransform rectTransform)
-                    sizeToSet = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y);
+                    sizeToSet = new Vector2(rectTransform.sizeDelta.x + 30f, rectTransform.sizeDelta.y + 15f);
                 else
-                    sizeToSet = new Vector2(size.x, size.y + 30f);
+                    sizeToSet = new Vector2(size.x + 30f, size.y + 34f);
 
                 m_width = sizeToSet.x;
                 m_height = sizeToSet.y;
