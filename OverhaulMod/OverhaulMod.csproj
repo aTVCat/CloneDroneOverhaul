@@ -361,6 +361,8 @@
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
     <Compile Include="Content\NewsUserData.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
