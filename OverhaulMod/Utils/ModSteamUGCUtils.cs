@@ -178,7 +178,35 @@ namespace OverhaulMod.Utils
             requestParameters.ConfigureQuery(queryHandle);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
-                onQueryCallback(queryResult, io, callback, errorCallback, debugCallback);
+                onQueryCallback(true, queryResult, io, callback, errorCallback, debugCallback);
+            }, errorCallback);
+            return true;
+        }
+
+        public static bool GetWorkshopItem(PublishedFileId_t publishedFileId, Action<WorkshopItem> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        {
+            UGCQueryHandle_t queryHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[] { publishedFileId }, 1);
+            SteamUGC.SetReturnChildren(queryHandle, true);
+            requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
+            {
+                onQueryCallback(false, queryResult, io, delegate (List<WorkshopItem> list)
+                {
+                    if (list != null && list.Count == 1)
+                        callback?.Invoke(list[0]);
+                    else
+                        errorCallback?.Invoke($"Item not found. ({(list == null ? -1 : list.Count)})");
+                }, errorCallback, debugCallback);
+            }, errorCallback);
+            return true;
+        }
+
+        public static bool GetWorkshopItems(PublishedFileId_t[] publishedFileIds, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
+        {
+            UGCQueryHandle_t queryHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishedFileIds, (uint)publishedFileIds.Length);
+            SteamUGC.SetReturnChildren(queryHandle, true);
+            requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
+            {
+                onQueryCallback(false, queryResult, io, callback, errorCallback, debugCallback);
             }, errorCallback);
             return true;
         }
@@ -193,12 +221,12 @@ namespace OverhaulMod.Utils
             requestParameters.ConfigureQuery(queryHandle);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
-                onQueryCallback(queryResult, io, callback, errorCallback, debugCallback);
+                onQueryCallback(true, queryResult, io, callback, errorCallback, debugCallback);
             }, errorCallback);
             return true;
         }
 
-        private static void onQueryCallback(SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
+        private static void onQueryCallback(bool setPageCount, SteamUGCQueryCompleted_t queryResult, bool ioError, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugInfo)
         {
             if (!checkQueryResultForErrors(queryResult, ioError, errorCallback))
             {
@@ -206,7 +234,9 @@ namespace OverhaulMod.Utils
                 return;
             }
 
-            setPageAmount(queryResult.m_unTotalMatchingResults);
+            if(setPageCount)
+                setPageAmount(queryResult.m_unTotalMatchingResults);
+
             callback?.Invoke(getQueryItems(queryResult));
             debugInfo?.Invoke(queryResult.m_bCachedData, (int)queryResult.m_unNumResultsReturned, (int)queryResult.m_unTotalMatchingResults);
             releaseQueryHandle(queryResult.m_handle);
@@ -215,8 +245,12 @@ namespace OverhaulMod.Utils
         private static List<WorkshopItem> getQueryItems(SteamUGCQueryCompleted_t queryResult)
         {
             List<WorkshopItem> items = new List<WorkshopItem>();
+            long numResultsReturned = (long)(ulong)queryResult.m_unNumResultsReturned;
+            if (numResultsReturned <= 0)
+                return items;
+
             uint index = 0;
-            while (index < (long)(ulong)queryResult.m_unNumResultsReturned)
+            while (index < numResultsReturned)
             {
                 if (SteamUGC.GetQueryUGCResult(queryResult.m_handle, index, out SteamUGCDetails_t ugcDetails) && ugcDetails.m_eResult == EResult.k_EResultOK && !ugcDetails.m_bBanned)
                 {

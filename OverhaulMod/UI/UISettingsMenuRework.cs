@@ -53,7 +53,7 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindPrefab", false)]
         public ModdedObject KeyBindPrefab;
 
-        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Quick setup", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot", "Advanced" })]
+        [TabManager(typeof(UIElementSettingsTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot", "Advanced" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -127,7 +127,7 @@ namespace OverhaulMod.UI
 
             if (!m_hasSelectedTab)
             {
-                m_tabs.SelectTab("Quick setup");
+                m_tabs.SelectTab("Home");
                 m_hasSelectedTab = true;
             }
         }
@@ -198,8 +198,8 @@ namespace OverhaulMod.UI
                 case "setup":
                     populateSetupPage(settingsMenu);
                     break;
-                case "Quick setup":
-                    populateQuickSetupPage(settingsMenu);
+                case "Home":
+                    populateHomePage(settingsMenu);
                     break;
                 case "Gameplay":
                     populateGameplayPage(settingsMenu);
@@ -295,7 +295,7 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populateQuickSetupPage(SettingsMenu settingsMenu)
+        private void populateHomePage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
@@ -426,6 +426,10 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL, value, true);
             }, "Arena remodel");
             _ = pageBuilder.Header4("Made by @water2977");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FLOATING_DUST), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FLOATING_DUST, value, true);
+            }, "Floating dust");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEATHER), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEATHER, value, true);

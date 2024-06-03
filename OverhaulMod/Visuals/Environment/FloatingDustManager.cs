@@ -1,10 +1,14 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using UnityEngine;
 
 namespace OverhaulMod.Visuals.Environment
 {
     public class FloatingDustManager : Singleton<FloatingDustManager>
     {
+        [ModSetting(ModSettingsConstants.ENABLE_FLOATING_DUST, true)]
+        public static bool EnableFloatingDust;
+
         private ParticleSystem[] m_normalSpaceDust;
         private ParticleSystem[] m_mindSpaceDust;
 
@@ -69,7 +73,7 @@ namespace OverhaulMod.Visuals.Environment
             if (!transform)
                 return;
 
-            bool allowParticles = true;
+            bool allowParticles = EnableFloatingDust;
             bool isMindspace = false;
 
             FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();

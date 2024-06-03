@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Content;
+﻿using Mono.Unix.Native;
+using OverhaulMod.Content;
 using OverhaulMod.UI.Attributes;
 using OverhaulMod.Utils;
 using Steamworks;
@@ -130,6 +131,12 @@ namespace OverhaulMod.UI
         [UIElement("ItemImageContainer")]
         private readonly Transform m_additionalPreviewDisplayContainer;
 
+        [UIElement("NamePanel")]
+        private readonly RectTransform m_namePanel;
+
+        [UIElement("Name")]
+        private readonly RectTransform m_nameHolder;
+
         /*
         [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
         private readonly UIElementMouseEventsComponent m_panel;*/
@@ -152,6 +159,12 @@ namespace OverhaulMod.UI
 
         private float m_timeLeftToRefreshDisplays;
 
+        private float m_timeLeftToResumeTicker;
+        private float m_tickerProgress;
+        private bool m_tickerIsGoingLeft;
+
+        public float EaseMultiplier;
+
         public UIWorkshopBrowser browserUI
         {
             get;
@@ -170,11 +183,30 @@ namespace OverhaulMod.UI
             tooltipOnHightLight.tooltipShowDuration = 2f;
             tooltipOnHightLight.InitializeElement();
             m_tooltipOnHightLight = tooltipOnHightLight;
+
+            EaseMultiplier = 50f;
+        }
+
+        public override void Show()
+        {
+            base.Show();
+            m_tickerProgress = 0f;
+            m_tickerIsGoingLeft = false;
+            m_timeLeftToResumeTicker = 1f;
+
+            RectTransform nameHolder = m_nameHolder;
+            Vector2 vector = nameHolder.anchoredPosition;
+            vector.x = 0f;
+            nameHolder.anchoredPosition = vector;
         }
 
         public override void Update()
         {
             base.Update();
+
+            float d = Time.unscaledDeltaTime;
+            if(m_timeLeftToResumeTicker > 0f)
+                m_timeLeftToResumeTicker -= d;
 
             if (m_refreshDisplaysNextFrame)
             {
@@ -184,7 +216,7 @@ namespace OverhaulMod.UI
             }
 
             if (m_makeButtonsInteractableInTime > 0f)
-                m_makeButtonsInteractableInTime -= Time.unscaledDeltaTime;
+                m_makeButtonsInteractableInTime -= d;
 
             if (m_makeButtonsInteractableInTime <= 0f)
             {
@@ -194,12 +226,56 @@ namespace OverhaulMod.UI
                 m_updateButton.interactable = true;
             }
 
-            m_timeLeftToRefreshDisplays -= Time.unscaledDeltaTime;
+            m_timeLeftToRefreshDisplays -= d;
             if (m_timeLeftToRefreshDisplays <= 0f)
             {
                 m_refreshDisplaysNextFrame = true;
                 m_timeLeftToRefreshDisplays = 0.1f;
             }
+
+            RectTransform namePanel = m_namePanel;
+            RectTransform nameHolder = m_nameHolder;
+            float preferredWidth = LayoutUtility.GetPreferredWidth(m_itemTitleText.rectTransform);
+            float xa = 0f;
+            float xb = Mathf.Min(namePanel.rect.width - preferredWidth, 0f);
+
+            if(xb != 0f && m_timeLeftToResumeTicker <= 0f)
+            {
+                float xbPositive = -xb;
+                float toAdd = d * (1f / Mathf.Clamp(xbPositive, 100f, 600f)) * EaseMultiplier;
+
+                Debug.Log(toAdd);
+
+                if (m_tickerIsGoingLeft)
+                {
+                    m_tickerProgress -= toAdd;
+                    if (m_tickerProgress <= 0f)
+                    {
+                        m_tickerIsGoingLeft = false;
+                        m_tickerProgress = 0f;
+                    }
+                }
+                else
+                {
+                    m_tickerProgress += toAdd;
+                    if (m_tickerProgress >= 1f)
+                    {
+                        m_tickerIsGoingLeft = true;
+                        m_tickerProgress = 1f;
+                    }
+                }
+
+                Vector2 vector = nameHolder.anchoredPosition;
+                vector.x = Mathf.Lerp(xa, xb, NumberUtils.EaseInOutCubic(0f, 1f, m_tickerProgress));
+                nameHolder.anchoredPosition = vector;
+            }
+            else
+            {
+                Vector2 vector = nameHolder.anchoredPosition;
+                vector.x = 0f;
+                nameHolder.anchoredPosition = vector;
+            }
+
             /*
             if (Input.GetMouseButtonDown(0) && !m_panel.isMouseOverElement && !isImageViewerShown)
             {

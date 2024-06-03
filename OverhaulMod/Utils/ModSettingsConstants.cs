@@ -220,5 +220,10 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIFeedbackMenu"/>
         /// </summary>
         public const string HAS_EVER_SENT_FEEDBACK = "HasEverSentFeedback";
+
+        /// <summary>
+        /// <see cref="Visuals.Environment.FloatingDustManager"/>
+        /// </summary>
+        public const string ENABLE_FLOATING_DUST = "EnableFloatingDust";
     }
 }

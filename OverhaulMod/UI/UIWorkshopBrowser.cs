@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.WebRequestMethods;
 
 namespace OverhaulMod.UI
 {
@@ -416,19 +417,30 @@ namespace OverhaulMod.UI
                 ModSteamUGCUtils.RequestParameters requestParameters = ModSteamUGCUtils.RequestParameters.Create(collections ? EUGCMatchingUGCType.k_EUGCMatchingUGCType_Collections : EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items);
                 requestParameters.EnableCaching();
                 requestParameters.RequireTags(collections ? null : new List<string>() { searchLevelType });
-                if (!collections)
-                {
-                    requestParameters.ReturnLongDescription();
-                    requestParameters.ReturnPreviews();
-                }
-                if (!string.IsNullOrEmpty(searchText))
-                {
-                    requestParameters.SearchText(searchText);
-                }
+                requestParameters.ReturnPreviews();
+                requestParameters.ReturnLongDescription();
 
-                bool success = sourceType == 0
+                if (!string.IsNullOrEmpty(searchText))
+                    requestParameters.SearchText(searchText);
+
+                bool success;
+                if (collections)
+                {
+                    success = ModSteamUGCUtils.GetWorkshopItems(new PublishedFileId_t[]
+                    {
+                        (PublishedFileId_t)3045196841, // Imagine Chapter 6 Competition Winners
+                        (PublishedFileId_t)2783921326, // Beginners Welcome Comp Entries - Clone Drone
+                        (PublishedFileId_t)2669983696, // Zombie Adventure Competition Winners 2021
+                        (PublishedFileId_t)2670197366, // LAUNCH Level Competition Winners
+                        (PublishedFileId_t)2369933278, // Winter Level Editor Competition 2020
+                    }, onGotItems, onError, null);
+                }
+                else
+                {
+                    success = sourceType == 0
                     ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null)
                     : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
+                }
 
                 if (!success)
                 {
@@ -457,6 +469,16 @@ namespace OverhaulMod.UI
                 workshopItemDisplay.browserUI = this;
                 workshopItemDisplay.InitializeElement();
                 workshopItemDisplay.Populate(workshopItem);
+            }
+        }
+
+        private void onGotItem(WorkshopItem workshopItem)
+        {
+            Debug.Log($"Got item. Author ID: {workshopItem.AuthorID}");
+            if (!ModSteamUGCUtils.GetWorkshopItems(workshopItem.Children, onGotItems, onError, null))
+            {
+                onError("Internal error.");
+                setIsLoading(false);
             }
         }
 
