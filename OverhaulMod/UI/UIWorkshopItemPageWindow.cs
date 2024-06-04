@@ -777,6 +777,8 @@ namespace OverhaulMod.UI
             bui.searchLevelsByUser = m_authorId;
             bui.searchUserList = EUserUGCList.k_EUserUGCList_Published;
             bui.sourceType = 1;
+            bui.browseCollections = false;
+            bui.browseChildrenOfCollection = default;
             bui.Populate();
             Hide();
         }

@@ -52,6 +52,12 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public bool isCollection
+        {
+            get;
+            set;
+        }
+
         /*
         protected override void OnInitialized()
         {
@@ -126,15 +132,23 @@ namespace OverhaulMod.UI
 
         private void onClicked()
         {
-            if (browserUI.HideContextMenuIfShown())
+            var browser = browserUI;
+            if (browser.HideContextMenuIfShown())
                 return;
 
             WorkshopItem item = workshopItem;
             if (item == null || item.IsDisposed())
                 return;
 
+            if (isCollection)
+            {
+                browser.browseChildrenOfCollection = item.ItemID;
+                browser.Populate();
+                return;
+            }
+
             UIWorkshopItemPageWindow window = ModUIConstants.ShowWorkshopItemPageWindow(itemPageWindowParentTransform);
-            window.browserUI = browserUI;
+            window.browserUI = browser;
             window.Populate(item);
         }
 
