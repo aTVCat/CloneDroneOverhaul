@@ -43,6 +43,10 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform m_panelTransform;
 
+        public bool IsFullscreen;
+
+        private bool m_shouldRefreshText;
+
         public override bool refreshOnlyCursor => true;
 
         public Action okButtonAction
@@ -71,6 +75,19 @@ namespace OverhaulMod.UI
             noButtonAction = null;
         }
 
+        public override void Update()
+        {
+            base.Update();
+            if (m_shouldRefreshText)
+            {
+                m_shouldRefreshText = false;
+
+                Vector2 sizeDelta = m_descriptionText.rectTransform.sizeDelta;
+                sizeDelta.y = m_descriptionText.preferredHeight + 30f;
+                m_descriptionText.rectTransform.sizeDelta = sizeDelta;
+            }
+        }
+
         public void OnOkButtonClicked()
         {
             okButtonAction?.Invoke();
@@ -93,6 +110,7 @@ namespace OverhaulMod.UI
         {
             m_headerText.text = header;
             m_descriptionText.text = description;
+            refreshTextHeightNextFrame();
         }
 
         public void SetHeight(float height)
@@ -128,6 +146,11 @@ namespace OverhaulMod.UI
             m_okButtonText.text = okText;
             m_yesButtonText.text = yesText;
             m_noButtonText.text = noText;
+        }
+
+        private void refreshTextHeightNextFrame()
+        {
+            m_shouldRefreshText = true;
         }
     }
 }

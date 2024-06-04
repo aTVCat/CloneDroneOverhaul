@@ -119,7 +119,7 @@ namespace OverhaulMod.UI
                 void leaderboardAction()
                 {
                     string fileName = $"{GameDataManager.Instance.getChallengeHighScoreSavePath(challengeDefinition.ChallengeID)}.json";
-                    List<HighScoreData> highScores = null;
+                    List<HighScoreData> highScores;
                     try
                     {
                         highScores = ModDataManager.Instance.DeserializeFile<List<HighScoreData>>(fileName, false);

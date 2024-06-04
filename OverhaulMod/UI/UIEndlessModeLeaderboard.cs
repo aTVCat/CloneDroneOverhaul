@@ -115,7 +115,7 @@ namespace OverhaulMod.UI
             {
                 List<HighScoreData> list = displayingList;
                 list.Clear();
-                ModDataManager.Instance.SerializeToFile(fileName, list, false);
+                ModJsonUtils.WriteStream(DataRepository.Instance.GetFullPath(fileName), list);
 
                 Populate(list, fileName);
             });
