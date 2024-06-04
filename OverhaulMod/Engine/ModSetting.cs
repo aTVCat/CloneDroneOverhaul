@@ -111,18 +111,6 @@ namespace OverhaulMod.Engine
             if (fieldInfo != null)
             {
                 fieldInfo.SetValue(null, value);
-
-                if (!m_valueChangedListeners.IsNullOrEmpty())
-                {
-                    foreach (Action<object> a in m_valueChangedListeners)
-                    {
-                        try
-                        {
-                            a?.Invoke(value);
-                        }
-                        catch { }
-                    }
-                }
             }
 
             string key = GetPlayerPrefKey();
@@ -141,6 +129,19 @@ namespace OverhaulMod.Engine
                     modSettingsDataManager.SetString(key, (string)value);
                     break;
             }
+
+            if (!m_valueChangedListeners.IsNullOrEmpty())
+            {
+                foreach (Action<object> a in m_valueChangedListeners)
+                {
+                    try
+                    {
+                        a?.Invoke(value);
+                    }
+                    catch { }
+                }
+            }
+
             GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT);
         }
 

@@ -100,6 +100,9 @@ namespace OverhaulMod.UI
             {
                 subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
             }
+
+            if(!m_selectedTabId.IsNullOrEmpty())
+                PopulatePage(m_selectedTabId);
         }
 
         public override void Hide()
@@ -349,6 +352,8 @@ namespace OverhaulMod.UI
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
         {
+            settingsMenu.refreshResolutionOptions();
+
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Graphics");
             _ = pageBuilder.Header3("Window");

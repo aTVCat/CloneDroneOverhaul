@@ -187,6 +187,7 @@ namespace OverhaulMod.Utils
         {
             UGCQueryHandle_t queryHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[] { publishedFileId }, 1);
             SteamUGC.SetReturnChildren(queryHandle, true);
+            SteamUGC.SetReturnLongDescription(queryHandle, true);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
                 onQueryCallback(false, queryResult, io, delegate (List<WorkshopItem> list)

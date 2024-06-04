@@ -12,6 +12,12 @@ namespace OverhaulMod.UI
         [UIElement("Text")]
         private readonly Text m_titleText;
 
+        [UIElement("AuthorText")]
+        private readonly Text m_authorText;
+
+        [UIElement("DescriptionText")]
+        private readonly Text m_description;
+
         [UIElement("Preview", false)]
         private readonly RawImage m_thumbnail;
 
@@ -92,7 +98,20 @@ namespace OverhaulMod.UI
             this.workshopItem = workshopItem;
             GetThumbnail();
 
-            m_completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
+            if (isCollection)
+            {
+                if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
+                    m_authorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
+                else
+                    m_authorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+
+
+                m_description.text = workshopItem.Description;
+            }
+            else
+            {
+                m_completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
+            }
         }
 
         public void GetThumbnail()
@@ -156,6 +175,9 @@ namespace OverhaulMod.UI
         {
             m_isMouseIn = true;
             RefreshSelectedFrame();
+            if (isCollection)
+                return;
+
             browserUI.QuickPreview(workshopItem);
         }
 
@@ -163,6 +185,9 @@ namespace OverhaulMod.UI
         {
             m_isMouseIn = false;
             RefreshSelectedFrame();
+            if (isCollection)
+                return;
+
             browserUI.QuickPreview(null);
         }
 
@@ -170,6 +195,9 @@ namespace OverhaulMod.UI
         {
             m_isMouseIn = false;
             RefreshSelectedFrame();
+            if (isCollection)
+                return;
+
             browserUI.QuickPreview(null);
         }
 
