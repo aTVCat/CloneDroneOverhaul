@@ -186,8 +186,8 @@ namespace OverhaulMod.Utils
         public static bool GetWorkshopItem(PublishedFileId_t publishedFileId, Action<WorkshopItem> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             UGCQueryHandle_t queryHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[] { publishedFileId }, 1);
-            SteamUGC.SetReturnChildren(queryHandle, true);
-            SteamUGC.SetReturnLongDescription(queryHandle, true);
+            _ = SteamUGC.SetReturnChildren(queryHandle, true);
+            _ = SteamUGC.SetReturnLongDescription(queryHandle, true);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
                 onQueryCallback(false, queryResult, io, delegate (List<WorkshopItem> list)
@@ -204,7 +204,7 @@ namespace OverhaulMod.Utils
         public static bool GetWorkshopItems(PublishedFileId_t[] publishedFileIds, Action<List<WorkshopItem>> callback, Action<string> errorCallback, Action<bool, int, int> debugCallback)
         {
             UGCQueryHandle_t queryHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishedFileIds, (uint)publishedFileIds.Length);
-            SteamUGC.SetReturnChildren(queryHandle, true);
+            _ = SteamUGC.SetReturnChildren(queryHandle, true);
             requestWorkshopItems(queryHandle, delegate (SteamUGCQueryCompleted_t queryResult, bool io)
             {
                 onQueryCallback(false, queryResult, io, callback, errorCallback, debugCallback);
@@ -235,7 +235,7 @@ namespace OverhaulMod.Utils
                 return;
             }
 
-            if(setPageCount)
+            if (setPageCount)
                 setPageAmount(queryResult.m_unTotalMatchingResults);
 
             callback?.Invoke(getQueryItems(queryResult));

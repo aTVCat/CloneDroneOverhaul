@@ -33,7 +33,7 @@ namespace OverhaulMod.UI
 
         private void Start()
         {
-            if(!m_rectTransform)
+            if (!m_rectTransform)
                 m_rectTransform = base.GetComponent<RectTransform>();
         }
 

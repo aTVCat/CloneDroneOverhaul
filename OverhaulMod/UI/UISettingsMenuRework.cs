@@ -101,7 +101,7 @@ namespace OverhaulMod.UI
                 subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
             }
 
-            if(!m_selectedTabId.IsNullOrEmpty())
+            if (!m_selectedTabId.IsNullOrEmpty())
                 PopulatePage(m_selectedTabId);
         }
 

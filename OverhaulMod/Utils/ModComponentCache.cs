@@ -1,16 +1,12 @@
 ﻿using OverhaulMod.Engine;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
     public static class ModComponentCache
     {
-        private static CacheForGetComponent<CameraModeController> s_cacheForCameraModeControllerComponent = new CacheForGetComponent<CameraModeController>();
+        private static readonly CacheForGetComponent<CameraModeController> s_cacheForCameraModeControllerComponent = new CacheForGetComponent<CameraModeController>();
 
         public static void ClearCache()
         {

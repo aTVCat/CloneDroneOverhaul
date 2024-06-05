@@ -150,7 +150,7 @@ namespace OverhaulMod.Utils
 
         public static bool IsModEnabled(string id)
         {
-            foreach(var mod in ModsManager.Instance.GetAllLoadedActiveMods())
+            foreach (ModLibrary.Mod mod in ModsManager.Instance.GetAllLoadedActiveMods())
             {
                 if (mod != null && mod.ModInfo != null && mod.ModInfo.UniqueID == id && mod.ModInfo.IsModEnabled)
                     return true;

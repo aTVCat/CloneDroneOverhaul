@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace OverhaulMod.UI
 {
@@ -53,7 +52,7 @@ namespace OverhaulMod.UI
                 Enabled = value;
                 if (value)
                 {
-                    if(!Cursor.visible || GameModeManager.IsOnTitleScreen())
+                    if (!Cursor.visible || GameModeManager.IsOnTitleScreen())
                         ModUIConstants.ShowDebugMenu();
                 }
                 else

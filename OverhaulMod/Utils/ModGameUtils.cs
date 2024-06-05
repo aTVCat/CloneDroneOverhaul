@@ -69,7 +69,7 @@ namespace OverhaulMod.Utils
             bool result = false;
             foreach (GameplayAchievement achievement in gameplayAchievementManager.Achievements)
             {
-                if(SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete))
+                if (SteamUserStats.GetAchievement(achievement.SteamAchievementID, out bool isComplete))
                 {
                     bool isAchievementWithTargetProgressOverThan1 = achievement.TargetProgress > 1;
                     int inGameProgress = gameplayAchievementManager.GetProgress(achievement.AchievementID);

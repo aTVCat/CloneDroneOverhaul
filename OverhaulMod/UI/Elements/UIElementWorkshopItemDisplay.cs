@@ -151,7 +151,7 @@ namespace OverhaulMod.UI
 
         private void onClicked()
         {
-            var browser = browserUI;
+            UIWorkshopBrowser browser = browserUI;
             if (browser.HideContextMenuIfShown())
                 return;
 

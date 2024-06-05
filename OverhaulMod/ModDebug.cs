@@ -13,7 +13,7 @@ namespace OverhaulMod
         public static void MessagePopupTest()
         {
             string desc = string.Empty;
-            for(int i = 0; i < 75; i++)
+            for (int i = 0; i < 75; i++)
             {
                 desc += "very long string ";
             }

@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,7 +62,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if(m_isPreviewing && Input.anyKey)
+            if (m_isPreviewing && Input.anyKey)
             {
                 stopPreviewing();
             }

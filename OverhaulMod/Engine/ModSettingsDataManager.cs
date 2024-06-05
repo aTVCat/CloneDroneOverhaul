@@ -1,10 +1,5 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Engine
 {
@@ -17,7 +12,7 @@ namespace OverhaulMod.Engine
         {
             get
             {
-                if(m_settingsFilePath == null)
+                if (m_settingsFilePath == null)
                 {
                     m_settingsFilePath = Path.Combine(ModCore.modDataFolder, SETTINGS_FILE_NAME);
                 }
@@ -25,18 +20,7 @@ namespace OverhaulMod.Engine
             }
         }
 
-        private ModSettingsDataContainer m_dataContainer;
-        public ModSettingsDataContainer dataContainer
-        {
-            get
-            {
-                return m_dataContainer;
-            }
-            set
-            {
-                m_dataContainer = value;
-            }
-        }
+        public ModSettingsDataContainer dataContainer { get; set; }
 
         public bool areAnyChangesMade
         {
@@ -49,7 +33,7 @@ namespace OverhaulMod.Engine
             base.Awake();
 
             FileStream fileStream = createFileIfNotCreated();
-            if(fileStream != null)
+            if (fileStream != null)
             {
                 writeToFile(fileStream, createDefaultDataContainer());
                 fileStream.Dispose();
@@ -62,7 +46,7 @@ namespace OverhaulMod.Engine
                     using (fileStream = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Read))
                     {
                         byte[] array = new byte[fileStream.Length];
-                        fileStream.Read(array, 0, array.Length);
+                        _ = fileStream.Read(array, 0, array.Length);
 
                         modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModIOUtils.GetString(array));
                         modSettingsDataContainer.FixValues();
@@ -143,7 +127,7 @@ namespace OverhaulMod.Engine
 
         public void Save(bool force = false)
         {
-            if(force || areAnyChangesMade)
+            if (force || areAnyChangesMade)
             {
                 areAnyChangesMade = false;
                 ModJsonUtils.WriteStream(settingsFilePath, dataContainer);

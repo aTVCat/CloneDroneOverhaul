@@ -4,7 +4,6 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -178,7 +177,7 @@ namespace OverhaulMod
                 stopwatch.Stop();
                 UnityEngine.Debug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
 #else
-          result1.InitializeUI();
+                result1.InitializeUI();
 #endif
                 result1.Show();
 
@@ -362,7 +361,7 @@ namespace OverhaulMod
 
             public void ShowWindow(string windowId)
             {
-                if(m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
                 {
                     if (windowBehaviour)
                         windowBehaviour.Show();
@@ -400,7 +399,7 @@ namespace OverhaulMod
 
             public void RemoveWindow(string windowId)
             {
-                m_windows.Remove(windowId);
+                _ = m_windows.Remove(windowId);
             }
         }
 
@@ -518,7 +517,7 @@ namespace OverhaulMod
                 transform.localEulerAngles = Vector3.zero;
                 transform.localPosition = Vector3.zero;
 
-                if(transform is RectTransform rectTransform)
+                if (transform is RectTransform rectTransform)
                 {
                     float widthToSet = m_width;
                     if (widthToSet == -1f)

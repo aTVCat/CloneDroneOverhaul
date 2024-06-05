@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         private static void Update_Postfix(CameraShaker __instance)
         {
             Vector3 position;
-            if(__instance._temporaryShakeStartTime < 0f)
+            if (__instance._temporaryShakeStartTime < 0f)
             {
                 position = Vector3.zero;
             }

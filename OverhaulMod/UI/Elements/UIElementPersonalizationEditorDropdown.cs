@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if(Input.GetMouseButtonDown(0) && !m_mouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && !m_mouseChecker.isMouseOverElement)
             {
                 Hide();
             }
@@ -45,7 +45,7 @@ namespace OverhaulMod.UI
 
         public void SetPosition(RectTransform rectTransform)
         {
-            var vector = base.transform.position;
+            Vector3 vector = base.transform.position;
             vector.x = rectTransform.position.x - 1f;
             base.transform.position = vector;
         }
@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
                     Button button = Instantiate(m_buttonPrefab, base.transform);
                     button.onClick.AddListener(od.action);
                     ModdedObject moddedObject = button.GetComponent<ModdedObject>();
-                    moddedObject.GetObject<Text>(0).text = od.text;                    
+                    moddedObject.GetObject<Text>(0).text = od.text;
                     Image image = moddedObject.GetObject<Image>(1);
                     image.enabled = sprite;
                     image.sprite = sprite;

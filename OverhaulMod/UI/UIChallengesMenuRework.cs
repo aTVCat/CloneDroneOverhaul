@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -105,19 +104,19 @@ namespace OverhaulMod.UI
 
             ChallengeDefinition[] challenges = ChallengeManager.Instance.GetChallenges(isCoop);
             if (challenges.IsNullOrEmpty())
-                return;            
+                return;
 
             foreach (ChallengeDefinition challengeDefinition in challenges)
             {
                 displayingChallenges.Add(challengeDefinition);
                 bool hasCompleted = ChallengeManager.Instance.HasCompletedChallenge(challengeDefinition.ChallengeID);
 
-                UnityAction action = delegate
+                void action()
                 {
                     OnChallengeClicked(challengeDefinition);
-                };
+                }
 
-                UnityAction leaderboardAction = delegate
+                void leaderboardAction()
                 {
                     string fileName = $"{GameDataManager.Instance.getChallengeHighScoreSavePath(challengeDefinition.ChallengeID)}.json";
                     List<HighScoreData> highScores;
@@ -130,7 +129,7 @@ namespace OverhaulMod.UI
                         highScores = new List<HighScoreData>();
                     }
                     ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
-                };
+                }
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
                 Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.ImageSprite : challengeDefinition.ImageSprite;

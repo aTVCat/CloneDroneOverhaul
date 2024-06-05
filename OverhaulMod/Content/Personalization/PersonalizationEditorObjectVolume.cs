@@ -180,7 +180,7 @@ namespace OverhaulMod.Content.Personalization
                         } while (i < frame.Voxels.Length);
 
                         List<ColorPairFloat> colorPairs = new List<ColorPairFloat>();
-                        foreach (var color in colors)
+                        foreach (Color32 color in colors)
                             colorPairs.Add(new ColorPairFloat(color, color));
 
                         colorReplacements = PersonalizationManager.Instance.GetStringFromColorPairs(colorPairs);

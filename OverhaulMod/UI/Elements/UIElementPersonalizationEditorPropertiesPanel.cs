@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using PicaVoxel;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -111,7 +110,7 @@ namespace OverhaulMod.UI
 
         public void OnEditVolumeColorsButtonClicked()
         {
-            var volume = m_volume;
+            PersonalizationEditorObjectVolume volume = m_volume;
             if (!volume)
                 return;
 
@@ -121,7 +120,7 @@ namespace OverhaulMod.UI
 
         public void OnVolumeColorReplacementsChanged(string str)
         {
-            var volume = m_volume;
+            PersonalizationEditorObjectVolume volume = m_volume;
             if (volume)
                 volume.colorReplacements = str;
         }

@@ -29,7 +29,7 @@ namespace OverhaulMod.Patches
             if (!__instance.GameThemeData)
             {
                 GameUIThemeData gameUIThemeData = ModCache.gameUIThemeData;
-                if(gameUIThemeData)
+                if (gameUIThemeData)
                     __instance.GameThemeData = gameUIThemeData;
             }
         }

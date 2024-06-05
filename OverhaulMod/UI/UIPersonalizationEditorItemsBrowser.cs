@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            if(list != null)
+            if (list != null)
                 foreach (PersonalizationItemInfo item in list)
                 {
                     ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
                     });
                 }
 
-            if(exceptions != null)
+            if (exceptions != null)
                 foreach (KeyValuePair<string, System.Exception> keyValue in exceptions)
                 {
                     ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);

@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
                 return GameModeManager.IsOnTitleScreen();
             }
         }
-        
+
         public bool forceHide
         {
             get;

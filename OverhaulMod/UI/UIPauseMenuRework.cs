@@ -75,6 +75,9 @@ namespace OverhaulMod.UI
         [UIElement("StartMatchButton")]
         private readonly Button m_startMatchButton;
 
+        [UIElement("StartMatchButtonText")]
+        private readonly Text m_startMatchButtonText;
+
         [UIElementAction(nameof(OnSkipLevelButtonClicked), false)]
         [UIElement("SkipLevelButton")]
         private readonly Button m_skipLevelButton;
@@ -84,16 +87,6 @@ namespace OverhaulMod.UI
 
         [UIElement("ConfirmMainMenuText", false)]
         private readonly GameObject m_confirmMainMenuTextObject;
-
-        [UIElement("PlayerListOld", false)]
-        private readonly GameObject m_playerListOldObject;
-
-        [UIElement("PlayerDisplayPrefab", false)]
-        private readonly ModdedObject m_playerDisplayOld;
-
-        [UIElement("PlayerDisplayContainer")]
-        private readonly Transform m_playerDisplayContainerOld;
-
 
         [UIElement("WorkshopPanel")]
         private readonly GameObject m_workshopPanelObject;
@@ -118,6 +111,18 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnWorkshopLevelInfoButtonClicked))]
         [UIElement("SteamPageButton")]
         private readonly Button m_workshopLevelPageButton;
+
+        [UIElement("PlayerList", false)]
+        private readonly GameObject m_playerInfoListObject;
+
+        [UIElement("PlayerSpecialStatLabel")]
+        private readonly Text m_playerInfoSpecialStatLabel;
+
+        [UIElement("PlayerInfoDisplay", false)]
+        private readonly ModdedObject m_playerInfoDisplayPrefab;
+
+        [UIElement("PlayerInfoDisplayContainer")]
+        private readonly Transform m_playerInfoDisplayContainer;
 
         private ulong m_refreshedWorkshopPanelForItem;
 
@@ -166,9 +171,19 @@ namespace OverhaulMod.UI
 
             ArenaCoopManager arenaCoopManager = ArenaCoopManager.Instance;
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
-            bool flag1 = battleRoyaleManager && (battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.InWaitingArea) || battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted));
-            bool flag2 = arenaCoopManager && !arenaCoopManager.IsMatchStarted();
-            m_startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (flag1 || flag2));
+            bool isBattleRoyale = battleRoyaleManager;
+            bool isCoop = arenaCoopManager;
+
+            bool isBattleRoyaleWaitingArea = isBattleRoyale && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.InWaitingArea);
+            bool isBattleRoyaleFightStarted = isBattleRoyale && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted);
+            bool isCoopMatchNotStarted = isCoop && !arenaCoopManager.IsMatchStarted();
+
+            m_startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (isBattleRoyaleWaitingArea || isBattleRoyaleFightStarted || isCoopMatchNotStarted));
+            if (isCoopMatchNotStarted || isBattleRoyaleWaitingArea)
+                m_startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!");
+            else if (isBattleRoyaleFightStarted)
+                m_startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!");
+
             m_skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             m_returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
 
@@ -183,25 +198,39 @@ namespace OverhaulMod.UI
         private void refreshPlayers()
         {
             bool isInMultiplayer = GameModeManager.IsMultiplayer();
-            m_playerListOldObject.SetActive(isInMultiplayer);
+            m_playerInfoListObject.SetActive(isInMultiplayer);
             if (!isInMultiplayer)
                 return;
 
-            if (m_playerDisplayContainerOld.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_playerDisplayContainerOld);
+            if (m_playerInfoDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_playerInfoDisplayContainer);
 
             MultiplayerPlayerInfoManager multiplayerPlayerInfoManager = MultiplayerPlayerInfoManager.Instance;
             if (!multiplayerPlayerInfoManager)
                 return;
 
-            var infoStates = multiplayerPlayerInfoManager.GetAllPlayerInfoStates();
+            System.Collections.Generic.List<MultiplayerPlayerInfoState> infoStates = multiplayerPlayerInfoManager.GetAllPlayerInfoStates();
             if (infoStates.IsNullOrEmpty())
                 return;
 
             bool canShowWins = BattleRoyaleManager.Instance;
+            Color killsColor = ModParseUtils.TryParseToColor("EC2711", Color.red);
+            Color winsColor = Color.white;
+
+            Text specialStatLabel = m_playerInfoSpecialStatLabel;
+            if (canShowWins)
+            {
+                specialStatLabel.color = winsColor;
+                specialStatLabel.text = "Wins";
+            }
+            else
+            {
+                specialStatLabel.color = killsColor;
+                specialStatLabel.text = "Kills";
+            }
 
             int index = -1;
-            foreach(var infoState in infoStates)
+            foreach (MultiplayerPlayerInfoState infoState in infoStates)
             {
                 index++;
                 if (!infoState || infoState.IsDetached())
@@ -217,21 +246,21 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
-                ModdedObject playerDisplay = Instantiate(m_playerDisplayOld, m_playerDisplayContainerOld);
+                ModdedObject playerDisplay = Instantiate(m_playerInfoDisplayPrefab, m_playerInfoDisplayContainer);
                 playerDisplay.gameObject.SetActive(true);
                 playerDisplay.GetObject<Text>(0).text = playerInfoState.DisplayName;
                 Text countLabel = playerDisplay.GetObject<Text>(1);
                 if (canShowWins)
                 {
-                    countLabel.color = ModParseUtils.TryParseToColor("BFBFBF", Color.gray);
+                    countLabel.color = winsColor;
                     countLabel.text = playerInfoState.LastBotStandingWins.ToString();
                 }
                 else
                 {
-                    countLabel.color = ModParseUtils.TryParseToColor("F84141", Color.red);
+                    countLabel.color = killsColor;
                     countLabel.text = playerInfoState.Kills.ToString();
                 }
-                playerDisplay.GetObject<GameObject>(3).SetActive(index % 2 == 0);
+                playerDisplay.GetObject<Text>(2).text = GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)playerInfoState.PlatformID);
             }
         }
 
@@ -254,7 +283,13 @@ namespace OverhaulMod.UI
             {
                 m_refreshedWorkshopPanelForItem = itemId;
 
-                m_workshopLevelTitleText.text = item.Title;
+                Text titleText = m_workshopLevelTitleText;
+                titleText.text = item.Title;
+                if (item.Title.Contains("color="))
+                    titleText.color = Color.white;
+                else
+                    titleText.color = ModParseUtils.TryParseToColor("#FF4040", Color.red);
+
                 if (!item.CreatorName.IsNullOrEmpty() && item.CreatorName != "[unknown]")
                     m_workshopLevelCreatorText.text = $"By {item.CreatorName}";
                 else
@@ -365,6 +400,7 @@ namespace OverhaulMod.UI
         public void OnStartMatchButtonClicked()
         {
             GameUIRoot.Instance.EscMenu.OnStartBattleRoyaleLevelClicked();
+            Hide();
         }
 
         public void OnSkipLevelButtonClicked()
@@ -392,6 +428,60 @@ namespace OverhaulMod.UI
         public void OnWorkshopLevelInfoButtonClicked()
         {
 
+        }
+
+        public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)
+        {
+            if (!colored)
+            {
+                switch (login)
+                {
+                    case PlayFab.ClientModels.LoginIdentityProvider.Custom:
+                        return "Custom";
+                    case PlayFab.ClientModels.LoginIdentityProvider.CustomServer:
+                        return "Custom Server";
+
+                    case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
+                        return "Switch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
+                        return "Switch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
+                        return "PlayFab";
+                    case PlayFab.ClientModels.LoginIdentityProvider.PSN:
+                        return "PSN";
+                    case PlayFab.ClientModels.LoginIdentityProvider.Steam:
+                        return "Steam";
+                    case PlayFab.ClientModels.LoginIdentityProvider.Twitch:
+                        return "Twitch";
+                    case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
+                        return "XBox";
+                }
+                return "N/A";
+            }
+
+            switch (login)
+            {
+                case PlayFab.ClientModels.LoginIdentityProvider.Custom:
+                    return "<color=#cacaca>Custom</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.CustomServer:
+                    return "<color=#cacaca>Custom Server</color>";
+
+                case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
+                    return "<color=#FF3B26>Switch</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
+                    return "<color=#FF3B26>Switch</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
+                    return "<color=#ffffff>PlayFab</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.PSN:
+                    return "<color=#4F85FF>PSN</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.Steam:
+                    return "<color=#2769E5>Steam</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.Twitch:
+                    return "<color=#A426E4>Twitch</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
+                    return "<color=#0DB30F>XBox</color>";
+            }
+            return "<color=#ffffff>N/A</color>";
         }
     }
 }

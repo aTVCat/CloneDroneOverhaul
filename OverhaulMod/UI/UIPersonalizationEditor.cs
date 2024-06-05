@@ -27,7 +27,7 @@ namespace OverhaulMod.UI
         private readonly Button m_sendToVerificationButton;
 
         [UIElement("DeveloperPanel", false)]
-        private RectTransform m_developerPanel;
+        private readonly RectTransform m_developerPanel;
 
         [UIElement("ToolBar")]
         public RectTransform ToolBarTransform;
@@ -101,7 +101,7 @@ namespace OverhaulMod.UI
             else
                 windowManager.ShowWindow(InspectorWindowID);
 
-            if(ObjectPropertiesWindowID == null)
+            if (ObjectPropertiesWindowID == null)
                 ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(ObjectPropertiesWindowID);

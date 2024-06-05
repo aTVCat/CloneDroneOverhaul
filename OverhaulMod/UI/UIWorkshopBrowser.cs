@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.WebRequestMethods;
 
 namespace OverhaulMod.UI
 {
@@ -466,7 +465,7 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    if(browseChildrenOfCollection != default)
+                    if (browseChildrenOfCollection != default)
                     {
                         success = ModSteamUGCUtils.GetWorkshopItem(browseChildrenOfCollection, onGotItem, onError, null);
                     }
@@ -602,7 +601,7 @@ namespace OverhaulMod.UI
 
             if (collections)
             {
-                Vector2 vector= m_mainBG.sizeDelta;
+                Vector2 vector = m_mainBG.sizeDelta;
                 vector.y = -25f;
                 m_mainBG.sizeDelta = vector;
             }
@@ -619,7 +618,7 @@ namespace OverhaulMod.UI
             InputField inputField = m_searchBox;
             bool makeInteractable = !browseCollections && sourceType == 0;
 
-            if(!makeInteractable && inputField.IsActive())
+            if (!makeInteractable && inputField.IsActive())
                 inputField.DeactivateInputField();
 
             inputField.interactable = makeInteractable;
@@ -650,7 +649,7 @@ namespace OverhaulMod.UI
             bool isNull = !itemDisplay;
 
             m_contextMenu.gameObject.SetActive(!isNull);
-            if(!isNull)
+            if (!isNull)
                 m_contextMenu.position = itemDisplay.transform.position;
 
             m_contextMenuSubscribeButton.gameObject.SetActive(true);
@@ -666,7 +665,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                m_selectedItemDisplays.Remove(itemDisplay);
+                _ = m_selectedItemDisplays.Remove(itemDisplay);
             }
         }
 
@@ -677,7 +676,7 @@ namespace OverhaulMod.UI
 
         public void QuickPreview(WorkshopItem workshopItem)
         {
-            if(workshopItem == null)
+            if (workshopItem == null)
             {
                 m_quickPreview.gameObject.SetActive(false);
                 return;

@@ -92,7 +92,7 @@ namespace OverhaulMod.Visuals
                     vector.x = Mathf.Max(0.4f, transform.localScale.x / 4f);
 
                     newNormalModelTransform.localScale = vector;
-                    if(newFireModelTransform)
+                    if (newFireModelTransform)
                         newFireModelTransform.localScale = vector;
                 }
             }

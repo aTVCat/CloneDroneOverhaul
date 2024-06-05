@@ -2,8 +2,6 @@
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections;
-using System.IO;
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -59,7 +57,7 @@ namespace OverhaulMod.UI
 
         private PersonalizationCategory m_selectedCategory;
 
-        private UnityWebRequest m_webRequest;
+        private readonly UnityWebRequest m_webRequest;
 
         public override bool enableCursor => true;
 
@@ -205,7 +203,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            if(m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
+            if (m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
             {
                 m_notImplementedTextObject.SetActive(true);
             }

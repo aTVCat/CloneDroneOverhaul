@@ -1,5 +1,4 @@
-﻿using Mono.Unix.Native;
-using OverhaulMod.Content;
+﻿using OverhaulMod.Content;
 using OverhaulMod.UI.Attributes;
 using OverhaulMod.Utils;
 using Steamworks;
@@ -205,7 +204,7 @@ namespace OverhaulMod.UI
             base.Update();
 
             float d = Time.unscaledDeltaTime;
-            if(m_timeLeftToResumeTicker > 0f)
+            if (m_timeLeftToResumeTicker > 0f)
                 m_timeLeftToResumeTicker -= d;
 
             if (m_refreshDisplaysNextFrame)
@@ -239,7 +238,7 @@ namespace OverhaulMod.UI
             float xa = 0f;
             float xb = Mathf.Min(namePanel.rect.width - preferredWidth, 0f);
 
-            if(xb != 0f && m_timeLeftToResumeTicker <= 0f)
+            if (xb != 0f && m_timeLeftToResumeTicker <= 0f)
             {
                 float xbPositive = -xb;
                 float toAdd = d * (1f / Mathf.Clamp(xbPositive, 100f, 600f)) * EaseMultiplier;

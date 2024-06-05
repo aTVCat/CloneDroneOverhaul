@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Behaviours
@@ -16,7 +15,7 @@ namespace OverhaulMod.Patches.Behaviours
                 if (!m_targetTransform)
                 {
                     Transform guiRootTransform = ModCache.gameUIRoot.transform;
-                    for(int i = 0; i < guiRootTransform.childCount; i++)
+                    for (int i = 0; i < guiRootTransform.childCount; i++)
                     {
                         Transform child = guiRootTransform.GetChild(i);
                         if (child.name == "SpeechSubtitles")

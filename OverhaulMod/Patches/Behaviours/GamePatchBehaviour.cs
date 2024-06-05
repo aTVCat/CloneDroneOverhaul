@@ -62,7 +62,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void OnDestroy()
         {
-            if(!ModCore.isEnabled)
+            if (!ModCore.isEnabled)
                 UnPatch();
         }
     }

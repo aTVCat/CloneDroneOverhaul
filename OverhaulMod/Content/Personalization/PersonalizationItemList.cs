@@ -62,7 +62,7 @@ namespace OverhaulMod.Content.Personalization
                 Name = "Default",
                 EditorID = "lol",
                 ItemID = string.Empty,
-                Weapon = WeaponType.Shield ,
+                Weapon = WeaponType.Shield,
                 Category = PersonalizationCategory.WeaponSkins,
                 IsVerified = true,
             });
@@ -113,7 +113,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemInfo GetItem(string id)
         {
-            foreach (var item in GetItems())
+            foreach (PersonalizationItemInfo item in GetItems())
             {
                 if (item.ItemID == id)
                     return item;
@@ -129,9 +129,9 @@ namespace OverhaulMod.Content.Personalization
         public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory)
         {
             List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
-            foreach(var item in GetItems())
+            foreach (PersonalizationItemInfo item in GetItems())
             {
-                if(item.Category == personalizationCategory)
+                if (item.Category == personalizationCategory)
                 {
                     list.Add(item);
                 }

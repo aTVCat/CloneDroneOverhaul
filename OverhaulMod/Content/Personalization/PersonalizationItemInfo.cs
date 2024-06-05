@@ -107,7 +107,7 @@ namespace OverhaulMod.Content.Personalization
         public bool IsUnlocked(Character character)
         {
             if (!character || !character.IsAttachedAndAlive())
-                return false; 
+                return false;
 
             if (!IsExclusive())
                 return true;
@@ -116,7 +116,7 @@ namespace OverhaulMod.Content.Personalization
             string playFabId = isMainPlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
             CSteamID steamId = isMainPlayer ? ModUserInfo.localPlayerSteamID : default;
 
-            bool result = (!playFabId.IsNullOrEmpty() ? ExclusiveFor.Contains(playFabId) : false) || (steamId != default ? ExclusiveFor.Contains(steamId.ToString()) : false);
+            bool result = (!playFabId.IsNullOrEmpty() && ExclusiveFor.Contains(playFabId)) || (steamId != default && ExclusiveFor.Contains(steamId.ToString()));
 
             return character && (result || character.IsClone() || !character.IsMainPlayer());
         }
