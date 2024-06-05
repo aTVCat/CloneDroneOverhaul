@@ -97,19 +97,19 @@ namespace OverhaulMod.UI
         {
             ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
             if (InspectorWindowID == null)
-                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item", Vector2.one * -1f, Vector2.right * -45f);
+                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(InspectorWindowID);
 
             if(ObjectPropertiesWindowID == null)
-                ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, Vector2.right * -45f);
+                ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(ObjectPropertiesWindowID);
 
             if (PersonalizationEditorManager.Instance.canVerifyItems)
             {
                 if (DeveloperWindowID == null)
-                    DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, (Vector2.up * 45f) + (Vector2.right * 45f));
+                    DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
                 else
                     windowManager.ShowWindow(DeveloperWindowID);
             }

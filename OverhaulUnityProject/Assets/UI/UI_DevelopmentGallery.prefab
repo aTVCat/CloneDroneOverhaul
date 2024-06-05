@@ -244,7 +244,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Mod development backstage images
+  m_Text: Screenshots made during development
 --- !u!114 &867911203685019391
 MonoBehaviour:
   m_ObjectHideFlags: 0

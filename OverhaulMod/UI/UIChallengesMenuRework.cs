@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -104,32 +105,32 @@ namespace OverhaulMod.UI
 
             ChallengeDefinition[] challenges = ChallengeManager.Instance.GetChallenges(isCoop);
             if (challenges.IsNullOrEmpty())
-                return;
+                return;            
 
             foreach (ChallengeDefinition challengeDefinition in challenges)
             {
                 displayingChallenges.Add(challengeDefinition);
                 bool hasCompleted = ChallengeManager.Instance.HasCompletedChallenge(challengeDefinition.ChallengeID);
 
-                void action()
+                UnityAction action = delegate
                 {
                     OnChallengeClicked(challengeDefinition);
-                }
+                };
 
-                void leaderboardAction()
+                UnityAction leaderboardAction = delegate
                 {
                     string fileName = $"{GameDataManager.Instance.getChallengeHighScoreSavePath(challengeDefinition.ChallengeID)}.json";
                     List<HighScoreData> highScores;
                     try
                     {
-                        highScores = ModDataManager.Instance.DeserializeFile<List<HighScoreData>>(fileName, false);
+                        highScores = ModJsonUtils.DeserializeStream<List<HighScoreData>>(DataRepository.Instance.GetFullPath(fileName));
                     }
                     catch
                     {
                         highScores = new List<HighScoreData>();
                     }
                     ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
-                }
+                };
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
                 Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.ImageSprite : challengeDefinition.ImageSprite;

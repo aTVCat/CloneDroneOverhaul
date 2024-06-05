@@ -1,4 +1,5 @@
 ﻿using InternalModBot;
+using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +8,6 @@ namespace OverhaulMod.UI
 {
     public class UIPauseMenuRework : OverhaulUIBehaviour
     {
-        public static readonly bool UseMessagePopup = false;
-
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("LegacyUIButton")]
         private readonly Button m_legacyUIButton;
@@ -86,14 +85,41 @@ namespace OverhaulMod.UI
         [UIElement("ConfirmMainMenuText", false)]
         private readonly GameObject m_confirmMainMenuTextObject;
 
-        [UIElement("PlayerList", false)]
-        private readonly GameObject m_playerListObject;
+        [UIElement("PlayerListOld", false)]
+        private readonly GameObject m_playerListOldObject;
 
         [UIElement("PlayerDisplayPrefab", false)]
-        private readonly ModdedObject m_playerDisplay;
+        private readonly ModdedObject m_playerDisplayOld;
 
         [UIElement("PlayerDisplayContainer")]
-        private readonly Transform m_playerDisplayContainer;
+        private readonly Transform m_playerDisplayContainerOld;
+
+
+        [UIElement("WorkshopPanel")]
+        private readonly GameObject m_workshopPanelObject;
+
+        [UIElement("WorkshopPanel")]
+        private readonly RectTransform m_workshopPanelTransform;
+
+        [UIElement("LevelName")]
+        private readonly Text m_workshopLevelTitleText;
+
+        [UIElement("LevelCreator")]
+        private readonly Text m_workshopLevelCreatorText;
+
+        [UIElementAction(nameof(OnWorkshopLevelUpVoteButtonClicked))]
+        [UIElement("UpVoteButton")]
+        private readonly Button m_workshopLevelUpVoteButton;
+
+        [UIElementAction(nameof(OnWorkshopLevelDownVoteButtonClicked))]
+        [UIElement("DownVoteButton")]
+        private readonly Button m_workshopLevelDownVoteButton;
+
+        [UIElementAction(nameof(OnWorkshopLevelInfoButtonClicked))]
+        [UIElement("SteamPageButton")]
+        private readonly Button m_workshopLevelPageButton;
+
+        private ulong m_refreshedWorkshopPanelForItem;
 
         public override bool enableCursor
         {
@@ -108,11 +134,13 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
+            TimeManager.Instance.OnGamePaused();
+            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+
             refreshLogo();
             refreshButtons();
             refreshPlayers();
-            TimeManager.Instance.OnGamePaused();
-            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+            refreshWorkshopPanel();
         }
 
         public override void Hide()
@@ -155,12 +183,12 @@ namespace OverhaulMod.UI
         private void refreshPlayers()
         {
             bool isInMultiplayer = GameModeManager.IsMultiplayer();
-            m_playerListObject.SetActive(isInMultiplayer);
+            m_playerListOldObject.SetActive(isInMultiplayer);
             if (!isInMultiplayer)
                 return;
 
-            if (m_playerDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_playerDisplayContainer);
+            if (m_playerDisplayContainerOld.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_playerDisplayContainerOld);
 
             MultiplayerPlayerInfoManager multiplayerPlayerInfoManager = MultiplayerPlayerInfoManager.Instance;
             if (!multiplayerPlayerInfoManager)
@@ -189,7 +217,7 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
-                ModdedObject playerDisplay = Instantiate(m_playerDisplay, m_playerDisplayContainer);
+                ModdedObject playerDisplay = Instantiate(m_playerDisplayOld, m_playerDisplayContainerOld);
                 playerDisplay.gameObject.SetActive(true);
                 playerDisplay.GetObject<Text>(0).text = playerInfoState.DisplayName;
                 Text countLabel = playerDisplay.GetObject<Text>(1);
@@ -204,6 +232,55 @@ namespace OverhaulMod.UI
                     countLabel.text = playerInfoState.Kills.ToString();
                 }
                 playerDisplay.GetObject<GameObject>(3).SetActive(index % 2 == 0);
+            }
+        }
+
+        private void refreshWorkshopPanel()
+        {
+            SteamWorkshopItem item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            bool shouldShowPanel = item != null;
+
+            bool lostContentModEnabled = ModSpecialUtils.IsModEnabled("cool-hidden-content");
+            Vector2 anchoredPosition = m_workshopPanelTransform.anchoredPosition;
+            anchoredPosition.y = lostContentModEnabled ? 50f : 15f;
+            m_workshopPanelTransform.anchoredPosition = anchoredPosition;
+            m_workshopPanelObject.SetActive(shouldShowPanel);
+
+            if (!shouldShowPanel)
+                return;
+
+            ulong itemId = (ulong)item.WorkshopItemID;
+            if (itemId != m_refreshedWorkshopPanelForItem)
+            {
+                m_refreshedWorkshopPanelForItem = itemId;
+
+                m_workshopLevelTitleText.text = item.Title;
+                if (!item.CreatorName.IsNullOrEmpty() && item.CreatorName != "[unknown]")
+                    m_workshopLevelCreatorText.text = $"By {item.CreatorName}";
+                else
+                    m_workshopLevelCreatorText.text = $"By {item.CreatorID}";
+
+                m_workshopLevelUpVoteButton.gameObject.SetActive(false);
+                m_workshopLevelDownVoteButton.gameObject.SetActive(false);
+
+                ModSteamUGCUtils.GetUserVote(item.WorkshopItemID, delegate (WorkshopItemVote workshopItemVote)
+                {
+                    SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+                    if (item != item2)
+                        return;
+
+                    m_workshopLevelUpVoteButton.gameObject.SetActive(true);
+                    m_workshopLevelDownVoteButton.gameObject.SetActive(true);
+
+                    if (!workshopItemVote.HasVoted)
+                    {
+                        m_workshopLevelUpVoteButton.interactable = true;
+                        m_workshopLevelDownVoteButton.interactable = true;
+                        return;
+                    }
+                    m_workshopLevelUpVoteButton.interactable = !workshopItemVote.VoteValue;
+                    m_workshopLevelDownVoteButton.interactable = workshopItemVote.VoteValue;
+                });
             }
         }
 
@@ -300,6 +377,21 @@ namespace OverhaulMod.UI
         {
             Hide();
             ModUIUtils.ShowVanillaEscMenu();
+        }
+
+        public void OnWorkshopLevelUpVoteButtonClicked()
+        {
+
+        }
+
+        public void OnWorkshopLevelDownVoteButtonClicked()
+        {
+
+        }
+
+        public void OnWorkshopLevelInfoButtonClicked()
+        {
+
         }
     }
 }

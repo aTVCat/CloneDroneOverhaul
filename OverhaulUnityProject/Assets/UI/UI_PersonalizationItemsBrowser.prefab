@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7590033453331254668}
   - component: {fileID: 6210827742637125727}
   m_Layer: 5
-  m_Name: LockedIndicator
+  m_Name: ExclusivityIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f7cd18c7903bbf4b94c09d18f31448c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e14d36278c5c68947aa1bb578c070930, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1039,7 +1039,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 477a989ae8371c84eab1a5d3e2de38fa, type: 3}
-    m_FontSize: 16
+    m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1

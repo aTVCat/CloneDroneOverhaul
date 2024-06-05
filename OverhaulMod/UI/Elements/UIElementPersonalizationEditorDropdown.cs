@@ -39,12 +39,14 @@ namespace OverhaulMod.UI
             Show();
             SetPosition(rectTransform);
             Populate(list);
+
+            base.transform.SetAsLastSibling();
         }
 
         public void SetPosition(RectTransform rectTransform)
         {
             var vector = base.transform.position;
-            vector.x = rectTransform.position.x;
+            vector.x = rectTransform.position.x - 1f;
             base.transform.position = vector;
         }
 
