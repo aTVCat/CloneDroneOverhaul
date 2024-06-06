@@ -225,5 +225,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.Environment.FloatingDustManager"/>
         /// </summary>
         public const string ENABLE_FLOATING_DUST = "EnableFloatingDust";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string TWEAK_BLOOM = "TweakBloom";
     }
 }

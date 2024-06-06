@@ -26,6 +26,16 @@ namespace OverhaulMod.Utils
             return name.Substring(name.LastIndexOf('\\') + 1);
         }
 
+        public static bool CreateDirectoryIfNotExists(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            return false;
+        }
+
         public static void WriteText(string @string, string path)
         {
             FileMode fileMode = File.Exists(path) ? FileMode.Truncate : FileMode.Create;

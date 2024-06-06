@@ -172,7 +172,7 @@ namespace OverhaulMod
                 result1.uiName = fullName;
 
 #if DEBUG
-                Stopwatch stopwatch = Stopwatch.StartNew();
+                System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 result1.InitializeUI();
                 stopwatch.Stop();
                 UnityEngine.Debug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");

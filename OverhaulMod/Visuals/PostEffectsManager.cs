@@ -14,6 +14,9 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_BLOOM, true)]
         public static bool EnableBloom;
 
+        [ModSetting(ModSettingsConstants.TWEAK_BLOOM, true)]
+        public static bool TweakBloom;
+
         public override void Awake()
         {
             base.Awake();
@@ -66,9 +69,18 @@ namespace OverhaulMod.Visuals
             Bloom bloom = camera.GetComponent<Bloom>();
             if (bloom)
             {
-                bloom.bloomBlurIterations = 4;
-                bloom.bloomIntensity = 0.5f;
-                bloom.bloomThreshold = 1f;
+                if (TweakBloom)
+                {
+                    bloom.bloomBlurIterations = 4;
+                    bloom.bloomIntensity = 0.5f;
+                    bloom.bloomThreshold = 1f;
+                }
+                else
+                {
+                    bloom.bloomBlurIterations = 2;
+                    bloom.bloomIntensity = 0.5f;
+                    bloom.bloomThreshold = 0.9f;
+                }
                 bloom.enabled = EnableBloom;
             }
         }

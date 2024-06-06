@@ -36,32 +36,28 @@ namespace OverhaulMod.Engine
             if (fileStream != null)
             {
                 writeToFile(fileStream, createDefaultDataContainer());
-                fileStream.Dispose();
             }
             else
             {
                 ModSettingsDataContainer modSettingsDataContainer;
                 try
                 {
-                    using (fileStream = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Read))
-                    {
-                        byte[] array = new byte[fileStream.Length];
-                        _ = fileStream.Read(array, 0, array.Length);
+                    fileStream = new FileStream(settingsFilePath, FileMode.Open, FileAccess.Read);
+                    byte[] array = new byte[fileStream.Length];
+                    _ = fileStream.Read(array, 0, array.Length);
 
-                        modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModIOUtils.GetString(array));
-                        modSettingsDataContainer.FixValues();
-                    }
+                    modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModIOUtils.GetString(array));
+                    modSettingsDataContainer.FixValues();
                 }
                 catch
                 {
-                    if (fileStream != null)
-                        fileStream.Dispose();
-
                     modSettingsDataContainer = new ModSettingsDataContainer();
                     modSettingsDataContainer.FixValues();
                 }
                 dataContainer = modSettingsDataContainer;
             }
+            if(fileStream != null)
+                fileStream.Dispose();
         }
 
         private void OnApplicationQuit()

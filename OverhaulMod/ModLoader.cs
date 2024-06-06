@@ -151,6 +151,12 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
+            ModIOUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
+            ModIOUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
+            ModIOUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
+            ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
+            ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
+
             if (!Directory.Exists(ModCore.modDataFolder))
                 _ = Directory.CreateDirectory(ModCore.modDataFolder);
 
@@ -184,6 +190,11 @@ namespace OverhaulMod
             {
                 PostEffectsManager.Instance.RefreshCameraPostEffects();
             }, ModSettingsConstants.ENABLE_BLOOM);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                PostEffectsManager.Instance.RefreshCameraPostEffects();
+            }, ModSettingsConstants.TWEAK_BLOOM);
         }
 
         private static void loadGameUIThemeData()
@@ -208,6 +219,7 @@ namespace OverhaulMod
                 ModCache.gameUIThemeData = gameUIThemeData;
             }
         }
+
 
         public static bool HasToLoad()
         {

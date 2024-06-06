@@ -93,10 +93,10 @@ namespace OverhaulMod.Engine
                         {
                             case LogLevel.Error:
                             case LogLevel.Warn:
-                                Debug.LogWarning($"Discord RPC: {message}");
+                                UnityEngine.Debug.LogWarning($"Discord RPC: {message}");
                                 break;
                             default:
-                                Debug.Log($"Discord RPC: {message}");
+                                UnityEngine.Debug.Log($"Discord RPC: {message}");
                                 break;
                         }
                     });

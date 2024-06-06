@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Content;
-using OverhaulMod.UI.Attributes;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
@@ -542,6 +541,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
+            m_voteUpButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 WorkshopItem item2 = m_workshopItem;
@@ -559,8 +559,6 @@ namespace OverhaulMod.UI
 
                 m_voteUpButton.interactable = true;
             });
-
-            m_voteUpButton.interactable = false;
         }
 
         public void OnVoteDownButtonClicked()
@@ -569,6 +567,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
+            m_voteDownButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 WorkshopItem item2 = m_workshopItem;
@@ -586,8 +585,6 @@ namespace OverhaulMod.UI
 
                 m_voteDownButton.interactable = true;
             });
-
-            m_voteDownButton.interactable = false;
         }
 
         public void OnFavoriteButtonClicked()

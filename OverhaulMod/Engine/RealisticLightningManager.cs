@@ -144,13 +144,6 @@ namespace OverhaulMod.Engine
             if (realisticLightningInfoList == null || realisticLightningInfoList.LightningInfos.IsNullOrEmpty())
                 return null;
 
-#if DEBUG
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            RealisticLightningInfo info = realisticLightningInfoList.GetLightningInfo(prefabName);
-            stopwatch.Stop();
-            UnityEngine.Debug.Log($"Got lightning info in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
-            return info;
-#endif
             return realisticLightningInfoList.GetLightningInfo(prefabName);
         }
 

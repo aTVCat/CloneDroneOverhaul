@@ -1,6 +1,7 @@
 ﻿using InternalModBot;
 using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -123,6 +124,9 @@ namespace OverhaulMod.UI
 
         [UIElement("PlayerInfoDisplayContainer")]
         private readonly Transform m_playerInfoDisplayContainer;
+
+        [UIElement("CodePanel", false)]
+        private readonly GameObject m_codePanelObject;
 
         private ulong m_refreshedWorkshopPanelForItem;
 
@@ -266,7 +270,16 @@ namespace OverhaulMod.UI
 
         private void refreshWorkshopPanel()
         {
-            SteamWorkshopItem item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            SteamWorkshopItem item;
+            try
+            {
+                item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            }
+            catch
+            {
+                item = null;
+            }
+
             bool shouldShowPanel = item != null;
 
             bool lostContentModEnabled = ModSpecialUtils.IsModEnabled("cool-hidden-content");
@@ -417,17 +430,67 @@ namespace OverhaulMod.UI
 
         public void OnWorkshopLevelUpVoteButtonClicked()
         {
+            SteamWorkshopItem item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            if (item == null)
+                return;
 
+            m_workshopLevelUpVoteButton.interactable = false;
+            ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
+            {
+                SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+                if (item != item2)
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                {
+                    m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
+                    m_workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
+                    return;
+                }
+
+                m_workshopLevelUpVoteButton.interactable = true;
+            });
         }
 
         public void OnWorkshopLevelDownVoteButtonClicked()
         {
+            SteamWorkshopItem item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            if (item == null)
+                return;
 
+            m_workshopLevelDownVoteButton.interactable = false;
+            ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
+            {
+                SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+                if (item != item2)
+                    return;
+
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                else
+                {
+                    m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
+                    m_workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
+                    return;
+                }
+
+                m_workshopLevelDownVoteButton.interactable = true;
+            });
         }
 
         public void OnWorkshopLevelInfoButtonClicked()
         {
+            SteamWorkshopItem item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
+            if (item == null)
+                return;
 
+            string link = item.GetURL();
+            if (SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
+                SteamFriends.ActivateGameOverlayToWebPage(link);
+            else
+                Application.OpenURL(link);
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)

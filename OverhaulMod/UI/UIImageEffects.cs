@@ -33,6 +33,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_vignetteImage.enabled = false;
+            m_ditheringImage.enabled = false;
 
             if (ditheringTextures == null)
                 GenerateNoiseTextures();

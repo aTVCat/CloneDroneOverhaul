@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OverhaulMod.UI.Attributes
+namespace OverhaulMod.UI
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class ShowTooltipOnHighLightAttribute : Attribute
