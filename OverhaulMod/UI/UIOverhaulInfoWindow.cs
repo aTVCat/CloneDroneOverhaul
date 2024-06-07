@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
             {
                 AddKeyValueDisplay("Compilation date", ModBuildInfo.extraInfo.CompileTime.ToShortDateString());
             }
-            AddKeyValueDisplay("Milestone", ModBuildInfo.milestoneNaming);
+            AddKeyValueDisplay("Milestone", ModBuildInfo.milestone);
             AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
             AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
             AddKeyValueDisplay("Is internal release?", ModBuildInfo.internalRelease.ToString());

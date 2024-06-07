@@ -230,5 +230,20 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string TWEAK_BLOOM = "TweakBloom";
+
+        /// <summary>
+        /// <see cref="Engine.TransitionManager"/>
+        /// </summary>
+        public const string OVERHAUL_SCENE_TRANSITIONS = "OverhaulSceneTransitions";
+
+        /// <summary>
+        /// <see cref="Engine.TransitionManager"/>
+        /// </summary>
+        public const string OVERHAUL_NON_SCENE_TRANSITIONS = "OverhaulNonSceneTransitions";
+
+        /// <summary>
+        /// <see cref="Engine.TransitionManager"/>
+        /// </summary>
+        public const string TRANSITION_ON_STARTUP = "TransitionOnStart";
     }
 }

@@ -20,6 +20,12 @@ namespace OverhaulMod.UI
         public void OnRestartButtonClicked()
         {
             Hide();
+
+            if (!TransitionManager.OverhaulNonSceneTransitions)
+            {
+                GameFlowManager.Instance.ResetGameAndSpawnHuman(true);
+                return;
+            }
             TransitionManager.Instance.DoNonSceneTransition(resetGameCoroutine());
         }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -558,7 +559,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Multiplayer settings");
             _ = pageBuilder.Header3("Preferred region");
             _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
-            _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
             _ = pageBuilder.Button("Manage muted players", delegate
             {
                 GameUIRoot.Instance.BlockListSettingsUI.Show();
@@ -652,19 +652,38 @@ namespace OverhaulMod.UI
 
         private void populateAdvancedPage(SettingsMenu settingsMenu)
         {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            pageBuilder.Header1("Transitions");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, value, true);
+            }, "Better scene transitions");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, value, true);
+            }, "Better in-game transitions");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP, value, true);
+            }, "Transition on startup");
+            pageBuilder.Header4("Doborog logo will be smoothly faded out on game start");
+
+            _ = pageBuilder.Header1("Multiplayer settings");
+            _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
+            pageBuilder.Header4("Improves ping on some machines, but can also make it worse");
+
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
             {
-                PageBuilder pageBuilder1 = new PageBuilder(this);
-                _ = pageBuilder1.Header1("This page is not implemented yet.");
+                _ = pageBuilder.Header1("More settings coming soon.");
                 return;
             }
 
-            PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Advanced settings");
             _ = pageBuilder.Button("Switch save data", null);
             _ = pageBuilder.Button("Reset game settings", null);
             _ = pageBuilder.Button("Reset Overhaul settings", null);
             _ = pageBuilder.Button("Reset ALL settings", null);
+
             _ = pageBuilder.Header1("First person mode");
             _ = pageBuilder.Header3("Shield transparency");
             _ = pageBuilder.Slider(0f, 1f, false, 1f, null);

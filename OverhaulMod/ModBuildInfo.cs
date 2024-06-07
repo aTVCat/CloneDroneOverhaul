@@ -1,5 +1,5 @@
 ﻿//#define MODBOT_RELEASE
-//#define GITHUB_RELEASE
+#define GITHUB_RELEASE
 
 using OverhaulMod.Utils;
 using System;
@@ -155,11 +155,11 @@ namespace OverhaulMod
             }
         }
 
-        public static string milestoneNaming
+        public static string milestone
         {
             get
             {
-                return "Update pre-release";
+                return "Stable";
             }
         }
 

@@ -405,6 +405,14 @@ namespace OverhaulMod.UI
 
         public void OnLevelEditorButtonClicked()
         {
+            if (!TransitionManager.OverhaulNonSceneTransitions)
+            {
+                if (LevelManager.Instance.IsSpawningCurrentLevel())
+                    return;
+
+                m_titleScreenUI.OnLevelEditorButtonClicked();
+                return;
+            }
             TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
         }
 

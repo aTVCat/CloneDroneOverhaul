@@ -8,12 +8,22 @@ namespace OverhaulMod.Engine
 {
     public class TransitionManager : Singleton<TransitionManager>
     {
+        [ModSetting(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, true)]
+        public static bool OverhaulSceneTransitions;
+
+        [ModSetting(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, true)]
+        public static bool OverhaulNonSceneTransitions;
+
+        [ModSetting(ModSettingsConstants.TRANSITION_ON_STARTUP, true)]
+        public static bool TransitionOnStartup;
+
         private TransitionBehaviour m_transitionBehaviour;
 
         public override void Awake()
         {
             base.Awake();
-            DoTransition(null, Color.white, false, true, true, 0.1f);
+            if(TransitionOnStartup)
+                DoTransition(null, Color.white, false, true, true, 0.1f);
         }
 
         public void DoNonSceneTransition(IEnumerator coroutine)

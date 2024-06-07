@@ -22,11 +22,16 @@ namespace OverhaulMod.UI
         [UIElement("NewVersionLabel_Gameplay")]
         private readonly GameObject m_gameplayWatermark;
 
+        [UIElement("NewVersionLabel_Gameplay")]
+        private readonly RectTransform m_gameplayWatermarkTransform;
+
         [UIElement("DebugLabel_Gameplay")]
         private readonly GameObject m_gameplayDebugIcon;
 
         [UIElement("Watermark_Gameplay")]
         private readonly Text m_gameplayVersionText;
+
+        private bool m_refreshWidth;
 
         public static UIVersionLabel instance
         {
@@ -63,10 +68,11 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
             string versionString = debug ? ModBuildInfo.fullVersionString.Replace('/', '.') : ModBuildInfo.versionString;
 
-            m_versionText.text = "overhaul mod v" + versionString;
+            m_versionText.text = "v" + versionString;
             m_debugIcon.SetActive(debug);
             m_gameplayVersionText.text = "overhaul v" + versionString;
             m_gameplayDebugIcon.SetActive(debug);
+            m_refreshWidth = true;
 
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
@@ -79,6 +85,15 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
+            if (m_refreshWidth)
+            {
+                m_refreshWidth = false;
+                RectTransform rectTransform = m_gameplayWatermarkTransform;
+                Vector2 sideDelta = rectTransform.sizeDelta;
+                sideDelta.x = m_gameplayVersionText.preferredWidth + 15f;
+                rectTransform.sizeDelta = sideDelta;
+            }
+
             if (Time.frameCount % 10 != 0)
                 return;
 

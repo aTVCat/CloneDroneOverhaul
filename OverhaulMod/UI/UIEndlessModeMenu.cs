@@ -77,6 +77,12 @@ namespace OverhaulMod.UI
 
         public void OnPlayButtonClicked()
         {
+            if (!TransitionManager.OverhaulNonSceneTransitions)
+            {
+                Hide();
+                ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+                return;
+            }
             TransitionManager.Instance.DoNonSceneTransition(transitionCoroutine());
         }
 
