@@ -169,7 +169,7 @@ namespace OverhaulMod
                 transform.localScale = Vector3.one;
 
                 T result1 = gameObject.AddComponent<T>();
-                result1.uiName = fullName;
+                result1.Name = fullName;
 
 #if DEBUG
                 System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -266,7 +266,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.isElement && behaviour.enableCursor)
+                if (behaviour && !behaviour.IsElement && behaviour.enableCursor)
                     return true;
             }
             return false;
@@ -280,7 +280,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.isElement && behaviour.enableUIOverLogoMode)
+                if (behaviour && !behaviour.IsElement && behaviour.enableUIOverLogoMode)
                     return true;
             }
             return false;
@@ -294,7 +294,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.isElement && behaviour.hideTitleScreen)
+                if (behaviour && !behaviour.IsElement && behaviour.hideTitleScreen)
                     return true;
             }
             return false;
@@ -302,7 +302,7 @@ namespace OverhaulMod
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
-            _ = m_instantiatedUIs.Remove(uIBehaviour.uiName);
+            _ = m_instantiatedUIs.Remove(uIBehaviour.Name);
         }
 
         public enum UILayer

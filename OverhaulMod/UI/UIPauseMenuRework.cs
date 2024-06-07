@@ -116,6 +116,12 @@ namespace OverhaulMod.UI
         [UIElement("PlayerList", false)]
         private readonly GameObject m_playerInfoListObject;
 
+        [UIElement("PlayerList", false)]
+        private readonly RectTransform m_playerInfoListTransform;
+
+        [UIElement("PlayerListScrollRect")]
+        private readonly RectTransform m_playerListScrollRectTransform;
+
         [UIElement("PlayerSpecialStatLabel")]
         private readonly Text m_playerInfoSpecialStatLabel;
 
@@ -125,8 +131,25 @@ namespace OverhaulMod.UI
         [UIElement("PlayerInfoDisplayContainer")]
         private readonly Transform m_playerInfoDisplayContainer;
 
+        [UIElement("ExtrasContentDownload", typeof(UIElementAddonEmbed))]
+        private readonly UIElementAddonEmbed m_extrasAddonEmbed;
+
         [UIElement("CodePanel", false)]
         private readonly GameObject m_codePanelObject;
+
+        [UIElement("CodeField")]
+        private readonly InputField m_codeField;
+
+        [UIElementAction(nameof(OnCopyCodeButtonClicked))]
+        [UIElement("CopyCodeButton")]
+        private readonly Button m_copyCodeButton;
+
+        [UIElementAction(nameof(OnRevealCodeButtonClicked))]
+        [UIElement("RevealCodeButton")]
+        private readonly Button m_revealCodeButton;
+
+        [UIElement("PlayerIconLabel")]
+        private readonly GameObject m_playerIconLabelObject;
 
         private ulong m_refreshedWorkshopPanelForItem;
 
@@ -140,6 +163,13 @@ namespace OverhaulMod.UI
 
         public static bool disableOverhauledVersion { get; set; }
 
+        protected override void OnInitialized()
+        {
+            m_extrasAddonEmbed.addonId = ContentManager.EXTRAS_CONTENT_FOLDER_NAME;
+            m_extrasAddonEmbed.RefreshDisplays();
+            m_extrasAddonEmbed.onContentDownloaded.AddListener(refreshPlayers);
+        }
+
         public override void Show()
         {
             base.Show();
@@ -150,6 +180,7 @@ namespace OverhaulMod.UI
             refreshButtons();
             refreshPlayers();
             refreshWorkshopPanel();
+            refreshCodePanel();
         }
 
         public override void Hide()
@@ -206,6 +237,15 @@ namespace OverhaulMod.UI
             if (!isInMultiplayer)
                 return;
 
+            bool lostContentModEnabled = ModSpecialUtils.IsModEnabled("cool-hidden-content");
+            Vector2 sizeDelta = m_playerInfoListTransform.sizeDelta;
+            sizeDelta.y = lostContentModEnabled ? -145f : -110f;
+            m_playerInfoListTransform.sizeDelta = sizeDelta;
+
+            Vector2 sizeDelta2 = m_playerListScrollRectTransform.sizeDelta;
+            sizeDelta2.y = m_extrasAddonEmbed.ShouldBeHidden() ? -55f : -105f;
+            m_playerListScrollRectTransform.sizeDelta = sizeDelta2;
+
             if (m_playerInfoDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_playerInfoDisplayContainer);
 
@@ -217,6 +257,7 @@ namespace OverhaulMod.UI
             if (infoStates.IsNullOrEmpty())
                 return;
 
+            bool canShowIcons = m_extrasAddonEmbed.ShouldBeHidden();
             bool canShowWins = BattleRoyaleManager.Instance;
             Color killsColor = ModParseUtils.TryParseToColor("EC2711", Color.red);
             Color winsColor = Color.white;
@@ -232,6 +273,8 @@ namespace OverhaulMod.UI
                 specialStatLabel.color = killsColor;
                 specialStatLabel.text = "Kills";
             }
+
+            m_playerIconLabelObject.SetActive(canShowIcons);
 
             int index = -1;
             foreach (MultiplayerPlayerInfoState infoState in infoStates)
@@ -265,6 +308,13 @@ namespace OverhaulMod.UI
                     countLabel.text = playerInfoState.Kills.ToString();
                 }
                 playerDisplay.GetObject<Text>(2).text = GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)playerInfoState.PlatformID);
+                playerDisplay.GetObject<RawImage>(3).enabled = canShowIcons;
+                playerDisplay.GetObject<GameObject>(6).SetActive(canShowIcons);
+                playerDisplay.GetObject<GameObject>(7).SetActive(!canShowIcons);
+
+                UIElementPlayerInfoDisplay playerInfoDisplay = playerDisplay.gameObject.AddComponent<UIElementPlayerInfoDisplay>();
+                playerInfoDisplay.InitializeElement();
+                playerInfoDisplay.LoadRobotHead(playerInfoState.CharacterModelIndex, playerInfoState.FavouriteColor);
             }
         }
 
@@ -329,6 +379,20 @@ namespace OverhaulMod.UI
                     m_workshopLevelUpVoteButton.interactable = !workshopItemVote.VoteValue;
                     m_workshopLevelDownVoteButton.interactable = workshopItemVote.VoteValue;
                 });
+            }
+        }
+
+        private void refreshCodePanel()
+        {
+            if (MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch())
+            {
+                m_codePanelObject.SetActive(true);
+                m_revealCodeButton.gameObject.SetActive(true);
+                m_codeField.text = MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+            }
+            else
+            {
+                m_codePanelObject.SetActive(false);
             }
         }
 
@@ -442,7 +506,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
                     m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
@@ -468,7 +532,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
                     m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
@@ -491,6 +555,16 @@ namespace OverhaulMod.UI
                 SteamFriends.ActivateGameOverlayToWebPage(link);
             else
                 Application.OpenURL(link);
+        }
+
+        public void OnRevealCodeButtonClicked()
+        {
+            m_revealCodeButton.gameObject.SetActive(false);
+        }
+
+        public void OnCopyCodeButtonClicked()
+        {
+            GUIUtility.systemCopyBuffer = m_codeField.text;
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)

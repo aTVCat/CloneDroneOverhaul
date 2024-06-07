@@ -29,6 +29,31 @@ namespace OverhaulMod.Patches.Behaviours
             }
         }
 
+        public override void Patch()
+        {
+            Transform transform = targetTransform;
+            if (transform && !transform.GetComponent<CanvasGroup>())
+            {
+                CanvasGroup canvasGroup = transform.gameObject.AddComponent<CanvasGroup>();
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+            }
+        }
+
+        public override void UnPatch()
+        {
+            Transform transform = targetTransform;
+            if (transform)
+            {
+                CanvasGroup canvasGroup = transform.GetComponent<CanvasGroup>();
+                if (canvasGroup)
+                {
+                    Destroy(canvasGroup);
+                }
+            }
+        }
+
         public void SetSiblingIndex(Transform transform)
         {
             Transform transform1 = targetTransform;

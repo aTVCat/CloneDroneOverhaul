@@ -74,6 +74,8 @@ namespace OverhaulMod.UI
 
         private bool m_hasSelectedTab;
 
+        private bool m_hasMultiplayerCustomizationChanges;
+
         private string m_selectedTabId;
 
         public override bool hideTitleScreen => true;
@@ -116,6 +118,11 @@ namespace OverhaulMod.UI
             }
 
             ModSettingsDataManager.Instance.Save();
+            if (m_hasMultiplayerCustomizationChanges && BoltNetwork.IsRunning && !BoltNetwork.IsServer && !BoltNetwork.IsSinglePlayer)
+            {
+                MultiplayerMatchManager.Instance.SendClientCharacterCustomizationEvent();
+                m_hasMultiplayerCustomizationChanges = false;
+            }
         }
 
         public void ShowRegularElements()
@@ -775,6 +782,7 @@ namespace OverhaulMod.UI
             {
                 settingsMenu.MultiplayerCharacterModelDropdown.value = value;
             }
+            m_hasMultiplayerCustomizationChanges = true;
         }
 
         public void OnMultiplayerFavoriteColorDropdownChanged(int value)
@@ -784,6 +792,7 @@ namespace OverhaulMod.UI
             {
                 settingsMenu.MultiplayerFavoriteColorDropdown.value = value;
             }
+            m_hasMultiplayerCustomizationChanges = true;
         }
 
         public void OnStoryDifficultyIndexChanged(int value)

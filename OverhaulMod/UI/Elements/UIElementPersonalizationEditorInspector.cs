@@ -68,6 +68,8 @@ namespace OverhaulMod.UI
                 bodyPartList.Add(new Dropdown.OptionData(bp));
             }
             m_bodyPartDropdown.RefreshShownValue();
+
+            m_typeDropdown.interactable = ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets);
         }
 
         public void Populate(PersonalizationItemInfo personalizationItemInfo)

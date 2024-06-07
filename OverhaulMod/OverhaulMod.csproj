@@ -557,6 +557,7 @@
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
+    <Compile Include="UI\Elements\UIElementPlayerInfoDisplay.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
@@ -567,6 +568,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemPreviewDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementAddonEmbed.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
     <Compile Include="UI\Elements\UIElementFileExplorerItemDisplay.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />

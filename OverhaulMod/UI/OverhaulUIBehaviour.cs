@@ -9,17 +9,11 @@ namespace OverhaulMod.UI
 {
     public class OverhaulUIBehaviour : ModBehaviour
     {
-        public string uiName
-        {
-            get;
-            set;
-        }
+        public string Name;
 
-        public bool isElement
-        {
-            get;
-            private set;
-        }
+        public bool IsElement;
+
+        protected bool m_initialized;
 
         public bool visible
         {
@@ -350,12 +344,13 @@ namespace OverhaulMod.UI
                 fi.SetValue(this, tabManager);
             }
 
+            m_initialized = true;
             OnInitialized();
         }
 
         public void InitializeElement()
         {
-            isElement = true;
+            IsElement = true;
             InitializeUI();
         }
 
@@ -366,21 +361,21 @@ namespace OverhaulMod.UI
 
         public override void OnDestroy()
         {
-            if (!isElement)
+            if (!IsElement)
                 ModUIManager.Instance.RemoveFromList(this);
         }
 
         public virtual void Show()
         {
             base.gameObject.SetActive(true);
-            if (!isElement)
+            if (!IsElement)
                 ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
         }
 
         public virtual void Hide()
         {
             base.gameObject.SetActive(false);
-            if (!isElement)
+            if (!IsElement)
                 ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
         }
 

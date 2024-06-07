@@ -549,7 +549,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
                     m_voteDownButton.interactable = t.m_bVoteUp;
@@ -575,7 +575,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Vote error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
                     m_voteDownButton.interactable = t.m_bVoteUp;
@@ -631,7 +631,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Subscription error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Subscription error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                     m_refreshDisplaysNextFrame = true;
             });
@@ -654,7 +654,7 @@ namespace OverhaulMod.UI
                     return;
 
                 if (ioError || t.m_eResult != EResult.k_EResultOK)
-                    ModUIUtils.MessagePopupOK("Unsubscription error", $"Error code:{t.m_eResult} (ioError: {ioError})", 150f, true);
+                    ModUIUtils.MessagePopupOK("Unsubscription error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                     m_refreshDisplaysNextFrame = true;
             });
@@ -732,7 +732,7 @@ namespace OverhaulMod.UI
                 if (t.m_unAppID == SteamUtils.GetAppID() && t.m_nPublishedFileId == item2.ItemID)
                 {
                     if (t.m_eResult != EResult.k_EResultOK)
-                        ModUIUtils.MessagePopupOK("Update error", $"Error code:{t.m_eResult}", 150f, true);
+                        ModUIUtils.MessagePopupOK("Update error", $"Error code: {t.m_eResult}", 150f, true);
                     else
                         m_refreshDisplaysNextFrame = true;
                 }

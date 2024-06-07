@@ -93,9 +93,7 @@ namespace OverhaulMod.Content
                 _ = m_downloadingFiles.Remove(name);
                 ModManagers.Instance.TriggerModContentLoadedEvent(error);
             }, out UnityWebRequest unityWebRequest, -1);
-
             m_downloadingFiles.Add(name, unityWebRequest);
-
             return true;
         }
 
