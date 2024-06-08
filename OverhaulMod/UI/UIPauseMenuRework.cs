@@ -574,12 +574,10 @@ namespace OverhaulMod.UI
                 switch (login)
                 {
                     case PlayFab.ClientModels.LoginIdentityProvider.Custom:
-                        return "Custom";
                     case PlayFab.ClientModels.LoginIdentityProvider.CustomServer:
-                        return "Custom Server";
+                        return "Custom";
 
                     case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
-                        return "Switch";
                     case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
                         return "Switch";
                     case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
@@ -591,7 +589,7 @@ namespace OverhaulMod.UI
                     case PlayFab.ClientModels.LoginIdentityProvider.Twitch:
                         return "Twitch";
                     case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
-                        return "XBox";
+                        return "XBOX";
                 }
                 return "N/A";
             }
@@ -599,12 +597,10 @@ namespace OverhaulMod.UI
             switch (login)
             {
                 case PlayFab.ClientModels.LoginIdentityProvider.Custom:
-                    return "<color=#cacaca>Custom</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.CustomServer:
-                    return "<color=#cacaca>Custom Server</color>";
+                    return "<color=#cacaca>Custom</color>";
 
                 case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitch:
-                    return "<color=#FF3B26>Switch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.NintendoSwitchAccount:
                     return "<color=#FF3B26>Switch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.PlayFab:
@@ -616,7 +612,7 @@ namespace OverhaulMod.UI
                 case PlayFab.ClientModels.LoginIdentityProvider.Twitch:
                     return "<color=#A426E4>Twitch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
-                    return "<color=#0DB30F>XBox</color>";
+                    return "<color=#0DB30F>XBOX</color>";
             }
             return "<color=#ffffff>N/A</color>";
         }
