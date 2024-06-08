@@ -35,7 +35,7 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public List<string> ImportedFiles;
 
-        public void LoadImportedFilePaths()
+        public void GetImportedFiles()
         {
             List<string> list = new List<string>();
             foreach (string f in Directory.GetFiles(GetImportedFilesFolder(this)))
@@ -71,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
             if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon))
                 Weapon = WeaponType.Sword;
 
-            LoadImportedFilePaths();
+            GetImportedFiles();
         }
 
         public void SetAuthor(string name)
@@ -133,7 +133,12 @@ namespace OverhaulMod.Content.Personalization
 
         public static string GetImportedFilesFolder(PersonalizationItemInfo personalizationItemInfo)
         {
-            return $"{personalizationItemInfo.FolderPath}files/";
+            return Path.Combine(personalizationItemInfo.FolderPath, "files/");
+        }
+
+        public static string GetImportedFileFullPath(PersonalizationItemInfo personalizationItemInfo, string fileName)
+        {
+            return Path.Combine(GetImportedFilesFolder(personalizationItemInfo), fileName);
         }
 
         public static string GetCategoryString(PersonalizationCategory personalizationCategory, bool many = false)

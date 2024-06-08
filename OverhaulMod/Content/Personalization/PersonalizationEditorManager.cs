@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
@@ -76,12 +77,23 @@ namespace OverhaulMod.Content.Personalization
 
         public void StartEditorGameMode()
         {
+            if (!TransitionManager.OverhaulNonSceneTransitions)
+            {
+                base.StartCoroutine(startEditorGameModeCoroutine(false));
+                return;
+            }
+            TransitionManager.Instance.DoNonSceneTransition(startEditorGameModeCoroutine(true));
+        }
+
+        private IEnumerator startEditorGameModeCoroutine(bool useTransitionManager)
+        {
+            if (useTransitionManager)
+                yield return new WaitForSecondsRealtime(0.25f);
+
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
             LevelManager.Instance.CleanUpLevelThisFrame();
             GameFlowManager.Instance.HideTitleScreen(false);
-
-            GameUIRoot.Instance.LoadingScreen.Show();
 
             GameDataManager.Instance.SaveHighScoreDataWithoutModifyingIt();
             CacheManager.Instance.CreateOrClearInstance();
@@ -90,9 +102,6 @@ namespace OverhaulMod.Content.Personalization
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 UIPersonalizationEditor editorUi = ModUIConstants.ShowPersonalizationEditorUI();
-
-                GameUIRoot.Instance.LoadingScreen.Hide();
-                GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
 
                 GameObject cameraObject = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab.gameObject);
                 cameraObject.tag = "MainCamera";
@@ -112,8 +121,9 @@ namespace OverhaulMod.Content.Personalization
                     LevelManager.Instance._currentLevelHidesTheArena = false;
                 }
 
-                _ = base.StartCoroutine(spawnLevelCoroutine(levelEditorLevelData));
+                _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
+            yield break;
         }
 
         public void EditItem(PersonalizationItemInfo personalizationItemInfo, string folder)
@@ -195,13 +205,21 @@ namespace OverhaulMod.Content.Personalization
                 bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
                 bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.ShieldSize, 1);
                 bot.RefreshUpgrades();
+
+                BoltEntity boltEntity = bot.GetComponent<BoltEntity>();
+                if (boltEntity)
+                {
+                    bot._hasEverHadLocalControl = false;
+                    bot._hasLocalControl = false;
+                    boltEntity.ReleaseControl();
+                }
             }, 0.5f);
 
             Destroy(spawnPoint);
             yield break;
         }
 
-        private IEnumerator spawnLevelCoroutine(LevelEditorLevelData levelEditorLevelData)
+        private IEnumerator spawnLevelCoroutine(bool useTransitionManager, LevelEditorLevelData levelEditorLevelData)
         {
             if (levelEditorLevelData != null)
             {
@@ -215,6 +233,13 @@ namespace OverhaulMod.Content.Personalization
             }
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
             SpawnBot();
+
+            if (useTransitionManager)
+            {
+                yield return new WaitForSecondsRealtime(1f);
+                TransitionManager.Instance.EndTransition();
+            }
+
             yield break;
         }
 

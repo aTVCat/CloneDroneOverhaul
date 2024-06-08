@@ -127,7 +127,12 @@ namespace OverhaulMod.Content.Personalization
             objectInfo.SetScale(base.transform.localScale);
 
             foreach (PersonalizationEditorObjectBehaviour c in children)
+            {
+                if (!c || !c.gameObject)
+                    continue;
+
                 objectInfo.Children.Add(c.Serialize());
+            }
 
             return objectInfo;
         }

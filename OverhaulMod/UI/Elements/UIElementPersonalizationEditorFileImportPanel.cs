@@ -46,6 +46,21 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_fileDisplayPrefab, m_fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(1).text = file;
+                moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, $"Delete {file}?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    {
+                        string path = PersonalizationItemInfo.GetImportedFileFullPath(itemInfo, file);
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+
+                        itemInfo.GetImportedFiles();
+                        Populate();
+                        PersonalizationEditorManager.Instance.SpawnRootObject();
+                    });
+                });
             }
         }
 
@@ -70,7 +85,7 @@ namespace OverhaulMod.UI
                     {
                         File.Delete(dest);
                         File.Copy(path, dest);
-                        item.LoadImportedFilePaths();
+                        item.GetImportedFiles();
                         Populate();
                     });
                     return;
@@ -80,7 +95,7 @@ namespace OverhaulMod.UI
                     File.Copy(path, dest);
                 }
 
-                item.LoadImportedFilePaths();
+                item.GetImportedFiles();
                 Populate();
             }, InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
         }

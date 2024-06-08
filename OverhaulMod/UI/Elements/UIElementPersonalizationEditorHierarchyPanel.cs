@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -41,11 +43,34 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(1).text = obj.Name;
+                moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, $"Delete {obj.Name}?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    {
+                        PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
+                        if (behaviour)
+                        {
+                            base.StartCoroutine(deleteObjectCoroutine(behaviour.gameObject));
+                        }
+                    });
+                });
                 moddedObject.GetObject<Button>(3).onClick.AddListener(delegate
                 {
                     UIPersonalizationEditor.instance.PropertiesPanel.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
                 });
             }
+        }
+
+        private IEnumerator deleteObjectCoroutine(GameObject gameObject)
+        {
+            Destroy(gameObject);
+            yield return null;
+            yield return null;
+            PersonalizationEditorManager.Instance.SerializeRoot();
+
+            PersonalizationEditorManager.Instance.SpawnRootObject();
+            Populate();
+            yield break;
         }
 
         public void OnCreateButtonClicked()
