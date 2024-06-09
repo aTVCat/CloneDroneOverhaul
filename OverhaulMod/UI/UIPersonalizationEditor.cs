@@ -8,7 +8,7 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditor : OverhaulUIBehaviour
     {
-        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions;
+        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions;
 
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
@@ -48,6 +48,14 @@ namespace OverhaulMod.UI
         [UIElement("FileButton")]
         private readonly Button m_toolbarFileButton;
 
+        [UIElementAction(nameof(OnViewButtonClicked))]
+        [UIElement("ViewButton")]
+        private readonly Button m_toolbarViewButton;
+
+        [UIElementAction(nameof(OnWindowButtonClicked))]
+        [UIElement("WindowButton")]
+        private readonly Button m_toolbarWindowButton;
+
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
         public override bool enableCursor => true;
@@ -69,6 +77,19 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Upload", "Redirect-16x16", instance.OnUploadButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
+            };
+
+            s_viewOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
+            };
+
+            s_windowOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", ShowInspector),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", ShowObjectProperties),
+                new UIElementPersonalizationEditorDropdown.OptionData(true),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", ShowItemModerator),
             };
         }
 
@@ -93,25 +114,49 @@ namespace OverhaulMod.UI
             ModUIUtils.MessagePopupOK("Item save error", message, 150f, true);
         }
 
-        public void ShowInspectorWindow()
+        public void ShowEverything()
+        {
+            ShowInspector();
+            ShowObjectProperties();
+            ShowItemModerator();
+        }
+
+        public void ShowInspector()
         {
             ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
             if (InspectorWindowID == null)
-                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
+                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item info", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(InspectorWindowID);
+        }
 
+        public void ShowObjectProperties()
+        {
+            ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
             if (ObjectPropertiesWindowID == null)
                 ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(ObjectPropertiesWindowID);
+        }
 
+        public void ShowItemModerator()
+        {
+            TryShowItemModerator(false);
+        }
+
+        public void TryShowItemModerator(bool withMessage)
+        {
             if (PersonalizationEditorManager.Instance.canVerifyItems)
             {
+                ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
                 if (DeveloperWindowID == null)
                     DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
                 else
                     windowManager.ShowWindow(DeveloperWindowID);
+            }
+            else if (withMessage)
+            {
+                ModUIUtils.MessagePopupOK("Item moderator is not available", "This panel is made for developers.", 150f, true);
             }
         }
 
@@ -152,6 +197,22 @@ namespace OverhaulMod.UI
                 return;
 
             Dropdown.ShowWithOptions(s_fileOptions, m_toolbarFileButton.transform as RectTransform);
+        }
+
+        public void OnViewButtonClicked()
+        {
+            if (Dropdown.gameObject.activeSelf)
+                return;
+
+            Dropdown.ShowWithOptions(s_viewOptions, m_toolbarViewButton.transform as RectTransform);
+        }
+
+        public void OnWindowButtonClicked()
+        {
+            if (Dropdown.gameObject.activeSelf)
+                return;
+
+            Dropdown.ShowWithOptions(s_windowOptions, m_toolbarWindowButton.transform as RectTransform);
         }
     }
 }

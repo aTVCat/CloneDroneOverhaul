@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
                     {
-                        UIPersonalizationEditor.instance.ShowInspectorWindow();
+                        UIPersonalizationEditor.instance.ShowEverything();
                         PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
                         Hide();
                     });
@@ -120,7 +120,7 @@ namespace OverhaulMod.UI
             {
                 if (PersonalizationManager.Instance.CreateItem(str, out PersonalizationItemInfo personalizationItem))
                 {
-                    UIPersonalizationEditor.instance.ShowInspectorWindow();
+                    UIPersonalizationEditor.instance.ShowEverything();
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                     Hide();
                 }

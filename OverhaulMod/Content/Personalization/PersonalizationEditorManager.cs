@@ -239,6 +239,7 @@ namespace OverhaulMod.Content.Personalization
                 yield return new WaitForSecondsRealtime(1f);
                 TransitionManager.Instance.EndTransition();
             }
+            WelcomeMessage();
 
             yield break;
         }
@@ -256,6 +257,17 @@ namespace OverhaulMod.Content.Personalization
             personalizationController.DestroyAllItems();
             editingRoot = personalizationController.SpawnItem(editingItemInfo);
             PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
+        }
+
+        public void WelcomeMessage()
+        {
+            ModUIUtils.MessagePopupOK("Welcome to customization editor!", "Here you can make weapon skins, accessories and pets." +
+                "\n\n<color=#FFFFFF><size=14>HOW TO MAKE STUFF?</size></color>" +
+                "\nTo open or create a project, click on 'File' at the top left and click on 'Open'." +
+                "\n\n<color=#FFFFFF><size=14>HOW TO UPLOAD STUFF?</size></color>" +
+                "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
+                "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
+                "\n\n<color=#FFCB23>This editor is still in development, so you can experience some issues while editing!</color>", 400f, true);
         }
     }
 }

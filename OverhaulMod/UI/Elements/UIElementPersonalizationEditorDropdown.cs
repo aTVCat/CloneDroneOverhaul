@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
         public void SetPosition(RectTransform rectTransform)
         {
             Vector3 vector = base.transform.position;
-            vector.x = rectTransform.position.x - 1f;
+            vector.x = rectTransform.position.x - 1.2f;
             base.transform.position = vector;
         }
 

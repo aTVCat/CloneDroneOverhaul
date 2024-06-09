@@ -10,6 +10,22 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationItemsBrowser : OverhaulUIBehaviour
     {
+        public const string ITEM_DISPLAY_DEFAULT_TEXT_COLOR = "#FFFFFF";
+        public const string ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR = "#000000";
+        public const string ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR = "#FFFFFF";
+
+        public const string ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR = "#FFD058";
+        public const string ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR = "#A46300";
+        public const string ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR = "#FFC44D";
+
+        public const string ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR = "#FFFFFF";
+        public const string ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR = "#00285B";
+        public const string ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR = "#3E96FF";
+
+        public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR = "#FFFFFF";
+        public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR = "#006A0D";
+        public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR = "#00F81F";
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -218,6 +234,8 @@ namespace OverhaulMod.UI
                 {
                     PersonalizationItemInfo item = list[i];
                     bool isUnlocked = item.IsUnlocked();
+                    bool isExclusive = item.IsExclusive();
+                    bool isVerified = item.IsVerified;
 
                     if (item.Weapon != weaponType)
                     {
@@ -265,15 +283,59 @@ namespace OverhaulMod.UI
                     else
                         prefix = "By ";
 
+                    Color textColor;
+                    Color textOutlineColor;
+                    Color glowColor;
+
+                    if (isExclusive && !isVerified)
+                    {
+                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR, Color.white);
+                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+                    }
+                    else if (isExclusive)
+                    {
+                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR, Color.white);
+                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+                    }
+                    else if (!isVerified)
+                    {
+                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR, Color.white);
+                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR, Color.black);
+                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR, Color.white);
+                    }
+                    else
+                    {
+                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_COLOR, Color.white);
+                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
+                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
+                    }
+                    glowColor.a = 0.4f;
+
                     ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
-                    moddedObject.GetObject<Text>(0).text = item.Name;
+
+                    Text itemNameText = moddedObject.GetObject<Text>(0);
+                    itemNameText.text = item.Name.ToUpper();
+                    itemNameText.color = textColor;
+                    Outline itemNameTextOutline = itemNameText.GetComponent<Outline>();
+                    itemNameTextOutline.effectColor = textOutlineColor;
+
+                    Image glowImage = moddedObject.GetObject<Image>(2);
+                    glowImage.color = glowColor;
+
                     moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
-                    moddedObject.GetObject<GameObject>(2).SetActive(!isUnlocked);
-                    moddedObject.GetObject<GameObject>(3).SetActive(!item.IsVerified);
+
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
                     {
+                        if (!item.IsCompatibleWithMod())
+                        {
+                            ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod ({item.MinModVersion}).\nMake sure you're using the latest version of the mod.", 175f, true);
+                            return;
+                        }
+
                         Character character = CharacterTracker.Instance.GetPlayer();
                         if (character)
                         {

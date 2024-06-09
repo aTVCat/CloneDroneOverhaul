@@ -11,7 +11,7 @@ namespace OverhaulMod.Content.Personalization
     {
         public string Name, Description;
 
-        public bool IsVerified;
+        public bool IsSentForVerification, IsVerified;
 
         public string ItemID, EditorID;
 
@@ -26,6 +26,8 @@ namespace OverhaulMod.Content.Personalization
         public string BodyPartName;
 
         public int Version;
+
+        public System.Version MinModVersion;
 
         public PersonalizationEditorObjectInfo RootObject;
 
@@ -124,6 +126,11 @@ namespace OverhaulMod.Content.Personalization
         public bool IsUnlocked()
         {
             return IsUnlocked(CharacterTracker.Instance.GetPlayer());
+        }
+
+        public bool IsCompatibleWithMod()
+        {
+            return MinModVersion == null || ModBuildInfo.version >= MinModVersion;
         }
 
         public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)

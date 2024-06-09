@@ -148,12 +148,14 @@ namespace OverhaulMod.Patches
                 __instance._cameraHolderAnimator.SetBool("HasNockedArrow", !CameraManager.EnableFirstPersonMode);
         }*/
 
+
         [HarmonyPostfix]
         [HarmonyPatch("CreateCharacterModel")]
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);
 
+            /*
             CharacterModel characterModel = __instance._characterModel;
             if (characterModel)
             {
@@ -162,7 +164,7 @@ namespace OverhaulMod.Patches
 
                 if (characterModel.LegsAnimator)
                     _ = characterModel.LegsAnimator.gameObject.AddComponent<OverhaulAnimator>();
-            }
+            }*/
         }
 
         /*

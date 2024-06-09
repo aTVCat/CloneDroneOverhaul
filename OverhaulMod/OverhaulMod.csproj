@@ -433,11 +433,6 @@
     <Compile Include="Engine\ModSettingsDataContainer.cs" />
     <Compile Include="Engine\ModSettingsDataManager.cs" />
     <Compile Include="Engine\ModSettingsManager.cs" />
-    <Compile Include="Engine\OverhaulAnimationInfo.cs" />
-    <Compile Include="Engine\OverhaulAnimationKeyframe.cs" />
-    <Compile Include="Engine\OverhaulAnimationListInfo.cs" />
-    <Compile Include="Engine\OverhaulAnimationTrack.cs" />
-    <Compile Include="Engine\OverhaulAnimator.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
     <Compile Include="Engine\FadingVoxelManager.cs" />
