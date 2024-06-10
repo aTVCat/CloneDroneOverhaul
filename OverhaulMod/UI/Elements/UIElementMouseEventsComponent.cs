@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            isMouseOverElement = false;
+            //isMouseOverElement = false;
         }
     }
 }

@@ -33,6 +33,9 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform m_panel;
 
+        [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
+        private readonly UIElementMouseEventsComponent m_panelMouseEvents;
+
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
         private readonly TabManager m_tabs;
         [UIElement("WeaponSkinsTab")]
@@ -65,6 +68,9 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButtonText")]
         private readonly Text m_updateButtonText;
 
+        [UIElement("DescriptionBox", typeof(UIElementPersonalizationItemDescriptionBox), false)]
+        private readonly UIElementPersonalizationItemDescriptionBox m_descriptionBox;
+
         private RectTransform m_rectTransform;
 
         private bool m_isOpen, m_isPopulating, m_showContents;
@@ -86,6 +92,8 @@ namespace OverhaulMod.UI
             m_tabs.AddTab(m_petsTab.gameObject, "pets");
             m_tabs.SelectTab("weapon skins");
             m_prevTab = "weapon skins";
+
+            m_descriptionBox.SetBrowserUI(this);
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
         }
@@ -149,6 +157,16 @@ namespace OverhaulMod.UI
             base.OnDisable();
             m_isPopulating = false;
             UIVersionLabel.instance.forceHide = false;
+        }
+
+        public bool IsMouseOverPanel()
+        {
+            return m_panelMouseEvents.isMouseOverElement;
+        }
+
+        public void ShowDescriptionBox(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
+        {
+            m_descriptionBox.ShowForItem(itemInfo, rectTransform);
         }
 
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
@@ -311,7 +329,7 @@ namespace OverhaulMod.UI
                         textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
                         glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
                     }
-                    glowColor.a = 0.4f;
+                    glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
 
                     ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
@@ -327,25 +345,10 @@ namespace OverhaulMod.UI
 
                     moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
 
-                    Button button = moddedObject.GetComponent<Button>();
-                    button.onClick.AddListener(delegate
-                    {
-                        if (!item.IsCompatibleWithMod())
-                        {
-                            ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod ({item.MinModVersion}).\nMake sure you're using the latest version of the mod.", 175f, true);
-                            return;
-                        }
-
-                        Character character = CharacterTracker.Instance.GetPlayer();
-                        if (character)
-                        {
-                            PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
-                            if (personalizationController)
-                            {
-                                personalizationController.EquipSkin(item);
-                            }
-                        }
-                    });
+                    UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
+                    personalizationItemDisplay.ItemInfo = item;
+                    personalizationItemDisplay.InitializeElement();
+                    personalizationItemDisplay.SetBrowserUI(this);
 
                     if (i % 15 == 0)
                         yield return null;

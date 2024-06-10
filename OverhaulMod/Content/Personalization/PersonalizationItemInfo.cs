@@ -133,6 +133,11 @@ namespace OverhaulMod.Content.Personalization
             return MinModVersion == null || ModBuildInfo.version >= MinModVersion;
         }
 
+        public bool IsEquipped()
+        {
+            return PersonalizationManager.GetIsItemEquipped(this);
+        }
+
         public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)
         {
             return ModIOUtils.GetDirectoryName(personalizationItemInfo.FolderPath);

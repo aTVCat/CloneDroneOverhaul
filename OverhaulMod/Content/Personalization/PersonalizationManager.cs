@@ -24,10 +24,23 @@ namespace OverhaulMod.Content.Personalization
 
         public const string CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT = "CustomizationAssetsFileDownloaded";
 
+        public const string ITEM_EQUIPPED_OR_UNEQUIPPED = "PersonalizationItemEquippedOrUnequipped";
+
         public static readonly string[] SupportedBodyParts = new string[]
         {
             "Head",
-            "Arm"
+            "ArmUpperR",
+            "ArmLowerR",
+            "HandR",
+            "ArmUpperL",
+            "ArmLowerL",
+            "HandL",
+            "LegUpperR",
+            "LegLowerR",
+            "FootR",
+            "LegUpperL",
+            "LegLowerL",
+            "FootL",
         };
 
         private string m_assetsVersionFile;
@@ -389,6 +402,60 @@ namespace OverhaulMod.Content.Personalization
                 || weaponType == WeaponType.Hammer
                 || weaponType == WeaponType.Spear
                 || weaponType == WeaponType.Shield);
+        }
+
+        public static void SetIsItemEquipped(PersonalizationItemInfo item, bool value)
+        {
+            string id = item.ItemID;
+            switch (item.Category)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    switch (item.Weapon)
+                    {
+                        case WeaponType.Sword:
+                            PersonalizationController.SwordSkin = id;
+                            break;
+                        case WeaponType.Bow:
+                            PersonalizationController.BowSkin = id;
+                            break;
+                        case WeaponType.Hammer:
+                            PersonalizationController.HammerSkin = id;
+                            break;
+                        case WeaponType.Spear:
+                            PersonalizationController.SpearSkin = id;
+                            break;
+                        case WeaponType.Shield:
+                            PersonalizationController.ShieldSkin = id;
+                            break;
+                    }
+                    break;
+            }
+
+            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED);
+        }
+
+        public static bool GetIsItemEquipped(PersonalizationItemInfo item)
+        {
+            string itemId = item.ItemID;
+            switch (item.Category)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    switch (item.Weapon)
+                    {
+                        case WeaponType.Sword:
+                            return PersonalizationController.SwordSkin == itemId;
+                        case WeaponType.Bow:
+                            return PersonalizationController.BowSkin == itemId;
+                        case WeaponType.Hammer:
+                            return PersonalizationController.HammerSkin == itemId;
+                        case WeaponType.Spear:
+                            return PersonalizationController.SpearSkin == itemId;
+                        case WeaponType.Shield:
+                            return PersonalizationController.ShieldSkin == itemId;
+                    }
+                    return false;
+            }
+            return false;
         }
     }
 }

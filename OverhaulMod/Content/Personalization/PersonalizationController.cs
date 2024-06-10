@@ -221,7 +221,7 @@ namespace OverhaulMod.Content.Personalization
             _ = SpawnItem(shieldSkin);
         }
 
-        public void EquipSkin(PersonalizationItemInfo itemToEquip)
+        public void EquipItem(PersonalizationItemInfo itemToEquip)
         {
             PersonalizationItemInfo info = null;
             foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
@@ -231,25 +231,7 @@ namespace OverhaulMod.Content.Personalization
                     break;
                 }
 
-            string id = itemToEquip.ItemID;
-            switch (itemToEquip.Weapon)
-            {
-                case WeaponType.Sword:
-                    SwordSkin = id;
-                    break;
-                case WeaponType.Bow:
-                    BowSkin = id;
-                    break;
-                case WeaponType.Hammer:
-                    HammerSkin = id;
-                    break;
-                case WeaponType.Spear:
-                    SpearSkin = id;
-                    break;
-                case WeaponType.Shield:
-                    ShieldSkin = id;
-                    break;
-            }
+            PersonalizationManager.SetIsItemEquipped(itemToEquip, true);
 
             DestroyItem(info);
             _ = SpawnItem(itemToEquip);

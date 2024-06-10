@@ -549,6 +549,8 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationItemDescriptionBox.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
