@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 2156105924821518807}
   - component: {fileID: 5563561694039917222}
   m_Layer: 5
-  m_Name: "UI_PersonalizationItemsBrowse\u043ASettings"
+  m_Name: UI_PersonalizationSettingsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -743,7 +743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 
   objects:
-  - {fileID: 0}
+  - {fileID: 1562499759222063940}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

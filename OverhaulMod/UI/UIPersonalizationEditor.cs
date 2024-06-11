@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
         [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspector), false)]
         public readonly UIElementPersonalizationEditorInspector Inspector;
 
-        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
+        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
         [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel), false)]
@@ -91,6 +91,8 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", ShowItemModerator),
             };
+
+            m_toolbarWindowButton.interactable = false;
         }
 
         public override void OnDestroy()
@@ -116,6 +118,7 @@ namespace OverhaulMod.UI
 
         public void ShowEverything()
         {
+            m_toolbarWindowButton.interactable = true;
             ShowInspector();
             ShowObjectProperties();
             ShowItemModerator();
@@ -193,25 +196,16 @@ namespace OverhaulMod.UI
 
         public void OnFileButtonClicked()
         {
-            if (Dropdown.gameObject.activeSelf)
-                return;
-
             Dropdown.ShowWithOptions(s_fileOptions, m_toolbarFileButton.transform as RectTransform);
         }
 
         public void OnViewButtonClicked()
         {
-            if (Dropdown.gameObject.activeSelf)
-                return;
-
             Dropdown.ShowWithOptions(s_viewOptions, m_toolbarViewButton.transform as RectTransform);
         }
 
         public void OnWindowButtonClicked()
         {
-            if (Dropdown.gameObject.activeSelf)
-                return;
-
             Dropdown.ShowWithOptions(s_windowOptions, m_toolbarWindowButton.transform as RectTransform);
         }
     }

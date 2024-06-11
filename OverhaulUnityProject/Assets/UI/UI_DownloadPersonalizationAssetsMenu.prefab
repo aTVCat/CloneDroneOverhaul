@@ -673,7 +673,7 @@ GameObject:
   - component: {fileID: 2156105924821518807}
   - component: {fileID: 5563561694039917222}
   m_Layer: 5
-  m_Name: UI_DownloadCustomizationAssetsMenu
+  m_Name: UI_DownloadPersonalizationAssetsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

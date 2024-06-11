@@ -138,6 +138,18 @@ namespace OverhaulMod.Content.Personalization
             return PersonalizationManager.GetIsItemEquipped(this);
         }
 
+        public string GetSpecialInfoString()
+        {
+            switch (Category)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    return Weapon.ToString();
+                case PersonalizationCategory.Accessories:
+                    return BodyPartName;
+            }
+            return string.Empty;
+        }
+
         public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)
         {
             return ModIOUtils.GetDirectoryName(personalizationItemInfo.FolderPath);

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIDownloadCustomizationAssetsMenu : OverhaulUIBehaviour
+    public class UIDownloadPersonalizationAssetsMenu : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]

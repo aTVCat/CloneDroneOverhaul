@@ -169,10 +169,15 @@ namespace OverhaulMod.UI
             m_descriptionBox.ShowForItem(itemInfo, rectTransform);
         }
 
+        public void EquipSelectedItem()
+        {
+            m_descriptionBox.OnEquipButtonClicked();
+        }
+
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
             if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
-                ModUIConstants.ShowDownloadCustomizationAssetsMenu(base.transform);
+                ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -410,8 +415,8 @@ namespace OverhaulMod.UI
             }
 
             refreshCameraRect();
-            cameraManager.SetCameraHolderPosition(Vector3.forward * 0.75f, firstPersonMover);
-            cameraManager.SetCameraHolderEulerAngles(Vector3.up * -90f, firstPersonMover);
+            cameraManager.SetCameraHolderPosition(new Vector3(0f, 0f, 0.75f), firstPersonMover);
+            cameraManager.SetCameraHolderEulerAngles(Vector3.up * 220f, firstPersonMover);
             cameraManager.enableForceFOVOffset = true;
             cameraManager.enableThirdPerson = true;
             cameraManager.forceFOVOffset = -5f;
@@ -429,7 +434,7 @@ namespace OverhaulMod.UI
 
         public void OnUpdateButtonClicked()
         {
-            ModUIConstants.ShowDownloadCustomizationAssetsMenu(base.transform);
+            ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
     }
 }

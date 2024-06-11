@@ -16,7 +16,13 @@ namespace OverhaulMod.UI
         public const string ITEM_EQUIPPED_BG_COLOR = "#305EE0";
 
         public const string ITEM_UNEQUIPPED_NAME_BG_COLOR = "#272727";
-        public const string ITEM_EQUIPPED_NAME_BG_COLOR = "#0D193B";
+        public const string ITEM_EQUIPPED_NAME_BG_COLOR = "#10204F";
+
+        [UIElement("NameBG")]
+        private Image m_nameBg;
+
+        [UIElement("Frame")]
+        private Image m_frame;
 
         private Button m_button;
 
@@ -26,13 +32,9 @@ namespace OverhaulMod.UI
 
         private RectTransform m_rectTransform;
 
-        [UIElement("NameBG")]
-        private Image m_nameBg;
-
-        [UIElement("Frame")]
-        private Image m_frame;
-
         public PersonalizationItemInfo ItemInfo;
+
+        private float m_timeForDoubleClick;
 
         protected override void OnInitialized()
         {
@@ -43,6 +45,8 @@ namespace OverhaulMod.UI
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
             RefreshDisplays();
+
+            m_timeForDoubleClick = -1f;
         }
 
         public override void OnDestroy()
@@ -50,6 +54,8 @@ namespace OverhaulMod.UI
             base.OnDestroy();
             GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
         }
+
+        public bool IsDoubleClicked() => m_timeForDoubleClick != -1f && Time.unscaledTime < m_timeForDoubleClick;
 
         public void SetBrowserUI(UIPersonalizationItemsBrowser itemsBrowser)
         {
@@ -78,7 +84,14 @@ namespace OverhaulMod.UI
             if (itemInfo == null)
                 return;
 
+            if (IsDoubleClicked())
+            {
+                m_timeForDoubleClick = -1f;
+                m_browser.EquipSelectedItem();
+                return;
+            }
             m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);
+            m_timeForDoubleClick = Time.unscaledTime + 0.25f;
         }
     }
 }

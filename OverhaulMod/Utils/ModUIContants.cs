@@ -75,7 +75,8 @@ namespace OverhaulMod.Utils
         public const string UI_CINEMATIC_EFFECTS = "UI_CinematicEffects";
         public const string UI_IMAGE_EXPLORER = "UI_ImageExplorer";
         public const string UI_AUTO_BUILD_MENU = "UI_AutoBuildMenu";
-        public const string UI_DOWNLOAD_CUSTOMIZATION_ASSETS_MENU = "UI_DownloadCustomizationAssetsMenu";
+        public const string UI_DOWNLOAD_PERSONALIZATION_ASSETS_MENU = "UI_DownloadPersonalizationAssetsMenu";
+        public const string UI_PERSONALIZATION_SETTINGS_MENU = "UI_PersonalizationSettingsMenu";
 
         public static void ShowVersionLabel()
         {
@@ -448,9 +449,14 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIAutoBuildMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_MENU, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowDownloadCustomizationAssetsMenu(Transform transform)
+        public static void ShowDownloadPersonalizationAssetsMenu(Transform transform)
         {
-            _ = ModUIManager.Instance.Show<UIDownloadCustomizationAssetsMenu>(AssetBundleConstants.UI, UI_DOWNLOAD_CUSTOMIZATION_ASSETS_MENU, transform);
+            _ = ModUIManager.Instance.Show<UIDownloadPersonalizationAssetsMenu>(AssetBundleConstants.UI, UI_DOWNLOAD_PERSONALIZATION_ASSETS_MENU, transform);
+        }
+
+        public static void ShowPersonalizationSettingsMenu(Transform transform)
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationSettingsMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_SETTINGS_MENU, transform);
         }
     }
 }
