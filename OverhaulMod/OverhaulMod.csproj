@@ -376,6 +376,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
+    <Compile Include="Content\Personalization\PersonalizationUserInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
@@ -522,6 +523,7 @@
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\CameraShaker_Patch.cs" />
+    <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -551,7 +553,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationItemDescriptionBox.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationItemDisplay.cs" />
-    <Compile Include="UI\Elements\UIElementSettingsTab.cs" />
+    <Compile Include="UI\Elements\UIElementTabWithText.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
     <Compile Include="UI\Elements\UIElementPlayerInfoDisplay.cs" />

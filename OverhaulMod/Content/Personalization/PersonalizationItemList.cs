@@ -21,51 +21,6 @@ namespace OverhaulMod.Content.Personalization
             Dictionary<string, Exception> errors = new Dictionary<string, Exception>();
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();
-            list.Add(new PersonalizationItemInfo()
-            {
-                Name = "Default",
-                EditorID = "lol",
-                ItemID = string.Empty,
-                Weapon = WeaponType.Sword,
-                Category = PersonalizationCategory.WeaponSkins,
-                IsVerified = true,
-            });
-            list.Add(new PersonalizationItemInfo()
-            {
-                Name = "Default",
-                EditorID = "lol",
-                ItemID = string.Empty,
-                Weapon = WeaponType.Bow,
-                Category = PersonalizationCategory.WeaponSkins,
-                IsVerified = true,
-            });
-            list.Add(new PersonalizationItemInfo()
-            {
-                Name = "Default",
-                EditorID = "lol",
-                ItemID = string.Empty,
-                Weapon = WeaponType.Hammer,
-                Category = PersonalizationCategory.WeaponSkins,
-                IsVerified = true,
-            });
-            list.Add(new PersonalizationItemInfo()
-            {
-                Name = "Default",
-                EditorID = "lol",
-                ItemID = string.Empty,
-                Weapon = WeaponType.Spear,
-                Category = PersonalizationCategory.WeaponSkins,
-                IsVerified = true,
-            });
-            list.Add(new PersonalizationItemInfo()
-            {
-                Name = "Default",
-                EditorID = "lol",
-                ItemID = string.Empty,
-                Weapon = WeaponType.Shield,
-                Category = PersonalizationCategory.WeaponSkins,
-                IsVerified = true,
-            });
 
             string[] directories;
             try
@@ -141,7 +96,7 @@ namespace OverhaulMod.Content.Personalization
 
         public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, bool sort)
         {
-            return sort ? GetItems(personalizationCategory).OrderBy(f => f.Weapon).ToList() : GetItems(personalizationCategory);
+            return sort ? GetItems(personalizationCategory).OrderBy(f => f.Name).ToList() : GetItems(personalizationCategory);
         }
     }
 }

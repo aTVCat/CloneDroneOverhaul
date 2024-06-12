@@ -30,6 +30,7 @@ namespace OverhaulMod.Content.Personalization
             get;
             set;
         }
+
         public PersonalizationEditorObjectBehaviour editingRoot { get; set; }
 
         public string editingFolder

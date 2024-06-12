@@ -42,6 +42,9 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.KeyBinder(name, defaultKey, delegate (KeyCode kc)
             {
+                if (kc == (KeyCode)(-1))
+                    return;
+
                 key = kc;
             }, null);
         }

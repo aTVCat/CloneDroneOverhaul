@@ -169,27 +169,27 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SWORD_SKIN = "SwordSkin";
+        public const string SWORD_SKIN = "SwordSkinV2";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string BOW_SKIN = "BowSkin";
+        public const string BOW_SKIN = "BowSkinV2";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string HAMMER_SKIN = "HammerSkin";
+        public const string HAMMER_SKIN = "HammerSkinV2";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SPEAR_SKIN = "SpearSkin";
+        public const string SPEAR_SKIN = "SpearSkinV2";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SHIELD_SKIN = "ShieldSkin";
+        public const string SHIELD_SKIN = "ShieldSkinV2";
 
         /// <summary>
         /// <see cref="Visuals.RobotWeaponBag"/>

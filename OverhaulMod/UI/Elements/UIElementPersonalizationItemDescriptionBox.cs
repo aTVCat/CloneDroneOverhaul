@@ -27,6 +27,12 @@ namespace OverhaulMod.UI
         [UIElement("LockedOverlay")]
         private GameObject m_lockedOverlay;
 
+        [UIElement("NonVerifiedOverlay")]
+        private GameObject m_nonVerifiedOverlay;
+
+        [UIElement("LockedNonVerifiedOverlay")]
+        private GameObject m_lockedNonVerifiedOverlay;
+
         [UIElementAction(nameof(OnEquipButtonClicked))]
         [UIElement("EquipButton")]
         private Button m_equipButton;
@@ -60,7 +66,13 @@ namespace OverhaulMod.UI
 
         public void ShowForItem(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
         {
-            base.Show();
+            if(itemInfo == null || rectTransform == null)
+            {
+                Hide();
+                return;
+            }
+
+            Show();
             if (m_selectedItemInfo == itemInfo)
                 return;
 
@@ -70,12 +82,15 @@ namespace OverhaulMod.UI
             m_itemNameText.text = itemInfo.Name;
             m_itemDescriptionText.text = itemInfo.Description;
 
+            /*
             bool equipped = itemInfo.IsEquipped();
             m_unequippedIndicatorObject.SetActive(!equipped);
-            m_equippedIndicatorObject.SetActive(equipped);
+            m_equippedIndicatorObject.SetActive(equipped);*/
 
             bool isLocked = !itemInfo.IsUnlocked();
-            m_lockedOverlay.SetActive(isLocked);
+            m_lockedOverlay.SetActive(isLocked && itemInfo.IsVerified);
+            m_nonVerifiedOverlay.SetActive(!itemInfo.IsVerified && !isLocked);
+            m_lockedNonVerifiedOverlay.SetActive(!itemInfo.IsVerified && isLocked);
             m_equipButton.interactable = !isLocked;
 
             Transform transform = base.transform;
@@ -86,35 +101,6 @@ namespace OverhaulMod.UI
 
         public void OnEquipButtonClicked()
         {
-            PersonalizationItemInfo item = m_selectedItemInfo;
-            if (item == null || !item.IsUnlocked())
-                return;
-
-            if (!item.IsCompatibleWithMod())
-            {
-                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod ({item.MinModVersion}).\nMake sure you're using the latest version of the mod.", 175f, true);
-                return;
-            }
-
-            if(item.Category == PersonalizationCategory.WeaponSkins)
-            {
-                Character character = CharacterTracker.Instance.GetPlayer();
-                if (character)
-                {
-                    PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
-                    if (personalizationController)
-                    {
-                        personalizationController.EquipItem(item);
-                    }
-                }
-            }
-            else
-            {
-                throw new NotImplementedException($"DescriptionBox: Add support for {item.Category}");
-            }
-
-            m_unequippedIndicatorObject.SetActive(false);
-            m_equippedIndicatorObject.SetActive(true);
         }
     }
 }

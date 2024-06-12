@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static System.AppDomainInitializerInfo;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationItemDisplay : OverhaulUIBehaviour
+    public class UIElementPersonalizationItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public const string ITEM_UNEQUIPPED_BG_COLOR = "#404040";
         public const string ITEM_EQUIPPED_BG_COLOR = "#305EE0";
@@ -23,6 +25,12 @@ namespace OverhaulMod.UI
 
         [UIElement("Frame")]
         private Image m_frame;
+
+        [UIElement("NewIndicator")]
+        private GameObject m_newIndicator;
+
+        [UIElement("FavoriteIndicator")]
+        private GameObject m_favoriteIndicator;
 
         private Button m_button;
 
@@ -68,6 +76,10 @@ namespace OverhaulMod.UI
             if (itemInfo == null)
                 return;
 
+            PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.userInfo;
+
+            bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
+            bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
             bool equipped = itemInfo.IsEquipped();
 
             Color bgColor = ModParseUtils.TryParseToColor(equipped ? ITEM_EQUIPPED_BG_COLOR : ITEM_UNEQUIPPED_BG_COLOR, Color.white);
@@ -76,22 +88,39 @@ namespace OverhaulMod.UI
             m_bg.color = bgColor;
             m_nameBg.color = nameBgColor;
             m_frame.color = nameBgColor;
+            m_favoriteIndicator.SetActive(isFavorite);
+            m_newIndicator.SetActive(!isDiscovered);
         }
 
         private void onClicked()
         {
             PersonalizationItemInfo itemInfo = ItemInfo;
+            if (itemInfo == null || !itemInfo.IsUnlocked())
+                return;
+
+            PersonalizationUserInfo userInfo = PersonalizationManager.Instance.userInfo;
+            if (!userInfo.IsItemDiscovered(itemInfo))
+            {
+                userInfo.SetIsItemDiscovered(itemInfo);
+                m_newIndicator.SetActive(false);
+            }
+
+            PersonalizationManager.Instance.EquipItem(itemInfo);
+            m_browser.MakeDefaultSkinButtonInteractable();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            PersonalizationItemInfo itemInfo = ItemInfo;
             if (itemInfo == null)
                 return;
 
-            if (IsDoubleClicked())
-            {
-                m_timeForDoubleClick = -1f;
-                m_browser.EquipSelectedItem();
-                return;
-            }
             m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);
-            m_timeForDoubleClick = Time.unscaledTime + 0.25f;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            m_browser.ShowDescriptionBox(null, null);
         }
     }
 }

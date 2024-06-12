@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
             upgradeUI.Show(false, true, false);
             upgradeUI.ExitButton.SetActive(false);
             upgradeUI.StoryBackButton.SetActive(false);
-            upgradeUI.StoryConfirmButtonLabel.transform.parent.gameObject.SetActive(false);
+            upgradeUI.StoryConfirmButtonLabel.transform.parent.parent.gameObject.SetActive(false);
             upgradeUI.StoryModeHumanLabel.text = "Select upgrades...";
 
             isShowingUpgradeUI = true;

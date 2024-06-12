@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.UI
 {
-    public class UIElementSettingsTab : UIElementTab
+    public class UIElementTabWithText : UIElementTab
     {
         [UIElement("Text")]
         private readonly Text m_text;

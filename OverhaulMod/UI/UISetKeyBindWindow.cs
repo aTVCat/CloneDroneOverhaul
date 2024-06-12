@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindText", false)]
         private readonly Text m_keyBindText;
 
-        public override bool hideTitleScreen => true;
+        public override bool refreshOnlyCursor => true;
 
         private KeyCode m_defaultKey;
         private KeyCode m_setKey;
@@ -42,6 +42,13 @@ namespace OverhaulMod.UI
         {
             get;
             set;
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            callBack?.Invoke((KeyCode)(-1));
+            callBack = null;
         }
 
         public override void Update()
@@ -83,8 +90,6 @@ namespace OverhaulMod.UI
 
         public void OnCloseButtonClicked()
         {
-            callBack?.Invoke(KeyCode.None);
-            callBack = null;
             Hide();
         }
 

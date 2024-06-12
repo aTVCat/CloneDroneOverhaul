@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -36,8 +37,8 @@ namespace OverhaulMod.UI
         [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
         private readonly UIElementMouseEventsComponent m_panelMouseEvents;
 
-        [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
-        private readonly TabManager m_tabs;
+        [TabManager(typeof(UIElementTab), null, null, null, nameof(OnCategoryTabSelected))]
+        private readonly TabManager m_categoryTabs;
         [UIElement("WeaponSkinsTab")]
         private readonly ModdedObject m_weaponSkinsTab;
         [UIElement("AccessoriesTab")]
@@ -45,10 +46,19 @@ namespace OverhaulMod.UI
         [UIElement("PetsTab")]
         private readonly ModdedObject m_petsTab;
 
+        [TabManager(typeof(UIElementTabWithText), nameof(m_subCategoryTabPrefab), nameof(m_subCategoryTabsContainer), null, nameof(OnSubcategoryTabSelected))]
+        private readonly TabManager m_subcategoryTabs;
+        [UIElement("SubcategoryTabPrefab", false)]
+        private readonly ModdedObject m_subCategoryTabPrefab;
+        [UIElement("SubcategoryTabs")]
+        private readonly Transform m_subCategoryTabsContainer;
+
         [UIElement("ItemDisplay", false)]
         private readonly ModdedObject m_itemDisplay;
         [UIElement("TextDisplay", false)]
         private readonly ModdedObject m_textDisplay;
+        [UIElement("UtilsPanel", false)]
+        private readonly ModdedObject m_utilsPanel;
         [UIElement("Content")]
         private readonly Transform m_container;
         [UIElement("Content")]
@@ -68,6 +78,9 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButtonText")]
         private readonly Text m_updateButtonText;
 
+        [UIElement("ScrollRect")]
+        private readonly RectTransform m_scrollRectTransform;
+
         [UIElement("DescriptionBox", typeof(UIElementPersonalizationItemDescriptionBox), false)]
         private readonly UIElementPersonalizationItemDescriptionBox m_descriptionBox;
 
@@ -79,7 +92,11 @@ namespace OverhaulMod.UI
 
         private PersonalizationCategory m_selectedCategory;
 
+        private string m_selectedSubcategory;
+
         private readonly UnityWebRequest m_webRequest;
+
+        private Button m_defaultSkinButton;
 
         public override bool enableCursor => true;
 
@@ -87,10 +104,10 @@ namespace OverhaulMod.UI
         {
             m_rectTransform = base.GetComponent<RectTransform>();
 
-            m_tabs.AddTab(m_weaponSkinsTab.gameObject, "weapon skins");
-            m_tabs.AddTab(m_accessoriesTab.gameObject, "accessories");
-            m_tabs.AddTab(m_petsTab.gameObject, "pets");
-            m_tabs.SelectTab("weapon skins");
+            m_categoryTabs.AddTab(m_weaponSkinsTab.gameObject, "weapon skins");
+            m_categoryTabs.AddTab(m_accessoriesTab.gameObject, "accessories");
+            m_categoryTabs.AddTab(m_petsTab.gameObject, "pets");
+            m_categoryTabs.SelectTab("weapon skins");
             m_prevTab = "weapon skins";
 
             m_descriptionBox.SetBrowserUI(this);
@@ -109,14 +126,14 @@ namespace OverhaulMod.UI
             base.Show();
             m_isOpen = true;
             m_showContents = true;
-            m_tabs.interactable = true;
+            m_categoryTabs.interactable = true;
 
-            if (m_tabs.selectedTab && m_prevTab != m_tabs.selectedTab.tabId)
+            if (m_categoryTabs.selectedTab && m_prevTab != m_categoryTabs.selectedTab.tabId)
             {
                 if (m_container.childCount != 0)
                     TransformUtils.DestroyAllChildren(m_container);
 
-                m_tabs.SelectTab(m_prevTab);
+                m_categoryTabs.SelectTab(m_prevTab);
             }
 
             setCameraZoomedIn(true);
@@ -157,6 +174,8 @@ namespace OverhaulMod.UI
             base.OnDisable();
             m_isPopulating = false;
             UIVersionLabel.instance.forceHide = false;
+
+            PersonalizationManager.Instance.userInfo.SaveIfDirty();
         }
 
         public bool IsMouseOverPanel()
@@ -169,9 +188,13 @@ namespace OverhaulMod.UI
             m_descriptionBox.ShowForItem(itemInfo, rectTransform);
         }
 
-        public void EquipSelectedItem()
+        public void MakeDefaultSkinButtonInteractable()
         {
-            m_descriptionBox.OnEquipButtonClicked();
+            Button button = m_defaultSkinButton;
+            if (button)
+            {
+                button.interactable = true;
+            }
         }
 
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
@@ -180,10 +203,10 @@ namespace OverhaulMod.UI
                 ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
-        public void OnTabSelected(UIElementTab elementTab)
+        public void OnCategoryTabSelected(UIElementTab elementTab)
         {
-            UIElementTab oldTab = m_tabs.prevSelectedTab;
-            UIElementTab newTab = m_tabs.selectedTab;
+            UIElementTab oldTab = m_categoryTabs.prevSelectedTab;
+            UIElementTab newTab = m_categoryTabs.selectedTab;
             if (oldTab)
             {
                 m_prevTab = oldTab.tabId;
@@ -201,9 +224,17 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
+            m_subcategoryTabs.Clear();
             if (newTab.tabId == "weapon skins")
             {
                 m_selectedCategory = PersonalizationCategory.WeaponSkins;
+                m_subcategoryTabs.AddTab("Sword");
+                m_subcategoryTabs.AddTab("Bow");
+                m_subcategoryTabs.AddTab("Hammer");
+                m_subcategoryTabs.AddTab("Spear");
+                m_subcategoryTabs.AddTab("Shield");
+
+                m_subcategoryTabs.SelectTab("Sword");
             }
             else if (newTab.tabId == "accessories")
             {
@@ -221,6 +252,12 @@ namespace OverhaulMod.UI
             Populate();
         }
 
+        public void OnSubcategoryTabSelected(UIElementTab elementTab)
+        {
+            m_selectedSubcategory = elementTab.tabId;
+            Populate();
+        }
+
         public void Populate()
         {
             if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
@@ -233,7 +270,16 @@ namespace OverhaulMod.UI
         private IEnumerator populateCoroutine()
         {
             m_showContents = false;
-            m_tabs.interactable = false;
+            m_categoryTabs.interactable = false;
+            m_subcategoryTabs.interactable = false;
+
+            RectTransform scrollRectTransform = m_scrollRectTransform;
+            Vector2 sizeDelta = scrollRectTransform.sizeDelta;
+            if(m_selectedCategory != PersonalizationCategory.WeaponSkins)
+                sizeDelta.y = -190f;
+            else
+                sizeDelta.y = -225f;
+            scrollRectTransform.sizeDelta = sizeDelta;
 
             float timeToWait = Time.unscaledTime + 0.25f;
             while (timeToWait > Time.unscaledTime)
@@ -241,6 +287,7 @@ namespace OverhaulMod.UI
 
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
+
 
             if (m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
             {
@@ -250,54 +297,54 @@ namespace OverhaulMod.UI
             {
                 m_notImplementedTextObject.SetActive(false);
 
-                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-                WeaponType weaponType = WeaponType.None;
+                if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
+                    weaponType = WeaponType.Sword;
+
+                ModdedObject utilsPanel = Instantiate(m_utilsPanel, m_container);
+                utilsPanel.gameObject.SetActive(true);
+                Button defaultSkinButton = utilsPanel.GetObject<Button>(0);
+                defaultSkinButton.onClick.AddListener(delegate
+                {
+                    defaultSkinButton.interactable = false;
+                    PersonalizationController.SetWeaponSkin(weaponType, null);
+                    PersonalizationController.DestroyWeaponSkin(weaponType);
+                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED);
+                });
+                defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
+                m_defaultSkinButton = defaultSkinButton;
+
+                ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
+                {
+                    switch (weaponType)
+                    {
+                        case WeaponType.Sword:
+                            input.Weapon1 = true;
+                            break;
+                        case WeaponType.Bow:
+                            input.Weapon2 = true;
+                            break;
+                        case WeaponType.Hammer:
+                            input.Weapon3 = true;
+                            break;
+                        case WeaponType.Spear:
+                            input.Weapon4 = true;
+                            break;
+                        case WeaponType.Shield:
+                            input.Weapon4 = true;
+                            break;
+                    }
+                });
+
                 System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
                 for (int i = 0; i < list.Count; i++)
                 {
                     PersonalizationItemInfo item = list[i];
+                    if (item.Weapon != weaponType)
+                        continue;
+
                     bool isUnlocked = item.IsUnlocked();
                     bool isExclusive = item.IsExclusive();
                     bool isVerified = item.IsVerified;
-
-                    if (item.Weapon != weaponType)
-                    {
-                        WeaponType currentWeaponType = item.Weapon;
-
-                        ModdedObject moddedObject1 = Instantiate(m_textDisplay, m_container);
-                        moddedObject1.gameObject.SetActive(true);
-                        moddedObject1.GetObject<Button>(0).onClick.AddListener(delegate
-                        {
-                            if (firstPersonMover)
-                            {
-                                ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
-                                {
-                                    switch (currentWeaponType)
-                                    {
-                                        case WeaponType.Sword:
-                                            commandInput.Weapon1 = true;
-                                            break;
-                                        case WeaponType.Bow:
-                                            commandInput.Weapon2 = true;
-                                            break;
-                                        case WeaponType.Hammer:
-                                            commandInput.Weapon3 = true;
-                                            break;
-                                        case WeaponType.Shield:
-                                        case WeaponType.Spear:
-                                            commandInput.Weapon4 = true;
-                                            break;
-                                    }
-                                });
-                            }
-                        });
-                        moddedObject1.GetObject<Button>(0).interactable = firstPersonMover && firstPersonMover._equippedWeapons.Contains(currentWeaponType);
-
-                        Text text = moddedObject1.GetComponent<Text>();
-                        text.text = item.Weapon.ToString();
-
-                        weaponType = currentWeaponType;
-                    }
 
                     string authorsString = item.GetAuthorsString();
                     string prefix;
@@ -352,16 +399,17 @@ namespace OverhaulMod.UI
 
                     UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
                     personalizationItemDisplay.ItemInfo = item;
-                    personalizationItemDisplay.InitializeElement();
                     personalizationItemDisplay.SetBrowserUI(this);
+                    personalizationItemDisplay.InitializeElement();
 
                     if (i % 15 == 0)
                         yield return null;
                 }
             }
 
-            m_prevTab = m_tabs.selectedTab?.tabId;
-            m_tabs.interactable = true;
+            m_prevTab = m_categoryTabs.selectedTab?.tabId;
+            m_categoryTabs.interactable = true;
+            m_subcategoryTabs.interactable = true;
             m_showContents = true;
             m_isPopulating = false;
             yield break;

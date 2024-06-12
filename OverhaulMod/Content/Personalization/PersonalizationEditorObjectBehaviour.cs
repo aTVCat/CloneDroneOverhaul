@@ -20,21 +20,31 @@ namespace OverhaulMod.Content.Personalization
             get
             {
                 List<PersonalizationEditorObjectBehaviour> list = m_children;
-                list.Clear();
+                if(list == null)
+                {
+                    list = new List<PersonalizationEditorObjectBehaviour>();
+                    m_children = list;
+                }
+                else
+                {
+                    list.Clear();
+                }
 
                 Transform transform = base.transform;
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    Transform child = transform.GetChild(i);
-                    if (child)
+                if(transform.childCount > 0)
+                    for (int i = 0; i < transform.childCount; i++)
                     {
-                        PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
-                        if (personalizationEditorObjectBehaviour)
+                        Transform child = transform.GetChild(i);
+                        if (child)
                         {
-                            list.Add(personalizationEditorObjectBehaviour);
+                            PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
+                            if (personalizationEditorObjectBehaviour)
+                            {
+                                list.Add(personalizationEditorObjectBehaviour);
+                            }
                         }
                     }
-                }
+
                 return list;
             }
         }
@@ -126,14 +136,17 @@ namespace OverhaulMod.Content.Personalization
             objectInfo.SetEulerAngles(base.transform.localEulerAngles);
             objectInfo.SetScale(base.transform.localScale);
 
-            foreach (PersonalizationEditorObjectBehaviour c in children)
+            List<PersonalizationEditorObjectBehaviour> list = children;
+            if (list == null)
+                return objectInfo;
+
+            foreach (PersonalizationEditorObjectBehaviour c in list)
             {
                 if (!c || !c.gameObject)
                     continue;
 
                 objectInfo.Children.Add(c.Serialize());
             }
-
             return objectInfo;
         }
     }

@@ -5,7 +5,21 @@ namespace OverhaulMod.Engine
 {
     public class ModSettingsDataManager : Singleton<ModSettingsDataManager>
     {
-        public const string SETTINGS_FILE_NAME = "modSettings.json";
+        public const string SETTINGS_FILE_NAME_OLD = "modSettings.json";
+        public const string SETTINGS_FILE_NAME = "Settings.json";
+
+        private string m_settingsFilePathOld;
+        public string settingsFilePathOld
+        {
+            get
+            {
+                if (m_settingsFilePathOld == null)
+                {
+                    m_settingsFilePathOld = Path.Combine(ModCore.modDataFolder, SETTINGS_FILE_NAME_OLD);
+                }
+                return m_settingsFilePathOld;
+            }
+        }
 
         private string m_settingsFilePath;
         public string settingsFilePath
@@ -31,6 +45,8 @@ namespace OverhaulMod.Engine
         public override void Awake()
         {
             base.Awake();
+
+            renameOldFile();
 
             FileStream fileStream = createFileIfNotCreated();
             if (fileStream != null)
@@ -80,6 +96,16 @@ namespace OverhaulMod.Engine
                 return File.Create(settingsFilePath);
             }
             return null;
+        }
+
+        private void renameOldFile()
+        {
+            string oldPath = settingsFilePathOld;
+            string newPath = settingsFilePath;
+            if(File.Exists(oldPath) && !File.Exists(newPath))
+            {
+                File.Move(oldPath, newPath);
+            }
         }
 
         private void writeToFile(FileStream fileStream, ModSettingsDataContainer modSettingsDataContainer)

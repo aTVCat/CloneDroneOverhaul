@@ -34,11 +34,11 @@ namespace OverhaulMod.Engine
 
         public override void OnEnable()
         {
-            bool multiplayer = GameModeManager.IsMultiplayer() || ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
-            m_button.interactable = !multiplayer;
-            m_graphic.enabled = !multiplayer;
-            m_getUpgradesTextObject.SetActive(!multiplayer);
-            m_revertUpgradesTextObject.SetActive(!multiplayer);
+            bool shouldBeActive = !GameModeManager.IsOnTitleScreen() && !GameModeManager.IsMultiplayer() && !ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
+            m_button.interactable = shouldBeActive;
+            m_graphic.enabled = shouldBeActive;
+            m_getUpgradesTextObject.SetActive(shouldBeActive);
+            m_revertUpgradesTextObject.SetActive(shouldBeActive);
         }
 
         public void SetText(bool revert)

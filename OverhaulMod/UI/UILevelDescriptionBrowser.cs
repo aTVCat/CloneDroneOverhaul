@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -122,12 +123,26 @@ namespace OverhaulMod.UI
             if (m_levelDifficultyDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_levelDifficultyDisplayContainer);
 
+            list = list.OrderBy(f => (int)f.DifficultyTier).ToList();
+
+            Dictionary<DifficultyTier, int> countOfEachDifficultyConfig = new Dictionary<DifficultyTier, int>();
+
             m_levelDifficultySelectWindow.SetActive(true);
             foreach (LevelDescription level in list)
             {
+                if (countOfEachDifficultyConfig.ContainsKey(level.DifficultyTier))
+                    countOfEachDifficultyConfig[level.DifficultyTier]++;
+                else
+                    countOfEachDifficultyConfig.Add(level.DifficultyTier, 1);
+
+                EndlessTierDescription description = EndlessModeManager.Instance.GetTierDescriptionFromTier(level.DifficultyTier);
+                int difficultyCount = countOfEachDifficultyConfig[level.DifficultyTier];
+                Color difficultyColor = description == null ? Color.white : description.TextColor;
+
                 ModdedObject moddedObject = Instantiate(m_levelDifficultyDisplayPrefab, m_levelDifficultyDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = level.DifficultyTier.GetTierString();
+                moddedObject.GetObject<Text>(0).text = $"{level.DifficultyTier.GetTierString()}{(difficultyCount <= 1 ? string.Empty : $" {difficultyCount}")}";
+                moddedObject.GetObject<Text>(0).color = difficultyColor;
 
                 Graphic graphic = moddedObject.GetComponent<Graphic>();
                 graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);

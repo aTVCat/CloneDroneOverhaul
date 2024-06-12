@@ -21,6 +21,7 @@ namespace OverhaulMod.Patches
             return true;
         }
 
+        /*
         [HarmonyPostfix]
         [HarmonyPatch("Show")]
         private static void Show_Postfix(UpgradeUI __instance)
@@ -42,6 +43,6 @@ namespace OverhaulMod.Patches
                 if (transform2)
                     transform2.gameObject.SetActive(!autoBuildManager.isInAutoBuildConfigurationMode);
             }
-        }
+        }*/
     }
 }

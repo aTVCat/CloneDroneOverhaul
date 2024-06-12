@@ -26,9 +26,13 @@ namespace OverhaulMod.Content.Personalization
 
         public const string ITEM_EQUIPPED_OR_UNEQUIPPED = "PersonalizationItemEquippedOrUnequipped";
 
+        public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
+
         public static readonly string[] SupportedBodyParts = new string[]
         {
             "Head",
+            "Torso",
+            "Spine",
             "ArmUpperR",
             "ArmLowerR",
             "HandR",
@@ -79,6 +83,12 @@ namespace OverhaulMod.Content.Personalization
             private set;
         }
 
+        public PersonalizationUserInfo userInfo
+        {
+            get;
+            private set;
+        }
+
         private UnityWebRequest m_webRequest;
 
         public override void Awake()
@@ -88,6 +98,8 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemList personalizationItemList = new PersonalizationItemList();
             personalizationItemList.Load();
             itemList = personalizationItemList;
+
+            loadUserInfoFile();
         }
 
         private void Start()
@@ -303,6 +315,45 @@ namespace OverhaulMod.Content.Personalization
             return localAssetsInfo?.AssetsVersion;
         }
 
+        private void loadUserInfoFile()
+        {
+            string path = Path.Combine(ModDataManager.Instance.userDataFolder, USER_INFO_FILE);
+
+            PersonalizationUserInfo personalizationUserInfo;
+            try
+            {
+                if(!File.Exists(path))
+                {
+                    personalizationUserInfo = new PersonalizationUserInfo();
+                    personalizationUserInfo.FixValues();
+                }
+                else
+                {
+                    personalizationUserInfo = ModDataManager.Instance.DeserializeFile<PersonalizationUserInfo>(USER_INFO_FILE, false);
+                    personalizationUserInfo.FixValues();
+                }
+            }
+            catch
+            {
+                personalizationUserInfo = new PersonalizationUserInfo();
+                personalizationUserInfo.FixValues();
+            }
+
+            if (personalizationUserInfo.DiscoveredItems.Count == 0)
+                personalizationUserInfo.DiscoverAllItems();
+
+            userInfo = personalizationUserInfo;
+        }
+
+        public void SaveUserInfo()
+        {
+            PersonalizationUserInfo personalizationUserInfo = userInfo;
+            if(personalizationUserInfo != null)
+            {
+                ModDataManager.Instance.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
+            }
+        }
+
         public void ConfigureFirstPersonMover(FirstPersonMover firstPersonMover)
         {
             if (!firstPersonMover || !firstPersonMover.IsAlive())
@@ -404,30 +455,39 @@ namespace OverhaulMod.Content.Personalization
                 || weaponType == WeaponType.Shield);
         }
 
+        public void EquipItem(PersonalizationItemInfo item)
+        {
+            if (!item.IsCompatibleWithMod())
+            {
+                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod ({item.MinModVersion}).\nMake sure you're using the latest version of the mod.", 175f, true);
+                return;
+            }
+
+            if (item.Category == PersonalizationCategory.WeaponSkins)
+            {
+                Character character = CharacterTracker.Instance.GetPlayer();
+                if (character)
+                {
+                    PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                    if (personalizationController)
+                    {
+                        personalizationController.EquipItem(item);
+                    }
+                }
+            }
+            else
+            {
+
+            }
+        }
+
         public static void SetIsItemEquipped(PersonalizationItemInfo item, bool value)
         {
             string id = item.ItemID;
             switch (item.Category)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    switch (item.Weapon)
-                    {
-                        case WeaponType.Sword:
-                            PersonalizationController.SwordSkin = id;
-                            break;
-                        case WeaponType.Bow:
-                            PersonalizationController.BowSkin = id;
-                            break;
-                        case WeaponType.Hammer:
-                            PersonalizationController.HammerSkin = id;
-                            break;
-                        case WeaponType.Spear:
-                            PersonalizationController.SpearSkin = id;
-                            break;
-                        case WeaponType.Shield:
-                            PersonalizationController.ShieldSkin = id;
-                            break;
-                    }
+                    PersonalizationController.SetWeaponSkin(item.Weapon, id);
                     break;
             }
 

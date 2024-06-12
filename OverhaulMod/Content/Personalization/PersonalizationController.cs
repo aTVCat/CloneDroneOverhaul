@@ -8,19 +8,19 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationController : MonoBehaviour
     {
-        [ModSetting(ModSettingsConstants.SWORD_SKIN, "")]
+        [ModSetting(ModSettingsConstants.SWORD_SKIN, null)]
         public static string SwordSkin;
 
-        [ModSetting(ModSettingsConstants.BOW_SKIN, "")]
+        [ModSetting(ModSettingsConstants.BOW_SKIN, null)]
         public static string BowSkin;
 
-        [ModSetting(ModSettingsConstants.HAMMER_SKIN, "")]
+        [ModSetting(ModSettingsConstants.HAMMER_SKIN, null)]
         public static string HammerSkin;
 
-        [ModSetting(ModSettingsConstants.SPEAR_SKIN, "")]
+        [ModSetting(ModSettingsConstants.SPEAR_SKIN, null)]
         public static string SpearSkin;
 
-        [ModSetting(ModSettingsConstants.SHIELD_SKIN, "")]
+        [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
         public static string ShieldSkin;
 
         private FirstPersonMover m_owner;
@@ -94,27 +94,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public bool HasEquippedSkinOnWeapon(WeaponType weaponType)
-        {
-            if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
-                return false;
-
-            switch (weaponType)
-            {
-                case WeaponType.Sword:
-                    return !SwordSkin.IsNullOrEmpty();
-                case WeaponType.Bow:
-                    return !BowSkin.IsNullOrEmpty();
-                case WeaponType.Hammer:
-                    return !HammerSkin.IsNullOrEmpty();
-                case WeaponType.Spear:
-                    return !SpearSkin.IsNullOrEmpty();
-                case WeaponType.Shield:
-                    return !ShieldSkin.IsNullOrEmpty();
-            }
-            return false;
-        }
-
         public PersonalizationEditorObjectBehaviour SpawnItem(string itemId)
         {
             if (itemId.IsNullOrEmpty())
@@ -178,6 +157,15 @@ namespace OverhaulMod.Content.Personalization
                     return true;
 
             return false;
+        }
+
+        public PersonalizationItemInfo GetItem(WeaponType weaponType)
+        {
+            foreach (var keyValue in m_spawnedItems)
+                if (keyValue.Key.Weapon == weaponType)
+                    return keyValue.key;
+
+            return null;
         }
 
         private void getWeaponRenderers()
@@ -265,6 +253,72 @@ namespace OverhaulMod.Content.Personalization
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
                 return ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
+            }
+            return null;
+        }
+
+        public static void RefreshMainPlayer()
+        {
+            Character character = CharacterTracker.Instance.GetPlayer();
+            if (character)
+            {
+                PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                if (personalizationController)
+                {
+                    personalizationController.SpawnEquippedSkins();
+                }
+            }
+        }
+
+        public static void DestroyWeaponSkin(WeaponType weaponType)
+        {
+            Character character = CharacterTracker.Instance.GetPlayer();
+            if (character)
+            {
+                PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                if (personalizationController)
+                {
+                    personalizationController.DestroyItem(personalizationController.GetItem(weaponType));
+                }
+            }
+        }
+
+        public static void SetWeaponSkin(WeaponType weaponType, string itemId)
+        {
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    SwordSkin = itemId;
+                    break;
+                case WeaponType.Bow:
+                    BowSkin = itemId;
+                    break;
+                case WeaponType.Hammer:
+                    HammerSkin = itemId;
+                    break;
+                case WeaponType.Spear:
+                    SpearSkin = itemId;
+                    break;
+                case WeaponType.Shield:
+                    ShieldSkin = itemId;
+                    break;
+            }
+        }
+
+        public static string GetWeaponSkin(WeaponType weaponType)
+        {
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    return SwordSkin;
+                case WeaponType.Bow:
+                    return BowSkin;
+                case WeaponType.Hammer:
+                    return HammerSkin;
+                case WeaponType.Spear:
+                    return SpearSkin;
+                case WeaponType.Shield:
+                    return ShieldSkin;
             }
             return null;
         }
