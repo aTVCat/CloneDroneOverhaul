@@ -19,10 +19,16 @@ namespace OverhaulMod.UI
             set;
         } = 2f;
 
+        public bool textIsLocalizationId
+        {
+            get;
+            set;
+        }
+
         public override void Update()
         {
             if (m_isMouseIn)
-                ModUIUtils.Tooltip(tooltipText, tooltipShowDuration);
+                ModUIUtils.Tooltip(textIsLocalizationId ? LocalizationManager.Instance.GetTranslatedString(tooltipText) : tooltipText, tooltipShowDuration);
         }
 
         public void OnDeselect(BaseEventData eventData)

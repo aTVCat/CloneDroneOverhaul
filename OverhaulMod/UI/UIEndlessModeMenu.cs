@@ -20,7 +20,7 @@ namespace OverhaulMod.UI
         [UIElement("ViewLeaderBoardButton")]
         private readonly Button m_leaderboardButton;
 
-        [ShowTooltipOnHighLight("Erase progress", 1.5f)]
+        [ShowTooltipOnHighLight("erase progress", 1.5f, true)]
         [UIElementAction(nameof(OnResetProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
         private readonly Button m_resetProgressButton;
@@ -48,8 +48,8 @@ namespace OverhaulMod.UI
                 else
                 {
                     string name = gameData.HumanFacts?.GetFullName();
-                    string difficultyText = $" <color={tierDesc.TextColor.ToHex()}>{tierDesc.Tier.GetTierString()}</color>";
-                    m_progressText.text = $"{name} - Level {gameData.LevelIDsBeatenThisPlaythrough.Count + 1}{difficultyText}";
+                    string difficultyText = $" <color={tierDesc.TextColor.ToHex()}>{LocalizationManager.Instance.GetTranslatedString(tierDesc.Tier.GetTierString())}</color>";
+                    m_progressText.text = $"{name} - {LocalizationManager.Instance.GetTranslatedString("level_context")} {gameData.LevelIDsBeatenThisPlaythrough.Count + 1}{difficultyText}";
                 }
             }
             else

@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 8168976655274925323}
   - component: {fileID: 3001650128922189863}
   - component: {fileID: 7116242152976228843}
+  - component: {fileID: 3221106983076478345}
   m_Layer: 0
   m_Name: Warning1
   m_TagString: Untagged
@@ -565,6 +566,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_EffectDistance: {x: -1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &3221106983076478345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666781670004107764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: build_note
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &4675937809994842343
 GameObject:
   m_ObjectHideFlags: 0

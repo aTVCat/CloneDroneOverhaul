@@ -175,6 +175,7 @@ namespace OverhaulMod.UI
                             showTooltipOnHightLight.InitializeElement();
                             showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
                             showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
+                            showTooltipOnHightLight.textIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
                         }
                     }
 

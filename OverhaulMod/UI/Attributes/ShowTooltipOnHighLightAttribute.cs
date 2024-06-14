@@ -9,16 +9,20 @@ namespace OverhaulMod.UI
 
         public float Duration;
 
-        public ShowTooltipOnHighLightAttribute(string text, float duration)
+        public bool TextIsLocalizationID;
+
+        public ShowTooltipOnHighLightAttribute(string text, float duration, bool textIsLocalizationId = false)
         {
             Text = text;
             Duration = duration;
+            TextIsLocalizationID = textIsLocalizationId;
         }
 
-        public ShowTooltipOnHighLightAttribute(string text)
+        public ShowTooltipOnHighLightAttribute(string text, bool textIsLocalizationId = false)
         {
             Text = text;
             Duration = 2f;
+            TextIsLocalizationID = textIsLocalizationId;
         }
     }
 }
