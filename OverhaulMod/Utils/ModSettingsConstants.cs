@@ -245,5 +245,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.TransitionManager"/>
         /// </summary>
         public const string TRANSITION_ON_STARTUP = "TransitionOnStart";
+
+        /// <summary>
+        /// <see cref="Engine.AdvancedPhotoModeManager"/>
+        /// </summary>
+        public const string ADVANCED_PHOTO_MODE = "AdvancedPhotoMode";
     }
 }

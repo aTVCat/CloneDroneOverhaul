@@ -6,6 +6,9 @@ namespace OverhaulMod.Engine
 {
     public class AdvancedPhotoModeManager : Singleton<AdvancedPhotoModeManager>, IGameLoadListener
     {
+        [ModSetting(ModSettingsConstants.ADVANCED_PHOTO_MODE, true)]
+        public static bool EnableAdvancedPhotoMode;
+
         private LightningInfo m_nonEditedLightningInfo, m_editedLightningInfo;
 
         private bool m_isInPhotoMode, m_hasEverEnteredPhotoMode;
@@ -105,6 +108,9 @@ namespace OverhaulMod.Engine
 
         private void onEnteredPhotoMode()
         {
+            if (!EnableAdvancedPhotoMode)
+                return;
+
             m_isInPhotoMode = true;
 
             LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
@@ -130,14 +136,17 @@ namespace OverhaulMod.Engine
 
         private void onExitedPhotoMode()
         {
-            m_isInPhotoMode = false;
+            if (m_isInPhotoMode)
+            {
+                m_isInPhotoMode = false;
 
-            RealisticLightningManager.Instance.PatchLevelLightSettings();
-            RefreshLightningWithNormalInfo();
+                RealisticLightningManager.Instance.PatchLevelLightSettings();
+                RefreshLightningWithNormalInfo();
 
-            UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
-            if (photoModeUI)
-                photoModeUI.ResetEnvironmentFields();
+                UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
+                if (photoModeUI)
+                    photoModeUI.ResetEnvironmentFields();
+            }
         }
 
         public static class Settings
@@ -146,7 +155,7 @@ namespace OverhaulMod.Engine
             {
                 get
                 {
-                    AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
+                    AdvancedPhotoModeManager advancedPhotoModeManager = Instance;
                     return advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode();
                 }
             }

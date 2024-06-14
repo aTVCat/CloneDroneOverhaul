@@ -695,9 +695,14 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
             pageBuilder.Header4("Improves ping on some machines, but can also make it worse");
 
+            _ = pageBuilder.Header1("Misc.");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ADVANCED_PHOTO_MODE), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ADVANCED_PHOTO_MODE, value, true);
+            }, "Advanced photo mode");
+
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
             {
-                _ = pageBuilder.Header1("More settings coming soon.");
                 return;
             }
 
