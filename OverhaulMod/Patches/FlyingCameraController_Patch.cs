@@ -14,8 +14,12 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Update")]
         private static bool Update_Prefix(FlyingCameraController __instance)
         {
+            InputManager inputManager = InputManager.Instance;
             if (UIManager.Instance.IsMouseOverUIElement())
+            {
+                inputManager.SetCursorEnabled(true);
                 return false;
+            }
 
             if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
                 return true;
@@ -26,7 +30,6 @@ namespace OverhaulMod.Patches
             {
                 bool rmbHeld = player.GetButton(3) || (modUIManager && !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK));
 
-                InputManager inputManager = InputManager.Instance;
                 inputManager.SetCursorEnabled(!rmbHeld);
             }
             return true;

@@ -4,6 +4,7 @@ using OverhaulMod.Content;
 using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
+using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
@@ -195,6 +196,13 @@ namespace OverhaulMod
             {
                 PostEffectsManager.Instance.RefreshCameraPostEffects();
             }, ModSettingsConstants.TWEAK_BLOOM);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
+                if (energyUIPatch)
+                    energyUIPatch.RefreshPatch();
+            }, ModSettingsConstants.ENERGY_UI_REWORK);
         }
 
         private static void loadGameUIThemeData()

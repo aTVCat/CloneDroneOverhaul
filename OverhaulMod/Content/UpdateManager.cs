@@ -54,6 +54,7 @@ namespace OverhaulMod.Content
 
         private void Start()
         {
+            /*
             if (PlayerPrefs.HasKey(PLAYER_PREF_KEY))
             {
                 string oldBuildPath = PlayerPrefs.GetString(PLAYER_PREF_KEY);
@@ -70,7 +71,7 @@ namespace OverhaulMod.Content
                 }
                 PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
                 PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, ModBuildInfo.version.ToString());
-            }
+            }*/
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
         }
 
@@ -191,13 +192,13 @@ namespace OverhaulMod.Content
             switch (index)
             {
                 case 0:
-                    return "Get only stable builds.";
+                    return LocalizationManager.Instance.GetTranslatedString("update_branch_release_description");
                 case 1:
-                    return "Get latest public test builds.";
+                    return LocalizationManager.Instance.GetTranslatedString("update_branch_testing_description");
                 case 2:
-                    return "Get development/debug builds.";
+                    return LocalizationManager.Instance.GetTranslatedString("update_branch_canary_description");
             }
-            return "This branch doesn't have description.";
+            return LocalizationManager.Instance.GetTranslatedString("update_branch_unknown_description");
         }
 
         public List<Dropdown.OptionData> GetAvailableBranches()
@@ -209,10 +210,12 @@ namespace OverhaulMod.Content
         {
             string modFolder = ModCore.instance.ModInfo.FolderPath;
             string filePath = modFolder + "ModInfo.json";
-            File.Delete(filePath);
+            if (File.Exists(filePath))
+                File.Move(filePath, modFolder + "ModInfo.json.bak");
 
+            /*
             PlayerPrefs.SetString(PLAYER_PREF_KEY, modFolder);
-            PlayerPrefs.Save();
+            PlayerPrefs.Save();*/
         }
     }
 }

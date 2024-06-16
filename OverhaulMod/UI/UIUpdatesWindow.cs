@@ -21,9 +21,9 @@ namespace OverhaulMod.UI
         [UIElement("CheckForUpdatesButton")]
         private readonly Button m_checkForUpdatesButton;
 
-        [UIElementAction(nameof(OnDirectUpdateButtonClicked))]
+        [UIElementAction(nameof(OnInGameUpdateButtonClicked))]
         [UIElement("UpdateButton")]
-        private readonly Button m_directUpdateButton;
+        private readonly Button m_inGameUpdateButton;
 
         [UIElementAction(nameof(OnBranchChanged))]
         [UIElement("BranchDropdown")]
@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
             int branch = (ModBuildInfo.internalRelease || ExclusiveContentManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
 
             m_checkForUpdatesOnStartupToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP);
-            m_directUpdateButton.interactable = false;
+            m_inGameUpdateButton.interactable = false;
             m_branchDropdown.options = UpdateManager.Instance.GetAvailableBranches();
             m_branchDropdown.value = branch;
 
@@ -133,19 +133,19 @@ namespace OverhaulMod.UI
 
             if (updateInfo == null || !updateInfo.IsNewBuild())
             {
-                m_versionText.text = "No updates found.";
+                m_versionText.text = LocalizationManager.Instance.GetTranslatedString("no updates found");
                 return;
             }
             m_directoryName = "OverhaulMod_V" + updateInfo.ModVersion;
             m_downloadSource = updateInfo.DownloadLink;
-            m_directUpdateButton.interactable = true;
+            m_inGameUpdateButton.interactable = true;
 
-            SetVersionAndChangelogTexts($"<color=#5f9ded>></color>  Update available: {updateInfo.ModVersion} ({updateInfo.ModBotVersion})", $"Changelog:\n{updateInfo.Changelog}");
+            SetVersionAndChangelogTexts($"<color=#5f9ded>></color>  {LocalizationManager.Instance.GetTranslatedString("update available:")} {updateInfo.ModVersion} ({updateInfo.ModBotVersion})", $"Changelog:\n{updateInfo.Changelog}");
         }
 
         private void onFailedToCheckUpdates(string error)
         {
-            SetVersionAndChangelogTexts("Error:".AddColor(Color.yellow), $"{error}".AddColor(Color.yellow));
+            SetVersionAndChangelogTexts(LocalizationManager.Instance.GetTranslatedString("error:").AddColor(Color.yellow), $"{error}".AddColor(Color.yellow));
             SetUIInteractable(true);
         }
 
@@ -162,7 +162,7 @@ namespace OverhaulMod.UI
             m_progressBar.SetActive(false);
             SetUIInteractable(true);
 
-            ModUIUtils.MessagePopupOK("Installation error", error, 200f, true);
+            ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("installation error"), error, 200f, true);
         }
 
         public void SetVersionAndChangelogTexts(string version, string changelog)
@@ -178,7 +178,7 @@ namespace OverhaulMod.UI
 
         public void OnCheckForUpdatesButtonClicked()
         {
-            m_directUpdateButton.interactable = false;
+            m_inGameUpdateButton.interactable = false;
             SetUIInteractable(false);
             ClearVersionAndChangelogTexts();
 
@@ -193,19 +193,19 @@ namespace OverhaulMod.UI
         public void OnBranchChanged(int index)
         {
             index = Mathf.Clamp(index, 0, m_branchDropdown.options.Count - 1);
-            m_branchDescription.text = $"Selected branch: \"{m_branchDropdown.options[index].text}\".\n{UpdateManager.Instance.GetBranchDescription(index)}";
+            m_branchDescription.text = $"{LocalizationManager.Instance.GetTranslatedString("selected branch:")} \"{m_branchDropdown.options[index].text}\".\n{UpdateManager.Instance.GetBranchDescription(index)}";
         }
 
-        public void OnDirectUpdateButtonClicked()
+        public void OnInGameUpdateButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, "Update the mod in-game?", "You won't be able to exit this menu while downloading a new build.\n\nNOTE: This feature is in testing phase so it might break the game.\nUse this with caution.", 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Update mod", "Cancel", null, onConfirmedToDoDirectUpdate); ;
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("Update the mod in-game?"), LocalizationManager.Instance.GetTranslatedString("ingame_update_desc"), 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", LocalizationManager.Instance.GetTranslatedString("update"), LocalizationManager.Instance.GetTranslatedString("cancel"), null, onConfirmedInGameUpdate);
         }
 
-        private void onConfirmedToDoDirectUpdate()
+        private void onConfirmedInGameUpdate()
         {
             disallowClosing = true;
             m_exitButton.interactable = false;
-            m_directUpdateButton.interactable = false;
+            m_inGameUpdateButton.interactable = false;
             m_progressBar.SetActive(true);
             SetUIInteractable(false);
             ClearVersionAndChangelogTexts();

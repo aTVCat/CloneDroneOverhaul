@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         {
             EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
             if (energyUIPatch)
-                energyUIPatch.PatchEnergyUI(false);
+                energyUIPatch.RefreshPatch();
         }
     }
 }

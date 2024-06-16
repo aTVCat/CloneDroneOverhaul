@@ -25,8 +25,8 @@ namespace OverhaulMod.UI
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnTimeScaleChanged))]
-        [UIElement("TimeScaleField")]
-        private readonly InputField m_timeScaleField;
+        [UIElement("TimeScaleSlider")]
+        private readonly Slider m_timeScaleSlider;
 
 
         [UIElementAction(nameof(OnShowPlayerToggled))]
@@ -189,7 +189,7 @@ namespace OverhaulMod.UI
                 m_cinematicBordersToggle.isOn = cinematicEffects.borders;
             }
 
-            m_timeScaleField.text = PhotoManager.Instance.OverridePausedTimeScale.ToString().Replace(',', '.');
+            m_timeScaleSlider.value = Mathf.Round(Mathf.Clamp01(PhotoManager.Instance.OverridePausedTimeScale) * 10f);
 
             m_vignetteToggle.isOn = AdvancedPhotoModeManager.Settings.EnableVignette;
             m_ditheringToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDithering;
@@ -262,18 +262,12 @@ namespace OverhaulMod.UI
             setFieldsValues();
         }
 
-        public void OnTimeScaleChanged(string value)
+        public void OnTimeScaleChanged(float value)
         {
             if (m_disallowCallbacks)
                 return;
 
-            if (!float.TryParse(value.Replace('.', ','), out float ts))
-                ts = 0.1f;
-
-            ts = Mathf.Clamp(ts, 0.01f, 1.0f);
-            m_timeScaleField.text = ts.ToString().Replace(',', '.');
-
-            PhotoManager.Instance.OverridePausedTimeScale = ts;
+            PhotoManager.Instance.OverridePausedTimeScale = Mathf.Clamp(value / 10f, 0.1f, 1f);
         }
 
         public void OnShowPlayerToggled(bool value)

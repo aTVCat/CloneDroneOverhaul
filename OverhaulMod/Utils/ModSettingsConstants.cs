@@ -265,5 +265,20 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.RichPresenceManager"/>
         /// </summary>
         public const string RPC_DISPLAY_LEVEL_FILE_NAME = "RPCDisplayLevelFileName";
+
+        /// <summary>
+        /// <see cref="Patches.Behaviours.EnergyUIPatchBehaviour"/>
+        /// </summary>
+        public const string ENERGY_UI_REWORK = "EnergyUIRework";
+
+        /// <summary>
+        /// <see cref="EnergyUIBehaviour"/>
+        /// </summary>
+        public const string ENERGY_UI_FADE_OUT_IF_FULL = "EnergyUIFadeOutIfFull";
+
+        /// <summary>
+        /// <see cref="EnergyUIBehaviour"/>
+        /// </summary>
+        public const string ENERGY_UI_FADE_OUT_INTENSITY = "EnergyUIFadeOutIntensity";
     }
 }

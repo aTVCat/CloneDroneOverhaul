@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,9 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class EnergyUIPatchBehaviour : GamePatchBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENERGY_UI_REWORK, true)]
+        public static bool EnablePatch;
+
         private GameObject m_bg;
         private Transform m_cantJumpBG;
 
@@ -42,13 +46,16 @@ namespace OverhaulMod.Patches.Behaviours
 
             if (!transform.GetComponent<EnergyUIBehaviour>())
                 _ = transform.gameObject.AddComponent<EnergyUIBehaviour>();
-
-            PatchEnergyUI(false);
         }
 
         public override void UnPatch()
         {
             PatchEnergyUI(true);
+        }
+
+        public void RefreshPatch()
+        {
+            PatchEnergyUI(!EnablePatch);
         }
 
         public void PatchEnergyUI(bool vanilla)

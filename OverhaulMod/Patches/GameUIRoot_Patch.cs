@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using Rewired;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,7 @@ namespace OverhaulMod.Patches
             }
 
             ModUIManager manager = ModUIManager.Instance;
-            if (manager && manager.ShouldEnableCursor())
+            if (manager && (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && UIManager.Instance.IsMouseOverUIElement())))
             {
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;

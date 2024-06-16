@@ -232,6 +232,9 @@ namespace OverhaulMod.UI
                 case "Advanced":
                     populateAdvancedPage(settingsMenu);
                     break;
+                case "UI Patches":
+                    populateUIPatchesPage(settingsMenu);
+                    break;
                 default:
                     populateDefaultPage(settingsMenu);
                     break;
@@ -348,6 +351,11 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
                 ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+            });
+            _ = pageBuilder.Button("Configure UI enhancements", delegate
+            {
+                ClearPageContents();
+                populateUIPatchesPage(settingsMenu);
             });
 
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
@@ -729,6 +737,40 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Shield transparency");
             _ = pageBuilder.Slider(0f, 1f, false, 1f, null);
             _ = pageBuilder.Toggle(false, null, "Damage indicator");
+        }
+
+        private void populateUIPatchesPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                populateHomePage(settingsMenu);
+            });
+
+            _ = pageBuilder.Header1("Energy bar enhancements");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
+            }, "Energy bar redesign");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, value, true);
+            }, "Fade out energy bar if full");
+            _ = pageBuilder.Header3("Fade out intensity");
+            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, value, true);
+            }, true);
+            _ = pageBuilder.Button("Reset energy bar settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true, true);
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f, true);
+
+                ClearPageContents();
+                populateUIPatchesPage(settingsMenu);
+            });
         }
 
         private int getCurrentLanguageIndex()
