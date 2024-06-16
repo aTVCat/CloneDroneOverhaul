@@ -322,7 +322,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationUserInfo personalizationUserInfo;
             try
             {
-                if(!File.Exists(path))
+                if (!File.Exists(path))
                 {
                     personalizationUserInfo = new PersonalizationUserInfo();
                     personalizationUserInfo.FixValues();
@@ -348,7 +348,7 @@ namespace OverhaulMod.Content.Personalization
         public void SaveUserInfo()
         {
             PersonalizationUserInfo personalizationUserInfo = userInfo;
-            if(personalizationUserInfo != null)
+            if (personalizationUserInfo != null)
             {
                 ModDataManager.Instance.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
             }

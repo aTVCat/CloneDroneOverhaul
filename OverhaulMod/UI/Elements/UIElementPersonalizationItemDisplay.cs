@@ -1,14 +1,8 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static System.AppDomainInitializerInfo;
 
 namespace OverhaulMod.UI
 {
@@ -21,16 +15,16 @@ namespace OverhaulMod.UI
         public const string ITEM_EQUIPPED_NAME_BG_COLOR = "#10204F";
 
         [UIElement("NameBG")]
-        private Image m_nameBg;
+        private readonly Image m_nameBg;
 
         [UIElement("Frame")]
-        private Image m_frame;
+        private readonly Image m_frame;
 
         [UIElement("NewIndicator")]
-        private GameObject m_newIndicator;
+        private readonly GameObject m_newIndicator;
 
         [UIElement("FavoriteIndicator")]
-        private GameObject m_favoriteIndicator;
+        private readonly GameObject m_favoriteIndicator;
 
         private Button m_button;
 

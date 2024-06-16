@@ -73,6 +73,8 @@ namespace OverhaulMod.UI
 
         private bool m_isSendingFeedback;
 
+        private string m_charsLeftText;
+
         public int selectedRank
         {
             get;
@@ -83,6 +85,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
+            m_charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
             m_improveField.characterLimit = CHARACTER_LIMIT;
             m_favoriteField.characterLimit = CHARACTER_LIMIT;
             m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
@@ -121,7 +124,7 @@ namespace OverhaulMod.UI
 
         private string getCharLeftTextForField(InputField inputField)
         {
-            return $"{inputField.characterLimit - inputField.text.Length} characters left";
+            return $"{inputField.characterLimit - inputField.text.Length} {m_charsLeftText}";
         }
 
         public void SetExitButtonVisible(bool value)

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -676,7 +675,7 @@ namespace OverhaulMod.UI
         private void populateAdvancedPage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
-            pageBuilder.Header1("Transitions");
+            _ = pageBuilder.Header1("Transitions");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, value, true);
@@ -689,11 +688,25 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP, value, true);
             }, "Transition on startup");
-            pageBuilder.Header4("Doborog logo will be smoothly faded out on game start");
+            _ = pageBuilder.Header4("Doborog logo will be smoothly faded out on game start");
+
+            _ = pageBuilder.Header1("Rich presence");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_RPC), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_RPC, value, true);
+            }, "Enable rich presence");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.RPC_DETAILS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.RPC_DETAILS, value, true);
+            }, "Display details");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.RPC_DISPLAY_LEVEL_FILE_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.RPC_DISPLAY_LEVEL_FILE_NAME, value, true);
+            }, "Display editing level name");
 
             _ = pageBuilder.Header1("Multiplayer settings");
             _ = pageBuilder.Toggle(settingsMenu.RelayToggle.isOn, OnRelayToggleChanged, "Relay connection");
-            pageBuilder.Header4("Improves ping on some machines, but can also make it worse");
+            _ = pageBuilder.Header4("Improves ping on some machines, but can also make it worse");
 
             _ = pageBuilder.Header1("Misc.");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ADVANCED_PHOTO_MODE), delegate (bool value)

@@ -80,7 +80,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!TransitionManager.OverhaulNonSceneTransitions)
             {
-                base.StartCoroutine(startEditorGameModeCoroutine(false));
+                _ = base.StartCoroutine(startEditorGameModeCoroutine(false));
                 return;
             }
             TransitionManager.Instance.DoNonSceneTransition(startEditorGameModeCoroutine(true));

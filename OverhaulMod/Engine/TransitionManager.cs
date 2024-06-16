@@ -22,7 +22,7 @@ namespace OverhaulMod.Engine
         public override void Awake()
         {
             base.Awake();
-            if(TransitionOnStartup)
+            if (TransitionOnStartup)
                 DoTransition(null, Color.white, false, true, true, 0.1f);
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.AppDomainInitializerInfo;
 
 namespace OverhaulMod.Content.Personalization
 {

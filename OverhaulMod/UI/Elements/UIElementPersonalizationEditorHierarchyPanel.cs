@@ -2,7 +2,6 @@
 using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -50,7 +49,7 @@ namespace OverhaulMod.UI
                         PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
                         if (behaviour)
                         {
-                            base.StartCoroutine(deleteObjectCoroutine(behaviour.gameObject));
+                            _ = base.StartCoroutine(deleteObjectCoroutine(behaviour.gameObject));
                         }
                     });
                 });

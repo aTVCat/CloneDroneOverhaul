@@ -161,7 +161,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemInfo GetItem(WeaponType weaponType)
         {
-            foreach (var keyValue in m_spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in m_spawnedItems)
                 if (keyValue.Key.Weapon == weaponType)
                     return keyValue.key;
 

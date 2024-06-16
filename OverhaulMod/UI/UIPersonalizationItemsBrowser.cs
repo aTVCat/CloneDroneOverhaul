@@ -275,7 +275,7 @@ namespace OverhaulMod.UI
 
             RectTransform scrollRectTransform = m_scrollRectTransform;
             Vector2 sizeDelta = scrollRectTransform.sizeDelta;
-            if(m_selectedCategory != PersonalizationCategory.WeaponSkins)
+            if (m_selectedCategory != PersonalizationCategory.WeaponSkins)
                 sizeDelta.y = -190f;
             else
                 sizeDelta.y = -225f;

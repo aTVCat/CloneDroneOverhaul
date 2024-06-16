@@ -151,11 +151,11 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
-            ModIOUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
-            ModIOUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
-            ModIOUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
-            ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
-            ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
 
             if (!Directory.Exists(ModCore.modDataFolder))
                 _ = Directory.CreateDirectory(ModCore.modDataFolder);

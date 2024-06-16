@@ -30,7 +30,7 @@ namespace OverhaulMod.Utils
         {
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                _ = Directory.CreateDirectory(path);
                 return true;
             }
             return false;

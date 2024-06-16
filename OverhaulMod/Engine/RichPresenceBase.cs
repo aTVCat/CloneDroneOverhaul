@@ -101,7 +101,7 @@ namespace OverhaulMod.Engine
         public static string GetGameModeDetailsString()
         {
             string result = string.Empty;
-            if (!GameFlowManager.Instance)
+            if (!RichPresenceManager.RichPresenceDetails || !GameFlowManager.Instance)
                 return result;
 
             if (ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer())
@@ -186,7 +186,7 @@ namespace OverhaulMod.Engine
                     break;
                 case GameMode.LevelEditor:
                     LevelEditorDataManager levelEditorDataManager = LevelEditorDataManager.Instance;
-                    if (!levelEditorDataManager)
+                    if (!RichPresenceManager.RichPresenceDisplayLevelFileName || !levelEditorDataManager)
                         return result;
 
                     string path = levelEditorDataManager.GetCurrentlyEditedLevelPath();

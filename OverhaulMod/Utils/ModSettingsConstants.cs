@@ -250,5 +250,20 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AdvancedPhotoModeManager"/>
         /// </summary>
         public const string ADVANCED_PHOTO_MODE = "AdvancedPhotoMode";
+
+        /// <summary>
+        /// <see cref="Engine.RichPresenceManager"/>
+        /// </summary>
+        public const string ENABLE_RPC = "EnableRPC";
+
+        /// <summary>
+        /// <see cref="Engine.RichPresenceManager"/>
+        /// </summary>
+        public const string RPC_DETAILS = "RPCDetails";
+
+        /// <summary>
+        /// <see cref="Engine.RichPresenceManager"/>
+        /// </summary>
+        public const string RPC_DISPLAY_LEVEL_FILE_NAME = "RPCDisplayLevelFileName";
     }
 }

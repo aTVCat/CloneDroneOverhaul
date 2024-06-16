@@ -1,10 +1,8 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static OverhaulMod.UI.UIElementKeyBindSetter;
 
 namespace OverhaulMod.UI
 {
@@ -91,7 +89,7 @@ namespace OverhaulMod.UI
             ModUIUtils.MessagePopup(true, $"Download {addonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 ContentManager contentManager = ContentManager.Instance;
-                contentManager.DownloadContent(addonId, delegate
+                _ = contentManager.DownloadContent(addonId, delegate
                 {
                     onContentDownloaded.Invoke();
                     RefreshDisplays();

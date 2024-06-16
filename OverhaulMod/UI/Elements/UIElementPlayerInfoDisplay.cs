@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
             base.OnDestroy();
 
             UnityWebRequest unityWebRequest = m_webRequest;
-            if(unityWebRequest != null)
+            if (unityWebRequest != null)
             {
                 try
                 {
@@ -71,12 +71,12 @@ namespace OverhaulMod.UI
             if (!System.IO.File.Exists(path))
                 return;
 
-            base.StartCoroutine(loadIconCoroutine(path));
+            _ = base.StartCoroutine(loadIconCoroutine(path));
         }
 
         private IEnumerator loadIconCoroutine(string path)
         {
-            using(UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
+            using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
             {
                 m_webRequest = unityWebRequest;
                 yield return unityWebRequest.SendWebRequest();

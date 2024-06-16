@@ -72,7 +72,7 @@ namespace OverhaulMod.Engine
                 }
                 dataContainer = modSettingsDataContainer;
             }
-            if(fileStream != null)
+            if (fileStream != null)
                 fileStream.Dispose();
         }
 
@@ -102,7 +102,7 @@ namespace OverhaulMod.Engine
         {
             string oldPath = settingsFilePathOld;
             string newPath = settingsFilePath;
-            if(File.Exists(oldPath) && !File.Exists(newPath))
+            if (File.Exists(oldPath) && !File.Exists(newPath))
             {
                 File.Move(oldPath, newPath);
             }

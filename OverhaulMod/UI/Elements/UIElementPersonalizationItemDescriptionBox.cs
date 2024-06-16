@@ -1,10 +1,4 @@
 ﻿using OverhaulMod.Content.Personalization;
-using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,29 +7,29 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationItemDescriptionBox : OverhaulUIBehaviour
     {
         [UIElement("ItemName")]
-        private Text m_itemNameText;
+        private readonly Text m_itemNameText;
 
         [UIElement("ItemDescription")]
-        private Text m_itemDescriptionText;
+        private readonly Text m_itemDescriptionText;
 
         [UIElement("EquipButton")]
-        private GameObject m_unequippedIndicatorObject;
+        private readonly GameObject m_unequippedIndicatorObject;
 
         [UIElement("EquippedLabel")]
-        private GameObject m_equippedIndicatorObject;
+        private readonly GameObject m_equippedIndicatorObject;
 
         [UIElement("LockedOverlay")]
-        private GameObject m_lockedOverlay;
+        private readonly GameObject m_lockedOverlay;
 
         [UIElement("NonVerifiedOverlay")]
-        private GameObject m_nonVerifiedOverlay;
+        private readonly GameObject m_nonVerifiedOverlay;
 
         [UIElement("LockedNonVerifiedOverlay")]
-        private GameObject m_lockedNonVerifiedOverlay;
+        private readonly GameObject m_lockedNonVerifiedOverlay;
 
         [UIElementAction(nameof(OnEquipButtonClicked))]
         [UIElement("EquipButton")]
-        private Button m_equipButton;
+        private readonly Button m_equipButton;
 
         private PersonalizationItemInfo m_selectedItemInfo;
 
@@ -53,10 +47,10 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if(Input.GetMouseButtonDown(0) && !m_mouseEvents.isMouseOverElement && !m_browser.IsMouseOverPanel())
+            if (Input.GetMouseButtonDown(0) && !m_mouseEvents.isMouseOverElement && !m_browser.IsMouseOverPanel())
             {
                 Hide();
-            }    
+            }
         }
 
         public void SetBrowserUI(UIPersonalizationItemsBrowser personalizationItemsBrowser)
@@ -66,7 +60,7 @@ namespace OverhaulMod.UI
 
         public void ShowForItem(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
         {
-            if(itemInfo == null || rectTransform == null)
+            if (itemInfo == null || rectTransform == null)
             {
                 Hide();
                 return;
