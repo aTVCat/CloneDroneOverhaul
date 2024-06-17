@@ -99,7 +99,7 @@ namespace OverhaulMod.Utils
 
         public static void MessagePopupNotImplemented()
         {
-            MessagePopupOK("Work in progress!", "Functionality will be added in later builds...", false);
+            MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("wip_header"), LocalizationManager.Instance.GetTranslatedString("wip_text"), false);
         }
 
         public static void ShowVanillaEscMenu()

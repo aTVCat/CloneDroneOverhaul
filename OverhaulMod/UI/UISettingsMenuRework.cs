@@ -161,6 +161,8 @@ namespace OverhaulMod.UI
 
         public void OnTabCreated(UIElementTab elementTab)
         {
+            UIElementTabWithText elementTabWithText = elementTab as UIElementTabWithText;
+            elementTabWithText.LocalizationID = $"settings_tab_{elementTab.tabId.ToLower()}";
         }
 
         public void ClearPageContents()
@@ -483,7 +485,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEATHER, value, true);
             }, "Enable weather");
             _ = pageBuilder.Header3("Force weather type");
-            _ = pageBuilder.Dropdown(WeatherManager.WeatherOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE), delegate (int value)
+            _ = pageBuilder.Dropdown(WeatherManager.Instance.GetTranslatedWeatherOptions(), ModSettingsManager.GetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE, value, true);
             });
@@ -538,7 +540,7 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Header3("Endless levels");
             _ = pageBuilder.Dropdown(settingsMenu.WorkshopLevelPolicyDropdown.options, settingsMenu.WorkshopLevelPolicyDropdown.value, OnWorkshopEndlessLevelPolicyIndexChanged);
-            _ = pageBuilder.Button("Get more levels", delegate
+            Button button = pageBuilder.Button("Get more levels", delegate
             {
                 Hide();
                 if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
@@ -546,6 +548,7 @@ namespace OverhaulMod.UI
                 else
                     ModUIConstants.ShowWorkshopBrowserRework();
             });
+            button.interactable = GameModeManager.IsOnTitleScreen();
 
             _ = pageBuilder.Header1("Twitch");
             _ = pageBuilder.Button("Enemy spawn settings", delegate
@@ -838,6 +841,9 @@ namespace OverhaulMod.UI
             if (localizationManager)
             {
                 localizationManager.SetCurrentLanguage(localizationManager.SupportedLanguages[value].LanguageCode);
+
+                m_tabs.ReinstantiatePreconfiguredTabs();
+                m_tabs.SelectTab("Home");
             }
         }
 
@@ -1117,24 +1123,24 @@ namespace OverhaulMod.UI
                 return dropdown;
             }
 
-            public Text Header1(string text, string localizationId = null)
+            public Text Header1(string text, bool localize = true)
             {
-                return instantiateHeader(text, localizationId, SettingsMenu.Header1Prefab);
+                return instantiateHeader(text, localize ? $"settings_header_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header1Prefab);
             }
 
-            public Text Header2(string text, string localizationId = null)
+            public Text Header2(string text, bool localize = true)
             {
-                return instantiateHeader(text, localizationId, SettingsMenu.Header2Prefab);
+                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header2Prefab);
             }
 
-            public Text Header3(string text, string localizationId = null)
+            public Text Header3(string text, bool localize = true)
             {
-                return instantiateHeader(text, localizationId, SettingsMenu.Header3Prefab);
+                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header3Prefab);
             }
 
-            public Text Header4(string text, string localizationId = null)
+            public Text Header4(string text, bool localize = true)
             {
-                return instantiateHeader(text, localizationId, SettingsMenu.Header4Prefab);
+                return instantiateHeader(text, localize ? $"settings_tooltip_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header4Prefab);
             }
 
             public Dropdown Dropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
@@ -1169,7 +1175,7 @@ namespace OverhaulMod.UI
                 return slider;
             }
 
-            public Toggle Toggle(bool isOn, UnityAction<bool> callback, string text, string localizationId = null)
+            public Toggle Toggle(bool isOn, UnityAction<bool> callback, string text, bool localize = true)
             {
                 if (callback == null)
                     callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
@@ -1178,7 +1184,8 @@ namespace OverhaulMod.UI
                 moddedObject.gameObject.SetActive(true);
                 Text textComponent = moddedObject.GetObject<Text>(1);
                 textComponent.text = text;
-                addLocalizedTextField(textComponent, localizationId);
+                if (localize)
+                    addLocalizedTextField(textComponent, $"settings_checkbox_{text.ToLower().Replace(' ', '_')}");
                 Toggle toggle = moddedObject.GetObject<Toggle>(0);
                 toggle.isOn = isOn;
                 if (callback != null)
@@ -1186,14 +1193,14 @@ namespace OverhaulMod.UI
                 return toggle;
             }
 
-            public Button Button(string text, Action onClicked)
+            public Button Button(string text, Action onClicked, bool localize = true)
             {
                 if (onClicked == null)
                     onClicked = ModUIUtils.MessagePopupNotImplemented;
 
                 ModdedObject moddedObject = Instantiate(SettingsMenu.ButtonPrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = text;
+                moddedObject.GetObject<Text>(0).text = localize ? LocalizationManager.Instance.GetTranslatedString($"settings_button_{text.ToLower().Replace(' ', '_')}") : text;
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(new UnityAction(onClicked));
                 return button;

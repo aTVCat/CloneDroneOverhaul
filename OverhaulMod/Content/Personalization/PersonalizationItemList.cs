@@ -46,6 +46,10 @@ namespace OverhaulMod.Content.Personalization
                     {
                         try
                         {
+                            string filesDirectory = Path.Combine(d, "files");
+                            if (!Directory.Exists(filesDirectory))
+                                Directory.CreateDirectory(filesDirectory);
+
                             PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(infoFile);
                             personalizationItemInfo.FolderPath = d;
                             personalizationItemInfo.FixValues();

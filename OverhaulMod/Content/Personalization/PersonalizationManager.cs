@@ -124,6 +124,13 @@ namespace OverhaulMod.Content.Personalization
                     {
                         _ = Directory.CreateDirectory(ModCore.customizationFolder);
                     }
+                    else
+                    {
+                        foreach(var folder in Directory.GetDirectories(ModCore.customizationFolder))
+                        {
+                            Directory.Delete(folder, true);
+                        }
+                    }
                     /*
                     else
                     {
@@ -156,6 +163,7 @@ namespace OverhaulMod.Content.Personalization
                         }, true);
                     }
 
+                    itemList.Load();
                     GlobalEventManager.Instance.Dispatch(CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT);
                 }
                 catch (Exception exc)
@@ -164,7 +172,6 @@ namespace OverhaulMod.Content.Personalization
                     callback?.Invoke(false);
                     return;
                 }
-                itemList.Load();
                 callback?.Invoke(true);
             }, delegate
             {

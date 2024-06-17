@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
             {
                 m_isSendingFeedback = false;
                 refreshElements();
-                ModUIUtils.MessagePopupOK("Successfully sent the feedback!", "Thanks!", true);
+                ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("feedback_success_header"), LocalizationManager.Instance.GetTranslatedString("feedback_success_text"), true);
 
                 if (!HasEverSentFeedback)
                 {

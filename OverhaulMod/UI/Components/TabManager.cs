@@ -1,7 +1,9 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.DateTimeParse;
 
 namespace OverhaulMod.UI
 {
@@ -18,6 +20,8 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, UIElementTab> m_instantiatedTabs;
 
+        public string[] PreconfiguredTabs;
+
         public UIElementTab prevSelectedTab
         {
             get;
@@ -29,6 +33,7 @@ namespace OverhaulMod.UI
             get;
             private set;
         }
+
         public bool interactable { get; set; }
 
         /// <summary>
@@ -51,6 +56,15 @@ namespace OverhaulMod.UI
             interactable = true;
 
             m_instantiatedTabs = new Dictionary<string, UIElementTab>();
+        }
+
+        public void ReinstantiatePreconfiguredTabs()
+        {
+            Clear();
+            var tabs = PreconfiguredTabs;
+            if (!tabs.IsNullOrEmpty())
+                foreach (string tab in tabs)
+                    AddTab(tab);
         }
 
         public void Clear()
@@ -80,6 +94,7 @@ namespace OverhaulMod.UI
             moddedObject.SetActive(true);
             UIElementTab tab = (UIElementTab)moddedObject.AddComponent(m_type);
             tab.tabId = tabId;
+            callOnTabCreateMethod(tab);
             tab.InitializeElement();
             Button button = tab.GetButton();
             button.interactable = interactable;
@@ -101,7 +116,6 @@ namespace OverhaulMod.UI
                 tab.GetButton().interactable = false;
                 callOnTabSelectMethod(tab);
             });
-            callOnTabCreateMethod(tab);
             m_instantiatedTabs.Add(tabId, tab);
         }
 

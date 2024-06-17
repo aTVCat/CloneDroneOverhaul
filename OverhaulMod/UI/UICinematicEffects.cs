@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OverhaulMod.Engine;
+using UnityEngine;
 
 namespace OverhaulMod.UI
 {
@@ -60,7 +61,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            m_bordersObject.SetActive(m_photoManager.IsInPhotoMode() && borders);
+            m_bordersObject.SetActive(AdvancedPhotoModeManager.EnableAdvancedPhotoMode && m_photoManager.IsInPhotoMode() && borders);
         }
     }
 }

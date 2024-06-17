@@ -220,6 +220,22 @@ namespace OverhaulMod.Visuals.Environment
             ActivateParticles(weatherValue, rate, max);
         }
 
+        public List<Dropdown.OptionData> GetTranslatedWeatherOptions()
+        {
+            string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
+            string key = $"weather_options_{langCode}";
+            if (ModAdvancedCache.TryGet(key, out List<Dropdown.OptionData> options))
+                return options;
+
+            List<Dropdown.OptionData> list = WeatherOptions.CloneList();
+            foreach (Dropdown.OptionData option in list)
+            {
+                option.text = LocalizationManager.Instance.GetTranslatedString($"settings_option_{option.text.ToLower()}");
+            }
+            ModAdvancedCache.Add(key, list);
+            return list;
+        }
+
         public WeatherInfo GetWeatherInfo(string name)
         {
             if (WeatherInfos.IsNullOrEmpty())

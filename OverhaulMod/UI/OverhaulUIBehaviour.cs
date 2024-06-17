@@ -330,6 +330,7 @@ namespace OverhaulMod.UI
                 MethodInfo onTabCreatedMethod = localType.GetMethod(tma.OnTabCreatedCallbackMethodName, new System.Type[] { typeof(UIElementTab) });
                 MethodInfo onTabSelectedMethod = localType.GetMethod(tma.OnTabSelectedCallbackMethodName, new System.Type[] { typeof(UIElementTab) });
 
+                tabManager.PreconfiguredTabs = tma.Tabs;
                 tabManager.Config(prefab, container, tma.ComponentType, delegate (UIElementTab tab)
                 {
                     _ = (onTabCreatedMethod?.Invoke(this, new object[] { tab }));

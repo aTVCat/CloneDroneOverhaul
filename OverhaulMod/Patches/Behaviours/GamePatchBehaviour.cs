@@ -22,6 +22,7 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(EnergyUIPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
                 typeof(SubtitleTextFieldPatchBehaviour),
+                typeof(ChallengeManagerPatchBehaviour)
             });
             gameObject.transform.SetParent(ModManagers.Instance.transform);
             s_gameObject = gameObject;

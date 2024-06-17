@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
         [UIElement("PetsTab")]
         private readonly ModdedObject m_petsTab;
 
-        [TabManager(typeof(UIElementTabWithText), nameof(m_subCategoryTabPrefab), nameof(m_subCategoryTabsContainer), null, nameof(OnSubcategoryTabSelected))]
+        [TabManager(typeof(UIElementTabWithText), nameof(m_subCategoryTabPrefab), nameof(m_subCategoryTabsContainer), nameof(OnSubcategoryTabCreated), nameof(OnSubcategoryTabSelected))]
         private readonly TabManager m_subcategoryTabs;
         [UIElement("SubcategoryTabPrefab", false)]
         private readonly ModdedObject m_subCategoryTabPrefab;
@@ -258,6 +258,12 @@ namespace OverhaulMod.UI
             Populate();
         }
 
+        public void OnSubcategoryTabCreated(UIElementTab elementTab)
+        {
+            UIElementTabWithText elementTabWithText = elementTab as UIElementTabWithText;
+            elementTabWithText.LocalizationID = $"customization_subtab_{elementTab.tabId.ToLower()}";
+        }
+
         public void Populate()
         {
             if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
@@ -348,10 +354,10 @@ namespace OverhaulMod.UI
 
                     string authorsString = item.GetAuthorsString();
                     string prefix;
-                    if (authorsString.StartsWith("From ") || authorsString.StartsWith("from "))
-                        prefix = string.Empty;
+                    if (authorsString == "vanilla")
+                        prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
                     else
-                        prefix = "By ";
+                        prefix = $"{LocalizationManager.Instance.GetTranslatedString("customization_author")} ";
 
                     Color textColor;
                     Color textOutlineColor;
@@ -426,11 +432,11 @@ namespace OverhaulMod.UI
             PersonalizationManager personalizationManager = PersonalizationManager.Instance;
             if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
             {
-                m_updateButtonText.text = "Download";
+                m_updateButtonText.text = LocalizationManager.Instance.GetTranslatedString("Download");
             }
             else
             {
-                m_updateButtonText.text = "Update";
+                m_updateButtonText.text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
             }
         }
 

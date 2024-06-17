@@ -12,6 +12,15 @@ namespace OverhaulMod.Utils
         public static bool IsNullOrEmpty(this System.Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
 
+        public static List<T> CloneList<T>(this List<T> list)
+        {
+            List<T> newList = new List<T>();
+            foreach(T value in list)
+                newList.Add((T)value.MemberwiseClone());
+
+            return newList;
+        }
+
         public static bool IsModdedEnumValue(this System.Enum enumValue)
         {
             string enumName = enumValue.ToString();

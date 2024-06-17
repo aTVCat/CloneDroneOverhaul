@@ -477,6 +477,7 @@
     <Compile Include="Patches\Behaviours\MinorPatchBehaviour.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\Behaviours\ChallengeManagerPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\SubtitleTextFieldPatchBehaviour.cs" />
     <Compile Include="Patches\EnergyUI_Patch.cs" />
     <Compile Include="Patches\CacheManager_Patch.cs" />

@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,7 +59,11 @@ namespace OverhaulMod.UI
         [UIElement("TriggeringFanfaresText")]
         private readonly Text m_triggeringFanfaresFontPreviewText;
 
-        private bool m_isPopulatingTranslations;
+        [UIElementAction(nameof(OnSearchBoxChanged))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
+
+        private Dictionary<string, GameObject> m_cachedInstantiatedKeyDisplays;
 
         public override bool hideTitleScreen => true;
 
@@ -86,6 +89,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_cachedInstantiatedKeyDisplays = new Dictionary<string, GameObject>();
+
             m_languagesDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(true);
             m_languagesDropdown.value = 0;
             m_translationValueInputField.onEndEdit.AddListener(delegate (string str)
@@ -103,12 +108,6 @@ namespace OverhaulMod.UI
             PopulateTranslations();
         }
 
-        public override void OnDisable()
-        {
-            m_isPopulatingTranslations = false;
-            m_loadingIndicatorObject.SetActive(false);
-        }
-
         public void EditTranslation(string key)
         {
             editingTranslationKey = key;
@@ -120,18 +119,32 @@ namespace OverhaulMod.UI
 
         public void ChangeTranslation(string oldName, string newName)
         {
-            editingTranslationKey = newName;
-
-            ModLocalizationManager.Instance.ChangeTranslation(oldName, newName);
-            try
+            if (m_cachedInstantiatedKeyDisplays.TryGetValue(oldName, out GameObject display))
             {
-                ModdedObject translationKey = m_translationKeysContainer.GetChild(siblingIndexOfTranslationKey)?.GetComponent<ModdedObject>();
-                if (translationKey)
+                editingTranslationKey = newName;
+
+                ModLocalizationManager.Instance.ChangeTranslation(oldName, newName);
+                try
                 {
-                    translationKey.GetObject<Text>(0).text = newName;
+                    ModdedObject translationKey = display.GetComponent<ModdedObject>();
+                    if (translationKey)
+                    {
+                        translationKey.GetObject<Text>(0).text = newName;
+                    }
+
+                    Button button = translationKey.GetComponent<Button>();
+                    button.onClick.RemoveAllListeners();
+                    button.onClick.AddListener(delegate
+                    {
+                        siblingIndexOfTranslationKey = translationKey.transform.GetSiblingIndex();
+                        EditTranslation(newName);
+                    });
                 }
+                catch { }
+
+                _ = m_cachedInstantiatedKeyDisplays.Remove(oldName);
+                m_cachedInstantiatedKeyDisplays.Add(newName, display);
             }
-            catch { }
         }
 
         public void DeleteTranslation(string key)
@@ -139,6 +152,7 @@ namespace OverhaulMod.UI
             editingTranslationKey = string.Empty;
 
             ModLocalizationManager.Instance.DeleteTranslation(key);
+            _ = m_cachedInstantiatedKeyDisplays.Remove(key);
 
             m_translationKeyLabel.text = string.Empty;
             m_translationValueInputField.text = string.Empty;
@@ -175,63 +189,39 @@ namespace OverhaulMod.UI
             Button button = translationKey.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                EditTranslation(key);
                 siblingIndexOfTranslationKey = translationKey.transform.GetSiblingIndex();
+                EditTranslation(key);
             });
+
+            m_cachedInstantiatedKeyDisplays.Add(key, translationKey.gameObject);
             return translationKey;
         }
 
         public void PopulateTranslations()
         {
-            if (m_isPopulatingTranslations || !visibleInHierarchy)
-                return;
-
-            m_isPopulatingTranslations = true;
+            m_cachedInstantiatedKeyDisplays.Clear();
             if (m_translationKeysContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_translationKeysContainer);
 
-            _ = base.StartCoroutine(populateTranslationsCoroutine());
-        }
-
-        private IEnumerator populateTranslationsCoroutine()
-        {
             ModLocalizationManager manager = ModLocalizationManager.Instance;
             if (!manager.CanLanguageBeTranslated(editingLangId))
             {
                 Text text = Instantiate(m_textPrefab, m_translationKeysContainer);
                 text.gameObject.SetActive(true);
-                text.text = "This language cannot be translated";
+                text.text = "This language cannot be translated now";
+                return;
+            }
 
-                m_isPopulatingTranslations = false;
-                yield break;
+            Dictionary<string, string> translationDictionary = manager.GetTranslationDictionary(editingLangId);
+            if (translationDictionary != null && translationDictionary.Count != 0)
+            {
+                foreach (string key in translationDictionary.Keys)
+                    _ = InstantiateTranslationKeyDisplay(key);
             }
 
             Button addTranslationButton = Instantiate(m_addTranslationKeyButtonPrefab, m_translationKeysContainer);
             addTranslationButton.gameObject.SetActive(true);
             addTranslationButton.onClick.AddListener(OnAddTranslationButtonClicked);
-
-            Dictionary<string, string> translationDictionary = manager.GetTranslationDictionary(editingLangId);
-            if (translationDictionary != null && translationDictionary.Count != 0)
-            {
-                m_translationKeysContainer.gameObject.SetActive(false);
-                m_loadingIndicatorObject.SetActive(true);
-
-                int index = 0;
-                foreach (string key in translationDictionary.Keys)
-                {
-                    _ = InstantiateTranslationKeyDisplay(key);
-                    if (index % 5 == 0)
-                        yield return null;
-                }
-
-                m_translationKeysContainer.gameObject.SetActive(true);
-                yield return null;
-
-                addTranslationButton.transform.SetAsLastSibling();
-                m_loadingIndicatorObject.SetActive(false);
-            }
-            m_isPopulatingTranslations = false;
-            yield break;
         }
 
         public void OnLanguagesDropdownChanged(int index)
@@ -245,14 +235,8 @@ namespace OverhaulMod.UI
 
         public void OnAddTranslationButtonClicked()
         {
-            if (m_isPopulatingTranslations)
-                return;
-
             ModUIUtils.InputFieldWindow("Add translation", "Enter non-existing translation name", 125f, delegate (string value)
             {
-                if (m_isPopulatingTranslations)
-                    return;
-
                 ModLocalizationManager.Instance.AddTranslation(value);
                 ModdedObject moddedObject = InstantiateTranslationKeyDisplay(value);
                 moddedObject.transform.SetSiblingIndex(m_translationKeysContainer.childCount - 2);
@@ -273,7 +257,7 @@ namespace OverhaulMod.UI
 
         public void OnToLowerButtonClicked()
         {
-            ChangeTranslation(editingTranslationKey, editingTranslationKey.ToLower());
+            OnChangedTranslationKeyField(editingTranslationKey.ToLower());
         }
 
         public void OnDeleteTranslationButtonClicked()
@@ -282,6 +266,24 @@ namespace OverhaulMod.UI
             {
                 DeleteTranslation(editingTranslationKey);
             });
+        }
+
+        public void OnSearchBoxChanged(string text)
+        {
+            string lowerText = text.ToLower();
+            bool forceSetEnabled = text.IsNullOrEmpty();
+
+            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedKeyDisplays)
+            {
+                if (forceSetEnabled)
+                {
+                    keyValue.Value.SetActive(true);
+                }
+                else
+                {
+                    keyValue.Value.SetActive(keyValue.Key.ToLower().Contains(lowerText));
+                }
+            }
         }
     }
 }

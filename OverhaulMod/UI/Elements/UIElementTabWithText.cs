@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using OverhaulMod.Utils;
+using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
@@ -7,9 +8,11 @@ namespace OverhaulMod.UI
         [UIElement("Text")]
         private readonly Text m_text;
 
+        public string LocalizationID;
+
         protected override void OnInitialized()
         {
-            m_text.text = tabId;
+            m_text.text = LocalizationID.IsNullOrEmpty() ? tabId : LocalizationManager.Instance.GetTranslatedString(LocalizationID);
         }
     }
 }
