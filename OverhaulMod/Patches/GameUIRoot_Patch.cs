@@ -94,6 +94,8 @@ namespace OverhaulMod.Patches
                     return false;
                 }
 
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DOWNLOAD_PERSONALIZATION_ASSETS_MENU))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_ITEMS_BROWSER))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER))

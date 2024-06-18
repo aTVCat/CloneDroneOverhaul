@@ -102,7 +102,7 @@ namespace OverhaulMod
             _ = ModManagers.New<RealisticLightningManager>();
             _ = ModManagers.New<ParticleManager>();
             _ = ModManagers.New<PostEffectsManager>();
-            _ = ModManagers.New<QuickResetManager>();
+            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.New<QuickResetManager>();
             _ = ModManagers.New<AutoBuildManager>();
 
             _ = ModManagers.New<ModPhysicsManager>();
@@ -227,7 +227,6 @@ namespace OverhaulMod
                 ModCache.gameUIThemeData = gameUIThemeData;
             }
         }
-
 
         public static bool HasToLoad()
         {

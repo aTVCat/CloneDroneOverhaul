@@ -48,6 +48,8 @@ namespace OverhaulMod.Patches.Behaviours
                         }
                         index++;
                     }
+
+                    indexesToRemove.Reverse();
                     foreach (int i in indexesToRemove)
                         list.RemoveAt(i);
 

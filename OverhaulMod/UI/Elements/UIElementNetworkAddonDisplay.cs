@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
                 versionString = minModVersion.ToString();
 
             m_minVersionText.enabled = !isSupported;
-            m_minVersionText.text = $"New mod version is required: {versionString}";
+            m_minVersionText.text = $"Requires mod version: {versionString}";
 
             m_hasImages = !images.IsNullOrEmpty();
         }

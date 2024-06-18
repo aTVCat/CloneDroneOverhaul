@@ -86,6 +86,12 @@ namespace OverhaulMod
                 case FeatureType.StoryModeModifiers:
                     result = false;
                     break;
+                case FeatureType.QuickReset:
+                    result = false;
+                    break;
+                case FeatureType.WinLoseDialogRework:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -142,6 +148,8 @@ namespace OverhaulMod
             WorkshopBrowserContextMenu,
 
             StoryModeModifiers,
+
+            QuickReset
         }
     }
 }

@@ -11,15 +11,20 @@ namespace OverhaulMod.UI
         [UIElement("RestartButton")]
         private readonly Button m_restartButton;
 
-        [UIElementAction(nameof(OnSoftRestartButtonClicked))]
+        [UIElementAction(nameof(OnQuickResetButtonClicked))]
         [UIElement("SoftRestartButton")]
-        private readonly Button m_softRestartButton;
+        private readonly Button m_quickResetButton;
 
         [UIElementAction(nameof(OnMainMenuClicked))]
         [UIElement("MainMenuButton")]
         private readonly Button m_mainMenuButton;
 
         public override bool enableCursor => true;
+
+        protected override void OnInitialized()
+        {
+            m_quickResetButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset));
+        }
 
         public void OnRestartButtonClicked()
         {
@@ -33,7 +38,7 @@ namespace OverhaulMod.UI
             TransitionManager.Instance.DoNonSceneTransition(resetGameCoroutine());
         }
 
-        public void OnSoftRestartButtonClicked()
+        public void OnQuickResetButtonClicked()
         {
             Hide();
             QuickResetManager.Instance.RestartGame();

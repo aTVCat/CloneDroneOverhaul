@@ -22,6 +22,8 @@ namespace OverhaulMod.Engine
             set;
         }
 
+        private bool m_isApplyingBuild;
+
         private void Start()
         {
             LoadBuildInfo();
@@ -74,6 +76,9 @@ namespace OverhaulMod.Engine
 
         public void ApplyBuild()
         {
+            if (m_isApplyingBuild)
+                return;
+
             FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
             if (!firstPersonMover)
                 return;
@@ -91,6 +96,7 @@ namespace OverhaulMod.Engine
 
         private IEnumerator applyBuildCoroutine(AutoBuildInfo autoBuildInfo)
         {
+            m_isApplyingBuild = true;
             string playFabId = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
 
@@ -107,6 +113,7 @@ namespace OverhaulMod.Engine
                     yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playFabId) || Time.unscaledTime >= timeOut);
                 }
             }
+            m_isApplyingBuild = false;
             yield break;
         }
     }

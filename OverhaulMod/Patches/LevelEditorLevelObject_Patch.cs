@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("DeserializeInto")]
         private static void DeserializeInto_Postfix(LevelEditorLevelObject __instance, ObjectPlacedInLevel objectPlacedInLevel)
         {
-            if (objectPlacedInLevel)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset) && objectPlacedInLevel)
             {
                 LevelEditorObjectAdvancedBehaviour objectAdvancedBehaviour = objectPlacedInLevel.GetComponent<LevelEditorObjectAdvancedBehaviour>();
                 if (!objectAdvancedBehaviour)
