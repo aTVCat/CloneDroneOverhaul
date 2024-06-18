@@ -42,6 +42,8 @@ namespace OverhaulMod.UI
         private readonly ModdedObject m_displayPrefab;
         [UIElement("GlobalAdvancementPrefab", false)]
         private readonly ModdedObject m_globalDisplayPrefab;
+        [UIElement("GlobalAdvancementsTable", false)]
+        private readonly ModdedObject m_tablePrefab;
 
         [UIElement("MyAchTabButton")]
         private readonly ModdedObject m_localAdvancementsTab;
@@ -162,6 +164,9 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Error", "Something went wrong while preparing statistics", true);
                     return;
                 }
+
+                ModdedObject moddedObject1 = Instantiate(m_tablePrefab, m_pageVerticalContentsTransform);
+                moddedObject1.gameObject.SetActive(true);
 
                 foreach ((GameplayAchievement, float) tuple in list)
                 {

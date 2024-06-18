@@ -1,5 +1,5 @@
 ﻿//#define MODBOT_RELEASE
-#define GITHUB_RELEASE
+//#define GITHUB_RELEASE
 
 using OverhaulMod.Utils;
 using System;

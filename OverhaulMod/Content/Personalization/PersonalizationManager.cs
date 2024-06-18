@@ -126,7 +126,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                     else
                     {
-                        foreach(var folder in Directory.GetDirectories(ModCore.customizationFolder))
+                        foreach (string folder in Directory.GetDirectories(ModCore.customizationFolder))
                         {
                             Directory.Delete(folder, true);
                         }

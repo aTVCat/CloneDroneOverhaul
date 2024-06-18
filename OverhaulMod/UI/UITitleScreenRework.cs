@@ -136,6 +136,10 @@ namespace OverhaulMod.UI
         [UIElement("BehindTheScenesButton")]
         private readonly Button m_behindTheScenesButton;
 
+        [UIElementAction(nameof(OnDiscordServerButtonClicked))]
+        [UIElement("DiscordServerButton")]
+        private readonly Button m_discordServerButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
@@ -229,10 +233,10 @@ namespace OverhaulMod.UI
                     {
                         m_socialButtonContainer = socialButtonContainer;
                         m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
-                        m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 30f);
+                        m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 65f);
                         m_socialButtonPopoutHolder = socialButtonPopoutHolder;
                         m_initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
-                        m_newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 30f);
+                        m_newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 65f);
                     }
                 }
             }
@@ -481,6 +485,17 @@ namespace OverhaulMod.UI
         public void OnBehindTheScenesButtonClicked()
         {
             ModUIConstants.ShowDevelopmentGallery(base.transform);
+        }
+
+        public void OnDiscordServerButtonClicked()
+        {
+            ModUIConstants.ShowDiscordServerMenu(base.transform);
+            /*
+            ModUIUtils.MessagePopup(true, "Join \"Modded Multiplayer\" Discord server?", null, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                string link = "https://discord.gg/ezhvabY63m";
+                Application.OpenURL(link);
+            });*/
         }
     }
 }

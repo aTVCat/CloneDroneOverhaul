@@ -15,7 +15,7 @@ namespace OverhaulMod.Utils
         public static List<T> CloneList<T>(this List<T> list)
         {
             List<T> newList = new List<T>();
-            foreach(T value in list)
+            foreach (T value in list)
                 newList.Add((T)value.MemberwiseClone());
 
             return newList;

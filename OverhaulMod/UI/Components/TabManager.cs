@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.DateTimeParse;
 
 namespace OverhaulMod.UI
 {
@@ -61,7 +60,7 @@ namespace OverhaulMod.UI
         public void ReinstantiatePreconfiguredTabs()
         {
             Clear();
-            var tabs = PreconfiguredTabs;
+            string[] tabs = PreconfiguredTabs;
             if (!tabs.IsNullOrEmpty())
                 foreach (string tab in tabs)
                     AddTab(tab);

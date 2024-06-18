@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
         public void OnRefreshButtonClicked()
         {
             m_refreshButton.interactable = false;
-            if(Time.realtimeSinceStartup < s_dontActuallyRefreshRemoteVersionUntilTime)
+            if (Time.realtimeSinceStartup < s_dontActuallyRefreshRemoteVersionUntilTime)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {

@@ -518,9 +518,9 @@ namespace OverhaulMod.UI
 
         public void OnSearchBoxChanged(string text)
         {
-            string lowerText = text.ToLower();
+            _ = text.ToLower();
             bool forceEnableAll = text.IsNullOrEmpty();
-            foreach(var keyValue in m_cachedDisplays)
+            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedDisplays)
             {
                 if (forceEnableAll)
                     keyValue.Value.SetActive(true);
