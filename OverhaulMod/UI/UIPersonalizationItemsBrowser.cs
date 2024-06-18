@@ -3,6 +3,7 @@ using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -84,6 +85,16 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionBox", typeof(UIElementPersonalizationItemDescriptionBox), false)]
         private readonly UIElementPersonalizationItemDescriptionBox m_descriptionBox;
 
+        [UIElementAction(nameof(OnSearchBoxChanged))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
+
+        [UIElementAction(nameof(OnSortDropdownChanged))]
+        [UIElement("SortDropdown")]
+        private readonly Dropdown m_sortDropdown;
+
+        private Dictionary<string, GameObject> m_cachedDisplays;
+
         private RectTransform m_rectTransform;
 
         private bool m_isOpen, m_isPopulating, m_showContents;
@@ -92,16 +103,21 @@ namespace OverhaulMod.UI
 
         private PersonalizationCategory m_selectedCategory;
 
+        private int m_sortType;
+
         private string m_selectedSubcategory;
 
         private readonly UnityWebRequest m_webRequest;
 
         private Button m_defaultSkinButton;
 
+        private bool m_allowUICallbacks;
+
         public override bool enableCursor => true;
 
         protected override void OnInitialized()
         {
+            m_cachedDisplays = new Dictionary<string, GameObject>();
             m_rectTransform = base.GetComponent<RectTransform>();
 
             m_categoryTabs.AddTab(m_weaponSkinsTab.gameObject, "weapon skins");
@@ -111,8 +127,10 @@ namespace OverhaulMod.UI
             m_prevTab = "weapon skins";
 
             m_descriptionBox.SetBrowserUI(this);
+            m_sortDropdown.value = 1;
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
+            m_allowUICallbacks = true;
         }
 
         public override void OnDestroy()
@@ -278,6 +296,7 @@ namespace OverhaulMod.UI
             m_showContents = false;
             m_categoryTabs.interactable = false;
             m_subcategoryTabs.interactable = false;
+            m_sortDropdown.interactable = false;
 
             RectTransform scrollRectTransform = m_scrollRectTransform;
             Vector2 sizeDelta = scrollRectTransform.sizeDelta;
@@ -291,6 +310,7 @@ namespace OverhaulMod.UI
             while (timeToWait > Time.unscaledTime)
                 yield return null;
 
+            m_cachedDisplays.Clear();
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
@@ -341,7 +361,7 @@ namespace OverhaulMod.UI
                     }
                 });
 
-                System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, true);
+                System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
                 for (int i = 0; i < list.Count; i++)
                 {
                     PersonalizationItemInfo item = list[i];
@@ -408,14 +428,19 @@ namespace OverhaulMod.UI
                     personalizationItemDisplay.SetBrowserUI(this);
                     personalizationItemDisplay.InitializeElement();
 
+                    m_cachedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
+
                     if (i % 15 == 0)
                         yield return null;
                 }
             }
 
+            OnSearchBoxChanged(m_searchBox.text);
+
             m_prevTab = m_categoryTabs.selectedTab?.tabId;
             m_categoryTabs.interactable = true;
             m_subcategoryTabs.interactable = true;
+            m_sortDropdown.interactable = true;
             m_showContents = true;
             m_isPopulating = false;
             yield break;
@@ -483,12 +508,34 @@ namespace OverhaulMod.UI
 
         public void OnSettingsButtonClicked()
         {
-
+            ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
         }
 
         public void OnUpdateButtonClicked()
         {
             ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+        }
+
+        public void OnSearchBoxChanged(string text)
+        {
+            string lowerText = text.ToLower();
+            bool forceEnableAll = text.IsNullOrEmpty();
+            foreach(var keyValue in m_cachedDisplays)
+            {
+                if (forceEnableAll)
+                    keyValue.Value.SetActive(true);
+                else
+                    keyValue.Value.SetActive(keyValue.Key.Contains(text));
+            }
+        }
+
+        public void OnSortDropdownChanged(int value)
+        {
+            if (!m_allowUICallbacks)
+                return;
+
+            m_sortType = value;
+            Populate();
         }
     }
 }

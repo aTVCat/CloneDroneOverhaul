@@ -30,6 +30,10 @@ namespace OverhaulMod.UI
         [UIElement("AnswerVariantButton", false)]
         private readonly ModdedObject m_answerVariantButton;
 
+        [UIElementAction(nameof(OnCopyTextButtonClicked))]
+        [UIElement("CopyTextButton")]
+        private readonly Button m_copyTextButton;
+
         public override void Show()
         {
             base.Show();
@@ -93,6 +97,11 @@ namespace OverhaulMod.UI
                     list.Add(button);
                 }
             }
+        }
+
+        public void OnCopyTextButtonClicked()
+        {
+            GUIUtility.systemCopyBuffer = m_descriptionText.text;
         }
     }
 }

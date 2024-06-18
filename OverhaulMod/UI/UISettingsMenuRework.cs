@@ -724,6 +724,11 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ADVANCED_PHOTO_MODE, value, true);
             }, "Advanced photo mode");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, value, true);
+            }, "Require RMB holding");
+            _ = pageBuilder.Header4("Require holding right mouse button when controls are hidden");
 
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
             {

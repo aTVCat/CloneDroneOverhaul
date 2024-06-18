@@ -18,6 +18,10 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButton")]
         private readonly Button m_updateButton;
 
+        [UIElementAction(nameof(OnRefreshButtonClicked))]
+        [UIElement("RefreshButton")]
+        private readonly Button m_refreshButton;
+
         [UIElement("ProgressBar", false)]
         private readonly GameObject m_progressBar;
 
@@ -32,10 +36,13 @@ namespace OverhaulMod.UI
 
         private PersonalizationManager m_personalizationManager;
 
+        private static float s_dontActuallyRefreshRemoteVersionUntilTime;
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             m_personalizationManager = PersonalizationManager.Instance;
+            s_dontActuallyRefreshRemoteVersionUntilTime = 0f;
         }
 
         public override void Show()
@@ -75,15 +82,18 @@ namespace OverhaulMod.UI
             {
                 case PersonalizationAssetsState.NotInstalled:
                     m_downloadButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    m_refreshButton.gameObject.SetActive(false);
                     m_updateButton.gameObject.SetActive(false);
                     break;
                 case PersonalizationAssetsState.Installed:
                     m_downloadButton.gameObject.SetActive(false);
+                    m_refreshButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
                     m_updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
                     m_updateButton.interactable = false;
                     break;
                 case PersonalizationAssetsState.NeedUpdate:
                     m_downloadButton.gameObject.SetActive(false);
+                    m_refreshButton.gameObject.SetActive(false);
                     m_updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
                     break;
             }
@@ -130,6 +140,27 @@ namespace OverhaulMod.UI
                 refreshContents();
             });
             refreshContents();
+        }
+
+        public void OnRefreshButtonClicked()
+        {
+            m_refreshButton.interactable = false;
+            if(Time.realtimeSinceStartup < s_dontActuallyRefreshRemoteVersionUntilTime)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    m_refreshButton.interactable = true;
+                }, 1f);
+                return;
+            }
+
+            m_personalizationManager.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
+            {
+                s_dontActuallyRefreshRemoteVersionUntilTime = Time.realtimeSinceStartup + 15f;
+                m_refreshButton.interactable = true;
+                if (result)
+                    refreshContents();
+            }, true);
         }
     }
 }

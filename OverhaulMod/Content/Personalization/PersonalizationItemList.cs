@@ -16,8 +16,12 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public Exception LoadError;
 
+        [NonSerialized]
+        private int m_version;
+
         public void Load()
         {
+            m_version++;
             Dictionary<string, Exception> errors = new Dictionary<string, Exception>();
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();
@@ -48,7 +52,7 @@ namespace OverhaulMod.Content.Personalization
                         {
                             string filesDirectory = Path.Combine(d, "files");
                             if (!Directory.Exists(filesDirectory))
-                                Directory.CreateDirectory(filesDirectory);
+                                _ = Directory.CreateDirectory(filesDirectory);
 
                             PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(infoFile);
                             personalizationItemInfo.FolderPath = d;
@@ -98,9 +102,30 @@ namespace OverhaulMod.Content.Personalization
             return list;
         }
 
-        public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, bool sort)
+        public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, PersonalizationItemsSortType sort)
         {
-            return sort ? GetItems(personalizationCategory).OrderBy(f => f.Name).ToList() : GetItems(personalizationCategory);
+            // todo: cache this using versions
+            List<PersonalizationItemInfo> result;
+            List<PersonalizationItemInfo> list = GetItems(personalizationCategory);
+            switch (sort)
+            {
+                case PersonalizationItemsSortType.Alphabet:
+                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).ToList();
+                    break;
+                case PersonalizationItemsSortType.AlphabetReverse:
+                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).Reverse().ToList();
+                    break;
+                case PersonalizationItemsSortType.Exclusivity:
+                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).OrderBy(f => !f.IsExclusive()).ToList();
+                    break;
+                case PersonalizationItemsSortType.ExclusivityReverse:
+                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).OrderBy(f => f.IsExclusive()).ToList();
+                    break;
+                default:
+                    result = list;
+                    break;
+            }
+            return result;
         }
     }
 }

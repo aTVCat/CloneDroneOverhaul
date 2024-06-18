@@ -81,6 +81,7 @@ namespace OverhaulMod.Combat.Weapons
         {
             RefreshRenderer();
 
+            MeleeImpactArea.BypassBlockAreaForType = owner.HasUpgrade(ModUpgradesManager.SCYTHE_BLADE_UPGRADE) ? WeaponType.Sword : WeaponType.None;
             MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
         }
 

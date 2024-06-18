@@ -9,6 +9,9 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.ADVANCED_PHOTO_MODE, true)]
         public static bool EnableAdvancedPhotoMode;
 
+        [ModSetting(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, false)]
+        public static bool RequireHoldingRMBWhenUIIsHidden;
+
         private LightningInfo m_nonEditedLightningInfo, m_editedLightningInfo;
 
         private bool m_isInPhotoMode, m_hasEverEnteredPhotoMode;

@@ -9,6 +9,7 @@ namespace OverhaulMod.Combat
     {
         public const UpgradeType SCYTHE_UNLOCK_UPGRADE = (UpgradeType)500;
         public const UpgradeType SCYTHE_FIRE_UPGRADE = (UpgradeType)501;
+        public const UpgradeType SCYTHE_BLADE_UPGRADE = (UpgradeType)502;
 
         public const UpgradeType HALBERD_UNLOCK_UPGRADE = (UpgradeType)510;
         public const UpgradeType HALBERD_FIRE_UPGRADE = (UpgradeType)511;
@@ -86,13 +87,20 @@ namespace OverhaulMod.Combat
                   AssetBundleConstants.UPGRADES,
                   "Scythe-128x128",
                   scythe);
+            _ = CreateUpgrade<UpgradeDescription>("Sharp blade",
+                  "Your scythe phases through swords!",
+                  SCYTHE_BLADE_UPGRADE,
+                  1,
+                  AssetBundleConstants.UPGRADES,
+                  "Scythe-128x128",
+                  scythe);
 
             _ = CreateUpgrade<UpgradeDescription>("Double jump",
                 "Do second jump",
                 DOUBLE_JUMP_UPGRADE,
                 1);
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AllGameplayContent))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewGameplayContent))
             {
                 UpgradeDescription battleAxe = CreateUpgrade<UpgradeDescription>("Battle axe unlock",
                     "You get a battle axe!",

@@ -280,5 +280,10 @@ namespace OverhaulMod.Utils
         /// <see cref="EnergyUIBehaviour"/>
         /// </summary>
         public const string ENERGY_UI_FADE_OUT_INTENSITY = "EnergyUIFadeOutIntensity";
+
+        /// <summary>
+        /// <see cref="Engine.AdvancedPhotoModeManager"/>
+        /// </summary>
+        public const string REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN = "RequireRMBHoldWhenUIIsHidden";
     }
 }

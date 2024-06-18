@@ -382,6 +382,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
     <Compile Include="Content\Personalization\ShowPersonalizationEditorObjectIf.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemsSortType.cs" />
     <Compile Include="Content\WorkshopItemPreview.cs" />
     <Compile Include="Content\WorkshopItemVote.cs" />
     <Compile Include="Discord\ActivityManager.cs" />

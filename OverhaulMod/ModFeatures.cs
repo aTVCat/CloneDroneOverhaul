@@ -62,7 +62,7 @@ namespace OverhaulMod
                 case FeatureType.GameModeSelectionScreensRework:
                     result = true;
                     break;
-                case FeatureType.AllGameplayContent:
+                case FeatureType.NewGameplayContent:
                     result = ModBuildInfo.enableV5;
                     break;
                 case FeatureType.NewEnemies:
@@ -125,7 +125,7 @@ namespace OverhaulMod
 
             GameModeSelectionScreensRework,
 
-            AllGameplayContent,
+            NewGameplayContent,
 
             NewEnemies,
 

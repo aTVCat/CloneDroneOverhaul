@@ -29,7 +29,7 @@ namespace OverhaulMod.Combat
             m_MeleeWeapons = new List<WeaponType>();
 
             AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AllGameplayContent))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewGameplayContent))
             {
                 AddWeapon<BattleAxeWeaponModel>(BATTLE_AXE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulBAxe");
                 AddWeapon<HalberdWeaponModel>(HALBERD_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulHalberd");
