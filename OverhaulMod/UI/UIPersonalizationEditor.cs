@@ -8,7 +8,7 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditor : OverhaulUIBehaviour
     {
-        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions;
+        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions, s_helpOptions;
 
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
         [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspector), false)]
         public readonly UIElementPersonalizationEditorInspector Inspector;
 
-        [UIElement("UtilitiesPanel", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
+        [UIElement("BottomBar", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
         [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel), false)]
@@ -56,9 +56,13 @@ namespace OverhaulMod.UI
         [UIElement("WindowButton")]
         private readonly Button m_toolbarWindowButton;
 
+        [UIElementAction(nameof(OnHelpButtonClicked))]
+        [UIElement("HelpButton")]
+        private readonly Button m_toolbarHelpButton;
+
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
-        public override bool enableCursor => true;
+        public override bool enableCursor => !Input.GetMouseButton(1);
 
         public static UIPersonalizationEditor instance
         {
@@ -90,6 +94,13 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", ShowObjectProperties),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", ShowItemModerator),
+            };
+
+            s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
+                new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", PersonalizationEditorManager.Instance.TutorialVideo),
+                new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked),
             };
 
             m_toolbarWindowButton.interactable = false;
@@ -131,6 +142,9 @@ namespace OverhaulMod.UI
                 InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item info", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(InspectorWindowID);
+
+            ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(InspectorWindowID);
+            windowBehaviour.transform.localScale = Vector3.one * 0.85f;
         }
 
         public void ShowObjectProperties()
@@ -140,6 +154,9 @@ namespace OverhaulMod.UI
                 ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(ObjectPropertiesWindowID);
+
+            ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(ObjectPropertiesWindowID);
+            windowBehaviour.transform.localScale = Vector3.one * 0.85f;
         }
 
         public void ShowItemModerator()
@@ -156,6 +173,9 @@ namespace OverhaulMod.UI
                     DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
                 else
                     windowManager.ShowWindow(DeveloperWindowID);
+
+                ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(DeveloperWindowID);
+                windowBehaviour.transform.localScale = Vector3.one * 0.85f;
             }
             else if (withMessage)
             {
@@ -194,6 +214,11 @@ namespace OverhaulMod.UI
             ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
 
+        public void OnAboutButtonClicked()
+        {
+            Dropdown.Hide();
+        }
+
         public void OnFileButtonClicked()
         {
             Dropdown.ShowWithOptions(s_fileOptions, m_toolbarFileButton.transform as RectTransform);
@@ -207,6 +232,11 @@ namespace OverhaulMod.UI
         public void OnWindowButtonClicked()
         {
             Dropdown.ShowWithOptions(s_windowOptions, m_toolbarWindowButton.transform as RectTransform);
+        }
+
+        public void OnHelpButtonClicked()
+        {
+            Dropdown.ShowWithOptions(s_helpOptions, m_toolbarHelpButton.transform as RectTransform);
         }
     }
 }

@@ -66,7 +66,7 @@ namespace OverhaulMod.Content.Personalization
                 ScaleArray = new float[3];
         }
 
-        public PersonalizationEditorObjectBehaviour Deserialize(Transform parent)
+        public PersonalizationEditorObjectBehaviour Deserialize(Transform parent, PersonalizationControllerInfo personalizationControllerInfo)
         {
             if (!parent)
             {
@@ -77,6 +77,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.PlaceObject(Path, parent, false);
             behaviour.IsRoot = IsRoot;
             behaviour.UniqueIndex = UniqueIndex;
+            behaviour.ControllerInfo = personalizationControllerInfo;
             Transform transform = behaviour.transform;
             transform.localPosition = GetPosition();
             transform.localEulerAngles = GetEulerAngles();
@@ -86,7 +87,7 @@ namespace OverhaulMod.Content.Personalization
             if (!Children.IsNullOrEmpty())
             {
                 foreach (PersonalizationEditorObjectInfo info in Children)
-                    _ = info.Deserialize(behaviour.transform);
+                    _ = info.Deserialize(behaviour.transform, personalizationControllerInfo);
             }
             return behaviour;
         }

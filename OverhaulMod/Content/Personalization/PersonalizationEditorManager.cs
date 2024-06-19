@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -17,6 +18,8 @@ namespace OverhaulMod.Content.Personalization
         public const string ITEM_INFO_FILE = "itemInfo.json";
 
         public const string OBJECT_EDITED_EVENT = "PersonalizationEditorObjectEdited";
+
+        public const string PRESET_PREVIEW_CHANGED_EVENT = "PersonalizationEditorPresetPreviewChanged";
 
         private PersonalizationController m_currentPersonalizationController;
         public PersonalizationController currentPersonalizationController
@@ -48,6 +51,12 @@ namespace OverhaulMod.Content.Personalization
             {
                 return currentEditingItemInfo.FolderPath;
             }
+        }
+
+        public PersonalizationEditorObjectShowConditions previewPresetKey
+        {
+            get;
+            set;
         }
 
         private string m_editorId;
@@ -105,6 +114,7 @@ namespace OverhaulMod.Content.Personalization
             m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
+            previewPresetKey = PersonalizationEditorObjectShowConditions.IsNormal;
 
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
@@ -138,6 +148,22 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
             yield break;
+        }
+
+        public List<Dropdown.OptionData> GetConditionOptions()
+        {
+            if (ModAdvancedCache.TryGet("DropdownShowConditionOptions", out List<Dropdown.OptionData> list))
+                return list;
+
+            list = new List<Dropdown.OptionData>
+            {
+                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal),
+                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire),
+                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer),
+                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer)
+            };
+            ModAdvancedCache.Add("DropdownShowConditionOptions", list);
+            return list;
         }
 
         public bool CreateItem(string name, bool usePersistentFolder, out PersonalizationItemInfo personalizationItem)
@@ -278,7 +304,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 GameObject level = new GameObject();
                 LevelManager.Instance._currentLevelHidesTheArena = true;
-                LevelEditorDataManager.Instance.DeserializeInto(level.transform, levelEditorLevelData).MoveNext();
+                _ = LevelEditorDataManager.Instance.DeserializeInto(level.transform, levelEditorLevelData).MoveNext();
             }
             else
             {
@@ -328,6 +354,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void WelcomeMessage()
         {
+            UIPersonalizationEditor.instance.Dropdown.Hide();
             ModUIUtils.MessagePopupOK("Welcome to customization editor!", "Here you can make weapon skins, accessories and pets." +
                 "\n\n<color=#FFFFFF><size=14>HOW TO MAKE STUFF?</size></color>" +
                 "\nTo open or create a project, click on 'File' at the top left and click on 'Open'." +
@@ -335,6 +362,12 @@ namespace OverhaulMod.Content.Personalization
                 "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
                 "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
                 "\n\n<color=#FFCB23>This editor is still in development, so you can experience some issues while editing!</color>", 400f, true);
+        }
+
+        public void TutorialVideo()
+        {
+            UIPersonalizationEditor.instance.Dropdown.Hide();
+            Application.OpenURL("https://google.com"); // todo: make tutorial video and add it here
         }
 
         public List<ColorPairFloat> GetColorPairsFromString(string dataString)

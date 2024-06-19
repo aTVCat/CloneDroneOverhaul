@@ -39,6 +39,7 @@ namespace OverhaulMod.UI
                 {
                     PersonalizationEditorObjectBehaviour b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.currentEditingRoot.transform, true);
                     b.UniqueIndex = PersonalizationEditorObjectManager.Instance.GetNextUniqueIndex();
+                    b.ControllerInfo = PersonalizationEditorManager.Instance.currentEditingRoot.ControllerInfo;
                     PersonalizationEditorManager.Instance.SerializeRoot();
                     Hide();
 

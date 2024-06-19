@@ -28,7 +28,7 @@ namespace OverhaulMod.Content.Personalization
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();
 
-            if(DuplicateItems == null)
+            if (DuplicateItems == null)
                 DuplicateItems = new List<PersonalizationItemInfo>();
 
             List<string> directories;

@@ -365,6 +365,7 @@
     <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
@@ -372,7 +373,8 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectShowIf.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectShowConditions.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
@@ -381,8 +383,8 @@
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationManager.cs" />
-    <Compile Include="Content\Personalization\ShowPersonalizationEditorObjectIf.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemsSortType.cs" />
+    <Compile Include="Content\Personalization\VolumeSettingsPreset.cs" />
     <Compile Include="Content\WorkshopItemPreview.cs" />
     <Compile Include="Content\WorkshopItemVote.cs" />
     <Compile Include="Discord\ActivityManager.cs" />
@@ -536,6 +538,8 @@
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
+    <Compile Include="UI\Components\EventController.cs" />
+    <Compile Include="UI\DropdownShowConditionOptionData.cs" />
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />

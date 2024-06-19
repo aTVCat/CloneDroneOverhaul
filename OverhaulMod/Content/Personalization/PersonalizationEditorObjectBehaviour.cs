@@ -14,6 +14,8 @@ namespace OverhaulMod.Content.Personalization
 
         public Dictionary<string, object> PropertyValues;
 
+        public PersonalizationControllerInfo ControllerInfo;
+
         private List<PersonalizationEditorObjectBehaviour> m_children;
         public List<PersonalizationEditorObjectBehaviour> children
         {

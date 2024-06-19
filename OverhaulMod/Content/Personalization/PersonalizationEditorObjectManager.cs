@@ -144,7 +144,7 @@ namespace OverhaulMod.Content.Personalization
             prefab.enabled = true;
             GameObject gameObject = bodyPart.gameObject;
             _ = gameObject.AddComponent<PersonalizationEditorObjectVolume>();
-            _ = gameObject.AddComponent<PersonalizationEditorObjectShowIf>();
+            _ = gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             Volume volume = gameObject.GetComponent<Volume>();
             volume.Material = getVolumeMaterial();
             Destroy(bodyPart);

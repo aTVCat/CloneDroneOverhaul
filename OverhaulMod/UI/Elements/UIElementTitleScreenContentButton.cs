@@ -8,6 +8,9 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
 
+        [UIElement("Image", true)]
+        private readonly GameObject m_icon;
+
         private ContentManager m_contentManager;
 
         protected override void OnInitialized()
@@ -17,7 +20,9 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_loadingIndicator.SetActive(m_contentManager.isLoadingAnyContent);
+            bool isLoadingAnyContent = m_contentManager.isLoadingAnyContent;
+            m_loadingIndicator.SetActive(isLoadingAnyContent);
+            m_icon.SetActive(!isLoadingAnyContent);
         }
     }
 }

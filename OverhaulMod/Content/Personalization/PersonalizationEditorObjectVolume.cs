@@ -1,9 +1,11 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using PicaVoxel;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -11,7 +13,18 @@ namespace OverhaulMod.Content.Personalization
     {
         private bool m_hasAddedEventListeners;
 
-        private int m_prevFileImportVersion;
+        private PersonalizationEditorObjectVisibilityController m_visibilityController;
+        public PersonalizationEditorObjectVisibilityController visibilityController
+        {
+            get
+            {
+                if (!m_visibilityController)
+                {
+                    m_visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
+                }
+                return m_visibilityController;
+            }
+        }
 
         private Volume m_volume;
         public Volume volume
@@ -27,92 +40,28 @@ namespace OverhaulMod.Content.Personalization
         }
 
         [PersonalizationEditorObjectProperty]
-        public int fileImportVersion
+        public Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> volumeSettingPresets
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(fileImportVersion), 0);
-            }
-            set
-            {
-                m_prevFileImportVersion = fileImportVersion;
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(fileImportVersion), value);
-            }
-        }
-
-        [PersonalizationEditorObjectProperty(true)]
-        public string voxFilePath
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(voxFilePath), string.Empty);
-            }
-            set
-            {
-                if (value != voxFilePath)
-                {
-                    fileImportVersion++;
-                }
-
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(voxFilePath), value);
-                RefreshVolume();
-            }
-        }
-
-        [PersonalizationEditorObjectProperty(0.001f, 0.1f)]
-        public float voxelSize
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(voxelSize), 0.1f);
+                return ob.GetPropertyValue<Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
             }
             set
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(voxelSize), value);
-                RefreshVolume();
-            }
-        }
-
-        [PersonalizationEditorObjectProperty]
-        public bool centerPivot
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(centerPivot), true);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(centerPivot), value);
-                RefreshVolume();
-            }
-        }
-
-        public string colorReplacements
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(colorReplacements), string.Empty);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(colorReplacements), value);
-                RefreshVolume();
+                ob.SetPropertyValue(nameof(volumeSettingPresets), value);
             }
         }
 
         private void Start()
         {
-            m_prevFileImportVersion = fileImportVersion;
+            if (volumeSettingPresets == null)
+                volumeSettingPresets = new Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset>();
+
+            EventController singleEventController = base.gameObject.AddComponent<EventController>();
+            singleEventController.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
+
             RefreshVolume();
             if (PersonalizationEditorManager.IsInEditor())
             {
@@ -130,15 +79,68 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public PersonalizationEditorObjectShowConditions GetUnusedShowCondition()
+        {
+            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormal))
+                return PersonalizationEditorObjectShowConditions.IsNormal;
+            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFire))
+                return PersonalizationEditorObjectShowConditions.IsOnFire;
+            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer))
+                return PersonalizationEditorObjectShowConditions.IsNormalMultiplayer;
+            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer))
+                return PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer;
+
+            return PersonalizationEditorObjectShowConditions.None;
+        }
+
+        public PersonalizationEditorObjectShowConditions GetCurrentShowCondition()
+        {
+            if (PersonalizationEditorManager.IsInEditor())
+            {
+                return PersonalizationEditorManager.Instance.previewPresetKey;
+            }
+            visibilityController.GetWeaponProperties(out PersonalizationEditorObjectShowConditions showConditions);
+            return showConditions;
+        }
+
+        public List<Dropdown.OptionData> GetUnusedConditionOptions()
+        {
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormal))
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal));
+            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer))
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer));
+            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFire))
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
+            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer))
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer));
+            return list;
+        }
+
+        public VolumeSettingsPreset GetCurrentPreset()
+        {
+            PersonalizationEditorObjectShowConditions condition = GetCurrentShowCondition();
+            Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> d = volumeSettingPresets;
+            if (d == null || d.Count == 0)
+                return null;
+
+            if (!d.ContainsKey(condition))
+            {
+                foreach (VolumeSettingsPreset value in d.Values)
+                    return value;
+            }
+            return d[condition];
+        }
+
         public void RefreshVolume()
         {
+            VolumeSettingsPreset preset = GetCurrentPreset();
+
             Volume volumeComponent = volume;
             if (volumeComponent)
             {
                 Vector3 vector = base.transform.localScale;
                 base.transform.localScale = Vector3.one;
-                string path = $"{ModCore.customizationFolder}{voxFilePath}";
-                Debug.Log($"PATH: {path}");
 
                 if (volumeComponent.NumFrames > 0)
                 {
@@ -149,6 +151,13 @@ namespace OverhaulMod.Content.Personalization
                     list.Clear();
                 }
 
+                if (preset == null)
+                {
+                    volumeComponent.GenerateBasic(FillMode.None);
+                    return;
+                }
+
+                string path = $"{ModCore.customizationFolder}{preset.VoxFilePath}";
                 if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);
@@ -156,15 +165,11 @@ namespace OverhaulMod.Content.Personalization
                 else
                 {
                     volumeComponent.AddFrame(0);
-                    MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", voxelSize, centerPivot);
-                    string cr = colorReplacements;
+                    MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                    string cr = preset.ColorReplacements;
 
-                    int fiv = fileImportVersion;
-
-                    if (cr.IsNullOrEmpty() || m_prevFileImportVersion != fiv)
+                    if (cr.IsNullOrEmpty())
                     {
-                        m_prevFileImportVersion = fiv;
-
                         List<Color32> colors = new List<Color32>();
                         Frame frame = volumeComponent.GetCurrentFrame();
                         int i = 0;
@@ -183,7 +188,7 @@ namespace OverhaulMod.Content.Personalization
                         foreach (Color32 color in colors)
                             colorPairs.Add(new ColorPairFloat(color, color));
 
-                        colorReplacements = PersonalizationEditorManager.Instance.GetStringFromColorPairs(colorPairs);
+                        preset.ColorReplacements = PersonalizationEditorManager.Instance.GetStringFromColorPairs(colorPairs);
                     }
                     else
                     {
