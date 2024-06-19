@@ -183,11 +183,11 @@ namespace OverhaulMod.Content.Personalization
                         foreach (Color32 color in colors)
                             colorPairs.Add(new ColorPairFloat(color, color));
 
-                        colorReplacements = PersonalizationManager.Instance.GetStringFromColorPairs(colorPairs);
+                        colorReplacements = PersonalizationEditorManager.Instance.GetStringFromColorPairs(colorPairs);
                     }
                     else
                     {
-                        List<ColorPairFloat> list = PersonalizationManager.Instance.GetColorPairsFromString(cr);
+                        List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
                         if (!list.IsNullOrEmpty())
                         {
                             foreach (ColorPairFloat cp in list)

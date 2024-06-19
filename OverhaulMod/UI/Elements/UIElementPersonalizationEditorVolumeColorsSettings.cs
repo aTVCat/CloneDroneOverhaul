@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public void Populate(string colorsString)
         {
-            List<ColorPairFloat> list = PersonalizationManager.Instance.GetColorPairsFromString(colorsString);
+            List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(colorsString);
             m_colorPairs = list;
 
             if (m_container.childCount != 0)
@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
 
         private void onColorChangedCallback(ColorPairFloat colorPairFloat)
         {
-            onColorChanged?.Invoke(PersonalizationManager.Instance.GetStringFromColorPairs(m_colorPairs));
+            onColorChanged?.Invoke(PersonalizationEditorManager.Instance.GetStringFromColorPairs(m_colorPairs));
         }
     }
 }

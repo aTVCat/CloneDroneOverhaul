@@ -32,10 +32,19 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectInfo RootObject;
 
         [NonSerialized]
+        public string RootFolderName;
+
+        [NonSerialized]
+        public string RootFolderPath;
+
+        [NonSerialized]
         public string FolderPath;
 
         [NonSerialized]
         public List<string> ImportedFiles;
+
+        [NonSerialized]
+        public bool IsPersistentAsset;
 
         public void GetImportedFiles()
         {

@@ -166,11 +166,11 @@ namespace OverhaulMod
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
-            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Type:** {personalizationItem.Category}\n- **Description:** {personalizationItem.Description}";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Type:** {personalizationItem.Category}\n- **Description:** {personalizationItem.Description}\n- **Version:** {personalizationItem.Version}";
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __New item to verify. v{ModBuildInfo.version}__",
+                content = $"## __New item to verify. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}",
                 embeds = new Embed[]
                 {
                     new Embed()

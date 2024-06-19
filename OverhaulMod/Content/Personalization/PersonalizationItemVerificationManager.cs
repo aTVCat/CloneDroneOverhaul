@@ -6,16 +6,10 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationItemVerificationManager : Singleton<PersonalizationItemVerificationManager>
     {
-        public void SendItemToVerification(string folder, PersonalizationItemInfo personalizationItemInfo, Action successCallback, Action<string> errorCallback)
+        public void SendItemToVerification(PersonalizationItemInfo personalizationItemInfo, Action successCallback, Action<string> errorCallback)
         {
-            string file = $"{Path.GetTempPath()}PersonalizationItem_{UnityEngine.Random.Range(10000, 100000)}.zip";
-            if (File.Exists(file))
-                File.Delete(file);
-
-            FastZip fastZip = new FastZip();
-            fastZip.CreateZip(file, folder, true, null);
-
-            ModWebhookManager.Instance.ExecuteVerificationRequestWebhook(file, personalizationItemInfo, successCallback, errorCallback);
+            PersonalizationEditorManager.Instance.ExportItem(personalizationItemInfo, out string dest, Path.GetTempPath());
+            ModWebhookManager.Instance.ExecuteVerificationRequestWebhook(dest, personalizationItemInfo, successCallback, errorCallback);
         }
     }
 }

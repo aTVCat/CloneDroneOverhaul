@@ -157,6 +157,7 @@ namespace OverhaulMod
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
+            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
 
             if (!Directory.Exists(ModCore.modDataFolder))
                 _ = Directory.CreateDirectory(ModCore.modDataFolder);

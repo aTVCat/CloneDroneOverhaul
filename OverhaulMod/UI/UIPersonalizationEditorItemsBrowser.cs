@@ -32,6 +32,9 @@ namespace OverhaulMod.UI
         [UIElement("ViewAllItemsToggle")]
         private readonly Toggle m_viewAllItemsToggle;
 
+        [UIElement("UsePersistentDirectoryToggle")]
+        private readonly Toggle m_usePersistentDirectoryToggle;
+
         [UIElement("ItemDisplayPrefab", false)]
         private readonly ModdedObject m_itemDisplayPrefab;
 
@@ -41,10 +44,26 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        [UIElementAction(nameof(OnSearchBoxChanged))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
+
+        private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
+
+        protected override void OnInitialized()
+        {
+            m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
+            m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
+            m_usePersistentDirectoryToggle.gameObject.SetActive(ModUserInfo.isDeveloper);
+            m_usePersistentDirectoryToggle.isOn = true;
+        }
+
         public override void Show()
         {
             base.Show();
             Populate();
+
+            m_searchBox.ActivateInputField();
         }
 
         public void Populate()
@@ -68,6 +87,7 @@ namespace OverhaulMod.UI
 
         private void populate(List<PersonalizationItemInfo> list, Dictionary<string, System.Exception> exceptions)
         {
+            m_cachedInstantiatedDisplays.Clear();
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
@@ -79,6 +99,7 @@ namespace OverhaulMod.UI
                     moddedObject.GetObject<Text>(0).text = item.Name;
                     moddedObject.GetObject<Text>(1).text = PersonalizationItemInfo.GetCategoryString(item.Category);
                     moddedObject.GetObject<Text>(2).text = item.GetSpecialInfoString();
+                    moddedObject.GetObject<GameObject>(3).SetActive(item.IsVerified);
 
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
@@ -87,6 +108,8 @@ namespace OverhaulMod.UI
                         PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
                         Hide();
                     });
+
+                    m_cachedInstantiatedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
                 }
 
             if (exceptions != null)
@@ -119,7 +142,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
-                if (PersonalizationManager.Instance.CreateItem(str, out PersonalizationItemInfo personalizationItem))
+                if (PersonalizationEditorManager.Instance.CreateItem(str, m_usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
                 {
                     UIPersonalizationEditor.instance.ShowEverything();
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
@@ -130,6 +153,24 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
                 }
             });
+        }
+
+        public void OnSearchBoxChanged(string text)
+        {
+            string lowerText = text.ToLower();
+            bool forceSetEnabled = text.IsNullOrEmpty();
+
+            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedDisplays)
+            {
+                if (forceSetEnabled)
+                {
+                    keyValue.Value.SetActive(true);
+                }
+                else
+                {
+                    keyValue.Value.SetActive(keyValue.Key.ToLower().Contains(lowerText));
+                }
+            }
         }
     }
 }

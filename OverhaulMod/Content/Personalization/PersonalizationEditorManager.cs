@@ -1,42 +1,53 @@
-﻿using OverhaulMod.Engine;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
+        public const string ITEM_INFO_FILE = "itemInfo.json";
+
         public const string OBJECT_EDITED_EVENT = "PersonalizationEditorObjectEdited";
 
-        private PersonalizationController m_editingPersonalizationController;
-        public PersonalizationController editingPersonalizationController
+        private PersonalizationController m_currentPersonalizationController;
+        public PersonalizationController currentPersonalizationController
         {
             get
             {
-                if (!m_editingPersonalizationController)
-                    m_editingPersonalizationController = CharacterTracker.Instance?.GetPlayer()?.GetComponent<PersonalizationController>();
+                if (!m_currentPersonalizationController)
+                    m_currentPersonalizationController = CharacterTracker.Instance?.GetPlayer()?.GetComponent<PersonalizationController>();
 
-                return m_editingPersonalizationController;
+                return m_currentPersonalizationController;
             }
         }
 
-        public PersonalizationItemInfo editingItemInfo
+        public PersonalizationItemInfo currentEditingItemInfo
         {
             get;
             set;
         }
 
-        public PersonalizationEditorObjectBehaviour editingRoot { get; set; }
-
-        public string editingFolder
+        public PersonalizationEditorObjectBehaviour currentEditingRoot
         {
             get;
             set;
+        }
+
+        public string currentEditingItemFolder
+        {
+            get
+            {
+                return currentEditingItemInfo.FolderPath;
+            }
         }
 
         private string m_editorId;
@@ -91,6 +102,10 @@ namespace OverhaulMod.Content.Personalization
             if (useTransitionManager)
                 yield return new WaitForSecondsRealtime(0.25f);
 
+            m_currentPersonalizationController = null;
+            currentEditingItemInfo = null;
+            currentEditingRoot = null;
+
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
             LevelManager.Instance.CleanUpLevelThisFrame();
@@ -110,16 +125,14 @@ namespace OverhaulMod.Content.Personalization
                 cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
                 PersonalizationEditorCamera personalizationEditorCamera = cameraObject.AddComponent<PersonalizationEditorCamera>();
                 personalizationEditorCamera.ToolBarTransform = editorUi.ToolBarTransform;
-                /*personalizationEditorCamera.LeftPanelTransform = editorUi.LeftPanelTransform;*/
 
                 LevelEditorLevelData levelEditorLevelData = null;
                 try
                 {
-                    levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(ModCore.dataFolder + "levels/personalizationEditorLevel.json");
+                    levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(Path.Combine(ModCore.dataFolder, "levels/personalizationEditorLevel.json"));
                 }
                 catch
                 {
-                    LevelManager.Instance._currentLevelHidesTheArena = false;
                 }
 
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
@@ -127,29 +140,68 @@ namespace OverhaulMod.Content.Personalization
             yield break;
         }
 
+        public bool CreateItem(string name, bool usePersistentFolder, out PersonalizationItemInfo personalizationItem)
+        {
+            personalizationItem = null;
+            if (name.IsNullOrEmpty())
+                return false;
+
+            string rootDirectory = usePersistentFolder ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            string directoryName = name.Replace(" ", string.Empty);
+            string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
+            string filesDirectoryPath = Path.Combine(directoryPath, "files/");
+
+            if (Directory.Exists(directoryPath))
+                return false;
+            else
+                _ = Directory.CreateDirectory(directoryPath);
+
+            if (!Directory.Exists(filesDirectoryPath))
+                _ = Directory.CreateDirectory(filesDirectoryPath);
+
+            personalizationItem = new PersonalizationItemInfo()
+            {
+                Name = name,
+                Description = "No description provided.",
+                IsVerified = false,
+                Category = PersonalizationCategory.WeaponSkins,
+                EditorID = PersonalizationEditorManager.Instance.editorId,
+                ItemID = Guid.NewGuid().ToString(),
+                FolderPath = directoryPath,
+                RootFolderPath = rootDirectory,
+                RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
+                IsPersistentAsset = usePersistentFolder
+            };
+            personalizationItem.FixValues();
+            personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
+            PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
+
+            ModJsonUtils.WriteStream(directoryPath + PersonalizationEditorManager.ITEM_INFO_FILE, personalizationItem);
+            return true;
+        }
+
         public void EditItem(PersonalizationItemInfo personalizationItemInfo, string folder)
         {
-            editingItemInfo = personalizationItemInfo;
-            editingFolder = folder;
+            currentEditingItemInfo = personalizationItemInfo;
             UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
             SpawnRootObject();
         }
 
         public bool SaveItem(out string error)
         {
-            if (editingItemInfo == null)
+            if (currentEditingItemInfo == null)
             {
                 error = "Editing item info is NULL";
                 return false;
             }
 
-            if (!editingRoot)
+            if (!currentEditingRoot)
             {
                 error = "Editing item is NULL";
                 return false;
             }
 
-            string folder = editingFolder;
+            string folder = currentEditingItemFolder;
             if (folder.IsNullOrEmpty())
             {
                 error = "Could not find folder";
@@ -163,7 +215,7 @@ namespace OverhaulMod.Content.Personalization
             SerializeRoot();
             try
             {
-                ModJsonUtils.WriteStream(folder + PersonalizationManager.ITEM_INFO_FILE, editingItemInfo);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), currentEditingItemInfo);
             }
             catch (Exception exc)
             {
@@ -176,7 +228,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SerializeRoot()
         {
-            editingItemInfo.RootObject = editingRoot.Serialize();
+            currentEditingItemInfo.RootObject = currentEditingRoot.Serialize();
         }
 
         public void SpawnBot()
@@ -186,7 +238,7 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator spawnBotCoroutine()
         {
-            PersonalizationController personalizationController = editingPersonalizationController;
+            PersonalizationController personalizationController = currentPersonalizationController;
             if (personalizationController)
             {
                 Destroy(personalizationController.gameObject);
@@ -226,12 +278,13 @@ namespace OverhaulMod.Content.Personalization
             {
                 GameObject level = new GameObject();
                 LevelManager.Instance._currentLevelHidesTheArena = true;
-                yield return base.StartCoroutine(LevelEditorDataManager.Instance.DeserializeInto(level.transform, levelEditorLevelData));
+                LevelEditorDataManager.Instance.DeserializeInto(level.transform, levelEditorLevelData).MoveNext();
             }
             else
             {
                 LevelManager.Instance._currentLevelHidesTheArena = false;
             }
+            ArenaLiftManager.Instance.SetToArena();
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
             SpawnBot();
 
@@ -247,17 +300,30 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnRootObject()
         {
-            PersonalizationEditorObjectInfo rootInfo = editingItemInfo?.RootObject;
+            PersonalizationEditorObjectInfo rootInfo = currentEditingItemInfo?.RootObject;
             if (rootInfo == null)
                 return;
 
-            PersonalizationController personalizationController = editingPersonalizationController;
+            PersonalizationController personalizationController = currentPersonalizationController;
             if (!personalizationController)
                 return;
 
             personalizationController.DestroyAllItems();
-            editingRoot = personalizationController.SpawnItem(editingItemInfo);
+            currentEditingRoot = personalizationController.SpawnItem(currentEditingItemInfo);
             PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
+        }
+
+        public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null)
+        {
+            string fn = $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip";
+            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.Instance.savesFolder : overrideDirectoryPath;
+            destination = Path.Combine(folder, fn);
+
+            if (File.Exists(destination))
+                File.Delete(destination);
+
+            FastZip fastZip = new FastZip();
+            fastZip.CreateZip(destination, personalizationItemInfo.FolderPath, true, null);
         }
 
         public void WelcomeMessage()
@@ -269,6 +335,54 @@ namespace OverhaulMod.Content.Personalization
                 "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
                 "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
                 "\n\n<color=#FFCB23>This editor is still in development, so you can experience some issues while editing!</color>", 400f, true);
+        }
+
+        public List<ColorPairFloat> GetColorPairsFromString(string dataString)
+        {
+            if (dataString.IsNullOrEmpty())
+                return null;
+
+            string[] split = dataString.Split('|');
+            if (split.IsNullOrEmpty())
+                return null;
+
+            List<ColorPairFloat> list = new List<ColorPairFloat>();
+            foreach (string oldAndNewColorsString in split)
+            {
+                if (oldAndNewColorsString.IsNullOrEmpty())
+                    continue;
+
+                string[] oldAndNewColors = oldAndNewColorsString.Split('-');
+                if (oldAndNewColors.Length == 2)
+                {
+                    Color a = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
+                    Color b = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
+                    list.Add(new ColorPairFloat(a, b));
+                }
+            }
+            return list;
+        }
+
+        public string GetStringFromColorPairs(List<ColorPairFloat> colorPairs)
+        {
+            if (colorPairs.IsNullOrEmpty())
+                return null;
+
+            int index = 0;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (ColorPairFloat cp in colorPairs)
+            {
+                string colorA = ColorUtility.ToHtmlStringRGBA(cp.ColorA);
+                string colorB = ColorUtility.ToHtmlStringRGBA(cp.ColorB);
+                string colorsString = $"{colorA}-{colorB}".Replace("#", string.Empty);
+                _ = stringBuilder.Append(colorsString);
+                if (index + 1 != colorPairs.Count)
+                    _ = stringBuilder.Append('|');
+
+                index++;
+            }
+            return stringBuilder.ToString();
         }
     }
 }

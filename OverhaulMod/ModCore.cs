@@ -16,6 +16,10 @@ namespace OverhaulMod
     [MainModClass]
     public class ModCore : Mod
     {
+        public const string CUSTOMIZATION_FOLDER_NAME = "customization";
+
+        public const string CUSTOMIZATION_PERSISTENT_FOLDER_NAME = "customizationPersistent";
+
         [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
         public static bool EnableTitleBarOverhaul;
 
@@ -138,9 +142,22 @@ namespace OverhaulMod
             {
                 if (s_customizationFolder == null)
                 {
-                    s_customizationFolder = $"{Path.Combine(contentFolder, "customization")}/";
+                    s_customizationFolder = $"{Path.Combine(contentFolder, CUSTOMIZATION_FOLDER_NAME)}/";
                 }
                 return s_customizationFolder;
+            }
+        }
+
+        private static string s_persistentCustomizationFolder;
+        public static string customizationPersistentFolder
+        {
+            get
+            {
+                if (s_persistentCustomizationFolder == null)
+                {
+                    s_persistentCustomizationFolder = $"{Path.Combine(contentFolder, CUSTOMIZATION_PERSISTENT_FOLDER_NAME)}/";
+                }
+                return s_persistentCustomizationFolder;
             }
         }
 

@@ -10,6 +10,8 @@ namespace OverhaulMod.Content.Personalization
     {
         public List<PersonalizationItemInfo> Items;
 
+        public List<PersonalizationItemInfo> DuplicateItems;
+
         [NonSerialized]
         public Dictionary<string, Exception> ItemLoadErrors;
 
@@ -26,10 +28,15 @@ namespace OverhaulMod.Content.Personalization
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();
 
-            string[] directories;
+            if(DuplicateItems == null)
+                DuplicateItems = new List<PersonalizationItemInfo>();
+
+            List<string> directories;
             try
             {
-                directories = Directory.GetDirectories(ModCore.customizationFolder);
+                directories = new List<string>();
+                directories.AddRange(Directory.GetDirectories(ModCore.customizationFolder));
+                directories.AddRange(Directory.GetDirectories(ModCore.customizationPersistentFolder));
             }
             catch (Exception exc)
             {
@@ -43,21 +50,30 @@ namespace OverhaulMod.Content.Personalization
             {
                 foreach (string directory in directories)
                 {
+                    string rootDirectory = Directory.GetParent(directory).FullPath;
+                    string rootDirectoryName = new DirectoryInfo(rootDirectory).Name;
+
                     string dirName = Path.GetDirectoryName(directory);
-                    string d = directory + "/";
-                    string infoFile = d + PersonalizationManager.ITEM_INFO_FILE;
+                    string infoFile = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);
                     if (File.Exists(infoFile))
                     {
                         try
                         {
-                            string filesDirectory = Path.Combine(d, "files");
+                            string filesDirectory = Path.Combine(directory, "files");
                             if (!Directory.Exists(filesDirectory))
                                 _ = Directory.CreateDirectory(filesDirectory);
 
                             PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(infoFile);
-                            personalizationItemInfo.FolderPath = d;
+                            personalizationItemInfo.FolderPath = directory;
+                            personalizationItemInfo.RootFolderPath = rootDirectory;
+                            personalizationItemInfo.RootFolderName = rootDirectoryName;
+                            personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
                             personalizationItemInfo.FixValues();
-                            list.Add(personalizationItemInfo);
+
+                            if (getItem(personalizationItemInfo.ItemID, list) == null)
+                                list.Add(personalizationItemInfo);
+                            else
+                                DuplicateItems.Add(personalizationItemInfo);
                         }
                         catch (Exception exc)
                         {
@@ -74,14 +90,19 @@ namespace OverhaulMod.Content.Personalization
             ItemLoadErrors = errors;
         }
 
-        public PersonalizationItemInfo GetItem(string id)
+        private PersonalizationItemInfo getItem(string id, List<PersonalizationItemInfo> list)
         {
-            foreach (PersonalizationItemInfo item in GetItems())
+            foreach (PersonalizationItemInfo item in list)
             {
                 if (item.ItemID == id)
                     return item;
             }
             return null;
+        }
+
+        public PersonalizationItemInfo GetItem(string id)
+        {
+            return getItem(id, GetItems());
         }
 
         public List<PersonalizationItemInfo> GetItems()
