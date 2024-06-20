@@ -58,6 +58,12 @@ namespace OverhaulMod.Content.Personalization
         {
             if (volumeSettingPresets == null)
                 volumeSettingPresets = new Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset>();
+            else
+            {
+                foreach (var value in volumeSettingPresets.Values)
+                    if (value.ReplaceWithFavoriteColors == null)
+                        value.ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>();
+            }
 
             EventController singleEventController = base.gameObject.AddComponent<EventController>();
             singleEventController.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
@@ -161,13 +167,15 @@ namespace OverhaulMod.Content.Personalization
                 if (voxFilePath == null)
                     voxFilePath = string.Empty;
 
-                string path = Path.Combine(ModCore.customizationFolder, voxFilePath);
+                string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, voxFilePath);
                 if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);
                 }
                 else
                 {
+                    Color favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
+
                     volumeComponent.AddFrame(0);
                     MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
                     string cr = preset.ColorReplacements;
@@ -200,7 +208,23 @@ namespace OverhaulMod.Content.Personalization
                         if (!list.IsNullOrEmpty())
                         {
                             foreach (ColorPairFloat cp in list)
-                                ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, cp.ColorB, false);
+                            {
+                                Color colorB;
+                                if(preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
+                                {
+                                    HSBColor hsbcolor = new HSBColor(favoriteColor);
+                                    hsbcolor.s *= favoriteColorSettings.SaturationMultiplier;
+                                    hsbcolor.b *= favoriteColorSettings.BrightnessMultiplier;
+                                    colorB = hsbcolor.ToColor();
+                                    colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
+                                }
+                                else
+                                {
+                                    colorB = cp.ColorB;
+                                }
+
+                                ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, colorB, false);
+                            }
                         }
                     }
                 }

@@ -34,7 +34,7 @@ namespace OverhaulMod.UI
             m_colorPairs = new List<ColorPairFloat>();
         }
 
-        public void Populate(string colorsString)
+        public void Populate(string colorsString, Dictionary<string, FavoriteColorSettings> replaceWithFavoriteColors)
         {
             List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(colorsString);
             m_colorPairs = list;
@@ -54,8 +54,13 @@ namespace OverhaulMod.UI
                     editorColorPairDisplay.InitializeElement();
                     editorColorPairDisplay.returnNewPair = false;
                     editorColorPairDisplay.colorPair = cp;
+                    editorColorPairDisplay.favoriteColorSettings = replaceWithFavoriteColors;
                     editorColorPairDisplay.colorPickerTransform = UIPersonalizationEditor.instance.transform;
                     editorColorPairDisplay.onValueChanged.AddListener(onColorChangedCallback);
+                    editorColorPairDisplay.onFavoriteColorSettingsChanged.AddListener(delegate
+                    {
+                        GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                    });
 
                     index++;
                 }

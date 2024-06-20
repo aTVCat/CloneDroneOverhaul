@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -61,6 +62,9 @@ namespace PicaVoxel
 
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
+
+            if(ModBuildInfo.debug)
+                Debug.Log(magic);
 
             if (magic.ToLower() == "vox ")
             {
@@ -171,7 +175,7 @@ namespace PicaVoxel
         public static void ImportModel(GameObject obj, string fileName, string volumeName, float voxelSize, bool centerPivot)
         {
             obj.name = volumeName;
-            using (BinaryReader stream = new BinaryReader(new FileStream(fileName, FileMode.Open)))
+            using (BinaryReader stream = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read)))
             {
                 FromMagica(stream, obj, voxelSize, centerPivot);
             }

@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -227,7 +226,14 @@ namespace OverhaulMod.UI
                                     if (settingsPreset.VoxFilePath == path)
                                         return;
                                     else
+                                    {
                                         settingsPreset.ColorReplacements = null; // reset color replacements for other palette
+                                        Dictionary<string, FavoriteColorSettings> d = settingsPreset.ReplaceWithFavoriteColors;
+                                        if (d == null)
+                                            settingsPreset.ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>();
+                                        else
+                                            d.Clear();
+                                    }
 
                                     voxelModelFileFieldText.text = path;
                                     settingsPreset.VoxFilePath = path;
@@ -238,7 +244,7 @@ namespace OverhaulMod.UI
                         });
 
                         // center pivot
-                        Toggle centerPivotToggle= display.GetObject<Toggle>(2);
+                        Toggle centerPivotToggle = display.GetObject<Toggle>(2);
                         centerPivotToggle.isOn = settingsPreset.CenterPivot;
                         centerPivotToggle.onValueChanged.AddListener(delegate (bool value)
                         {
@@ -261,7 +267,7 @@ namespace OverhaulMod.UI
                             }
                         }
 
-                        if(conditionDropdownValueToSet == -1)
+                        if (conditionDropdownValueToSet == -1)
                         {
                             conditionsDropdown.options.Add(new DropdownShowConditionOptionData(prevCondition));
                             conditionsDropdown.RefreshShownValue();
@@ -294,10 +300,10 @@ namespace OverhaulMod.UI
                         conditionsDropdown.interactable = volume.GetUnusedShowCondition() != PersonalizationEditorObjectShowConditions.None;
 
                         // active frame
-                        Action refreshActiveFrameAction = delegate
+                        void refreshActiveFrameAction()
                         {
                             display.GetObject<GameObject>(4).SetActive(prevCondition == PersonalizationEditorManager.Instance.previewPresetKey);
-                        };
+                        }
                         refreshActiveFrameAction();
 
                         EventController singleEventController = display.gameObject.AddComponent<EventController>();
@@ -305,24 +311,24 @@ namespace OverhaulMod.UI
                         singleEventController.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, refreshActiveFrameAction);
 
                         // colors
-                        Action<string> onColorChangedAction = delegate (string value)
+                        void onColorChangedAction(string value)
                         {
                             settingsPreset.ColorReplacements = value;
                             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
-                        };
+                        }
 
                         display.GetObject<Button>(3).onClick.AddListener(delegate
                         {
                             UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel.m_volumeColorsSettings;
                             volumeColorsSettings.Show();
-                            volumeColorsSettings.Populate(settingsPreset.ColorReplacements);
+                            volumeColorsSettings.Populate(settingsPreset.ColorReplacements, settingsPreset.ReplaceWithFavoriteColors);
                             volumeColorsSettings.onColorChanged = onColorChangedAction;
                         });
 
                         // delete
                         display.GetObject<Button>(5).onClick.AddListener(delegate
                         {
-                            volumePresets.Remove(prevCondition);
+                            _ = volumePresets.Remove(prevCondition);
                             populateFieldsAction();
                         });
 
@@ -361,7 +367,8 @@ namespace OverhaulMod.UI
                         volume.volumeSettingPresets.Add(volume.GetUnusedShowCondition(), new VolumeSettingsPreset()
                         {
                             CenterPivot = true,
-                            VoxelSize = 0.1f
+                            VoxelSize = 0.1f,
+                            ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>()
                         });
                         populateFieldsAction();
                     });
