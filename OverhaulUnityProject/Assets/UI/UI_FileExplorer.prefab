@@ -580,7 +580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1368301978804270296}
   m_Layer: 5
-  m_Name: PanelNew
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,7 +604,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 325, y: 450}
+  m_SizeDelta: {x: 325, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2353745856312132695
 GameObject:
@@ -2182,7 +2182,7 @@ PrefabInstance:
     - target: {fileID: 1117528166163649060, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
       propertyPath: m_Text
-      value: Cancel
+      value: No file
       objectReference: {fileID: 0}
     - target: {fileID: 2217772015947243889, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}

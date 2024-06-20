@@ -127,6 +127,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_doneButton.interactable = false;
+
             m_driveDropdown.options.Clear();
             foreach (DriveInfo d in DriveInfo.GetDrives())
             {
@@ -139,6 +141,9 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
+
+            m_doneButton.interactable = false;
+            m_selectedFile = null;
             callback = null;
         }
 
@@ -251,6 +256,7 @@ namespace OverhaulMod.UI
             m_prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
             m_prevSelectedIndicator.SetActive(true);
             m_selectedFile = itemDisplay.fullName;
+            m_doneButton.interactable = true;
         }
 
         private void onItemDoubleClicked(UIElementFileExplorerItemDisplay itemDisplay)

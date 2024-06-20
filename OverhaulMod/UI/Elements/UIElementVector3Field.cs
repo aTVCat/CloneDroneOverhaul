@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -33,9 +34,9 @@ namespace OverhaulMod.UI
             {
                 m_vector = value;
                 m_disableCallbacks = true;
-                m_xField.text = value.x.ToString().Replace(',', '.');
-                m_yField.text = value.y.ToString().Replace(',', '.');
-                m_zField.text = value.z.ToString().Replace(',', '.');
+                m_xField.text = value.x.ToString(CultureInfo.InvariantCulture);
+                m_yField.text = value.y.ToString(CultureInfo.InvariantCulture);
+                m_zField.text = value.z.ToString(CultureInfo.InvariantCulture);
                 m_disableCallbacks = false;
 
                 onValueChanged.Invoke(value);

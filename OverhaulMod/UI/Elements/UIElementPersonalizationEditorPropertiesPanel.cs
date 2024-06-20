@@ -2,6 +2,7 @@
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -212,12 +213,26 @@ namespace OverhaulMod.UI
                         {
                             ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
                             {
-                                string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
-                                string fileName = Path.GetFileName(filePath);
-                                string path = Path.Combine(directoryName, "files", fileName);
+                                if (filePath.IsNullOrEmpty())
+                                {
+                                    voxelModelFileFieldText.text = string.Empty;
+                                    settingsPreset.VoxFilePath = string.Empty;
+                                }
+                                else
+                                {
+                                    string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                    string fileName = Path.GetFileName(filePath);
+                                    string path = Path.Combine(directoryName, "files", fileName);
 
-                                voxelModelFileFieldText.text = path;
-                                settingsPreset.VoxFilePath = path;
+                                    if (settingsPreset.VoxFilePath == path)
+                                        return;
+                                    else
+                                        settingsPreset.ColorReplacements = null; // reset color replacements for other palette
+
+                                    voxelModelFileFieldText.text = path;
+                                    settingsPreset.VoxFilePath = path;
+                                }
+
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.currentEditingItemInfo), "*.vox");
                         });
@@ -235,14 +250,30 @@ namespace OverhaulMod.UI
                         bool allowCallback = true;
                         PersonalizationEditorObjectShowConditions prevCondition = preset.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
-                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptions();
-                        conditionsDropdown.value = ((int)prevCondition) - 1;
+                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
+
+                        int conditionDropdownValueToSet = -1;
+                        for (int i = 0; i < conditionsDropdown.options.Count; i++)
+                        {
+                            if (conditionsDropdown.options[i] is DropdownShowConditionOptionData showConditionOptionData && showConditionOptionData.Value == prevCondition)
+                            {
+                                conditionDropdownValueToSet = i;
+                            }
+                        }
+
+                        if(conditionDropdownValueToSet == -1)
+                        {
+                            conditionsDropdown.options.Add(new DropdownShowConditionOptionData(prevCondition));
+                            conditionsDropdown.RefreshShownValue();
+                        }
+
+                        conditionsDropdown.value = conditionDropdownValueToSet;
                         conditionsDropdown.onValueChanged.AddListener(delegate (int value)
                         {
                             if (!allowCallback)
                                 return;
 
-                            PersonalizationEditorObjectShowConditions condition = (PersonalizationEditorObjectShowConditions)(value + 1);
+                            PersonalizationEditorObjectShowConditions condition = (conditionsDropdown.options[value] as DropdownShowConditionOptionData).Value;
                             if (volumePresets.ContainsKey(condition))
                             {
                                 allowCallback = false;
@@ -293,6 +324,30 @@ namespace OverhaulMod.UI
                         {
                             volumePresets.Remove(prevCondition);
                             populateFieldsAction();
+                        });
+
+                        // voxel size
+                        float prevValue = settingsPreset.VoxelSize;
+                        InputField voxelSizeFiled = display.GetObject<InputField>(6);
+                        voxelSizeFiled.text = settingsPreset.VoxelSize.ToString(CultureInfo.InvariantCulture);
+                        voxelSizeFiled.onEndEdit.AddListener(delegate (string value)
+                        {
+                            if (!allowCallback)
+                                return;
+
+                            float newValue = ModParseUtils.TryParseToFloat(value, prevValue);
+                            if (newValue <= 0f)
+                            {
+                                newValue = 0.01f;
+
+                                allowCallback = false;
+                                voxelSizeFiled.text = newValue.ToString(CultureInfo.InvariantCulture);
+                                allowCallback = true;
+                            }
+
+                            settingsPreset.VoxelSize = newValue;
+                            prevValue = newValue;
+                            GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                         });
                     }
                 }

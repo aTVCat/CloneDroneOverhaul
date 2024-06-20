@@ -28,10 +28,6 @@ namespace OverhaulMod.UI
         [UIElement("ResetButton")]
         private readonly Button m_resetButton;
 
-        //[UIElementAction(nameof(OnResetButtonClicked))]
-        [UIElement("PlayerColorButton")]
-        private readonly Button m_playerColorButton;
-
         private bool m_disableCallbacks;
 
         private bool m_disableColorPairUpdates;

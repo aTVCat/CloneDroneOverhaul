@@ -166,6 +166,33 @@ namespace OverhaulMod.Content.Personalization
             return list;
         }
 
+        public List<Dropdown.OptionData> GetConditionOptionsDependingOnEditingWeapon()
+        {
+            WeaponType weaponType = currentEditingItemInfo.Weapon;
+            string key = $"DropdownShowConditionOptions_{weaponType}";
+            if (ModAdvancedCache.TryGet(key, out List<Dropdown.OptionData> list))
+                return list;
+
+            list = new List<Dropdown.OptionData>
+            {
+                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal),
+            };
+
+            if (weaponType == WeaponType.Sword)
+            {
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer));
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer));
+            }
+            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear)
+            {
+                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
+            }
+
+            ModAdvancedCache.Add(key, list);
+            return list;
+        }
+
         public bool CreateItem(string name, bool usePersistentFolder, out PersonalizationItemInfo personalizationItem)
         {
             personalizationItem = null;
@@ -202,13 +229,15 @@ namespace OverhaulMod.Content.Personalization
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
 
-            ModJsonUtils.WriteStream(directoryPath + PersonalizationEditorManager.ITEM_INFO_FILE, personalizationItem);
+            ModJsonUtils.WriteStream(directoryPath + ITEM_INFO_FILE, personalizationItem);
             return true;
         }
 
         public void EditItem(PersonalizationItemInfo personalizationItemInfo, string folder)
         {
             currentEditingItemInfo = personalizationItemInfo;
+            UIPersonalizationEditor.instance.Utilities.SetConditionOptions(GetConditionOptionsDependingOnEditingWeapon());
+
             UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
             SpawnRootObject();
         }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,13 +22,14 @@ namespace OverhaulMod.UI
         [UIElement("EnableAnimationToggle")]
         private readonly Toggle m_enableAnimationToggle;
 
+        [UIElementAction(nameof(OnPresetPreviewChanged))]
         [UIElement("PresetPreviewDropdown")]
         private readonly Dropdown m_presetPreviewDropdown;
 
-        protected override void OnInitialized()
+        public void SetConditionOptions(List<Dropdown.OptionData> options)
         {
-            m_presetPreviewDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptions();
-            m_presetPreviewDropdown.onValueChanged.AddListener(OnPresetPreviewChanged);
+            m_presetPreviewDropdown.options = options;
+            m_presetPreviewDropdown.value = 0;
         }
 
         public void OnShowPlayerToggled(bool value)
@@ -84,7 +86,7 @@ namespace OverhaulMod.UI
 
         public void OnPresetPreviewChanged(int value)
         {
-            PersonalizationEditorManager.Instance.previewPresetKey = (PersonalizationEditorObjectShowConditions)(value + 1);
+            PersonalizationEditorManager.Instance.previewPresetKey = (m_presetPreviewDropdown.options[value] as DropdownShowConditionOptionData).Value;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT);
         }
     }
