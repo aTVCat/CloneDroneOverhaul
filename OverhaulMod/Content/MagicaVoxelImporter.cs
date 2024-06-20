@@ -62,7 +62,7 @@ namespace PicaVoxel
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
 
-            if (magic == "VOX ")
+            if (magic.ToLower() == "vox ")
             {
                 int sizex = 0, sizey = 0, sizez = 0;
                 bool subsample = false;

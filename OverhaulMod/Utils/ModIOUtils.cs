@@ -22,6 +22,10 @@ namespace OverhaulMod.Utils
 
         public static string GetDirectoryName(string path)
         {
+            path = path.Replace("/", "\\");
+            if(!path.EndsWith('\\'))
+                path = path + "\\";
+
             string name = Path.GetDirectoryName(path);
             return name.Substring(name.LastIndexOf('\\') + 1);
         }

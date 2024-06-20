@@ -157,7 +157,11 @@ namespace OverhaulMod.Content.Personalization
                     return;
                 }
 
-                string path = $"{ModCore.customizationFolder}{preset.VoxFilePath}";
+                string voxFilePath = preset.VoxFilePath;
+                if (voxFilePath == null)
+                    voxFilePath = string.Empty;
+
+                string path = Path.Combine(ModCore.customizationFolder, voxFilePath);
                 if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);

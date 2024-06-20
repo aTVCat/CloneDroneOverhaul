@@ -51,7 +51,7 @@ namespace OverhaulMod.Content.Personalization
                 foreach (string directory in directories)
                 {
                     string rootDirectory = Directory.GetParent(directory).FullPath;
-                    string rootDirectoryName = new DirectoryInfo(rootDirectory).Name;
+                    string rootDirectoryName = ModIOUtils.GetDirectoryName(rootDirectory);
 
                     string dirName = Path.GetDirectoryName(directory);
                     string infoFile = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);

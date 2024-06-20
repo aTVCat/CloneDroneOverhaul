@@ -122,7 +122,6 @@ namespace OverhaulMod.UI
                 return;
 
             m_volumeColorsSettings.Show();
-            //m_volumeColorsSettings.Populate(volume.colorReplacements);
         }
 
         public void OnVolumeColorReplacementsChanged(string str)
@@ -200,9 +199,39 @@ namespace OverhaulMod.UI
                 {
                     foreach (KeyValuePair<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> preset in volumePresets)
                     {
+                        VolumeSettingsPreset settingsPreset = preset.Value;
+
                         ModdedObject display = Instantiate(propertiesPanel.m_volumeSettingsPresetDisplay, container);
                         display.gameObject.SetActive(true);
 
+                        // voxel model file
+                        ModdedObject voxelModelFileField = display.GetObject<ModdedObject>(1);
+                        InputField voxelModelFileFieldText = voxelModelFileField.GetObject<InputField>(0);
+                        voxelModelFileFieldText.text = settingsPreset.VoxFilePath;
+                        voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
+                        {
+                            ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
+                            {
+                                string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                string fileName = Path.GetFileName(filePath);
+                                string path = Path.Combine(directoryName, "files", fileName);
+
+                                voxelModelFileFieldText.text = path;
+                                settingsPreset.VoxFilePath = path;
+                                GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                            }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.currentEditingItemInfo), "*.vox");
+                        });
+
+                        // center pivot
+                        Toggle centerPivotToggle= display.GetObject<Toggle>(2);
+                        centerPivotToggle.isOn = settingsPreset.CenterPivot;
+                        centerPivotToggle.onValueChanged.AddListener(delegate (bool value)
+                        {
+                            settingsPreset.CenterPivot = value;
+                            GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                        });
+
+                        // conditions dropdown
                         bool allowCallback = true;
                         PersonalizationEditorObjectShowConditions prevCondition = preset.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
@@ -224,9 +253,8 @@ namespace OverhaulMod.UI
                             }
                             else
                             {
-                                VolumeSettingsPreset prst = volumePresets[prevCondition];
                                 _ = volumePresets.Remove(prevCondition);
-                                volumePresets.Add(condition, prst);
+                                volumePresets.Add(condition, settingsPreset);
 
                                 prevCondition = condition;
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -234,6 +262,7 @@ namespace OverhaulMod.UI
                         });
                         conditionsDropdown.interactable = volume.GetUnusedShowCondition() != PersonalizationEditorObjectShowConditions.None;
 
+                        // active frame
                         Action refreshActiveFrameAction = delegate
                         {
                             display.GetObject<GameObject>(4).SetActive(prevCondition == PersonalizationEditorManager.Instance.previewPresetKey);
@@ -243,6 +272,28 @@ namespace OverhaulMod.UI
                         EventController singleEventController = display.gameObject.AddComponent<EventController>();
                         singleEventController.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, refreshActiveFrameAction);
                         singleEventController.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, refreshActiveFrameAction);
+
+                        // colors
+                        Action<string> onColorChangedAction = delegate (string value)
+                        {
+                            settingsPreset.ColorReplacements = value;
+                            GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                        };
+
+                        display.GetObject<Button>(3).onClick.AddListener(delegate
+                        {
+                            UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel.m_volumeColorsSettings;
+                            volumeColorsSettings.Show();
+                            volumeColorsSettings.Populate(settingsPreset.ColorReplacements);
+                            volumeColorsSettings.onColorChanged = onColorChangedAction;
+                        });
+
+                        // delete
+                        display.GetObject<Button>(5).onClick.AddListener(delegate
+                        {
+                            volumePresets.Remove(prevCondition);
+                            populateFieldsAction();
+                        });
                     }
                 }
 
@@ -252,7 +303,11 @@ namespace OverhaulMod.UI
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        volume.volumeSettingPresets.Add(volume.GetUnusedShowCondition(), new VolumeSettingsPreset());
+                        volume.volumeSettingPresets.Add(volume.GetUnusedShowCondition(), new VolumeSettingsPreset()
+                        {
+                            CenterPivot = true,
+                            VoxelSize = 0.1f
+                        });
                         populateFieldsAction();
                     });
                 }
