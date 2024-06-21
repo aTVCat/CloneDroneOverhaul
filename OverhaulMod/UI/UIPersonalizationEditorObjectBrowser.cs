@@ -29,6 +29,9 @@ namespace OverhaulMod.UI
             System.Collections.Generic.List<PersonalizationEditorObjectSpawnInfo> list = PersonalizationEditorObjectManager.Instance.GetObjectInfos();
             foreach (PersonalizationEditorObjectSpawnInfo obj in list)
             {
+                if (obj.Path == "Empty")
+                    continue;
+
                 ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = obj.Name;

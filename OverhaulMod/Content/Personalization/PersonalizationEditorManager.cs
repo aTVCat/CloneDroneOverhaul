@@ -17,6 +17,10 @@ namespace OverhaulMod.Content.Personalization
     {
         public const string ITEM_INFO_FILE = "itemInfo.json";
 
+        public const string ITEM_META_DATA_FILE = "metaData.json";
+
+        public const string EDITOR_STARTED_EVENT = "PersonalizationEditorStarted";
+
         public const string OBJECT_EDITED_EVENT = "PersonalizationEditorObjectEdited";
 
         public const string PRESET_PREVIEW_CHANGED_EVENT = "PersonalizationEditorPresetPreviewChanged";
@@ -53,7 +57,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public PersonalizationEditorObjectShowConditions previewPresetKey
+        public WeaponVariant previewPresetKey
         {
             get;
             set;
@@ -114,7 +118,7 @@ namespace OverhaulMod.Content.Personalization
             m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
-            previewPresetKey = PersonalizationEditorObjectShowConditions.IsNormal;
+            previewPresetKey = WeaponVariant.IsNormal;
 
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
@@ -157,10 +161,10 @@ namespace OverhaulMod.Content.Personalization
 
             list = new List<Dropdown.OptionData>
             {
-                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal),
-                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire),
-                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer),
-                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer)
+                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal),
+                new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire),
+                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer),
+                new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer)
             };
             ModAdvancedCache.Add("DropdownShowConditionOptions", list);
             return list;
@@ -175,18 +179,18 @@ namespace OverhaulMod.Content.Personalization
 
             list = new List<Dropdown.OptionData>
             {
-                new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal),
+                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal),
             };
 
             if (weaponType == WeaponType.Sword)
             {
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer));
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer));
             }
             else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear)
             {
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
             }
 
             ModAdvancedCache.Add(key, list);
@@ -218,18 +222,23 @@ namespace OverhaulMod.Content.Personalization
                 Description = "No description provided.",
                 IsVerified = false,
                 Category = PersonalizationCategory.WeaponSkins,
-                EditorID = PersonalizationEditorManager.Instance.editorId,
+                EditorID = Instance.editorId,
                 ItemID = Guid.NewGuid().ToString(),
                 FolderPath = directoryPath,
                 RootFolderPath = rootDirectory,
                 RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
-                IsPersistentAsset = usePersistentFolder
+                IsPersistentAsset = usePersistentFolder,
+                MetaData = new PersonalizationItemMetaData()
+                {
+                    CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                }
             };
             personalizationItem.FixValues();
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
 
-            ModJsonUtils.WriteStream(directoryPath + ITEM_INFO_FILE, personalizationItem);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), personalizationItem);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), personalizationItem.MetaData);
             return true;
         }
 
@@ -266,11 +275,21 @@ namespace OverhaulMod.Content.Personalization
             if (!Directory.Exists(folder))
                 _ = Directory.CreateDirectory(folder);
 
+            PersonalizationItemMetaData personalizationItemMetaData = currentEditingItemInfo.MetaData;
+            if (personalizationItemMetaData == null)
+            {
+                personalizationItemMetaData = new PersonalizationItemMetaData
+                {
+                    CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion
+                };
+            }
+
             UIPersonalizationEditor.instance.Inspector.ApplyValues();
             SerializeRoot();
             try
             {
                 ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), currentEditingItemInfo);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_META_DATA_FILE), personalizationItemMetaData);
             }
             catch (Exception exc)
             {
@@ -342,6 +361,7 @@ namespace OverhaulMod.Content.Personalization
             ArenaLiftManager.Instance.SetToArena();
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
             SpawnBot();
+            GlobalEventManager.Instance.Dispatch(EDITOR_STARTED_EVENT);
 
             if (useTransitionManager)
             {

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -13,15 +14,20 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshCursorEnabled")]
         private static bool RefreshCursorEnabled_Prefix()
         {
+#if DEBUG
             if (ModDebug.forceDisableCursor)
             {
                 InputManager.Instance.SetCursorEnabled(false);
                 return false;
             }
-
+#endif
             ModUIManager manager = ModUIManager.Instance;
-            if (manager && (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && UIManager.Instance.IsMouseOverUIElement())))
+            if (!manager)
+                return true;
+
+            if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()))
             {
+                Debug.Log("Overhaul mod enabled the cursor");
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;
             }

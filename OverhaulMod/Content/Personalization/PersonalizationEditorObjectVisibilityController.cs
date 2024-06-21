@@ -1,4 +1,6 @@
-﻿namespace OverhaulMod.Content.Personalization
+﻿using OverhaulMod.Engine;
+
+namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVisibilityController : PersonalizationEditorObjectComponentBase
     {
@@ -57,62 +59,18 @@
             if (alwaysOn)
                 return true;
 
-            GetWeaponProperties(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out bool of, out bool gs);
+            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out bool of, out bool gs);
             return isGreatSword == gs && isOnFire == of;
         }
 
-        public void GetWeaponProperties(out PersonalizationEditorObjectShowConditions showConditions)
+        public void GetWeaponVariant(out WeaponVariant showConditions)
         {
-            GetWeaponProperties(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
+            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
         }
 
-        public void GetWeaponProperties(out bool isOnFire, out bool isGreatSword)
+        public void GetWeaponVariant(out bool isOnFire, out bool isGreatSword)
         {
-            GetWeaponProperties(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out isOnFire, out isGreatSword);
-        }
-
-        public static void GetWeaponProperties(FirstPersonMover firstPersonMover, WeaponType weaponType, out bool isOnFire, out bool isGreatSword)
-        {
-            isGreatSword = false;
-            isOnFire = false;
-            switch (weaponType)
-            {
-                case WeaponType.Sword:
-                    isGreatSword = GameModeManager.UsesMultiplayerSpeedMultiplier();
-                    isOnFire = firstPersonMover.HasUpgrade(UpgradeType.FireSword);
-                    break;
-                case WeaponType.Hammer:
-                    isOnFire = firstPersonMover.HasUpgrade(UpgradeType.FireHammer);
-                    break;
-                case WeaponType.Spear:
-                    isOnFire = firstPersonMover.HasUpgrade(UpgradeType.FireSpear);
-                    break;
-            }
-        }
-
-        public static void GetWeaponProperties(FirstPersonMover firstPersonMover, WeaponType weaponType, out PersonalizationEditorObjectShowConditions showConditions)
-        {
-            GetWeaponProperties(firstPersonMover, weaponType, out bool of, out bool gs);
-            if (!of && !gs)
-            {
-                showConditions = PersonalizationEditorObjectShowConditions.IsNormal;
-            }
-            else if (of && !gs)
-            {
-                showConditions = PersonalizationEditorObjectShowConditions.IsOnFire;
-            }
-            else if (!of && gs)
-            {
-                showConditions = PersonalizationEditorObjectShowConditions.IsNormalMultiplayer;
-            }
-            else if (of && gs)
-            {
-                showConditions = PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer;
-            }
-            else
-            {
-                showConditions = PersonalizationEditorObjectShowConditions.None;
-            }
+            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out isOnFire, out isGreatSword);
         }
     }
 }

@@ -258,16 +258,22 @@ namespace OverhaulMod
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.BOOMERANG_FIRE_UPGRADE, ModWeaponsManager.BOOMERANG_TYPE);
             owner.RefreshModWeaponModels();
 
-            RobotInventory robotInventory = owner.GetComponent<RobotInventory>();
-            if (robotInventory)
+            if (owner._upgradesNeedsRefreshing)
             {
-                robotInventory.OnUpgradesRefreshed(upgrades);
+                RobotInventory robotInventory = owner.GetComponent<RobotInventory>();
+                if (robotInventory)
+                {
+                    robotInventory.OnUpgradesRefreshed(upgrades);
+                }
             }
+        }
 
+        public override void AfterUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
+        {
             PersonalizationController personalizationController = owner.GetComponent<PersonalizationController>();
             if (personalizationController)
             {
-                personalizationController.SpawnEquippedSkins();
+                personalizationController.RespawnSkinsIfRequired();
             }
         }
 

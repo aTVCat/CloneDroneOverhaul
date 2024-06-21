@@ -63,7 +63,7 @@ namespace PicaVoxel
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
 
-            if(ModBuildInfo.debug)
+            if (ModBuildInfo.debug)
                 Debug.Log(magic);
 
             if (magic.ToLower() == "vox ")

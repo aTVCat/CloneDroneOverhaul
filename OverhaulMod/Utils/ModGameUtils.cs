@@ -219,5 +219,18 @@ namespace OverhaulMod.Utils
         {
             m_playerInputUpdateActions.Add(action);
         }
+
+        public static void FadeThenStopMusic(float duration)
+        {
+            AudioManager audioManager = AudioManager.Instance;
+            if (audioManager.MusicAudioSource.mute)
+                return;
+
+            audioManager.FadeOutMusic(duration);
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                audioManager.StopMusic();
+            }, duration);
+        }
     }
 }

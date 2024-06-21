@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,20 +43,17 @@ namespace OverhaulMod.Engine
         {
             RefreshMusicTrack();
 
-            GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, onLevelEditorStarted);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, StopTitleScreenMusic);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.EDITOR_STARTED_EVENT, StopTitleScreenMusic);
 
             Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
             if (transform)
                 transform.SetParent(WorldRoot.Instance?.transform);
         }
 
-        private void onLevelEditorStarted()
+        public void StopTitleScreenMusic()
         {
-            AudioManager.Instance.FadeOutMusic(1f);
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                AudioManager.Instance.StopMusic();
-            }, 1.25f);
+            ModGameUtils.FadeThenStopMusic(0.3f);
         }
 
         public void LoadCustomizationInfo()

@@ -1,6 +1,6 @@
-﻿namespace OverhaulMod.Content.Personalization
+﻿namespace OverhaulMod.Engine
 {
-    public enum PersonalizationEditorObjectShowConditions
+    public enum WeaponVariant
     {
         None,
 

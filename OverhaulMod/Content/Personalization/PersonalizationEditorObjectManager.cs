@@ -27,7 +27,7 @@ namespace OverhaulMod.Content.Personalization
             m_instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
-            addObjectInfo("Volume", "Volume", instantiateVolume);
+            addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
         }
 
         private void addObjectInfo(string name, string path, Func<Transform, GameObject> func)

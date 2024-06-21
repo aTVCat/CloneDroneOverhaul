@@ -377,7 +377,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!item.IsCompatibleWithMod())
             {
-                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod ({item.MinModVersion}).\nMake sure you're using the latest version of the mod.", 175f, true);
+                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod.\nMake sure you're using the latest version of the mod.", 175f, true);
                 return;
             }
 

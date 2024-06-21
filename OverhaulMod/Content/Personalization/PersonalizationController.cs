@@ -53,10 +53,15 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> m_spawnedItems;
 
+        private Dictionary<WeaponType, WeaponVariant> m_weaponTypeToVariant;
+
+        private bool m_spawnSkinsNextFrame;
+
         private void Awake()
         {
             m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
             m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
+            m_weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant>();
         }
 
         private void Start()
@@ -78,10 +83,49 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        private void Update()
+        {
+            if (m_spawnSkinsNextFrame)
+            {
+                m_spawnSkinsNextFrame = false;
+                SpawnEquippedSkins();
+            }
+        }
+
         public void Initialize()
         {
-            getWeaponRenderers();
-            SpawnEquippedSkins();
+            SpawnEquippedSkinsNextFrame();
+        }
+
+        public bool ShouldRefreshSkinOfWeapon(WeaponType weaponType)
+        {
+            return GetWeaponVariant(weaponType) != GetWeaponVariant(weaponType, false);
+        }
+
+        public WeaponVariant GetWeaponVariant(WeaponType weaponType, bool getCached = true)
+        {
+            if (!getCached)
+            {
+                WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
+                return weaponVariant;
+            }
+
+            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
+            if (d.ContainsKey(weaponType))
+                return d[weaponType];
+
+            return WeaponVariant.None;
+        }
+
+        public void RefreshWeaponVariant(WeaponType weaponType)
+        {
+            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
+            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
+
+            if (d.ContainsKey(weaponType))
+                d[weaponType] = weaponVariant;
+            else
+                d.Add(weaponType, weaponVariant);
         }
 
         public void SetWeaponPartsVisible(WeaponType weaponType, bool value)
@@ -113,6 +157,8 @@ namespace OverhaulMod.Content.Personalization
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 SetWeaponPartsVisible(personalizationItemInfo.Weapon, false);
+
+            RefreshWeaponVariant(personalizationItemInfo.Weapon);
 
             return behaviour;
         }
@@ -189,9 +235,15 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public void SpawnEquippedSkinsNextFrame()
+        {
+            m_spawnSkinsNextFrame = true;
+        }
+
         public void SpawnEquippedSkins()
         {
             DestroyAllItems();
+            getWeaponRenderers();
 
             if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
                 return;
@@ -207,6 +259,38 @@ namespace OverhaulMod.Content.Personalization
             _ = SpawnItem(hammerSkin);
             _ = SpawnItem(spearSkin);
             _ = SpawnItem(shieldSkin);
+        }
+
+        public void RespawnSkinsIfRequired()
+        {
+            Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> d = m_spawnedItems;
+            if (d.Count == 0)
+            {
+                SpawnEquippedSkins();
+            }
+            else
+            {
+                getWeaponRenderers();
+
+                List<PersonalizationItemInfo> skinsToRespawn = null;
+                foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in d)
+                {
+                    if (ShouldRefreshSkinOfWeapon(kv.Key.Weapon))
+                    {
+                        if (skinsToRespawn == null)
+                            skinsToRespawn = new List<PersonalizationItemInfo>();
+
+                        skinsToRespawn.Add(kv.Key);
+                    }
+                }
+
+                if (skinsToRespawn != null)
+                    foreach (PersonalizationItemInfo info in skinsToRespawn)
+                    {
+                        DestroyItem(info);
+                        _ = SpawnItem(GetWeaponSkin(info.Weapon));
+                    }
+            }
         }
 
         public void EquipItem(PersonalizationItemInfo itemToEquip)
@@ -265,7 +349,7 @@ namespace OverhaulMod.Content.Personalization
                 PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
                 if (personalizationController)
                 {
-                    personalizationController.SpawnEquippedSkins();
+                    personalizationController.SpawnEquippedSkinsNextFrame();
                 }
             }
         }

@@ -374,7 +374,8 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectShowConditions.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
+    <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
@@ -461,6 +462,7 @@
     <Compile Include="Engine\UpgradeModes.cs" />
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Content\WorkshopItem.cs" />
+    <Compile Include="Engine\WeaponVariantManager.cs" />
     <Compile Include="Interfaces\IGameLoadListener.cs" />
     <Compile Include="Interfaces\IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
@@ -488,6 +490,7 @@
     <Compile Include="Patches\LevelLightSettings_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
+    <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
     <Compile Include="Patches\UpgradeDescription_Patch.cs" />
     <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
@@ -540,7 +543,7 @@
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />
-    <Compile Include="UI\DropdownShowConditionOptionData.cs" />
+    <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />

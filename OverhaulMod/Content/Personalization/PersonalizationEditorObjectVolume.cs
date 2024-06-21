@@ -40,12 +40,12 @@ namespace OverhaulMod.Content.Personalization
         }
 
         [PersonalizationEditorObjectProperty]
-        public Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> volumeSettingPresets
+        public Dictionary<WeaponVariant, VolumeSettingsPreset> volumeSettingPresets
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
             }
             set
             {
@@ -57,10 +57,10 @@ namespace OverhaulMod.Content.Personalization
         private void Start()
         {
             if (volumeSettingPresets == null)
-                volumeSettingPresets = new Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset>();
+                volumeSettingPresets = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
             else
             {
-                foreach (var value in volumeSettingPresets.Values)
+                foreach (VolumeSettingsPreset value in volumeSettingPresets.Values)
                     if (value.ReplaceWithFavoriteColors == null)
                         value.ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>();
             }
@@ -85,48 +85,48 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public PersonalizationEditorObjectShowConditions GetUnusedShowCondition()
+        public WeaponVariant GetUnusedShowCondition()
         {
-            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormal))
-                return PersonalizationEditorObjectShowConditions.IsNormal;
-            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFire))
-                return PersonalizationEditorObjectShowConditions.IsOnFire;
-            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer))
-                return PersonalizationEditorObjectShowConditions.IsNormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer))
-                return PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer;
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormal))
+                return WeaponVariant.IsNormal;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFire))
+                return WeaponVariant.IsOnFire;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormalMultiplayer))
+                return WeaponVariant.IsNormalMultiplayer;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFireMultiplayer))
+                return WeaponVariant.IsOnFireMultiplayer;
 
-            return PersonalizationEditorObjectShowConditions.None;
+            return WeaponVariant.None;
         }
 
-        public PersonalizationEditorObjectShowConditions GetCurrentShowCondition()
+        public WeaponVariant GetCurrentShowCondition()
         {
             if (PersonalizationEditorManager.IsInEditor())
             {
                 return PersonalizationEditorManager.Instance.previewPresetKey;
             }
-            visibilityController.GetWeaponProperties(out PersonalizationEditorObjectShowConditions showConditions);
+            visibilityController.GetWeaponVariant(out WeaponVariant showConditions);
             return showConditions;
         }
 
         public List<Dropdown.OptionData> GetUnusedConditionOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormal))
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormal));
-            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer))
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsNormalMultiplayer));
-            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFire))
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFire));
-            if (!volumeSettingPresets.ContainsKey(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer))
-                list.Add(new DropdownShowConditionOptionData(PersonalizationEditorObjectShowConditions.IsOnFireMultiplayer));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormal))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormalMultiplayer))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFire))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFireMultiplayer))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer));
             return list;
         }
 
         public VolumeSettingsPreset GetCurrentPreset()
         {
-            PersonalizationEditorObjectShowConditions condition = GetCurrentShowCondition();
-            Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> d = volumeSettingPresets;
+            WeaponVariant condition = GetCurrentShowCondition();
+            Dictionary<WeaponVariant, VolumeSettingsPreset> d = volumeSettingPresets;
             if (d == null || d.Count == 0)
                 return null;
 
@@ -210,7 +210,7 @@ namespace OverhaulMod.Content.Personalization
                             foreach (ColorPairFloat cp in list)
                             {
                                 Color colorB;
-                                if(preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
+                                if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
                                 {
                                     HSBColor hsbcolor = new HSBColor(favoriteColor);
                                     hsbcolor.s *= favoriteColorSettings.SaturationMultiplier;

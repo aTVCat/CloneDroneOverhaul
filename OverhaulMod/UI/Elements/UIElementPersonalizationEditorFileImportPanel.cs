@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
 
                         itemInfo.GetImportedFiles();
                         Populate();
-                        PersonalizationEditorManager.Instance.SpawnRootObject();
+                        GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                     });
                 });
             }
@@ -87,6 +87,7 @@ namespace OverhaulMod.UI
                         File.Copy(path, dest);
                         item.GetImportedFiles();
                         Populate();
+                        GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                     });
                     return;
                 }
@@ -97,6 +98,7 @@ namespace OverhaulMod.UI
 
                 item.GetImportedFiles();
                 Populate();
+                GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
             }, InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
         }
     }

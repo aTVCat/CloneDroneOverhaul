@@ -27,8 +27,6 @@ namespace OverhaulMod.Content.Personalization
 
         public int Version;
 
-        public System.Version MinModVersion;
-
         public PersonalizationEditorObjectInfo RootObject;
 
         [NonSerialized]
@@ -45,6 +43,9 @@ namespace OverhaulMod.Content.Personalization
 
         [NonSerialized]
         public bool IsPersistentAsset;
+
+        [NonSerialized]
+        public PersonalizationItemMetaData MetaData;
 
         public void GetImportedFiles()
         {
@@ -139,7 +140,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsCompatibleWithMod()
         {
-            return MinModVersion == null || ModBuildInfo.version >= MinModVersion;
+            return MetaData == null || PersonalizationItemMetaData.CurrentCustomizationSystemVersion >= MetaData.CustomizationSystemVersion;
         }
 
         public bool IsEquipped()

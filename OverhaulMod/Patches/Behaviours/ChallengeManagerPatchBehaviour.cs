@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches.Behaviours
             ChallengeManager challengeManager = ChallengeManager.Instance;
             foreach (ChallengeDefinition challenge in challengeManager.Challenges)
             {
-                if (challenge.ChallengeID == "HammerChallenge" || challenge.ChallengeID == "SpearOnly" || challenge.ChallengeID == "BowOnlyChallenge")
+                if (challenge.ChallengeID == "HammerChallenge" || challenge.ChallengeID == "SpearOnly" || challenge.ChallengeID == "BowOnlyChallenge" || challenge.ChallengeID == "EndlessGreatsword" || challenge.ChallengeID == "KickOnly" || challenge.ChallengeID == "Laser")
                 {
                     List<UpgradeTypeAndLevel> list = challenge.DisabledUpgrades.ToList();
                     list.Add(new UpgradeTypeAndLevel()
@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches.Behaviours
             ChallengeManager challengeManager = ChallengeManager.Instance;
             foreach (ChallengeDefinition challenge in challengeManager.Challenges)
             {
-                if (challenge.ChallengeID == "HammerChallenge" || challenge.ChallengeID == "SpearOnly" || challenge.ChallengeID == "BowOnlyChallenge")
+                if (challenge.ChallengeID == "HammerChallenge" || challenge.ChallengeID == "SpearOnly" || challenge.ChallengeID == "BowOnlyChallenge" || challenge.ChallengeID == "EndlessGreatsword" || challenge.ChallengeID == "KickOnly" || challenge.ChallengeID == "Laser")
                 {
                     List<int> indexesToRemove = new List<int>();
                     List<UpgradeTypeAndLevel> list = challenge.DisabledUpgrades.ToList();

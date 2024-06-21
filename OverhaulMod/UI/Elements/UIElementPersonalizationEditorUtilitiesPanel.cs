@@ -86,7 +86,7 @@ namespace OverhaulMod.UI
 
         public void OnPresetPreviewChanged(int value)
         {
-            PersonalizationEditorManager.Instance.previewPresetKey = (m_presetPreviewDropdown.options[value] as DropdownShowConditionOptionData).Value;
+            PersonalizationEditorManager.Instance.previewPresetKey = (m_presetPreviewDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.Globalization;
@@ -42,6 +43,8 @@ namespace OverhaulMod.UI
 
         private UIElementMouseEventsComponent m_mousePositionChecker;
 
+        private int m_objectId;
+
         private PersonalizationEditorObjectBehaviour m_object;
 
         private PersonalizationEditorObjectVolume m_volume;
@@ -52,6 +55,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_objectId = -1;
             m_volumePropertiesController = new VolumePropertiesController();
 
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
@@ -63,6 +67,14 @@ namespace OverhaulMod.UI
             TransformUtils.DestroyAllChildren(m_container);
         }
 
+        public void EditObjectAgain()
+        {
+            if (m_objectId == -1)
+                return;
+
+            EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(m_objectId));
+        }
+
         public void EditObject(PersonalizationEditorObjectBehaviour objectBehaviour)
         {
             bool isNotNull = objectBehaviour;
@@ -70,10 +82,12 @@ namespace OverhaulMod.UI
             m_nothingToEditOverlay.SetActive(!isNotNull);
             if (!isNotNull)
             {
+                m_objectId = -1;
                 m_object = null;
                 m_volume = null;
                 return;
             }
+            m_objectId = objectBehaviour.UniqueIndex;
             m_object = objectBehaviour;
             m_volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
 
@@ -194,10 +208,10 @@ namespace OverhaulMod.UI
                 dropdown.options = volume.GetConditionOptions();
                 forceConditionDropdown.gameObject.SetActive(true);*/
 
-                Dictionary<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
+                Dictionary<WeaponVariant, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
                 if (volumePresets != null && volumePresets.Count != 0)
                 {
-                    foreach (KeyValuePair<PersonalizationEditorObjectShowConditions, VolumeSettingsPreset> preset in volumePresets)
+                    foreach (KeyValuePair<WeaponVariant, VolumeSettingsPreset> preset in volumePresets)
                     {
                         VolumeSettingsPreset settingsPreset = preset.Value;
 
@@ -254,14 +268,14 @@ namespace OverhaulMod.UI
 
                         // conditions dropdown
                         bool allowCallback = true;
-                        PersonalizationEditorObjectShowConditions prevCondition = preset.Key;
+                        WeaponVariant prevCondition = preset.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
                         conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
 
                         int conditionDropdownValueToSet = -1;
                         for (int i = 0; i < conditionsDropdown.options.Count; i++)
                         {
-                            if (conditionsDropdown.options[i] is DropdownShowConditionOptionData showConditionOptionData && showConditionOptionData.Value == prevCondition)
+                            if (conditionsDropdown.options[i] is DropdownWeaponVariantOptionData showConditionOptionData && showConditionOptionData.Value == prevCondition)
                             {
                                 conditionDropdownValueToSet = i;
                             }
@@ -269,7 +283,7 @@ namespace OverhaulMod.UI
 
                         if (conditionDropdownValueToSet == -1)
                         {
-                            conditionsDropdown.options.Add(new DropdownShowConditionOptionData(prevCondition));
+                            conditionsDropdown.options.Add(new DropdownWeaponVariantOptionData(prevCondition));
                             conditionsDropdown.RefreshShownValue();
                         }
 
@@ -279,7 +293,7 @@ namespace OverhaulMod.UI
                             if (!allowCallback)
                                 return;
 
-                            PersonalizationEditorObjectShowConditions condition = (conditionsDropdown.options[value] as DropdownShowConditionOptionData).Value;
+                            WeaponVariant condition = (conditionsDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
                             if (volumePresets.ContainsKey(condition))
                             {
                                 allowCallback = false;
@@ -297,7 +311,7 @@ namespace OverhaulMod.UI
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }
                         });
-                        conditionsDropdown.interactable = volume.GetUnusedShowCondition() != PersonalizationEditorObjectShowConditions.None;
+                        conditionsDropdown.interactable = volume.GetUnusedShowCondition() != WeaponVariant.None;
 
                         // active frame
                         void refreshActiveFrameAction()
@@ -358,7 +372,7 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if (volume.GetUnusedShowCondition() != PersonalizationEditorObjectShowConditions.None)
+                if (volume.GetUnusedShowCondition() != WeaponVariant.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);

@@ -113,7 +113,7 @@ namespace OverhaulMod
 
         public bool IsUIVisible(string assetBundle, string assetKey)
         {
-            string fullName = assetBundle + "." + assetKey;
+            string fullName = $"{assetBundle}.{assetKey}";
             return HasInstantiatedUI(fullName) && m_instantiatedUIs[fullName].activeInHierarchy;
         }
 
@@ -153,7 +153,7 @@ namespace OverhaulMod
 
         public T Show<T>(string assetBundle, string assetKey, UILayer layer = UILayer.Last, int siblingIndexOffset = 0) where T : OverhaulUIBehaviour
         {
-            string fullName = assetBundle + "." + assetKey;
+            string fullName = $"{assetBundle}.{assetKey}";
             if (!HasInstantiatedUI(fullName))
             {
                 GameObject prefab = ModResources.Load<GameObject>(assetBundle, assetKey);
@@ -202,7 +202,7 @@ namespace OverhaulMod
 
         public T Get<T>(string assetBundle, string assetKey) where T : OverhaulUIBehaviour
         {
-            string fullName = assetBundle + "." + assetKey;
+            string fullName = $"{assetBundle}.{assetKey}";
             return m_instantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
         }
 
