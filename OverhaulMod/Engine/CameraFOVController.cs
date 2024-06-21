@@ -5,8 +5,11 @@ namespace OverhaulMod.Engine
 {
     public class CameraFOVController : MonoBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENABLE_FOV_OVERRIDE, false)]
+        public static bool EnableFOVOverride;
+
         [ModSetting(ModSettingsConstants.CAMERA_FOV_OFFSET, 0f)]
-        public static float FovOffset;
+        public static float FOVOffset;
 
         private CameraManager m_cameraManager;
 
@@ -25,6 +28,9 @@ namespace OverhaulMod.Engine
 
         private void LateUpdate()
         {
+            if (!EnableFOVOverride)
+                return;
+
             FirstPersonMover owner = m_owner;
             if (!owner || owner._isGrabbedForUpgrade)
                 return;
@@ -41,7 +47,7 @@ namespace OverhaulMod.Engine
             if (cameraManager.enableForceFOVOffset)
                 camera.fieldOfView += cameraManager.forceFOVOffset;
             else
-                camera.fieldOfView += FovOffset;
+                camera.fieldOfView += FOVOffset;
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)

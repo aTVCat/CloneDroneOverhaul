@@ -60,6 +60,11 @@ namespace OverhaulMod.Patches.Behaviours
                 UnityEvent coopEndlessModeEvent = new UnityEvent();
                 coopEndlessModeEvent.AddListener(delegate
                 {
+                    if (!ModUIManager.ShowDuelInviteMenuRework)
+                    {
+                        ModCache.titleScreenUI.OnPlayCoopButtonClicked();
+                        return;
+                    }
                     ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
                 });
                 multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
@@ -67,6 +72,11 @@ namespace OverhaulMod.Patches.Behaviours
                 UnityEvent coopChallengesModeEvent = new UnityEvent();
                 coopChallengesModeEvent.AddListener(delegate
                 {
+                    if (!ModUIManager.ShowDuelInviteMenuRework)
+                    {
+                        ModCache.titleScreenUI.OnPlayCoopChallengesButtonClicked();
+                        return;
+                    }
                     ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
                 });
                 multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
@@ -74,6 +84,11 @@ namespace OverhaulMod.Patches.Behaviours
                 UnityEvent battleRoyaleModeEvent = new UnityEvent();
                 battleRoyaleModeEvent.AddListener(delegate
                 {
+                    if (!ModUIManager.ShowDuelInviteMenuRework)
+                    {
+                        ModCache.titleScreenUI.OnPlayBattleRoyaleButtonClicked();
+                        return;
+                    }
                     ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
                 });
                 multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
@@ -81,6 +96,11 @@ namespace OverhaulMod.Patches.Behaviours
                 UnityEvent duelModeEvent = new UnityEvent();
                 duelModeEvent.AddListener(delegate
                 {
+                    if (!ModUIManager.ShowDuelInviteMenuRework)
+                    {
+                        ModCache.titleScreenUI.OnDuelInviteMenuClicked();
+                        return;
+                    }
                     ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
                 });
                 multiplayerDatas[3].ClickedCallback = duelModeEvent;

@@ -464,8 +464,8 @@
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Content\WorkshopItem.cs" />
     <Compile Include="Engine\WeaponVariantManager.cs" />
-    <Compile Include="Interfaces\IGameLoadListener.cs" />
-    <Compile Include="Interfaces\IModLoadListener.cs" />
+    <Compile Include="IGameLoadListener.cs" />
+    <Compile Include="IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Content\RepositoryManager.cs" />

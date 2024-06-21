@@ -444,10 +444,24 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.Header3("Field of view");
-            _ = pageBuilder.Slider(-10f, 25f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE), delegate (bool value)
             {
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
-            }, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE, value, true);
+                PopulatePage("Graphics");
+            }, "Enable FOV override");
+            Text fovOverrideHeader4 = pageBuilder.Header4("Might cause camera bugs in rare cases.\nRestarting the level will fix those");
+            Vector2 fovOverrideHeader4SizeDelta = (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta;
+            fovOverrideHeader4SizeDelta.y += 15f;
+            (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta = fovOverrideHeader4SizeDelta;
+
+            if (CameraFOVController.EnableFOVOverride)
+            {
+                _ = pageBuilder.Slider(-10f, 25f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                {
+                    ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
+                }, true);
+            }
+
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);

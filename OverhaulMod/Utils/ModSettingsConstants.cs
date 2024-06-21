@@ -67,6 +67,11 @@ namespace OverhaulMod.Utils
         public const string SHOW_TITLE_SCREEN_REWORK = UI_PREFIX + nameof(UITitleScreenRework);
 
         /// <summary>
+        /// <see cref="ModUIManager"/>
+        /// </summary>
+        public const string SHOW_DUEL_INVITE_MENU_REWORK = UI_PREFIX + nameof(UIDuelInviteMenuRework);
+
+        /// <summary>
         /// <see cref="Engine.ModAudioManager"/>
         /// </summary>
         public const string ENABLE_REVERB_FILTER = "SoundReverbFilterEnabled";
@@ -285,5 +290,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AdvancedPhotoModeManager"/>
         /// </summary>
         public const string REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN = "RequireRMBHoldWhenUIIsHidden";
+
+        /// <summary>
+        /// <see cref="Engine.CameraFOVController"/>
+        /// </summary>
+        public const string ENABLE_FOV_OVERRIDE = "EnableFOVOverride";
     }
 }

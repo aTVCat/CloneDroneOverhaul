@@ -32,6 +32,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_TITLE_SCREEN_REWORK, true, ModSetting.Tag.UISetting)]
         public static bool ShowTitleScreenRework;
 
+        [ModSetting(ModSettingsConstants.SHOW_DUEL_INVITE_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        public static bool ShowDuelInviteMenuRework;
+
         private Dictionary<string, GameObject> m_instantiatedUIs;
 
         private Transform m_gameUIRootTransform;
