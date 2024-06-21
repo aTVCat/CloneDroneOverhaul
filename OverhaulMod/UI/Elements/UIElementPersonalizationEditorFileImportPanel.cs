@@ -55,6 +55,7 @@ namespace OverhaulMod.UI
                         {
                             File.Delete(path);
                         }
+                        PersonalizationCacheManager.Instance.Remove(path.Replace("/", "\\"));
 
                         itemInfo.GetImportedFiles();
                         Populate();
@@ -85,6 +86,8 @@ namespace OverhaulMod.UI
                     {
                         File.Delete(dest);
                         File.Copy(path, dest);
+                        PersonalizationCacheManager.Instance.Remove(dest.Replace("/", "\\"));
+
                         item.GetImportedFiles();
                         Populate();
                         GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -94,6 +97,7 @@ namespace OverhaulMod.UI
                 else
                 {
                     File.Copy(path, dest);
+                    PersonalizationCacheManager.Instance.Remove(dest.Replace("/", "\\"));
                 }
 
                 item.GetImportedFiles();

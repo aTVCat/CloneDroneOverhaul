@@ -372,19 +372,19 @@ namespace OverhaulMod.Content.Personalization
             switch (weaponType)
             {
                 case WeaponType.Sword:
-                    SwordSkin = itemId;
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SWORD_SKIN, itemId);
                     break;
                 case WeaponType.Bow:
-                    BowSkin = itemId;
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.BOW_SKIN, itemId);
                     break;
                 case WeaponType.Hammer:
-                    HammerSkin = itemId;
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.HAMMER_SKIN, itemId);
                     break;
                 case WeaponType.Spear:
-                    SpearSkin = itemId;
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SPEAR_SKIN, itemId);
                     break;
                 case WeaponType.Shield:
-                    ShieldSkin = itemId;
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SHIELD_SKIN, itemId);
                     break;
             }
         }

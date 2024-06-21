@@ -63,9 +63,6 @@ namespace PicaVoxel
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
 
-            if (ModBuildInfo.debug)
-                Debug.Log(magic);
-
             if (magic.ToLower() == "vox ")
             {
                 int sizex = 0, sizey = 0, sizez = 0;
@@ -176,6 +173,15 @@ namespace PicaVoxel
         {
             obj.name = volumeName;
             using (BinaryReader stream = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read)))
+            {
+                FromMagica(stream, obj, voxelSize, centerPivot);
+            }
+        }
+
+        public static void ImportModelFromMemory(GameObject obj, byte[] bytes, string volumeName, float voxelSize, bool centerPivot)
+        {
+            obj.name = volumeName;
+            using (BinaryReader stream = new BinaryReader(new MemoryStream(bytes)))
             {
                 FromMagica(stream, obj, voxelSize, centerPivot);
             }

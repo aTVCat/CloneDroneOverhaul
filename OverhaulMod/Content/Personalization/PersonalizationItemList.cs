@@ -137,6 +137,8 @@ namespace OverhaulMod.Content.Personalization
                     ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
                 }
             }
+
+            PersonalizationCacheManager.Instance.CacheFiles(list);
         }
 
         private PersonalizationItemInfo getItem(string id, List<PersonalizationItemInfo> list)

@@ -194,6 +194,7 @@ namespace OverhaulMod.UI
             UIVersionLabel.instance.forceHide = false;
 
             PersonalizationManager.Instance.userInfo.SaveIfDirty();
+            ModSettingsDataManager.Instance.Save();
         }
 
         public bool IsMouseOverPanel()

@@ -364,6 +364,7 @@
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
+    <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />

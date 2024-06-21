@@ -177,7 +177,18 @@ namespace OverhaulMod.Content.Personalization
                     Color favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
 
                     volumeComponent.AddFrame(0);
-                    MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                    if(PersonalizationEditorManager.IsInEditor() || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
+                    {
+                         MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                    }
+                    else
+                    {
+                        if (ModBuildInfo.debug)
+                            Debug.Log("Loaded the model from memory");
+
+                        MagicaVoxelImporter.ImportModelFromMemory(base.gameObject, array, "Import", preset.VoxelSize, preset.CenterPivot);
+                    }
+
                     string cr = preset.ColorReplacements;
 
                     if (cr.IsNullOrEmpty())
