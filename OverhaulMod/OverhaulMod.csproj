@@ -369,6 +369,9 @@
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuideManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuideStage.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
@@ -560,6 +563,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorDropdown.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorGuideWindow.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorNotification.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />

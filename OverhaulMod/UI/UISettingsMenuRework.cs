@@ -626,7 +626,6 @@ namespace OverhaulMod.UI
             {
                 GameUIRoot.Instance.EmoteSettingsUI.Show();
             });
-            _ = pageBuilder.Button("Personalize", null);
         }
 
         private void populateControlsPage(SettingsMenu settingsMenu)

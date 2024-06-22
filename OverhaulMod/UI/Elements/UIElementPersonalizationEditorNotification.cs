@@ -45,7 +45,7 @@ namespace OverhaulMod.UI.Elements
             m_canvasGroup.alpha += Mathf.Lerp(m_canvasGroup.alpha, 1f, dMultiplied);
             m_fill.fillAmount = (m_duration - m_timeLeft) / m_duration;
 
-            if(m_timeLeft <= 0f)
+            if (m_timeLeft <= 0f)
             {
                 Hide();
             }

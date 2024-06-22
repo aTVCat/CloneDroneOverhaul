@@ -86,6 +86,7 @@ namespace OverhaulMod
             _ = ModManagers.New<PersonalizationEditorManager>();
             _ = ModManagers.New<PersonalizationEditorObjectManager>();
             _ = ModManagers.New<PersonalizationItemVerificationManager>();
+            _ = ModManagers.New<PersonalizationEditorGuideManager>();
 
             _ = ModManagers.New<WeatherManager>();
             _ = ModManagers.New<FloatingDustManager>();

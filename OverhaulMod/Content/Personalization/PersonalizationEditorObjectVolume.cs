@@ -132,7 +132,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (!d.ContainsKey(condition))
             {
-                if(condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
+                if (condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
                     return d[WeaponVariant.OnFire];
                 else if (condition == WeaponVariant.NormalMultiplayer && d.ContainsKey(WeaponVariant.Normal))
                     return d[WeaponVariant.Normal];
@@ -182,9 +182,9 @@ namespace OverhaulMod.Content.Personalization
                     Color favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
 
                     volumeComponent.AddFrame(0);
-                    if(PersonalizationEditorManager.IsInEditor() || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
+                    if (PersonalizationEditorManager.IsInEditor() || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
                     {
-                         MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                        MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
                     }
                     else
                     {

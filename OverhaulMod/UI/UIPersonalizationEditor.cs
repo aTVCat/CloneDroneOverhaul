@@ -48,6 +48,9 @@ namespace OverhaulMod.UI
         [UIElement("Notification", typeof(UIElementPersonalizationEditorNotification), false)]
         public readonly UIElementPersonalizationEditorNotification Notification;
 
+        [UIElement("GuideWindow", typeof(UIElementPersonalizationEditorGuideWindow), false)]
+        public readonly UIElementPersonalizationEditorGuideWindow GuideWindow;
+
         [UIElementAction(nameof(OnFileButtonClicked))]
         [UIElement("FileButton")]
         private readonly Button m_toolbarFileButton;
@@ -108,13 +111,18 @@ namespace OverhaulMod.UI
             };
 
             m_toolbarWindowButton.interactable = false;
+
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                GuideWindow.StartGuide(PersonalizationEditorGuideManager.Instance.GetGuide("test"));
+            }, 3f);
         }
 
         public override void Update()
         {
-            if(InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
+            if (InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
             {
-                if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
+                if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
                 {
                     OnSaveButtonClicked();
                 }

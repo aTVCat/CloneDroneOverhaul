@@ -32,7 +32,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_cachedFiles.ContainsKey(path))
             {
                 byte[] array = m_cachedFiles[path];
-                m_cachedFiles.Remove(path);
+                _ = m_cachedFiles.Remove(path);
                 GC.SuppressFinalize(array);
             }
         }
