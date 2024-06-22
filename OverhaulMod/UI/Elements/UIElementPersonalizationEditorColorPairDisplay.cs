@@ -212,6 +212,8 @@ namespace OverhaulMod.UI
             if (m_favoriteColorSettings.ContainsKey(hex))
                 m_favoriteColorSettings[hex].SaturationMultiplier = value / 100f;
 
+            ModUIUtils.Tooltip($"{value}%");
+
             onFavoriteColorSettingsChanged.Invoke();
         }
 
@@ -224,6 +226,8 @@ namespace OverhaulMod.UI
             if (m_favoriteColorSettings.ContainsKey(hex))
                 m_favoriteColorSettings[hex].BrightnessMultiplier = value / 100f;
 
+            ModUIUtils.Tooltip($"{value}%");
+
             onFavoriteColorSettingsChanged.Invoke();
         }
 
@@ -235,6 +239,8 @@ namespace OverhaulMod.UI
             string hex = ColorUtility.ToHtmlStringRGBA(colorA);
             if (m_favoriteColorSettings.ContainsKey(hex))
                 m_favoriteColorSettings[hex].GlowPercent = value / 100f;
+
+            ModUIUtils.Tooltip($"{value}%");
 
             onFavoriteColorSettingsChanged.Invoke();
         }

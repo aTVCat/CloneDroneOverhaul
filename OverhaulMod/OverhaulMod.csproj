@@ -604,6 +604,7 @@
     <Compile Include="UI\UIAutoBuildMenu.cs" />
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
     <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationSettingsMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />

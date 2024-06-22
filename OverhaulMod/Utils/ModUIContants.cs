@@ -79,6 +79,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_SETTINGS_MENU = "UI_PersonalizationSettingsMenu";
         public const string UI_DISCORD_SERVER_MENU = "UI_DiscordServerMenu";
         public const string UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU = "UI_PersonalizationEditorExclusivityEditMenu";
+        public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
 
         public static void ShowVersionLabel()
         {
@@ -469,6 +470,11 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorExclusivityEditMenu ShowPersonalizationEditorExclusivityEditMenu(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorExclusivityEditMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU, transform);
+        }
+
+        public static void ShowPersonalizationEditorAboutDialog(Transform transform)
+        {
+            _ = ModUIManager.Instance.Show<UIPersonalizationEditorAboutDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG, transform);
         }
     }
 }

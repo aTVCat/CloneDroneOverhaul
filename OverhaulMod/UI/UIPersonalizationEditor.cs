@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
         [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspector), false)]
         public readonly UIElementPersonalizationEditorInspector Inspector;
 
-        [UIElement("BottomBar", typeof(UIElementPersonalizationEditorUtilitiesPanel))]
+        [UIElement("BottomBar", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
         [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel), false)]
@@ -247,6 +247,7 @@ namespace OverhaulMod.UI
         public void OnAboutButtonClicked()
         {
             Dropdown.Hide();
+            ModUIConstants.ShowPersonalizationEditorAboutDialog(base.transform);
         }
 
         public void OnFileButtonClicked()

@@ -253,7 +253,10 @@ namespace OverhaulMod.Content.Personalization
         public void EditItem(PersonalizationItemInfo personalizationItemInfo, string folder)
         {
             currentEditingItemInfo = personalizationItemInfo;
-            UIPersonalizationEditor.instance.Utilities.SetConditionOptions(GetConditionOptionsDependingOnEditingWeapon());
+
+            UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
+            utils.Show();
+            utils.SetConditionOptions(GetConditionOptionsDependingOnEditingWeapon());
 
             UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
             SpawnRootObject();

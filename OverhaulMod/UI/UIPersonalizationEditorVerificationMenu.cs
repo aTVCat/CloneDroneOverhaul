@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                m_statusText.text = "This item verified!\nYou can update it if you have made changes to it.";
+                m_statusText.text = "This item is verified!\nYou can update it if you have made changes to it.";
             }
 
             if (personalizationItemInfo.IsVerified)
