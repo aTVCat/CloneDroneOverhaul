@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -14,6 +15,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("RefreshCursorEnabled")]
         private static bool RefreshCursorEnabled_Prefix()
         {
+            if (PersonalizationEditorCamera.IsControllingTheCamera)
+                return false;
+
 #if DEBUG
             if (ModDebug.forceDisableCursor)
             {

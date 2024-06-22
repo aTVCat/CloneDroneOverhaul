@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && (GameModeManager.IsOnTitleScreen() || CharacterTracker.Instance.GetPlayer()))
+            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
             {
                 bool value = !Enabled;
                 Enabled = value;

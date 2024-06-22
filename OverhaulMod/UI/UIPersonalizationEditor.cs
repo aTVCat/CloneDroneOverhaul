@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
 
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
-        public override bool enableCursor => !Input.GetMouseButton(1);
+        public override bool enableCursor => true;
 
         public static UIPersonalizationEditor instance
         {
@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
             s_fileOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData("Save", "Save16x16", instance.OnSaveButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Upload", "Redirect-16x16", instance.OnUploadButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
@@ -108,6 +108,17 @@ namespace OverhaulMod.UI
             };
 
             m_toolbarWindowButton.interactable = false;
+        }
+
+        public override void Update()
+        {
+            if(InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
+            {
+                if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
+                {
+                    OnSaveButtonClicked();
+                }
+            }
         }
 
         public override void OnDestroy()

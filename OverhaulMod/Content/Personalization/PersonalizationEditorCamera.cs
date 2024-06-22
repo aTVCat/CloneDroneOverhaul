@@ -4,26 +4,54 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorCamera : MonoBehaviour
     {
-        public RectTransform LeftPanelTransform, ToolBarTransform;
+        public static bool IsControllingTheCamera;
+
+        private UIManager m_uiManager;
+
+        private InputManager m_inputManager;
 
         private Camera m_camera;
 
+        private bool m_wasMouseButtonDownPrevFrame;
+        private bool m_prevValue;
+
         private void Start()
         {
+            m_uiManager = UIManager.Instance;
+            m_inputManager = InputManager.Instance;
             m_camera = base.GetComponent<Camera>();
+            m_inputManager.SetCursorEnabled(true);
+        }
+
+        private void OnDestroy()
+        {
+            IsControllingTheCamera = false;
+        }
+
+        private void Update()
+        {
+            bool newValue = IsControllingTheCamera;
+            if (newValue != m_prevValue)
+            {
+                m_inputManager.SetCursorEnabled(!newValue);
+                m_prevValue = newValue;
+            }
         }
 
         private void LateUpdate()
         {
-            //RefreshCameraRect();
-            if (UIManager.Instance.IsMouseOverUIElement())
-                return;
-
+            bool isMouseOverUIElement = m_uiManager.IsMouseOverUIElement();
             bool control = Input.GetMouseButton(1);
-            Cursor.visible = !control;
-            Cursor.lockState = control ? CursorLockMode.Locked : CursorLockMode.None;
-            if (!control)
+            bool willControl = (control && !m_wasMouseButtonDownPrevFrame && !isMouseOverUIElement) || (m_wasMouseButtonDownPrevFrame && control && IsControllingTheCamera);
+
+            m_wasMouseButtonDownPrevFrame = control;
+
+            if (!willControl)
+            {
+                IsControllingTheCamera = false;
                 return;
+            }
+            IsControllingTheCamera = true;
 
             float deltaTime = Time.deltaTime;
             Vector3 vector = Vector3.zero;
@@ -69,26 +97,6 @@ namespace OverhaulMod.Content.Personalization
 
             base.transform.position += vector * deltaTime;
             base.transform.eulerAngles = new Vector3(newX, newY, 0f);
-        }
-
-        public void RefreshCameraRect()
-        {
-            float width = Screen.width;
-            float height = Screen.height;
-            float minX = 0f;
-
-            if (LeftPanelTransform && ToolBarTransform)
-            {
-                height -= ToolBarTransform.rect.height + 2f;
-                width -= LeftPanelTransform.rect.width + 2f;
-                minX = LeftPanelTransform.rect.width + 2f;
-            }
-
-            Rect rect = m_camera.pixelRect;
-            rect.xMin = minX;
-            rect.height = height;
-            rect.width = width;
-            m_camera.pixelRect = rect;
         }
     }
 }
