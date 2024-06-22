@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -33,14 +34,20 @@ namespace OverhaulMod.UI
         [UIElement("VerifyButton")]
         private readonly Button m_verifyButton;
 
+        [UIElement("ExclusiveForField", typeof(UIElementPersonalizationExclusiveForField))]
+        private readonly UIElementPersonalizationExclusiveForField m_exclusiveForField;
+
         [UIElement("AuthorField", typeof(UIElementPersonalizationAuthorsField))]
         private readonly UIElementPersonalizationAuthorsField m_authorField;
 
         [UIElement("HierarchyGroup", typeof(UIElementPersonalizationEditorHierarchyPanel))]
-        private readonly UIElementPersonalizationEditorHierarchyPanel m_hierarchyField;
+        private readonly UIElementPersonalizationEditorHierarchyPanel m_hierarchyPanel;
 
         [UIElement("ImportedFilesGroup", typeof(UIElementPersonalizationEditorFileImportPanel))]
-        private readonly UIElementPersonalizationEditorFileImportPanel m_filesField;
+        private readonly UIElementPersonalizationEditorFileImportPanel m_filesPanel;
+
+        [UIElement("SpecialInfoGroup", false)]
+        private readonly GameObject m_specialInfoPanel;
 
         private bool m_disallowCallbacks;
 
@@ -70,6 +77,8 @@ namespace OverhaulMod.UI
             m_bodyPartDropdown.RefreshShownValue();
 
             m_typeDropdown.interactable = ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets);
+
+            m_specialInfoPanel.SetActive(PersonalizationEditorManager.Instance.canEditItemSpecialInfo);
         }
 
         public void Populate(PersonalizationItemInfo personalizationItemInfo)
@@ -84,11 +93,12 @@ namespace OverhaulMod.UI
             m_descriptionField.text = personalizationItemInfo.Description;
             m_editorIdField.text = personalizationItemInfo.EditorID;
             m_authorField.referenceList = personalizationItemInfo.Authors;
+            m_exclusiveForField.referenceList = personalizationItemInfo.ExclusiveFor_V2;
             m_typeDropdown.value = (int)personalizationItemInfo.Category - 1;
             m_verifyButton.interactable = !personalizationItemInfo.IsVerified;
             m_itemIdField.text = personalizationItemInfo.ItemID;
-            m_hierarchyField.itemInfo = personalizationItemInfo;
-            m_filesField.itemInfo = personalizationItemInfo;
+            m_hierarchyPanel.itemInfo = personalizationItemInfo;
+            m_filesPanel.itemInfo = personalizationItemInfo;
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -127,6 +137,9 @@ namespace OverhaulMod.UI
             personalizationItemInfo.EditorID = m_editorIdField.text;
             personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.value + 1);
             personalizationItemInfo.IsVerified = !m_verifyButton.interactable;
+            if (personalizationItemInfo.IsVerified && PersonalizationEditorManager.Instance.canVerifyItems)
+                personalizationItemInfo.IsSentForVerification = false;
+
             personalizationItemInfo.ItemID = m_itemIdField.text;
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[m_bodyPartDropdown.value].text;
         }

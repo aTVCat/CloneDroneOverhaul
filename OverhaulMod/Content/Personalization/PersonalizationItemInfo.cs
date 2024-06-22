@@ -17,7 +17,7 @@ namespace OverhaulMod.Content.Personalization
 
         public List<string> Authors;
 
-        public List<string> ExclusiveFor;
+        public List<PersonalizationItemLockInfo> ExclusiveFor_V2;
 
         public PersonalizationCategory Category;
 
@@ -61,8 +61,8 @@ namespace OverhaulMod.Content.Personalization
             if (Authors == null)
                 Authors = new List<string>();
 
-            if (ExclusiveFor == null)
-                ExclusiveFor = new List<string>();
+            if (ExclusiveFor_V2 == null)
+                ExclusiveFor_V2 = new List<PersonalizationItemLockInfo>();
 
             if (RootObject == null)
             {
@@ -108,7 +108,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsExclusive()
         {
-            return ExclusiveFor != null && ExclusiveFor.Count != 0;
+            return ExclusiveFor_V2 != null && ExclusiveFor_V2.Count != 0;
         }
 
         public bool CanBeEdited()
@@ -118,17 +118,24 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsUnlocked(Character character)
         {
-            if (!character || !character.IsAttachedAndAlive())
-                return false;
-
             if (!IsExclusive())
                 return true;
 
-            bool isMainPlayer = character.IsMainPlayer();
-            string playFabId = isMainPlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
-            CSteamID steamId = isMainPlayer ? ModUserInfo.localPlayerSteamID : default;
+            if (!character)
+                return false;
 
-            bool result = (!playFabId.IsNullOrEmpty() && ExclusiveFor.Contains(playFabId)) || (steamId != default && ExclusiveFor.Contains(steamId.ToString()));
+            string playFabId = GameModeManager.IsSinglePlayer() ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+
+            bool result = false;
+            List<PersonalizationItemLockInfo> exclusiveForList = ExclusiveFor_V2;
+            foreach (PersonalizationItemLockInfo lockInfo in exclusiveForList)
+            {
+                if (lockInfo.PlayerPlayFabID == playFabId)
+                {
+                    result = true;
+                    break;
+                }
+            }
 
             return character && (result || character.IsClone() || !character.IsMainPlayer());
         }

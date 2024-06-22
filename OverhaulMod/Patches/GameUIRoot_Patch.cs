@@ -111,8 +111,17 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER))
                     return false;
-                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU))
+
+                UIPersonalizationEditorVerificationMenu personalizationEditorVerificationMenu = modUIManager.Get<UIPersonalizationEditorVerificationMenu>(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU);
+                if (personalizationEditorVerificationMenu && personalizationEditorVerificationMenu.visibleInHierarchy)
+                {
+                    if (!personalizationEditorVerificationMenu.CanExit())
+                        return false;
+
+                    downloadPersonalizationAssetsMenu.Hide();
                     return false;
+                }
+
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_MESSAGE_POPUP_FULL_SCREEN))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN))

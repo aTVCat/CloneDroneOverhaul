@@ -395,7 +395,6 @@ namespace OverhaulMod.UI
                         _ = stringBuilder.Append(", ");
                 }
                 tagsText = stringBuilder.ToString();
-                _ = stringBuilder.Clear();
             }
 
             string postTimeText = $"{workshopItem.PostDate.ToShortDateString()}, {workshopItem.PostDate.ToShortTimeString()}";

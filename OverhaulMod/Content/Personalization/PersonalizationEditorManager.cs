@@ -96,6 +96,14 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public bool canEditItemSpecialInfo
+        {
+            get
+            {
+                return ModUserInfo.isDeveloper;
+            }
+        }
+
         public static bool IsInEditor()
         {
             return GameFlowManager.Instance._gameMode == (GameMode)2500;

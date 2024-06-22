@@ -29,7 +29,6 @@ namespace OverhaulMod.Patches
                 _ = stringBuilder.Append(' ');
                 _ = stringBuilder.Append(stackTrace);
                 string fullString = stringBuilder.ToString();
-                _ = stringBuilder.Clear();
 
                 if (CrashPreventionManager.OnGameCrashed() || fullString.Contains("UpdateMe"))
                     return false;

@@ -369,7 +369,6 @@ namespace OverhaulMod.UI
                     if (item.Weapon != weaponType)
                         continue;
 
-                    bool isUnlocked = item.IsUnlocked();
                     bool isExclusive = item.IsExclusive();
                     bool isVerified = item.IsVerified;
 

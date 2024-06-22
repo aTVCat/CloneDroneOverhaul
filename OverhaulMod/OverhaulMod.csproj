@@ -378,6 +378,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
@@ -558,6 +559,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationExclusiveForField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorDropdown.cs" />
@@ -602,6 +604,7 @@
     <Compile Include="UI\UIAutoBuildMenu.cs" />
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationSettingsMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />

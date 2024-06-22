@@ -100,8 +100,6 @@ namespace OverhaulMod.UI
             string file = ModCore.savesFolder + "LeaderboardExport.txt";
             ModIOUtils.WriteText(stringBuilder.ToString(), file);
             _ = ModIOUtils.OpenFile(file);
-
-            _ = stringBuilder.Clear();
         }
 
         public void OnSavesFolderButtonClicked()

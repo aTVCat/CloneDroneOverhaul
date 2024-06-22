@@ -201,8 +201,7 @@ namespace OverhaulMod.UI
 
         private void refreshButtons()
         {
-            bool customizationSupported = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor();
-            m_customizationButton.interactable = customizationSupported;
+            m_customizationButton.interactable = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor() && CharacterTracker.Instance.GetPlayer();
 
             ArenaCoopManager arenaCoopManager = ArenaCoopManager.Instance;
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
@@ -292,6 +291,9 @@ namespace OverhaulMod.UI
                 {
                     continue;
                 }
+
+                if (playerInfoState.IsDisconnected)
+                    continue;
 
                 ModdedObject playerDisplay = Instantiate(m_playerInfoDisplayPrefab, m_playerInfoDisplayContainer);
                 playerDisplay.gameObject.SetActive(true);

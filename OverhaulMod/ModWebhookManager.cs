@@ -165,7 +165,7 @@ namespace OverhaulMod
         public void ExecuteVerificationRequestWebhook(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
-            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{ModUserInfo.localPlayerSteamID}>)\n- **PlayFab ID:** {ModUserInfo.localPlayerPlayFabID}";
             string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Type:** {personalizationItem.Category}\n- **Description:** {personalizationItem.Description}\n- **Version:** {personalizationItem.Version}";
 
             WebhookObject obj1 = new WebhookObject()
