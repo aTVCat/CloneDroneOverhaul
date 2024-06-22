@@ -103,6 +103,15 @@ namespace OverhaulMod.Content.Personalization
                             infoFileNeedToGetUpdated = true;
                             rawData = rawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions", "OverhaulMod.Engine.WeaponVariant");
                         }
+                        if (personalizationItemMetaData.CustomizationSystemVersion < 2) // removed "Is" from every value name in WeaponVariant enum
+                        {
+                            metaDataFileNeedsToGetUpdated = true;
+                            infoFileNeedToGetUpdated = true;
+                            rawData = rawData.Replace("\"IsNormal\"", "\"Normal\"");
+                            rawData = rawData.Replace("\"IsOnFire\"", "\"OnFire\"");
+                            rawData = rawData.Replace("\"IsNormalMultiplayer\"", "\"NormalMultiplayer\"");
+                            rawData = rawData.Replace("\"IsOnFireMultiplayer\"", "\"OnFireMultiplayer\"");
+                        }
                         personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
 
                         PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);

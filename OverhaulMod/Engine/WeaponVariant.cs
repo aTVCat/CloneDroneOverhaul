@@ -4,10 +4,10 @@
     {
         None,
 
-        IsNormal,
-        IsOnFire,
+        Normal,
+        OnFire,
 
-        IsNormalMultiplayer,
-        IsOnFireMultiplayer
+        NormalMultiplayer,
+        OnFireMultiplayer
     }
 }

@@ -30,11 +30,6 @@ namespace OverhaulMod.UI
 
         public override bool refreshOnlyCursor => true;
 
-        protected override void OnInitialized()
-        {
-            RefreshProgressDisplays();
-        }
-
         public void RefreshProgressDisplays()
         {
             GameData gameData = GameDataManager.Instance?._endlessModeData;
@@ -62,6 +57,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
+            RefreshProgressDisplays();
         }
 
         public override void Hide()

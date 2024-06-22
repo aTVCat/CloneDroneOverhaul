@@ -87,14 +87,14 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant GetUnusedShowCondition()
         {
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormal))
-                return WeaponVariant.IsNormal;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFire))
-                return WeaponVariant.IsOnFire;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormalMultiplayer))
-                return WeaponVariant.IsNormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFireMultiplayer))
-                return WeaponVariant.IsOnFireMultiplayer;
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
+                return WeaponVariant.Normal;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire))
+                return WeaponVariant.OnFire;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer))
+                return WeaponVariant.NormalMultiplayer;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer))
+                return WeaponVariant.OnFireMultiplayer;
 
             return WeaponVariant.None;
         }
@@ -112,14 +112,14 @@ namespace OverhaulMod.Content.Personalization
         public List<Dropdown.OptionData> GetUnusedConditionOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormal))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsNormalMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFire))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.IsOnFireMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer))
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
             return list;
         }
 
@@ -132,6 +132,11 @@ namespace OverhaulMod.Content.Personalization
 
             if (!d.ContainsKey(condition))
             {
+                if(condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
+                    return d[WeaponVariant.OnFire];
+                else if (condition == WeaponVariant.NormalMultiplayer && d.ContainsKey(WeaponVariant.Normal))
+                    return d[WeaponVariant.Normal];
+
                 foreach (VolumeSettingsPreset value in d.Values)
                     return value;
             }

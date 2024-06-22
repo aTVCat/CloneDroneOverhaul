@@ -152,6 +152,9 @@ namespace OverhaulMod.Content.Personalization
                 return null;
 
             Transform transform = GetParentForItem(personalizationItemInfo);
+            if (!transform)
+                return null;
+
             PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, personalizationItemInfo));
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 

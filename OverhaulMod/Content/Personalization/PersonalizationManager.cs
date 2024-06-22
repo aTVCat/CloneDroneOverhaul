@@ -2,6 +2,7 @@
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -383,10 +384,19 @@ namespace OverhaulMod.Content.Personalization
 
             if (item.Category == PersonalizationCategory.WeaponSkins)
             {
-                Character character = CharacterTracker.Instance.GetPlayer();
-                if (character)
+                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                List<FirstPersonMover> clones = CloneManager.Instance._clones;
+
+                List<FirstPersonMover> allPlayers = new List<FirstPersonMover>(clones);
+                if (firstPersonMover)
+                    allPlayers.Add(firstPersonMover);
+
+                foreach (FirstPersonMover clone in allPlayers)
                 {
-                    PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
+                    if (!clone)
+                        continue;
+
+                    PersonalizationController personalizationController = clone.GetComponent<PersonalizationController>();
                     if (personalizationController)
                     {
                         personalizationController.EquipItem(item);

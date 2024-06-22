@@ -91,12 +91,12 @@ namespace OverhaulMod.Engine
             if (autoBuildInfo == null || autoBuildInfo.Upgrades.IsNullOrEmpty())
                 return;
 
+            m_isApplyingBuild = true;
             _ = base.StartCoroutine(applyBuildCoroutine(autoBuildInfo));
         }
 
         private IEnumerator applyBuildCoroutine(AutoBuildInfo autoBuildInfo)
         {
-            m_isApplyingBuild = true;
             string playFabId = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
 
@@ -109,8 +109,9 @@ namespace OverhaulMod.Engine
                 {
                     icon.OnButtonClicked();
 
-                    float timeOut = Time.unscaledTime + 1.5f;
-                    yield return new WaitUntil(() => !icon.GetCanUpgradeRightNow(playFabId) || Time.unscaledTime >= timeOut);
+                    float timeOut = Time.unscaledTime + 2f;
+                    while (icon.GetCanUpgradeRightNow(playFabId) && Time.unscaledTime < timeOut)
+                        yield return null;
                 }
             }
             m_isApplyingBuild = false;

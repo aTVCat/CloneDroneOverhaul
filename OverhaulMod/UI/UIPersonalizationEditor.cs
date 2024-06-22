@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,9 @@ namespace OverhaulMod.UI
 
         [UIElement("Dropdown", typeof(UIElementPersonalizationEditorDropdown), false)]
         public readonly UIElementPersonalizationEditorDropdown Dropdown;
+
+        [UIElement("Notification", typeof(UIElementPersonalizationEditorNotification), false)]
+        public readonly UIElementPersonalizationEditorNotification Notification;
 
         [UIElementAction(nameof(OnFileButtonClicked))]
         [UIElement("FileButton")]
@@ -122,9 +126,14 @@ namespace OverhaulMod.UI
             base.Hide();
         }
 
+        public void ShowNotification(string header, string text, Color baseColor, float duration = 7f)
+        {
+            Notification.ShowNotification(header, text, baseColor, duration);
+        }
+
         public void ShowSaveErrorMessage(string message)
         {
-            ModUIUtils.MessagePopupOK("Item save error", message, 150f, true);
+            ShowNotification("Could not save the item", message, UIElementPersonalizationEditorNotification.ErrorColor, 15f);
         }
 
         public void ShowEverything()
@@ -200,6 +209,8 @@ namespace OverhaulMod.UI
             Dropdown.Hide();
             if (!PersonalizationEditorManager.Instance.SaveItem(out string error))
                 ShowSaveErrorMessage(error);
+            else
+                ShowNotification("Success", $"Saved the item ({PersonalizationEditorManager.Instance.currentEditingItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
         }
 
         public void OnSendToVerificationButtonClicked()

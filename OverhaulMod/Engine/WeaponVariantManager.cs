@@ -26,19 +26,19 @@
             GetWeaponVariant(firstPersonMover, weaponType, out bool of, out bool gs);
             if (!of && !gs)
             {
-                showConditions = WeaponVariant.IsNormal;
+                showConditions = WeaponVariant.Normal;
             }
             else if (of && !gs)
             {
-                showConditions = WeaponVariant.IsOnFire;
+                showConditions = WeaponVariant.OnFire;
             }
             else if (!of && gs)
             {
-                showConditions = WeaponVariant.IsNormalMultiplayer;
+                showConditions = WeaponVariant.NormalMultiplayer;
             }
             else if (of && gs)
             {
-                showConditions = WeaponVariant.IsOnFireMultiplayer;
+                showConditions = WeaponVariant.OnFireMultiplayer;
             }
             else
             {

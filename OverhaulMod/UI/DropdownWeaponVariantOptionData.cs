@@ -11,16 +11,16 @@ namespace OverhaulMod.UI
         {
             switch (value)
             {
-                case WeaponVariant.IsNormal:
+                case WeaponVariant.Normal:
                     text = "Normal";
                     break;
-                case WeaponVariant.IsOnFire:
+                case WeaponVariant.OnFire:
                     text = "Fire";
                     break;
-                case WeaponVariant.IsNormalMultiplayer:
+                case WeaponVariant.NormalMultiplayer:
                     text = "Normal (Multiplayer)";
                     break;
-                case WeaponVariant.IsOnFireMultiplayer:
+                case WeaponVariant.OnFireMultiplayer:
                     text = "Fire (Multiplayer)";
                     break;
                 default:

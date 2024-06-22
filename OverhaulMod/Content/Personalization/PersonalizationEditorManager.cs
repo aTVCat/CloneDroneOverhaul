@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
+using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
@@ -118,7 +119,7 @@ namespace OverhaulMod.Content.Personalization
             m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
-            previewPresetKey = WeaponVariant.IsNormal;
+            previewPresetKey = WeaponVariant.Normal;
 
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
@@ -161,10 +162,10 @@ namespace OverhaulMod.Content.Personalization
 
             list = new List<Dropdown.OptionData>
             {
-                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal),
-                new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire),
-                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer),
-                new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer)
+                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
+                new DropdownWeaponVariantOptionData(WeaponVariant.OnFire),
+                new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer),
+                new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer)
             };
             ModAdvancedCache.Add("DropdownShowConditionOptions", list);
             return list;
@@ -179,18 +180,18 @@ namespace OverhaulMod.Content.Personalization
 
             list = new List<Dropdown.OptionData>
             {
-                new DropdownWeaponVariantOptionData(WeaponVariant.IsNormal),
+                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
             };
 
             if (weaponType == WeaponType.Sword)
             {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsNormalMultiplayer));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFireMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
             }
             else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear)
             {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.IsOnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
             }
 
             ModAdvancedCache.Add(key, list);
@@ -249,6 +250,8 @@ namespace OverhaulMod.Content.Personalization
 
             UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
             SpawnRootObject();
+
+            UIPersonalizationEditor.instance.ShowNotification("Success", $"Loaded the item ({personalizationItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
         }
 
         public bool SaveItem(out string error)
