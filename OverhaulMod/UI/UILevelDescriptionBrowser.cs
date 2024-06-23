@@ -94,8 +94,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            string levelWord = levelLists.Count == 1 ? "level" : "levels";
-            m_levelsLabel.text = $"{levelLists.Count} {levelWord} to pick";
+            m_levelsLabel.text = $"{levelLists.Count} {LocalizationManager.Instance.GetTranslatedString("mmcustomization_text_n_levels_to_pick")}";
 
             foreach (KeyValuePair<string, List<LevelDescription>> keyValue in levelLists)
             {

@@ -92,6 +92,12 @@ namespace OverhaulMod
                 case FeatureType.WinLoseDialogRework:
                     result = true;
                     break;
+                case FeatureType.ShieldSkins:
+                    result = false;
+                    break;
+                case FeatureType.PersonalizationEditorTutorialVideo:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -149,7 +155,11 @@ namespace OverhaulMod
 
             StoryModeModifiers,
 
-            QuickReset
+            QuickReset,
+
+            ShieldSkins,
+
+            PersonalizationEditorTutorialVideo
         }
     }
 }

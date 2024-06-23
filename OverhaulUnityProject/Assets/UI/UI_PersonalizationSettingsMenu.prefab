@@ -355,6 +355,7 @@ GameObject:
   - component: {fileID: 5835182174096531096}
   - component: {fileID: 3459274307865217000}
   - component: {fileID: 3014211761319520732}
+  - component: {fileID: 3588002850719259250}
   m_Layer: 5
   m_Name: Header
   m_TagString: Untagged
@@ -437,6 +438,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &3588002850719259250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738026126498806926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: customization_settings_header
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &3970780638635061716
 GameObject:
   m_ObjectHideFlags: 0

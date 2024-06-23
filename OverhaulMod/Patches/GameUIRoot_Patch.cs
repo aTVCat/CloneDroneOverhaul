@@ -75,6 +75,8 @@ namespace OverhaulMod.Patches
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_SET_KEY_BIND_WINDOW))
                     return false;
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_LEVEL_DESCRIPTION_BROWSER))
+                    return false;
 
                 UIAutoBuildMenu autoBuildMenu = modUIManager.Get<UIAutoBuildMenu>(AssetBundleConstants.UI, ModUIConstants.UI_AUTO_BUILD_MENU);
                 if (autoBuildMenu && autoBuildMenu.visibleInHierarchy)

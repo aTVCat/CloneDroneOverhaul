@@ -198,7 +198,7 @@ namespace OverhaulMod.UI
 
         public void OnInGameUpdateButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("Update the mod in-game?"), LocalizationManager.Instance.GetTranslatedString("ingame_update_desc"), 175f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", LocalizationManager.Instance.GetTranslatedString("update"), LocalizationManager.Instance.GetTranslatedString("cancel"), null, onConfirmedInGameUpdate);
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update the mod in-game?"), LocalizationManager.Instance.GetTranslatedString("ingame_update_desc"), 200f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", LocalizationManager.Instance.GetTranslatedString("update"), LocalizationManager.Instance.GetTranslatedString("cancel"), null, onConfirmedInGameUpdate);
         }
 
         private void onConfirmedInGameUpdate()

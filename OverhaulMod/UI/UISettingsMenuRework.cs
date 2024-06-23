@@ -741,7 +741,10 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, value, true);
             }, "Require RMB holding");
-            _ = pageBuilder.Header4("Require holding right mouse button when controls are hidden");
+            Text rmbHoldHeader4 = pageBuilder.Header4("Require holding right mouse button when controls are hidden");
+            Vector2 rmbHoldHeader4SizeDelta = (rmbHoldHeader4.transform.parent as RectTransform).sizeDelta;
+            rmbHoldHeader4SizeDelta.y += 15f;
+            (rmbHoldHeader4.transform.parent as RectTransform).sizeDelta = rmbHoldHeader4SizeDelta;
 
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.AdvancedSettings))
             {

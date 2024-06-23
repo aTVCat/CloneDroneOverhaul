@@ -423,7 +423,7 @@ namespace OverhaulMod.Content.Personalization
                 "\n\n<color=#FFFFFF><size=14>HOW TO UPLOAD STUFF?</size></color>" +
                 "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
                 "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
-                "\n\n<color=#FFCB23>This editor is still in development, so you can experience some issues while editing!</color>", 400f, true);
+                "\n\n<color=#FFCB23>This editor is still in development, so you can experience issues while editing!</color>", 400f, true);
         }
 
         public void TutorialVideo()

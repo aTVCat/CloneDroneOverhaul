@@ -86,7 +86,12 @@ namespace OverhaulMod
             }
         }
 
-        public static T New<T>() where T : Singleton<T>
+        public static T NewSingleton<T>() where T : Singleton<T>
+        {
+            return Instance.gameObject.AddComponent<T>();
+        }
+
+        public static T NewBoltSingleton<T>() where T : BoltGlobalEventListenerSingleton<T>
         {
             return Instance.gameObject.AddComponent<T>();
         }

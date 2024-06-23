@@ -65,7 +65,8 @@ namespace OverhaulMod.UI
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Bow));
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Hammer));
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Spear));
-            weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
+                weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
             m_weaponDropdown.RefreshShownValue();
 
             List<Dropdown.OptionData> bodyPartList = m_bodyPartDropdown.options;

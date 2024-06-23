@@ -103,12 +103,12 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", ShowItemModerator),
             };
 
-            s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
-                new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", PersonalizationEditorManager.Instance.TutorialVideo),
-                new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage)
             };
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", PersonalizationEditorManager.Instance.TutorialVideo));
+            s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked));
 
             m_toolbarWindowButton.interactable = false;
 

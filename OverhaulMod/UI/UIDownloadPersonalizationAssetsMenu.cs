@@ -53,11 +53,11 @@ namespace OverhaulMod.UI
             PersonalizationManager personalizationManager = m_personalizationManager;
             if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
             {
-                m_header.text = "Download player\r\ncustomization assets";
+                m_header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_install_header");
             }
             else
             {
-                m_header.text = "Update player\r\ncustomization assets";
+                m_header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_update_header");
             }
         }
 

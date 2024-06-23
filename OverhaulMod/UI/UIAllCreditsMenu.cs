@@ -26,19 +26,19 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            AddSection("Made by:", "FFFFFF");
+            AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_author"), "FFFFFF");
             AddUser("A TVCat", "hi", "https://steamcommunity.com/profiles/76561199028311109");
 
-            AddSection("Playtested by:", "FFECD9");
-            AddUser("SonicGleb", "The first playtester", "https://steamcommunity.com/id/sonicgleb");
+            AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_playtested_by"), "FFECD9");
+            AddUser("SonicGleb", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_playtested_by_sonicgleb"), "https://steamcommunity.com/id/sonicgleb");
             AddUser("Electrified_CyberKick", "", "https://steamcommunity.com/id/Lexium-Rosewarne");
             AddUser("ッizanami", "", "https://steamcommunity.com/profiles/76561198258900316");
             AddUser("bow1__", "", "https://steamcommunity.com/id/EggRolly");
 
-            AddSection("Special thanks:", "D9E0FF");
-            AddUser("SonicGleb", "Made some UI icons and voxel models", "https://steamcommunity.com/id/sonicgleb");
-            AddUser("Igrok_x_xp", "Made some voxel models", "https://steamcommunity.com/profiles/76561199014733748");
-            AddUser("Pharawill-MK2 (Water)", "Made overhauled arena model and customization editor level", "https://steamcommunity.com/profiles/76561198995153570");
+            AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_special_thanks"), "D9E0FF");
+            AddUser("SonicGleb", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_sonicgleb"), "https://steamcommunity.com/id/sonicgleb");
+            AddUser("Igrok_x_xp", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_igrok_x_xp"), "https://steamcommunity.com/profiles/76561199014733748");
+            AddUser("Pharawill-MK2 (Water)", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_water"), "https://steamcommunity.com/profiles/76561198995153570");
         }
 
         public void AddUser(string displayName, string description, string steamLink)

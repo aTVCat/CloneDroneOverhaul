@@ -59,55 +59,56 @@ namespace OverhaulMod
 
         private static void addManagers()
         {
-            _ = ModManagers.New<ModSettingsDataManager>();
-            _ = ModManagers.New<ModSettingsManager>();
-            _ = ModManagers.New<ModDataManager>();
-            _ = ModManagers.New<RepositoryManager>();
-            _ = ModManagers.New<ExclusiveContentManager>();
-            _ = ModManagers.New<ModLocalizationManager>();
-            _ = ModManagers.New<ModAudioManager>();
-            _ = ModManagers.New<ModResources>();
-            _ = ModManagers.New<ModUIManager>();
-            _ = ModManagers.New<ModLevelManager>();
-            _ = ModManagers.New<ModWeaponsManager>();
-            _ = ModManagers.New<ModUpgradesManager>();
-            _ = ModManagers.New<ModEnemiesManager>();
-            _ = ModManagers.New<DifficultyTierManager>();
-            _ = ModManagers.New<ModGameModifiersManager>();
-            _ = ModManagers.New<TitleScreenCustomizationManager>();
+            _ = ModManagers.NewSingleton<ModSettingsDataManager>();
+            _ = ModManagers.NewSingleton<ModSettingsManager>();
+            _ = ModManagers.NewSingleton<ModDataManager>();
+            _ = ModManagers.NewSingleton<RepositoryManager>();
+            _ = ModManagers.NewSingleton<ExclusiveContentManager>();
+            _ = ModManagers.NewSingleton<ModLocalizationManager>();
+            _ = ModManagers.NewSingleton<ModAudioManager>();
+            _ = ModManagers.NewSingleton<ModResources>();
+            _ = ModManagers.NewSingleton<ModUIManager>();
+            _ = ModManagers.NewSingleton<ModLevelManager>();
+            _ = ModManagers.NewSingleton<ModWeaponsManager>();
+            _ = ModManagers.NewSingleton<ModUpgradesManager>();
+            _ = ModManagers.NewSingleton<ModEnemiesManager>();
+            _ = ModManagers.NewSingleton<DifficultyTierManager>();
+            _ = ModManagers.NewSingleton<ModGameModifiersManager>();
+            _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
 
-            _ = ModManagers.New<ModWebhookManager>();
-            _ = ModManagers.New<ExclusiveContentManager>();
-            _ = ModManagers.New<ContentManager>();
-            _ = ModManagers.New<UpdateManager>();
-            _ = ModManagers.New<NewsManager>();
-            _ = ModManagers.New<PersonalizationCacheManager>();
-            _ = ModManagers.New<PersonalizationManager>();
-            _ = ModManagers.New<PersonalizationEditorManager>();
-            _ = ModManagers.New<PersonalizationEditorObjectManager>();
-            _ = ModManagers.New<PersonalizationItemVerificationManager>();
-            _ = ModManagers.New<PersonalizationEditorGuideManager>();
+            _ = ModManagers.NewSingleton<ModWebhookManager>();
+            _ = ModManagers.NewSingleton<ExclusiveContentManager>();
+            _ = ModManagers.NewSingleton<ContentManager>();
+            _ = ModManagers.NewSingleton<UpdateManager>();
+            _ = ModManagers.NewSingleton<NewsManager>();
+            _ = ModManagers.NewSingleton<PersonalizationCacheManager>();
+            _ = ModManagers.NewSingleton<PersonalizationManager>();
+            _ = ModManagers.NewSingleton<PersonalizationEditorManager>();
+            _ = ModManagers.NewSingleton<PersonalizationEditorObjectManager>();
+            _ = ModManagers.NewSingleton<PersonalizationItemVerificationManager>();
+            _ = ModManagers.NewSingleton<PersonalizationEditorGuideManager>();
+            _ = ModManagers.NewBoltSingleton<PersonalizationMultiplayerManager>();
 
-            _ = ModManagers.New<WeatherManager>();
-            _ = ModManagers.New<FloatingDustManager>();
-            _ = ModManagers.New<FadingVoxelManager>();
+            _ = ModManagers.NewSingleton<WeatherManager>();
+            _ = ModManagers.NewSingleton<FloatingDustManager>();
+            _ = ModManagers.NewSingleton<FadingVoxelManager>();
 
-            _ = ModManagers.New<ArenaRemodelManager>();
-            _ = ModManagers.New<ArenaAudienceManager>();
-            _ = ModManagers.New<LightningTransitionManager>();
-            _ = ModManagers.New<AdvancedPhotoModeManager>();
-            _ = ModManagers.New<UpgradeModesManager>();
-            _ = ModManagers.New<TransitionManager>();
-            _ = ModManagers.New<CameraManager>();
-            _ = ModManagers.New<RichPresenceManager>();
-            _ = ModManagers.New<PooledPrefabManager>();
-            _ = ModManagers.New<RealisticLightningManager>();
-            _ = ModManagers.New<ParticleManager>();
-            _ = ModManagers.New<PostEffectsManager>();
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.New<QuickResetManager>();
-            _ = ModManagers.New<AutoBuildManager>();
+            _ = ModManagers.NewSingleton<ArenaRemodelManager>();
+            _ = ModManagers.NewSingleton<ArenaAudienceManager>();
+            _ = ModManagers.NewSingleton<LightningTransitionManager>();
+            _ = ModManagers.NewSingleton<AdvancedPhotoModeManager>();
+            _ = ModManagers.NewSingleton<UpgradeModesManager>();
+            _ = ModManagers.NewSingleton<TransitionManager>();
+            _ = ModManagers.NewSingleton<CameraManager>();
+            _ = ModManagers.NewSingleton<RichPresenceManager>();
+            _ = ModManagers.NewSingleton<PooledPrefabManager>();
+            _ = ModManagers.NewSingleton<RealisticLightningManager>();
+            _ = ModManagers.NewSingleton<ParticleManager>();
+            _ = ModManagers.NewSingleton<PostEffectsManager>();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.NewSingleton<QuickResetManager>();
+            _ = ModManagers.NewSingleton<AutoBuildManager>();
 
-            _ = ModManagers.New<ModPhysicsManager>();
+            _ = ModManagers.NewSingleton<ModPhysicsManager>();
         }
 
         private static void loadAssemblies()

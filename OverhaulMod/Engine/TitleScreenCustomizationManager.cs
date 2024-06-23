@@ -132,6 +132,30 @@ namespace OverhaulMod.Engine
         {
             List<Dropdown.OptionData> list = DropdownStringOptionData.GetOptionsData(AudioLibrary.Instance.GetMusicClipNames());
             list[0].text = "None";
+            foreach (Dropdown.OptionData od in list)
+            {
+                od.text = StringUtils.AddSpacesToCamelCasedString(od.text);
+                if (od.text.Contains("_"))
+                    od.text = od.text.Replace("_", string.Empty);
+                if (od.text.Contains("C5"))
+                    od.text = od.text.Replace("C5", "Chapter 5");
+                if (od.text.Contains("Chapter5"))
+                    od.text = od.text.Replace("Chapter5", "Chapter 5");
+                if (od.text.Contains("Chapter4"))
+                    od.text = od.text.Replace("Chapter4", "Chapter 4");
+                if (od.text.Contains("Chapter3"))
+                    od.text = od.text.Replace("Chapter3", "Chapter 3");
+                if (od.text.Contains("Chapter2"))
+                    od.text = od.text.Replace("Chapter2", "Chapter 2");
+                if (od.text.Contains("Ghost"))
+                    od.text = od.text.Replace("Ghost", "Emilia");
+                if (od.text.Contains("Spidertron7000"))
+                    od.text = od.text.Replace("Spidertron7000", "Spidertron 7000");
+                if (od.text.Contains(" Music"))
+                    od.text = od.text.Replace(" Music", string.Empty);
+                if (od.text.Contains("Photo Clip"))
+                    od.text = od.text.Replace("Photo Clip", "Photo Mode");
+            }
             return list;
         }
 

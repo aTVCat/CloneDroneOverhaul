@@ -251,7 +251,9 @@ namespace OverhaulMod.UI
                 m_subcategoryTabs.AddTab("Bow");
                 m_subcategoryTabs.AddTab("Hammer");
                 m_subcategoryTabs.AddTab("Spear");
-                m_subcategoryTabs.AddTab("Shield");
+
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
+                    m_subcategoryTabs.AddTab("Shield");
 
                 m_subcategoryTabs.SelectTab("Sword");
             }
@@ -371,13 +373,27 @@ namespace OverhaulMod.UI
 
                     bool isExclusive = item.IsExclusive();
                     bool isVerified = item.IsVerified;
+                    bool noSpecificAuthor = false;
 
                     string authorsString = item.GetAuthorsString();
                     string prefix;
                     if (authorsString == "vanilla")
+                    {
+                        noSpecificAuthor = true;
                         prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
+                    }
                     else
                         prefix = $"{LocalizationManager.Instance.GetTranslatedString("customization_author")} ";
+
+                    string authorsStringToDisplay;
+                    if (noSpecificAuthor)
+                    {
+                        authorsStringToDisplay = prefix;
+                    }
+                    else
+                    {
+                        authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
+                    }
 
                     Color textColor;
                     Color textOutlineColor;
@@ -421,7 +437,7 @@ namespace OverhaulMod.UI
                     Image glowImage = moddedObject.GetObject<Image>(2);
                     glowImage.color = glowColor;
 
-                    moddedObject.GetObject<Text>(1).text = $"{prefix}{authorsString}";
+                    moddedObject.GetObject<Text>(1).text = authorsStringToDisplay;
 
                     UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
                     personalizationItemDisplay.ItemInfo = item;

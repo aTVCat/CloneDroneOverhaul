@@ -1,5 +1,4 @@
-﻿//#define MODBOT_RELEASE
-//#define GITHUB_RELEASE
+﻿//#define PUBLIC_RELEASE
 
 using OverhaulMod.Utils;
 using System;
@@ -83,20 +82,7 @@ namespace OverhaulMod
             {
                 if (s_fullVersionString == null)
                 {
-                    string buildRelease = "internal";
-                    if (gitHubRelease && modBotRelease)
-                    {
-                        buildRelease = "github-modbot";
-                    }
-                    else if (gitHubRelease)
-                    {
-                        buildRelease = "github";
-                    }
-                    else if (modBotRelease)
-                    {
-                        buildRelease = "modbot";
-                    }
-
+                    string buildRelease = internalRelease ? "internal" : "public";
                     if (extraInfo != null && !extraInfoError)
                     {
                         string date = extraInfo.CompileTime.ToShortDateString();
@@ -123,35 +109,16 @@ namespace OverhaulMod
             }
         }
 
-        public static bool modBotRelease
-        {
-            get
-            {
-#if MODBOT_RELEASE
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
-
-        public static bool gitHubRelease
-        {
-            get
-            {
-#if GITHUB_RELEASE
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
 
         public static bool internalRelease
         {
             get
             {
-                return !modBotRelease && !gitHubRelease;
+#if PUBLIC_RELEASE
+                return false;
+#else
+                return true;
+#endif
             }
         }
 

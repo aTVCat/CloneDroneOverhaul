@@ -61,17 +61,17 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            AddKeyValueDisplay("Mod version", ModBuildInfo.version.ToString());
+            AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_mod_version"), ModBuildInfo.version.ToString(), false);
             if (!ModBuildInfo.extraInfoError)
             {
-                AddKeyValueDisplay("Compilation date", ModBuildInfo.extraInfo.CompileTime.ToShortDateString());
+                AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_compilation_date"), ModBuildInfo.extraInfo.CompileTime.ToShortDateString(), false);
             }
-            AddKeyValueDisplay("Milestone", ModBuildInfo.milestone);
-            AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
-            AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
-            AddKeyValueDisplay("Is internal release?", ModBuildInfo.internalRelease.ToString());
-            AddKeyValueDisplay("Has V5 features?", ModBuildInfo.enableV5.ToString());
-            AddKeyValueDisplay("Debug mode?", ModBuildInfo.debug.ToString());
+            AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_milestone"), ModBuildInfo.milestone, false);
+            //AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
+            //AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
+            AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_is_internal_release"), ModBuildInfo.internalRelease.ToString());
+            //AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_has_v0.5_features"), ModBuildInfo.enableV5.ToString());
+            AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_debug_mode"), ModBuildInfo.debug.ToString());
         }
 
         public override void Show()
@@ -84,12 +84,12 @@ namespace OverhaulMod.UI
             base.Hide();
         }
 
-        public void AddKeyValueDisplay(string key, string value)
+        public void AddKeyValueDisplay(string key, string value, bool translateValue = true)
         {
             ModdedObject moddedObject = Instantiate(m_keyValuePrefab, m_content);
             moddedObject.gameObject.SetActive(true);
-            moddedObject.GetObject<Text>(0).text = key + ":";
-            moddedObject.GetObject<Text>(1).text = value;
+            moddedObject.GetObject<Text>(0).text = key;
+            moddedObject.GetObject<Text>(1).text = translateValue ? LocalizationManager.Instance.GetTranslatedString(value.ToLower()) : value;
             moddedObject.GetObject<GameObject>(2).SetActive(m_keyValueCount % 2 == 0);
             m_keyValueCount++;
         }
