@@ -79,7 +79,7 @@ namespace OverhaulMod.UI
                     return;
 
                 string fn = Path.GetFileName(path);
-                string dest = PersonalizationItemInfo.GetImportedFilesFolder(item) + fn;
+                string dest = Path.Combine(PersonalizationItemInfo.GetImportedFilesFolder(item), fn);
                 if (File.Exists(dest))
                 {
                     ModUIUtils.MessagePopup(true, "File with the same name is already imported!", "Replace the file?", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Replace", "No", null, delegate

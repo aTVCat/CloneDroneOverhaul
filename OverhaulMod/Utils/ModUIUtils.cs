@@ -18,7 +18,7 @@ namespace OverhaulMod.Utils
         {
             UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
 
-            if (!Directory.Exists(initialFolder))
+            if (initialFolder.IsNullOrEmpty() || !Directory.Exists(initialFolder))
                 fileExplorer.OnDownloadsFolderButtonClicked();
             else
                 fileExplorer.currentFolder = initialFolder;

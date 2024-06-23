@@ -1,6 +1,9 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +27,7 @@ namespace OverhaulMod.UI
         [UIElement("CreateNewButton")]
         private readonly Button m_createNewButton;
 
-        [UIElementAction(nameof(OnFolderButtonClicked))]
+        [UIElementAction(nameof(OnImportButtonClicked))]
         [UIElement("ImportButton")]
         private readonly Button m_importButton;
 
@@ -48,14 +51,28 @@ namespace OverhaulMod.UI
         [UIElement("SearchBox")]
         private readonly InputField m_searchBox;
 
+        [UIElement("ExportVersionField")]
+        private readonly InputField m_exportVersionField;
+
+        [UIElementAction(nameof(OnExportAllButtonClicked))]
+        [UIElement("ExportAllButton")]
+        private readonly Button m_exportAllButton;
+
         private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
 
         protected override void OnInitialized()
         {
+            bool isDev = ModUserInfo.isDeveloper;
+
             m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
             m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
-            m_usePersistentDirectoryToggle.gameObject.SetActive(ModUserInfo.isDeveloper);
+            m_usePersistentDirectoryToggle.gameObject.SetActive(isDev);
             m_usePersistentDirectoryToggle.isOn = true;
+            m_importButton.gameObject.SetActive(isDev);
+            m_exportAllButton.gameObject.SetActive(isDev);
+            m_exportVersionField.gameObject.SetActive(isDev);
+            if (isDev)
+                m_exportVersionField.text = PersonalizationManager.Instance.localAssetsInfo.AssetsVersion.ToString();
         }
 
         public override void Show()
@@ -135,7 +152,7 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(ModCore.customizationFolder);
+            _ = ModIOUtils.OpenFileExplorer(m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
         }
 
         public void OnCreateNewButtonClicked()
@@ -171,6 +188,47 @@ namespace OverhaulMod.UI
                     keyValue.Value.SetActive(keyValue.Key.ToLower().Contains(lowerText));
                 }
             }
+        }
+
+        public void OnImportButtonClicked()
+        {
+            ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
+            {
+                ModUIUtils.InputFieldWindow("Enter folder name", "bla bla", 125f, delegate (string value)
+                {
+                    string folderName = value.Replace(" ", string.Empty);
+                    string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
+                    Directory.CreateDirectory(folderPath);
+
+                    FastZip fastZip = new FastZip();
+                    fastZip.ExtractZip(path, folderPath, null);
+
+                    PersonalizationManager.Instance.itemList.Load();
+                    Populate();
+                });
+
+            }, null, "*.zip");
+        }
+
+        public void OnExportAllButtonClicked()
+        {
+            if (!Version.TryParse(m_exportVersionField.text, out Version version))
+            {
+                ModUIUtils.MessagePopupOK("Error", "Could not parse text from version input field");
+                return;
+            }
+
+            FastZip fastZip = new FastZip();
+            fastZip.CreateZip(Path.Combine(ModCore.savesFolder, "customization.zip"), ModCore.customizationFolder, true, string.Empty);
+
+            PersonalizationAssetsInfo personalizationAssetsInfo = new PersonalizationAssetsInfo
+            {
+                AssetsVersion = version
+            };
+            _ = PersonalizationManager.Instance.SetLocalAssetsVersion(version);
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, PersonalizationManager.ASSETS_VERSION_FILE), personalizationAssetsInfo);
+
+            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
         }
     }
 }

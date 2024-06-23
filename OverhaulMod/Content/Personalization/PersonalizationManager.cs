@@ -288,28 +288,28 @@ namespace OverhaulMod.Content.Personalization
             return m_webRequest != null;
         }
 
-        public void SetLocalAssetsVersion(string versionString, Action<bool> callback)
+        public bool SetLocalAssetsVersion(string versionString)
         {
-            if (System.Version.TryParse(versionString, out System.Version version))
-            {
-                PersonalizationAssetsInfo personalizationAssetsInfo = localAssetsInfo;
-                if (personalizationAssetsInfo == null)
-                {
-                    personalizationAssetsInfo = new PersonalizationAssetsInfo
-                    {
-                        AssetsVersion = version
-                    };
-                    personalizationAssetsInfo.FixValues();
-                    localAssetsInfo = personalizationAssetsInfo;
-                }
-                ModJsonUtils.WriteStream(assetsVersionFile, personalizationAssetsInfo);
+            if (!System.Version.TryParse(versionString, out System.Version version))
+                return false;
 
-                callback?.Invoke(true);
-            }
-            else
+            return SetLocalAssetsVersion(version);
+        }
+
+        public bool SetLocalAssetsVersion(System.Version version)
+        {
+            PersonalizationAssetsInfo personalizationAssetsInfo = localAssetsInfo;
+            if (personalizationAssetsInfo == null)
             {
-                callback?.Invoke(false);
+                personalizationAssetsInfo = new PersonalizationAssetsInfo
+                {
+                    AssetsVersion = version
+                };
+                personalizationAssetsInfo.FixValues();
+                localAssetsInfo = personalizationAssetsInfo;
             }
+            ModJsonUtils.WriteStream(assetsVersionFile, personalizationAssetsInfo);
+            return true;
         }
 
         public System.Version GetLocalAssetsVersion()
