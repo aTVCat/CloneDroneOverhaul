@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -62,6 +63,10 @@ namespace PicaVoxel
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
 
+            bool isDebug = ModBuildInfo.debug;
+            if (isDebug)
+                Debug.Log($"\"{magic.ToLower()}\"");
+
             if (magic.ToLower() == "vox ")
             {
                 int sizex = 0, sizey = 0, sizez = 0;
@@ -72,13 +77,17 @@ namespace PicaVoxel
                     char[] chunkId = stream.ReadChars(4);
                     int chunkSize = stream.ReadInt32();
                     _ = stream.ReadInt32();
-                    string chunkName = new string(chunkId);
+                    string chunkName = new string(chunkId).ToLower();
 
-                    if (chunkName == "PACK")
+                    /*
+                    if (isDebug)
+                        Debug.Log($"\"{chunkName}, {chunkSize}\"");*/
+
+                    if (chunkName == "pack")
                     {
                         _ = stream.ReadInt32();
                     }
-                    else if (chunkName == "SIZE")
+                    else if (chunkName == "size")
                     {
                         sizex = stream.ReadInt32();
                         sizez = stream.ReadInt32();
@@ -86,7 +95,7 @@ namespace PicaVoxel
 
                         _ = stream.ReadBytes(chunkSize - (4 * 3));
                     }
-                    else if (chunkName == "XYZI")
+                    else if (chunkName == "xyzi")
                     {
                         int numVoxels = stream.ReadInt32();
 
@@ -96,7 +105,7 @@ namespace PicaVoxel
 
                         frames.Add(voxelData);
                     }
-                    else if (chunkName == "RGBA")
+                    else if (chunkName == "rgba")
                     {
                         for (int i = 0; i < 256; i++)
                         {

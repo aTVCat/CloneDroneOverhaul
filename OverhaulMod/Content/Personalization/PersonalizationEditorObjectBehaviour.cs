@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MoonSharp.Interpreter.Interop.StandardDescriptors.HardwiredDescriptors;
+using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -74,13 +76,9 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public PersonalizationItemInfo ItemInfo;
-
         private void Awake()
         {
             m_children = new List<PersonalizationEditorObjectBehaviour>();
-            if (PersonalizationEditorManager.IsInEditor())
-                PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(this);
         }
 
         private void OnDestroy()
@@ -90,6 +88,9 @@ namespace OverhaulMod.Content.Personalization
 
         public T GetPropertyValue<T>(string name, T defaultValue)
         {
+            if (PropertyValues.IsNullOrEmpty())
+                return defaultValue;
+
             if (!PropertyValues.TryGetValue(name, out object obj))
                 return defaultValue;
 
@@ -104,6 +105,9 @@ namespace OverhaulMod.Content.Personalization
 
         public void SetPropertyValue(string name, object value)
         {
+            if (PropertyValues == null)
+                return;
+
             if (!PropertyValues.ContainsKey(name))
             {
                 PropertyValues.Add(name, value);

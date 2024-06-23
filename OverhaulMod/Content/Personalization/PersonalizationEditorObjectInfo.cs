@@ -78,12 +78,14 @@ namespace OverhaulMod.Content.Personalization
             behaviour.IsRoot = IsRoot;
             behaviour.UniqueIndex = UniqueIndex;
             behaviour.ControllerInfo = personalizationControllerInfo;
+            behaviour.Name = Name;
+            behaviour.PropertyValues = PropertyValues;
+            if (PersonalizationEditorManager.IsInEditor())
+                PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(behaviour);
             Transform transform = behaviour.transform;
             transform.localPosition = GetPosition();
             transform.localEulerAngles = GetEulerAngles();
             transform.localScale = GetScale();
-            behaviour.Name = Name;
-            behaviour.PropertyValues = PropertyValues;
             if (!Children.IsNullOrEmpty())
             {
                 foreach (PersonalizationEditorObjectInfo info in Children)

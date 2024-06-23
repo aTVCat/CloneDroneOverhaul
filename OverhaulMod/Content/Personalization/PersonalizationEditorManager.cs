@@ -397,6 +397,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             personalizationController.DestroyAllItems();
+            personalizationController.RefreshWeaponRenderers();
             currentEditingRoot = personalizationController.SpawnItem(currentEditingItemInfo);
             PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
         }

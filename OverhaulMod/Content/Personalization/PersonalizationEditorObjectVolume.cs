@@ -13,6 +13,8 @@ namespace OverhaulMod.Content.Personalization
     {
         private bool m_hasAddedEventListeners;
 
+        private static readonly Dictionary<WeaponVariant, VolumeSettingsPreset> s_emptySettingsDictionary = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
+
         private PersonalizationEditorObjectVisibilityController m_visibilityController;
         public PersonalizationEditorObjectVisibilityController visibilityController
         {
@@ -45,7 +47,7 @@ namespace OverhaulMod.Content.Personalization
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), s_emptySettingsDictionary);
             }
             set
             {
@@ -54,8 +56,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        private bool m_hasStarted;
+
         private void Start()
         {
+            m_hasStarted = true;
+
             if (volumeSettingPresets == null)
                 volumeSettingPresets = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
             else
@@ -87,13 +93,14 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant GetUnusedShowCondition()
         {
+            WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
             if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
                 return WeaponVariant.Normal;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire))
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire) && weaponType != WeaponType.Bow)
                 return WeaponVariant.OnFire;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer))
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant.NormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer))
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant.OnFireMultiplayer;
 
             return WeaponVariant.None;
@@ -145,6 +152,9 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshVolume()
         {
+            if (!m_hasStarted)
+                return;
+
             VolumeSettingsPreset preset = GetCurrentPreset();
 
             Volume volumeComponent = volume;
@@ -173,6 +183,9 @@ namespace OverhaulMod.Content.Personalization
                     voxFilePath = string.Empty;
 
                 string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, voxFilePath);
+                if (ModBuildInfo.debug)
+                    Debug.Log($"{voxFilePath} (Exists? {File.Exists(path)})");
+
                 if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);

@@ -31,7 +31,6 @@ namespace OverhaulMod.Patches
 
             if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()))
             {
-                Debug.Log("Overhaul mod enabled the cursor");
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;
             }

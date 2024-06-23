@@ -133,7 +133,7 @@ namespace OverhaulMod.Content.Personalization
             if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(weaponType, out Transform[] parts))
             {
                 foreach (Transform transform in parts)
-                    if (transform)
+                    if (transform && !(weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower")))
                         transform.gameObject.SetActive(value);
             }
         }
@@ -217,7 +217,7 @@ namespace OverhaulMod.Content.Personalization
             return null;
         }
 
-        private void getWeaponRenderers()
+        public void RefreshWeaponRenderers()
         {
             m_weaponTypeToParts.Clear();
             CharacterModel characterModel = ownerModel;
@@ -245,8 +245,11 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnEquippedSkins()
         {
+            if (PersonalizationEditorManager.IsInEditor())
+                return;
+
             DestroyAllItems();
-            getWeaponRenderers();
+            RefreshWeaponRenderers();
 
             if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
                 return;
@@ -273,7 +276,7 @@ namespace OverhaulMod.Content.Personalization
             }
             else
             {
-                getWeaponRenderers();
+                RefreshWeaponRenderers();
 
                 List<PersonalizationItemInfo> skinsToRespawn = null;
                 foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in d)

@@ -83,6 +83,19 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_examplesFolder;
+        public static string examplesFolder
+        {
+            get
+            {
+                if (s_examplesFolder == null)
+                {
+                    s_examplesFolder = $"{Path.Combine(folder, "examples")}/";
+                }
+                return s_examplesFolder;
+            }
+        }
+
         private static string s_dataFolder;
         public static string dataFolder
         {
