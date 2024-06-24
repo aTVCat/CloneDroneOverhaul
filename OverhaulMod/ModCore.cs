@@ -249,6 +249,11 @@ namespace OverhaulMod
             ModLoader.Unload();
         }
 
+        public override void OnClientConnectedToServer()
+        {
+            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
+        }
+
         public override UnityEngine.Object OnResourcesLoad(string path)
         {
             return LevelEditorPatch.Patch.GetResourceObject(path);

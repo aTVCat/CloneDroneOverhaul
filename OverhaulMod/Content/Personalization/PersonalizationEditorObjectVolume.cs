@@ -2,6 +2,7 @@
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using PicaVoxel;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace OverhaulMod.Content.Personalization
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), s_emptySettingsDictionary);
+                return ob.GetPropertyValue(nameof(volumeSettingPresets), s_emptySettingsDictionary);
             }
             set
             {
@@ -151,6 +152,20 @@ namespace OverhaulMod.Content.Personalization
         }
 
         public void RefreshVolume()
+        {
+            refreshVolumeCoroutine().Run();
+        }
+
+        private IEnumerator refreshVolumeCoroutine()
+        {
+            while(!objectBehaviour || objectBehaviour.ControllerInfo == null)
+                yield return null;
+
+            refreshVolume();
+            yield break;
+        }
+
+        private void refreshVolume()
         {
             if (!m_hasStarted)
                 return;

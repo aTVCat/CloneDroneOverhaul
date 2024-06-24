@@ -69,7 +69,7 @@ namespace OverhaulMod
             {
                 if (s_versionString == null)
                 {
-                    s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                    s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}-rc1";
                 }
                 return s_versionString;
             }

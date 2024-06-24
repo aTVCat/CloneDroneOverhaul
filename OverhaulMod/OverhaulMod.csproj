@@ -382,6 +382,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Engine;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -65,6 +66,11 @@ namespace OverhaulMod.Content.Personalization
 
         public void GetWeaponVariant(out WeaponVariant showConditions)
         {
+            Debug.Log($"OB: {objectBehaviour}");
+            Debug.Log($"CI: {objectBehaviour.ControllerInfo != null}");
+            Debug.Log($"Ref: {objectBehaviour.ControllerInfo.Reference}");
+            Debug.Log($"Own: {objectBehaviour.ControllerInfo.Reference.owner}");
+            Debug.Log($"Itm: {objectBehaviour.ControllerInfo.ItemInfo != null}");
             WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
         }
 
