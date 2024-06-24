@@ -143,8 +143,20 @@ namespace OverhaulMod.Content.Personalization
 
                 WeaponType weaponType = owner.GetEquippedWeaponType();
                 string skin = GetWeaponSkinDependingOnOwner(weaponType);
+                bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
-                SetWeaponPartsVisible(weaponType, skin.IsNullOrEmpty() || skin == "_");
+                bool hasSpawnedSkinForWeapon = false;
+                foreach (var key in m_spawnedItems.Keys)
+                    if (key.Weapon == weaponType)
+                        hasSpawnedSkinForWeapon = true;
+
+                if (!m_isMainPlayer && !noSkin && !hasSpawnedSkinForWeapon)
+                {
+                    //Debug.Log("Spawned an item because we didnt earlier");
+                    SpawnItem(skin);
+                }
+
+                SetWeaponPartsVisible(weaponType, noSkin || !hasSpawnedSkinForWeapon);
             }
         }
 
