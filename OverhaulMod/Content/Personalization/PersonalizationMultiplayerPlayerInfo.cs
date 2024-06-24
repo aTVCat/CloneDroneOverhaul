@@ -53,19 +53,19 @@ namespace OverhaulMod.Content.Personalization
                         SteamID = split[i];
                         break;
                     case 3:
-                        SwordSkin = split[i].Replace("-", string.Empty);
+                        SwordSkin = split[i];
                         break;
                     case 4:
-                        BowSkin = split[i].Replace("-", string.Empty);
+                        BowSkin = split[i];
                         break;
                     case 5:
-                        HammerSkin = split[i].Replace("-", string.Empty);
+                        HammerSkin = split[i];
                         break;
                     case 6:
-                        SpearSkin = split[i].Replace("-", string.Empty);
+                        SpearSkin = split[i];
                         break;
                     case 7:
-                        ShieldSkin = split[i].Replace("-", string.Empty);
+                        ShieldSkin = split[i];
                         break;
                 }
             }

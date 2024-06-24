@@ -117,7 +117,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_hasAddedEventListeners)
             {
                 m_hasAddedEventListeners = false;
-                GlobalEventManager.Instance.RemoveEventListener(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, SpawnEquippedSkinsNextFrame);
+                GlobalEventManager.Instance.RemoveEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             }
         }
 
@@ -127,6 +127,14 @@ namespace OverhaulMod.Content.Personalization
             {
                 m_spawnSkinsNextFrame = false;
                 SpawnEquippedSkins();
+            }
+        }
+
+        private void onPlayerInfoUpdated(string playFabId)
+        {
+            if(playFabId == owner.GetPlayFabID())
+            {
+                SpawnEquippedSkinsNextFrame();
             }
         }
 
@@ -163,7 +171,7 @@ namespace OverhaulMod.Content.Personalization
             }
 
             m_hasInitialized = true;
-            GlobalEventManager.Instance.AddEventListener(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, SpawnEquippedSkinsNextFrame);
+            GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             m_hasAddedEventListeners = true;
             SpawnEquippedSkins();
             yield break;
@@ -397,11 +405,14 @@ namespace OverhaulMod.Content.Personalization
 
         public string GetWeaponSkinDependingOnOwner(WeaponType weaponType)
         {
+            if (!m_hasInitialized)
+                return null;
+
             if (m_isEnemy || (m_isPlayer && !m_isMultiplayer))
                 return GetWeaponSkin(weaponType);
             else if (m_isMultiplayer)
             {
-                PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = PersonalizationMultiplayerManager.Instance.GetPlayInfo(owner.GetPlayFabID());
+                PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = playerInfo;
                 if (multiplayerPlayerInfo == null)
                     return string.Empty;
 

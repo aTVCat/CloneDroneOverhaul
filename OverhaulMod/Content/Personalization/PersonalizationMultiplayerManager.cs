@@ -123,8 +123,8 @@ namespace OverhaulMod.Content.Personalization
 
         private string normalizeId(string id)
         {
-            if (id.IsNullOrEmpty())
-                id = "-";
+            if (id == null)
+                id = string.Empty;
 
             return id;
         }

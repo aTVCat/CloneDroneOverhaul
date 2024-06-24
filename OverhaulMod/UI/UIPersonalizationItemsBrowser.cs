@@ -195,6 +195,8 @@ namespace OverhaulMod.UI
 
             PersonalizationManager.Instance.userInfo.SaveIfDirty();
             ModSettingsDataManager.Instance.Save();
+
+            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
         public bool IsMouseOverPanel()

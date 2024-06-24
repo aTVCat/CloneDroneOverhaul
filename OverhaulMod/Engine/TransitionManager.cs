@@ -72,7 +72,6 @@ namespace OverhaulMod.Engine
             {
                 sceneTransitionManager._isDisconnecting = true;
                 SceneTransitionManager.LastDisconnectHadBoltRunning = true;
-                Debug.Log("SceneTransitionManager Shutting down!!");
                 bool flag = false;
                 object obj = SceneTransitionManager.mutex;
                 lock (obj)
@@ -95,13 +94,11 @@ namespace OverhaulMod.Engine
                 catch (Exception arg)
                 {
                     sceneTransitionManager._isDisconnecting = false;
-                    Debug.Log(string.Format("[SceneTransitionManager BoltLauncher.Shutdown error] {0}", arg).AddColor(Color.red));
                     SceneManager.LoadScene("Gameplay");
                     yield break;
                 }
             }
             sceneTransitionManager._isDisconnecting = false;
-            Debug.Log(string.Format("[SceneTransitionManager] {0}", BoltNetwork.IsConnected).AddColor(Color.red));
             SceneManager.LoadScene("Gameplay");
             yield break;
         }

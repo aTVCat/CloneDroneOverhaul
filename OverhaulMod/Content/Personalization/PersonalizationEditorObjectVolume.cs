@@ -57,7 +57,9 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private bool m_hasStarted;
+        private bool m_hasStarted, m_isDestroyed;
+
+        private bool m_aboutToRefreshVolume;
 
         private void Start()
         {
@@ -85,6 +87,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void OnDestroy()
         {
+            m_isDestroyed = true;
             if (m_hasAddedEventListeners)
             {
                 m_hasAddedEventListeners = false;
@@ -153,14 +156,23 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshVolume()
         {
+            if (m_aboutToRefreshVolume || m_isDestroyed)
+                return;
+
+            m_aboutToRefreshVolume = true;
             refreshVolumeCoroutine().Run();
         }
 
-        private IEnumerator refreshVolumeCoroutine()
+        private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while(!objectBehaviour || objectBehaviour.ControllerInfo == null)
+            while(!m_isDestroyed && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
                 yield return null;
 
+            if (m_isDestroyed)
+                yield break;
+
+            Debug.Log($"refreshed volume {objectBehaviour.ControllerInfo.ItemInfo.Weapon}");
+            m_aboutToRefreshVolume = false;
             refreshVolume();
             yield break;
         }

@@ -510,7 +510,6 @@ namespace OverhaulMod.UI
 
         private void onGotItem(WorkshopItem workshopItem)
         {
-            Debug.Log($"Got item. Author ID: {workshopItem.AuthorID}, Item ID: {workshopItem.ItemID}");
             if (!ModSteamUGCUtils.GetWorkshopItems(workshopItem.Children, onGotItems, onError, null))
             {
                 onError("Internal error.");

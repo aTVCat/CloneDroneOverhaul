@@ -96,8 +96,6 @@ namespace OverhaulMod.Content
         {
             if (!m_disposed)
             {
-                Debug.Log("Disposed WorkshopItem");
-
                 if (AdditionalPreviews != null)
                     AdditionalPreviews.Clear();
 
