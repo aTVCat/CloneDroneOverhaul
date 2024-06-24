@@ -178,17 +178,15 @@ namespace OverhaulMod.Content.Personalization
             return list;
         }
 
-        public List<Dropdown.OptionData> GetConditionOptionsDependingOnEditingWeapon()
+        public List<Dropdown.OptionData> GetConditionOptionsDependingOnEditingWeapon(bool includeNone = false)
         {
             WeaponType weaponType = currentEditingItemInfo.Weapon;
-            string key = $"DropdownShowConditionOptions_{weaponType}";
-            if (ModAdvancedCache.TryGet(key, out List<Dropdown.OptionData> list))
-                return list;
 
-            list = new List<Dropdown.OptionData>
-            {
-                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
-            };
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            if (includeNone)
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.None));
+
+            list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
 
             if (weaponType == WeaponType.Sword)
             {
@@ -201,7 +199,6 @@ namespace OverhaulMod.Content.Personalization
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
             }
 
-            ModAdvancedCache.Add(key, list);
             return list;
         }
 

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +55,8 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                if (!m_hasInitialized || !m_isMultiplayer || !m_isPlayer)
+                FirstPersonMover firstPersonMover = owner;
+                if (!firstPersonMover || !firstPersonMover.IsAlive() || !m_hasInitialized || !m_isMultiplayer || !m_isPlayer)
                     return null;
 
                 if(m_playerInfo == null)
@@ -75,11 +77,13 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_isEnemy;
 
-        private bool m_isPlayer;
+        private bool m_isPlayer, m_isMainPlayer;
 
         private bool m_isMultiplayer;
 
         private bool m_hasStarted, m_hasInitialized, m_hasAddedEventListeners;
+
+        private float m_timeLeftToRefreshWeaponParts;
 
         private void Awake()
         {
@@ -128,6 +132,17 @@ namespace OverhaulMod.Content.Personalization
                 m_spawnSkinsNextFrame = false;
                 SpawnEquippedSkins();
             }
+
+            m_timeLeftToRefreshWeaponParts -= Time.unscaledDeltaTime;
+            if(m_timeLeftToRefreshWeaponParts <= 0f)
+            {
+                m_timeLeftToRefreshWeaponParts = 0.5f;
+
+                WeaponType weaponType = owner.GetEquippedWeaponType();
+                string skin = GetWeaponSkinDependingOnOwner(weaponType);
+
+                SetWeaponPartsVisible(weaponType, skin.IsNullOrEmpty() || skin == "_");
+            }
         }
 
         private void onPlayerInfoUpdated(string playFabId)
@@ -161,6 +176,11 @@ namespace OverhaulMod.Content.Personalization
                 {
                     m_isEnemy = false;
                     m_isPlayer = true;
+                    m_isMainPlayer = firstPersonMover.IsMainPlayer();
+
+                    float timeOut = Time.time + 1f;
+                    while (Time.time < timeOut && firstPersonMover.GetPlayFabID().IsNullOrEmpty())
+                        yield return null;
                 }
             }
             else
@@ -168,12 +188,13 @@ namespace OverhaulMod.Content.Personalization
                 m_isMultiplayer = false;
                 m_isEnemy = !firstPersonMover.IsMainPlayer();
                 m_isPlayer = !m_isEnemy;
+                m_isMainPlayer = !m_isEnemy;
             }
 
             m_hasInitialized = true;
             GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             m_hasAddedEventListeners = true;
-            SpawnEquippedSkins();
+            SpawnEquippedSkinsNextFrame();
             yield break;
         }
 
@@ -231,17 +252,20 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo == null || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
                 return null;
 
+            RefreshWeaponVariant(personalizationItemInfo.Weapon);
+
             Transform transform = GetParentForItem(personalizationItemInfo);
             if (!transform)
                 return null;
 
             PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, personalizationItemInfo));
+            if(!behaviour)
+                return null;
+
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 SetWeaponPartsVisible(personalizationItemInfo.Weapon, false);
-
-            RefreshWeaponVariant(personalizationItemInfo.Weapon);
 
             return behaviour;
         }
@@ -407,6 +431,9 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!m_hasInitialized)
                 return null;
+
+            if(m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
+                return GetWeaponSkin(weaponType);
 
             if (m_isEnemy || (m_isPlayer && !m_isMultiplayer))
                 return GetWeaponSkin(weaponType);

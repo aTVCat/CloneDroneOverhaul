@@ -28,6 +28,8 @@ namespace OverhaulMod.UI
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR = "#006A0D";
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR = "#00F81F";
 
+        public static bool IsPreviewing;
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -136,12 +138,14 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
+            IsPreviewing = false;
             GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
         }
 
         public override void Show()
         {
             base.Show();
+            IsPreviewing = true;
             m_isOpen = true;
             m_showContents = true;
             m_categoryTabs.interactable = true;
@@ -190,6 +194,8 @@ namespace OverhaulMod.UI
         public override void OnDisable()
         {
             base.OnDisable();
+
+            IsPreviewing = false;
             m_isPopulating = false;
             UIVersionLabel.instance.forceHide = false;
 

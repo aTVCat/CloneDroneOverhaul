@@ -68,13 +68,17 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectBehaviour Deserialize(Transform parent, PersonalizationControllerInfo personalizationControllerInfo)
         {
+            PersonalizationEditorObjectManager personalizationEditorObjectManager = PersonalizationEditorObjectManager.Instance;
+            if (personalizationEditorObjectManager.GetObjectInfo(Path) == null)
+                return null;
+
             if (!parent)
             {
                 GameObject gameObject = new GameObject(Name);
                 parent = gameObject.transform;
             }
 
-            PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.PlaceObject(Path, parent, false);
+            PersonalizationEditorObjectBehaviour behaviour = personalizationEditorObjectManager.PlaceObject(Path, parent, false);
             behaviour.IsRoot = IsRoot;
             behaviour.UniqueIndex = UniqueIndex;
             behaviour.ControllerInfo = personalizationControllerInfo;

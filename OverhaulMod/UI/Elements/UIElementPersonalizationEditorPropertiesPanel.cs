@@ -32,6 +32,12 @@ namespace OverhaulMod.UI
         [UIElement("VolumeSettingsPresetDisplay", false)]
         private readonly ModdedObject m_volumeSettingsPresetDisplay;
 
+        [UIElement("EnableIfPresetDropdown", false)]
+        private readonly ModdedObject m_enableIfPresetDropdown;
+
+        [UIElement("VolumeExtraSettings", false)]
+        private readonly ModdedObject m_volumeExtraSettings;
+
         [UIElement("AddVolumeSettingsPresetButton", false)]
         private readonly Button m_addVolumeSettingsPresetButton;
 
@@ -51,12 +57,15 @@ namespace OverhaulMod.UI
 
         private VolumePropertiesController m_volumePropertiesController;
 
+        private VisibilityPropertiesController m_visibilityPropertiesController;
+
         private bool m_disableCallbacks;
 
         protected override void OnInitialized()
         {
             m_objectId = -1;
             m_volumePropertiesController = new VolumePropertiesController();
+            m_visibilityPropertiesController = new VisibilityPropertiesController();
 
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
@@ -65,6 +74,11 @@ namespace OverhaulMod.UI
         public void Clear()
         {
             TransformUtils.DestroyAllChildren(m_container);
+        }
+
+        public void Refresh()
+        {
+            EditObject(m_object);
         }
 
         public void EditObjectAgain()
@@ -79,6 +93,8 @@ namespace OverhaulMod.UI
         {
             bool isNotNull = objectBehaviour;
 
+            ModUIConstants.HideGenericColorPicker();
+            m_volumeColorsSettings.Hide();
             m_nothingToEditOverlay.SetActive(!isNotNull);
             if (!isNotNull)
             {
@@ -97,6 +113,11 @@ namespace OverhaulMod.UI
             m_positionField.vector = objectBehaviour.transform.localPosition;
             m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
             m_scaleField.vector = objectBehaviour.transform.localScale;
+
+            if (objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>())
+            {
+                m_visibilityPropertiesController.PopulateFields(this, m_container, objectBehaviour);
+            }
 
             if (m_volume)
             {
@@ -190,23 +211,64 @@ namespace OverhaulMod.UI
             }
         }
 
+        public class VisibilityPropertiesController : ObjectPropertiesController
+        {
+            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            {
+                ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel.m_enableIfPresetDropdown, container);
+                enableIfPresetDropdown.gameObject.SetActive(true);
+
+                PersonalizationEditorObjectVisibilityController visibilityController = objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>();
+
+                Dropdown dropdown = enableIfPresetDropdown.GetObject<Dropdown>(0);
+                dropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon(true);
+
+                int conditionDropdownValueToSet = -1;
+                for (int i = 0; i < dropdown.options.Count; i++)
+                {
+                    if (dropdown.options[i] is DropdownWeaponVariantOptionData showConditionOptionData && showConditionOptionData.Value == visibilityController.enableIfWeaponVariant)
+                    {
+                        conditionDropdownValueToSet = i;
+                    }
+                }
+
+                if(conditionDropdownValueToSet == -1)
+                {
+                    dropdown.options.Add(new DropdownWeaponVariantOptionData(visibilityController.enableIfWeaponVariant));
+                    dropdown.RefreshShownValue();
+                    conditionDropdownValueToSet = dropdown.options.Count - 1;
+                }
+
+                dropdown.value = conditionDropdownValueToSet;
+                dropdown.onValueChanged.AddListener(delegate (int value)
+                {
+                    WeaponVariant weaponVariant = (dropdown.options[value] as DropdownWeaponVariantOptionData).Value;
+                    visibilityController.enableIfWeaponVariant = weaponVariant;
+                    visibilityController.RefreshVisibility();
+                });
+            }
+        }
+
         public class VolumePropertiesController : ObjectPropertiesController
         {
             public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 void populateFieldsAction()
                 {
-                    propertiesPanel.Clear();
-                    propertiesPanel.m_volumePropertiesController.PopulateFields(propertiesPanel, container, objectBehaviour);
+                    propertiesPanel.Refresh();
                 }
 
                 PersonalizationEditorObjectVolume volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
 
-                /*
-                ModdedObject forceConditionDropdown = Instantiate(propertiesPanel.m_forceVolumeSettingsPresetDropdown, container);
-                Dropdown dropdown = forceConditionDropdown.GetObject<Dropdown>(0);
-                dropdown.options = volume.GetConditionOptions();
-                forceConditionDropdown.gameObject.SetActive(true);*/
+                ModdedObject volumeExtraSettings = Instantiate(propertiesPanel.m_volumeExtraSettings, container);
+                volumeExtraSettings.gameObject.SetActive(true);
+                Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
+                hideIfNoPresetToggle.isOn = volume.hideIfNoPreset;
+                hideIfNoPresetToggle.onValueChanged.AddListener(delegate (bool value)
+                {
+                    volume.hideIfNoPreset = value;
+                    GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                });
 
                 Dictionary<WeaponVariant, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
                 if (volumePresets != null && volumePresets.Count != 0)
@@ -285,6 +347,8 @@ namespace OverhaulMod.UI
                         {
                             conditionsDropdown.options.Add(new DropdownWeaponVariantOptionData(prevCondition));
                             conditionsDropdown.RefreshShownValue();
+
+                            conditionDropdownValueToSet = conditionsDropdown.options.Count - 1;
                         }
 
                         conditionsDropdown.value = conditionDropdownValueToSet;

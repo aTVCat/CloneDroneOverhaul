@@ -180,6 +180,7 @@ namespace OverhaulMod.UI
             showAlphaChannel = useAlphaChannel;
             outputColor = currentColor;
             outputAlpha = useAlphaChannel ? currentColor.a : 1f;
+            RefreshHexCodeField();
         }
 
         public void InvokeCallback()

@@ -391,6 +391,11 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIGenericColorPicker>(AssetBundleConstants.UI, UI_GENERIC_COLOR_PICKER, parent);
         }
 
+        public static void HideGenericColorPicker()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_GENERIC_COLOR_PICKER);
+        }
+
         public static UIGenericImageViewer ShowGenericImageViewer(Transform parent)
         {
             return ModUIManager.Instance.Show<UIGenericImageViewer>(AssetBundleConstants.UI, UI_GENERIC_IMAGE_VIEWER, parent);

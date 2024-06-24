@@ -6,62 +6,60 @@ namespace OverhaulMod.Content.Personalization
     public class PersonalizationEditorObjectVisibilityController : PersonalizationEditorObjectComponentBase
     {
         [PersonalizationEditorObjectProperty]
-        public bool alwaysOn
+        public WeaponVariant enableIfWeaponVariant
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(alwaysOn), true);
+                return (WeaponVariant)ob.GetPropertyValue(nameof(enableIfWeaponVariant), 0);
             }
             set
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(alwaysOn), value);
+                ob.SetPropertyValue(nameof(enableIfWeaponVariant), (int)value);
             }
         }
 
-        [PersonalizationEditorObjectProperty]
-        public bool isOnFire
+        private bool m_hasAddedEventListeners;
+
+        private void Start()
         {
-            get
+            if (PersonalizationEditorManager.IsInEditor())
             {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(isOnFire), false);
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVisibility);
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVisibility);
+                m_hasAddedEventListeners = true;
             }
-            set
+            RefreshVisibility();
+        }
+
+        private void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
             {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(isOnFire), value);
+                m_hasAddedEventListeners = false;
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVisibility);
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVisibility);
             }
         }
 
-        [PersonalizationEditorObjectProperty]
-        public bool isGreatSword
+        public void RefreshVisibility()
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(isGreatSword), false);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(isGreatSword), value);
-            }
-        }
-
-        public bool MustShowInEditor()
-        {
-            return objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+            base.gameObject.SetActive(MustShowTheObject());
         }
 
         public bool MustShowTheObject()
         {
-            if (alwaysOn)
+            if (enableIfWeaponVariant == WeaponVariant.None)
                 return true;
 
-            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out bool of, out bool gs);
-            return isGreatSword == gs && isOnFire == of;
+            WeaponVariant weaponVariant1;
+            if (PersonalizationEditorManager.IsInEditor())
+                weaponVariant1 = PersonalizationEditorManager.Instance.previewPresetKey;
+            else
+                WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out weaponVariant1);
+
+            return enableIfWeaponVariant == weaponVariant1;
         }
 
         public void GetWeaponVariant(out WeaponVariant showConditions)

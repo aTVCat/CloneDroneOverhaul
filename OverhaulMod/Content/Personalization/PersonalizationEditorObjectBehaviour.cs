@@ -106,7 +106,7 @@ namespace OverhaulMod.Content.Personalization
         public void SetPropertyValue(string name, object value)
         {
             if (PropertyValues == null)
-                return;
+                PropertyValues = new Dictionary<string, object>();
 
             if (!PropertyValues.ContainsKey(name))
             {

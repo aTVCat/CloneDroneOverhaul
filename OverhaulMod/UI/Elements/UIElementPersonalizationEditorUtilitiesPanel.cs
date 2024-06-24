@@ -22,6 +22,11 @@ namespace OverhaulMod.UI
         [UIElement("EnableAnimationToggle")]
         private readonly Toggle m_enableAnimationToggle;
 
+        [ShowTooltipOnHighLight("Show original model (Over skin)", 1f)]
+        [UIElementAction(nameof(OnOriginalModelToggled))]
+        [UIElement("EnableOriginalModelToggle")]
+        private readonly Toggle m_enableOriginalModelToggle;
+
         [UIElementAction(nameof(OnPresetPreviewChanged))]
         [UIElement("PresetPreviewDropdown")]
         private readonly Dropdown m_presetPreviewDropdown;
@@ -79,9 +84,18 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnBowStringsToggled(bool value)
+        public void OnOriginalModelToggled(bool value)
         {
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            if (!firstPersonMover)
+                return;
 
+            PersonalizationController personalizationController = firstPersonMover.GetComponent<PersonalizationController>();
+            if (!personalizationController)
+                return;
+
+            WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
+            personalizationController.SetWeaponPartsVisible(weaponType, value);
         }
 
         public void OnPresetPreviewChanged(int value)

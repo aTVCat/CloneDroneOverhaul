@@ -48,12 +48,27 @@ namespace OverhaulMod.Content.Personalization
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(volumeSettingPresets), s_emptySettingsDictionary);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
             }
             set
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
                 ob.SetPropertyValue(nameof(volumeSettingPresets), value);
+            }
+        }
+
+        [PersonalizationEditorObjectProperty]
+        public bool hideIfNoPreset
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return ob.GetPropertyValue(nameof(hideIfNoPreset), false);
+            }
+            set
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(hideIfNoPreset), value);
             }
         }
 
@@ -74,12 +89,10 @@ namespace OverhaulMod.Content.Personalization
                         value.ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>();
             }
 
-            EventController singleEventController = base.gameObject.AddComponent<EventController>();
-            singleEventController.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
-
             RefreshVolume();
             if (PersonalizationEditorManager.IsInEditor())
             {
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
                 m_hasAddedEventListeners = true;
             }
@@ -91,6 +104,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_hasAddedEventListeners)
             {
                 m_hasAddedEventListeners = false;
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
             }
         }
@@ -143,6 +157,11 @@ namespace OverhaulMod.Content.Personalization
 
             if (!d.ContainsKey(condition))
             {
+                if (hideIfNoPreset)
+                {
+                    return null;
+                }
+
                 if (condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
                     return d[WeaponVariant.OnFire];
                 else if (condition == WeaponVariant.NormalMultiplayer && d.ContainsKey(WeaponVariant.Normal))

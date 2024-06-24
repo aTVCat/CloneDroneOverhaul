@@ -28,6 +28,9 @@ namespace OverhaulMod.Content.Personalization
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
+            addObjectInfo("Fire particles (Sword)", "FireParticles_Sword", instantiateSwordFireParticles);
+            addObjectInfo("Fire particles (Hammer)", "FireParticles_Hammer", instantiateHammerFireParticles);
+            addObjectInfo("Fire particles (Spear)", "FireParticles_Spear", instantiateSpearFireParticles);
         }
 
         private void addObjectInfo(string name, string path, Func<Transform, GameObject> func)
@@ -149,6 +152,27 @@ namespace OverhaulMod.Content.Personalization
             volume.Material = getVolumeMaterial();
             Destroy(bodyPart);
             return gameObject;
+        }
+
+        private GameObject instantiateSwordFireParticles(Transform parent)
+        {
+            Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), parent);
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            return fireParticles.gameObject;
+        }
+
+        private GameObject instantiateSpearFireParticles(Transform parent)
+        {
+            Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSpearModelPrefab, "SwordFireVFX (1)"), parent);
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            return fireParticles.gameObject;
+        }
+
+        private GameObject instantiateHammerFireParticles(Transform parent)
+        {
+            Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireHammerModelPrefab, "FireVFX (1)"), parent);
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            return fireParticles.gameObject;
         }
 
         private GameObject instantiateEmpty(Transform parent)
