@@ -133,6 +133,9 @@ namespace OverhaulMod.Content.Personalization
                 SpawnEquippedSkins();
             }
 
+            if (PersonalizationEditorManager.IsInEditor())
+                return;
+
             m_timeLeftToRefreshWeaponParts -= Time.unscaledDeltaTime;
             if(m_timeLeftToRefreshWeaponParts <= 0f)
             {

@@ -126,7 +126,11 @@ namespace OverhaulMod.UI
                         Hide();
                     });
 
-                    m_cachedInstantiatedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
+                    string text = item.Name.ToLower();
+                    while(m_cachedInstantiatedDisplays.ContainsKey(text))
+                        text += "_1";
+
+                    m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
                 }
 
             if (exceptions != null)
