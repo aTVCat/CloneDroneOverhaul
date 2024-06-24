@@ -82,6 +82,9 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationMultiplayerPlayerInfo GetPlayInfo(string playFaId)
         {
+            if (playFaId == null)
+                return null;
+
             if (!m_playerInfos.TryGetValue(playFaId, out PersonalizationMultiplayerPlayerInfo playerInfo))
                 return null;
 
