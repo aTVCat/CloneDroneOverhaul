@@ -63,10 +63,6 @@ namespace PicaVoxel
             string magic = new string(stream.ReadChars(4));
             _ = stream.ReadInt32();
 
-            bool isDebug = ModBuildInfo.debug;
-            if (isDebug)
-                Debug.Log($"\"{magic.ToLower()}\"");
-
             if (magic.ToLower() == "vox ")
             {
                 int sizex = 0, sizey = 0, sizez = 0;
@@ -78,10 +74,6 @@ namespace PicaVoxel
                     int chunkSize = stream.ReadInt32();
                     _ = stream.ReadInt32();
                     string chunkName = new string(chunkId).ToLower();
-
-                    /*
-                    if (isDebug)
-                        Debug.Log($"\"{chunkName}, {chunkSize}\"");*/
 
                     if (chunkName == "pack")
                     {

@@ -190,7 +190,6 @@ namespace OverhaulMod.Content.Personalization
             if (m_isDestroyed)
                 yield break;
 
-            Debug.Log($"refreshed volume {objectBehaviour.ControllerInfo.ItemInfo.Weapon}");
             m_aboutToRefreshVolume = false;
             refreshVolume();
             yield break;
@@ -229,8 +228,6 @@ namespace OverhaulMod.Content.Personalization
                     voxFilePath = string.Empty;
 
                 string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, voxFilePath);
-                if (ModBuildInfo.debug)
-                    Debug.Log($"{voxFilePath} (Exists? {File.Exists(path)})");
 
                 if (!File.Exists(path))
                 {

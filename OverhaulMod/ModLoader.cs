@@ -87,7 +87,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<PersonalizationEditorObjectManager>();
             _ = ModManagers.NewSingleton<PersonalizationItemVerificationManager>();
             _ = ModManagers.NewSingleton<PersonalizationEditorGuideManager>();
-            _ = ModManagers.NewBoltSingleton<PersonalizationMultiplayerManager>();
+            _ = ModManagers.NewSingleton<PersonalizationMultiplayerManager>();
 
             _ = ModManagers.NewSingleton<WeatherManager>();
             _ = ModManagers.NewSingleton<FloatingDustManager>();

@@ -163,7 +163,6 @@ namespace OverhaulMod.Content.Personalization
                 }
                 catch (Exception exc)
                 {
-                    Debug.Log(exc);
                     callback?.Invoke(false);
                     return;
                 }

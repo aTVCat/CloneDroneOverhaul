@@ -254,6 +254,11 @@ namespace OverhaulMod
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
+        public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)
+        {
+            PersonalizationMultiplayerManager.Instance.OnEvent(moddedEvent);
+        }
+
         public override UnityEngine.Object OnResourcesLoad(string path)
         {
             return LevelEditorPatch.Patch.GetResourceObject(path);

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
-    public class PersonalizationMultiplayerManager : BoltGlobalEventListenerSingleton<PersonalizationMultiplayerManager>
+    public class PersonalizationMultiplayerManager : Singleton<PersonalizationMultiplayerManager>
     {
         public const string PLAYER_INFO_UPDATED_EVENT = "MultiplayerPlayerCustomizationInfoUpdated";
 
@@ -32,11 +32,8 @@ namespace OverhaulMod.Content.Personalization
             m_playerInfos = new Dictionary<string, PersonalizationMultiplayerPlayerInfo>();
         }
 
-        public void SendPlayerCustomizationDataEvent(bool sendForRecentlyConnectedPlayer, bool debug = false)
+        public void SendPlayerCustomizationDataEvent(bool sendForRecentlyConnectedPlayer)
         {
-            if (!BoltNetwork.IsClient && !debug)
-                return;
-
             string swordSkin = normalizeId(PersonalizationController.SwordSkin);
             string bowSkin = normalizeId(PersonalizationController.BowSkin);
             string hammerSkin = normalizeId(PersonalizationController.HammerSkin);
@@ -55,18 +52,10 @@ namespace OverhaulMod.Content.Personalization
             appendValue(stringBuilder, spearSkin, false);
             appendValue(stringBuilder, shieldSkin, true);
 
-            if (debug)
-            {
-                Debug.Log(stringBuilder.ToString());
-                return;
-            }
-
-            GenericStringForModdingEvent genericStringForModdingEvent = GenericStringForModdingEvent.Create(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered);
-            genericStringForModdingEvent.EventData = stringBuilder.ToString();
-            genericStringForModdingEvent.Send();
+            GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
         }
 
-        public override void OnEvent(GenericStringForModdingEvent evnt)
+        public void OnEvent(GenericStringForModdingEvent evnt)
         {
             string eventData = evnt.EventData;
             if (eventData.StartsWith(m_prefixFalse))
@@ -93,9 +82,11 @@ namespace OverhaulMod.Content.Personalization
 
         private void registerPlayerInfo(string rawData)
         {
+            Debug.Log(rawData);
             if(rawData.Length > 16)
             {
                 string playFabId = rawData.Remove(16);
+                Debug.Log(playFabId);
                 if (m_playerInfos.ContainsKey(playFabId))
                 {
                     m_playerInfos[playFabId].SetData(rawData);
@@ -121,7 +112,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 return value ? m_prefixTrue : m_prefixFalse;
             }
-            return $"[OverhaulV4_{value}] ";
+            return $"[OverhaulV4_{value.ToString().ToLower()}] ";
         }
 
         private string normalizeId(string id)
