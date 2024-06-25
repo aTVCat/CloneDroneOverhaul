@@ -18,6 +18,8 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationControllerInfo ControllerInfo;
 
+        public Vector3 SerializedScale;
+
         private List<PersonalizationEditorObjectBehaviour> m_children;
         public List<PersonalizationEditorObjectBehaviour> children
         {

@@ -53,8 +53,6 @@ namespace OverhaulMod.UI
 
         private PersonalizationEditorObjectBehaviour m_object;
 
-        private PersonalizationEditorObjectVolume m_volume;
-
         private VolumePropertiesController m_volumePropertiesController;
 
         private VisibilityPropertiesController m_visibilityPropertiesController;
@@ -100,12 +98,10 @@ namespace OverhaulMod.UI
             {
                 m_objectId = -1;
                 m_object = null;
-                m_volume = null;
                 return;
             }
             m_objectId = objectBehaviour.UniqueIndex;
             m_object = objectBehaviour;
-            m_volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
 
             Clear();
 
@@ -119,7 +115,7 @@ namespace OverhaulMod.UI
                 m_visibilityPropertiesController.PopulateFields(this, m_container, objectBehaviour);
             }
 
-            if (m_volume)
+            if (objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>())
             {
                 m_volumePropertiesController.PopulateFields(this, m_container, objectBehaviour);
             }
@@ -148,15 +144,6 @@ namespace OverhaulMod.UI
             }*/
 
             m_disableCallbacks = false;
-        }
-
-        public void OnEditVolumeColorsButtonClicked()
-        {
-            PersonalizationEditorObjectVolume volume = m_volume;
-            if (!volume)
-                return;
-
-            m_volumeColorsSettings.Show();
         }
 
         public void OnVolumeColorReplacementsChanged(string str)
@@ -201,6 +188,7 @@ namespace OverhaulMod.UI
                 return;
 
             objectBehaviour.transform.localScale = value;
+            objectBehaviour.SerializedScale = value;
         }
 
         public class ObjectPropertiesController
@@ -399,7 +387,7 @@ namespace OverhaulMod.UI
                         {
                             UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel.m_volumeColorsSettings;
                             volumeColorsSettings.Show();
-                            volumeColorsSettings.Populate(settingsPreset.ColorReplacements, settingsPreset.ReplaceWithFavoriteColors);
+                            volumeColorsSettings.Populate(settingsPreset);
                             volumeColorsSettings.onColorChanged = onColorChangedAction;
                         });
 

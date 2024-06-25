@@ -427,7 +427,7 @@ namespace OverhaulMod.Content.Personalization
         public void TutorialVideo()
         {
             UIPersonalizationEditor.instance.Dropdown.Hide();
-            Application.OpenURL("https://google.com"); // todo: make tutorial video and add it here
+            Application.OpenURL("https://youtu.be/xdbdb-WizSo"); // todo: make tutorial video and add it here
         }
 
         public List<ColorPairFloat> GetColorPairsFromString(string dataString)

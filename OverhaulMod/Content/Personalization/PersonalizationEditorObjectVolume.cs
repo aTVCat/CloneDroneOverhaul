@@ -205,7 +205,6 @@ namespace OverhaulMod.Content.Personalization
             Volume volumeComponent = volume;
             if (volumeComponent)
             {
-                Vector3 vector = base.transform.localScale;
                 base.transform.localScale = Vector3.one;
 
                 if (volumeComponent.NumFrames > 0)
@@ -285,8 +284,8 @@ namespace OverhaulMod.Content.Personalization
                                 if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
                                 {
                                     HSBColor hsbcolor = new HSBColor(favoriteColor);
-                                    hsbcolor.s *= favoriteColorSettings.SaturationMultiplier;
-                                    hsbcolor.b *= favoriteColorSettings.BrightnessMultiplier;
+                                    hsbcolor.s = favoriteColorSettings.SaturationMultiplier;
+                                    hsbcolor.b = favoriteColorSettings.BrightnessMultiplier;
                                     colorB = hsbcolor.ToColor();
                                     colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
                                 }
@@ -300,7 +299,7 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
                 }
-                base.transform.localScale = vector;
+                base.transform.localScale = objectBehaviour.SerializedScale;
             }
         }
     }

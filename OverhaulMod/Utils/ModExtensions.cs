@@ -14,11 +14,26 @@ namespace OverhaulMod.Utils
 
         public static List<T> CloneList<T>(this List<T> list)
         {
+            if(list ==null )
+                return null;
+
             List<T> newList = new List<T>();
             foreach (T value in list)
                 newList.Add((T)value.MemberwiseClone());
 
             return newList;
+        }
+
+        public static Dictionary<T1, T2> CloneDictionary<T1, T2>(this Dictionary<T1, T2> dictionary)
+        {
+            if (dictionary == null)
+                return null;
+
+            Dictionary<T1, T2> newDictionary = new Dictionary<T1, T2>();
+            foreach (var kv in dictionary)
+                newDictionary.Add((T1)kv.Key.MemberwiseClone(), (T2)kv.Value.MemberwiseClone());
+
+            return newDictionary;
         }
 
         public static bool IsModdedEnumValue(this System.Enum enumValue)

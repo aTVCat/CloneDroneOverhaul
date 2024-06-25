@@ -85,6 +85,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<PersonalizationManager>();
             _ = ModManagers.NewSingleton<PersonalizationEditorManager>();
             _ = ModManagers.NewSingleton<PersonalizationEditorObjectManager>();
+            _ = ModManagers.NewSingleton<PersonalizationEditorCopyPasteManager>();
             _ = ModManagers.NewSingleton<PersonalizationItemVerificationManager>();
             _ = ModManagers.NewSingleton<PersonalizationEditorGuideManager>();
             _ = ModManagers.NewSingleton<PersonalizationMultiplayerManager>();

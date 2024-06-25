@@ -96,7 +96,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.PersonalizationEditorTutorialVideo:
-                    result = false;
+                    result = true;
                     break;
                 default:
                     return false;

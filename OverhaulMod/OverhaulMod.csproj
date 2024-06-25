@@ -369,6 +369,7 @@
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorCopyPasteManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuideManager.cs" />

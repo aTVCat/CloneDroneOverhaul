@@ -122,6 +122,7 @@ namespace OverhaulMod.UI
                     button.onClick.AddListener(delegate
                     {
                         UIPersonalizationEditor.instance.ShowEverything();
+                        UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
                         PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
                         Hide();
                     });
@@ -163,9 +164,19 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
+                string rootDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+                string directoryName = str.Replace(" ", string.Empty);
+                string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
+                if (Directory.Exists(directoryPath))
+                {
+                    ModUIUtils.MessagePopupOK("Directory with the same name already exists", "Try naming the folder differently", true);
+                    return;
+                }
+
                 if (PersonalizationEditorManager.Instance.CreateItem(str, m_usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
                 {
                     UIPersonalizationEditor.instance.ShowEverything();
+                    UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                     Hide();
                 }

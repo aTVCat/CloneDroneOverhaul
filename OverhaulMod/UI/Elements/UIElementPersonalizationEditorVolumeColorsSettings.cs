@@ -20,7 +20,19 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_container;
 
+        [UIElementAction(nameof(OnCopyColorsButtonClicked))]
+        [UIElement("CopyColorsButton")]
+        private readonly Button m_copyColorsButton;
+
+        [UIElementAction(nameof(OnPasteColorsButtonClicked))]
+        [UIElement("PasteColorsButton")]
+        private readonly Button m_pasteColorsButton;
+
+        private VolumeSettingsPreset m_volumeSettingsPreset;
+
         private List<ColorPairFloat> m_colorPairs;
+
+        private Dictionary<string, FavoriteColorSettings> m_favoriteColorSettings;
 
         public Action<string> onColorChanged
         {
@@ -32,13 +44,19 @@ namespace OverhaulMod.UI
         {
             base.OnInitialized();
             m_colorPairs = new List<ColorPairFloat>();
+            m_pasteColorsButton.interactable = false;
         }
 
-        public void Populate(string colorsString, Dictionary<string, FavoriteColorSettings> replaceWithFavoriteColors)
+        public void Populate(VolumeSettingsPreset volumeSettingsPreset)
         {
-            List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(colorsString);
-            m_colorPairs = list;
+            m_volumeSettingsPreset = volumeSettingsPreset;
+            m_colorPairs = PersonalizationEditorManager.Instance.GetColorPairsFromString(volumeSettingsPreset.ColorReplacements);
+            m_favoriteColorSettings = volumeSettingsPreset.ReplaceWithFavoriteColors;
+            populate(m_colorPairs, m_favoriteColorSettings);
+        }
 
+        private void populate(List<ColorPairFloat> list, Dictionary<string, FavoriteColorSettings> replaceWithFavoriteColors)
+        {
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
@@ -70,6 +88,38 @@ namespace OverhaulMod.UI
         private void onColorChangedCallback(ColorPairFloat colorPairFloat)
         {
             onColorChanged?.Invoke(PersonalizationEditorManager.Instance.GetStringFromColorPairs(m_colorPairs));
+        }
+
+        public void OnCopyColorsButtonClicked()
+        {
+            m_pasteColorsButton.interactable = true;
+            PersonalizationEditorCopyPasteManager.Instance.CopyColorSettings(m_colorPairs, m_favoriteColorSettings);
+        }
+
+        public void OnPasteColorsButtonClicked()
+        {
+            m_pasteColorsButton.interactable = false; 
+
+            List<ColorPairFloat> originalColors = m_colorPairs;
+            Dictionary<string, FavoriteColorSettings> originalFavoriteColors = m_favoriteColorSettings;
+
+            PersonalizationEditorCopyPasteManager.Instance.PasteColorSettings(out List<ColorPairFloat> colorPairs, out Dictionary<string, FavoriteColorSettings> favoriteColors);
+
+            foreach (ColorPairFloat colorPairFloatA in originalColors)
+            {
+                foreach (ColorPairFloat colorPairFloatB in colorPairs)
+                {
+                    if (colorPairFloatA.ColorA == colorPairFloatB.ColorA)
+                        colorPairFloatA.ColorB = colorPairFloatB.ColorB;
+                }
+            }
+
+            originalFavoriteColors.Clear();
+            foreach(var kv in favoriteColors)
+                originalFavoriteColors.Add(kv.Key, (FavoriteColorSettings)kv.Value.MemberwiseClone());
+
+            onColorChangedCallback(null);
+            populate(originalColors, originalFavoriteColors);
         }
     }
 }
