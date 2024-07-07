@@ -29,6 +29,9 @@ namespace OverhaulMod.Patches
             if (!manager)
                 return true;
 
+            Debug.Log($"ShouldEnableCursor: {manager.ShouldEnableCursor()}");
+            Debug.Log($"UIVisible: {manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()}");
+
             if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()))
             {
                 InputManager.Instance.SetCursorEnabled(true);

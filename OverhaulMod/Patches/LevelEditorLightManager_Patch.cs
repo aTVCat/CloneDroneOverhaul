@@ -54,7 +54,7 @@ namespace OverhaulMod.Patches
                 }
             }
 
-            if (!LightningTransitionManager.TransitionsEnabled)
+            if (!LightningTransitionManager.allowLightTransitions)
                 return true;
 
             levelLightSettings.RestrictLightSettingsVariables();

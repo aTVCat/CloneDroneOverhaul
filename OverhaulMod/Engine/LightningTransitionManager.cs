@@ -6,7 +6,15 @@ namespace OverhaulMod.Engine
     public class LightningTransitionManager : Singleton<LightningTransitionManager>
     {
         [ModSetting(ModSettingsConstants.ENABLE_LIGHTNING_TRANSITION, true)]
-        public static bool TransitionsEnabled;
+        public static bool EnableLightTransitions;
+
+        public static bool allowLightTransitions
+        {
+            get
+            {
+                return EnableLightTransitions && (GameModeManager.Is(GameMode.None) || GameModeManager.Is(GameMode.Endless) || GameModeManager.Is(GameMode.EndlessCoop) || GameModeManager.Is(GameMode.CoopChallenge) || GameModeManager.Is(GameMode.Twitch) || GameModeManager.Is(GameMode.CoopChallenge) || (GameModeManager.Is(GameMode.Story) && !LevelManager.Instance.IsCurrentLevelHidingTheArena()));
+            }
+        }
 
         private LightningTransitionInfo m_currentTransition;
 
@@ -52,12 +60,12 @@ namespace OverhaulMod.Engine
             return m_currentTransition != null;
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null)
                 return;
 
-            float v = m_timeLeft - Time.fixedDeltaTime;
+            float v = m_timeLeft - Time.deltaTime;
             m_timeLeft = v;
 
             bool levelHidesArena = false;

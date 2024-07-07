@@ -75,11 +75,11 @@ namespace OverhaulMod.Engine
                 d < 0.5f ? a.DirectionalRotationY : b.DirectionalRotationY,
                 Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));*/
 
+            Vector3 dirLightRotation = Quaternion.Lerp(Quaternion.Euler(a.DirectionalRotationX, a.DirectionalRotationY, 0f), Quaternion.Euler(b.DirectionalRotationX, b.DirectionalRotationY, 0f), d).eulerAngles;
             refreshDirectionalLight(d < 0.985f || b.EnableDirectionalLight,
                 ModUnityUtils.LerpRGB(a.DirectionalColor, b.DirectionalColor, d),
                 Mathf.Lerp(a.EnableDirectionalLight ? a.DirectionalIntensity : 0f, b.EnableDirectionalLight ? b.DirectionalIntensity : 0f, d),
-                Mathf.Lerp(a.DirectionalRotationX, b.DirectionalRotationX, d),
-                Mathf.Lerp(a.DirectionalRotationY, b.DirectionalRotationY, d),
+                dirLightRotation,
                 Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));
 
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
@@ -165,7 +165,7 @@ namespace OverhaulMod.Engine
             RenderSettings.fogColor = color;
         }
 
-        public void refreshDirectionalLight(bool enable, Color color, float intensity, float x, float y, float shadowStrength)
+        public void refreshDirectionalLight(bool enable, Color color, float intensity, Vector3 rotation, float shadowStrength)
         {
             DirectionalLightManager directionalLightManager = DirectionalLightManager.Instance;
 
@@ -176,7 +176,7 @@ namespace OverhaulMod.Engine
             light.gameObject.SetActive(enable);
             light.color = color;
             light.intensity = intensity;
-            light.transform.localEulerAngles = new Vector3(x, y, 0f);
+            light.transform.localEulerAngles = rotation;
             light.shadowStrength = shadowStrength;
         }
     }

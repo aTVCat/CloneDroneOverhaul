@@ -1,4 +1,6 @@
 ﻿using OverhaulMod.Utils;
+using System.Linq;
+using System.Text;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -20,6 +22,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnSkillPointsButtonClicked))]
         [UIElement("MoreSkillPointsButton")]
         private readonly Button m_skillPointsButton;
+
+        [UIElementAction(nameof(OnExportAllUpgradesButtonClicked))]
+        [UIElement("ExportAllUpgradesButton")]
+        private readonly Button m_exportAllUpgradesButton;
 
         public void OnSkillPointsButtonClicked()
         {
@@ -53,6 +59,28 @@ namespace OverhaulMod.UI
         {
             ModBuildInfo.GenerateExtraInfo();
             ModUIUtils.MessagePopupOK("Successfully saved compilation date.", "Successfully saved compilation date.");
+        }
+
+        public void OnExportAllUpgradesButtonClicked()
+        {
+            var list = UpgradeManager.Instance.UpgradeDescriptions;
+            var lastUd = list.Last();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach(var ud in list)
+            {
+                stringBuilder.Append(ud.UpgradeName);
+                stringBuilder.Append(" (");
+                stringBuilder.Append(ud.UpgradeType);
+                stringBuilder.Append(", ");
+                stringBuilder.Append(ud.Level);
+                stringBuilder.Append(")");
+                if (ud != lastUd)
+                    stringBuilder.Append("\r\n");
+            }
+
+            ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
+            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
         }
     }
 }

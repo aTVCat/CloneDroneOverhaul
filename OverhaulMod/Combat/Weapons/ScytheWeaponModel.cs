@@ -69,6 +69,15 @@ namespace OverhaulMod.Combat.Weapons
             };
             base.PartsToHideInsteadOfRoot = Array.Empty<GameObject>();
 
+            Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), moddedObject.GetObject<Transform>(4));
+            fireParticles.localPosition = new Vector3(-0.75f, 0.15f, 1.5f);
+            fireParticles.localEulerAngles = Vector3.zero;
+            fireParticles.localScale = Vector3.one * 0.008f;
+            ParticleSystem particleSystem = fireParticles.GetComponent<ParticleSystem>();
+            particleSystem.startLifetime = 0.6f;
+            ParticleSystem.ShapeModule shape = particleSystem.shape;
+            shape.scale = new Vector3(140f, 8f, 1f);
+
             RefreshRenderer();
         }
 

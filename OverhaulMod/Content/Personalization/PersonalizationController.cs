@@ -269,6 +269,9 @@ namespace OverhaulMod.Content.Personalization
 
             RefreshWeaponVariant(personalizationItemInfo.Weapon);
 
+            if (personalizationItemInfo.Weapon == WeaponType.Bow && (owner.CharacterType == EnemyType.ZombieArcher1)) // todo: check if glock 18 mod is enabled
+                return null;
+
             Transform transform = GetParentForItem(personalizationItemInfo);
             if (!transform)
                 return null;

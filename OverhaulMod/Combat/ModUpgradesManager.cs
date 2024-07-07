@@ -85,20 +85,22 @@ namespace OverhaulMod.Combat
                   SCYTHE_FIRE_UPGRADE,
                   1,
                   AssetBundleConstants.UPGRADES,
-                  "Scythe-128x128",
+                  "FireScythe-128x128",
                   scythe);
             _ = CreateUpgrade<UpgradeDescription>("Sharp blade",
                   "Your scythe phases through swords!",
                   SCYTHE_BLADE_UPGRADE,
                   1,
                   AssetBundleConstants.UPGRADES,
-                  "Scythe-128x128",
+                  "ScytheBlade-128x128",
                   scythe);
 
             _ = CreateUpgrade<UpgradeDescription>("Double jump",
-                "Do second jump",
+                "Do 2 jumps!",
                 DOUBLE_JUMP_UPGRADE,
-                1);
+                1,
+                AssetBundleConstants.UPGRADES,
+                "DoubleJump-128x128");
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewGameplayContent))
             {
@@ -186,8 +188,10 @@ namespace OverhaulMod.Combat
                       "FireBoomerang-128x128"));
             }
 
+            /*
             OverrideSizeDeltaForUpgrade(SCYTHE_UNLOCK_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(SCYTHE_FIRE_UPGRADE, 1, Vector2.zero);
+            OverrideSizeDeltaForUpgrade(SCYTHE_BLADE_UPGRADE, 1, Vector2.zero);*/
             OverrideSizeDeltaForUpgrade(AXE_UNLOCK_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(AXE_FIRE_UPGRADE, 1, Vector2.zero);
             OverrideSizeDeltaForUpgrade(HALBERD_UNLOCK_UPGRADE, 1, Vector2.zero);

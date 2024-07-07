@@ -281,13 +281,10 @@ namespace OverhaulMod
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.BOOMERANG_FIRE_UPGRADE, ModWeaponsManager.BOOMERANG_TYPE);
             owner.RefreshModWeaponModels();
 
-            if (owner._upgradesNeedsRefreshing)
+            RobotInventory robotInventory = owner.GetComponent<RobotInventory>();
+            if (robotInventory)
             {
-                RobotInventory robotInventory = owner.GetComponent<RobotInventory>();
-                if (robotInventory)
-                {
-                    robotInventory.OnUpgradesRefreshed(upgrades);
-                }
+                robotInventory.OnUpgradesRefreshed(upgrades);
             }
         }
 

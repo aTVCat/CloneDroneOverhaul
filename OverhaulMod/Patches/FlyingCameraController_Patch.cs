@@ -15,15 +15,15 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Update")]
         private static bool Update_Prefix(FlyingCameraController __instance)
         {
+            if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
+                return true;
+
             InputManager inputManager = InputManager.Instance;
             if (UIManager.Instance.IsMouseOverUIElement())
             {
                 inputManager.SetCursorEnabled(true);
                 return false;
             }
-
-            if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
-                return true;
 
             ModUIManager modUIManager = ModUIManager.Instance;
             Player player = ReInput.players.GetPlayer(0);

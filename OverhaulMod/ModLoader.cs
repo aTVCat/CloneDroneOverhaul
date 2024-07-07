@@ -204,9 +204,12 @@ namespace OverhaulMod
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
-                if (energyUIPatch)
-                    energyUIPatch.RefreshPatch();
+                ModActionUtils.DoInFrame(delegate
+                {
+                    EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
+                    if (energyUIPatch)
+                        energyUIPatch.RefreshPatch();
+                });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
         }
 

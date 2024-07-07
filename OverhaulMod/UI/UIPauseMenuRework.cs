@@ -272,6 +272,7 @@ namespace OverhaulMod.UI
                 specialStatLabel.color = killsColor;
                 specialStatLabel.text = "Kills";
             }
+            specialStatLabel.enabled = GameModeManager.IsBattleRoyale() || GameModeManager.IsMultiplayerDuel();
 
             m_playerIconLabelObject.SetActive(canShowIcons);
 
@@ -309,6 +310,7 @@ namespace OverhaulMod.UI
                     countLabel.color = killsColor;
                     countLabel.text = playerInfoState.Kills.ToString();
                 }
+                countLabel.enabled = GameModeManager.IsBattleRoyale() || GameModeManager.IsMultiplayerDuel();
                 playerDisplay.GetObject<Text>(2).text = GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)playerInfoState.PlatformID);
                 playerDisplay.GetObject<RawImage>(3).enabled = canShowIcons;
                 playerDisplay.GetObject<GameObject>(6).SetActive(canShowIcons);

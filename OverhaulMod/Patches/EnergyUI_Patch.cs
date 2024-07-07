@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Patches.Behaviours;
+using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {
@@ -10,9 +11,14 @@ namespace OverhaulMod.Patches
         [HarmonyPatch("Show")]
         private static void Show_Postfix()
         {
-            EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
-            if (energyUIPatch)
-                energyUIPatch.RefreshPatch();
+            ModActionUtils.DoInFrame(delegate
+            {
+                EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
+                if (energyUIPatch)
+                {
+                    energyUIPatch.RefreshPatch();
+                }
+            });
         }
     }
 }
