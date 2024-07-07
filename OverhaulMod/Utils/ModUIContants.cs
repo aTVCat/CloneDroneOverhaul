@@ -207,9 +207,9 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIContentDownloadWindow>(AssetBundleConstants.UI, UI_CONTENT_DOWNLOAD_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowUpdatesWindow()
+        public static UIUpdatesWindow ShowUpdatesWindow()
         {
-            _ = ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
+            return ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
         }
 
         public static void ShowPersonalizationItemsBrowser()

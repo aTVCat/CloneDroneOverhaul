@@ -16,7 +16,9 @@ namespace OverhaulMod.Content
     {
         public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "UpdateInfoRefreshDate";
 
-        public const string NEW_VERSION_PLAYER_PREF_KEY = "UpdateInfoVersion";
+        public const string NEW_RELEASE_VERSION_PLAYER_PREF_KEY = "UpdateInfoReleaseVersion";
+
+        public const string NEW_TESTING_VERSION_PLAYER_PREF_KEY = "UpdateInfoTestingVersion";
 
         public const string REPOSITORY_FILE = "UpdateInfo.json";
 
@@ -85,9 +87,19 @@ namespace OverhaulMod.Content
                 yield break;
             }
 
-            if (!System.Version.TryParse(PlayerPrefs.GetString(NEW_VERSION_PLAYER_PREF_KEY, "default"), out System.Version newVersion))
+            bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester();
+            if (!System.Version.TryParse(PlayerPrefs.GetString(isTester ? NEW_TESTING_VERSION_PLAYER_PREF_KEY : NEW_RELEASE_VERSION_PLAYER_PREF_KEY, "default"), out System.Version newVersion))
                 newVersion = ModBuildInfo.version;
             downloadedVersion = newVersion;
+
+            if (newVersion > ModBuildInfo.version && GameModeManager.IsOnTitleScreen())
+            {
+                ModUIUtils.MessagePopup(true, "Overhaul Mod update available!", $"Version {newVersion} is available to install via updates menu.\nWould you like to install it now?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                {
+                    UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
+                    window.SelectBranchAndSearchForUpdates(isTester ? 1 : 0);
+                });
+            }
 
             if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))
                 if (DateTime.Now < timeToRefreshData)
@@ -129,12 +141,16 @@ namespace OverhaulMod.Content
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
 
-                    if (ExclusiveContentManager.Instance.IsLocalUserTheTester())
+                    if (ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester())
+                    {
                         if (updateInfoList.InternalRelease != null && updateInfoList.InternalRelease.ModVersion != null)
-                            PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, updateInfoList.InternalRelease.ModVersion.ToString());
-                        else
+                            PlayerPrefs.SetString(NEW_TESTING_VERSION_PLAYER_PREF_KEY, updateInfoList.InternalRelease.ModVersion.ToString());
+                    }
+                    else
+                    {
                         if (updateInfoList.ModBotRelease != null && updateInfoList.ModBotRelease.ModVersion != null)
-                            PlayerPrefs.SetString(NEW_VERSION_PLAYER_PREF_KEY, updateInfoList.ModBotRelease.ModVersion.ToString());
+                            PlayerPrefs.SetString(NEW_RELEASE_VERSION_PLAYER_PREF_KEY, updateInfoList.ModBotRelease.ModVersion.ToString());
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -175,7 +191,7 @@ namespace OverhaulMod.Content
 
                 try
                 {
-                    prepareBuildForAnUpdate();
+                    prepareCurrentBuildForAnUpdate();
                 }
                 catch (Exception exc)
                 {
@@ -206,12 +222,18 @@ namespace OverhaulMod.Content
             return ExclusiveContentManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
         }
 
-        private void prepareBuildForAnUpdate()
+        private void prepareCurrentBuildForAnUpdate()
         {
             string modFolder = ModCore.instance.ModInfo.FolderPath;
-            string filePath = modFolder + "ModInfo.json";
+            string filePath = Path.Combine(modFolder, "ModInfo.json");
+            string backupFilePath = Path.Combine(modFolder, "ModInfo.json.bak");
             if (File.Exists(filePath))
-                File.Move(filePath, modFolder + "ModInfo.json.bak");
+            {
+                if(File.Exists(backupFilePath))
+                    File.Delete(backupFilePath);
+
+                File.Move(filePath, backupFilePath);
+            }
 
             /*
             PlayerPrefs.SetString(PLAYER_PREF_KEY, modFolder);

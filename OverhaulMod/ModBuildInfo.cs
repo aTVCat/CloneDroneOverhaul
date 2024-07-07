@@ -138,6 +138,14 @@ namespace OverhaulMod
             }
         }
 
+        public static bool isPrereleaseBuild
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         internal static void Load()
         {
             if (s_loaded)

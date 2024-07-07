@@ -107,6 +107,13 @@ namespace OverhaulMod.UI
                 m_progressBarFill.fillAmount = 0f;
         }
 
+        public void SelectBranchAndSearchForUpdates(int value)
+        {
+            m_branchDropdown.value = value;
+            UpdateManager.timeToToClearCache = 0f;
+            OnCheckForUpdatesButtonClicked();
+        }
+
         public void SetUIInteractable(bool value)
         {
             m_branchDropdown.interactable = value;
