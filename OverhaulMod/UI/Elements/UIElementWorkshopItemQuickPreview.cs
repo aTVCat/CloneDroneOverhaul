@@ -25,9 +25,9 @@ namespace OverhaulMod.UI
             m_description.text = description;
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
-                m_authorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
+                m_authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
             else
-                m_authorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+                m_authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
 
             m_starsFill.fillAmount = Mathf.Ceil(workshopItem.Rating * 5f) / 5f;
         }

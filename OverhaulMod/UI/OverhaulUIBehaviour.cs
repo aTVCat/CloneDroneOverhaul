@@ -88,6 +88,8 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
+                bool ignoreIfElementIsMissing = fieldInfo.GetCustomAttribute<UIElementIgnoreIfMissingAttribute>() != null;
+
                 UIElementAttribute elementAttribute = fieldInfo.GetCustomAttribute<UIElementAttribute>();
                 if (elementAttribute != null)
                 {
@@ -103,8 +105,10 @@ namespace OverhaulMod.UI
                         gameObject = GetObject<GameObject>(elementAttribute.Name);
                         if (!gameObject)
                         {
-                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
-                            return;
+                            if (!ignoreIfElementIsMissing)
+                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+
+                            continue;
                         }
 
                         UnityEngine.Object component = gameObject.AddComponent(elementAttribute.ComponentToAdd);
@@ -119,8 +123,10 @@ namespace OverhaulMod.UI
                         gameObject = GetObject<GameObject>(elementAttribute.Name);
                         if (!gameObject)
                         {
-                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
-                            return;
+                            if (!ignoreIfElementIsMissing)
+                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+
+                            continue;
                         }
 
                         UIElementColorPickerButton colorPickerButton = gameObject.AddComponent<UIElementColorPickerButton>();
@@ -133,8 +139,10 @@ namespace OverhaulMod.UI
                         gameObject = GetObject<GameObject>(elementAttribute.Name);
                         if (!gameObject)
                         {
-                            Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
-                            return;
+                            if (!ignoreIfElementIsMissing)
+                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+
+                            continue;
                         }
 
                         UIElementKeyBindSetter keyBindSetter = gameObject.AddComponent<UIElementKeyBindSetter>();
@@ -149,8 +157,10 @@ namespace OverhaulMod.UI
                         unityObject = elementAttribute.HasIndex() ? GetObject(elementAttribute.Index, fieldInfo.FieldType) : GetObject(elementAttribute.Name, fieldInfo.FieldType);
                         if (!unityObject)
                         {
-                            Debug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})");
-                            return;
+                            if (!ignoreIfElementIsMissing)
+                                Debug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+
+                            continue;
                         }
                     }
 

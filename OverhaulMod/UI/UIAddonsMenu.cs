@@ -128,12 +128,14 @@ namespace OverhaulMod.UI
 
             foreach (ContentInfo content in list)
             {
+                string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
+
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = content.DisplayName;
+                moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
                 moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete {content.DisplayName}?", "This action cannot be undone.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} {content.DisplayName}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         if (moddedObject && moddedObject.gameObject)
                         {
@@ -160,10 +162,12 @@ namespace OverhaulMod.UI
                     if (content == null || content.File.IsNullOrEmpty() || content.DisplayName.IsNullOrEmpty())
                         continue;
 
+                    string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
+
                     ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
-                    moddedObject.GetObject<Text>(0).text = content.DisplayName;
-                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? "No description provided." : content.Description;
+                    moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
+                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? "No description provided." : LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
                     moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
 
                     List<string> list = content.GetImages().ToList();

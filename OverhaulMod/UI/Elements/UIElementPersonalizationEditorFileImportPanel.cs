@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(1).text = file;
                 moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete {file}?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"Delete {file}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         string path = PersonalizationItemInfo.GetImportedFileFullPath(itemInfo, file);
                         if (File.Exists(path))

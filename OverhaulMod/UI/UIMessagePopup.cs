@@ -43,6 +43,10 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform m_panelTransform;
 
+        [UIElementIgnoreIfMissing]
+        [UIElement("ScrollRect")]
+        private readonly GameObject m_scrollRectObject;
+
         public bool IsFullscreen;
 
         private bool m_shouldRefreshText;
@@ -111,6 +115,11 @@ namespace OverhaulMod.UI
             m_headerText.text = header;
             m_descriptionText.text = description;
             refreshTextHeightNextFrame();
+
+            if (m_scrollRectObject)
+            {
+                m_scrollRectObject.SetActive(!string.IsNullOrEmpty(description));
+            }
         }
 
         public void SetHeight(float height)
@@ -142,6 +151,11 @@ namespace OverhaulMod.UI
                 yesText = string.Empty;
             if (noText == null)
                 noText = string.Empty;
+
+            if (yesText.ToLower() == "yes")
+                yesText = LocalizationManager.Instance.GetTranslatedString("button_yes");
+            if (noText.ToLower() == "no")
+                noText = LocalizationManager.Instance.GetTranslatedString("button_no");
 
             m_okButtonText.text = okText;
             m_yesButtonText.text = yesText;

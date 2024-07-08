@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 8115744908289679860}
   - component: {fileID: 3438575129888880734}
   - component: {fileID: 5297361718772387759}
+  - component: {fileID: 6037019776515319960}
   m_Layer: 5
   m_Name: NoSurveysAvailableLabel
   m_TagString: Untagged
@@ -227,6 +228,23 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: No survey available
+--- !u!114 &6037019776515319960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477247703443707232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: news_no_survey
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &2412468738127626289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,6 +1470,7 @@ GameObject:
   - component: {fileID: 6332080129443631630}
   - component: {fileID: 1834534873023641476}
   - component: {fileID: 2098155389338388730}
+  - component: {fileID: 7149558488687666684}
   m_Layer: 5
   m_Name: SurveysAvailableLabel
   m_TagString: Untagged
@@ -1538,6 +1557,23 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7149558488687666684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7971098103241266800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: news_select_answer
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &8218418391962446434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,6 +1641,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CopyTextButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: LocalizationID
+      value: copy_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: DontTranslateText
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
@@ -1719,15 +1765,15 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566, type: 3}
---- !u!224 &1898337085933310995 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
-    type: 3}
-  m_PrefabInstance: {fileID: 5465446489312510551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6133394142668432166 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2217772015947243889, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+    type: 3}
+  m_PrefabInstance: {fileID: 5465446489312510551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1898337085933310995 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
     type: 3}
   m_PrefabInstance: {fileID: 5465446489312510551}
   m_PrefabAsset: {fileID: 0}

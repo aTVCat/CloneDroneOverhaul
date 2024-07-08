@@ -108,7 +108,7 @@ namespace OverhaulMod.UI
         {
             if (isLarge)
             {
-                ModUIUtils.MessagePopup(true, $"This add-on is large", "The download can take a while. Continue?", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_header"), LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_text"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
                     _ = m_contentManager.DownloadContent(contentFile, null, null);
                 });

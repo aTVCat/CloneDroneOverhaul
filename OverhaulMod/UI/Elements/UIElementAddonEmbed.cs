@@ -77,7 +77,7 @@ namespace OverhaulMod.UI
             ContentManager contentManager = ContentManager.Instance;
             if (contentManager.IsDownloading(addonId))
             {
-                m_loadingIndicatorText.text = $"Downloading...  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetDownloadProgress(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetDownloadProgress(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 

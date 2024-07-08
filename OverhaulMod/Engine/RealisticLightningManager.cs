@@ -9,33 +9,42 @@ namespace OverhaulMod.Engine
     {
         public const string LIGHTNING_INFO_LIST_FILE = "lightningInfo.json";
 
+        public static readonly string LightSettingsObjectResourcePath = "Prefabs/LevelObjects/Settings/LevelLightSettings";
+
+        public static readonly string LightSettingsOverrideObjectResourcePath = "Prefabs/LevelObjects/Lights/LightSettingsOverride";
+
         private static Material[] s_skyboxes;
 
         private RealisticLightningInfoList m_lightningInfoList;
 
         private void Start()
         {
-            if (ContentManager.Instance.HasContent(ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME))
-            {
-                ContentManager.Instance.SetContentIsLoading(this, true);
-                ModResources.Instance.LoadBundleAsync("overhaulassets_skyboxes", delegate (AssetBundle bundle)
-                {
-                    _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine(bundle));
-                }, null, $"{ModCore.addonsFolder}{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/");
+            DelegateScheduler.Instance.Schedule(loadSkyboxesAddon, 3f);
+        }
 
-                RealisticLightningInfoList realisticLightningInfoList = null;
-                try
-                {
-                    realisticLightningInfoList = ModJsonUtils.DeserializeStream<RealisticLightningInfoList>($"{ModCore.addonsFolder}{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/{LIGHTNING_INFO_LIST_FILE}");
-                    realisticLightningInfoList.FixValues();
-                }
-                catch
-                {
-                    realisticLightningInfoList = new RealisticLightningInfoList();
-                    realisticLightningInfoList.FixValues();
-                }
-                m_lightningInfoList = realisticLightningInfoList;
+        private void loadSkyboxesAddon()
+        {
+            if (ErrorManager.Instance.HasCrashed() || !ContentManager.Instance.HasContent(ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME))
+                return;
+
+            ContentManager.Instance.SetContentIsLoading(this, true);
+            ModResources.Instance.LoadBundleAsync("overhaulassets_skyboxes", delegate (AssetBundle bundle)
+            {
+                _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine(bundle));
+            }, null, $"{ModCore.addonsFolder}{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/");
+
+            RealisticLightningInfoList realisticLightningInfoList = null;
+            try
+            {
+                realisticLightningInfoList = ModJsonUtils.DeserializeStream<RealisticLightningInfoList>($"{ModCore.addonsFolder}{ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME}/{LIGHTNING_INFO_LIST_FILE}");
+                realisticLightningInfoList.FixValues();
             }
+            catch
+            {
+                realisticLightningInfoList = new RealisticLightningInfoList();
+                realisticLightningInfoList.FixValues();
+            }
+            m_lightningInfoList = realisticLightningInfoList;
         }
 
         private IEnumerator loadAllSkyboxesCoroutine(AssetBundle bundle)
@@ -153,10 +162,7 @@ namespace OverhaulMod.Engine
                 lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
 
             RealisticLightSettings realisticLightSettings = lightSettings.GetComponent<RealisticLightSettings>();
-            if (!realisticLightSettings)
-                realisticLightSettings = lightSettings.gameObject.AddComponent<RealisticLightSettings>();
-
-            if (realisticLightSettings.HasSetSkyBoxIndex)
+            if (!realisticLightSettings || !realisticLightSettings.EnableRealisticSkybox)
                 return;
 
             RealisticLightningInfo realisticLightningInfo = GetCurrentRealisticLightningInfo();

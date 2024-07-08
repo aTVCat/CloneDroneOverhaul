@@ -449,7 +449,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE, value, true);
                 PopulatePage("Graphics");
             }, "Enable FOV override");
-            Text fovOverrideHeader4 = pageBuilder.Header4("Might cause camera bugs in rare cases.\nRestarting the level will fix those");
+            Text fovOverrideHeader4 = pageBuilder.Header4("fov_override");
             Vector2 fovOverrideHeader4SizeDelta = (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta;
             fovOverrideHeader4SizeDelta.y += 15f;
             (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta = fovOverrideHeader4SizeDelta;

@@ -103,6 +103,13 @@ namespace OverhaulMod.Engine
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
 
+            RealisticLightUserSettings realisticLightUserSettings = levelLightSettings.GetComponent<RealisticLightUserSettings>();
+            if(realisticLightUserSettings && realisticLightUserSettings.EnableRealisticSkybox)
+            {
+                RealisticSkyboxIndex = realisticLightUserSettings.RealisticSkyBox;
+                return;
+            }
+
             RealisticLightSettings realisticLightSettings = levelLightSettings.GetComponent<RealisticLightSettings>();
             RealisticSkyboxIndex = realisticLightSettings ? realisticLightSettings.RealisticSkyBoxIndex : -1;
         }

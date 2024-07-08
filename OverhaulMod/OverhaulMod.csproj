@@ -384,6 +384,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Engine\RealisticLightUserSettings.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
@@ -546,6 +547,7 @@
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
     <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
     <Compile Include="UI\Attributes\UIElementCallbackAttribute.cs" />
+    <Compile Include="UI\Attributes\UIElementIgnoreIfMissingAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\CrosshairOffsetController.cs" />

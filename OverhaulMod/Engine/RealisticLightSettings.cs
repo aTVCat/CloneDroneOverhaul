@@ -4,8 +4,8 @@ namespace OverhaulMod.Engine
 {
     public class RealisticLightSettings : MonoBehaviour
     {
-        public int RealisticSkyBoxIndex;
+        public bool EnableRealisticSkybox;
 
-        public bool HasSetSkyBoxIndex;
+        public int RealisticSkyBoxIndex;
     }
 }

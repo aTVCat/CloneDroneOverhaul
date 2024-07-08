@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 3665464217090724488}
   - component: {fileID: 1486508261398510974}
   - component: {fileID: 867911203685019391}
+  - component: {fileID: 6526045089211714269}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -448,6 +449,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 1
+--- !u!114 &6526045089211714269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920543864942194118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: file_explorer_text
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &2185152800373923436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1683,6 +1701,7 @@ GameObject:
   - component: {fileID: 2373510336453479858}
   - component: {fileID: 256167666438491615}
   - component: {fileID: 750675154562128241}
+  - component: {fileID: 4771245882748768774}
   m_Layer: 5
   m_Name: Header
   m_TagString: Untagged
@@ -1765,6 +1784,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1.5, y: 1.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &4771245882748768774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868789361833806429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: file_explorer_header
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &9009835280622457269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,6 +1979,7 @@ GameObject:
   - component: {fileID: 717120285249756092}
   - component: {fileID: 2688189755181859562}
   - component: {fileID: 7123241385688806800}
+  - component: {fileID: 3199024345784964897}
   m_Layer: 5
   m_Name: SearchPatternLabel
   m_TagString: Untagged
@@ -2024,6 +2061,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 1
+--- !u!114 &3199024345784964897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033625619394225948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationID: file_explorer_pattern
+  DontTranslateText: 0
+  DontTranslateOnStart: 0
+  DisableWrappingForLogographicLanguages: 1
+  MaxCharactersPerJapaneseLineBreak: -1
 --- !u!1 &9086781449609651536
 GameObject:
   m_ObjectHideFlags: 0
@@ -2188,6 +2242,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CancelButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: DontTranslateText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: LocalizationID
+      value: file_explorer_nothing
       objectReference: {fileID: 0}
     - target: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
@@ -2471,6 +2535,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DoneButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: DontTranslateText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: LocalizationID
+      value: done
       objectReference: {fileID: 0}
     - target: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}
@@ -2785,6 +2859,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DownloadsFolderButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: DontTranslateText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687769586041414502, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
+        type: 3}
+      propertyPath: LocalizationID
+      value: file_explorer_downloads
       objectReference: {fileID: 0}
     - target: {fileID: 5872998592114955844, guid: 9a0cd5d4fb766fb43b4cf7bfc932f566,
         type: 3}

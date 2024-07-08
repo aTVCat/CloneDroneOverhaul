@@ -72,7 +72,7 @@ namespace OverhaulMod.UI
         [UIElement("PlayButton")]
         private readonly Button m_playButton;
 
-        [ShowTooltipOnHighLight("Erase progress", 1.5f)]
+        [ShowTooltipOnHighLight("erase progress", 1.5f, true)]
         [UIElementAction(nameof(OnEraseProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
         private readonly Button m_eraseProgressButton;
@@ -305,9 +305,9 @@ namespace OverhaulMod.UI
             m_itemDescriptionText.text = workshopItem.Description;
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
-                m_itemAuthorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
+                m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
             else
-                m_itemAuthorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+                m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
 
             m_itemLink = $"https://steamcommunity.com/sharedfiles/filedetails/?id={workshopItem.ItemID}";
             m_authorProfileLink = $"https://steamcommunity.com/profiles/{workshopItem.AuthorID}";
@@ -458,7 +458,7 @@ namespace OverhaulMod.UI
 
             m_loadingIndicatorObject.SetActive(downloading || needsUpdate);
             if (m_loadingIndicatorObject.activeSelf)
-                m_loadingIndicatorText.text = $"Downloading item...  {(Mathf.RoundToInt(Mathf.Clamp01(ModSteamUGCUtils.GetItemDownloadProgress(workshopItem.ItemID)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(ModSteamUGCUtils.GetItemDownloadProgress(workshopItem.ItemID)) * 100f).ToString() + "%").AddColor(Color.white)}";
         }
 
         private void refreshUserVote(WorkshopItem workshopItem)
@@ -691,7 +691,7 @@ namespace OverhaulMod.UI
                 return;
 
             string path = DataRepository.Instance.GetFullPath($"ChallengeData{item.ItemID}", false);
-            ModUIUtils.MessagePopup(true, "Reset progress?", "This action cannot be undone.", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, "Reset progress?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 if (File.Exists(path))
                     try

@@ -44,7 +44,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(1).text = obj.Name;
                 moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete {obj.Name}?", "This action cannot be undone", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"Delete {obj.Name}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
                         if (behaviour)

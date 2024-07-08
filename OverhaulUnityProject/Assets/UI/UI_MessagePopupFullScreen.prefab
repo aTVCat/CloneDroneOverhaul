@@ -396,6 +396,7 @@ MonoBehaviour:
   - {fileID: 7347013328333231773}
   - {fileID: 3883609696474741274}
   - {fileID: 1157125117649540422}
+  - {fileID: 2558620276248313286}
 --- !u!222 &4068547431724709869
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1204,6 +1205,12 @@ RectTransform:
 --- !u!224 &7130812956385880957 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2460295540619242411, guid: 339cbba86aa04d441bcc6969fbf247f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 4670520164682580182}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2558620276248313286 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7157080510426004752, guid: 339cbba86aa04d441bcc6969fbf247f2,
     type: 3}
   m_PrefabInstance: {fileID: 4670520164682580182}
   m_PrefabAsset: {fileID: 0}
