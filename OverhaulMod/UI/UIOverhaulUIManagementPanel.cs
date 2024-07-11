@@ -85,7 +85,7 @@ namespace OverhaulMod.UI
             if (m_instantiatedToggles.IsNullOrEmpty())
                 return;
 
-            ModUIUtils.MessagePopup(true, "Enable all modded UIs?", "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_configure_overhaul_mod_uis_header_enable_all_modded_uis"), "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 foreach (Toggle toggle in m_instantiatedToggles)
                     toggle.isOn = true;
@@ -97,7 +97,7 @@ namespace OverhaulMod.UI
             if (m_instantiatedToggles.IsNullOrEmpty())
                 return;
 
-            ModUIUtils.MessagePopup(true, "Disable all modded UIs?", "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_configure_overhaul_mod_uis_header_disable_all_modded_uis"), "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 foreach (Toggle toggle in m_instantiatedToggles)
                     toggle.isOn = false;

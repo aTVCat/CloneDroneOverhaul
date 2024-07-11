@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
 
         public void SetContents(string keyBindName, KeyCode defaultKey)
         {
-            m_header.text = $"Set key bind for \"{keyBindName}\"";
+            m_header.text = $"{LocalizationManager.Instance.GetTranslatedString("set_keybind_for")} \"{keyBindName}\"";
             m_defaultKey = defaultKey;
             StartWaitingUser();
         }

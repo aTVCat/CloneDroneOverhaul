@@ -260,7 +260,7 @@ namespace OverhaulMod.UI
                 string userName = ModBotSignInUI._userName;
                 if (!userName.IsNullOrEmpty())
                 {
-                    m_modBotLogonText.text = $"Logged as: {userName.AddColor(Color.white)}";
+                    m_modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
                     m_modBotLogonText.enabled = true;
                     m_modBotLogInButton.gameObject.SetActive(false);
                 }

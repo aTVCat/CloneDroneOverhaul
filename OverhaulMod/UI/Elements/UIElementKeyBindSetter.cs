@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
 
         public void OnSetBindButtonClicked()
         {
-            ModUIUtils.KeyBinder(name, defaultKey, delegate (KeyCode kc)
+            ModUIUtils.KeyBinder(m_description.text, defaultKey, delegate (KeyCode kc)
             {
                 if (kc == (KeyCode)(-1))
                     return;
