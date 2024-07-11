@@ -3320,6 +3320,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3537510358457434719}
     m_Modifications:
+    - target: {fileID: 1320128759187966511, guid: 5483c591f698e984bb77d21ccdec902e,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1933634681037471718, guid: 5483c591f698e984bb77d21ccdec902e,
         type: 3}
       propertyPath: m_LocalPosition.x

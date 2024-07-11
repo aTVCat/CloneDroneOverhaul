@@ -129,13 +129,14 @@ namespace OverhaulMod.UI
             foreach (ContentInfo content in list)
             {
                 string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
+                string displayName = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
 
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
+                moddedObject.GetObject<Text>(0).text = displayName;
                 moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} {content.DisplayName}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} {displayName}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         if (moddedObject && moddedObject.gameObject)
                         {

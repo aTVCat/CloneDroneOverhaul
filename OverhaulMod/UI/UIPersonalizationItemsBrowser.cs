@@ -62,6 +62,8 @@ namespace OverhaulMod.UI
         private readonly ModdedObject m_textDisplay;
         [UIElement("UtilsPanel", false)]
         private readonly ModdedObject m_utilsPanel;
+        [UIElement("BottomPanel", false)]
+        private readonly ModdedObject m_bottomPanel;
         [UIElement("Content")]
         private readonly Transform m_container;
         [UIElement("Content")]
@@ -457,6 +459,18 @@ namespace OverhaulMod.UI
                     if (i % 15 == 0)
                         yield return null;
                 }
+
+                ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
+                bottomPanel.gameObject.SetActive(true);
+                Button editorButton = bottomPanel.GetObject<Button>(0);
+                editorButton.onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, "Enter Customization editor?", "You'll leave from current match", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    {
+                        ModCore.EnterCustomizationEditor = true;
+                        SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+                    });
+                });
             }
 
             OnSearchBoxChanged(m_searchBox.text);

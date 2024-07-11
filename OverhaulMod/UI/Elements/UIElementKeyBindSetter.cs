@@ -19,6 +19,9 @@ namespace OverhaulMod.UI
         [UIElement("SetDefaultBindButton")]
         private readonly Button m_setDefaultBindButton;
 
+        [UIElement("Description")]
+        private readonly Text m_description;
+
         private KeyCode m_key;
         public KeyCode key
         {
@@ -52,6 +55,11 @@ namespace OverhaulMod.UI
         public void OnSetDefaultButtonClicked()
         {
             key = defaultKey;
+        }
+
+        public void SetDescription(string text)
+        {
+            m_description.text = text;
         }
 
         [Serializable]

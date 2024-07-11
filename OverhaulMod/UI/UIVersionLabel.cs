@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
         {
             get
             {
-                return ShowLabel && !ModCache.photoManager.IsInPhotoMode();
+                return ShowLabel && !GameModeManager.IsInLevelEditor() && !ModCache.photoManager.IsInPhotoMode();
             }
         }
 

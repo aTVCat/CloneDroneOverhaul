@@ -26,6 +26,8 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
         public static bool ShowSpeakerName;
 
+        public static bool EnterCustomizationEditor;
+
         public static event Action GameInitialized;
         public static event Action<bool> ModStateChanged;
         public static event Action<Camera, Camera> OnCameraSwitched;
@@ -212,6 +214,13 @@ namespace OverhaulMod
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
+
+            if (EnterCustomizationEditor)
+            {
+                EnterCustomizationEditor = false;
+                if(PersonalizationEditorManager.Instance)
+                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
+            }
         }
 
         public override void OnModLoaded()

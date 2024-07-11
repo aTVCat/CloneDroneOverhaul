@@ -81,6 +81,12 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButton")]
         private readonly Button m_updateButton;
 
+        [UIElement("LBSMessage", false)]
+        private readonly GameObject m_battleRoyaleMessage;
+
+        [UIElement("EndlessMessage", false)]
+        private readonly GameObject m_endlessModeMessage;
+
         [UIElement("FavouriteGlow", false)]
         private readonly GameObject m_favoriteButtonGlowObject;
 
@@ -308,6 +314,9 @@ namespace OverhaulMod.UI
                 m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
             else
                 m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+
+            m_battleRoyaleMessage.SetActive(workshopItem.IsLastBotStandingLevel());
+            m_endlessModeMessage.SetActive(workshopItem.IsEndlessLevel());
 
             m_itemLink = $"https://steamcommunity.com/sharedfiles/filedetails/?id={workshopItem.ItemID}";
             m_authorProfileLink = $"https://steamcommunity.com/profiles/{workshopItem.AuthorID}";

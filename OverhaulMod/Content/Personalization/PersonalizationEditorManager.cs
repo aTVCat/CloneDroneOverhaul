@@ -109,9 +109,9 @@ namespace OverhaulMod.Content.Personalization
             return GameFlowManager.Instance._gameMode == (GameMode)2500;
         }
 
-        public void StartEditorGameMode()
+        public void StartEditorGameMode(bool noTransition = false)
         {
-            if (!TransitionManager.OverhaulNonSceneTransitions)
+            if (noTransition || !TransitionManager.OverhaulNonSceneTransitions)
             {
                 _ = base.StartCoroutine(startEditorGameModeCoroutine(false));
                 return;
@@ -124,6 +124,7 @@ namespace OverhaulMod.Content.Personalization
             if (useTransitionManager)
                 yield return new WaitForSecondsRealtime(0.25f);
 
+            yield return null;
             m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
@@ -141,12 +142,6 @@ namespace OverhaulMod.Content.Personalization
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 UIPersonalizationEditor editorUi = ModUIConstants.ShowPersonalizationEditorUI();
-
-                GameObject cameraObject = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab.gameObject);
-                cameraObject.tag = "MainCamera";
-                cameraObject.transform.position = new Vector3(-2.5f, 3f, 3f);
-                cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
-                _ = cameraObject.AddComponent<PersonalizationEditorCamera>();
 
                 LevelEditorLevelData levelEditorLevelData = null;
                 try
@@ -372,6 +367,12 @@ namespace OverhaulMod.Content.Personalization
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
             SpawnBot();
             GlobalEventManager.Instance.Dispatch(EDITOR_STARTED_EVENT);
+
+            GameObject cameraObject = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab.gameObject);
+            cameraObject.tag = "MainCamera";
+            cameraObject.transform.position = new Vector3(-2.5f, 3f, 3f);
+            cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
+            _ = cameraObject.AddComponent<PersonalizationEditorCamera>();
 
             if (useTransitionManager)
             {

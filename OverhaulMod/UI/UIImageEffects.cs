@@ -43,6 +43,7 @@ namespace OverhaulMod.UI
         {
             base.Update();
 
+            bool isNotInLevelEditor = !GameModeManager.IsInLevelEditor();
             bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
 
             float v = m_timeLeftToSwitchTexture - Time.unscaledDeltaTime;
@@ -52,8 +53,8 @@ namespace OverhaulMod.UI
             m_timeLeftToSwitchTexture = 0.034f;
 
             bool hasCamera = CameraManager.Instance.mainCamera;
-            bool enableVignette = hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : EnableVignette);
-            bool enableDithering = hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : EnableDithering) && ditheringTextures != null;
+            bool enableVignette = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : EnableVignette);
+            bool enableDithering = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : EnableDithering) && ditheringTextures != null;
 
             m_vignetteImage.enabled = enableVignette;
             m_ditheringImage.enabled = enableDithering;

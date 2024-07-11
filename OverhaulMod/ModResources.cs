@@ -2,66 +2,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod
 {
     public class ModResources : Singleton<ModResources>
     {
-        internal const string ASSET_BUNDLES_FOLDER = "assets/assetBundles/";
+        internal const string ASSET_BUNDLES_FOLDER = "assets/";
 
-        private static Dictionary<string, Dictionary<string, UnityEngine.Object>> s_assets;
+        private static readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> s_assets = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
 
-        private static Dictionary<string, AssetBundle> s_bundles;
+        private static readonly Dictionary<string, AssetBundle> s_bundles = new Dictionary<string, AssetBundle>();
 
-        private static List<string> s_loadingBundles;
+        private static readonly List<string> s_loadingBundles = new List<string>();
 
-        private static List<string> s_loadingAssets;
-
-        public int loadedAssetBundlesCount
-        {
-            get
-            {
-                return s_assets.Count;
-            }
-        }
-
-        public int loadedAssetsCount
-        {
-            get
-            {
-                int count = 0;
-                foreach (string key in s_assets.Keys)
-                {
-                    count += s_assets[key].Count;
-                }
-                return count;
-            }
-        }
-
-        public override void Awake()
-        {
-            base.Awake();
-
-            if (s_assets == null)
-                s_assets = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
-            if (s_bundles == null)
-                s_bundles = new Dictionary<string, AssetBundle>();
-            if (s_loadingBundles == null)
-                s_loadingBundles = new List<string>();
-            if (s_loadingAssets == null)
-                s_loadingAssets = new List<string>();
-
-            /*
-            foreach (AssetBundle b in AssetBundle.GetAllLoadedAssetBundles())
-            {
-                if (!s_bundles.ContainsKey(b.name))
-                    s_bundles.Add(b.name, b);
-
-                if (!s_assets.ContainsKey(b.name))
-                    s_assets.Add(b.name, new Dictionary<string, UnityEngine.Object>());
-            }*/
-        }
+        private static readonly List<string> s_loadingAssets = new List<string>();
 
         private void OnDestroy()
         {
@@ -104,7 +61,7 @@ namespace OverhaulMod
         {
             if (!IsBundleLoaded(assetBundle))
             {
-                string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+                string bundleName = startPath == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, assetBundle) : Path.Combine(startPath, assetBundle);
                 cacheAssetBundle(assetBundle, AssetBundle.LoadFromFile(bundleName));
             }
 
@@ -138,7 +95,7 @@ namespace OverhaulMod
 
         public AssetBundle LoadBundle(string assetBundle, string startPath = null)
         {
-            string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+            string bundleName = startPath == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, assetBundle) : Path.Combine(startPath, assetBundle);
             AssetBundle bundle = AssetBundle.LoadFromFile(bundleName);
             if (!IsBundleLoaded(assetBundle))
                 cacheAssetBundle(assetBundle, bundle);
@@ -147,7 +104,7 @@ namespace OverhaulMod
 
         public void LoadBundleAsync(string assetBundle, Action<AssetBundle> successCallback, Action<string> errorCallback, string startPath = null)
         {
-            string bundlePath = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+            string bundlePath = startPath == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, assetBundle) : Path.Combine(startPath, assetBundle);
             if (IsBundleLoaded(assetBundle))
             {
                 successCallback?.Invoke(GetBundle(assetBundle));
@@ -186,7 +143,7 @@ namespace OverhaulMod
         private IEnumerator loadAssetAsyncCoroutine(string assetBundle, string objectName, Type assetType, Action<UnityEngine.Object> callback, Action<string> errorCallback, string startPath = null)
         {
             string errorString = null;
-            string bundleName = startPath == null ? ModCore.folder + ASSET_BUNDLES_FOLDER + assetBundle : startPath + assetBundle;
+            string bundleName = startPath == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, assetBundle) : Path.Combine(startPath, assetBundle);
             bool bundleLoadDone = false;
             AssetBundle bundle = null;
 
@@ -336,19 +293,9 @@ namespace OverhaulMod
             _ = s_bundles.Remove(assetBundle);
         }
 
-        public override string ToString()
-        {
-            return $"ModResources, loaded bundles/assets: {loadedAssetBundlesCount}/{loadedAssetsCount}";
-        }
-
         public static T Load<T>(string assetBundle, string objectName, string startPath = null) where T : UnityEngine.Object
         {
             return Instance.LoadAsset<T>(assetBundle, objectName, startPath);
-        }
-
-        public static Sprite Sprite(string objectName)
-        {
-            return Instance.LoadAsset<Sprite>(AssetBundleConstants.UI, objectName);
         }
     }
 }

@@ -1229,8 +1229,6 @@ namespace OverhaulMod.UI
 
             public UIElementKeyBindSetter KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
             {
-                _ = Header3(name);
-
                 ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
 
@@ -1238,6 +1236,7 @@ namespace OverhaulMod.UI
                 elementKeyBind.InitializeElement();
                 elementKeyBind.key = keyCode;
                 elementKeyBind.defaultKey = defaultKey;
+                elementKeyBind.SetDescription(LocalizationManager.Instance.GetTranslatedString($"settings_subheader_{name.ToLower().Replace(' ', '_')}"));
                 elementKeyBind.onValueChanged.AddListener(new UnityAction<KeyCode>(onChanged));
 
                 return elementKeyBind;
