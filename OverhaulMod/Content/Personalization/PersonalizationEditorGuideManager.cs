@@ -10,7 +10,7 @@ namespace OverhaulMod.Content.Personalization
         {
             m_guides = new List<PersonalizationEditorGuide>()
             {
-                new PersonalizationEditorGuide("test", new List<PersonalizationEditorGuideStage>()
+                new PersonalizationEditorGuide("getting_started", new List<PersonalizationEditorGuideStage>()
                 {
                     new PersonalizationEditorGuideStage("Introduction", "This guide will help you in making a simple weapon skin.\n\n(Everything is still in development, so there might be mistakes)", null),
                     new PersonalizationEditorGuideStage("Introduction", "Click on \"File\" at the top left, then on \"Open\".\nClick on \"New\", name your item then click on \"Done\".", null),
@@ -32,6 +32,9 @@ namespace OverhaulMod.Content.Personalization
                     new PersonalizationEditorGuideStage("Finishing", "After you consider your item finished, you can upload it by pressing \"File\" button and selecting \"Upload\"", null),
                     new PersonalizationEditorGuideStage("Finishing", "It will take a while until your item will be verified. You can check for customization assets updates that might contain your item verified so everyone will be able to use it.\nThis can be done via player customization menu (\"Updates\" button at bottom left)", null),
                 })
+                {
+                    IsTranslated = true
+                }
             };
         }
 

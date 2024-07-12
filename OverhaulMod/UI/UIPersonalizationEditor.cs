@@ -105,7 +105,8 @@ namespace OverhaulMod.UI
 
             s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage)
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
+                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", DropdownGuide),
             };
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", PersonalizationEditorManager.Instance.TutorialVideo));
             s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked));
@@ -114,7 +115,7 @@ namespace OverhaulMod.UI
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                GuideWindow.StartGuide(PersonalizationEditorGuideManager.Instance.GetGuide("test"));
+                Guide();
             }, 3f);
         }
 
@@ -143,6 +144,17 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
+        }
+
+        public void DropdownGuide()
+        {
+            Dropdown.Hide();
+            Guide();
+        }
+
+        public void Guide()
+        {
+            GuideWindow.StartGuide(PersonalizationEditorGuideManager.Instance.GetGuide("getting_started"));
         }
 
         public void ShowNotification(string header, string text, Color baseColor, float duration = 7f)

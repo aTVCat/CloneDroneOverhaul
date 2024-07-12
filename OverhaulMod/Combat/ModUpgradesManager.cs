@@ -1,4 +1,5 @@
-﻿using ModLibrary;
+﻿using InternalModBot;
+using ModLibrary;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,29 +75,29 @@ namespace OverhaulMod.Combat
 
         private void createUpgrades()
         {
-            UpgradeDescription scythe = CreateUpgrade<UpgradeDescription>("Scythe unlock",
-                "You get a scythe!",
+            UpgradeDescription scythe = CreateUpgrade<UpgradeDescription>("scythe_unlock",
+                "scythe_unlock_desc",
                 SCYTHE_UNLOCK_UPGRADE,
                 1,
                 AssetBundleConstants.UPGRADES,
                 "Scythe-128x128");
-            _ = CreateUpgrade<UpgradeDescription>("Fire scythe",
-                  "Your scythe is ON FIRE!",
+            _ = CreateUpgrade<UpgradeDescription>("fire_scythe",
+                  "fire_scythe_desc",
                   SCYTHE_FIRE_UPGRADE,
                   1,
                   AssetBundleConstants.UPGRADES,
                   "FireScythe-128x128",
                   scythe);
-            _ = CreateUpgrade<UpgradeDescription>("Sharp blade",
-                  "Your scythe phases through swords!",
+            _ = CreateUpgrade<UpgradeDescription>("sharp_blade",
+                  "sharp_blade_desc",
                   SCYTHE_BLADE_UPGRADE,
                   1,
                   AssetBundleConstants.UPGRADES,
                   "ScytheBlade-128x128",
                   scythe);
 
-            _ = CreateUpgrade<UpgradeDescription>("Double jump",
-                "Do 2 jumps!",
+            _ = CreateUpgrade<UpgradeDescription>("double_jump",
+                "double_jump_desc",
                 DOUBLE_JUMP_UPGRADE,
                 1,
                 AssetBundleConstants.UPGRADES,
@@ -210,9 +211,22 @@ namespace OverhaulMod.Combat
         {
             Mod mod = ModCore.instance;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
-            foreach (UpgradeDescription upgradeDescription in m_upgrades)
-                if (!upgradeManager.HasUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level))
-                    UpgradeManager.Instance.AddUpgrade(upgradeDescription, mod);
+            foreach (UpgradeDescription upgrade in m_upgrades)
+                if (!upgradeManager.HasUpgrade(upgrade.UpgradeType, upgrade.Level))
+                {
+                    if (!upgradeManager.IsUpgradeTypeAndLevelUsed(upgrade.UpgradeType, upgrade.Level))
+                        upgradeManager.UpgradeDescriptions.Add(upgrade);
+
+                    UpgradePagesManager.AddUpgrade(upgrade.UpgradeType, upgrade.Level, mod.ModInfo.UniqueID);
+                    if (upgrade is AbilityUpgrade)
+                    {
+                        Dictionary<UpgradeType, bool> abilityUpgradeTypes = upgradeManager._abilityUpgradeTypes;
+                        if (abilityUpgradeTypes != null)
+                        {
+                            abilityUpgradeTypes[upgrade.UpgradeType] = true;
+                        }
+                    }
+                }
         }
 
         public T CreateUpgrade<T>(string displayName, string description, UpgradeType upgradeType, int level = 1, string iconBundle = null, string iconAsset = null, UpgradeDescription r1 = null, UpgradeDescription r2 = null) where T : UpgradeDescription

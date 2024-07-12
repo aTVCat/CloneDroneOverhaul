@@ -94,7 +94,17 @@ namespace OverhaulMod.UI.Elements
                 SetTexts("Error", "This stage doesn't have any content (this is strange)");
                 return;
             }
-            SetTexts(guideStage.Header, guideStage.Description);
+
+            if (m_currentGuide.IsTranslated)
+            {
+                string header = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_header_{guideStage.Header.ToLower().Replace(' ', '_')}");
+                string description = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_text_page_{m_currentGuideStageIndex+1}");
+                SetTexts(header, description);
+            }
+            else
+            {
+                SetTexts(guideStage.Header, guideStage.Description);
+            }
 
             System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, UnityAction>> list = guideStage.Buttons;
             if (!list.IsNullOrEmpty())

@@ -136,7 +136,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(0).text = displayName;
                 moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} {displayName}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} \"{displayName}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         if (moddedObject && moddedObject.gameObject)
                         {

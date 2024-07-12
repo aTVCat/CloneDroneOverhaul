@@ -100,7 +100,7 @@ namespace OverhaulMod.UI
             upgradeUI.ExitButton.SetActive(false);
             upgradeUI.StoryBackButton.SetActive(false);
             upgradeUI.StoryConfirmButtonLabel.transform.parent.parent.gameObject.SetActive(false);
-            upgradeUI.StoryModeHumanLabel.text = "Select upgrades...";
+            upgradeUI.StoryModeHumanLabel.text = LocalizationManager.Instance.GetTranslatedString("Select upgrades...");
 
             isShowingUpgradeUI = true;
 

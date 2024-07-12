@@ -435,7 +435,7 @@ namespace OverhaulMod.UI
         {
             if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
             {
-                ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
                 return;
             }
 
@@ -456,7 +456,7 @@ namespace OverhaulMod.UI
         {
             if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
             {
-                ModUIUtils.MessagePopup(true, "Exit editor?", "Make sure you have saved your progress.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes, exit", "No", null, Application.Quit, null);
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, Application.Quit, null);
                 return;
             }
 

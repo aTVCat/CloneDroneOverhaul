@@ -99,8 +99,8 @@ namespace OverhaulMod.UI
 
         public void ShowSuccess()
         {
-            m_headerText.text = "No errors encountered.";
-            m_descriptionText.text = "Multiplayer should work fine for you.";
+            m_headerText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine");
+            m_descriptionText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine_desc");
             m_rulesButton.gameObject.SetActive(false);
             SetColor(m_colors[2].Item1, m_colors[2].Item2, m_colors[2].Item3);
         }

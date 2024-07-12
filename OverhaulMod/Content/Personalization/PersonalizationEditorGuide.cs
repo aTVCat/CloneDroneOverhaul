@@ -8,6 +8,8 @@ namespace OverhaulMod.Content.Personalization
 
         public List<PersonalizationEditorGuideStage> Stages;
 
+        public bool IsTranslated;
+
         public PersonalizationEditorGuide()
         {
 
