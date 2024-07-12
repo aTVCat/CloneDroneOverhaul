@@ -1,5 +1,4 @@
-﻿using OverhaulMod;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -148,9 +147,9 @@ namespace PicaVoxel
                                     Value = 128
                                 };
                             }
-                            catch (Exception)
+                            catch (Exception exc)
                             {
-                                Debug.Log(v.x + " " + v.y + " " + v.z);
+                                Debug.LogWarning($"{v.x} {v.y} {v.z} ({exc.GetType()})");
                             }
 
                         }

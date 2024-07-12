@@ -19,6 +19,10 @@ namespace OverhaulMod.UI
         [UIElement("CloseUpgradeUIButton", false)]
         private readonly Button m_closeUpgradeUIButton;
 
+        [UIElementAction(nameof(OnAutoActivationToggled))]
+        [UIElement("ActivateOnMatchStartToggle")]
+        private readonly Toggle m_autoActivationToggle;
+
         [KeyBindSetter(KeyCode.U)]
         [UIElementAction(nameof(OnKeyBindChanged))]
         [UIElement("KeyBind")]
@@ -47,6 +51,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
+            m_autoActivationToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START);
         }
 
         public override void OnEnable()
@@ -66,6 +71,8 @@ namespace OverhaulMod.UI
 
             objectToShow = null;
             SetUpgradeUISiblingIndex(true);
+
+            ModSettingsDataManager.Instance.Save();
         }
 
         public void SetUpgradeUISiblingIndex(bool initial)
@@ -114,6 +121,11 @@ namespace OverhaulMod.UI
 
             m_panel.SetActive(true);
             m_closeUpgradeUIButton.gameObject.SetActive(false);
+        }
+
+        public void OnAutoActivationToggled(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, value, true);
         }
 
         public void OnKeyBindChanged(KeyCode keyCode)

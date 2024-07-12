@@ -68,8 +68,8 @@ namespace OverhaulMod.UI
                 }
 
                 _ = stringBuilder.Append(toAppend);
-                if(index < list.Count - 1)
-                    stringBuilder.Append(", ");
+                if (index < list.Count - 1)
+                    _ = stringBuilder.Append(", ");
 
                 index++;
             }

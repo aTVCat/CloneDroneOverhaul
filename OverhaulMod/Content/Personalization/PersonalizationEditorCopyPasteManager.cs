@@ -1,9 +1,5 @@
 ﻿using OverhaulMod.Engine;
-using OverhaulMod.Utils;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Content.Personalization
 {

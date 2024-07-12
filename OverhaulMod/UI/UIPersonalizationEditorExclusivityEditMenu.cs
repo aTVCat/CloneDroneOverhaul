@@ -108,7 +108,7 @@ namespace OverhaulMod.UI
 
         public void OnAddSelfButtonClicked()
         {
-            string value = SteamFriends.GetPersonaName();
+            _ = SteamFriends.GetPersonaName();
 
             List<PersonalizationItemLockInfo> list = referenceList;
             if (list == null)

@@ -384,7 +384,7 @@ namespace OverhaulMod.UI
 
         public void OnUpdatesButtonClicked()
         {
-            ModUIConstants.ShowUpdatesWindow();
+            _ = ModUIConstants.ShowUpdatesWindow();
         }
 
         public void OnAdvancementsButtonClicked()

@@ -63,24 +63,24 @@ namespace OverhaulMod.UI
 
         public void OnExportAllUpgradesButtonClicked()
         {
-            var list = UpgradeManager.Instance.UpgradeDescriptions;
-            var lastUd = list.Last();
+            System.Collections.Generic.List<UpgradeDescription> list = UpgradeManager.Instance.UpgradeDescriptions;
+            UpgradeDescription lastUd = list.Last();
 
             StringBuilder stringBuilder = new StringBuilder();
-            foreach(var ud in list)
+            foreach (UpgradeDescription ud in list)
             {
-                stringBuilder.Append(ud.UpgradeName);
-                stringBuilder.Append(" (");
-                stringBuilder.Append(ud.UpgradeType);
-                stringBuilder.Append(", ");
-                stringBuilder.Append(ud.Level);
-                stringBuilder.Append(")");
+                _ = stringBuilder.Append(ud.UpgradeName);
+                _ = stringBuilder.Append(" (");
+                _ = stringBuilder.Append(ud.UpgradeType);
+                _ = stringBuilder.Append(", ");
+                _ = stringBuilder.Append(ud.Level);
+                _ = stringBuilder.Append(")");
                 if (ud != lastUd)
-                    stringBuilder.Append("\r\n");
+                    _ = stringBuilder.Append("\r\n");
             }
 
             ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
-            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
         }
     }
 }

@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
 
         public void OnPasteColorsButtonClicked()
         {
-            m_pasteColorsButton.interactable = false; 
+            m_pasteColorsButton.interactable = false;
 
             List<ColorPairFloat> originalColors = m_colorPairs;
             Dictionary<string, FavoriteColorSettings> originalFavoriteColors = m_favoriteColorSettings;
@@ -115,7 +115,7 @@ namespace OverhaulMod.UI
             }
 
             originalFavoriteColors.Clear();
-            foreach(var kv in favoriteColors)
+            foreach (KeyValuePair<string, FavoriteColorSettings> kv in favoriteColors)
                 originalFavoriteColors.Add(kv.Key, (FavoriteColorSettings)kv.Value.MemberwiseClone());
 
             onColorChangedCallback(null);

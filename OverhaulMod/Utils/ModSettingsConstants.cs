@@ -295,5 +295,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.CameraFOVController"/>
         /// </summary>
         public const string ENABLE_FOV_OVERRIDE = "EnableFOVOverride";
+
+        /// <summary>
+        /// <see cref="Engine.AutoBuildManager"/>
+        /// </summary>
+        public const string AUTO_BUILD_ACTIVATION_ON_MATCH_START = "AutoBuildActivationOnMatchStart";
     }
 }

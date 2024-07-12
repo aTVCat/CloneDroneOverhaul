@@ -14,7 +14,7 @@ namespace OverhaulMod.Utils
 
         public static List<T> CloneList<T>(this List<T> list)
         {
-            if(list ==null )
+            if (list == null)
                 return null;
 
             List<T> newList = new List<T>();
@@ -30,7 +30,7 @@ namespace OverhaulMod.Utils
                 return null;
 
             Dictionary<T1, T2> newDictionary = new Dictionary<T1, T2>();
-            foreach (var kv in dictionary)
+            foreach (KeyValuePair<T1, T2> kv in dictionary)
                 newDictionary.Add((T1)kv.Key.MemberwiseClone(), (T2)kv.Value.MemberwiseClone());
 
             return newDictionary;

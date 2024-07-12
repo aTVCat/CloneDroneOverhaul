@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Content;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System.Collections;

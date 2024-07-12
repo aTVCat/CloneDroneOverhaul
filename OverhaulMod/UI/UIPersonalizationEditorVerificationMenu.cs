@@ -40,7 +40,7 @@ namespace OverhaulMod.UI
 
         public void RefreshButtonAndStatusText(PersonalizationItemInfo personalizationItemInfo)
         {
-            if(!personalizationItemInfo.IsSentForVerification && !personalizationItemInfo.IsVerified)
+            if (!personalizationItemInfo.IsSentForVerification && !personalizationItemInfo.IsVerified)
             {
                 m_statusText.text = "You haven't uploaded this item yet.";
             }
@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
             PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationItemInfo, delegate
             {
                 personalizationItemInfo.IsSentForVerification = true;
-                personalizationEditorManager.SaveItem(out _);
+                _ = personalizationEditorManager.SaveItem(out _);
 
                 m_exitButton.interactable = true;
                 m_loadingIndicator.SetActive(false);

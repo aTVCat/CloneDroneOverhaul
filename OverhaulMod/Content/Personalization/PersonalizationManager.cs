@@ -161,7 +161,7 @@ namespace OverhaulMod.Content.Personalization
                     itemList.Load();
                     GlobalEventManager.Instance.Dispatch(CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT);
                 }
-                catch (Exception exc)
+                catch (Exception)
                 {
                     callback?.Invoke(false);
                     return;

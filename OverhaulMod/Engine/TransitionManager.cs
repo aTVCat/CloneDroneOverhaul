@@ -85,13 +85,12 @@ namespace OverhaulMod.Engine
 
                 if (!flag)
                     yield break;
-
                 try
                 {
                     BoltLauncher.Shutdown();
                     yield break;
                 }
-                catch (Exception arg)
+                catch (Exception)
                 {
                     sceneTransitionManager._isDisconnecting = false;
                     SceneManager.LoadScene("Gameplay");

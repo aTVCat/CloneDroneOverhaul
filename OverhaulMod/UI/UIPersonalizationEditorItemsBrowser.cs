@@ -128,7 +128,7 @@ namespace OverhaulMod.UI
                     });
 
                     string text = item.Name.ToLower();
-                    while(m_cachedInstantiatedDisplays.ContainsKey(text))
+                    while (m_cachedInstantiatedDisplays.ContainsKey(text))
                         text += "_1";
 
                     m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
@@ -213,7 +213,7 @@ namespace OverhaulMod.UI
                 {
                     string folderName = value.Replace(" ", string.Empty);
                     string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
-                    Directory.CreateDirectory(folderPath);
+                    _ = Directory.CreateDirectory(folderPath);
 
                     FastZip fastZip = new FastZip();
                     fastZip.ExtractZip(path, folderPath, null);

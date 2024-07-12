@@ -229,7 +229,7 @@ namespace OverhaulMod.Content
             string backupFilePath = Path.Combine(modFolder, "ModInfo.json.bak");
             if (File.Exists(filePath))
             {
-                if(File.Exists(backupFilePath))
+                if (File.Exists(backupFilePath))
                     File.Delete(backupFilePath);
 
                 File.Move(filePath, backupFilePath);

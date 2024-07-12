@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
 
         private void OnDestroy()
         {
-            InstantiatedRealisticLightUserSettings.Remove(this);
+            _ = InstantiatedRealisticLightUserSettings.Remove(this);
         }
 
         private void Start()
@@ -93,7 +93,7 @@ namespace OverhaulMod.Engine
 
         public static RealisticLightUserSettings GetActiveSettings()
         {
-            foreach(var settings in InstantiatedRealisticLightUserSettings)
+            foreach (RealisticLightUserSettings settings in InstantiatedRealisticLightUserSettings)
             {
                 if (settings && settings.IsActive())
                     return settings;

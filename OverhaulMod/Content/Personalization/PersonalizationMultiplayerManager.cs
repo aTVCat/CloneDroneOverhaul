@@ -1,10 +1,6 @@
-﻿using OverhaulMod.Engine;
-using OverhaulMod.Utils;
-using System;
+﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -41,8 +37,8 @@ namespace OverhaulMod.Content.Personalization
             string shieldSkin = normalizeId(PersonalizationController.ShieldSkin);
 
             StringBuilder stringBuilder = m_stringBuilder;
-            stringBuilder.Clear();
-            stringBuilder.Append(getPrefix(sendForRecentlyConnectedPlayer));
+            _ = stringBuilder.Clear();
+            _ = stringBuilder.Append(getPrefix(sendForRecentlyConnectedPlayer));
             appendValue(stringBuilder, ModUserInfo.localPlayerPlayFabID, false);
             appendValue(stringBuilder, ModUserInfo.localPlayerSteamID.ToString(), false);
             appendValue(stringBuilder, s_dataVersion, false);
@@ -52,7 +48,7 @@ namespace OverhaulMod.Content.Personalization
             appendValue(stringBuilder, spearSkin, false);
             appendValue(stringBuilder, shieldSkin, true);
 
-            GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
+            _ = GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
         }
 
         public void OnEvent(GenericStringForModdingEvent evnt)
@@ -82,11 +78,16 @@ namespace OverhaulMod.Content.Personalization
 
         private void registerPlayerInfo(string rawData)
         {
-            Debug.Log(rawData);
-            if(rawData.Length > 16)
+            bool debug = ModBuildInfo.debug;
+
+            if(debug)
+                Debug.Log(rawData);
+
+            if (rawData.Length > 16)
             {
                 string playFabId = rawData.Remove(16);
-                Debug.Log(playFabId);
+                if (debug)
+                    Debug.Log(playFabId);
                 if (m_playerInfos.ContainsKey(playFabId))
                 {
                     m_playerInfos[playFabId].SetData(rawData);
@@ -101,9 +102,9 @@ namespace OverhaulMod.Content.Personalization
 
         private void appendValue(StringBuilder stringBuilder, string value, bool isLast)
         {
-            stringBuilder.Append(value);
+            _ = stringBuilder.Append(value);
             if (!isLast)
-                stringBuilder.Append(Separator);
+                _ = stringBuilder.Append(Separator);
         }
 
         private string getPrefix(bool value, bool useCache = true)

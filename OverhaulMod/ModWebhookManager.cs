@@ -211,7 +211,7 @@ namespace OverhaulMod
                     _ = await task;
                     if (task.Exception != null)
                     {
-                        Debug.Log(task.Exception);
+                        Debug.LogWarning(task.Exception);
                         errorCallback?.Invoke(task.Exception.ToString());
                     }
                     else
@@ -222,7 +222,7 @@ namespace OverhaulMod
             }
             catch (Exception exc)
             {
-                Debug.Log(exc);
+                Debug.LogWarning(exc);
                 errorCallback?.Invoke(exc.ToString());
             }
         }
@@ -237,7 +237,7 @@ namespace OverhaulMod
                     _ = await task;
                     if (task.Exception != null)
                     {
-                        Debug.Log(task.Exception);
+                        Debug.LogWarning(task.Exception);
                         errorCallback?.Invoke(task.Exception.ToString());
                     }
                     else
@@ -248,7 +248,7 @@ namespace OverhaulMod
             }
             catch (Exception exc)
             {
-                Debug.Log(exc);
+                Debug.LogWarning(exc);
                 errorCallback?.Invoke(exc.ToString());
             }
         }

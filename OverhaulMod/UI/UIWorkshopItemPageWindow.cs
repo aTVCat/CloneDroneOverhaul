@@ -248,8 +248,6 @@ namespace OverhaulMod.UI
                 float xbPositive = -xb;
                 float toAdd = d * (1f / Mathf.Clamp(xbPositive, 100f, 600f)) * EaseMultiplier;
 
-                Debug.Log(toAdd);
-
                 if (m_tickerIsGoingLeft)
                 {
                     m_tickerProgress -= toAdd;

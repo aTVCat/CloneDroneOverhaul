@@ -58,7 +58,7 @@ namespace OverhaulMod.UI.Elements
 
             m_currentGuide = guide;
             m_currentGuideStageIndex = 0;
-            if(guide.Stages.IsNullOrEmpty())
+            if (guide.Stages.IsNullOrEmpty())
             {
                 SetTexts("Error", "This guide doesn't have any stages");
                 return;
@@ -76,8 +76,8 @@ namespace OverhaulMod.UI.Elements
 
         public void NextGuideStage()
         {
-            var list = m_currentGuide.Stages;
-            int index = m_currentGuideStageIndex+1;
+            System.Collections.Generic.List<PersonalizationEditorGuideStage> list = m_currentGuide.Stages;
+            int index = m_currentGuideStageIndex + 1;
             if (index >= list.Count)
                 return;
 
@@ -89,7 +89,7 @@ namespace OverhaulMod.UI.Elements
         {
             Clear();
 
-            if(guideStage == null)
+            if (guideStage == null)
             {
                 SetTexts("Error", "This stage doesn't have any content (this is strange)");
                 return;
@@ -134,7 +134,7 @@ namespace OverhaulMod.UI.Elements
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = text;
 
-            if(unityAction != null)
+            if (unityAction != null)
             {
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(unityAction);

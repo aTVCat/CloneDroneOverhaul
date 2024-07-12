@@ -10,6 +10,13 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.AUTO_BUILD_KEY_BIND, KeyCode.U)]
         public static KeyCode AutoBuildKeyBind;
 
+        [ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
+        public static bool AutoBuildActivationOnMatchStart;
+
+        private bool m_hasSelectedUpgradesForMatch;
+
+        private float m_timeLeftBeforeAutoActivationReset;
+
         public bool isInAutoBuildConfigurationMode
         {
             get;
@@ -33,6 +40,34 @@ namespace OverhaulMod.Engine
         {
             if (Input.GetKeyDown(AutoBuildKeyBind))
                 ApplyBuild();
+
+            if (m_hasSelectedUpgradesForMatch)
+            {
+                m_timeLeftBeforeAutoActivationReset -= Time.deltaTime;
+                if (m_timeLeftBeforeAutoActivationReset <= 0f)
+                    m_hasSelectedUpgradesForMatch = false;
+                else
+                    return;
+            }
+
+            if (!AutoBuildActivationOnMatchStart)
+                return;
+
+            BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
+            if (battleRoyaleManager)
+            {
+                UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+                if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
+                    return;
+
+                int secondsLeft = battleRoyaleManager.GetSecondsToGameStart();
+                if (!m_hasSelectedUpgradesForMatch && secondsLeft > 7 && secondsLeft < 10)
+                {
+                    m_hasSelectedUpgradesForMatch = true;
+                    m_timeLeftBeforeAutoActivationReset = 15f;
+                    ApplyBuild();
+                }
+            }
         }
 
         public void LoadBuildInfo()

@@ -218,7 +218,7 @@ namespace OverhaulMod
             if (EnterCustomizationEditor)
             {
                 EnterCustomizationEditor = false;
-                if(PersonalizationEditorManager.Instance)
+                if (PersonalizationEditorManager.Instance)
                     PersonalizationEditorManager.Instance.StartEditorGameMode(true);
             }
         }

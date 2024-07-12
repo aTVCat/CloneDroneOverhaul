@@ -104,7 +104,7 @@ namespace OverhaulMod.Engine
             CameraExposure = levelLightSettings.CameraExposure;
 
             RealisticLightUserSettings realisticLightUserSettings = levelLightSettings.GetComponent<RealisticLightUserSettings>();
-            if(realisticLightUserSettings && realisticLightUserSettings.EnableRealisticSkybox)
+            if (realisticLightUserSettings && realisticLightUserSettings.EnableRealisticSkybox)
             {
                 RealisticSkyboxIndex = realisticLightUserSettings.RealisticSkyBox;
                 return;

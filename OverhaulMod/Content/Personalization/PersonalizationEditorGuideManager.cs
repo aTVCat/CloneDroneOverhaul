@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -41,7 +37,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorGuide GetGuide(string name)
         {
-            foreach (var guide in m_guides)
+            foreach (PersonalizationEditorGuide guide in m_guides)
                 if (guide.Name == name)
                     return guide;
 

@@ -59,7 +59,7 @@ namespace OverhaulMod.Content.Personalization
                 if (!firstPersonMover || !firstPersonMover.IsAlive() || !m_hasInitialized || !m_isMultiplayer || !m_isPlayer)
                     return null;
 
-                if(m_playerInfo == null)
+                if (m_playerInfo == null)
                 {
                     m_playerInfo = PersonalizationMultiplayerManager.Instance.GetPlayInfo(owner.GetPlayFabID());
                 }
@@ -110,7 +110,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void OnEnable()
         {
-            if(m_hasStarted && !m_hasInitialized)
+            if (m_hasStarted && !m_hasInitialized)
             {
                 _ = base.StartCoroutine(initializeCoroutine(owner));
             }
@@ -137,7 +137,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             m_timeLeftToRefreshWeaponParts -= Time.unscaledDeltaTime;
-            if(m_timeLeftToRefreshWeaponParts <= 0f)
+            if (m_timeLeftToRefreshWeaponParts <= 0f)
             {
                 m_timeLeftToRefreshWeaponParts = 0.5f;
 
@@ -146,14 +146,14 @@ namespace OverhaulMod.Content.Personalization
                 bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
                 bool hasSpawnedSkinForWeapon = false;
-                foreach (var key in m_spawnedItems.Keys)
+                foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
                     if (key.Weapon == weaponType)
                         hasSpawnedSkinForWeapon = true;
 
                 if (!m_isMainPlayer && !noSkin && !hasSpawnedSkinForWeapon)
                 {
                     //Debug.Log("Spawned an item because we didnt earlier");
-                    SpawnItem(skin);
+                    _ = SpawnItem(skin);
                 }
 
                 SetWeaponPartsVisible(weaponType, noSkin || !hasSpawnedSkinForWeapon);
@@ -162,7 +162,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void onPlayerInfoUpdated(string playFabId)
         {
-            if(playFabId == owner.GetPlayFabID())
+            if (playFabId == owner.GetPlayFabID())
             {
                 SpawnEquippedSkinsNextFrame();
             }
@@ -277,7 +277,7 @@ namespace OverhaulMod.Content.Personalization
                 return null;
 
             PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, personalizationItemInfo));
-            if(!behaviour)
+            if (!behaviour)
                 return null;
 
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
@@ -450,7 +450,7 @@ namespace OverhaulMod.Content.Personalization
             if (!m_hasInitialized)
                 return null;
 
-            if(m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
+            if (m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
                 return GetWeaponSkin(weaponType);
 
             if (m_isEnemy || (m_isPlayer && !m_isMultiplayer))

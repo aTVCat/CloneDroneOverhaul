@@ -220,7 +220,7 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if(conditionDropdownValueToSet == -1)
+                if (conditionDropdownValueToSet == -1)
                 {
                     dropdown.options.Add(new DropdownWeaponVariantOptionData(visibilityController.enableIfWeaponVariant));
                     dropdown.RefreshShownValue();

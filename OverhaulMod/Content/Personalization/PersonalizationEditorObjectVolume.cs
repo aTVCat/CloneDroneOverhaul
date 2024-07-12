@@ -179,12 +179,12 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             m_aboutToRefreshVolume = true;
-            refreshVolumeCoroutine().Run();
+            _ = refreshVolumeCoroutine().Run();
         }
 
         private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while(!m_isDestroyed && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
+            while (!m_isDestroyed && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
                 yield return null;
 
             if (m_isDestroyed)
@@ -282,9 +282,11 @@ namespace OverhaulMod.Content.Personalization
                             Color colorB;
                             if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
                             {
-                                HSBColor hsbcolor = new HSBColor(favoriteColor);
-                                hsbcolor.s = favoriteColorSettings.SaturationMultiplier;
-                                hsbcolor.b = favoriteColorSettings.BrightnessMultiplier;
+                                HSBColor hsbcolor = new HSBColor(favoriteColor)
+                                {
+                                    s = favoriteColorSettings.SaturationMultiplier,
+                                    b = favoriteColorSettings.BrightnessMultiplier
+                                };
                                 colorB = hsbcolor.ToColor();
                                 colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
                             }
