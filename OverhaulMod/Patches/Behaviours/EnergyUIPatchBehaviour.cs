@@ -35,17 +35,6 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Patch()
         {
-            EnergyUI eui = energyUI;
-            Transform transform = eui.transform;
-            m_bg = transform.FindChildRecursive("FrameBG").gameObject;
-            m_barBGImage = transform.FindChildRecursive("BarBG").GetComponent<Image>();
-            m_barBGVanillaColor = m_barBGImage.color;
-            m_glowImage = transform.FindChildRecursive("GlowFill").GetComponent<Image>();
-            m_glowVanillaColor = m_glowImage.color;
-            m_cantJumpBG = transform.FindChildRecursive("CantJumpBG");
-
-            if (!transform.GetComponent<EnergyUIBehaviour>())
-                _ = transform.gameObject.AddComponent<EnergyUIBehaviour>();
         }
 
         public override void UnPatch()
@@ -63,6 +52,28 @@ namespace OverhaulMod.Patches.Behaviours
             EnergyUI component = energyUI;
             if (!component)
                 return;
+
+            Transform transform1 = component.transform;
+            if(!m_bg)
+                m_bg = transform1.FindChildRecursive("FrameBG").gameObject;
+
+            if(!m_barBGImage)
+                m_barBGImage = transform1.FindChildRecursive("BarBG").GetComponent<Image>();
+
+            if(m_barBGVanillaColor == default)
+                m_barBGVanillaColor = m_barBGImage.color;
+
+            if(!m_glowImage)
+                m_glowImage = transform1.FindChildRecursive("GlowFill").GetComponent<Image>();
+
+            if(m_barBGVanillaColor == default)
+                m_glowVanillaColor = m_glowImage.color;
+
+            if(!m_cantJumpBG)
+                m_cantJumpBG = transform1.FindChildRecursive("CantJumpBG");
+
+            if (!transform1.GetComponent<EnergyUIBehaviour>())
+                _ = transform1.gameObject.AddComponent<EnergyUIBehaviour>();
 
             GameObject errorText = component.InsufficientEnergyText?.gameObject;
             if (errorText)

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Engine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -102,6 +103,25 @@ namespace OverhaulMod.UI
         {
             PersonalizationEditorManager.Instance.previewPresetKey = (m_presetPreviewDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT);
+        }
+
+        public void SetPresetPreview(WeaponVariant weaponVariant)
+        {
+            var options = m_presetPreviewDropdown.options;
+
+            int i = 0;
+            foreach(var option in options)
+            {
+                if(option is DropdownWeaponVariantOptionData dropdownWeaponVariantOptionData && dropdownWeaponVariantOptionData.Value == weaponVariant)
+                {
+                    m_presetPreviewDropdown.value = i;
+                    return;
+                }
+                i++;
+            }
+
+            options.Add(new DropdownWeaponVariantOptionData(weaponVariant));
+            m_presetPreviewDropdown.value = options.Count - 1;
         }
     }
 }

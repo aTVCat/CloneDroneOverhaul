@@ -26,6 +26,10 @@ namespace OverhaulMod.Content.Personalization
 
         public const string PRESET_PREVIEW_CHANGED_EVENT = "PersonalizationEditorPresetPreviewChanged";
 
+        public readonly GameData GameData = new GameData();
+
+        private bool m_hasConfiguredGameData;
+
         private PersonalizationController m_currentPersonalizationController;
         public PersonalizationController currentPersonalizationController
         {
@@ -125,6 +129,23 @@ namespace OverhaulMod.Content.Personalization
                 yield return new WaitForSecondsRealtime(0.25f);
 
             yield return null;
+
+            if (!m_hasConfiguredGameData)
+            {
+                GameData gameData = GameData;
+                gameData.HumanFacts = HumanFactsManager.Instance.GetRandomFactSet();
+                gameData.PlayerUpgrades = new Dictionary<UpgradeType, int>()
+                {
+                    { UpgradeType.SwordUnlock, 1 },
+                    { UpgradeType.BowUnlock, 1 },
+                    { UpgradeType.Hammer, 3 },
+                    { UpgradeType.SpearUnlock, 1 },
+                    { UpgradeType.Dash, 1 },
+                    { UpgradeType.EnergyCapacity, 2 },
+                };
+                m_hasConfiguredGameData = true;
+            }
+
             m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
@@ -326,18 +347,19 @@ namespace OverhaulMod.Content.Personalization
             GameObject spawnPoint = new GameObject();
 
             FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true);
+            bot._upgradeCollection._upgradeLevels = new Dictionary<UpgradeType, int>();
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SwordUnlock, 1);
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Hammer, 3);
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.EnergyCapacity, 2);
+            bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Dash, 1);
             bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
-                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Hammer, 3);
-                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
-                bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.ShieldSize, 1);
-                bot.RefreshUpgrades();
-
                 BoltEntity boltEntity = bot.GetComponent<BoltEntity>();
                 if (boltEntity)
                 {
@@ -345,7 +367,7 @@ namespace OverhaulMod.Content.Personalization
                     bot._hasLocalControl = false;
                     boltEntity.ReleaseControl();
                 }
-            }, 0.5f);
+            }, 0.2f);
 
             Destroy(spawnPoint);
             yield break;

@@ -65,6 +65,8 @@ namespace OverhaulMod.UI
             Destroy(gameObject);
             yield return null;
             yield return null;
+            yield return null;
+            yield return null;
             PersonalizationEditorManager.Instance.SerializeRoot();
 
             PersonalizationEditorManager.Instance.SpawnRootObject();

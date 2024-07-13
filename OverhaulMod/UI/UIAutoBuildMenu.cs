@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using InternalModBot;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,8 @@ namespace OverhaulMod.UI
         private readonly GameObject m_panel;
 
         private int m_upgradeUISiblingIndex;
+
+        private Font m_originalFont;
 
         public override bool refreshOnlyCursor => true;
 
@@ -95,12 +98,17 @@ namespace OverhaulMod.UI
             autoBuildManager.isInAutoBuildConfigurationMode = true;
             autoBuildManager.ResetUpgrades(autoBuildManager.buildInfo.GetUpgradesFromData(), autoBuildManager.buildInfo.SkillPoints);
 
+            UpgradePagesManager._currentPageIndex = 0;
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
             upgradeUI.Show(false, true, false);
             upgradeUI.ExitButton.SetActive(false);
             upgradeUI.StoryBackButton.SetActive(false);
             upgradeUI.StoryConfirmButtonLabel.transform.parent.parent.gameObject.SetActive(false);
-            upgradeUI.StoryModeHumanLabel.text = LocalizationManager.Instance.GetTranslatedString("Select upgrades...");
+            upgradeUI.StoryModeHumanLabel.text = LocalizationManager.Instance.GetTranslatedString("select_upgrades...");
+            if (!m_originalFont)
+                m_originalFont = upgradeUI.StoryModeHumanLabel.font;
+            upgradeUI.StoryModeHumanLabel.font = LocalizationManager.Instance.GetFontForCurrentLanguage();
+            upgradeUI.StoryModeHumanLabel.color = new Color(1f, 0f, 0.5255f, 1);
 
             isShowingUpgradeUI = true;
 
@@ -115,7 +123,10 @@ namespace OverhaulMod.UI
             autoBuildManager.buildInfo.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             autoBuildManager.SaveBuildInfo();
 
-            ModCache.gameUIRoot.UpgradeUI.Hide();
+            UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+            upgradeUI.Hide();
+            if (m_originalFont)
+                upgradeUI.StoryModeHumanLabel.font = m_originalFont;
 
             isShowingUpgradeUI = false;
 

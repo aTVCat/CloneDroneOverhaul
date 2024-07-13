@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 
@@ -28,6 +29,15 @@ namespace OverhaulMod.Patches
                 string str = ModGameUtils.overrideCurrentLevelId;
                 if (str != null)
                     __result = str;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("getCurrentGameData")]
+        private static void getCurrentGameData_Postfix(ref GameData __result)
+        {
+            if (PersonalizationEditorManager.IsInEditor())
+            {
             }
         }
     }

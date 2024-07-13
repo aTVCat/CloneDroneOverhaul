@@ -301,6 +301,8 @@ namespace OverhaulMod.UI
 
                                     voxelModelFileFieldText.text = path;
                                     settingsPreset.VoxFilePath = path;
+
+                                    UIPersonalizationEditor.instance.Utilities.SetPresetPreview(preset.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);

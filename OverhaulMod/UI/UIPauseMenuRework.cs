@@ -435,7 +435,7 @@ namespace OverhaulMod.UI
         {
             if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
             {
-                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, SceneTransitionManager.Instance.DisconnectAndExitToMainMenu, null);
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, OnConfirmMainMenuButtonClicked, null);
                 return;
             }
 
@@ -449,6 +449,10 @@ namespace OverhaulMod.UI
 
         public void OnConfirmMainMenuButtonClicked()
         {
+            WorkshopLevelManager workshopLevelManager = WorkshopLevelManager.Instance;
+            workshopLevelManager.ClearPlaytestData();
+            workshopLevelManager.SetPlaytestActive(false);
+
             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
@@ -456,7 +460,7 @@ namespace OverhaulMod.UI
         {
             if (GameModeManager.Is((GameMode)2500) || (GameModeManager.IsInLevelEditor() && LevelEditorDataManager.Instance.CurrentLevelNeedsSaving()))
             {
-                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, Application.Quit, null);
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor"), LocalizationManager.Instance.GetTranslatedString("dialog_exit_editor_desc"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, OnConfirmExitGameButtonClicked, null);
                 return;
             }
 

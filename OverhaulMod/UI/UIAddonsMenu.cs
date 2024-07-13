@@ -168,7 +168,7 @@ namespace OverhaulMod.UI
                     ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
-                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? "No description provided." : LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
+                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? LocalizationManager.Instance.GetTranslatedString("no_description_provided") : LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
                     moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
 
                     List<string> list = content.GetImages().ToList();
