@@ -363,6 +363,7 @@
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
+    <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
     <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />

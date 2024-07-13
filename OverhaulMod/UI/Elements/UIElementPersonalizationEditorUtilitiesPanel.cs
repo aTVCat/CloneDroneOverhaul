@@ -87,6 +87,8 @@ namespace OverhaulMod.UI
 
         public void OnOriginalModelToggled(bool value)
         {
+            PersonalizationEditorManager.Instance.originalModelsEnabled = value;
+
             FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
             if (!firstPersonMover)
                 return;

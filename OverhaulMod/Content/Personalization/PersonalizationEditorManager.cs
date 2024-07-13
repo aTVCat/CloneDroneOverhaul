@@ -30,6 +30,8 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_hasConfiguredGameData;
 
+        private GreatSwordPreviewController m_greatSwordPreviewController;
+
         private PersonalizationController m_currentPersonalizationController;
         public PersonalizationController currentPersonalizationController
         {
@@ -62,10 +64,32 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        private bool m_originalModelsEnabled;
+        public bool originalModelsEnabled
+        {
+            get
+            {
+                return m_originalModelsEnabled;
+            }
+            set
+            {
+                m_originalModelsEnabled = value;
+                RefreshGreatswordPreview();
+            }
+        }
+
+        private WeaponVariant m_previewPresetKey;
         public WeaponVariant previewPresetKey
         {
-            get;
-            set;
+            get
+            {
+                return m_previewPresetKey;
+            }
+            set
+            {
+                m_previewPresetKey = value;
+                RefreshGreatswordPreview();
+            }
         }
 
         private string m_editorId;
@@ -150,6 +174,7 @@ namespace OverhaulMod.Content.Personalization
             currentEditingItemInfo = null;
             currentEditingRoot = null;
             previewPresetKey = WeaponVariant.Normal;
+            originalModelsEnabled = false;
 
             GameFlowManager.Instance._gameMode = (GameMode)2500;
 
@@ -176,6 +201,12 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
             yield break;
+        }
+
+        public void RefreshGreatswordPreview()
+        {
+            if (m_greatSwordPreviewController)
+                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant.NormalMultiplayer || previewPresetKey == WeaponVariant.OnFireMultiplayer));
         }
 
         public List<Dropdown.OptionData> GetConditionOptions()
@@ -357,6 +388,8 @@ namespace OverhaulMod.Content.Personalization
             bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
+
+            m_greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
 
             DelegateScheduler.Instance.Schedule(delegate
             {
