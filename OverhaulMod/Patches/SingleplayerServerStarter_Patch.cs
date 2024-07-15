@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {
@@ -11,6 +12,7 @@ namespace OverhaulMod.Patches
         private static void StartServerThenCall_Postfix()
         {
             TitleScreenCustomizationManager.Instance.StopTitleScreenMusic();
+            ModUIConstants.HideTitleScreenRework();
         }
     }
 }

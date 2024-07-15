@@ -150,6 +150,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
+            UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
+
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)
                 return;
@@ -160,7 +162,9 @@ namespace OverhaulMod.UI
             FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
             firstPersonMover.SetEquippedWeaponType(weaponType, false);
 
-            PersonalizationEditorManager.Instance.SpawnRootObject();
+            PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
+            manager.SerializeRoot();
+            manager.SpawnRootObject();
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -168,12 +172,17 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
+            UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
+
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)
                 return;
 
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[value].text;
-            PersonalizationEditorManager.Instance.SpawnRootObject();
+
+            PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
+            manager.SerializeRoot();
+            manager.SpawnRootObject();
         }
 
         public void OnVerifyButtonClicked()

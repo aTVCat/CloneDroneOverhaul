@@ -117,6 +117,11 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, UILayer.AfterTitleScreen);
         }
 
+        public static void HideTitleScreenRework()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_TITLE_SCREEN);
+        }
+
         public static void ShowAdvancementProgress(GameplayAchievement gameplayAchievement)
         {
             UIAdvancementProgress panel = ModUIManager.Instance.Show<UIAdvancementProgress>(AssetBundleConstants.UI, UI_ADVANCEMENT_PROGRESS, UILayer.AfterTitleScreen);
