@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -72,7 +73,7 @@ namespace OverhaulMod.Engine
 
         public void LoadCustomPlacementLinesFile()
         {
-            string path = ModCore.dataFolder + FILE_NAME;
+            string path = Path.Combine(ModCore.dataFolder, FILE_NAME);
 
             ArenaAudienceLinePointInfoList arenaAudienceLinePointInfoList;
             try
@@ -177,7 +178,7 @@ namespace OverhaulMod.Engine
                 arenaAudienceLinePointInfoList.Points.Add(arenaAudienceLinePointInfo);
             }
 
-            string path = ModCore.dataFolder + FILE_NAME;
+            string path = Path.Combine(ModCore.dataFolder, FILE_NAME);
             ModJsonUtils.WriteStream(path, arenaAudienceLinePointInfoList);
         }
 

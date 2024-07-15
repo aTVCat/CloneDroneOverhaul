@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
                 return;
 
             WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
-            personalizationController.SetWeaponPartsVisible(weaponType, value);
+            personalizationController.SetWeaponPartsVisible(weaponType, value, false);
         }
 
         public void OnPresetPreviewChanged(int value)

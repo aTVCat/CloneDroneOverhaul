@@ -162,8 +162,10 @@ namespace OverhaulMod.Engine
                 lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
 
             RealisticLightSettings realisticLightSettings = lightSettings.GetComponent<RealisticLightSettings>();
-            if (!realisticLightSettings || !realisticLightSettings.EnableRealisticSkybox)
-                return;
+            if (!realisticLightSettings)
+            {
+                realisticLightSettings = lightSettings.gameObject.AddComponent<RealisticLightSettings>();
+            }
 
             RealisticLightningInfo realisticLightningInfo = GetCurrentRealisticLightningInfo();
             if (realisticLightningInfo != null)

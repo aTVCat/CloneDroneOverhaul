@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine.UI;
 
 namespace OverhaulMod.Engine
@@ -29,7 +30,7 @@ namespace OverhaulMod.Engine
 
             try
             {
-                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(ModCore.dataFolder + FILE_NAME);
+                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.dataFolder + FILE_NAME));
                 info.FixValues();
             }
             catch
@@ -57,7 +58,7 @@ namespace OverhaulMod.Engine
             ModLocalizationInfo info = m_localizationInfo;
             if (info != null)
             {
-                ModJsonUtils.WriteStream(ModCore.dataFolder + FILE_NAME, info);
+                ModJsonUtils.WriteStream(Path.Combine(ModCore.dataFolder, FILE_NAME), info);
             }
         }
 

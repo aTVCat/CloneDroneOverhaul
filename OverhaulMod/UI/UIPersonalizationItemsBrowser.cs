@@ -465,7 +465,7 @@ namespace OverhaulMod.UI
                 Button editorButton = bottomPanel.GetObject<Button>(0);
                 editorButton.onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, "Enter Customization editor?", "You'll leave from current match", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
                         ModCore.EnterCustomizationEditor = true;
                         SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();

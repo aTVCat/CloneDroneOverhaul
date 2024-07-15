@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -149,7 +150,7 @@ namespace OverhaulMod.Patches.Behaviours
                 return;
             }
 
-            RepositoryManager.Instance.GetLocalTexture(ModCore.texturesFolder + $"gamemodes/{imageName}.jpg", delegate (Texture2D texture2D)
+            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.texturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
             {
                 Sprite sprite = texture2D.ToSprite();
                 array[index].ThumbnailSprite = sprite;

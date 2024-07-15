@@ -35,7 +35,6 @@ namespace OverhaulMod.Patches
             return true;
         }
 
-
         [HarmonyPrefix]
         [HarmonyPatch("RefreshLightInScene")]
         private static bool RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)

@@ -261,6 +261,25 @@ namespace OverhaulMod
         public override void OnClientConnectedToServer()
         {
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
+            DelegateScheduler.Instance.Schedule(delegate // fix arena lift not working in coop
+            {
+                if (!ArenaLiftManager.Instance)
+                    return;
+
+                ArenaLift lift = ArenaLiftManager.Instance.Lift;
+                if (lift && (lift._state == null || lift._stateHolder == null))
+                {
+                    foreach (MovingPlatformStateHolder sh in Resources.FindObjectsOfTypeAll<MovingPlatformStateHolder>())
+                    {
+                        if (!sh.IsDetached() && sh.state.UniqueIndex == lift.GetUniqueIndex())
+                        {
+                            lift._state = sh.state;
+                            lift._stateHolder = sh;
+                            break;
+                        }
+                    }
+                }
+            }, 3f);
         }
 
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)

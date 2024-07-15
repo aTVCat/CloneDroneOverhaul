@@ -90,7 +90,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.WinLoseDialogRework:
-                    result = true;
+                    result = false;
                     break;
                 case FeatureType.ShieldSkins:
                     result = false;

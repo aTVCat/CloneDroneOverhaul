@@ -81,7 +81,7 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_isMultiplayer;
 
-        private bool m_hasStarted, m_hasInitialized, m_hasAddedEventListeners;
+        private bool m_hasInitialized, m_hasAddedEventListeners;
 
         private float m_timeLeftToRefreshWeaponParts;
 
@@ -92,9 +92,8 @@ namespace OverhaulMod.Content.Personalization
             m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            m_hasStarted = true;
             FirstPersonMover firstPersonMover = owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
@@ -102,17 +101,9 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            if (!base.enabled || !base.gameObject.activeInHierarchy)
-                return;
-
-            _ = base.StartCoroutine(initializeCoroutine(firstPersonMover));
-        }
-
-        private void OnEnable()
-        {
-            if (m_hasStarted && !m_hasInitialized)
+            if (!m_hasInitialized)
             {
-                _ = base.StartCoroutine(initializeCoroutine(owner));
+                _ = base.StartCoroutine(initializeCoroutine(firstPersonMover));
             }
         }
 
@@ -120,8 +111,8 @@ namespace OverhaulMod.Content.Personalization
         {
             if (m_hasAddedEventListeners)
             {
-                m_hasAddedEventListeners = false;
                 GlobalEventManager.Instance.RemoveEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
+                m_hasAddedEventListeners = false;
             }
         }
 
@@ -156,7 +147,7 @@ namespace OverhaulMod.Content.Personalization
                     _ = SpawnItem(skin);
                 }
 
-                SetWeaponPartsVisible(weaponType, noSkin || !hasSpawnedSkinForWeapon);
+                SetWeaponPartsVisible(weaponType, noSkin || !hasSpawnedSkinForWeapon, false);
             }
         }
 
@@ -170,6 +161,8 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
         {
+            yield return null;
+
             while (firstPersonMover && firstPersonMover.IsAlive() && !firstPersonMover.IsInitialized())
                 yield return null;
 
@@ -215,25 +208,10 @@ namespace OverhaulMod.Content.Personalization
 
         public bool ShouldRefreshSkinOfWeapon(WeaponType weaponType)
         {
-            return GetWeaponVariant(weaponType) != GetWeaponVariant(weaponType, false);
+            return GetWeaponVariantOfSpawnedSkin(weaponType) != GetWeaponVariant(weaponType);
         }
 
-        public WeaponVariant GetWeaponVariant(WeaponType weaponType, bool getCached = true)
-        {
-            if (!getCached)
-            {
-                WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
-                return weaponVariant;
-            }
-
-            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
-            if (d.ContainsKey(weaponType))
-                return d[weaponType];
-
-            return WeaponVariant.None;
-        }
-
-        public void RefreshWeaponVariant(WeaponType weaponType)
+        public void RefreshWeaponVariantOfSpawnedSkin(WeaponType weaponType)
         {
             Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
             WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
@@ -244,12 +222,27 @@ namespace OverhaulMod.Content.Personalization
                 d.Add(weaponType, weaponVariant);
         }
 
-        public void SetWeaponPartsVisible(WeaponType weaponType, bool value)
+        public WeaponVariant GetWeaponVariantOfSpawnedSkin(WeaponType weaponType)
+        {
+            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
+            if (d.ContainsKey(weaponType))
+                return d[weaponType];
+
+            return WeaponVariant.None;
+        }
+
+        public WeaponVariant GetWeaponVariant(WeaponType weaponType)
+        {
+            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
+            return weaponVariant;
+        }
+
+        public void SetWeaponPartsVisible(WeaponType weaponType, bool value, bool hideBowStrings)
         {
             if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(weaponType, out Transform[] parts))
             {
                 foreach (Transform transform in parts)
-                    if (transform && !(weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower")))
+                    if (transform && !(weaponType == WeaponType.Bow && !hideBowStrings && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower")))
                         transform.gameObject.SetActive(value);
             }
         }
@@ -267,7 +260,7 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo == null || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
                 return null;
 
-            RefreshWeaponVariant(personalizationItemInfo.Weapon);
+            RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
 
             if (personalizationItemInfo.Weapon == WeaponType.Bow && (owner.CharacterType == EnemyType.ZombieArcher1)) // todo: check if glock 18 mod is enabled
                 return null;
@@ -283,7 +276,7 @@ namespace OverhaulMod.Content.Personalization
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                SetWeaponPartsVisible(personalizationItemInfo.Weapon, false);
+                SetWeaponPartsVisible(personalizationItemInfo.Weapon, false, false);
 
             return behaviour;
         }
@@ -294,7 +287,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                SetWeaponPartsVisible(personalizationItemInfo.Weapon, true);
+                SetWeaponPartsVisible(personalizationItemInfo.Weapon, true, false);
 
             PersonalizationEditorObjectBehaviour b = m_spawnedItems[personalizationItemInfo];
             if (b)

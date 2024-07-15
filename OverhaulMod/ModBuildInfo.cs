@@ -1,7 +1,6 @@
-﻿//#define PUBLIC_RELEASE
-
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System;
+using System.IO;
 
 namespace OverhaulMod
 {
@@ -82,7 +81,7 @@ namespace OverhaulMod
             {
                 if (s_fullVersionString == null)
                 {
-                    string buildRelease = internalRelease ? "internal" : "public";
+                    string buildRelease = debug ? "internal" : "public";
                     if (extraInfo != null && !extraInfoError)
                     {
                         string date = extraInfo.CompileTime.ToShortDateString();
@@ -105,19 +104,6 @@ namespace OverhaulMod
                 return true;
 #else
                 return false;
-#endif
-            }
-        }
-
-
-        public static bool internalRelease
-        {
-            get
-            {
-#if PUBLIC_RELEASE
-                return false;
-#else
-                return true;
 #endif
             }
         }
@@ -175,7 +161,7 @@ namespace OverhaulMod
             extraInfo = null;
             try
             {
-                string filePath = ModCore.dataFolder + EXTRA_INFO_FILE_PATH;
+                string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
 
                 ExtraInfo loadedExtraInfo = ModJsonUtils.Deserialize<ExtraInfo>(ModIOUtils.ReadText(filePath));
                 extraInfo = loadedExtraInfo;
@@ -185,7 +171,7 @@ namespace OverhaulMod
 
         public static void GenerateExtraInfo()
         {
-            string filePath = ModCore.dataFolder + EXTRA_INFO_FILE_PATH;
+            string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
             string content = ModJsonUtils.Serialize(new ExtraInfo()
             {
                 CompileTime = DateTime.Now

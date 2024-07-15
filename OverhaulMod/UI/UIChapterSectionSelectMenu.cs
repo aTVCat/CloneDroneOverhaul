@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,7 +60,7 @@ namespace OverhaulMod.UI
 
             this.chapterIndex = chapterIndex;
 
-            ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(ModLevelManager.Instance.chapterSectionsFolder + "story", chapterIndex);
+            ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(Path.Combine(ModLevelManager.Instance.chapterSectionsFolder, "story"), chapterIndex);
             if (sections == null || sections.Length == 0)
                 return;
 

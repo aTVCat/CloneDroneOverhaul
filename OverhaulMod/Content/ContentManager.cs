@@ -69,7 +69,7 @@ namespace OverhaulMod.Content
                     string tempFile = Path.GetTempFileName();
                     ModIOUtils.WriteBytes(bytes, tempFile);
 
-                    string directory = ModCore.addonsFolder + name.Replace(" ", string.Empty) + "/";
+                    string directory = Path.Combine(ModCore.addonsFolder, name.Replace(' ', '_'));
                     if (!Directory.Exists(directory))
                         _ = Directory.CreateDirectory(directory);
 
@@ -157,7 +157,7 @@ namespace OverhaulMod.Content
         public void RemoveContent(string name)
         {
             if (HasContent(name))
-                Directory.Delete($"{ModCore.addonsFolder}{name}/", true);
+                Directory.Delete(Path.Combine(ModCore.addonsFolder, name), true);
         }
 
         public bool HasContent(string contentName, bool quick = false)
@@ -171,7 +171,7 @@ namespace OverhaulMod.Content
                     if (c.DisplayName == contentName)
                         return true;
             }
-            return Directory.Exists($"{ModCore.addonsFolder}{contentName}/");
+            return Directory.Exists(Path.Combine(ModCore.addonsFolder, contentName));
         }
 
         public void SetContentIsLoading(object obj, bool value)
@@ -192,7 +192,7 @@ namespace OverhaulMod.Content
         /// <returns></returns>
         public string GetContentPath(string contentName)
         {
-            string path = $"{ModCore.addonsFolder}{contentName}/";
+            string path = Path.Combine(ModCore.addonsFolder, contentName);
             return !Directory.Exists(path) ? null : path;
         }
 
@@ -208,14 +208,14 @@ namespace OverhaulMod.Content
             List<ContentInfo> list = new List<ContentInfo>();
             foreach (string folder in folders)
             {
-                string addonInfoFilePath = folder + "/" + CONTENT_INFO_FILE;
+                string addonInfoFilePath = Path.Combine(folder, CONTENT_INFO_FILE);
                 if (!File.Exists(addonInfoFilePath))
                     continue;
 
                 try
                 {
                     ContentInfo contentInfo = ModJsonUtils.DeserializeStream<ContentInfo>(addonInfoFilePath);
-                    contentInfo.FolderPath = folder + "/";
+                    contentInfo.FolderPath = folder;
                     list.Add(contentInfo);
                 }
                 catch

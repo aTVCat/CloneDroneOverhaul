@@ -69,7 +69,7 @@ namespace OverhaulMod.UI
             AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_milestone"), ModBuildInfo.milestone, false);
             //AddKeyValueDisplay("Is Mod-Bot release?", ModBuildInfo.modBotRelease.ToString());
             //AddKeyValueDisplay("Is GitHub release?", ModBuildInfo.gitHubRelease.ToString());
-            AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_is_internal_release"), ModBuildInfo.internalRelease.ToString());
+            //AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_is_internal_release"), ModBuildInfo.internalRelease.ToString());
             //AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_has_v0.5_features"), ModBuildInfo.enableV5.ToString());
             AddKeyValueDisplay(LocalizationManager.Instance.GetTranslatedString("credits_text_debug_mode"), ModBuildInfo.debug.ToString());
         }

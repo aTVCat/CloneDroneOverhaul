@@ -27,10 +27,17 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnPlayRandomButtonClicked))]
         [UIElement("RandomSoloChallengeButton")]
-        private readonly Button m_playRandomButton;
+        private readonly Button m_soloPlayRandomButton;
         [UIElementAction(nameof(OnPlayUndefeatedButtonClicked))]
         [UIElement("UndefeatedSoloChallengeButton")]
-        private readonly Button m_playUndefeatedButton;
+        private readonly Button m_soloPlayUndefeatedButton;
+
+        [UIElementAction(nameof(OnPlayRandomButtonClicked))]
+        [UIElement("RandomCoopChallengeButton")]
+        private readonly Button m_coopPlayRandomButton;
+        [UIElementAction(nameof(OnPlayUndefeatedButtonClicked))]
+        [UIElement("UndefeatedCoopChallengeButton")]
+        private readonly Button m_coopPlayUndefeatedButton;
 
         [UIElementAction(nameof(OnGetMoreChallengesButtonClicked))]
         [UIElement("WorkshopChallengesButton")]
@@ -40,6 +47,11 @@ namespace OverhaulMod.UI
         private readonly GameObject m_soloButtonsContainerObject;
         [UIElement("CoopButtons", false)]
         private readonly GameObject m_coopButtonsContainerObject;
+
+        [UIElement("PlayUndefeatedChallengeButtonHolder", true)]
+        private readonly GameObject m_soloPlayUndefeatedChallengeButtonHolder;
+        [UIElement("JoinUndefeatedChallengeButtonHolder", true)]
+        private readonly GameObject m_coopPlayUndefeatedChallengeButtonHolder;
 
         [UIElement("ChallengeDisplay", false)]
         private readonly ModdedObject m_challengeDisplayPrefab;
@@ -102,14 +114,19 @@ namespace OverhaulMod.UI
             if (m_challengesContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_challengesContainer);
 
-            ChallengeDefinition[] challenges = ChallengeManager.Instance.GetChallenges(isCoop);
+            m_coopButtonsContainerObject.SetActive(isCoop);
+            m_soloButtonsContainerObject.SetActive(!isCoop);
+
+            ChallengeManager manager = ChallengeManager.Instance;
+            ChallengeDefinition[] challenges = manager.GetChallenges(isCoop);
             if (challenges.IsNullOrEmpty())
                 return;
 
+            bool hasUndefeatedChallenge = false;
             foreach (ChallengeDefinition challengeDefinition in challenges)
             {
                 displayingChallenges.Add(challengeDefinition);
-                bool hasCompleted = ChallengeManager.Instance.HasCompletedChallenge(challengeDefinition.ChallengeID);
+                bool hasCompleted = manager.HasCompletedChallenge(challengeDefinition.ChallengeID);
 
                 void action()
                 {
@@ -166,7 +183,16 @@ namespace OverhaulMod.UI
                 showTooltipOnHightLight.tooltipText = "leaderboard";
                 showTooltipOnHightLight.tooltipShowDuration = 1f;
                 showTooltipOnHightLight.textIsLocalizationId = true;
+
+                if (!hasUndefeatedChallenge)
+                {
+                    if (!manager.HasCompletedChallenge(challengeDefinition.ChallengeID))
+                        hasUndefeatedChallenge = true;
+                }
             }
+
+            m_soloPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
+            m_coopPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
         }
 
         private CharacterModelCustomizationEntry getCharacterModelUnlockedByChallenge(string challengeID)
@@ -285,10 +311,12 @@ namespace OverhaulMod.UI
                 return;
             }
 
+            OnChallengeClicked(challengeDefinition);
+            /*
             ModUIUtils.MessagePopup(true, $"Play {LocalizationManager.Instance.GetTranslatedString(challengeDefinition.ChallengeName)}?", "You haven't beaten it yet", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 OnChallengeClicked(challengeDefinition);
-            });
+            });*/
         }
     }
 }

@@ -80,6 +80,7 @@ namespace OverhaulMod.Utils
         public const string UI_DISCORD_SERVER_MENU = "UI_DiscordServerMenu";
         public const string UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU = "UI_PersonalizationEditorExclusivityEditMenu";
         public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
+        public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
 
         public static void ShowVersionLabel()
         {
@@ -88,12 +89,12 @@ namespace OverhaulMod.Utils
 
         public static void ShowOtherModsMenu()
         {
-            _ = ModUIManager.Instance.Show<UIOtherMods>(AssetBundleConstants.UI, UI_OTHER_MODS, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIOtherMods>(AssetBundleConstants.UI, UI_OTHER_MODS, UILayer.AfterTitleScreen);
         }
 
         public static void ShowEndlessModeMenu()
         {
-            _ = ModUIManager.Instance.Show<UIEndlessModeMenu>(AssetBundleConstants.UI, UI_ENDLESS_MODE, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIEndlessModeMenu>(AssetBundleConstants.UI, UI_ENDLESS_MODE, UILayer.AfterTitleScreen);
         }
 
         public static void ShowLeaderboard(Transform parent, List<HighScoreData> list, string fileName)
@@ -104,7 +105,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowSettingsMenuRework(bool setup)
         {
-            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Show<UISettingsMenuRework>(AssetBundleConstants.UI, UI_SETTINGS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Show<UISettingsMenuRework>(AssetBundleConstants.UI, UI_SETTINGS_MENU, UILayer.AfterTitleScreen);
             if (setup)
                 settingsMenuRework.ShowSetupElements();
             else
@@ -113,12 +114,12 @@ namespace OverhaulMod.Utils
 
         public static void ShowTitleScreenRework()
         {
-            _ = ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, UILayer.AfterTitleScreen);
         }
 
         public static void ShowAdvancementProgress(GameplayAchievement gameplayAchievement)
         {
-            UIAdvancementProgress panel = ModUIManager.Instance.Show<UIAdvancementProgress>(AssetBundleConstants.UI, UI_ADVANCEMENT_PROGRESS, ModUIManager.UILayer.AfterTitleScreen);
+            UIAdvancementProgress panel = ModUIManager.Instance.Show<UIAdvancementProgress>(AssetBundleConstants.UI, UI_ADVANCEMENT_PROGRESS, UILayer.AfterTitleScreen);
             if (panel)
             {
                 panel.ShowProgress(gameplayAchievement);
@@ -127,43 +128,43 @@ namespace OverhaulMod.Utils
 
         public static void ShowAdvancementsMenuRework()
         {
-            _ = ModUIManager.Instance.Show<UIAdvancementsMenu>(AssetBundleConstants.UI, UI_ADVANCEMENTS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIAdvancementsMenu>(AssetBundleConstants.UI, UI_ADVANCEMENTS_MENU, UILayer.AfterTitleScreen);
         }
 
         public static void ShowWorkshopBrowserRework()
         {
-            _ = ModUIManager.Instance.Show<UIWorkshopBrowser>(AssetBundleConstants.UI, UI_WORKSHOP_BROWSER, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIWorkshopBrowser>(AssetBundleConstants.UI, UI_WORKSHOP_BROWSER, UILayer.AfterTitleScreen);
         }
 
         public static UIMessagePopup ShowMessagePopup()
         {
-            return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP, ModUIManager.UILayer.Last);
+            return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP, UILayer.Last);
         }
 
         public static UIMessagePopup ShowFullScreenMessagePopup()
         {
-            return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP_FULL_SCREEN, ModUIManager.UILayer.Last);
+            return ModUIManager.Instance.Show<UIMessagePopup>(AssetBundleConstants.UI, UI_MESSAGE_POPUP_FULL_SCREEN, UILayer.Last);
         }
 
         public static void ShowFeedbackUIRework(bool showExitButton)
         {
-            UIFeedbackMenu feedbackMenu = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, ModUIManager.UILayer.BeforeCrashScreen);
+            UIFeedbackMenu feedbackMenu = ModUIManager.Instance.Show<UIFeedbackMenu>(AssetBundleConstants.UI, UI_FEEDBACK_UI, UILayer.BeforeCrashScreen);
             feedbackMenu.SetExitButtonVisible(showExitButton);
         }
 
         public static void ShowCommunityHub()
         {
-            _ = ModUIManager.Instance.Show<UICommunityHub>(AssetBundleConstants.UI, UI_COMMUNITY_HUB, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UICommunityHub>(AssetBundleConstants.UI, UI_COMMUNITY_HUB, UILayer.AfterTitleScreen);
         }
 
         public static void ShowPauseMenuRework()
         {
-            _ = ModUIManager.Instance.Show<UIPauseMenuRework>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.UILayer.AfterEscMenu);
+            _ = ModUIManager.Instance.Show<UIPauseMenuRework>(AssetBundleConstants.UI, UI_PAUSE_MENU, UILayer.AfterEscMenu);
         }
 
         public static void ShowChapterSelectMenu()
         {
-            _ = ModUIManager.Instance.Show<UIChapterSelectMenuRework>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIChapterSelectMenuRework>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, UILayer.AfterTitleScreen);
         }
 
         public static void ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
@@ -174,7 +175,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowLoadingScreen()
         {
-            _ = ModUIManager.Instance.Show<UILoadingScreenRework>(AssetBundleConstants.UI, UI_LOADING_SCREEN, ModUIManager.UILayer.Last);
+            _ = ModUIManager.Instance.Show<UILoadingScreenRework>(AssetBundleConstants.UI, UI_LOADING_SCREEN, UILayer.Last);
         }
 
         public static void HideLoadingScreen()
@@ -184,7 +185,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowExclusiveContentMenu()
         {
-            _ = ModUIManager.Instance.Show<UIExclusiveContentMenu>(AssetBundleConstants.UI, UI_EXCLUSIVE_CONTENT_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIExclusiveContentMenu>(AssetBundleConstants.UI, UI_EXCLUSIVE_CONTENT_MENU, UILayer.AfterTitleScreen);
         }
 
         public static void ShowExclusiveContentEditor(Transform parent)
@@ -194,27 +195,27 @@ namespace OverhaulMod.Utils
 
         public static void ShowMultiplayerConnectScreen()
         {
-            _ = ModUIManager.Instance.Show<UIMultiplayerConnectScreen>(AssetBundleConstants.UI, UI_CONNECT_SCREEN, ModUIManager.UILayer.AfterMultiplayerConnectScreen);
+            _ = ModUIManager.Instance.Show<UIMultiplayerConnectScreen>(AssetBundleConstants.UI, UI_CONNECT_SCREEN, UILayer.AfterMultiplayerConnectScreen);
         }
 
         public static void ShowNewsPanel()
         {
-            _ = ModUIManager.Instance.Show<UINewsPanel>(AssetBundleConstants.UI, UI_NEWS_PANEL, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UINewsPanel>(AssetBundleConstants.UI, UI_NEWS_PANEL, UILayer.AfterTitleScreen);
         }
 
         public static void ShowContentDownloadWindow()
         {
-            _ = ModUIManager.Instance.Show<UIContentDownloadWindow>(AssetBundleConstants.UI, UI_CONTENT_DOWNLOAD_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIContentDownloadWindow>(AssetBundleConstants.UI, UI_CONTENT_DOWNLOAD_WINDOW, UILayer.AfterTitleScreen);
         }
 
         public static UIUpdatesWindow ShowUpdatesWindow()
         {
-            return ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
+            return ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, UILayer.AfterTitleScreen);
         }
 
         public static void ShowPersonalizationItemsBrowser()
         {
-            _ = ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.UILayer.BeforeEscMenu);
+            _ = ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, UILayer.BeforeEscMenu);
         }
 
         public static void ShowUpdateInfoEditor(Transform parent)
@@ -229,7 +230,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowRestartRequiredScreen(bool allowIgnoring)
         {
-            UIRestartRequiredScreen screen = ModUIManager.Instance.Show<UIRestartRequiredScreen>(AssetBundleConstants.UI, UI_RESTART_REQUIRED_SCREEN, ModUIManager.UILayer.AfterCrashScreen);
+            UIRestartRequiredScreen screen = ModUIManager.Instance.Show<UIRestartRequiredScreen>(AssetBundleConstants.UI, UI_RESTART_REQUIRED_SCREEN, UILayer.AfterCrashScreen);
             screen.SetAllowIgnoring(allowIgnoring);
         }
 
@@ -241,7 +242,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowInformationSelectMenu()
         {
-            _ = ModUIManager.Instance.Show<UIInformationSelectWindow>(AssetBundleConstants.UI, UI_INFORMATION_SELECT_WINDOW, ModUIManager.UILayer.BeforeCrashScreen);
+            _ = ModUIManager.Instance.Show<UIInformationSelectWindow>(AssetBundleConstants.UI, UI_INFORMATION_SELECT_WINDOW, UILayer.BeforeCrashScreen);
         }
 
         public static void ShowOverhaulModInfoMenu(Transform parent)
@@ -261,17 +262,17 @@ namespace OverhaulMod.Utils
 
         public static void ShowLevelDescriptionListEditor()
         {
-            _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, UILayer.AfterTitleScreen);
         }
 
         public static UIPersonalizationEditor ShowPersonalizationEditorUI()
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
+            return ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, UILayer.BeforeEscMenu);
         }
 
         public static void ShowMultiplayerGameModeSelectScreen()
         {
-            _ = ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, UILayer.AfterTitleScreen);
         }
 
         public static void ShowCreditsMenu(Transform parent)
@@ -281,7 +282,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowAddonsMenu()
         {
-            _ = ModUIManager.Instance.Show<UIAddonsMenu>(AssetBundleConstants.UI, UI_ADDONS_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UIAddonsMenu>(AssetBundleConstants.UI, UI_ADDONS_MENU, UILayer.AfterTitleScreen);
         }
 
         public static void ShowAddonsEditor(Transform parent)
@@ -291,18 +292,18 @@ namespace OverhaulMod.Utils
 
         public static void ShowChallengesMenuRework(bool coop, bool privateMatches)
         {
-            UIChallengesMenuRework challengesMenuRework = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+            UIChallengesMenuRework challengesMenuRework = ModUIManager.Instance.Show<UIChallengesMenuRework>(AssetBundleConstants.UI, UI_CHALLENGES_MENU_REWORK, UILayer.AfterTitleScreen);
             challengesMenuRework.Populate(coop, privateMatches);
         }
 
         public static void ShowLocalizationEditor()
         {
-            _ = ModUIManager.Instance.Show<UILocalizationEditor>(AssetBundleConstants.UI, UI_LOCALIZATION_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
+            _ = ModUIManager.Instance.Show<UILocalizationEditor>(AssetBundleConstants.UI, UI_LOCALIZATION_EDITOR, UILayer.AfterTitleScreen);
         }
 
         public static UIGenericInputFieldWindow ShowGenericInputFieldWindow()
         {
-            return ModUIManager.Instance.Show<UIGenericInputFieldWindow>(AssetBundleConstants.UI, UI_GENERIC_INPUT_FIELD_WINDOW, ModUIManager.UILayer.Last);
+            return ModUIManager.Instance.Show<UIGenericInputFieldWindow>(AssetBundleConstants.UI, UI_GENERIC_INPUT_FIELD_WINDOW, UILayer.Last);
         }
 
         public static void ShowAddonsDownloadEditor(Transform parent)
@@ -317,22 +318,22 @@ namespace OverhaulMod.Utils
 
         public static UILevelDescriptionBrowser ShowLevelDescriptionBrowser()
         {
-            return ModUIManager.Instance.Show<UILevelDescriptionBrowser>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_BROWSER, ModUIManager.UILayer.Last);
+            return ModUIManager.Instance.Show<UILevelDescriptionBrowser>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_BROWSER, UILayer.Last);
         }
 
         public static void ShowTooltips()
         {
-            _ = ModUIManager.Instance.Show<UITooltips>(AssetBundleConstants.UI, UI_TOOLTIPS, ModUIManager.UILayer.First);
+            _ = ModUIManager.Instance.Show<UITooltips>(AssetBundleConstants.UI, UI_TOOLTIPS, UILayer.First);
         }
 
         public static void ShowImageEffects()
         {
-            _ = ModUIManager.Instance.Show<UIImageEffects>(AssetBundleConstants.UI, UI_IMAGE_EFFECTS, ModUIManager.UILayer.First);
+            _ = ModUIManager.Instance.Show<UIImageEffects>(AssetBundleConstants.UI, UI_IMAGE_EFFECTS, UILayer.First);
         }
 
         public static void ShowPhotoModeUIRework()
         {
-            _ = ModUIManager.Instance.Show<UIPhotoModeUIRework>(AssetBundleConstants.UI, UI_PHOTO_MODE_UI_REWORK, ModUIManager.UILayer.BeforeEscMenu);
+            _ = ModUIManager.Instance.Show<UIPhotoModeUIRework>(AssetBundleConstants.UI, UI_PHOTO_MODE_UI_REWORK, UILayer.BeforeEscMenu);
         }
 
         public static void HidePhotoModeUIRework()
@@ -362,7 +363,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowDebugMenu()
         {
-            _ = ModUIManager.Instance.Show<UIDebugMenu>(AssetBundleConstants.UI, UI_DEBUG_MENU, ModUIManager.UILayer.Last);
+            _ = ModUIManager.Instance.Show<UIDebugMenu>(AssetBundleConstants.UI, UI_DEBUG_MENU, UILayer.Last);
         }
 
         public static void HideDebugMenu()
@@ -372,7 +373,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowCrashScreen(string errorMessage)
         {
-            UICrashScreen crashScreen = ModUIManager.Instance.Show<UICrashScreen>(AssetBundleConstants.UI, UI_CRASH_SCREEN, ModUIManager.UILayer.AfterCrashScreen);
+            UICrashScreen crashScreen = ModUIManager.Instance.Show<UICrashScreen>(AssetBundleConstants.UI, UI_CRASH_SCREEN, UILayer.AfterCrashScreen);
             crashScreen.SetStackTraceText(errorMessage);
         }
 
@@ -383,7 +384,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowDamageIndicator()
         {
-            _ = ModUIManager.Instance.Show<UIDamageIndicator>(AssetBundleConstants.UI, UI_DAMAGE_INDICATOR, ModUIManager.UILayer.BeforeEscMenu);
+            _ = ModUIManager.Instance.Show<UIDamageIndicator>(AssetBundleConstants.UI, UI_DAMAGE_INDICATOR, UILayer.BeforeEscMenu);
         }
 
         public static UIGenericColorPicker ShowGenericColorPicker(Transform parent)
@@ -408,23 +409,23 @@ namespace OverhaulMod.Utils
 
         public static void ShowGameLossWindow()
         {
-            _ = ModUIManager.Instance.Show<UIGameLossWindow>(AssetBundleConstants.UI, UI_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
+            _ = ModUIManager.Instance.Show<UIGameLossWindow>(AssetBundleConstants.UI, UI_GAME_LOSS_WINDOW, UILayer.BeforeEscMenu);
         }
 
         public static void ShowEndlessGameLossWindow()
         {
-            _ = ModUIManager.Instance.Show<UIEndlessGameLossWindow>(AssetBundleConstants.UI, UI_ENDLESS_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
+            _ = ModUIManager.Instance.Show<UIEndlessGameLossWindow>(AssetBundleConstants.UI, UI_ENDLESS_GAME_LOSS_WINDOW, UILayer.BeforeEscMenu);
         }
 
         public static void ShowDuelInviteMenuRework(GameMode gameMode)
         {
-            UIDuelInviteMenuRework duelInviteMenuRework = ModUIManager.Instance.Show<UIDuelInviteMenuRework>(AssetBundleConstants.UI, UI_DUEL_INVITE_MENU_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+            UIDuelInviteMenuRework duelInviteMenuRework = ModUIManager.Instance.Show<UIDuelInviteMenuRework>(AssetBundleConstants.UI, UI_DUEL_INVITE_MENU_REWORK, UILayer.AfterTitleScreen);
             duelInviteMenuRework.Populate(gameMode);
         }
 
         public static UIScreenTooltips ShowScreenTooltips()
         {
-            return ModUIManager.Instance.Show<UIScreenTooltips>(AssetBundleConstants.UI, UI_SCREEN_TOOLTIPS, ModUIManager.UILayer.Last);
+            return ModUIManager.Instance.Show<UIScreenTooltips>(AssetBundleConstants.UI, UI_SCREEN_TOOLTIPS, UILayer.Last);
         }
 
         public static void ShowPersonalizationEditorHelpMenu(Transform parent)
@@ -444,7 +445,7 @@ namespace OverhaulMod.Utils
 
         public static void ShowCinematicEffects()
         {
-            _ = ModUIManager.Instance.Show<UICinematicEffects>(AssetBundleConstants.UI, UI_CINEMATIC_EFFECTS, ModUIManager.UILayer.AfterEnergyUI);
+            _ = ModUIManager.Instance.Show<UICinematicEffects>(AssetBundleConstants.UI, UI_CINEMATIC_EFFECTS, UILayer.AfterEnergyUI);
         }
 
         public static UIImageExplorer ShowImageExplorer(Transform parent)
@@ -454,7 +455,7 @@ namespace OverhaulMod.Utils
 
         public static UIAutoBuildMenu ShowAutoBuildMenu()
         {
-            return ModUIManager.Instance.Show<UIAutoBuildMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            return ModUIManager.Instance.Show<UIAutoBuildMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_MENU, UILayer.AfterTitleScreen);
         }
 
         public static void ShowDownloadPersonalizationAssetsMenu(Transform transform)
@@ -480,6 +481,11 @@ namespace OverhaulMod.Utils
         public static void ShowPersonalizationEditorAboutDialog(Transform transform)
         {
             _ = ModUIManager.Instance.Show<UIPersonalizationEditorAboutDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG, transform);
+        }
+
+        public static UIAssetBundleAssetsBrowser ShowAssetBundleAssetsBrowser(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIAssetBundleAssetsBrowser>(AssetBundleConstants.UI, UI_ASSET_BUNDLE_ASSETS_BROWSER, transform);
         }
     }
 }

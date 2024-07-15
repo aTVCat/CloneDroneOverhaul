@@ -123,28 +123,28 @@ namespace OverhaulMod
         {
             if (!s_hasAddedObjects)
             {
-                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, ModCore.editorTexturesFolder + "WeatherSettingsOverride.png");
+                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.editorTexturesFolder, "WeatherSettingsOverride.png"));
 
                 if (ModBuildInfo.debug)
                     Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
 
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewEnemies))
                 {
-                    Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                    Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                    Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                    Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, ModCore.editorTexturesFolder + "ScytheBot.png");
-                    Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
-                    Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, ModCore.editorTexturesFolder + "SprinterScytheBot.png");
+                    Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
+                    Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
+                    Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
+                    Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
+                    Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
+                    Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
 
-                    Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
-                    Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
-                    Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
-                    Patch.AddObject("Axe4", "OverhaulMod", "Enemies", ModPrefabUtils.axe4Spawner, null, ModCore.editorTexturesFolder + "AxeBot.png");
+                    Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
+                    Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
+                    Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
+                    Patch.AddObject("Axe4", "OverhaulMod", "Enemies", ModPrefabUtils.axe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
 
-                    Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
-                    Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
-                    Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, ModCore.editorTexturesFolder + "HalberdBot.png");
+                    Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
+                    Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
+                    Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
 
                     Patch.AddObject("GuardBot", "OverhaulMod", "Enemies", ModPrefabUtils.guardBotSpawner, null, null);
 

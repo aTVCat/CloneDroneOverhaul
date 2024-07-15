@@ -86,7 +86,7 @@ namespace OverhaulMod.UI
 
             ContentInfo content = list[index];
             editingContentInfo = content;
-            editingFile = content.FolderPath + ContentManager.CONTENT_INFO_FILE;
+            editingFile = Path.Combine(content.FolderPath, ContentManager.CONTENT_INFO_FILE);
 
             m_addonNameField.text = content.DisplayName;
             m_addonVersionField.text = content.Version.ToString();
@@ -113,7 +113,7 @@ namespace OverhaulMod.UI
             ModUIUtils.InputFieldWindow("Create new content folder", "Name it", 125f, delegate (string value)
             {
                 string folderName = value.Replace(" ", string.Empty);
-                string folderPath = ModCore.addonsFolder + folderName + "/";
+                string folderPath = Path.Combine(ModCore.addonsFolder, folderName);
                 string contentInfoFilePath = folderPath + ContentManager.CONTENT_INFO_FILE;
 
                 _ = Directory.CreateDirectory(folderPath);

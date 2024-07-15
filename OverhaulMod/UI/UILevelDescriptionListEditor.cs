@@ -118,7 +118,7 @@ namespace OverhaulMod.UI
             levelDescription.DifficultyTier = (DifficultyTier)m_difficultyDropdown.value;
             levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseToInt(m_difficultyIndexInputField.text, 0);
 
-            ModIOUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), ModLevelManager.Instance.levelsFolder + ModLevelManager.LEVEL_DESCRIPTIONS_FILE);
+            ModIOUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
             RefreshDisplays();
         }
 
@@ -139,7 +139,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.MessagePopup(true, "Create new file?", "ig you're not supposed to do this", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                StreamWriter streamWriter = File.CreateText(ModLevelManager.Instance.levelsFolder + ModLevelManager.LEVEL_DESCRIPTIONS_FILE);
+                StreamWriter streamWriter = File.CreateText(Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
                 streamWriter.Close();
                 ModLevelManager.Instance.LoadLevelDescriptions();
                 RefreshDisplays();

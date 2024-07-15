@@ -20,7 +20,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_chapterSectionsFolder == null)
                 {
-                    m_chapterSectionsFolder = ModCore.dataFolder + CHAPTER_SECTIONS_FOLDER;
+                    m_chapterSectionsFolder = Path.Combine(ModCore.dataFolder, CHAPTER_SECTIONS_FOLDER);
                 }
                 return m_chapterSectionsFolder;
             }
@@ -33,7 +33,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_levelsFolder == null)
                 {
-                    m_levelsFolder = ModCore.dataFolder + LEVELS_FOLDER;
+                    m_levelsFolder = Path.Combine(ModCore.dataFolder, LEVELS_FOLDER);
                 }
                 return m_levelsFolder;
             }
@@ -73,7 +73,7 @@ namespace OverhaulMod.Engine
             modLevelDescriptionsLoadError = null;
             try
             {
-                modLevelDescriptions = ModJsonUtils.DeserializeStream<ModLevelDescriptionList>(levelsFolder + LEVEL_DESCRIPTIONS_FILE);
+                modLevelDescriptions = ModJsonUtils.DeserializeStream<ModLevelDescriptionList>(Path.Combine(levelsFolder, LEVEL_DESCRIPTIONS_FILE));
 
                 if (modLevelDescriptions == null)
                     modLevelDescriptions = new ModLevelDescriptionList()

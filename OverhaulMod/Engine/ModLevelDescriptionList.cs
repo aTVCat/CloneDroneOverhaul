@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OverhaulMod.Engine
 {
@@ -24,7 +25,7 @@ namespace OverhaulMod.Engine
             {
                 LevelDescription levelDescription = new LevelDescription()
                 {
-                    LevelJSONPath = ModCore.dataFolder + "levels/" + level.LevelJSONPath,
+                    LevelJSONPath = Path.Combine(ModCore.dataFolder, "levels", level.LevelJSONPath),
                     LevelID = level.LevelID,
                     LevelEditorDifficultyIndex = level.LevelEditorDifficultyIndex,
                     DifficultyTier = level.DifficultyTier,

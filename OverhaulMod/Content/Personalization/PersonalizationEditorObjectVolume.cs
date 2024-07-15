@@ -12,7 +12,7 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
     {
-        private bool m_hasAddedEventListeners;
+        public static readonly MeshingMode VolumeMeshingMode = MeshingMode.Culled;
 
         private static readonly Dictionary<WeaponVariant, VolumeSettingsPreset> s_emptySettingsDictionary = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
 
@@ -71,6 +71,8 @@ namespace OverhaulMod.Content.Personalization
                 ob.SetPropertyValue(nameof(hideIfNoPreset), value);
             }
         }
+
+        private bool m_hasAddedEventListeners;
 
         private bool m_hasStarted, m_isDestroyed;
 
@@ -205,6 +207,9 @@ namespace OverhaulMod.Content.Personalization
             Volume volumeComponent = volume;
             if (volumeComponent)
             {
+                volumeComponent.MeshingMode = VolumeMeshingMode;
+                //volumeComponent.CollisionMode = CollisionMode.None;
+
                 base.transform.localScale = Vector3.one;
 
                 if (volumeComponent.NumFrames > 0)
