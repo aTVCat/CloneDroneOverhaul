@@ -77,13 +77,13 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_isEnemy;
 
-        private bool m_isPlayer, m_isMainPlayer;
+        private bool m_isPlayer, m_isMainPlayer, m_isMindSpace;
 
         private bool m_isMultiplayer;
 
         private bool m_hasInitialized, m_hasAddedEventListeners;
 
-        private float m_timeLeftToRefreshWeaponParts;
+        private float m_timeLeftToRefreshWeaponSkinAndParts;
 
         private void Awake()
         {
@@ -124,30 +124,34 @@ namespace OverhaulMod.Content.Personalization
                 SpawnEquippedSkins();
             }
 
-            if (PersonalizationEditorManager.IsInEditor())
+            if (!m_hasInitialized)
                 return;
 
-            m_timeLeftToRefreshWeaponParts -= Time.unscaledDeltaTime;
-            if (m_timeLeftToRefreshWeaponParts <= 0f)
+            m_timeLeftToRefreshWeaponSkinAndParts -= Time.unscaledDeltaTime;
+            if (m_timeLeftToRefreshWeaponSkinAndParts <= 0f)
             {
-                m_timeLeftToRefreshWeaponParts = 0.5f;
+                m_timeLeftToRefreshWeaponSkinAndParts = 0.5f;
 
-                WeaponType weaponType = owner.GetEquippedWeaponType();
-                string skin = GetWeaponSkinDependingOnOwner(weaponType);
-                bool noSkin = skin.IsNullOrEmpty() || skin == "_";
-
-                bool hasSpawnedSkinForWeapon = false;
-                foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
-                    if (key.Weapon == weaponType)
-                        hasSpawnedSkinForWeapon = true;
-
-                if (!m_isMainPlayer && !noSkin && !hasSpawnedSkinForWeapon)
+                if (!m_isMindSpace)
                 {
-                    //Debug.Log("Spawned an item because we didnt earlier");
-                    _ = SpawnItem(skin);
-                }
+                    WeaponType weaponType = owner.GetEquippedWeaponType();
+                    string skin = GetWeaponSkinDependingOnOwner(weaponType);
+                    bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
-                SetWeaponPartsVisible(weaponType, noSkin || !hasSpawnedSkinForWeapon, false);
+                    bool hasSpawnedSkinForWeapon = false;
+                    foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
+                        if (key.Weapon == weaponType)
+                            hasSpawnedSkinForWeapon = true;
+
+                    if (!m_isMainPlayer && !noSkin && !hasSpawnedSkinForWeapon)
+                    {
+                        //Debug.Log("Spawned an item because we didnt earlier");
+                        hasSpawnedSkinForWeapon = SpawnItem(skin) != null;
+                    }
+
+                    bool forceEnable = PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.originalModelsEnabled;
+                    SetWeaponPartsVisible(weaponType, forceEnable || noSkin || !hasSpawnedSkinForWeapon, false);
+                }
             }
         }
 
@@ -157,6 +161,11 @@ namespace OverhaulMod.Content.Personalization
             {
                 SpawnEquippedSkinsNextFrame();
             }
+        }
+
+        private void refreshWeaponSkinAndParts()
+        {
+            m_timeLeftToRefreshWeaponSkinAndParts = 0f;
         }
 
         private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
@@ -197,6 +206,7 @@ namespace OverhaulMod.Content.Personalization
                 m_isEnemy = !firstPersonMover.IsMainPlayer();
                 m_isPlayer = !m_isEnemy;
                 m_isMainPlayer = !m_isEnemy;
+                m_isMindSpace = firstPersonMover.IsMindSpaceCharacter;
             }
 
             m_hasInitialized = true;
@@ -262,7 +272,7 @@ namespace OverhaulMod.Content.Personalization
 
             RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
 
-            if (personalizationItemInfo.Weapon == WeaponType.Bow && (owner.CharacterType == EnemyType.ZombieArcher1)) // todo: check if glock 18 mod is enabled
+            if (owner.IsMindSpaceCharacter || (personalizationItemInfo.Weapon == WeaponType.Bow && (ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e") || owner.CharacterType == EnemyType.ZombieArcher1)))
                 return null;
 
             Transform transform = GetParentForItem(personalizationItemInfo);
@@ -276,7 +286,7 @@ namespace OverhaulMod.Content.Personalization
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                SetWeaponPartsVisible(personalizationItemInfo.Weapon, false, false);
+                refreshWeaponSkinAndParts();
 
             return behaviour;
         }
@@ -287,7 +297,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                SetWeaponPartsVisible(personalizationItemInfo.Weapon, true, false);
+                refreshWeaponSkinAndParts();
 
             PersonalizationEditorObjectBehaviour b = m_spawnedItems[personalizationItemInfo];
             if (b)

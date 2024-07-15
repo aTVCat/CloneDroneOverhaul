@@ -68,9 +68,9 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
             string versionString = ModBuildInfo.fullVersionString;
 
-            m_versionText.text = "v" + versionString;
+            m_versionText.text = "v" + ModBuildInfo.fullVersionString;
             m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = "overhaul v" + versionString;
+            m_gameplayVersionText.text = "overhaul v" + ModBuildInfo.versionString;
             m_gameplayDebugIcon.SetActive(debug);
             m_refreshWidth = true;
 

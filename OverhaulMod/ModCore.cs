@@ -346,10 +346,11 @@ namespace OverhaulMod
             if (!firstPersonMover || !firstPersonMover.IsAlive())
                 yield break;
 
-            PersonalizationManager.Instance.ConfigureFirstPersonMover(firstPersonMover);
             if (firstPersonMover.IsAttachedAndAlive())
             {
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+                _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
+
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && (GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale() ? firstPersonMover.IsMainPlayer() : true))
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
 
                 RobotInventory robotInventory = firstPersonMover.gameObject.AddComponent<RobotInventory>();

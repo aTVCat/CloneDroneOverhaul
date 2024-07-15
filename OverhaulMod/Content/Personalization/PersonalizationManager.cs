@@ -355,14 +355,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void ConfigureFirstPersonMover(FirstPersonMover firstPersonMover)
-        {
-            if (!firstPersonMover || !firstPersonMover.IsAlive())
-                return;
-
-            _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
-        }
-
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
         {
             return weaponType != WeaponType.None

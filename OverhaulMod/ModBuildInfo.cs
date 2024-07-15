@@ -108,14 +108,6 @@ namespace OverhaulMod
             }
         }
 
-        public static string milestone
-        {
-            get
-            {
-                return "Stable";
-            }
-        }
-
         public static bool enableV5
         {
             get

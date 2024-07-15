@@ -60,6 +60,8 @@ namespace OverhaulMod.UI
         private readonly ModdedObject m_itemDisplay;
         [UIElement("TextDisplay", false)]
         private readonly ModdedObject m_textDisplay;
+        [UIElement("MessageDisplay", false)]
+        private readonly ModdedObject m_messageDisplay;
         [UIElement("UtilsPanel", false)]
         private readonly ModdedObject m_utilsPanel;
         [UIElement("BottomPanel", false)]
@@ -327,7 +329,6 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-
             if (m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
             {
                 m_notImplementedTextObject.SetActive(true);
@@ -338,19 +339,6 @@ namespace OverhaulMod.UI
 
                 if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
                     weaponType = WeaponType.Sword;
-
-                ModdedObject utilsPanel = Instantiate(m_utilsPanel, m_container);
-                utilsPanel.gameObject.SetActive(true);
-                Button defaultSkinButton = utilsPanel.GetObject<Button>(0);
-                defaultSkinButton.onClick.AddListener(delegate
-                {
-                    defaultSkinButton.interactable = false;
-                    PersonalizationController.SetWeaponSkin(weaponType, null);
-                    PersonalizationController.DestroyWeaponSkin(weaponType);
-                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED);
-                });
-                defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
-                m_defaultSkinButton = defaultSkinButton;
 
                 ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
                 {
@@ -374,103 +362,125 @@ namespace OverhaulMod.UI
                     }
                 });
 
-                System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
-                for (int i = 0; i < list.Count; i++)
+                if (weaponType == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e"))
                 {
-                    PersonalizationItemInfo item = list[i];
-                    if (item.Weapon != weaponType)
-                        continue;
-
-                    bool isExclusive = item.IsExclusive();
-                    bool isVerified = item.IsVerified;
-                    bool noSpecificAuthor = false;
-
-                    string authorsString = item.GetAuthorsString();
-                    string prefix;
-                    if (authorsString == "vanilla")
-                    {
-                        noSpecificAuthor = true;
-                        prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
-                    }
-                    else
-                        prefix = $"{LocalizationManager.Instance.GetTranslatedString("customization_author")} ";
-
-                    string authorsStringToDisplay;
-                    if (noSpecificAuthor)
-                    {
-                        authorsStringToDisplay = prefix;
-                    }
-                    else
-                    {
-                        authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
-                    }
-
-                    Color textColor;
-                    Color textOutlineColor;
-                    Color glowColor;
-
-                    if (isExclusive && !isVerified)
-                    {
-                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR, Color.white);
-                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
-                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
-                    }
-                    else if (isExclusive)
-                    {
-                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR, Color.white);
-                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
-                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
-                    }
-                    else if (!isVerified)
-                    {
-                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR, Color.white);
-                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR, Color.black);
-                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR, Color.white);
-                    }
-                    else
-                    {
-                        textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_COLOR, Color.white);
-                        textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
-                        glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
-                    }
-                    glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
-
-                    ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
-                    moddedObject.gameObject.SetActive(true);
-
-                    Text itemNameText = moddedObject.GetObject<Text>(0);
-                    itemNameText.text = item.Name.ToUpper();
-                    itemNameText.color = textColor;
-                    Outline itemNameTextOutline = itemNameText.GetComponent<Outline>();
-                    itemNameTextOutline.effectColor = textOutlineColor;
-
-                    Image glowImage = moddedObject.GetObject<Image>(2);
-                    glowImage.color = glowColor;
-
-                    moddedObject.GetObject<Text>(1).text = authorsStringToDisplay;
-
-                    UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
-                    personalizationItemDisplay.ItemInfo = item;
-                    personalizationItemDisplay.SetBrowserUI(this);
-                    personalizationItemDisplay.InitializeElement();
-
-                    m_cachedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
-
-                    if (i % 15 == 0)
-                        yield return null;
+                    ModdedObject messageDisplay = Instantiate(m_messageDisplay, m_container);
+                    messageDisplay.gameObject.SetActive(true);
+                    messageDisplay.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("bow_skins_not_supported_glock18");
                 }
-
-                ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
-                bottomPanel.gameObject.SetActive(true);
-                Button editorButton = bottomPanel.GetObject<Button>(0);
-                editorButton.onClick.AddListener(delegate
+                else
                 {
-                    ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    ModdedObject utilsPanel = Instantiate(m_utilsPanel, m_container);
+                    utilsPanel.gameObject.SetActive(true);
+                    Button defaultSkinButton = utilsPanel.GetObject<Button>(0);
+                    defaultSkinButton.onClick.AddListener(delegate
                     {
-                        ModCore.EnterCustomizationEditor = true;
-                        SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+                        defaultSkinButton.interactable = false;
+                        PersonalizationController.SetWeaponSkin(weaponType, null);
+                        PersonalizationController.DestroyWeaponSkin(weaponType);
+                        GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED);
                     });
-                });
+                    defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
+                    m_defaultSkinButton = defaultSkinButton;
+
+                    System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        PersonalizationItemInfo item = list[i];
+                        if (item.Weapon != weaponType)
+                            continue;
+
+                        bool isExclusive = item.IsExclusive();
+                        bool isVerified = item.IsVerified;
+                        bool noSpecificAuthor = false;
+
+                        string authorsString = item.GetAuthorsString();
+                        string prefix;
+                        if (authorsString == "vanilla")
+                        {
+                            noSpecificAuthor = true;
+                            prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
+                        }
+                        else
+                            prefix = $"{LocalizationManager.Instance.GetTranslatedString("customization_author")} ";
+
+                        string authorsStringToDisplay;
+                        if (noSpecificAuthor)
+                        {
+                            authorsStringToDisplay = prefix;
+                        }
+                        else
+                        {
+                            authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
+                        }
+
+                        Color textColor;
+                        Color textOutlineColor;
+                        Color glowColor;
+
+                        if (isExclusive && !isVerified)
+                        {
+                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR, Color.white);
+                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+                        }
+                        else if (isExclusive)
+                        {
+                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR, Color.white);
+                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+                        }
+                        else if (!isVerified)
+                        {
+                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR, Color.white);
+                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR, Color.black);
+                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR, Color.white);
+                        }
+                        else
+                        {
+                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_COLOR, Color.white);
+                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
+                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
+                        }
+                        glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
+
+                        ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
+                        moddedObject.gameObject.SetActive(true);
+
+                        Text itemNameText = moddedObject.GetObject<Text>(0);
+                        itemNameText.text = item.Name.ToUpper();
+                        itemNameText.color = textColor;
+                        Outline itemNameTextOutline = itemNameText.GetComponent<Outline>();
+                        itemNameTextOutline.effectColor = textOutlineColor;
+
+                        Image glowImage = moddedObject.GetObject<Image>(2);
+                        glowImage.color = glowColor;
+
+                        moddedObject.GetObject<Text>(1).text = authorsStringToDisplay;
+
+                        UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
+                        personalizationItemDisplay.ItemInfo = item;
+                        personalizationItemDisplay.SetBrowserUI(this);
+                        personalizationItemDisplay.InitializeElement();
+
+                        m_cachedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
+
+                        if (i % 15 == 0)
+                            yield return null;
+                    }
+
+                    ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
+                    bottomPanel.gameObject.SetActive(true);
+                    Button editorButton = bottomPanel.GetObject<Button>(0);
+                    editorButton.onClick.AddListener(delegate
+                    {
+                        ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                        {
+                            ModCore.EnterCustomizationEditor = true;
+                            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+                        });
+                    });
+                }
             }
 
             OnSearchBoxChanged(m_searchBox.text);

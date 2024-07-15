@@ -88,17 +88,6 @@ namespace OverhaulMod.UI
         public void OnOriginalModelToggled(bool value)
         {
             PersonalizationEditorManager.Instance.originalModelsEnabled = value;
-
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
-            if (!firstPersonMover)
-                return;
-
-            PersonalizationController personalizationController = firstPersonMover.GetComponent<PersonalizationController>();
-            if (!personalizationController)
-                return;
-
-            WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
-            personalizationController.SetWeaponPartsVisible(weaponType, value, false);
         }
 
         public void OnPresetPreviewChanged(int value)
