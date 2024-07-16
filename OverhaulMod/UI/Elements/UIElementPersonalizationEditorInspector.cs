@@ -34,6 +34,10 @@ namespace OverhaulMod.UI
         [UIElement("VerifyButton")]
         private readonly Button m_verifyButton;
 
+        [UIElementAction(nameof(OnHideBowStringsToggled))]
+        [UIElement("HideBowStringsToggle")]
+        private readonly Toggle m_hideBowStrings;
+
         [UIElement("ExclusiveForField", typeof(UIElementPersonalizationExclusiveForField))]
         private readonly UIElementPersonalizationExclusiveForField m_exclusiveForField;
 
@@ -100,6 +104,8 @@ namespace OverhaulMod.UI
             m_itemIdField.text = personalizationItemInfo.ItemID;
             m_hierarchyPanel.itemInfo = personalizationItemInfo;
             m_filesPanel.itemInfo = personalizationItemInfo;
+            m_hideBowStrings.isOn = personalizationItemInfo.HideBowStrings;
+            m_hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -165,6 +171,8 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
+
+            m_hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && weaponType == WeaponType.Bow;
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -183,6 +191,18 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
+        }
+
+        public void OnHideBowStringsToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            if (personalizationItemInfo == null)
+                return;
+
+            personalizationItemInfo.HideBowStrings = value;
         }
 
         public void OnVerifyButtonClicked()

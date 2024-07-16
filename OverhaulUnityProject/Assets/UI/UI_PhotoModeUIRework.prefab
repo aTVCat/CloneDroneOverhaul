@@ -4936,7 +4936,7 @@ PrefabInstance:
     - target: {fileID: 1866594172965452439, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
       propertyPath: m_Text
-      value: Use realistic skyboxes add-on
+      value: Use realistic skyboxes addon
       objectReference: {fileID: 0}
     - target: {fileID: 1866594172965452439, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}

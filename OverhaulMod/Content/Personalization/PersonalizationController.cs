@@ -141,19 +141,33 @@ namespace OverhaulMod.Content.Personalization
                     string skin = GetWeaponSkinDependingOnOwner(weaponType);
                     bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
+                    PersonalizationItemInfo personalizationItemInfo = null;
                     bool hasSpawnedSkinForWeapon = false;
                     foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
                         if (key.Weapon == weaponType)
+                        {
+                            personalizationItemInfo = key;
                             hasSpawnedSkinForWeapon = true;
+                        }
 
                     if (!noSkin && !hasSpawnedSkinForWeapon)
                     {
                         //Debug.Log("Spawned an item because we didnt earlier");
-                        hasSpawnedSkinForWeapon = SpawnItem(skin) != null;
+
+                        PersonalizationEditorObjectBehaviour behaviour = SpawnItem(skin);
+                        if (behaviour)
+                        {
+                            personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
+                            hasSpawnedSkinForWeapon = true;
+                        }
+                        else
+                        {
+                            hasSpawnedSkinForWeapon = false;
+                        }
                     }
 
                     bool forceEnable = PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.originalModelsEnabled;
-                    SetWeaponPartsVisible(weaponType, forceEnable || !hasSpawnedSkinForWeapon, false);
+                    SetWeaponPartsVisible(weaponType, forceEnable || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
                 }
             }
         }
@@ -255,8 +269,17 @@ namespace OverhaulMod.Content.Personalization
             if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(weaponType, out Transform[] parts))
             {
                 foreach (Transform transform in parts)
-                    if (transform && !(weaponType == WeaponType.Bow && !hideBowStrings && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower")))
-                        transform.gameObject.SetActive(value);
+                    if (transform)
+                    {
+                        if(!value && weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
+                        {
+                            transform.gameObject.SetActive(!hideBowStrings);
+                        }
+                        else
+                        {
+                            transform.gameObject.SetActive(value);
+                        }
+                    }
             }
         }
 

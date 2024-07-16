@@ -23,6 +23,8 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponType Weapon;
 
+        public bool HideBowStrings;
+
         public string BodyPartName;
 
         public int Version;

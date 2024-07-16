@@ -9,6 +9,8 @@ namespace OverhaulMod.Engine
 {
     public class RealisticLightingManager : Singleton<RealisticLightingManager>
     {
+        public const string OLD_LIGHTING_INFO_LIST_FILE = "lightningInfo.json";
+
         public const string LIGHTING_INFO_LIST_FILE = "lightingInfo.json";
 
         public static readonly string LightSettingsObjectResourcePath = "Prefabs/LevelObjects/Settings/LevelLightSettings";
@@ -38,7 +40,21 @@ namespace OverhaulMod.Engine
             RealisticLightingInfoList realisticLightingInfoList = null;
             try
             {
-                realisticLightingInfoList = ModJsonUtils.DeserializeStream<RealisticLightingInfoList>(Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, LIGHTING_INFO_LIST_FILE));
+                string path = Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, LIGHTING_INFO_LIST_FILE);
+                if (!File.Exists(path))
+                {
+                    string oldPath = Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, OLD_LIGHTING_INFO_LIST_FILE);
+                    if (File.Exists(oldPath))
+                    {
+                        ModIOUtils.WriteText(ModIOUtils.ReadText(oldPath).Replace("Lightning", "Lighting"), oldPath);
+                        File.Move(oldPath, path);
+                    }
+                    else
+                    {
+                        realisticLightingInfoList = new RealisticLightingInfoList();
+                    }
+                }
+                realisticLightingInfoList = ModJsonUtils.DeserializeStream<RealisticLightingInfoList>(path);
                 realisticLightingInfoList.FixValues();
             }
             catch

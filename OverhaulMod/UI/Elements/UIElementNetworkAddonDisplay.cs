@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
                 versionString = minModVersion.ToString();
 
             m_minVersionText.enabled = !isSupported;
-            m_minVersionText.text = $"Requires mod version: {versionString}";
+            m_minVersionText.text = $"{LocalizationManager.Instance.GetTranslatedString("addon_requires_version")} {versionString}";
 
             m_hasImages = !images.IsNullOrEmpty();
         }
