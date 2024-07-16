@@ -157,9 +157,9 @@ namespace OverhaulMod.Utils
         public const string ENABLE_BLOOM = "EnableBloom";
 
         /// <summary>
-        /// <see cref="Engine.LightningTransitionManager"/>
+        /// <see cref="Engine.LightingTransitionManager"/>
         /// </summary>
-        public const string ENABLE_LIGHTNING_TRANSITION = "EnableLightningTransition";
+        public const string ENABLE_LIGHTING_TRANSITION = "EnableLightingTransition";
 
         /// <summary>
         /// <see cref="Engine.AutoBuildManager"/>

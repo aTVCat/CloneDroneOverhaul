@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Behaviours
@@ -37,7 +38,7 @@ namespace OverhaulMod.Patches.Behaviours
                     {
                         ModAdvancedCache.Add("Chapter4Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 2);
-                    }, null, $"{ModCore.addonsFolder}{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, Path.Combine(ModCore.addonsFolder, ContentManager.EXTRAS_CONTENT_FOLDER_NAME));
                 }
 
                 if (ModAdvancedCache.TryGet("Chapter5Skybox_Rework", out Material material2))
@@ -50,7 +51,7 @@ namespace OverhaulMod.Patches.Behaviours
                     {
                         ModAdvancedCache.Add("Chapter5Skybox_Rework", material);
                         replaceSkyboxMaterial(material, 7);
-                    }, null, $"{ModCore.addonsFolder}{ContentManager.EXTRAS_CONTENT_FOLDER_NAME}/");
+                    }, null, Path.Combine(ModCore.addonsFolder, ContentManager.EXTRAS_CONTENT_FOLDER_NAME));
                 }
             }
             yield break;

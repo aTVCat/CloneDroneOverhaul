@@ -96,14 +96,14 @@ namespace OverhaulMod
 
             _ = ModManagers.NewSingleton<ArenaRemodelManager>();
             _ = ModManagers.NewSingleton<ArenaAudienceManager>();
-            _ = ModManagers.NewSingleton<LightningTransitionManager>();
+            _ = ModManagers.NewSingleton<LightingTransitionManager>();
             _ = ModManagers.NewSingleton<AdvancedPhotoModeManager>();
             _ = ModManagers.NewSingleton<UpgradeModesManager>();
             _ = ModManagers.NewSingleton<TransitionManager>();
             _ = ModManagers.NewSingleton<CameraManager>();
             _ = ModManagers.NewSingleton<RichPresenceManager>();
             _ = ModManagers.NewSingleton<PooledPrefabManager>();
-            _ = ModManagers.NewSingleton<RealisticLightningManager>();
+            _ = ModManagers.NewSingleton<RealisticLightingManager>();
             _ = ModManagers.NewSingleton<ParticleManager>();
             _ = ModManagers.NewSingleton<PostEffectsManager>();
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.NewSingleton<QuickResetManager>();

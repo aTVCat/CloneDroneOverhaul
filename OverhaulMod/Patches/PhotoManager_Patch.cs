@@ -21,7 +21,7 @@ namespace OverhaulMod.Patches
                     return false;
 
                 if (Input.GetMouseButtonUp(0))
-                    AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+                    AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
 
             }
             return true;

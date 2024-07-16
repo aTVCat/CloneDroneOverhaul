@@ -12,8 +12,8 @@ namespace OverhaulMod.UI
         [UIElement("ExpandButton", typeof(UIElementExpandButton))]
         private readonly UIElementExpandButton m_expandButton;
 
-        [UIElement("LightningPanel")]
-        private readonly RectTransform m_lightningPanel;
+        [UIElement("LightingPanel")]
+        private readonly RectTransform m_lightingPanel;
 
         [UIElementAction(nameof(OnSaveRLightInfoButtonClicked))]
         [UIElement("SaveRLightInfoButton")]
@@ -127,7 +127,7 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxSlider")]
         private readonly Slider m_realisticSkyBoxSlider;
 
-        private LightningInfo m_lightningInfo;
+        private LightingInfo m_lightingInfo;
 
         private bool m_disallowCallbacks;
 
@@ -135,12 +135,12 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            RectTransform lightningPanel = m_lightningPanel;
-            lightningPanel.sizeDelta = new Vector2(225f, 300f);
+            RectTransform lightingPanel = m_lightingPanel;
+            lightingPanel.sizeDelta = new Vector2(225f, 300f);
 
             UIElementExpandButton expandButton = m_expandButton;
-            expandButton.rectTransform = lightningPanel;
-            expandButton.collapsedSize = lightningPanel.sizeDelta;
+            expandButton.rectTransform = lightingPanel;
+            expandButton.collapsedSize = lightingPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 300f);
 
             m_saveRLightInfoButton.gameObject.SetActive(ModBuildInfo.debug);
@@ -167,13 +167,13 @@ namespace OverhaulMod.UI
 
         private void setFieldsValues()
         {
-            LightningInfo lightningInfo = AdvancedPhotoModeManager.Instance.GetEditedLightningInfo();
-            if (lightningInfo == null)
+            LightingInfo lightingInfo = AdvancedPhotoModeManager.Instance.GetEditedLightingInfo();
+            if (lightingInfo == null)
             {
-                m_lightningInfo = default;
+                m_lightingInfo = default;
                 return;
             }
-            m_lightningInfo = lightningInfo;
+            m_lightingInfo = lightingInfo;
 
             m_disallowCallbacks = true;
 
@@ -196,30 +196,30 @@ namespace OverhaulMod.UI
             m_ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
             m_vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
 
-            m_fogToggle.isOn = lightningInfo.FogEnabled;
-            m_fogColor.color = lightningInfo.FogColor;
-            m_fogStartSlider.value = lightningInfo.FogStartDistance;
-            m_fogEndSlider.value = lightningInfo.FogEndDistance;
+            m_fogToggle.isOn = lightingInfo.FogEnabled;
+            m_fogColor.color = lightingInfo.FogColor;
+            m_fogStartSlider.value = lightingInfo.FogStartDistance;
+            m_fogEndSlider.value = lightingInfo.FogEndDistance;
 
-            m_directionalLightToggle.isOn = lightningInfo.EnableDirectionalLight;
-            m_directionalLightColor.color = lightningInfo.DirectionalColor;
-            m_directionalLightXSlider.value = lightningInfo.DirectionalRotationX;
-            m_directionalLightYSlider.value = lightningInfo.DirectionalRotationY;
-            m_directionalLightIntensitySlider.value = lightningInfo.DirectionalIntensity;
-            m_directionalLightShadowsSlider.value = lightningInfo.DirectionalShadowStrength;
+            m_directionalLightToggle.isOn = lightingInfo.EnableDirectionalLight;
+            m_directionalLightColor.color = lightingInfo.DirectionalColor;
+            m_directionalLightXSlider.value = lightingInfo.DirectionalRotationX;
+            m_directionalLightYSlider.value = lightingInfo.DirectionalRotationY;
+            m_directionalLightIntensitySlider.value = lightingInfo.DirectionalIntensity;
+            m_directionalLightShadowsSlider.value = lightingInfo.DirectionalShadowStrength;
 
-            m_skyBoxSlider.value = lightningInfo.SkyboxIndex;
+            m_skyBoxSlider.value = lightingInfo.SkyboxIndex;
 
-            RealisticLightningInfo realisticLightningInfo = RealisticLightningManager.Instance.GetCurrentRealisticLightningInfo();
-            if (realisticLightningInfo == null)
+            RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
+            if (realisticLightingInfo == null)
             {
                 m_realisticSkyBoxToggle.isOn = false;
                 m_realisticSkyBoxSlider.value = -1;
             }
             else
             {
-                m_realisticSkyBoxToggle.isOn = realisticLightningInfo.SkyboxIndex != -1;
-                m_realisticSkyBoxSlider.value = realisticLightningInfo.SkyboxIndex;
+                m_realisticSkyBoxToggle.isOn = realisticLightingInfo.SkyboxIndex != -1;
+                m_realisticSkyBoxSlider.value = realisticLightingInfo.SkyboxIndex;
             }
 
             m_disallowCallbacks = false;
@@ -247,7 +247,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveRLightInfoButtonClicked()
         {
-            RealisticLightningManager.Instance.SaveCurrentLightningInfo(Mathf.RoundToInt(m_realisticSkyBoxSlider.value));
+            RealisticLightingManager.Instance.SaveCurrentLightingInfo(Mathf.RoundToInt(m_realisticSkyBoxSlider.value));
         }
 
         public void OnRestoreDefaultsButtonClicked()
@@ -373,8 +373,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.FogEnabled = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.FogEnabled = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnFogColored(Color value)
@@ -382,8 +382,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.FogColor = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.FogColor = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnFogStartChanged(float value)
@@ -391,8 +391,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.FogStartDistance = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.FogStartDistance = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnFogEndChanged(float value)
@@ -400,8 +400,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.FogEndDistance = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.FogEndDistance = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightToggled(bool value)
@@ -409,8 +409,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.EnableDirectionalLight = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.EnableDirectionalLight = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightColored(Color value)
@@ -418,8 +418,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.DirectionalColor = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.DirectionalColor = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightXChanged(float value)
@@ -427,8 +427,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.DirectionalRotationX = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.DirectionalRotationX = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightYChanged(float value)
@@ -436,8 +436,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.DirectionalRotationY = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.DirectionalRotationY = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnSkyBoxIndexChanged(float value)
@@ -445,8 +445,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.SkyboxIndex = Mathf.RoundToInt(value);
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.SkyboxIndex = Mathf.RoundToInt(value);
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnUseRealisticSkyBoxesToggled(bool value)
@@ -454,8 +454,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.RealisticSkyboxIndex = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.RealisticSkyboxIndex = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnRealisticSkyBoxIndexChanged(float value)
@@ -463,8 +463,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.RealisticSkyboxIndex = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.RealisticSkyboxIndex = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightIntensityChanged(float value)
@@ -472,8 +472,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.DirectionalIntensity = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.DirectionalIntensity = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
         public void OnDirectionalLightShadowsChanged(float value)
@@ -481,8 +481,8 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightningInfo.DirectionalShadowStrength = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightningWithEditedInfo();
+            m_lightingInfo.DirectionalShadowStrength = value;
+            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
     }
 }

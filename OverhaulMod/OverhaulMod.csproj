@@ -425,9 +425,9 @@
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\LevelEditorObjectAdvancedBehaviour.cs" />
-    <Compile Include="Engine\LightningInfo.cs" />
-    <Compile Include="Engine\LightningTransitionInfo.cs" />
-    <Compile Include="Engine\LightningTransitionManager.cs" />
+    <Compile Include="Engine\LightingInfo.cs" />
+    <Compile Include="Engine\LightingTransitionInfo.cs" />
+    <Compile Include="Engine\LightingTransitionManager.cs" />
     <Compile Include="Engine\ModAudioManager.cs" />
     <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
@@ -456,9 +456,9 @@
     <Compile Include="Engine\PooledPrefabBehaviour.cs" />
     <Compile Include="Engine\PooledPrefabInfo.cs" />
     <Compile Include="Engine\PooledPrefabManager.cs" />
-    <Compile Include="Engine\RealisticLightningInfo.cs" />
-    <Compile Include="Engine\RealisticLightningInfoList.cs" />
-    <Compile Include="Engine\RealisticLightningManager.cs" />
+    <Compile Include="Engine\RealisticLightingInfo.cs" />
+    <Compile Include="Engine\RealisticLightingInfoList.cs" />
+    <Compile Include="Engine\RealisticLightingManager.cs" />
     <Compile Include="Engine\RealisticLightSettings.cs" />
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />

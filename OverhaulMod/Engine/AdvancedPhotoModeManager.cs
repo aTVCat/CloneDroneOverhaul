@@ -12,7 +12,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, false)]
         public static bool RequireHoldingRMBWhenUIIsHidden;
 
-        private LightningInfo m_nonEditedLightningInfo, m_editedLightningInfo;
+        private LightingInfo m_nonEditedLightingInfo, m_editedLightingInfo;
 
         private bool m_isInPhotoMode, m_hasEverEnteredPhotoMode;
 
@@ -24,8 +24,8 @@ namespace OverhaulMod.Engine
 
         private void Start()
         {
-            m_nonEditedLightningInfo = new LightningInfo();
-            m_editedLightningInfo = new LightningInfo();
+            m_nonEditedLightingInfo = new LightingInfo();
+            m_editedLightingInfo = new LightingInfo();
         }
 
         public void OnGameLoaded()
@@ -51,10 +51,10 @@ namespace OverhaulMod.Engine
             }
 
             editingLevelLightSettings = changedLightSettings;
-            m_nonEditedLightningInfo.SetValues(currentLightSettings);
+            m_nonEditedLightingInfo.SetValues(currentLightSettings);
         }
 
-        public void RefreshLightningWithEditedInfo()
+        public void RefreshLightingWithEditedInfo()
         {
             if (!m_isInPhotoMode)
                 return;
@@ -63,11 +63,11 @@ namespace OverhaulMod.Engine
             if (!currentLevelLightSettings)
                 return;
 
-            m_editedLightningInfo.ApplyValues(currentLevelLightSettings);
+            m_editedLightingInfo.ApplyValues(currentLevelLightSettings);
             LevelEditorLightManager.Instance.RefreshLightInScene();
         }
 
-        public void RefreshLightningWithNormalInfo()
+        public void RefreshLightingWithNormalInfo()
         {
             LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
             if (!currentLevelLightSettings)
@@ -76,7 +76,7 @@ namespace OverhaulMod.Engine
                 return;
             }
 
-            m_nonEditedLightningInfo.ApplyValues(currentLevelLightSettings);
+            m_nonEditedLightingInfo.ApplyValues(currentLevelLightSettings);
             LevelEditorLightManager.Instance.RefreshLightInScene();
         }
 
@@ -89,19 +89,19 @@ namespace OverhaulMod.Engine
             if (!currentLevelLightSettings)
                 return;
 
-            m_nonEditedLightningInfo.ApplyValues(currentLevelLightSettings);
-            m_editedLightningInfo.SetValues(currentLevelLightSettings);
+            m_nonEditedLightingInfo.ApplyValues(currentLevelLightSettings);
+            m_editedLightingInfo.SetValues(currentLevelLightSettings);
             LevelEditorLightManager.Instance.RefreshLightInScene();
         }
 
-        public LightningInfo GetNormalLightningInfo()
+        public LightingInfo GetNormalLightingInfo()
         {
-            return m_nonEditedLightningInfo;
+            return m_nonEditedLightingInfo;
         }
 
-        public LightningInfo GetEditedLightningInfo()
+        public LightingInfo GetEditedLightingInfo()
         {
-            return m_editedLightningInfo;
+            return m_editedLightingInfo;
         }
 
         public bool IsInPhotoMode()
@@ -124,17 +124,17 @@ namespace OverhaulMod.Engine
             }
             editingLevelLightSettings = levelLightSettings;
 
-            m_nonEditedLightningInfo.SetValues(levelLightSettings);
+            m_nonEditedLightingInfo.SetValues(levelLightSettings);
 
             if (!m_hasEverEnteredPhotoMode)
             {
-                m_editedLightningInfo.SetValues(levelLightSettings);
+                m_editedLightingInfo.SetValues(levelLightSettings);
                 Settings.SetDefaultSettings();
 
                 m_hasEverEnteredPhotoMode = true;
             }
 
-            RefreshLightningWithEditedInfo();
+            RefreshLightingWithEditedInfo();
         }
 
         private void onExitedPhotoMode()
@@ -143,8 +143,8 @@ namespace OverhaulMod.Engine
             {
                 m_isInPhotoMode = false;
 
-                RealisticLightningManager.Instance.PatchLevelLightSettings();
-                RefreshLightningWithNormalInfo();
+                RealisticLightingManager.Instance.PatchLevelLightSettings();
+                RefreshLightingWithNormalInfo();
 
                 UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
                 if (photoModeUI)

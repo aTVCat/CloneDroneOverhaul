@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace OverhaulMod
 {
+    /// <summary>
+    /// todo: rework in 0.4.1
+    /// </summary>
     public class ModResources : Singleton<ModResources>
     {
         internal const string ASSET_BUNDLES_FOLDER = "assets/";
@@ -214,7 +217,7 @@ namespace OverhaulMod
                 errorCallback?.Invoke("Asset bundle load failed.");
                 yield break;
             }
-            cacheAssetBundle(bundlePath.Substring(bundlePath.LastIndexOf('/') + 1), request.assetBundle);
+            cacheAssetBundle(Path.GetFileName(bundlePath), request.assetBundle);
             callback?.Invoke(request.assetBundle);
             _ = s_loadingBundles.Remove(bundlePath);
             yield break;

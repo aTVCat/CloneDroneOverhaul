@@ -488,11 +488,11 @@ namespace OverhaulMod.UI
 
 
             _ = pageBuilder.Header1("Environment");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTNING_TRANSITION), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_LIGHTNING_TRANSITION, value, true);
-            }, "Lightning transitions");
-            _ = pageBuilder.Header4("The lightning changes smoothly as level switches");
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, value, true);
+            }, "Lighting transitions");
+            _ = pageBuilder.Header4("The lighting changes smoothly as level switches");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL, value, true);
