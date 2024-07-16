@@ -140,6 +140,10 @@ namespace OverhaulMod.UI
         [UIElement("DiscordServerButton")]
         private readonly Button m_discordServerButton;
 
+        [UIElementAction(nameof(OnPatchNotesButtonClicked))]
+        [UIElement("PatchNotesButton")]
+        private readonly Button m_patchNotesButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
@@ -496,6 +500,11 @@ namespace OverhaulMod.UI
                 string link = "https://discord.gg/ezhvabY63m";
                 Application.OpenURL(link);
             });*/
+        }
+
+        public void OnPatchNotesButtonClicked()
+        {
+            ModUIConstants.ShowPatchNotes();
         }
     }
 }

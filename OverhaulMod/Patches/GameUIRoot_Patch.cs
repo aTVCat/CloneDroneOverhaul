@@ -96,6 +96,8 @@ namespace OverhaulMod.Patches
                     return false;
                 }
 
+                if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PATCH_NOTES))
+                    return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DISCORD_SERVER_MENU))
                     return false;
                 if (modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DEVELOPMENT_GALLERY))

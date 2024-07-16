@@ -240,7 +240,7 @@ namespace OverhaulMod
 
         private IEnumerator waitUntilBundleIsLoadedCoroutine(string bundlePath, Action<AssetBundle> callback, Action<string> errorCallback)
         {
-            string sub = bundlePath.Substring(bundlePath.LastIndexOf('/') + 1);
+            string sub = Path.GetFileName(bundlePath);
             yield return new WaitUntil(() => !s_loadingBundles.Contains(bundlePath));
             if (s_bundles.ContainsKey(sub))
             {

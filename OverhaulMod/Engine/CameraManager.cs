@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using UnityEngine;
+using static Sony.NP.Matching;
 
 namespace OverhaulMod.Engine
 {
@@ -171,8 +172,14 @@ namespace OverhaulMod.Engine
             EnergyUI energyUI = ModCache.gameUIRoot?.EnergyUI;
             if (energyUI)
             {
-                string word = value ? "Enabled" : "Disabled";
-                energyUI.SetErrorLabelVisible($"{word} first person mode");
+                if (value)
+                {
+                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fpm_enabled"));
+                }
+                else
+                {
+                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fpm_disabled"));
+                }
             }
         }
     }

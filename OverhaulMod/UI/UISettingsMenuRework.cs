@@ -329,6 +329,14 @@ namespace OverhaulMod.UI
                     titleScreenCustomizationPanel.enableRework = ModUIManager.ShowTitleScreenRework;
                 }
 
+                if (!UIPatchNotes.HasShowedPatchNotes)
+                {
+                    DelegateScheduler.Instance.Schedule(delegate
+                    {
+                        _ = ModUIConstants.ShowPatchNotes();
+                    }, 1f);
+                }
+
                 Hide();
             });
         }

@@ -224,6 +224,7 @@ namespace OverhaulMod.Content.Personalization
                 if (preset == null)
                 {
                     volumeComponent.GenerateBasic(FillMode.None);
+                    base.transform.localScale = objectBehaviour.SerializedScale;
                     return;
                 }
 
@@ -239,6 +240,7 @@ namespace OverhaulMod.Content.Personalization
                     if (!File.Exists(path))
                     {
                         volumeComponent.GenerateBasic(FillMode.None);
+                        base.transform.localScale = objectBehaviour.SerializedScale;
                         return;
                     }
                     else

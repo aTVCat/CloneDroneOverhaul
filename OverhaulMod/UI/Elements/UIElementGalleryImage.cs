@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +44,7 @@ namespace OverhaulMod.UI
 
         public void GetDescription()
         {
-            string fileName = filePath.Substring(filePath.LastIndexOf('/') + 1).Replace(".jpg", string.Empty);
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
 
             string displayName;
             switch (fileName)

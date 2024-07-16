@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -59,6 +60,10 @@ namespace OverhaulMod.UI
             if (!base.gameObject.activeInHierarchy || !base.enabled)
                 return;
 
+            string contentPath = ContentManager.Instance.GetContentPath(ContentManager.EXTRAS_CONTENT_FOLDER_NAME);
+            if (string.IsNullOrEmpty(contentPath))
+                return;
+
             if (characterModelIndex < 0 || characterModelIndex >= MultiplayerCharacterCustomizationManager.Instance.CharacterModels.Count)
                 characterModelIndex = 0;
 
@@ -67,8 +72,8 @@ namespace OverhaulMod.UI
             if (filename.Contains("Emperor")) filename = "Emperor_0.png";
             if (filename.Contains("Sword 5")) filename = "Sword 5_0.png";
 
-            string path = $"{ContentManager.Instance.GetContentPath(ContentManager.EXTRAS_CONTENT_FOLDER_NAME)}playerIcons/{filename}";
-            if (!System.IO.File.Exists(path))
+            string path = Path.Combine(contentPath, "playerIcons", filename);
+            if (!File.Exists(path))
                 return;
 
             _ = base.StartCoroutine(loadIconCoroutine(path));

@@ -55,6 +55,8 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!DiscoveredItems.Contains(itemId))
                 DiscoveredItems.Add(itemId);
+
+            SetIsDirty(true);
         }
 
         public bool IsItemDiscovered(PersonalizationItemInfo itemInfo)
@@ -80,6 +82,8 @@ namespace OverhaulMod.Content.Personalization
                 _ = list.Remove(itemId);
             else if (!list.Contains(itemId) && value)
                 list.Add(itemId);
+
+            SetIsDirty(true);
         }
 
         public bool IsItemFavorite(PersonalizationItemInfo itemInfo)

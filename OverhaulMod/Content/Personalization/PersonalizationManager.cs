@@ -340,8 +340,8 @@ namespace OverhaulMod.Content.Personalization
                 personalizationUserInfo.FixValues();
             }
 
-            if (personalizationUserInfo.DiscoveredItems.Count == 0)
-                personalizationUserInfo.DiscoverAllItems();
+            /*if (personalizationUserInfo.DiscoveredItems.Count == 0)
+                personalizationUserInfo.DiscoverAllItems();*/
 
             userInfo = personalizationUserInfo;
         }

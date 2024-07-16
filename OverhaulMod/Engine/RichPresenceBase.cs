@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -193,7 +194,7 @@ namespace OverhaulMod.Engine
                     if (path.IsNullOrEmpty())
                         return result;
 
-                    result = path.Contains("/") ? "Editing " + path.Substring(path.LastIndexOf('/') + 1) : "Editing " + path;
+                    result = $"Editing: {Path.GetFileNameWithoutExtension(path)}";
 
                     break;
             }

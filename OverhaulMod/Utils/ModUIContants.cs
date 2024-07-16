@@ -81,6 +81,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU = "UI_PersonalizationEditorExclusivityEditMenu";
         public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
+        public const string UI_PATCH_NOTES = "UI_PatchNotes";
 
         public static void ShowVersionLabel()
         {
@@ -112,9 +113,9 @@ namespace OverhaulMod.Utils
                 settingsMenuRework.ShowRegularElements();
         }
 
-        public static void ShowTitleScreenRework()
+        public static UITitleScreenRework ShowTitleScreenRework()
         {
-            _ = ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, UILayer.AfterTitleScreen);
+            return ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, UILayer.AfterTitleScreen);
         }
 
         public static void HideTitleScreenRework()
@@ -491,6 +492,11 @@ namespace OverhaulMod.Utils
         public static UIAssetBundleAssetsBrowser ShowAssetBundleAssetsBrowser(Transform transform)
         {
             return ModUIManager.Instance.Show<UIAssetBundleAssetsBrowser>(AssetBundleConstants.UI, UI_ASSET_BUNDLE_ASSETS_BROWSER, transform);
+        }
+
+        public static UIPatchNotes ShowPatchNotes()
+        {
+            return ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, UILayer.AfterTitleScreen, 1);
         }
     }
 }

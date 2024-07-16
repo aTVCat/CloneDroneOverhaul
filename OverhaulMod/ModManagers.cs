@@ -54,10 +54,15 @@ namespace OverhaulMod
             if (GameModeManager.IsOnTitleScreen() && !BoltNetwork.IsRunning)
             {
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
-                    ModUIConstants.ShowTitleScreenRework();
+                    _ = ModUIConstants.ShowTitleScreenRework();
 
                 if (ShowModSetupScreenOnStart)
                     ModUIConstants.ShowSettingsMenuRework(true);
+                else if (!UIPatchNotes.HasShowedPatchNotes)
+                {
+                    yield return new WaitForSecondsRealtime(2f);
+                    _ = ModUIConstants.ShowPatchNotes();
+                }
             }
             ModUIConstants.ShowCinematicEffects();
             yield break;

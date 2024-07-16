@@ -453,8 +453,8 @@ namespace OverhaulMod.Content.Personalization
 
         public string GetWeaponSkinDependingOnOwner(WeaponType weaponType)
         {
-            if (!m_hasInitialized)
-                return null;
+            if (!m_hasInitialized || PersonalizationEditorManager.IsInEditor())
+                return string.Empty;
 
             if (m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
                 return GetWeaponSkin(weaponType);

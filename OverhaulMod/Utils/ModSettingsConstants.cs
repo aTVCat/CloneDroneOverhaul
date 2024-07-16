@@ -305,5 +305,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
         public const string ALLOW_ENEMIES_USE_WEAPON_SKINS = "AllowEnemiesUseWeaponSkins";
+
+        /// <summary>
+        /// <see cref="UI.UIPatchNotes"/>
+        /// </summary>
+        public const string HAS_SHOWED_PATCH_NOTES = "HasShowedPatchNotes";
     }
 }
