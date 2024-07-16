@@ -300,5 +300,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AutoBuildManager"/>
         /// </summary>
         public const string AUTO_BUILD_ACTIVATION_ON_MATCH_START = "AutoBuildActivationOnMatchStart";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string ALLOW_ENEMIES_USE_WEAPON_SKINS = "AllowEnemiesUseWeaponSkins";
     }
 }

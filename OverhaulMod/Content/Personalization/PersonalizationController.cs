@@ -24,6 +24,9 @@ namespace OverhaulMod.Content.Personalization
         [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
         public static string ShieldSkin;
 
+        [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
+        public static bool AllowEnemiesUseSkins;
+
         private FirstPersonMover m_owner;
         public FirstPersonMover owner
         {
@@ -143,14 +146,14 @@ namespace OverhaulMod.Content.Personalization
                         if (key.Weapon == weaponType)
                             hasSpawnedSkinForWeapon = true;
 
-                    if (!m_isMainPlayer && !noSkin && !hasSpawnedSkinForWeapon)
+                    if (!noSkin && !hasSpawnedSkinForWeapon)
                     {
                         //Debug.Log("Spawned an item because we didnt earlier");
                         hasSpawnedSkinForWeapon = SpawnItem(skin) != null;
                     }
 
                     bool forceEnable = PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.originalModelsEnabled;
-                    SetWeaponPartsVisible(weaponType, forceEnable || noSkin || !hasSpawnedSkinForWeapon, false);
+                    SetWeaponPartsVisible(weaponType, forceEnable || !hasSpawnedSkinForWeapon, false);
                 }
             }
         }
@@ -267,7 +270,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
         {
-            if (personalizationItemInfo == null || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
+            if (personalizationItemInfo == null || !personalizationItemInfo.IsUnlocked(owner) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
                 return null;
 
             RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
@@ -456,7 +459,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
                 return GetWeaponSkin(weaponType);
 
-            if (m_isEnemy || (m_isPlayer && !m_isMultiplayer))
+            if ((m_isEnemy && AllowEnemiesUseSkins) || (m_isPlayer && !m_isMultiplayer))
                 return GetWeaponSkin(weaponType);
             else if (m_isMultiplayer)
             {

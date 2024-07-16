@@ -99,6 +99,9 @@ namespace OverhaulMod.UI
         [UIElement("SortDropdown")]
         private readonly Dropdown m_sortDropdown;
 
+        [UIElement("LoadingSawblade")]
+        private readonly Image m_loadingSawblade;
+
         private Dictionary<string, GameObject> m_cachedDisplays;
 
         private RectTransform m_rectTransform;
@@ -165,6 +168,13 @@ namespace OverhaulMod.UI
             setCameraZoomedIn(true);
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
             refreshUpdateButton();
+
+            m_cachedDisplays.Clear();
+            if (m_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_container);
+
+            m_loadingSawblade.color = Color.white;
+
             Populate();
         }
 
@@ -179,9 +189,15 @@ namespace OverhaulMod.UI
         {
             base.Update();
 
+            float d = Time.unscaledDeltaTime * 12.5f * (m_showContents ? 1f : -1f);
+
             float a = m_containerCanvasGroup.alpha;
-            a = Mathf.Clamp(a + (Time.unscaledDeltaTime * 12.5f * (m_showContents ? 1f : -1f)), 0f, 1f);
+            a = Mathf.Clamp(a + d, 0f, 1f);
             m_containerCanvasGroup.alpha = a;
+
+            Color color = m_loadingSawblade.color;
+            color.a = 1f - a;
+            m_loadingSawblade.color = color;
         }
 
         private void LateUpdate()

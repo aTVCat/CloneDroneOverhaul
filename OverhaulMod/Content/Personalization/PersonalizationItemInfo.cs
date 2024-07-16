@@ -124,7 +124,8 @@ namespace OverhaulMod.Content.Personalization
             if (!character)
                 return false;
 
-            string playFabId = GameModeManager.IsSinglePlayer() ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+            bool isSinglePlayer = GameModeManager.IsSinglePlayer();
+            string playFabId = isSinglePlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
 
             bool result = false;
             List<PersonalizationItemLockInfo> exclusiveForList = ExclusiveFor_V2;
@@ -137,7 +138,7 @@ namespace OverhaulMod.Content.Personalization
                 }
             }
 
-            return character && (result || character.IsClone() || !character.IsMainPlayer());
+            return result || (isSinglePlayer && (character.IsClone() || !character.IsMainPlayer()));
         }
 
         public bool IsUnlocked()
