@@ -207,6 +207,15 @@ namespace OverhaulMod.Combat
             OverrideSizeDeltaForUpgrade(BOOMERANG_FIRE_UPGRADE, 1, Vector2.zero);
         }
 
+        public void DeleteLocalizationKeysOfUpgrades(Dictionary<string, string> keys)
+        {
+            foreach(var upgrade in m_upgrades)
+            {
+                keys.Remove(upgrade.UpgradeName);
+                keys.Remove(upgrade.Description);
+            }
+        }
+
         public void AddUpgrades()
         {
             Mod mod = ModCore.instance;

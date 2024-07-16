@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
@@ -151,6 +152,7 @@ namespace OverhaulMod.Engine
 
         public void PopulateTranslationDictionary(ref Dictionary<string, string> keyValuePairs, string langId)
         {
+            ModUpgradesManager.Instance.DeleteLocalizationKeysOfUpgrades(keyValuePairs); // fixes a bug which corrupts the name of upgrades after switching the language 
             ModLocalizationInfo modLocalizationInfo = m_localizationInfo;
             if (modLocalizationInfo != null)
             {
