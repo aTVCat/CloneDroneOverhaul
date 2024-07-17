@@ -390,7 +390,6 @@ GameObject:
   - component: {fileID: 7780822868452850354}
   - component: {fileID: 1495598970173310180}
   - component: {fileID: 7826979427685443801}
-  - component: {fileID: 2044436592366387892}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -459,21 +458,6 @@ MonoBehaviour:
   m_Text: 'hmm
 
     hmm2'
---- !u!114 &2044436592366387892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6560112967054562695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 1, y: 1}
-  m_UseGraphicAlpha: 1
 --- !u!1001 &4670520164682580182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -654,6 +638,11 @@ PrefabInstance:
     - target: {fileID: 4976722326959811986, guid: 339cbba86aa04d441bcc6969fbf247f2,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6522637913199227992, guid: 339cbba86aa04d441bcc6969fbf247f2,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7157080510426004752, guid: 339cbba86aa04d441bcc6969fbf247f2,

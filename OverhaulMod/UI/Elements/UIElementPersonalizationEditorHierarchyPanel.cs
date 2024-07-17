@@ -49,6 +49,7 @@ namespace OverhaulMod.UI
                         PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
                         if (behaviour)
                         {
+                            Destroy(moddedObject.gameObject);
                             _ = base.StartCoroutine(deleteObjectCoroutine(behaviour.gameObject));
                         }
                     });
@@ -68,9 +69,6 @@ namespace OverhaulMod.UI
             yield return null;
             yield return null;
             PersonalizationEditorManager.Instance.SerializeRoot();
-
-            PersonalizationEditorManager.Instance.SpawnRootObject();
-            Populate();
             yield break;
         }
 

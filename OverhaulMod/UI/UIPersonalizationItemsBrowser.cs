@@ -165,7 +165,7 @@ namespace OverhaulMod.UI
                 m_categoryTabs.SelectTab(m_prevTab);
             }
 
-            setCameraZoomedIn(true);
+            base.StartCoroutine(waitThenRefreshCameraCoroutine());
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
             refreshUpdateButton();
 
@@ -507,6 +507,18 @@ namespace OverhaulMod.UI
             m_sortDropdown.interactable = true;
             m_showContents = true;
             m_isPopulating = false;
+            yield break;
+        }
+
+        private IEnumerator waitThenRefreshCameraCoroutine()
+        {
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            if (firstPersonMover)
+            {
+                while (firstPersonMover.IsSwingingMeleeWeapon())
+                    yield return null;
+            }
+            setCameraZoomedIn(true);
             yield break;
         }
 

@@ -38,6 +38,14 @@ namespace OverhaulMod.UI
         [UIElement("HideBowStringsToggle")]
         private readonly Toggle m_hideBowStrings;
 
+        [UIElementAction(nameof(OnEditedOverrideParentDropdown))]
+        [UIElement("OverrideParentDropdown")]
+        private readonly Dropdown m_overrideParentDropdown;
+
+        [UIElementAction(nameof(OnEditedBowStringsWidth))]
+        [UIElement("BowStringsWidthSlider")]
+        private readonly Slider m_bowStringsWidth;
+
         [UIElement("ExclusiveForField", typeof(UIElementPersonalizationExclusiveForField))]
         private readonly UIElementPersonalizationExclusiveForField m_exclusiveForField;
 
@@ -73,6 +81,25 @@ namespace OverhaulMod.UI
                 weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
             m_weaponDropdown.RefreshShownValue();
 
+            List<Dropdown.OptionData> overrideParentList = m_overrideParentDropdown.options;
+            overrideParentList.Clear();
+            overrideParentList.Add(new DropdownStringOptionData()
+            {
+                text = "Default",
+                StringValue = null,
+            });
+            overrideParentList.Add(new DropdownStringOptionData()
+            {
+                text = "Left hand",
+                StringValue = "HandL",
+            });
+            overrideParentList.Add(new DropdownStringOptionData()
+            {
+                text = "Right hand",
+                StringValue = "HandR",
+            });
+            m_overrideParentDropdown.RefreshShownValue();
+
             List<Dropdown.OptionData> bodyPartList = m_bodyPartDropdown.options;
             bodyPartList.Clear();
             foreach (string bp in PersonalizationManager.SupportedBodyParts)
@@ -106,12 +133,24 @@ namespace OverhaulMod.UI
             m_filesPanel.itemInfo = personalizationItemInfo;
             m_hideBowStrings.isOn = personalizationItemInfo.HideBowStrings;
             m_hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+            m_overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+            m_bowStringsWidth.value = personalizationItemInfo.BowStringsWidth;
+            m_bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
                 if ((m_weaponDropdown.options[i] as DropdownWeaponTypeOptionData).Weapon == personalizationItemInfo.Weapon)
                 {
                     m_weaponDropdown.value = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < m_overrideParentDropdown.options.Count; i++)
+            {
+                if ((m_overrideParentDropdown.options[i] as DropdownStringOptionData).StringValue == personalizationItemInfo.OverrideParent)
+                {
+                    m_overrideParentDropdown.value = i;
                     break;
                 }
             }
@@ -171,8 +210,11 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
+            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
 
             m_hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && weaponType == WeaponType.Bow;
+            m_overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+            m_bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -191,6 +233,7 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
+            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
         }
 
         public void OnHideBowStringsToggled(bool value)
@@ -203,6 +246,39 @@ namespace OverhaulMod.UI
                 return;
 
             personalizationItemInfo.HideBowStrings = value;
+        }
+
+        public void OnEditedOverrideParentDropdown(int value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            if (personalizationItemInfo == null)
+                return;
+
+            personalizationItemInfo.OverrideParent = (m_overrideParentDropdown.options[value] as DropdownStringOptionData).StringValue;
+
+            PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
+            manager.SerializeRoot();
+            manager.SpawnRootObject();
+            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
+        }
+
+        public void OnEditedBowStringsWidth(float value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            if (personalizationItemInfo == null)
+                return;
+
+            personalizationItemInfo.BowStringsWidth = value;
+
+            PersonalizationController controller = PersonalizationEditorManager.Instance.currentPersonalizationController;
+            if (controller)
+                controller.SetBowStringsWidth(value);
         }
 
         public void OnVerifyButtonClicked()

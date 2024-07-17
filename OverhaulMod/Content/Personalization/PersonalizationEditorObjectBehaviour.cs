@@ -126,6 +126,9 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo Serialize()
         {
+            if (!this || !gameObject)
+                return null;
+
             if (IsRoot)
                 NextUniqueIndex = PersonalizationEditorObjectManager.Instance.GetCurrentUniqueIndex();
 
@@ -152,7 +155,9 @@ namespace OverhaulMod.Content.Personalization
                 if (!c || !c.gameObject)
                     continue;
 
-                objectInfo.Children.Add(c.Serialize());
+                PersonalizationEditorObjectInfo cInfo = c.Serialize();
+                if (cInfo != null)
+                    objectInfo.Children.Add(cInfo);
             }
             return objectInfo;
         }

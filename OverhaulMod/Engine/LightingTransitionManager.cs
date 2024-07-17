@@ -62,7 +62,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null)
+            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null || AdvancedPhotoModeManager.Instance.IsInPhotoMode())
                 return;
 
             float v = m_timeLeft - Time.deltaTime;
@@ -81,7 +81,7 @@ namespace OverhaulMod.Engine
             }
             else
             {
-                m_currentTransition.completion = 1f - NumberUtils.EaseInOutCubic(0f, 1f, Mathf.Clamp01(v / transitionTime));
+                m_currentTransition.completion = 1f - NumberUtils.EaseInOutQuad(0f, 1f, Mathf.Clamp01(v / transitionTime));
             }
         }
     }

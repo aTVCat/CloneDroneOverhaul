@@ -86,7 +86,7 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_hasInitialized, m_hasAddedEventListeners;
 
-        private float m_timeLeftToRefreshWeaponSkinAndParts;
+        private float m_timeLeftToRefreshWeaponSkinAndParts, m_timeLeftToRefreshSkinVisibility;
 
         private void Awake()
         {
@@ -130,14 +130,20 @@ namespace OverhaulMod.Content.Personalization
             if (!m_hasInitialized)
                 return;
 
-            m_timeLeftToRefreshWeaponSkinAndParts -= Time.unscaledDeltaTime;
+            FirstPersonMover firstPersonMover = owner;
+            if (!firstPersonMover)
+                return;
+
+            float d = Time.unscaledDeltaTime;
+
+            m_timeLeftToRefreshWeaponSkinAndParts -= d;
             if (m_timeLeftToRefreshWeaponSkinAndParts <= 0f)
             {
                 m_timeLeftToRefreshWeaponSkinAndParts = 0.5f;
 
                 if (!m_isMindSpace)
                 {
-                    WeaponType weaponType = owner.GetEquippedWeaponType();
+                    WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
                     string skin = GetWeaponSkinDependingOnOwner(weaponType);
                     bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
@@ -168,6 +174,26 @@ namespace OverhaulMod.Content.Personalization
 
                     bool forceEnable = PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.originalModelsEnabled;
                     SetWeaponPartsVisible(weaponType, forceEnable || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                }
+            }
+
+            m_timeLeftToRefreshSkinVisibility -= d;
+            if (m_timeLeftToRefreshSkinVisibility <= 0f)
+            {
+                m_timeLeftToRefreshSkinVisibility = 0.1f;
+
+                WeaponType equippedWeaponType = firstPersonMover.GetEquippedWeaponType();
+                foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in m_spawnedItems)
+                {
+                    PersonalizationEditorObjectBehaviour behaviour = keyValue.Value;
+                    if (!behaviour)
+                        continue;
+
+                    PersonalizationItemInfo info = keyValue.Key;
+                    if (info.Category != PersonalizationCategory.WeaponSkins || info.Weapon != WeaponType.Bow || string.IsNullOrEmpty(info.OverrideParent))
+                        continue;
+
+                    behaviour.gameObject.SetActive(info.Weapon == equippedWeaponType);
                 }
             }
         }
@@ -229,6 +255,7 @@ namespace OverhaulMod.Content.Personalization
             m_hasInitialized = true;
             GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             m_hasAddedEventListeners = true;
+            refreshWeaponSkinAndParts();
             SpawnEquippedSkinsNextFrame();
             yield break;
         }
@@ -271,7 +298,7 @@ namespace OverhaulMod.Content.Personalization
                 foreach (Transform transform in parts)
                     if (transform)
                     {
-                        if(!value && weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
+                        if (!value && weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
                         {
                             transform.gameObject.SetActive(!hideBowStrings);
                         }
@@ -279,6 +306,18 @@ namespace OverhaulMod.Content.Personalization
                         {
                             transform.gameObject.SetActive(value);
                         }
+                    }
+            }
+        }
+
+        public void SetBowStringsWidth(float value)
+        {
+            if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(WeaponType.Bow, out Transform[] parts))
+            {
+                foreach (Transform transform in parts)
+                    if (transform && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
+                    {
+                        transform.localScale = new Vector3(0.1f * value, transform.localScale.y, 0.1f * value);
                     }
             }
         }
@@ -312,7 +351,14 @@ namespace OverhaulMod.Content.Personalization
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            {
+                if (personalizationItemInfo.Weapon == WeaponType.Bow)
+                {
+                    SetBowStringsWidth(Mathf.Clamp(personalizationItemInfo.BowStringsWidth, 0.1f, 1f));
+                }
+
                 refreshWeaponSkinAndParts();
+            }
 
             return behaviour;
         }
@@ -331,6 +377,11 @@ namespace OverhaulMod.Content.Personalization
 
             if (editCollection)
                 _ = m_spawnedItems.Remove(personalizationItemInfo);
+
+            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow)
+            {
+                SetBowStringsWidth(1f);
+            }
         }
 
         public void DestroyAllItems()
@@ -469,7 +520,14 @@ namespace OverhaulMod.Content.Personalization
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                return ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
+                Transform transform = ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
+                if (!string.IsNullOrEmpty(personalizationItemInfo.OverrideParent))
+                {
+                    Transform transform2 = TransformUtils.FindChildRecursive(owner.transform, personalizationItemInfo.OverrideParent);
+                    if (transform2)
+                        transform = transform2;
+                }
+                return transform;
             }
             return null;
         }

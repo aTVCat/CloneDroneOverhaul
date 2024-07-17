@@ -7,7 +7,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.ENABLE_REVERB_FILTER, true)]
         public static bool EnableReverbFilter;
 
-        [ModSetting(ModSettingsConstants.REVERB_FILTER_INTENSITY, 1f)]
+        [ModSetting(ModSettingsConstants.REVERB_FILTER_INTENSITY, 0.6f)]
         public static float ReverbIntensity;
     }
 }

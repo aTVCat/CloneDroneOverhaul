@@ -8,10 +8,6 @@ namespace OverhaulMod
     {
         internal const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
-        public const bool OVERRIDE_VERSION = false;
-
-        public static readonly Version OverrideVersion = new Version(0, 4, 1, 0);
-
         private static bool s_loaded;
 
         public static ExtraInfo extraInfo { get; private set; }
@@ -136,7 +132,7 @@ namespace OverhaulMod
 
         private static void loadVersion()
         {
-            Version version = OVERRIDE_VERSION ? OverrideVersion : ModCache.modAssemblyName.Version;
+            Version version = ModCache.modAssemblyName.Version;
             int major = version.Major;
             int minor = version.Minor;
             int build = version.Build;

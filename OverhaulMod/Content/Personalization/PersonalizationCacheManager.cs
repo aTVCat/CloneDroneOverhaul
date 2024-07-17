@@ -33,7 +33,6 @@ namespace OverhaulMod.Content.Personalization
             {
                 byte[] array = m_cachedFiles[path];
                 _ = m_cachedFiles.Remove(path);
-                GC.SuppressFinalize(array);
             }
         }
 
@@ -50,7 +49,6 @@ namespace OverhaulMod.Content.Personalization
         {
             Dictionary<string, byte[]> d = m_cachedFiles;
             d.Clear();
-            GC.Collect();
 
             int i = 0;
             do

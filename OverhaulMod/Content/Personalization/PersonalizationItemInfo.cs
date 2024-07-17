@@ -25,6 +25,10 @@ namespace OverhaulMod.Content.Personalization
 
         public bool HideBowStrings;
 
+        public float BowStringsWidth = 1f;
+
+        public string OverrideParent;
+
         public string BodyPartName;
 
         public int Version;
