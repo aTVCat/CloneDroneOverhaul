@@ -54,22 +54,22 @@ namespace OverhaulMod.Patches.Behaviours
                 return;
 
             Transform transform1 = component.transform;
-            if(!m_bg)
+            if (!m_bg)
                 m_bg = transform1.FindChildRecursive("FrameBG").gameObject;
 
-            if(!m_barBGImage)
+            if (!m_barBGImage)
                 m_barBGImage = transform1.FindChildRecursive("BarBG").GetComponent<Image>();
 
-            if(m_barBGVanillaColor == default)
+            if (m_barBGVanillaColor == default)
                 m_barBGVanillaColor = m_barBGImage.color;
 
-            if(!m_glowImage)
+            if (!m_glowImage)
                 m_glowImage = transform1.FindChildRecursive("GlowFill").GetComponent<Image>();
 
-            if(m_barBGVanillaColor == default)
+            if (m_barBGVanillaColor == default)
                 m_glowVanillaColor = m_glowImage.color;
 
-            if(!m_cantJumpBG)
+            if (!m_cantJumpBG)
                 m_cantJumpBG = transform1.FindChildRecursive("CantJumpBG");
 
             if (!transform1.GetComponent<EnergyUIBehaviour>())

@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
             instance = this;
 
             bool debug = ModBuildInfo.debug;
-            string versionString = ModBuildInfo.fullVersionString;
+            _ = ModBuildInfo.fullVersionString;
 
             m_versionText.text = "v" + ModBuildInfo.fullVersionString;
             m_debugIcon.SetActive(debug);

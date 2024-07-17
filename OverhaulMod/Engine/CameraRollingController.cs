@@ -18,6 +18,7 @@ namespace OverhaulMod.Engine
 
         public float AdditionalXOffset, AdditionalZOffset;
 
+        private Camera m_camera;
         private Transform m_playerCameraTransform;
         private SettingsManager m_settingsManager;
         private FirstPersonMover m_owner;
@@ -51,10 +52,14 @@ namespace OverhaulMod.Engine
             m_settingsManager = SettingsManager.Instance;
             m_playerCameraTransform = camera.transform;
             m_owner = firstPersonMover;
+            m_camera = camera;
         }
 
         private void LateUpdate()
         {
+            if (!m_playerCameraTransform)
+                return;
+
             if (!enableControl)
                 return;
 
@@ -83,6 +88,11 @@ namespace OverhaulMod.Engine
                     x = moveForward ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
                 if (firstPersonMover.IsJumping() || firstPersonMover.IsFreeFallingWithNoGroundInSight())
                     x += 1f;
+            }
+
+            if (m_camera)
+            {
+                m_camera.nearClipPlane = CameraManager.EnableFirstPersonMode ? 0.1f : 0.3f;
             }
 
             UpdateViewBobbing(forceZero);

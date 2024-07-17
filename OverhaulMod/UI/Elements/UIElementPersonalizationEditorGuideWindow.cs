@@ -98,7 +98,7 @@ namespace OverhaulMod.UI.Elements
             if (m_currentGuide.IsTranslated)
             {
                 string header = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_header_{guideStage.Header.ToLower().Replace(' ', '_')}");
-                string description = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_text_page_{m_currentGuideStageIndex+1}");
+                string description = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_text_page_{m_currentGuideStageIndex + 1}");
                 SetTexts(header, description);
             }
             else

@@ -193,7 +193,7 @@ namespace OverhaulMod.Content.Personalization
                     if (info.Category != PersonalizationCategory.WeaponSkins || info.Weapon != WeaponType.Bow || string.IsNullOrEmpty(info.OverrideParent))
                         continue;
 
-                    behaviour.gameObject.SetActive(info.Weapon == equippedWeaponType);
+                    behaviour.gameObject.SetActive(firstPersonMover.IsAlive() && info.Weapon == equippedWeaponType);
                 }
             }
         }

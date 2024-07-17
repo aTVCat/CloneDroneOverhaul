@@ -504,7 +504,7 @@ namespace OverhaulMod.UI
 
         public void OnPatchNotesButtonClicked()
         {
-            ModUIConstants.ShowPatchNotes();
+            _ = ModUIConstants.ShowPatchNotes();
         }
     }
 }

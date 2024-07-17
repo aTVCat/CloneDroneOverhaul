@@ -209,10 +209,10 @@ namespace OverhaulMod.Combat
 
         public void DeleteLocalizationKeysOfUpgrades(Dictionary<string, string> keys)
         {
-            foreach(var upgrade in m_upgrades)
+            foreach (UpgradeDescription upgrade in m_upgrades)
             {
-                keys.Remove(upgrade.UpgradeName);
-                keys.Remove(upgrade.Description);
+                _ = keys.Remove(upgrade.UpgradeName);
+                _ = keys.Remove(upgrade.Description);
             }
         }
 

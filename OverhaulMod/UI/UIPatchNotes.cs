@@ -34,10 +34,10 @@ namespace OverhaulMod.UI
                 text = ModIOUtils.ReadText(file);
             else
             {
-                if(langCode != "en")
+                if (langCode != "en")
                 {
                     file = Path.Combine(ModCore.dataFolder, $"changelog_en.txt");
-                    if(File.Exists(file))
+                    if (File.Exists(file))
                         text = ModIOUtils.ReadText(file);
                     else
                         text = "Changelog file load error.";

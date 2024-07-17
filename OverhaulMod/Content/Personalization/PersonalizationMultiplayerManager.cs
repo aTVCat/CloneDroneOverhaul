@@ -80,7 +80,7 @@ namespace OverhaulMod.Content.Personalization
         {
             bool debug = ModBuildInfo.debug;
 
-            if(debug)
+            if (debug)
                 Debug.Log(rawData);
 
             if (rawData.Length > 16)

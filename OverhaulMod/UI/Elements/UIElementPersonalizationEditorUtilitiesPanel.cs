@@ -98,12 +98,12 @@ namespace OverhaulMod.UI
 
         public void SetPresetPreview(WeaponVariant weaponVariant)
         {
-            var options = m_presetPreviewDropdown.options;
+            List<Dropdown.OptionData> options = m_presetPreviewDropdown.options;
 
             int i = 0;
-            foreach(var option in options)
+            foreach (Dropdown.OptionData option in options)
             {
-                if(option is DropdownWeaponVariantOptionData dropdownWeaponVariantOptionData && dropdownWeaponVariantOptionData.Value == weaponVariant)
+                if (option is DropdownWeaponVariantOptionData dropdownWeaponVariantOptionData && dropdownWeaponVariantOptionData.Value == weaponVariant)
                 {
                     m_presetPreviewDropdown.value = i;
                     return;

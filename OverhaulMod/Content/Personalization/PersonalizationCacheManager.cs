@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +30,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (m_cachedFiles.ContainsKey(path))
             {
-                byte[] array = m_cachedFiles[path];
+                _ = m_cachedFiles[path];
                 _ = m_cachedFiles.Remove(path);
             }
         }

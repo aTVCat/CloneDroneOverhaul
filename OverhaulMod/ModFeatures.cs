@@ -33,7 +33,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WeaponBag:
-                    result = true;
+                    result = false;
                     break;
                 case FeatureType.ChapterSelectMenuRework:
                     result = true;

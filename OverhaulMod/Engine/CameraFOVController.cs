@@ -19,18 +19,21 @@ namespace OverhaulMod.Engine
 
         private FirstPersonMover m_owner;
 
+        private float m_timeToAllowUnclampedFovUntil;
+
+        private float m_lerpedOffset;
+
         private void Start()
         {
             m_cameraManager = CameraManager.Instance;
             m_camera = base.GetComponent<Camera>();
             m_cameraAnimator = base.GetComponentInParent<Animator>();
+            m_timeToAllowUnclampedFovUntil = Time.time + 1f;
+            m_lerpedOffset = getFovOffset();
         }
 
         private void LateUpdate()
         {
-            if (!EnableFOVOverride)
-                return;
-
             FirstPersonMover owner = m_owner;
             if (!owner || owner._isGrabbedForUpgrade)
                 return;
@@ -43,16 +46,20 @@ namespace OverhaulMod.Engine
             if (!camera)
                 return;
 
-            CameraManager cameraManager = m_cameraManager;
-            if (cameraManager.enableForceFOVOffset)
-                camera.fieldOfView += cameraManager.forceFOVOffset;
-            else
-                camera.fieldOfView += FOVOffset;
+            m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, getFovOffset(), Time.unscaledDeltaTime * 9f);
+            camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 150f : 100f);
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)
         {
             m_owner = firstPersonMover;
+        }
+
+        private float getFovOffset()
+        {
+            bool fovOverrideEnabled = EnableFOVOverride;
+            CameraManager cameraManager = m_cameraManager;
+            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 25f) : (fovOverrideEnabled ? FOVOffset : 0));
         }
     }
 }

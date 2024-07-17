@@ -165,7 +165,7 @@ namespace OverhaulMod.UI
                 m_categoryTabs.SelectTab(m_prevTab);
             }
 
-            base.StartCoroutine(waitThenRefreshCameraCoroutine());
+            _ = base.StartCoroutine(waitThenRefreshCameraCoroutine());
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
             refreshUpdateButton();
 

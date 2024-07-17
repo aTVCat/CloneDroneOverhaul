@@ -262,7 +262,7 @@ namespace OverhaulMod
         {
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
             if (GameModeManager.Is(GameMode.EndlessCoop) || GameModeManager.Is(GameMode.CoopChallenge))
-                waitThenFixArenaLiftInCoop().Run();
+                _ = waitThenFixArenaLiftInCoop().Run();
         }
 
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)
@@ -333,7 +333,7 @@ namespace OverhaulMod
             {
                 _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
 
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && (GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale() ? firstPersonMover.IsMainPlayer() : true))
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
 
                 RobotInventory robotInventory = firstPersonMover.gameObject.AddComponent<RobotInventory>();
