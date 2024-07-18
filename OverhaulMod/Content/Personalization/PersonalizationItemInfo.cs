@@ -3,6 +3,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -98,16 +99,16 @@ namespace OverhaulMod.Content.Personalization
             Authors.Add(name);
         }
 
-        public string GetAuthorsString()
+        public string GetAuthorsString(bool translate = false)
         {
             if (Authors.IsNullOrEmpty())
-                return "n/a";
+                return "N/A (no author)";
 
             string result = Authors[0];
             if (Authors.Count != 1)
             {
                 for (int i = 1; i < Authors.Count; i++)
-                    result += $", {Authors[i]}";
+                    result += $"{((translate && i == Authors.Count-1) ? $" {LocalizationManager.Instance.GetTranslatedString("customization_authors_and")}" : ",")} {Authors[i]}";
             }
             return result;
         }

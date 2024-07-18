@@ -70,6 +70,9 @@ namespace OverhaulMod.Engine
                     return;
             }
 
+            if (!firstPersonMover.IsAlive())
+                return;
+
             Transform transform = firstPersonMover._cameraHolderTransform;
             if (!transform)
                 return;
@@ -85,6 +88,9 @@ namespace OverhaulMod.Engine
                 if (!firstPersonMover)
                     return;
             }
+
+            if (!firstPersonMover.IsAlive())
+                return;
 
             SetCameraHolderEulerAngles(Vector3.zero, firstPersonMover);
         }

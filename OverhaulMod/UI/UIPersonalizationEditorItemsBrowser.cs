@@ -122,7 +122,6 @@ namespace OverhaulMod.UI
                     button.onClick.AddListener(delegate
                     {
                         UIPersonalizationEditor.instance.ShowEverything();
-                        UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
                         PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
                         Hide();
                     });
@@ -176,7 +175,6 @@ namespace OverhaulMod.UI
                 if (PersonalizationEditorManager.Instance.CreateItem(str, m_usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
                 {
                     UIPersonalizationEditor.instance.ShowEverything();
-                    UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                     Hide();
                 }

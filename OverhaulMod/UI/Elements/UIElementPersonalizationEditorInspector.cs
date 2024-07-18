@@ -195,8 +195,6 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
-
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)
                 return;
@@ -224,8 +222,6 @@ namespace OverhaulMod.UI
         {
             if (m_disallowCallbacks)
                 return;
-
-            UIPersonalizationEditor.instance.PropertiesPanel.EditObject(null);
 
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)

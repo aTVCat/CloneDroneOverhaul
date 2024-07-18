@@ -139,6 +139,7 @@ namespace OverhaulMod.UI
             m_sortDropdown.value = 1;
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayerDied, tryHide);
             m_allowUICallbacks = true;
         }
 
@@ -147,6 +148,7 @@ namespace OverhaulMod.UI
             base.OnDestroy();
             IsPreviewing = false;
             GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.PlayerDied, tryHide);
         }
 
         public override void Show()
@@ -223,6 +225,14 @@ namespace OverhaulMod.UI
             ModSettingsDataManager.Instance.Save();
 
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
+        }
+
+        private void tryHide()
+        {
+            if (base.gameObject.activeInHierarchy)
+            {
+                Hide();
+            }
         }
 
         public bool IsMouseOverPanel()
@@ -410,7 +420,7 @@ namespace OverhaulMod.UI
                         bool isVerified = item.IsVerified;
                         bool noSpecificAuthor = false;
 
-                        string authorsString = item.GetAuthorsString();
+                        string authorsString = item.GetAuthorsString(true);
                         string prefix;
                         if (authorsString == "vanilla")
                         {
@@ -418,7 +428,7 @@ namespace OverhaulMod.UI
                             prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
                         }
                         else
-                            prefix = $"{LocalizationManager.Instance.GetTranslatedString("customization_author")} ";
+                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author"): LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
 
                         string authorsStringToDisplay;
                         if (noSpecificAuthor)
@@ -493,6 +503,10 @@ namespace OverhaulMod.UI
                             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
                         });
                     });
+
+                    ModdedObject messageDisplay1 = Instantiate(m_messageDisplay, m_container);
+                    messageDisplay1.gameObject.SetActive(true);
+                    messageDisplay1.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("authors_reminder");
                 }
             }
 

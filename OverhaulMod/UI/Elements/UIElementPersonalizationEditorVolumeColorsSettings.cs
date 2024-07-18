@@ -92,16 +92,22 @@ namespace OverhaulMod.UI
 
         public void OnCopyColorsButtonClicked()
         {
+            if (m_colorPairs == null || m_favoriteColorSettings == null)
+                return;
+
             m_pasteColorsButton.interactable = true;
             PersonalizationEditorCopyPasteManager.Instance.CopyColorSettings(m_colorPairs, m_favoriteColorSettings);
         }
 
         public void OnPasteColorsButtonClicked()
         {
-            m_pasteColorsButton.interactable = false;
-
             List<ColorPairFloat> originalColors = m_colorPairs;
             Dictionary<string, FavoriteColorSettings> originalFavoriteColors = m_favoriteColorSettings;
+
+            if (originalColors == null || originalFavoriteColors == null)
+                return;
+
+            m_pasteColorsButton.interactable = false;
 
             PersonalizationEditorCopyPasteManager.Instance.PasteColorSettings(out List<ColorPairFloat> colorPairs, out Dictionary<string, FavoriteColorSettings> favoriteColors);
 

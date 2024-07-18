@@ -59,6 +59,8 @@ namespace OverhaulMod.UI
 
         private bool m_disableCallbacks;
 
+        private bool m_prevObjectState;
+
         protected override void OnInitialized()
         {
             m_objectId = -1;
@@ -67,6 +69,19 @@ namespace OverhaulMod.UI
 
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
+        }
+
+        private void LateUpdate()
+        {
+            bool newObjectState = m_object;
+            if(newObjectState != m_prevObjectState)
+            {
+                if (!newObjectState)
+                {
+                    EditObject(null);
+                }
+                m_prevObjectState = newObjectState;
+            }
         }
 
         public void Clear()
