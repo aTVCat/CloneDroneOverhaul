@@ -358,6 +358,7 @@
     <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\ContentListInfo.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
+    <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
     <Compile Include="Content\NewsUserData.cs" />
@@ -474,6 +475,7 @@
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Content\WorkshopItem.cs" />
     <Compile Include="Engine\WeaponVariantManager.cs" />
+    <Compile Include="FileDownloader.cs" />
     <Compile Include="IGameLoadListener.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />

@@ -36,6 +36,12 @@ namespace OverhaulMod.UI
 
         private bool m_hasImages;
 
+        public string contentName
+        {
+            get;
+            set;
+        }
+
         public string contentFile
         {
             get;
@@ -92,7 +98,7 @@ namespace OverhaulMod.UI
             string file = contentFile;
 
             bool isDownloadingContent = contentManager.IsDownloading(file);
-            bool hasDownloaded = contentManager.HasContent(file, true);
+            bool hasDownloaded = contentManager.HasContent(contentName, true);
 
             m_progressBar.SetActive(isDownloadingContent);
             m_contentSizeText.SetActive(!isDownloadingContent && isSupported);
@@ -110,11 +116,19 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_header"), LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_text"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
-                    _ = m_contentManager.DownloadContent(contentFile, null, null);
+                    _ = m_contentManager.DownloadContent(contentName, contentFile, delegate (string error)
+                    {
+                        if(error != null)
+                            ModUIUtils.MessagePopupOK("Addon download error", error, true);
+                    });
                 });
                 return;
             }
-            _ = m_contentManager.DownloadContent(contentFile, null, null);
+            _ = m_contentManager.DownloadContent(contentName, contentFile, delegate (string error)
+            {
+                if (error != null)
+                    ModUIUtils.MessagePopupOK("Addon download error", error, true);
+            });
         }
 
         public void OnImagesButtonClicked()

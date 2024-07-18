@@ -55,8 +55,6 @@ namespace OverhaulMod.UI
             m_exitButton.gameObject.SetActive(false);
             m_progressBar.SetActive(true);
             m_progressBarFill.fillAmount = 0f;
-
-            _ = ContentManager.Instance.DownloadContent("default", onDownloadSuccess, onDownloadFail);
         }
 
         public void OnDoneButtonClicked()

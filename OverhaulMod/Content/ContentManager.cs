@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using BestHTTP.SocketIO;
+using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
@@ -16,13 +17,13 @@ namespace OverhaulMod.Content
 
         public const string EXTRAS_CONTENT_FOLDER_NAME = "Extras";
 
-        public const string REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME = "RealisticSkyboxes";
+        public const string REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME = "Realistic skyboxes";
 
-        public const string GALLERY_CONTENT_FOLDER_NAME = "Gallery";
+        public const string GALLERY_CONTENT_FOLDER_NAME = "Behind the scenes";
 
         public const string CONTENT_DOWNLOAD_DONE_EVENT = "OverhaulContentDownloadDone";
 
-        private Dictionary<string, UnityWebRequest> m_downloadingFiles;
+        private Dictionary<string, float> m_downloadingFiles;
 
         private List<ContentInfo> m_installedContent;
 
@@ -38,7 +39,7 @@ namespace OverhaulMod.Content
 
         private void Start()
         {
-            m_downloadingFiles = new Dictionary<string, UnityWebRequest>();
+            m_downloadingFiles = new Dictionary<string, float>();
             m_loadingAddons = new List<object>();
             RefreshContent();
         }
@@ -51,32 +52,45 @@ namespace OverhaulMod.Content
             _ = GetContent();
         }
 
-        public bool DownloadContent(string name, Action callback, Action<string> errorCallback)
+        public bool DownloadContent(string name, string url, Action<string> callback)
         {
-            if (m_downloadingFiles.ContainsKey(name))
+            if (m_downloadingFiles.ContainsKey(url))
             {
-                _ = base.StartCoroutine(waitUntilContentIsDownloaded(name, callback, errorCallback));
+                _ = base.StartCoroutine(waitUntilContentIsDownloaded(url, callback));
                 return false;
             }
 
-            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/{name}.zip", delegate (byte[] bytes)
+            m_downloadingFiles.Add(url, 0f);
+
+            string tempPath = Path.GetTempFileName();
+            GoogleDriveManager.Instance.DownloadFile(url, tempPath, delegate (float progress)
             {
+                if (!m_downloadingFiles.ContainsKey(url))
+                    m_downloadingFiles.Add(url, progress);
+                else
+                    m_downloadingFiles[url] = progress;
+            },
+            delegate (string result)
+            {
+                _ = m_downloadingFiles.Remove(url);
+
+                if (result != null)
+                {
+                    ModManagers.Instance.TriggerModContentLoadedEvent(result);
+                    callback?.Invoke(result);
+                    return;
+                }
+
                 RemoveContent(name);
-                _ = m_downloadingFiles.Remove(name);
 
                 try
                 {
-                    string tempFile = Path.GetTempFileName();
-                    ModIOUtils.WriteBytes(bytes, tempFile);
-
-                    string directory = Path.Combine(ModCore.addonsFolder, name.Replace(' ', '_'));
-                    if (!Directory.Exists(directory))
-                        _ = Directory.CreateDirectory(directory);
+                    string dest = Path.Combine(ModCore.addonsFolder, name);
+                    if (!Directory.Exists(dest))
+                        Directory.CreateDirectory(dest);
 
                     FastZip fastZip = new FastZip();
-                    fastZip.ExtractZip(tempFile, directory, null);
-                    if (File.Exists(tempFile))
-                        File.Delete(tempFile);
+                    fastZip.ExtractZip(tempPath, dest, null);
                 }
                 catch (Exception exc)
                 {
@@ -85,15 +99,10 @@ namespace OverhaulMod.Content
                 }
 
                 ModManagers.Instance.TriggerModContentLoadedEvent(null);
-                callback?.Invoke();
+                callback?.Invoke(null);
 
                 RefreshContent(true);
-            }, delegate (string error)
-            {
-                _ = m_downloadingFiles.Remove(name);
-                ModManagers.Instance.TriggerModContentLoadedEvent(error);
-            }, out UnityWebRequest unityWebRequest, -1);
-            m_downloadingFiles.Add(name, unityWebRequest);
+            });
             return true;
         }
 
@@ -117,18 +126,11 @@ namespace OverhaulMod.Content
             }, errorCallback, out unityWebRequest, 15);
         }
 
-        private IEnumerator waitUntilContentIsDownloaded(string name, Action callback, Action<string> errorCallback)
+        private IEnumerator waitUntilContentIsDownloaded(string name, Action<string> callback)
         {
             GlobalEventManager.Instance.AddEventListenerOnce(CONTENT_DOWNLOAD_DONE_EVENT, delegate (string error)
             {
-                if (string.IsNullOrEmpty(error))
-                {
-                    callback?.Invoke();
-                }
-                else
-                {
-                    errorCallback.Invoke(error);
-                }
+                callback?.Invoke(error);
             });
             yield break;
         }
@@ -140,17 +142,9 @@ namespace OverhaulMod.Content
 
         public float GetDownloadProgress(string name)
         {
-            if (m_downloadingFiles.TryGetValue(name, out UnityWebRequest unityWebRequest))
-            {
-                try
-                {
-                    return unityWebRequest.isDone ? 1f : unityWebRequest.downloadProgress;
-                }
-                catch
-                {
-                    return -1f;
-                }
-            }
+            if (m_downloadingFiles.TryGetValue(name, out float progress))
+                return progress;
+
             return -1f;
         }
 
@@ -164,11 +158,12 @@ namespace OverhaulMod.Content
         {
             if (quick)
             {
+                string lower = contentName.ToLower();
                 if (m_installedContent.IsNullOrEmpty())
                     return false;
 
                 foreach (ContentInfo c in m_installedContent)
-                    if (c.DisplayName == contentName)
+                    if (c.DisplayName.ToLower() == lower)
                         return true;
             }
             return Directory.Exists(Path.Combine(ModCore.addonsFolder, contentName));

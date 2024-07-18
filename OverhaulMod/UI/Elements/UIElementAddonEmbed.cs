@@ -29,6 +29,12 @@ namespace OverhaulMod.UI
             set;
         }
 
+        public string addonFile
+        {
+            get;
+            set;
+        }
+
         public UnityEvent onContentDownloaded { get; set; } = new UnityEvent();
 
         protected override void OnInitialized()
@@ -89,13 +95,16 @@ namespace OverhaulMod.UI
             ModUIUtils.MessagePopup(true, $"Download {addonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 ContentManager contentManager = ContentManager.Instance;
-                _ = contentManager.DownloadContent(addonId, delegate
+                _ = contentManager.DownloadContent(addonId, addonFile, delegate (string error)
                 {
+                    if (error != null)
+                    {
+                        ModUIUtils.MessagePopupOK("Mod content download error", error);
+                        return;
+                    }
+
                     onContentDownloaded.Invoke();
                     RefreshDisplays();
-                }, delegate (string error)
-                {
-                    ModUIUtils.MessagePopupOK("Mod content download error", error);
                 });
                 RefreshDisplays();
                 RefreshLoading();

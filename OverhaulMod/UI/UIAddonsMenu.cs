@@ -178,6 +178,7 @@ namespace OverhaulMod.UI
 
                     UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
                     networkAddonDisplay.contentFile = content.File;
+                    networkAddonDisplay.contentName = content.DisplayName;
                     networkAddonDisplay.isSupported = content.IsSupported();
                     networkAddonDisplay.minModVersion = content.MinModVersion;
                     networkAddonDisplay.isLarge = content.Size > 52428800L;
