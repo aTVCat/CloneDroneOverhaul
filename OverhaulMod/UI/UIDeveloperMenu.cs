@@ -17,7 +17,6 @@ namespace OverhaulMod.UI
             m_stringBuilder = new StringBuilder();
         }
 
-#if DEBUG
         public void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10f, 100f, 200f, 200f));
@@ -42,7 +41,6 @@ namespace OverhaulMod.UI
             _ = GUILayout.TextArea(m_stringBuilder.ToString());
             GUILayout.EndArea();
         }
-#endif
 
         public override void Update()
         {

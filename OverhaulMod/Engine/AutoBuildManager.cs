@@ -38,6 +38,9 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
+            if (!GameModeManager.Is(GameMode.BattleRoyale))
+                return;
+
             if (Input.GetKeyDown(AutoBuildKeyBind))
                 ApplyBuild();
 

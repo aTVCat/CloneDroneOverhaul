@@ -263,6 +263,13 @@ namespace OverhaulMod
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
             if (GameModeManager.Is(GameMode.EndlessCoop) || GameModeManager.Is(GameMode.CoopChallenge))
                 _ = waitThenFixArenaLiftInCoop().Run();
+
+            ArenaRemodelManager.Instance.PatchVanillaParts(false);
+        }
+
+        public override void OnLevelEditorStarted()
+        {
+            ArenaRemodelManager.Instance.SetUpperInteriorActive(false);
         }
 
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)

@@ -141,6 +141,7 @@ namespace OverhaulMod.Engine
 
             GlobalEventManager.Instance.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate);
 
+            SetUpperInteriorActive(true);
             SetVanillaPartsActive(false);
             PatchVanillaParts(true);
             setUpBattleCruiser();
@@ -210,6 +211,11 @@ namespace OverhaulMod.Engine
             m_liftWallTransform.gameObject.SetActive(value);
         }
 
+        public void SetUpperInteriorActive(bool value)
+        {
+            m_arenaUpperInteriorTransform.gameObject.SetActive(value);
+        }
+
         private void setUpBattleCruiser()
         {
             m_battleCruiserTransform = TransformUtils.FindChildRecursive(m_emperorSectionTransform, "Battlecruiser");
@@ -244,12 +250,6 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (Time.unscaledTime >= m_timeToRefreshVanillaArenaParts)
-            {
-                m_timeToRefreshVanillaArenaParts = Time.unscaledTime + 5f;
-                PatchVanillaParts(!GameModeManager.IsCoop());
-            }
-
             if (m_overhaulGarbageDoorTransform && m_garbageDoorTransform)
             {
                 Vector3 position = m_garbageDoorTransform.position;
@@ -257,11 +257,6 @@ namespace OverhaulMod.Engine
                 position.y += 1.21f;
                 position.z = 0f;
                 m_overhaulGarbageDoorTransform.localPosition = position;
-            }
-
-            if (m_arenaUpperInteriorTransform)
-            {
-                m_arenaUpperInteriorTransform.gameObject.SetActive(!GameModeManager.IsInLevelEditor());
             }
         }
     }

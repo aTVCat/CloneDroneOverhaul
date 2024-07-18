@@ -64,6 +64,7 @@ namespace OverhaulMod.UI
             if (sections == null || sections.Length == 0)
                 return;
 
+            LocalizationManager localizationManager = LocalizationManager.Instance;
             foreach (ModLevelSectionInfo chapterSection in sections)
             {
                 if (chapterSection.DeserializationError)
@@ -71,7 +72,20 @@ namespace OverhaulMod.UI
 
                 ModdedObject moddedObject = Instantiate(m_sectionDisplayPrefab, m_sectionsContainer);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = chapterSection.DisplayName;
+
+                if (chapterSection.ChapterIndex < 3)
+                {
+                    moddedObject.GetObject<Text>(0).text = $"{localizationManager.GetTranslatedString("story_section_level")} {chapterSection.Order + 1}";
+                }
+                else
+                {
+                    string translation = $"story_section_c{chapterSection.ChapterIndex}_{chapterSection.Order + 1}";
+                    if (localizationManager.HasTranslatedString(translation))
+                        moddedObject.GetObject<Text>(0).text = localizationManager.GetTranslatedString(translation);
+                    else
+                        moddedObject.GetObject<Text>(0).text = chapterSection.DisplayName;
+                }
+
                 moddedObject.GetObject<Text>(1).text = $"{chapterSection.Order + 1}.";
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
@@ -107,7 +121,7 @@ namespace OverhaulMod.UI
                 if (manager)
                 {
                     Hide();
-                    _ = manager.Hide(Utils.AssetBundleConstants.UI, Utils.ModUIConstants.UI_CHAPTER_SELECT_MENU);
+                    _ = manager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_SELECT_MENU);
                 }
                 _ = methodInfo.Invoke(legacyUI, null);
             }

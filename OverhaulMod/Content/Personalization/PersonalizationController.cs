@@ -180,7 +180,7 @@ namespace OverhaulMod.Content.Personalization
             m_timeLeftToRefreshSkinVisibility -= d;
             if (m_timeLeftToRefreshSkinVisibility <= 0f)
             {
-                m_timeLeftToRefreshSkinVisibility = 0.1f;
+                m_timeLeftToRefreshSkinVisibility = 0.2f;
 
                 WeaponType equippedWeaponType = firstPersonMover.GetEquippedWeaponType();
                 foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in m_spawnedItems)
