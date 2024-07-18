@@ -480,9 +480,6 @@ namespace OverhaulMod.UI
                         personalizationItemDisplay.InitializeElement();
 
                         m_cachedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
-
-                        if (i % 15 == 0)
-                            yield return null;
                     }
 
                     ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);

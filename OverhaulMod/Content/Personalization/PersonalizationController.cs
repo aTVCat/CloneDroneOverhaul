@@ -332,7 +332,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
         {
-            if (personalizationItemInfo == null || !personalizationItemInfo.IsUnlocked(owner) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
+            if (personalizationItemInfo == null || (!PersonalizationEditorManager.IsInEditor() && !personalizationItemInfo.IsUnlocked(owner)) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
                 return null;
 
             RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);

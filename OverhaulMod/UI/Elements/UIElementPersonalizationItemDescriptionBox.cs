@@ -27,6 +27,9 @@ namespace OverhaulMod.UI
         [UIElement("LockedNonVerifiedOverlay")]
         private readonly GameObject m_lockedNonVerifiedOverlay;
 
+        [UIElement("DescriptionBox")]
+        private readonly RectTransform m_boxTransform;
+
         [UIElementAction(nameof(OnEquipButtonClicked))]
         [UIElement("EquipButton")]
         private readonly Button m_equipButton;
@@ -39,6 +42,8 @@ namespace OverhaulMod.UI
 
         private Animator m_animator;
 
+        private bool m_refreshBoxNextFrame;
+
         protected override void OnInitialized()
         {
             m_mouseEvents = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
@@ -50,6 +55,24 @@ namespace OverhaulMod.UI
             if (Input.GetMouseButtonDown(0) && !m_mouseEvents.isMouseOverElement && !m_browser.IsMouseOverPanel())
             {
                 Hide();
+            }
+
+            if (m_refreshBoxNextFrame)
+            {
+                m_refreshBoxNextFrame = false;
+
+                float initialHeight = 75f - (m_lockedOverlay.activeSelf || m_lockedNonVerifiedOverlay.activeSelf || m_nonVerifiedOverlay.activeSelf ? 0f : 20f);
+                float preferredTextHeight = m_itemDescriptionText.preferredHeight + 10f;
+
+                RectTransform t = m_boxTransform;
+                Vector2 sizeDelta = t.sizeDelta;
+                sizeDelta.y = initialHeight + preferredTextHeight;
+                t.sizeDelta = sizeDelta;
+
+                RectTransform t2 = m_itemDescriptionText.rectTransform;
+                Vector2 sizeDelta2 = t2.sizeDelta;
+                sizeDelta2.y = preferredTextHeight;
+                t2.sizeDelta = sizeDelta2;
             }
         }
 
@@ -91,6 +114,8 @@ namespace OverhaulMod.UI
             Vector3 vector = transform.position;
             vector.y = rectTransform.position.y;
             transform.position = vector;
+
+            m_refreshBoxNextFrame = true;
         }
 
         public void OnEquipButtonClicked()

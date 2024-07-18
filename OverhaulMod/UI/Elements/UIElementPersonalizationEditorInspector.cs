@@ -215,6 +215,9 @@ namespace OverhaulMod.UI
             m_hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && weaponType == WeaponType.Bow;
             m_overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
             m_bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+
+            UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
+            utils.SetConditionOptions(PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon());
         }
 
         public void OnEditedBodyPartDropdown(int value)

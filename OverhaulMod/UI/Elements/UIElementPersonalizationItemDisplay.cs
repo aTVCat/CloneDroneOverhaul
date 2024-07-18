@@ -20,6 +20,12 @@ namespace OverhaulMod.UI
         [UIElement("Frame")]
         private readonly Image m_frame;
 
+        [UIElement("ItemName")]
+        private readonly Text m_nameText;
+
+        [UIElement("NameHolder")]
+        private readonly RectTransform m_nameHolder;
+
         [UIElement("NewIndicator")]
         private readonly GameObject m_newIndicator;
 
@@ -38,6 +44,8 @@ namespace OverhaulMod.UI
 
         private float m_timeForDoubleClick;
 
+        private bool m_refreshNameHolderNextFrame;
+
         protected override void OnInitialized()
         {
             m_rectTransform = base.GetComponent<RectTransform>();
@@ -49,6 +57,20 @@ namespace OverhaulMod.UI
             RefreshDisplays();
 
             m_timeForDoubleClick = -1f;
+            m_refreshNameHolderNextFrame = true;
+        }
+
+        public override void Update()
+        {
+            if (m_refreshNameHolderNextFrame)
+            {
+                m_refreshNameHolderNextFrame = false;
+
+                RectTransform rectTransform = m_nameHolder;
+                Vector2 sizeDelta = rectTransform.sizeDelta;
+                sizeDelta.x = Mathf.Min(m_nameText.preferredWidth + 1f, 175f);
+                rectTransform.sizeDelta = sizeDelta;
+            }
         }
 
         public override void OnDestroy()
