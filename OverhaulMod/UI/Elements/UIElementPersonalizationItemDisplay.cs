@@ -131,6 +131,16 @@ namespace OverhaulMod.UI
             if (itemInfo == null)
                 return;
 
+            if (!itemInfo.IsUnlocked())
+            {
+                PersonalizationUserInfo userInfo = PersonalizationManager.Instance.userInfo;
+                if (!userInfo.IsItemDiscovered(itemInfo))
+                {
+                    userInfo.SetIsItemDiscovered(itemInfo);
+                    m_newIndicator.SetActive(false);
+                }
+            }
+
             m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);
         }
 
