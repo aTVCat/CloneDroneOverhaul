@@ -235,7 +235,8 @@ namespace OverhaulMod.Content.Personalization
                 string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, voxFilePath);
 
                 volumeComponent.AddFrame(0);
-                if (PersonalizationEditorManager.IsInEditor() || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
+                bool inEditor = PersonalizationEditorManager.IsInEditor();
+                if (inEditor || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
                 {
                     if (!File.Exists(path))
                     {
@@ -244,7 +245,18 @@ namespace OverhaulMod.Content.Personalization
                         return;
                     }
                     else
+                    {
                         MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                        if (inEditor)
+                        {
+                            Frame frame = volumeComponent.GetCurrentFrame();
+                            int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
+                            if(allDimensions > 145)
+                            {
+                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", Color.yellow, 30f);
+                            }
+                        }
+                    }
                 }
                 else
                 {

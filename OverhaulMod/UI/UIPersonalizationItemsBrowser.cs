@@ -82,6 +82,10 @@ namespace OverhaulMod.UI
         [UIElement("UpdateButton")]
         private readonly Button m_updateButton;
 
+        [UIElementAction(nameof(OnClearButtonClicked))]
+        [UIElement("ClearButton")]
+        private readonly Button m_clearButton;
+
         [UIElement("UpdateButtonText")]
         private readonly Text m_updateButtonText;
 
@@ -605,6 +609,8 @@ namespace OverhaulMod.UI
 
         public void OnSearchBoxChanged(string text)
         {
+            m_clearButton.interactable = !text.IsNullOrEmpty();
+
             _ = text.ToLower();
             bool forceEnableAll = text.IsNullOrEmpty();
             foreach (KeyValuePair<string, GameObject> keyValue in m_cachedDisplays)
@@ -623,6 +629,11 @@ namespace OverhaulMod.UI
 
             m_sortType = value;
             Populate();
+        }
+
+        public void OnClearButtonClicked()
+        {
+            m_searchBox.text = string.Empty;
         }
     }
 }
