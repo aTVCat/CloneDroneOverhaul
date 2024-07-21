@@ -66,27 +66,6 @@
   <ItemGroup>
     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
     <Reference Include="UnityEngine.Purchasing">
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp-Editor.csproj
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Purchasing">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-=======
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
@@ -112,7 +91,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp-Editor.csproj
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -349,18 +327,6 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp-Editor.csproj
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
-=======
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
@@ -371,7 +337,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp-Editor.csproj
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

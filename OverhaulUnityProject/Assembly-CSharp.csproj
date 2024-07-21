@@ -64,13 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-    <Compile Include="Assets\ModdedObject.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\LocalizeText.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionCommon.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Plugins\AmplifyOcclusionEffect.cs" />
-    <Compile Include="Assets\ModStuff\BetaOverhaul\Shaders\ShaderOnCamera.cs" />
-=======
     <Compile Include="Assets\Scripts\ColorForState.cs" />
     <Compile Include="Assets\Scripts\GameUIThemeData.cs" />
     <Compile Include="Assets\Scripts\InterfaceInputMode.cs" />
@@ -83,7 +76,6 @@
     <Compile Include="Assets\Scripts\UISelectionState.cs" />
     <Compile Include="Assets\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
     <Compile Include="Assets\Shaders\ShaderOnCamera.cs" />
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -117,26 +109,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\ApplyPostEffect.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\VertexColoredFogOFF.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Common.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\ChromaticAb.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\OcclusionFunctions.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\PencilEffect.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ModelsEffect\Shield.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Models\WeaponSkins\WeaponSkinsAssetBundleVersion.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\SimpleGrabPassBlur.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\UI\MaskedUIBlur.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\TemporalFilter.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Occlusion.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Blur.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\MotionBlur.shader" />
-=======
     <None Include="Assets\Shaders\AmplifyOcclusion\ApplyPostEffect.cginc" />
     <None Include="Assets\Shaders\ImageEffects\LightLeaks\LightLeaks.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\PixelNES.shader" />
@@ -164,33 +136,10 @@
     <None Include="Assets\Shaders\AmplifyOcclusion\Blur.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\CRTScreen.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\Neon.shader" />
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\StdLib.hlsl" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\CommonFunctions.cginc" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\xRLib.hlsl" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\BlurFunctions.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\GTAO.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\TAA.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\D3D11.hlsl" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ModelsEffect\SoftShader.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\AmplifyOcclusion\Resources\Apply.shader" />
-    <None Include="Assets\ModStuff\BetaOverhaul\Shaders\ImageEffects\Spotlight.shader" />
-=======
     <None Include="Assets\Shaders\SnapshotShaders\PixelGB.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\EdgeDetect.shader" />
     <None Include="Assets\Shaders\ImageEffects\StdLib.hlsl" />
@@ -214,38 +163,13 @@
     <None Include="Assets\Shaders\ModelEffects\SoftShader.shader" />
     <None Include="Assets\Shaders\AmplifyOcclusion\Apply.shader" />
     <None Include="Assets\Shaders\ImageEffects\Spotlight.shader" />
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Shaders\ImageEffects\ThreeDOutlineShader.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-=======
     <None Include="Assets\Shaders\SnapshotShaders\Bloom.shader" />
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Shaders\ImageEffects\ECAB.shader" />
     <Reference Include="UnityEngine.Purchasing">
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Purchasing">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-=======
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
@@ -271,7 +195,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -475,11 +398,7 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-<<<<<<< HEAD:OverhaulUnityProjectNormal/Assembly-CSharp.csproj
-      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
-=======
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
->>>>>>> 0.4.x-development:OverhaulUnityProject/Assembly-CSharp.csproj
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
