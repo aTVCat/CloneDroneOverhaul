@@ -1,0 +1,759 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props" Condition="Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CF09D809-823F-42A6-B3D8-A15A3DBC35F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OverhaulMod</RootNamespace>
+    <AssemblyName>OverhaulMod</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Accessibility" />
+    <Reference Include="AdvancedAPI">
+      <HintPath>.\AdvancedAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="AmplifyColor">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\AmplifyColor.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="bolt">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\bolt.dll</HintPath>
+    </Reference>
+    <Reference Include="bolt.user">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\bolt.user.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscordWebhook">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul\DiscordWebhook.dll</HintPath>
+    </Reference>
+    <Reference Include="Esprima">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Esprima.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="LevelEditorPatch">
+      <HintPath>.\LevelEditorPatch.dll</HintPath>
+    </Reference>
+    <Reference Include="ModBotWebsiteAPI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModBotWebsiteAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="ModLibrary">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="MoonSharp.Interpreter">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\MoonSharp.Interpreter.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.ClipperLib">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.ClipperLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Poly2Tri">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Pathfinding.Poly2Tri.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayFab">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\PlayFab.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Rewired_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Windows_Lib">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Rewired_Windows_Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="SonyNP">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\SonyNP.dll</HintPath>
+    </Reference>
+    <Reference Include="SonyPS4CommonDialog">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\SonyPS4CommonDialog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Analytics.DataPrivacy">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.StandardEvents">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.BaselibModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.BaselibModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.FileSystemHttpModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.FileSystemHttpModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StyleSheetsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.StyleSheetsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TimelineModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TimelineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Combat\Enemies\BackwardDashAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneBackwardDashAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneLongSprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\UseKickAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\InsaneSprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
+    <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
+    <Compile Include="Combat\RobotInventory.cs" />
+    <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\HandsWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
+    <Compile Include="Combat\Weapons\PrimitiveLaserBlasterWeaponModel.cs" />
+    <Compile Include="Content\ContentDownloadInfo.cs" />
+    <Compile Include="Content\ContentInfo.cs" />
+    <Compile Include="Content\ContentListInfo.cs" />
+    <Compile Include="Content\ExclusiveContentTesterRole.cs" />
+    <Compile Include="Content\GoogleDriveManager.cs" />
+    <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
+    <Compile Include="Content\MagicaVoxelImporter.cs" />
+    <Compile Include="Content\NewsUserData.cs" />
+    <Compile Include="Content\Personalization\BowPartType.cs" />
+    <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
+    <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
+    <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
+    <Compile Include="Content\Personalization\PersonalizationController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorCopyPasteManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuideManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorGuideStage.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
+    <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Engine\RealisticLightUserSettings.cs" />
+    <Compile Include="Engine\WeaponVariant.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
+    <Compile Include="Content\Personalization\PersonalizationUserInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemVerificationManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemsSortType.cs" />
+    <Compile Include="Content\Personalization\VolumeSettingsPreset.cs" />
+    <Compile Include="Content\WorkshopItemPreview.cs" />
+    <Compile Include="Content\WorkshopItemVote.cs" />
+    <Compile Include="Discord\ActivityManager.cs" />
+    <Compile Include="Discord\Constants.cs" />
+    <Compile Include="Discord\Core.cs" />
+    <Compile Include="Discord\ImageManager.cs" />
+    <Compile Include="Discord\LobbyManager.cs" />
+    <Compile Include="Discord\StorageManager.cs" />
+    <Compile Include="Discord\StoreManager.cs" />
+    <Compile Include="Engine\AdvancedPhotoModeManager.cs" />
+    <Compile Include="Engine\AdvancedPhotoModeProperty.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePoint.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePointInfo.cs" />
+    <Compile Include="Engine\ArenaAudienceLinePointInfoList.cs" />
+    <Compile Include="Engine\ArenaAudienceManager.cs" />
+    <Compile Include="Engine\ArenaRemodelManager.cs" />
+    <Compile Include="Engine\AutoBuildInfo.cs" />
+    <Compile Include="Engine\AutoBuildManager.cs" />
+    <Compile Include="Engine\CameraFOVController.cs" />
+    <Compile Include="Engine\CameraModeController.cs" />
+    <Compile Include="Engine\CameraManager.cs" />
+    <Compile Include="Engine\CameraRollingController.cs" />
+    <Compile Include="Engine\ColorPairFloat.cs" />
+    <Compile Include="Engine\CrashPreventionManager.cs" />
+    <Compile Include="Engine\DifficultyTierManager.cs" />
+    <Compile Include="Engine\FadingVoxel.cs" />
+    <Compile Include="Engine\LevelEditorObjectAdvancedBehaviour.cs" />
+    <Compile Include="Engine\LightingInfo.cs" />
+    <Compile Include="Engine\LightingTransitionInfo.cs" />
+    <Compile Include="Engine\LightingTransitionManager.cs" />
+    <Compile Include="Engine\ModAudioManager.cs" />
+    <Compile Include="Engine\ModLevelDescriptionList.cs" />
+    <Compile Include="Engine\ModLevelSectionInfo.cs" />
+    <Compile Include="Combat\ModGameModifiersManager.cs" />
+    <Compile Include="Combat\Weapons\HalberdWeaponModel.cs" />
+    <Compile Include="Content\ExclusiveContentBase.cs" />
+    <Compile Include="Content\ExclusiveContentColorOverride.cs" />
+    <Compile Include="Content\ExclusiveContentEditor.cs" />
+    <Compile Include="Content\ExclusiveContentFeatureUnlock.cs" />
+    <Compile Include="Content\ExclusiveContentInfo.cs" />
+    <Compile Include="Content\ExclusiveContentInfoList.cs" />
+    <Compile Include="Content\ExclusiveContentType.cs" />
+    <Compile Include="Content\NewsInfo.cs" />
+    <Compile Include="Engine\ModLocalizationInfo.cs" />
+    <Compile Include="Engine\ModLocalizationManager.cs" />
+    <Compile Include="Engine\ModPhysicsManager.cs" />
+    <Compile Include="Engine\ModSetting.cs" />
+    <Compile Include="Engine\ModSettingRequireRestartAttribute.cs" />
+    <Compile Include="Engine\ModSettingAttribute.cs" />
+    <Compile Include="Engine\ModSettingsDataContainer.cs" />
+    <Compile Include="Engine\ModSettingsDataManager.cs" />
+    <Compile Include="Engine\ModSettingsManager.cs" />
+    <Compile Include="Content\UpdateInfoList.cs" />
+    <Compile Include="Content\UpdateInfo.cs" />
+    <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\PooledPrefabBehaviour.cs" />
+    <Compile Include="Engine\PooledPrefabInfo.cs" />
+    <Compile Include="Engine\PooledPrefabManager.cs" />
+    <Compile Include="Engine\RealisticLightingInfo.cs" />
+    <Compile Include="Engine\RealisticLightingInfoList.cs" />
+    <Compile Include="Engine\RealisticLightingManager.cs" />
+    <Compile Include="Engine\RealisticLightSettings.cs" />
+    <Compile Include="Engine\RichPresenceBase.cs" />
+    <Compile Include="Engine\RichPresenceDiscord.cs" />
+    <Compile Include="Engine\RichPresenceManager.cs" />
+    <Compile Include="Engine\QuickResetManager.cs" />
+    <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
+    <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
+    <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
+    <Compile Include="Engine\TransitionBehaviour.cs" />
+    <Compile Include="Engine\TransitionManager.cs" />
+    <Compile Include="Engine\UpgradeModeButtonController.cs" />
+    <Compile Include="Engine\UpgradeModes.cs" />
+    <Compile Include="Engine\UpgradeModesManager.cs" />
+    <Compile Include="Content\WorkshopItem.cs" />
+    <Compile Include="Engine\WeaponVariantManager.cs" />
+    <Compile Include="FileDownloader.cs" />
+    <Compile Include="IGameLoadListener.cs" />
+    <Compile Include="IModLoadListener.cs" />
+    <Compile Include="Content\UpdateManager.cs" />
+    <Compile Include="Content\ContentManager.cs" />
+    <Compile Include="Content\RepositoryManager.cs" />
+    <Compile Include="Content\ExclusiveContentManager.cs" />
+    <Compile Include="Engine\ModLevelManager.cs" />
+    <Compile Include="Content\NewsManager.cs" />
+    <Compile Include="ModLoader.cs" />
+    <Compile Include="ModTime.cs" />
+    <Compile Include="ModDataManager.cs" />
+    <Compile Include="Content\NewsInfoList.cs" />
+    <Compile Include="ModUserInfo.cs" />
+    <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\MenuButtonsPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\MinorPatchBehaviour.cs" />
+    <Compile Include="Patches\AttackManager_Patch.cs" />
+    <Compile Include="Patches\AudienceManager_Patch.cs" />
+    <Compile Include="Patches\Behaviours\ChallengeManagerPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\SubtitleTextFieldPatchBehaviour.cs" />
+    <Compile Include="Patches\EnergyUI_Patch.cs" />
+    <Compile Include="Patches\CacheManager_Patch.cs" />
+    <Compile Include="Patches\LevelLightSettings_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
+    <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
+    <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
+    <Compile Include="Patches\UpgradeDescription_Patch.cs" />
+    <Compile Include="Patches\UpgradeUI_Patch.cs" />
+    <Compile Include="Patches\WinLoseDialog_Patch.cs" />
+    <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
+    <Compile Include="Patches\Character_Patch.cs" />
+    <Compile Include="Patches\ErrorManager_Patch.cs" />
+    <Compile Include="Patches\PhotoManager_Patch.cs" />
+    <Compile Include="Patches\FlyingCameraController_Patch.cs" />
+    <Compile Include="Patches\ErrorWindow_Patch.cs" />
+    <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
+    <Compile Include="Patches\SettingsMenu_Patch.cs" />
+    <Compile Include="Patches\SeveredVolumeGenerator_Patch.cs" />
+    <Compile Include="Patches\TitleScreenUI_Patch.cs" />
+    <Compile Include="Patches\GameFlowManager_Patch.cs" />
+    <Compile Include="Patches\LevelManager_Patch.cs" />
+    <Compile Include="Patches\LocalizedTextField_Patch.cs" />
+    <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
+    <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
+    <Compile Include="Patches\EscMenu_Patch.cs" />
+    <Compile Include="Patches\FirstPersonMover_Patch.cs" />
+    <Compile Include="Patches\GameDataManager_Patch.cs" />
+    <Compile Include="Patches\EndlessModeManager_Patch.cs" />
+    <Compile Include="Patches\GameModeManager_Patch.cs" />
+    <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
+    <Compile Include="Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />
+    <Compile Include="Patches\LoadingScreen_Patch.cs" />
+    <Compile Include="Patches\MechBodyPart_Patch.cs" />
+    <Compile Include="Patches\MetagameLevelTrigger_Patch.cs" />
+    <Compile Include="Patches\PlanetCollider_Patch.cs" />
+    <Compile Include="Patches\SceneTransitionManager_Patch.cs" />
+    <Compile Include="Patches\SelectableUI_Patch.cs" />
+    <Compile Include="Patches\SettingsManager_Patch.cs" />
+    <Compile Include="Patches\SkyBoxManager_Patch.cs" />
+    <Compile Include="Patches\Story3_IntroCutScene_Patch.cs" />
+    <Compile Include="Patches\SubtitleTextField_Patch.cs" />
+    <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
+    <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
+    <Compile Include="Patches\CameraShaker_Patch.cs" />
+    <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
+    <Compile Include="Patches\WorldAudioSource_Patch.cs" />
+    <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
+    <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
+    <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
+    <Compile Include="UI\Attributes\UIElementCallbackAttribute.cs" />
+    <Compile Include="UI\Attributes\UIElementIgnoreIfMissingAttribute.cs" />
+    <Compile Include="UI\Components\BetterSliderCallback.cs" />
+    <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
+    <Compile Include="UI\Components\CrosshairOffsetController.cs" />
+    <Compile Include="UI\Components\DraggablePanel.cs" />
+    <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
+    <Compile Include="UI\Components\EventController.cs" />
+    <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
+    <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
+    <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
+    <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
+    <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
+    <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
+    <Compile Include="UI\Elements\UIElementMouseEventsComponent.cs" />
+    <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
+    <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
+    <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationExclusiveForField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorDropdown.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorFileImportPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorHierarchyPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorGuideWindow.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorNotification.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorPropertiesPanel.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationItemDescriptionBox.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementTabWithText.cs" />
+    <Compile Include="UI\Elements\UIElementExpandButton.cs" />
+    <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
+    <Compile Include="UI\Elements\UIElementPlayerInfoDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
+    <Compile Include="UI\Elements\UIElementTab.cs" />
+    <Compile Include="UI\Components\TabManager.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
+    <Compile Include="UI\Elements\UIElementVector3Field.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorInspector.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorUtilitiesPanel.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemPreviewDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementAddonEmbed.cs" />
+    <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
+    <Compile Include="UI\Elements\UIElementFileExplorerItemDisplay.cs" />
+    <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UICrashScreen.cs" />
+    <Compile Include="UI\UIEndlessGameLossWindow.cs" />
+    <Compile Include="UI\UIGenericImageViewer.cs" />
+    <Compile Include="UI\UIDevelopmentGallery.cs" />
+    <Compile Include="UI\UIDebugMenu.cs" />
+    <Compile Include="UI\UIDamageIndicator.cs" />
+    <Compile Include="UI\UIGenericColorPicker.cs" />
+    <Compile Include="UI\UIGameLossWindow.cs" />
+    <Compile Include="UI\UIDuelInviteMenuRework.cs" />
+    <Compile Include="UI\UIFileExplorer.cs" />
+    <Compile Include="UI\UICinematicEffects.cs" />
+    <Compile Include="UI\UIImageExplorer.cs" />
+    <Compile Include="UI\UIAutoBuildMenu.cs" />
+    <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
+    <Compile Include="UI\UIDiscordServerMenu.cs" />
+    <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
+    <Compile Include="UI\UIPatchNotes.cs" />
+    <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
+    <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
+    <Compile Include="UI\UIPersonalizationSettingsMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
+    <Compile Include="UI\UIScreenTooltips.cs" />
+    <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
+    <Compile Include="UI\UIPersonalizationItemsBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
+    <Compile Include="UI\UISetKeyBindWindow.cs" />
+    <Compile Include="UI\UIPhotoModeUIRework.cs" />
+    <Compile Include="UI\UIImageEffects.cs" />
+    <Compile Include="UI\UILocalizationEditor.cs" />
+    <Compile Include="UI\UIAddonsEditor.cs" />
+    <Compile Include="UI\UIGenericInputFieldWindow.cs" />
+    <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
+    <Compile Include="UI\UIAllCreditsMenu.cs" />
+    <Compile Include="UI\UIAddonsMenu.cs" />
+    <Compile Include="UI\UIChallengesMenuRework.cs" />
+    <Compile Include="UI\UILevelDescriptionBrowser.cs" />
+    <Compile Include="UI\UITooltips.cs" />
+    <Compile Include="UI\UITitleScreenCustomizationPanel.cs" />
+    <Compile Include="UI\UIPersonalizationEditor.cs" />
+    <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
+    <Compile Include="UI\UIOverhaulInfoWindow.cs" />
+    <Compile Include="UI\UINewsInfoEditor.cs" />
+    <Compile Include="UI\UINewsDetailsPanel.cs" />
+    <Compile Include="UI\UIInformationSelectWindow.cs" />
+    <Compile Include="UI\UIRestartRequiredScreen.cs" />
+    <Compile Include="UI\UILevelDescriptionListEditor.cs" />
+    <Compile Include="UI\UIUpdateInfoEditor.cs" />
+    <Compile Include="UI\UIWorkshopItemPageWindow.cs" />
+    <Compile Include="Utils\ModAdvancedCache.cs" />
+    <Compile Include="ModDebug.cs" />
+    <Compile Include="Patches\Behaviours\ProjectilePatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\SkyboxesPatchBehaviour.cs" />
+    <Compile Include="Patches\CharacterModel_Patch.cs" />
+    <Compile Include="Patches\ChapterLoadingScreen_Patch.cs" />
+    <Compile Include="Engine\TransformInfo.cs" />
+    <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentColorPropertyDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentCustomPropertyDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentEnumPropertyDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementContentIntPropertyDisplay.cs" />
+    <Compile Include="UI\UIAdvancementProgress.cs" />
+    <Compile Include="UI\UIAdvancementsMenu.cs" />
+    <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorItemsBrowser.cs" />
+    <Compile Include="UI\UIUpdatesWindow.cs" />
+    <Compile Include="UI\UIContentDownloadWindow.cs" />
+    <Compile Include="UI\UINewsPanel.cs" />
+    <Compile Include="UI\UIMultiplayerConnectScreen.cs" />
+    <Compile Include="UI\UIExclusiveContentEditor.cs" />
+    <Compile Include="UI\UILoadingScreenRework.cs" />
+    <Compile Include="UI\UIChapterSelectMenuRework.cs" />
+    <Compile Include="UI\UIExclusiveContentMenu.cs" />
+    <Compile Include="UI\UIPauseMenuRework.cs" />
+    <Compile Include="UI\UICommunityHub.cs" />
+    <Compile Include="UI\UIFeedbackMenu.cs" />
+    <Compile Include="UI\UISettingsMenuRework.cs" />
+    <Compile Include="UI\UITitleScreenRework.cs" />
+    <Compile Include="UI\UIMessagePopup.cs" />
+    <Compile Include="UI\UIWorkshopBrowser.cs" />
+    <Compile Include="Utils\ModComponentCache.cs" />
+    <Compile Include="Utils\ModGameUtils.cs" />
+    <Compile Include="Utils\ModIntegrationUtils.cs" />
+    <Compile Include="Utils\ModParseUtils.cs" />
+    <Compile Include="Utils\ModSettingsConstants.cs" />
+    <Compile Include="Utils\ModSteamUGCUtils.cs" />
+    <Compile Include="Utils\ModSteamUserStatsUtils.cs" />
+    <Compile Include="Utils\ModUIUtils.cs" />
+    <Compile Include="Utils\ModSpecialUtils.cs" />
+    <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusion.cs" />
+    <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
+    <Compile Include="Visuals\ArrowModelRefresher.cs" />
+    <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
+    <Compile Include="Visuals\Environment\SeveredBodyPartSparks.cs" />
+    <Compile Include="Visuals\Environment\WeatherInfo.cs" />
+    <Compile Include="Visuals\Environment\WeatherManager.cs" />
+    <Compile Include="Visuals\ParticleManager.cs" />
+    <Compile Include="Visuals\PostEffectsManager.cs" />
+    <Compile Include="Visuals\RobotWeaponBag.cs" />
+    <Compile Include="UI\UIDeveloperMenu.cs" />
+    <Compile Include="Utils\AssetBundleConstants.cs" />
+    <Compile Include="Combat\ModEnemiesManager.cs" />
+    <Compile Include="ModUIManager.cs" />
+    <Compile Include="Combat\ModUpgradesManager.cs" />
+    <Compile Include="Combat\ModWeaponsManager.cs" />
+    <Compile Include="ModBuildInfo.cs" />
+    <Compile Include="Utils\ModCache.cs" />
+    <Compile Include="ModCore.cs" />
+    <Compile Include="ModFeatures.cs" />
+    <Compile Include="ModManagers.cs" />
+    <Compile Include="ModResources.cs" />
+    <Compile Include="Patches\Behaviours\GameModeCardsPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\GamePatchBehaviour.cs" />
+    <Compile Include="Utils\ModPrefabUtils.cs" />
+    <Compile Include="UI\UIEndlessModeLeaderboard.cs" />
+    <Compile Include="UI\UIEndlessModeMenu.cs" />
+    <Compile Include="UI\OverhaulUIBehaviour.cs" />
+    <Compile Include="ModBehaviour.cs" />
+    <Compile Include="UI\UIOtherMods.cs" />
+    <Compile Include="Utils\ModUIContants.cs" />
+    <Compile Include="UI\Attributes\UIElementActionAttribute.cs" />
+    <Compile Include="UI\Attributes\UIElementAttribute.cs" />
+    <Compile Include="UI\UIVersionLabel.cs" />
+    <Compile Include="Utils\ModActionUtils.cs" />
+    <Compile Include="Utils\ModExtensions.cs" />
+    <Compile Include="Utils\ModIOUtils.cs" />
+    <Compile Include="Utils\ModJsonUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ModUnityUtils.cs" />
+    <Compile Include="Combat\Weapons\ScytheWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\BattleAxeWeaponModel.cs" />
+    <Compile Include="Combat\Weapons\ModDividedSwordHitArea.cs" />
+    <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
+    <Compile Include="ModWebhookManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <PublicizeAll>true</PublicizeAll>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props'))" />
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets'))" />
+  </Target>
+  <Import Project="..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) "C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

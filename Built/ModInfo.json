@@ -1,0 +1,11 @@
+{
+	"DisplayName": "Clone Drone Overhaul",
+	"UniqueID": "rAnDomPaTcHeS1",
+	"MainDLLFileName": "OverhaulMod.dll",
+	"Author": "A TVCat",
+	"Version": 23,
+	"ImageFileName": "ModPreview.png",
+	"Description": "- Adds better graphics\n- Redesigns the most of the game HUD\n- Adds first person mode\n- Adds QoL things\n- Adds customization editor\n- Adds 90+ weapon skins to equip\n - Adds ability to revert upgrades\nand more!",
+	"ModDependencies": [],
+	"Tags": []
+}

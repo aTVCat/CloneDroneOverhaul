@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 3679982516
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5e159ce10fe02a24196494e540f0bf42
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a6f1b802d5256eeabf231280534bc6b8
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8ee05659617a60645b63ebb219dfe3c8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sprites/Glyphs/HQ-Question-256x256.png
+- Assets/Models/WeaponModels/Boomerang/BoomerangV2_Em.png
+- Assets/Models/WeaponModels/Boomerang/BoomerangV2.png
+- Assets/Models/WeaponModels/Boomerang/BoomerangV2.obj
+- Assets/Models/WeaponModels/Boomerang/P_WM_Boomerang_2.prefab
+- Assets/Models/WeaponModels/Boomerang/M_WM_Boomerangs.mat
+Dependencies: []

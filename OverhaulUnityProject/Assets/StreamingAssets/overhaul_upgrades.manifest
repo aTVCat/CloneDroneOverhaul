@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 525946831
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c81ac5cbd345d027a1b5b646e255f90f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sprites/UpgradeIcons/FireBoomerang-128x128.png
+- Assets/Sprites/UpgradeIcons/Axe-128x128.png
+- Assets/Sprites/UpgradeIcons/DKnives-128x128.png
+- Assets/Sprites/UpgradeIcons/MBlaster-128x128.png
+- Assets/Sprites/UpgradeIcons/Scythe-128x128.png
+- Assets/Sprites/UpgradeIcons/FireScythe-128x128.png
+- Assets/Sprites/UpgradeIcons/Hands-128x128.png
+- Assets/Sprites/UpgradeIcons/DoubleJump-128x128.png
+- Assets/Sprites/UpgradeIcons/ScytheBlade-128x128.png
+- Assets/Sprites/UpgradeIcons/Halberd-128x128.png
+- Assets/Sprites/UpgradeIcons/Boomerang-128x128.png
+- Assets/Sprites/UpgradeIcons/Claws-128x128.png
+Dependencies: []

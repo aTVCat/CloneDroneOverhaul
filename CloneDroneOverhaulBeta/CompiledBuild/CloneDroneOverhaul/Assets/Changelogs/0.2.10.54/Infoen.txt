@@ -1,3 +1,0 @@
-- The mod no longer alerts player about unsupported Clone drone version
-- Code cleanup
-- Fixed crash caused by recent skins update
