@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
     internal static class GameUIRoot_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("RefreshCursorEnabled")]
+        [HarmonyPatch(nameof(GameUIRoot.RefreshCursorEnabled))]
         private static bool RefreshCursorEnabled_Prefix()
         {
             if (PersonalizationEditorCamera.IsControllingTheCamera)
@@ -43,7 +43,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("CloseCurrentMenu")]
+        [HarmonyPatch(nameof(GameUIRoot.CloseCurrentMenu))]
         private static bool CloseCurrentMenu_Prefix(GameUIRoot __instance, bool uiCancelDown, bool pauseDown, bool force = false)
         {
             bool flag = false;

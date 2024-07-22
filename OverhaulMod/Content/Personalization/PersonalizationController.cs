@@ -190,7 +190,7 @@ namespace OverhaulMod.Content.Personalization
                         continue;
 
                     PersonalizationItemInfo info = keyValue.Key;
-                    if (info.Category != PersonalizationCategory.WeaponSkins || info.Weapon != WeaponType.Bow || string.IsNullOrEmpty(info.OverrideParent))
+                    if (info.Category != PersonalizationCategory.WeaponSkins || info.Weapon != WeaponType.Bow || info.OverrideParent.IsNullOrEmpty())
                         continue;
 
                     behaviour.gameObject.SetActive(firstPersonMover.IsAlive() && info.Weapon == equippedWeaponType);
@@ -337,7 +337,8 @@ namespace OverhaulMod.Content.Personalization
 
             RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
 
-            if (owner.IsMindSpaceCharacter || (personalizationItemInfo.Weapon == WeaponType.Bow && (ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e") || owner.CharacterType == EnemyType.ZombieArcher1)))
+            EnemyType enemyType = owner.CharacterType;
+            if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (personalizationItemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
                 return null;
 
             Transform transform = GetParentForItem(personalizationItemInfo);
@@ -521,7 +522,7 @@ namespace OverhaulMod.Content.Personalization
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
                 Transform transform = ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
-                if (!string.IsNullOrEmpty(personalizationItemInfo.OverrideParent))
+                if (!personalizationItemInfo.OverrideParent.IsNullOrEmpty())
                 {
                     Transform transform2 = TransformUtils.FindChildRecursive(owner.transform, personalizationItemInfo.OverrideParent);
                     if (transform2)

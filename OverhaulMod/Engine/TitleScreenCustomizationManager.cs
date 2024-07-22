@@ -11,6 +11,8 @@ namespace OverhaulMod.Engine
     {
         public const string CUSTOMIZATION_INFO_FILE = "TitleScreenCustomizationInfo.json";
 
+        public const string CUSTOM_LEVEL_ID = "customTitleScreenLevel";
+
         [ModSetting(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 

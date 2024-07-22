@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class UpgradeUI_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("OnResetButtonClicked")]
+        [HarmonyPatch(nameof(UpgradeUI.OnResetButtonClicked))]
         private static bool OnResetButtonClicked_Prefix(UpgradeUI __instance)
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;

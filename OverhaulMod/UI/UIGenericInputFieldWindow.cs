@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,7 +48,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_doneButton.interactable = !string.IsNullOrEmpty(m_inputField.text);
+            m_doneButton.interactable = !m_inputField.text.IsNullOrEmpty();
         }
 
         public void OnDoneButtonClicked()

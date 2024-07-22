@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class GameFlowManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("StartStoryModeGame")]
+        [HarmonyPatch(nameof(GameFlowManager.StartStoryModeGame))]
         private static void StartStoryModeGame_Prefix(GameFlowManager __instance, bool resetData = false)
         {
             if (!resetData)
@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
                 if (gameDataManager)
                 {
                     string levelId = gameDataManager._storyModeData.CurentLevelID;
-                    if (!string.IsNullOrEmpty(levelId) && levelId.Contains("C5"))
+                    if (!levelId.IsNullOrEmpty() && levelId.Contains("C5"))
                     {
                         ModGameUtils.overrideCurrentLevelId = levelId;
                         ModGameUtils.overrideActiveSections = gameDataManager._storyModeData.CurrentLevelSectionsVisible;

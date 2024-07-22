@@ -95,7 +95,7 @@ namespace OverhaulMod.UI
             m_languagesDropdown.value = 0;
             m_translationValueInputField.onEndEdit.AddListener(delegate (string str)
             {
-                if (string.IsNullOrEmpty(editingLangId) || string.IsNullOrEmpty(editingTranslationKey))
+                if (editingLangId.IsNullOrEmpty() || editingTranslationKey.IsNullOrEmpty())
                     return;
 
                 ModLocalizationManager.Instance.SetTranslation(editingLangId, editingTranslationKey, str);
@@ -227,7 +227,7 @@ namespace OverhaulMod.UI
         public void OnLanguagesDropdownChanged(int index)
         {
             PopulateTranslations();
-            if (!string.IsNullOrEmpty(editingTranslationKey))
+            if (!editingTranslationKey.IsNullOrEmpty())
             {
                 EditTranslation(editingTranslationKey);
             }

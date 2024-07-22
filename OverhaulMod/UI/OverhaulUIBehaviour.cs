@@ -106,7 +106,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -124,7 +124,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -140,7 +140,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
                         if (!unityObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }

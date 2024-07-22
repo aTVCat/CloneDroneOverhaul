@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches
     internal static class WeaponAITuningManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("UpdateConfigForCurrentWeapon")]
+        [HarmonyPatch(nameof(WeaponAITuningManager.UpdateConfigForCurrentWeapon))]
         private static bool UpdateConfigForCurrentWeapon_Prefix(WeaponAITuningManager __instance, AISwordsmanController controller)
         {
             FirstPersonMover firstPersonMover = controller.GetComponent<FirstPersonMover>();

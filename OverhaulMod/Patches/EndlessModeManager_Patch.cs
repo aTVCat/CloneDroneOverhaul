@@ -9,7 +9,7 @@ namespace OverhaulMod.Patches
     internal static class EndlessModeManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("GetDifficultyTierDropdownOptions")]
+        [HarmonyPatch(nameof(EndlessModeManager.GetDifficultyTierDropdownOptions))]
         private static void GetDifficultyTierDropdownOptions_Postfix(EndlessModeManager __instance, ref List<Dropdown.OptionData> __result)
         {
             __result = new List<Dropdown.OptionData>();

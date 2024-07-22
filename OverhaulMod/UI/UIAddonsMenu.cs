@@ -73,14 +73,14 @@ namespace OverhaulMod.UI
             base.Hide();
             if (m_shouldSuggestGameRestart)
             {
-                ModUIConstants.ShowRestartRequiredScreen(true);
+                _ = ModUIConstants.ShowRestartRequiredScreen(true);
                 m_shouldSuggestGameRestart = false;
             }
         }
 
         private void onContentDownloaded(string error)
         {
-            if (!string.IsNullOrEmpty(error))
+            if (!error.IsNullOrEmpty())
             {
                 ModUIUtils.MessagePopupOK("Content download error", "Details:\n" + error, 350f, true);
             }
@@ -201,12 +201,12 @@ namespace OverhaulMod.UI
 
         public void OnLocalAddonsEditorButtonClicked()
         {
-            ModUIConstants.ShowAddonsEditor(base.transform);
+            _ = ModUIConstants.ShowAddonsEditor(base.transform);
         }
 
         public void OnNetworkAddonsEditorButtonClicked()
         {
-            ModUIConstants.ShowAddonsDownloadEditor(base.transform);
+            _ = ModUIConstants.ShowAddonsDownloadEditor(base.transform);
         }
     }
 }

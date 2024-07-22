@@ -26,6 +26,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
         public static bool ShowSpeakerName;
 
+        [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
+        public static bool StreamerMode;
+
         public static bool EnterCustomizationEditor;
 
         public static event Action GameInitialized;
@@ -317,7 +320,7 @@ namespace OverhaulMod
 
         public override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
-            if (string.IsNullOrEmpty(newLanguageID) || localizationDictionary.IsNullOrEmpty())
+            if (newLanguageID.IsNullOrEmpty() || localizationDictionary.IsNullOrEmpty())
                 return;
 
             ModLocalizationManager manager = ModLocalizationManager.Instance;

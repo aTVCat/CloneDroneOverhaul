@@ -159,7 +159,7 @@ namespace OverhaulMod.UI
         private void onInstalledNewBuild()
         {
             m_progressBar.SetActive(false);
-            ModUIConstants.ShowRestartRequiredScreen(false);
+            _ = ModUIConstants.ShowRestartRequiredScreen(false);
         }
 
         private void onFailedToInstallNewBuild(string error)
@@ -222,7 +222,7 @@ namespace OverhaulMod.UI
 
         public void OnEditorButtonClicked()
         {
-            ModUIConstants.ShowUpdateInfoEditor(base.transform);
+            _ = ModUIConstants.ShowUpdateInfoEditor(base.transform);
         }
 
         public void OnCheckForUpdatesOnStartupToggleChanged(bool value)

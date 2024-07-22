@@ -5,23 +5,21 @@ namespace OverhaulMod
 {
     public static class ModFeatures
     {
-        private static readonly Dictionary<FeatureType, bool> s_cachedValues = new Dictionary<FeatureType, bool>();
+        private static readonly List<FeatureType> s_enabledFeatures = new List<FeatureType>();
 
         public static void CacheValues()
         {
-            Dictionary<FeatureType, bool> dictionary = s_cachedValues;
-            dictionary.Clear();
-            foreach (object enumName in typeof(FeatureType).GetEnumValues())
-            {
-                FeatureType featureType = (FeatureType)enumName;
-                dictionary.Add(featureType, IsEnabled(featureType, false));
-            }
+            List<FeatureType> list = s_enabledFeatures;
+            list.Clear();
+            foreach (FeatureType featureType in typeof(FeatureType).GetEnumValues())
+                if (IsEnabled(featureType, false))
+                    list.Add(featureType);
         }
 
         public static bool IsEnabled(FeatureType feature, bool useCaching = true)
         {
-            if (useCaching && s_cachedValues.ContainsKey(feature))
-                return s_cachedValues[feature];
+            if (useCaching && s_enabledFeatures.Contains(feature))
+                return true;
 
             bool result;
             switch (feature)

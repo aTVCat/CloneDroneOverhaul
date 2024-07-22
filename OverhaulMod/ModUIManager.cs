@@ -103,10 +103,10 @@ namespace OverhaulMod
             foreach (string key in keysToRemove)
                 _ = m_instantiatedUIs.Remove(key);
 
-            ModUIConstants.ShowVersionLabel();
-            ModUIConstants.ShowImageEffects();
+            _ = ModUIConstants.ShowVersionLabel();
+            _ = ModUIConstants.ShowImageEffects();
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
-                ModUIConstants.ShowTooltips();
+                _ = ModUIConstants.ShowTooltips();
         }
 
         public bool HasInstantiatedUI(string assetKey)
@@ -178,7 +178,7 @@ namespace OverhaulMod
                 System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 result1.InitializeUI();
                 stopwatch.Stop();
-                UnityEngine.Debug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
+                ModDebug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
 #else
                 result1.InitializeUI();
 #endif

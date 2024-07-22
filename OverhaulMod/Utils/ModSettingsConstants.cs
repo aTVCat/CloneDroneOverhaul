@@ -310,5 +310,10 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIPatchNotes"/>
         /// </summary>
         public const string HAS_SHOWED_PATCH_NOTES = "HasShowedPatchNotes";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string STREAMER_MODE = "StreamerMode";
     }
 }

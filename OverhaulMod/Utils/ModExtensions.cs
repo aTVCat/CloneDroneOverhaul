@@ -11,6 +11,7 @@ namespace OverhaulMod.Utils
         public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
         public static bool IsNullOrEmpty(this System.Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
+        public static bool IsNullOrWhiteSpace(this string @string) => string.IsNullOrWhiteSpace(@string);
 
         public static List<T> CloneList<T>(this List<T> list)
         {

@@ -448,7 +448,7 @@ namespace OverhaulMod.UI
                 requestParameters.ReturnPreviews();
                 requestParameters.ReturnLongDescription();
 
-                if (!string.IsNullOrEmpty(searchText))
+                if (!searchText.IsNullOrEmpty())
                     requestParameters.SearchText(searchText);
 
                 bool success;

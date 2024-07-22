@@ -30,7 +30,7 @@ namespace OverhaulMod.Patches.Behaviours
                         settingsMenu.Hide();
                         ModActionUtils.DoInFrame(delegate
                         {
-                            ModUIConstants.ShowSettingsMenuRework(false);
+                            _ = ModUIConstants.ShowSettingsMenuRework(false);
                         });
                     });
                 }

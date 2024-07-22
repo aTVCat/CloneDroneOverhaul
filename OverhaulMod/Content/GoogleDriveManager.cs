@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using UnityEngine;
-using static FileDownloader;
 
 namespace OverhaulMod.Content
 {

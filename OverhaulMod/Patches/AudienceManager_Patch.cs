@@ -9,7 +9,7 @@ namespace OverhaulMod.Patches
     internal static class AudienceManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("InitializeAudienceDataForLevel")]
+        [HarmonyPatch(nameof(AudienceManager.InitializeAudienceDataForLevel))]
         private static void InitializeAudienceDataForLevel_Postfix()
         {
             ArenaAudienceManager arenaAudienceManager = ArenaAudienceManager.Instance;
@@ -20,7 +20,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("addAudiencePositions")]
+        [HarmonyPatch(nameof(AudienceManager.addAudiencePositions))]
         private static bool addAudiencePositions_Prefix(AudienceManager __instance, List<Vector3> potentialAudiencePositions, AudiencePlacementLine audiencePlacementLine)
         {
             return audiencePlacementLine && audiencePlacementLine.StartPos && audiencePlacementLine.EndPos;

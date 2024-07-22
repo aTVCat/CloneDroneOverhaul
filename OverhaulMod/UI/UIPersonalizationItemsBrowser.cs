@@ -261,7 +261,7 @@ namespace OverhaulMod.UI
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
             if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
-                ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+                _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnCategoryTabSelected(UIElementTab elementTab)
@@ -432,7 +432,7 @@ namespace OverhaulMod.UI
                             prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
                         }
                         else
-                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author"): LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
+                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
 
                         string authorsStringToDisplay;
                         if (noSpecificAuthor)
@@ -599,12 +599,12 @@ namespace OverhaulMod.UI
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
+            _ = ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
         }
 
         public void OnUpdateButtonClicked()
         {
-            ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+            _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnSearchBoxChanged(string text)

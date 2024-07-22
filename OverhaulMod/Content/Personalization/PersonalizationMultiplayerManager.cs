@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -78,16 +77,12 @@ namespace OverhaulMod.Content.Personalization
 
         private void registerPlayerInfo(string rawData)
         {
-            bool debug = ModBuildInfo.debug;
-
-            if (debug)
-                Debug.Log(rawData);
-
+            ModDebug.Log(rawData);
             if (rawData.Length > 16)
             {
                 string playFabId = rawData.Remove(16);
-                if (debug)
-                    Debug.Log(playFabId);
+                ModDebug.Log(playFabId);
+
                 if (m_playerInfos.ContainsKey(playFabId))
                 {
                     m_playerInfos[playFabId].SetData(rawData);

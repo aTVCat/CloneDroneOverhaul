@@ -3,7 +3,6 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -108,7 +107,7 @@ namespace OverhaulMod.Content.Personalization
             if (Authors.Count != 1)
             {
                 for (int i = 1; i < Authors.Count; i++)
-                    result += $"{((translate && i == Authors.Count-1) ? $" {LocalizationManager.Instance.GetTranslatedString("customization_authors_and")}" : ",")} {Authors[i]}";
+                    result += $"{((translate && i == Authors.Count - 1) ? $" {LocalizationManager.Instance.GetTranslatedString("customization_authors_and")}" : ",")} {Authors[i]}";
             }
             return result;
         }
@@ -120,7 +119,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool CanBeEdited()
         {
-            return string.IsNullOrEmpty(EditorID) || EditorID.Contains(SteamUser.GetSteamID().ToString());
+            return EditorID.IsNullOrEmpty() || EditorID.Contains(SteamUser.GetSteamID().ToString());
         }
 
         public bool IsUnlocked(Character character)

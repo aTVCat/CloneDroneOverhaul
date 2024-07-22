@@ -145,7 +145,7 @@ namespace OverhaulMod.Engine
                 return;
             }
 
-            Bounds bounds = new Bounds(m_transformToFollow.localPosition, Vector3.one);
+            Bounds bounds = new Bounds(m_transformToFollow.localPosition, Vector3.zero);
             int index = 0;
             foreach (MeshFilter meshFilter in m_transformToFollow.GetComponentsInChildren<MeshFilter>())
             {
@@ -160,7 +160,7 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.45f), 0f);
+            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.2f), 0f);
         }
 
         public void RefreshHeadVisibility(float lerpValue)

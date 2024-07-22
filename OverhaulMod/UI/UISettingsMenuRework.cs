@@ -317,7 +317,7 @@ namespace OverhaulMod.UI
             }, "Show Overhaul mod version");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
-                ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
 
             _ = pageBuilder.Button("Done", delegate
@@ -360,7 +360,7 @@ namespace OverhaulMod.UI
             }, "Show Overhaul mod version");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
-                ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
             _ = pageBuilder.Button("Configure UI enhancements", delegate
             {
@@ -571,7 +571,7 @@ namespace OverhaulMod.UI
                 if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
                     ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
                 else
-                    ModUIConstants.ShowWorkshopBrowserRework();
+                    _ = ModUIConstants.ShowWorkshopBrowserRework();
             });
             button.interactable = GameModeManager.IsOnTitleScreen();
 
@@ -1121,7 +1121,7 @@ namespace OverhaulMod.UI
                 if (localizationId == null)
                     localizationId = string.Empty;
 
-                if (!string.IsNullOrEmpty(localizationId))
+                if (!localizationId.IsNullOrEmpty())
                 {
                     LocalizedTextField localizedTextField = text.gameObject.AddComponent<LocalizedTextField>();
                     localizedTextField.LocalizationID = localizationId;

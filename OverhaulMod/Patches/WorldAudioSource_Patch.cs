@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class WorldAudioSource_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Initialize")]
+        [HarmonyPatch(nameof(WorldAudioSource.Initialize))]
         private static void Initialize_Postfix(WorldAudioSource __instance)
         {
             /*

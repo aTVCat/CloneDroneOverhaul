@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class GameModeSelectScreen_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("SetMainScreenVisible")]
+        [HarmonyPatch(nameof(GameModeSelectScreen.SetMainScreenVisible))]
         private static bool SetMainScreenVisible_Prefix(GameModeSelectScreen __instance, bool visible)
         {
             bool isSinglePlayer = __instance.gameObject.name.StartsWith("Singleplayer");

@@ -192,7 +192,7 @@ namespace OverhaulMod.UI
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                ModUIConstants.ShowChallengesMenuRework(true, false);
+                _ = ModUIConstants.ShowChallengesMenuRework(true, false);
                 return;
             }
 
@@ -225,7 +225,7 @@ namespace OverhaulMod.UI
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                ModUIConstants.ShowChallengesMenuRework(true, true);
+                _ = ModUIConstants.ShowChallengesMenuRework(true, true);
                 return;
             }
 

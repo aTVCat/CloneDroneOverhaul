@@ -165,7 +165,7 @@ namespace OverhaulMod.Content
         public void DownloadBuildFromSource(string source, string directoryName, Action callback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = null;
-            string directoryPath = ModsManager.Instance.ModFolderPath + directoryName.Replace('.', '_');
+            string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName.Replace('.', '_'));
             if (Directory.Exists(directoryPath))
             {
                 try

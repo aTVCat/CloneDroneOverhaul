@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
                 if (value)
                 {
                     if (!Cursor.visible || GameModeManager.IsOnTitleScreen())
-                        ModUIConstants.ShowDebugMenu();
+                        _ = ModUIConstants.ShowDebugMenu();
                 }
                 else
                 {

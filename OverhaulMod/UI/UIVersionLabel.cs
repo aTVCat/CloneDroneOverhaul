@@ -68,9 +68,9 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
             _ = ModBuildInfo.fullVersionString;
 
-            m_versionText.text = "v" + ModBuildInfo.fullVersionString;
+            m_versionText.text = $"Mod v{ModBuildInfo.fullVersionString}   |   Game v{VersionNumberManager.Instance.GetVersionString()}";
             m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = "overhaul v" + ModBuildInfo.versionString;
+            m_gameplayVersionText.text = $"overhaul v{ModBuildInfo.versionString}";
             m_gameplayDebugIcon.SetActive(debug);
             m_refreshWidth = true;
 
@@ -105,7 +105,7 @@ namespace OverhaulMod.UI
 
         public void OnOtherModsButtonClicked()
         {
-            ModUIConstants.ShowOtherModsMenu();
+            _ = ModUIConstants.ShowOtherModsMenu();
         }
     }
 }

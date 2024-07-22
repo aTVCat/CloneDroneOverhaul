@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
     internal static class UpgradeUIIcon_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("OnClickToUpgradeAbility")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.OnClickToUpgradeAbility))]
         private static bool OnClickToUpgradeAbility_Prefix(UpgradeUIIcon __instance, ref bool __result, bool isRandomSelectionInput)
         {
             if (isRandomSelectionInput)
@@ -25,7 +25,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("refreshDisplay")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.refreshDisplay))]
         private static void refreshDisplay_Postfix(UpgradeUIIcon __instance)
         {
             CanvasGroup canvasGroup = __instance.GetComponent<CanvasGroup>();
@@ -53,7 +53,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("Awake")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.Awake))]
         private static void Awake_Postfix(UpgradeUIIcon __instance)
         {
             Transform selectableFrame = __instance.transform.FindChildRecursive("SelectableFrame");

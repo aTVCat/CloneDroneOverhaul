@@ -61,7 +61,7 @@ namespace OverhaulMod.Engine
         private Vector3 m_ogReturnSignPosition;
         private Vector3 m_ogReturnSignEulerAngles;
 
-        private float m_timeToRefreshVanillaArenaParts;
+        private readonly float m_timeToRefreshVanillaArenaParts;
 
         private void Start()
         {

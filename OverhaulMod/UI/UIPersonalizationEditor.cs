@@ -232,7 +232,7 @@ namespace OverhaulMod.UI
         public void OnSelectItemButtonClicked()
         {
             Dropdown.Hide();
-            ModUIConstants.ShowPersonalizationEditorItemsBrowser(base.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorItemsBrowser(base.transform);
         }
 
         public void OnSaveButtonClicked()
@@ -247,19 +247,19 @@ namespace OverhaulMod.UI
         public void OnSendToVerificationButtonClicked()
         {
             Dropdown.Hide();
-            ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
 
         public void OnUploadButtonClicked()
         {
             Dropdown.Hide();
-            ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
 
         public void OnAboutButtonClicked()
         {
             Dropdown.Hide();
-            ModUIConstants.ShowPersonalizationEditorAboutDialog(base.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorAboutDialog(base.transform);
         }
 
         public void OnFileButtonClicked()

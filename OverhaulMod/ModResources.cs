@@ -176,7 +176,7 @@ namespace OverhaulMod
                     yield return null;
             }
 
-            if (!string.IsNullOrEmpty(errorString))
+            if (!errorString.IsNullOrEmpty())
             {
                 errorCallback?.Invoke(errorString);
                 yield break;
@@ -197,7 +197,7 @@ namespace OverhaulMod
             while (!assetLoadDone)
                 yield return null;
 
-            if (!string.IsNullOrEmpty(errorString))
+            if (!errorString.IsNullOrEmpty())
             {
                 errorCallback?.Invoke(errorString);
                 yield break;

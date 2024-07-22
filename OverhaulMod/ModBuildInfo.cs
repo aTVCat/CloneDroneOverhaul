@@ -162,7 +162,7 @@ namespace OverhaulMod
             string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
             string content = ModJsonUtils.Serialize(new ExtraInfo()
             {
-                CompileTime = DateTime.Now
+                CompileTime = DateTime.UtcNow
             });
             ModIOUtils.WriteText(content, filePath);
         }
