@@ -33,6 +33,8 @@ namespace OverhaulMod.UI
 
         private bool m_refreshWidth;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         public static UIVersionLabel instance
         {
             get;

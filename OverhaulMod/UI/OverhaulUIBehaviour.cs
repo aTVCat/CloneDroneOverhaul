@@ -72,6 +72,14 @@ namespace OverhaulMod.UI
             }
         }
 
+        public virtual bool closeOnEscapeButtonPress
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public void InitializeUI()
         {
             List<(FieldInfo, TabManagerAttribute)> tabManagers = new List<(FieldInfo, TabManagerAttribute)>();
@@ -389,6 +397,8 @@ namespace OverhaulMod.UI
             base.gameObject.SetActive(false);
             if (!IsElement)
                 ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
+
+            ModUIManager.Instance.RemoveUIFromLastShown(this);
         }
 
         public virtual void ToggleVisibility()

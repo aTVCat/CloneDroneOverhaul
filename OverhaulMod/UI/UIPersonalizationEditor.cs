@@ -71,6 +71,8 @@ namespace OverhaulMod.UI
 
         public override bool enableCursor => true;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         public static UIPersonalizationEditor instance
         {
             get;

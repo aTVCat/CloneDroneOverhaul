@@ -133,6 +133,8 @@ namespace OverhaulMod.UI
 
         private List<GarbageTarget> m_garbageTargets;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         protected override void OnInitialized()
         {
             RectTransform lightingPanel = m_lightingPanel;

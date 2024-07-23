@@ -168,6 +168,8 @@ namespace OverhaulMod.UI
         [UIElement("UpdatesButton", typeof(UIElementTitleScreenButtonWithWarn))]
         public UIElementTitleScreenButtonWithWarn UpdatesButtonWarnController;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
         private GameObject m_legacyContainer;

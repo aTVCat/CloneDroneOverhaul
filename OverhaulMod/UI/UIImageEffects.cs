@@ -21,6 +21,8 @@ namespace OverhaulMod.UI
         [UIElement("Dithering", true)]
         private readonly RawImage m_ditheringImage;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         private float m_timeLeftToSwitchTexture;
         private int m_TextureIndex;
 

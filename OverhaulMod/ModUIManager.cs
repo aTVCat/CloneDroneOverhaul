@@ -37,6 +37,8 @@ namespace OverhaulMod
 
         private Dictionary<string, GameObject> m_instantiatedUIs;
 
+        private List<OverhaulUIBehaviour> m_shownUIs;
+
         private Transform m_gameUIRootTransform;
         public Transform GameUIRootTransform
         {
@@ -73,6 +75,7 @@ namespace OverhaulMod
             base.Awake();
             windowManager = base.gameObject.AddComponent<WindowManager>();
             m_instantiatedUIs = new Dictionary<string, GameObject>();
+            m_shownUIs = new List<OverhaulUIBehaviour>();
         }
 
         private void OnDestroy()
@@ -184,11 +187,18 @@ namespace OverhaulMod
 #endif
                 result1.Show();
 
+                if (result1.closeOnEscapeButtonPress)
+                    m_shownUIs.Add(result1);
+
                 return result1;
             }
 
             T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
+
+            if(result.closeOnEscapeButtonPress)
+                m_shownUIs.Add(result);
+
             return result;
         }
 
@@ -218,6 +228,19 @@ namespace OverhaulMod
                 return true;
             }
             return false;
+        }
+
+        public OverhaulUIBehaviour GetLastShownUI()
+        {
+            if (m_shownUIs.Count == 0)
+                return null;
+
+            return m_shownUIs[m_shownUIs.Count - 1];
+        }
+
+        public void RemoveUIFromLastShown(OverhaulUIBehaviour behaviour)
+        {
+            m_shownUIs.Remove(behaviour);
         }
 
         public void RefreshUI(bool refreshOnlyCursor)
