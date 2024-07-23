@@ -340,6 +340,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetLoadingState.cs" />
     <Compile Include="Combat\Enemies\BackwardDashAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\InsaneBackwardDashAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\InsaneLongSprintAIBehaviour.cs" />

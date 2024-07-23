@@ -251,7 +251,7 @@ namespace OverhaulMod.Combat
             upgradeDescription.Requirement = r1;
             upgradeDescription.Requirement2 = r2;
             if (!iconBundle.IsNullOrEmpty() && !iconAsset.IsNullOrEmpty())
-                upgradeDescription.Icon = ModResources.Load<Sprite>(iconBundle, iconAsset);
+                upgradeDescription.Icon = ModResources.Sprite(iconBundle, iconAsset);
 
             m_upgrades.Add(upgradeDescription);
             return (T)upgradeDescription;

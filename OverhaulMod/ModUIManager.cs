@@ -159,7 +159,7 @@ namespace OverhaulMod
             string fullName = $"{assetBundle}.{assetKey}";
             if (!HasInstantiatedUI(fullName))
             {
-                GameObject prefab = ModResources.Load<GameObject>(assetBundle, assetKey);
+                GameObject prefab = ModResources.Prefab(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
@@ -342,7 +342,7 @@ namespace OverhaulMod
             private void Awake()
             {
                 m_windows = new Dictionary<string, WindowBehaviour>();
-                m_windowPrefab = ModResources.Load<GameObject>(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
+                m_windowPrefab = ModResources.Prefab(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
             }
 
             public string Window(Transform parent, Transform content, string title, Vector2 size, Vector2 position = default, bool destroyOnClose = false)

@@ -48,7 +48,7 @@ namespace OverhaulMod.Combat
 
             GameObject model = null;
             if (!assetBundle.IsNullOrEmpty() && !assetName.IsNullOrEmpty())
-                model = ModResources.Load<GameObject>(assetBundle, assetName);
+                model = ModResources.Prefab(assetBundle, assetName);
 
             m_Weapons.Add(weaponType, (model, typeof(T)));
 

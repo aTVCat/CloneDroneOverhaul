@@ -132,7 +132,7 @@ namespace OverhaulMod.UI
             m_driveDropdown.options.Clear();
             foreach (DriveInfo d in DriveInfo.GetDrives())
             {
-                Sprite sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, d.Name == "C:\\" ? "SysDrive-Mini-16x16" : "Drive-Mini-16x16");
+                Sprite sprite = ModResources.Sprite(AssetBundleConstants.UI, d.Name == "C:\\" ? "SysDrive-Mini-16x16" : "Drive-Mini-16x16");
                 m_driveDropdown.options.Add(new Dropdown.OptionData(d.Name, sprite));
             }
             m_driveDropdown.RefreshShownValue();
