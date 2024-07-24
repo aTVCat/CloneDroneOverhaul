@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System.Collections;
@@ -23,6 +25,9 @@ namespace OverhaulMod.Content.Personalization
 
         [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
         public static string ShieldSkin;
+
+        [ModSetting(ModSettingsConstants.SCYTHE_SKIN, null)]
+        public static string ScytheSkin;
 
         [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
         public static bool AllowEnemiesUseSkins;
@@ -88,11 +93,16 @@ namespace OverhaulMod.Content.Personalization
 
         private float m_timeLeftToRefreshWeaponSkinAndParts, m_timeLeftToRefreshSkinVisibility;
 
+        private bool m_hasRefreshedAfterDeath;
+
         private void Awake()
         {
             m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
             m_weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant>();
             m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
+
+            if (PersonalizationEditorManager.IsInEditor())
+                PersonalizationEditorManager.Instance.currentPersonalizationController = this;
         }
 
         private void OnEnable()
@@ -121,6 +131,9 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
+            if (m_hasRefreshedAfterDeath)
+                return;
+
             if (m_spawnSkinsNextFrame)
             {
                 m_spawnSkinsNextFrame = false;
@@ -140,6 +153,9 @@ namespace OverhaulMod.Content.Personalization
             if (m_timeLeftToRefreshWeaponSkinAndParts <= 0f)
             {
                 m_timeLeftToRefreshWeaponSkinAndParts = 0.5f;
+
+                if (!firstPersonMover.IsAlive())
+                    m_hasRefreshedAfterDeath = true;
 
                 if (!m_isMindSpace)
                 {
@@ -293,6 +309,16 @@ namespace OverhaulMod.Content.Personalization
 
         public void SetWeaponPartsVisible(WeaponType weaponType, bool value, bool hideBowStrings)
         {
+            if(weaponType == ModWeaponsManager.SCYTHE_TYPE)
+            {
+                WeaponModel weaponModel = ownerModel.GetWeaponModel(ModWeaponsManager.SCYTHE_TYPE);
+                if (weaponModel && weaponModel is ModWeaponModel modWeaponModel)
+                {
+                    modWeaponModel.SetIsModelActive(value);
+                }
+                return;
+            }
+
             if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(weaponType, out Transform[] parts))
             {
                 foreach (Transform transform in parts)
@@ -406,7 +432,7 @@ namespace OverhaulMod.Content.Personalization
         {
             foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in m_spawnedItems)
                 if (keyValue.Key.Weapon == weaponType)
-                    return keyValue.key;
+                    return keyValue.Key;
 
             return null;
         }
@@ -561,6 +587,8 @@ namespace OverhaulMod.Content.Personalization
                         return multiplayerPlayerInfo.SpearSkin;
                     case WeaponType.Shield:
                         return multiplayerPlayerInfo.ShieldSkin;
+                    case ModWeaponsManager.SCYTHE_TYPE:
+                        return multiplayerPlayerInfo.ScytheSkin;
                 }
             }
             return string.Empty;
@@ -598,6 +626,9 @@ namespace OverhaulMod.Content.Personalization
                 case WeaponType.Shield:
                     ModSettingsManager.SetStringValue(ModSettingsConstants.SHIELD_SKIN, itemId);
                     break;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SCYTHE_SKIN, itemId);
+                    break;
             }
         }
 
@@ -615,6 +646,8 @@ namespace OverhaulMod.Content.Personalization
                     return SpearSkin;
                 case WeaponType.Shield:
                     return ShieldSkin;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    return ScytheSkin;
             }
             return null;
         }

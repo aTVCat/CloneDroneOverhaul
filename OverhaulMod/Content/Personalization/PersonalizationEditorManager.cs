@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.UI.Elements;
@@ -32,16 +33,12 @@ namespace OverhaulMod.Content.Personalization
 
         private GreatSwordPreviewController m_greatSwordPreviewController;
 
-        private PersonalizationController m_currentPersonalizationController;
+        private FirstPersonMover m_bot;
+
         public PersonalizationController currentPersonalizationController
         {
-            get
-            {
-                if (!m_currentPersonalizationController)
-                    m_currentPersonalizationController = CharacterTracker.Instance?.GetPlayer()?.GetComponent<PersonalizationController>();
-
-                return m_currentPersonalizationController;
-            }
+            get;
+            set;
         }
 
         public PersonalizationItemInfo currentEditingItemInfo
@@ -170,7 +167,6 @@ namespace OverhaulMod.Content.Personalization
                 m_hasConfiguredGameData = true;
             }
 
-            m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
             previewPresetKey = WeaponVariant.Normal;
@@ -201,6 +197,11 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
             yield break;
+        }
+
+        public FirstPersonMover GetBot()
+        {
+            return m_bot;
         }
 
         public void RefreshGreatswordPreview()
@@ -241,7 +242,7 @@ namespace OverhaulMod.Content.Personalization
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
             }
-            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear)
+            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear || weaponType == ModWeaponsManager.SCYTHE_TYPE)
             {
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
             }
@@ -377,7 +378,7 @@ namespace OverhaulMod.Content.Personalization
 
             GameObject spawnPoint = new GameObject();
 
-            FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true);
+            FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, false);
             bot._upgradeCollection._upgradeLevels = new Dictionary<UpgradeType, int>();
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SwordUnlock, 1);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
@@ -385,10 +386,12 @@ namespace OverhaulMod.Content.Personalization
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.EnergyCapacity, 2);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Dash, 1);
+            bot._upgradeCollection.AddUpgradeIfMissing(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, 1);
             bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
+            m_bot = bot;
             m_greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
 
             DelegateScheduler.Instance.Schedule(delegate
@@ -441,9 +444,23 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnRootObject()
         {
-            PersonalizationEditorObjectInfo rootInfo = currentEditingItemInfo?.RootObject;
-            if (rootInfo == null)
+            var info = currentEditingItemInfo;
+            if (info == null)
                 return;
+
+            PersonalizationEditorObjectInfo rootInfo = info.RootObject;
+            if (rootInfo == null)
+            {
+                rootInfo = new PersonalizationEditorObjectInfo()
+                {
+                    Name = "Root",
+                    Path = "Empty",
+                    IsRoot = true,
+                    Children = new List<PersonalizationEditorObjectInfo>(),
+                    PropertyValues = new Dictionary<string, object>()
+                };
+                currentEditingItemInfo.RootObject = rootInfo;
+            }
 
             PersonalizationController personalizationController = currentPersonalizationController;
             if (!personalizationController)

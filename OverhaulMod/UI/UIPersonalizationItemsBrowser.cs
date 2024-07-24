@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
@@ -214,7 +215,7 @@ namespace OverhaulMod.UI
         public override void OnEnable()
         {
             base.OnEnable();
-            UIVersionLabel.instance.forceHide = true;
+            UIVersionLabel.instance.offsetX = 325f;
         }
 
         public override void OnDisable()
@@ -223,7 +224,7 @@ namespace OverhaulMod.UI
 
             IsPreviewing = false;
             m_isPopulating = false;
-            UIVersionLabel.instance.forceHide = false;
+            UIVersionLabel.instance.offsetX = 0f;
 
             PersonalizationManager.Instance.userInfo.SaveIfDirty();
             ModSettingsDataManager.Instance.Save();
@@ -297,6 +298,9 @@ namespace OverhaulMod.UI
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                     m_subcategoryTabs.AddTab("Shield");
 
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins) && BoltNetwork.IsServer)
+                    m_subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
+
                 m_subcategoryTabs.SelectTab("Sword");
             }
             else if (newTab.tabId == "accessories")
@@ -369,6 +373,7 @@ namespace OverhaulMod.UI
 
                 if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
                     weaponType = WeaponType.Sword;
+                else 
 
                 ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
                 {
@@ -388,6 +393,13 @@ namespace OverhaulMod.UI
                             break;
                         case WeaponType.Shield:
                             input.Weapon4 = true;
+                            break;
+                        case ModWeaponsManager.SCYTHE_TYPE:
+                            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                            if(firstPersonMover)
+                            {
+                                firstPersonMover.SetEquippedWeaponType(ModWeaponsManager.SCYTHE_TYPE);
+                            }
                             break;
                     }
                 });

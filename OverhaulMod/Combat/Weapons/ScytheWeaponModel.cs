@@ -40,7 +40,7 @@ namespace OverhaulMod.Combat.Weapons
 
         public override void OnInstantiated(FirstPersonMover owner)
         {
-            MeleeWeaponAITuning meleeWeaponTuning = (MeleeWeaponAITuning)WeaponAITuningManager.Instance.SwordAITuning.MemberwiseClone();
+            MeleeWeaponAITuning meleeWeaponTuning = WeaponAITuningManager.Instance.SwordAITuning.Clone();
             meleeWeaponTuning.MaxRangeToAttack = 13f;
             meleeWeaponTuning.RunForwardUntilRange = 7.5f;
             AITuning = meleeWeaponTuning;
@@ -94,24 +94,34 @@ namespace OverhaulMod.Combat.Weapons
             MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
         }
 
+        public override void SetIsModelActive(bool value)
+        {
+            base.SetIsModelActive(value);
+            RefreshRenderer();
+        }
+
         public void RefreshRenderer()
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             if (!moddedObject)
                 return;
 
-            bool fire = GetOwner().HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
+            FirstPersonMover owner = GetOwner();
+            if (!owner)
+                return;
+
+            bool fire = owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {
                 meshRenderer.material.shader = Shader.Find("Standard");
-                meshRenderer.gameObject.SetActive(!fire);
+                meshRenderer.gameObject.SetActive(!fire && IsModelActive);
             }
             MeshRenderer meshRenderer2 = moddedObject.GetObject<MeshRenderer>(4);
             if (meshRenderer2)
             {
                 meshRenderer2.material.shader = Shader.Find("Standard");
-                meshRenderer2.gameObject.SetActive(fire);
+                meshRenderer2.gameObject.SetActive(fire && IsModelActive);
             }
         }
     }

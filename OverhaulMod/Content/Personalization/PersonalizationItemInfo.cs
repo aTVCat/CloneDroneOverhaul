@@ -167,6 +167,11 @@ namespace OverhaulMod.Content.Personalization
             switch (Category)
             {
                 case PersonalizationCategory.WeaponSkins:
+                    switch (Weapon)
+                    {
+                        case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                            return "Scythe";
+                    }
                     return Weapon.ToString();
                 case PersonalizationCategory.Accessories:
                     return BodyPartName;

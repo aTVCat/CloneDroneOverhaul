@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2583304706
+CRC: 291112969
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fa437f3504d77d8335031510bf14ca7b
+    Hash: 77b66a8dc180392fa382ac9d6c876b17
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -138,6 +138,7 @@ Assets:
 - Assets/UI/UI_SetKeyBindWindow.prefab
 - Assets/UI/UI_FileExplorer.prefab
 - Assets/UI/UI_CreditsMenu.prefab
+- Assets/Sprites/Glyphs/Tick-16x16.png
 - Assets/UI/UI_InformationSelectWindow.prefab
 - Assets/Sprites/Glyphs/Drive-Mini-16x16.png
 - Assets/UI/UI_PauseMenuRework.prefab

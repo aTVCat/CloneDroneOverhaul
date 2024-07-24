@@ -30,7 +30,7 @@ namespace OverhaulMod.UI
             _ = m_stringBuilder.Clear();
             foreach (KeyValuePair<string, string> keyValue in s_debugValues)
             {
-                _ = m_stringBuilder.Append(keyValue.key);
+                _ = m_stringBuilder.Append(keyValue.Key);
                 _ = m_stringBuilder.Append(": ");
                 _ = m_stringBuilder.Append(keyValue.Value);
                 if (index < s_debugValues.Count - 1)

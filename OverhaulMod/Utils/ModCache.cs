@@ -55,7 +55,7 @@ namespace OverhaulMod.Utils
             {
                 if (s_jsonSerializerSettings == null)
                 {
-                    s_jsonSerializerSettings = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettings = dataRepository.GetSettings().Clone();
                 }
                 return s_jsonSerializerSettings;
             }
@@ -68,7 +68,7 @@ namespace OverhaulMod.Utils
             {
                 if (s_jsonSerializerSettingsFormatted == null)
                 {
-                    s_jsonSerializerSettingsFormatted = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettingsFormatted = dataRepository.GetSettings().Clone();
                     s_jsonSerializerSettingsFormatted.Formatting = Formatting.Indented;
                 }
                 return s_jsonSerializerSettingsFormatted;

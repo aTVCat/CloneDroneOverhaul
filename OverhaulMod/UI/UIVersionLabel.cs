@@ -63,6 +63,22 @@ namespace OverhaulMod.UI
             set;
         }
 
+        private float m_offsetX;
+        public float offsetX
+        {
+            get
+            {
+                return m_offsetX;
+            }
+            set
+            {
+                m_offsetX = value;
+                Vector2 anchoredPosition = m_gameplayWatermarkTransform.anchoredPosition;
+                anchoredPosition.x = 5f + value;
+                m_gameplayWatermarkTransform.anchoredPosition = anchoredPosition;
+            }
+        }
+
         protected override void OnInitialized()
         {
             instance = this;
@@ -70,9 +86,9 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
             _ = ModBuildInfo.fullVersionString;
 
-            m_versionText.text = $"Mod v{ModBuildInfo.fullVersionString}   |   Game v{VersionNumberManager.Instance.GetVersionString()}";
+            m_versionText.text = $"Overhaul {ModBuildInfo.fullVersionString}\nClone Drone {VersionNumberManager.Instance.GetVersionString()}";
             m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = $"overhaul v{ModBuildInfo.versionString}";
+            m_gameplayVersionText.text = $"overhaul {ModBuildInfo.versionString}";
             m_gameplayDebugIcon.SetActive(debug);
             m_refreshWidth = true;
 

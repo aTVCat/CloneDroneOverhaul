@@ -117,6 +117,8 @@ namespace OverhaulMod.UI
                     moddedObject.GetObject<Text>(1).text = PersonalizationItemInfo.GetCategoryString(item.Category);
                     moddedObject.GetObject<Text>(2).text = item.GetSpecialInfoString();
                     moddedObject.GetObject<GameObject>(3).SetActive(item.IsVerified);
+                    moddedObject.GetObject<Text>(4).text = item.GetAuthorsString(false);
+                    moddedObject.GetObject<GameObject>(5).SetActive(item.IsExclusive());
 
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate

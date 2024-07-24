@@ -142,7 +142,10 @@ namespace OverhaulMod.Engine
                     };
                     m_activity = activity;
                 }
-                catch { }
+                catch
+                {
+                    base.enabled = false;
+                }
             }
 
             if (m_activityHandler == null)

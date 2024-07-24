@@ -161,7 +161,7 @@ namespace OverhaulMod.Engine
                     foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
                     {
                         if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
-                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.key);
+                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.Key);
                     }
             }
         }

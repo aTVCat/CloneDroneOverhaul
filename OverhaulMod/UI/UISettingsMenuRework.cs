@@ -53,7 +53,13 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindPrefab", false)]
         public ModdedObject KeyBindPrefab;
 
-        [TabManager(typeof(UIElementTabWithText), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Mod-Bot", "Advanced" })]
+        [UIElement("GridContainer", false)]
+        public GameObject GridContainer;
+
+        [UIElement("LanguageButtonPrefab", false)]
+        public ModdedObject LanguageButton;
+
+        [TabManager(typeof(UIElementTabWithText), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -237,6 +243,9 @@ namespace OverhaulMod.UI
                 case "UI Patches":
                     populateUIPatchesPage(settingsMenu);
                     break;
+                case "Languages":
+                    populateLanguagesPage(settingsMenu);
+                    break;
                 default:
                     populateDefaultPage(settingsMenu);
                     break;
@@ -345,8 +354,8 @@ namespace OverhaulMod.UI
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
-            _ = pageBuilder.Header3("Language");
-            _ = pageBuilder.Dropdown(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
+            //_ = pageBuilder.Header3("Language");
+            //_ = pageBuilder.Dropdown(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
@@ -663,8 +672,21 @@ namespace OverhaulMod.UI
 
         private void populateModBotPage(SettingsMenu settingsMenu)
         {
+        }
+
+        private void populateDefaultPage(SettingsMenu settingsMenu)
+        {
             PageBuilder pageBuilder = new PageBuilder(this);
-            _ = pageBuilder.Header1("Controls");
+            _ = pageBuilder.Header1("This page is not implemented yet.");
+            _ = pageBuilder.Header2("Try using original menu");
+            _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
+        }
+
+        private void populateAdvancedPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Mod-Bot");
+            _ = pageBuilder.Header3("Controls");
             _ = pageBuilder.KeyBind("Open console", ModBotInputManager.GetKeyCode(ModBotInputType.OpenConsole), KeyCode.F1, delegate (KeyCode value)
             {
                 ModBotInputManager.InputOptions[0].Key = value;
@@ -674,7 +696,7 @@ namespace OverhaulMod.UI
                 ModBotInputManager.InputOptions[1].Key = value;
             });
 
-            _ = pageBuilder.Header1("Website integration");
+            _ = pageBuilder.Header3("Website integration");
             if (API.HasSession)
             {
                 _ = pageBuilder.Button("Edit tags", delegate
@@ -697,19 +719,7 @@ namespace OverhaulMod.UI
                     ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
                 });
             }
-        }
 
-        private void populateDefaultPage(SettingsMenu settingsMenu)
-        {
-            PageBuilder pageBuilder = new PageBuilder(this);
-            _ = pageBuilder.Header1("This page is not implemented yet.");
-            _ = pageBuilder.Header2("Try using original menu");
-            _ = pageBuilder.Button("Open original settings menu", OnLegacyUIButtonClicked);
-        }
-
-        private void populateAdvancedPage(SettingsMenu settingsMenu)
-        {
-            PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Transitions");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS), delegate (bool value)
             {
@@ -806,6 +816,28 @@ namespace OverhaulMod.UI
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
             });
+        }
+
+        private void populateLanguagesPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+
+            Text header = pageBuilder.Header1("Change language");
+            header.alignment = TextAnchor.LowerCenter;
+
+            RectTransform container = pageBuilder.GridContainer(new Vector2(410f, 1f), new Vector2(200f, 50f), new Vector2(5f, 5f));
+            pageBuilder.LanguageButton("en", container);
+            pageBuilder.LanguageButton("fr", container);
+            pageBuilder.LanguageButton("it", container);
+            pageBuilder.LanguageButton("de", container);
+            pageBuilder.LanguageButton("es-ES", container);
+            pageBuilder.LanguageButton("es-419", container);
+            pageBuilder.LanguageButton("zh-CN", container);
+            pageBuilder.LanguageButton("zh-TW", container);
+            pageBuilder.LanguageButton("ru", container);
+            pageBuilder.LanguageButton("pt-BR", container);
+            pageBuilder.LanguageButton("ja", container);
+            pageBuilder.LanguageButton("ko", container);
         }
 
         private int getCurrentLanguageIndex()
@@ -1128,9 +1160,9 @@ namespace OverhaulMod.UI
                 }
             }
 
-            private Text instantiateHeader(string text, string localizationId, ModdedObject prefab)
+            private Text instantiateHeader(string text, string localizationId, ModdedObject prefab, Transform parentOverride = null)
             {
-                ModdedObject moddedObject = Instantiate(prefab, SettingsMenu.PageContentsTransform);
+                ModdedObject moddedObject = Instantiate(prefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
                 Text textComponent = moddedObject.GetObject<Text>(0);
                 textComponent.text = text;
@@ -1138,7 +1170,7 @@ namespace OverhaulMod.UI
                 return textComponent;
             }
 
-            private Dropdown instantiateDropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Dropdown prefab)
+            private Dropdown instantiateDropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Dropdown prefab, Transform parentOverride = null)
             {
                 if (callback == null)
                     callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
@@ -1146,7 +1178,7 @@ namespace OverhaulMod.UI
                 if (list == null)
                     list = new List<Dropdown.OptionData>();
 
-                Dropdown dropdown = Instantiate(prefab, SettingsMenu.PageContentsTransform);
+                Dropdown dropdown = Instantiate(prefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 dropdown.gameObject.SetActive(true);
                 dropdown.options = list;
                 dropdown.value = value;
@@ -1155,44 +1187,44 @@ namespace OverhaulMod.UI
                 return dropdown;
             }
 
-            public Text Header1(string text, bool localize = true)
+            public Text Header1(string text, bool localize = true, Transform parentOverride = null)
             {
-                return instantiateHeader(text, localize ? $"settings_header_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header1Prefab);
+                return instantiateHeader(text, localize ? $"settings_header_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header1Prefab, parentOverride);
             }
 
-            public Text Header2(string text, bool localize = true)
+            public Text Header2(string text, bool localize = true, Transform parentOverride = null)
             {
-                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header2Prefab);
+                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header2Prefab, parentOverride);
             }
 
-            public Text Header3(string text, bool localize = true)
+            public Text Header3(string text, bool localize = true, Transform parentOverride = null)
             {
-                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header3Prefab);
+                return instantiateHeader(text, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header3Prefab, parentOverride);
             }
 
-            public Text Header4(string text, bool localize = true)
+            public Text Header4(string text, bool localize = true, Transform parentOverride = null)
             {
-                return instantiateHeader(text, localize ? $"settings_tooltip_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header4Prefab);
+                return instantiateHeader(text, localize ? $"settings_tooltip_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header4Prefab, parentOverride);
             }
 
-            public Dropdown Dropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
+            public Dropdown Dropdown(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Transform parentOverride = null)
             {
-                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownPrefab);
+                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownPrefab, parentOverride);
             }
 
-            public Dropdown DropdownWithImage(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
+            public Dropdown DropdownWithImage(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Transform parentOverride = null)
             {
-                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImagePrefab);
+                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImagePrefab, parentOverride);
             }
 
-            public Dropdown DropdownWithImage169(List<Dropdown.OptionData> list, int value, UnityAction<int> callback)
+            public Dropdown DropdownWithImage169(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Transform parentOverride = null)
             {
-                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab);
+                return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab, parentOverride);
             }
 
-            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false)
+            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false, Transform parentOverride = null)
             {
-                Slider slider = Instantiate(SettingsMenu.SliderPrefab, SettingsMenu.PageContentsTransform);
+                Slider slider = Instantiate(SettingsMenu.SliderPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 slider.gameObject.SetActive(true);
                 slider.minValue = min;
                 slider.maxValue = max;
@@ -1207,12 +1239,12 @@ namespace OverhaulMod.UI
                 return slider;
             }
 
-            public Toggle Toggle(bool isOn, UnityAction<bool> callback, string text, bool localize = true)
+            public Toggle Toggle(bool isOn, UnityAction<bool> callback, string text, bool localize = true, Transform parentOverride = null)
             {
                 if (callback == null)
                     callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
 
-                ModdedObject moddedObject = Instantiate(SettingsMenu.TogglePrefab, SettingsMenu.PageContentsTransform);
+                ModdedObject moddedObject = Instantiate(SettingsMenu.TogglePrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
                 Text textComponent = moddedObject.GetObject<Text>(1);
                 textComponent.text = text;
@@ -1225,12 +1257,12 @@ namespace OverhaulMod.UI
                 return toggle;
             }
 
-            public Button Button(string text, Action onClicked, bool localize = true)
+            public Button Button(string text, Action onClicked, bool localize = true, Transform parentOverride = null)
             {
                 if (onClicked == null)
                     onClicked = ModUIUtils.MessagePopupNotImplemented;
 
-                ModdedObject moddedObject = Instantiate(SettingsMenu.ButtonPrefab, SettingsMenu.PageContentsTransform);
+                ModdedObject moddedObject = Instantiate(SettingsMenu.ButtonPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = localize ? LocalizationManager.Instance.GetTranslatedString($"settings_button_{text.ToLower().Replace(' ', '_')}") : text;
                 Button button = moddedObject.GetComponent<Button>();
@@ -1238,9 +1270,9 @@ namespace OverhaulMod.UI
                 return button;
             }
 
-            public UIElementKeyBindSetter KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged)
+            public UIElementKeyBindSetter KeyBind(string name, KeyCode keyCode, KeyCode defaultKey, Action<KeyCode> onChanged, Transform parentOverride = null)
             {
-                ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, SettingsMenu.PageContentsTransform);
+                ModdedObject moddedObject = Instantiate(SettingsMenu.KeyBindPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);
 
                 UIElementKeyBindSetter elementKeyBind = moddedObject.gameObject.AddComponent<UIElementKeyBindSetter>();
@@ -1251,6 +1283,105 @@ namespace OverhaulMod.UI
                 elementKeyBind.onValueChanged.AddListener(new UnityAction<KeyCode>(onChanged));
 
                 return elementKeyBind;
+            }
+
+            public RectTransform GridContainer(Vector2 size, Vector2 cellSize, Vector2 spacing, Transform parentOverride = null)
+            {
+                GameObject gridContainerObject = Instantiate(SettingsMenu.GridContainer, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                gridContainerObject.SetActive(true);
+
+                RectTransform rectTransform = gridContainerObject.GetComponent<RectTransform>();
+                Vector2 sizeDelta = rectTransform.sizeDelta;
+                sizeDelta.y = size.y;
+                rectTransform.sizeDelta = sizeDelta;
+
+                LayoutElement layoutElement = gridContainerObject.GetComponent<LayoutElement>();
+                layoutElement.minWidth = size.x;
+
+                GridLayoutGroup gridLayoutGroup = gridContainerObject.GetComponent<GridLayoutGroup>();
+                gridLayoutGroup.cellSize = cellSize;
+                gridLayoutGroup.spacing = spacing;
+
+                return rectTransform;
+            }
+
+            public void LanguageButton(string langCode, Transform parentOverride = null)
+            {
+                ModdedObject moddedObject = Instantiate(SettingsMenu.LanguageButton, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+
+                Text header = moddedObject.GetObject<Text>(0);
+                Text subHeader = moddedObject.GetObject<Text>(1);
+
+                string headerText;
+                string subHeaderText;
+
+                switch (langCode)
+                {
+                    case "en":
+                        headerText = "English";
+                        subHeaderText = "(English) [en]";
+                        break;
+                    case "fr":
+                        headerText = "Français - la France";
+                        subHeaderText = "(French - France) [fr]";
+                        break;
+                    case "it":
+                        headerText = "Italiano";
+                        subHeaderText = "(Italian) [it]";
+                        break;
+                    case "de":
+                        headerText = "Deutsch";
+                        subHeaderText = "(German) [de]";
+                        break;
+                    case "es-ES":
+                        headerText = "Español - España";
+                        subHeaderText = "(Spanish - Spain) [es-ES]";
+                        break;
+                    case "es-419":
+                        headerText = "Español - Latinoamérica";
+                        subHeaderText = "(Spanish - Latin America) [es-419]";
+                        break;
+                    case "zh-CN":
+                        headerText = "简体中文";
+                        subHeaderText = "(Simplified Chinese) [zh-CN]";
+                        break;
+                    case "zh-TW":
+                        headerText = "繁體中文";
+                        subHeaderText = "(Traditional Chinese) [zh-TW]";
+                        break;
+                    case "ru":
+                        headerText = "Pусский";
+                        subHeaderText = "(Russian) [ru]";
+                        break;
+                    case "pt-BR":
+                        headerText = "Português do Brasil";
+                        subHeaderText = "(Brazilian Portuguese) [pt-BR]";
+                        break;
+                    case "ja":
+                        headerText = "日本語";
+                        subHeaderText = "(Japanese) [ja]";
+                        break;
+                    case "ko":
+                        headerText = "한국어";
+                        subHeaderText = "(Korean) [ko]";
+                        break;
+                    default:
+                        headerText = langCode;
+                        subHeaderText = langCode;
+                        break;
+                }
+
+                header.text = headerText;
+                subHeader.text = subHeaderText;
+
+                UnityEngine.UI.Button button = moddedObject.GetComponent<Button>();
+                button.onClick.AddListener(delegate
+                {
+                    LocalizationManager.Instance.SetCurrentLanguage(langCode);
+                    SettingsMenu.m_tabs.ReinstantiatePreconfiguredTabs();
+                    SettingsMenu.m_tabs.SelectTab("Languages");
+                });
             }
 
             public void Dispose()

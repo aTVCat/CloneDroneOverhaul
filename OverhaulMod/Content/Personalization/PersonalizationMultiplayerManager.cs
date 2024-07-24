@@ -34,6 +34,7 @@ namespace OverhaulMod.Content.Personalization
             string hammerSkin = normalizeId(PersonalizationController.HammerSkin);
             string spearSkin = normalizeId(PersonalizationController.SpearSkin);
             string shieldSkin = normalizeId(PersonalizationController.ShieldSkin);
+            string scytheSkin = normalizeId(PersonalizationController.ScytheSkin);
 
             StringBuilder stringBuilder = m_stringBuilder;
             _ = stringBuilder.Clear();
@@ -46,6 +47,7 @@ namespace OverhaulMod.Content.Personalization
             appendValue(stringBuilder, hammerSkin, false);
             appendValue(stringBuilder, spearSkin, false);
             appendValue(stringBuilder, shieldSkin, true);
+            appendValue(stringBuilder, scytheSkin, true);
 
             _ = GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
         }

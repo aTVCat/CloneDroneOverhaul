@@ -82,7 +82,7 @@ public class FileDownloader : IDisposable
         private readonly CookieContainer cookies = new CookieContainer();
         public DownloadProgress ContentRangeTarget;
 
-        public override WebRequest GetWebRequest(Uri address)
+        protected override WebRequest GetWebRequest(Uri address)
         {
             WebRequest request = base.GetWebRequest(address);
             if (request is HttpWebRequest)
@@ -98,12 +98,12 @@ public class FileDownloader : IDisposable
             return request;
         }
 
-        public override WebResponse GetWebResponse(WebRequest request, IAsyncResult result)
+        protected override WebResponse GetWebResponse(WebRequest request, IAsyncResult result)
         {
             return ProcessResponse(base.GetWebResponse(request, result));
         }
 
-        public override WebResponse GetWebResponse(WebRequest request)
+        protected override WebResponse GetWebResponse(WebRequest request)
         {
             return ProcessResponse(base.GetWebResponse(request));
         }

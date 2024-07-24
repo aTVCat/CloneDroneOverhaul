@@ -1,4 +1,6 @@
-﻿namespace OverhaulMod.Engine
+﻿using OverhaulMod.Combat;
+
+namespace OverhaulMod.Engine
 {
     public class WeaponVariantManager
     {
@@ -17,6 +19,9 @@
                     break;
                 case WeaponType.Spear:
                     isOnFire = firstPersonMover.HasUpgrade(UpgradeType.FireSpear);
+                    break;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    isOnFire = firstPersonMover.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
                     break;
             }
         }

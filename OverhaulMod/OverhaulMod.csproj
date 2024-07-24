@@ -738,9 +738,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <PropertyGroup>
-    <PublicizeAll>true</PublicizeAll>
-  </PropertyGroup>
+  <ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+    <Publicize Include="Assembly-CSharp-firstpass" />
+    <Publicize Include="ModLibrary" />
+    <Publicize Include="AdvancedAPI" />
+    <Publicize Include="UnityEngine.UI" />
+  </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>
     </ApplicationIcon>

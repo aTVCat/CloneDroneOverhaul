@@ -40,7 +40,7 @@ namespace OverhaulMod.UI
 
         public void OnShowPlayerToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 
@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
 
         public void OnShowWeaponToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 
@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
 
         public void OnAnimationToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 

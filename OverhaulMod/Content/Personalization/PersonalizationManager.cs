@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Combat;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
@@ -362,7 +363,8 @@ namespace OverhaulMod.Content.Personalization
                 || weaponType == WeaponType.Bow
                 || weaponType == WeaponType.Hammer
                 || weaponType == WeaponType.Spear
-                || weaponType == WeaponType.Shield);
+                || weaponType == WeaponType.Shield
+                || weaponType == ModWeaponsManager.SCYTHE_TYPE);
         }
 
         public void EquipItem(PersonalizationItemInfo item)
@@ -431,6 +433,8 @@ namespace OverhaulMod.Content.Personalization
                             return PersonalizationController.SpearSkin == itemId;
                         case WeaponType.Shield:
                             return PersonalizationController.ShieldSkin == itemId;
+                        case ModWeaponsManager.SCYTHE_TYPE:
+                            return PersonalizationController.ScytheSkin == itemId;
                     }
                     return false;
             }

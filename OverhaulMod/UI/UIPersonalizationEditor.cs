@@ -67,6 +67,10 @@ namespace OverhaulMod.UI
         [UIElement("HelpButton")]
         private readonly Button m_toolbarHelpButton;
 
+        [UIElementAction(nameof(OnUploadButtonClicked))]
+        [UIElement("UploadButton")]
+        private readonly Button m_toolbarUploadButton;
+
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
         public override bool enableCursor => true;
@@ -86,8 +90,6 @@ namespace OverhaulMod.UI
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Upload", "Redirect-16x16", instance.OnUploadButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
@@ -114,6 +116,7 @@ namespace OverhaulMod.UI
             s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked));
 
             m_toolbarWindowButton.interactable = false;
+            m_toolbarUploadButton.interactable = false;
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -164,14 +167,20 @@ namespace OverhaulMod.UI
             Notification.ShowNotification(header, text, baseColor, duration);
         }
 
+        public void ShowErrorNotification(string header, string text, float duration = 7f)
+        {
+            Notification.ShowNotification(header, text, UIElementPersonalizationEditorNotification.ErrorColor, duration);
+        }
+
         public void ShowSaveErrorMessage(string message)
         {
-            ShowNotification("Could not save the item", message, UIElementPersonalizationEditorNotification.ErrorColor, 15f);
+            ShowErrorNotification("Could not save the item", message, 15f);
         }
 
         public void ShowEverything()
         {
             m_toolbarWindowButton.interactable = true;
+            m_toolbarUploadButton.interactable = true;
             ShowInspector();
             ShowObjectProperties();
             ShowItemModerator();
