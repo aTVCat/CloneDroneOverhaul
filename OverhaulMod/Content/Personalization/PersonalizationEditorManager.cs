@@ -181,6 +181,8 @@ namespace OverhaulMod.Content.Personalization
             CacheManager.Instance.CreateOrClearInstance();
             GarbageManager.Instance.DestroyAllGarbage();
 
+            PersonalizationEditorTemplateManager.Instance.LoadTemplates();
+
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
                 UIPersonalizationEditor editorUi = ModUIConstants.ShowPersonalizationEditorUI();
@@ -250,17 +252,13 @@ namespace OverhaulMod.Content.Personalization
             return list;
         }
 
-        public bool CreateItem(string name, bool usePersistentFolder, out PersonalizationItemInfo personalizationItem)
+        public bool CreateItem(string directoryName, string name, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
         {
-            personalizationItem = null;
-            if (name.IsNullOrEmpty())
-                return false;
-
             string rootDirectory = usePersistentFolder ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
-            string directoryName = name.Replace(" ", string.Empty);
-            string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
-            string filesDirectoryPath = Path.Combine(directoryPath, "files/");
+            string directoryPath = Path.Combine(rootDirectory, directoryName);
+            string filesDirectoryPath = Path.Combine(directoryPath, "files");
 
+            personalizationItem = null;
             if (Directory.Exists(directoryPath))
                 return false;
             else
@@ -269,23 +267,56 @@ namespace OverhaulMod.Content.Personalization
             if (!Directory.Exists(filesDirectoryPath))
                 _ = Directory.CreateDirectory(filesDirectoryPath);
 
-            personalizationItem = new PersonalizationItemInfo()
+            bool useTemplate = true;
+            if (templateSource != null)
             {
-                Name = name,
-                Description = "No description provided.",
-                IsVerified = false,
-                Category = PersonalizationCategory.WeaponSkins,
-                EditorID = Instance.editorId,
-                ItemID = Guid.NewGuid().ToString(),
-                FolderPath = directoryPath,
-                RootFolderPath = rootDirectory,
-                RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
-                IsPersistentAsset = usePersistentFolder,
-                MetaData = new PersonalizationItemMetaData()
+                try
                 {
-                    CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    personalizationItem = ModJsonUtils.Deserialize<PersonalizationItemInfo>(ModJsonUtils.Serialize(templateSource));
+
+                    personalizationItem.Name = name;
+                    personalizationItem.Description = "No description provided.";
+                    personalizationItem.IsVerified = false;
+                    personalizationItem.EditorID = Instance.editorId;
+                    personalizationItem.ItemID = Guid.NewGuid().ToString();
+                    personalizationItem.FolderPath = directoryPath;
+                    personalizationItem.RootFolderPath = rootDirectory;
+                    personalizationItem.RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME;
+                    personalizationItem.IsPersistentAsset = usePersistentFolder;
+                    personalizationItem.MetaData = new PersonalizationItemMetaData()
+                    {
+                        CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    };
                 }
-            };
+                catch
+                {
+                    useTemplate = false;
+                }
+            }
+            else
+                useTemplate = false;
+
+            if (!useTemplate)
+            {
+                personalizationItem = new PersonalizationItemInfo()
+                {
+                    Name = name,
+                    Description = "No description provided.",
+                    IsVerified = false,
+                    Category = PersonalizationCategory.WeaponSkins,
+                    EditorID = Instance.editorId,
+                    ItemID = Guid.NewGuid().ToString(),
+                    FolderPath = directoryPath,
+                    RootFolderPath = rootDirectory,
+                    RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
+                    IsPersistentAsset = usePersistentFolder,
+                    MetaData = new PersonalizationItemMetaData()
+                    {
+                        CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    }
+                };
+            }
+
             personalizationItem.FixValues();
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);

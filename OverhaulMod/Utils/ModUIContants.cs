@@ -81,6 +81,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
+        public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -506,6 +507,11 @@ namespace OverhaulMod.Utils
         public static UIPatchNotes ShowPatchNotes()
         {
             return ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
+        }
+
+        public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
 using OverhaulMod.Engine;
+using System;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
@@ -9,6 +10,19 @@ namespace OverhaulMod.Utils
 {
     public static class ModCache
     {
+        private static string[] s_commandLineArgs;
+        public static string[] commandLineArgs
+        {
+            get
+            {
+                if (s_commandLineArgs == null)
+                {
+                    s_commandLineArgs = Environment.GetCommandLineArgs();
+                }
+                return s_commandLineArgs;
+            }
+        }
+
         private static Assembly s_modAssembly;
         public static Assembly modAssembly
         {

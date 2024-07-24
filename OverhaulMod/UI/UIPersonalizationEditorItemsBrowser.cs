@@ -163,6 +163,12 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
+            UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
+            panel.TargetDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            panel.UsePersistentFolder = m_usePersistentDirectoryToggle.isOn;
+            panel.ItemCreatedCallback = Hide;
+
+            /*
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
                 string rootDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
@@ -184,7 +190,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
                 }
-            });
+            });*/
         }
 
         public void OnSearchBoxChanged(string text)

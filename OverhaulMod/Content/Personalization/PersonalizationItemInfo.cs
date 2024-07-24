@@ -36,6 +36,9 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectInfo RootObject;
 
         [NonSerialized]
+        public bool Corrupted;
+
+        [NonSerialized]
         public string RootFolderName;
 
         [NonSerialized]

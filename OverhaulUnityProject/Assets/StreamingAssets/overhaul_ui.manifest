@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 291112969
+CRC: 3885614562
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 77b66a8dc180392fa382ac9d6c876b17
+    Hash: df558a183aaaa5f62032244950379ca1
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -119,6 +119,7 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
+- Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
 - Assets/UI/UI_NewsInfoEditor.prefab

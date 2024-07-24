@@ -383,6 +383,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
@@ -558,6 +559,7 @@
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />
+    <Compile Include="UI\DropdownPersonalizationItemInfo.cs" />
     <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
@@ -615,6 +617,7 @@
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorItemCreationDialog.cs" />
     <Compile Include="UI\UIPatchNotes.cs" />
     <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
     <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
