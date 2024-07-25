@@ -44,7 +44,7 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer())
                 return;
 
-            RobotInventory robotInventory = __instance.GetComponent<RobotInventory>();
+            RobotInventory robotInventory = ModComponentCache.GetRobotInventory(__instance.transform);
             if (robotInventory)
             {
                 if (__instance._isOnGroundServer)
@@ -138,43 +138,11 @@ namespace OverhaulMod.Patches
             }
         }
 
-        /*
-        [HarmonyPostfix]
-        [HarmonyPatch("CreateArrowAndDrawBow")]
-        private static void CreateArrowAndDrawBow_Postfix(FirstPersonMover __instance)
-        {
-            if (__instance.IsPlayerCameraActive())
-                __instance._cameraHolderAnimator.SetBool("HasNockedArrow", !CameraManager.EnableFirstPersonMode);
-        }*/
-
-
         [HarmonyPostfix]
         [HarmonyPatch(nameof(FirstPersonMover.CreateCharacterModel))]
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);
-
-            /*
-            CharacterModel characterModel = __instance._characterModel;
-            if (characterModel)
-            {
-                if (characterModel.UpperAnimator)
-                    _ = characterModel.UpperAnimator.gameObject.AddComponent<OverhaulAnimator>();
-
-                if (characterModel.LegsAnimator)
-                    _ = characterModel.LegsAnimator.gameObject.AddComponent<OverhaulAnimator>();
-            }*/
         }
-
-        /*
-        [HarmonyPrefix]
-        [HarmonyPatch("ReleaseNockedArrow")]
-        private static void ReleaseNockedArrow_Prefix(FirstPersonMover __instance, int serverFrame, ref Vector3 startPosition, Vector3 startFlyDirection, float rotationZ)
-        {
-            if (CameraManager.EnableFirstPersonMode && __instance.IsPlayerCameraActive())
-            {
-                //startPosition = __instance._characterModel.ArrowHolder.position;
-            }
-        }*/
     }
 }

@@ -21,6 +21,8 @@ namespace OverhaulMod.Content
                     resultCallback?.Invoke("Download failed: " + e.Error);
                 else
                     resultCallback?.Invoke(null);
+
+                fileDownloader.Dispose();
             };
             fileDownloader.DownloadProgressChanged += (sender, e) =>
             {

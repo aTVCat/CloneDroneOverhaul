@@ -31,6 +31,8 @@ namespace OverhaulMod.UI
         [UIElement("Watermark_Gameplay")]
         private readonly Text m_gameplayVersionText;
 
+        public bool ForceHide;
+
         private bool m_refreshWidth;
 
         public override bool closeOnEscapeButtonPress => false;
@@ -55,12 +57,6 @@ namespace OverhaulMod.UI
             {
                 return GameModeManager.IsOnTitleScreen();
             }
-        }
-
-        public bool forceHide
-        {
-            get;
-            set;
         }
 
         private float m_offsetX;
@@ -115,7 +111,7 @@ namespace OverhaulMod.UI
             if (Time.frameCount % 10 != 0)
                 return;
 
-            bool show = !forceHide && showWatermark;
+            bool show = !ForceHide && showWatermark;
             bool titleScreen = showFullWatermark;
             m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);

@@ -6,6 +6,8 @@ namespace OverhaulMod.Combat.Weapons
 {
     public class ScytheWeaponModel : ModWeaponModel
     {
+        private bool m_hasUpdatedShaderForNormalVariant, m_hasUpdatedShaderForFireVariant;
+
         public override float attackSpeed
         {
             get
@@ -114,14 +116,22 @@ namespace OverhaulMod.Combat.Weapons
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {
-                meshRenderer.material.shader = Shader.Find("Standard");
-                meshRenderer.gameObject.SetActive(!fire && IsModelActive);
+                if(!m_hasUpdatedShaderForNormalVariant)
+                {
+                    meshRenderer.material.shader = Shader.Find("Standard");
+                    m_hasUpdatedShaderForNormalVariant = true;
+                }
+                meshRenderer.enabled = !fire && IsModelActive;
             }
             MeshRenderer meshRenderer2 = moddedObject.GetObject<MeshRenderer>(4);
             if (meshRenderer2)
             {
-                meshRenderer2.material.shader = Shader.Find("Standard");
-                meshRenderer2.gameObject.SetActive(fire && IsModelActive);
+                if (!m_hasUpdatedShaderForFireVariant)
+                {
+                    meshRenderer2.material.shader = Shader.Find("Standard");
+                    m_hasUpdatedShaderForFireVariant = true;
+                }
+                meshRenderer2.enabled = fire && IsModelActive;
             }
         }
     }

@@ -147,7 +147,7 @@ namespace OverhaulMod.Content.Personalization
             if (!firstPersonMover)
                 return;
 
-            float d = Time.unscaledDeltaTime;
+            float d = Time.deltaTime;
 
             m_timeLeftToRefreshWeaponSkinAndParts -= d;
             if (m_timeLeftToRefreshWeaponSkinAndParts <= 0f)

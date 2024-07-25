@@ -7,9 +7,6 @@ using UnityEngine;
 
 namespace OverhaulMod
 {
-    /// <summary>
-    /// todo: rework in 0.4.1
-    /// </summary>
     public class ModResources : Singleton<ModResources>
     {
         internal const string ASSET_BUNDLES_FOLDER = "assets/";
@@ -134,8 +131,6 @@ namespace OverhaulMod
         {
             public readonly string FileLocation;
 
-            private string m_bundleName;
-
             public AssetLoadingState LoadingState;
 
             private float m_loadProgress;
@@ -161,15 +156,6 @@ namespace OverhaulMod
             public AssetBundle GetBundle()
             {
                 return m_bundle;
-            }
-
-            public string GetBundleName()
-            {
-                if (m_bundleName == null)
-                {
-                    m_bundleName = ModResources.GetBundleName(FileLocation);
-                }
-                return m_bundleName;
             }
 
             public float GetBundleLoadProgress()

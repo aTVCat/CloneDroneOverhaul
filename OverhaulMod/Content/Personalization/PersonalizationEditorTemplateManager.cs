@@ -33,12 +33,6 @@ namespace OverhaulMod.Content.Personalization
         {
             m_hasLoadedTemplates = true;
 
-            if (ModCache.commandLineArgs.Contains("-cdo_noTemplates"))
-            {
-                m_noTemplates = true;
-                return;
-            }
-
             string path = templatesFolder;
             if (!Directory.Exists(path))
             {

@@ -176,6 +176,8 @@ namespace OverhaulMod.UI
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
             refreshUpdateButton();
 
+            UIVersionLabel.instance.offsetX = 325f;
+
             m_cachedDisplays.Clear();
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
@@ -190,6 +192,12 @@ namespace OverhaulMod.UI
             base.Hide();
             m_isOpen = false;
             setCameraZoomedIn(false);
+            UIVersionLabel.instance.offsetX = 0f;
+
+            PersonalizationManager.Instance.userInfo.SaveIfDirty();
+            ModSettingsDataManager.Instance.Save();
+
+            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
         public override void Update()
@@ -212,24 +220,12 @@ namespace OverhaulMod.UI
             refreshCameraRect();
         }
 
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            UIVersionLabel.instance.offsetX = 325f;
-        }
-
         public override void OnDisable()
         {
             base.OnDisable();
 
             IsPreviewing = false;
             m_isPopulating = false;
-            UIVersionLabel.instance.offsetX = 0f;
-
-            PersonalizationManager.Instance.userInfo.SaveIfDirty();
-            ModSettingsDataManager.Instance.Save();
-
-            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
         private void tryHide()
