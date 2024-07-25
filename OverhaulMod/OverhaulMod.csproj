@@ -358,6 +358,7 @@
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\ContentListInfo.cs" />
+    <Compile Include="Content\ExclusiveContentItemsVerifierRole.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
@@ -571,6 +572,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementOverhaulUIInfo.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationExclusiveForField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />

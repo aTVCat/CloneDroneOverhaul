@@ -55,6 +55,10 @@ namespace OverhaulMod.UI
         [UIElement("PathField")]
         private readonly InputField m_pathField;
 
+        [UIElementAction(nameof(OnRevealPathButtonClicked))]
+        [UIElement("RevealPathButton")]
+        private readonly Button m_revealPathButton;
+
         private bool m_populateNextFrame;
 
         private string m_selectedFile;
@@ -145,6 +149,14 @@ namespace OverhaulMod.UI
             m_doneButton.interactable = false;
             m_selectedFile = null;
             callback = null;
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            m_pathField.interactable = false;
+            m_revealPathButton.gameObject.SetActive(true);
         }
 
         public override void Update()
@@ -305,6 +317,12 @@ namespace OverhaulMod.UI
             callback?.Invoke(m_selectedFile);
             callback = null;
             Hide();
+        }
+
+        public void OnRevealPathButtonClicked()
+        {
+            m_pathField.interactable = true;
+            m_revealPathButton.gameObject.SetActive(false);
         }
 
         public void OnCancelButtonClicked()

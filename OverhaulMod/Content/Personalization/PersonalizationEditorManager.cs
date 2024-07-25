@@ -109,7 +109,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -117,7 +117,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -125,7 +125,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 

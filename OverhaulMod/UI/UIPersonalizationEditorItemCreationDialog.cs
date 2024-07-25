@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
             SetStatusText("Please wait...", Color.gray);
             m_doneButton.interactable = false;
 
-            m_timeLeftToRefreshStatus = 0.5f;
+            m_timeLeftToRefreshStatus = 1f;
             m_hasToRefreshStatus = true;
         }
 
@@ -108,6 +108,13 @@ namespace OverhaulMod.UI
             if (m_itemNameField.text.IsNullOrWhiteSpace())
             {
                 SetStatusText("Folder name is a whitespace.", Color.red);
+                m_doneButton.interactable = false;
+                return;
+            }
+
+            if (m_itemNameField.text.EndsWith(" "))
+            {
+                SetStatusText("Item name ends with whitespace.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
@@ -186,6 +193,7 @@ namespace OverhaulMod.UI
 
         public void OnItemNameChanged(string value)
         {
+            StartRefreshingStatus();
             string itemName = value;
 
             bool isDone = false;
