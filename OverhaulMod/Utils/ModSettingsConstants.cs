@@ -314,7 +314,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UIPatchNotes"/>
         /// </summary>
-        public const string HAS_SHOWED_PATCH_NOTES = "HasShowedPatchNotes";
+        public const string LAST_BUILD_CHANGELOG_WAS_SHOWN = "LastBuildChangelogWasShownOn";
 
         /// <summary>
         /// <see cref="ModCore"/>

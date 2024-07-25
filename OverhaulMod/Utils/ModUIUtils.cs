@@ -8,6 +8,25 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void ShowChangelogIfRequired(float delay)
+        {
+            bool showChangelog = false;
+
+            string lastBuildChangelogWasShownOn = UIPatchNotes.LastBuildChangelogWasShownOn;
+            if (lastBuildChangelogWasShownOn.IsNullOrEmpty())
+                showChangelog = true;
+            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version newVersion) && newVersion > ModBuildInfo.version)
+                showChangelog = true;
+
+            if (showChangelog)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    _ = ModUIConstants.ShowPatchNotes();
+                }, delay);
+            }
+        }
+
         public static void ImageExplorer(List<string> imagePaths, Transform parent)
         {
             UIImageExplorer imageExplorer = ModUIConstants.ShowImageExplorer(parent);
