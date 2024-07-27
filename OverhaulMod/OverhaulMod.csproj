@@ -530,6 +530,7 @@
     <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\MetagameLevelTrigger_Patch.cs" />
+    <Compile Include="Patches\MultiplayerMatchManager_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\PhotoManager_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
